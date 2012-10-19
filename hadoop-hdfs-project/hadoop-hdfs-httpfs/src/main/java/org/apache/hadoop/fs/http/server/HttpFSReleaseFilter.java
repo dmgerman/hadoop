@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|service
@@ -57,6 +71,10 @@ comment|/**  * Filter that releases FileSystemAccess filesystem instances upon H
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|HttpFSReleaseFilter
 specifier|public
 class|class

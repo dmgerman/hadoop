@@ -52,20 +52,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|commons
 operator|.
 name|logging
@@ -235,6 +221,8 @@ name|value
 return|;
 block|}
 comment|/**    * Push the metric to the mr.    * The metric is pushed only if it was updated since last push    *     * Note this does NOT push to JMX    * (JMX gets the info via {@link #get()}    *    * @param mr    */
+annotation|@
+name|Override
 DECL|method|pushMetric (final MetricsRecord mr)
 specifier|public
 specifier|synchronized

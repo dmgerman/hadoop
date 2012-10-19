@@ -291,6 +291,8 @@ name|blklist
 expr_stmt|;
 block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
+annotation|@
+name|Override
 DECL|method|setPermission (FsPermission permission)
 name|void
 name|setPermission
@@ -312,6 +314,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|isDirectory ()
 name|boolean
 name|isDirectory
@@ -324,10 +328,10 @@ block|}
 comment|/** @return the replication factor of the file. */
 annotation|@
 name|Override
-DECL|method|getReplication ()
+DECL|method|getBlockReplication ()
 specifier|public
 name|short
-name|getReplication
+name|getBlockReplication
 parameter_list|()
 block|{
 return|return
@@ -692,6 +696,8 @@ operator|=
 name|blk
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
 name|int
 name|collectSubtreeBlocksAndClear
@@ -1026,7 +1032,7 @@ block|}
 return|return
 name|size
 operator|*
-name|getReplication
+name|getBlockReplication
 argument_list|()
 return|;
 block|}

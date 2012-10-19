@@ -162,6 +162,8 @@ operator|new
 name|ThreadLocal
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 specifier|synchronized
 name|Object
@@ -245,6 +247,8 @@ operator|=
 name|out
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeByte (byte b, String tag)
 specifier|public
 name|void
@@ -267,6 +271,8 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeBool (boolean b, String tag)
 specifier|public
 name|void
@@ -289,6 +295,8 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeInt (int i, String tag)
 specifier|public
 name|void
@@ -313,6 +321,8 @@ name|i
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeLong (long l, String tag)
 specifier|public
 name|void
@@ -337,6 +347,8 @@ name|l
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeFloat (float f, String tag)
 specifier|public
 name|void
@@ -359,6 +371,8 @@ name|f
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeDouble (double d, String tag)
 specifier|public
 name|void
@@ -381,6 +395,8 @@ name|d
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeString (String s, String tag)
 specifier|public
 name|void
@@ -405,6 +421,8 @@ name|s
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeBuffer (Buffer buf, String tag)
 specifier|public
 name|void
@@ -457,6 +475,8 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|startRecord (Record r, String tag)
 specifier|public
 name|void
@@ -471,6 +491,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|Override
 DECL|method|endRecord (Record r, String tag)
 specifier|public
 name|void
@@ -485,6 +507,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|Override
 DECL|method|startVector (ArrayList v, String tag)
 specifier|public
 name|void
@@ -510,6 +534,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|endVector (ArrayList v, String tag)
 specifier|public
 name|void
@@ -524,6 +550,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{}
+annotation|@
+name|Override
 DECL|method|startMap (TreeMap v, String tag)
 specifier|public
 name|void
@@ -549,6 +577,8 @@ name|tag
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|endMap (TreeMap v, String tag)
 specifier|public
 name|void

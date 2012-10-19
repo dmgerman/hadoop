@@ -154,22 +154,6 @@ name|org
 operator|.
 name|apache
 operator|.
-name|ftpserver
-operator|.
-name|command
-operator|.
-name|impl
-operator|.
-name|STAT
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|conf
@@ -2438,6 +2422,8 @@ name|MyFsShell
 extends|extends
 name|FsShell
 block|{
+annotation|@
+name|Override
 DECL|method|registerCommands (CommandFactory factory)
 specifier|protected
 name|void

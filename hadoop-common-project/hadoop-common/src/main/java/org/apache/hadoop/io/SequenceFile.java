@@ -436,6 +436,20 @@ name|PriorityQueue
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**   *<code>SequenceFile</code>s are flat files consisting of binary key/value   * pairs.  *   *<p><code>SequenceFile</code> provides {@link Writer}, {@link Reader} and  * {@link Sorter} classes for writing, reading and sorting respectively.</p>  *   * There are three<code>SequenceFile</code><code>Writer</code>s based on the   * {@link CompressionType} used to compress key/value pairs:  *<ol>  *<li>  *<code>Writer</code> : Uncompressed records.  *</li>  *<li>  *<code>RecordCompressWriter</code> : Record-compressed files, only compress   *                                       values.  *</li>  *<li>  *<code>BlockCompressWriter</code> : Block-compressed files, both keys&   *                                      values are collected in 'blocks'   *                                      separately and compressed. The size of   *                                      the 'block' is configurable.  *</ol>  *   *<p>The actual compression algorithm used to compress key and/or values can be  * specified by using the appropriate {@link CompressionCodec}.</p>  *   *<p>The recommended way is to use the static<tt>createWriter</tt> methods  * provided by the<code>SequenceFile</code> to chose the preferred format.</p>  *  *<p>The {@link Reader} acts as the bridge and can read any of the above   *<code>SequenceFile</code> formats.</p>  *  *<h4 id="Formats">SequenceFile Formats</h4>  *   *<p>Essentially there are 3 different formats for<code>SequenceFile</code>s  * depending on the<code>CompressionType</code> specified. All of them share a  *<a href="#Header">common header</a> described below.  *   *<h5 id="Header">SequenceFile Header</h5>  *<ul>  *<li>  *   version - 3 bytes of magic header<b>SEQ</b>, followed by 1 byte of actual   *             version number (e.g. SEQ4 or SEQ6)  *</li>  *<li>  *   keyClassName -key class  *</li>  *<li>  *   valueClassName - value class  *</li>  *<li>  *   compression - A boolean which specifies if compression is turned on for   *                 keys/values in this file.  *</li>  *<li>  *   blockCompression - A boolean which specifies if block-compression is   *                      turned on for keys/values in this file.  *</li>  *<li>  *   compression codec -<code>CompressionCodec</code> class which is used for    *                       compression of keys and/or values (if compression is   *                       enabled).  *</li>  *<li>  *   metadata - {@link Metadata} for this file.  *</li>  *<li>  *   sync - A sync marker to denote end of the header.  *</li>  *</ul>  *   *<h5 id="#UncompressedFormat">Uncompressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record  *<ul>  *<li>Record length</li>  *<li>Key length</li>  *<li>Key</li>  *<li>Value</li>  *</ul>  *</li>  *<li>  * A sync-marker every few<code>100</code> bytes or so.  *</li>  *</ul>  *  *<h5 id="#RecordCompressedFormat">Record-Compressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record  *<ul>  *<li>Record length</li>  *<li>Key length</li>  *<li>Key</li>  *<li><i>Compressed</i> Value</li>  *</ul>  *</li>  *<li>  * A sync-marker every few<code>100</code> bytes or so.  *</li>  *</ul>  *   *<h5 id="#BlockCompressedFormat">Block-Compressed SequenceFile Format</h5>  *<ul>  *<li>  *<a href="#Header">Header</a>  *</li>  *<li>  * Record<i>Block</i>  *<ul>  *<li>Uncompressed number of records in the block</li>  *<li>Compressed key-lengths block-size</li>  *<li>Compressed key-lengths block</li>  *<li>Compressed keys block-size</li>  *<li>Compressed keys block</li>  *<li>Compressed value-lengths block-size</li>  *<li>Compressed value-lengths block</li>  *<li>Compressed values block-size</li>  *<li>Compressed values block</li>  *</ul>  *</li>  *<li>  * A sync-marker every block.  *</li>  *</ul>  *   *<p>The compressed blocks of key lengths and value lengths consist of the   * actual lengths of individual keys/values encoded in ZeroCompressedInteger   * format.</p>  *   * @see CompressionCodec  */
 end_comment
@@ -1899,6 +1913,8 @@ operator|=
 name|length
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSize ()
 specifier|public
 name|int
@@ -1909,6 +1925,8 @@ return|return
 name|dataSize
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeUncompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -1932,6 +1950,8 @@ name|dataSize
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeCompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -2096,6 +2116,8 @@ operator|=
 name|length
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSize ()
 specifier|public
 name|int
@@ -2106,6 +2128,8 @@ return|return
 name|dataSize
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|writeUncompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -2208,6 +2232,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|writeCompressedBytes (DataOutputStream outStream)
 specifier|public
 name|void
@@ -2386,6 +2412,8 @@ name|theMetadata
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -2477,6 +2505,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -2582,6 +2612,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
@@ -2824,6 +2856,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -2840,6 +2874,8 @@ literal|42
 return|;
 comment|// any arbitrary constant will do
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -3098,9 +3134,9 @@ decl_stmt|;
 name|long
 name|time
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|digester
@@ -4724,6 +4760,42 @@ argument_list|(
 name|keyClass
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|keySerializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a serializer for the Key class: '"
+operator|+
+name|keyClass
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using"
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|keySerializer
@@ -4744,6 +4816,42 @@ argument_list|(
 name|valClass
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|uncompressedValSerializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a serializer for the Value class: '"
+operator|+
+name|valClass
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using"
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|uncompressedValSerializer
@@ -4828,6 +4936,42 @@ argument_list|(
 name|valClass
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|compressedValSerializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a serializer for the Value class: '"
+operator|+
+name|valClass
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using"
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|compressedValSerializer
@@ -5009,6 +5153,8 @@ name|conf
 return|;
 block|}
 comment|/** Close the file. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -5480,6 +5626,8 @@ expr_stmt|;
 block|}
 comment|/** Append a key/value pair. */
 annotation|@
+name|Override
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
@@ -5658,6 +5806,8 @@ expr_stmt|;
 comment|// data
 block|}
 comment|/** Append a key/value pair. */
+annotation|@
+name|Override
 DECL|method|appendRaw (byte[] keyData, int keyOffset, int keyLength, ValueBytes val)
 specifier|public
 specifier|synchronized
@@ -5942,6 +6092,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Compress and flush contents to dfs */
+annotation|@
+name|Override
 DECL|method|sync ()
 specifier|public
 specifier|synchronized
@@ -6029,6 +6181,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Close the file. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -6056,6 +6210,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Append a key/value pair. */
+annotation|@
+name|Override
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -6235,6 +6391,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Append a key/value pair. */
+annotation|@
+name|Override
 DECL|method|appendRaw (byte[] keyData, int keyOffset, int keyLength, ValueBytes val)
 specifier|public
 specifier|synchronized
@@ -8032,6 +8190,43 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|this
+operator|.
+name|keyDeserializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a deserializer for the Key class: '"
+operator|+
+name|getKeyClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using "
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 operator|!
 name|blockCompressed
 condition|)
@@ -8070,6 +8265,43 @@ name|getValueClass
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|valDeserializer
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Could not find a deserializer for the Value class: '"
+operator|+
+name|getValueClass
+argument_list|()
+operator|.
+name|getCanonicalName
+argument_list|()
+operator|+
+literal|"'. "
+operator|+
+literal|"Please ensure that the configuration '"
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|IO_SERIALIZATIONS_KEY
+operator|+
+literal|"' is "
+operator|+
+literal|"properly configured, if you're using "
+operator|+
+literal|"custom serialization."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|valDeserializer
@@ -8108,6 +8340,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Close the file. */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -10697,6 +10931,8 @@ argument_list|()
 return|;
 block|}
 comment|/** Returns the name of the file. */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -12394,6 +12630,8 @@ argument_list|<
 name|IntWritable
 argument_list|>
 block|{
+annotation|@
+name|Override
 DECL|method|compare (IntWritable I, IntWritable J)
 specifier|public
 name|int
@@ -13507,6 +13745,8 @@ operator|=
 name|progress
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|lessThan (Object a, Object b)
 specifier|protected
 name|boolean
@@ -13594,6 +13834,8 @@ operator|<
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -13632,6 +13874,8 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getKey ()
 specifier|public
 name|DataOutputBuffer
@@ -13644,6 +13888,8 @@ return|return
 name|rawKey
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValue ()
 specifier|public
 name|ValueBytes
@@ -13656,6 +13902,8 @@ return|return
 name|rawValue
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|boolean
@@ -13780,6 +14028,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getProgress ()
 specifier|public
 name|Progress
@@ -14654,6 +14904,8 @@ return|return
 name|preserveInput
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (Object o)
 specifier|public
 name|int
@@ -14748,6 +15000,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -14823,6 +15077,8 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -15145,6 +15401,8 @@ name|parent
 expr_stmt|;
 block|}
 comment|/** The default cleanup. Subclasses can override this with a custom         * cleanup         */
+annotation|@
+name|Override
 DECL|method|cleanup ()
 specifier|public
 name|void
@@ -15172,6 +15430,8 @@ name|cleanup
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean

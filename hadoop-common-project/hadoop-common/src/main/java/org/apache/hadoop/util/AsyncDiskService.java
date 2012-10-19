@@ -295,6 +295,8 @@ operator|new
 name|ThreadFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Thread
 name|newThread
@@ -496,9 +498,9 @@ block|{
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|milliseconds
@@ -542,9 +544,9 @@ name|max
 argument_list|(
 name|end
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|,
 literal|0

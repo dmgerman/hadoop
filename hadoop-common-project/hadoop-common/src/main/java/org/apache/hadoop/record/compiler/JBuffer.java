@@ -90,6 +90,8 @@ literal|"TypeID.RIOType.BUFFER"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -99,6 +101,8 @@ return|return
 literal|"org.apache.hadoop.record.meta.TypeID.BufferTypeID"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|genCompareTo (CodeBuffer cb, String fname, String other)
 name|void
 name|genCompareTo
@@ -133,6 +137,8 @@ literal|");\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genEquals (CodeBuffer cb, String fname, String peer)
 name|void
 name|genEquals
@@ -167,6 +173,8 @@ literal|");\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genHashCode (CodeBuffer cb, String fname)
 name|void
 name|genHashCode
@@ -194,6 +202,8 @@ literal|".hashCode();\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genSlurpBytes (CodeBuffer cb, String b, String s, String l)
 name|void
 name|genSlurpBytes
@@ -261,6 +271,8 @@ literal|"}\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genCompareBytes (CodeBuffer cb)
 name|void
 name|genCompareBytes
@@ -357,6 +369,8 @@ literal|" ::std::string"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genGetSet (CodeBuffer cb, String fname)
 name|void
 name|genGetSet
@@ -443,6 +457,8 @@ literal|"}\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -481,6 +497,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSignature ()
 name|String
 name|getSignature

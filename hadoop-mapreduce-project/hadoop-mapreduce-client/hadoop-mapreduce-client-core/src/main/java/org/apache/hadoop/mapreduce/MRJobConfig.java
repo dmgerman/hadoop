@@ -458,6 +458,9 @@ name|CACHE_ARCHIVES_VISIBILITIES
 init|=
 literal|"mapreduce.job.cache.archives.visibilities"
 decl_stmt|;
+comment|/**    * @deprecated Symlinks are always on and cannot be disabled.    */
+annotation|@
+name|Deprecated
 DECL|field|CACHE_SYMLINK
 specifier|public
 specifier|static
@@ -2210,6 +2213,31 @@ DECL|field|MR_AM_SECURITY_SERVICE_AUTHORIZATION_CLIENT
 name|MR_AM_SECURITY_SERVICE_AUTHORIZATION_CLIENT
 init|=
 literal|"security.job.client.protocol.acl"
+decl_stmt|;
+comment|/**    * CLASSPATH for all YARN MapReduce applications.    */
+DECL|field|MAPREDUCE_APPLICATION_CLASSPATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_APPLICATION_CLASSPATH
+init|=
+literal|"mapreduce.application.classpath"
+decl_stmt|;
+comment|/**    * Default CLASSPATH for all YARN MapReduce applications.    */
+DECL|field|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
+init|=
+block|{
+literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*"
+block|,
+literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*"
+block|,   }
 decl_stmt|;
 block|}
 end_interface

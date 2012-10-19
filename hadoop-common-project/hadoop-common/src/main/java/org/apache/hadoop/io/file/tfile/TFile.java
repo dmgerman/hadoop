@@ -952,6 +952,8 @@ name|conf
 expr_stmt|;
 block|}
 comment|/**      * Close the Writer. Resources will be released regardless of the exceptions      * being thrown. Future close calls will have no effect.      *       * The underlying FSDataOutputStream is not closed.      */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -2596,6 +2598,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Close the reader. The state of the Reader object is undefined after      * close. Calling close() for multiple times has no effect.      */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -4521,6 +4525,8 @@ block|}
 block|}
 block|}
 comment|/**        * Close the scanner. Release all resources. The behavior of using the        * scanner after calling close is not defined. The entry returned by the        * previous entry() call will be invalid.        */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -6139,10 +6145,8 @@ return|return
 operator|!
 name|strComparator
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 return|;
 block|}
 DECL|method|getComparatorString ()

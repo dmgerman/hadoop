@@ -28,7 +28,19 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -154,24 +166,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSNamesystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|VersionInfo
@@ -202,16 +196,6 @@ name|JSON
 import|;
 end_import
 
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
 begin_comment
 comment|/**  * Class for testing {@link NameNodeMXBean} implementation  */
 end_comment
@@ -222,6 +206,16 @@ specifier|public
 class|class
 name|TestNameNodeMXBean
 block|{
+comment|/**    * Used to assert equality between doubles    */
+DECL|field|DELTA
+specifier|private
+specifier|static
+specifier|final
+name|double
+name|DELTA
+init|=
+literal|0.000001
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -316,8 +310,6 @@ argument_list|,
 literal|"ClusterId"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -344,8 +336,6 @@ argument_list|,
 literal|"BlockPoolId"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -372,8 +362,6 @@ argument_list|,
 literal|"Version"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -384,8 +372,6 @@ argument_list|,
 name|version
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|version
@@ -422,8 +408,6 @@ argument_list|,
 literal|"Used"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -453,8 +437,6 @@ argument_list|,
 literal|"Total"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -484,8 +466,6 @@ argument_list|,
 literal|"Safemode"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -514,8 +494,6 @@ literal|"NonDfsUsedSpace"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -547,8 +525,6 @@ literal|"PercentRemaining"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -560,6 +536,8 @@ name|percentremaining
 operator|.
 name|floatValue
 argument_list|()
+argument_list|,
+name|DELTA
 argument_list|)
 expr_stmt|;
 comment|// get attribute Totalblocks
@@ -580,8 +558,6 @@ literal|"TotalBlocks"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -754,8 +730,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -784,8 +758,6 @@ literal|"DeadNodes"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn
@@ -814,8 +786,6 @@ literal|"NameDirStatuses"
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|fsn

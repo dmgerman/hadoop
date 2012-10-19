@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -128,17 +152,21 @@ name|DataNodeTestUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestDFSRemove
 specifier|public
 class|class
 name|TestDFSRemove
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|dir
 specifier|final
@@ -285,6 +313,8 @@ return|return
 name|total
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRemove ()
 specifier|public
 name|void

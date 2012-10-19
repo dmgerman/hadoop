@@ -60,20 +60,6 @@ name|ContextFactory
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics
-operator|.
-name|MetricsException
-import|;
-end_import
-
 begin_comment
 comment|/**  * A null context which has a thread calling   * periodically when monitoring is started. This keeps the data sampled   * correctly.  * In all other respects, this is like the NULL context: No data is emitted.  * This is suitable for Monitoring systems like JMX which reads the metrics  *  when someone reads the data from JMX.  *   * The default impl of start and stop monitoring:  *  is the AbstractMetricsContext is good enough.  *   */
 end_comment
@@ -114,6 +100,8 @@ name|NullContextWithUpdateThread
 parameter_list|()
 block|{   }
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -146,6 +134,8 @@ expr_stmt|;
 block|}
 comment|/**    * Do-nothing version of emitRecord    */
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -166,6 +156,8 @@ parameter_list|)
 block|{}
 comment|/**    * Do-nothing version of update    */
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -179,6 +171,8 @@ name|record
 parameter_list|)
 block|{   }
 comment|/**    * Do-nothing version of remove    */
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

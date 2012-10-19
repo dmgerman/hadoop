@@ -115,6 +115,8 @@ name|getBytes
 parameter_list|()
 function_decl|;
 comment|/** Return true if both the algorithms and the values are the same. */
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
@@ -192,7 +194,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

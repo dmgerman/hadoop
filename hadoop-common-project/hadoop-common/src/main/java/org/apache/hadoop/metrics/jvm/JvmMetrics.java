@@ -489,6 +489,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * This will be called periodically (with the period being configuration      * dependent).      */
+annotation|@
+name|Override
 DECL|method|doUpdates (MetricsContext context)
 specifier|public
 name|void

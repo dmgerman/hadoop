@@ -242,22 +242,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|DatanodeID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsConstants
 import|;
 end_import
@@ -1267,6 +1251,8 @@ operator|)
 name|this
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPath ()
 specifier|public
 name|String
@@ -1429,6 +1415,8 @@ operator|)
 name|this
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getBlocks ()
 specifier|public
 name|Block
@@ -2729,6 +2717,8 @@ name|OP_ADD
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|shouldCompleteLastBlock ()
 specifier|public
 name|boolean
@@ -2816,6 +2806,8 @@ name|OP_CLOSE
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|shouldCompleteLastBlock ()
 specifier|public
 name|boolean
@@ -2932,6 +2924,8 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPath ()
 specifier|public
 name|String
@@ -2961,6 +2955,8 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getBlocks ()
 specifier|public
 name|Block
@@ -11765,6 +11761,8 @@ name|code
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInputStream in, int logVersion)
 specifier|public
 name|void
@@ -12122,6 +12120,8 @@ operator|new
 name|WritableFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Writable
 name|newInstance
@@ -12153,6 +12153,8 @@ block|}
 comment|/////////////////////////////////////
 comment|// Writable
 comment|/////////////////////////////////////
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -12179,6 +12181,8 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

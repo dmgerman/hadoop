@@ -21,6 +21,66 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -89,16 +149,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -278,7 +328,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsVolumeSpi
+name|FsDatasetSpi
 import|;
 end_import
 
@@ -298,7 +348,7 @@ name|datanode
 operator|.
 name|fsdataset
 operator|.
-name|FsDatasetSpi
+name|FsVolumeSpi
 import|;
 end_import
 
@@ -324,6 +374,16 @@ name|FsDatasetTestUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests {@link DirectoryScanner} handling of differences  * between blocks on the disk and block in memory.  */
 end_comment
@@ -333,8 +393,6 @@ DECL|class|TestDirectoryScanner
 specifier|public
 class|class
 name|TestDirectoryScanner
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -1417,6 +1475,8 @@ name|mismatchBlocks
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDirectoryScanner ()
 specifier|public
 name|void
@@ -1517,26 +1577,11 @@ argument_list|,
 name|parallelism
 argument_list|)
 expr_stmt|;
-name|DataNode
-name|dn
-init|=
-name|cluster
-operator|.
-name|getDataNodes
-argument_list|()
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
 name|scanner
 operator|=
 operator|new
 name|DirectoryScanner
 argument_list|(
-name|dn
-argument_list|,
 name|fds
 argument_list|,
 name|CONF

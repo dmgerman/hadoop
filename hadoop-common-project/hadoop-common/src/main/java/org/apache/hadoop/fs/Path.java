@@ -307,10 +307,8 @@ argument_list|)
 operator|||
 name|parentPath
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 operator|)
 condition|)
 block|{
@@ -666,6 +664,9 @@ block|{
 name|uri
 operator|=
 name|aUri
+operator|.
+name|normalize
+argument_list|()
 expr_stmt|;
 block|}
 comment|/** Construct a Path from components. */
@@ -1297,6 +1298,8 @@ name|suffix
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1474,6 +1477,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -1518,6 +1523,8 @@ name|uri
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -1531,6 +1538,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (Object o)
 specifier|public
 name|int

@@ -17,22 +17,36 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -192,24 +206,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|protocol
-operator|.
-name|InterDatanodeProtocol
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|datanode
 operator|.
 name|DataNode
@@ -276,9 +272,37 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|InterDatanodeProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -291,8 +315,6 @@ DECL|class|TestDatanodeDeath
 specifier|public
 class|class
 name|TestDatanodeDeath
-extends|extends
-name|TestCase
 block|{
 block|{
 operator|(
@@ -577,6 +599,8 @@ name|stamp
 expr_stmt|;
 block|}
 comment|// create a bunch of files. Write to them and then verify.
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -1326,6 +1350,8 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -2255,6 +2281,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSimple0 ()
 specifier|public
 name|void
@@ -2269,6 +2297,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSimple1 ()
 specifier|public
 name|void
@@ -2283,6 +2313,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSimple2 ()
 specifier|public
 name|void
@@ -2297,6 +2329,8 @@ literal|2
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testComplex ()
 specifier|public
 name|void

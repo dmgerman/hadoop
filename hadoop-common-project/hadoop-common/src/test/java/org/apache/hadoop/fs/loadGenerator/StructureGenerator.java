@@ -966,6 +966,8 @@ name|numOfBlocks
 expr_stmt|;
 block|}
 comment|/** Output a file attribute */
+annotation|@
+name|Override
 DECL|method|outputFiles (PrintStream out, String prefix)
 specifier|protected
 name|void

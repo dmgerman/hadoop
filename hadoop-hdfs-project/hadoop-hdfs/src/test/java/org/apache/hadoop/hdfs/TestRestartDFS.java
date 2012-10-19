@@ -17,12 +17,26 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -82,6 +96,16 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JUnit test for checking if restarting DFS preserves integrity.  */
 end_comment
@@ -91,8 +115,6 @@ DECL|class|TestRestartDFS
 specifier|public
 class|class
 name|TestRestartDFS
-extends|extends
-name|TestCase
 block|{
 DECL|method|runTests (Configuration conf, boolean serviceTest)
 specifier|public
@@ -667,6 +689,8 @@ block|}
 block|}
 block|}
 comment|/** check if DFS remains in proper condition after a restart */
+annotation|@
+name|Test
 DECL|method|testRestartDFS ()
 specifier|public
 name|void
@@ -692,6 +716,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** check if DFS remains in proper condition after a restart     * this rerun is with 2 ports enabled for RPC in the namenode    */
+annotation|@
+name|Test
 DECL|method|testRestartDualPortDFS ()
 specifier|public
 name|void

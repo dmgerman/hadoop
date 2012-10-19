@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -53,26 +89,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|AssertionFailedError
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -226,24 +242,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -264,6 +262,50 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/** Unit tests for permission */
 end_comment
@@ -273,8 +315,6 @@ DECL|class|TestDFSPermission
 specifier|public
 class|class
 name|TestDFSPermission
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|public
@@ -534,7 +574,7 @@ comment|// Initiate the random number generator and logging the seed
 name|long
 name|seed
 init|=
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -735,7 +775,7 @@ throw|;
 block|}
 block|}
 annotation|@
-name|Override
+name|Before
 DECL|method|setUp ()
 specifier|public
 name|void
@@ -769,7 +809,7 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
-name|Override
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -793,6 +833,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** This tests if permission setting in create, mkdir, and     * setPermission works correctly    */
+annotation|@
+name|Test
 DECL|method|testPermissionSetting ()
 specifier|public
 name|void
@@ -1478,6 +1520,8 @@ block|}
 block|}
 block|}
 comment|/**    * check that ImmutableFsPermission can be used as the argument    * to setPermission    */
+annotation|@
+name|Test
 DECL|method|testImmutableFsPermission ()
 specifier|public
 name|void
@@ -1519,6 +1563,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/* check if the ownership of a file/directory is set correctly */
+annotation|@
+name|Test
 DECL|method|testOwnership ()
 specifier|public
 name|void
@@ -1985,6 +2031,8 @@ name|DELETE
 block|}
 empty_stmt|;
 comment|/* Check if namenode performs permission checking correctly for    * superuser, file owner, group owner, and other users */
+annotation|@
+name|Test
 DECL|method|testPermissionChecking ()
 specifier|public
 name|void
@@ -3182,7 +3230,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|AssertionFailedError
+name|AssertionError
 name|ae
 parameter_list|)
 block|{
@@ -4804,6 +4852,8 @@ operator|!=
 name|requiredAncestorPermission
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|logPermissions ()
 specifier|protected
 name|void

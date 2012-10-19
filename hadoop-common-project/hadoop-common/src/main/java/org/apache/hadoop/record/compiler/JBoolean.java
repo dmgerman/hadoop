@@ -92,6 +92,8 @@ literal|"TypeID.RIOType.BOOL"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genCompareTo (CodeBuffer cb, String fname, String other)
 name|void
 name|genCompareTo
@@ -130,6 +132,8 @@ literal|"?1:-1);\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -139,6 +143,8 @@ return|return
 literal|"org.apache.hadoop.record.meta.TypeID.BoolTypeID"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|genHashCode (CodeBuffer cb, String fname)
 name|void
 name|genHashCode
@@ -167,6 +173,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// In Binary format, boolean is written as byte. true = 1, false = 0
+annotation|@
+name|Override
 DECL|method|genSlurpBytes (CodeBuffer cb, String b, String s, String l)
 name|void
 name|genSlurpBytes
@@ -240,6 +248,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// In Binary format, boolean is written as byte. true = 1, false = 0
+annotation|@
+name|Override
 DECL|method|genCompareBytes (CodeBuffer cb)
 name|void
 name|genCompareBytes
@@ -331,6 +341,8 @@ literal|"bool"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -369,6 +381,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSignature ()
 name|String
 name|getSignature

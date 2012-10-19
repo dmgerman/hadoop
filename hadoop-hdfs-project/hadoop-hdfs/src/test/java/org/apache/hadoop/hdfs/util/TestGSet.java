@@ -52,6 +52,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Assert
@@ -92,9 +106,9 @@ specifier|final
 name|long
 name|starttime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 DECL|method|print (Object s)
@@ -1436,9 +1450,9 @@ name|long
 name|s
 init|=
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|starttime
@@ -1518,9 +1532,9 @@ specifier|final
 name|long
 name|starttime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|/** Determine the probability in {@link #check()}. */
@@ -2180,9 +2194,9 @@ specifier|final
 name|long
 name|t
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|starttime

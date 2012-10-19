@@ -732,6 +732,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationId
 import|;
 end_import
@@ -906,7 +924,20 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|// Setting AppState to NEW and finalStatus to UNDEFINED as they are never used
+name|ApplicationAttemptId
+name|unknownAttemptId
+init|=
+name|recordFactory
+operator|.
+name|newRecordInstance
+argument_list|(
+name|ApplicationAttemptId
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+comment|// Setting AppState to NEW and finalStatus to UNDEFINED as they are never
+comment|// used
 comment|// for a non running job
 return|return
 name|BuilderUtils
@@ -914,6 +945,8 @@ operator|.
 name|newApplicationReport
 argument_list|(
 name|unknownAppId
+argument_list|,
+name|unknownAttemptId
 argument_list|,
 literal|"N/A"
 argument_list|,

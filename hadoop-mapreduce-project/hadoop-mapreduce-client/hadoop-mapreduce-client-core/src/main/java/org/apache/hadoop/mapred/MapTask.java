@@ -2550,6 +2550,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processing split: "
+operator|+
+name|inputSplit
+argument_list|)
+expr_stmt|;
 block|}
 DECL|class|NewTrackingRecordReader
 specifier|static
@@ -4224,6 +4233,15 @@ name|splitIndex
 operator|.
 name|getStartOffset
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Processing split: "
+operator|+
+name|split
 argument_list|)
 expr_stmt|;
 name|org

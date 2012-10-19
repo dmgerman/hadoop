@@ -42,16 +42,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -75,6 +65,44 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Storage
+operator|.
+name|FormatConfirmable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamespaceInfo
 import|;
 end_import
 
@@ -97,7 +125,22 @@ interface|interface
 name|JournalManager
 extends|extends
 name|Closeable
+extends|,
+name|FormatConfirmable
+extends|,
+name|LogsPurgeable
 block|{
+comment|/**    * Format the underlying storage, removing any previously    * stored data.    */
+DECL|method|format (NamespaceInfo ns)
+name|void
+name|format
+parameter_list|(
+name|NamespaceInfo
+name|ns
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Begin writing to a new segment of the log stream, which starts at    * the given transaction ID.    */
 DECL|method|startLogSegment (long txId)
 name|EditLogOutputStream
@@ -123,24 +166,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a list of edit log input streams.  The list will start with the    * stream that contains fromTxnId, and continue until the end of the journal    * being managed.    *     * @param fromTxnId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    *    * @return a list of streams    */
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
-name|void
-name|selectInputStreams
-parameter_list|(
-name|Collection
-argument_list|<
-name|EditLogInputStream
-argument_list|>
-name|streams
-parameter_list|,
-name|long
-name|fromTxnId
-parameter_list|,
-name|boolean
-name|inProgressOk
-parameter_list|)
-function_decl|;
 comment|/**    * Set the amount of memory that this stream should use to buffer edits    */
 DECL|method|setOutputBufferCapacity (int size)
 name|void
@@ -149,17 +174,6 @@ parameter_list|(
 name|int
 name|size
 parameter_list|)
-function_decl|;
-comment|/**    * The JournalManager may archive/purge any logs for transactions less than    * or equal to minImageTxId.    *    * @param minTxIdToKeep the earliest txid that must be retained after purging    *                      old logs    * @throws IOException if purging fails    */
-DECL|method|purgeLogsOlderThan (long minTxIdToKeep)
-name|void
-name|purgeLogsOlderThan
-parameter_list|(
-name|long
-name|minTxIdToKeep
-parameter_list|)
-throws|throws
-name|IOException
 function_decl|;
 comment|/**    * Recover segments which have not been finalized.    */
 DECL|method|recoverUnfinalizedSegments ()
@@ -170,6 +184,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Close the journal manager, freeing any resources it may hold.    */
+annotation|@
+name|Override
 DECL|method|close ()
 name|void
 name|close

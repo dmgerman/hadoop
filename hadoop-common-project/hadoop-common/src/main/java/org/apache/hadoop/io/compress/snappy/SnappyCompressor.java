@@ -108,6 +108,20 @@ name|Compressor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|NativeCodeLoader
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link Compressor} based on the snappy compression algorithm.  * http://code.google.com/p/snappy/  */
 end_comment
@@ -236,21 +250,37 @@ name|bytesWritten
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|nativeSnappyLoaded
+specifier|private
+specifier|static
+name|boolean
+name|nativeSnappyLoaded
+init|=
+literal|false
+decl_stmt|;
 static|static
 block|{
 if|if
 condition|(
-name|LoadSnappy
+name|NativeCodeLoader
 operator|.
-name|isLoaded
+name|isNativeCodeLoaded
+argument_list|()
+operator|&&
+name|NativeCodeLoader
+operator|.
+name|buildSupportsSnappy
 argument_list|()
 condition|)
 block|{
-comment|// Initialize the native library
 try|try
 block|{
 name|initIDs
 argument_list|()
+expr_stmt|;
+name|nativeSnappyLoaded
+operator|=
+literal|true
 expr_stmt|;
 block|}
 catch|catch
@@ -259,38 +289,28 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
-comment|// Ignore failure to load/initialize snappy
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|t
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Cannot load "
-operator|+
-name|SnappyCompressor
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-operator|+
-literal|" without snappy library!"
+literal|"failed to load SnappyCompressor"
+argument_list|,
+name|t
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+DECL|method|isNativeCodeLoaded ()
+specifier|public
+specifier|static
+name|boolean
+name|isNativeCodeLoaded
+parameter_list|()
+block|{
+return|return
+name|nativeSnappyLoaded
+return|;
 block|}
 comment|/**    * Creates a new compressor.    *    * @param directBufferSize size of the direct buffer to be used.    */
 DECL|method|SnappyCompressor (int directBufferSize)

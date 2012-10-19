@@ -21,6 +21,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyInt
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doNothing
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -65,6 +101,22 @@ operator|.
 name|fs
 operator|.
 name|UnresolvedLinkException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|FsPermission
 import|;
 end_import
 
@@ -431,6 +483,8 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|StandbyException
+throws|,
+name|IOException
 block|{
 return|return
 name|namenode
@@ -534,7 +588,7 @@ name|resourcesLow
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|leaveSafeMode (NameNode namenode, boolean checkForUpgrades)
+DECL|method|leaveSafeMode (NameNode namenode)
 specifier|public
 specifier|static
 name|void
@@ -542,12 +596,7 @@ name|leaveSafeMode
 parameter_list|(
 name|NameNode
 name|namenode
-parameter_list|,
-name|boolean
-name|checkForUpgrades
 parameter_list|)
-throws|throws
-name|SafeModeException
 block|{
 name|namenode
 operator|.
@@ -555,9 +604,7 @@ name|getNamesystem
 argument_list|()
 operator|.
 name|leaveSafeMode
-argument_list|(
-name|checkForUpgrades
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|abortEditLogs (NameNode nn)
@@ -1046,6 +1093,60 @@ return|return
 literal|null
 return|;
 block|}
+block|}
+DECL|method|createMkdirOp (String path)
+specifier|public
+specifier|static
+name|FSEditLogOp
+name|createMkdirOp
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+block|{
+name|MkdirOp
+name|op
+init|=
+name|MkdirOp
+operator|.
+name|getInstance
+argument_list|(
+operator|new
+name|FSEditLogOp
+operator|.
+name|OpInstanceCache
+argument_list|()
+argument_list|)
+operator|.
+name|setPath
+argument_list|(
+name|path
+argument_list|)
+operator|.
+name|setTimestamp
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|setPermissionStatus
+argument_list|(
+operator|new
+name|PermissionStatus
+argument_list|(
+literal|"testuser"
+argument_list|,
+literal|"testgroup"
+argument_list|,
+name|FsPermission
+operator|.
+name|getDefault
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+return|return
+name|op
+return|;
 block|}
 comment|/**    * @return the number of blocks marked safe by safemode, or -1    * if safemode is not running.    */
 DECL|method|getSafeModeSafeBlocks (NameNode nn)

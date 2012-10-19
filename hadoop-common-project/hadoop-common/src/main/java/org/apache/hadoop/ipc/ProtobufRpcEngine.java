@@ -338,6 +338,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -400,6 +414,18 @@ name|ServiceException
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|TextFormat
+import|;
+end_import
+
 begin_comment
 comment|/**  * RPC Engine for for protobuf based RPCs.  */
 end_comment
@@ -417,7 +443,7 @@ implements|implements
 name|RpcEngine
 block|{
 DECL|field|LOG
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|Log
@@ -1094,9 +1120,9 @@ condition|)
 block|{
 name|startTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -1115,6 +1141,56 @@ name|val
 init|=
 literal|null
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|": Call -> "
+operator|+
+name|remoteId
+operator|+
+literal|": "
+operator|+
+name|method
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" {"
+operator|+
+name|TextFormat
+operator|.
+name|shortDebugString
+argument_list|(
+operator|(
+name|Message
+operator|)
+name|args
+index|[
+literal|1
+index|]
+argument_list|)
+operator|+
+literal|"}"
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|val
@@ -1148,6 +1224,45 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|": Exception<- "
+operator|+
+name|remoteId
+operator|+
+literal|": "
+operator|+
+name|method
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" {"
+operator|+
+name|e
+operator|+
+literal|"}"
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|ServiceException
@@ -1167,9 +1282,9 @@ block|{
 name|long
 name|callTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -1185,9 +1300,11 @@ operator|.
 name|getName
 argument_list|()
 operator|+
-literal|" "
+literal|" took "
 operator|+
 name|callTime
+operator|+
+literal|"ms"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1242,6 +1359,50 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|": Response<- "
+operator|+
+name|remoteId
+operator|+
+literal|": "
+operator|+
+name|method
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" {"
+operator|+
+name|TextFormat
+operator|.
+name|shortDebugString
+argument_list|(
+name|returnMessage
+argument_list|)
+operator|+
+literal|"}"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1261,6 +1422,8 @@ return|return
 name|returnMessage
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -2198,9 +2361,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|server
@@ -2234,9 +2397,9 @@ call|(
 name|int
 call|)
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime

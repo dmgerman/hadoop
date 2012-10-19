@@ -72,16 +72,6 @@ name|java
 operator|.
 name|net
 operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
 name|URL
 import|;
 end_import
@@ -271,6 +261,20 @@ operator|.
 name|web
 operator|.
 name|URLUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -887,9 +891,9 @@ name|warnDays
 operator|*
 name|MM_SECONDS_PER_DAY
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|X509Certificate
@@ -970,9 +974,9 @@ argument_list|(
 operator|(
 name|expTime
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|)
 operator|/
@@ -1020,6 +1024,8 @@ name|DummyHostnameVerifier
 implements|implements
 name|HostnameVerifier
 block|{
+annotation|@
+name|Override
 DECL|method|verify (String hostname, SSLSession session)
 specifier|public
 name|boolean
@@ -1046,6 +1052,8 @@ name|DummyTrustManager
 implements|implements
 name|X509TrustManager
 block|{
+annotation|@
+name|Override
 DECL|method|checkClientTrusted (X509Certificate[] chain, String authType)
 specifier|public
 name|void
@@ -1059,6 +1067,8 @@ name|String
 name|authType
 parameter_list|)
 block|{     }
+annotation|@
+name|Override
 DECL|method|checkServerTrusted (X509Certificate[] chain, String authType)
 specifier|public
 name|void
@@ -1072,6 +1082,8 @@ name|String
 name|authType
 parameter_list|)
 block|{     }
+annotation|@
+name|Override
 DECL|method|getAcceptedIssuers ()
 specifier|public
 name|X509Certificate

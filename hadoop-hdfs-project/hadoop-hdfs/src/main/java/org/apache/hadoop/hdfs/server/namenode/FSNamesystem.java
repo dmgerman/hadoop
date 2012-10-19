@@ -60,6 +60,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_TRASH_INTERVAL_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_TRASH_INTERVAL_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -128,6 +160,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_CHECKSUM_TYPE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CHECKSUM_TYPE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_DEFAULT
 import|;
 end_import
@@ -145,6 +209,38 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_ENCRYPT_DATA_TRANSFER_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_ENCRYPT_DATA_TRANSFER_DEFAULT
 import|;
 end_import
 
@@ -748,13 +844,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -1568,24 +1660,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|UpgradeAction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -2012,24 +2086,6 @@ name|server
 operator|.
 name|common
 operator|.
-name|UpgradeStatusReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
 name|Util
 import|;
 end_import
@@ -2246,6 +2302,28 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|namenode
+operator|.
+name|web
+operator|.
+name|resources
+operator|.
+name|NamenodeWebHdfsMethods
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|DatanodeCommand
@@ -2357,24 +2435,6 @@ operator|.
 name|protocol
 operator|.
 name|NamespaceInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
-name|UpgradeCommand
 import|;
 end_import
 
@@ -2646,6 +2706,34 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|DataChecksum
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|VersionInfo
 import|;
 end_import
@@ -2768,6 +2856,8 @@ name|StringBuilder
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|StringBuilder
 name|initialValue
@@ -3134,7 +3224,6 @@ name|HOURS
 argument_list|)
 decl_stmt|;
 DECL|field|dtSecretManager
-specifier|private
 specifier|final
 name|DelegationTokenSecretManager
 name|dtSecretManager
@@ -3319,7 +3408,49 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
-comment|/**    * Instantiates an FSNamesystem loaded from the image and edits    * directories specified in the passed Configuration.    *     * @param conf the Configuration which specifies the storage directories    *             from which to load    * @return an FSNamesystem which contains the loaded namespace    * @throws IOException if loading fails    */
+comment|/**    * Clear all loaded data    */
+DECL|method|clear ()
+name|void
+name|clear
+parameter_list|()
+block|{
+name|dir
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|dtSecretManager
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|generationStamp
+operator|.
+name|setStamp
+argument_list|(
+name|GenerationStamp
+operator|.
+name|FIRST_VALID_STAMP
+argument_list|)
+expr_stmt|;
+name|leaseManager
+operator|.
+name|removeAllLeases
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getLeaseManager ()
+name|LeaseManager
+name|getLeaseManager
+parameter_list|()
+block|{
+return|return
+name|leaseManager
+return|;
+block|}
+comment|/**    /**    * Instantiates an FSNamesystem loaded from the image and edits    * directories specified in the passed Configuration.    *     * @param conf the Configuration which specifies the storage directories    *             from which to load    * @return an FSNamesystem which contains the loaded namespace    * @throws IOException if loading fails    */
 DECL|method|loadFromDisk (Configuration conf)
 specifier|public
 specifier|static
@@ -3408,11 +3539,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Only one "
+literal|"Only one image storage directory ("
 operator|+
 name|DFS_NAMENODE_NAME_DIR_KEY
 operator|+
-literal|" directory configured , beware data loss!"
+literal|") configured. Beware of dataloss"
+operator|+
+literal|" due to lack of redundant storage directories!"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3430,11 +3563,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Only one "
+literal|"Only one namespace edits storage directory ("
 operator|+
 name|DFS_NAMENODE_EDITS_DIR_KEY
 operator|+
-literal|" directory configured , beware data loss!"
+literal|") configured. Beware of dataloss"
+operator|+
+literal|" due to lack of redundant storage directories!"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3807,6 +3942,58 @@ literal|"must not be specified if HA is not enabled."
 argument_list|)
 throw|;
 block|}
+comment|// Get the checksum type from config
+name|String
+name|checksumTypeStr
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFS_CHECKSUM_TYPE_KEY
+argument_list|,
+name|DFS_CHECKSUM_TYPE_DEFAULT
+argument_list|)
+decl_stmt|;
+name|DataChecksum
+operator|.
+name|Type
+name|checksumType
+decl_stmt|;
+try|try
+block|{
+name|checksumType
+operator|=
+name|DataChecksum
+operator|.
+name|Type
+operator|.
+name|valueOf
+argument_list|(
+name|checksumTypeStr
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|iae
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid checksum type in "
+operator|+
+name|DFS_CHECKSUM_TYPE_KEY
+operator|+
+literal|": "
+operator|+
+name|checksumTypeStr
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|serverDefaults
@@ -3861,6 +4048,26 @@ name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
 name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
+argument_list|,
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFS_ENCRYPT_DATA_TRANSFER_KEY
+argument_list|,
+name|DFS_ENCRYPT_DATA_TRANSFER_DEFAULT
+argument_list|)
+argument_list|,
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|FS_TRASH_INTERVAL_KEY
+argument_list|,
+name|FS_TRASH_INTERVAL_DEFAULT
+argument_list|)
+argument_list|,
+name|checksumType
 argument_list|)
 expr_stmt|;
 name|this
@@ -4428,6 +4635,13 @@ operator|.
 name|catchupDuringFailover
 argument_list|()
 expr_stmt|;
+name|blockManager
+operator|.
+name|setPostponeBlocksFromFuture
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -4736,6 +4950,13 @@ name|initSharedJournalsForRead
 argument_list|()
 expr_stmt|;
 block|}
+name|blockManager
+operator|.
+name|setPostponeBlocksFromFuture
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|editLogTailer
 operator|=
 operator|new
@@ -5592,11 +5813,6 @@ argument_list|()
 operator|.
 name|getCTime
 argument_list|()
-argument_list|,
-name|upgradeManager
-operator|.
-name|getUpgradeVersion
-argument_list|()
 argument_list|)
 return|;
 block|}
@@ -6019,8 +6235,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -6164,8 +6378,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -6243,8 +6455,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -6457,8 +6667,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -6539,6 +6747,54 @@ name|getLocatedBlocks
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|LocatedBlock
+name|lastBlock
+init|=
+name|blocks
+operator|.
+name|getLastLocatedBlock
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|lastBlock
+operator|!=
+literal|null
+condition|)
+block|{
+name|ArrayList
+argument_list|<
+name|LocatedBlock
+argument_list|>
+name|lastBlockList
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|LocatedBlock
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|lastBlockList
+operator|.
+name|add
+argument_list|(
+name|lastBlock
+argument_list|)
+expr_stmt|;
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|sortLocatedBlocks
+argument_list|(
+name|clientMachine
+argument_list|,
+name|lastBlockList
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|blocks
@@ -6619,8 +6875,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -6753,8 +7007,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -7112,8 +7364,6 @@ operator|.
 name|getLoginUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -7386,8 +7636,6 @@ operator|.
 name|getLoginUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -7617,7 +7865,7 @@ name|repl
 init|=
 name|trgInode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 comment|// now check the srcs
@@ -7720,7 +7968,7 @@ name|repl
 operator|!=
 name|srcInode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 condition|)
 block|{
@@ -7744,7 +7992,7 @@ literal|" vs. "
 operator|+
 name|srcInode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 throw|;
@@ -7944,8 +8192,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -8100,8 +8346,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -8200,8 +8444,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -8336,8 +8578,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -8554,8 +8794,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -8738,8 +8976,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -9019,8 +9255,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -9161,8 +9395,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -9433,19 +9665,6 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|recoverLeaseInternal
-argument_list|(
-name|myFile
-argument_list|,
-name|src
-argument_list|,
-name|holder
-argument_list|,
-name|clientMachine
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|blockManager
@@ -9535,7 +9754,22 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
+else|else
+block|{
+comment|// Opening an existing file for write - may need to recover lease.
+name|recoverLeaseInternal
+argument_list|(
+name|myFile
+argument_list|,
+name|src
+argument_list|,
+name|holder
+argument_list|,
+name|clientMachine
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -9557,6 +9791,7 @@ operator|+
 literal|" because the file exists"
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 specifier|final
@@ -9775,7 +10010,7 @@ argument_list|()
 argument_list|,
 name|file
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 name|file
@@ -10461,8 +10696,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -10659,8 +10892,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -10707,6 +10938,13 @@ block|{
 name|blockPoolId
 operator|=
 name|bpid
+expr_stmt|;
+name|blockManager
+operator|.
+name|setBlockPoolId
+argument_list|(
+name|blockPoolId
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The client would like to obtain an additional block for the indicated    * filename (which is being written-to).  Return an array that consists    * of the block, plus a set of machines.  The first on this list should    * be where the client writes data.  Subsequent items in the list must    * be provided in the connection to the first datanode.    *    * Make sure the previous blocks have been reported by datanodes and    * are replicated.  Will return an empty 2-elt array if we want the    * client to "try again later".    */
@@ -11117,7 +11355,7 @@ name|replication
 operator|=
 name|pendingFile
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 block|}
@@ -12255,7 +12493,7 @@ name|numExpectedReplicas
 init|=
 name|file
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 name|Block
@@ -12612,8 +12850,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -12763,8 +12999,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -13100,8 +13334,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -13297,8 +13529,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -13391,8 +13621,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -13908,7 +14136,14 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|StandbyException
+throws|,
+name|IOException
 block|{
+name|HdfsFileStatus
+name|stat
+init|=
+literal|null
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -13953,7 +14188,8 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
-return|return
+name|stat
+operator|=
 name|dir
 operator|.
 name|getFileInfo
@@ -13962,7 +14198,50 @@ name|src
 argument_list|,
 name|resolveLink
 argument_list|)
-return|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|auditLog
+operator|.
+name|isInfoEnabled
+argument_list|()
+operator|&&
+name|isExternalInvocation
+argument_list|()
+condition|)
+block|{
+name|logAuditEvent
+argument_list|(
+literal|false
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+argument_list|,
+name|getRemoteIp
+argument_list|()
+argument_list|,
+literal|"getfileinfo"
+argument_list|,
+name|src
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+throw|throw
+name|e
+throw|;
 block|}
 finally|finally
 block|{
@@ -13970,6 +14249,40 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|auditLog
+operator|.
+name|isInfoEnabled
+argument_list|()
+operator|&&
+name|isExternalInvocation
+argument_list|()
+condition|)
+block|{
+name|logAuditEvent
+argument_list|(
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+argument_list|,
+name|getRemoteIp
+argument_list|()
+argument_list|,
+literal|"getfileinfo"
+argument_list|,
+name|src
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|stat
+return|;
 block|}
 comment|/**    * Create all the necessary directories    */
 DECL|method|mkdirs (String src, PermissionStatus permissions, boolean createParent)
@@ -14029,8 +14342,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -14164,8 +14475,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -15337,7 +15646,7 @@ name|diff
 operator|*
 name|fileINode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16047,8 +16356,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -16156,8 +16463,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 argument_list|,
-name|Server
-operator|.
 name|getRemoteIp
 argument_list|()
 argument_list|,
@@ -16336,45 +16641,6 @@ argument_list|,
 name|failedVolumes
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|cmds
-operator|==
-literal|null
-operator|||
-name|cmds
-operator|.
-name|length
-operator|==
-literal|0
-condition|)
-block|{
-name|DatanodeCommand
-name|cmd
-init|=
-name|upgradeManager
-operator|.
-name|getBroadcastCommand
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|cmd
-operator|!=
-literal|null
-condition|)
-block|{
-name|cmds
-operator|=
-operator|new
-name|DatanodeCommand
-index|[]
-block|{
-name|cmd
-block|}
-expr_stmt|;
-block|}
-block|}
 return|return
 operator|new
 name|HeartbeatResponse
@@ -17619,6 +17885,39 @@ argument_list|,
 name|DFS_NAMENODE_REPLICATION_MIN_DEFAULT
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|DFS_NAMENODE_SAFEMODE_THRESHOLD_PCT_KEY
+operator|+
+literal|" = "
+operator|+
+name|threshold
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|DFS_NAMENODE_SAFEMODE_MIN_DATANODES_KEY
+operator|+
+literal|" = "
+operator|+
+name|datanodeThreshold
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|DFS_NAMENODE_SAFEMODE_EXTENSION_KEY
+operator|+
+literal|"     = "
+operator|+
+name|extension
+argument_list|)
+expr_stmt|;
 comment|// default to safe mode threshold (i.e., don't populate queues before leaving safe mode)
 name|this
 operator|.
@@ -17793,73 +18092,14 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-comment|/**      * Leave safe mode.      *<p>      * Switch to manual safe mode if distributed upgrade is required.<br>      * Check for invalid, under-& over-replicated blocks in the end of startup.      */
-DECL|method|leave (boolean checkForUpgrades)
+comment|/**      * Leave safe mode.      *<p>      * Check for invalid, under-& over-replicated blocks in the end of startup.      */
+DECL|method|leave ()
 specifier|private
 specifier|synchronized
 name|void
 name|leave
-parameter_list|(
-name|boolean
-name|checkForUpgrades
-parameter_list|)
+parameter_list|()
 block|{
-if|if
-condition|(
-name|checkForUpgrades
-condition|)
-block|{
-comment|// verify whether a distributed upgrade needs to be started
-name|boolean
-name|needUpgrade
-init|=
-literal|false
-decl_stmt|;
-try|try
-block|{
-name|needUpgrade
-operator|=
-name|upgradeManager
-operator|.
-name|startUpgrade
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|FSNamesystem
-operator|.
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"IOException in startDistributedUpgradeIfNeeded"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|needUpgrade
-condition|)
-block|{
-comment|// switch to manual safe mode
-name|safeMode
-operator|=
-operator|new
-name|SafeModeInfo
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-block|}
 comment|// if not done yet, initialize replication queues.
 comment|// In the standby, do not populate repl queues
 if|if
@@ -18215,9 +18455,7 @@ comment|// don't need to wait
 name|this
 operator|.
 name|leave
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 expr_stmt|;
 comment|// leave safe mode
 return|return;
@@ -18495,7 +18733,13 @@ condition|)
 block|{
 name|leaveMsg
 operator|=
-literal|"Resources are low on NN. Safe mode must be turned off manually"
+literal|"Resources are low on NN. "
+operator|+
+literal|"Please add or free up more resources then turn off safe mode manually.  "
+operator|+
+literal|"NOTE:  If you turn off safe mode before adding resources, "
+operator|+
+literal|"the NN will immediately return to safe mode."
 expr_stmt|;
 block|}
 else|else
@@ -18511,27 +18755,6 @@ name|isManual
 argument_list|()
 condition|)
 block|{
-if|if
-condition|(
-name|upgradeManager
-operator|.
-name|getUpgradeState
-argument_list|()
-condition|)
-return|return
-name|leaveMsg
-operator|+
-literal|" upon completion of "
-operator|+
-literal|"the distributed upgrade: upgrade progress = "
-operator|+
-name|upgradeManager
-operator|.
-name|getUpgradeStatus
-argument_list|()
-operator|+
-literal|"%"
-return|;
 name|leaveMsg
 operator|=
 literal|"Use \"hdfs dfsadmin -safemode leave\" to turn safe mode off"
@@ -19063,6 +19286,8 @@ init|=
 literal|1000
 decl_stmt|;
 comment|/**      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -19120,41 +19345,9 @@ block|}
 else|else
 block|{
 comment|// leave safe mode and stop the monitor
-try|try
-block|{
 name|leaveSafeMode
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|SafeModeException
-name|es
-parameter_list|)
-block|{
-comment|// should never happen
-name|String
-name|msg
-init|=
-literal|"SafeModeMonitor may not run during distributed upgrade."
-decl_stmt|;
-assert|assert
-literal|false
-operator|:
-name|msg
-assert|;
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-name|msg
-argument_list|,
-name|es
-argument_list|)
-throw|;
-block|}
 block|}
 name|smmthread
 operator|=
@@ -19194,9 +19387,7 @@ name|SAFEMODE_LEAVE
 case|:
 comment|// leave safe mode
 name|leaveSafeMode
-argument_list|(
-literal|false
-argument_list|)
+argument_list|()
 expr_stmt|;
 break|break;
 case|case
@@ -19461,6 +19652,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Adjust the total number of blocks safe and expected during safe mode.    * If safe mode is not currently on, this is a no-op.    * @param deltaSafe the change in number of safe blocks    * @param deltaTotal the change i nnumber of total blocks expected    */
+annotation|@
+name|Override
 DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)
 specifier|public
 name|void
@@ -19827,15 +20020,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Leave safe mode.    * @throws IOException    */
-DECL|method|leaveSafeMode (boolean checkForUpgrades)
+DECL|method|leaveSafeMode ()
 name|void
 name|leaveSafeMode
-parameter_list|(
-name|boolean
-name|checkForUpgrades
-parameter_list|)
-throws|throws
-name|SafeModeException
+parameter_list|()
 block|{
 name|writeLock
 argument_list|()
@@ -19860,28 +20048,10 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-if|if
-condition|(
-name|upgradeManager
-operator|.
-name|getUpgradeState
-argument_list|()
-condition|)
-throw|throw
-operator|new
-name|SafeModeException
-argument_list|(
-literal|"Distributed upgrade is in progress"
-argument_list|,
-name|safeMode
-argument_list|)
-throw|;
 name|safeMode
 operator|.
 name|leave
-argument_list|(
-name|checkForUpgrades
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 finally|finally
@@ -19944,6 +20114,9 @@ name|OperationCategory
 operator|.
 name|JOURNAL
 argument_list|)
+expr_stmt|;
+name|checkSuperuserPrivilege
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -20163,56 +20336,6 @@ argument_list|)
 operator|!=
 literal|null
 operator|)
-return|;
-block|}
-comment|// Distributed upgrade manager
-DECL|field|upgradeManager
-specifier|final
-name|UpgradeManagerNamenode
-name|upgradeManager
-init|=
-operator|new
-name|UpgradeManagerNamenode
-argument_list|(
-name|this
-argument_list|)
-decl_stmt|;
-DECL|method|distributedUpgradeProgress (UpgradeAction action )
-name|UpgradeStatusReport
-name|distributedUpgradeProgress
-parameter_list|(
-name|UpgradeAction
-name|action
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|upgradeManager
-operator|.
-name|distributedUpgradeProgress
-argument_list|(
-name|action
-argument_list|)
-return|;
-block|}
-DECL|method|processDistributedUpgradeCommand (UpgradeCommand comm)
-name|UpgradeCommand
-name|processDistributedUpgradeCommand
-parameter_list|(
-name|UpgradeCommand
-name|comm
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|upgradeManager
-operator|.
-name|processUpgradeCommand
-argument_list|(
-name|comm
-argument_list|)
 return|;
 block|}
 DECL|method|createFsOwnerPermissions (FsPermission permission)
@@ -20947,6 +21070,35 @@ name|getDatanodeManager
 argument_list|()
 operator|.
 name|getNumDeadDataNodes
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"StaleDataNodes"
+block|,
+literal|"Number of datanodes marked stale due to delayed heartbeat"
+block|}
+argument_list|)
+DECL|method|getNumStaleDataNodes ()
+specifier|public
+name|int
+name|getNumStaleDataNodes
+parameter_list|()
+block|{
+return|return
+name|getBlockManager
+argument_list|()
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|getNumStaleNodes
 argument_list|()
 return|;
 block|}
@@ -22273,6 +22425,8 @@ operator|=
 name|b
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -23354,6 +23508,44 @@ name|Server
 operator|.
 name|isRpcInvocation
 argument_list|()
+operator|||
+name|NamenodeWebHdfsMethods
+operator|.
+name|isWebHdfsInvocation
+argument_list|()
+return|;
+block|}
+DECL|method|getRemoteIp ()
+specifier|private
+specifier|static
+name|InetAddress
+name|getRemoteIp
+parameter_list|()
+block|{
+name|InetAddress
+name|ip
+init|=
+name|Server
+operator|.
+name|getRemoteIp
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|ip
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|ip
+return|;
+block|}
+return|return
+name|NamenodeWebHdfsMethods
+operator|.
+name|getRemoteIp
+argument_list|()
 return|;
 block|}
 comment|/**    * Log fsck event in the audit log     */
@@ -24161,9 +24353,9 @@ parameter_list|)
 block|{
 return|return
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|alivenode
@@ -24450,6 +24642,8 @@ name|password
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|isGenStampInFuture (long genStamp)
 specifier|public
 name|boolean
@@ -24537,6 +24731,26 @@ name|nnResourceChecker
 operator|=
 name|nnResourceChecker
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|isAvoidingStaleDataNodesForWrite ()
+specifier|public
+name|boolean
+name|isAvoidingStaleDataNodesForWrite
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|blockManager
+operator|.
+name|getDatanodeManager
+argument_list|()
+operator|.
+name|isAvoidingStaleDataNodesForWrite
+argument_list|()
+return|;
 block|}
 block|}
 end_class

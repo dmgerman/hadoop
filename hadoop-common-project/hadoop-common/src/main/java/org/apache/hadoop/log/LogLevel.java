@@ -484,6 +484,8 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|doGet (HttpServletRequest request, HttpServletResponse response )
 specifier|public
 name|void

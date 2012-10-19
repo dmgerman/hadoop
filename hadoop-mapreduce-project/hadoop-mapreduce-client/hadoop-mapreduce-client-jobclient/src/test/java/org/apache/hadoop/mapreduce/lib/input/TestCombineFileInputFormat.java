@@ -84,6 +84,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -809,7 +821,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Returing missing blocks for "
+literal|"Returning missing blocks for "
 operator|+
 name|fileWithMissingBlocks
 argument_list|)
@@ -819,6 +831,9 @@ index|[
 literal|0
 index|]
 operator|=
+operator|new
+name|HdfsBlockLocation
+argument_list|(
 operator|new
 name|BlockLocation
 argument_list|(
@@ -849,6 +864,9 @@ index|]
 operator|.
 name|getLength
 argument_list|()
+argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1541,7 +1559,7 @@ name|void
 name|testSplitPlacement
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|dfs
@@ -5624,6 +5642,10 @@ name|numBlocks
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|FileSystem
 name|fileSys
@@ -5697,6 +5719,10 @@ name|numBlocks
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|FileSystem
 name|fileSys
@@ -5785,6 +5811,10 @@ name|numBlocks
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 for|for
 control|(
@@ -5832,7 +5862,7 @@ name|void
 name|testSplitPlacementForCompressedFiles
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|dfs
@@ -9307,7 +9337,7 @@ name|void
 name|testMissingBlocks
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|String
 name|namenode

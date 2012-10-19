@@ -394,7 +394,9 @@ name|setReadyToFlush
 argument_list|()
 expr_stmt|;
 name|flushAndSync
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -585,11 +587,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|flushAndSync ()
+DECL|method|flushAndSync (boolean durable)
 specifier|public
 name|void
 name|flushAndSync
-parameter_list|()
+parameter_list|(
+name|boolean
+name|durable
+parameter_list|)
 throws|throws
 name|IOException
 block|{

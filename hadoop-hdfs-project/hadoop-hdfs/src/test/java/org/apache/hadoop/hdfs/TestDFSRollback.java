@@ -61,6 +61,42 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -97,16 +133,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -166,24 +192,6 @@ name|server
 operator|.
 name|common
 operator|.
-name|StorageInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
 name|HdfsServerConstants
 operator|.
 name|NodeType
@@ -222,6 +230,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|common
+operator|.
+name|StorageInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|FSImageTestUtil
@@ -239,6 +265,26 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -279,8 +325,6 @@ DECL|class|TestDFSRollback
 specifier|public
 class|class
 name|TestDFSRollback
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -658,6 +702,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This test attempts to rollback the NameNode and DataNode under    * a number of valid and invalid conditions.    */
+annotation|@
+name|Test
 DECL|method|testRollback ()
 specifier|public
 name|void
@@ -1753,8 +1799,10 @@ block|}
 block|}
 block|}
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()

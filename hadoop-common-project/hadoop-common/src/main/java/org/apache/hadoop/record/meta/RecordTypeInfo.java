@@ -337,6 +337,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Serialize the type information for a record    */
+annotation|@
+name|Override
 DECL|method|serialize (RecordOutput rout, String tag)
 specifier|public
 name|void
@@ -390,6 +392,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Deserialize the type information for a record    */
+annotation|@
+name|Override
 DECL|method|deserialize (RecordInput rin, String tag)
 specifier|public
 name|void
@@ -442,6 +446,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This class doesn't implement Comparable as it's not meant to be used     * for anything besides de/serializing.    * So we always throw an exception.    * Not implemented. Always returns 0 if another RecordTypeInfo is passed in.     */
+annotation|@
+name|Override
 DECL|method|compareTo (final Object peer_)
 specifier|public
 name|int

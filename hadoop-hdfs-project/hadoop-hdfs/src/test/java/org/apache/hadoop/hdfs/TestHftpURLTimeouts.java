@@ -104,16 +104,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URLConnection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|LinkedList
@@ -296,6 +286,8 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|HttpURLConnection
 name|conn
 init|=
@@ -375,6 +367,15 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
@@ -456,6 +457,8 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|HttpURLConnection
 name|conn
 init|=
@@ -535,6 +538,15 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|checkConnectTimeout (HftpFileSystem fs, boolean ignoreReadTimeout)
 specifier|private

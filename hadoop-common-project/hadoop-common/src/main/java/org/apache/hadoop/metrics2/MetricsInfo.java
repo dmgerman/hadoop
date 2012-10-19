@@ -44,8 +44,24 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
+name|annotation
+operator|.
+name|Metric
+import|;
+end_import
+
 begin_comment
-comment|/**  * Interface to provide immutable meta info for metrics  */
+comment|/**  * Interface to provide immutable metainfo for metrics.  */
 end_comment
 
 begin_interface
@@ -62,13 +78,13 @@ specifier|public
 interface|interface
 name|MetricsInfo
 block|{
-comment|/**    * @return the name of the metric/tag    */
+comment|/**    * Typically name corresponds to annotation {@link Metric#value()} or    * the name of the class.    * @return the name of the metric/tag    */
 DECL|method|name ()
 name|String
 name|name
 parameter_list|()
 function_decl|;
-comment|/**    * @return the description of the metric/tag    */
+comment|/**    * Typically the description corresponds to annotation {@link Metric#about()}    * or the name of the class.    * @return the description of the metric/tag    */
 DECL|method|description ()
 name|String
 name|description

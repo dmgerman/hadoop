@@ -213,6 +213,22 @@ operator|=
 name|errOut
 expr_stmt|;
 block|}
+DECL|method|setOut (PrintStream out)
+specifier|protected
+name|void
+name|setOut
+parameter_list|(
+name|PrintStream
+name|out
+parameter_list|)
+block|{
+name|this
+operator|.
+name|out
+operator|=
+name|out
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|setConf (Configuration conf)

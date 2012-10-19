@@ -920,6 +920,8 @@ name|EOF
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -985,6 +987,8 @@ throw|;
 block|}
 block|}
 comment|/**    * In CONTINOUS reading mode, this read method starts from the    * start of the compressed stream and end at the end of file by    * emitting un-compressed data.  In this mode stream positioning    * is not announced and should be ignored.    *    * In BYBLOCK reading mode, this read method informs about the end    * of a BZip2 block by returning EOB.  At this event, the compressed    * stream position is also announced.  This announcement tells that    * how much of the compressed stream has been de-compressed and read    * out of this class.  In between EOB events, the stream position is    * not updated.    *    *    * @throws IOException    *             if the stream content is malformed or an I/O error occurs.    *    * @return int The return value greater than 0 are the bytes read.  A value    * of -1 means end of stream while -2 represents end of block    */
+annotation|@
+name|Override
 DECL|method|read (final byte[] dest, final int offs, final int len)
 specifier|public
 name|int
@@ -1829,6 +1833,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

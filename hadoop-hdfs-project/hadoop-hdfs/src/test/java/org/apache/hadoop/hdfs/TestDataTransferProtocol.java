@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -128,16 +164,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -189,20 +215,6 @@ operator|.
 name|fs
 operator|.
 name|FSDataInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
 import|;
 end_import
 
@@ -649,8 +661,6 @@ DECL|class|TestDataTransferProtocol
 specifier|public
 class|class
 name|TestDataTransferProtocol
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -679,7 +689,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_CRC32C
+name|Type
+operator|.
+name|CRC32C
 argument_list|,
 literal|512
 argument_list|)
@@ -993,55 +1005,6 @@ name|sock
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|createFile (FileSystem fs, Path path, int fileLen)
-name|void
-name|createFile
-parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
-name|Path
-name|path
-parameter_list|,
-name|int
-name|fileLen
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|byte
-index|[]
-name|arr
-init|=
-operator|new
-name|byte
-index|[
-name|fileLen
-index|]
-decl_stmt|;
-name|FSDataOutputStream
-name|out
-init|=
-name|fs
-operator|.
-name|create
-argument_list|(
-name|path
-argument_list|)
-decl_stmt|;
-name|out
-operator|.
-name|write
-argument_list|(
-name|arr
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|readFile (FileSystem fs, Path path, int fileLen)
 name|void
@@ -1401,9 +1364,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|testOpWrite ()
 annotation|@
 name|Test
+DECL|method|testOpWrite ()
 specifier|public
 name|void
 name|testOpWrite
@@ -2207,9 +2170,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|testDataTransferProtocol ()
 annotation|@
 name|Test
+DECL|method|testDataTransferProtocol ()
 specifier|public
 name|void
 name|testDataTransferProtocol
@@ -2364,6 +2327,8 @@ argument_list|,
 literal|4096
 argument_list|)
 decl_stmt|;
+name|DFSTestUtil
+operator|.
 name|createFile
 argument_list|(
 name|fileSys
@@ -2371,6 +2336,24 @@ argument_list|,
 name|file
 argument_list|,
 name|fileLen
+argument_list|,
+name|fileLen
+argument_list|,
+name|fileSys
+operator|.
+name|getDefaultBlockSize
+argument_list|(
+name|file
+argument_list|)
+argument_list|,
+name|fileSys
+operator|.
+name|getDefaultReplication
+argument_list|(
+name|file
+argument_list|)
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 comment|// get the first blockid for the file

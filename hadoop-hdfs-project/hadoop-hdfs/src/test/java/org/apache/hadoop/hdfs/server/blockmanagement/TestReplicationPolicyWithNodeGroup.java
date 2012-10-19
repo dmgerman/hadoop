@@ -21,6 +21,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -97,16 +133,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -271,8 +297,6 @@ DECL|class|TestReplicationPolicyWithNodeGroup
 specifier|public
 class|class
 name|TestReplicationPolicyWithNodeGroup
-extends|extends
-name|TestCase
 block|{
 DECL|field|BLOCK_SIZE
 specifier|private
@@ -641,6 +665,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * In this testcase, client is dataNodes[0]. So the 1st replica should be    * placed on dataNodes[0], the 2nd replica should be placed on     * different rack and third should be placed on different node (and node group)    * of rack chosen for 2nd node.    * The only excpetion is when the<i>numOfReplicas</i> is 2,     * the 1st is on dataNodes[0] and the 2nd is on a different rack.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChooseTarget1 ()
 specifier|public
 name|void
@@ -699,6 +725,13 @@ index|[
 literal|0
 index|]
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
@@ -725,6 +758,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -765,6 +805,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -823,6 +870,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -917,6 +971,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -1087,6 +1148,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * In this testcase, client is dataNodes[0], but the dataNodes[1] is    * not allowed to be chosen. So the 1st replica should be    * placed on dataNodes[0], the 2nd replica should be placed on a different    * rack, the 3rd should be on same rack as the 2nd replica but in different    * node group, and the rest should be placed on a third rack.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChooseTarget2 ()
 specifier|public
 name|void
@@ -1418,6 +1481,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * In this testcase, client is dataNodes[0], but dataNodes[0] is not qualified    * to be chosen. So the 1st replica should be placed on dataNodes[1],     * the 2nd replica should be placed on a different rack,    * the 3rd replica should be placed on the same rack as the 2nd replica but in different nodegroup,    * and the rest should be placed on the third rack.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChooseTarget3 ()
 specifier|public
 name|void
@@ -1481,6 +1546,13 @@ index|[
 literal|0
 index|]
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
@@ -1507,6 +1579,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -1547,6 +1626,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -1605,6 +1691,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -1681,6 +1774,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -1785,6 +1885,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * In this testcase, client is dataNodes[0], but none of the nodes on rack 1    * is qualified to be chosen. So the 1st replica should be placed on either    * rack 2 or rack 3.     * the 2nd replica should be placed on a different rack,    * the 3rd replica should be placed on the same rack as the 1st replica, but     * in different node group.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChooseTarget4 ()
 specifier|public
 name|void
@@ -1863,6 +1965,13 @@ index|[
 literal|0
 index|]
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
@@ -1889,6 +1998,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -1934,6 +2050,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -1997,6 +2120,13 @@ name|dataNodes
 index|[
 literal|0
 index|]
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -2102,6 +2232,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * In this testcase, client is is a node outside of file system.    * So the 1st replica can be placed on any node.     * the 2nd replica should be placed on a different rack,    * the 3rd replica should be placed on the same rack as the 2nd replica,    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testChooseTarget5 ()
 specifier|public
 name|void
@@ -2129,6 +2261,13 @@ literal|0
 argument_list|,
 name|NODE
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
@@ -2153,6 +2292,13 @@ literal|1
 argument_list|,
 name|NODE
 argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+argument_list|,
 name|BLOCK_SIZE
 argument_list|)
 expr_stmt|;
@@ -2176,6 +2322,13 @@ argument_list|,
 literal|2
 argument_list|,
 name|NODE
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -2218,6 +2371,13 @@ argument_list|,
 literal|3
 argument_list|,
 name|NODE
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
 argument_list|,
 name|BLOCK_SIZE
 argument_list|)
@@ -2274,6 +2434,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This testcase tests re-replication, when dataNodes[0] is already chosen.    * So the 1st replica can be placed on random rack.     * the 2nd replica should be placed on different node and nodegroup by same rack as     * the 1st replica. The 3rd replica can be placed randomly.    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testRereplicate1 ()
 specifier|public
 name|void
@@ -2538,6 +2700,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This testcase tests re-replication,     * when dataNodes[0] and dataNodes[1] are already chosen.    * So the 1st replica should be placed on a different rack of rack 1.     * the rest replicas can be placed randomly,    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testRereplicate2 ()
 specifier|public
 name|void
@@ -2726,6 +2890,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This testcase tests re-replication,     * when dataNodes[0] and dataNodes[3] are already chosen.    * So the 1st replica should be placed on the rack that the writer resides.     * the rest replicas can be placed randomly,    * @throws Exception    */
+annotation|@
+name|Test
 DECL|method|testRereplicate3 ()
 specifier|public
 name|void

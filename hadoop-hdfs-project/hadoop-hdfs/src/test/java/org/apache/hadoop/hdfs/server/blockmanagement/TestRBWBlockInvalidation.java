@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -248,30 +272,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
 begin_comment
 comment|/**  * Test when RBW block is removed. Invalidation of the corrupted block happens  * and then the under replicated block gets replicated to the datanode.  */
 end_comment
@@ -314,6 +314,11 @@ block|}
 comment|/**    * Test when a block's replica is removed from RBW folder in one of the    * datanode, namenode should ask to invalidate that corrupted block and    * schedule replication for one more replica for that under replicated block.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testBlockInvalidationWhenRBWReplicaMissedInDN ()
 specifier|public
 name|void

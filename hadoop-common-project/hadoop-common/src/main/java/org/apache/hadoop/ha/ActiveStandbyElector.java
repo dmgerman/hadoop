@@ -889,15 +889,13 @@ name|length
 operator|>=
 literal|1
 operator|&&
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|pathParts
 index|[
 literal|0
 index|]
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 argument_list|,
 literal|"Invalid path: %s"
 argument_list|,
@@ -3070,6 +3068,8 @@ name|String
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|String
 name|run
@@ -3132,6 +3132,8 @@ index|[]
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|byte
 index|[]
@@ -3192,6 +3194,8 @@ name|Stat
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Stat
 name|run
@@ -3245,6 +3249,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|run

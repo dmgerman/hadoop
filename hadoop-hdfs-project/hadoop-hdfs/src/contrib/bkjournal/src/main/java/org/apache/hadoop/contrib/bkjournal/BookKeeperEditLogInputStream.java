@@ -335,7 +335,7 @@ name|logVersion
 operator|=
 name|metadata
 operator|.
-name|getVersion
+name|getDataLayoutVersion
 argument_list|()
 expr_stmt|;
 name|this

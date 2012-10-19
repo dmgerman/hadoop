@@ -253,6 +253,8 @@ name|DURefreshThread
 implements|implements
 name|Runnable
 block|{
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -505,6 +507,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -525,6 +529,8 @@ operator|+
 name|dirPath
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getExecString ()
 specifier|protected
 name|String
@@ -545,6 +551,8 @@ name|dirPath
 block|}
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseExecResult (BufferedReader lines)
 specifier|protected
 name|void

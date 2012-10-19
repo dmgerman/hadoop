@@ -235,6 +235,16 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|value
+operator|!=
+name|newVal
+operator|||
+operator|!
+name|loaded
+condition|)
+block|{
 name|writeFile
 argument_list|(
 name|file
@@ -242,6 +252,7 @@ argument_list|,
 name|newVal
 argument_list|)
 expr_stmt|;
+block|}
 name|value
 operator|=
 name|newVal

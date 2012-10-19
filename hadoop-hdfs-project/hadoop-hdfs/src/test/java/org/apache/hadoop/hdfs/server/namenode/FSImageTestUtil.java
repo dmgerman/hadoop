@@ -21,6 +21,66 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doReturn
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -232,6 +292,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileUtil
@@ -338,9 +412,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FileJournalManager
+name|FSImageStorageInspector
 operator|.
-name|EditLogFile
+name|FSImageFile
 import|;
 end_import
 
@@ -358,9 +432,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageStorageInspector
+name|FileJournalManager
 operator|.
-name|FSImageFile
+name|EditLogFile
 import|;
 end_import
 
@@ -434,13 +508,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|mockito
 operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
+name|Matchers
 import|;
 end_import
 
@@ -451,16 +521,6 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
 import|;
 end_import
 
@@ -488,7 +548,7 @@ name|common
 operator|.
 name|collect
 operator|.
-name|Lists
+name|ImmutableList
 import|;
 end_import
 
@@ -502,7 +562,7 @@ name|common
 operator|.
 name|collect
 operator|.
-name|ImmutableList
+name|Lists
 import|;
 end_import
 
@@ -545,42 +605,6 @@ operator|.
 name|io
 operator|.
 name|Files
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doReturn
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|mock
 import|;
 end_import
 

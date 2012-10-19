@@ -148,6 +148,8 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -227,6 +229,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add given element to the hash table    *    * @return true if the element was not present in the table, false otherwise    */
+annotation|@
+name|Override
 DECL|method|addElem (final T element)
 specifier|protected
 name|boolean
@@ -379,6 +383,8 @@ literal|true
 return|;
 block|}
 comment|/**    * Remove the element corresponding to the key, given key.hashCode() == index.    *    * @return Return the entry with the element if exists. Otherwise return null.    */
+annotation|@
+name|Override
 DECL|method|removeElem (final T key)
 specifier|protected
 name|DoubleLinkedElement
@@ -534,6 +540,8 @@ name|first
 return|;
 block|}
 comment|/**    * Remove and return n elements from the hashtable.    * The order in which entries are removed is corresponds     * to the order in which they were inserted.    *    * @return first element    */
+annotation|@
+name|Override
 DECL|method|pollN (int n)
 specifier|public
 name|List
@@ -616,6 +624,8 @@ name|retList
 return|;
 block|}
 comment|/**    * Remove all elements from the set and return them in order. Traverse the    * link list, don't worry about hashtable - faster version of the parent    * method.    */
+annotation|@
+name|Override
 DECL|method|pollAll ()
 specifier|public
 name|List
@@ -794,6 +804,8 @@ return|return
 name|a
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|iterator ()
 specifier|public
 name|Iterator
@@ -932,6 +944,8 @@ throw|;
 block|}
 block|}
 comment|/**    * Clear the set. Resize it to the original capacity.    */
+annotation|@
+name|Override
 DECL|method|clear ()
 specifier|public
 name|void

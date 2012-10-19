@@ -58,16 +58,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -146,25 +136,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|fs
 operator|.
-name|Credentials
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|Options
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
+name|ChecksumOpt
 import|;
 end_import
 
@@ -253,6 +229,8 @@ name|fs
 return|;
 block|}
 comment|/** Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    */
+annotation|@
+name|Override
 DECL|method|initialize (URI name, Configuration conf)
 specifier|public
 name|void
@@ -330,6 +308,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Returns a URI whose scheme and authority identify this FileSystem.*/
+annotation|@
+name|Override
 DECL|method|getUri ()
 specifier|public
 name|URI
@@ -360,6 +340,8 @@ argument_list|()
 return|;
 block|}
 comment|/** Make sure that a path specifies a FileSystem. */
+annotation|@
+name|Override
 DECL|method|makeQualified (Path path)
 specifier|public
 name|Path
@@ -436,6 +418,8 @@ comment|///////////////////////////////////////////////////////////////
 comment|// FileSystem
 comment|///////////////////////////////////////////////////////////////
 comment|/** Check that a Path belongs to this FileSystem. */
+annotation|@
+name|Override
 DECL|method|checkPath (Path path)
 specifier|protected
 name|void
@@ -453,6 +437,8 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getFileBlockLocations (FileStatus file, long start, long len)
 specifier|public
 name|BlockLocation
@@ -508,6 +494,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Opens an FSDataInputStream at the indicated Path.    * @param f the file name to open    * @param bufferSize the size of the buffer to be used.    */
+annotation|@
+name|Override
 DECL|method|open (Path f, int bufferSize)
 specifier|public
 name|FSDataInputStream
@@ -533,7 +521,8 @@ name|bufferSize
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -564,7 +553,6 @@ name|progress
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -618,6 +606,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Set replication for an existing file.    *     * @param src file name    * @param replication new replication    * @throws IOException    * @return true if successful;    *         false if file does not exist or is a directory    */
+annotation|@
+name|Override
 DECL|method|setReplication (Path src, short replication)
 specifier|public
 name|boolean
@@ -644,6 +634,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Renames Path src to Path dst.  Can take place on local fs    * or remote DFS.    */
+annotation|@
+name|Override
 DECL|method|rename (Path src, Path dst)
 specifier|public
 name|boolean
@@ -670,6 +662,8 @@ argument_list|)
 return|;
 block|}
 comment|/** Delete a file */
+annotation|@
+name|Override
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
 name|boolean
@@ -695,28 +689,9 @@ name|recursive
 argument_list|)
 return|;
 block|}
-comment|/**    * Mark a path to be deleted when FileSystem is closed.    * When the JVM shuts down,    * all FileSystem objects will be closed automatically.    * Then,    * the marked path will be deleted as a result of closing the FileSystem.    *    * The path has to exist in the file system.    *     * @param f the path to delete.    * @return  true if deleteOnExit is successful, otherwise false.    * @throws IOException    */
-DECL|method|deleteOnExit (Path f)
-specifier|public
-name|boolean
-name|deleteOnExit
-parameter_list|(
-name|Path
-name|f
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|deleteOnExit
-argument_list|(
-name|f
-argument_list|)
-return|;
-block|}
 comment|/** List files in a directory. */
+annotation|@
+name|Override
 DECL|method|listStatus (Path f)
 specifier|public
 name|FileStatus
@@ -738,7 +713,6 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|listCorruptFileBlocks (Path path)
@@ -765,6 +739,8 @@ argument_list|)
 return|;
 block|}
 comment|/** List files and its block locations in a directory. */
+annotation|@
+name|Override
 DECL|method|listLocatedStatus (Path f)
 specifier|public
 name|RemoteIterator
@@ -788,6 +764,8 @@ name|f
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getHomeDirectory ()
 specifier|public
 name|Path
@@ -802,6 +780,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Set the current working directory for the given file system. All relative    * paths will be resolved relative to it.    *     * @param newDir    */
+annotation|@
+name|Override
 DECL|method|setWorkingDirectory (Path newDir)
 specifier|public
 name|void
@@ -820,6 +800,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the current working directory for the given file system    *     * @return the directory pathname    */
+annotation|@
+name|Override
 DECL|method|getWorkingDirectory ()
 specifier|public
 name|Path
@@ -833,6 +815,8 @@ name|getWorkingDirectory
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getInitialWorkingDirectory ()
 specifier|protected
 name|Path
@@ -846,7 +830,6 @@ name|getInitialWorkingDirectory
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|getStatus (Path p)
@@ -869,7 +852,6 @@ name|p
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|mkdirs (Path f, FsPermission permission)
@@ -898,6 +880,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+annotation|@
+name|Override
 DECL|method|copyFromLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -928,6 +912,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The src files are on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+annotation|@
+name|Override
 DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path[] srcs, Path dst)
 specifier|public
 name|void
@@ -964,6 +950,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The src file is on the local disk.  Add it to FS at    * the given dst name.    * delSrc indicates if the source should be removed    */
+annotation|@
+name|Override
 DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path src, Path dst)
 specifier|public
 name|void
@@ -999,6 +987,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The src file is under FS, and the dst is on the local disk.    * Copy it from FS control to the local dst name.    * delSrc indicates if the src will be removed or not.    */
+annotation|@
+name|Override
 DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -1029,6 +1019,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Returns a local File that the user can write output to.  The caller    * provides both the eventual FS target name and the local working    * file.  If the FS is local, we write directly into the target.  If    * the FS is remote, we write into the tmp local area.    */
+annotation|@
+name|Override
 DECL|method|startLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|Path
@@ -1055,6 +1047,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Called when we're all done writing to the target.  A local FS will    * do nothing, because we've written to exactly the right place.  A remote    * FS will copy the contents of tmpLocalFile to the correct target at    * fsOutputFile.    */
+annotation|@
+name|Override
 DECL|method|completeLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|void
@@ -1080,6 +1074,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Return the total size of all files in the filesystem.*/
+annotation|@
+name|Override
 DECL|method|getUsed ()
 specifier|public
 name|long
@@ -1228,6 +1224,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get file status.    */
+annotation|@
+name|Override
 DECL|method|getFileStatus (Path f)
 specifier|public
 name|FileStatus
@@ -1248,7 +1246,8 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|getFileChecksum (Path f)
 specifier|public
 name|FileChecksum
@@ -1269,7 +1268,8 @@ name|f
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|setVerifyChecksum (boolean verifyChecksum)
 specifier|public
 name|void
@@ -1300,7 +1300,7 @@ parameter_list|)
 block|{
 name|fs
 operator|.
-name|setVerifyChecksum
+name|setWriteChecksum
 argument_list|(
 name|writeChecksum
 argument_list|)
@@ -1342,7 +1342,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|setOwner (Path p, String username, String groupname )
@@ -1374,7 +1373,6 @@ name|groupname
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|setTimes (Path p, long mtime, long atime )
@@ -1406,7 +1404,6 @@ name|atime
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|setPermission (Path p, FsPermission permission )
@@ -1435,7 +1432,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum)
+DECL|method|primitiveCreate (Path f, FsPermission absolutePermission, EnumSet<CreateFlag> flag, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt)
 specifier|protected
 name|FSDataOutputStream
 name|primitiveCreate
@@ -1464,8 +1461,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -1489,7 +1486,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|)
 return|;
 block|}
@@ -1528,111 +1525,20 @@ block|}
 annotation|@
 name|Override
 comment|// FileSystem
-DECL|method|getCanonicalServiceName ()
+DECL|method|getChildFileSystems ()
 specifier|public
-name|String
-name|getCanonicalServiceName
+name|FileSystem
+index|[]
+name|getChildFileSystems
 parameter_list|()
 block|{
 return|return
-name|fs
-operator|.
-name|getCanonicalServiceName
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// FileSystem
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|getDelegationToken (String renewer)
-specifier|public
-name|Token
-argument_list|<
-name|?
-argument_list|>
-name|getDelegationToken
-parameter_list|(
-name|String
-name|renewer
-parameter_list|)
-throws|throws
-name|IOException
+operator|new
+name|FileSystem
+index|[]
 block|{
-return|return
 name|fs
-operator|.
-name|getDelegationToken
-argument_list|(
-name|renewer
-argument_list|)
-return|;
 block|}
-annotation|@
-name|Override
-comment|// FileSystem
-DECL|method|getDelegationTokens (String renewer)
-specifier|public
-name|List
-argument_list|<
-name|Token
-argument_list|<
-name|?
-argument_list|>
-argument_list|>
-name|getDelegationTokens
-parameter_list|(
-name|String
-name|renewer
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|getDelegationTokens
-argument_list|(
-name|renewer
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-comment|// FileSystem
-DECL|method|getDelegationTokens (String renewer, Credentials credentials)
-specifier|public
-name|List
-argument_list|<
-name|Token
-argument_list|<
-name|?
-argument_list|>
-argument_list|>
-name|getDelegationTokens
-parameter_list|(
-name|String
-name|renewer
-parameter_list|,
-name|Credentials
-name|credentials
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|fs
-operator|.
-name|getDelegationTokens
-argument_list|(
-name|renewer
-argument_list|,
-name|credentials
-argument_list|)
 return|;
 block|}
 block|}

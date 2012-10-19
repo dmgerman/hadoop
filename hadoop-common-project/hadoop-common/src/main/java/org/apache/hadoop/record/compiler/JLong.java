@@ -90,6 +90,8 @@ literal|"TypeID.RIOType.LONG"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -99,6 +101,8 @@ return|return
 literal|"org.apache.hadoop.record.meta.TypeID.LongTypeID"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|genHashCode (CodeBuffer cb, String fname)
 name|void
 name|genHashCode
@@ -130,6 +134,8 @@ literal|">>>32));\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genSlurpBytes (CodeBuffer cb, String b, String s, String l)
 name|void
 name|genSlurpBytes
@@ -197,6 +203,8 @@ literal|"}\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|genCompareBytes (CodeBuffer cb)
 name|void
 name|genCompareBytes
@@ -293,6 +301,8 @@ literal|"int64_t"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getTypeIDObjectString ()
 name|String
 name|getTypeIDObjectString
@@ -331,6 +341,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getSignature ()
 name|String
 name|getSignature

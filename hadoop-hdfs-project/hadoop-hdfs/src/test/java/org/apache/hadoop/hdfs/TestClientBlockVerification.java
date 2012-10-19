@@ -17,26 +17,48 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|never
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSClient
 import|;
 end_import
 
@@ -53,6 +75,20 @@ operator|.
 name|impl
 operator|.
 name|Log4JLogger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -98,33 +134,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|log4j
 operator|.
 name|Level
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
 import|;
 end_import
 
@@ -149,38 +161,12 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|mockito
+name|junit
 operator|.
-name|Mockito
-operator|.
-name|spy
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|verify
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|never
+name|Test
 import|;
 end_import
 
@@ -359,10 +345,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK
@@ -434,10 +416,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK
@@ -508,10 +486,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK
@@ -639,10 +613,6 @@ argument_list|)
 operator|.
 name|sendReadResult
 argument_list|(
-name|reader
-operator|.
-name|dnSock
-argument_list|,
 name|Status
 operator|.
 name|CHECKSUM_OK

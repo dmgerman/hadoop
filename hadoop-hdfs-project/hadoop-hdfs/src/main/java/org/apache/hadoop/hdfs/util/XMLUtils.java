@@ -538,6 +538,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**       * Convert a stanza to a human-readable string.      */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

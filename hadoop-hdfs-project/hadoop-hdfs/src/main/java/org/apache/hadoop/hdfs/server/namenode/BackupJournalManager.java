@@ -76,6 +76,24 @@ name|NamenodeRegistration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|NamespaceInfo
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JournalManager implementation that uses RPCs to log transactions  * to a BackupNode.  */
 end_comment
@@ -136,6 +154,41 @@ name|bnReg
 operator|=
 name|bnReg
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|format (NamespaceInfo nsInfo)
+specifier|public
+name|void
+name|format
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+block|{
+comment|// format() should only get called at startup, before any BNs
+comment|// can register with the NN.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"BackupNode journal should never get formatted"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|hasSomeData ()
+specifier|public
+name|boolean
+name|hasSomeData
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
 block|}
 annotation|@
 name|Override

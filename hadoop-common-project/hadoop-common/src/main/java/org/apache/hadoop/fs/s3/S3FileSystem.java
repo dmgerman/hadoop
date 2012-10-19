@@ -1118,6 +1118,8 @@ argument_list|)
 return|;
 block|}
 comment|/** This optional operation is not yet supported. */
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -1649,6 +1651,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|delete (Path path, boolean recursive)
 specifier|public
 name|boolean

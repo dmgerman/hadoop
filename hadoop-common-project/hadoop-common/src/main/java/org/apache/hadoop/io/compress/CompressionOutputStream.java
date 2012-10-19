@@ -110,6 +110,8 @@ operator|=
 name|out
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -127,6 +129,8 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void
@@ -142,6 +146,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Write compressed bytes to the stream.    * Made abstract to prevent leakage to underlying stream.    */
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 specifier|abstract

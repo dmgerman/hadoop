@@ -2099,7 +2099,7 @@ argument_list|(
 name|bc
 argument_list|)
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 name|BlockInfo

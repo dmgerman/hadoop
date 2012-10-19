@@ -166,10 +166,6 @@ DECL|field|buildVersion
 name|String
 name|buildVersion
 decl_stmt|;
-DECL|field|distributedUpgradeVersion
-name|int
-name|distributedUpgradeVersion
-decl_stmt|;
 DECL|field|blockPoolID
 name|String
 name|blockPoolID
@@ -194,7 +190,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|NamespaceInfo (int nsID, String clusterID, String bpID, long cT, int duVersion, String buildVersion, String softwareVersion)
+DECL|method|NamespaceInfo (int nsID, String clusterID, String bpID, long cT, String buildVersion, String softwareVersion)
 specifier|public
 name|NamespaceInfo
 parameter_list|(
@@ -209,9 +205,6 @@ name|bpID
 parameter_list|,
 name|long
 name|cT
-parameter_list|,
-name|int
-name|duVersion
 parameter_list|,
 name|String
 name|buildVersion
@@ -245,18 +238,12 @@ name|buildVersion
 expr_stmt|;
 name|this
 operator|.
-name|distributedUpgradeVersion
-operator|=
-name|duVersion
-expr_stmt|;
-name|this
-operator|.
 name|softwareVersion
 operator|=
 name|softwareVersion
 expr_stmt|;
 block|}
-DECL|method|NamespaceInfo (int nsID, String clusterID, String bpID, long cT, int duVersion)
+DECL|method|NamespaceInfo (int nsID, String clusterID, String bpID, long cT)
 specifier|public
 name|NamespaceInfo
 parameter_list|(
@@ -271,9 +258,6 @@ name|bpID
 parameter_list|,
 name|long
 name|cT
-parameter_list|,
-name|int
-name|duVersion
 parameter_list|)
 block|{
 name|this
@@ -285,8 +269,6 @@ argument_list|,
 name|bpID
 argument_list|,
 name|cT
-argument_list|,
-name|duVersion
 argument_list|,
 name|Storage
 operator|.
@@ -310,16 +292,6 @@ return|return
 name|buildVersion
 return|;
 block|}
-DECL|method|getDistributedUpgradeVersion ()
-specifier|public
-name|int
-name|getDistributedUpgradeVersion
-parameter_list|()
-block|{
-return|return
-name|distributedUpgradeVersion
-return|;
-block|}
 DECL|method|getBlockPoolID ()
 specifier|public
 name|String
@@ -340,6 +312,8 @@ return|return
 name|softwareVersion
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

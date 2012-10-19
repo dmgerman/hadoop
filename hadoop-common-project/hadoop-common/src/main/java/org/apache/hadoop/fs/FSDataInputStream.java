@@ -91,6 +91,8 @@ implements|,
 name|Closeable
 implements|,
 name|ByteBufferReadable
+implements|,
+name|HasFileDescriptor
 block|{
 DECL|method|FSDataInputStream (InputStream in)
 specifier|public
@@ -134,6 +136,8 @@ throw|;
 block|}
 block|}
 comment|/**    * Seek to the given offset.    *    * @param desired offset to seek to    */
+annotation|@
+name|Override
 DECL|method|seek (long desired)
 specifier|public
 specifier|synchronized
@@ -160,6 +164,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the current position in the input stream.    *    * @return current position in the input stream    */
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -181,6 +187,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Read bytes from the given position in the stream to the given buffer.    *    * @param position  position in the input stream to seek    * @param buffer    buffer into which data is read    * @param offset    offset into the buffer in which data is written    * @param length    maximum number of bytes to read    * @return total number of bytes read into the buffer, or<code>-1</code>    *         if there is no more data because the end of the stream has been    *         reached    */
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|int
@@ -223,6 +231,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Read bytes from the given position in the stream to the given buffer.    * Continues to read until<code>length</code> bytes have been read.    *    * @param position  position in the input stream to seek    * @param buffer    buffer into which data is read    * @param offset    offset into the buffer in which data is written    * @param length    the number of bytes to read    * @throws EOFException If the end of stream is reached while reading.    *                      If an exception is thrown an undetermined number    *                      of bytes in the buffer may have been written.     */
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|void
@@ -264,6 +274,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * See {@link #readFully(long, byte[], int, int)}.    */
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer)
 specifier|public
 name|void
@@ -301,6 +313,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Seek to the given position on an alternate copy of the data.    *    * @param  targetPos  position to seek to    * @return true if a new source is found, false otherwise    */
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -346,6 +360,8 @@ return|return
 name|in
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (ByteBuffer buf)
 specifier|public
 name|int
@@ -385,6 +401,62 @@ argument_list|(
 literal|"Byte-buffer read unsupported by input stream"
 argument_list|)
 throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFileDescriptor ()
+specifier|public
+name|FileDescriptor
+name|getFileDescriptor
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|in
+operator|instanceof
+name|HasFileDescriptor
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|HasFileDescriptor
+operator|)
+name|in
+operator|)
+operator|.
+name|getFileDescriptor
+argument_list|()
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|in
+operator|instanceof
+name|FileInputStream
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|FileInputStream
+operator|)
+name|in
+operator|)
+operator|.
+name|getFD
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 block|}
 end_class

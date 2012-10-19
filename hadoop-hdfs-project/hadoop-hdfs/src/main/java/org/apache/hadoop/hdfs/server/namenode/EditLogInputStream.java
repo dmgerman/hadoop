@@ -68,34 +68,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-import|;
-end_import
-
 begin_comment
 comment|/**  * A generic abstract class to support reading edits log data from   * persistent storage.  *   * It should stream bytes from the storage exactly as they were written  * into the #{@link EditLogOutputStream}.  */
 end_comment
@@ -149,6 +121,8 @@ name|getLastTxId
 parameter_list|()
 function_decl|;
 comment|/**    * Close the stream.    * @throws IOException if an error occurred while closing    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|abstract

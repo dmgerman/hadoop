@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -178,17 +190,21 @@ name|Level
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestFileCreationDelete
 specifier|public
 class|class
 name|TestFileCreationDelete
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 block|{
 operator|(
@@ -254,6 +270,8 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFileCreationDeleteParent ()
 specifier|public
 name|void

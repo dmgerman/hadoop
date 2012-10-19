@@ -63,7 +63,7 @@ specifier|abstract
 class|class
 name|MetricsRecordBuilder
 block|{
-comment|/**    * Add a metrics tag    * @param info  metadata of the tag    * @param value of the tag    * @return self    */
+comment|/**    * Add a metrics value with metrics information    * @param info  metadata of the tag    * @param value of the tag    * @return self    */
 DECL|method|tag (MetricsInfo info, String value)
 specifier|public
 specifier|abstract

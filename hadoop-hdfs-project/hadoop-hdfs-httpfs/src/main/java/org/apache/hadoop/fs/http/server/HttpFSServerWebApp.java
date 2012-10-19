@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -131,6 +145,10 @@ comment|/**  * Bootstrap class that manages the initialization and destruction o
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|HttpFSServerWebApp
 specifier|public
 class|class
@@ -201,7 +219,7 @@ expr_stmt|;
 block|}
 comment|/**    * Constructor used for testing purposes.    */
 DECL|method|HttpFSServerWebApp (String homeDir, String configDir, String logDir, String tempDir, Configuration config)
-specifier|protected
+specifier|public
 name|HttpFSServerWebApp
 parameter_list|(
 name|String

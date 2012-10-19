@@ -264,6 +264,24 @@ name|server
 operator|.
 name|common
 operator|.
+name|GenerationStamp
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
 name|InconsistentFSStateException
 import|;
 end_import
@@ -283,6 +301,26 @@ operator|.
 name|common
 operator|.
 name|Storage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Storage
+operator|.
+name|FormatConfirmable
 import|;
 end_import
 
@@ -352,13 +390,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -588,6 +622,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -751,12 +799,11 @@ name|Configuration
 name|conf
 decl_stmt|;
 DECL|field|archivalManager
-specifier|private
-specifier|final
+specifier|protected
 name|NNStorageRetentionManager
 name|archivalManager
 decl_stmt|;
-comment|/**    * Construct an FSImage    * @param conf Configuration    * @see #FSImage(Configuration conf,     *               Collection imageDirs, Collection editsDirs)     * @throws IOException if default directories are invalid.    */
+comment|/**    * Construct an FSImage    * @param conf Configuration    * @throws IOException if default directories are invalid.    */
 DECL|method|FSImage (Configuration conf)
 specifier|public
 name|FSImage
@@ -937,6 +984,13 @@ argument_list|(
 name|ns
 argument_list|)
 expr_stmt|;
+name|editLog
+operator|.
+name|formatNonFileJournals
+argument_list|(
+name|ns
+argument_list|)
+expr_stmt|;
 name|saveFSImageInAllDirs
 argument_list|(
 name|fsn
@@ -944,6 +998,75 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Check whether the storage directories and non-file journals exist.    * If running in interactive mode, will prompt the user for each    * directory to allow them to format anyway. Otherwise, returns    * false, unless 'force' is specified.    *     * @param force format regardless of whether dirs exist    * @param interactive prompt the user when a dir exists    * @return true if formatting should proceed    * @throws IOException if some storage cannot be accessed    */
+DECL|method|confirmFormat (boolean force, boolean interactive)
+name|boolean
+name|confirmFormat
+parameter_list|(
+name|boolean
+name|force
+parameter_list|,
+name|boolean
+name|interactive
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|List
+argument_list|<
+name|FormatConfirmable
+argument_list|>
+name|confirms
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|StorageDirectory
+name|sd
+range|:
+name|storage
+operator|.
+name|dirIterable
+argument_list|(
+literal|null
+argument_list|)
+control|)
+block|{
+name|confirms
+operator|.
+name|add
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
+block|}
+name|confirms
+operator|.
+name|addAll
+argument_list|(
+name|editLog
+operator|.
+name|getFormatConfirmables
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|Storage
+operator|.
+name|confirmFormat
+argument_list|(
+name|confirms
+argument_list|,
+name|force
+argument_list|,
+name|interactive
+argument_list|)
+return|;
 block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.     *     * @throws IOException    * @return true if the image needs to be saved or false otherwise    */
 DECL|method|recoverTransitionRead (StartupOption startOpt, FSNamesystem target, MetaRecoveryContext recovery)
@@ -1025,15 +1148,6 @@ argument_list|(
 literal|"All specified directories are not accessible or do not exist."
 argument_list|)
 throw|;
-name|storage
-operator|.
-name|setUpgradeManager
-argument_list|(
-name|target
-operator|.
-name|upgradeManager
-argument_list|)
-expr_stmt|;
 comment|// 1. For each data directory calculate its state and
 comment|// check whether all is consistent before transitioning.
 name|Map
@@ -1201,14 +1315,6 @@ argument_list|(
 name|startOpt
 argument_list|,
 name|layoutVersion
-argument_list|)
-expr_stmt|;
-comment|// check whether distributed upgrade is required and/or should be continued
-name|storage
-operator|.
-name|verifyDistributedUpgradeProgress
-argument_list|(
-name|startOpt
 argument_list|)
 expr_stmt|;
 comment|// 2. Format unformatted dirs.
@@ -1602,32 +1708,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|storage
-operator|.
-name|getDistributedUpgradeState
-argument_list|()
-condition|)
-block|{
-comment|// only distributed upgrade need to continue
-comment|// don't do version upgrade
-name|this
-operator|.
-name|loadFSImage
-argument_list|(
-name|target
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-name|storage
-operator|.
-name|initializeDistributedUpgrade
-argument_list|()
-expr_stmt|;
-return|return;
-block|}
 comment|// Upgrade is allowed only if there are
 comment|// no previous fs states in any of the directories
 for|for
@@ -2103,11 +2183,6 @@ literal|" storage directory(ies), previously logged."
 argument_list|)
 throw|;
 block|}
-name|storage
-operator|.
-name|initializeDistributedUpgrade
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|doRollback ()
 specifier|private
@@ -2438,16 +2513,6 @@ block|}
 name|isUpgradeFinalized
 operator|=
 literal|true
-expr_stmt|;
-comment|// check whether name-node can start in regular mode
-name|storage
-operator|.
-name|verifyDistributedUpgradeProgress
-argument_list|(
-name|StartupOption
-operator|.
-name|REGULAR
-argument_list|)
 expr_stmt|;
 block|}
 DECL|method|doFinalize (StorageDirectory sd)
@@ -2934,9 +2999,7 @@ name|IOException
 block|{
 name|target
 operator|.
-name|dir
-operator|.
-name|reset
+name|clear
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -3446,9 +3509,9 @@ decl_stmt|;
 name|long
 name|checkpointAge
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|imageFile
@@ -3926,7 +3989,7 @@ name|setMostRecentCheckpointInfo
 argument_list|(
 name|txid
 argument_list|,
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -3976,6 +4039,8 @@ operator|=
 name|sd
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -4048,6 +4113,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -5271,7 +5338,7 @@ name|setMostRecentCheckpointInfo
 argument_list|(
 name|txid
 argument_list|,
-name|Util
+name|Time
 operator|.
 name|now
 argument_list|()
@@ -5279,6 +5346,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|synchronized
 specifier|public

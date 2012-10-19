@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|util
@@ -51,6 +65,10 @@ comment|/**  * Adapter class that allows<code>Runnable</code>s and<code>Callable
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|RunnableCallable
 specifier|public
 class|class
@@ -210,6 +228,8 @@ block|}
 block|}
 block|}
 comment|/**    * Returns the class name of the wrapper callable/runnable.    *    * @return the class name of the wrapper callable/runnable.    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

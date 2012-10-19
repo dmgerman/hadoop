@@ -204,6 +204,20 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * Used by {@link DFSClient} for renewing file-being-written leases  * on the namenode.  * When a file is opened for write (create or append),  * namenode stores a file lease for recording the identity of the writer.  * The writer (i.e. the DFSClient) is required to renew the lease periodically.  * When the lease is not renewed before it expires,  * the namenode considers the writer as failed and then it may either let  * another writer to obtain the lease or close the file.  *</p>  *<p>  * This class also provides the following functionality:  *<ul>  *<li>  * It maintains a map from (namenode, user) pairs to lease renewers.   * The same {@link LeaseRenewer} instance is used for renewing lease  * for all the {@link DFSClient} to the same namenode and the same user.  *</li>  *<li>  * Each renewer maintains a list of {@link DFSClient}.  * Periodically the leases for all the clients are renewed.  * A client is removed from the list when the client is closed.  *</li>  *<li>  * A thread per namenode per user is used by the {@link LeaseRenewer}  * to renew the leases.  *</li>  *</ul>  *</p>  */
 end_comment
@@ -639,30 +653,6 @@ block|}
 block|}
 block|}
 block|}
-DECL|field|clienNamePostfix
-specifier|private
-specifier|final
-name|String
-name|clienNamePostfix
-init|=
-name|DFSUtil
-operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextInt
-argument_list|()
-operator|+
-literal|"_"
-operator|+
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|getId
-argument_list|()
-decl_stmt|;
 comment|/** The time in milliseconds that the map became empty. */
 DECL|field|emptyTime
 specifier|private
@@ -806,26 +796,6 @@ parameter_list|()
 block|{
 return|return
 name|renewal
-return|;
-block|}
-comment|/** @return the client name for the given id. */
-DECL|method|getClientName (final String id)
-name|String
-name|getClientName
-parameter_list|(
-specifier|final
-name|String
-name|id
-parameter_list|)
-block|{
-return|return
-literal|"DFSClient_"
-operator|+
-name|id
-operator|+
-literal|"_"
-operator|+
-name|clienNamePostfix
 return|;
 block|}
 comment|/** Add a client. */
@@ -1059,6 +1029,20 @@ name|isAlive
 argument_list|()
 return|;
 block|}
+comment|/** Does this renewer have nothing to renew? */
+DECL|method|isEmpty ()
+specifier|public
+name|boolean
+name|isEmpty
+parameter_list|()
+block|{
+return|return
+name|dfsclients
+operator|.
+name|isEmpty
+argument_list|()
+return|;
+block|}
 comment|/** Used only by tests */
 DECL|method|getDaemonName ()
 specifier|synchronized
@@ -1088,9 +1072,9 @@ name|Long
 operator|.
 name|MAX_VALUE
 operator|&&
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|emptyTime
@@ -1348,6 +1332,22 @@ init|(
 name|this
 init|)
 block|{
+if|if
+condition|(
+name|dfsc
+operator|.
+name|isFilesBeingWrittenEmpty
+argument_list|()
+condition|)
+block|{
+name|dfsclients
+operator|.
+name|remove
+argument_list|(
+name|dfsc
+argument_list|)
+expr_stmt|;
+block|}
 comment|//update emptyTime if necessary
 if|if
 condition|(
@@ -1382,9 +1382,9 @@ block|}
 comment|//discover the first time that all file-being-written maps are empty.
 name|emptyTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -1451,9 +1451,9 @@ block|{
 comment|//discover the first time that the client list is empty.
 name|emptyTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -1794,14 +1794,11 @@ control|(
 name|long
 name|lastRenewed
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 init|;
-name|clientsRunning
-argument_list|()
-operator|&&
 operator|!
 name|Thread
 operator|.
@@ -1821,9 +1818,9 @@ specifier|final
 name|long
 name|elapsed
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|lastRenewed
@@ -1868,9 +1865,9 @@ expr_stmt|;
 block|}
 name|lastRenewed
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -2023,6 +2020,30 @@ block|}
 block|}
 comment|//no longer the current daemon or expired
 return|return;
+block|}
+comment|// if no clients are in running state or there is no more clients
+comment|// registered with this renewer, stop the daemon after the grace
+comment|// period.
+if|if
+condition|(
+operator|!
+name|clientsRunning
+argument_list|()
+operator|&&
+name|emptyTime
+operator|==
+name|Long
+operator|.
+name|MAX_VALUE
+condition|)
+block|{
+name|emptyTime
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}

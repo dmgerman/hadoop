@@ -1133,7 +1133,6 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|handle (Callback[] callbacks)
@@ -1442,7 +1441,6 @@ name|SaslGssCallbackHandler
 implements|implements
 name|CallbackHandler
 block|{
-comment|/** {@inheritDoc} */
 annotation|@
 name|Override
 DECL|method|handle (Callback[] callbacks)

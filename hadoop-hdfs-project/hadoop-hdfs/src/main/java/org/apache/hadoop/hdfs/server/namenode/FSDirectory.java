@@ -28,13 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -1110,6 +1106,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Shutdown the filestore    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1177,7 +1175,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Add the given filename to the fs.    * @throws QuotaExceededException     * @throws FileAlreadyExistsException     */
+comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    */
 DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, DatanodeDescriptor clientNode, long generationStamp)
 name|INodeFileUnderConstruction
 name|addFile
@@ -1223,11 +1221,9 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|mkdirs
-argument_list|(
+name|Path
+name|parent
+init|=
 operator|new
 name|Path
 argument_list|(
@@ -1236,6 +1232,26 @@ argument_list|)
 operator|.
 name|getParent
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|parent
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Trying to add "/" as a file - this path has no
+comment|// parent -- avoids an NPE below.
+return|return
+literal|null
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|mkdirs
+argument_list|(
+name|parent
 operator|.
 name|toString
 argument_list|()
@@ -1350,7 +1366,6 @@ return|return
 name|newNode
 return|;
 block|}
-comment|/**    */
 DECL|method|unprotectedAddFile ( String path, PermissionStatus permissions, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
 name|INode
 name|unprotectedAddFile
@@ -1382,8 +1397,6 @@ parameter_list|,
 name|String
 name|clientMachine
 parameter_list|)
-throws|throws
-name|UnresolvedLinkException
 block|{
 name|INode
 name|newNode
@@ -1461,6 +1474,32 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|debug
+argument_list|(
+literal|"DIR* FSDirectory.unprotectedAddFile: exception when add "
+operator|+
+name|path
+operator|+
+literal|" to the file system"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
@@ -1486,8 +1525,6 @@ parameter_list|,
 name|boolean
 name|propagateModTime
 parameter_list|)
-throws|throws
-name|UnresolvedLinkException
 block|{
 comment|// NOTE: This does not update space counts for parents
 name|INodeDirectory
@@ -1705,7 +1742,7 @@ argument_list|()
 operator|*
 name|fileINode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 literal|true
@@ -1722,7 +1759,7 @@ name|block
 argument_list|,
 name|fileINode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 name|BlockUCState
@@ -2098,7 +2135,7 @@ argument_list|()
 operator|*
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 literal|true
@@ -4051,7 +4088,7 @@ name|oldRepl
 init|=
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 decl_stmt|;
 comment|// check disk quota
@@ -9514,7 +9551,7 @@ name|replication
 operator|=
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 name|blocksize
@@ -9655,7 +9692,7 @@ name|replication
 operator|=
 name|fileNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 expr_stmt|;
 name|blocksize

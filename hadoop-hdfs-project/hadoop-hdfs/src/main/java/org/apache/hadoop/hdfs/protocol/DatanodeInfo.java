@@ -140,6 +140,20 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**   * This class extends the primary identifier of a Datanode with ephemeral  * state, eg usage information, current administrative state, and the  * network location that is communicated to clients.  */
 end_comment
@@ -163,37 +177,37 @@ implements|implements
 name|Node
 block|{
 DECL|field|capacity
-specifier|protected
+specifier|private
 name|long
 name|capacity
 decl_stmt|;
 DECL|field|dfsUsed
-specifier|protected
+specifier|private
 name|long
 name|dfsUsed
 decl_stmt|;
 DECL|field|remaining
-specifier|protected
+specifier|private
 name|long
 name|remaining
 decl_stmt|;
 DECL|field|blockPoolUsed
-specifier|protected
+specifier|private
 name|long
 name|blockPoolUsed
 decl_stmt|;
 DECL|field|lastUpdate
-specifier|protected
+specifier|private
 name|long
 name|lastUpdate
 decl_stmt|;
 DECL|field|xceiverCount
-specifier|protected
+specifier|private
 name|int
 name|xceiverCount
 decl_stmt|;
 DECL|field|location
-specifier|protected
+specifier|private
 name|String
 name|location
 init|=
@@ -245,6 +259,8 @@ operator|=
 name|v
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -384,15 +400,8 @@ name|adminState
 operator|=
 name|from
 operator|.
-name|adminState
-expr_stmt|;
-name|this
-operator|.
-name|hostName
-operator|=
-name|from
-operator|.
-name|hostName
+name|getAdminState
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|DatanodeInfo (DatanodeID nodeID)
@@ -690,6 +699,8 @@ name|adminState
 expr_stmt|;
 block|}
 comment|/** Network location name */
+annotation|@
+name|Override
 DECL|method|getName ()
 specifier|public
 name|String
@@ -950,6 +961,8 @@ name|xceiverCount
 expr_stmt|;
 block|}
 comment|/** network location */
+annotation|@
+name|Override
 DECL|method|getNetworkLocation ()
 specifier|public
 specifier|synchronized
@@ -962,6 +975,8 @@ name|location
 return|;
 block|}
 comment|/** Sets the network location */
+annotation|@
+name|Override
 DECL|method|setNetworkLocation (String location)
 specifier|public
 specifier|synchronized
@@ -1608,6 +1623,29 @@ return|return
 name|adminState
 return|;
 block|}
+comment|/**    * Check if the datanode is in stale state. Here if     * the namenode has not received heartbeat msg from a     * datanode for more than staleInterval (default value is    * {@link DFSConfigKeys#DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT}),    * the datanode will be treated as stale node.    *     * @param staleInterval    *          the time interval for marking the node as stale. If the last    *          update time is beyond the given time interval, the node will be    *          marked as stale.    * @return true if the node is stale    */
+DECL|method|isStale (long staleInterval)
+specifier|public
+name|boolean
+name|isStale
+parameter_list|(
+name|long
+name|staleInterval
+parameter_list|)
+block|{
+return|return
+operator|(
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|-
+name|lastUpdate
+operator|)
+operator|>=
+name|staleInterval
+return|;
+block|}
 comment|/**    * Sets the admin state of this node.    */
 DECL|method|setAdminState (AdminStates newState)
 specifier|protected
@@ -1655,6 +1693,8 @@ name|parent
 decl_stmt|;
 comment|//its parent
 comment|/** Return this node's parent */
+annotation|@
+name|Override
 DECL|method|getParent ()
 specifier|public
 name|Node
@@ -1665,6 +1705,8 @@ return|return
 name|parent
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setParent (Node parent)
 specifier|public
 name|void
@@ -1682,6 +1724,8 @@ name|parent
 expr_stmt|;
 block|}
 comment|/** Return this node's level in the tree.    * E.g. the root of a tree returns 0 and its children return 1    */
+annotation|@
+name|Override
 DECL|method|getLevel ()
 specifier|public
 name|int
@@ -1692,6 +1736,8 @@ return|return
 name|level
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setLevel (int level)
 specifier|public
 name|void

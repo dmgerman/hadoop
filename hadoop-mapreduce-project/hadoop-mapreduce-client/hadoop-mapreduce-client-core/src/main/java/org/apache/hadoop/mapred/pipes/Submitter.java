@@ -1430,13 +1430,6 @@ literal|"#"
 argument_list|)
 condition|)
 block|{
-name|DistributedCache
-operator|.
-name|createSymlink
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|// set default gdb commands for map and reduce task
 name|String
 name|defScript

@@ -60,16 +60,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Enumeration
 import|;
 end_import
@@ -91,16 +81,6 @@ operator|.
 name|io
 operator|.
 name|PrintWriter
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|servlet
-operator|.
-name|ServletContext
 import|;
 end_import
 
@@ -214,7 +194,6 @@ name|CONF_SERVLET_RECONFIGURABLE_PREFIX
 init|=
 literal|"conf.servlet.reconfigurable."
 decl_stmt|;
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|init ()
@@ -789,10 +768,8 @@ argument_list|)
 operator|||
 name|value
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 if|if
@@ -814,10 +791,8 @@ argument_list|)
 operator|||
 name|value
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 operator|)
 operator|&&
 name|oldConf
@@ -892,10 +867,8 @@ operator|&&
 operator|!
 name|value
 operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+name|isEmpty
+argument_list|()
 operator|&&
 operator|(
 name|oldConf
@@ -1075,7 +1048,6 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|doGet (HttpServletRequest req, HttpServletResponse resp)
@@ -1148,7 +1120,6 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|doPost (HttpServletRequest req, HttpServletResponse resp)

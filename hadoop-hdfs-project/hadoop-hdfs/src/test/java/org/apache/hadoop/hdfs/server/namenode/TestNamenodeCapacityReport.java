@@ -21,6 +21,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -47,16 +59,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -208,6 +210,16 @@ name|DatanodeManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This tests InterDataNodeProtocol for block handling.   */
 end_comment
@@ -217,8 +229,6 @@ DECL|class|TestNamenodeCapacityReport
 specifier|public
 class|class
 name|TestNamenodeCapacityReport
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -237,6 +247,8 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|/**    * The following test first creates a file.    * It verifies the block information from a datanode.    * Then, it updates the block with new information and verifies again.     */
+annotation|@
+name|Test
 DECL|method|testVolumeSize ()
 specifier|public
 name|void

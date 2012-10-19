@@ -237,6 +237,13 @@ literal|8
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|skipCrc
+specifier|private
+name|boolean
+name|skipCrc
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Constructor, taking a description of the action.    * @param description Verbose description of the copy operation.    */
 DECL|method|RetriableFileCopyCommand (String description)
 specifier|public
@@ -250,6 +257,30 @@ name|super
 argument_list|(
 name|description
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a RetriableFileCopyCommand.    *    * @param skipCrc Whether to skip the crc check.    * @param description A verbose description of the copy operation.    */
+DECL|method|RetriableFileCopyCommand (boolean skipCrc, String description)
+specifier|public
+name|RetriableFileCopyCommand
+parameter_list|(
+name|boolean
+name|skipCrc
+parameter_list|,
+name|String
+name|description
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|description
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|skipCrc
+operator|=
+name|skipCrc
 expr_stmt|;
 block|}
 comment|/**    * Implementation of RetriableCommand::doExecute().    * This is the actual copy-implementation.    * @param arguments Argument-list to the command.    * @return Number of bytes copied.    * @throws Exception: CopyReadException, if there are read-failures. All other    *         failures are IOExceptions.    */
@@ -487,6 +518,21 @@ argument_list|,
 name|bytesRead
 argument_list|)
 expr_stmt|;
+comment|//At this point, src&dest lengths are same. if length==0, we skip checksum
+if|if
+condition|(
+operator|(
+name|bytesRead
+operator|!=
+literal|0
+operator|)
+operator|&&
+operator|(
+operator|!
+name|skipCrc
+operator|)
+condition|)
+block|{
 name|compareCheckSums
 argument_list|(
 name|sourceFS
@@ -501,6 +547,7 @@ argument_list|,
 name|tmpTargetPath
 argument_list|)
 expr_stmt|;
+block|}
 name|promoteTmpToTarget
 argument_list|(
 name|tmpTargetPath

@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -82,11 +106,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -95,8 +119,6 @@ DECL|class|TestOIVCanReadOldVersions
 specifier|public
 class|class
 name|TestOIVCanReadOldVersions
-extends|extends
-name|TestCase
 block|{
 comment|// Location of fsimage files during testing.
 DECL|field|TEST_CACHE_DATA_DIR
@@ -119,6 +141,8 @@ comment|// Verify that the image processor can correctly process prior Hadoop
 comment|// layout versions.  These fsimages were previously generated and stored
 comment|// with the test.  Test success indicates that no changes have been made
 comment|// to the OIV that causes older fsimages to be incorrectly processed.
+annotation|@
+name|Test
 DECL|method|testOldFSImages ()
 specifier|public
 name|void

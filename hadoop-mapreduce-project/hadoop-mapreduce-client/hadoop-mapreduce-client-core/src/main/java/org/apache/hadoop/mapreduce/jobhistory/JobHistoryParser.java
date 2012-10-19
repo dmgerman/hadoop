@@ -2344,6 +2344,12 @@ name|AccessControlList
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|priority
+operator|=
+name|JobPriority
+operator|.
+name|NORMAL
+expr_stmt|;
 block|}
 comment|/** Print all the job information */
 DECL|method|printAll ()
@@ -2451,6 +2457,13 @@ operator|+
 name|totalReduces
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|mapCounters
+operator|!=
+literal|null
+condition|)
+block|{
 name|System
 operator|.
 name|out
@@ -2465,6 +2478,14 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|reduceCounters
+operator|!=
+literal|null
+condition|)
+block|{
 name|System
 operator|.
 name|out
@@ -2479,6 +2500,14 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|totalCounters
+operator|!=
+literal|null
+condition|)
+block|{
 name|System
 operator|.
 name|out
@@ -2493,6 +2522,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|System
 operator|.
 name|out
@@ -2504,6 +2534,13 @@ operator|+
 name|uberized
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|amInfos
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|AMInfo
@@ -2517,6 +2554,7 @@ operator|.
 name|printAll
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 for|for
 control|(

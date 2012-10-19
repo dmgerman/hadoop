@@ -17,6 +17,52 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|NodeType
+operator|.
+name|DATA_NODE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +89,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -99,28 +135,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-operator|.
-name|NodeType
-operator|.
-name|DATA_NODE
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -160,6 +174,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -181,8 +215,6 @@ DECL|class|TestDFSFinalize
 specifier|public
 class|class
 name|TestDFSFinalize
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -429,6 +461,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * This test attempts to finalize the NameNode and DataNode.    */
+annotation|@
+name|Test
 DECL|method|testFinalize ()
 specifier|public
 name|void
@@ -648,8 +682,10 @@ expr_stmt|;
 block|}
 comment|// end numDir loop
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()

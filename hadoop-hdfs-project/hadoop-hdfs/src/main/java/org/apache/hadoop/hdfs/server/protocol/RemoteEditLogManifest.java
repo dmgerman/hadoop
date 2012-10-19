@@ -112,7 +112,7 @@ name|checkState
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Check that the logs are contiguous and non-overlapping    * sequences of transactions, in sorted order    * @throws IllegalStateException if incorrect    */
+comment|/**    * Check that the logs are non-overlapping sequences of transactions,    * in sorted order. They do not need to be contiguous.    * @throws IllegalStateException if incorrect    */
 DECL|method|checkState ()
 specifier|private
 name|void
@@ -152,20 +152,26 @@ name|log
 operator|.
 name|getStartTxId
 argument_list|()
-operator|!=
+operator|<=
 name|prev
 operator|.
 name|getEndTxId
 argument_list|()
-operator|+
-literal|1
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalStateException
 argument_list|(
-literal|"Invalid log manifest:"
+literal|"Invalid log manifest (log "
+operator|+
+name|log
+operator|+
+literal|" overlaps "
+operator|+
+name|prev
+operator|+
+literal|")\n"
 operator|+
 name|this
 argument_list|)

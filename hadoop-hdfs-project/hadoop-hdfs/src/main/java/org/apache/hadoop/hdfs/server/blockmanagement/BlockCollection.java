@@ -38,6 +38,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|ContentSummary
@@ -49,6 +63,10 @@ comment|/**   * This interface is used by the block manager to expose a  * few c
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|interface|BlockCollection
 specifier|public
 interface|interface
@@ -93,10 +111,10 @@ name|getPreferredBlockSize
 parameter_list|()
 function_decl|;
 comment|/**    * Get block replication for the collection     * @return block replication value    */
-DECL|method|getReplication ()
+DECL|method|getBlockReplication ()
 specifier|public
 name|short
-name|getReplication
+name|getBlockReplication
 parameter_list|()
 function_decl|;
 comment|/**    * Get the name of the collection.    */

@@ -288,6 +288,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|http
+operator|.
+name|HttpConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -3518,6 +3532,8 @@ operator|=
 name|v
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -4368,7 +4384,10 @@ name|attribute
 argument_list|(
 literal|"link"
 argument_list|,
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|url
 argument_list|)
@@ -4666,7 +4685,10 @@ init|=
 operator|new
 name|URL
 argument_list|(
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|httpAddress
 operator|+

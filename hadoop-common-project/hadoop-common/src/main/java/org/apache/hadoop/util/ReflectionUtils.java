@@ -1068,9 +1068,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -1254,6 +1254,8 @@ name|CopyInCopyOutBuffer
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 specifier|synchronized
 name|CopyInCopyOutBuffer

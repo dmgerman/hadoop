@@ -19,36 +19,26 @@ package|;
 end_package
 
 begin_import
-import|import
-name|junit
+import|import static
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
+operator|.
+name|assertEquals
 import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
@@ -82,6 +72,30 @@ name|InputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestConfigurationUtils
 specifier|public
@@ -107,8 +121,6 @@ argument_list|(
 literal|false
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -154,8 +166,6 @@ argument_list|,
 name|is
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -166,8 +176,6 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -302,8 +310,6 @@ argument_list|,
 name|targetConf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"valueFromSource"
@@ -316,8 +322,6 @@ literal|"testParameter1"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"valueFromSource"
@@ -330,8 +334,6 @@ literal|"testParameter2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"valueFromTarget"
@@ -418,8 +420,6 @@ argument_list|,
 name|targetConf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"valueFromSource"
@@ -432,8 +432,6 @@ literal|"testParameter1"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"originalValueFromTarget"
@@ -446,8 +444,6 @@ literal|"testParameter2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"originalValueFromTarget"
@@ -460,8 +456,6 @@ literal|"testParameter3"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"valueFromSource"
@@ -474,8 +468,6 @@ literal|"testParameter1"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|"valueFromSource"
@@ -488,8 +480,6 @@ literal|"testParameter2"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|srcConf
@@ -536,8 +526,6 @@ argument_list|,
 literal|"${a}"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -550,8 +538,6 @@ argument_list|,
 literal|"A"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -573,8 +559,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -587,8 +571,6 @@ argument_list|,
 literal|"A"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -665,8 +647,6 @@ argument_list|,
 literal|"${aaa}"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -679,8 +659,6 @@ argument_list|,
 literal|"A"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -693,8 +671,6 @@ argument_list|,
 literal|"${a}"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -707,8 +683,6 @@ argument_list|,
 literal|"${user.name}"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -721,8 +695,6 @@ argument_list|,
 literal|"A"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -735,8 +707,6 @@ argument_list|,
 literal|"A"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -749,8 +719,6 @@ argument_list|,
 name|userName
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf
@@ -772,8 +740,6 @@ argument_list|,
 literal|"foo"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|conf

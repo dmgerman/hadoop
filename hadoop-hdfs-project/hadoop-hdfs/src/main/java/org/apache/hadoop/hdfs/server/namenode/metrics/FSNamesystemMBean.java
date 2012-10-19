@@ -134,6 +134,13 @@ name|int
 name|getNumDeadDataNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Number of stale data nodes    * @return number of stale data nodes    */
+DECL|method|getNumStaleDataNodes ()
+specifier|public
+name|int
+name|getNumStaleDataNodes
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

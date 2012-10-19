@@ -162,6 +162,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|CorruptFileBlockIterator
@@ -586,7 +602,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
+DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt, boolean createParent)
 specifier|public
 name|HdfsDataOutputStream
 name|createInternal
@@ -615,8 +631,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 name|boolean
 name|createParent
@@ -651,7 +667,7 @@ name|progress
 argument_list|,
 name|bufferSize
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|)
 argument_list|,
 name|getStatistics
@@ -1724,7 +1740,6 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * {@inheritDoc}    */
 annotation|@
 name|Override
 DECL|method|listCorruptFileBlocks (Path path)
@@ -1774,7 +1789,7 @@ name|UnresolvedLinkException
 block|{
 name|dfs
 operator|.
-name|mkdirs
+name|primitiveMkdir
 argument_list|(
 name|getUriPath
 argument_list|(

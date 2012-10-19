@@ -87,6 +87,8 @@ return|return
 name|_instance
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hash (byte[] data, int length, int seed)
 specifier|public
 name|int

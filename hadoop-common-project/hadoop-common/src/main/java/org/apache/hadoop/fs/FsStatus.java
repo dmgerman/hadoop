@@ -193,6 +193,8 @@ block|}
 comment|//////////////////////////////////////////////////
 comment|// Writable
 comment|//////////////////////////////////////////////////
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -226,6 +228,8 @@ name|remaining
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

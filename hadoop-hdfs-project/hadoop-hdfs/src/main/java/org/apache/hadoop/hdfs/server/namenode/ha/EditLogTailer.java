@@ -56,6 +56,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collection
@@ -370,13 +380,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -894,6 +900,29 @@ argument_list|,
 literal|"Tailer thread should not be running once failover starts"
 argument_list|)
 expr_stmt|;
+comment|// Important to do tailing as the login user, in case the shared
+comment|// edits storage is implemented by a JournalManager that depends
+comment|// on security credentials to access the logs (eg QuorumJournalManager).
+name|SecurityUtil
+operator|.
+name|doAsLoginUser
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|Void
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Void
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 try|try
 block|{
 name|doTailEdits
@@ -914,9 +943,17 @@ name|e
 argument_list|)
 throw|;
 block|}
+return|return
+literal|null
+return|;
 block|}
+block|}
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|doTailEdits ()
-specifier|private
 name|void
 name|doTailEdits
 parameter_list|()
@@ -1391,9 +1428,6 @@ argument_list|(
 literal|1
 argument_list|,
 name|t
-operator|.
-name|getMessage
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

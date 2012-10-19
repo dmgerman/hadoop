@@ -106,6 +106,20 @@ name|java
 operator|.
 name|util
 operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|regex
 operator|.
 name|Pattern
@@ -167,6 +181,20 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -293,6 +321,17 @@ specifier|abstract
 class|class
 name|GenericTestUtils
 block|{
+DECL|field|sequence
+specifier|private
+specifier|static
+specifier|final
+name|AtomicInteger
+name|sequence
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
+decl_stmt|;
 comment|/**    * Extracts the name of the method where the invocation has happened    * @return String name of the invoking method    */
 DECL|method|getMethodName ()
 specifier|public
@@ -314,6 +353,21 @@ literal|2
 index|]
 operator|.
 name|getMethodName
+argument_list|()
+return|;
+block|}
+comment|/**    * Generates a process-wide unique sequence number.    * @return an unique sequence number    */
+DECL|method|uniqueSequenceId ()
+specifier|public
+specifier|static
+name|int
+name|uniqueSequenceId
+parameter_list|()
+block|{
+return|return
+name|sequence
+operator|.
+name|incrementAndGet
 argument_list|()
 return|;
 block|}
@@ -543,9 +597,9 @@ block|{
 name|long
 name|st
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 do|do
@@ -575,9 +629,9 @@ expr_stmt|;
 block|}
 do|while
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|st
@@ -589,7 +643,14 @@ throw|throw
 operator|new
 name|TimeoutException
 argument_list|(
-literal|"Timed out waiting for condition"
+literal|"Timed out waiting for condition. "
+operator|+
+literal|"Thread diagnostics:\n"
+operator|+
+name|TimedOutTestsListener
+operator|.
+name|buildThreadDiagnosticString
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -841,6 +902,8 @@ name|countDown
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|answer (InvocationOnMock invocation)
 specifier|public
 name|Object

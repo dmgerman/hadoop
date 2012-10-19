@@ -33,6 +33,42 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -49,16 +85,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
 import|;
 end_import
 
@@ -441,8 +467,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Must not delete a running block pool"
@@ -506,8 +530,6 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Must not delete if any block files exist unless "
@@ -657,8 +679,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Must not delete a running block pool"
@@ -1069,8 +1089,6 @@ argument_list|(
 name|nn1Conf
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|1
@@ -1132,8 +1150,6 @@ argument_list|(
 name|args
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 literal|0
@@ -1182,8 +1198,6 @@ argument_list|(
 name|forceArgs
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 literal|0
@@ -1287,8 +1301,6 @@ operator|==
 literal|false
 condition|)
 block|{
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|bpDir
@@ -1350,8 +1362,6 @@ argument_list|,
 literal|"VERSION"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|finalizedDir
@@ -1360,8 +1370,6 @@ name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|rbwDir
@@ -1370,8 +1378,6 @@ name|isDirectory
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|versionFile

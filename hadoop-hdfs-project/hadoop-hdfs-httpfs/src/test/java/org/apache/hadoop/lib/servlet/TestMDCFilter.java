@@ -19,56 +19,72 @@ package|;
 end_package
 
 begin_import
-import|import
-name|junit
+import|import static
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
+operator|.
+name|assertEquals
 import|;
 end_import
 
 begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|HTestCase
-import|;
-end_import
-
-begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Test
+name|Assert
+operator|.
+name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|mockito
+name|io
 operator|.
-name|Mockito
+name|IOException
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|slf4j
+name|security
 operator|.
-name|MDC
+name|Principal
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
 import|;
 end_import
 
@@ -136,35 +152,45 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|test
+operator|.
+name|HTestCase
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|security
+name|junit
 operator|.
-name|Principal
+name|Test
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|mockito
 operator|.
-name|concurrent
+name|Mockito
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|atomic
+name|slf4j
 operator|.
-name|AtomicBoolean
+name|MDC
 import|;
 end_import
 
@@ -287,8 +313,6 @@ name|IOException
 throws|,
 name|ServletException
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -301,8 +325,6 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -315,8 +337,6 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -329,8 +349,6 @@ argument_list|,
 literal|"METHOD"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -383,8 +401,6 @@ argument_list|,
 name|chain
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|invoked
@@ -393,8 +409,6 @@ name|get
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|MDC
@@ -405,8 +419,6 @@ literal|"hostname"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|MDC
@@ -417,8 +429,6 @@ literal|"user"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|MDC
@@ -429,8 +439,6 @@ literal|"method"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertNull
 argument_list|(
 name|MDC
@@ -501,8 +509,6 @@ name|IOException
 throws|,
 name|ServletException
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -515,8 +521,6 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -529,8 +533,6 @@ argument_list|,
 literal|"name"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -543,8 +545,6 @@ argument_list|,
 literal|"METHOD"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -578,8 +578,6 @@ argument_list|,
 name|chain
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|invoked
@@ -627,8 +625,6 @@ name|IOException
 throws|,
 name|ServletException
 block|{
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -641,8 +637,6 @@ argument_list|,
 literal|"HOST"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -655,8 +649,6 @@ argument_list|,
 literal|"name"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -669,8 +661,6 @@ argument_list|,
 literal|"METHOD"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertEquals
 argument_list|(
 name|MDC
@@ -704,8 +694,6 @@ argument_list|,
 name|chain
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|invoked

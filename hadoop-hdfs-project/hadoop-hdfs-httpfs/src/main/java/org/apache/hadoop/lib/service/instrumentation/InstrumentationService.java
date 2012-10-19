@@ -28,6 +28,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|server
@@ -81,6 +95,20 @@ operator|.
 name|service
 operator|.
 name|Scheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -247,6 +275,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|InstrumentationService
 specifier|public
 class|class
@@ -663,6 +695,8 @@ name|Long
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Long
 name|getValue
@@ -703,6 +737,8 @@ name|Long
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Long
 name|getValue
@@ -743,6 +779,8 @@ name|Long
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Long
 name|getValue
@@ -1096,6 +1134,8 @@ DECL|field|total
 name|long
 name|total
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|start ()
 specifier|public
 name|Cron
@@ -1126,9 +1166,9 @@ condition|)
 block|{
 name|start
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|lapStart
@@ -1146,9 +1186,9 @@ condition|)
 block|{
 name|lapStart
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -1156,6 +1196,8 @@ return|return
 name|this
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|stop ()
 specifier|public
 name|Cron
@@ -1186,9 +1228,9 @@ condition|)
 block|{
 name|own
 operator|+=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|lapStart
@@ -1212,9 +1254,9 @@ argument_list|()
 expr_stmt|;
 name|total
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start

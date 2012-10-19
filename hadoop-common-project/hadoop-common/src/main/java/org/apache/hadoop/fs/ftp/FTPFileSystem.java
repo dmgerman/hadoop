@@ -1400,6 +1400,8 @@ name|fos
 return|;
 block|}
 comment|/** This optional operation is not yet supported. */
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -2636,7 +2638,7 @@ expr_stmt|;
 name|created
 operator|=
 name|created
-operator|&
+operator|&&
 name|client
 operator|.
 name|makeDirectory

@@ -740,11 +740,46 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/** A client for an IPC service.  IPC calls take a single {@link Writable} as a  * parameter, and return a {@link Writable} as their value.  A service runs on  * a port and is defined by a parameter class and a value class.  *   * @see Server  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+name|value
+operator|=
+block|{
+literal|"Common"
+block|,
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|,
+literal|"Yarn"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|Client
 specifier|public
 class|class
@@ -1163,11 +1198,6 @@ name|AuthMethod
 name|authMethod
 decl_stmt|;
 comment|// authentication method
-DECL|field|useSasl
-specifier|private
-name|boolean
-name|useSasl
-decl_stmt|;
 DECL|field|token
 specifier|private
 name|Token
@@ -1449,19 +1479,8 @@ operator|.
 name|getProtocol
 argument_list|()
 decl_stmt|;
-name|this
-operator|.
-name|useSasl
-operator|=
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
-name|useSasl
-operator|&&
 name|protocol
 operator|!=
 literal|null
@@ -1618,20 +1637,6 @@ block|}
 block|}
 if|if
 condition|(
-operator|!
-name|useSasl
-condition|)
-block|{
-name|authMethod
-operator|=
-name|AuthMethod
-operator|.
-name|SIMPLE
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
 name|token
 operator|!=
 literal|null
@@ -1644,13 +1649,29 @@ operator|.
 name|DIGEST
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
 block|{
 name|authMethod
 operator|=
 name|AuthMethod
 operator|.
 name|KERBEROS
+expr_stmt|;
+block|}
+else|else
+block|{
+name|authMethod
+operator|=
+name|AuthMethod
+operator|.
+name|SIMPLE
 expr_stmt|;
 block|}
 name|connectionContext
@@ -1749,9 +1770,9 @@ name|lastActivity
 operator|.
 name|set
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1860,6 +1881,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Read a byte from the stream.        * Send a ping if timeout on read. Retries if no failure is detected        * until a byte is read.        * @throws IOException for any IO problem other than socket timeout        */
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -1899,6 +1922,8 @@ condition|)
 do|;
 block|}
 comment|/** Read bytes into a buffer starting from offset<code>off</code>        * Send a ping if timeout on read. Retries if no failure is detected        * until a byte is read.        *         * @return the total number of bytes read; -1 if the connection is closed.        */
+annotation|@
+name|Override
 DECL|method|read (byte[] buf, int off, int len)
 specifier|public
 name|int
@@ -2453,6 +2478,8 @@ name|Object
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Object
 name|run
@@ -2736,7 +2763,11 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|useSasl
+name|authMethod
+operator|!=
+name|AuthMethod
+operator|.
+name|SIMPLE
 condition|)
 block|{
 specifier|final
@@ -2761,15 +2792,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|authMethod
-operator|==
-name|AuthMethod
-operator|.
-name|KERBEROS
-condition|)
-block|{
-if|if
-condition|(
 name|ticket
 operator|.
 name|getRealUser
@@ -2785,7 +2807,6 @@ operator|.
 name|getRealUser
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 name|boolean
 name|continueSasl
@@ -2923,10 +2944,6 @@ argument_list|)
 argument_list|,
 name|authMethod
 argument_list|)
-expr_stmt|;
-name|useSasl
-operator|=
-literal|false
 expr_stmt|;
 block|}
 block|}
@@ -3479,9 +3496,9 @@ init|=
 name|maxIdleTime
 operator|-
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|lastActivity
@@ -3617,9 +3634,9 @@ block|{
 name|long
 name|curTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -3661,6 +3678,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -5118,7 +5137,8 @@ block|{
 return|return
 name|call
 operator|.
-name|rpcResponse
+name|getRpcResult
+argument_list|()
 return|;
 block|}
 block|}
@@ -6203,6 +6223,22 @@ operator|)
 expr_stmt|;
 return|return
 name|result
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|serverPrincipal
+operator|+
+literal|"@"
+operator|+
+name|address
 return|;
 block|}
 block|}

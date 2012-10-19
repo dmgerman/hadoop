@@ -118,6 +118,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRedirect ()
+specifier|public
+name|boolean
+name|getRedirect
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getExpectedHttpResponseCode ()
 specifier|public
 name|int
@@ -129,6 +141,8 @@ name|expectedHttpResponseCode
 return|;
 block|}
 comment|/** @return a URI query string. */
+annotation|@
+name|Override
 DECL|method|toQueryString ()
 specifier|public
 name|String

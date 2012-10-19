@@ -156,20 +156,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
 begin_comment
 comment|/**   * A base class for running a Unix command.  *   *<code>Shell</code> can be used to run unix commands like<code>du</code> or  *<code>df</code>. It also offers facilities to gate commands by   * time-intervals.  */
 end_comment
@@ -555,9 +541,9 @@ name|lastTime
 operator|+
 name|interval
 operator|>
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 condition|)
 return|return;
@@ -1032,9 +1018,9 @@ argument_list|()
 expr_stmt|;
 name|lastTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -1298,6 +1284,8 @@ name|run
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getExecString ()
 specifier|public
 name|String
@@ -1309,6 +1297,8 @@ return|return
 name|command
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseExecResult (BufferedReader lines)
 specifier|protected
 name|void
@@ -1397,6 +1387,8 @@ argument_list|()
 return|;
 block|}
 comment|/**      * Returns the commands of this instance.      * Arguments with spaces in are presented with quotes round; other      * arguments are presented raw      *      * @return a string representation of the object.      */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

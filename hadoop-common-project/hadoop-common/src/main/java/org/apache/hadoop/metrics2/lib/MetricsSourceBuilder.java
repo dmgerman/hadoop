@@ -201,7 +201,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Helper class to build metrics source object from annotations  */
+comment|/**  * Helper class to build {@link MetricsSource} object from annotations.  *<p>  * For a given source object:  *<ul>  *<li>Sets the {@link Field}s annotated with {@link Metric} to  * {@link MutableMetric} and adds it to the {@link MetricsRegistry}.</li>  *<li>  * For {@link Method}s annotated with {@link Metric} creates  * {@link MutableMetric} and adds it to the {@link MetricsRegistry}.</li>  *</ul>  */
 end_comment
 
 begin_class
@@ -640,6 +640,7 @@ return|return
 name|r
 return|;
 block|}
+comment|/**    * Change the declared field {@code field} in {@code source} Object to    * {@link MutableMetric}    */
 DECL|method|add (Object source, Field field)
 specifier|private
 name|void
@@ -672,7 +673,9 @@ operator|instanceof
 name|Metric
 operator|)
 condition|)
+block|{
 continue|continue;
+block|}
 try|try
 block|{
 comment|// skip fields already set
@@ -754,6 +757,7 @@ argument_list|,
 name|mutable
 argument_list|)
 expr_stmt|;
+comment|// Set the source field to MutableMetric
 name|hasAtMetric
 operator|=
 literal|true
@@ -784,6 +788,7 @@ block|}
 block|}
 block|}
 block|}
+comment|/** Add {@link MutableMetric} for a method annotated with {@link Metric} */
 DECL|method|add (Object source, Method method)
 specifier|private
 name|void
@@ -816,7 +821,9 @@ operator|instanceof
 name|Metric
 operator|)
 condition|)
+block|{
 continue|continue;
+block|}
 name|factory
 operator|.
 name|newForMethod

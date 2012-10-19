@@ -324,6 +324,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|ParentNotDirectoryException
 import|;
 end_import
@@ -507,6 +523,20 @@ operator|.
 name|util
 operator|.
 name|Progressable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -731,9 +761,9 @@ argument_list|)
 expr_stmt|;
 name|creationTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|ugi
@@ -784,6 +814,27 @@ name|URISyntaxException
 throws|,
 name|UnsupportedFileSystemException
 block|{
+name|String
+name|pathString
+init|=
+name|uri
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|pathString
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|pathString
+operator|=
+literal|"/"
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|ChRootedFs
@@ -800,10 +851,7 @@ argument_list|,
 operator|new
 name|Path
 argument_list|(
-name|uri
-operator|.
-name|getPath
-argument_list|()
+name|pathString
 argument_list|)
 argument_list|)
 return|;
@@ -1026,7 +1074,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createInternal (final Path f, final EnumSet<CreateFlag> flag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final int bytesPerChecksum, final boolean createParent)
+DECL|method|createInternal (final Path f, final EnumSet<CreateFlag> flag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final boolean createParent)
 specifier|public
 name|FSDataOutputStream
 name|createInternal
@@ -1063,8 +1111,8 @@ name|Progressable
 name|progress
 parameter_list|,
 specifier|final
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 specifier|final
 name|boolean
@@ -1169,7 +1217,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)
@@ -2971,7 +3019,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createInternal (final Path f, final EnumSet<CreateFlag> flag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final int bytesPerChecksum, final boolean createParent)
+DECL|method|createInternal (final Path f, final EnumSet<CreateFlag> flag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final boolean createParent)
 specifier|public
 name|FSDataOutputStream
 name|createInternal
@@ -3008,8 +3056,8 @@ name|Progressable
 name|progress
 parameter_list|,
 specifier|final
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 specifier|final
 name|boolean
@@ -3691,7 +3739,7 @@ condition|(
 name|theInternalDir
 operator|.
 name|isRoot
-operator|&
+operator|&&
 name|dir
 operator|==
 literal|null

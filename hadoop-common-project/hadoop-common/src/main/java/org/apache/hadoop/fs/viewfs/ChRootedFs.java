@@ -242,6 +242,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -701,7 +717,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createInternal (final Path f, final EnumSet<CreateFlag> flag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final int bytesPerChecksum, final boolean createParent)
+DECL|method|createInternal (final Path f, final EnumSet<CreateFlag> flag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final boolean createParent)
 specifier|public
 name|FSDataOutputStream
 name|createInternal
@@ -738,8 +754,8 @@ name|Progressable
 name|progress
 parameter_list|,
 specifier|final
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 specifier|final
 name|boolean
@@ -772,7 +788,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)

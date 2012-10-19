@@ -133,6 +133,8 @@ name|value
 return|;
 block|}
 comment|/**    */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -153,6 +155,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void

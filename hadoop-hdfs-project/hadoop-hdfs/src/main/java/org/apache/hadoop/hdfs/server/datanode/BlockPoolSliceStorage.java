@@ -703,8 +703,6 @@ control|)
 block|{
 name|doTransition
 argument_list|(
-name|datanode
-argument_list|,
 name|getStorageDir
 argument_list|(
 name|idx
@@ -1086,14 +1084,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime.    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime Regular    * startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param dn DataNode to which this storage belongs to    * @param sd storage directory<SD>/current/<bpid>    * @param nsInfo namespace info    * @param startOpt startup option    * @throws IOException    */
-DECL|method|doTransition (DataNode datanode, StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt)
+DECL|method|doTransition (StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt)
 specifier|private
 name|void
 name|doTransition
 parameter_list|(
-name|DataNode
-name|datanode
-parameter_list|,
 name|StorageDirectory
 name|sd
 parameter_list|,
@@ -1244,29 +1239,10 @@ operator|.
 name|getCTime
 argument_list|()
 condition|)
+block|{
 return|return;
 comment|// regular startup
-comment|// verify necessity of a distributed upgrade
-name|UpgradeManagerDatanode
-name|um
-init|=
-name|datanode
-operator|.
-name|getUpgradeManagerDatanode
-argument_list|(
-name|nsInfo
-operator|.
-name|getBlockPoolID
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|verifyDistributedUpgradeProgress
-argument_list|(
-name|um
-argument_list|,
-name|nsInfo
-argument_list|)
-expr_stmt|;
+block|}
 if|if
 condition|(
 name|this
@@ -2025,6 +2001,8 @@ operator|new
 name|Runnable
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -2070,6 +2048,8 @@ literal|" is complete."
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 specifier|public
 name|String
 name|toString
@@ -2188,45 +2168,6 @@ name|linkStats
 operator|.
 name|report
 argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|verifyDistributedUpgradeProgress (UpgradeManagerDatanode um, NamespaceInfo nsInfo)
-specifier|private
-name|void
-name|verifyDistributedUpgradeProgress
-parameter_list|(
-name|UpgradeManagerDatanode
-name|um
-parameter_list|,
-name|NamespaceInfo
-name|nsInfo
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-assert|assert
-name|um
-operator|!=
-literal|null
-operator|:
-literal|"DataNode.upgradeManager is null."
-assert|;
-name|um
-operator|.
-name|setUpgradeState
-argument_list|(
-literal|false
-argument_list|,
-name|getLayoutVersion
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|um
-operator|.
-name|initializeUpgrade
-argument_list|(
-name|nsInfo
 argument_list|)
 expr_stmt|;
 block|}

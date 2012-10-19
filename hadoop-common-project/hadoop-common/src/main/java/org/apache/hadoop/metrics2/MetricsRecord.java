@@ -78,19 +78,19 @@ name|long
 name|timestamp
 parameter_list|()
 function_decl|;
-comment|/**    * @return the record name    */
+comment|/**    * @return the metrics record name    */
 DECL|method|name ()
 name|String
 name|name
 parameter_list|()
 function_decl|;
-comment|/**    * @return the description of the record    */
+comment|/**    * @return the description of the metrics record    */
 DECL|method|description ()
 name|String
 name|description
 parameter_list|()
 function_decl|;
-comment|/**    * @return the context name of the record    */
+comment|/**    * @return the context name of the metrics record    */
 DECL|method|context ()
 name|String
 name|context

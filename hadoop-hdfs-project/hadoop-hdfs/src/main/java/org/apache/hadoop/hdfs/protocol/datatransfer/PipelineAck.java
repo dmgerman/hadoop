@@ -164,6 +164,18 @@ name|Status
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|TextFormat
+import|;
+end_import
+
 begin_comment
 comment|/** Pipeline Acknowledgment **/
 end_comment
@@ -430,10 +442,12 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|proto
+name|TextFormat
 operator|.
-name|toString
-argument_list|()
+name|shortDebugString
+argument_list|(
+name|proto
+argument_list|)
 return|;
 block|}
 block|}

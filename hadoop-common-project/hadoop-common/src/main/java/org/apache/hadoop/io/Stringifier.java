@@ -106,6 +106,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**     * Closes this object.     * @throws IOException if an I/O error occurs     * */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

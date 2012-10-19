@@ -220,6 +220,8 @@ operator|new
 name|WritableFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Writable
 name|newInstance
@@ -580,7 +582,8 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -601,7 +604,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -703,7 +707,8 @@ operator|)
 name|s
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
@@ -766,7 +771,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -778,7 +784,8 @@ name|toShort
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1363,6 +1370,8 @@ name|permission
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|applyUMask (FsPermission umask)
 specifier|public
 name|FsPermission
@@ -1378,6 +1387,8 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

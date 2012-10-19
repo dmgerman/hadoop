@@ -112,16 +112,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Random
 import|;
 end_import
@@ -425,7 +415,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a demonstrative program, which uses DBInputFormat for reading  * the input data from a database, and DBOutputFormat for writing the data   * to the database.   *<br>  * The Program first creates the necessary tables, populates the input table   * and runs the mapred job.   *<br>   * The input data is a mini access log, with a<code>&lt;url,referrer,time&gt;  *</code> schema.The output is the number of pageviews of each url in the log,   * having the schema<code>&lt;url,pageview&gt;</code>.    *   * When called with no arguments the program starts a local HSQLDB server, and   * uses this database for storing/retrieving the data.   */
+comment|/**  * This is a demonstrative program, which uses DBInputFormat for reading  * the input data from a database, and DBOutputFormat for writing the data   * to the database.   *<br>  * The Program first creates the necessary tables, populates the input table   * and runs the mapred job.   *<br>   * The input data is a mini access log, with a<code>&lt;url,referrer,time&gt;  *</code> schema.The output is the number of pageviews of each url in the log,   * having the schema<code>&lt;url,pageview&gt;</code>.    *   * When called with no arguments the program starts a local HSQLDB server, and   * uses this database for storing/retrieving the data.   *<br>  * This program requires some additional configuration relating to HSQLDB.    * The the hsqldb jar should be added to the classpath:  *<br>  *<code>export HADOOP_CLASSPATH=share/hadoop/mapreduce/lib-examples/hsqldb-2.0.0.jar</code>  *<br>  * And the hsqldb jar should be included with the<code>-libjars</code>   * argument when executing it with hadoop:  *<br>  *<code>-libjars share/hadoop/mapreduce/lib-examples/hsqldb-2.0.0.jar</code>  */
 end_comment
 
 begin_class
@@ -463,6 +453,13 @@ DECL|field|initialized
 specifier|private
 name|boolean
 name|initialized
+init|=
+literal|false
+decl_stmt|;
+DECL|field|isOracle
+specifier|private
+name|boolean
+name|isOracle
 init|=
 literal|false
 decl_stmt|;
@@ -578,6 +575,24 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|driverClassName
+operator|.
+name|toLowerCase
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"oracle"
+argument_list|)
+condition|)
+block|{
+name|isOracle
+operator|=
+literal|true
+expr_stmt|;
+block|}
 name|Class
 operator|.
 name|forName
@@ -752,7 +767,7 @@ block|{
 name|String
 name|dropAccess
 init|=
-literal|"DROP TABLE Access"
+literal|"DROP TABLE HAccess"
 decl_stmt|;
 name|String
 name|dropPageview
@@ -837,15 +852,34 @@ throws|throws
 name|SQLException
 block|{
 name|String
+name|dataType
+init|=
+literal|"BIGINT NOT NULL"
+decl_stmt|;
+if|if
+condition|(
+name|isOracle
+condition|)
+block|{
+name|dataType
+operator|=
+literal|"NUMBER(19) NOT NULL"
+expr_stmt|;
+block|}
+name|String
 name|createAccess
 init|=
 literal|"CREATE TABLE "
 operator|+
-literal|"Access(url      VARCHAR(100) NOT NULL,"
+literal|"HAccess(url      VARCHAR(100) NOT NULL,"
 operator|+
 literal|" referrer VARCHAR(100),"
 operator|+
-literal|" time     BIGINT NOT NULL, "
+literal|" time     "
+operator|+
+name|dataType
+operator|+
+literal|", "
 operator|+
 literal|" PRIMARY KEY (url, time))"
 decl_stmt|;
@@ -856,7 +890,11 @@ literal|"CREATE TABLE "
 operator|+
 literal|"Pageview(url      VARCHAR(100) NOT NULL,"
 operator|+
-literal|" pageview     BIGINT NOT NULL, "
+literal|" pageview     "
+operator|+
+name|dataType
+operator|+
+literal|", "
 operator|+
 literal|" PRIMARY KEY (url))"
 decl_stmt|;
@@ -921,7 +959,7 @@ name|connection
 operator|.
 name|prepareStatement
 argument_list|(
-literal|"INSERT INTO Access(url, referrer, time)"
+literal|"INSERT INTO HAccess(url, referrer, time)"
 operator|+
 literal|" VALUES (?, ?, ?)"
 argument_list|)
@@ -1270,7 +1308,7 @@ comment|//check total num pageview
 name|String
 name|countAccessQuery
 init|=
-literal|"SELECT COUNT(*) FROM Access"
+literal|"SELECT COUNT(*) FROM HAccess"
 decl_stmt|;
 name|String
 name|sumPageviewQuery
@@ -2021,8 +2059,9 @@ expr_stmt|;
 name|Job
 name|job
 init|=
-operator|new
 name|Job
+operator|.
+name|getInstance
 argument_list|(
 name|conf
 argument_list|)
@@ -2080,7 +2119,7 @@ name|AccessRecord
 operator|.
 name|class
 argument_list|,
-literal|"Access"
+literal|"HAccess"
 argument_list|,
 literal|null
 argument_list|,

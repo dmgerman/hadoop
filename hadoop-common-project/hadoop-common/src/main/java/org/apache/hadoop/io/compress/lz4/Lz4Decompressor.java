@@ -792,6 +792,8 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 specifier|synchronized

@@ -1825,6 +1825,11 @@ name|storage
 argument_list|)
 expr_stmt|;
 block|}
+name|bnImage
+operator|.
+name|initEditLog
+argument_list|()
+expr_stmt|;
 name|setRegistration
 argument_list|()
 expr_stmt|;

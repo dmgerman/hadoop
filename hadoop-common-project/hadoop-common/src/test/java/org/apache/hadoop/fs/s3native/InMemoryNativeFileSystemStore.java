@@ -222,6 +222,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * A stub implementation of {@link NativeFileSystemStore} for testing  * {@link NativeS3FileSystem} without actually connecting to S3.  *</p>  */
 end_comment
@@ -278,6 +292,8 @@ index|[]
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|initialize (URI uri, Configuration conf)
 specifier|public
 name|void
@@ -299,6 +315,8 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|storeEmptyFile (String key)
 specifier|public
 name|void
@@ -323,9 +341,9 @@ name|key
 argument_list|,
 literal|0
 argument_list|,
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 argument_list|)
@@ -344,6 +362,8 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|storeFile (String key, File file, byte[] md5Hash)
 specifier|public
 name|void
@@ -462,9 +482,9 @@ operator|.
 name|length
 argument_list|()
 argument_list|,
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 argument_list|)
@@ -482,6 +502,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|retrieve (String key)
 specifier|public
 name|InputStream
@@ -502,6 +524,8 @@ literal|0
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|retrieve (String key, long byteRangeStart)
 specifier|public
 name|InputStream
@@ -668,6 +692,8 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|retrieveMetadata (String key)
 specifier|public
 name|FileMetadata
@@ -688,6 +714,8 @@ name|key
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|list (String prefix, int maxListingLength)
 specifier|public
 name|PartialListing
@@ -715,6 +743,8 @@ literal|false
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|list (String prefix, int maxListingLength, String priorLastKey, boolean recursive)
 specifier|public
 name|PartialListing
@@ -995,6 +1025,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|delete (String key)
 specifier|public
 name|void
@@ -1021,6 +1053,8 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|copy (String srcKey, String dstKey)
 specifier|public
 name|void
@@ -1064,6 +1098,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|purge (String prefix)
 specifier|public
 name|void
@@ -1146,6 +1182,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|dump ()
 specifier|public
 name|void

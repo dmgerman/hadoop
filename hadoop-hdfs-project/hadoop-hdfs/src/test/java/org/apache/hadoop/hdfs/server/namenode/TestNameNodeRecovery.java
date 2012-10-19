@@ -21,6 +21,66 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|doNothing
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -67,42 +127,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|doNothing
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|spy
 import|;
 end_import
 
@@ -260,43 +284,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|OpInstanceCache
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSImage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|FSNamesystem
+name|DeleteOp
 import|;
 end_import
 
@@ -316,7 +304,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|DeleteOp
+name|OpInstanceCache
 import|;
 end_import
 
@@ -439,6 +427,13 @@ operator|.
 name|FORCE_ALL
 argument_list|)
 expr_stmt|;
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|runEditLogTest (EditLogTestSetup elts)
 specifier|static
@@ -522,7 +517,9 @@ expr_stmt|;
 name|elfos
 operator|.
 name|flushAndSync
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|elfos
 operator|.
@@ -1058,6 +1055,8 @@ operator|=
 name|paddingLength
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|addTransactionsToLog (EditLogOutputStream elos, OpInstanceCache cache)
 specifier|public
 name|void
@@ -1080,6 +1079,8 @@ name|paddingLength
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getLastValidTxId ()
 specifier|public
 name|long
@@ -1091,6 +1092,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValidTxIds ()
 specifier|public
 name|Set
@@ -1223,6 +1226,8 @@ operator|=
 name|paddingLength
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|addTransactionsToLog (EditLogOutputStream elos, OpInstanceCache cache)
 specifier|public
 name|void
@@ -1252,6 +1257,8 @@ name|cache
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getLastValidTxId ()
 specifier|public
 name|long
@@ -1262,6 +1269,8 @@ return|return
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValidTxIds ()
 specifier|public
 name|Set
@@ -1361,6 +1370,8 @@ name|MAX_TXID
 init|=
 literal|10
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|addTransactionsToLog (EditLogOutputStream elos, OpInstanceCache cache)
 specifier|public
 name|void
@@ -1470,6 +1481,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getLastValidTxId ()
 specifier|public
 name|long
@@ -1482,6 +1495,8 @@ operator|-
 literal|1
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValidTxIds ()
 specifier|public
 name|Set

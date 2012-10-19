@@ -60,13 +60,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -548,6 +544,8 @@ block|}
 comment|//
 comment|// The main work loop
 comment|//
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

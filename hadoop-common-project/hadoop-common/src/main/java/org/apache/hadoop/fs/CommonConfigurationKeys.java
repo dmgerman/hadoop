@@ -478,6 +478,25 @@ name|HA_FC_GRACEFUL_FENCE_TIMEOUT_DEFAULT
 init|=
 literal|5000
 decl_stmt|;
+comment|/* FC connection retries for graceful fencing */
+DECL|field|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES
+init|=
+literal|"ha.failover-controller.graceful-fence.connection.retries"
+decl_stmt|;
+DECL|field|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HA_FC_GRACEFUL_FENCE_CONNECTION_RETRIES_DEFAULT
+init|=
+literal|1
+decl_stmt|;
 comment|/* Timeout that the CLI (manual) FC waits for monitorHealth, getServiceState */
 DECL|field|HA_FC_CLI_CHECK_TIMEOUT_KEY
 specifier|public
@@ -515,6 +534,25 @@ name|String
 name|DEFAULT_HADOOP_HTTP_STATIC_USER
 init|=
 literal|"dr.who"
+decl_stmt|;
+comment|/** Enable/Disable aliases serving from jetty */
+DECL|field|HADOOP_JETTY_LOGS_SERVE_ALIASES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_JETTY_LOGS_SERVE_ALIASES
+init|=
+literal|"hadoop.jetty.logs.serve.aliases"
+decl_stmt|;
+DECL|field|DEFAULT_HADOOP_JETTY_LOGS_SERVE_ALIASES
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_HADOOP_JETTY_LOGS_SERVE_ALIASES
+init|=
+literal|true
 decl_stmt|;
 comment|/* Path to the Kerberos ticket cache.  Setting this will force    * UserGroupInformation to use only this ticket cache file when creating a    * FileSystem instance.    */
 DECL|field|KERBEROS_TICKET_CACHE_PATH

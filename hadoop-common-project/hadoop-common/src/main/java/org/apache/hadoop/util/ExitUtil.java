@@ -126,14 +126,12 @@ name|systemExitDisabled
 init|=
 literal|false
 decl_stmt|;
-DECL|field|terminateCalled
+DECL|field|firstExitException
 specifier|private
 specifier|static
 specifier|volatile
-name|boolean
-name|terminateCalled
-init|=
-literal|false
+name|ExitException
+name|firstExitException
 decl_stmt|;
 DECL|class|ExitException
 specifier|public
@@ -203,9 +201,37 @@ name|boolean
 name|terminateCalled
 parameter_list|()
 block|{
+comment|// Either we set this member or we actually called System#exit
 return|return
-name|terminateCalled
+name|firstExitException
+operator|!=
+literal|null
 return|;
+block|}
+comment|/**    * @return the first ExitException thrown, null if none thrown yet    */
+DECL|method|getFirstExitException ()
+specifier|public
+specifier|static
+name|ExitException
+name|getFirstExitException
+parameter_list|()
+block|{
+return|return
+name|firstExitException
+return|;
+block|}
+comment|/**    * Reset the tracking of process termination. This is for use    * in unit tests where one test in the suite expects an exit    * but others do not.    */
+DECL|method|resetFirstExitException ()
+specifier|public
+specifier|static
+name|void
+name|resetFirstExitException
+parameter_list|()
+block|{
+name|firstExitException
+operator|=
+literal|null
+expr_stmt|;
 block|}
 comment|/**    * Terminate the current process. Note that terminate is the *only* method    * that should be used to terminate the daemon processes.    * @param status exit code    * @param msg message used to create the ExitException    * @throws ExitException if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status, String msg)
@@ -232,16 +258,14 @@ operator|+
 name|status
 argument_list|)
 expr_stmt|;
-name|terminateCalled
-operator|=
-literal|true
-expr_stmt|;
 if|if
 condition|(
 name|systemExitDisabled
 condition|)
 block|{
-throw|throw
+name|ExitException
+name|ee
+init|=
 operator|new
 name|ExitException
 argument_list|(
@@ -249,6 +273,30 @@ name|status
 argument_list|,
 name|msg
 argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Terminate called"
+argument_list|,
+name|ee
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|firstExitException
+condition|)
+block|{
+name|firstExitException
+operator|=
+name|ee
+expr_stmt|;
+block|}
+throw|throw
+name|ee
 throw|;
 block|}
 name|System
@@ -259,7 +307,36 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link terminate(int, String)} without a message.    * @param status    * @throws ExitException    */
+comment|/**    * Like {@link terminate(int, String)} but uses the given throwable to    * initialize the ExitException.    * @param status    * @param t throwable used to create the ExitException    * @throws ExitException if System.exit is disabled for test purposes    */
+DECL|method|terminate (int status, Throwable t)
+specifier|public
+specifier|static
+name|void
+name|terminate
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+throws|throws
+name|ExitException
+block|{
+name|terminate
+argument_list|(
+name|status
+argument_list|,
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|t
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Like {@link terminate(int, String)} without a message.    * @param status    * @throws ExitException if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status)
 specifier|public
 specifier|static

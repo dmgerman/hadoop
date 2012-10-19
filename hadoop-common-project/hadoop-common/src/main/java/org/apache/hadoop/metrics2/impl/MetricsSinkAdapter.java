@@ -196,6 +196,20 @@ name|MetricsSink
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * An adapter class for metrics sink and associated filters  */
 end_comment
@@ -1033,9 +1047,9 @@ name|latency
 operator|.
 name|add
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|ts

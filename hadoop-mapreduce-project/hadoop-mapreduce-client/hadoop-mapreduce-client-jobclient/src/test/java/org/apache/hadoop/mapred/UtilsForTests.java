@@ -148,6 +148,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2413,6 +2425,10 @@ name|replication
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+block|{
+try|try
 block|{
 name|writeFile
 argument_list|(
@@ -2463,6 +2479,15 @@ name|replication
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+comment|// Ignore
+block|}
+block|}
 comment|/**    * Signal the maps/reduces to start.    */
 DECL|method|signalTasks (MiniDFSCluster dfs, FileSystem fileSys, boolean isMap, String mapSignalFile, String reduceSignalFile)
 specifier|static
@@ -2486,6 +2511,10 @@ name|reduceSignalFile
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+block|{
+try|try
 block|{
 comment|//  signal the maps to complete
 name|writeFile
@@ -2520,6 +2549,15 @@ operator|)
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+comment|// Ignore
+block|}
 block|}
 DECL|method|getSignalFile (Path dir)
 specifier|static
@@ -2612,6 +2650,10 @@ name|replication
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|FileSystem
 name|fileSys

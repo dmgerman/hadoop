@@ -1741,11 +1741,6 @@ argument_list|(
 name|partitionUri
 argument_list|)
 expr_stmt|;
-name|job
-operator|.
-name|createSymlink
-argument_list|()
-expr_stmt|;
 name|long
 name|end
 init|=

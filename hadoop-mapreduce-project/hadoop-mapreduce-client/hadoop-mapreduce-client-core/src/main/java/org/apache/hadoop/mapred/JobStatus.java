@@ -988,6 +988,11 @@ argument_list|()
 argument_list|,
 name|stat
 operator|.
+name|getQueue
+argument_list|()
+argument_list|,
+name|stat
+operator|.
 name|getJobFile
 argument_list|()
 argument_list|,

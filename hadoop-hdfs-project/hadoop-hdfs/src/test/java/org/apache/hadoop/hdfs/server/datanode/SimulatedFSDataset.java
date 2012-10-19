@@ -242,6 +242,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsBlocksMetadata
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -438,6 +454,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics2
 operator|.
 name|util
@@ -622,7 +652,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_NULL
+name|Type
+operator|.
+name|NULL
 argument_list|,
 literal|16
 operator|*
@@ -857,6 +889,8 @@ literal|null
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|getGenerationStamp ()
 specifier|synchronized
 specifier|public
@@ -871,6 +905,8 @@ name|getGenerationStamp
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getNumBytes ()
 specifier|synchronized
 specifier|public
@@ -898,6 +934,8 @@ argument_list|()
 return|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|setNumBytes (long length)
 specifier|synchronized
 specifier|public
@@ -3659,10 +3697,12 @@ argument_list|(
 name|b
 argument_list|)
 decl_stmt|;
-name|result
+name|IOUtils
 operator|.
-name|skip
+name|skipFully
 argument_list|(
+name|result
+argument_list|,
 name|seekOffset
 argument_list|)
 expr_stmt|;
@@ -4281,6 +4321,8 @@ literal|"Registered FSDatasetState MBean"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|shutdown ()
 specifier|public
 name|void
@@ -4301,6 +4343,8 @@ name|mbeanName
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getStorageInfo ()
 specifier|public
 name|String
@@ -4313,6 +4357,8 @@ operator|+
 name|storageId
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasEnoughResource ()
 specifier|public
 name|boolean
@@ -4676,6 +4722,28 @@ parameter_list|(
 name|ExtendedBlock
 name|b
 parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHdfsBlocksMetadata (List<ExtendedBlock> blocks)
+specifier|public
+name|HdfsBlocksMetadata
+name|getHdfsBlocksMetadata
+parameter_list|(
+name|List
+argument_list|<
+name|ExtendedBlock
+argument_list|>
+name|blocks
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 throw|throw
 operator|new

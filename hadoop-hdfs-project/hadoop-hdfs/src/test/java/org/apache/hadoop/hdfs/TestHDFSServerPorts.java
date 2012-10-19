@@ -17,6 +17,50 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Util
+operator|.
+name|fileAsURI
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +87,6 @@ operator|.
 name|net
 operator|.
 name|UnknownHostException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -123,26 +157,6 @@ operator|.
 name|fs
 operator|.
 name|FileUtil
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
-operator|.
-name|fileAsURI
 import|;
 end_import
 
@@ -228,20 +242,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|HdfsConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|metrics2
 operator|.
 name|lib
@@ -264,6 +264,16 @@ name|DNS
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This test checks correctness of port usage by hdfs components:  * NameNode, DataNode, SecondaryNamenode and BackupNode.  *   * The correct behavior is:<br>   * - when a specific port is provided the server must either start on that port   * or fail by throwing {@link java.net.BindException}.<br>  * - if the port = 0 (ephemeral) then the server should choose   * a free port and start on it.  */
 end_comment
@@ -273,8 +283,6 @@ DECL|class|TestHDFSServerPorts
 specifier|public
 class|class
 name|TestHDFSServerPorts
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|public
@@ -1174,6 +1182,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNameNodePorts ()
 specifier|public
 name|void
@@ -1400,6 +1410,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Verify datanode port usage.    */
+annotation|@
+name|Test
 DECL|method|testDataNodePorts ()
 specifier|public
 name|void
@@ -1595,6 +1607,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Verify secondary namenode port usage.    */
+annotation|@
+name|Test
 DECL|method|testSecondaryNodePorts ()
 specifier|public
 name|void
@@ -1725,6 +1739,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**      * Verify BackupNode port usage.      */
+annotation|@
+name|Test
 DECL|method|testBackupNodePorts ()
 specifier|public
 name|void

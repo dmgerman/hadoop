@@ -50,6 +50,20 @@ name|SimpleDateFormat
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * this class is a time class to   * measure to measure the time   * taken for some event.  */
 end_comment
@@ -89,9 +103,9 @@ name|IOException
 block|{
 name|startTimeEpoch
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -105,9 +119,9 @@ name|IOException
 block|{
 name|finishTimeEpoch
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -199,9 +213,9 @@ block|{
 return|return
 name|formatTime
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 return|;

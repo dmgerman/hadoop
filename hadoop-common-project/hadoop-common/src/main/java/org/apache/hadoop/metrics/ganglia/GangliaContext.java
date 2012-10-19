@@ -178,20 +178,6 @@ name|hadoop
 operator|.
 name|metrics
 operator|.
-name|MetricsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics
-operator|.
 name|spi
 operator|.
 name|AbstractMetricsContext
@@ -550,6 +536,8 @@ name|GangliaContext
 parameter_list|()
 block|{   }
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -671,6 +659,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

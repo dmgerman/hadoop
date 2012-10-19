@@ -82,6 +82,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -326,7 +338,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|HdfsConstants
+operator|.
+name|DatanodeReportType
 import|;
 end_import
 
@@ -342,9 +356,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|DatanodeReportType
+name|LocatedBlock
 import|;
 end_import
 
@@ -740,6 +752,10 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 specifier|final
 name|FileSystem
@@ -805,6 +821,10 @@ name|size
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 specifier|final
 name|ExtendedBlock

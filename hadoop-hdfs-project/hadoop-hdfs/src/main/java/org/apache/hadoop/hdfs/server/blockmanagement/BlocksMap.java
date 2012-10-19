@@ -124,6 +124,8 @@ operator|=
 name|blkInfo
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|hasNext ()
 specifier|public
 name|boolean
@@ -152,6 +154,8 @@ operator|!=
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|DatanodeDescriptor
@@ -168,6 +172,8 @@ operator|++
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|remove ()
 specifier|public
 name|void
@@ -407,10 +413,7 @@ name|void
 name|close
 parameter_list|()
 block|{
-name|blocks
-operator|=
-literal|null
-expr_stmt|;
+comment|// Empty blocks once GSet#clear is implemented (HDFS-3940)
 block|}
 DECL|method|getBlockCollection (Block b)
 name|BlockCollection

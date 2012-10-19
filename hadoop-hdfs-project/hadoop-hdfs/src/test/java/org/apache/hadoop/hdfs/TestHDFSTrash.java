@@ -113,7 +113,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests commands from Trash.  */
+comment|/**  * Test trash using HDFS  */
 end_comment
 
 begin_class
@@ -190,7 +190,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Tests Trash on HDFS    */
 annotation|@
 name|Test
 DECL|method|testTrash ()

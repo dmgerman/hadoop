@@ -236,20 +236,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
-operator|.
-name|NetUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -489,15 +475,10 @@ decl_stmt|;
 name|String
 name|addr
 init|=
-name|NetUtils
-operator|.
-name|getHostPortString
-argument_list|(
 name|nn
 operator|.
-name|getNameNodeAddress
+name|getNameNodeAddressHostPortString
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|String
 name|addrParam
@@ -618,6 +599,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Service a GET request as described below.    * Request:    * {@code    * GET http://<nn>:<port>/data[/<path>] HTTP/1.1    * }    */
+annotation|@
+name|Override
 DECL|method|doGet (final HttpServletRequest request, final HttpServletResponse response)
 specifier|public
 name|void

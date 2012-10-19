@@ -92,16 +92,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -133,6 +123,18 @@ operator|.
 name|util
 operator|.
 name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -242,7 +244,7 @@ argument_list|>
 name|harMetaCache
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|URI
 argument_list|,
@@ -310,6 +312,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Initialize a Har filesystem per har archive. The     * archive home directory is the top level directory    * in the filesystem that contains the HAR archive.    * Be careful with this method, you do not want to go     * on creating new Filesystem instances per call to     * path.getFileSystem().    * the uri of Har is     * har://underlyingfsscheme-host:port/archivepath.    * or     * har:///archivepath. This assumes the underlying filesystem    * to be used in case not specified.    */
+annotation|@
+name|Override
 DECL|method|initialize (URI name, Configuration conf)
 specifier|public
 name|void
@@ -1007,6 +1011,8 @@ name|fname
 return|;
 block|}
 comment|/**    * return the top level archive.    */
+annotation|@
+name|Override
 DECL|method|getWorkingDirectory ()
 specifier|public
 name|Path
@@ -2665,6 +2671,8 @@ name|hstatus
 return|;
 block|}
 comment|/**    * @return null since no checksum algorithm is implemented.    */
+annotation|@
+name|Override
 DECL|method|getFileChecksum (Path f)
 specifier|public
 name|FileChecksum
@@ -2779,6 +2787,8 @@ literal|"Har: Create not allowed"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream
@@ -3035,6 +3045,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * return the top level archive path.    */
+annotation|@
+name|Override
 DECL|method|getHomeDirectory ()
 specifier|public
 name|Path
@@ -3052,6 +3064,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setWorkingDirectory (Path newDir)
 specifier|public
 name|void
@@ -3064,6 +3078,8 @@ block|{
 comment|//does nothing.
 block|}
 comment|/**    * not implemented.    */
+annotation|@
+name|Override
 DECL|method|mkdirs (Path f, FsPermission permission)
 specifier|public
 name|boolean
@@ -3087,6 +3103,8 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * not implemented.    */
+annotation|@
+name|Override
 DECL|method|copyFromLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -3113,6 +3131,8 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * copies the file in the har filesystem to a local file.    */
+annotation|@
+name|Override
 DECL|method|copyToLocalFile (boolean delSrc, Path src, Path dst)
 specifier|public
 name|void
@@ -3154,6 +3174,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * not implemented.    */
+annotation|@
+name|Override
 DECL|method|startLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|Path
@@ -3177,6 +3199,8 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * not implemented.    */
+annotation|@
+name|Override
 DECL|method|completeLocalOutput (Path fsOutputFile, Path tmpLocalFile)
 specifier|public
 name|void
@@ -3200,6 +3224,8 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * not implemented.    */
+annotation|@
+name|Override
 DECL|method|setOwner (Path p, String username, String groupname)
 specifier|public
 name|void
@@ -3226,6 +3252,8 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Not implemented.    */
+annotation|@
+name|Override
 DECL|method|setPermission (Path p, FsPermission permisssion)
 specifier|public
 name|void
@@ -3360,6 +3388,8 @@ operator|+
 name|length
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 specifier|synchronized
@@ -3404,6 +3434,8 @@ operator|)
 name|remaining
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 specifier|synchronized
@@ -3439,6 +3471,8 @@ block|{
 comment|// do nothing
 block|}
 comment|/**        * reset is not implemented        */
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 name|void
@@ -3455,6 +3489,8 @@ literal|"reset not implemented."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 specifier|synchronized
@@ -3496,6 +3532,8 @@ literal|0xff
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (byte[] b)
 specifier|public
 specifier|synchronized
@@ -3541,6 +3579,8 @@ name|ret
 return|;
 block|}
 comment|/**        *         */
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int offset, int len)
 specifier|public
 specifier|synchronized
@@ -3623,6 +3663,8 @@ return|return
 name|ret
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 specifier|synchronized
@@ -3693,6 +3735,8 @@ else|:
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 specifier|synchronized
@@ -3710,6 +3754,8 @@ name|start
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 specifier|synchronized
@@ -3759,6 +3805,8 @@ name|position
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -3778,6 +3826,8 @@ literal|false
 return|;
 block|}
 comment|/**        * implementing position readable.         */
+annotation|@
+name|Override
 DECL|method|read (long pos, byte[] b, int offset, int length)
 specifier|public
 name|int
@@ -3849,6 +3899,8 @@ argument_list|)
 return|;
 block|}
 comment|/**        * position readable again.        */
+annotation|@
+name|Override
 DECL|method|readFully (long pos, byte[] b, int offset, int length)
 specifier|public
 name|void
@@ -3905,6 +3957,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFully (long pos, byte[] b)
 specifier|public
 name|void
@@ -4499,11 +4553,6 @@ argument_list|()
 expr_stmt|;
 name|LineReader
 name|aLin
-decl_stmt|;
-name|String
-name|retStr
-init|=
-literal|null
 decl_stmt|;
 comment|// now start reading the real index file
 for|for

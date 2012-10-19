@@ -32,7 +32,23 @@ name|test
 operator|.
 name|MetricsAsserts
 operator|.
-name|*
+name|assertCounter
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|getMetrics
 import|;
 end_import
 

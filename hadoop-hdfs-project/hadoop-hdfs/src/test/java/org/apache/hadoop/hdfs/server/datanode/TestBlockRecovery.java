@@ -1387,8 +1387,6 @@ argument_list|,
 name|POOL_ID
 argument_list|,
 literal|1L
-argument_list|,
-literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3726,7 +3724,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_CRC32
+name|Type
+operator|.
+name|CRC32
 argument_list|,
 literal|512
 argument_list|)
@@ -4028,6 +4028,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run

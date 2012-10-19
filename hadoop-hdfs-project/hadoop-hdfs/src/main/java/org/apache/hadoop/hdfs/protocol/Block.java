@@ -170,6 +170,8 @@ operator|new
 name|WritableFactory
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Writable
 name|newInstance
@@ -662,6 +664,8 @@ name|stamp
 expr_stmt|;
 block|}
 comment|/**    */
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

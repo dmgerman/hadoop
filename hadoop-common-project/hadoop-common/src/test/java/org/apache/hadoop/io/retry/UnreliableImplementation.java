@@ -36,24 +36,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|retry
-operator|.
-name|UnreliableInterface
-operator|.
-name|UnreliableException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|RemoteException
@@ -199,6 +181,8 @@ operator|=
 name|exceptionToFailWith
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|alwaysSucceeds ()
 specifier|public
 name|void
@@ -207,6 +191,8 @@ parameter_list|()
 block|{
 comment|// do nothing
 block|}
+annotation|@
+name|Override
 DECL|method|alwaysFailsWithFatalException ()
 specifier|public
 name|void
@@ -221,6 +207,8 @@ name|FatalException
 argument_list|()
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|alwaysFailsWithRemoteFatalException ()
 specifier|public
 name|void
@@ -244,6 +232,8 @@ literal|"Oops"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
 DECL|method|failsOnceThenSucceeds ()
 specifier|public
 name|void
@@ -267,6 +257,8 @@ argument_list|()
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|failsOnceThenSucceedsWithReturnValue ()
 specifier|public
 name|boolean
@@ -293,6 +285,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|failsTenTimesThenSucceeds ()
 specifier|public
 name|void

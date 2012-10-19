@@ -50,6 +50,20 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|HttpConfig
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Private
@@ -79,7 +93,10 @@ parameter_list|)
 block|{
 return|return
 operator|(
-literal|"http://"
+name|HttpConfig
+operator|.
+name|getSchemePrefix
+argument_list|()
 operator|+
 name|taskTrackerHostName
 operator|+

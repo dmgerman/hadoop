@@ -214,6 +214,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Tool
 import|;
 end_import
@@ -283,9 +297,9 @@ parameter_list|()
 block|{
 name|startTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -305,9 +319,9 @@ literal|" time: "
 operator|+
 operator|(
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -894,6 +908,8 @@ literal|"  dfsthroughput.buffer.size:\tbuffer size for write/read (4k)\n"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run (String[] args)
 specifier|public
 name|int

@@ -216,6 +216,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MRConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|OutputCommitter
 import|;
 end_import
@@ -345,6 +359,22 @@ operator|.
 name|jobhistory
 operator|.
 name|TaskStartedEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|ssl
+operator|.
+name|SSLFactory
 import|;
 end_import
 
@@ -1245,6 +1275,11 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+DECL|field|encryptedShuffle
+specifier|protected
+name|boolean
+name|encryptedShuffle
+decl_stmt|;
 DECL|field|credentials
 specifier|protected
 name|Credentials
@@ -1675,7 +1710,6 @@ name|TaskState
 operator|.
 name|SUCCEEDED
 argument_list|,
-comment|//only possible for map tasks
 name|EnumSet
 operator|.
 name|of
@@ -1698,7 +1732,7 @@ operator|.
 name|T_ATTEMPT_FAILED
 argument_list|,
 operator|new
-name|MapRetroactiveFailureTransition
+name|RetroactiveFailureTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -1708,7 +1742,6 @@ name|TaskState
 operator|.
 name|SUCCEEDED
 argument_list|,
-comment|//only possible for map tasks
 name|EnumSet
 operator|.
 name|of
@@ -1727,7 +1760,7 @@ operator|.
 name|T_ATTEMPT_KILLED
 argument_list|,
 operator|new
-name|MapRetroactiveKilledTransition
+name|RetroactiveKilledTransition
 argument_list|()
 argument_list|)
 comment|// Ignore-able transitions.
@@ -2128,6 +2161,23 @@ operator|.
 name|appContext
 operator|=
 name|appContext
+expr_stmt|;
+name|this
+operator|.
+name|encryptedShuffle
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|MRConfig
+operator|.
+name|SHUFFLE_SSL_ENABLED_KEY
+argument_list|,
+name|MRConfig
+operator|.
+name|SHUFFLE_SSL_ENABLED_DEFAULT
+argument_list|)
 expr_stmt|;
 comment|// See if this is from a previous generation.
 if|if
@@ -3661,11 +3711,22 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+name|String
+name|scheme
+init|=
+operator|(
+name|encryptedShuffle
+operator|)
+condition|?
+literal|"https://"
+else|:
+literal|"http://"
+decl_stmt|;
 name|tce
 operator|.
 name|setMapOutputServerAddress
 argument_list|(
-literal|"http://"
+name|scheme
 operator|+
 name|attempt
 operator|.
@@ -5042,11 +5103,11 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|class|MapRetroactiveFailureTransition
+DECL|class|RetroactiveFailureTransition
 specifier|private
 specifier|static
 class|class
-name|MapRetroactiveFailureTransition
+name|RetroactiveFailureTransition
 extends|extends
 name|AttemptFailedTransition
 block|{
@@ -5113,7 +5174,7 @@ name|SUCCEEDED
 return|;
 block|}
 block|}
-comment|//verify that this occurs only for map task
+comment|// a successful REDUCE task should not be overridden
 comment|//TODO: consider moving it to MapTaskImpl
 if|if
 condition|(
@@ -5214,11 +5275,11 @@ name|SCHEDULED
 return|;
 block|}
 block|}
-DECL|class|MapRetroactiveKilledTransition
+DECL|class|RetroactiveKilledTransition
 specifier|private
 specifier|static
 class|class
-name|MapRetroactiveKilledTransition
+name|RetroactiveKilledTransition
 implements|implements
 name|MultipleArcTransition
 argument_list|<
@@ -5243,7 +5304,65 @@ name|TaskEvent
 name|event
 parameter_list|)
 block|{
-comment|// verify that this occurs only for map task
+name|TaskAttemptId
+name|attemptId
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|event
+operator|instanceof
+name|TaskTAttemptEvent
+condition|)
+block|{
+name|TaskTAttemptEvent
+name|castEvent
+init|=
+operator|(
+name|TaskTAttemptEvent
+operator|)
+name|event
+decl_stmt|;
+name|attemptId
+operator|=
+name|castEvent
+operator|.
+name|getTaskAttemptID
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|task
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|TaskState
+operator|.
+name|SUCCEEDED
+operator|&&
+operator|!
+name|attemptId
+operator|.
+name|equals
+argument_list|(
+name|task
+operator|.
+name|successfulAttempt
+argument_list|)
+condition|)
+block|{
+comment|// don't allow a different task attempt to override a previous
+comment|// succeeded state
+return|return
+name|TaskState
+operator|.
+name|SUCCEEDED
+return|;
+block|}
+block|}
+comment|// a successful REDUCE task should not be overridden
 comment|// TODO: consider moving it to MapTaskImpl
 if|if
 condition|(
@@ -5284,31 +5403,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|TaskTAttemptEvent
-name|attemptEvent
-init|=
-operator|(
-name|TaskTAttemptEvent
-operator|)
-name|event
-decl_stmt|;
-name|TaskAttemptId
-name|attemptId
-init|=
-name|attemptEvent
-operator|.
-name|getTaskAttemptID
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|task
-operator|.
-name|successfulAttempt
-operator|==
-name|attemptId
-condition|)
-block|{
 comment|// successful attempt is now killed. reschedule
 comment|// tell the job about the rescheduling
 name|unSucceed
@@ -5360,16 +5454,6 @@ name|TaskState
 operator|.
 name|SCHEDULED
 return|;
-block|}
-else|else
-block|{
-comment|// nothing to do
-return|return
-name|TaskState
-operator|.
-name|SUCCEEDED
-return|;
-block|}
 block|}
 block|}
 DECL|class|KillNewTransition

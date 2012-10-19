@@ -350,6 +350,8 @@ name|curSegmentTxId
 expr_stmt|;
 block|}
 comment|/**    * Get the cluster id from CheckpointSignature    * @return the cluster id    */
+annotation|@
+name|Override
 DECL|method|getClusterID ()
 specifier|public
 name|String
@@ -408,6 +410,8 @@ operator|=
 name|blockpoolID
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -467,6 +471,73 @@ operator|+
 name|blockpoolID
 return|;
 block|}
+DECL|method|storageVersionMatches (StorageInfo si)
+name|boolean
+name|storageVersionMatches
+parameter_list|(
+name|StorageInfo
+name|si
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+operator|(
+name|layoutVersion
+operator|==
+name|si
+operator|.
+name|layoutVersion
+operator|)
+operator|&&
+operator|(
+name|cTime
+operator|==
+name|si
+operator|.
+name|cTime
+operator|)
+return|;
+block|}
+DECL|method|isSameCluster (FSImage si)
+name|boolean
+name|isSameCluster
+parameter_list|(
+name|FSImage
+name|si
+parameter_list|)
+block|{
+return|return
+name|namespaceID
+operator|==
+name|si
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|namespaceID
+operator|&&
+name|clusterID
+operator|.
+name|equals
+argument_list|(
+name|si
+operator|.
+name|getClusterID
+argument_list|()
+argument_list|)
+operator|&&
+name|blockpoolID
+operator|.
+name|equals
+argument_list|(
+name|si
+operator|.
+name|getBlockPoolID
+argument_list|()
+argument_list|)
+return|;
+block|}
 DECL|method|validateStorageInfo (FSImage si)
 name|void
 name|validateStorageInfo
@@ -479,52 +550,18 @@ name|IOException
 block|{
 if|if
 condition|(
-name|layoutVersion
-operator|!=
-name|si
-operator|.
-name|getStorage
-argument_list|()
-operator|.
-name|layoutVersion
-operator|||
-name|namespaceID
-operator|!=
-name|si
-operator|.
-name|getStorage
-argument_list|()
-operator|.
-name|namespaceID
-operator|||
-name|cTime
-operator|!=
-name|si
-operator|.
-name|getStorage
-argument_list|()
-operator|.
-name|cTime
-operator|||
 operator|!
-name|clusterID
-operator|.
-name|equals
+name|isSameCluster
 argument_list|(
 name|si
-operator|.
-name|getClusterID
-argument_list|()
 argument_list|)
 operator|||
 operator|!
-name|blockpoolID
-operator|.
-name|equals
+name|storageVersionMatches
 argument_list|(
 name|si
 operator|.
-name|getBlockPoolID
+name|getStorage
 argument_list|()
 argument_list|)
 condition|)
@@ -604,6 +641,8 @@ block|}
 comment|//
 comment|// Comparable interface
 comment|//
+annotation|@
+name|Override
 DECL|method|compareTo (CheckpointSignature o)
 specifier|public
 name|int
@@ -686,6 +725,8 @@ name|result
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -721,6 +762,8 @@ operator|==
 literal|0
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int

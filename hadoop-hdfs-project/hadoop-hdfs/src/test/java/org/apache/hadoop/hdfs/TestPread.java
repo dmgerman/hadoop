@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +67,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -122,7 +136,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSConfigKeys
+name|server
+operator|.
+name|datanode
+operator|.
+name|SimulatedFSDataset
 import|;
 end_import
 
@@ -130,17 +148,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|datanode
-operator|.
-name|SimulatedFSDataset
+name|Test
 import|;
 end_import
 
@@ -153,8 +163,6 @@ DECL|class|TestPread
 specifier|public
 class|class
 name|TestPread
-extends|extends
-name|TestCase
 block|{
 DECL|field|seed
 specifier|static
@@ -192,33 +200,30 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// create and write a file that contains three blocks of data
-name|DataOutputStream
-name|stm
-init|=
-name|fileSys
+comment|// test empty file open and read
+name|DFSTestUtil
 operator|.
-name|create
+name|createFile
 argument_list|(
+name|fileSys
+argument_list|,
 name|name
 argument_list|,
-literal|true
+literal|12
+operator|*
+name|blockSize
 argument_list|,
-literal|4096
+literal|0
+argument_list|,
+name|blockSize
 argument_list|,
 operator|(
 name|short
 operator|)
 literal|1
 argument_list|,
-name|blockSize
+name|seed
 argument_list|)
-decl_stmt|;
-comment|// test empty file open and read
-name|stm
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 name|FSDataInputStream
 name|in
@@ -323,53 +328,31 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// now create the real file
-name|stm
-operator|=
-name|fileSys
+name|DFSTestUtil
 operator|.
-name|create
+name|createFile
 argument_list|(
+name|fileSys
+argument_list|,
 name|name
 argument_list|,
-literal|true
+literal|12
+operator|*
+name|blockSize
 argument_list|,
-literal|4096
+literal|12
+operator|*
+name|blockSize
+argument_list|,
+name|blockSize
 argument_list|,
 operator|(
 name|short
 operator|)
 literal|1
 argument_list|,
-name|blockSize
-argument_list|)
-expr_stmt|;
-name|Random
-name|rand
-init|=
-operator|new
-name|Random
-argument_list|(
 name|seed
 argument_list|)
-decl_stmt|;
-name|rand
-operator|.
-name|nextBytes
-argument_list|(
-name|buffer
-argument_list|)
-expr_stmt|;
-name|stm
-operator|.
-name|write
-argument_list|(
-name|buffer
-argument_list|)
-expr_stmt|;
-name|stm
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|checkAndEraseData (byte[] actual, int from, byte[] expected, String message)
@@ -1265,6 +1248,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Tests positional read in DFS.    */
+annotation|@
+name|Test
 DECL|method|testPreadDFS ()
 specifier|public
 name|void
@@ -1437,6 +1422,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testPreadDFSSimulated ()
 specifier|public
 name|void
@@ -1458,6 +1445,8 @@ literal|false
 expr_stmt|;
 block|}
 comment|/**    * Tests positional read in LocalFS.    */
+annotation|@
+name|Test
 DECL|method|testPreadLocalFS ()
 specifier|public
 name|void

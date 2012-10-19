@@ -132,6 +132,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -163,20 +179,6 @@ operator|.
 name|util
 operator|.
 name|PureJavaCrc32
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
 import|;
 end_import
 
@@ -285,6 +287,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Set whether to verify checksum.    */
+annotation|@
+name|Override
 DECL|method|setVerifyChecksum (boolean inVerifyChecksum)
 specifier|public
 name|void
@@ -798,6 +802,8 @@ name|bytesPerSum
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getChunkPosition (long dataPos)
 specifier|protected
 name|long
@@ -815,6 +821,8 @@ operator|*
 name|bytesPerSum
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 name|int
@@ -835,6 +843,8 @@ name|available
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] b, int off, int len)
 specifier|public
 name|int
@@ -962,6 +972,8 @@ return|return
 name|nread
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1354,6 +1366,8 @@ name|fileLen
 return|;
 block|}
 comment|/**      * Skips over and discards<code>n</code> bytes of data from the      * input stream.      *      * The<code>skip</code> method skips over some smaller number of bytes      * when reaching end of file before<code>n</code> bytes have been skipped.      * The actual number of bytes skipped is returned.  If<code>n</code> is      * negative, no bytes are skipped.      *      * @param      n   the number of bytes to be skipped.      * @return     the actual number of bytes skipped.      * @exception  IOException  if an I/O error occurs.      *             ChecksumException if the chunk to skip to is corrupted      */
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 specifier|synchronized
@@ -1406,6 +1420,8 @@ argument_list|)
 return|;
 block|}
 comment|/**      * Seek to the given position in the stream.      * The next read() will be from that position.      *       *<p>This method does not allow seek past the end of the file.      * This produces IOException.      *      * @param      pos   the postion to seek to.      * @exception  IOException  if an I/O error occurs or seeks after EOF      *             ChecksumException if the chunk to seek to is corrupted      */
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 specifier|synchronized
@@ -1544,7 +1560,7 @@ name|CHKSUM_AS_FRACTION
 init|=
 literal|0.01f
 decl_stmt|;
-DECL|method|ChecksumFSOutputSummer (final ChecksumFs fs, final Path file, final EnumSet<CreateFlag> createFlag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final int bytesPerChecksum, final boolean createParent)
+DECL|method|ChecksumFSOutputSummer (final ChecksumFs fs, final Path file, final EnumSet<CreateFlag> createFlag, final FsPermission absolutePermission, final int bufferSize, final short replication, final long blockSize, final Progressable progress, final ChecksumOpt checksumOpt, final boolean createParent)
 specifier|public
 name|ChecksumFSOutputSummer
 parameter_list|(
@@ -1584,8 +1600,8 @@ name|Progressable
 name|progress
 parameter_list|,
 specifier|final
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 specifier|final
 name|boolean
@@ -1608,6 +1624,10 @@ argument_list|,
 literal|4
 argument_list|)
 expr_stmt|;
+comment|// checksumOpt is passed down to the raw fs. Unless it implements
+comment|// checksum impelemts internally, checksumOpt will be ignored.
+comment|// If the raw fs does checksum internally, we will end up with
+comment|// two layers of checksumming. i.e. checksumming checksum file.
 name|this
 operator|.
 name|datas
@@ -1633,7 +1653,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)
@@ -1700,7 +1720,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)
@@ -1726,6 +1746,8 @@ name|bytesPerSum
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1794,7 +1816,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, int bytesPerChecksum, boolean createParent)
+DECL|method|createInternal (Path f, EnumSet<CreateFlag> createFlag, FsPermission absolutePermission, int bufferSize, short replication, long blockSize, Progressable progress, ChecksumOpt checksumOpt, boolean createParent)
 specifier|public
 name|FSDataOutputStream
 name|createInternal
@@ -1823,8 +1845,8 @@ parameter_list|,
 name|Progressable
 name|progress
 parameter_list|,
-name|int
-name|bytesPerChecksum
+name|ChecksumOpt
+name|checksumOpt
 parameter_list|,
 name|boolean
 name|createParent
@@ -1858,7 +1880,7 @@ name|blockSize
 argument_list|,
 name|progress
 argument_list|,
-name|bytesPerChecksum
+name|checksumOpt
 argument_list|,
 name|createParent
 argument_list|)
@@ -2129,6 +2151,8 @@ block|}
 block|}
 block|}
 comment|/**    * Implement the delete(Path, boolean) in checksum    * file system.    */
+annotation|@
+name|Override
 DECL|method|delete (Path f, boolean recursive)
 specifier|public
 name|boolean

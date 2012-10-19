@@ -198,6 +198,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|createURLStreamHandler (String protocol)
 specifier|public
 name|java

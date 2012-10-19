@@ -21,6 +21,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -57,16 +105,6 @@ operator|.
 name|io
 operator|.
 name|OutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -222,6 +260,26 @@ name|DataChecksum
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * this class tests the methods of the  SimulatedFSDataset.  */
 end_comment
@@ -231,8 +289,6 @@ DECL|class|TestSimulatedFSDataset
 specifier|public
 class|class
 name|TestSimulatedFSDataset
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 name|Configuration
@@ -264,19 +320,16 @@ name|BLOCK_LENGTH_MULTIPLIER
 init|=
 literal|79
 decl_stmt|;
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -289,20 +342,6 @@ name|setFactory
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|tearDown ()
-specifier|protected
-name|void
-name|tearDown
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|super
-operator|.
-name|tearDown
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|blockIdToLen (long blkid)
@@ -396,7 +435,9 @@ name|newDataChecksum
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_CRC32
+name|Type
+operator|.
+name|CRC32
 argument_list|,
 literal|512
 argument_list|)
@@ -529,6 +570,8 @@ literal|1
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testFSDatasetFactory ()
 specifier|public
 name|void
@@ -627,6 +670,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetMetaData ()
 specifier|public
 name|void
@@ -757,7 +802,9 @@ name|assertEquals
 argument_list|(
 name|DataChecksum
 operator|.
-name|CHECKSUM_NULL
+name|Type
+operator|.
+name|NULL
 argument_list|,
 name|checksum
 operator|.
@@ -776,6 +823,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testStorageUsage ()
 specifier|public
 name|void
@@ -918,6 +967,8 @@ name|lengthRead
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testWriteRead ()
 specifier|public
 name|void
@@ -1007,6 +1058,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetBlockReport ()
 specifier|public
 name|void
@@ -1096,6 +1149,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testInjectionEmpty ()
 specifier|public
 name|void
@@ -1303,6 +1358,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInjectionNonEmpty ()
 specifier|public
 name|void
@@ -1718,6 +1775,8 @@ block|{
 comment|// ok - as expected
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testInValidBlocks ()
 specifier|public
 name|void
@@ -1781,6 +1840,8 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInvalidate ()
 specifier|public
 name|void

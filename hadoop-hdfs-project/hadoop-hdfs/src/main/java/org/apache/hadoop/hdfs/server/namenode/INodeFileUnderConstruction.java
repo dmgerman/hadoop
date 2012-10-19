@@ -447,7 +447,7 @@ argument_list|,
 name|getBlocks
 argument_list|()
 argument_list|,
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|,
 name|getModificationTime
@@ -590,6 +590,8 @@ name|newlist
 expr_stmt|;
 block|}
 comment|/**    * Convert the last block of the file to an under-construction block.    * Set its locations.    */
+annotation|@
+name|Override
 DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] targets)
 specifier|public
 name|BlockInfoUnderConstruction

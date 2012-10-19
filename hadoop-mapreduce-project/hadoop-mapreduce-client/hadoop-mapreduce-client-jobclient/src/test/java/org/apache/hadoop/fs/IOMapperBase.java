@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -97,11 +107,6 @@ comment|/**  * Base mapper class for IO operations.  *<p>  * Two abstract method
 end_comment
 
 begin_class
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|IOMapperBase
 specifier|public
 specifier|abstract
@@ -144,6 +149,11 @@ DECL|field|hostName
 specifier|protected
 name|String
 name|hostName
+decl_stmt|;
+DECL|field|stream
+specifier|protected
+name|Closeable
+name|stream
 decl_stmt|;
 DECL|method|IOMapperBase ()
 specifier|public
@@ -262,6 +272,22 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create an input or output stream based on the specified file.    * Subclasses should override this method to provide an actual stream.    *     * @param name file name    * @return the stream    * @throws IOException    */
+DECL|method|getIOStream (String name)
+specifier|public
+name|Closeable
+name|getIOStream
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/**    * Collect stat data to be combined by a subsequent reducer.    *     * @param output    * @param name file name    * @param execTime IO execution time    * @param doIOReturnValue value returned by {@link #doIO(Reporter,String,long)}    * @throws IOException    */
 DECL|method|collectStats (OutputCollector<Text, Text> output, String name, long execTime, T doIOReturnValue)
 specifier|abstract
@@ -343,6 +369,20 @@ operator|+
 name|hostName
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|stream
+operator|=
+name|getIOStream
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+name|T
+name|statValue
+init|=
+literal|null
+decl_stmt|;
 name|long
 name|tStart
 init|=
@@ -351,9 +391,10 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|T
+try|try
+block|{
 name|statValue
-init|=
+operator|=
 name|doIO
 argument_list|(
 name|reporter
@@ -362,7 +403,22 @@ name|name
 argument_list|,
 name|longValue
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|stream
+operator|!=
+literal|null
+condition|)
+name|stream
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 name|long
 name|tEnd
 init|=

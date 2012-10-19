@@ -115,6 +115,9 @@ name|NAME_NODE
 block|,
 DECL|enumConstant|DATA_NODE
 name|DATA_NODE
+block|,
+DECL|enumConstant|JOURNAL_NODE
+name|JOURNAL_NODE
 block|;   }
 comment|/** Startup options */
 DECL|enum|StartupOption
@@ -215,10 +218,9 @@ argument_list|)
 block|;
 DECL|field|name
 specifier|private
+specifier|final
 name|String
 name|name
-init|=
-literal|null
 decl_stmt|;
 comment|// Used only with format and upgrade options
 DECL|field|clusterId
@@ -532,6 +534,8 @@ operator|=
 name|arg
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

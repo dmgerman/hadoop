@@ -576,6 +576,8 @@ name|isUpgradeFinalized
 return|;
 block|}
 comment|/**    * @return the image that has the most recent associated transaction ID.    * If there are multiple storage directories which contain equal images     * the storage directory that was inspected first will be preferred.    *     * @throws FileNotFoundException if not images are found.    */
+annotation|@
+name|Override
 DECL|method|getLatestImage ()
 name|FSImageFile
 name|getLatestImage

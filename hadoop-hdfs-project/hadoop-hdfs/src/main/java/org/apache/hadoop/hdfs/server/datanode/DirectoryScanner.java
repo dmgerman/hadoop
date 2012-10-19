@@ -382,6 +382,20 @@ name|Daemon
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * Periodically scans the data directories for block and block metadata files.  * Reconciles the differences with block information maintained in the dataset.  */
 end_comment
@@ -413,12 +427,6 @@ name|DirectoryScanner
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|datanode
-specifier|private
-specifier|final
-name|DataNode
-name|datanode
 decl_stmt|;
 DECL|field|dataset
 specifier|private
@@ -557,6 +565,8 @@ operator|=
 name|bpid
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -1125,12 +1135,9 @@ name|GRANDFATHER_GENERATION_STAMP
 return|;
 block|}
 block|}
-DECL|method|DirectoryScanner (DataNode dn, FsDatasetSpi<?> dataset, Configuration conf)
+DECL|method|DirectoryScanner (FsDatasetSpi<?> dataset, Configuration conf)
 name|DirectoryScanner
 parameter_list|(
-name|DataNode
-name|dn
-parameter_list|,
 name|FsDatasetSpi
 argument_list|<
 name|?
@@ -1141,12 +1148,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|this
-operator|.
-name|datanode
-operator|=
-name|dn
-expr_stmt|;
 name|this
 operator|.
 name|dataset
@@ -1257,9 +1258,9 @@ comment|//msec
 name|long
 name|firstScanTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|offset
@@ -1346,57 +1347,6 @@ literal|"this cycle terminating immediately because 'shouldRun' has been deactiv
 argument_list|)
 expr_stmt|;
 return|return;
-block|}
-name|String
-index|[]
-name|bpids
-init|=
-name|dataset
-operator|.
-name|getBlockPoolList
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|String
-name|bpid
-range|:
-name|bpids
-control|)
-block|{
-name|UpgradeManagerDatanode
-name|um
-init|=
-name|datanode
-operator|.
-name|getUpgradeManagerDatanode
-argument_list|(
-name|bpid
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|um
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|um
-operator|.
-name|isUpgradeCompleted
-argument_list|()
-condition|)
-block|{
-comment|//If distributed upgrades underway, exit and wait for next cycle.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"this cycle terminating immediately because Distributed Upgrade is in process"
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 block|}
 comment|//We're are okay to run - do it
 name|reconcile
@@ -2270,23 +2220,20 @@ operator|.
 name|getVolumes
 argument_list|()
 decl_stmt|;
-name|ArrayList
-argument_list|<
+comment|// Use an array since the threads may return out of order and
+comment|// compilersInProgress#keySet may return out of order as well.
 name|ScanInfoPerBlockPool
-argument_list|>
+index|[]
 name|dirReports
 init|=
 operator|new
-name|ArrayList
-argument_list|<
 name|ScanInfoPerBlockPool
-argument_list|>
-argument_list|(
+index|[
 name|volumes
 operator|.
 name|size
 argument_list|()
-argument_list|)
+index|]
 decl_stmt|;
 name|Map
 argument_list|<
@@ -2331,7 +2278,6 @@ control|)
 block|{
 if|if
 condition|(
-operator|!
 name|isValid
 argument_list|(
 name|dataset
@@ -2344,19 +2290,6 @@ name|i
 argument_list|)
 argument_list|)
 condition|)
-block|{
-comment|// volume is invalid
-name|dirReports
-operator|.
-name|add
-argument_list|(
-name|i
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-else|else
 block|{
 name|ReportCompiler
 name|reportCompiler
@@ -2418,14 +2351,13 @@ block|{
 try|try
 block|{
 name|dirReports
-operator|.
-name|add
-argument_list|(
+index|[
 name|report
 operator|.
 name|getKey
 argument_list|()
-argument_list|,
+index|]
+operator|=
 name|report
 operator|.
 name|getValue
@@ -2433,7 +2365,6 @@ argument_list|()
 operator|.
 name|get
 argument_list|()
-argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -2508,11 +2439,9 @@ operator|.
 name|addAll
 argument_list|(
 name|dirReports
-operator|.
-name|get
-argument_list|(
+index|[
 name|i
-argument_list|)
+index|]
 argument_list|)
 expr_stmt|;
 block|}

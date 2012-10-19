@@ -267,6 +267,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -872,9 +886,9 @@ init|)
 block|{
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|jmxCacheTS
@@ -885,9 +899,9 @@ block|{
 comment|// temporarilly advance the expiry while updating the cache
 name|jmxCacheTS
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|jmxCacheTTL
@@ -962,9 +976,9 @@ expr_stmt|;
 block|}
 name|jmxCacheTS
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|lastRecs

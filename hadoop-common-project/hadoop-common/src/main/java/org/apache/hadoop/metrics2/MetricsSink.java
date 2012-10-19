@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The metrics sink interface  */
+comment|/**  * The metrics sink interface.<p>  * Implementations of this interface consume the {@link MetricsRecord} generated  * from {@link MetricsSource}. It registers with {@link MetricsSystem} which  * periodically pushes the {@link MetricsRecord} to the sink using  * {@link #putMetrics(MetricsRecord)} method.  */
 end_comment
 
 begin_interface

@@ -180,6 +180,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|MiniHadoopClusterManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|SleepJob
 import|;
 end_import
@@ -643,6 +657,19 @@ operator|.
 name|class
 argument_list|,
 literal|"HDFS Stress Test and Live Data Verification."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"minicluster"
+argument_list|,
+name|MiniHadoopClusterManager
+operator|.
+name|class
+argument_list|,
+literal|"Single process HDFS and MR cluster."
 argument_list|)
 expr_stmt|;
 block|}

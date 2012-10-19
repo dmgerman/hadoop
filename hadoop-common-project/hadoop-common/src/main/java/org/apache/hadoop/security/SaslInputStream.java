@@ -58,6 +58,28 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|ReadableByteChannel
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|security
@@ -186,6 +208,8 @@ class|class
 name|SaslInputStream
 extends|extends
 name|InputStream
+implements|implements
+name|ReadableByteChannel
 block|{
 DECL|field|LOG
 specifier|public
@@ -269,6 +293,14 @@ name|int
 name|ofinish
 init|=
 literal|0
+decl_stmt|;
+comment|// whether or not this stream is open
+DECL|field|isOpen
+specifier|private
+name|boolean
+name|isOpen
+init|=
+literal|true
 decl_stmt|;
 DECL|method|unsignedBytesToInt (byte[] buf)
 specifier|private
@@ -672,6 +704,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Reads the next byte of data from this input stream. The value byte is    * returned as an<code>int</code> in the range<code>0</code> to    *<code>255</code>. If no byte is available because the end of the stream has    * been reached, the value<code>-1</code> is returned. This method blocks    * until input data is available, the end of the stream is detected, or an    * exception is thrown.    *<p>    *     * @return the next byte of data, or<code>-1</code> if the end of the stream    *         is reached.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -745,6 +779,8 @@ operator|)
 return|;
 block|}
 comment|/**    * Reads up to<code>b.length</code> bytes of data from this input stream into    * an array of bytes.    *<p>    * The<code>read</code> method of<code>InputStream</code> calls the    *<code>read</code> method of three arguments with the arguments    *<code>b</code>,<code>0</code>, and<code>b.length</code>.    *     * @param b    *          the buffer into which the data is read.    * @return the total number of bytes read into the buffer, or<code>-1</code>    *         is there is no more data because the end of the stream has been    *         reached.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|read (byte[] b)
 specifier|public
 name|int
@@ -771,6 +807,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Reads up to<code>len</code> bytes of data from this input stream into an    * array of bytes. This method blocks until some input is available. If the    * first argument is<code>null,</code> up to<code>len</code> bytes are read    * and discarded.    *     * @param b    *          the buffer into which the data is read.    * @param off    *          the start offset of the data.    * @param len    *          the maximum number of bytes read.    * @return the total number of bytes read into the buffer, or<code>-1</code>    *         if there is no more data because the end of the stream has been    *         reached.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -906,6 +944,8 @@ name|available
 return|;
 block|}
 comment|/**    * Skips<code>n</code> bytes of input from the bytes that can be read from    * this input stream without blocking.    *     *<p>    * Fewer bytes than requested might be skipped. The actual number of bytes    * skipped is equal to<code>n</code> or the result of a call to    * {@link #available()<code>available</code>}, whichever is smaller. If    *<code>n</code> is less than zero, no bytes are skipped.    *     *<p>    * The actual number of bytes skipped is returned.    *     * @param n    *          the number of bytes to be skipped.    * @return the actual number of bytes skipped.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 name|long
@@ -971,6 +1011,8 @@ name|n
 return|;
 block|}
 comment|/**    * Returns the number of bytes that can be read from this input stream without    * blocking. The<code>available</code> method of<code>InputStream</code>    * returns<code>0</code>. This method<B>should</B> be overridden by    * subclasses.    *     * @return the number of bytes that can be read from this input stream without    *         blocking.    * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|available ()
 specifier|public
 name|int
@@ -1001,6 +1043,8 @@ operator|)
 return|;
 block|}
 comment|/**    * Closes this input stream and releases any system resources associated with    * the stream.    *<p>    * The<code>close</code> method of<code>SASLInputStream</code> calls the    *<code>close</code> method of its underlying input stream.    *     * @exception IOException    *              if an I/O error occurs.    */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1025,8 +1069,14 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|isOpen
+operator|=
+literal|false
+expr_stmt|;
 block|}
 comment|/**    * Tests if this input stream supports the<code>mark</code> and    *<code>reset</code> methods, which it does not.    *     * @return<code>false</code>, since this class does not support the    *<code>mark</code> and<code>reset</code> methods.    */
+annotation|@
+name|Override
 DECL|method|markSupported ()
 specifier|public
 name|boolean
@@ -1035,6 +1085,138 @@ parameter_list|()
 block|{
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isOpen ()
+specifier|public
+name|boolean
+name|isOpen
+parameter_list|()
+block|{
+return|return
+name|isOpen
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|read (ByteBuffer dst)
+specifier|public
+name|int
+name|read
+parameter_list|(
+name|ByteBuffer
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|int
+name|bytesRead
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|dst
+operator|.
+name|hasArray
+argument_list|()
+condition|)
+block|{
+name|bytesRead
+operator|=
+name|read
+argument_list|(
+name|dst
+operator|.
+name|array
+argument_list|()
+argument_list|,
+name|dst
+operator|.
+name|arrayOffset
+argument_list|()
+operator|+
+name|dst
+operator|.
+name|position
+argument_list|()
+argument_list|,
+name|dst
+operator|.
+name|remaining
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|bytesRead
+operator|>
+operator|-
+literal|1
+condition|)
+block|{
+name|dst
+operator|.
+name|position
+argument_list|(
+name|dst
+operator|.
+name|position
+argument_list|()
+operator|+
+name|bytesRead
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|byte
+index|[]
+name|buf
+init|=
+operator|new
+name|byte
+index|[
+name|dst
+operator|.
+name|remaining
+argument_list|()
+index|]
+decl_stmt|;
+name|bytesRead
+operator|=
+name|read
+argument_list|(
+name|buf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|bytesRead
+operator|>
+operator|-
+literal|1
+condition|)
+block|{
+name|dst
+operator|.
+name|put
+argument_list|(
+name|buf
+argument_list|,
+literal|0
+argument_list|,
+name|bytesRead
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|bytesRead
 return|;
 block|}
 block|}

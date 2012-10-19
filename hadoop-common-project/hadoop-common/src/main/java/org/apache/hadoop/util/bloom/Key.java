@@ -379,6 +379,8 @@ name|result
 return|;
 block|}
 comment|// Writable
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -414,6 +416,8 @@ name|weight
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void

@@ -194,6 +194,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -247,6 +261,8 @@ name|filterConfig
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|init (FilterConfig filterConfig)
 specifier|public
 name|void
@@ -265,6 +281,8 @@ operator|=
 name|filterConfig
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|destroy ()
 specifier|public
 name|void
@@ -278,6 +296,8 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|doFilter (ServletRequest request, ServletResponse response, FilterChain chain)
 specifier|public
 name|void
@@ -349,6 +369,8 @@ specifier|public
 name|Initializer
 parameter_list|()
 block|{}
+annotation|@
+name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)
 specifier|public
 name|void
@@ -769,6 +791,8 @@ specifier|public
 name|Initializer
 parameter_list|()
 block|{       }
+annotation|@
+name|Override
 DECL|method|initFilter (FilterContainer container, Configuration conf)
 specifier|public
 name|void
@@ -817,7 +841,7 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-comment|// start a http server with CountingFilter
+comment|// start a http server with ErrorFilter
 name|conf
 operator|.
 name|set
@@ -874,6 +898,84 @@ name|contains
 argument_list|(
 literal|"Problem in starting http server. Server handlers failed"
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Similar to the above test case, except that it uses a different API to add the    * filter. Regression test for HADOOP-8786.    */
+annotation|@
+name|Test
+DECL|method|testContextSpecificServletFilterWhenInitThrowsException ()
+specifier|public
+name|void
+name|testContextSpecificServletFilterWhenInitThrowsException
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|HttpServer
+name|http
+init|=
+name|createTestServer
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|http
+operator|.
+name|defineFilter
+argument_list|(
+name|http
+operator|.
+name|webAppContext
+argument_list|,
+literal|"ErrorFilter"
+argument_list|,
+name|ErrorFilter
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|http
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"expecting exception"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Unable to initialize WebAppContext"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

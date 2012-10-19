@@ -26,11 +26,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|lib
+name|classification
 operator|.
-name|util
-operator|.
-name|Check
+name|InterfaceAudience
 import|;
 end_import
 
@@ -45,6 +43,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|Param
 specifier|public
 specifier|abstract
@@ -194,6 +196,8 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

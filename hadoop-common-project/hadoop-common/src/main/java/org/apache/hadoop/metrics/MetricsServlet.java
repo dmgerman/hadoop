@@ -321,6 +321,8 @@ name|metricMap
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
@@ -341,6 +343,8 @@ argument_list|()
 throw|;
 block|}
 comment|/** Converts to JSON by providing an array. */
+annotation|@
+name|Override
 DECL|method|toJSON (Output out)
 specifier|public
 name|void

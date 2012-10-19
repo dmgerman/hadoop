@@ -2412,7 +2412,7 @@ name|int
 name|replication
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|writeFile
 argument_list|(
@@ -2485,7 +2485,7 @@ name|String
 name|reduceSignalFile
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 comment|//  signal the maps to complete
 name|writeFile
@@ -2611,7 +2611,7 @@ name|short
 name|replication
 parameter_list|)
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|FileSystem
 name|fileSys

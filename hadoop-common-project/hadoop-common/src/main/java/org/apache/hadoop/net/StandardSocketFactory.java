@@ -142,7 +142,6 @@ specifier|public
 name|StandardSocketFactory
 parameter_list|()
 block|{   }
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket ()
@@ -164,7 +163,6 @@ name|socket
 argument_list|()
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (InetAddress addr, int port)
@@ -204,7 +202,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (InetAddress addr, int port, InetAddress localHostAddr, int localPort)
@@ -263,7 +260,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (String host, int port)
@@ -305,7 +301,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|createSocket (String host, int port, InetAddress localHostAddr, int localPort)
@@ -366,7 +361,6 @@ return|return
 name|socket
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|equals (Object obj)
@@ -411,7 +405,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/* @inheritDoc */
 annotation|@
 name|Override
 DECL|method|hashCode ()

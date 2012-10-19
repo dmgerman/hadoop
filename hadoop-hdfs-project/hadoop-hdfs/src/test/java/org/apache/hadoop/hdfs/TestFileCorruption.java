@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -63,16 +99,6 @@ operator|.
 name|util
 operator|.
 name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -328,6 +354,16 @@ name|Level
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JUnit test for corrupted file handling.  */
 end_comment
@@ -337,8 +373,6 @@ DECL|class|TestFileCorruption
 specifier|public
 class|class
 name|TestFileCorruption
-extends|extends
-name|TestCase
 block|{
 block|{
 operator|(
@@ -438,6 +472,8 @@ name|stateChangeLog
 operator|)
 decl_stmt|;
 comment|/** check if DFS can handle corrupted blocks properly */
+annotation|@
+name|Test
 DECL|method|testFileCorruption ()
 specifier|public
 name|void
@@ -700,6 +736,8 @@ block|}
 block|}
 block|}
 comment|/** check if local FS can handle corrupted blocks properly */
+annotation|@
+name|Test
 DECL|method|testLocalFileCorruption ()
 specifier|public
 name|void
@@ -840,6 +878,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Test the case that a replica is reported corrupt while it is not    * in blocksMap. Make sure that ArrayIndexOutOfBounds does not thrown.    * See Hadoop-4351.    */
+annotation|@
+name|Test
 DECL|method|testArrayOutOfBoundsException ()
 specifier|public
 name|void

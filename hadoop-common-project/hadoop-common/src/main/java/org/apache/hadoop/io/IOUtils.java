@@ -90,6 +90,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -144,6 +158,22 @@ specifier|public
 class|class
 name|IOUtils
 block|{
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|IOUtils
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Copies from one stream to another.    *    * @param in InputStrem to read from    * @param out OutputStream to write to    * @param buffSize the size of the buffer     * @param close whether or not close the InputStream and     * OutputStream at the end. The streams are closed in the finally clause.      */
 DECL|method|copyBytes (InputStream in, OutputStream out, int buffSize, boolean close)
 specifier|public
@@ -711,9 +741,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|long
+name|amt
+init|=
+name|len
+decl_stmt|;
 while|while
 condition|(
-name|len
+name|amt
 operator|>
 literal|0
 condition|)
@@ -725,25 +760,58 @@ name|in
 operator|.
 name|skip
 argument_list|(
-name|len
+name|amt
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
 name|ret
-operator|<
+operator|==
 literal|0
+condition|)
+block|{
+comment|// skip may return 0 even if we're not at EOF.  Luckily, we can
+comment|// use the read() method to figure out if we're at the end.
+name|int
+name|b
+init|=
+name|in
+operator|.
+name|read
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|b
+operator|==
+operator|-
+literal|1
 condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|EOFException
 argument_list|(
-literal|"Premature EOF from inputStream"
+literal|"Premature EOF from inputStream after "
+operator|+
+literal|"skipping "
+operator|+
+operator|(
+name|len
+operator|-
+name|amt
+operator|)
+operator|+
+literal|" byte(s)."
 argument_list|)
 throw|;
 block|}
-name|len
+name|ret
+operator|=
+literal|1
+expr_stmt|;
+block|}
+name|amt
 operator|-=
 name|ret
 expr_stmt|;
@@ -797,7 +865,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Throwable
 name|e
 parameter_list|)
 block|{
@@ -883,7 +951,17 @@ parameter_list|(
 name|IOException
 name|ignored
 parameter_list|)
-block|{       }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Ignoring exception while closing socket"
+argument_list|,
+name|ignored
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * The /dev/null of OutputStreams.    */
@@ -895,6 +973,8 @@ name|NullOutputStream
 extends|extends
 name|OutputStream
 block|{
+annotation|@
+name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -913,6 +993,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{     }
+annotation|@
+name|Override
 DECL|method|write (int b)
 specifier|public
 name|void

@@ -1502,6 +1502,77 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/*    * Test when mapred.local.dir not configured and called    * getLocalPathForWrite    */
+annotation|@
+name|Test
+DECL|method|testShouldNotthrowNPE ()
+specifier|public
+name|void
+name|testShouldNotthrowNPE
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|Configuration
+name|conf1
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+try|try
+block|{
+name|dirAllocator
+operator|.
+name|getLocalPathForWrite
+argument_list|(
+literal|"/test"
+argument_list|,
+name|conf1
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception not thrown when "
+operator|+
+name|CONTEXT
+operator|+
+literal|" is not set"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|assertEquals
+argument_list|(
+name|CONTEXT
+operator|+
+literal|" not configured"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NullPointerException
+name|e
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"Lack of configuration should not have thrown an NPE."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** Test no side effect files are left over. After creating a temp    * temp file, remove both the temp file and its parent. Verify that    * no files or directories are left over as can happen when File objects    * are mistakenly created from fully qualified path strings.    * @throws IOException    */
 annotation|@
 name|Test
@@ -1764,6 +1835,8 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|String
 name|contextCfgItemName
 init|=
@@ -1825,6 +1898,13 @@ name|contextCfgItemName
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|rmBufferDirs
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

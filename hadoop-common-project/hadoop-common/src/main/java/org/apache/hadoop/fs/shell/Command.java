@@ -261,26 +261,35 @@ name|Command
 extends|extends
 name|Configured
 block|{
-comment|/** default name of the command */
-DECL|field|NAME
+comment|/** field name indicating the default name of the command */
+DECL|field|COMMAND_NAME_FIELD
 specifier|public
 specifier|static
+specifier|final
 name|String
-name|NAME
+name|COMMAND_NAME_FIELD
+init|=
+literal|"NAME"
 decl_stmt|;
-comment|/** the command's usage switches and arguments format */
-DECL|field|USAGE
+comment|/** field name indicating the command's usage switches and arguments format */
+DECL|field|COMMAND_USAGE_FIELD
 specifier|public
 specifier|static
+specifier|final
 name|String
-name|USAGE
+name|COMMAND_USAGE_FIELD
+init|=
+literal|"USAGE"
 decl_stmt|;
-comment|/** the command's long description */
-DECL|field|DESCRIPTION
+comment|/** field name indicating the command's long description */
+DECL|field|COMMAND_DESCRIPTION_FIELD
 specifier|public
 specifier|static
+specifier|final
 name|String
-name|DESCRIPTION
+name|COMMAND_DESCRIPTION_FIELD
+init|=
+literal|"DESCRIPTION"
 decl_stmt|;
 DECL|field|args
 specifier|protected
@@ -1209,7 +1218,7 @@ operator|)
 condition|?
 name|getCommandField
 argument_list|(
-literal|"NAME"
+name|COMMAND_NAME_FIELD
 argument_list|)
 else|:
 name|name
@@ -1271,7 +1280,7 @@ literal|""
 else|:
 name|getCommandField
 argument_list|(
-literal|"USAGE"
+name|COMMAND_USAGE_FIELD
 argument_list|)
 decl_stmt|;
 return|return
@@ -1309,7 +1318,7 @@ literal|"'"
 else|:
 name|getCommandField
 argument_list|(
-literal|"DESCRIPTION"
+name|COMMAND_DESCRIPTION_FIELD
 argument_list|)
 return|;
 block|}

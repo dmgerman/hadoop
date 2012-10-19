@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -228,17 +252,21 @@ name|NameNodeAdapter
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestLeaseRecovery
 specifier|public
 class|class
 name|TestLeaseRecovery
-extends|extends
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 block|{
 DECL|field|BLOCK_SIZE
 specifier|static
@@ -389,6 +417,8 @@ parameter_list|)
 block|{     }
 block|}
 comment|/**    * The following test first creates a file with a few blocks.    * It randomly truncates the replica of the last block stored in each datanode.    * Finally, it triggers block synchronization to synchronize all stored block.    */
+annotation|@
+name|Test
 DECL|method|testBlockSynchronization ()
 specifier|public
 name|void

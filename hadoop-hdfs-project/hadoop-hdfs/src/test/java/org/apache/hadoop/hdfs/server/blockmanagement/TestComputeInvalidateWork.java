@@ -21,12 +21,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
 import|;
 end_import
 
@@ -100,42 +102,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|BlockManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|common
 operator|.
 name|GenerationStamp
@@ -160,6 +126,16 @@ name|FSNamesystem
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test if FSNamesystem handles heartbeat right  */
 end_comment
@@ -169,10 +145,10 @@ DECL|class|TestComputeInvalidateWork
 specifier|public
 class|class
 name|TestComputeInvalidateWork
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Test if {@link FSNamesystem#computeInvalidateWork(int)}    * can schedule invalidate work correctly     */
+annotation|@
+name|Test
 DECL|method|testCompInvalidate ()
 specifier|public
 name|void

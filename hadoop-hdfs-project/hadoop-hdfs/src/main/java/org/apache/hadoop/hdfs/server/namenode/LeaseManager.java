@@ -264,13 +264,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -738,6 +734,28 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|removeAllLeases ()
+specifier|synchronized
+name|void
+name|removeAllLeases
+parameter_list|()
+block|{
+name|sortedLeases
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|sortedLeasesByPath
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|leases
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Reassign lease for file src to the new holder.    */
 DECL|method|reassignLease (Lease lease, String src, String newHolder)
@@ -1810,6 +1828,8 @@ name|getSimpleName
 argument_list|()
 decl_stmt|;
 comment|/** Check leases periodically. */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void

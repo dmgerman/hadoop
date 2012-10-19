@@ -987,7 +987,7 @@ name|nextInt
 argument_list|()
 operator|)
 operator|&
-literal|0xffffffff
+literal|0xffffffffL
 decl_stmt|;
 name|data
 index|[

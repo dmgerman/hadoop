@@ -74,6 +74,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -680,6 +692,10 @@ name|fileName
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 comment|// create a multi-block file on hdfs
 name|Path
@@ -1092,7 +1108,7 @@ name|void
 name|testMultiLevelInput
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|JobConf
 name|job
@@ -2039,6 +2055,10 @@ name|numBlocks
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|TimeoutException
+throws|,
+name|InterruptedException
 block|{
 name|FileSystem
 name|fileSys

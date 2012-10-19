@@ -135,6 +135,8 @@ operator|.
 name|nextInt
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -154,6 +156,8 @@ name|state
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -206,6 +210,8 @@ name|result
 return|;
 block|}
 comment|/** Required by test code, below. */
+annotation|@
+name|Override
 DECL|method|equals (Object o)
 specifier|public
 name|boolean
@@ -369,6 +375,17 @@ name|testName
 operator|+
 literal|".alt"
 decl_stmt|;
+name|WritableName
+operator|.
+name|setName
+argument_list|(
+name|SimpleWritable
+operator|.
+name|class
+argument_list|,
+name|testName
+argument_list|)
+expr_stmt|;
 name|WritableName
 operator|.
 name|addName

@@ -541,6 +541,8 @@ name|setChanged
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|snapshot (MetricsRecordBuilder builder, boolean all)
 specifier|public
 specifier|synchronized

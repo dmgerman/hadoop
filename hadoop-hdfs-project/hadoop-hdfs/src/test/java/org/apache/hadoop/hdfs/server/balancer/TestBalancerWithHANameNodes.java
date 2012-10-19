@@ -158,7 +158,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|NameNodeProxies
+name|MiniDFSNNTopology
+operator|.
+name|NNConf
 import|;
 end_import
 
@@ -172,9 +174,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSNNTopology
-operator|.
-name|NNConf
+name|NameNodeProxies
 import|;
 end_import
 

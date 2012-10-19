@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -112,6 +148,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -127,18 +177,6 @@ operator|.
 name|log4j
 operator|.
 name|LogManager
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
 import|;
 end_import
 
@@ -287,9 +325,9 @@ expr_stmt|;
 name|long
 name|seed
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|LOG
@@ -395,9 +433,11 @@ name|bb
 init|=
 name|ByteBuffer
 operator|.
-name|wrap
+name|allocateDirect
 argument_list|(
 name|target
+operator|.
+name|length
 argument_list|)
 decl_stmt|;
 name|int
@@ -452,6 +492,18 @@ name|read
 expr_stmt|;
 block|}
 block|}
+name|bb
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|bb
+operator|.
+name|get
+argument_list|(
+name|target
+argument_list|)
+expr_stmt|;
 return|return
 name|cnt
 return|;
@@ -1605,9 +1657,9 @@ comment|// Start the workers and wait
 name|long
 name|starttime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 for|for
@@ -1650,9 +1702,9 @@ block|}
 name|long
 name|endtime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// Cleanup

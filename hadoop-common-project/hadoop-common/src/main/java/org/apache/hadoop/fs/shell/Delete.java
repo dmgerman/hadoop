@@ -594,6 +594,8 @@ name|NAME
 init|=
 literal|"rmr"
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|processOptions (LinkedList<String> args)
 specifier|protected
 name|void
@@ -680,6 +682,8 @@ name|ignoreNonEmpty
 init|=
 literal|false
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|processOptions (LinkedList<String> args)
 specifier|protected
 name|void

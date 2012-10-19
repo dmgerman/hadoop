@@ -747,13 +747,6 @@ operator|.
 name|getIpAddr
 argument_list|()
 decl_stmt|;
-name|NamenodeWebHdfsMethods
-operator|.
-name|setRemoteAddress
-argument_list|(
-name|ipAddr
-argument_list|)
-expr_stmt|;
 comment|//The chosen datanode must be the same as the client address
 specifier|final
 name|DatanodeInfo

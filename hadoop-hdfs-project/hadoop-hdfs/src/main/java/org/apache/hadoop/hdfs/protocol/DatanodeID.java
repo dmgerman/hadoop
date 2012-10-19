@@ -80,37 +80,37 @@ init|=
 block|{}
 decl_stmt|;
 DECL|field|ipAddr
-specifier|protected
+specifier|private
 name|String
 name|ipAddr
 decl_stmt|;
 comment|// IP address
 DECL|field|hostName
-specifier|protected
+specifier|private
 name|String
 name|hostName
 decl_stmt|;
 comment|// hostname
 DECL|field|storageID
-specifier|protected
+specifier|private
 name|String
 name|storageID
 decl_stmt|;
 comment|// unique per cluster storageID
 DECL|field|xferPort
-specifier|protected
+specifier|private
 name|int
 name|xferPort
 decl_stmt|;
 comment|// data streaming port
 DECL|field|infoPort
-specifier|protected
+specifier|private
 name|int
 name|infoPort
 decl_stmt|;
 comment|// info server port
 DECL|field|ipcPort
-specifier|protected
+specifier|private
 name|int
 name|ipcPort
 decl_stmt|;
@@ -289,7 +289,7 @@ return|;
 block|}
 comment|/**    * @return IP:ipcPort string    */
 DECL|method|getIpcAddr ()
-specifier|public
+specifier|private
 name|String
 name|getIpcAddr
 parameter_list|()
@@ -330,6 +330,61 @@ operator|+
 literal|":"
 operator|+
 name|xferPort
+return|;
+block|}
+comment|/**    * @return hostname:ipcPort    */
+DECL|method|getIpcAddrWithHostname ()
+specifier|private
+name|String
+name|getIpcAddrWithHostname
+parameter_list|()
+block|{
+return|return
+name|hostName
+operator|+
+literal|":"
+operator|+
+name|ipcPort
+return|;
+block|}
+comment|/**    * @param useHostname true to use the DN hostname, use the IP otherwise    * @return name:xferPort    */
+DECL|method|getXferAddr (boolean useHostname)
+specifier|public
+name|String
+name|getXferAddr
+parameter_list|(
+name|boolean
+name|useHostname
+parameter_list|)
+block|{
+return|return
+name|useHostname
+condition|?
+name|getXferAddrWithHostname
+argument_list|()
+else|:
+name|getXferAddr
+argument_list|()
+return|;
+block|}
+comment|/**    * @param useHostname true to use the DN hostname, use the IP otherwise    * @return name:ipcPort    */
+DECL|method|getIpcAddr (boolean useHostname)
+specifier|public
+name|String
+name|getIpcAddr
+parameter_list|(
+name|boolean
+name|useHostname
+parameter_list|)
+block|{
+return|return
+name|useHostname
+condition|?
+name|getIpcAddrWithHostname
+argument_list|()
+else|:
+name|getIpcAddr
+argument_list|()
 return|;
 block|}
 comment|/**    * @return data storage ID.    */
@@ -376,6 +431,8 @@ return|return
 name|ipcPort
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object to)
 specifier|public
 name|boolean
@@ -445,6 +502,8 @@ argument_list|)
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -464,6 +523,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -522,6 +583,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Compare based on data transfer address.    *    * @param that    * @return as specified by Comparable    */
+annotation|@
+name|Override
 DECL|method|compareTo (DatanodeID that)
 specifier|public
 name|int

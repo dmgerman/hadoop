@@ -344,6 +344,20 @@ name|Entry
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_class
 DECL|class|TestTFileSeqFileComparison
 specifier|public
@@ -583,9 +597,9 @@ name|IOException
 block|{
 name|startTimeEpoch
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|System
@@ -611,9 +625,9 @@ name|IOException
 block|{
 name|finishTimeEpoch
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|System
@@ -697,9 +711,9 @@ block|{
 return|return
 name|formatTime
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 return|;
@@ -860,6 +874,8 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|append (BytesWritable key, BytesWritable value)
 specifier|public
 name|void
@@ -904,6 +920,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1148,6 +1166,8 @@ argument_list|)
 index|]
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getKey ()
 specifier|public
 name|byte
@@ -1159,6 +1179,8 @@ return|return
 name|keyBuffer
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getKeyLength ()
 specifier|public
 name|int
@@ -1169,6 +1191,8 @@ return|return
 name|keyLength
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValue ()
 specifier|public
 name|byte
@@ -1180,6 +1204,8 @@ return|return
 name|valueBuffer
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValueLength ()
 specifier|public
 name|int
@@ -1190,6 +1216,8 @@ return|return
 name|valueLength
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|boolean
@@ -1263,6 +1291,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1500,6 +1530,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|append (BytesWritable key, BytesWritable value)
 specifier|public
 name|void
@@ -1524,6 +1556,8 @@ name|value
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1627,6 +1661,8 @@ name|BytesWritable
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getKey ()
 specifier|public
 name|byte
@@ -1641,6 +1677,8 @@ name|get
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getKeyLength ()
 specifier|public
 name|int
@@ -1654,6 +1692,8 @@ name|getSize
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValue ()
 specifier|public
 name|byte
@@ -1668,6 +1708,8 @@ name|get
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getValueLength ()
 specifier|public
 name|int
@@ -1681,6 +1723,8 @@ name|getSize
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|boolean
@@ -1700,6 +1744,8 @@ name|value
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|public
 name|void

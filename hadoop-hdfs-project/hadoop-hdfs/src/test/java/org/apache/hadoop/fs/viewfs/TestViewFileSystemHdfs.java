@@ -417,6 +417,8 @@ argument_list|()
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|public
@@ -450,6 +452,8 @@ name|setUp
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 annotation|@
 name|After
 DECL|method|tearDown ()
@@ -531,8 +535,9 @@ name|getExpectedDelegationTokenCount
 parameter_list|()
 block|{
 return|return
-literal|9
+literal|2
 return|;
+comment|// Mount points to 2 unique hdfs
 block|}
 annotation|@
 name|Override

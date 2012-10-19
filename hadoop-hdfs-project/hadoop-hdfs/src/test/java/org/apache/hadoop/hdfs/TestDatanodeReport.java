@@ -17,6 +17,50 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|assertGauge
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|getMetrics
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -33,16 +77,6 @@ operator|.
 name|util
 operator|.
 name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -113,18 +147,12 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|MetricsAsserts
-operator|.
-name|*
+name|Test
 import|;
 end_import
 
@@ -137,8 +165,6 @@ DECL|class|TestDatanodeReport
 specifier|public
 class|class
 name|TestDatanodeReport
-extends|extends
-name|TestCase
 block|{
 DECL|field|conf
 specifier|final
@@ -161,6 +187,8 @@ init|=
 literal|4
 decl_stmt|;
 comment|/**    * This test attempts to different types of datanode report.    */
+annotation|@
+name|Test
 DECL|method|testDatanodeReport ()
 specifier|public
 name|void

@@ -586,12 +586,10 @@ decl_stmt|;
 comment|// If f refers to a regular file or directory
 if|if
 condition|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|target
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return
@@ -665,12 +663,10 @@ comment|/* The exists method in the File class returns false for dangling       
 if|if
 condition|(
 operator|!
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|target
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return

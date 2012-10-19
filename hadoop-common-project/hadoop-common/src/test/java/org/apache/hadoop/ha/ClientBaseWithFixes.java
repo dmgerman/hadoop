@@ -92,16 +92,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|LinkedList
 import|;
 end_import
@@ -149,6 +139,20 @@ operator|.
 name|concurrent
 operator|.
 name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -472,6 +476,8 @@ name|NullWatcher
 implements|implements
 name|Watcher
 block|{
+annotation|@
+name|Override
 DECL|method|process (WatchedEvent event)
 specifier|public
 name|void
@@ -532,6 +538,8 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|process (WatchedEvent event)
 specifier|synchronized
 specifier|public
@@ -613,9 +621,9 @@ block|{
 name|long
 name|expire
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|timeout
@@ -644,9 +652,9 @@ name|left
 operator|=
 name|expire
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -681,9 +689,9 @@ block|{
 name|long
 name|expire
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|timeout
@@ -711,9 +719,9 @@ name|left
 operator|=
 name|expire
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -1271,9 +1279,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 while|while
@@ -1359,9 +1367,9 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|>
 name|start
@@ -1410,9 +1418,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 while|while
@@ -1461,9 +1469,9 @@ return|;
 block|}
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|>
 name|start

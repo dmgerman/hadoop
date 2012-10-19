@@ -270,6 +270,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Tool
 import|;
 end_import
@@ -403,9 +417,9 @@ specifier|private
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 literal|10000
@@ -658,6 +672,8 @@ name|id
 expr_stmt|;
 block|}
 comment|/** Main loop      * Each iteration decides what's the next operation and then pauses.      */
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -854,9 +870,9 @@ decl_stmt|;
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|InputStream
@@ -879,9 +895,9 @@ name|OPEN
 index|]
 operator|+=
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -990,9 +1006,9 @@ expr_stmt|;
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|fc
@@ -1010,9 +1026,9 @@ name|DELETE
 index|]
 operator|+=
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -1055,9 +1071,9 @@ decl_stmt|;
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|fc
@@ -1077,9 +1093,9 @@ name|LIST
 index|]
 operator|+=
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -1094,6 +1110,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Main function:    * It first initializes data by parsing the command line arguments.    * It then starts the number of DFSClient threads as specified by    * the user.    * It stops all the threads when the specified elapsed time is passed.    * Before exiting, it prints the average execution for     * each operation and operation throughput.    */
+annotation|@
+name|Override
 DECL|method|run (String[] args)
 specifier|public
 name|int
@@ -2216,9 +2234,9 @@ operator|=
 operator|new
 name|Random
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|hostHashCode
@@ -2899,9 +2917,9 @@ name|sleepTime
 operator|=
 name|startTime
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|)
 operator|>
@@ -2944,9 +2962,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|FSDataOutputStream
@@ -3000,9 +3018,9 @@ name|CREATE
 index|]
 operator|+=
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -3039,9 +3057,9 @@ expr_stmt|;
 block|}
 name|startTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|out
@@ -3055,9 +3073,9 @@ name|WRITE_CLOSE
 index|]
 operator|+=
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime

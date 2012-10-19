@@ -452,7 +452,9 @@ name|String
 name|getUser
 parameter_list|()
 function_decl|;
-comment|/**    * This method checks to see if symlinks are to be create for the     * localized cache files in the current working directory     * @return true if symlinks are to be created- else return false    */
+comment|/**    * Originally intended to check if symlinks should be used, but currently    * symlinks cannot be disabled.    * @return true    */
+annotation|@
+name|Deprecated
 DECL|method|getSymlink ()
 specifier|public
 name|boolean
@@ -487,7 +489,9 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return the path array of the localized caches    * @return A path array of localized caches    * @throws IOException    */
+comment|/**    * Return the path array of the localized caches    * @return A path array of localized caches    * @throws IOException    * @deprecated the array returned only includes the items the were     * downloaded. There is no way to map this to what is returned by    * {@link #getCacheArchives()}.    */
+annotation|@
+name|Deprecated
 DECL|method|getLocalCacheArchives ()
 specifier|public
 name|Path
@@ -497,7 +501,9 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Return the path array of the localized files    * @return A path array of localized files    * @throws IOException    */
+comment|/**    * Return the path array of the localized files    * @return A path array of localized files    * @throws IOException    * @deprecated the array returned only includes the items the were     * downloaded. There is no way to map this to what is returned by    * {@link #getCacheFiles()}.    */
+annotation|@
+name|Deprecated
 DECL|method|getLocalCacheFiles ()
 specifier|public
 name|Path

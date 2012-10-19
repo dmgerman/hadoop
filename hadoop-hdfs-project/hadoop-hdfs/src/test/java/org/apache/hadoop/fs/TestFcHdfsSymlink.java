@@ -331,6 +331,8 @@ specifier|static
 name|WebHdfsFileSystem
 name|webhdfs
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getScheme ()
 specifier|protected
 name|String
@@ -341,6 +343,8 @@ return|return
 literal|"hdfs"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testBaseDir1 ()
 specifier|protected
 name|String
@@ -353,6 +357,8 @@ return|return
 literal|"/test1"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testBaseDir2 ()
 specifier|protected
 name|String
@@ -365,6 +371,8 @@ return|return
 literal|"/test2"
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|testURI ()
 specifier|protected
 name|URI
@@ -510,7 +518,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-comment|/** Link from Hdfs to LocalFs */
+comment|/** Access a file using a link that spans Hdfs to LocalFs */
 DECL|method|testLinkAcrossFileSystems ()
 specifier|public
 name|void
@@ -648,6 +656,199 @@ name|getLen
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Test
+comment|/** Test renaming a file across two file systems using a link */
+DECL|method|testRenameAcrossFileSystemsViaLink ()
+specifier|public
+name|void
+name|testRenameAcrossFileSystemsViaLink
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Path
+name|localDir
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"file://"
+operator|+
+name|getAbsoluteTestRootDir
+argument_list|(
+name|fc
+argument_list|)
+operator|+
+literal|"/test"
+argument_list|)
+decl_stmt|;
+name|Path
+name|hdfsFile
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testBaseDir1
+argument_list|()
+argument_list|,
+literal|"file"
+argument_list|)
+decl_stmt|;
+name|Path
+name|link
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testBaseDir1
+argument_list|()
+argument_list|,
+literal|"link"
+argument_list|)
+decl_stmt|;
+name|Path
+name|hdfsFileNew
+init|=
+operator|new
+name|Path
+argument_list|(
+name|testBaseDir1
+argument_list|()
+argument_list|,
+literal|"fileNew"
+argument_list|)
+decl_stmt|;
+name|Path
+name|hdfsFileNewViaLink
+init|=
+operator|new
+name|Path
+argument_list|(
+name|link
+argument_list|,
+literal|"fileNew"
+argument_list|)
+decl_stmt|;
+name|FileContext
+name|localFc
+init|=
+name|FileContext
+operator|.
+name|getLocalFSFileContext
+argument_list|()
+decl_stmt|;
+name|localFc
+operator|.
+name|delete
+argument_list|(
+name|localDir
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|localFc
+operator|.
+name|mkdir
+argument_list|(
+name|localDir
+argument_list|,
+name|FileContext
+operator|.
+name|DEFAULT_PERM
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|localFc
+operator|.
+name|setWorkingDirectory
+argument_list|(
+name|localDir
+argument_list|)
+expr_stmt|;
+name|createAndWriteFile
+argument_list|(
+name|fc
+argument_list|,
+name|hdfsFile
+argument_list|)
+expr_stmt|;
+name|fc
+operator|.
+name|createSymlink
+argument_list|(
+name|localDir
+argument_list|,
+name|link
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+comment|// Rename hdfs://test1/file to hdfs://test1/link/fileNew
+comment|// which renames to file://TEST_ROOT/test/fileNew which
+comment|// spans AbstractFileSystems and therefore fails.
+try|try
+block|{
+name|fc
+operator|.
+name|rename
+argument_list|(
+name|hdfsFile
+argument_list|,
+name|hdfsFileNewViaLink
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Renamed across file systems"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidPathException
+name|ipe
+parameter_list|)
+block|{
+comment|// Expected
+block|}
+comment|// Now rename hdfs://test1/link/fileNew to hdfs://test1/fileNew
+comment|// which renames file://TEST_ROOT/test/fileNew to hdfs://test1/fileNew
+comment|// which spans AbstractFileSystems and therefore fails.
+name|createAndWriteFile
+argument_list|(
+name|fc
+argument_list|,
+name|hdfsFileNewViaLink
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|fc
+operator|.
+name|rename
+argument_list|(
+name|hdfsFileNewViaLink
+argument_list|,
+name|hdfsFileNew
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Renamed across file systems"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidPathException
+name|ipe
+parameter_list|)
+block|{
+comment|// Expected
+block|}
 block|}
 annotation|@
 name|Test

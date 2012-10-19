@@ -168,20 +168,6 @@ name|hadoop
 operator|.
 name|metrics
 operator|.
-name|MetricsException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|metrics
-operator|.
 name|MetricsRecord
 import|;
 end_import
@@ -289,6 +275,8 @@ specifier|public
 name|CompositeContext
 parameter_list|()
 block|{   }
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -964,6 +952,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|invoke (Object p, Method m, Object[] args)
 specifier|public
 name|Object

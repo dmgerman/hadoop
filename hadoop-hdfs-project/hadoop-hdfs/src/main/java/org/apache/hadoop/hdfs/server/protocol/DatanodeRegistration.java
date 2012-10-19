@@ -314,15 +314,18 @@ argument_list|()
 operator|+
 literal|", storageID="
 operator|+
-name|storageID
+name|getStorageID
+argument_list|()
 operator|+
 literal|", infoPort="
 operator|+
-name|infoPort
+name|getInfoPort
+argument_list|()
 operator|+
 literal|", ipcPort="
 operator|+
-name|ipcPort
+name|getIpcPort
+argument_list|()
 operator|+
 literal|", storageInfo="
 operator|+

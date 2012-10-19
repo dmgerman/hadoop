@@ -124,16 +124,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|concurrent
@@ -256,7 +246,7 @@ name|ha
 operator|.
 name|HAServiceProtocol
 operator|.
-name|StateChangeRequestInfo
+name|RequestSource
 import|;
 end_import
 
@@ -272,7 +262,7 @@ name|ha
 operator|.
 name|HAServiceProtocol
 operator|.
-name|RequestSource
+name|StateChangeRequestInfo
 import|;
 end_import
 
@@ -329,22 +319,6 @@ operator|.
 name|hdfs
 operator|.
 name|MiniDFSNNTopology
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsConstants
 import|;
 end_import
 
@@ -1826,8 +1800,6 @@ name|testDelegationTokensAfterFailover
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|URISyntaxException
 block|{
 name|Configuration
 name|conf
@@ -2584,8 +2556,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -2748,8 +2718,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertFalse
@@ -2824,8 +2792,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|assertFalse

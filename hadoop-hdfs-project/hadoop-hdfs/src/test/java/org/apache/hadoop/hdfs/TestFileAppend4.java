@@ -1012,6 +1012,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -1071,7 +1073,8 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|.
-name|leaserenewer
+name|getLeaseRenewer
+argument_list|()
 operator|.
 name|interruptAndJoin
 argument_list|()
@@ -1353,6 +1356,8 @@ operator|new
 name|Thread
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|void
 name|run
@@ -1412,7 +1417,8 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|.
-name|leaserenewer
+name|getLeaseRenewer
+argument_list|()
 operator|.
 name|interruptAndJoin
 argument_list|()

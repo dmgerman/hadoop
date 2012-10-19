@@ -412,6 +412,34 @@ name|IOUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Scans the block files under a block pool and verifies that the  * files are not corrupt.  * This keeps track of blocks and their last verification times.  * Currently it does not modify the metadata for block.  */
 end_comment
@@ -620,9 +648,9 @@ specifier|private
 name|long
 name|currentPeriodStart
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 DECL|field|bytesLeft
@@ -721,6 +749,8 @@ operator|=
 name|block
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -734,6 +764,8 @@ name|hashCode
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
@@ -778,6 +810,8 @@ else|:
 name|lastScanTime
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (BlockScanInfo other)
 specifier|public
 name|int
@@ -1304,9 +1338,9 @@ name|period
 argument_list|)
 decl_stmt|;
 return|return
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|scanPeriod
@@ -1427,6 +1461,17 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getTotalScans ()
+name|long
+name|getTotalScans
+parameter_list|()
+block|{
+return|return
+name|totalScans
+return|;
 block|}
 comment|/** @return the last scan time for the block pool. */
 DECL|method|getLastScanTime ()
@@ -1552,9 +1597,9 @@ block|}
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|info
@@ -1919,9 +1964,9 @@ name|currentPeriodStart
 operator|+
 name|scanPeriod
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|long
@@ -1955,8 +2000,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|verifyBlock (ExtendedBlock block)
-specifier|private
 name|void
 name|verifyBlock
 parameter_list|(
@@ -2431,9 +2477,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|RollingLogs
@@ -2697,9 +2743,9 @@ decl_stmt|;
 name|long
 name|lastScanTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|scanPeriod
@@ -2816,20 +2862,97 @@ name|totalBytesToScan
 expr_stmt|;
 name|currentPeriodStart
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|workRemainingInCurrentPeriod ()
+specifier|private
+specifier|synchronized
+name|boolean
+name|workRemainingInCurrentPeriod
+parameter_list|()
+block|{
+if|if
+condition|(
+name|bytesLeft
+operator|<=
+literal|0
+operator|&&
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|<
+name|currentPeriodStart
+operator|+
+name|scanPeriod
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Skipping scan since bytesLeft="
+operator|+
+name|bytesLeft
+operator|+
+literal|", Start="
+operator|+
+name|currentPeriodStart
+operator|+
+literal|", period="
+operator|+
+name|scanPeriod
+operator|+
+literal|", now="
+operator|+
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|+
+literal|" "
+operator|+
+name|blockPoolId
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 DECL|method|scanBlockPoolSlice ()
 name|void
 name|scanBlockPoolSlice
 parameter_list|()
 block|{
-name|startNewPeriod
+if|if
+condition|(
+operator|!
+name|workRemainingInCurrentPeriod
 argument_list|()
-expr_stmt|;
+condition|)
+block|{
+return|return;
+block|}
 comment|// Create a new processedBlocks structure
 name|processedBlocks
 operator|=
@@ -2874,9 +2997,9 @@ name|lastScanTime
 operator|.
 name|set
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2934,9 +3057,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 synchronized|synchronized
@@ -3041,7 +3164,7 @@ throw|;
 block|}
 finally|finally
 block|{
-name|cleanUp
+name|rollVerificationLogs
 argument_list|()
 expr_stmt|;
 if|if
@@ -3064,11 +3187,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|cleanUp ()
+DECL|method|rollVerificationLogs ()
 specifier|private
 specifier|synchronized
 name|void
-name|cleanUp
+name|rollVerificationLogs
 parameter_list|()
 block|{
 if|if
@@ -3201,9 +3324,9 @@ decl_stmt|;
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|Date

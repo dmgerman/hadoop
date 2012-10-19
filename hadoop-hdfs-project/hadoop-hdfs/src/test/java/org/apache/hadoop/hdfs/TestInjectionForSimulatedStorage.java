@@ -17,12 +17,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
 import|;
 end_import
 
@@ -32,7 +34,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
 import|;
 end_import
 
@@ -53,16 +65,6 @@ operator|.
 name|util
 operator|.
 name|Set
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|*
 import|;
 end_import
 
@@ -246,6 +248,30 @@ name|SimulatedFSDataset
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the replication and injection of blocks of a DFS file for simulated storage.  */
 end_comment
@@ -255,8 +281,6 @@ DECL|class|TestInjectionForSimulatedStorage
 specifier|public
 class|class
 name|TestInjectionForSimulatedStorage
-extends|extends
-name|TestCase
 block|{
 DECL|field|checksumSize
 specifier|private
@@ -311,106 +335,6 @@ argument_list|(
 literal|"org.apache.hadoop.hdfs.TestInjectionForSimulatedStorage"
 argument_list|)
 decl_stmt|;
-DECL|method|writeFile (FileSystem fileSys, Path name, int repl)
-specifier|private
-name|void
-name|writeFile
-parameter_list|(
-name|FileSystem
-name|fileSys
-parameter_list|,
-name|Path
-name|name
-parameter_list|,
-name|int
-name|repl
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|// create and write a file that contains three blocks of data
-name|FSDataOutputStream
-name|stm
-init|=
-name|fileSys
-operator|.
-name|create
-argument_list|(
-name|name
-argument_list|,
-literal|true
-argument_list|,
-name|fileSys
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_FILE_BUFFER_SIZE_KEY
-argument_list|,
-literal|4096
-argument_list|)
-argument_list|,
-operator|(
-name|short
-operator|)
-name|repl
-argument_list|,
-name|blockSize
-argument_list|)
-decl_stmt|;
-name|byte
-index|[]
-name|buffer
-init|=
-operator|new
-name|byte
-index|[
-name|filesize
-index|]
-decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|buffer
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|buffer
-index|[
-name|i
-index|]
-operator|=
-literal|'1'
-expr_stmt|;
-block|}
-name|stm
-operator|.
-name|write
-argument_list|(
-name|buffer
-argument_list|)
-expr_stmt|;
-name|stm
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-comment|// Waits for all of the blocks to have expected replication
 comment|// Waits for all of the blocks to have expected replication
 DECL|method|waitForBlockReplication (String filename, ClientProtocol namenode, int expected, long maxWaitSec)
 specifier|private
@@ -435,9 +359,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|//wait for all the blocks to be replicated;
@@ -627,9 +551,9 @@ operator|>
 literal|0
 operator|&&
 operator|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start
@@ -674,6 +598,8 @@ block|}
 block|}
 block|}
 comment|/* This test makes sure that NameNode retries all the available blocks     * for under replicated blocks. This test uses simulated storage and one    * of its features to inject blocks,    *     * It creates a file with several blocks and replication of 4.     * The cluster is then shut down - NN retains its state but the DNs are     * all simulated and hence loose their blocks.     * The blocks are then injected in one of the DNs. The  expected behaviour is    * that the NN will arrange for themissing replica will be copied from a valid source.    */
+annotation|@
+name|Test
 DECL|method|testInjection ()
 specifier|public
 name|void
@@ -834,7 +760,9 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
-name|writeFile
+name|DFSTestUtil
+operator|.
+name|createFile
 argument_list|(
 name|cluster
 operator|.
@@ -843,7 +771,18 @@ argument_list|()
 argument_list|,
 name|testPath
 argument_list|,
+name|filesize
+argument_list|,
+name|filesize
+argument_list|,
+name|blockSize
+argument_list|,
+operator|(
+name|short
+operator|)
 name|numDataNodes
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 name|waitForBlockReplication

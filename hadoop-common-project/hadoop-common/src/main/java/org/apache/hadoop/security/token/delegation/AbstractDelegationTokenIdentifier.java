@@ -144,6 +144,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+operator|.
+name|AuthenticationMethod
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|TokenIdentifier
@@ -399,6 +415,8 @@ name|getKind
 parameter_list|()
 function_decl|;
 comment|/**    * Get the username encoded in the token identifier    *     * @return the username or owner    */
+annotation|@
+name|Override
 DECL|method|getUser ()
 specifier|public
 name|UserGroupInformation
@@ -414,15 +432,13 @@ literal|null
 operator|)
 operator|||
 operator|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|owner
 operator|.
 name|toString
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 operator|)
 condition|)
 block|{
@@ -430,6 +446,14 @@ return|return
 literal|null
 return|;
 block|}
+specifier|final
+name|UserGroupInformation
+name|realUgi
+decl_stmt|;
+specifier|final
+name|UserGroupInformation
+name|ugi
+decl_stmt|;
 if|if
 condition|(
 operator|(
@@ -439,15 +463,13 @@ literal|null
 operator|)
 operator|||
 operator|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|realUser
 operator|.
 name|toString
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 operator|)
 operator|||
 name|realUser
@@ -458,7 +480,10 @@ name|owner
 argument_list|)
 condition|)
 block|{
-return|return
+name|ugi
+operator|=
+name|realUgi
+operator|=
 name|UserGroupInformation
 operator|.
 name|createRemoteUser
@@ -468,13 +493,12 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 else|else
 block|{
-name|UserGroupInformation
 name|realUgi
-init|=
+operator|=
 name|UserGroupInformation
 operator|.
 name|createRemoteUser
@@ -484,8 +508,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
-decl_stmt|;
-return|return
+expr_stmt|;
+name|ugi
+operator|=
 name|UserGroupInformation
 operator|.
 name|createProxyUser
@@ -497,8 +522,20 @@ argument_list|()
 argument_list|,
 name|realUgi
 argument_list|)
-return|;
+expr_stmt|;
 block|}
+name|realUgi
+operator|.
+name|setAuthenticationMethod
+argument_list|(
+name|AuthenticationMethod
+operator|.
+name|TOKEN
+argument_list|)
+expr_stmt|;
+return|return
+name|ugi
+return|;
 block|}
 DECL|method|getOwner ()
 specifier|public
@@ -661,7 +698,8 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|equals (Object obj)
 specifier|public
 name|boolean
@@ -768,7 +806,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -781,6 +820,8 @@ operator|.
 name|sequenceNumber
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFields (DataInput in)
 specifier|public
 name|void
@@ -964,6 +1005,8 @@ name|masterKeyId
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -1041,6 +1084,8 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String

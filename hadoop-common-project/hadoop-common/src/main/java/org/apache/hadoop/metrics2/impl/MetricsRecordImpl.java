@@ -150,7 +150,7 @@ name|AbstractMetric
 argument_list|>
 name|metrics
 decl_stmt|;
-comment|/**    * Construct a metrics record    * @param info  {@link MetricInfo} of the record    * @param timestamp of the record    * @param tags  of the record    * @param metrics of the record    */
+comment|/**    * Construct a metrics record    * @param info  {@link MetricsInfo} of the record    * @param timestamp of the record    * @param tags  of the record    * @param metrics of the record    */
 DECL|method|MetricsRecordImpl (MetricsInfo info, long timestamp, List<MetricsTag> tags, Iterable<AbstractMetric> metrics)
 specifier|public
 name|MetricsRecordImpl

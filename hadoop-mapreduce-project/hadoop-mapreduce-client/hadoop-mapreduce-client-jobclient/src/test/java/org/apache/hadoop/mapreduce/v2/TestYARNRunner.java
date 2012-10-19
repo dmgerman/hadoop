@@ -1558,6 +1558,7 @@ throws|throws
 name|Exception
 block|{
 comment|/* we not want a mock of resourcemgr deleagte */
+specifier|final
 name|ClientRMProtocol
 name|clientRMProtocol
 init|=
@@ -1575,9 +1576,24 @@ operator|new
 name|ResourceMgrDelegate
 argument_list|(
 name|conf
-argument_list|,
-name|clientRMProtocol
 argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|public
+specifier|synchronized
+name|void
+name|start
+parameter_list|()
+block|{
+name|this
+operator|.
+name|rmClient
+operator|=
+name|clientRMProtocol
+expr_stmt|;
+block|}
+block|}
 decl_stmt|;
 comment|/* make sure kill calls finish application master */
 name|when

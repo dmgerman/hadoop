@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The metrics source interface  */
+comment|/**  * The source of metrics information. It generates and updates metrics. It  * registers with {@link MetricsSystem}, which periodically polls it to collect  * {@link MetricsRecord} and passes it to {@link MetricsSink}.  */
 end_comment
 
 begin_interface
@@ -62,7 +62,7 @@ specifier|public
 interface|interface
 name|MetricsSource
 block|{
-comment|/**    * Get metrics from the source    * @param collector to contain the resulting metrics snapshot    * @param all if true, return all metrics even if unchanged.    */
+comment|/**    * Get metrics from the metrics source    * @param collector to contain the resulting metrics snapshot    * @param all if true, return all metrics even if unchanged.    */
 DECL|method|getMetrics (MetricsCollector collector, boolean all)
 name|void
 name|getMetrics

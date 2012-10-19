@@ -670,6 +670,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|VersionInfo
 import|;
 end_import
@@ -1459,9 +1473,9 @@ argument_list|)
 expr_stmt|;
 name|start
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 name|LOG
@@ -1505,9 +1519,9 @@ comment|// try {Thread.sleep(500);} catch (InterruptedException e) {}
 block|}
 name|elapsedTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start
@@ -2110,6 +2124,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -2165,6 +2181,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -2319,6 +2337,8 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -2328,6 +2348,8 @@ return|return
 name|OP_CLEAN_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseArguments (List<String> args)
 name|void
 name|parseArguments
@@ -2363,6 +2385,8 @@ name|printUsage
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|generateInputs (int[] opsPerThread)
 name|void
 name|generateInputs
@@ -2377,6 +2401,8 @@ block|{
 comment|// do nothing
 block|}
 comment|/**      * Does not require the argument      */
+annotation|@
+name|Override
 DECL|method|getExecutionArgument (int daemonId)
 name|String
 name|getExecutionArgument
@@ -2390,6 +2416,8 @@ literal|null
 return|;
 block|}
 comment|/**      * Remove entire benchmark directory.      */
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String ignore)
 name|long
 name|executeOp
@@ -2420,9 +2448,9 @@ expr_stmt|;
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|nameNodeProto
@@ -2437,9 +2465,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 return|return
@@ -2448,6 +2476,8 @@ operator|-
 name|start
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|printResults ()
 name|void
 name|printResults
@@ -2539,6 +2569,8 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -2548,6 +2580,8 @@ return|return
 name|OP_CREATE_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseArguments (List<String> args)
 name|void
 name|parseArguments
@@ -2775,6 +2809,8 @@ name|nrFilesPerDir
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|generateInputs (int[] opsPerThread)
 name|void
 name|generateInputs
@@ -2937,6 +2973,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * returns client name      */
+annotation|@
+name|Override
 DECL|method|getExecutionArgument (int daemonId)
 name|String
 name|getExecutionArgument
@@ -2953,6 +2991,8 @@ argument_list|)
 return|;
 block|}
 comment|/**      * Do file create.      */
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String clientName)
 name|long
 name|executeOp
@@ -2972,9 +3012,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// dummyActionNoSynch(fileIdx);
@@ -3027,9 +3067,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 for|for
@@ -3069,6 +3109,8 @@ operator|-
 name|start
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|printResults ()
 name|void
 name|printResults
@@ -3179,6 +3221,8 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -3188,6 +3232,8 @@ return|return
 name|OP_OPEN_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseArguments (List<String> args)
 name|void
 name|parseArguments
@@ -3238,6 +3284,8 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|generateInputs (int[] opsPerThread)
 name|void
 name|generateInputs
@@ -3422,6 +3470,8 @@ throw|;
 block|}
 block|}
 comment|/**      * Do file open.      */
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String ignore)
 name|long
 name|executeOp
@@ -3441,9 +3491,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|nameNodeProto
@@ -3466,9 +3516,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 return|return
@@ -3522,6 +3572,8 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -3531,6 +3583,8 @@ return|return
 name|OP_DELETE_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String ignore)
 name|long
 name|executeOp
@@ -3550,9 +3604,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|nameNodeProto
@@ -3573,9 +3627,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 return|return
@@ -3629,6 +3683,8 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -3638,6 +3694,8 @@ return|return
 name|OP_FILE_STATUS_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String ignore)
 name|long
 name|executeOp
@@ -3657,9 +3715,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|nameNodeProto
@@ -3678,9 +3736,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 return|return
@@ -3741,6 +3799,8 @@ name|args
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -3750,6 +3810,8 @@ return|return
 name|OP_RENAME_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|generateInputs (int[] opsPerThread)
 name|void
 name|generateInputs
@@ -3849,6 +3911,8 @@ literal|".r"
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String ignore)
 name|long
 name|executeOp
@@ -3868,9 +3932,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|nameNodeProto
@@ -3897,9 +3961,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 return|return
@@ -4062,6 +4126,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -4459,6 +4525,8 @@ return|return
 name|blockReportList
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compareTo (String xferAddr)
 specifier|public
 name|int
@@ -4881,6 +4949,8 @@ return|return
 name|numThreads
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -4890,6 +4960,8 @@ return|return
 name|OP_BLOCK_REPORT_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseArguments (List<String> args)
 name|void
 name|parseArguments
@@ -5122,6 +5194,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|generateInputs (int[] ignore)
 name|void
 name|generateInputs
@@ -5602,6 +5676,8 @@ name|prevBlock
 return|;
 block|}
 comment|/**      * Does not require the argument      */
+annotation|@
+name|Override
 DECL|method|getExecutionArgument (int daemonId)
 name|String
 name|getExecutionArgument
@@ -5614,6 +5690,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String ignore)
 name|long
 name|executeOp
@@ -5648,9 +5726,9 @@ decl_stmt|;
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|StorageBlockReport
@@ -5694,9 +5772,9 @@ expr_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 return|return
@@ -5705,6 +5783,8 @@ operator|-
 name|start
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|printResults ()
 name|void
 name|printResults
@@ -5996,6 +6076,8 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getOpName ()
 name|String
 name|getOpName
@@ -6005,6 +6087,8 @@ return|return
 name|OP_REPLICATION_NAME
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|parseArguments (List<String> args)
 name|void
 name|parseArguments
@@ -6283,6 +6367,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|generateInputs (int[] ignore)
 name|void
 name|generateInputs
@@ -6535,6 +6621,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * Does not require the argument      */
+annotation|@
+name|Override
 DECL|method|getExecutionArgument (int daemonId)
 name|String
 name|getExecutionArgument
@@ -6547,6 +6635,8 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|executeOp (int daemonId, int inputIdx, String ignore)
 name|long
 name|executeOp
@@ -6573,9 +6663,9 @@ assert|;
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 comment|// compute data-node work
@@ -6598,9 +6688,9 @@ decl_stmt|;
 name|long
 name|end
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|numPendingBlocks
@@ -6629,6 +6719,8 @@ operator|-
 name|start
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|printResults ()
 name|void
 name|printResults

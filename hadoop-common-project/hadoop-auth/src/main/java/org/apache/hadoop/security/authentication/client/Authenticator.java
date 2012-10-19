@@ -50,6 +50,16 @@ specifier|public
 interface|interface
 name|Authenticator
 block|{
+comment|/**    * Sets a {@link ConnectionConfigurator} instance to use for    * configuring connections.    *    * @param configurator the {@link ConnectionConfigurator} instance.    */
+DECL|method|setConnectionConfigurator (ConnectionConfigurator configurator)
+specifier|public
+name|void
+name|setConnectionConfigurator
+parameter_list|(
+name|ConnectionConfigurator
+name|configurator
+parameter_list|)
+function_decl|;
 comment|/**    * Authenticates against a URL and returns a {@link AuthenticatedURL.Token} to be    * used by subsequent requests.    *    * @param url the URl to authenticate against.    * @param token the authentication token being used for the user.    *    * @throws IOException if an IO error occurred.    * @throws AuthenticationException if an authentication error occurred.    */
 DECL|method|authenticate (URL url, AuthenticatedURL.Token token)
 specifier|public

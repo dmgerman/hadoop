@@ -91,6 +91,12 @@ specifier|protected
 name|String
 name|value
 decl_stmt|;
+DECL|field|source
+specifier|protected
+name|String
+index|[]
+name|source
+decl_stmt|;
 DECL|method|ConfEntryInfo ()
 specifier|public
 name|ConfEntryInfo
@@ -108,6 +114,31 @@ name|value
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|key
+argument_list|,
+name|value
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|ConfEntryInfo (String key, String value, String[] source)
+specifier|public
+name|ConfEntryInfo
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|String
+name|value
+parameter_list|,
+name|String
+index|[]
+name|source
+parameter_list|)
+block|{
+name|this
 operator|.
 name|name
 operator|=
@@ -118,6 +149,12 @@ operator|.
 name|value
 operator|=
 name|value
+expr_stmt|;
+name|this
+operator|.
+name|source
+operator|=
+name|source
 expr_stmt|;
 block|}
 DECL|method|getName ()
@@ -142,6 +179,17 @@ return|return
 name|this
 operator|.
 name|value
+return|;
+block|}
+DECL|method|getSource ()
+specifier|public
+name|String
+index|[]
+name|getSource
+parameter_list|()
+block|{
+return|return
+name|source
 return|;
 block|}
 block|}

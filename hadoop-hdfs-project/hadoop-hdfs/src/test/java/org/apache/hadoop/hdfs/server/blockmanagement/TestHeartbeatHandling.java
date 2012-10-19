@@ -21,22 +21,24 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|util
 operator|.
 name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -256,6 +258,16 @@ name|DatanodeRegistration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Test if FSNamesystem handles heartbeat right  */
 end_comment
@@ -265,10 +277,10 @@ DECL|class|TestHeartbeatHandling
 specifier|public
 class|class
 name|TestHeartbeatHandling
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Test if    * {@link FSNamesystem#handleHeartbeat}    * can pick up replication and/or invalidate requests and observes the max    * limit    */
+annotation|@
+name|Test
 DECL|method|testHeartbeat ()
 specifier|public
 name|void

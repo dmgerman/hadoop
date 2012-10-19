@@ -17,6 +17,98 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|NodeType
+operator|.
+name|DATA_NODE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
+name|NodeType
+operator|.
+name|NAME_NODE
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -33,16 +125,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -102,7 +184,9 @@ name|server
 operator|.
 name|common
 operator|.
-name|Storage
+name|HdfsServerConstants
+operator|.
+name|StartupOption
 import|;
 end_import
 
@@ -120,9 +204,7 @@ name|server
 operator|.
 name|common
 operator|.
-name|HdfsServerConstants
-operator|.
-name|StartupOption
+name|Storage
 import|;
 end_import
 
@@ -145,46 +227,32 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-operator|.
-name|NodeType
-operator|.
-name|NAME_NODE
+name|After
 import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|hdfs
+name|junit
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-operator|.
-name|NodeType
-operator|.
-name|DATA_NODE
+name|Test
 import|;
 end_import
 
@@ -197,8 +265,6 @@ DECL|class|TestDFSStorageStateRecovery
 specifier|public
 class|class
 name|TestDFSStorageStateRecovery
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -1672,6 +1738,8 @@ argument_list|()
 return|;
 block|}
 comment|/**    * This test iterates over the testCases table and attempts    * to startup the NameNode normally.    */
+annotation|@
+name|Test
 DECL|method|testNNStorageStates ()
 specifier|public
 name|void
@@ -1915,6 +1983,8 @@ block|}
 comment|// end numDirs loop
 block|}
 comment|/**    * This test iterates over the testCases table for Datanode storage and    * attempts to startup the DataNode normally.    */
+annotation|@
+name|Test
 DECL|method|testDNStorageStates ()
 specifier|public
 name|void
@@ -2191,6 +2261,8 @@ block|}
 comment|// end numDirs loop
 block|}
 comment|/**    * This test iterates over the testCases table for block pool storage and    * attempts to startup the DataNode normally.    */
+annotation|@
+name|Test
 DECL|method|testBlockPoolStorageStates ()
 specifier|public
 name|void
@@ -2478,8 +2550,10 @@ comment|// end testCases loop
 block|}
 comment|// end numDirs loop
 block|}
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -2499,8 +2573,10 @@ name|initialize
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|After
 DECL|method|tearDown ()
-specifier|protected
+specifier|public
 name|void
 name|tearDown
 parameter_list|()

@@ -64,20 +64,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|DataInputBuffer
@@ -1455,6 +1441,8 @@ return|return
 name|seed
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (int i, int j)
 specifier|public
 name|int
@@ -1492,6 +1480,8 @@ index|]
 index|]
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|swap (int i, int j)
 specifier|public
 name|void
@@ -1757,6 +1747,8 @@ return|return
 name|swaps
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (int i, int j)
 specifier|public
 name|int
@@ -1794,6 +1786,8 @@ name|j
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|swap (int i, int j)
 specifier|public
 name|void
@@ -2150,6 +2144,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|compare (int i, int j)
 specifier|public
 name|int
@@ -2253,6 +2249,8 @@ index|]
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|swap (int i, int j)
 specifier|public
 name|void

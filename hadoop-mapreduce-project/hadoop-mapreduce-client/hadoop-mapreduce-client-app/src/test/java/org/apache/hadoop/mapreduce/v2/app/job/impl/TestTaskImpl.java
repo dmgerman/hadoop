@@ -826,16 +826,6 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-DECL|field|taskType
-specifier|private
-specifier|final
-name|TaskType
-name|taskType
-init|=
-name|TaskType
-operator|.
-name|MAP
-decl_stmt|;
 DECL|field|appContext
 specifier|private
 name|AppContext
@@ -890,7 +880,11 @@ name|taskAttemptCounter
 init|=
 literal|0
 decl_stmt|;
-DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
+DECL|field|taskType
+name|TaskType
+name|taskType
+decl_stmt|;
+DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext, TaskType taskType)
 specifier|public
 name|MockTaskImpl
 parameter_list|(
@@ -943,6 +937,9 @@ name|metrics
 parameter_list|,
 name|AppContext
 name|appContext
+parameter_list|,
+name|TaskType
+name|taskType
 parameter_list|)
 block|{
 name|super
@@ -977,6 +974,12 @@ name|metrics
 argument_list|,
 name|appContext
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|taskType
+operator|=
+name|taskType
 expr_stmt|;
 block|}
 annotation|@
@@ -1030,6 +1033,8 @@ argument_list|,
 name|clock
 argument_list|,
 name|appContext
+argument_list|,
+name|taskType
 argument_list|)
 decl_stmt|;
 name|taskAttempts
@@ -1110,7 +1115,12 @@ specifier|private
 name|TaskAttemptId
 name|attemptId
 decl_stmt|;
-DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, AppContext appContext)
+DECL|field|taskType
+specifier|private
+name|TaskType
+name|taskType
+decl_stmt|;
+DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, AppContext appContext, TaskType taskType)
 specifier|public
 name|MockTaskAttemptImpl
 parameter_list|(
@@ -1152,6 +1162,9 @@ name|clock
 parameter_list|,
 name|AppContext
 name|appContext
+parameter_list|,
+name|TaskType
+name|taskType
 parameter_list|)
 block|{
 name|super
@@ -1208,6 +1221,12 @@ argument_list|(
 name|taskId
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|taskType
+operator|=
+name|taskType
+expr_stmt|;
 block|}
 DECL|method|getAttemptId ()
 specifier|public
@@ -1230,7 +1249,9 @@ block|{
 return|return
 operator|new
 name|MockTask
-argument_list|()
+argument_list|(
+name|taskType
+argument_list|)
 return|;
 block|}
 DECL|method|getProgress ()
@@ -1293,6 +1314,25 @@ name|MockTask
 extends|extends
 name|Task
 block|{
+DECL|field|taskType
+specifier|private
+name|TaskType
+name|taskType
+decl_stmt|;
+DECL|method|MockTask (TaskType taskType)
+name|MockTask
+parameter_list|(
+name|TaskType
+name|taskType
+parameter_list|)
+block|{
+name|this
+operator|.
+name|taskType
+operator|=
+name|taskType
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|run (JobConf job, TaskUmbilicalProtocol umbilical)
@@ -1324,7 +1364,13 @@ name|isMapTask
 parameter_list|()
 block|{
 return|return
-literal|true
+operator|(
+name|taskType
+operator|==
+name|TaskType
+operator|.
+name|MAP
+operator|)
 return|;
 block|}
 block|}
@@ -1518,8 +1564,17 @@ name|MockTaskAttemptImpl
 argument_list|>
 argument_list|()
 expr_stmt|;
-name|mockTask
-operator|=
+block|}
+DECL|method|createMockTask (TaskType taskType)
+specifier|private
+name|MockTaskImpl
+name|createMockTask
+parameter_list|(
+name|TaskType
+name|taskType
+parameter_list|)
+block|{
+return|return
 operator|new
 name|MockTaskImpl
 argument_list|(
@@ -1553,8 +1608,10 @@ argument_list|,
 name|metrics
 argument_list|,
 name|appContext
+argument_list|,
+name|taskType
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|After
@@ -1984,6 +2041,15 @@ argument_list|(
 literal|"--- START: testInit ---"
 argument_list|)
 expr_stmt|;
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
+argument_list|)
+expr_stmt|;
 name|assertTaskNewState
 argument_list|()
 expr_stmt|;
@@ -2014,6 +2080,15 @@ argument_list|(
 literal|"--- START: testScheduleTask ---"
 argument_list|)
 expr_stmt|;
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
+argument_list|)
+expr_stmt|;
 name|TaskId
 name|taskId
 init|=
@@ -2040,6 +2115,15 @@ operator|.
 name|info
 argument_list|(
 literal|"--- START: testKillScheduledTask ---"
+argument_list|)
+expr_stmt|;
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
 argument_list|)
 expr_stmt|;
 name|TaskId
@@ -2073,6 +2157,15 @@ operator|.
 name|info
 argument_list|(
 literal|"--- START: testKillScheduledTaskAttempt ---"
+argument_list|)
+expr_stmt|;
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
 argument_list|)
 expr_stmt|;
 name|TaskId
@@ -2112,6 +2205,15 @@ argument_list|(
 literal|"--- START: testLaunchTaskAttempt ---"
 argument_list|)
 expr_stmt|;
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
+argument_list|)
+expr_stmt|;
 name|TaskId
 name|taskId
 init|=
@@ -2147,6 +2249,15 @@ operator|.
 name|info
 argument_list|(
 literal|"--- START: testKillRunningTaskAttempt ---"
+argument_list|)
+expr_stmt|;
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
 argument_list|)
 expr_stmt|;
 name|TaskId
@@ -2192,6 +2303,15 @@ operator|.
 name|info
 argument_list|(
 literal|"--- START: testTaskProgress ---"
+argument_list|)
+expr_stmt|;
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
 argument_list|)
 expr_stmt|;
 comment|// launch task
@@ -2360,6 +2480,15 @@ name|void
 name|testFailureDuringTaskAttemptCommit
 parameter_list|()
 block|{
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
+argument_list|)
+expr_stmt|;
 name|TaskId
 name|taskId
 init|=
@@ -2499,13 +2628,14 @@ name|assertTaskSucceededState
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-DECL|method|testSpeculativeTaskAttemptSucceedsEvenIfFirstFails ()
-specifier|public
+DECL|method|runSpeculativeTaskAttemptSucceedsEvenIfFirstFails (TaskEventType failEvent)
+specifier|private
 name|void
-name|testSpeculativeTaskAttemptSucceedsEvenIfFirstFails
-parameter_list|()
+name|runSpeculativeTaskAttemptSucceedsEvenIfFirstFails
+parameter_list|(
+name|TaskEventType
+name|failEvent
+parameter_list|)
 block|{
 name|TaskId
 name|taskId
@@ -2613,15 +2743,113 @@ operator|.
 name|getAttemptId
 argument_list|()
 argument_list|,
-name|TaskEventType
-operator|.
-name|T_ATTEMPT_FAILED
+name|failEvent
 argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// The task should still be in the succeeded state
 name|assertTaskSucceededState
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testMapSpeculativeTaskAttemptSucceedsEvenIfFirstFails ()
+specifier|public
+name|void
+name|testMapSpeculativeTaskAttemptSucceedsEvenIfFirstFails
+parameter_list|()
+block|{
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
+argument_list|)
+expr_stmt|;
+name|runSpeculativeTaskAttemptSucceedsEvenIfFirstFails
+argument_list|(
+name|TaskEventType
+operator|.
+name|T_ATTEMPT_FAILED
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testReduceSpeculativeTaskAttemptSucceedsEvenIfFirstFails ()
+specifier|public
+name|void
+name|testReduceSpeculativeTaskAttemptSucceedsEvenIfFirstFails
+parameter_list|()
+block|{
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|REDUCE
+argument_list|)
+expr_stmt|;
+name|runSpeculativeTaskAttemptSucceedsEvenIfFirstFails
+argument_list|(
+name|TaskEventType
+operator|.
+name|T_ATTEMPT_FAILED
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testMapSpeculativeTaskAttemptSucceedsEvenIfFirstIsKilled ()
+specifier|public
+name|void
+name|testMapSpeculativeTaskAttemptSucceedsEvenIfFirstIsKilled
+parameter_list|()
+block|{
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|MAP
+argument_list|)
+expr_stmt|;
+name|runSpeculativeTaskAttemptSucceedsEvenIfFirstFails
+argument_list|(
+name|TaskEventType
+operator|.
+name|T_ATTEMPT_KILLED
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testReduceSpeculativeTaskAttemptSucceedsEvenIfFirstIsKilled ()
+specifier|public
+name|void
+name|testReduceSpeculativeTaskAttemptSucceedsEvenIfFirstIsKilled
+parameter_list|()
+block|{
+name|mockTask
+operator|=
+name|createMockTask
+argument_list|(
+name|TaskType
+operator|.
+name|REDUCE
+argument_list|)
+expr_stmt|;
+name|runSpeculativeTaskAttemptSucceedsEvenIfFirstFails
+argument_list|(
+name|TaskEventType
+operator|.
+name|T_ATTEMPT_KILLED
+argument_list|)
 expr_stmt|;
 block|}
 block|}

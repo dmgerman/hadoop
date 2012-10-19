@@ -21,12 +21,82 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|assertCounter
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|MetricsAsserts
+operator|.
+name|getMetrics
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -36,7 +106,77 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|BufferedInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|ByteArrayInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FilenameFilter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|RandomAccessFile
 import|;
 end_import
 
@@ -56,7 +196,37 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
 import|;
 end_import
 
@@ -96,27 +266,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
+name|Random
 import|;
 end_import
 
@@ -162,16 +312,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|regex
 operator|.
 name|Matcher
@@ -187,6 +327,20 @@ operator|.
 name|regex
 operator|.
 name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|io
+operator|.
+name|FileUtils
 import|;
 end_import
 
@@ -286,6 +440,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -302,7 +470,7 @@ name|fs
 operator|.
 name|permission
 operator|.
-name|*
+name|FsPermission
 import|;
 end_import
 
@@ -314,11 +482,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|fs
 operator|.
-name|protocol
+name|permission
 operator|.
-name|HdfsConstants
+name|PermissionStatus
 import|;
 end_import
 
@@ -376,7 +544,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsFileStatus
+name|HdfsConstants
 import|;
 end_import
 
@@ -390,11 +558,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|protocol
 operator|.
-name|namenode
-operator|.
-name|EditLogFileInputStream
+name|HdfsFileStatus
 import|;
 end_import
 
@@ -435,24 +601,6 @@ operator|.
 name|NNStorage
 operator|.
 name|NameNodeDirType
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NNStorage
 import|;
 end_import
 
@@ -528,6 +676,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -538,11 +700,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|aspectj
+name|junit
 operator|.
-name|util
-operator|.
-name|FileUtil
+name|Test
 import|;
 end_import
 
@@ -553,16 +713,6 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
 import|;
 end_import
 
@@ -594,22 +744,6 @@ name|Lists
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|MetricsAsserts
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class tests the creation and validation of a checkpoint.  */
 end_comment
@@ -619,8 +753,6 @@ DECL|class|TestEditLog
 specifier|public
 class|class
 name|TestEditLog
-extends|extends
-name|TestCase
 block|{
 static|static
 block|{
@@ -754,6 +886,18 @@ literal|""
 argument_list|)
 argument_list|)
 decl_stmt|;
+static|static
+block|{
+comment|// No need to fsync for the purposes of tests. This makes
+comment|// the tests run much faster.
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 DECL|field|TRAILER_BYTE
 specifier|static
 specifier|final
@@ -837,6 +981,8 @@ name|startIdx
 expr_stmt|;
 block|}
 comment|// add a bunch of transactions.
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -1007,6 +1153,8 @@ name|log
 return|;
 block|}
 comment|/**    * Test case for an empty edit log from a prior version of Hadoop.    */
+annotation|@
+name|Test
 DECL|method|testPreTxIdEditLogNoEdits ()
 specifier|public
 name|void
@@ -1065,6 +1213,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test case for loading a very simple edit log from a format    * prior to the inclusion of edit transaction IDs in the log.    */
+annotation|@
+name|Test
 DECL|method|testPreTxidEditLogWithEdits ()
 specifier|public
 name|void
@@ -1231,6 +1381,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Simple test for writing to and rolling the edit log.    */
+annotation|@
+name|Test
 DECL|method|testSimpleEditLog ()
 specifier|public
 name|void
@@ -1437,6 +1589,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Tests transaction logging in dfs.    */
+annotation|@
+name|Test
 DECL|method|testMultiThreadedEditLog ()
 specifier|public
 name|void
@@ -2066,6 +2220,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|call
@@ -2120,6 +2276,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|call
@@ -2167,6 +2325,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|call
@@ -2190,6 +2350,8 @@ name|get
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testSyncBatching ()
 specifier|public
 name|void
@@ -2438,6 +2600,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test what happens with the following sequence:    *    *  Thread A writes edit    *  Thread B calls logSyncAll    *           calls close() on stream    *  Thread A calls logSync    *    * This sequence is legal and can occur if enterSafeMode() is closely    * followed by saveNamespace.    */
+annotation|@
+name|Test
 DECL|method|testBatchedSyncWithClosedLogs ()
 specifier|public
 name|void
@@ -2631,6 +2795,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testEditChecksum ()
 specifier|public
 name|void
@@ -2946,6 +3112,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test what happens if the NN crashes when it has has started but    * had no transactions written.    */
+annotation|@
+name|Test
 DECL|method|testCrashRecoveryNoTransactions ()
 specifier|public
 name|void
@@ -2961,6 +3129,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Test what happens if the NN crashes when it has has started and    * had a few transactions written    */
+annotation|@
+name|Test
 DECL|method|testCrashRecoveryWithTransactions ()
 specifier|public
 name|void
@@ -3151,16 +3321,15 @@ argument_list|,
 literal|"dfs.backup-while-running"
 argument_list|)
 decl_stmt|;
-name|FileUtil
+name|FileUtils
 operator|.
-name|copyDir
+name|copyDirectory
 argument_list|(
 name|dfsDir
 argument_list|,
 name|backupDir
 argument_list|)
 expr_stmt|;
-empty_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3180,7 +3349,7 @@ expr_stmt|;
 comment|// Now restore the backup
 name|FileUtil
 operator|.
-name|deleteContents
+name|fullyDeleteContents
 argument_list|(
 name|dfsDir
 argument_list|)
@@ -3471,6 +3640,8 @@ block|}
 block|}
 block|}
 comment|// should succeed - only one corrupt log dir
+annotation|@
+name|Test
 DECL|method|testCrashRecoveryEmptyLogOneDir ()
 specifier|public
 name|void
@@ -3490,6 +3661,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// should fail - seen_txid updated to 3, but no log dir contains txid 3
+annotation|@
+name|Test
 DECL|method|testCrashRecoveryEmptyLogBothDirs ()
 specifier|public
 name|void
@@ -3509,6 +3682,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// should succeed - only one corrupt log dir
+annotation|@
+name|Test
 DECL|method|testCrashRecoveryEmptyLogOneDirNoUpdateSeenTxId ()
 specifier|public
 name|void
@@ -3528,6 +3703,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// should succeed - both log dirs corrupt, but seen_txid never updated
+annotation|@
+name|Test
 DECL|method|testCrashRecoveryEmptyLogBothDirsNoUpdateSeenTxId ()
 specifier|public
 name|void
@@ -4087,6 +4264,8 @@ literal|true
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testFailedOpen ()
 specifier|public
 name|void
@@ -4174,6 +4353,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Regression test for HDFS-1112/HDFS-3020. Ensures that, even if    * logSync isn't called periodically, the edit log will sync itself.    */
+annotation|@
+name|Test
 DECL|method|testAutoSync ()
 specifier|public
 name|void
@@ -5632,6 +5813,8 @@ operator|new
 name|FilenameFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept
@@ -5829,7 +6012,9 @@ expr_stmt|;
 name|elfos
 operator|.
 name|flushAndSync
-argument_list|()
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 name|elfos
 operator|.
@@ -5894,39 +6079,16 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
-name|StringWriter
-name|sw
-init|=
-operator|new
-name|StringWriter
-argument_list|()
-decl_stmt|;
-name|t
-operator|.
-name|printStackTrace
-argument_list|(
-operator|new
-name|PrintWriter
-argument_list|(
-name|sw
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|fail
 argument_list|(
-literal|"caught non-IOException throwable with message "
+literal|"Caught non-IOException throwable "
 operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
 name|t
-operator|.
-name|getMessage
-argument_list|()
-operator|+
-literal|"\nstack trace\n"
-operator|+
-name|sw
-operator|.
-name|toString
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6273,6 +6435,8 @@ operator|new
 name|FilenameFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept
@@ -6491,6 +6655,8 @@ operator|new
 name|FilenameFilter
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|boolean
 name|accept
@@ -6904,9 +7070,9 @@ comment|// How long does it take to read through all these edit logs?
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 try|try
@@ -6954,9 +7120,9 @@ block|}
 name|long
 name|endTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|double

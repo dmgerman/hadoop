@@ -208,7 +208,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|iterator ()
 specifier|public
 name|Iterator
@@ -388,7 +389,8 @@ name|next
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|hasNext ()
 specifier|public
 name|boolean
@@ -399,7 +401,8 @@ return|return
 name|hasnext
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|next ()
 specifier|public
 name|Map
@@ -458,6 +461,8 @@ name|curr
 return|;
 block|}
 comment|/** Not supported */
+annotation|@
+name|Override
 DECL|method|remove ()
 specifier|public
 name|void

@@ -28,13 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -295,6 +291,26 @@ operator|.
 name|HdfsServerConstants
 operator|.
 name|NamenodeRole
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Storage
+operator|.
+name|FormatConfirmable
 import|;
 end_import
 
@@ -943,6 +959,8 @@ DECL|class|FSEditLog
 specifier|public
 class|class
 name|FSEditLog
+implements|implements
+name|LogsPurgeable
 block|{
 DECL|field|LOG
 specifier|static
@@ -1177,6 +1195,8 @@ name|TransactionId
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 specifier|synchronized
 name|TransactionId
@@ -1826,6 +1846,136 @@ operator|.
 name|CLOSED
 expr_stmt|;
 block|}
+comment|/**    * Format all configured journals which are not file-based.    *     * File-based journals are skipped, since they are formatted by the    * Storage format code.    */
+DECL|method|formatNonFileJournals (NamespaceInfo nsInfo)
+specifier|synchronized
+name|void
+name|formatNonFileJournals
+parameter_list|(
+name|NamespaceInfo
+name|nsInfo
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|state
+operator|==
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+argument_list|,
+literal|"Bad state: %s"
+argument_list|,
+name|state
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|JournalManager
+name|jm
+range|:
+name|journalSet
+operator|.
+name|getJournalManagers
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+operator|!
+operator|(
+name|jm
+operator|instanceof
+name|FileJournalManager
+operator|)
+condition|)
+block|{
+name|jm
+operator|.
+name|format
+argument_list|(
+name|nsInfo
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+DECL|method|getFormatConfirmables ()
+specifier|synchronized
+name|List
+argument_list|<
+name|FormatConfirmable
+argument_list|>
+name|getFormatConfirmables
+parameter_list|()
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|state
+operator|==
+name|State
+operator|.
+name|BETWEEN_LOG_SEGMENTS
+argument_list|,
+literal|"Bad state: %s"
+argument_list|,
+name|state
+argument_list|)
+expr_stmt|;
+name|List
+argument_list|<
+name|FormatConfirmable
+argument_list|>
+name|ret
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+specifier|final
+name|JournalManager
+name|jm
+range|:
+name|journalSet
+operator|.
+name|getJournalManagers
+argument_list|()
+control|)
+block|{
+comment|// The FJMs are confirmed separately since they are also
+comment|// StorageDirectories
+if|if
+condition|(
+operator|!
+operator|(
+name|jm
+operator|instanceof
+name|FileJournalManager
+operator|)
+condition|)
+block|{
+name|ret
+operator|.
+name|add
+argument_list|(
+name|jm
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|ret
+return|;
+block|}
 comment|/**    * Write an operation to the edit log. Do not sync to persistent    * store yet.    */
 DECL|method|logEdit (final FSEditLogOp op)
 name|void
@@ -2322,7 +2472,16 @@ specifier|final
 name|String
 name|msg
 init|=
-literal|"Could not sync enough journals to persistent storage. "
+literal|"Could not sync enough journals to persistent storage "
+operator|+
+literal|"due to "
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|+
+literal|". "
 operator|+
 literal|"Unsynced transactions: "
 operator|+
@@ -2651,7 +2810,7 @@ name|setReplication
 argument_list|(
 name|newNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 operator|.
@@ -2752,7 +2911,7 @@ name|setReplication
 argument_list|(
 name|newNode
 operator|.
-name|getReplication
+name|getBlockReplication
 argument_list|()
 argument_list|)
 operator|.
@@ -4191,6 +4350,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Archive any log files that are older than the given txid.    */
+annotation|@
+name|Override
 DECL|method|purgeLogsOlderThan (final long minTxIdToKeep)
 specifier|public
 specifier|synchronized
@@ -4650,7 +4811,38 @@ name|ex
 parameter_list|)
 block|{
 comment|// All journals have failed, it is handled in logSync.
+comment|// TODO: are we sure this is OK?
 block|}
+block|}
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+specifier|public
+name|void
+name|selectInputStreams
+parameter_list|(
+name|Collection
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|streams
+parameter_list|,
+name|long
+name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
+parameter_list|)
+block|{
+name|journalSet
+operator|.
+name|selectInputStreams
+argument_list|(
+name|streams
+argument_list|,
+name|fromTxId
+argument_list|,
+name|inProgressOk
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId)
 specifier|public
@@ -4720,8 +4912,6 @@ name|EditLogInputStream
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|journalSet
-operator|.
 name|selectInputStreams
 argument_list|(
 name|streams

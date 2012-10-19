@@ -52,6 +52,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|ConnectException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|HttpURLConnection
 import|;
 end_import
@@ -873,6 +883,8 @@ name|SimpleDateFormat
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 name|SimpleDateFormat
 name|initialValue
@@ -1416,6 +1428,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Token
 argument_list|<
@@ -1454,21 +1468,35 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|Exception
+name|IOException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|ConnectException
+condition|)
+block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
-literal|"Couldn't get a delegation token from "
+literal|"Couldn't connect to "
 operator|+
 name|nnHttpUrl
 operator|+
-literal|" using http."
+literal|", assuming security is disabled"
 argument_list|)
 expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 if|if
 condition|(
 name|LOG
@@ -1481,16 +1509,15 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"error was "
+literal|"Exception getting delegation token"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
 block|}
-comment|//Maybe the server is in unsecure mode (that's bad but okay)
-return|return
-literal|null
-return|;
+throw|throw
+name|e
+throw|;
 block|}
 for|for
 control|(
@@ -1873,8 +1900,6 @@ name|url
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|openConnection ()
 specifier|protected
 name|HttpURLConnection
@@ -1898,14 +1923,18 @@ block|}
 comment|/** Use HTTP Range header for specifying offset. */
 annotation|@
 name|Override
-DECL|method|openConnection (final long offset)
+DECL|method|connect (final long offset, final boolean resolved)
 specifier|protected
 name|HttpURLConnection
-name|openConnection
+name|connect
 parameter_list|(
 specifier|final
 name|long
 name|offset
+parameter_list|,
+specifier|final
+name|boolean
+name|resolved
 parameter_list|)
 throws|throws
 name|IOException
@@ -1944,6 +1973,68 @@ operator|+
 literal|"-"
 argument_list|)
 expr_stmt|;
+block|}
+name|conn
+operator|.
+name|connect
+argument_list|()
+expr_stmt|;
+comment|//Expects HTTP_OK or HTTP_PARTIAL response codes.
+specifier|final
+name|int
+name|code
+init|=
+name|conn
+operator|.
+name|getResponseCode
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|offset
+operator|!=
+literal|0L
+operator|&&
+name|code
+operator|!=
+name|HttpURLConnection
+operator|.
+name|HTTP_PARTIAL
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"HTTP_PARTIAL expected, received "
+operator|+
+name|code
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|offset
+operator|==
+literal|0L
+operator|&&
+name|code
+operator|!=
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"HTTP_OK expected, received "
+operator|+
+name|code
+argument_list|)
+throw|;
 block|}
 return|return
 name|conn
@@ -2001,82 +2092,6 @@ literal|null
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-comment|/** Expects HTTP_OK and HTTP_PARTIAL response codes. */
-annotation|@
-name|Override
-DECL|method|checkResponseCode (final HttpURLConnection connection )
-specifier|protected
-name|void
-name|checkResponseCode
-parameter_list|(
-specifier|final
-name|HttpURLConnection
-name|connection
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-specifier|final
-name|int
-name|code
-init|=
-name|connection
-operator|.
-name|getResponseCode
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|startPos
-operator|!=
-literal|0
-operator|&&
-name|code
-operator|!=
-name|HttpURLConnection
-operator|.
-name|HTTP_PARTIAL
-condition|)
-block|{
-comment|// We asked for a byte range but did not receive a partial content
-comment|// response...
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"HTTP_PARTIAL expected, received "
-operator|+
-name|code
-argument_list|)
-throw|;
-block|}
-elseif|else
-if|if
-condition|(
-name|startPos
-operator|==
-literal|0
-operator|&&
-name|code
-operator|!=
-name|HttpURLConnection
-operator|.
-name|HTTP_OK
-condition|)
-block|{
-comment|// We asked for all bytes from the beginning but didn't receive a 200
-comment|// response (none of the other 2xx codes are valid here)
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"HTTP_OK expected, received "
-operator|+
-name|code
-argument_list|)
-throw|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -2208,6 +2223,8 @@ name|FileStatus
 argument_list|>
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|startElement (String ns, String localname, String qname, Attributes attrs)
 specifier|public
 name|void
@@ -3218,6 +3235,8 @@ comment|/** This optional operation is not yet supported. */
 end_comment
 
 begin_function
+annotation|@
+name|Override
 DECL|method|append (Path f, int bufferSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream

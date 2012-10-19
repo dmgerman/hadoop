@@ -217,6 +217,8 @@ name|FileContext
 parameter_list|()
 block|{}
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -305,6 +307,8 @@ block|}
 block|}
 comment|/**    * Starts or restarts monitoring, by opening in append-mode, the    * file specified by the<code>fileName</code> attribute,    * if specified. Otherwise the data will be written to standard    * output.    */
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -363,6 +367,8 @@ expr_stmt|;
 block|}
 comment|/**    * Stops monitoring, closing the file.    * @see #close()    */
 annotation|@
+name|Override
+annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
@@ -396,6 +402,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Emits a metrics record to a file.    */
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -546,6 +554,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Flushes the output writer, forcing updates to disk.    */
+annotation|@
+name|Override
 annotation|@
 name|InterfaceAudience
 operator|.

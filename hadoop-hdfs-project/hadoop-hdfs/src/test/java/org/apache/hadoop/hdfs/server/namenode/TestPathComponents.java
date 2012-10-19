@@ -21,34 +21,24 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Assert
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INode
+name|assertTrue
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
+name|Arrays
 import|;
 end_import
 
@@ -70,31 +60,23 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Test
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
 import|;
 end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import static
 name|org
 operator|.
 name|junit
 operator|.
-name|Assert
-operator|.
-name|*
+name|Test
 import|;
 end_import
 

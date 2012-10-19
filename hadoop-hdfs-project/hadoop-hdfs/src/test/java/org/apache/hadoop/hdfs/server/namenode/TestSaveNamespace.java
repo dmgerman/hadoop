@@ -679,6 +679,8 @@ operator|=
 name|throwRTE
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|answer (InvocationOnMock invocation)
 specifier|public
 name|Void
@@ -2580,6 +2582,8 @@ name|Void
 argument_list|>
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|public
 name|Void
 name|call

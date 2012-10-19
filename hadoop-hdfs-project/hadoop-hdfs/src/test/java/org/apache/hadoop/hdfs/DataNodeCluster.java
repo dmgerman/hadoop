@@ -180,6 +180,20 @@ name|DNS
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  *    *   * This program starts a mini cluster of data nodes  *  (ie a mini cluster without the name node), all within one address space.  *  It is assumed that the name node has been started separately prior  *  to running this program.  *    *  A use case of this is to run a real name node with a large number of  *  simulated data nodes for say a NN benchmark.  *    * Synopisis:  *   DataNodeCluster -n numDatNodes [-racks numRacks] -simulated  *              [-inject startingBlockId numBlocksPerDN]  *              [ -r replicationForInjectedBlocks ]  *              [-d editsLogDirectory]  *  * if -simulated is specified then simulated data nodes are started.  * if -inject is specified then blocks are injected in each datanode;  *    -inject option is valid only for simulated data nodes.  *      *    See Also @link #CreateEditsLog for creating a edits log file to  *    inject a matching set of blocks into into a name node.  *    Typical use of -inject is to inject blocks into a set of datanodes  *    using this DataNodeCLuster command  *    and then to inject the same blocks into a name node using the  *    CreateEditsLog command.  *  */
 end_comment
@@ -1267,9 +1281,9 @@ name|ip
 operator|+
 literal|"-"
 operator|+
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 return|;
 block|}

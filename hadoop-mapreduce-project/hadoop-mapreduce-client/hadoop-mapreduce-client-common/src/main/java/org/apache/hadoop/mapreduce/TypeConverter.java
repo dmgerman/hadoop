@@ -2912,6 +2912,9 @@ case|:
 case|case
 name|SUBMITTED
 case|:
+case|case
+name|ACCEPTED
+case|:
 return|return
 name|State
 operator|.

@@ -1027,7 +1027,7 @@ name|void
 name|testRecoverReplicas
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf

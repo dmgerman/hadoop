@@ -363,7 +363,8 @@ comment|//        entirely clear where the byte should go or what its value
 comment|//        should be.  Perhaps it suffices to have some deflated bytes
 comment|//        in the first buffer load?  (But how else would one do it?)
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|needsInput ()
 specifier|public
 specifier|synchronized
@@ -402,6 +403,8 @@ return|;
 block|}
 comment|/** {@inheritDoc} */
 comment|/*    * In our case, the input data includes both gzip header/trailer bytes (which    * we handle in executeState()) and deflate-stream bytes (which we hand off    * to Inflater).    *    * NOTE:  This code assumes the data passed in via b[] remains unmodified    *        until _we_ signal that it's safe to modify it (via needsInput()).    *        The alternative would require an additional buffer-copy even for    *        the bulk deflate stream, which is a performance hit we don't want    *        to absorb.  (Decompressor now documents this requirement.)    */
+annotation|@
+name|Override
 DECL|method|setInput (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -473,6 +476,8 @@ comment|// note:  might be zero
 block|}
 comment|/**    * Decompress the data (gzip header, deflate stream, gzip trailer) in the    * provided buffer.    *    * @return the number of decompressed bytes placed into b    */
 comment|/* From the caller's perspective, this is where the state machine lives.    * The code is written such that we never return from decompress() with    * data remaining in userBuf unless we're in FINISHED state and there was    * data beyond the current gzip member (e.g., we're within a concatenated    * gzip stream).  If this ever changes, {@link #needsInput()} will also    * need to be modified (i.e., uncomment the userBufLen condition).    *    * The actual deflate-stream processing (decompression) is handled by    * Java's Inflater class.  Unlike the gzip header/trailer code (execute*    * methods below), the deflate stream is never copied; Inflater operates    * directly on the user's buffer.    */
+annotation|@
+name|Override
 DECL|method|decompress (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -1277,7 +1282,7 @@ operator|.
 name|getBytesWritten
 argument_list|()
 operator|&
-literal|0xffffffff
+literal|0xffffffffL
 operator|)
 condition|)
 block|{
@@ -1333,6 +1338,8 @@ name|trailerBytesRead
 return|;
 block|}
 comment|/**    * Returns the number of bytes remaining in the input buffer; normally    * called when finished() is true to determine amount of post-gzip-stream    * data.  Note that, other than the finished state with concatenated data    * after the end of the current gzip stream, this will never return a    * non-zero value unless called after {@link #setInput(byte[] b, int off,    * int len)} and before {@link #decompress(byte[] b, int off, int len)}.    * (That is, after {@link #decompress(byte[] b, int off, int len)} it    * always returns zero, except in finished state with concatenated data.)</p>    *    * @return the total (non-negative) number of unprocessed bytes in input    */
+annotation|@
+name|Override
 DECL|method|getRemaining ()
 specifier|public
 specifier|synchronized
@@ -1344,7 +1351,8 @@ return|return
 name|userBufLen
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|needsDictionary ()
 specifier|public
 specifier|synchronized
@@ -1359,7 +1367,8 @@ name|needsDictionary
 argument_list|()
 return|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|setDictionary (byte[] b, int off, int len)
 specifier|public
 specifier|synchronized
@@ -1390,6 +1399,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Returns true if the end of the gzip substream (single "member") has been    * reached.</p>    */
+annotation|@
+name|Override
 DECL|method|finished ()
 specifier|public
 specifier|synchronized
@@ -1408,6 +1419,8 @@ operator|)
 return|;
 block|}
 comment|/**    * Resets everything, including the input buffer, regardless of whether the    * current gzip substream is finished.</p>    */
+annotation|@
+name|Override
 DECL|method|reset ()
 specifier|public
 specifier|synchronized
@@ -1472,7 +1485,8 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/** {@inheritDoc} */
+annotation|@
+name|Override
 DECL|method|end ()
 specifier|public
 specifier|synchronized
@@ -1996,7 +2010,7 @@ argument_list|)
 operator|)
 operator|)
 operator|&
-literal|0xffffffff
+literal|0xffffffffL
 operator|)
 return|;
 block|}

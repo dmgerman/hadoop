@@ -246,6 +246,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -499,6 +513,33 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Reset all data structures and mutable state.    */
+DECL|method|reset ()
+specifier|public
+specifier|synchronized
+name|void
+name|reset
+parameter_list|()
+block|{
+name|currentId
+operator|=
+literal|0
+expr_stmt|;
+name|allKeys
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|delegationTokenSequenceNumber
+operator|=
+literal|0
+expr_stmt|;
+name|currentTokens
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**     * Add a previously used master key to cache (when NN restarts),     * should be called before activate().    * */
 DECL|method|addKey (DelegationKey key)
 specifier|public
@@ -702,9 +743,9 @@ name|currentKey
 operator|.
 name|setExpiryDate
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|tokenMaxLifetime
@@ -738,9 +779,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 for|for
@@ -822,24 +863,15 @@ name|TokenIdent
 name|identifier
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Creating password for identifier: "
-operator|+
-name|identifier
-argument_list|)
-expr_stmt|;
 name|int
 name|sequenceNum
 decl_stmt|;
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|sequenceNum
@@ -875,6 +907,15 @@ operator|.
 name|setSequenceNumber
 argument_list|(
 name|sequenceNum
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Creating password for identifier: "
+operator|+
+name|identifier
 argument_list|)
 expr_stmt|;
 name|byte
@@ -965,9 +1006,9 @@ block|}
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -1078,9 +1119,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|ByteArrayInputStream
@@ -1160,10 +1201,6 @@ literal|null
 operator|)
 operator|||
 operator|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|id
 operator|.
 name|getRenewer
@@ -1171,7 +1208,9 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 operator|)
 condition|)
 block|{
@@ -1506,15 +1545,13 @@ name|renewer
 operator|==
 literal|null
 operator|||
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|renewer
 operator|.
 name|toString
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 operator|||
 operator|!
 name|cancelerShortName
@@ -1672,9 +1709,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|Iterator
@@ -1822,6 +1859,8 @@ specifier|private
 name|long
 name|lastTokenCacheCleanup
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -1857,9 +1896,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if

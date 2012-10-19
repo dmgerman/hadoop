@@ -334,6 +334,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -383,6 +397,7 @@ literal|"ha-nn-uri-%d"
 decl_stmt|;
 comment|/**    * Trigger an edits log roll on the active and then wait for the standby to    * catch up to all the edits done by the active. This method will check    * repeatedly for up to NN_LAG_TIMEOUT milliseconds, and then fail throwing    * {@link CouldNotCatchUpException}    *     * @param active active NN    * @param standby standby NN which should catch up to active    * @throws IOException if an error occurs rolling the edit log    * @throws CouldNotCatchUpException if the standby doesn't catch up to the    *         active in NN_LAG_TIMEOUT milliseconds    */
 DECL|method|waitForStandbyToCatchUp (NameNode active, NameNode standby)
+specifier|public
 specifier|static
 name|void
 name|waitForStandbyToCatchUp
@@ -428,16 +443,16 @@ expr_stmt|;
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 while|while
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start
@@ -1127,9 +1142,9 @@ block|{
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 while|while
@@ -1160,9 +1175,9 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start

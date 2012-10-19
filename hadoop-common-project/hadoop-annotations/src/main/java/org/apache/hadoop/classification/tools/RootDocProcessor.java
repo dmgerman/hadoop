@@ -591,6 +591,8 @@ operator|=
 name|target
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|invoke (Object proxy, Method method, Object[] args)
 specifier|public
 name|Object

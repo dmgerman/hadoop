@@ -765,6 +765,13 @@ name|void
 name|testBuildDTServiceName
 parameter_list|()
 block|{
+name|SecurityUtil
+operator|.
+name|setTokenServiceUseIp
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"127.0.0.1:123"
@@ -850,6 +857,13 @@ name|void
 name|testBuildTokenServiceSockAddr
 parameter_list|()
 block|{
+name|SecurityUtil
+operator|.
+name|setTokenServiceUseIp
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"127.0.0.1:123"

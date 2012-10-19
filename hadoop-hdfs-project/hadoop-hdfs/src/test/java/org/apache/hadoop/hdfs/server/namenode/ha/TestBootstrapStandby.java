@@ -23,12 +23,38 @@ package|;
 end_package
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|io
+name|junit
 operator|.
-name|ByteArrayInputStream
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -59,16 +85,6 @@ operator|.
 name|net
 operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
 import|;
 end_import
 
@@ -274,24 +290,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|NamenodeFsck
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|test
 operator|.
 name|GenericTestUtils
@@ -352,20 +350,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|base
-operator|.
-name|Suppliers
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|collect
 operator|.
 name|ImmutableList
@@ -397,18 +381,6 @@ operator|.
 name|collect
 operator|.
 name|Lists
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
 import|;
 end_import
 
@@ -570,8 +542,6 @@ specifier|public
 name|void
 name|shutdownCluster
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(
@@ -740,8 +710,6 @@ operator|.
 name|leaveSafeMode
 argument_list|(
 name|nn0
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|long

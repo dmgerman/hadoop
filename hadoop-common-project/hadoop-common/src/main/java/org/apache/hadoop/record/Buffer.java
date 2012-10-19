@@ -533,6 +533,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|hashCode ()
 specifier|public
 name|int
@@ -588,6 +590,8 @@ name|hash
 return|;
 block|}
 comment|/**    * Define the sort order of the Buffer.    *     * @param other The other buffer    * @return Positive if this is bigger than other, 0 if they are equal, and    *         negative if this is smaller than other.    */
+annotation|@
+name|Override
 DECL|method|compareTo (Object other)
 specifier|public
 name|int
@@ -693,6 +697,8 @@ name|count
 return|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|equals (Object other)
 specifier|public
 name|boolean
@@ -731,6 +737,8 @@ operator|)
 return|;
 block|}
 comment|// inheric javadoc
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -846,6 +854,8 @@ argument_list|)
 return|;
 block|}
 comment|// inherit javadoc
+annotation|@
+name|Override
 DECL|method|clone ()
 specifier|public
 name|Object

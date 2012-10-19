@@ -32,6 +32,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -87,6 +97,8 @@ implements|implements
 name|Seekable
 implements|,
 name|PositionedReadable
+implements|,
+name|HasFileDescriptor
 block|{
 comment|/**    * Creates a<code>BufferedFSInputStream</code>    * with the specified buffer size,    * and saves its  argument, the input stream    *<code>in</code>, for later use.  An internal    * buffer array of length<code>size</code>    * is created and stored in<code>buf</code>.    *    * @param   in     the underlying input stream.    * @param   size   the buffer size.    * @exception IllegalArgumentException if size<= 0.    */
 DECL|method|BufferedFSInputStream (FSInputStream in, int size)
@@ -108,6 +120,8 @@ name|size
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getPos ()
 specifier|public
 name|long
@@ -134,6 +148,8 @@ name|pos
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|skip (long n)
 specifier|public
 name|long
@@ -168,6 +184,8 @@ return|return
 name|n
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|seek (long pos)
 specifier|public
 name|void
@@ -261,6 +279,8 @@ name|pos
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|seekToNewSource (long targetPos)
 specifier|public
 name|boolean
@@ -294,6 +314,8 @@ name|targetPos
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|read (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|int
@@ -335,6 +357,8 @@ name|length
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer, int offset, int length)
 specifier|public
 name|void
@@ -375,6 +399,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFully (long position, byte[] buffer)
 specifier|public
 name|void
@@ -404,6 +430,42 @@ argument_list|,
 name|buffer
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFileDescriptor ()
+specifier|public
+name|FileDescriptor
+name|getFileDescriptor
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|in
+operator|instanceof
+name|HasFileDescriptor
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|HasFileDescriptor
+operator|)
+name|in
+operator|)
+operator|.
+name|getFileDescriptor
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 block|}
 end_class

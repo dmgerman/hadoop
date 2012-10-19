@@ -17,6 +17,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -88,16 +112,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -142,41 +156,9 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FsUrlStreamHandlerFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
+name|Test
 import|;
 end_import
 
@@ -189,10 +171,10 @@ DECL|class|TestUrlStreamHandler
 specifier|public
 class|class
 name|TestUrlStreamHandler
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Test opening and reading from an InputStream through a hdfs:// URL.    *<p>    * First generate a file with some content through the FileSystem API, then    * try to open and read the file through the URL stream API.    *     * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testDfsUrls ()
 specifier|public
 name|void
@@ -466,6 +448,8 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Test opening and reading from an InputStream through a file:// URL.    *     * @throws IOException    * @throws URISyntaxException    */
+annotation|@
+name|Test
 DECL|method|testFileUrls ()
 specifier|public
 name|void

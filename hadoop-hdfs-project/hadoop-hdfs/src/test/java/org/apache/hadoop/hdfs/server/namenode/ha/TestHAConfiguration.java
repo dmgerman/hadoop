@@ -34,7 +34,23 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|*
+name|DFS_NAMENODE_EDITS_DIR_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_SHARED_EDITS_DIR_KEY
 import|;
 end_import
 
@@ -46,7 +62,19 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
 import|;
 end_import
 

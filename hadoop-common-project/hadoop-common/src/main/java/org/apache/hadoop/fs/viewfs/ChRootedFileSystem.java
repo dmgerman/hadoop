@@ -421,15 +421,33 @@ name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|String
+name|pathString
+init|=
+name|uri
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|pathString
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|pathString
+operator|=
+literal|"/"
+expr_stmt|;
+block|}
 name|chRootPathPart
 operator|=
 operator|new
 name|Path
 argument_list|(
-name|uri
-operator|.
-name|getPath
-argument_list|()
+name|pathString
 argument_list|)
 expr_stmt|;
 name|chRootPathPartString
@@ -454,6 +472,8 @@ expr_stmt|;
 comment|// We don't use the wd of the myFs
 block|}
 comment|/**     * Called after a new FileSystem instance is constructed.    * @param name a uri whose authority section names the host, port, etc.    *   for this FileSystem    * @param conf the configuration    */
+annotation|@
+name|Override
 DECL|method|initialize (final URI name, final Configuration conf)
 specifier|public
 name|void

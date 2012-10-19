@@ -28,13 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|util
 operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|Util
+name|Time
 operator|.
 name|now
 import|;
@@ -48,7 +44,19 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -401,7 +409,7 @@ name|void
 name|testProcesOverReplicateBlock
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -862,7 +870,7 @@ name|void
 name|testChooseReplicaToDelete
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|cluster

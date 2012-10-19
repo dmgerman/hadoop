@@ -1258,6 +1258,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|handle (Callback[] callbacks)
 specifier|public
 name|void

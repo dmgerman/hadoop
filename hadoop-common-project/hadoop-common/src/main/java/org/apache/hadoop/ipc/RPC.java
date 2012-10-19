@@ -344,6 +344,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|*
@@ -366,6 +394,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -381,6 +423,27 @@ comment|/** A simple RPC mechanism.  *  * A<i>protocol</i> is a Java interface. 
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+name|value
+operator|=
+block|{
+literal|"Common"
+block|,
+literal|"HDFS"
+block|,
+literal|"MapReduce"
+block|,
+literal|"Yarn"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
 DECL|class|RPC
 specifier|public
 class|class
@@ -1424,9 +1487,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|IOException
@@ -1536,9 +1599,9 @@ block|}
 comment|// check if timed out
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|timeout
@@ -2236,7 +2299,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated protocol interface should be passed.    */
+comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated Please use {@link Builder} to build the {@link Server}    */
 annotation|@
 name|Deprecated
 DECL|method|getServer (final Object instance, final String bindAddress, final int port, Configuration conf)
@@ -2280,7 +2343,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated protocol interface should be passed.    */
+comment|/** Construct a server for a protocol implementation instance listening on a    * port and address.    * @deprecated Please use {@link Builder} to build the {@link Server}    */
 annotation|@
 name|Deprecated
 DECL|method|getServer (final Object instance, final String bindAddress, final int port, final int numHandlers, final boolean verbose, Configuration conf)
@@ -2342,7 +2405,9 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance. */
+comment|/** Construct a server for a protocol implementation instance.    *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, Configuration conf)
 specifier|public
 specifier|static
@@ -2393,7 +2458,7 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance.    * @deprecated secretManager should be passed.    */
+comment|/** Construct a server for a protocol implementation instance.    * @deprecated Please use {@link Builder} to build the {@link Server}    */
 annotation|@
 name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf)
@@ -2452,7 +2517,9 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance. */
+comment|/** Construct a server for a protocol implementation instance.     *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager)
 specifier|public
 specifier|static
@@ -2517,6 +2584,9 @@ literal|null
 argument_list|)
 return|;
 block|}
+comment|/**    *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 DECL|method|getServer (Class<?> protocol, Object instance, String bindAddress, int port, int numHandlers, boolean verbose, Configuration conf, SecretManager<? extends TokenIdentifier> secretManager, String portRangeConfig)
 specifier|public
 specifier|static
@@ -2597,7 +2667,9 @@ name|portRangeConfig
 argument_list|)
 return|;
 block|}
-comment|/** Construct a server for a protocol implementation instance. */
+comment|/** Construct a server for a protocol implementation instance.    *  @deprecated Please use {@link Builder} to build the {@link Server}    */
+annotation|@
+name|Deprecated
 specifier|public
 specifier|static
 parameter_list|<
@@ -2687,6 +2759,445 @@ argument_list|,
 literal|null
 argument_list|)
 return|;
+block|}
+comment|/**    * Class to construct instances of RPC server with specific options.    */
+DECL|class|Builder
+specifier|public
+specifier|static
+class|class
+name|Builder
+block|{
+DECL|field|protocol
+specifier|private
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+init|=
+literal|null
+decl_stmt|;
+DECL|field|instance
+specifier|private
+name|Object
+name|instance
+init|=
+literal|null
+decl_stmt|;
+DECL|field|bindAddress
+specifier|private
+name|String
+name|bindAddress
+init|=
+literal|"0.0.0.0"
+decl_stmt|;
+DECL|field|port
+specifier|private
+name|int
+name|port
+init|=
+literal|0
+decl_stmt|;
+DECL|field|numHandlers
+specifier|private
+name|int
+name|numHandlers
+init|=
+literal|1
+decl_stmt|;
+DECL|field|numReaders
+specifier|private
+name|int
+name|numReaders
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|queueSizePerHandler
+specifier|private
+name|int
+name|queueSizePerHandler
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|verbose
+specifier|private
+name|boolean
+name|verbose
+init|=
+literal|false
+decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
+DECL|field|secretManager
+specifier|private
+name|SecretManager
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|secretManager
+init|=
+literal|null
+decl_stmt|;
+DECL|field|portRangeConfig
+specifier|private
+name|String
+name|portRangeConfig
+init|=
+literal|null
+decl_stmt|;
+DECL|method|Builder (Configuration conf)
+specifier|public
+name|Builder
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+block|}
+comment|/** Mandatory field */
+DECL|method|setProtocol (Class<?> protocol)
+specifier|public
+name|Builder
+name|setProtocol
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|protocol
+parameter_list|)
+block|{
+name|this
+operator|.
+name|protocol
+operator|=
+name|protocol
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Mandatory field */
+DECL|method|setInstance (Object instance)
+specifier|public
+name|Builder
+name|setInstance
+parameter_list|(
+name|Object
+name|instance
+parameter_list|)
+block|{
+name|this
+operator|.
+name|instance
+operator|=
+name|instance
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: 0.0.0.0 */
+DECL|method|setBindAddress (String bindAddress)
+specifier|public
+name|Builder
+name|setBindAddress
+parameter_list|(
+name|String
+name|bindAddress
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bindAddress
+operator|=
+name|bindAddress
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: 0 */
+DECL|method|setPort (int port)
+specifier|public
+name|Builder
+name|setPort
+parameter_list|(
+name|int
+name|port
+parameter_list|)
+block|{
+name|this
+operator|.
+name|port
+operator|=
+name|port
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: 1 */
+DECL|method|setNumHandlers (int numHandlers)
+specifier|public
+name|Builder
+name|setNumHandlers
+parameter_list|(
+name|int
+name|numHandlers
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numHandlers
+operator|=
+name|numHandlers
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: -1 */
+DECL|method|setnumReaders (int numReaders)
+specifier|public
+name|Builder
+name|setnumReaders
+parameter_list|(
+name|int
+name|numReaders
+parameter_list|)
+block|{
+name|this
+operator|.
+name|numReaders
+operator|=
+name|numReaders
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: -1 */
+DECL|method|setQueueSizePerHandler (int queueSizePerHandler)
+specifier|public
+name|Builder
+name|setQueueSizePerHandler
+parameter_list|(
+name|int
+name|queueSizePerHandler
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queueSizePerHandler
+operator|=
+name|queueSizePerHandler
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: false */
+DECL|method|setVerbose (boolean verbose)
+specifier|public
+name|Builder
+name|setVerbose
+parameter_list|(
+name|boolean
+name|verbose
+parameter_list|)
+block|{
+name|this
+operator|.
+name|verbose
+operator|=
+name|verbose
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: null */
+DECL|method|setSecretManager ( SecretManager<? extends TokenIdentifier> secretManager)
+specifier|public
+name|Builder
+name|setSecretManager
+parameter_list|(
+name|SecretManager
+argument_list|<
+name|?
+extends|extends
+name|TokenIdentifier
+argument_list|>
+name|secretManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|secretManager
+operator|=
+name|secretManager
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/** Default: null */
+DECL|method|setPortRangeConfig (String portRangeConfig)
+specifier|public
+name|Builder
+name|setPortRangeConfig
+parameter_list|(
+name|String
+name|portRangeConfig
+parameter_list|)
+block|{
+name|this
+operator|.
+name|portRangeConfig
+operator|=
+name|portRangeConfig
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Build the RPC Server.       * @throws IOException on error      * @throws HadoopIllegalArgumentException when mandatory fields are not set      */
+DECL|method|build ()
+specifier|public
+name|Server
+name|build
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|HadoopIllegalArgumentException
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|conf
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"conf is not set"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|protocol
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"protocol is not set"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|this
+operator|.
+name|instance
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"instance is not set"
+argument_list|)
+throw|;
+block|}
+return|return
+name|getProtocolEngine
+argument_list|(
+name|this
+operator|.
+name|protocol
+argument_list|,
+name|this
+operator|.
+name|conf
+argument_list|)
+operator|.
+name|getServer
+argument_list|(
+name|this
+operator|.
+name|protocol
+argument_list|,
+name|this
+operator|.
+name|instance
+argument_list|,
+name|this
+operator|.
+name|bindAddress
+argument_list|,
+name|this
+operator|.
+name|port
+argument_list|,
+name|this
+operator|.
+name|numHandlers
+argument_list|,
+name|this
+operator|.
+name|numReaders
+argument_list|,
+name|this
+operator|.
+name|queueSizePerHandler
+argument_list|,
+name|this
+operator|.
+name|verbose
+argument_list|,
+name|this
+operator|.
+name|conf
+argument_list|,
+name|this
+operator|.
+name|secretManager
+argument_list|,
+name|this
+operator|.
+name|portRangeConfig
+argument_list|)
+return|;
+block|}
 block|}
 comment|/** An RPC Server. */
 DECL|class|Server

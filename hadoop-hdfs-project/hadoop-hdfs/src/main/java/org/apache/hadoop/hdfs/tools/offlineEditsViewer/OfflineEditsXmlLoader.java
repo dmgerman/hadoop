@@ -449,6 +449,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Loads edits file, uses visitor to process all elements    */
+annotation|@
+name|Override
 DECL|method|loadEdits ()
 specifier|public
 name|void
@@ -686,6 +688,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|startElement (String uri, String name, String qName, Attributes atts)
 specifier|public
 name|void
@@ -912,6 +916,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|endElement (String uri, String name, String qName)
 specifier|public
 name|void
@@ -1314,6 +1320,8 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|characters (char ch[], int start, int length)
 specifier|public
 name|void

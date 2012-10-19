@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -33,16 +69,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -78,13 +104,21 @@ name|DatanodeDescriptor
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_class
 DECL|class|TestNetworkTopologyWithNodeGroup
 specifier|public
 class|class
 name|TestNetworkTopologyWithNodeGroup
-extends|extends
-name|TestCase
 block|{
 DECL|field|cluster
 specifier|private
@@ -226,6 +260,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testNumOfChildren ()
 specifier|public
 name|void
@@ -247,6 +283,8 @@ name|length
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNumOfRacks ()
 specifier|public
 name|void
@@ -266,6 +304,8 @@ literal|3
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testRacks ()
 specifier|public
 name|void
@@ -411,6 +451,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNodeGroups ()
 specifier|public
 name|void
@@ -556,6 +598,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetDistance ()
 specifier|public
 name|void
@@ -665,6 +709,8 @@ literal|8
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testPseudoSortByDistance ()
 specifier|public
 name|void
@@ -1123,6 +1169,8 @@ name|frequency
 return|;
 block|}
 comment|/**    * This test checks that chooseRandom works for an excluded node.    */
+annotation|@
+name|Test
 DECL|method|testChooseRandomExcludedNode ()
 specifier|public
 name|void

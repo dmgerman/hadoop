@@ -139,6 +139,8 @@ operator|=
 name|nelems
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|done ()
 specifier|public
 name|boolean
@@ -153,6 +155,8 @@ literal|0
 operator|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|incr ()
 specifier|public
 name|void
@@ -195,6 +199,8 @@ operator|new
 name|ThreadLocal
 argument_list|()
 block|{
+annotation|@
+name|Override
 specifier|protected
 specifier|synchronized
 name|Object
@@ -278,6 +284,8 @@ operator|=
 name|din
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|readByte (final String tag)
 specifier|public
 name|byte
@@ -297,6 +305,8 @@ name|readByte
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readBool (final String tag)
 specifier|public
 name|boolean
@@ -316,6 +326,8 @@ name|readBoolean
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readInt (final String tag)
 specifier|public
 name|int
@@ -337,6 +349,8 @@ name|in
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readLong (final String tag)
 specifier|public
 name|long
@@ -358,6 +372,8 @@ name|in
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readFloat (final String tag)
 specifier|public
 name|float
@@ -377,6 +393,8 @@ name|readFloat
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readDouble (final String tag)
 specifier|public
 name|double
@@ -396,6 +414,8 @@ name|readDouble
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readString (final String tag)
 specifier|public
 name|String
@@ -417,6 +437,8 @@ name|in
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|readBuffer (final String tag)
 specifier|public
 name|Buffer
@@ -466,6 +488,8 @@ name|barr
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|startRecord (final String tag)
 specifier|public
 name|void
@@ -480,6 +504,8 @@ name|IOException
 block|{
 comment|// no-op
 block|}
+annotation|@
+name|Override
 DECL|method|endRecord (final String tag)
 specifier|public
 name|void
@@ -494,6 +520,8 @@ name|IOException
 block|{
 comment|// no-op
 block|}
+annotation|@
+name|Override
 DECL|method|startVector (final String tag)
 specifier|public
 name|Index
@@ -517,6 +545,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|endVector (final String tag)
 specifier|public
 name|void
@@ -531,6 +561,8 @@ name|IOException
 block|{
 comment|// no-op
 block|}
+annotation|@
+name|Override
 DECL|method|startMap (final String tag)
 specifier|public
 name|Index
@@ -554,6 +586,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|endMap (final String tag)
 specifier|public
 name|void

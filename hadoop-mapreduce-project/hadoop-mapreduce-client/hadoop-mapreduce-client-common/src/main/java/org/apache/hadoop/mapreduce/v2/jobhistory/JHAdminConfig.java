@@ -192,19 +192,6 @@ name|DEFAULT_MR_HISTORY_DATESTRING_CACHE_SIZE
 init|=
 literal|200000
 decl_stmt|;
-comment|//TODO REMOVE debug-mode
-comment|/** Equivalent to 0.20 mapreduce.jobhistory.debug.mode */
-DECL|field|MR_HISTORY_DEBUG_MODE
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|MR_HISTORY_DEBUG_MODE
-init|=
-name|MR_HISTORY_PREFIX
-operator|+
-literal|"debug-mode"
-decl_stmt|;
 comment|/** Path where history files should be stored for DONE jobs. **/
 DECL|field|MR_HISTORY_DONE_DIR
 specifier|public
@@ -424,7 +411,28 @@ name|MR_HISTORY_STORAGE
 init|=
 name|MR_HISTORY_PREFIX
 operator|+
-literal|".store.class"
+literal|"store.class"
+decl_stmt|;
+comment|/** Whether to use fixed ports with the minicluster. */
+DECL|field|MR_HISTORY_MINICLUSTER_FIXED_PORTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_MINICLUSTER_FIXED_PORTS
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"minicluster.fixed.ports"
+decl_stmt|;
+comment|/**    * Default is false to be able to run tests concurrently without port    * conflicts.    */
+DECL|field|DEFAULT_MR_HISTORY_MINICLUSTER_FIXED_PORTS
+specifier|public
+specifier|static
+name|boolean
+name|DEFAULT_MR_HISTORY_MINICLUSTER_FIXED_PORTS
+init|=
+literal|false
 decl_stmt|;
 block|}
 end_class

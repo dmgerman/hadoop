@@ -20,6 +20,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -466,7 +480,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * {@inheritDoc}      */
 annotation|@
 name|Override
 DECL|method|getReconfigurableProperties ()
@@ -491,7 +504,6 @@ name|PROP4
 argument_list|)
 return|;
 block|}
-comment|/**      * {@inheritDoc}      */
 annotation|@
 name|Override
 DECL|method|reconfigurePropertyImpl (String property, String newVal)
@@ -1278,9 +1290,9 @@ expr_stmt|;
 name|long
 name|endWait
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 literal|2000
@@ -1292,9 +1304,9 @@ operator|.
 name|isAlive
 argument_list|()
 operator|&&
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|<
 name|endWait

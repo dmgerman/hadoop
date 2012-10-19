@@ -64,6 +64,20 @@ name|LogFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * A utility to easily test threaded/synchronized code.  * Utility works by letting you add threads that do some work to a  * test context object, and then lets you kick them all off to stress test  * your parallel code.  *  * Also propagates thread exceptions back to the runner, to let you verify.  *  * An example:  *  *<code>  *  final AtomicInteger threadsRun = new AtomicInteger();  *  *  TestContext ctx = new TestContext();  *  // Add 3 threads to test.  *  for (int i = 0; i< 3; i++) {  *    ctx.addThread(new TestingThread(ctx) {  *      @Override  *      public void doWork() throws Exception {  *        threadsRun.incrementAndGet();  *      }  *    });  *  }  *  ctx.startThreads();  *  // Set a timeout period for threads to complete.  *  ctx.waitFor(30000);  *  assertEquals(3, threadsRun.get());  *</code>  *  * For repetitive actions, use the {@link MultithreadedTestUtil.RepeatingThread}  * instead.  *  * (More examples can be found in {@link TestMultithreadedTestUtil})  */
 end_comment
@@ -215,9 +229,9 @@ block|{
 name|long
 name|endTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|millis
@@ -243,9 +257,9 @@ name|left
 init|=
 name|endTime
 operator|-
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -441,6 +455,8 @@ operator|=
 name|ctx
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -524,6 +540,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Repeats a given user action until the context is asked to stop      * or meets an error.      */
+annotation|@
+name|Override
 DECL|method|doWork ()
 specifier|public
 specifier|final

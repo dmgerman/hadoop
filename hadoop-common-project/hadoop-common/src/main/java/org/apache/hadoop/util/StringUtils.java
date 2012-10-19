@@ -168,6 +168,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|net
+operator|.
+name|InetAddresses
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -343,6 +357,20 @@ name|String
 name|fullHostname
 parameter_list|)
 block|{
+if|if
+condition|(
+name|InetAddresses
+operator|.
+name|isInetAddress
+argument_list|(
+name|fullHostname
+argument_list|)
+condition|)
+block|{
+return|return
+name|fullHostname
+return|;
+block|}
 name|int
 name|offset
 init|=
@@ -946,7 +974,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    *     * @param str    */
+comment|/**    * @param str    *          The string array to be parsed into an URI array.    * @return<tt>null</tt> if str is<tt>null</tt>, else the URI array    *         equivalent to str.    * @throws IllegalArgumentException    *           If any string in str violates RFC&nbsp;2396.    */
 DECL|method|stringToURI (String[] str)
 specifier|public
 specifier|static
@@ -1020,30 +1048,20 @@ name|URISyntaxException
 name|ur
 parameter_list|)
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
+throw|throw
+operator|new
+name|IllegalArgumentException
 argument_list|(
-literal|"Exception in specified URI's "
+literal|"Failed to create uri for "
 operator|+
-name|StringUtils
-operator|.
-name|stringifyException
-argument_list|(
-name|ur
-argument_list|)
-argument_list|)
-expr_stmt|;
-comment|//making sure its asssigned to null in case of an error
-name|uris
+name|str
 index|[
 name|i
 index|]
-operator|=
-literal|null
-expr_stmt|;
+argument_list|,
+name|ur
+argument_list|)
+throw|;
 block|}
 block|}
 return|return
@@ -1552,15 +1570,13 @@ literal|null
 operator|==
 name|str
 operator|||
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|str
 operator|.
 name|trim
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return
@@ -1821,12 +1837,10 @@ comment|// String.split returns a single empty result for splitting the empty
 comment|// string.
 if|if
 condition|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|str
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return
@@ -2722,6 +2736,15 @@ name|VersionInfo
 operator|.
 name|getDate
 argument_list|()
+block|,
+literal|"  java = "
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.version"
+argument_list|)
 block|}
 argument_list|)
 argument_list|)

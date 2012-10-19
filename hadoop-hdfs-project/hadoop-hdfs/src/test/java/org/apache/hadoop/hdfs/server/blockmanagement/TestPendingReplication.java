@@ -21,22 +21,26 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
 operator|.
-name|TestCase
+name|assertEquals
 import|;
 end_import
 
 begin_import
-import|import
-name|java
+import|import static
+name|org
 operator|.
-name|lang
+name|junit
 operator|.
-name|System
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -56,6 +60,16 @@ name|Block
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests the internals of PendingReplicationBlocks.java  */
 end_comment
@@ -65,8 +79,6 @@ DECL|class|TestPendingReplication
 specifier|public
 class|class
 name|TestPendingReplication
-extends|extends
-name|TestCase
 block|{
 DECL|field|TIMEOUT
 specifier|final
@@ -77,6 +89,8 @@ init|=
 literal|3
 decl_stmt|;
 comment|// 3 seconds
+annotation|@
+name|Test
 DECL|method|testPendingReplication ()
 specifier|public
 name|void

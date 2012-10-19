@@ -28,17 +28,31 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
 import|;
 end_import
 
 begin_import
-import|import
+import|import static
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
 operator|.
 name|Assert
+operator|.
+name|fail
 import|;
 end_import
 
@@ -48,7 +62,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|IOException
 import|;
 end_import
 
@@ -771,8 +785,6 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Could not renew or cancel the token"
@@ -916,8 +928,6 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Could not renew or cancel the token"
@@ -1028,8 +1038,6 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"Could not renew or cancel the token"

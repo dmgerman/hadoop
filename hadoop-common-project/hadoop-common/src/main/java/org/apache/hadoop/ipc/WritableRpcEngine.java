@@ -226,6 +226,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -640,6 +654,8 @@ name|rpcVersion
 return|;
 block|}
 annotation|@
+name|Override
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
@@ -770,6 +786,8 @@ expr_stmt|;
 block|}
 block|}
 annotation|@
+name|Override
+annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
@@ -873,6 +891,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -982,6 +1002,8 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -998,6 +1020,8 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -1111,6 +1135,8 @@ name|factory
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|invoke (Object proxy, Method method, Object[] args)
 specifier|public
 name|Object
@@ -1144,9 +1170,9 @@ condition|)
 block|{
 name|startTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 block|}
@@ -1188,9 +1214,9 @@ block|{
 name|long
 name|callTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime
@@ -1220,6 +1246,8 @@ argument_list|()
 return|;
 block|}
 comment|/* close the IPC client that's responsible for this invoker's RPCs */
+annotation|@
+name|Override
 DECL|method|close ()
 specifier|synchronized
 specifier|public
@@ -2191,9 +2219,9 @@ comment|// Invoke the protocol method
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|Method
@@ -2258,9 +2286,9 @@ call|(
 name|int
 call|)
 argument_list|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|startTime

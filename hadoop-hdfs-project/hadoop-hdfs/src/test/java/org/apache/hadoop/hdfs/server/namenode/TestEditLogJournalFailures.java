@@ -671,7 +671,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Could not sync enough journals to persistent storage. "
+literal|"Could not sync enough journals to persistent storage due to "
+operator|+
+literal|"No journals available to flush. "
 operator|+
 literal|"Unsynced transactions: 1"
 argument_list|,
@@ -1125,7 +1127,9 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Could not sync enough journals to persistent storage. "
+literal|"Could not sync enough journals to persistent storage due to "
+operator|+
+literal|"setReadyToFlush failed for too many journals. "
 operator|+
 literal|"Unsynced transactions: 1"
 argument_list|,

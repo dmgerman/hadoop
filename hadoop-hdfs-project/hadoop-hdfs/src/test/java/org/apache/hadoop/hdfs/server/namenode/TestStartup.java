@@ -63,6 +63,54 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -139,16 +187,6 @@ operator|.
 name|util
 operator|.
 name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -532,7 +570,27 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Assert
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -545,8 +603,6 @@ DECL|class|TestStartup
 specifier|public
 class|class
 name|TestStartup
-extends|extends
-name|TestCase
 block|{
 DECL|field|NAME_NODE_HOST
 specifier|public
@@ -633,97 +689,10 @@ name|fsimageLength
 init|=
 literal|0
 decl_stmt|;
-DECL|method|writeFile (FileSystem fileSys, Path name, int repl)
-specifier|private
-name|void
-name|writeFile
-parameter_list|(
-name|FileSystem
-name|fileSys
-parameter_list|,
-name|Path
-name|name
-parameter_list|,
-name|int
-name|repl
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|FSDataOutputStream
-name|stm
-init|=
-name|fileSys
-operator|.
-name|create
-argument_list|(
-name|name
-argument_list|,
-literal|true
-argument_list|,
-name|fileSys
-operator|.
-name|getConf
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-name|CommonConfigurationKeys
-operator|.
-name|IO_FILE_BUFFER_SIZE_KEY
-argument_list|,
-literal|4096
-argument_list|)
-argument_list|,
-operator|(
-name|short
-operator|)
-name|repl
-argument_list|,
-name|blockSize
-argument_list|)
-decl_stmt|;
-name|byte
-index|[]
-name|buffer
-init|=
-operator|new
-name|byte
-index|[
-name|fileSize
-index|]
-decl_stmt|;
-name|Random
-name|rand
-init|=
-operator|new
-name|Random
-argument_list|(
-name|seed
-argument_list|)
-decl_stmt|;
-name|rand
-operator|.
-name|nextBytes
-argument_list|(
-name|buffer
-argument_list|)
-expr_stmt|;
-name|stm
-operator|.
-name|write
-argument_list|(
-name|buffer
-argument_list|)
-expr_stmt|;
-name|stm
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-block|}
+annotation|@
+name|Before
 DECL|method|setUp ()
-specifier|protected
+specifier|public
 name|void
 name|setUp
 parameter_list|()
@@ -914,6 +883,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * clean up    */
+annotation|@
+name|After
 DECL|method|tearDown ()
 specifier|public
 name|void
@@ -1047,15 +1018,26 @@ argument_list|(
 literal|"t1"
 argument_list|)
 decl_stmt|;
-name|this
+name|DFSTestUtil
 operator|.
-name|writeFile
+name|createFile
 argument_list|(
 name|fileSys
 argument_list|,
 name|file1
 argument_list|,
+name|fileSize
+argument_list|,
+name|fileSize
+argument_list|,
+name|blockSize
+argument_list|,
+operator|(
+name|short
+operator|)
 literal|1
+argument_list|,
+name|seed
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1717,6 +1699,8 @@ block|}
 block|}
 block|}
 comment|/**    * secnn-6    * checkpoint for edits and image is the same directory    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testChkpointStartup2 ()
 specifier|public
 name|void
@@ -1837,6 +1821,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * seccn-8    * checkpoint for edits and image are different directories     * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testChkpointStartup1 ()
 specifier|public
 name|void
@@ -1958,6 +1944,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * secnn-7    * secondary node copies fsimage and edits into correct separate directories.    * @throws IOException    */
+annotation|@
+name|Test
 DECL|method|testSNNStartup ()
 specifier|public
 name|void
@@ -2367,6 +2355,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testCompression ()
 specifier|public
 name|void
@@ -2704,6 +2694,8 @@ name|join
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testImageChecksum ()
 specifier|public
 name|void
@@ -2753,19 +2745,12 @@ name|cluster
 init|=
 literal|null
 decl_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|compress
 condition|)
 block|{
-name|conf
+name|config
 operator|.
 name|setBoolean
 argument_list|(
@@ -2795,7 +2780,7 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|conf
+name|config
 argument_list|)
 operator|.
 name|numDataNodes
@@ -2950,7 +2935,7 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|conf
+name|config
 argument_list|)
 operator|.
 name|numDataNodes
@@ -3019,6 +3004,8 @@ block|}
 block|}
 block|}
 comment|/**    * This test tests hosts include list contains host names.  After namenode    * restarts, the still alive datanodes should not have any trouble in getting    * registrant again.    */
+annotation|@
+name|Test
 DECL|method|testNNRestart ()
 specifier|public
 name|void
@@ -3043,13 +3030,6 @@ decl_stmt|;
 name|Path
 name|excludeFile
 decl_stmt|;
-name|Configuration
-name|conf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
 name|int
 name|HEARTBEAT_INTERVAL
 init|=
@@ -3063,7 +3043,7 @@ name|FileSystem
 operator|.
 name|getLocal
 argument_list|(
-name|conf
+name|config
 argument_list|)
 expr_stmt|;
 name|Path
@@ -3106,7 +3086,7 @@ literal|"exclude"
 argument_list|)
 expr_stmt|;
 comment|// Setup conf
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -3132,7 +3112,7 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|conf
+name|config
 operator|.
 name|set
 argument_list|(
@@ -3220,7 +3200,7 @@ name|MiniDFSCluster
 operator|.
 name|Builder
 argument_list|(
-name|conf
+name|config
 argument_list|)
 operator|.
 name|numDataNodes
@@ -3259,8 +3239,6 @@ argument_list|(
 name|nn
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertTrue
 argument_list|(
 name|cluster

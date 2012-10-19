@@ -159,6 +159,8 @@ init|=
 literal|"test-runjar.jar"
 decl_stmt|;
 annotation|@
+name|Override
+annotation|@
 name|Before
 DECL|method|setUp ()
 specifier|protected
@@ -208,6 +210,8 @@ name|makeTestJar
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 annotation|@
 name|After
 DECL|method|tearDown ()

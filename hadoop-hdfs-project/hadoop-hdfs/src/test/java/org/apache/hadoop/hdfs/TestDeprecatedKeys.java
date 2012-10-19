@@ -17,16 +17,14 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
-name|apache
+name|junit
 operator|.
-name|hadoop
+name|Assert
 operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
+name|assertTrue
 import|;
 end_import
 
@@ -46,11 +44,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -59,10 +57,10 @@ DECL|class|TestDeprecatedKeys
 specifier|public
 class|class
 name|TestDeprecatedKeys
-extends|extends
-name|TestCase
 block|{
 comment|//Tests a deprecated key
+annotation|@
+name|Test
 DECL|method|testDeprecatedKeys ()
 specifier|public
 name|void

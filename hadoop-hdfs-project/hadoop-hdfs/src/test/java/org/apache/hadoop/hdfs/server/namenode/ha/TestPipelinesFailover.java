@@ -810,6 +810,8 @@ block|{
 DECL|enumConstant|GRACEFUL_FAILOVER
 name|GRACEFUL_FAILOVER
 block|{
+annotation|@
+name|Override
 name|void
 name|run
 parameter_list|(
@@ -839,6 +841,8 @@ block|,
 DECL|enumConstant|ORIGINAL_ACTIVE_CRASHED
 name|ORIGINAL_ACTIVE_CRASHED
 block|{
+annotation|@
+name|Override
 name|void
 name|run
 parameter_list|(

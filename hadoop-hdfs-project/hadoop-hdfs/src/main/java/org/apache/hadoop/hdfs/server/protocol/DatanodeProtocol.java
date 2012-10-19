@@ -276,24 +276,6 @@ init|=
 literal|8
 decl_stmt|;
 comment|// update balancer bandwidth
-DECL|field|DNA_UC_ACTION_REPORT_STATUS
-specifier|final
-specifier|static
-name|int
-name|DNA_UC_ACTION_REPORT_STATUS
-init|=
-literal|100
-decl_stmt|;
-comment|// Report upgrade status
-DECL|field|DNA_UC_ACTION_START_UPGRADE
-specifier|final
-specifier|static
-name|int
-name|DNA_UC_ACTION_START_UPGRADE
-init|=
-literal|101
-decl_stmt|;
-comment|// start upgrade
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
 DECL|method|registerDatanode (DatanodeRegistration registration )
 specifier|public
@@ -392,17 +374,6 @@ specifier|public
 name|NamespaceInfo
 name|versionRequest
 parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * This is a very general way to send a command to the name-node during    * distributed upgrade process.    *     * The generosity is because the variety of upgrade commands is unpredictable.    * The reply from the name-node is also received in the form of an upgrade     * command.     *     * @return a reply in the form of an upgrade command    */
-DECL|method|processUpgradeCommand (UpgradeCommand comm)
-name|UpgradeCommand
-name|processUpgradeCommand
-parameter_list|(
-name|UpgradeCommand
-name|comm
-parameter_list|)
 throws|throws
 name|IOException
 function_decl|;

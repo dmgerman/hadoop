@@ -26,6 +26,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|lib
 operator|.
 name|lang
@@ -39,6 +53,10 @@ comment|/**  * Exception thrown by the {@link Server} class.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ServerException
 specifier|public
 class|class
@@ -47,6 +65,10 @@ extends|extends
 name|XException
 block|{
 comment|/**    * Error codes use by the {@link Server} class.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|enum|ERROR
 specifier|public
 specifier|static
@@ -121,6 +143,24 @@ DECL|enumConstant|S11
 name|S11
 argument_list|(
 literal|"Service [{0}] exception during status change to [{1}] -server shutting down-, {2}"
+argument_list|)
+block|,
+DECL|enumConstant|S12
+name|S12
+argument_list|(
+literal|"Could not start service [{0}], {1}"
+argument_list|)
+block|,
+DECL|enumConstant|S13
+name|S13
+argument_list|(
+literal|"Missing system property [{0}]"
+argument_list|)
+block|,
+DECL|enumConstant|S14
+name|S14
+argument_list|(
+literal|"Could not initialize server, {0}"
 argument_list|)
 block|;
 DECL|field|msg

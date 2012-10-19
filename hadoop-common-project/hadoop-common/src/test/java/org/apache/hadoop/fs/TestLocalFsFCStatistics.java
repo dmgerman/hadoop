@@ -169,6 +169,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|verifyReadBytes (Statistics stats)
 specifier|protected
 name|void
@@ -191,6 +193,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|verifyWrittenBytes (Statistics stats)
 specifier|protected
 name|void
@@ -216,6 +220,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getFsUri ()
 specifier|protected
 name|URI

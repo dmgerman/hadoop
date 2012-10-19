@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -33,16 +45,6 @@ operator|.
 name|net
 operator|.
 name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -92,6 +94,16 @@ name|NameNode
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/** Test NameNode port defaulting code. */
 end_comment
@@ -101,9 +113,9 @@ DECL|class|TestDefaultNameNodePort
 specifier|public
 class|class
 name|TestDefaultNameNodePort
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testGetAddressFromString ()
 specifier|public
 name|void
@@ -177,6 +189,8 @@ literal|555
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetAddressFromConf ()
 specifier|public
 name|void
@@ -269,6 +283,8 @@ name|DEFAULT_PORT
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetUri ()
 specifier|public
 name|void

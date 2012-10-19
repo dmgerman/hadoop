@@ -17,6 +17,42 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -114,16 +150,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -147,6 +173,22 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|impl
+operator|.
+name|Log4JLogger
 import|;
 end_import
 
@@ -250,9 +292,99 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|DataNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|DataNodeTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSNamesystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Level
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -265,8 +397,6 @@ DECL|class|TestDatanodeBlockScanner
 specifier|public
 class|class
 name|TestDatanodeBlockScanner
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -320,6 +450,28 @@ argument_list|(
 literal|".*?(SCAN_PERIOD)\\s*:\\s*(\\d+.*?)"
 argument_list|)
 decl_stmt|;
+static|static
+block|{
+operator|(
+operator|(
+name|Log4JLogger
+operator|)
+name|FSNamesystem
+operator|.
+name|auditLog
+operator|)
+operator|.
+name|getLogger
+argument_list|()
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|WARN
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * This connects to datanode and fetches block verification data.    * It repeats this until the given block has a verification time> newTime.    * @param newTime - validation timestamps before newTime are "old", the    *            result of previous validations.  This method waits until a "new"    *            validation timestamp is obtained.  If no validator runs soon    *            enough, the method will time out.    * @return - the new validation timestamp    * @throws IOException    * @throws TimeoutException    */
 DECL|method|waitForVerification (int infoPort, FileSystem fs, Path file, int blocksValidated, long newTime, long timeout)
 specifier|private
@@ -366,9 +518,9 @@ decl_stmt|;
 name|long
 name|lastWarnTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -414,9 +566,9 @@ name|Long
 operator|.
 name|MAX_VALUE
 else|:
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|timeout
@@ -432,9 +584,9 @@ if|if
 condition|(
 name|failtime
 operator|<
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 condition|)
 block|{
@@ -579,9 +731,9 @@ block|{
 name|long
 name|now
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 if|if
@@ -633,6 +785,8 @@ return|return
 name|verificationTime
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDatanodeBlockScanner ()
 specifier|public
 name|void
@@ -646,9 +800,9 @@ block|{
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|Configuration
@@ -917,13 +1071,15 @@ name|blk
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBlockCorruptionPolicy ()
 specifier|public
 name|void
 name|testBlockCorruptionPolicy
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -1151,39 +1307,30 @@ name|block
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Read the file to trigger reportBadBlocks by client
-try|try
-block|{
-name|IOUtils
+comment|// Trigger each of the DNs to scan this block immediately.
+comment|// The block pool scanner doesn't run frequently enough on its own
+comment|// to notice these, and due to HDFS-1371, the client won't report
+comment|// bad blocks to the NN when all replicas are bad.
+for|for
+control|(
+name|DataNode
+name|dn
+range|:
+name|cluster
 operator|.
-name|copyBytes
-argument_list|(
-name|fs
-operator|.
-name|open
-argument_list|(
-name|file1
-argument_list|)
-argument_list|,
-operator|new
-name|IOUtils
-operator|.
-name|NullOutputStream
+name|getDataNodes
 argument_list|()
+control|)
+block|{
+name|DataNodeTestUtils
+operator|.
+name|runBlockScannerForBlock
+argument_list|(
+name|dn
 argument_list|,
-name|conf
-argument_list|,
-literal|true
+name|block
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// Ignore exception
 block|}
 comment|// We now have the blocks to be marked as corrupt and we get back all
 comment|// its replicas
@@ -1222,6 +1369,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * testBlockCorruptionRecoveryPolicy.    * This tests recovery of corrupt replicas, first for one corrupt replica    * then for two. The test invokes blockCorruptionRecoveryPolicy which    * 1. Creates a block with desired number of replicas    * 2. Corrupts the desired number of replicas and restarts the datanodes    *    containing the corrupt replica. Additionaly we also read the block    *    in case restarting does not report corrupt replicas.    *    Restarting or reading from the datanode would trigger reportBadBlocks     *    to namenode.    *    NameNode adds it to corruptReplicasMap and neededReplication    * 3. Test waits until all corrupt replicas are reported, meanwhile    *    Re-replciation brings the block back to healthy state    * 4. Test again waits until the block is reported with expected number    *    of good replicas.    */
+annotation|@
+name|Test
 DECL|method|testBlockCorruptionRecoveryPolicy1 ()
 specifier|public
 name|void
@@ -1251,6 +1400,8 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBlockCorruptionRecoveryPolicy2 ()
 specifier|public
 name|void
@@ -1348,6 +1499,17 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_PENDING_TIMEOUT_SEC_KEY
+argument_list|,
+literal|5L
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -1416,6 +1578,12 @@ argument_list|,
 name|file1
 argument_list|)
 decl_stmt|;
+specifier|final
+name|int
+name|ITERATIONS
+init|=
+literal|10
+decl_stmt|;
 comment|// Wait until block is replicated to numReplicas
 name|DFSTestUtil
 operator|.
@@ -1428,6 +1596,18 @@ argument_list|,
 name|numReplicas
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|int
+name|k
+init|=
+literal|0
+init|;
+condition|;
+name|k
+operator|++
+control|)
+block|{
 comment|// Corrupt numCorruptReplicas replicas of block
 name|int
 index|[]
@@ -1582,6 +1762,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Loop until all corrupt replicas are reported
+try|try
+block|{
 name|DFSTestUtil
 operator|.
 name|waitCorruptReplicas
@@ -1600,6 +1782,37 @@ argument_list|,
 name|numCorruptReplicas
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|TimeoutException
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|k
+operator|>
+name|ITERATIONS
+condition|)
+block|{
+throw|throw
+name|e
+throw|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Timed out waiting for corrupt replicas, trying again, iteration "
+operator|+
+name|k
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+break|break;
+block|}
 comment|// Loop until the block recovers after replication
 name|DFSTestUtil
 operator|.
@@ -1653,6 +1866,8 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Test if NameNode handles truncated blocks in block report */
+annotation|@
+name|Test
 DECL|method|testTruncatedBlockReport ()
 specifier|public
 name|void
@@ -1735,9 +1950,9 @@ expr_stmt|;
 name|long
 name|startTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|MiniDFSCluster
@@ -2169,9 +2384,9 @@ decl_stmt|;
 name|long
 name|failtime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 operator|(
@@ -2204,9 +2419,9 @@ if|if
 condition|(
 name|failtime
 operator|<
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 condition|)
 block|{

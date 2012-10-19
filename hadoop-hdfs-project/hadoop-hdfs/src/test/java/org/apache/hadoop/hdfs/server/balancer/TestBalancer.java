@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -332,7 +356,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|HdfsConstants
+operator|.
+name|DatanodeReportType
 import|;
 end_import
 
@@ -348,9 +374,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
-operator|.
-name|DatanodeReportType
+name|LocatedBlock
 import|;
 end_import
 
@@ -376,33 +400,23 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertEquals
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
 import|;
 end_import
 
@@ -632,6 +646,10 @@ name|nnIndex
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|FileSystem
 name|fs
@@ -691,6 +709,10 @@ name|numNodes
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 name|cluster
 operator|=
@@ -1468,9 +1490,9 @@ name|Long
 operator|.
 name|MAX_VALUE
 else|:
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|timeout
@@ -1543,9 +1565,9 @@ break|break;
 comment|//done
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|>
 name|failtime
@@ -1646,9 +1668,9 @@ name|Long
 operator|.
 name|MAX_VALUE
 else|:
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|+
 name|timeout
@@ -1749,9 +1771,9 @@ literal|false
 expr_stmt|;
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|>
 name|failtime
@@ -2212,6 +2234,11 @@ block|}
 comment|/**    * Test parse method in Balancer#Cli class with threshold value out of    * boundaries.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancerCliParseWithThresholdOutOfBoundaries ()
 specifier|public
 name|void
@@ -2321,6 +2348,11 @@ block|}
 comment|/** Test a cluster with even distribution,     * then a new empty node is added to the cluster*/
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancer0 ()
 specifier|public
 name|void
@@ -2329,13 +2361,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Configuration
-name|conf
-init|=
+name|testBalancer0Internal
+argument_list|(
 operator|new
 name|HdfsConfiguration
 argument_list|()
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testBalancer0Internal (Configuration conf)
+name|void
+name|testBalancer0Internal
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|initConf
 argument_list|(
 name|conf
@@ -2355,6 +2398,11 @@ block|}
 comment|/** Test unevenly distributed cluster */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancer1 ()
 specifier|public
 name|void
@@ -2363,13 +2411,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Configuration
-name|conf
-init|=
+name|testBalancer1Internal
+argument_list|(
 operator|new
 name|HdfsConfiguration
 argument_list|()
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testBalancer1Internal (Configuration conf)
+name|void
+name|testBalancer1Internal
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|initConf
 argument_list|(
 name|conf
@@ -2418,6 +2477,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancer2 ()
 specifier|public
 name|void
@@ -2426,13 +2490,24 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Configuration
-name|conf
-init|=
+name|testBalancer2Internal
+argument_list|(
 operator|new
 name|HdfsConfiguration
 argument_list|()
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testBalancer2Internal (Configuration conf)
+name|void
+name|testBalancer2Internal
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|initConf
 argument_list|(
 name|conf
@@ -2661,6 +2736,11 @@ block|}
 comment|/**    * Test parse method in Balancer#Cli class with wrong number of params    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testBalancerCliParseWithWrongParams ()
 specifier|public
 name|void

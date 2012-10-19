@@ -196,6 +196,8 @@ name|context
 expr_stmt|;
 block|}
 comment|/**    * Returns the record name.     *    * @return the record name    */
+annotation|@
+name|Override
 DECL|method|getRecordName ()
 specifier|public
 name|String
@@ -207,6 +209,8 @@ name|recordName
 return|;
 block|}
 comment|/**    * Sets the named tag to the specified value.    *    * @param tagName name of the tag    * @param tagValue new value of the tag    * @throws MetricsException if the tagName conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setTag (String tagName, String tagValue)
 specifier|public
 name|void
@@ -242,6 +246,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named tag to the specified value.    *    * @param tagName name of the tag    * @param tagValue new value of the tag    * @throws MetricsException if the tagName conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setTag (String tagName, int tagValue)
 specifier|public
 name|void
@@ -270,6 +276,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named tag to the specified value.    *    * @param tagName name of the tag    * @param tagValue new value of the tag    * @throws MetricsException if the tagName conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setTag (String tagName, long tagValue)
 specifier|public
 name|void
@@ -298,6 +306,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named tag to the specified value.    *    * @param tagName name of the tag    * @param tagValue new value of the tag    * @throws MetricsException if the tagName conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setTag (String tagName, short tagValue)
 specifier|public
 name|void
@@ -326,6 +336,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named tag to the specified value.    *    * @param tagName name of the tag    * @param tagValue new value of the tag    * @throws MetricsException if the tagName conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setTag (String tagName, byte tagValue)
 specifier|public
 name|void
@@ -354,6 +366,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Removes any tag of the specified name.    */
+annotation|@
+name|Override
 DECL|method|removeTag (String tagName)
 specifier|public
 name|void
@@ -372,6 +386,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named metric to the specified value.    *    * @param metricName name of the metric    * @param metricValue new value of the metric    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setMetric (String metricName, int metricValue)
 specifier|public
 name|void
@@ -398,6 +414,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named metric to the specified value.    *    * @param metricName name of the metric    * @param metricValue new value of the metric    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setMetric (String metricName, long metricValue)
 specifier|public
 name|void
@@ -424,6 +442,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named metric to the specified value.    *    * @param metricName name of the metric    * @param metricValue new value of the metric    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setMetric (String metricName, short metricValue)
 specifier|public
 name|void
@@ -450,6 +470,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named metric to the specified value.    *    * @param metricName name of the metric    * @param metricValue new value of the metric    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setMetric (String metricName, byte metricValue)
 specifier|public
 name|void
@@ -476,6 +498,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Sets the named metric to the specified value.    *    * @param metricName name of the metric    * @param metricValue new value of the metric    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|setMetric (String metricName, float metricValue)
 specifier|public
 name|void
@@ -501,6 +525,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increments the named metric by the specified value.    *    * @param metricName name of the metric    * @param metricValue incremental value    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|incrMetric (String metricName, int metricValue)
 specifier|public
 name|void
@@ -527,6 +553,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increments the named metric by the specified value.    *    * @param metricName name of the metric    * @param metricValue incremental value    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|incrMetric (String metricName, long metricValue)
 specifier|public
 name|void
@@ -553,6 +581,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increments the named metric by the specified value.    *    * @param metricName name of the metric    * @param metricValue incremental value    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|incrMetric (String metricName, short metricValue)
 specifier|public
 name|void
@@ -579,6 +609,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increments the named metric by the specified value.    *    * @param metricName name of the metric    * @param metricValue incremental value    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|incrMetric (String metricName, byte metricValue)
 specifier|public
 name|void
@@ -605,6 +637,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Increments the named metric by the specified value.    *    * @param metricName name of the metric    * @param metricValue incremental value    * @throws MetricsException if the metricName or the type of the metricValue     * conflicts with the configuration    */
+annotation|@
+name|Override
 DECL|method|incrMetric (String metricName, float metricValue)
 specifier|public
 name|void
@@ -690,6 +724,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Updates the table of buffered data which is to be sent periodically.    * If the tag values match an existing row, that row is updated;     * otherwise, a new row is added.    */
+annotation|@
+name|Override
 DECL|method|update ()
 specifier|public
 name|void
@@ -705,6 +741,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Removes the row, if it exists, in the buffered data table having tags     * that equal the tags that have been set on this record.     */
+annotation|@
+name|Override
 DECL|method|remove ()
 specifier|public
 name|void

@@ -417,28 +417,6 @@ operator|)
 return|;
 block|}
 block|}
-DECL|method|INode ()
-specifier|protected
-name|INode
-parameter_list|()
-block|{
-name|name
-operator|=
-literal|null
-expr_stmt|;
-name|parent
-operator|=
-literal|null
-expr_stmt|;
-name|modificationTime
-operator|=
-literal|0
-expr_stmt|;
-name|accessTime
-operator|=
-literal|0
-expr_stmt|;
-block|}
 DECL|method|INode (PermissionStatus permissions, long mTime, long atime)
 name|INode
 parameter_list|(

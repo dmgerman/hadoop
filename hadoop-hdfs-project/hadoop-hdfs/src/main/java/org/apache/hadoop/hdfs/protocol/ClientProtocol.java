@@ -234,42 +234,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|HdfsConstants
-operator|.
-name|UpgradeAction
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|UpgradeStatusReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|namenode
@@ -397,6 +361,26 @@ operator|.
 name|token
 operator|.
 name|TokenInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|block
+operator|.
+name|DataEncryptionKey
 import|;
 end_import
 
@@ -1133,6 +1117,19 @@ name|AccessControlException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Roll the edit log.    * Requires superuser privileges.    *     * @throws AccessControlException if the superuser privilege is violated    * @throws IOException if log roll fails    * @return the txid of the new segment    */
+annotation|@
+name|Idempotent
+DECL|method|rollEdits ()
+specifier|public
+name|long
+name|rollEdits
+parameter_list|()
+throws|throws
+name|AccessControlException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Enable/Disable restore failed storage.    *<p>    * sets flag to enable restore of failed storage replicas    *     * @throws AccessControlException if the superuser privilege is violated.    */
 DECL|method|restoreFailedStorage (String arg)
 specifier|public
@@ -1162,18 +1159,6 @@ specifier|public
 name|void
 name|finalizeUpgrade
 parameter_list|()
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * Report distributed upgrade progress or force current upgrade to proceed.    *     * @param action {@link HdfsConstants.UpgradeAction} to perform    * @return upgrade status information or null if no upgrades are in progress    * @throws IOException    */
-DECL|method|distributedUpgradeProgress (UpgradeAction action)
-specifier|public
-name|UpgradeStatusReport
-name|distributedUpgradeProgress
-parameter_list|(
-name|UpgradeAction
-name|action
-parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
@@ -1489,6 +1474,15 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|token
 parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * @return encryption key so a client can encrypt data sent via the    *         DataTransferProtocol to/from DataNodes.    * @throws IOException    */
+DECL|method|getDataEncryptionKey ()
+specifier|public
+name|DataEncryptionKey
+name|getDataEncryptionKey
+parameter_list|()
 throws|throws
 name|IOException
 function_decl|;

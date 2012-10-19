@@ -118,6 +118,28 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -546,6 +568,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -605,7 +641,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This test simulates a variety of situations when blocks are being  * intentionally orrupted, unexpectedly modified, and so on before a block  * report is happening  */
+comment|/**  * This test simulates a variety of situations when blocks are being  * intentionally corrupted, unexpectedly modified, and so on before a block  * report is happening  */
 end_comment
 
 begin_class
@@ -1915,7 +1951,7 @@ name|void
 name|blockReport_06
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 specifier|final
 name|String
@@ -2078,7 +2114,7 @@ name|void
 name|blockReport_07
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 specifier|final
 name|String
@@ -3445,9 +3481,9 @@ decl_stmt|;
 name|long
 name|start
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 decl_stmt|;
 name|int
@@ -3486,9 +3522,9 @@ expr_stmt|;
 name|long
 name|waiting_period
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start
@@ -3569,9 +3605,9 @@ expr_stmt|;
 block|}
 name|start
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 expr_stmt|;
 while|while
@@ -3627,9 +3663,9 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|now
 argument_list|()
 operator|-
 name|start
@@ -3756,6 +3792,10 @@ name|waitReplicas
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
+throws|,
+name|TimeoutException
 block|{
 if|if
 condition|(
@@ -3795,6 +3835,11 @@ literal|null
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|waitClusterUp
+argument_list|()
 expr_stmt|;
 name|ArrayList
 argument_list|<
@@ -3862,6 +3907,7 @@ if|if
 condition|(
 name|waitReplicas
 condition|)
+block|{
 name|DFSTestUtil
 operator|.
 name|waitReplication
@@ -3873,6 +3919,7 @@ argument_list|,
 name|REPL_FACTOR
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|prepareForRide (final Path filePath, final String METHOD_NAME, long fileSize)
 specifier|private
@@ -4383,6 +4430,8 @@ operator|=
 name|all
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|accept (File file, String s)
 specifier|public
 name|boolean
@@ -4829,6 +4878,8 @@ operator|=
 name|filePath
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|run ()
 specifier|public
 name|void
@@ -4847,16 +4898,21 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Exception
 name|e
 parameter_list|)
 block|{
-name|LOG
+name|e
 operator|.
-name|warn
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
 argument_list|(
-literal|"Shouldn't happen"
-argument_list|,
+literal|"Failed to start BlockChecker: "
+operator|+
 name|e
 argument_list|)
 expr_stmt|;

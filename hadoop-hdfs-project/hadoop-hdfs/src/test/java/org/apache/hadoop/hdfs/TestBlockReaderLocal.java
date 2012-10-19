@@ -291,7 +291,7 @@ name|void
 name|testStablePositionAfterCorruptRead
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 specifier|final
 name|short
