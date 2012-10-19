@@ -1413,6 +1413,10 @@ argument_list|,
 name|this
 operator|.
 name|containerTokenSecretManager
+argument_list|,
+name|this
+operator|.
+name|clientToAMSecretManager
 argument_list|)
 expr_stmt|;
 comment|// Register event handler for NodesListManager
@@ -1944,10 +1948,6 @@ name|ApplicationMasterLauncher
 argument_list|(
 name|this
 operator|.
-name|clientToAMSecretManager
-argument_list|,
-name|this
-operator|.
 name|rmContext
 argument_list|)
 return|;
@@ -2012,10 +2012,6 @@ argument_list|(
 name|this
 operator|.
 name|rmContext
-argument_list|,
-name|this
-operator|.
-name|clientToAMSecretManager
 argument_list|,
 name|this
 operator|.

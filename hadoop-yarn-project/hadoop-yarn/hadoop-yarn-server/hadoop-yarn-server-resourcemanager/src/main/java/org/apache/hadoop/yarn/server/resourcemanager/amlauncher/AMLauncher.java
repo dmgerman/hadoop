@@ -662,26 +662,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|security
-operator|.
-name|ClientToAMTokenSecretManagerInRM
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|ProtoUtils
@@ -746,12 +726,6 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|field|clientToAMSecretManager
-specifier|private
-specifier|final
-name|ClientToAMTokenSecretManagerInRM
-name|clientToAMSecretManager
-decl_stmt|;
 DECL|field|eventType
 specifier|private
 specifier|final
@@ -775,7 +749,7 @@ specifier|final
 name|EventHandler
 name|handler
 decl_stmt|;
-DECL|method|AMLauncher (RMContext rmContext, RMAppAttempt application, AMLauncherEventType eventType, ClientToAMTokenSecretManagerInRM clientToAMSecretManager, Configuration conf)
+DECL|method|AMLauncher (RMContext rmContext, RMAppAttempt application, AMLauncherEventType eventType, Configuration conf)
 specifier|public
 name|AMLauncher
 parameter_list|(
@@ -787,9 +761,6 @@ name|application
 parameter_list|,
 name|AMLauncherEventType
 name|eventType
-parameter_list|,
-name|ClientToAMTokenSecretManagerInRM
-name|clientToAMSecretManager
 parameter_list|,
 name|Configuration
 name|conf
@@ -806,12 +777,6 @@ operator|.
 name|conf
 operator|=
 name|conf
-expr_stmt|;
-name|this
-operator|.
-name|clientToAMSecretManager
-operator|=
-name|clientToAMSecretManager
 expr_stmt|;
 name|this
 operator|.
@@ -1616,7 +1581,10 @@ name|clientSecretKey
 init|=
 name|this
 operator|.
-name|clientToAMSecretManager
+name|rmContext
+operator|.
+name|getClientToAMTokenSecretManager
+argument_list|()
 operator|.
 name|getMasterKey
 argument_list|(

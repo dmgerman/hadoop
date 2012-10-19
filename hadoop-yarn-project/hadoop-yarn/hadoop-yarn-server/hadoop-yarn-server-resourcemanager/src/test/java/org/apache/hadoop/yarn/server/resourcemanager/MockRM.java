@@ -264,7 +264,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Resource
+name|NodeState
 import|;
 end_import
 
@@ -282,7 +282,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeState
+name|Resource
 import|;
 end_import
 
@@ -1648,10 +1648,6 @@ return|return
 operator|new
 name|ApplicationMasterLauncher
 argument_list|(
-name|this
-operator|.
-name|clientToAMSecretManager
-argument_list|,
 name|getRMContext
 argument_list|()
 argument_list|)

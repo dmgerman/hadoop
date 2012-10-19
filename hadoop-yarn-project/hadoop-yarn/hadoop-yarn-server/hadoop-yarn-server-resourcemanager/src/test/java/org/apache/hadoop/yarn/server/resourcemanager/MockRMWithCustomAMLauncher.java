@@ -217,10 +217,6 @@ return|return
 operator|new
 name|ApplicationMasterLauncher
 argument_list|(
-name|super
-operator|.
-name|clientToAMSecretManager
-argument_list|,
 name|getRMContext
 argument_list|()
 argument_list|)
@@ -247,8 +243,6 @@ argument_list|,
 name|application
 argument_list|,
 name|event
-argument_list|,
-name|clientToAMSecretManager
 argument_list|,
 name|getConfig
 argument_list|()

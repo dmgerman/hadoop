@@ -808,6 +808,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 block|{
 annotation|@
@@ -937,8 +939,6 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 operator|new
 name|ApplicationACLsManager
 argument_list|(
@@ -982,8 +982,6 @@ block|{
 name|super
 argument_list|(
 name|context
-argument_list|,
-name|clientToAMSecretManager
 argument_list|,
 name|scheduler
 argument_list|,
