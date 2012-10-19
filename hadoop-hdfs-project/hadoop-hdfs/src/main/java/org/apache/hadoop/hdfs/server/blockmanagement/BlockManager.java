@@ -1688,8 +1688,6 @@ specifier|final
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 specifier|final
 name|boolean
@@ -6299,7 +6297,7 @@ comment|// The reason we use 'pending' is so we can retry
 comment|// replications that fail after an appropriate amount of time.
 name|pendingReplications
 operator|.
-name|add
+name|increment
 argument_list|(
 name|block
 argument_list|,
@@ -6519,7 +6517,7 @@ return|return
 name|scheduledWork
 return|;
 block|}
-comment|/**    * Choose target datanodes according to the replication policy.    * @throws IOException if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, DatanodeDescriptor, HashMap, long)    */
+comment|/**    * Choose target datanodes according to the replication policy.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, DatanodeDescriptor,    *      List, boolean, HashMap, long)    */
 DECL|method|chooseTarget (final String src, final int numOfReplicas, final DatanodeDescriptor client, final HashMap<Node, Node> excludedNodes, final long blocksize)
 specifier|public
 name|DatanodeDescriptor
@@ -8671,7 +8669,7 @@ return|return
 name|storedBlock
 return|;
 block|}
-comment|/**    * Queue the given reported block for later processing in the    * standby node. {@see PendingDataNodeMessages}.    * @param reason a textual reason to report in the debug logs    */
+comment|/**    * Queue the given reported block for later processing in the    * standby node. @see PendingDataNodeMessages.    * @param reason a textual reason to report in the debug logs    */
 DECL|method|queueReportedBlock (DatanodeDescriptor dn, Block block, ReplicaState reportedState, String reason)
 specifier|private
 name|void
@@ -9346,7 +9344,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Faster version of {@link addStoredBlock()}, intended for use with     * initial block report at startup.  If not in startup safe mode, will    * call standard addStoredBlock().    * Assumes this method is called "immediately" so there is no need to    * refresh the storedBlock from blocksMap.    * Doesn't handle underReplication/overReplication, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    * @throws IOException    */
+comment|/**    * Faster version of    * {@link #addStoredBlock(BlockInfo, DatanodeDescriptor, DatanodeDescriptor, boolean)}    * , intended for use with initial block report at startup. If not in startup    * safe mode, will call standard addStoredBlock(). Assumes this method is    * called "immediately" so there is no need to refresh the storedBlock from    * blocksMap. Doesn't handle underReplication/overReplication, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    *     * @throws IOException    */
 DECL|method|addStoredBlockImmediate (BlockInfo storedBlock, DatanodeDescriptor node)
 specifier|private
 name|void
@@ -11602,7 +11600,7 @@ comment|// Modify the blocks->datanode map and node's map.
 comment|//
 name|pendingReplications
 operator|.
-name|remove
+name|decrement
 argument_list|(
 name|block
 argument_list|)
@@ -12299,7 +12297,7 @@ name|stale
 argument_list|)
 return|;
 block|}
-comment|/**     * Simpler, faster form of {@link countNodes()} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link countNodes()} instead.    *     * @param b - the block being tested    * @return count of live nodes for this block    */
+comment|/**     * Simpler, faster form of {@link #countNodes(Block)} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link countNodes()} instead.    *     * @param b - the block being tested    * @return count of live nodes for this block    */
 DECL|method|countLiveNodes (BlockInfo b)
 name|int
 name|countLiveNodes
@@ -13031,6 +13029,14 @@ expr_stmt|;
 name|blocksMap
 operator|.
 name|removeBlock
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
+comment|// Remove the block from pendingReplications
+name|pendingReplications
+operator|.
+name|remove
 argument_list|(
 name|block
 argument_list|)
