@@ -90,6 +90,7 @@ end_comment
 
 begin_class
 DECL|class|INodeDirectoryWithQuota
+specifier|public
 class|class
 name|INodeDirectoryWithQuota
 extends|extends
@@ -119,6 +120,7 @@ name|diskspace
 decl_stmt|;
 comment|/** Convert an existing directory inode to one with the given quota    *     * @param nsQuota Namespace quota to be assigned to this inode    * @param dsQuota Diskspace quota to be assigned to this indoe    * @param other The other inode from which all other properties are copied    */
 DECL|method|INodeDirectoryWithQuota (long nsQuota, long dsQuota, INodeDirectory other)
+specifier|protected
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|long
@@ -130,8 +132,6 @@ parameter_list|,
 name|INodeDirectory
 name|other
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|super
 argument_list|(
@@ -272,6 +272,7 @@ comment|/** Get this directory's namespace quota    * @return this directory's n
 annotation|@
 name|Override
 DECL|method|getNsQuota ()
+specifier|public
 name|long
 name|getNsQuota
 parameter_list|()
@@ -284,6 +285,7 @@ comment|/** Get this directory's diskspace quota    * @return this directory's d
 annotation|@
 name|Override
 DECL|method|getDsQuota ()
+specifier|public
 name|long
 name|getDsQuota
 parameter_list|()

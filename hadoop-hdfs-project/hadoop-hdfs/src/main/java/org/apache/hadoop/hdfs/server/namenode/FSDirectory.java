@@ -5558,8 +5558,133 @@ return|return
 name|filesRemoved
 return|;
 block|}
-comment|/**    * Replaces the specified inode with the specified one.    */
-DECL|method|replaceNode (String path, INodeFile oldnode, INodeFile newnode)
+comment|/**    * Replaces the specified INode.    */
+DECL|method|replaceINodeUnsynced (String path, INode oldnode, INode newnode )
+specifier|private
+name|void
+name|replaceINodeUnsynced
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|INode
+name|oldnode
+parameter_list|,
+name|INode
+name|newnode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|//remove the old node from the namespace
+if|if
+condition|(
+operator|!
+name|oldnode
+operator|.
+name|removeNode
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|String
+name|mess
+init|=
+literal|"FSDirectory.replaceINodeUnsynced: failed to remove "
+operator|+
+name|path
+decl_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"DIR* "
+operator|+
+name|mess
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|mess
+argument_list|)
+throw|;
+block|}
+comment|//add the new node
+name|rootDir
+operator|.
+name|addNode
+argument_list|(
+name|path
+argument_list|,
+name|newnode
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Replaces the specified INodeDirectory.    */
+DECL|method|replaceINodeDirectory (String path, INodeDirectory oldnode, INodeDirectory newnode)
+specifier|public
+name|void
+name|replaceINodeDirectory
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|INodeDirectory
+name|oldnode
+parameter_list|,
+name|INodeDirectory
+name|newnode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|replaceINodeUnsynced
+argument_list|(
+name|path
+argument_list|,
+name|oldnode
+argument_list|,
+name|newnode
+argument_list|)
+expr_stmt|;
+comment|//update children's parent directory
+for|for
+control|(
+name|INode
+name|i
+range|:
+name|newnode
+operator|.
+name|getChildren
+argument_list|()
+control|)
+block|{
+name|i
+operator|.
+name|parent
+operator|=
+name|newnode
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Replaces the specified INodeFile with the specified one.    */
+DECL|method|replaceNode (String path, INodeFile oldnode, INodeFile newnode )
 specifier|public
 name|void
 name|replaceNode
@@ -5575,61 +5700,23 @@ name|newnode
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-comment|//
-comment|// Remove the node from the namespace
-comment|//
-if|if
-condition|(
-operator|!
+name|replaceINodeUnsynced
+argument_list|(
+name|path
+argument_list|,
 name|oldnode
-operator|.
-name|removeNode
-argument_list|()
-condition|)
-block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|warn
-argument_list|(
-literal|"DIR* FSDirectory.replaceNode: "
-operator|+
-literal|"failed to remove "
-operator|+
-name|path
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"FSDirectory.replaceNode: "
-operator|+
-literal|"failed to remove "
-operator|+
-name|path
-argument_list|)
-throw|;
-block|}
-comment|/* Currently oldnode and newnode are assumed to contain the same        * blocks. Otherwise, blocks need to be removed from the blocksMap.        */
-name|rootDir
-operator|.
-name|addNode
-argument_list|(
-name|path
 argument_list|,
 name|newnode
 argument_list|)
 expr_stmt|;
+comment|//Currently, oldnode and newnode are assumed to contain the same blocks.
+comment|//Otherwise, blocks need to be removed from the blocksMap.
 name|int
 name|index
 init|=

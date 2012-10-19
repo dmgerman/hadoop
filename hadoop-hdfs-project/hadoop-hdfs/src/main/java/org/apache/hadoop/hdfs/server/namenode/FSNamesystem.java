@@ -32,23 +32,7 @@ name|fs
 operator|.
 name|CommonConfigurationKeysPublic
 operator|.
-name|IO_FILE_BUFFER_SIZE_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|CommonConfigurationKeysPublic
-operator|.
-name|IO_FILE_BUFFER_SIZE_KEY
+name|FS_TRASH_INTERVAL_DEFAULT
 import|;
 end_import
 
@@ -80,7 +64,23 @@ name|fs
 operator|.
 name|CommonConfigurationKeysPublic
 operator|.
-name|FS_TRASH_INTERVAL_DEFAULT
+name|IO_FILE_BUFFER_SIZE_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 import|;
 end_import
 
@@ -160,7 +160,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_CHECKSUM_TYPE_KEY
+name|DFS_CHECKSUM_TYPE_DEFAULT
 import|;
 end_import
 
@@ -176,7 +176,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_CHECKSUM_TYPE_DEFAULT
+name|DFS_CHECKSUM_TYPE_KEY
 import|;
 end_import
 
@@ -224,7 +224,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_ENCRYPT_DATA_TRANSFER_KEY
+name|DFS_ENCRYPT_DATA_TRANSFER_DEFAULT
 import|;
 end_import
 
@@ -240,7 +240,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_ENCRYPT_DATA_TRANSFER_DEFAULT
+name|DFS_ENCRYPT_DATA_TRANSFER_KEY
 import|;
 end_import
 
@@ -2287,6 +2287,26 @@ operator|.
 name|metrics
 operator|.
 name|NameNodeMetrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|INodeDirectorySnapshottable
 import|;
 end_import
 
@@ -14794,6 +14814,82 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Set the given directory as a snapshottable directory.    * If the path is already a snapshottable directory, this is a no-op.    * Otherwise, the {@link INodeDirectory} of the path is replaced by an     * {@link INodeDirectorySnapshottable}.    */
+DECL|method|setSnapshottable (final String path)
+name|void
+name|setSnapshottable
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+specifier|final
+name|INodeDirectory
+name|d
+init|=
+name|INodeDirectory
+operator|.
+name|valueOf
+argument_list|(
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|path
+argument_list|)
+argument_list|,
+name|path
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|d
+operator|.
+name|isSnapshottable
+argument_list|()
+condition|)
+block|{
+comment|//The directory is already a snapshottable directory.
+return|return;
+block|}
+specifier|final
+name|INodeDirectorySnapshottable
+name|s
+init|=
+name|INodeDirectorySnapshottable
+operator|.
+name|newInstance
+argument_list|(
+name|d
+argument_list|)
+decl_stmt|;
+name|dir
+operator|.
+name|replaceINodeDirectory
+argument_list|(
+name|path
+argument_list|,
+name|d
+argument_list|,
+name|s
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/** Persist all metadata about this file.    * @param src The string representation of the path    * @param clientName The string representation of the client    * @throws IOException if path does not exist    */
 DECL|method|fsync (String src, String clientName)

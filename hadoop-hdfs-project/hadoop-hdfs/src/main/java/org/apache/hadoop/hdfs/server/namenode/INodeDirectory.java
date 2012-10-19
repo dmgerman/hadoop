@@ -34,6 +34,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -142,6 +152,7 @@ end_comment
 
 begin_class
 DECL|class|INodeDirectory
+specifier|public
 class|class
 name|INodeDirectory
 extends|extends
@@ -164,6 +175,65 @@ name|ROOT_NAME
 init|=
 literal|""
 decl_stmt|;
+comment|/** Cast INode to INodeDirectory. */
+DECL|method|valueOf (INode inode, String src )
+specifier|public
+specifier|static
+name|INodeDirectory
+name|valueOf
+parameter_list|(
+name|INode
+name|inode
+parameter_list|,
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|inode
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+name|src
+operator|+
+literal|" does not exist."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|inode
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|src
+operator|+
+literal|" is not a directory."
+argument_list|)
+throw|;
+block|}
+return|return
+operator|(
+name|INodeDirectory
+operator|)
+name|inode
+return|;
+block|}
 DECL|field|children
 specifier|private
 name|List
@@ -286,6 +356,17 @@ parameter_list|()
 block|{
 return|return
 literal|true
+return|;
+block|}
+comment|/** Is this a snapshottable directory? */
+DECL|method|isSnapshottable ()
+specifier|public
+name|boolean
+name|isSnapshottable
+parameter_list|()
+block|{
+return|return
+literal|false
 return|;
 block|}
 DECL|method|removeChild (INode node)
