@@ -1524,17 +1524,6 @@ name|conf
 operator|.
 name|setCapacity
 argument_list|(
-name|CapacitySchedulerConfiguration
-operator|.
-name|ROOT
-argument_list|,
-literal|100
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setCapacity
-argument_list|(
 name|A
 argument_list|,
 name|A_CAPACITY
