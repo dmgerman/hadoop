@@ -1486,6 +1486,36 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Create a snapshot    * @param snapshotName name of the snapshot created    * @param snapshotRoot the path that is being snapshotted    */
+DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|createSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Delete a snapshot    * @param snapshotName name of the snapshot to be deleted    * @param snapshotRoot the path where the snapshot exists    */
+DECL|method|deleteSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

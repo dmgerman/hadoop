@@ -6297,6 +6297,42 @@ name|generateDataEncryptionKey
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|createSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO Auto-generated method stub
+block|}
+annotation|@
+name|Override
+DECL|method|deleteSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO Auto-generated method stub
+block|}
 block|}
 end_class
 
