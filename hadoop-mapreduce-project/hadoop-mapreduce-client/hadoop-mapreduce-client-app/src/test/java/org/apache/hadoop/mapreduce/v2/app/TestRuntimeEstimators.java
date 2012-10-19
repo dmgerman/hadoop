@@ -2647,6 +2647,29 @@ throw|;
 block|}
 annotation|@
 name|Override
+specifier|public
+name|TaskAttemptCompletionEvent
+index|[]
+DECL|method|getMapAttemptCompletionEvents (int startIndex, int maxEvents)
+name|getMapAttemptCompletionEvents
+parameter_list|(
+name|int
+name|startIndex
+parameter_list|,
+name|int
+name|maxEvents
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getName ()
 specifier|public
 name|String

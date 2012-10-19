@@ -938,6 +938,32 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getMapAttemptCompletionEvents ( int startIndex, int maxEvents)
+specifier|public
+name|TaskAttemptCompletionEvent
+index|[]
+name|getMapAttemptCompletionEvents
+parameter_list|(
+name|int
+name|startIndex
+parameter_list|,
+name|int
+name|maxEvents
+parameter_list|)
+block|{
+return|return
+name|job
+operator|.
+name|getMapAttemptCompletionEvents
+argument_list|(
+name|startIndex
+argument_list|,
+name|maxEvents
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getTasks ()
 specifier|public
 name|Map
