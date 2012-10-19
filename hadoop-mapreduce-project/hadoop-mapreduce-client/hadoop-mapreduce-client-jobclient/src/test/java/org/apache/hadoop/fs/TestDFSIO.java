@@ -603,8 +603,6 @@ operator|+
 literal|" [-size Size[B|KB|MB|GB|TB]]"
 operator|+
 literal|" [-resFile resultFileName] [-bufferSize Bytes]"
-operator|+
-literal|" [-rootDir]"
 decl_stmt|;
 DECL|field|config
 specifier|private
