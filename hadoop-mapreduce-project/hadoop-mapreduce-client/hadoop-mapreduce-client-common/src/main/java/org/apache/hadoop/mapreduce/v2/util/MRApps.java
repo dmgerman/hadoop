@@ -445,8 +445,6 @@ operator|.
 name|api
 operator|.
 name|ApplicationConstants
-operator|.
-name|Environment
 import|;
 end_import
 
@@ -463,6 +461,8 @@ operator|.
 name|api
 operator|.
 name|ApplicationConstants
+operator|.
+name|Environment
 import|;
 end_import
 
@@ -783,11 +783,7 @@ name|NEW
 block|,
 name|TaskAttemptState
 operator|.
-name|UNASSIGNED
-block|,
-name|TaskAttemptState
-operator|.
-name|ASSIGNED
+name|STARTING
 block|}
 argument_list|)
 block|,
@@ -805,26 +801,6 @@ block|,
 name|TaskAttemptState
 operator|.
 name|COMMIT_PENDING
-block|,
-name|TaskAttemptState
-operator|.
-name|SUCCESS_CONTAINER_CLEANUP
-block|,
-name|TaskAttemptState
-operator|.
-name|FAIL_CONTAINER_CLEANUP
-block|,
-name|TaskAttemptState
-operator|.
-name|FAIL_TASK_CLEANUP
-block|,
-name|TaskAttemptState
-operator|.
-name|KILL_CONTAINER_CLEANUP
-block|,
-name|TaskAttemptState
-operator|.
-name|KILL_TASK_CLEANUP
 block|}
 argument_list|)
 block|,

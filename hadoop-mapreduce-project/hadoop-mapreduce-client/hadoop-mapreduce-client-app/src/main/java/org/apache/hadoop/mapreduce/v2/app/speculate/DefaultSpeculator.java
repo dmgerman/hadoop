@@ -1950,7 +1950,7 @@ argument_list|()
 operator|==
 name|TaskAttemptState
 operator|.
-name|ASSIGNED
+name|STARTING
 condition|)
 block|{
 if|if

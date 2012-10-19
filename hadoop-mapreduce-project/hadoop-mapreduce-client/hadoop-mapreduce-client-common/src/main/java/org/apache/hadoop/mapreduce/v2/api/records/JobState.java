@@ -43,9 +43,6 @@ block|,
 DECL|enumConstant|FAILED
 name|FAILED
 block|,
-DECL|enumConstant|KILL_WAIT
-name|KILL_WAIT
-block|,
 DECL|enumConstant|KILLED
 name|KILLED
 block|,
