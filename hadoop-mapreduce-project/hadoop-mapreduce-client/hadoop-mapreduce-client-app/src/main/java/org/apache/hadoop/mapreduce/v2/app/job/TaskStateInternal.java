@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.api.records
+DECL|package|org.apache.hadoop.mapreduce.v2.app.job
 package|package
 name|org
 operator|.
@@ -16,23 +16,24 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|api
+name|app
 operator|.
-name|records
+name|job
 package|;
 end_package
 
 begin_enum
-DECL|enum|TaskState
+DECL|enum|TaskStateInternal
 specifier|public
 enum|enum
-name|TaskState
+name|TaskStateInternal
 block|{
 DECL|enumConstant|NEW
 DECL|enumConstant|SCHEDULED
 DECL|enumConstant|RUNNING
 DECL|enumConstant|SUCCEEDED
 DECL|enumConstant|FAILED
+DECL|enumConstant|KILL_WAIT
 DECL|enumConstant|KILLED
 name|NEW
 block|,
@@ -43,6 +44,8 @@ block|,
 name|SUCCEEDED
 block|,
 name|FAILED
+block|,
+name|KILL_WAIT
 block|,
 name|KILLED
 block|}

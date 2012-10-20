@@ -774,6 +774,25 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getMapAttemptCompletionEvents ( int startIndex, int maxEvents)
+specifier|public
+name|TaskAttemptCompletionEvent
+index|[]
+name|getMapAttemptCompletionEvents
+parameter_list|(
+name|int
+name|startIndex
+parameter_list|,
+name|int
+name|maxEvents
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|checkAccess (UserGroupInformation callerUGI, JobACL jobOperation)
 specifier|public
 name|boolean

@@ -430,6 +430,18 @@ name|int
 name|maxEvents
 parameter_list|)
 function_decl|;
+name|TaskAttemptCompletionEvent
+index|[]
+DECL|method|getMapAttemptCompletionEvents (int startIndex, int maxEvents)
+name|getMapAttemptCompletionEvents
+parameter_list|(
+name|int
+name|startIndex
+parameter_list|,
+name|int
+name|maxEvents
+parameter_list|)
+function_decl|;
 comment|/**    * @return information for MR AppMasters (previously failed and current)    */
 DECL|method|getAMInfos ()
 name|List

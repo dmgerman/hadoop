@@ -338,7 +338,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|JobState
+name|TaskId
 import|;
 end_import
 
@@ -354,11 +354,11 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|api
+name|app
 operator|.
-name|records
+name|job
 operator|.
-name|TaskId
+name|JobStateInternal
 import|;
 end_import
 
@@ -708,13 +708,13 @@ name|when
 argument_list|(
 name|mockJob
 operator|.
-name|getState
+name|getInternalState
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|ERROR
 argument_list|)
@@ -729,7 +729,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|JobState
+name|JobStateInternal
 name|state
 init|=
 name|trans
@@ -747,7 +747,7 @@ name|assertEquals
 argument_list|(
 literal|"Incorrect state returned from JobNoTasksCompletedTransition"
 argument_list|,
-name|JobState
+name|JobStateInternal
 operator|.
 name|ERROR
 argument_list|,
@@ -861,7 +861,7 @@ name|mockJob
 operator|.
 name|finished
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|KILLED
 argument_list|)
@@ -869,7 +869,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|KILLED
 argument_list|)
@@ -880,7 +880,7 @@ name|mockJob
 operator|.
 name|finished
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|FAILED
 argument_list|)
@@ -888,7 +888,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|FAILED
 argument_list|)
@@ -899,7 +899,7 @@ name|mockJob
 operator|.
 name|finished
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|SUCCEEDED
 argument_list|)
@@ -907,7 +907,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|SUCCEEDED
 argument_list|)
@@ -963,7 +963,7 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|JobState
+name|JobStateInternal
 name|jobState
 init|=
 name|JobImpl
@@ -990,7 +990,7 @@ name|assertEquals
 argument_list|(
 literal|"checkJobCompleteSuccess returns incorrect state"
 argument_list|,
-name|JobState
+name|JobStateInternal
 operator|.
 name|FAILED
 argument_list|,
@@ -1153,7 +1153,7 @@ name|finished
 argument_list|(
 name|any
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|class
 argument_list|)
@@ -1162,7 +1162,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|JobState
+name|JobStateInternal
 operator|.
 name|SUCCEEDED
 argument_list|)
@@ -1236,7 +1236,7 @@ name|assertEquals
 argument_list|(
 literal|"checkJobCompleteSuccess returns incorrect state"
 argument_list|,
-name|JobState
+name|JobStateInternal
 operator|.
 name|SUCCEEDED
 argument_list|,

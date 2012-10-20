@@ -603,8 +603,6 @@ operator|+
 literal|" [-size Size[B|KB|MB|GB|TB]]"
 operator|+
 literal|" [-resFile resultFileName] [-bufferSize Bytes]"
-operator|+
-literal|" [-rootDir]"
 decl_stmt|;
 DECL|field|config
 specifier|private
@@ -3778,6 +3776,9 @@ index|[
 name|i
 index|]
 operator|.
+name|toLowerCase
+argument_list|()
+operator|.
 name|startsWith
 argument_list|(
 literal|"-read"
@@ -3799,7 +3800,7 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 literal|"-write"
 argument_list|)
@@ -3820,7 +3821,7 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 literal|"-append"
 argument_list|)
@@ -3841,7 +3842,7 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 literal|"-random"
 argument_list|)
@@ -3874,7 +3875,7 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 literal|"-backward"
 argument_list|)
@@ -3907,7 +3908,7 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 literal|"-skip"
 argument_list|)
@@ -3940,7 +3941,7 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 literal|"-clean"
 argument_list|)
@@ -3961,6 +3962,9 @@ index|[
 name|i
 index|]
 operator|.
+name|toLowerCase
+argument_list|()
+operator|.
 name|startsWith
 argument_list|(
 literal|"-seq"
@@ -3979,6 +3983,9 @@ name|args
 index|[
 name|i
 index|]
+operator|.
+name|toLowerCase
+argument_list|()
 operator|.
 name|startsWith
 argument_list|(
@@ -4003,9 +4010,9 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
-literal|"-nrFiles"
+literal|"-nrfiles"
 argument_list|)
 condition|)
 block|{
@@ -4031,9 +4038,9 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
-literal|"-fileSize"
+literal|"-filesize"
 argument_list|)
 operator|||
 name|args
@@ -4041,7 +4048,7 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
 literal|"-size"
 argument_list|)
@@ -4067,9 +4074,9 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
-literal|"-skipSize"
+literal|"-skipsize"
 argument_list|)
 condition|)
 block|{
@@ -4093,9 +4100,9 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
-literal|"-bufferSize"
+literal|"-buffersize"
 argument_list|)
 condition|)
 block|{
@@ -4121,9 +4128,9 @@ index|[
 name|i
 index|]
 operator|.
-name|equals
+name|equalsIgnoreCase
 argument_list|(
-literal|"-resFile"
+literal|"-resfile"
 argument_list|)
 condition|)
 block|{

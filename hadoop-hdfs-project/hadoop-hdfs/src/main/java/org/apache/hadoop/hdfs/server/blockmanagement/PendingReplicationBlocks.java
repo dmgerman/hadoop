@@ -282,9 +282,9 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Add a block to the list of pending Replications    */
-DECL|method|add (Block block, int numReplicas)
+DECL|method|increment (Block block, int numReplicas)
 name|void
-name|add
+name|increment
 parameter_list|(
 name|Block
 name|block
@@ -347,9 +347,9 @@ block|}
 block|}
 block|}
 comment|/**    * One replication request for this block has finished.    * Decrement the number of pending replication requests    * for this block.    */
-DECL|method|remove (Block block)
+DECL|method|decrement (Block block)
 name|void
-name|remove
+name|decrement
 parameter_list|(
 name|Block
 name|block
@@ -419,6 +419,29 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+block|}
+comment|/**    * Remove the record about the given block from pendingReplications.    * @param block The given block whose pending replication requests need to be    *              removed    */
+DECL|method|remove (Block block)
+name|void
+name|remove
+parameter_list|(
+name|Block
+name|block
+parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|pendingReplications
+init|)
+block|{
+name|pendingReplications
+operator|.
+name|remove
+argument_list|(
+name|block
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|clear ()

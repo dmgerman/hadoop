@@ -242,6 +242,26 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
+name|ClientToAMTokenSecretManagerInRM
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
 name|DelegationTokenRenewer
 import|;
 end_import
@@ -349,6 +369,11 @@ function_decl|;
 DECL|method|getContainerTokenSecretManager ()
 name|RMContainerTokenSecretManager
 name|getContainerTokenSecretManager
+parameter_list|()
+function_decl|;
+DECL|method|getClientToAMTokenSecretManager ()
+name|ClientToAMTokenSecretManagerInRM
+name|getClientToAMTokenSecretManager
 parameter_list|()
 function_decl|;
 block|}

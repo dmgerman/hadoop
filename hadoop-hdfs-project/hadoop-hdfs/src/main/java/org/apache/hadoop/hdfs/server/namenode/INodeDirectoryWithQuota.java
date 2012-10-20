@@ -183,7 +183,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota ( PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
+DECL|method|INodeDirectoryWithQuota (PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|PermissionStatus

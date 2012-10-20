@@ -2175,14 +2175,34 @@ argument_list|(
 name|TEST_DIR
 argument_list|)
 decl_stmt|;
-comment|//Only two files (in partitioned) have 4 bytes each
+comment|// Only two files (in partitioned).  Each has 3 characters + system-specific
+comment|// line separator.
+name|long
+name|expected
+init|=
+literal|2
+operator|*
+operator|(
+literal|3
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
+operator|.
+name|length
+argument_list|()
+operator|)
+decl_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|du
+name|expected
 argument_list|,
-literal|8
+name|du
 argument_list|)
 expr_stmt|;
 block|}
