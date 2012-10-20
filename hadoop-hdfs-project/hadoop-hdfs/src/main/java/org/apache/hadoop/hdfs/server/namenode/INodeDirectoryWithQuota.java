@@ -130,8 +130,6 @@ parameter_list|,
 name|INodeDirectory
 name|other
 parameter_list|)
-throws|throws
-name|QuotaExceededException
 block|{
 name|super
 argument_list|(
@@ -183,7 +181,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota ( PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
+DECL|method|INodeDirectoryWithQuota (PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|PermissionStatus
