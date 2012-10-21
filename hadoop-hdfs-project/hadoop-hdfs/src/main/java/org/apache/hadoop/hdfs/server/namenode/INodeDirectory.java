@@ -243,6 +243,7 @@ argument_list|>
 name|children
 decl_stmt|;
 DECL|method|INodeDirectory (String name, PermissionStatus permissions)
+specifier|protected
 name|INodeDirectory
 parameter_list|(
 name|String

@@ -200,6 +200,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|INode
+specifier|public
 specifier|abstract
 class|class
 name|INode
@@ -586,7 +587,7 @@ expr_stmt|;
 block|}
 comment|/** Get the {@link PermissionStatus} */
 DECL|method|getPermissionStatus ()
-specifier|protected
+specifier|public
 name|PermissionStatus
 name|getPermissionStatus
 parameter_list|()
@@ -1026,6 +1027,7 @@ return|;
 block|}
 comment|/**    * Set local file name    */
 DECL|method|setLocalName (String name)
+specifier|protected
 name|void
 name|setLocalName
 parameter_list|(
@@ -1144,6 +1146,7 @@ return|;
 block|}
 comment|/**    * Set last modification time of inode.    */
 DECL|method|setModificationTime (long modtime)
+specifier|public
 name|void
 name|setModificationTime
 parameter_list|(

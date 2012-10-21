@@ -6183,6 +6183,7 @@ return|;
 block|}
 comment|/**    * Get {@link INode} associated with the file / directory.    */
 DECL|method|getINode (String src)
+specifier|public
 name|INode
 name|getINode
 parameter_list|(
