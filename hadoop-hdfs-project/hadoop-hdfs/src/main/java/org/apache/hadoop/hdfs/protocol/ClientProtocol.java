@@ -1516,6 +1516,19 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * List snapshots of one directory    * @param snapshotRoot the path where the snapshot exists    */
+DECL|method|listSnapshots (String snapshotRoot)
+specifier|public
+name|SnapshotInfo
+index|[]
+name|listSnapshots
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
