@@ -435,6 +435,7 @@ operator|+
 name|blocksAsString
 argument_list|()
 assert|;
+comment|//TODO SNAPSHOT: may convert to INodeFileWithLink
 name|INodeFile
 name|obj
 init|=
@@ -447,7 +448,7 @@ argument_list|,
 name|getBlocks
 argument_list|()
 argument_list|,
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|,
 name|getModificationTime

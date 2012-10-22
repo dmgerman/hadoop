@@ -2890,7 +2890,7 @@ name|setReplication
 argument_list|(
 name|newNode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 operator|.
@@ -2991,7 +2991,7 @@ name|setReplication
 argument_list|(
 name|newNode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 operator|.

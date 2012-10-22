@@ -633,7 +633,7 @@ name|writeShort
 argument_list|(
 name|cons
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1006,7 +1006,7 @@ name|writeShort
 argument_list|(
 name|fileINode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

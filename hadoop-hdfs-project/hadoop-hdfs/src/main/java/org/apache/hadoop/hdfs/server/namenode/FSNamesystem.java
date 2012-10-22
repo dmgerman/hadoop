@@ -7896,12 +7896,13 @@ argument_list|(
 name|trgInode
 argument_list|)
 expr_stmt|;
+specifier|final
 name|short
 name|repl
 init|=
 name|trgInode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 decl_stmt|;
 comment|// now check the srcs
@@ -8004,7 +8005,7 @@ name|repl
 operator|!=
 name|srcInode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 condition|)
 block|{
@@ -8028,7 +8029,7 @@ literal|" vs. "
 operator|+
 name|srcInode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 throw|;
@@ -10033,6 +10034,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|//TODO SNAPSHOT: INodeFileUnderConstruction with link
 name|INodeFileUnderConstruction
 name|cons
 init|=
@@ -10046,7 +10048,7 @@ argument_list|()
 argument_list|,
 name|file
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|,
 name|file
@@ -11391,7 +11393,7 @@ name|replication
 operator|=
 name|pendingFile
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 expr_stmt|;
 block|}
@@ -15682,7 +15684,7 @@ name|diff
 operator|*
 name|fileINode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

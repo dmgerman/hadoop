@@ -5196,7 +5196,7 @@ literal|""
 operator|+
 name|inode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|)
 expr_stmt|;

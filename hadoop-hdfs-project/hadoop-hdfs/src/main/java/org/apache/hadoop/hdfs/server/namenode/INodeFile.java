@@ -273,7 +273,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|setReplication
+name|setFileReplication
 argument_list|(
 name|replication
 argument_list|)
@@ -312,7 +312,7 @@ argument_list|()
 argument_list|,
 name|f
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|,
 name|f
@@ -368,12 +368,11 @@ literal|false
 return|;
 block|}
 comment|/** @return the replication factor of the file. */
-annotation|@
-name|Override
-DECL|method|getBlockReplication ()
+DECL|method|getFileReplication ()
 specifier|public
+specifier|final
 name|short
-name|getBlockReplication
+name|getFileReplication
 parameter_list|()
 block|{
 return|return
@@ -391,9 +390,22 @@ name|BLOCKBITS
 argument_list|)
 return|;
 block|}
-DECL|method|setReplication (short replication)
+annotation|@
+name|Override
+DECL|method|getBlockReplication ()
+specifier|public
+name|short
+name|getBlockReplication
+parameter_list|()
+block|{
+return|return
+name|getFileReplication
+argument_list|()
+return|;
+block|}
+DECL|method|setFileReplication (short replication)
 name|void
-name|setReplication
+name|setFileReplication
 parameter_list|(
 name|short
 name|replication
@@ -1074,7 +1086,7 @@ block|}
 return|return
 name|size
 operator|*
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 return|;
 block|}

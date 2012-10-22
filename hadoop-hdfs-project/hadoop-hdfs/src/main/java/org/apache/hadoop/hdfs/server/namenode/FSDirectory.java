@@ -1611,34 +1611,60 @@ argument_list|,
 name|UNKNOWN_DISK_SPACE
 argument_list|)
 expr_stmt|;
+specifier|final
+name|INodeFileWithLink
+name|srcWithLink
+decl_stmt|;
 if|if
 condition|(
 name|snapshot
 operator|!=
 literal|null
-operator|&&
-name|src
-operator|.
-name|getClass
-argument_list|()
-operator|==
-name|INodeFile
-operator|.
-name|class
 condition|)
 block|{
-comment|//created a snapshot and the source is an INodeFile, replace the source.
+comment|//added snapshot node successfully, check source type,
+if|if
+condition|(
+name|src
+operator|instanceof
+name|INodeFileWithLink
+condition|)
+block|{
+name|srcWithLink
+operator|=
+operator|(
+name|INodeFileWithLink
+operator|)
+name|src
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|//source is an INodeFile, replace the source.
+name|srcWithLink
+operator|=
+operator|new
+name|INodeFileWithLink
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
 name|replaceNode
 argument_list|(
 name|srcPath
 argument_list|,
 name|src
 argument_list|,
-operator|new
-name|INodeFileWithLink
-argument_list|(
-name|src
+name|srcWithLink
 argument_list|)
+expr_stmt|;
+block|}
+comment|//insert the snapshot to src's linked list.
+name|srcWithLink
+operator|.
+name|insert
+argument_list|(
+name|snapshot
 argument_list|)
 expr_stmt|;
 block|}
@@ -1933,7 +1959,7 @@ argument_list|()
 operator|*
 name|fileINode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|,
 literal|true
@@ -1950,7 +1976,7 @@ name|block
 argument_list|,
 name|fileINode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|,
 name|BlockUCState
@@ -2326,7 +2352,7 @@ argument_list|()
 operator|*
 name|fileNode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 argument_list|,
 literal|true
@@ -4279,7 +4305,7 @@ name|oldRepl
 init|=
 name|fileNode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 decl_stmt|;
 comment|// check disk quota
@@ -4320,7 +4346,7 @@ argument_list|)
 expr_stmt|;
 name|fileNode
 operator|.
-name|setReplication
+name|setFileReplication
 argument_list|(
 name|replication
 argument_list|)
@@ -9830,7 +9856,7 @@ name|replication
 operator|=
 name|fileNode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 expr_stmt|;
 name|blocksize
@@ -9971,7 +9997,7 @@ name|replication
 operator|=
 name|fileNode
 operator|.
-name|getBlockReplication
+name|getFileReplication
 argument_list|()
 expr_stmt|;
 name|blocksize
