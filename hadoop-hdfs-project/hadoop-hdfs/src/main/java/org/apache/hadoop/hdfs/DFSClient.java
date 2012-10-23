@@ -8519,6 +8519,31 @@ name|fileMD5
 argument_list|)
 return|;
 default|default:
+comment|// If there is no block allocated for the file,
+comment|// return one with the magic entry that matches what previous
+comment|// hdfs versions return.
+if|if
+condition|(
+name|locatedblocks
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+operator|new
+name|MD5MD5CRC32GzipFileChecksum
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+name|fileMD5
+argument_list|)
+return|;
+block|}
 comment|// we should never get here since the validity was checked
 comment|// when getCrcType() was called above.
 return|return
