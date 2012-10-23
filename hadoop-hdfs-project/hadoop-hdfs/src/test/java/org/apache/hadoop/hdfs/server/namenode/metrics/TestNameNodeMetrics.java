@@ -1406,6 +1406,29 @@ operator|)
 literal|2
 argument_list|)
 expr_stmt|;
+comment|// Disable the heartbeats, so that no corrupted replica
+comment|// can be fixed
+for|for
+control|(
+name|DataNode
+name|dn
+range|:
+name|cluster
+operator|.
+name|getDataNodes
+argument_list|()
+control|)
+block|{
+name|DataNodeTestUtils
+operator|.
+name|setHeartbeatsDisabledForTests
+argument_list|(
+name|dn
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Corrupt first replica of the block
 name|LocatedBlock
 name|block
@@ -1476,14 +1499,20 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-name|Thread
+name|BlockManagerTestUtil
 operator|.
-name|sleep
+name|getComputedDatanodeWork
 argument_list|(
-literal|1000
+name|bm
 argument_list|)
 expr_stmt|;
-comment|// Wait for block to be marked corrupt
+name|BlockManagerTestUtil
+operator|.
+name|updateState
+argument_list|(
+name|bm
+argument_list|)
+expr_stmt|;
 name|MetricsRecordBuilder
 name|rb
 init|=
@@ -1528,6 +1557,15 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// During the file deletion, both BlockManager#corruptReplicas and
+comment|// BlockManager#pendingReplications will be updated, i.e., the records
+comment|// for the blocks of the deleted file will be removed from both
+comment|// corruptReplicas and pendingReplications. The corresponding
+comment|// metrics (CorruptBlocks and PendingReplicationBlocks) will only be updated
+comment|// when BlockManager#computeDatanodeWork is run where the
+comment|// BlockManager#udpateState is called. And in
+comment|// BlockManager#computeDatanodeWork the metric ScheduledReplicationBlocks
+comment|// will also be updated.
 name|rb
 operator|=
 name|waitForDnMetricValue
