@@ -1740,6 +1740,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|SnapshotInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|datatransfer
 operator|.
 name|ReplaceDatanodeOnFailure
@@ -24789,6 +24805,42 @@ operator|.
 name|isAvoidingStaleDataNodesForWrite
 argument_list|()
 return|;
+block|}
+comment|// Allow snapshot on a directroy.
+annotation|@
+name|VisibleForTesting
+DECL|method|allowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|allowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|SafeModeException
+throws|,
+name|IOException
+block|{
+comment|// TODO: implement
+block|}
+comment|// Disallow snapshot on a directory.
+annotation|@
+name|VisibleForTesting
+DECL|method|disallowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|disallowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|SafeModeException
+throws|,
+name|IOException
+block|{
+comment|// TODO: implement
 block|}
 block|}
 end_class

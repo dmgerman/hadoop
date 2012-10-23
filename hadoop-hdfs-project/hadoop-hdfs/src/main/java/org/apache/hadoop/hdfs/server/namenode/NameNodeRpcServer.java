@@ -6399,6 +6399,50 @@ return|return
 name|si
 return|;
 block|}
+annotation|@
+name|Override
+comment|// Client Protocol
+DECL|method|allowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|allowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namesystem
+operator|.
+name|allowSnapshot
+argument_list|(
+name|snapshotRoot
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+comment|// Client Protocol
+DECL|method|disallowSnapshot (String snapshot)
+specifier|public
+name|void
+name|disallowSnapshot
+parameter_list|(
+name|String
+name|snapshot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namesystem
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|snapshot
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

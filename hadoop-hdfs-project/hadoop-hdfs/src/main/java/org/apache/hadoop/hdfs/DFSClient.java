@@ -8821,6 +8821,46 @@ name|action
 argument_list|)
 return|;
 block|}
+comment|/**    * Allow snapshot on a directory.    *     * @see ClientProtocol#allowSnapshot(String snapshotRoot)    */
+DECL|method|allowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|allowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namenode
+operator|.
+name|allowSnapshot
+argument_list|(
+name|snapshotRoot
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Disallow snapshot on a directory.    *     * @see ClientProtocol#disallowSnapshot(String snapshotRoot)    */
+DECL|method|disallowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|disallowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namenode
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|snapshotRoot
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Save namespace image.    *     * @see ClientProtocol#saveNamespace()    */
 DECL|method|saveNamespace ()
 name|void

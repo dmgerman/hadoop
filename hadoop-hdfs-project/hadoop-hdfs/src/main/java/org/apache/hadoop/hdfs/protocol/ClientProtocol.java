@@ -1529,6 +1529,30 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**      * Allow snapshot on a directory.      * @param snapshotRoot the directory to be snapped      * @throws IOException      */
+DECL|method|allowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|allowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**      * Disallow snapshot on a directory.      * @param snapshotRoot the directory to disallow snapshot      * @throws IOException      */
+DECL|method|disallowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|disallowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

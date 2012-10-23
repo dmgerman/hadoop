@@ -3962,6 +3962,46 @@ name|SAFEMODE_GET
 argument_list|)
 return|;
 block|}
+comment|/**    * Allow snapshot on a directory.    *     * @param snapshotRoot the directory to be snapped    * @throws IOException    */
+DECL|method|allowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|allowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|allowSnapshot
+argument_list|(
+name|snapshotRoot
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Disallow snapshot on a directory.    *     * @param snapshotRoot the directory to be snapped    * @throws IOException    */
+DECL|method|disallowSnapshot (String snapshotRoot)
+specifier|public
+name|void
+name|disallowSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|snapshotRoot
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
