@@ -854,7 +854,7 @@ name|getOptionValue
 argument_list|(
 literal|"queue"
 argument_list|,
-literal|""
+literal|"default"
 argument_list|)
 expr_stmt|;
 name|classpath

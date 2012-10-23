@@ -414,22 +414,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factory
 operator|.
 name|providers
@@ -1241,6 +1225,8 @@ return|;
 block|}
 block|}
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|setConf (Configuration conf)
 specifier|public
 name|void
@@ -1250,34 +1236,13 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-if|if
-condition|(
-name|conf
-operator|instanceof
-name|YarnConfiguration
-condition|)
-block|{
 name|yarnConf
 operator|=
-operator|(
-name|YarnConfiguration
-operator|)
 name|conf
 expr_stmt|;
 block|}
-else|else
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Can only configure with "
-operator|+
-literal|"YarnConfiguration"
-argument_list|)
-throw|;
-block|}
-block|}
+annotation|@
+name|Override
 DECL|method|getConf ()
 specifier|public
 name|Configuration
@@ -1295,7 +1260,7 @@ name|conf
 decl_stmt|;
 DECL|field|yarnConf
 specifier|private
-name|YarnConfiguration
+name|Configuration
 name|yarnConf
 decl_stmt|;
 DECL|field|rmContext

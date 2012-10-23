@@ -723,6 +723,10 @@ literal|"--classpath"
 block|,
 name|classpath
 block|,
+literal|"--queue"
+block|,
+literal|"default"
+block|,
 literal|"--cmd"
 block|,
 name|javaHome
