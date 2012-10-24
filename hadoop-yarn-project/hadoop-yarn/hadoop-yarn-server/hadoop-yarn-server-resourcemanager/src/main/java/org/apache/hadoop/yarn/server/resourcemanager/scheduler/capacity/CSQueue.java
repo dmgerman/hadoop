@@ -339,6 +339,16 @@ name|CSQueue
 name|getParent
 parameter_list|()
 function_decl|;
+comment|/**    * Set the parent<code>Queue</code>.    * @param newParentQueue new parent queue    */
+DECL|method|setParent (CSQueue newParentQueue)
+specifier|public
+name|void
+name|setParent
+parameter_list|(
+name|CSQueue
+name|newParentQueue
+parameter_list|)
+function_decl|;
 comment|/**    * Get the queue name.    * @return the queue name    */
 DECL|method|getQueueName ()
 specifier|public
@@ -528,14 +538,14 @@ name|int
 name|getNumApplications
 parameter_list|()
 function_decl|;
-comment|/**    * Reinitialize the queue.    * @param queue new queue to re-initalize from    * @param clusterResource resources in the cluster    */
-DECL|method|reinitialize (CSQueue queue, Resource clusterResource)
+comment|/**    * Reinitialize the queue.    * @param newlyParsedQueue new queue to re-initalize from    * @param clusterResource resources in the cluster    */
+DECL|method|reinitialize (CSQueue newlyParsedQueue, Resource clusterResource)
 specifier|public
 name|void
 name|reinitialize
 parameter_list|(
 name|CSQueue
-name|queue
+name|newlyParsedQueue
 parameter_list|,
 name|Resource
 name|clusterResource

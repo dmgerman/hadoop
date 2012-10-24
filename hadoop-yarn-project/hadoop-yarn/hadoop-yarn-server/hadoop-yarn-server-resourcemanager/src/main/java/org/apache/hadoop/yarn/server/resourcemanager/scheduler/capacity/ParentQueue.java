@@ -586,7 +586,6 @@ argument_list|)
 decl_stmt|;
 DECL|field|parent
 specifier|private
-specifier|final
 name|CSQueue
 name|parent
 decl_stmt|;
@@ -1396,6 +1395,7 @@ annotation|@
 name|Override
 DECL|method|getParent ()
 specifier|public
+specifier|synchronized
 name|CSQueue
 name|getParent
 parameter_list|()
@@ -1403,6 +1403,28 @@ block|{
 return|return
 name|parent
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setParent (CSQueue newParentQueue)
+specifier|public
+specifier|synchronized
+name|void
+name|setParent
+parameter_list|(
+name|CSQueue
+name|newParentQueue
+parameter_list|)
+block|{
+name|this
+operator|.
+name|parent
+operator|=
+operator|(
+name|ParentQueue
+operator|)
+name|newParentQueue
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1928,14 +1950,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reinitialize (CSQueue queue, Resource clusterResource)
+DECL|method|reinitialize ( CSQueue newlyParsedQueue, Resource clusterResource)
 specifier|public
 specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
 name|CSQueue
-name|queue
+name|newlyParsedQueue
 parameter_list|,
 name|Resource
 name|clusterResource
@@ -1948,13 +1970,13 @@ if|if
 condition|(
 operator|!
 operator|(
-name|queue
+name|newlyParsedQueue
 operator|instanceof
 name|ParentQueue
 operator|)
 operator|||
 operator|!
-name|queue
+name|newlyParsedQueue
 operator|.
 name|getQueuePath
 argument_list|()
@@ -1977,7 +1999,7 @@ argument_list|()
 operator|+
 literal|" from "
 operator|+
-name|queue
+name|newlyParsedQueue
 operator|.
 name|getQueuePath
 argument_list|()
@@ -1985,39 +2007,39 @@ argument_list|)
 throw|;
 block|}
 name|ParentQueue
-name|parentQueue
+name|newlyParsedParentQueue
 init|=
 operator|(
 name|ParentQueue
 operator|)
-name|queue
+name|newlyParsedQueue
 decl_stmt|;
 comment|// Set new configs
 name|setupQueueConfigs
 argument_list|(
 name|clusterResource
 argument_list|,
-name|parentQueue
+name|newlyParsedParentQueue
 operator|.
 name|capacity
 argument_list|,
-name|parentQueue
+name|newlyParsedParentQueue
 operator|.
 name|absoluteCapacity
 argument_list|,
-name|parentQueue
+name|newlyParsedParentQueue
 operator|.
 name|maximumCapacity
 argument_list|,
-name|parentQueue
+name|newlyParsedParentQueue
 operator|.
 name|absoluteMaxCapacity
 argument_list|,
-name|parentQueue
+name|newlyParsedParentQueue
 operator|.
 name|state
 argument_list|,
-name|parentQueue
+name|newlyParsedParentQueue
 operator|.
 name|acls
 argument_list|)
@@ -2047,7 +2069,7 @@ name|newChildQueues
 init|=
 name|getQueues
 argument_list|(
-name|parentQueue
+name|newlyParsedParentQueue
 operator|.
 name|childQueues
 argument_list|)
@@ -2096,6 +2118,7 @@ argument_list|(
 name|newChildQueueName
 argument_list|)
 decl_stmt|;
+comment|// Check if the child-queue already exists
 if|if
 condition|(
 name|childQueue
@@ -2103,6 +2126,7 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// Re-init existing child queues
 name|childQueue
 operator|.
 name|reinitialize
@@ -2127,6 +2151,16 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// New child queue, do not re-init
+comment|// Set parent to 'this'
+name|newChildQueue
+operator|.
+name|setParent
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+comment|// Save in list of current child queues
 name|currentChildQueues
 operator|.
 name|put

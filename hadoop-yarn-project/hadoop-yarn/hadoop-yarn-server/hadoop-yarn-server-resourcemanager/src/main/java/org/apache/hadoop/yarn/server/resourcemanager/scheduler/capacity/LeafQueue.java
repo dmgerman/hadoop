@@ -1654,7 +1654,8 @@ expr_stmt|;
 name|float
 name|absCapacity
 init|=
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|getAbsoluteCapacity
 argument_list|()
@@ -1831,7 +1832,8 @@ name|updateQueueStatistics
 argument_list|(
 name|this
 argument_list|,
-name|parent
+name|getParent
+argument_list|()
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -2091,6 +2093,7 @@ annotation|@
 name|Override
 DECL|method|getParent ()
 specifier|public
+specifier|synchronized
 name|CSQueue
 name|getParent
 parameter_list|()
@@ -2098,6 +2101,28 @@ block|{
 return|return
 name|parent
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setParent (CSQueue newParentQueue)
+specifier|public
+specifier|synchronized
+name|void
+name|setParent
+parameter_list|(
+name|CSQueue
+name|newParentQueue
+parameter_list|)
+block|{
+name|this
+operator|.
+name|parent
+operator|=
+operator|(
+name|ParentQueue
+operator|)
+name|newParentQueue
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2120,7 +2145,8 @@ name|getQueuePath
 parameter_list|()
 block|{
 return|return
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|getQueuePath
 argument_list|()
@@ -2336,7 +2362,8 @@ name|computeAbsoluteMaximumCapacity
 argument_list|(
 name|maximumCapacity
 argument_list|,
-name|parent
+name|getParent
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|CSQueueUtils
@@ -2396,22 +2423,6 @@ operator|.
 name|userLimitFactor
 operator|=
 name|userLimitFactor
-expr_stmt|;
-block|}
-DECL|method|setParentQueue (CSQueue parent)
-specifier|synchronized
-name|void
-name|setParentQueue
-parameter_list|(
-name|CSQueue
-name|parent
-parameter_list|)
-block|{
-name|this
-operator|.
-name|parent
-operator|=
-name|parent
 expr_stmt|;
 block|}
 annotation|@
@@ -2842,14 +2853,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reinitialize (CSQueue queue, Resource clusterResource)
+DECL|method|reinitialize ( CSQueue newlyParsedQueue, Resource clusterResource)
 specifier|public
 specifier|synchronized
 name|void
 name|reinitialize
 parameter_list|(
 name|CSQueue
-name|queue
+name|newlyParsedQueue
 parameter_list|,
 name|Resource
 name|clusterResource
@@ -2862,13 +2873,13 @@ if|if
 condition|(
 operator|!
 operator|(
-name|queue
+name|newlyParsedQueue
 operator|instanceof
 name|LeafQueue
 operator|)
 operator|||
 operator|!
-name|queue
+name|newlyParsedQueue
 operator|.
 name|getQueuePath
 argument_list|()
@@ -2891,7 +2902,7 @@ argument_list|()
 operator|+
 literal|" from "
 operator|+
-name|queue
+name|newlyParsedQueue
 operator|.
 name|getQueuePath
 argument_list|()
@@ -2899,65 +2910,65 @@ argument_list|)
 throw|;
 block|}
 name|LeafQueue
-name|leafQueue
+name|newlyParsedLeafQueue
 init|=
 operator|(
 name|LeafQueue
 operator|)
-name|queue
+name|newlyParsedQueue
 decl_stmt|;
 name|setupQueueConfigs
 argument_list|(
 name|clusterResource
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|capacity
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|absoluteCapacity
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|maximumCapacity
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|absoluteMaxCapacity
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|userLimit
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|userLimitFactor
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|maxApplications
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|getMaxApplicationsPerUser
 argument_list|()
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|getMaximumActiveApplications
 argument_list|()
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|getMaximumActiveApplicationsPerUser
 argument_list|()
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|state
 argument_list|,
-name|leafQueue
+name|newlyParsedLeafQueue
 operator|.
 name|acls
 argument_list|)
@@ -3005,7 +3016,8 @@ block|}
 block|}
 comment|// Check if parent-queue allows access
 return|return
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|hasAccess
 argument_list|(
@@ -3266,7 +3278,8 @@ expr_stmt|;
 comment|// Inform the parent queue
 try|try
 block|{
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|submitApplication
 argument_list|(
@@ -3290,7 +3303,8 @@ name|info
 argument_list|(
 literal|"Failed to submit application to parent-queue: "
 operator|+
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|getQueuePath
 argument_list|()
@@ -3551,7 +3565,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Inform the parent queue
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|finishApplication
 argument_list|(
@@ -6457,7 +6472,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Inform the parent queue
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|completedContainer
 argument_list|(
@@ -6507,7 +6523,8 @@ name|updateQueueStatistics
 argument_list|(
 name|this
 argument_list|,
-name|parent
+name|getParent
+argument_list|()
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -6641,7 +6658,8 @@ name|updateQueueStatistics
 argument_list|(
 name|this
 argument_list|,
-name|parent
+name|getParent
+argument_list|()
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -6778,7 +6796,8 @@ name|updateQueueStatistics
 argument_list|(
 name|this
 argument_list|,
-name|parent
+name|getParent
+argument_list|()
 argument_list|,
 name|clusterResource
 argument_list|,
@@ -7026,7 +7045,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|recoverContainer
 argument_list|(
