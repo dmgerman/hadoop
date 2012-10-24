@@ -84,6 +84,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -275,6 +289,12 @@ name|TaskCleanupEvent
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|stopped
+specifier|private
+specifier|final
+name|AtomicBoolean
+name|stopped
+decl_stmt|;
 DECL|method|TaskCleanerImpl (AppContext context)
 specifier|public
 name|TaskCleanerImpl
@@ -293,6 +313,16 @@ operator|.
 name|context
 operator|=
 name|context
+expr_stmt|;
+name|this
+operator|.
+name|stopped
+operator|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|start ()
@@ -365,6 +395,12 @@ decl_stmt|;
 while|while
 condition|(
 operator|!
+name|stopped
+operator|.
+name|get
+argument_list|()
+operator|&&
+operator|!
 name|Thread
 operator|.
 name|currentThread
@@ -390,6 +426,15 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|stopped
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -399,6 +444,7 @@ operator|+
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 comment|// the events from the queue are handled in parallel
@@ -443,6 +489,19 @@ name|void
 name|stop
 parameter_list|()
 block|{
+if|if
+condition|(
+name|stopped
+operator|.
+name|getAndSet
+argument_list|(
+literal|true
+argument_list|)
+condition|)
+block|{
+comment|// return if already stopped
+return|return;
+block|}
 name|eventHandlingThread
 operator|.
 name|interrupt

@@ -354,6 +354,12 @@ name|InterruptedException
 name|ie
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|stopped
+condition|)
+block|{
 name|LOG
 operator|.
 name|warn
@@ -363,6 +369,7 @@ argument_list|,
 name|ie
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 if|if
@@ -885,6 +892,12 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|stopped
+condition|)
+block|{
 name|LOG
 operator|.
 name|warn
@@ -894,6 +907,7 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|YarnException

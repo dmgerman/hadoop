@@ -1321,6 +1321,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|NativeIOException
+name|nioe
+parameter_list|)
+block|{
+comment|// ignore this error as FreeBSD returns EBADF even if length is zero
+block|}
 finally|finally
 block|{
 name|fis

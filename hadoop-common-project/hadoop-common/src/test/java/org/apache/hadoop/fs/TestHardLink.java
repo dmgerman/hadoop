@@ -1672,20 +1672,36 @@ argument_list|,
 name|callCount
 argument_list|)
 expr_stmt|;
-comment|//and check the results were as expected in the dir tree
-name|assertTrue
-argument_list|(
-name|Arrays
-operator|.
-name|deepEquals
-argument_list|(
-name|fileNames
-argument_list|,
+name|String
+index|[]
+name|tgt_multNames
+init|=
 name|tgt_mult
 operator|.
 name|list
 argument_list|()
+decl_stmt|;
+comment|//sort directory listings before comparsion
+name|Arrays
+operator|.
+name|sort
+argument_list|(
+name|fileNames
 argument_list|)
+expr_stmt|;
+name|Arrays
+operator|.
+name|sort
+argument_list|(
+name|tgt_multNames
+argument_list|)
+expr_stmt|;
+comment|//and check the results were as expected in the dir tree
+name|assertArrayEquals
+argument_list|(
+name|fileNames
+argument_list|,
+name|tgt_multNames
 argument_list|)
 expr_stmt|;
 comment|//Test the case where maxlength is too small even for one filename.
@@ -1774,20 +1790,34 @@ argument_list|,
 name|callCount
 argument_list|)
 expr_stmt|;
-comment|//check the results were as expected in the dir tree
-name|assertTrue
-argument_list|(
-name|Arrays
-operator|.
-name|deepEquals
-argument_list|(
-name|fileNames
-argument_list|,
+name|tgt_multNames
+operator|=
 name|tgt_mult
 operator|.
 name|list
 argument_list|()
+expr_stmt|;
+comment|//sort directory listings before comparsion
+name|Arrays
+operator|.
+name|sort
+argument_list|(
+name|fileNames
 argument_list|)
+expr_stmt|;
+name|Arrays
+operator|.
+name|sort
+argument_list|(
+name|tgt_multNames
+argument_list|)
+expr_stmt|;
+comment|//and check the results were as expected in the dir tree
+name|assertArrayEquals
+argument_list|(
+name|fileNames
+argument_list|,
+name|tgt_multNames
 argument_list|)
 expr_stmt|;
 block|}

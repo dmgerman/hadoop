@@ -593,6 +593,11 @@ name|String
 name|procfsDir
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|pid
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|pid

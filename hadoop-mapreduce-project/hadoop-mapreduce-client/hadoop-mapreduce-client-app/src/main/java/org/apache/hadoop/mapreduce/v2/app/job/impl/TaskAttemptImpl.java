@@ -2307,6 +2307,23 @@ operator|new
 name|FailedTransition
 argument_list|()
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|TaskAttemptStateInternal
+operator|.
+name|NEW
+argument_list|,
+name|TaskAttemptStateInternal
+operator|.
+name|NEW
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_DIAGNOSTICS_UPDATE
+argument_list|,
+name|DIAGNOSTIC_INFORMATION_UPDATE_TRANSITION
+argument_list|)
 comment|// Transitions from the UNASSIGNED state.
 operator|.
 name|addTransition
@@ -2376,6 +2393,23 @@ name|FAILED
 argument_list|,
 literal|true
 argument_list|)
+argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|TaskAttemptStateInternal
+operator|.
+name|UNASSIGNED
+argument_list|,
+name|TaskAttemptStateInternal
+operator|.
+name|UNASSIGNED
+argument_list|,
+name|TaskAttemptEventType
+operator|.
+name|TA_DIAGNOSTICS_UPDATE
+argument_list|,
+name|DIAGNOSTIC_INFORMATION_UPDATE_TRANSITION
 argument_list|)
 comment|// Transitions from the ASSIGNED state.
 operator|.
