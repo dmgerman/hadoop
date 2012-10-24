@@ -1474,6 +1474,20 @@ name|ConverterUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * The Map-Reduce Application Master.  * The state machine is encapsulated in the implementation of Job interface.  * All state changes happens via Job interface. Each event   * results in a Finite State Transition in Job.  *   * MR AppMaster is the composition of loosely coupled services. The services   * interact with each other via events. The components resembles the   * Actors model. The component acts on received event and send out the   * events to other components.  * This keeps it highly concurrent with no or minimal synchronization needs.  *   * The events are dispatched by a central Dispatch mechanism. All components  * register to the Dispatcher.  *   * The information is shared across different components using AppContext.  */
 end_comment
@@ -2852,26 +2866,13 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|class|JobFinishEventHandler
-specifier|private
-class|class
-name|JobFinishEventHandler
-implements|implements
-name|EventHandler
-argument_list|<
-name|JobFinishEvent
-argument_list|>
-block|{
 annotation|@
-name|Override
-DECL|method|handle (JobFinishEvent event)
+name|VisibleForTesting
+DECL|method|shutDownJob ()
 specifier|public
 name|void
-name|handle
-parameter_list|(
-name|JobFinishEvent
-name|event
-parameter_list|)
+name|shutDownJob
+parameter_list|()
 block|{
 comment|// job has finished
 comment|// this is the only job, so shut down the Appmaster
@@ -3001,6 +3002,10 @@ argument_list|(
 literal|"Calling stop for all the services"
 argument_list|)
 expr_stmt|;
+name|MRAppMaster
+operator|.
+name|this
+operator|.
 name|stop
 argument_list|()
 expr_stmt|;
@@ -3031,6 +3036,50 @@ literal|"Exiting MR AppMaster..GoodBye!"
 argument_list|)
 expr_stmt|;
 name|sysexit
+argument_list|()
+expr_stmt|;
+block|}
+DECL|class|JobFinishEventHandler
+specifier|private
+class|class
+name|JobFinishEventHandler
+implements|implements
+name|EventHandler
+argument_list|<
+name|JobFinishEvent
+argument_list|>
+block|{
+annotation|@
+name|Override
+DECL|method|handle (JobFinishEvent event)
+specifier|public
+name|void
+name|handle
+parameter_list|(
+name|JobFinishEvent
+name|event
+parameter_list|)
+block|{
+comment|// Create a new thread to shutdown the AM. We should not do it in-line
+comment|// to avoid blocking the dispatcher itself.
+operator|new
+name|Thread
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|shutDownJob
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+operator|.
+name|start
 argument_list|()
 expr_stmt|;
 block|}
