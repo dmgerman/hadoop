@@ -156,6 +156,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -751,6 +765,12 @@ decl_stmt|;
 DECL|field|rpc
 name|YarnRPC
 name|rpc
+decl_stmt|;
+DECL|field|stopped
+specifier|private
+specifier|final
+name|AtomicBoolean
+name|stopped
 decl_stmt|;
 DECL|method|getContainer (ContainerLauncherEvent event)
 specifier|private
@@ -1532,6 +1552,16 @@ name|context
 operator|=
 name|context
 expr_stmt|;
+name|this
+operator|.
+name|stopped
+operator|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -1703,6 +1733,12 @@ decl_stmt|;
 while|while
 condition|(
 operator|!
+name|stopped
+operator|.
+name|get
+argument_list|()
+operator|&&
+operator|!
 name|Thread
 operator|.
 name|currentThread
@@ -1728,6 +1764,15 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|stopped
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
@@ -1737,6 +1782,7 @@ operator|+
 name|e
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 name|int
@@ -1900,6 +1946,19 @@ name|void
 name|stop
 parameter_list|()
 block|{
+if|if
+condition|(
+name|stopped
+operator|.
+name|getAndSet
+argument_list|(
+literal|true
+argument_list|)
+condition|)
+block|{
+comment|// return if already stopped
+return|return;
+block|}
 comment|// shutdown any containers that might be left running
 name|shutdownAllContainers
 argument_list|()

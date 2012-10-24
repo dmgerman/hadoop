@@ -693,6 +693,7 @@ name|applicationAttemptId
 decl_stmt|;
 DECL|field|stopped
 specifier|private
+specifier|final
 name|AtomicBoolean
 name|stopped
 decl_stmt|;
@@ -1589,6 +1590,15 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|stopped
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|warn
@@ -1596,6 +1606,7 @@ argument_list|(
 literal|"Allocated thread interrupted. Returning."
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 block|}
