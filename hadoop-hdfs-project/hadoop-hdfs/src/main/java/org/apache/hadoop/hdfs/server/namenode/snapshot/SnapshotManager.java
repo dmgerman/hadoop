@@ -156,7 +156,7 @@ name|namesystem
 expr_stmt|;
 block|}
 comment|/**    * Set the given directory as a snapshottable directory.    * If the path is already a snapshottable directory, this is a no-op.    * Otherwise, the {@link INodeDirectory} of the path is replaced by an     * {@link INodeDirectorySnapshottable}.    */
-DECL|method|setSnapshottable (final String path, final FSDirectory fsdir)
+DECL|method|setSnapshottable (final String path, final int snapshotQuota, final FSDirectory fsdir)
 specifier|public
 name|void
 name|setSnapshottable
@@ -164,6 +164,10 @@ parameter_list|(
 specifier|final
 name|String
 name|path
+parameter_list|,
+specifier|final
+name|int
+name|snapshotQuota
 parameter_list|,
 specifier|final
 name|FSDirectory
@@ -217,6 +221,8 @@ operator|.
 name|newInstance
 argument_list|(
 name|d
+argument_list|,
+name|snapshotQuota
 argument_list|)
 decl_stmt|;
 name|fsdir

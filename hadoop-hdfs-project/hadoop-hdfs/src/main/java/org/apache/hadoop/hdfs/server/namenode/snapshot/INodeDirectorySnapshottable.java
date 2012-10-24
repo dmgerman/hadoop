@@ -60,6 +60,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -150,7 +162,7 @@ name|INodeDirectorySnapshottable
 extends|extends
 name|INodeDirectoryWithQuota
 block|{
-DECL|method|newInstance (final INodeDirectory dir)
+DECL|method|newInstance ( final INodeDirectory dir, final int snapshotQuota)
 specifier|static
 specifier|public
 name|INodeDirectorySnapshottable
@@ -159,6 +171,10 @@ parameter_list|(
 specifier|final
 name|INodeDirectory
 name|dir
+parameter_list|,
+specifier|final
+name|int
+name|snapshotQuota
 parameter_list|)
 block|{
 name|long
@@ -213,6 +229,8 @@ argument_list|,
 name|dsq
 argument_list|,
 name|dir
+argument_list|,
+name|snapshotQuota
 argument_list|)
 return|;
 block|}
@@ -288,7 +306,13 @@ name|INodeDirectorySnapshotRoot
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|INodeDirectorySnapshottable (long nsQuota, long dsQuota, INodeDirectory dir)
+comment|/** Number of snapshots is allowed. */
+DECL|field|snapshotQuota
+specifier|private
+name|int
+name|snapshotQuota
+decl_stmt|;
+DECL|method|INodeDirectorySnapshottable (long nsQuota, long dsQuota, INodeDirectory dir, final int snapshotQuota)
 specifier|private
 name|INodeDirectorySnapshottable
 parameter_list|(
@@ -300,6 +324,10 @@ name|dsQuota
 parameter_list|,
 name|INodeDirectory
 name|dir
+parameter_list|,
+specifier|final
+name|int
+name|snapshotQuota
 parameter_list|)
 block|{
 name|super
@@ -310,6 +338,56 @@ name|dsQuota
 argument_list|,
 name|dir
 argument_list|)
+expr_stmt|;
+name|setSnapshotQuota
+argument_list|(
+name|snapshotQuota
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getSnapshotQuota ()
+specifier|public
+name|int
+name|getSnapshotQuota
+parameter_list|()
+block|{
+return|return
+name|snapshotQuota
+return|;
+block|}
+DECL|method|setSnapshotQuota (int snapshotQuota)
+specifier|public
+name|void
+name|setSnapshotQuota
+parameter_list|(
+name|int
+name|snapshotQuota
+parameter_list|)
+block|{
+if|if
+condition|(
+name|snapshotQuota
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Cannot set snapshot quota to "
+operator|+
+name|snapshotQuota
+operator|+
+literal|"<= 0"
+argument_list|)
+throw|;
+block|}
+name|this
+operator|.
+name|snapshotQuota
+operator|=
+name|snapshotQuota
 expr_stmt|;
 block|}
 annotation|@
@@ -325,7 +403,7 @@ literal|true
 return|;
 block|}
 comment|/** Add a snapshot root under this directory. */
-DECL|method|addSnapshotRoot (final String name)
+DECL|method|addSnapshotRoot (final String name )
 name|INodeDirectorySnapshotRoot
 name|addSnapshotRoot
 parameter_list|(
@@ -333,7 +411,39 @@ specifier|final
 name|String
 name|name
 parameter_list|)
+throws|throws
+name|SnapshotException
 block|{
+comment|//check snapshot quota
+if|if
+condition|(
+name|snapshots
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|1
+operator|>
+name|snapshotQuota
+condition|)
+block|{
+throw|throw
+operator|new
+name|SnapshotException
+argument_list|(
+literal|"Failed to add snapshot: there are already "
+operator|+
+name|snapshots
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" snapshot(s) and the snapshot quota is "
+operator|+
+name|snapshotQuota
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|INodeDirectorySnapshotRoot
 name|r
