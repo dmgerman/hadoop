@@ -2322,6 +2322,26 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|INodeFileWithLink
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
 name|SnapshotManager
 import|;
 end_import
@@ -7835,6 +7855,25 @@ operator|+
 name|target
 operator|+
 literal|" is empty"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|trgInode
+operator|instanceof
+name|INodeFileWithLink
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"concat: target file "
+operator|+
+name|target
+operator|+
+literal|" is in a snapshot"
 argument_list|)
 throw|;
 block|}

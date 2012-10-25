@@ -303,9 +303,10 @@ name|long
 name|header
 decl_stmt|;
 DECL|field|blocks
+specifier|protected
 name|BlockInfo
-name|blocks
 index|[]
+name|blocks
 init|=
 literal|null
 decl_stmt|;
@@ -823,6 +824,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
+specifier|protected
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(
@@ -936,6 +938,7 @@ return|;
 block|}
 comment|/** Compute file size.    * May or may not include BlockInfoUnderConstruction.    */
 DECL|method|computeFileSize (boolean includesBlockInfoUnderConstruction)
+specifier|protected
 name|long
 name|computeFileSize
 parameter_list|(

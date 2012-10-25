@@ -99,6 +99,23 @@ operator|=
 name|size
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|computeFileSize (boolean includesBlockInfoUnderConstruction)
+specifier|protected
+name|long
+name|computeFileSize
+parameter_list|(
+name|boolean
+name|includesBlockInfoUnderConstruction
+parameter_list|)
+block|{
+comment|//ignore includesBlockInfoUnderConstruction
+comment|//since files in a snapshot are considered as closed.
+return|return
+name|size
+return|;
+block|}
 block|}
 end_class
 
