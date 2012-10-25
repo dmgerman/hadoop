@@ -125,11 +125,6 @@ import|;
 end_import
 
 begin_class
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|EventFetcher
 class|class
 name|EventFetcher
@@ -149,15 +144,6 @@ name|long
 name|SLEEP_TIME
 init|=
 literal|1000
-decl_stmt|;
-DECL|field|MAX_EVENTS_TO_FETCH
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|MAX_EVENTS_TO_FETCH
-init|=
-literal|10000
 decl_stmt|;
 DECL|field|MAX_RETRIES
 specifier|private
@@ -216,12 +202,17 @@ name|V
 argument_list|>
 name|scheduler
 decl_stmt|;
-DECL|field|fromEventId
+DECL|field|fromEventIdx
 specifier|private
 name|int
-name|fromEventId
+name|fromEventIdx
 init|=
 literal|0
+decl_stmt|;
+DECL|field|maxEventsToFetch
+specifier|private
+name|int
+name|maxEventsToFetch
 decl_stmt|;
 DECL|field|exceptionReporter
 specifier|private
@@ -245,7 +236,7 @@ name|stopped
 init|=
 literal|false
 decl_stmt|;
-DECL|method|EventFetcher (TaskAttemptID reduce, TaskUmbilicalProtocol umbilical, ShuffleScheduler<K,V> scheduler, ExceptionReporter reporter)
+DECL|method|EventFetcher (TaskAttemptID reduce, TaskUmbilicalProtocol umbilical, ShuffleScheduler<K,V> scheduler, ExceptionReporter reporter, int maxEventsToFetch)
 specifier|public
 name|EventFetcher
 parameter_list|(
@@ -265,6 +256,9 @@ name|scheduler
 parameter_list|,
 name|ExceptionReporter
 name|reporter
+parameter_list|,
+name|int
+name|maxEventsToFetch
 parameter_list|)
 block|{
 name|setName
@@ -298,6 +292,12 @@ expr_stmt|;
 name|exceptionReporter
 operator|=
 name|reporter
+expr_stmt|;
+name|this
+operator|.
+name|maxEventsToFetch
+operator|=
+name|maxEventsToFetch
 expr_stmt|;
 block|}
 annotation|@
@@ -549,7 +549,7 @@ block|}
 block|}
 comment|/**     * Queries the {@link TaskTracker} for a set of map-completion events     * from a given event ID.    * @throws IOException    */
 DECL|method|getMapCompletionEvents ()
-specifier|private
+specifier|protected
 name|int
 name|getMapCompletionEvents
 parameter_list|()
@@ -561,6 +561,14 @@ name|numNewMaps
 init|=
 literal|0
 decl_stmt|;
+name|TaskCompletionEvent
+name|events
+index|[]
+init|=
+literal|null
+decl_stmt|;
+do|do
+block|{
 name|MapTaskCompletionEventsUpdate
 name|update
 init|=
@@ -584,9 +592,9 @@ operator|.
 name|getJobID
 argument_list|()
 argument_list|,
-name|fromEventId
+name|fromEventIdx
 argument_list|,
-name|MAX_EVENTS_TO_FETCH
+name|maxEventsToFetch
 argument_list|,
 operator|(
 name|org
@@ -602,15 +610,13 @@ operator|)
 name|reduce
 argument_list|)
 decl_stmt|;
-name|TaskCompletionEvent
 name|events
-index|[]
-init|=
+operator|=
 name|update
 operator|.
 name|getMapTaskCompletionEvents
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -623,7 +629,7 @@ name|length
 operator|+
 literal|" map completion events from "
 operator|+
-name|fromEventId
+name|fromEventIdx
 argument_list|)
 expr_stmt|;
 comment|// Check if the reset is required.
@@ -638,7 +644,7 @@ name|shouldReset
 argument_list|()
 condition|)
 block|{
-name|fromEventId
+name|fromEventIdx
 operator|=
 literal|0
 expr_stmt|;
@@ -649,7 +655,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// Update the last seen event ID
-name|fromEventId
+name|fromEventIdx
 operator|+=
 name|events
 operator|.
@@ -823,6 +829,16 @@ expr_stmt|;
 break|break;
 block|}
 block|}
+block|}
+do|while
+condition|(
+name|events
+operator|.
+name|length
+operator|==
+name|maxEventsToFetch
+condition|)
+do|;
 return|return
 name|numNewMaps
 return|;
