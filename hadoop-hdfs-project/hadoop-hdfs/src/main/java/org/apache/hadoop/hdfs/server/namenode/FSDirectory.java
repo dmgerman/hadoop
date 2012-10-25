@@ -4962,7 +4962,10 @@ block|{
 name|INodeFile
 name|srcInode
 init|=
-name|getFileINode
+operator|(
+name|INodeFile
+operator|)
+name|getINode
 argument_list|(
 name|src
 argument_list|)
@@ -6160,53 +6163,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get {@link INode} associated with the file.    */
-DECL|method|getFileINode (String src)
-name|INodeFile
-name|getFileINode
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-name|INode
-name|inode
-init|=
-name|getINode
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|inode
-operator|==
-literal|null
-operator|||
-name|inode
-operator|.
-name|isDirectory
-argument_list|()
-condition|)
-return|return
-literal|null
-return|;
-assert|assert
-operator|!
-name|inode
-operator|.
-name|isLink
-argument_list|()
-assert|;
-return|return
-operator|(
-name|INodeFile
-operator|)
-name|inode
-return|;
-block|}
 comment|/**    * Get {@link INode} associated with the file / directory.    */
 DECL|method|getINode (String src)
 specifier|public
@@ -6224,9 +6180,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|INode
-name|iNode
-init|=
+return|return
 name|rootDir
 operator|.
 name|getNode
@@ -6235,9 +6189,6 @@ name|src
 argument_list|,
 literal|true
 argument_list|)
-decl_stmt|;
-return|return
-name|iNode
 return|;
 block|}
 finally|finally

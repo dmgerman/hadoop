@@ -744,7 +744,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Formatting journal storage directory "
+literal|"Formatting journal "
 operator|+
 name|sd
 operator|+

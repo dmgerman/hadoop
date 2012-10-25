@@ -7223,40 +7223,24 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
+specifier|final
 name|INodeFile
 name|inode
 init|=
+name|INodeFile
+operator|.
+name|valueOf
+argument_list|(
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
+name|src
+argument_list|)
+argument_list|,
 name|src
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|inode
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File does not exist: "
-operator|+
-name|src
-argument_list|)
-throw|;
-block|}
-assert|assert
-operator|!
-name|inode
-operator|.
-name|isLink
-argument_list|()
-assert|;
 if|if
 condition|(
 name|doAccessTime
@@ -7792,34 +7776,27 @@ decl_stmt|;
 comment|// we put the following prerequisite for the operation
 comment|// replication and blocks sizes should be the same for ALL the blocks
 comment|// check the target
-name|INode
-name|inode
+specifier|final
+name|INodeFile
+name|trgInode
 init|=
+name|INodeFile
+operator|.
+name|valueOf
+argument_list|(
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
+name|target
+argument_list|)
+argument_list|,
 name|target
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|inode
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"concat: trg file doesn't exist"
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|inode
+name|trgInode
 operator|.
 name|isUnderConstruction
 argument_list|()
@@ -7827,21 +7804,17 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"concat: trg file is uner construction"
+literal|"concat: target file "
+operator|+
+name|target
+operator|+
+literal|" is under construction"
 argument_list|)
 throw|;
 block|}
-name|INodeFile
-name|trgInode
-init|=
-operator|(
-name|INodeFile
-operator|)
-name|inode
-decl_stmt|;
-comment|// per design trg shouldn't be empty and all the blocks same size
+comment|// per design target shouldn't be empty and all the blocks same size
 if|if
 condition|(
 name|trgInode
@@ -7855,13 +7828,13 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"concat: "
+literal|"concat: target file "
 operator|+
 name|target
 operator|+
-literal|" file is empty"
+literal|" is empty"
 argument_list|)
 throw|;
 block|}
@@ -7897,11 +7870,33 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
+literal|"The last block in "
+operator|+
 name|target
 operator|+
-literal|" blocks size should be the same"
+literal|" is not full; last block size = "
+operator|+
+name|trgInode
+operator|.
+name|blocks
+index|[
+name|trgInode
+operator|.
+name|blocks
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|" but file block size = "
+operator|+
+name|blockSize
 argument_list|)
 throw|;
 block|}
@@ -7967,13 +7962,21 @@ name|endSrc
 operator|=
 literal|true
 expr_stmt|;
+specifier|final
 name|INodeFile
 name|srcInode
 init|=
+name|INodeFile
+operator|.
+name|valueOf
+argument_list|(
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
+name|src
+argument_list|)
+argument_list|,
 name|src
 argument_list|)
 decl_stmt|;
@@ -7983,10 +7986,6 @@ name|src
 operator|.
 name|isEmpty
 argument_list|()
-operator|||
-name|srcInode
-operator|==
-literal|null
 operator|||
 name|srcInode
 operator|.
@@ -8004,9 +8003,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"concat: file "
+literal|"concat: source file "
 operator|+
 name|src
 operator|+
@@ -8027,26 +8026,26 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
+literal|"concat: the soruce file "
+operator|+
 name|src
 operator|+
-literal|" and "
+literal|" and the target file "
 operator|+
 name|target
 operator|+
-literal|" "
-operator|+
-literal|"should have same replication: "
-operator|+
-name|repl
-operator|+
-literal|" vs. "
+literal|" should have the same replication: source replication is "
 operator|+
 name|srcInode
 operator|.
-name|getFileReplication
+name|getBlockReplication
 argument_list|()
+operator|+
+literal|" but target replication is "
+operator|+
+name|repl
 argument_list|)
 throw|;
 block|}
@@ -8100,17 +8099,35 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"concat: blocks sizes of "
+literal|"concat: the soruce file "
 operator|+
 name|src
 operator|+
-literal|" and "
+literal|" and the target file "
 operator|+
 name|target
 operator|+
-literal|" should all be the same"
+literal|" should have the same blocks sizes: target block size is "
+operator|+
+name|blockSize
+operator|+
+literal|" but the size of source block "
+operator|+
+name|idx
+operator|+
+literal|" is "
+operator|+
+name|srcInode
+operator|.
+name|blocks
+index|[
+name|idx
+index|]
+operator|.
+name|getNumBytes
+argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -8141,9 +8158,9 @@ comment|// trg + srcs
 comment|// it means at least two files are the same
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|HadoopIllegalArgumentException
 argument_list|(
-literal|"at least two files are the same"
+literal|"concat: at least two of the source files are the same"
 argument_list|)
 throw|;
 block|}
@@ -9708,18 +9725,6 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|INodeFile
-name|myFile
-init|=
-name|dir
-operator|.
-name|getFileINode
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
-try|try
-block|{
 name|blockManager
 operator|.
 name|verifyReplication
@@ -9731,26 +9736,6 @@ argument_list|,
 name|clientMachine
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"failed to create "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-throw|;
-block|}
 name|boolean
 name|create
 init|=
@@ -9761,6 +9746,17 @@ argument_list|(
 name|CreateFlag
 operator|.
 name|CREATE
+argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+name|myFile
+init|=
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|src
 argument_list|)
 decl_stmt|;
 if|if
@@ -9870,12 +9866,25 @@ operator|!=
 literal|null
 condition|)
 block|{
+specifier|final
+name|INodeFile
+name|f
+init|=
+name|INodeFile
+operator|.
+name|valueOf
+argument_list|(
+name|myFile
+argument_list|,
+name|src
+argument_list|)
+decl_stmt|;
 return|return
 name|prepareFileForWrite
 argument_list|(
 name|src
 argument_list|,
-name|myFile
+name|f
 argument_list|,
 name|holder
 argument_list|,
@@ -10215,33 +10224,24 @@ name|src
 argument_list|)
 throw|;
 block|}
-name|INode
+specifier|final
+name|INodeFile
 name|inode
 init|=
+name|INodeFile
+operator|.
+name|valueOf
+argument_list|(
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
+name|src
+argument_list|)
+argument_list|,
 name|src
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|inode
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-literal|"File not found "
-operator|+
-name|src
-argument_list|)
-throw|;
-block|}
 if|if
 condition|(
 operator|!
@@ -12044,35 +12044,25 @@ assert|assert
 name|hasReadOrWriteLock
 argument_list|()
 assert|;
-name|INodeFile
-name|file
-init|=
-name|dir
-operator|.
-name|getFileINode
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
+return|return
 name|checkLease
 argument_list|(
 name|src
 argument_list|,
 name|holder
 argument_list|,
-name|file
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|src
 argument_list|)
-expr_stmt|;
-return|return
-operator|(
-name|INodeFileUnderConstruction
-operator|)
-name|file
+argument_list|)
 return|;
 block|}
 DECL|method|checkLease (String src, String holder, INode file)
 specifier|private
-name|void
+name|INodeFileUnderConstruction
 name|checkLease
 parameter_list|(
 name|String
@@ -12097,10 +12087,12 @@ name|file
 operator|==
 literal|null
 operator|||
+operator|!
+operator|(
 name|file
-operator|.
-name|isDirectory
-argument_list|()
+operator|instanceof
+name|INodeFile
+operator|)
 condition|)
 block|{
 name|Lease
@@ -12121,7 +12113,7 @@ literal|"No lease on "
 operator|+
 name|src
 operator|+
-literal|" File does not exist. "
+literal|": File does not exist. "
 operator|+
 operator|(
 name|lease
@@ -12169,7 +12161,7 @@ literal|"No lease on "
 operator|+
 name|src
 operator|+
-literal|" File is not open for writing. "
+literal|": File is not open for writing. "
 operator|+
 operator|(
 name|lease
@@ -12237,6 +12229,9 @@ name|holder
 argument_list|)
 throw|;
 block|}
+return|return
+name|pendingFile
+return|;
 block|}
 comment|/**    * Complete in-progress write to the given file.    * @return true if successful, false if the client should continue to retry    *         (e.g if not all blocks have reached minimum replication yet)    * @throws IOException on error (eg lease mismatch, file not open, file deleted)    */
 DECL|method|completeFile (String src, String holder, ExtendedBlock last)
@@ -12404,24 +12399,29 @@ name|LeaseExpiredException
 name|lee
 parameter_list|)
 block|{
-name|INodeFile
-name|file
+specifier|final
+name|INode
+name|inode
 init|=
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|file
+name|inode
 operator|!=
 literal|null
 operator|&&
+name|inode
+operator|instanceof
+name|INodeFile
+operator|&&
 operator|!
-name|file
+name|inode
 operator|.
 name|isUnderConstruction
 argument_list|()
@@ -12433,10 +12433,16 @@ comment|// again to close the file. If the file still exists and
 comment|// the client's view of the last block matches the actual
 comment|// last block, then we'll treat it as a successful close.
 comment|// See HDFS-3031.
+specifier|final
 name|Block
 name|realLastBlock
 init|=
-name|file
+operator|(
+operator|(
+name|INodeFile
+operator|)
+name|inode
+operator|)
 operator|.
 name|getLastBlock
 argument_list|()
@@ -14923,97 +14929,23 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|INodeFile
-name|iFile
-init|=
-name|dir
-operator|.
-name|getFileINode
-argument_list|(
-name|src
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|iFile
-operator|==
-literal|null
-condition|)
-block|{
 specifier|final
-name|String
-name|message
-init|=
-literal|"DIR* NameSystem.internalReleaseLease: "
-operator|+
-literal|"attempt to release a create lock on "
-operator|+
-name|src
-operator|+
-literal|" file does not exist."
-decl_stmt|;
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|warn
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|message
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|iFile
-operator|.
-name|isUnderConstruction
-argument_list|()
-condition|)
-block|{
-specifier|final
-name|String
-name|message
-init|=
-literal|"DIR* NameSystem.internalReleaseLease: "
-operator|+
-literal|"attempt to release a create lock on "
-operator|+
-name|src
-operator|+
-literal|" but file is already closed."
-decl_stmt|;
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|warn
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|message
-argument_list|)
-throw|;
-block|}
 name|INodeFileUnderConstruction
 name|pendingFile
 init|=
-operator|(
 name|INodeFileUnderConstruction
-operator|)
-name|iFile
+operator|.
+name|valueOf
+argument_list|(
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|src
+argument_list|)
+argument_list|,
+name|src
+argument_list|)
 decl_stmt|;
 name|int
 name|nrBlocks
@@ -19777,17 +19709,25 @@ name|getPaths
 argument_list|()
 control|)
 block|{
-name|INode
-name|node
+specifier|final
+name|INodeFileUnderConstruction
+name|cons
 decl_stmt|;
 try|try
 block|{
-name|node
+name|cons
 operator|=
+name|INodeFileUnderConstruction
+operator|.
+name|valueOf
+argument_list|(
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
+name|path
+argument_list|)
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
@@ -19806,37 +19746,20 @@ literal|"Lease files should reside on this FS"
 argument_list|)
 throw|;
 block|}
-assert|assert
-name|node
-operator|!=
-literal|null
-operator|:
-literal|"Found a lease for nonexisting file."
-assert|;
-assert|assert
-name|node
-operator|.
-name|isUnderConstruction
-argument_list|()
-operator|:
-literal|"Found a lease for file "
-operator|+
-name|path
-operator|+
-literal|" that is not under construction."
-operator|+
-literal|" lease="
-operator|+
-name|lease
-assert|;
-name|INodeFileUnderConstruction
-name|cons
-init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
-name|node
-decl_stmt|;
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|BlockInfo
 index|[]
 name|blocks
@@ -22112,17 +22035,25 @@ argument_list|()
 control|)
 block|{
 comment|// verify that path exists in namespace
-name|INode
-name|node
+specifier|final
+name|INodeFileUnderConstruction
+name|cons
 decl_stmt|;
 try|try
 block|{
-name|node
+name|cons
 operator|=
+name|INodeFileUnderConstruction
+operator|.
+name|valueOf
+argument_list|(
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
+name|path
+argument_list|)
+argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
@@ -22141,54 +22072,6 @@ literal|"Lease files should reside on this FS"
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|node
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"saveLeases found path "
-operator|+
-name|path
-operator|+
-literal|" but no matching entry in namespace."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|node
-operator|.
-name|isUnderConstruction
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"saveLeases found path "
-operator|+
-name|path
-operator|+
-literal|" but is not under construction."
-argument_list|)
-throw|;
-block|}
-name|INodeFileUnderConstruction
-name|cons
-init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
-name|node
-decl_stmt|;
 name|FSImageSerialization
 operator|.
 name|writeINodeUnderConstruction

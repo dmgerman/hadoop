@@ -5210,11 +5210,28 @@ argument_list|(
 name|bytes
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isWebHDFS
+condition|)
+block|{
+comment|// WebHDFS does not support hflush. To avoid DataNode communicating with
+comment|// NN while we're shutting down NN, we call out4.close() to finish
+comment|// writing the data
+name|out4
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
 name|out4
 operator|.
 name|hflush
 argument_list|()
 expr_stmt|;
+block|}
 comment|//shutdown namenode
 name|assertTrue
 argument_list|(
@@ -5265,6 +5282,12 @@ block|{
 try|try
 block|{
 comment|//write some more data and then close the file
+if|if
+condition|(
+operator|!
+name|isWebHDFS
+condition|)
+block|{
 name|out4
 operator|.
 name|write
@@ -5291,6 +5314,7 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -5738,6 +5762,12 @@ name|r
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|isWebHDFS
+condition|)
+block|{
 name|Assert
 operator|.
 name|assertEquals
@@ -5751,6 +5781,23 @@ argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|2
+operator|*
+name|bytes
+operator|.
+name|length
+argument_list|,
+name|count
+argument_list|)
+expr_stmt|;
+block|}
 name|in
 operator|.
 name|close

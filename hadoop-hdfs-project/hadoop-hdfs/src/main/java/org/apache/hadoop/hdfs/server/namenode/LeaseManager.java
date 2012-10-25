@@ -1085,7 +1085,7 @@ name|fsnamesystem
 operator|.
 name|dir
 operator|.
-name|getFileINode
+name|getINode
 argument_list|(
 name|src
 argument_list|)

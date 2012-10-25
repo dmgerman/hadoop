@@ -797,18 +797,6 @@ argument_list|,
 name|p
 argument_list|)
 expr_stmt|;
-name|DFSClient
-name|client
-init|=
-operator|(
-operator|(
-name|DistributedFileSystem
-operator|)
-name|fileSys
-operator|)
-operator|.
-name|dfs
-decl_stmt|;
 name|fileSys
 operator|.
 name|close
@@ -3012,7 +3000,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"File does not exist: /test/TestExistingDir"
+literal|"Path is not a file: /test/TestExistingDir"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4375,12 +4363,6 @@ name|conf
 init|=
 name|getTestConfiguration
 argument_list|()
-decl_stmt|;
-specifier|final
-name|long
-name|grace
-init|=
-literal|1000L
 decl_stmt|;
 name|MiniDFSCluster
 name|cluster
