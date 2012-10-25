@@ -67,7 +67,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface that represents the over the wire information for a file.  */
+comment|/**  * SnapshotInfo maintains information for a snapshot  */
 end_comment
 
 begin_class

@@ -6716,6 +6716,35 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
+comment|/**    * Create a snapshot    * @param snapshotName The name of the snapshot    * @param snapshotRoot The directory where the snapshot will be taken    */
+DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|createSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support createSnapshot"
+argument_list|)
+throw|;
+block|}
 comment|// making it volatile to be able to do a double checked locking
 DECL|field|FILE_SYSTEMS_LOADED
 specifier|private

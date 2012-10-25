@@ -830,22 +830,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -8845,6 +8829,31 @@ argument_list|(
 name|action
 argument_list|)
 return|;
+block|}
+comment|/**    * Create one snapshot.    *     * @see ClientProtocol#createSnapshot(String snapshotName, String    *      snapshotRoot)    */
+DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|createSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namenode
+operator|.
+name|createSnapshot
+argument_list|(
+name|snapshotName
+argument_list|,
+name|snapshotRoot
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Allow snapshot on a directory.    *     * @see ClientProtocol#allowSnapshot(String snapshotRoot)    */
 DECL|method|allowSnapshot (String snapshotRoot)

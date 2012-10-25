@@ -4002,6 +4002,32 @@ name|snapshotRoot
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|createSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|createSnapshot
+argument_list|(
+name|snapshotName
+argument_list|,
+name|snapshotRoot
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

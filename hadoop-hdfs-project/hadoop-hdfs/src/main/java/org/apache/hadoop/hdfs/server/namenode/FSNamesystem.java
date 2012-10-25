@@ -24781,6 +24781,25 @@ name|IOException
 block|{
 comment|// TODO: implement
 block|}
+comment|/**    * Create a snapshot    * @param snapshotName The name of the snapshot    * @param snapshotRoot The directory where the snapshot will be taken    */
+DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+specifier|public
+name|void
+name|createSnapshot
+parameter_list|(
+name|String
+name|snapshotName
+parameter_list|,
+name|String
+name|snapshotRoot
+parameter_list|)
+throws|throws
+name|SafeModeException
+throws|,
+name|IOException
+block|{
+comment|// TODO: implement
+block|}
 block|}
 end_class
 

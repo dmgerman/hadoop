@@ -1501,34 +1501,6 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Delete a snapshot    * @param snapshotName name of the snapshot to be deleted    * @param snapshotRoot the path where the snapshot exists    */
-DECL|method|deleteSnapshot (String snapshotName, String snapshotRoot)
-specifier|public
-name|void
-name|deleteSnapshot
-parameter_list|(
-name|String
-name|snapshotName
-parameter_list|,
-name|String
-name|snapshotRoot
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/**    * List snapshots of one directory    * @param snapshotRoot the path where the snapshot exists    */
-DECL|method|listSnapshots (String snapshotRoot)
-specifier|public
-name|SnapshotInfo
-index|[]
-name|listSnapshots
-parameter_list|(
-name|String
-name|snapshotRoot
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
 comment|/**      * Allow snapshot on a directory.      * @param snapshotRoot the directory to be snapped      * @throws IOException      */
 DECL|method|allowSnapshot (String snapshotRoot)
 specifier|public
