@@ -781,6 +781,11 @@ specifier|final
 name|AppSchedulingInfo
 name|appSchedulingInfo
 decl_stmt|;
+DECL|field|appSchedulable
+specifier|private
+name|AppSchedulable
+name|appSchedulable
+decl_stmt|;
 DECL|field|queue
 specifier|private
 specifier|final
@@ -1007,6 +1012,32 @@ name|appSchedulingInfo
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+return|;
+block|}
+DECL|method|setAppSchedulable (AppSchedulable appSchedulable)
+specifier|public
+name|void
+name|setAppSchedulable
+parameter_list|(
+name|AppSchedulable
+name|appSchedulable
+parameter_list|)
+block|{
+name|this
+operator|.
+name|appSchedulable
+operator|=
+name|appSchedulable
+expr_stmt|;
+block|}
+DECL|method|getAppSchedulable ()
+specifier|public
+name|AppSchedulable
+name|getAppSchedulable
+parameter_list|()
+block|{
+return|return
+name|appSchedulable
 return|;
 block|}
 DECL|method|getUser ()

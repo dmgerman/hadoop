@@ -432,21 +432,19 @@ operator|instanceof
 name|FairScheduler
 condition|)
 block|{
-name|context
-argument_list|()
-operator|.
-name|setStatus
+name|setTitle
 argument_list|(
-literal|404
+literal|"Fair Scheduler"
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|WebAppException
+name|render
 argument_list|(
-literal|"Fair Scheduler UI not yet supported"
+name|FairSchedulerPage
+operator|.
+name|class
 argument_list|)
-throw|;
+expr_stmt|;
+return|return;
 block|}
 name|setTitle
 argument_list|(

@@ -4304,6 +4304,24 @@ name|node
 argument_list|)
 return|;
 block|}
+DECL|method|getSchedulerApp (ApplicationAttemptId appAttemptId)
+specifier|public
+name|FSSchedulerApp
+name|getSchedulerApp
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|)
+block|{
+return|return
+name|applications
+operator|.
+name|get
+argument_list|(
+name|appAttemptId
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getSchedulerAppInfo ( ApplicationAttemptId appAttemptId)
