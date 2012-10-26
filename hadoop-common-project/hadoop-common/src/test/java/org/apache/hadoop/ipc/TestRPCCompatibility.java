@@ -220,6 +220,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -581,6 +591,20 @@ operator|.
 name|versionID
 return|;
 block|}
+block|}
+annotation|@
+name|Before
+DECL|method|setUp ()
+specifier|public
+name|void
+name|setUp
+parameter_list|()
+block|{
+name|ProtocolSignature
+operator|.
+name|resetCache
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -1199,11 +1223,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ProtocolSignature
-operator|.
-name|resetCache
-argument_list|()
-expr_stmt|;
 comment|// create a server with two handlers
 name|TestImpl2
 name|impl
