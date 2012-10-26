@@ -234,65 +234,6 @@ name|ROOT_NAME
 init|=
 literal|""
 decl_stmt|;
-comment|/** Cast INode to INodeDirectory. */
-DECL|method|valueOf (INode inode, String src )
-specifier|public
-specifier|static
-name|INodeDirectory
-name|valueOf
-parameter_list|(
-name|INode
-name|inode
-parameter_list|,
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|inode
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|FileNotFoundException
-argument_list|(
-name|src
-operator|+
-literal|" does not exist."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|!
-name|inode
-operator|.
-name|isDirectory
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|src
-operator|+
-literal|" is not a directory."
-argument_list|)
-throw|;
-block|}
-return|return
-operator|(
-name|INodeDirectory
-operator|)
-name|inode
-return|;
-block|}
 DECL|field|children
 specifier|private
 name|List
@@ -384,6 +325,7 @@ expr_stmt|;
 block|}
 comment|/** copy constructor    *     * @param other    */
 DECL|method|INodeDirectory (INodeDirectory other)
+specifier|public
 name|INodeDirectory
 parameter_list|(
 name|INodeDirectory
@@ -1128,6 +1070,7 @@ return|;
 block|}
 comment|/**    * Add a child inode to the directory.    *     * @param node INode to insert    * @param setModTime set modification time for the parent node    *                   not needed when replaying the addition and     *                   the parent already has the proper mod time    * @return  null if the child with this name already exists;     *          node, otherwise    */
 DECL|method|addChild (final T node, boolean setModTime)
+specifier|public
 parameter_list|<
 name|T
 extends|extends
@@ -1778,6 +1721,26 @@ block|{
 return|return
 name|children
 return|;
+block|}
+comment|/** Set the children list. */
+DECL|method|setChildren (List<INode> children)
+specifier|public
+name|void
+name|setChildren
+parameter_list|(
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|children
+parameter_list|)
+block|{
+name|this
+operator|.
+name|children
+operator|=
+name|children
+expr_stmt|;
 block|}
 annotation|@
 name|Override

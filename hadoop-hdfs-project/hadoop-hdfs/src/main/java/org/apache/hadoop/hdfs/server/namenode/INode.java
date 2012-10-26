@@ -1514,6 +1514,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|removeNode ()
+specifier|public
 name|boolean
 name|removeNode
 parameter_list|()

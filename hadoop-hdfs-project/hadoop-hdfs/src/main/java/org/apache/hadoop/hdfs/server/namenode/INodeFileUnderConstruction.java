@@ -192,6 +192,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|class|INodeFileUnderConstruction
+specifier|public
 class|class
 name|INodeFileUnderConstruction
 extends|extends

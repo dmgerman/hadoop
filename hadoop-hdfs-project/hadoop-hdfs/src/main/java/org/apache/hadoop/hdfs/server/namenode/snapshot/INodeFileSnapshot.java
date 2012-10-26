@@ -102,7 +102,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|computeFileSize (boolean includesBlockInfoUnderConstruction)
-specifier|protected
+specifier|public
 name|long
 name|computeFileSize
 parameter_list|(

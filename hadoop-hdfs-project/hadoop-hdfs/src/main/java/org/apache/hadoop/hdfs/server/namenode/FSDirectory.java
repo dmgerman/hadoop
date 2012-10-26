@@ -5636,7 +5636,7 @@ name|i
 range|:
 name|newnode
 operator|.
-name|getChildren
+name|getChildrenList
 argument_list|()
 control|)
 block|{

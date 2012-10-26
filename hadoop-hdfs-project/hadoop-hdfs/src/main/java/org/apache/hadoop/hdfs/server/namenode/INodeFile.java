@@ -938,7 +938,7 @@ return|;
 block|}
 comment|/** Compute file size.    * May or may not include BlockInfoUnderConstruction.    */
 DECL|method|computeFileSize (boolean includesBlockInfoUnderConstruction)
-specifier|protected
+specifier|public
 name|long
 name|computeFileSize
 parameter_list|(
