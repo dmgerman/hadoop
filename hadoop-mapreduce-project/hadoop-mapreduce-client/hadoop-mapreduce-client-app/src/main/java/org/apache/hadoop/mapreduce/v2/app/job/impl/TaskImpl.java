@@ -1803,7 +1803,19 @@ name|T_ADD_SPEC_ATTEMPT
 argument_list|,
 name|TaskEventType
 operator|.
+name|T_ATTEMPT_COMMIT_PENDING
+argument_list|,
+name|TaskEventType
+operator|.
 name|T_ATTEMPT_LAUNCHED
+argument_list|,
+name|TaskEventType
+operator|.
+name|T_ATTEMPT_SUCCEEDED
+argument_list|,
+name|TaskEventType
+operator|.
+name|T_KILL
 argument_list|)
 argument_list|)
 comment|// Transitions from FAILED state
