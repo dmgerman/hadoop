@@ -13746,10 +13746,9 @@ condition|(
 operator|!
 name|recursive
 operator|&&
-operator|!
 name|dir
 operator|.
-name|isDirEmpty
+name|isNonEmptyDirectory
 argument_list|(
 name|src
 argument_list|)

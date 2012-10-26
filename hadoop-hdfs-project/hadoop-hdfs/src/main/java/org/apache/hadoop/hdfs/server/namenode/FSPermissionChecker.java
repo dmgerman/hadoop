@@ -829,7 +829,7 @@ name|child
 range|:
 name|d
 operator|.
-name|getChildren
+name|getChildrenList
 argument_list|()
 control|)
 block|{
