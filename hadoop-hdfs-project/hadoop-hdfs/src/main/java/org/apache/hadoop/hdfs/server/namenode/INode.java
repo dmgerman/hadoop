@@ -26,7 +26,27 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
 import|;
 end_import
 
@@ -210,7 +230,28 @@ name|byte
 index|[]
 argument_list|>
 block|{
-comment|/*    *  The inode name is in java UTF8 encoding;     *  The name in HdfsFileStatus should keep the same encoding as this.    *  if this encoding is changed, implicitly getFileInfo and listStatus in    *  clientProtocol are changed; The decoding at the client    *  side should change accordingly.    */
+DECL|field|EMPTY_LIST
+specifier|static
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|EMPTY_LIST
+init|=
+name|Collections
+operator|.
+name|unmodifiableList
+argument_list|(
+operator|new
+name|ArrayList
+argument_list|<
+name|INode
+argument_list|>
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|/**    *  The inode name is in java UTF8 encoding;     *  The name in HdfsFileStatus should keep the same encoding as this.    *  if this encoding is changed, implicitly getFileInfo and listStatus in    *  clientProtocol are changed; The decoding at the client    *  side should change accordingly.    */
 DECL|field|name
 specifier|protected
 name|byte

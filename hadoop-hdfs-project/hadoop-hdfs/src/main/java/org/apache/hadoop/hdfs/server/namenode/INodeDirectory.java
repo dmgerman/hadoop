@@ -34,6 +34,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -147,6 +157,65 @@ name|INodeDirectory
 extends|extends
 name|INode
 block|{
+comment|/** Cast INode to INodeDirectory. */
+DECL|method|valueOf (INode inode, String path )
+specifier|public
+specifier|static
+name|INodeDirectory
+name|valueOf
+parameter_list|(
+name|INode
+name|inode
+parameter_list|,
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|inode
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Directory does not exist: "
+operator|+
+name|path
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+operator|!
+name|inode
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Path is not a directory: "
+operator|+
+name|path
+argument_list|)
+throw|;
+block|}
+return|return
+operator|(
+name|INodeDirectory
+operator|)
+name|inode
+return|;
+block|}
 DECL|field|DEFAULT_FILES_PER_DIRECTORY
 specifier|protected
 specifier|static
@@ -478,8 +547,8 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Return the INode of the last component in components, or null if the last    * component does not exist.    */
-DECL|method|getNode (byte[][] components, boolean resolveLink)
+comment|/**    * @return the INode of the last component in components, or null if the last    * component does not exist.    */
+DECL|method|getNode (byte[][] components, boolean resolveLink )
 specifier|private
 name|INode
 name|getNode
@@ -1130,8 +1199,7 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|addToParent
 argument_list|(
 name|pathComponents
@@ -1142,11 +1210,9 @@ literal|true
 argument_list|)
 operator|==
 literal|null
-condition|)
-return|return
+condition|?
 literal|null
-return|;
-return|return
+else|:
 name|newNode
 return|;
 block|}
@@ -1198,7 +1264,7 @@ return|return
 name|parent
 return|;
 block|}
-DECL|method|getParent (byte[][] pathComponents)
+DECL|method|getParent (byte[][] pathComponents )
 name|INodeDirectory
 name|getParent
 parameter_list|(
@@ -1212,16 +1278,11 @@ name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
 block|{
-name|int
-name|pathLen
-init|=
+if|if
+condition|(
 name|pathComponents
 operator|.
 name|length
-decl_stmt|;
-if|if
-condition|(
-name|pathLen
 operator|<
 literal|2
 condition|)
@@ -1311,7 +1372,7 @@ name|inode
 return|;
 block|}
 comment|/**    * Add new inode     * Optimized version of addNode()    *     * @return  parent INode if new inode is inserted    *          or null if it already exists.    * @throws  FileNotFoundException if parent does not exist or     *          is not a directory.    */
-DECL|method|addToParent ( byte[][] pathComponents, INode newNode, boolean propagateModTime )
+DECL|method|addToParent (byte[][] pathComponents, INode newNode, boolean propagateModTime)
 name|INodeDirectory
 name|addToParent
 parameter_list|(
@@ -1331,30 +1392,29 @@ name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
 block|{
-name|int
-name|pathLen
-init|=
+if|if
+condition|(
 name|pathComponents
 operator|.
 name|length
-decl_stmt|;
-if|if
-condition|(
-name|pathLen
 operator|<
 literal|2
 condition|)
+block|{
 comment|// add root
 return|return
 literal|null
 return|;
+block|}
 name|newNode
 operator|.
 name|name
 operator|=
 name|pathComponents
 index|[
-name|pathLen
+name|pathComponents
+operator|.
+name|length
 operator|-
 literal|1
 index|]
@@ -1368,8 +1428,7 @@ argument_list|(
 name|pathComponents
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+return|return
 name|parent
 operator|.
 name|addChild
@@ -1380,11 +1439,9 @@ name|propagateModTime
 argument_list|)
 operator|==
 literal|null
-condition|)
-return|return
+condition|?
 literal|null
-return|;
-return|return
+else|:
 name|parent
 return|;
 block|}
@@ -1616,13 +1673,14 @@ return|return
 name|summary
 return|;
 block|}
-comment|/**    */
-DECL|method|getChildren ()
+comment|/**    * @return an empty list if the children list is null;    *         otherwise, return the children list.    *         The returned list should not be modified.    */
+DECL|method|getChildrenList ()
+specifier|public
 name|List
 argument_list|<
 name|INode
 argument_list|>
-name|getChildren
+name|getChildrenList
 parameter_list|()
 block|{
 return|return
@@ -1630,22 +1688,19 @@ name|children
 operator|==
 literal|null
 condition|?
-operator|new
-name|ArrayList
-argument_list|<
-name|INode
-argument_list|>
-argument_list|()
+name|EMPTY_LIST
 else|:
 name|children
 return|;
 block|}
-DECL|method|getChildrenRaw ()
+comment|/** @return the children list which is possibly null. */
+DECL|method|getChildren ()
+specifier|public
 name|List
 argument_list|<
 name|INode
 argument_list|>
-name|getChildrenRaw
+name|getChildren
 parameter_list|()
 block|{
 return|return
