@@ -3711,11 +3711,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Periodic Block Verification scan is disabled because "
+literal|"Periodic Block Verification scan disabled because "
 operator|+
 name|reason
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3838,8 +3836,6 @@ argument_list|(
 literal|"Periodic Directory Tree Verification scan is disabled because "
 operator|+
 name|reason
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 block|}
@@ -6958,7 +6954,7 @@ name|info
 argument_list|(
 name|bpReg
 operator|+
-literal|" Starting thread to transfer block "
+literal|" Starting thread to transfer "
 operator|+
 name|block
 operator|+
@@ -10422,7 +10418,7 @@ name|info
 argument_list|(
 name|who
 operator|+
-literal|" calls recoverBlock(block="
+literal|" calls recoverBlock("
 operator|+
 name|block
 operator|+

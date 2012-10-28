@@ -3865,7 +3865,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Rolling edit logs."
+literal|"Rolling edit logs"
 argument_list|)
 expr_stmt|;
 name|endCurrentLogSegment
@@ -3915,7 +3915,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Namenode started a new log segment at txid "
+literal|"Started a new log segment at txid "
 operator|+
 name|txid
 argument_list|)

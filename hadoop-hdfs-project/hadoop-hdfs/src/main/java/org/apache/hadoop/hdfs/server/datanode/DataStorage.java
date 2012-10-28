@@ -893,7 +893,7 @@ literal|"Storage directory "
 operator|+
 name|dataDir
 operator|+
-literal|" does not exist."
+literal|" does not exist"
 argument_list|)
 expr_stmt|;
 name|it
@@ -914,7 +914,7 @@ literal|"Storage directory "
 operator|+
 name|dataDir
 operator|+
-literal|" is not formatted."
+literal|" is not formatted"
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2336,7 +2336,7 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|" is complete."
+literal|" is complete"
 argument_list|)
 expr_stmt|;
 name|addBlockPoolStorage
@@ -2642,7 +2642,7 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|" is complete."
+literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2809,7 +2809,7 @@ literal|"Finalize upgrade for "
 operator|+
 name|dataDirPath
 operator|+
-literal|" failed."
+literal|" failed"
 argument_list|,
 name|ex
 argument_list|)
@@ -2823,7 +2823,7 @@ literal|"Finalize upgrade for "
 operator|+
 name|dataDirPath
 operator|+
-literal|" is complete."
+literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}

@@ -3572,7 +3572,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Error Recovery for block "
+literal|"Error Recovery for "
 operator|+
 name|block
 operator|+
@@ -4851,7 +4851,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Abandoning block "
+literal|"Abandoning "
 operator|+
 name|block
 argument_list|)
@@ -8241,7 +8241,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Could not complete file "
+literal|"Could not complete "
 operator|+
 name|src
 operator|+

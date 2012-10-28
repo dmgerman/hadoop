@@ -469,7 +469,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception while sending token. Re-throwing. "
+literal|"Exception while sending token. Re-throwing "
 argument_list|,
 name|e
 argument_list|)

@@ -4627,7 +4627,7 @@ name|info
 argument_list|(
 literal|"Catching up to latest edits from old active before "
 operator|+
-literal|"taking over writer role in edits logs."
+literal|"taking over writer role in edits logs"
 argument_list|)
 expr_stmt|;
 name|editLogTailer
@@ -4646,7 +4646,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Reprocessing replication and invalidation queues..."
+literal|"Reprocessing replication and invalidation queues"
 argument_list|)
 expr_stmt|;
 name|blockManager
@@ -10425,7 +10425,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"recoverLease: recover lease "
+literal|"recoverLease: "
 operator|+
 name|lease
 operator|+
@@ -10497,7 +10497,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"startFile: recover lease "
+literal|"startFile: recover "
 operator|+
 name|lease
 operator|+
@@ -10505,7 +10505,7 @@ literal|", src="
 operator|+
 name|src
 operator|+
-literal|" from client "
+literal|" client "
 operator|+
 name|pendingFile
 operator|.
@@ -11238,7 +11238,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.allocateBlock: "
+literal|"BLOCK* allocateBlock: "
 operator|+
 literal|"caught retry for allocation of a new block in "
 operator|+
@@ -12411,19 +12411,19 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"DIR* NameSystem.completeFile: "
+literal|"DIR* completeFile: "
 operator|+
-literal|"received request from "
+literal|"request from "
 operator|+
 name|holder
 operator|+
-literal|" to complete file "
+literal|" to complete "
 operator|+
 name|src
 operator|+
 literal|" which is already closed. But, it appears to be an RPC "
 operator|+
-literal|"retry. Returning success."
+literal|"retry. Returning success"
 argument_list|)
 expr_stmt|;
 return|return
@@ -12471,7 +12471,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"DIR* NameSystem.completeFile: file "
+literal|"DIR* completeFile: "
 operator|+
 name|src
 operator|+
@@ -12584,7 +12584,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.allocateBlock: "
+literal|"BLOCK* allocateBlock: "
 operator|+
 name|src
 operator|+
@@ -12650,9 +12650,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.checkFileProgress: "
-operator|+
-literal|"block "
+literal|"BLOCK* checkFileProgress: "
 operator|+
 name|block
 operator|+
@@ -12699,9 +12697,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.checkFileProgress: "
-operator|+
-literal|"block "
+literal|"BLOCK* checkFileProgress: "
 operator|+
 name|b
 operator|+
@@ -14759,7 +14755,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.fsync: file "
+literal|"BLOCK* fsync: "
 operator|+
 name|src
 operator|+
@@ -14856,7 +14852,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovering lease="
+literal|"Recovering "
 operator|+
 name|lease
 operator|+
@@ -17383,7 +17379,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"New namespace image has been created."
+literal|"New namespace image has been created"
 argument_list|)
 expr_stmt|;
 block|}
@@ -18007,7 +18003,7 @@ name|timeInSafemode
 operator|/
 literal|1000
 operator|+
-literal|" secs."
+literal|" secs"
 argument_list|)
 expr_stmt|;
 name|NameNode
@@ -18036,7 +18032,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"STATE* Safe mode is OFF."
+literal|"STATE* Safe mode is OFF"
 argument_list|)
 expr_stmt|;
 block|}
@@ -19208,7 +19204,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"NameNode is being shutdown, exit SafeModeMonitor thread. "
+literal|"NameNode is being shutdown, exit SafeModeMonitor thread"
 argument_list|)
 expr_stmt|;
 block|}
@@ -19864,7 +19860,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"STATE* Safe mode is ON. "
+literal|"STATE* Safe mode is ON"
 operator|+
 name|safeMode
 operator|.
@@ -19904,7 +19900,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"STATE* Safe mode is already OFF."
+literal|"STATE* Safe mode is already OFF"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -21237,7 +21233,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"*DIR* NameNode.reportBadBlocks"
+literal|"*DIR* reportBadBlocks"
 argument_list|)
 expr_stmt|;
 for|for

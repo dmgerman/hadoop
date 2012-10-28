@@ -1969,8 +1969,6 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Lease "
-operator|+
 name|oldest
 operator|+
 literal|" has expired hard limit"
@@ -2050,7 +2048,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Lease recovery for file "
+literal|"Lease recovery for "
 operator|+
 name|p
 operator|+
@@ -2071,7 +2069,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Started block recovery for file "
+literal|"Started block recovery "
 operator|+
 name|p
 operator|+

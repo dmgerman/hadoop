@@ -1481,7 +1481,7 @@ literal|"Storage directory "
 operator|+
 name|rootPath
 operator|+
-literal|" does not exist."
+literal|" does not exist"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1533,7 +1533,7 @@ name|info
 argument_list|(
 name|rootPath
 operator|+
-literal|"is not a directory."
+literal|"is not a directory"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1959,8 +1959,6 @@ argument_list|(
 literal|"Completing previous upgrade for storage directory "
 operator|+
 name|rootPath
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 name|rename
@@ -1985,7 +1983,7 @@ literal|"Recovering storage directory "
 operator|+
 name|rootPath
 operator|+
-literal|" from previous upgrade."
+literal|" from previous upgrade"
 argument_list|)
 expr_stmt|;
 if|if
@@ -2020,8 +2018,6 @@ argument_list|(
 literal|"Completing previous rollback for storage directory "
 operator|+
 name|rootPath
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 name|deleteDir
@@ -2043,7 +2039,7 @@ literal|"Recovering storage directory "
 operator|+
 name|rootPath
 operator|+
-literal|" from previous rollback."
+literal|" from previous rollback"
 argument_list|)
 expr_stmt|;
 name|rename
@@ -2066,8 +2062,6 @@ argument_list|(
 literal|"Completing previous finalize for storage directory "
 operator|+
 name|rootPath
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 name|deleteDir
@@ -2088,8 +2082,6 @@ argument_list|(
 literal|"Completing previous checkpoint for storage directory "
 operator|+
 name|rootPath
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 name|File
@@ -2131,7 +2123,7 @@ literal|"Recovering storage directory "
 operator|+
 name|rootPath
 operator|+
-literal|" from failed checkpoint."
+literal|" from failed checkpoint"
 argument_list|)
 expr_stmt|;
 if|if
@@ -2275,7 +2267,7 @@ name|this
 operator|.
 name|root
 operator|+
-literal|". The directory is already locked."
+literal|". The directory is already locked"
 decl_stmt|;
 name|LOG
 operator|.

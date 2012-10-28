@@ -2033,7 +2033,7 @@ argument_list|(
 name|bpid
 argument_list|)
 operator|+
-literal|":Exception writing block "
+literal|":Exception writing "
 operator|+
 name|block
 operator|+
@@ -2134,7 +2134,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"report corrupt block "
+literal|"report corrupt "
 operator|+
 name|block
 operator|+
@@ -2165,7 +2165,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to report bad block "
+literal|"Failed to report bad "
 operator|+
 name|block
 operator|+
@@ -2182,9 +2182,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Unexpected checksum mismatch "
-operator|+
-literal|"while writing "
+literal|"Unexpected checksum mismatch while writing "
 operator|+
 name|block
 operator|+
@@ -2686,7 +2684,7 @@ literal|"Packet starts at "
 operator|+
 name|firstByteInBlock
 operator|+
-literal|" for block "
+literal|" for "
 operator|+
 name|block
 operator|+
@@ -3334,7 +3332,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception in receiveBlock for "
+literal|"Exception for "
 operator|+
 name|block
 argument_list|,
@@ -3615,15 +3613,15 @@ literal|"computePartialChunkCrc sizePartialChunk "
 operator|+
 name|sizePartialChunk
 operator|+
-literal|" block "
+literal|" "
 operator|+
 name|block
 operator|+
-literal|" offset in block "
+literal|" block offset "
 operator|+
 name|blkoff
 operator|+
-literal|" offset in metafile "
+literal|" metafile offset "
 operator|+
 name|ckoff
 argument_list|)
@@ -3752,7 +3750,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Read in partial CRC chunk from disk for block "
+literal|"Read in partial CRC chunk from disk for "
 operator|+
 name|block
 argument_list|)
@@ -4742,11 +4740,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received block "
+literal|"Received "
 operator|+
 name|block
 operator|+
-literal|" of size "
+literal|" size "
 operator|+
 name|block
 operator|.

@@ -2576,7 +2576,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannout truncate block to from oldlen (="
+literal|"Cannot truncate block to from oldlen (="
 operator|+
 name|oldlen
 operator|+
@@ -2870,7 +2870,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Appending to replica "
+literal|"Appending to "
 operator|+
 name|replicaInfo
 argument_list|)
@@ -3930,7 +3930,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recover the RBW replica "
+literal|"Recover RBW replica "
 operator|+
 name|b
 argument_list|)
@@ -3988,7 +3988,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Recovering replica "
+literal|"Recovering "
 operator|+
 name|rbw
 argument_list|)
@@ -4169,7 +4169,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Convert replica "
+literal|"Convert "
 operator|+
 name|b
 operator|+
@@ -7379,7 +7379,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"initReplicaRecovery: block="
+literal|"initReplicaRecovery: "
 operator|+
 name|block
 operator|+
@@ -7710,7 +7710,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"updateReplica: block="
+literal|"updateReplica: "
 operator|+
 name|oldBlock
 operator|+

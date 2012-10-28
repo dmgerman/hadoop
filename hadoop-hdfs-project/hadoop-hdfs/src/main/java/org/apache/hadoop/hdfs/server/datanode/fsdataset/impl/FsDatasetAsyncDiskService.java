@@ -569,7 +569,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Shutting down all async disk service threads..."
+literal|"Shutting down all async disk service threads"
 argument_list|)
 expr_stmt|;
 for|for
@@ -608,7 +608,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"All async disk service threads have been shut down."
+literal|"All async disk service threads have been shut down"
 argument_list|)
 expr_stmt|;
 block|}
@@ -635,7 +635,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Scheduling block "
+literal|"Scheduling "
 operator|+
 name|block
 operator|.
@@ -890,7 +890,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Deleted block "
+literal|"Deleted "
 operator|+
 name|block
 operator|.
@@ -904,7 +904,7 @@ operator|.
 name|getLocalBlock
 argument_list|()
 operator|+
-literal|" at file "
+literal|" file "
 operator|+
 name|blockFile
 argument_list|)
