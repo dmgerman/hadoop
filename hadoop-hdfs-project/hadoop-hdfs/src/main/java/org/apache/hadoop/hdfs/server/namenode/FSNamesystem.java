@@ -24514,6 +24514,17 @@ return|return
 name|blockManager
 return|;
 block|}
+comment|/** @return the FSDirectory. */
+DECL|method|getFSDirectory ()
+specifier|public
+name|FSDirectory
+name|getFSDirectory
+parameter_list|()
+block|{
+return|return
+name|dir
+return|;
+block|}
 comment|/**    * Verifies that the given identifier and password are valid and match.    * @param identifier Token identifier.    * @param password Password in the token.    * @throws InvalidToken    */
 DECL|method|verifyToken (DelegationTokenIdentifier identifier, byte[] password)
 specifier|public
@@ -24652,23 +24663,87 @@ name|isAvoidingStaleDataNodesForWrite
 argument_list|()
 return|;
 block|}
-comment|// Allow snapshot on a directroy.
-annotation|@
-name|VisibleForTesting
-DECL|method|allowSnapshot (String snapshotRoot)
+comment|/** Allow snapshot on a directroy. */
+DECL|method|allowSnapshot (String path)
 specifier|public
 name|void
 name|allowSnapshot
 parameter_list|(
 name|String
-name|snapshotRoot
+name|path
 parameter_list|)
 throws|throws
 name|SafeModeException
 throws|,
 name|IOException
 block|{
-comment|// TODO: implement
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|SafeModeException
+argument_list|(
+literal|"Cannot allow snapshot for "
+operator|+
+name|path
+argument_list|,
+name|safeMode
+argument_list|)
+throw|;
+block|}
+name|checkOwner
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+comment|//TODO: do not hardcode snapshot quota value
+name|snapshotManager
+operator|.
+name|setSnapshottable
+argument_list|(
+name|path
+argument_list|,
+literal|256
+argument_list|)
+expr_stmt|;
+name|getEditLog
+argument_list|()
+operator|.
+name|logAllowSnapshot
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+name|getEditLog
+argument_list|()
+operator|.
+name|logSync
+argument_list|()
+expr_stmt|;
+comment|//TODO: audit log
 block|}
 comment|// Disallow snapshot on a directory.
 annotation|@
@@ -24750,6 +24825,16 @@ block|{
 name|snapshotManager
 operator|.
 name|createSnapshot
+argument_list|(
+name|snapshotName
+argument_list|,
+name|path
+argument_list|)
+expr_stmt|;
+name|getEditLog
+argument_list|()
+operator|.
+name|logCreateSnapshot
 argument_list|(
 name|snapshotName
 argument_list|,

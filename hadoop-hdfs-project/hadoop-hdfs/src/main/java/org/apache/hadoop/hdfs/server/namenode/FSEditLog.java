@@ -3941,15 +3941,12 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logAllowSnapshot (String snapName, String snapRoot)
+DECL|method|logAllowSnapshot (String path)
 name|void
 name|logAllowSnapshot
 parameter_list|(
 name|String
-name|snapName
-parameter_list|,
-name|String
-name|snapRoot
+name|path
 parameter_list|)
 block|{
 name|AllowSnapshotOp
@@ -3967,7 +3964,7 @@ argument_list|)
 operator|.
 name|setSnapshotRoot
 argument_list|(
-name|snapRoot
+name|path
 argument_list|)
 decl_stmt|;
 name|logEdit
@@ -3976,15 +3973,12 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logDisallowSnapshot (String snapName, String snapRoot)
+DECL|method|logDisallowSnapshot (String path)
 name|void
 name|logDisallowSnapshot
 parameter_list|(
 name|String
-name|snapName
-parameter_list|,
-name|String
-name|snapRoot
+name|path
 parameter_list|)
 block|{
 name|DisallowSnapshotOp
@@ -4002,7 +3996,7 @@ argument_list|)
 operator|.
 name|setSnapshotRoot
 argument_list|(
-name|snapRoot
+name|path
 argument_list|)
 decl_stmt|;
 name|logEdit
