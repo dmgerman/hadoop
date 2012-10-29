@@ -4049,7 +4049,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Exception occurred while aborting the client. "
+literal|"Exception occurred while aborting the client "
 operator|+
 name|ioe
 argument_list|)
@@ -9647,7 +9647,7 @@ literal|"Found corruption while reading "
 operator|+
 name|file
 operator|+
-literal|".  Error repairing corrupt blocks.  Bad blocks remain."
+literal|". Error repairing corrupt blocks. Bad blocks remain."
 argument_list|,
 name|ie
 argument_list|)

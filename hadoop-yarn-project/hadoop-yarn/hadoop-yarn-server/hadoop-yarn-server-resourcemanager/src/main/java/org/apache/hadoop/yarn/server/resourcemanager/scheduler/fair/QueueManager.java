@@ -2799,6 +2799,7 @@ block|}
 block|}
 comment|/**    * Get the maximum resource allocation for the given queue.    * @return the cap set on this queue, or Integer.MAX_VALUE if not set.    */
 DECL|method|getMaxResources (String queueName)
+specifier|public
 name|Resource
 name|getMaxResources
 parameter_list|(

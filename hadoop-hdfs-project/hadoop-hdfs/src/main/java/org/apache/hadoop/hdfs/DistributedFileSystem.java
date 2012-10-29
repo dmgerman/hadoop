@@ -3398,7 +3398,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Found checksum error in data stream at block="
+literal|"Found checksum error in data stream at "
 operator|+
 name|dataBlock
 operator|+
@@ -3473,7 +3473,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Found checksum error in checksum stream at block="
+literal|"Found checksum error in checksum stream at "
 operator|+
 name|sumsBlock
 operator|+

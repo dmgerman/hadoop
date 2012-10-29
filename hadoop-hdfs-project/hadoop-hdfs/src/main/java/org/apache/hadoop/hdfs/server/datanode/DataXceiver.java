@@ -1279,7 +1279,7 @@ argument_list|()
 operator|+
 literal|". Perhaps the client is running an "
 operator|+
-literal|"older version of Hadoop which does not support encryption."
+literal|"older version of Hadoop which does not support encryption"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -2322,7 +2322,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Receiving block "
+literal|"Receiving "
 operator|+
 name|block
 operator|+
@@ -2926,7 +2926,7 @@ name|info
 argument_list|(
 name|datanode
 operator|+
-literal|":Exception transfering block "
+literal|":Exception transfering "
 operator|+
 name|block
 operator|+
@@ -2934,7 +2934,7 @@ literal|" to mirror "
 operator|+
 name|mirrorNode
 operator|+
-literal|". continuing without the mirror."
+literal|"- continuing without the mirror"
 argument_list|,
 name|e
 argument_list|)
@@ -3135,7 +3135,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received block "
+literal|"Received "
 operator|+
 name|block
 operator|+
@@ -3902,7 +3902,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Copied block "
+literal|"Copied "
 operator|+
 name|block
 operator|+
@@ -4551,7 +4551,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Moved block "
+literal|"Moved "
 operator|+
 name|block
 operator|+

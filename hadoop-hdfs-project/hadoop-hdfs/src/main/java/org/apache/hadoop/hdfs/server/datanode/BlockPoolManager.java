@@ -570,22 +570,24 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|shutDownAll ()
+DECL|method|shutDownAll (BPOfferService[] bposArray)
 name|void
 name|shutDownAll
-parameter_list|()
-throws|throws
-name|InterruptedException
-block|{
+parameter_list|(
 name|BPOfferService
 index|[]
 name|bposArray
-init|=
-name|this
-operator|.
-name|getAllNamenodeThreads
-argument_list|()
-decl_stmt|;
+parameter_list|)
+throws|throws
+name|InterruptedException
+block|{
+if|if
+condition|(
+name|bposArray
+operator|!=
+literal|null
+condition|)
+block|{
 for|for
 control|(
 name|BPOfferService
@@ -615,6 +617,7 @@ operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|startAll ()

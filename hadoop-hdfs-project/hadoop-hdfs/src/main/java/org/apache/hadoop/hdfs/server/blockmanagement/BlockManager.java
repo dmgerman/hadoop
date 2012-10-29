@@ -4919,12 +4919,9 @@ literal|"BLOCK* addToInvalidates: "
 operator|+
 name|b
 operator|+
-literal|" to "
+literal|" "
 operator|+
 name|datanodes
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4988,7 +4985,7 @@ literal|"BLOCK* findAndMarkBlockAsCorrupt: "
 operator|+
 name|blk
 operator|+
-literal|" not found."
+literal|" not found"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -5283,7 +5280,7 @@ argument_list|()
 operator|+
 literal|" replica(s) are located on nodes "
 operator|+
-literal|"with potentially out-of-date block reports."
+literal|"with potentially out-of-date block reports"
 argument_list|)
 expr_stmt|;
 name|postponeBlock
@@ -5369,7 +5366,7 @@ literal|" on "
 operator|+
 name|dn
 operator|+
-literal|" is the only copy and was not deleted."
+literal|" is the only copy and was not deleted"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5874,13 +5871,11 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* "
-operator|+
-literal|"Removing block "
+literal|"BLOCK* Removing "
 operator|+
 name|block
 operator|+
-literal|" from neededReplications as it has enough replicas."
+literal|" from neededReplications as it has enough replicas"
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -6234,13 +6229,11 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* "
-operator|+
-literal|"Removing block "
+literal|"BLOCK* Removing "
 operator|+
 name|block
 operator|+
-literal|" from neededReplications as it has enough replicas."
+literal|" from neededReplications as it has enough replicas"
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -7479,15 +7472,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: "
-operator|+
-literal|"Received first block report from "
+literal|"BLOCK* processReport: Received first block report from "
 operator|+
 name|node
 operator|+
 literal|" after becoming active. Its block contents are no longer"
 operator|+
-literal|" considered stale."
+literal|" considered stale"
 argument_list|)
 expr_stmt|;
 name|rescanPostponedMisreplicatedBlocks
@@ -7870,7 +7861,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: block "
+literal|"BLOCK* processReport: "
 operator|+
 name|b
 operator|+
@@ -7885,7 +7876,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|+
-literal|" does not belong to any file."
+literal|" does not belong to any file"
 argument_list|)
 expr_stmt|;
 name|addToInvalidates
@@ -8910,7 +8901,7 @@ name|count
 operator|+
 literal|" messages from DataNodes "
 operator|+
-literal|"that were previously queued during standby state."
+literal|"that were previously queued during standby state"
 argument_list|)
 expr_stmt|;
 block|}
@@ -9161,7 +9152,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Received an RBW replica for block "
+literal|"Received an RBW replica for "
 operator|+
 name|storedBlock
 operator|+
@@ -9169,9 +9160,9 @@ literal|" on "
 operator|+
 name|dn
 operator|+
-literal|": ignoring it, since the block is "
+literal|": ignoring it, since it is "
 operator|+
-literal|"complete with the same generation stamp."
+literal|"complete with the same genstamp"
 argument_list|)
 expr_stmt|;
 return|return
@@ -9593,7 +9584,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|+
-literal|" but it does not belong to any file."
+literal|" but it does not belong to any file"
 argument_list|)
 expr_stmt|;
 comment|// we could add this block to invalidate set of this datanode.
@@ -10109,7 +10100,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"NameNode.invalidateCorruptReplicas "
+literal|"invalidateCorruptReplicas "
 operator|+
 literal|"error in deleting bad block "
 operator|+
@@ -10752,7 +10743,7 @@ name|info
 argument_list|(
 literal|"BLOCK* processOverReplicatedBlock: "
 operator|+
-literal|"Postponing processing of over-replicated block "
+literal|"Postponing processing of over-replicated "
 operator|+
 name|block
 operator|+
@@ -11126,7 +11117,7 @@ literal|", "
 operator|+
 name|b
 operator|+
-literal|") is added to invalidated blocks set."
+literal|") is added to invalidated blocks set"
 argument_list|)
 expr_stmt|;
 block|}
@@ -11835,7 +11826,7 @@ operator|.
 name|getNumBytes
 argument_list|()
 operator|+
-literal|" does not belong to any file."
+literal|" does not belong to any file"
 argument_list|)
 expr_stmt|;
 name|addToInvalidates
@@ -12325,7 +12316,7 @@ name|stale
 argument_list|)
 return|;
 block|}
-comment|/**     * Simpler, faster form of {@link #countNodes(Block)} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link countNodes()} instead.    *     * @param b - the block being tested    * @return count of live nodes for this block    */
+comment|/**     * Simpler, faster form of {@link #countNodes(Block)} that only returns the number    * of live nodes.  If in startup safemode (or its 30-sec extension period),    * then it gains speed by ignoring issues of excess replicas or nodes    * that are decommissioned or in process of becoming decommissioned.    * If not in startup, then it calls {@link #countNodes(Block)} instead.    *     * @param b - the block being tested    * @return count of live nodes for this block    */
 DECL|method|countLiveNodes (BlockInfo b)
 name|int
 name|countLiveNodes

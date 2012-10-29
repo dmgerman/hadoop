@@ -448,7 +448,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Continuing."
+literal|"Continuing"
 argument_list|)
 expr_stmt|;
 return|return;

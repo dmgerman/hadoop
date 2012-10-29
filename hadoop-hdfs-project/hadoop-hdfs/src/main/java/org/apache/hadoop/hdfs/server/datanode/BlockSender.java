@@ -2176,7 +2176,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BlockSender.sendChunks() exception: "
+literal|"exception: "
 argument_list|,
 name|e
 argument_list|)

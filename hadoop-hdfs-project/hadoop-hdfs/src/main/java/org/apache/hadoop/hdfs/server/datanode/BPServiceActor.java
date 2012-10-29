@@ -612,13 +612,19 @@ DECL|field|bpos
 name|BPOfferService
 name|bpos
 decl_stmt|;
+comment|// lastBlockReport, lastDeletedReport and lastHeartbeat may be assigned/read
+comment|// by testing threads (through BPServiceActor#triggerXXX), while also
+comment|// assigned/read by the actor thread. Thus they should be declared as volatile
+comment|// to make sure the "happens-before" consistency.
 DECL|field|lastBlockReport
+specifier|volatile
 name|long
 name|lastBlockReport
 init|=
 literal|0
 decl_stmt|;
 DECL|field|lastDeletedReport
+specifier|volatile
 name|long
 name|lastDeletedReport
 init|=
@@ -640,6 +646,7 @@ name|bpNamenode
 decl_stmt|;
 DECL|field|lastHeartbeat
 specifier|private
+specifier|volatile
 name|long
 name|lastHeartbeat
 init|=

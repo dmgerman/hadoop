@@ -952,8 +952,6 @@ operator|+
 literal|" hours for block pool "
 operator|+
 name|bpid
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 comment|// get the list of blocks and arrange them in random order
@@ -1673,7 +1671,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Reporting bad block "
+literal|"Reporting bad "
 operator|+
 name|block
 argument_list|)
@@ -1699,7 +1697,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Cannot report bad block="
+literal|"Cannot report bad "
 operator|+
 name|block
 operator|.
@@ -2170,7 +2168,7 @@ name|info
 argument_list|(
 name|block
 operator|+
-literal|" is no longer in the dataset."
+literal|" is no longer in the dataset"
 argument_list|)
 expr_stmt|;
 name|deleteBlock
@@ -2204,7 +2202,7 @@ literal|"Verification failed for "
 operator|+
 name|block
 operator|+
-literal|". It may be due to race with write."
+literal|" - may be due to race with write"
 argument_list|)
 expr_stmt|;
 name|deleteBlock

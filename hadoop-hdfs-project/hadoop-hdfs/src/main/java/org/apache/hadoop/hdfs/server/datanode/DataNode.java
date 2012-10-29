@@ -3711,11 +3711,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Periodic Block Verification scan is disabled because "
+literal|"Periodic Block Verification scan disabled because "
 operator|+
 name|reason
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3838,8 +3836,6 @@ argument_list|(
 literal|"Periodic Directory Tree Verification scan is disabled because "
 operator|+
 name|reason
-operator|+
-literal|"."
 argument_list|)
 expr_stmt|;
 block|}
@@ -6231,6 +6227,29 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|// We need to make a copy of the original blockPoolManager#offerServices to
+comment|// make sure blockPoolManager#shutDownAll() can still access all the
+comment|// BPOfferServices, since after setting DataNode#shouldRun to false the
+comment|// offerServices may be modified.
+name|BPOfferService
+index|[]
+name|bposArray
+init|=
+name|this
+operator|.
+name|blockPoolManager
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|this
+operator|.
+name|blockPoolManager
+operator|.
+name|getAllNamenodeThreads
+argument_list|()
+decl_stmt|;
 name|this
 operator|.
 name|shouldRun
@@ -6440,7 +6459,9 @@ operator|.
 name|blockPoolManager
 operator|.
 name|shutDownAll
-argument_list|()
+argument_list|(
+name|bposArray
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -6933,7 +6954,7 @@ name|info
 argument_list|(
 name|bpReg
 operator|+
-literal|" Starting thread to transfer block "
+literal|" Starting thread to transfer "
 operator|+
 name|block
 operator|+
@@ -10397,7 +10418,7 @@ name|info
 argument_list|(
 name|who
 operator|+
-literal|" calls recoverBlock(block="
+literal|" calls recoverBlock("
 operator|+
 name|block
 operator|+

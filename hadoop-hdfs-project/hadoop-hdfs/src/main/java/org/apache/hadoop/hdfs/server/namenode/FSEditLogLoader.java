@@ -904,7 +904,7 @@ operator|)
 operator|/
 literal|1000
 operator|+
-literal|" seconds."
+literal|" seconds"
 argument_list|)
 expr_stmt|;
 return|return

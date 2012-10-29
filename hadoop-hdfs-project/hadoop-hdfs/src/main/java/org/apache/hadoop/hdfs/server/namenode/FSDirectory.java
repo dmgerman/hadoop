@@ -1000,7 +1000,7 @@ literal|"Caching file names occuring more than "
 operator|+
 name|threshold
 operator|+
-literal|" times "
+literal|" times"
 argument_list|)
 expr_stmt|;
 name|nameCache
@@ -1365,13 +1365,9 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"DIR* FSDirectory.addFile: "
-operator|+
-literal|"failed to add "
+literal|"DIR* addFile: failed to add "
 operator|+
 name|path
-operator|+
-literal|" to the file system"
 argument_list|)
 expr_stmt|;
 return|return
@@ -1394,11 +1390,11 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"DIR* FSDirectory.addFile: "
+literal|"DIR* addFile: "
 operator|+
 name|path
 operator|+
-literal|" is added to the file system"
+literal|" is added"
 argument_list|)
 expr_stmt|;
 block|}
@@ -10155,13 +10151,9 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"DIR* FSDirectory.addSymlink: "
-operator|+
-literal|"failed to add "
+literal|"DIR* addSymlink: failed to add "
 operator|+
 name|path
-operator|+
-literal|" to the file system"
 argument_list|)
 expr_stmt|;
 return|return
@@ -10202,11 +10194,11 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"DIR* FSDirectory.addSymlink: "
+literal|"DIR* addSymlink: "
 operator|+
 name|path
 operator|+
-literal|" is added to the file system"
+literal|" is added"
 argument_list|)
 expr_stmt|;
 block|}

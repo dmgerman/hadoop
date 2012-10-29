@@ -2252,12 +2252,9 @@ literal|"Successfully connected to "
 operator|+
 name|targetAddr
 operator|+
-literal|" for block "
+literal|" for "
 operator|+
 name|blk
-operator|.
-name|getBlockId
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3499,7 +3496,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"No node available for block: "
+literal|"No node available for "
 operator|+
 name|blockInfo
 argument_list|)
@@ -3511,7 +3508,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Could not obtain block "
+literal|"Could not obtain "
 operator|+
 name|block
 operator|.

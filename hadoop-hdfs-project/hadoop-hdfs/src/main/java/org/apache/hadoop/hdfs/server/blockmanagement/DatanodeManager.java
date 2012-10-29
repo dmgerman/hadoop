@@ -2935,7 +2935,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Decommission complete for node "
+literal|"Decommission complete for "
 operator|+
 name|node
 argument_list|)
@@ -2978,7 +2978,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Start Decommissioning node "
+literal|"Start Decommissioning "
 operator|+
 name|node
 operator|+
@@ -2989,7 +2989,7 @@ operator|.
 name|numBlocks
 argument_list|()
 operator|+
-literal|" blocks."
+literal|" blocks"
 argument_list|)
 expr_stmt|;
 name|heartbeatManager
@@ -3043,7 +3043,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Stop Decommissioning node "
+literal|"Stop Decommissioning "
 operator|+
 name|node
 argument_list|)
@@ -3201,9 +3201,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.registerDatanode: "
-operator|+
-literal|"node registration from "
+literal|"BLOCK* registerDatanode: from "
 operator|+
 name|nodeReg
 operator|+
@@ -3263,9 +3261,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.registerDatanode: "
-operator|+
-literal|"node from name: "
+literal|"BLOCK* registerDatanode: "
 operator|+
 name|nodeN
 argument_list|)
@@ -3321,7 +3317,7 @@ name|stateChangeLog
 operator|.
 name|debug
 argument_list|(
-literal|"BLOCK* NameSystem.registerDatanode: "
+literal|"BLOCK* registerDatanode: "
 operator|+
 literal|"node restarted."
 argument_list|)
@@ -3338,9 +3334,7 @@ name|stateChangeLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* NameSystem.registerDatanode: "
-operator|+
-literal|"node "
+literal|"BLOCK* registerDatanode: "
 operator|+
 name|nodeS
 operator|+

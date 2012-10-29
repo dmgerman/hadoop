@@ -1574,7 +1574,7 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|" is complete."
+literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1875,7 +1875,7 @@ operator|.
 name|getRoot
 argument_list|()
 operator|+
-literal|" is complete."
+literal|" is complete"
 argument_list|)
 expr_stmt|;
 block|}

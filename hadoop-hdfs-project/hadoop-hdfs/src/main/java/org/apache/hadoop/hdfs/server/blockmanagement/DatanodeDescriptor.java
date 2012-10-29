@@ -1291,11 +1291,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Block "
-operator|+
 name|block
 operator|+
-literal|" is already in the recovery queue."
+literal|" is already in the recovery queue"
 argument_list|)
 expr_stmt|;
 return|return;
