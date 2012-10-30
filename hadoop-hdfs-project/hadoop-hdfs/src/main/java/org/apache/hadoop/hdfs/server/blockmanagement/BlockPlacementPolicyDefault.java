@@ -935,6 +935,11 @@ name|int
 name|totalReplicasExpected
 init|=
 name|numOfReplicas
+operator|+
+name|results
+operator|.
+name|size
+argument_list|()
 decl_stmt|;
 name|int
 name|numOfResults
@@ -1221,7 +1226,14 @@ name|warn
 argument_list|(
 literal|"Not able to place enough replicas, still in need of "
 operator|+
-name|numOfReplicas
+operator|(
+name|totalReplicasExpected
+operator|-
+name|results
+operator|.
+name|size
+argument_list|()
+operator|)
 operator|+
 literal|" to reach "
 operator|+
