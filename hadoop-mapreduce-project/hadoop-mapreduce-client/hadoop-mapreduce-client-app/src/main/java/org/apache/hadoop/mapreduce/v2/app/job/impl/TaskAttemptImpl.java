@@ -1430,6 +1430,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StringInterner
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|StringUtils
 import|;
 end_import
@@ -5580,7 +5594,6 @@ name|counters
 operator|=
 name|EMPTY_COUNTERS
 expr_stmt|;
-comment|//        counters.groups = new HashMap<String, CounterGroup>();
 block|}
 return|return
 name|counters
@@ -7216,17 +7229,26 @@ name|taskAttempt
 operator|.
 name|containerMgrAddress
 operator|=
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
 name|taskAttempt
 operator|.
 name|containerNodeId
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|taskAttempt
 operator|.
 name|nodeHttpAddress
 operator|=
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
 name|cEvent
 operator|.
 name|getContainer
@@ -7234,6 +7256,7 @@ argument_list|()
 operator|.
 name|getNodeHttpAddress
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|taskAttempt
 operator|.
@@ -9639,7 +9662,6 @@ name|counters
 init|=
 name|EMPTY_COUNTERS
 decl_stmt|;
-comment|//    counters.groups = new HashMap<String, CounterGroup>();
 name|result
 operator|.
 name|counters

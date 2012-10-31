@@ -652,6 +652,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StringInterner
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|StringUtils
 import|;
 end_import
@@ -7582,6 +7596,10 @@ argument_list|()
 condition|)
 name|attr
 operator|=
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
 operator|(
 operator|(
 name|Text
@@ -7597,6 +7615,7 @@ argument_list|()
 operator|.
 name|trim
 argument_list|()
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -7617,6 +7636,10 @@ argument_list|()
 condition|)
 name|value
 operator|=
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
 operator|(
 operator|(
 name|Text
@@ -7629,6 +7652,7 @@ operator|)
 operator|.
 name|getData
 argument_list|()
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -7688,6 +7712,10 @@ name|source
 operator|.
 name|add
 argument_list|(
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
 operator|(
 operator|(
 name|Text
@@ -7700,6 +7728,7 @@ operator|)
 operator|.
 name|getData
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

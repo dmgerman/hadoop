@@ -146,6 +146,20 @@ name|WritableUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringInterner
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class that contains the information regarding the Job Queues which are   * maintained by the Hadoop Map/Reduce framework.  *   */
 end_comment
@@ -503,11 +517,16 @@ name|IOException
 block|{
 name|queueName
 operator|=
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
 name|Text
 operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|queueState
@@ -525,11 +544,16 @@ argument_list|)
 expr_stmt|;
 name|schedulingInfo
 operator|=
+name|StringInterner
+operator|.
+name|weakIntern
+argument_list|(
 name|Text
 operator|.
 name|readString
 argument_list|(
 name|in
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|int
