@@ -1011,6 +1011,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get local file name    * @return local file name    */
 DECL|method|getLocalName ()
+specifier|public
 name|String
 name|getLocalName
 parameter_list|()
@@ -1171,6 +1172,23 @@ name|this
 operator|.
 name|parent
 return|;
+block|}
+comment|/** Set parent directory */
+DECL|method|setParent (INodeDirectory parent)
+specifier|public
+name|void
+name|setParent
+parameter_list|(
+name|INodeDirectory
+name|parent
+parameter_list|)
+block|{
+name|this
+operator|.
+name|parent
+operator|=
+name|parent
+expr_stmt|;
 block|}
 comment|/**     * Get last modification time of inode.    * @return access time    */
 DECL|method|getModificationTime ()

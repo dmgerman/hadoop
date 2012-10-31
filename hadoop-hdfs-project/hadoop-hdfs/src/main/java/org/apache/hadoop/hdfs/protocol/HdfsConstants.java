@@ -330,6 +330,16 @@ operator|.
 name|getCurrentLayoutVersion
 argument_list|()
 decl_stmt|;
+comment|/**    * A special path component contained in the path for a snapshot file/dir    */
+DECL|field|DOT_SNAPSHOT_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DOT_SNAPSHOT_DIR
+init|=
+literal|".snapshot"
+decl_stmt|;
 block|}
 end_class
 

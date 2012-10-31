@@ -132,6 +132,14 @@ argument_list|(
 name|f
 argument_list|)
 expr_stmt|;
+name|setLocalName
+argument_list|(
+name|f
+operator|.
+name|getLocalName
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|next
 operator|=
 name|this
