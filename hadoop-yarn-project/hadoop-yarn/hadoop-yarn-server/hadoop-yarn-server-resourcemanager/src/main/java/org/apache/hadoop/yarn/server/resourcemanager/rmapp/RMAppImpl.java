@@ -3008,12 +3008,7 @@ name|masterService
 argument_list|,
 name|submissionContext
 argument_list|,
-name|YarnConfiguration
-operator|.
-name|getProxyHostAndPort
-argument_list|(
 name|conf
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|attempts

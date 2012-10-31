@@ -4957,6 +4957,13 @@ name|hasRemaining
 argument_list|()
 condition|)
 block|{
+comment|//Clear out the response buffer so it can be collected
+name|call
+operator|.
+name|rpcResponse
+operator|=
+literal|null
+expr_stmt|;
 name|call
 operator|.
 name|connection

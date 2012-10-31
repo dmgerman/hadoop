@@ -7869,7 +7869,7 @@ index|[
 literal|1
 index|]
 operator|=
-literal|"/test/mkdirs/noFileHere"
+literal|"/test/mkdirs/isFileHere"
 expr_stmt|;
 name|val
 operator|=
@@ -7936,7 +7936,7 @@ index|[
 literal|1
 index|]
 operator|=
-literal|"/test/mkdirs/thisDirNotExists/noFileHere"
+literal|"/test/mkdirs/thisDirNotExists/isFileHere"
 expr_stmt|;
 name|val
 operator|=
@@ -8010,7 +8010,7 @@ index|[
 literal|2
 index|]
 operator|=
-literal|"/test/mkdirs/noFileHere"
+literal|"/test/mkdirs/isFileHere"
 expr_stmt|;
 name|val
 operator|=

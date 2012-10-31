@@ -419,6 +419,14 @@ expr_stmt|;
 name|usedCapacity
 operator|=
 operator|(
+name|queueLimit
+operator|==
+literal|0
+operator|)
+condition|?
+literal|0
+else|:
+operator|(
 name|usedMemory
 operator|/
 name|queueLimit

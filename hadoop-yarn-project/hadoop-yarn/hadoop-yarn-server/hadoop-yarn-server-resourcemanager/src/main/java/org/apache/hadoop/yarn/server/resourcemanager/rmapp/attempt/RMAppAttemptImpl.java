@@ -25,6 +25,24 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|pjoin
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -185,6 +203,20 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -397,6 +429,22 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
 import|;
 end_import
 
@@ -1289,11 +1337,10 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
-DECL|field|proxy
+DECL|field|conf
 specifier|private
-specifier|final
-name|String
-name|proxy
+name|Configuration
+name|conf
 decl_stmt|;
 specifier|private
 specifier|static
@@ -2071,7 +2118,7 @@ operator|.
 name|installTopology
 argument_list|()
 decl_stmt|;
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, String clientToken, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, String proxy)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, String clientToken, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -2093,15 +2140,15 @@ parameter_list|,
 name|ApplicationSubmissionContext
 name|submissionContext
 parameter_list|,
-name|String
-name|proxy
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
 operator|.
-name|proxy
+name|conf
 operator|=
-name|proxy
+name|conf
 expr_stmt|;
 name|this
 operator|.
@@ -2516,6 +2563,16 @@ operator|.
 name|getUriFromAMUrl
 argument_list|(
 name|trackingUriWithoutScheme
+argument_list|)
+decl_stmt|;
+name|String
+name|proxy
+init|=
+name|YarnConfiguration
+operator|.
+name|getProxyHostAndPort
+argument_list|(
+name|conf
 argument_list|)
 decl_stmt|;
 name|URI
@@ -4860,18 +4917,44 @@ operator|+
 literal|"Failing this attempt."
 argument_list|)
 expr_stmt|;
-comment|/*          * In the case when the AM dies, the trackingUrl is left pointing to the AM's          * URL, which shows up in the scheduler UI as a broken link. Setting it here          * to empty string will prevent any link from being displayed.          * NOTE: don't set trackingUrl to 'null'. That will cause null-pointer exceptions          * in the generated proto code.          */
+comment|// When the AM dies, the trackingUrl is left pointing to the AM's URL,
+comment|// which shows up in the scheduler UI as a broken link.  Direct the
+comment|// user to the app page on the RM so they can see the status and logs.
 name|appAttempt
 operator|.
 name|origTrackingUrl
 operator|=
-literal|""
+name|pjoin
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|getRMWebAppHostAndPort
+argument_list|(
+name|appAttempt
+operator|.
+name|conf
+argument_list|)
+argument_list|,
+literal|"cluster"
+argument_list|,
+literal|"app"
+argument_list|,
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|appAttempt
 operator|.
 name|proxiedTrackingUrl
 operator|=
-literal|""
+name|appAttempt
+operator|.
+name|origTrackingUrl
 expr_stmt|;
 operator|new
 name|FinalTransition

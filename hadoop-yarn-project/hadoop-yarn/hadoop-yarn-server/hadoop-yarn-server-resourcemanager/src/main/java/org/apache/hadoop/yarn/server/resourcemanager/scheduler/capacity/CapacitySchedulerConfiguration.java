@@ -434,7 +434,7 @@ specifier|final
 name|float
 name|MINIMUM_CAPACITY_VALUE
 init|=
-literal|1
+literal|0
 decl_stmt|;
 annotation|@
 name|Private

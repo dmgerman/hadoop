@@ -643,7 +643,7 @@ specifier|static
 name|float
 name|B1_CAPACITY
 init|=
-literal|50
+literal|79.2f
 decl_stmt|;
 DECL|field|B2_CAPACITY
 specifier|private
@@ -651,7 +651,7 @@ specifier|static
 name|float
 name|B2_CAPACITY
 init|=
-literal|30
+literal|0.8f
 decl_stmt|;
 DECL|field|B3_CAPACITY
 specifier|private

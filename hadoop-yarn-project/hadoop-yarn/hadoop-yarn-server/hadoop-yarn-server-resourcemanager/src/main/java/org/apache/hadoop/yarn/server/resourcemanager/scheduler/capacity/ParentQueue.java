@@ -1332,11 +1332,36 @@ name|childCapacities
 argument_list|)
 decl_stmt|;
 comment|// crude way to check
+comment|// allow capacities being set to 0, and enforce child 0 if parent is 0
 if|if
 condition|(
+operator|(
+operator|(
+name|capacity
+operator|>
+literal|0
+operator|)
+operator|&&
+operator|(
 name|delta
 operator|>
 name|PRECISION
+operator|)
+operator|)
+operator|||
+operator|(
+operator|(
+name|capacity
+operator|==
+literal|0
+operator|)
+operator|&&
+operator|(
+name|childCapacities
+operator|>
+literal|0
+operator|)
+operator|)
 condition|)
 block|{
 throw|throw
