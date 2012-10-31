@@ -357,7 +357,7 @@ name|init
 operator|.
 name|append
 argument_list|(
-literal|", aaSorting: [[0, 'asc']]"
+literal|", aaSorting: [[0, 'desc']]"
 argument_list|)
 expr_stmt|;
 name|String
