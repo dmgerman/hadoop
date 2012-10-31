@@ -1003,7 +1003,7 @@ name|setCapacity
 argument_list|(
 name|B1
 argument_list|,
-literal|50
+literal|60
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1021,7 +1021,7 @@ name|setCapacity
 argument_list|(
 name|B2
 argument_list|,
-literal|30
+literal|39.5f
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1039,7 +1039,7 @@ name|setCapacity
 argument_list|(
 name|B3
 argument_list|,
-literal|20
+literal|0.5f
 argument_list|)
 expr_stmt|;
 name|conf
