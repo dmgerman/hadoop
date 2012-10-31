@@ -24431,6 +24431,17 @@ return|return
 name|blockManager
 return|;
 block|}
+comment|/** @return the FSDirectory. */
+DECL|method|getFSDirectory ()
+specifier|public
+name|FSDirectory
+name|getFSDirectory
+parameter_list|()
+block|{
+return|return
+name|dir
+return|;
+block|}
 comment|/**    * Verifies that the given identifier and password are valid and match.    * @param identifier Token identifier.    * @param password Password in the token.    * @throws InvalidToken    */
 DECL|method|verifyToken (DelegationTokenIdentifier identifier, byte[] password)
 specifier|public
