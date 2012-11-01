@@ -263,10 +263,10 @@ comment|/** Test snapshot related operations. */
 end_comment
 
 begin_class
-DECL|class|TestSnapshot
+DECL|class|TestSnapshotPathINodes
 specifier|public
 class|class
-name|TestSnapshot
+name|TestSnapshotPathINodes
 block|{
 DECL|field|seed
 specifier|private
