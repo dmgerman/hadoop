@@ -1841,7 +1841,6 @@ init|(
 name|lastResponse
 init|)
 block|{
-comment|// BUG TODO: Locking order is screwed.
 comment|// Send the status update to the appAttempt.
 name|this
 operator|.
@@ -2143,6 +2142,9 @@ name|getResourceLimit
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|AMResponse
+name|oldResponse
+init|=
 name|responseMap
 operator|.
 name|put
@@ -2151,7 +2153,47 @@ name|appAttemptId
 argument_list|,
 name|response
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|oldResponse
+operator|==
+literal|null
+condition|)
+block|{
+comment|// appAttempt got unregistered, remove it back out
+name|responseMap
+operator|.
+name|remove
+argument_list|(
+name|appAttemptId
+argument_list|)
 expr_stmt|;
+name|String
+name|message
+init|=
+literal|"App Attempt removed from the cache during allocate"
+operator|+
+name|appAttemptId
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|allocateResponse
+operator|.
+name|setAMResponse
+argument_list|(
+name|reboot
+argument_list|)
+expr_stmt|;
+return|return
+name|allocateResponse
+return|;
+block|}
 name|allocateResponse
 operator|.
 name|setAMResponse
@@ -2232,28 +2274,6 @@ name|ApplicationAttemptId
 name|attemptId
 parameter_list|)
 block|{
-name|AMResponse
-name|lastResponse
-init|=
-name|responseMap
-operator|.
-name|get
-argument_list|(
-name|attemptId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|lastResponse
-operator|!=
-literal|null
-condition|)
-block|{
-synchronized|synchronized
-init|(
-name|lastResponse
-init|)
-block|{
 name|responseMap
 operator|.
 name|remove
@@ -2261,8 +2281,6 @@ argument_list|(
 name|attemptId
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 DECL|method|refreshServiceAcls (Configuration configuration, PolicyProvider policyProvider)
 specifier|public

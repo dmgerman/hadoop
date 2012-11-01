@@ -389,7 +389,7 @@ operator|.
 comment|// Sort by id upon page load
 name|append
 argument_list|(
-literal|", aaSorting: [[2, 'asc']]"
+literal|", aaSorting: [[2, 'desc']]"
 argument_list|)
 operator|.
 name|append
