@@ -2446,7 +2446,7 @@ argument_list|(
 literal|8
 argument_list|)
 decl_stmt|;
-comment|// Final commmand
+comment|// Final command
 name|StringBuilder
 name|mergedCommand
 init|=
@@ -2520,6 +2520,23 @@ argument_list|(
 name|environment
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+comment|// Setup the environment variables (LD_LIBRARY_PATH, etc)
+name|MRApps
+operator|.
+name|setEnvFromInputString
+argument_list|(
+name|environment
+argument_list|,
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_ENV
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Parse distributed cache
