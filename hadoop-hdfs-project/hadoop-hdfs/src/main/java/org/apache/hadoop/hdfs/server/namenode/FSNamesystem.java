@@ -17273,6 +17273,54 @@ name|getXceiverCount
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"SnapshottableDirectories"
+block|,
+literal|"Number of snapshottable directories"
+block|}
+argument_list|)
+DECL|method|getNumSnapshottableDirs ()
+specifier|public
+name|long
+name|getNumSnapshottableDirs
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|snapshotManager
+operator|.
+name|getNumSnapshottableDirs
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"Snapshots"
+block|,
+literal|"The number of snapshots"
+block|}
+argument_list|)
+DECL|method|getNumSnapshots ()
+specifier|public
+name|long
+name|getNumSnapshots
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|snapshotManager
+operator|.
+name|getNumSnapshots
+argument_list|()
+return|;
+block|}
 DECL|method|getNumberOfDatanodes (DatanodeReportType type)
 name|int
 name|getNumberOfDatanodes
@@ -24787,7 +24835,8 @@ name|SafeModeException
 throws|,
 name|IOException
 block|{
-comment|// TODO: implement
+comment|// TODO: implement, also need to update metrics in corresponding
+comment|// SnapshotManager method
 if|if
 condition|(
 name|auditLog

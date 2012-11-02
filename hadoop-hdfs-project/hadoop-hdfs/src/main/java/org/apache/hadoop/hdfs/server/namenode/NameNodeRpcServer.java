@@ -6338,6 +6338,11 @@ literal|" levels."
 argument_list|)
 throw|;
 block|}
+name|metrics
+operator|.
+name|incrCreateSnapshotOps
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|createSnapshot
@@ -6362,6 +6367,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|metrics
+operator|.
+name|incrAllowSnapshotOps
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|allowSnapshot
@@ -6384,6 +6394,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|metrics
+operator|.
+name|incrDisAllowSnapshotOps
+argument_list|()
+expr_stmt|;
 name|namesystem
 operator|.
 name|disallowSnapshot

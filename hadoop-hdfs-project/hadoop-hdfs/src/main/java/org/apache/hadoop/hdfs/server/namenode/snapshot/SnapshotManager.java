@@ -54,6 +54,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -187,6 +201,8 @@ DECL|class|SnapshotManager
 specifier|public
 class|class
 name|SnapshotManager
+implements|implements
+name|SnapshotStats
 block|{
 DECL|field|namesystem
 specifier|private
@@ -199,6 +215,24 @@ specifier|private
 specifier|final
 name|FSDirectory
 name|fsdir
+decl_stmt|;
+DECL|field|numSnapshottableDirs
+specifier|private
+name|AtomicLong
+name|numSnapshottableDirs
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
+decl_stmt|;
+DECL|field|numSnapshots
+specifier|private
+name|AtomicLong
+name|numSnapshots
+init|=
+operator|new
+name|AtomicLong
+argument_list|()
 decl_stmt|;
 comment|/** All snapshottable directories in the namesystem. */
 DECL|field|snapshottables
@@ -336,6 +370,11 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+name|numSnapshottableDirs
+operator|.
+name|getAndIncrement
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Create a snapshot of the given path.    *     * @param snapshotName The name of the snapshot.    * @param path The directory path where the snapshot will be taken.    */
 DECL|method|createSnapshot (final String snapshotName, final String path )
@@ -364,6 +403,11 @@ name|run
 argument_list|(
 name|snapshotName
 argument_list|)
+expr_stmt|;
+name|numSnapshots
+operator|.
+name|getAndIncrement
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Create a snapshot of subtrees by recursively coping the directory    * structure from the source directory to the snapshot destination directory.    * This creation algorithm requires O(N) running time and O(N) memory,    * where N = # files + # directories + # symlinks.     */
@@ -786,6 +830,36 @@ return|return
 name|snapshot
 return|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getNumSnapshottableDirs ()
+specifier|public
+name|long
+name|getNumSnapshottableDirs
+parameter_list|()
+block|{
+return|return
+name|numSnapshottableDirs
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumSnapshots ()
+specifier|public
+name|long
+name|getNumSnapshots
+parameter_list|()
+block|{
+return|return
+name|numSnapshots
+operator|.
+name|get
+argument_list|()
+return|;
 block|}
 block|}
 end_class

@@ -387,6 +387,33 @@ name|Metric
 name|MutableCounterLong
 name|filesInGetListingOps
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of allowSnapshot operations"
+argument_list|)
+DECL|field|allowSnapshotOps
+name|MutableCounterLong
+name|allowSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of disallowSnapshot operations"
+argument_list|)
+DECL|field|disallowSnapshotOps
+name|MutableCounterLong
+name|disallowSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of createSnapshot operations"
+argument_list|)
+DECL|field|createSnapshotOps
+name|MutableCounterLong
+name|createSnapshotOps
+decl_stmt|;
 DECL|field|transactions
 annotation|@
 name|Metric
@@ -846,6 +873,42 @@ name|incrGetLinkTargetOps
 parameter_list|()
 block|{
 name|getLinkTargetOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrAllowSnapshotOps ()
+specifier|public
+name|void
+name|incrAllowSnapshotOps
+parameter_list|()
+block|{
+name|allowSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrDisAllowSnapshotOps ()
+specifier|public
+name|void
+name|incrDisAllowSnapshotOps
+parameter_list|()
+block|{
+name|disallowSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrCreateSnapshotOps ()
+specifier|public
+name|void
+name|incrCreateSnapshotOps
+parameter_list|()
+block|{
+name|createSnapshotOps
 operator|.
 name|incr
 argument_list|()
