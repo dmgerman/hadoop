@@ -408,27 +408,15 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Ignore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
 name|Test
 import|;
 end_import
 
 begin_comment
-comment|/** Unit tests for using Job Token over RPC. */
+comment|/** Unit tests for using Job Token over RPC.   *   * System properties required:  * -Djava.security.krb5.conf=.../hadoop-mapreduce-project/hadoop-mapreduce-client/hadoop-mapreduce-client-jobclient/target/test-classes/krb5.conf   * -Djava.net.preferIPv4Stack=true  */
 end_comment
 
 begin_class
-annotation|@
-name|Ignore
 DECL|class|TestUmbilicalProtocolWithJobToken
 specifier|public
 class|class
