@@ -368,11 +368,12 @@ name|getChildren
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Check whether it's a directory    */
+comment|/** @return true unconditionally. */
 annotation|@
 name|Override
 DECL|method|isDirectory ()
 specifier|public
+specifier|final
 name|boolean
 name|isDirectory
 parameter_list|()
@@ -783,7 +784,7 @@ if|if
 condition|(
 name|curNode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 operator|&&
 operator|(

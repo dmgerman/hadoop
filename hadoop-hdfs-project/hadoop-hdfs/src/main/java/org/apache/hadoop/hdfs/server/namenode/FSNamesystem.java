@@ -7767,9 +7767,8 @@ if|if
 condition|(
 name|trgInode
 operator|.
-name|blocks
-operator|.
-name|length
+name|numBlocks
+argument_list|()
 operator|==
 literal|0
 condition|)
@@ -7795,22 +7794,20 @@ name|getPreferredBlockSize
 argument_list|()
 decl_stmt|;
 comment|// check the end block to be full
+specifier|final
+name|BlockInfo
+name|last
+init|=
+name|trgInode
+operator|.
+name|getLastBlock
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|blockSize
 operator|!=
-name|trgInode
-operator|.
-name|blocks
-index|[
-name|trgInode
-operator|.
-name|blocks
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
 operator|.
 name|getNumBytes
 argument_list|()
@@ -7826,18 +7823,7 @@ name|target
 operator|+
 literal|" is not full; last block size = "
 operator|+
-name|trgInode
-operator|.
-name|blocks
-index|[
-name|trgInode
-operator|.
-name|blocks
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
 operator|.
 name|getNumBytes
 argument_list|()
@@ -7941,9 +7927,8 @@ argument_list|()
 operator|||
 name|srcInode
 operator|.
-name|blocks
-operator|.
-name|length
+name|numBlocks
+argument_list|()
 operator|==
 literal|0
 condition|)
@@ -7999,12 +7984,20 @@ block|}
 comment|//boolean endBlock=false;
 comment|// verify that all the blocks are of the same length as target
 comment|// should be enough to check the end blocks
-name|int
-name|idx
+specifier|final
+name|BlockInfo
+index|[]
+name|srcBlocks
 init|=
 name|srcInode
 operator|.
-name|blocks
+name|getBlocks
+argument_list|()
+decl_stmt|;
+name|int
+name|idx
+init|=
+name|srcBlocks
 operator|.
 name|length
 operator|-
@@ -8016,9 +8009,7 @@ name|endSrc
 condition|)
 name|idx
 operator|=
-name|srcInode
-operator|.
-name|blocks
+name|srcBlocks
 operator|.
 name|length
 operator|-
@@ -8031,9 +8022,7 @@ name|idx
 operator|>=
 literal|0
 operator|&&
-name|srcInode
-operator|.
-name|blocks
+name|srcBlocks
 index|[
 name|idx
 index|]
@@ -8066,9 +8055,7 @@ name|idx
 operator|+
 literal|" is "
 operator|+
-name|srcInode
-operator|.
-name|blocks
+name|srcBlocks
 index|[
 name|idx
 index|]
@@ -9158,7 +9145,7 @@ operator|&&
 operator|!
 name|parentNode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|)
 block|{

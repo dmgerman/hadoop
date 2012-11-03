@@ -904,11 +904,15 @@ expr_stmt|;
 block|}
 comment|/**    * Check whether it's a directory    */
 DECL|method|isDirectory ()
-specifier|abstract
+specifier|public
 name|boolean
 name|isDirectory
 parameter_list|()
-function_decl|;
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Collect all the blocks in all children of this INode.    * Count and return the number of files in the sub tree.    * Also clears references since this INode is deleted.    */
 DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
 specifier|abstract
@@ -1306,10 +1310,10 @@ literal|false
 return|;
 block|}
 comment|/**    * Check whether it's a symlink    */
-DECL|method|isLink ()
+DECL|method|isSymlink ()
 specifier|public
 name|boolean
-name|isLink
+name|isSymlink
 parameter_list|()
 block|{
 return|return

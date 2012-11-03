@@ -898,7 +898,7 @@ if|if
 condition|(
 name|node
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|)
 block|{

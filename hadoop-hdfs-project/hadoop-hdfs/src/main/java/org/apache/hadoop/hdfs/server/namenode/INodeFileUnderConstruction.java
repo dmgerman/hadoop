@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -165,20 +175,6 @@ operator|.
 name|HdfsServerConstants
 operator|.
 name|BlockUCState
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Joiner
 import|;
 end_import
 
@@ -483,12 +479,15 @@ literal|"Can't finalize inode "
 operator|+
 name|this
 operator|+
-literal|" since it contains "
+literal|" since it contains non-complete blocks! Blocks are "
 operator|+
-literal|"non-complete blocks! Blocks are: "
-operator|+
-name|blocksAsString
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|getBlocks
 argument_list|()
+argument_list|)
 assert|;
 name|INodeFile
 name|obj
@@ -531,7 +530,8 @@ control|(
 name|BlockInfo
 name|b
 range|:
-name|blocks
+name|getBlocks
+argument_list|()
 control|)
 block|{
 if|if
@@ -563,6 +563,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|BlockInfo
+index|[]
+name|blocks
+init|=
+name|getBlocks
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|blocks
@@ -639,9 +647,10 @@ argument_list|,
 name|size_1
 argument_list|)
 expr_stmt|;
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 name|newlist
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Convert the last block of the file to an under-construction block.    * Set its locations.    */
@@ -664,13 +673,8 @@ name|IOException
 block|{
 if|if
 condition|(
-name|blocks
-operator|==
-literal|null
-operator|||
-name|blocks
-operator|.
-name|length
+name|numBlocks
+argument_list|()
 operator|==
 literal|0
 condition|)
@@ -679,9 +683,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Trying to update non-existant block. "
-operator|+
-literal|"File is empty."
+literal|"Failed to set last block: File is empty."
 argument_list|)
 throw|;
 block|}
@@ -718,28 +720,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|ucBlock
-return|;
-block|}
-DECL|method|blocksAsString ()
-specifier|private
-name|String
-name|blocksAsString
-parameter_list|()
-block|{
-return|return
-name|Joiner
-operator|.
-name|on
-argument_list|(
-literal|","
-argument_list|)
-operator|.
-name|join
-argument_list|(
-name|this
-operator|.
-name|blocks
-argument_list|)
 return|;
 block|}
 block|}
