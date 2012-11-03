@@ -174,7 +174,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 import|;
 end_import
 
@@ -1011,7 +1011,7 @@ name|getSnapshotRootIndex
 argument_list|()
 index|]
 operator|instanceof
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|)
 expr_stmt|;
 comment|// Check the INode for file1 (snapshot file)
@@ -1054,7 +1054,7 @@ operator|.
 name|getParent
 argument_list|()
 operator|instanceof
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|)
 expr_stmt|;
 comment|// Call getExistingPathINodes and request only one INode.
@@ -1649,7 +1649,7 @@ name|getSnapshotRootIndex
 argument_list|()
 index|]
 operator|instanceof
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|)
 expr_stmt|;
 comment|// Check the INode for file1 (snapshot file)
@@ -1692,7 +1692,7 @@ operator|.
 name|getParent
 argument_list|()
 operator|instanceof
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|)
 expr_stmt|;
 block|}
@@ -2019,7 +2019,7 @@ name|getSnapshotRootIndex
 argument_list|()
 index|]
 operator|instanceof
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|)
 expr_stmt|;
 comment|// Check the last INode in inodes, which should be null
@@ -2046,7 +2046,7 @@ operator|-
 literal|2
 index|]
 operator|instanceof
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|)
 expr_stmt|;
 block|}

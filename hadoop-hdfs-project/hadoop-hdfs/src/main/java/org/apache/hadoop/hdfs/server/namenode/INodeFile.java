@@ -402,6 +402,15 @@ name|getPreferredBlockSize
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|name
+operator|=
+name|f
+operator|.
+name|getLocalNameBytes
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
 annotation|@

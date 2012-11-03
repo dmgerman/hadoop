@@ -188,7 +188,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 import|;
 end_import
 
@@ -323,7 +323,7 @@ argument_list|>
 name|children
 decl_stmt|;
 DECL|method|INodeDirectory (String name, PermissionStatus permissions)
-specifier|protected
+specifier|public
 name|INodeDirectory
 parameter_list|(
 name|String
@@ -2042,7 +2042,7 @@ specifier|private
 name|boolean
 name|isSnapshot
 decl_stmt|;
-comment|/**      * Index of {@link INodeDirectorySnapshotRoot} for snapshot path, else -1      */
+comment|/**      * Index of {@link INodeDirectoryWithSnapshot} for snapshot path, else -1      */
 DECL|field|snapshotRootIndex
 specifier|private
 name|int
@@ -2149,7 +2149,7 @@ return|return
 name|inodes
 return|;
 block|}
-comment|/**      * @return index of the {@link INodeDirectorySnapshotRoot} in      *         {@link #inodes} for snapshot path, else -1.      */
+comment|/**      * @return index of the {@link INodeDirectoryWithSnapshot} in      *         {@link #inodes} for snapshot path, else -1.      */
 DECL|method|getSnapshotRootIndex ()
 name|int
 name|getSnapshotRootIndex

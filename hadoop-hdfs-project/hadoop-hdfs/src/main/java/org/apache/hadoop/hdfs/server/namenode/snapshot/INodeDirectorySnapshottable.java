@@ -315,14 +315,14 @@ specifier|private
 specifier|final
 name|List
 argument_list|<
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|>
 name|snapshots
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -484,7 +484,7 @@ return|;
 block|}
 comment|/** Add a snapshot root under this directory. */
 DECL|method|addSnapshotRoot (final String name )
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 name|addSnapshotRoot
 parameter_list|(
 specifier|final
@@ -525,11 +525,11 @@ argument_list|)
 throw|;
 block|}
 specifier|final
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 name|r
 init|=
 operator|new
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 argument_list|(
 name|name
 argument_list|,

@@ -462,7 +462,7 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|INodeDirectorySnapshotRoot
+name|INodeDirectoryWithSnapshot
 name|root
 init|=
 name|srcRoot

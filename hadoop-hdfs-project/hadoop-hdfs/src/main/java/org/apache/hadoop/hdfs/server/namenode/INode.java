@@ -1098,6 +1098,7 @@ return|;
 block|}
 comment|/**    * @return null if the local name is null;    *         otherwise, return the local name byte array.    */
 DECL|method|getLocalNameBytes ()
+specifier|public
 name|byte
 index|[]
 name|getLocalNameBytes
