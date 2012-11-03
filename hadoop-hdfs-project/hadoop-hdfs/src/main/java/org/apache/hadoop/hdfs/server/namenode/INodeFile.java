@@ -307,8 +307,6 @@ specifier|protected
 name|BlockInfo
 index|[]
 name|blocks
-init|=
-literal|null
 decl_stmt|;
 DECL|method|INodeFile (PermissionStatus permissions, BlockInfo[] blklist, short replication, long modificationTime, long atime, long preferredBlockSize)
 name|INodeFile
@@ -356,6 +354,8 @@ argument_list|(
 name|preferredBlockSize
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
 name|blocks
 operator|=
 name|blklist
@@ -435,17 +435,6 @@ name|UMASK
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|isDirectory ()
-name|boolean
-name|isDirectory
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
 block|}
 comment|/** @return the replication factor of the file. */
 DECL|method|getFileReplication ()
@@ -707,11 +696,10 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-name|this
-operator|.
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 name|newlist
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * add a block to the block list    */
@@ -734,22 +722,15 @@ condition|)
 block|{
 name|this
 operator|.
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 operator|new
 name|BlockInfo
-index|[
-literal|1
-index|]
-expr_stmt|;
-name|this
-operator|.
-name|blocks
-index|[
-literal|0
-index|]
-operator|=
+index|[]
+block|{
 name|newblock
+block|}
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -801,9 +782,10 @@ name|newblock
 expr_stmt|;
 name|this
 operator|.
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 name|newlist
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -828,6 +810,24 @@ name|idx
 index|]
 operator|=
 name|blk
+expr_stmt|;
+block|}
+comment|/** Set the blocks. */
+DECL|method|setBlocks (BlockInfo[] blocks)
+specifier|public
+name|void
+name|setBlocks
+parameter_list|(
+name|BlockInfo
+index|[]
+name|blocks
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blocks
+operator|=
+name|blocks
 expr_stmt|;
 block|}
 annotation|@
@@ -883,9 +883,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 return|return
 literal|1

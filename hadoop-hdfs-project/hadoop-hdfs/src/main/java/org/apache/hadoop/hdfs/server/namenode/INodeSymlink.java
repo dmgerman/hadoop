@@ -213,10 +213,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|isLink ()
+DECL|method|isSymlink ()
 specifier|public
 name|boolean
-name|isLink
+name|isSymlink
 parameter_list|()
 block|{
 return|return
@@ -327,18 +327,6 @@ expr_stmt|;
 comment|// Increment the file count
 return|return
 name|summary
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|isDirectory ()
-specifier|public
-name|boolean
-name|isDirectory
-parameter_list|()
-block|{
-return|return
-literal|false
 return|;
 block|}
 block|}

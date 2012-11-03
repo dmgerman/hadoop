@@ -1606,7 +1606,7 @@ operator|&&
 operator|!
 name|newNode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|)
 block|{
@@ -2530,7 +2530,7 @@ if|if
 condition|(
 name|srcInode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 operator|&&
 name|dst
@@ -3163,7 +3163,7 @@ if|if
 condition|(
 name|srcInode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 operator|&&
 name|dst
@@ -4079,7 +4079,7 @@ assert|assert
 operator|!
 name|inode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 assert|;
 if|if
@@ -4234,7 +4234,7 @@ argument_list|()
 operator|||
 name|inode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|)
 block|{
@@ -4320,7 +4320,7 @@ argument_list|()
 operator|||
 name|inode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|?
 literal|true
@@ -4785,9 +4785,8 @@ name|totalBlocks
 operator|+=
 name|srcInode
 operator|.
-name|blocks
-operator|.
-name|length
+name|numBlocks
+argument_list|()
 expr_stmt|;
 block|}
 name|trgInode
@@ -4823,9 +4822,10 @@ condition|)
 continue|continue;
 name|nodeToRemove
 operator|.
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 name|trgParent
 operator|.
@@ -5875,7 +5875,7 @@ if|if
 condition|(
 name|targetNode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|)
 return|return
@@ -8515,7 +8515,7 @@ if|if
 condition|(
 name|child
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|)
 block|{
@@ -9602,7 +9602,7 @@ argument_list|()
 argument_list|,
 name|node
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|?
 operator|(
@@ -9791,7 +9791,7 @@ argument_list|()
 argument_list|,
 name|node
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|?
 operator|(
@@ -10109,7 +10109,7 @@ argument_list|()
 operator|||
 name|inode
 operator|.
-name|isLink
+name|isSymlink
 argument_list|()
 condition|)
 block|{
