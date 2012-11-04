@@ -303,7 +303,7 @@ name|long
 name|header
 decl_stmt|;
 DECL|field|blocks
-specifier|protected
+specifier|private
 name|BlockInfo
 index|[]
 name|blocks

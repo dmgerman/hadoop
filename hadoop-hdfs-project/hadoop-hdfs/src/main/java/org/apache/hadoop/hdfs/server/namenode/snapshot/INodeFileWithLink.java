@@ -398,9 +398,17 @@ argument_list|>
 name|v
 parameter_list|)
 block|{
+specifier|final
+name|BlockInfo
+index|[]
+name|oldBlocks
+init|=
+name|getBlocks
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|blocks
+name|oldBlocks
 operator|!=
 literal|null
 condition|)
@@ -420,7 +428,7 @@ literal|0
 init|;
 name|n
 argument_list|<
-name|blocks
+name|oldBlocks
 operator|.
 name|length
 operator|&&
@@ -434,7 +442,7 @@ control|)
 block|{
 name|size
 operator|+=
-name|blocks
+name|oldBlocks
 index|[
 name|n
 index|]
@@ -443,12 +451,12 @@ name|getNumBytes
 argument_list|()
 expr_stmt|;
 block|}
-comment|//starting from block[n], the data is beyond max.
+comment|//starting from block n, the data is beyond max.
 if|if
 condition|(
 name|n
 operator|<
-name|blocks
+name|oldBlocks
 operator|.
 name|length
 condition|)
@@ -485,7 +493,7 @@ name|System
 operator|.
 name|arraycopy
 argument_list|(
-name|blocks
+name|oldBlocks
 argument_list|,
 literal|0
 argument_list|,
@@ -518,9 +526,10 @@ control|)
 block|{
 name|i
 operator|.
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 name|newBlocks
+argument_list|)
 expr_stmt|;
 block|}
 comment|//collect the blocks beyond max.
@@ -536,7 +545,7 @@ control|(
 init|;
 name|n
 operator|<
-name|blocks
+name|oldBlocks
 operator|.
 name|length
 condition|;
@@ -548,7 +557,7 @@ name|v
 operator|.
 name|add
 argument_list|(
-name|blocks
+name|oldBlocks
 index|[
 name|n
 index|]
@@ -557,9 +566,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
-name|blocks
-operator|=
+name|setBlocks
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 block|}
 block|}
