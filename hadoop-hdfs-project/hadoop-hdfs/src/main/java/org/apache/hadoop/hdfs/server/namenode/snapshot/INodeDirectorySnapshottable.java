@@ -376,6 +376,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getNumSnapshots ()
+specifier|public
 name|int
 name|getNumSnapshots
 parameter_list|()
