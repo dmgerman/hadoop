@@ -448,6 +448,7 @@ expr_stmt|;
 block|}
 comment|// check if (parentAccess != null)&& file exists, then check sb
 comment|// Resolve symlinks, the check is performed on the link target.
+specifier|final
 name|INode
 index|[]
 name|inodes
@@ -460,6 +461,9 @@ name|path
 argument_list|,
 literal|true
 argument_list|)
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|int
 name|ancestorIndex

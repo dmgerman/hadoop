@@ -1679,16 +1679,15 @@ name|newParent
 return|;
 block|}
 comment|/**    * Add a block to the file. Returns a reference to the added block.    */
-DECL|method|addBlock (String path, INode[] inodes, Block block, DatanodeDescriptor targets[] )
+DECL|method|addBlock (String path, INodesInPath inodesInPath, Block block, DatanodeDescriptor targets[])
 name|BlockInfo
 name|addBlock
 parameter_list|(
 name|String
 name|path
 parameter_list|,
-name|INode
-index|[]
-name|inodes
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|Block
 name|block
@@ -1698,7 +1697,7 @@ name|targets
 index|[]
 parameter_list|)
 throws|throws
-name|QuotaExceededException
+name|IOException
 block|{
 name|waitForReady
 argument_list|()
@@ -1708,27 +1707,24 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-assert|assert
+specifier|final
+name|INode
+index|[]
 name|inodes
-index|[
-name|inodes
+init|=
+name|inodesInPath
 operator|.
-name|length
-operator|-
-literal|1
-index|]
-operator|.
-name|isUnderConstruction
+name|getINodes
 argument_list|()
-operator|:
-literal|"INode should correspond to a file under construction"
-assert|;
+decl_stmt|;
+specifier|final
 name|INodeFileUnderConstruction
 name|fileINode
 init|=
-operator|(
 name|INodeFileUnderConstruction
-operator|)
+operator|.
+name|valueOf
+argument_list|(
 name|inodes
 index|[
 name|inodes
@@ -1737,11 +1733,14 @@ name|length
 operator|-
 literal|1
 index|]
+argument_list|,
+name|path
+argument_list|)
 decl_stmt|;
 comment|// check quota limits and updated space consumed
 name|updateCount
 argument_list|(
-name|inodes
+name|inodesInPath
 argument_list|,
 name|inodes
 operator|.
@@ -2122,20 +2121,34 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// update space consumed
-name|INode
-index|[]
-name|pathINodes
+specifier|final
+name|INodesInPath
+name|inodesInPath
 init|=
+name|rootDir
+operator|.
 name|getExistingPathINodes
 argument_list|(
 name|path
+argument_list|,
+literal|true
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|updateCount
 argument_list|(
-name|pathINodes
+name|inodesInPath
 argument_list|,
-name|pathINodes
+name|inodes
 operator|.
 name|length
 operator|-
@@ -2399,9 +2412,8 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|INode
-index|[]
-name|srcInodes
+name|INodesInPath
+name|srcInodesInPath
 init|=
 name|rootDir
 operator|.
@@ -2411,6 +2423,15 @@ name|src
 argument_list|,
 literal|false
 argument_list|)
+decl_stmt|;
+name|INode
+index|[]
+name|srcInodes
+init|=
+name|srcInodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|INode
 name|srcInode
@@ -2752,7 +2773,7 @@ name|srcChild
 operator|=
 name|removeChild
 argument_list|(
-name|srcInodes
+name|srcInodesInPath
 argument_list|,
 name|srcInodes
 operator|.
@@ -2817,7 +2838,7 @@ name|dstChild
 operator|=
 name|addChildNoQuotaCheck
 argument_list|(
-name|dstInodes
+name|dstInodesInPath
 argument_list|,
 name|dstInodes
 operator|.
@@ -2924,7 +2945,7 @@ argument_list|)
 expr_stmt|;
 name|addChildNoQuotaCheck
 argument_list|(
-name|srcInodes
+name|srcInodesInPath
 argument_list|,
 name|srcInodes
 operator|.
@@ -3039,9 +3060,8 @@ init|=
 literal|null
 decl_stmt|;
 specifier|final
-name|INode
-index|[]
-name|srcInodes
+name|INodesInPath
+name|srcInodesInPath
 init|=
 name|rootDir
 operator|.
@@ -3051,6 +3071,16 @@ name|src
 argument_list|,
 literal|false
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+index|[]
+name|srcInodes
+init|=
+name|srcInodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 specifier|final
 name|INode
@@ -3580,7 +3610,7 @@ name|removedSrc
 init|=
 name|removeChild
 argument_list|(
-name|srcInodes
+name|srcInodesInPath
 argument_list|,
 name|srcInodes
 operator|.
@@ -3660,7 +3690,7 @@ name|removedDst
 operator|=
 name|removeChild
 argument_list|(
-name|dstInodes
+name|dstInodesInPath
 argument_list|,
 name|dstInodes
 operator|.
@@ -3701,7 +3731,7 @@ name|dstChild
 operator|=
 name|addChildNoQuotaCheck
 argument_list|(
-name|dstInodes
+name|dstInodesInPath
 argument_list|,
 name|dstInodes
 operator|.
@@ -3860,7 +3890,7 @@ argument_list|)
 expr_stmt|;
 name|addChildNoQuotaCheck
 argument_list|(
-name|srcInodes
+name|srcInodesInPath
 argument_list|,
 name|srcInodes
 operator|.
@@ -3891,7 +3921,7 @@ argument_list|)
 expr_stmt|;
 name|addChildNoQuotaCheck
 argument_list|(
-name|dstInodes
+name|dstInodesInPath
 argument_list|,
 name|dstInodes
 operator|.
@@ -4039,9 +4069,9 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|INode
-index|[]
-name|inodes
+specifier|final
+name|INodesInPath
+name|inodesInPath
 init|=
 name|rootDir
 operator|.
@@ -4051,6 +4081,16 @@ name|src
 argument_list|,
 literal|true
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|INode
 name|inode
@@ -4132,7 +4172,7 @@ operator|)
 decl_stmt|;
 name|updateCount
 argument_list|(
-name|inodes
+name|inodesInPath
 argument_list|,
 name|inodes
 operator|.
@@ -4693,14 +4733,28 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// do the move
+specifier|final
+name|INodesInPath
+name|trgINodesInPath
+init|=
+name|rootDir
+operator|.
+name|getExistingPathINodes
+argument_list|(
+name|target
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+specifier|final
 name|INode
 index|[]
 name|trgINodes
 init|=
-name|getExistingPathINodes
-argument_list|(
-name|target
-argument_list|)
+name|trgINodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|INodeFile
 name|trgInode
@@ -4855,7 +4909,7 @@ expr_stmt|;
 comment|// update quota on the parent directory ('count' files removed, 0 space)
 name|unprotectedUpdateCount
 argument_list|(
-name|trgINodes
+name|trgINodesInPath
 argument_list|,
 name|trgINodes
 operator|.
@@ -5151,9 +5205,9 @@ argument_list|(
 name|src
 argument_list|)
 expr_stmt|;
-name|INode
-index|[]
-name|inodes
+specifier|final
+name|INodesInPath
+name|inodesInPath
 init|=
 name|rootDir
 operator|.
@@ -5163,6 +5217,16 @@ name|src
 argument_list|,
 literal|false
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|INode
 name|targetNode
@@ -5257,7 +5321,7 @@ name|targetNode
 operator|=
 name|removeChild
 argument_list|(
-name|inodes
+name|inodesInPath
 argument_list|,
 name|pos
 argument_list|)
@@ -5847,41 +5911,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Retrieve the existing INodes along the given path.    *     * @param path the path to explore    * @return INodes array containing the existing INodes in the order they    *         appear when following the path from the root INode to the    *         deepest INodes. The array size will be the number of expected    *         components in the path, and non existing components will be    *         filled with null    *             * @see INodeDirectory#getExistingPathINodes(byte[][], INode[])    */
-DECL|method|getExistingPathINodes (String path)
-name|INode
-index|[]
-name|getExistingPathINodes
-parameter_list|(
-name|String
-name|path
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-return|return
-name|rootDir
-operator|.
-name|getExistingPathINodes
-argument_list|(
-name|path
-argument_list|,
-literal|true
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Get the parent node of path.    *     * @param path the path to explore    * @return its parent node    */
 DECL|method|getParent (byte[][] path)
 name|INodeDirectory
@@ -6068,9 +6097,9 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|INode
-index|[]
-name|inodes
+specifier|final
+name|INodesInPath
+name|inodesInPath
 init|=
 name|rootDir
 operator|.
@@ -6080,6 +6109,16 @@ name|path
 argument_list|,
 literal|false
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|int
 name|len
@@ -6112,7 +6151,7 @@ throw|;
 block|}
 name|updateCount
 argument_list|(
-name|inodes
+name|inodesInPath
 argument_list|,
 name|len
 operator|-
@@ -6134,14 +6173,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/** update count of each inode with quota    *     * @param inodes an array of inodes on a path    * @param numOfINodes the number of inodes to update starting from index 0    * @param nsDelta the delta change of namespace    * @param dsDelta the delta change of diskspace    * @param checkQuota if true then check if quota is exceeded    * @throws QuotaExceededException if the new count violates any quota limit    */
-DECL|method|updateCount (INode[] inodes, int numOfINodes, long nsDelta, long dsDelta, boolean checkQuota)
+DECL|method|updateCount (INodesInPath inodesInPath, int numOfINodes, long nsDelta, long dsDelta, boolean checkQuota)
 specifier|private
 name|void
 name|updateCount
 parameter_list|(
-name|INode
-index|[]
-name|inodes
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|int
 name|numOfINodes
@@ -6171,6 +6209,16 @@ block|{
 comment|//still initializing. do not check or update quotas.
 return|return;
 block|}
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|numOfINodes
@@ -6206,65 +6254,26 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|numOfINodes
-condition|;
-name|i
-operator|++
-control|)
-block|{
-if|if
-condition|(
-name|inodes
-index|[
-name|i
-index|]
-operator|.
-name|isQuotaSet
-argument_list|()
-condition|)
-block|{
-comment|// a directory with quota
-name|INodeDirectoryWithQuota
-name|node
-init|=
-operator|(
-name|INodeDirectoryWithQuota
-operator|)
-name|inodes
-index|[
-name|i
-index|]
-decl_stmt|;
-name|node
-operator|.
-name|updateNumItemsInTree
+name|unprotectedUpdateCount
 argument_list|(
+name|inodesInPath
+argument_list|,
+name|numOfINodes
+argument_list|,
 name|nsDelta
 argument_list|,
 name|dsDelta
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-block|}
 comment|/**     * update quota of each inode and check to see if quota is exceeded.     * See {@link #updateCount(INode[], int, long, long, boolean)}    */
-DECL|method|updateCountNoQuotaCheck (INode[] inodes, int numOfINodes, long nsDelta, long dsDelta)
+DECL|method|updateCountNoQuotaCheck (INodesInPath inodesInPath, int numOfINodes, long nsDelta, long dsDelta)
 specifier|private
 name|void
 name|updateCountNoQuotaCheck
 parameter_list|(
-name|INode
-index|[]
-name|inodes
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|int
 name|numOfINodes
@@ -6284,7 +6293,7 @@ try|try
 block|{
 name|updateCount
 argument_list|(
-name|inodes
+name|inodesInPath
 argument_list|,
 name|numOfINodes
 argument_list|,
@@ -6316,13 +6325,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * updates quota without verification    * callers responsibility is to make sure quota is not exceeded    * @param inodes    * @param numOfINodes    * @param nsDelta    * @param dsDelta    */
-DECL|method|unprotectedUpdateCount (INode[] inodes, int numOfINodes, long nsDelta, long dsDelta)
+DECL|method|unprotectedUpdateCount (INodesInPath inodesInPath, int numOfINodes, long nsDelta, long dsDelta)
+specifier|private
 name|void
 name|unprotectedUpdateCount
 parameter_list|(
-name|INode
-index|[]
-name|inodes
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|int
 name|numOfINodes
@@ -6338,6 +6347,16 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -6719,7 +6738,10 @@ argument_list|(
 name|Path
 operator|.
 name|SEPARATOR
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|names
 index|[
 name|i
@@ -6918,17 +6940,9 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
-name|String
-name|cur
-init|=
-name|pathbuilder
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|unprotectedMkdir
 argument_list|(
-name|inodes
+name|inodesInPath
 argument_list|,
 name|i
 argument_list|,
@@ -6981,6 +6995,15 @@ operator|.
 name|incrFilesCreated
 argument_list|()
 expr_stmt|;
+specifier|final
+name|String
+name|cur
+init|=
+name|pathbuilder
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 name|fsImage
 operator|.
 name|getEditLog
@@ -7089,23 +7112,25 @@ operator|.
 name|getINodes
 argument_list|()
 decl_stmt|;
-name|unprotectedMkdir
-argument_list|(
-name|inodes
-argument_list|,
+specifier|final
+name|int
+name|pos
+init|=
 name|inodes
 operator|.
 name|length
 operator|-
 literal|1
+decl_stmt|;
+name|unprotectedMkdir
+argument_list|(
+name|inodesInPath
+argument_list|,
+name|pos
 argument_list|,
 name|components
 index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
+name|pos
 index|]
 argument_list|,
 name|permissions
@@ -7116,23 +7141,18 @@ expr_stmt|;
 return|return
 name|inodes
 index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
+name|pos
 index|]
 return|;
 block|}
 comment|/** create a directory at index pos.    * The parent path to the directory is at [0, pos-1].    * All ancestors exist. Newly created one stored at index pos.    */
-DECL|method|unprotectedMkdir (INode[] inodes, int pos, byte[] name, PermissionStatus permission, long timestamp)
+DECL|method|unprotectedMkdir (INodesInPath inodesInPath, int pos, byte[] name, PermissionStatus permission, long timestamp)
 specifier|private
 name|void
 name|unprotectedMkdir
 parameter_list|(
-name|INode
-index|[]
-name|inodes
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|int
 name|pos
@@ -7154,17 +7174,10 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|inodes
-index|[
-name|pos
-index|]
-operator|=
-name|addChild
-argument_list|(
-name|inodes
-argument_list|,
-name|pos
-argument_list|,
+specifier|final
+name|INodeDirectory
+name|dir
+init|=
 operator|new
 name|INodeDirectory
 argument_list|(
@@ -7174,14 +7187,37 @@ name|permission
 argument_list|,
 name|timestamp
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+name|inode
+init|=
+name|addChild
+argument_list|(
+name|inodesInPath
+argument_list|,
+name|pos
+argument_list|,
+name|dir
 argument_list|,
 operator|-
 literal|1
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|inodesInPath
+operator|.
+name|setINode
+argument_list|(
+name|pos
+argument_list|,
+name|inode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Add a node child to the namespace. The full path name of the node is src.    * childDiskspace should be -1, if unknown.     * QuotaExceededException is thrown if it violates quota limit */
-DECL|method|addNode (String src, T child, long childDiskspace)
+comment|/** Add a node child to the namespace. The full path name of the node is src.    * childDiskspace should be -1, if unknown.     * @throw QuotaExceededException is thrown if it violates quota limit    */
+DECL|method|addNode (String src, T child, long childDiskspace )
 specifier|private
 parameter_list|<
 name|T
@@ -7263,21 +7299,15 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|INode
-index|[]
-name|inodes
-init|=
+return|return
+name|addChild
+argument_list|(
+name|inodesInPath
+argument_list|,
 name|inodesInPath
 operator|.
 name|getINodes
 argument_list|()
-decl_stmt|;
-return|return
-name|addChild
-argument_list|(
-name|inodes
-argument_list|,
-name|inodes
 operator|.
 name|length
 operator|-
@@ -7286,6 +7316,8 @@ argument_list|,
 name|child
 argument_list|,
 name|childDiskspace
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -7820,8 +7852,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Add a node child to the inodes at index pos.     * Its ancestors are stored at [0, pos-1].     * QuotaExceededException is thrown if it violates quota limit */
-DECL|method|addChild (INode[] pathComponents, int pos, T child, long childDiskspace, boolean checkQuota)
+comment|/** Add a node child to the inodes at index pos.     * Its ancestors are stored at [0, pos-1].    * @return the added node.     * @throw QuotaExceededException is thrown if it violates quota limit    */
+DECL|method|addChild (INodesInPath inodesInPath, int pos, T child, long childDiskspace, boolean checkQuota)
 specifier|private
 parameter_list|<
 name|T
@@ -7831,9 +7863,8 @@ parameter_list|>
 name|T
 name|addChild
 parameter_list|(
-name|INode
-index|[]
-name|pathComponents
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|int
 name|pos
@@ -7850,8 +7881,18 @@ parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
+decl_stmt|;
 comment|// The filesystem limits are not really quotas, so this check may appear
-comment|// odd.  It's because a rename operation deletes the src, tries to add
+comment|// odd. It's because a rename operation deletes the src, tries to add
 comment|// to the dest, if that fails, re-adds the src from whence it came.
 comment|// The rename code disables the quota when it's restoring to the
 comment|// original location becase a quota violation would cause the the item
@@ -7863,7 +7904,7 @@ condition|)
 block|{
 name|verifyFsLimits
 argument_list|(
-name|pathComponents
+name|inodes
 argument_list|,
 name|pos
 argument_list|,
@@ -7906,7 +7947,7 @@ expr_stmt|;
 block|}
 name|updateCount
 argument_list|(
-name|pathComponents
+name|inodesInPath
 argument_list|,
 name|pos
 argument_list|,
@@ -7922,7 +7963,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|pathComponents
+name|inodes
 index|[
 name|pos
 operator|-
@@ -7940,6 +7981,7 @@ literal|"Panic: parent does not exist"
 argument_list|)
 throw|;
 block|}
+specifier|final
 name|T
 name|addedNode
 init|=
@@ -7947,7 +7989,7 @@ operator|(
 operator|(
 name|INodeDirectory
 operator|)
-name|pathComponents
+name|inodes
 index|[
 name|pos
 operator|-
@@ -7971,7 +8013,7 @@ condition|)
 block|{
 name|updateCount
 argument_list|(
-name|pathComponents
+name|inodesInPath
 argument_list|,
 name|pos
 argument_list|,
@@ -7992,48 +8034,7 @@ return|return
 name|addedNode
 return|;
 block|}
-DECL|method|addChild (INode[] pathComponents, int pos, T child, long childDiskspace)
-specifier|private
-parameter_list|<
-name|T
-extends|extends
-name|INode
-parameter_list|>
-name|T
-name|addChild
-parameter_list|(
-name|INode
-index|[]
-name|pathComponents
-parameter_list|,
-name|int
-name|pos
-parameter_list|,
-name|T
-name|child
-parameter_list|,
-name|long
-name|childDiskspace
-parameter_list|)
-throws|throws
-name|QuotaExceededException
-block|{
-return|return
-name|addChild
-argument_list|(
-name|pathComponents
-argument_list|,
-name|pos
-argument_list|,
-name|child
-argument_list|,
-name|childDiskspace
-argument_list|,
-literal|true
-argument_list|)
-return|;
-block|}
-DECL|method|addChildNoQuotaCheck (INode[] pathComponents, int pos, T child, long childDiskspace)
+DECL|method|addChildNoQuotaCheck (INodesInPath inodesInPath, int pos, T child, long childDiskspace)
 specifier|private
 parameter_list|<
 name|T
@@ -8043,9 +8044,8 @@ parameter_list|>
 name|T
 name|addChildNoQuotaCheck
 parameter_list|(
-name|INode
-index|[]
-name|pathComponents
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|int
 name|pos
@@ -8068,7 +8068,7 @@ name|inode
 operator|=
 name|addChild
 argument_list|(
-name|pathComponents
+name|inodesInPath
 argument_list|,
 name|pos
 argument_list|,
@@ -8103,19 +8103,29 @@ name|inode
 return|;
 block|}
 comment|/** Remove an inode at index pos from the namespace.    * Its ancestors are stored at [0, pos-1].    * Count of each ancestor with quota is also updated.    * Return the removed node; null if the removal fails.    */
-DECL|method|removeChild (INode[] pathComponents, int pos)
+DECL|method|removeChild (final INodesInPath inodesInPath, int pos)
 specifier|private
 name|INode
 name|removeChild
 parameter_list|(
-name|INode
-index|[]
-name|pathComponents
+specifier|final
+name|INodesInPath
+name|inodesInPath
 parameter_list|,
 name|int
 name|pos
 parameter_list|)
 block|{
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
+decl_stmt|;
 name|INode
 name|removedNode
 init|=
@@ -8123,7 +8133,7 @@ operator|(
 operator|(
 name|INodeDirectory
 operator|)
-name|pathComponents
+name|inodes
 index|[
 name|pos
 operator|-
@@ -8133,7 +8143,7 @@ operator|)
 operator|.
 name|removeChild
 argument_list|(
-name|pathComponents
+name|inodes
 index|[
 name|pos
 index|]
@@ -8166,7 +8176,7 @@ argument_list|)
 expr_stmt|;
 name|updateCountNoQuotaCheck
 argument_list|(
-name|pathComponents
+name|inodesInPath
 argument_list|,
 name|pos
 argument_list|,
@@ -8723,9 +8733,9 @@ argument_list|(
 name|src
 argument_list|)
 decl_stmt|;
-name|INode
-index|[]
-name|inodes
+specifier|final
+name|INodesInPath
+name|inodesInPath
 init|=
 name|rootDir
 operator|.
@@ -8735,6 +8745,16 @@ name|src
 argument_list|,
 literal|true
 argument_list|)
+decl_stmt|;
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
+operator|.
+name|getINodes
+argument_list|()
 decl_stmt|;
 name|INode
 name|targetNode

@@ -976,10 +976,9 @@ return|return
 name|existing
 return|;
 block|}
-comment|/**    * Retrieve the existing INodes along the given path. The first INode    * always exist and is this INode.    *     * @param path the path to explore    * @param resolveLink indicates whether UnresolvedLinkException should     *        be thrown when the path refers to a symbolic link.    * @return INodes array containing the existing INodes in the order they    *         appear when following the path from the root INode to the    *         deepest INodes. The array size will be the number of expected    *         components in the path, and non existing components will be    *         filled with null    *             * @see #getExistingPathINodes(byte[][], INode[])    */
+comment|/**    * Retrieve the existing INodes along the given path. The first INode    * always exist and is this INode.    *     * @param path the path to explore    * @param resolveLink indicates whether UnresolvedLinkException should     *        be thrown when the path refers to a symbolic link.    * @return INodes array containing the existing INodes in the order they    *         appear when following the path from the root INode to the    *         deepest INodes. The array size will be the number of expected    *         components in the path, and non existing components will be    *         filled with null    *             * @see #getExistingPathINodes(byte[][], int, boolean)    */
 DECL|method|getExistingPathINodes (String path, boolean resolveLink)
-name|INode
-index|[]
+name|INodesInPath
 name|getExistingPathINodes
 parameter_list|(
 name|String
@@ -1001,11 +1000,7 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-name|INodesInPath
-name|inodes
-init|=
-name|this
-operator|.
+return|return
 name|getExistingPathINodes
 argument_list|(
 name|components
@@ -1016,11 +1011,6 @@ name|length
 argument_list|,
 name|resolveLink
 argument_list|)
-decl_stmt|;
-return|return
-name|inodes
-operator|.
-name|inodes
 return|;
 block|}
 comment|/**    * Given a child's name, return the index of the next child    *    * @param name a child's name    * @return the index of the next child    */
@@ -1831,6 +1821,25 @@ block|{
 return|return
 name|inodes
 return|;
+block|}
+DECL|method|setINode (int i, INode inode)
+name|void
+name|setINode
+parameter_list|(
+name|int
+name|i
+parameter_list|,
+name|INode
+name|inode
+parameter_list|)
+block|{
+name|inodes
+index|[
+name|i
+index|]
+operator|=
+name|inode
+expr_stmt|;
 block|}
 block|}
 comment|/*    * The following code is to dump the tree recursively for testing.    *     *      \- foo   (INodeDirectory@33dd2717)    *        \- sub1   (INodeDirectory@442172)    *          +- file1   (INodeFile@78392d4)    *          +- file2   (INodeFile@78392d5)    *          +- sub11   (INodeDirectory@8400cff)    *            \- file3   (INodeFile@78392d6)    *          \- z_file4   (INodeFile@45848712)    */
