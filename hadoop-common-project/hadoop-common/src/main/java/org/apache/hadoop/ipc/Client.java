@@ -658,6 +658,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+operator|.
+name|AuthenticationMethod
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -1644,9 +1660,12 @@ condition|)
 block|{
 name|authMethod
 operator|=
-name|AuthMethod
+name|AuthenticationMethod
 operator|.
-name|DIGEST
+name|TOKEN
+operator|.
+name|getAuthMethod
+argument_list|()
 expr_stmt|;
 block|}
 elseif|else
@@ -1658,6 +1677,7 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
+comment|// eventually just use the ticket's authMethod
 name|authMethod
 operator|=
 name|AuthMethod
