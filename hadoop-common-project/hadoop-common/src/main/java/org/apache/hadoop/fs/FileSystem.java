@@ -6716,8 +6716,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**    * Create a snapshot    * @param snapshotName The name of the snapshot    * @param snapshotRoot The directory where the snapshot will be taken    */
-DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+comment|/**    * Create a snapshot    * @param snapshotName The name of the snapshot    * @param path The directory where snapshots will be taken.    */
+DECL|method|createSnapshot (String snapshotName, String path)
 specifier|public
 name|void
 name|createSnapshot
@@ -6726,7 +6726,7 @@ name|String
 name|snapshotName
 parameter_list|,
 name|String
-name|snapshotRoot
+name|path
 parameter_list|)
 throws|throws
 name|IOException

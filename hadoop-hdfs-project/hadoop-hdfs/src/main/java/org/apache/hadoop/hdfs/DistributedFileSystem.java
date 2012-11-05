@@ -3962,14 +3962,14 @@ name|SAFEMODE_GET
 argument_list|)
 return|;
 block|}
-comment|/**    * Allow snapshot on a directory.    *     * @param snapshotRoot the directory to be snapped    * @throws IOException    */
-DECL|method|allowSnapshot (String snapshotRoot)
+comment|/**    * Allow snapshot on a directory.    *     * @param path the directory to be taken snapshots    * @throws IOException    */
+DECL|method|allowSnapshot (String path)
 specifier|public
 name|void
 name|allowSnapshot
 parameter_list|(
 name|String
-name|snapshotRoot
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -3978,18 +3978,18 @@ name|dfs
 operator|.
 name|allowSnapshot
 argument_list|(
-name|snapshotRoot
+name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Disallow snapshot on a directory.    *     * @param snapshotRoot the directory to be snapped    * @throws IOException    */
-DECL|method|disallowSnapshot (String snapshotRoot)
+comment|/**    * Disallow snapshot on a directory.    *     * @param path the snapshottable directory.    * @throws IOException    */
+DECL|method|disallowSnapshot (String path)
 specifier|public
 name|void
 name|disallowSnapshot
 parameter_list|(
 name|String
-name|snapshotRoot
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -3998,13 +3998,13 @@ name|dfs
 operator|.
 name|disallowSnapshot
 argument_list|(
-name|snapshotRoot
+name|path
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+DECL|method|createSnapshot (String snapshotName, String path)
 specifier|public
 name|void
 name|createSnapshot
@@ -4013,7 +4013,7 @@ name|String
 name|snapshotName
 parameter_list|,
 name|String
-name|snapshotRoot
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -4024,7 +4024,7 @@ name|createSnapshot
 argument_list|(
 name|snapshotName
 argument_list|,
-name|snapshotRoot
+name|path
 argument_list|)
 expr_stmt|;
 block|}

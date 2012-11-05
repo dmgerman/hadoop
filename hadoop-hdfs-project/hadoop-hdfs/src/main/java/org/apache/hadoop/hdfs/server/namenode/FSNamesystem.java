@@ -24774,6 +24774,7 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+comment|//TODO: need to update metrics in corresponding SnapshotManager method
 if|if
 condition|(
 name|auditLog
@@ -24806,24 +24807,84 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Disallow snapshot on a directory.
-annotation|@
-name|VisibleForTesting
-DECL|method|disallowSnapshot (String snapshotRoot)
+comment|/** Disallow snapshot on a directory. */
+DECL|method|disallowSnapshot (String path)
 specifier|public
 name|void
 name|disallowSnapshot
 parameter_list|(
 name|String
-name|snapshotRoot
+name|path
 parameter_list|)
 throws|throws
 name|SafeModeException
 throws|,
 name|IOException
 block|{
-comment|// TODO: implement, also need to update metrics in corresponding
-comment|// SnapshotManager method
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|SafeModeException
+argument_list|(
+literal|"Cannot disallow snapshot for "
+operator|+
+name|path
+argument_list|,
+name|safeMode
+argument_list|)
+throw|;
+block|}
+name|checkOwner
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+name|snapshotManager
+operator|.
+name|resetSnapshottable
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+name|getEditLog
+argument_list|()
+operator|.
+name|logDisallowSnapshot
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+name|getEditLog
+argument_list|()
+operator|.
+name|logSync
+argument_list|()
+expr_stmt|;
+comment|//TODO: need to update metrics in corresponding SnapshotManager method
 if|if
 condition|(
 name|auditLog
@@ -24847,7 +24908,7 @@ argument_list|()
 argument_list|,
 literal|"disallowSnapshot"
 argument_list|,
-name|snapshotRoot
+name|path
 argument_list|,
 literal|null
 argument_list|,
