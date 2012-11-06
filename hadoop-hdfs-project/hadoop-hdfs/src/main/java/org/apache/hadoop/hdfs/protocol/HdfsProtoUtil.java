@@ -985,7 +985,7 @@ name|valueOf
 argument_list|(
 name|type
 operator|.
-name|name
+name|getNumber
 argument_list|()
 argument_list|)
 return|;
@@ -1013,8 +1013,7 @@ name|valueOf
 argument_list|(
 name|type
 operator|.
-name|name
-argument_list|()
+name|id
 argument_list|)
 return|;
 block|}

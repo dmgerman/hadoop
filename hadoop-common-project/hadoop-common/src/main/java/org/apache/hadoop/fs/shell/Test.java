@@ -141,7 +141,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"-[ezd]<path>"
+literal|"-[defsz]<path>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -150,9 +150,19 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"If file exists, has zero length, is a directory\n"
+literal|"Answer various questions about<path>, with result via exit status.\n"
 operator|+
-literal|"then return 0, else return 1."
+literal|"  -d  return 0 if<path> is a directory.\n"
+operator|+
+literal|"  -e  return 0 if<path> exists.\n"
+operator|+
+literal|"  -f  return 0 if<path> is a file.\n"
+operator|+
+literal|"  -s  return 0 if file<path> is greater than zero bytes in size.\n"
+operator|+
+literal|"  -z  return 0 if file<path> is zero bytes in size.\n"
+operator|+
+literal|"else, return 1."
 decl_stmt|;
 DECL|field|flag
 specifier|private
@@ -186,6 +196,10 @@ argument_list|,
 literal|"e"
 argument_list|,
 literal|"d"
+argument_list|,
+literal|"f"
+argument_list|,
+literal|"s"
 argument_list|,
 literal|"z"
 argument_list|)
@@ -300,6 +314,36 @@ name|stat
 operator|.
 name|isDirectory
 argument_list|()
+expr_stmt|;
+break|break;
+case|case
+literal|'f'
+case|:
+name|test
+operator|=
+name|item
+operator|.
+name|stat
+operator|.
+name|isFile
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
+literal|'s'
+case|:
+name|test
+operator|=
+operator|(
+name|item
+operator|.
+name|stat
+operator|.
+name|getLen
+argument_list|()
+operator|>
+literal|0
+operator|)
 expr_stmt|;
 break|break;
 case|case

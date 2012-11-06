@@ -293,6 +293,12 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+name|keyFieldHelper
+operator|=
+operator|new
+name|KeyFieldHelper
+argument_list|()
+expr_stmt|;
 name|String
 name|keyFieldSeparator
 init|=

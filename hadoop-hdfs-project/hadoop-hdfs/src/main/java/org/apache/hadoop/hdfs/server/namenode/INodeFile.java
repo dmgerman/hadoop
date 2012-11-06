@@ -42,16 +42,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -832,16 +822,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
+DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
 specifier|protected
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(
-name|List
-argument_list|<
-name|Block
-argument_list|>
-name|v
+name|BlocksMapUpdateInfo
+name|info
 parameter_list|)
 block|{
 name|parent
@@ -854,7 +841,7 @@ name|blocks
 operator|!=
 literal|null
 operator|&&
-name|v
+name|info
 operator|!=
 literal|null
 condition|)
@@ -867,9 +854,9 @@ range|:
 name|blocks
 control|)
 block|{
-name|v
+name|info
 operator|.
-name|add
+name|addDeleteBlock
 argument_list|(
 name|blk
 argument_list|)

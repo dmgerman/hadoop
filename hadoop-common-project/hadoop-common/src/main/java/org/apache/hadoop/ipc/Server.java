@@ -7633,8 +7633,6 @@ argument_list|(
 name|AuthMethod
 operator|.
 name|SIMPLE
-operator|.
-name|authenticationMethod
 argument_list|)
 expr_stmt|;
 block|}
@@ -7647,8 +7645,6 @@ operator|.
 name|setAuthenticationMethod
 argument_list|(
 name|authMethod
-operator|.
-name|authenticationMethod
 argument_list|)
 expr_stmt|;
 comment|//Now we check if this is a proxy user case. If the protocol user is

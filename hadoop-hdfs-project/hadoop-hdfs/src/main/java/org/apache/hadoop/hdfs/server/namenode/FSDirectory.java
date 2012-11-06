@@ -602,6 +602,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INodeDirectory
 operator|.
 name|INodesInPath
@@ -3826,17 +3846,11 @@ name|removedDst
 operator|=
 literal|null
 expr_stmt|;
-name|List
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 name|collectedBlocks
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 argument_list|()
 decl_stmt|;
 name|filesDeleted
@@ -4920,17 +4934,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Delete the target directory and collect the blocks under it    *     * @param src Path of a directory to delete    * @param collectedBlocks Blocks under the deleted directory    * @return true on successful deletion; else false    */
-DECL|method|delete (String src, List<Block>collectedBlocks)
+DECL|method|delete (String src, BlocksMapUpdateInfo collectedBlocks)
 name|boolean
 name|delete
 parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|List
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 throws|throws
@@ -5326,17 +5337,11 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
-name|List
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 name|collectedBlocks
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 argument_list|()
 decl_stmt|;
 name|int
@@ -5421,17 +5426,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param inodes the INode array resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
-DECL|method|unprotectedDelete (INodesInPath inodesInPath, List<Block> collectedBlocks, long mtime)
+DECL|method|unprotectedDelete (INodesInPath inodesInPath, BlocksMapUpdateInfo collectedBlocks, long mtime)
 name|int
 name|unprotectedDelete
 parameter_list|(
 name|INodesInPath
 name|inodesInPath
 parameter_list|,
-name|List
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|,
 name|long

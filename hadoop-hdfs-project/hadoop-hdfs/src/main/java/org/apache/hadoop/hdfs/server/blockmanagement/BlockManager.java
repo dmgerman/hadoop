@@ -12596,6 +12596,11 @@ operator|.
 name|getBlockIterator
 argument_list|()
 decl_stmt|;
+name|int
+name|numOverReplicated
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 name|it
@@ -12666,8 +12671,26 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+name|numOverReplicated
+operator|++
+expr_stmt|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Invalidated "
+operator|+
+name|numOverReplicated
+operator|+
+literal|" over-replicated blocks on "
+operator|+
+name|srcNode
+operator|+
+literal|" during recommissioning"
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Return true if there are any blocks on this node that have not    * yet reached their replication factor. Otherwise returns false.    */
 DECL|method|isReplicationInProgress (DatanodeDescriptor srcNode)

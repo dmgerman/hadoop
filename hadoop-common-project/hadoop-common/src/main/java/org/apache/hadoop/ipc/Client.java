@@ -658,6 +658,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+operator|.
+name|AuthenticationMethod
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -1179,12 +1195,6 @@ name|String
 name|serverPrincipal
 decl_stmt|;
 comment|// server's krb5 principal name
-DECL|field|connectionContext
-specifier|private
-name|IpcConnectionContextProto
-name|connectionContext
-decl_stmt|;
-comment|// connection context
 DECL|field|remoteId
 specifier|private
 specifier|final
@@ -1644,9 +1654,12 @@ condition|)
 block|{
 name|authMethod
 operator|=
-name|AuthMethod
+name|AuthenticationMethod
 operator|.
-name|DIGEST
+name|TOKEN
+operator|.
+name|getAuthMethod
+argument_list|()
 expr_stmt|;
 block|}
 elseif|else
@@ -1658,6 +1671,7 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
+comment|// eventually just use the ticket's authMethod
 name|authMethod
 operator|=
 name|AuthMethod
@@ -1674,24 +1688,6 @@ operator|.
 name|SIMPLE
 expr_stmt|;
 block|}
-name|connectionContext
-operator|=
-name|ProtoUtil
-operator|.
-name|makeIpcConnectionContext
-argument_list|(
-name|RPC
-operator|.
-name|getProtocolName
-argument_list|(
-name|protocol
-argument_list|)
-argument_list|,
-name|ticket
-argument_list|,
-name|authMethod
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -2920,31 +2916,6 @@ name|AuthMethod
 operator|.
 name|SIMPLE
 expr_stmt|;
-comment|// remake the connectionContext
-name|connectionContext
-operator|=
-name|ProtoUtil
-operator|.
-name|makeIpcConnectionContext
-argument_list|(
-name|connectionContext
-operator|.
-name|getProtocol
-argument_list|()
-argument_list|,
-name|ProtoUtil
-operator|.
-name|getUgi
-argument_list|(
-name|connectionContext
-operator|.
-name|getUserInfo
-argument_list|()
-argument_list|)
-argument_list|,
-name|authMethod
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 if|if
@@ -3003,7 +2974,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 name|writeConnectionContext
-argument_list|()
+argument_list|(
+name|remoteId
+argument_list|,
+name|authMethod
+argument_list|)
 expr_stmt|;
 comment|// update last activity time
 name|touch
@@ -3409,11 +3384,17 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/* Write the connection context header for each connection      * Out is not synchronized because only the first thread does this.      */
-DECL|method|writeConnectionContext ()
+DECL|method|writeConnectionContext (ConnectionId remoteId, AuthMethod authMethod)
 specifier|private
 name|void
 name|writeConnectionContext
-parameter_list|()
+parameter_list|(
+name|ConnectionId
+name|remoteId
+parameter_list|,
+name|AuthMethod
+name|authMethod
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -3425,7 +3406,27 @@ operator|new
 name|DataOutputBuffer
 argument_list|()
 decl_stmt|;
-name|connectionContext
+name|ProtoUtil
+operator|.
+name|makeIpcConnectionContext
+argument_list|(
+name|RPC
+operator|.
+name|getProtocolName
+argument_list|(
+name|remoteId
+operator|.
+name|getProtocol
+argument_list|()
+argument_list|)
+argument_list|,
+name|remoteId
+operator|.
+name|getTicket
+argument_list|()
+argument_list|,
+name|authMethod
+argument_list|)
 operator|.
 name|writeTo
 argument_list|(

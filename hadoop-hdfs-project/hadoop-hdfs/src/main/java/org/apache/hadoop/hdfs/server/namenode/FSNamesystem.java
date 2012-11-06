@@ -2104,6 +2104,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INodeDirectory
 operator|.
 name|INodesInPath
@@ -13666,17 +13686,11 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
-name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 name|collectedBlocks
 init|=
 operator|new
-name|ArrayList
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 argument_list|()
 decl_stmt|;
 name|writeLock
@@ -13829,16 +13843,13 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**     * From the given list, incrementally remove the blocks from blockManager    * Writelock is dropped and reacquired every BLOCK_DELETION_INCREMENT to    * ensure that other waiters on the lock can get in. See HDFS-2938    */
-DECL|method|removeBlocks (List<Block> blocks)
+comment|/**    * From the given list, incrementally remove the blocks from blockManager    * Writelock is dropped and reacquired every BLOCK_DELETION_INCREMENT to    * ensure that other waiters on the lock can get in. See HDFS-2938    *     * @param blocks    *          An instance of {@link BlocksMapUpdateInfo} which contains a list    *          of blocks that need to be removed from blocksMap    */
+DECL|method|removeBlocks (BlocksMapUpdateInfo blocks)
 specifier|private
 name|void
 name|removeBlocks
 parameter_list|(
-name|List
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 name|blocks
 parameter_list|)
 block|{
@@ -13852,11 +13863,22 @@ name|end
 init|=
 literal|0
 decl_stmt|;
+name|List
+argument_list|<
+name|Block
+argument_list|>
+name|toDeleteList
+init|=
+name|blocks
+operator|.
+name|getToDeleteList
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 name|start
 operator|<
-name|blocks
+name|toDeleteList
 operator|.
 name|size
 argument_list|()
@@ -13872,12 +13894,12 @@ name|end
 operator|=
 name|end
 operator|>
-name|blocks
+name|toDeleteList
 operator|.
 name|size
 argument_list|()
 condition|?
-name|blocks
+name|toDeleteList
 operator|.
 name|size
 argument_list|()
@@ -13908,7 +13930,7 @@ name|blockManager
 operator|.
 name|removeBlock
 argument_list|(
-name|blocks
+name|toDeleteList
 operator|.
 name|get
 argument_list|(
@@ -13930,17 +13952,15 @@ name|end
 expr_stmt|;
 block|}
 block|}
-DECL|method|removePathAndBlocks (String src, List<Block> blocks)
+comment|/**    * Remove leases and blocks related to a given path    * @param src The given path    * @param blocks Containing the list of blocks to be deleted from blocksMap    */
+DECL|method|removePathAndBlocks (String src, BlocksMapUpdateInfo blocks)
 name|void
 name|removePathAndBlocks
 parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|List
-argument_list|<
-name|Block
-argument_list|>
+name|BlocksMapUpdateInfo
 name|blocks
 parameter_list|)
 block|{
@@ -13988,6 +14008,9 @@ name|Block
 name|b
 range|:
 name|blocks
+operator|.
+name|getToDeleteList
+argument_list|()
 control|)
 block|{
 if|if

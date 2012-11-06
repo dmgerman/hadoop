@@ -528,6 +528,22 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SaslRpcServer
+operator|.
+name|AuthMethod
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|authentication
 operator|.
 name|util
@@ -1303,28 +1319,23 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|String
-name|value
+name|AuthenticationMethod
+name|auth
 init|=
-name|conf
+name|SecurityUtil
 operator|.
-name|get
+name|getAuthenticationMethod
 argument_list|(
-name|HADOOP_SECURITY_AUTHENTICATION
+name|conf
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|value
+name|auth
 operator|==
-literal|null
-operator|||
-literal|"simple"
+name|AuthenticationMethod
 operator|.
-name|equals
-argument_list|(
-name|value
-argument_list|)
+name|SIMPLE
 condition|)
 block|{
 name|useKerberos
@@ -1335,12 +1346,11 @@ block|}
 elseif|else
 if|if
 condition|(
-literal|"kerberos"
+name|auth
+operator|==
+name|AuthenticationMethod
 operator|.
-name|equals
-argument_list|(
-name|value
-argument_list|)
+name|KERBEROS
 condition|)
 block|{
 name|useKerberos
@@ -1360,7 +1370,7 @@ name|HADOOP_SECURITY_AUTHENTICATION
 operator|+
 literal|" of "
 operator|+
-name|value
+name|auth
 argument_list|)
 throw|;
 block|}
@@ -4720,25 +4730,139 @@ specifier|static
 enum|enum
 name|AuthenticationMethod
 block|{
+comment|// currently we support only one auth per method, but eventually a
+comment|// subtype is needed to differentiate, ex. if digest is token or ldap
 DECL|enumConstant|SIMPLE
 name|SIMPLE
-block|,
+parameter_list|(
+name|AuthMethod
+operator|.
+name|SIMPLE
+parameter_list|)
+operator|,
 DECL|enumConstant|KERBEROS
-name|KERBEROS
-block|,
+constructor|KERBEROS(AuthMethod.KERBEROS
+block|)
+enum|,
 DECL|enumConstant|TOKEN
 name|TOKEN
-block|,
+parameter_list|(
+name|AuthMethod
+operator|.
+name|DIGEST
+parameter_list|)
+operator|,
 DECL|enumConstant|CERTIFICATE
-name|CERTIFICATE
-block|,
+constructor|CERTIFICATE(null
+block|)
+operator|,
 DECL|enumConstant|KERBEROS_SSL
 name|KERBEROS_SSL
-block|,
+argument_list|(
+literal|null
+argument_list|)
+operator|,
 DECL|enumConstant|PROXY
 name|PROXY
-block|;   }
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+end_class
+
+begin_decl_stmt
+DECL|field|authMethod
+specifier|private
+specifier|final
+name|AuthMethod
+name|authMethod
+decl_stmt|;
+end_decl_stmt
+
+begin_constructor
+DECL|method|AuthenticationMethod (AuthMethod authMethod)
+specifier|private
+name|AuthenticationMethod
+parameter_list|(
+name|AuthMethod
+name|authMethod
+parameter_list|)
+block|{
+name|this
+operator|.
+name|authMethod
+operator|=
+name|authMethod
+expr_stmt|;
+block|}
+end_constructor
+
+begin_function
+DECL|method|getAuthMethod ()
+specifier|public
+name|AuthMethod
+name|getAuthMethod
+parameter_list|()
+block|{
+return|return
+name|authMethod
+return|;
+block|}
+end_function
+
+begin_function
+DECL|method|valueOf (AuthMethod authMethod)
+specifier|public
+specifier|static
+name|AuthenticationMethod
+name|valueOf
+parameter_list|(
+name|AuthMethod
+name|authMethod
+parameter_list|)
+block|{
+for|for
+control|(
+name|AuthenticationMethod
+name|value
+range|:
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|value
+operator|.
+name|getAuthMethod
+argument_list|()
+operator|==
+name|authMethod
+condition|)
+block|{
+return|return
+name|value
+return|;
+block|}
+block|}
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"no authentication method for "
+operator|+
+name|authMethod
+argument_list|)
+throw|;
+block|}
+end_function
+
+begin_comment
+unit|};
 comment|/**    * Create a proxy user using username of the effective user and the ugi of the    * real user.    * @param user    * @param realUser    * @return proxyUser ugi    */
+end_comment
+
+begin_function
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -4857,7 +4981,13 @@ return|return
 name|result
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * get RealUser (vs. EffectiveUser)    * @return realUser running over proxy user    */
+end_comment
+
+begin_function
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -4898,7 +5028,13 @@ return|return
 literal|null
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * This class is used for storing the groups for testing. It stores a local    * map that has the translation of usernames to groups.    */
+end_comment
+
+begin_class
 DECL|class|TestingGroups
 specifier|private
 specifier|static
@@ -5047,7 +5183,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_class
+
+begin_comment
 comment|/**    * Create a UGI for testing HDFS and MapReduce    * @param user the full user principal name    * @param userGroups the names of the groups that the user belongs to    * @return a fake user for running unit tests    */
+end_comment
+
+begin_function
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -5123,7 +5265,13 @@ return|return
 name|ugi
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Create a proxy user UGI for testing HDFS and MapReduce    *     * @param user    *          the full user principal name for effective user    * @param realUser    *          UGI of the real user    * @param userGroups    *          the names of the groups that the user belongs to    * @return a fake user for running unit tests    */
+end_comment
+
+begin_function
 DECL|method|createProxyUserForTesting (String user, UserGroupInformation realUser, String[] userGroups)
 specifier|public
 specifier|static
@@ -5196,7 +5344,13 @@ return|return
 name|ugi
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the user's login name.    * @return the user's name up to the first '/' or '@'.    */
+end_comment
+
+begin_function
 DECL|method|getShortUserName ()
 specifier|public
 name|String
@@ -5229,7 +5383,13 @@ return|return
 literal|null
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the user's full principal name.    * @return the user's full principal name.    */
+end_comment
+
+begin_function
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -5251,7 +5411,13 @@ name|getName
 argument_list|()
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Add a TokenIdentifier to this UGI. The TokenIdentifier has typically been    * authenticated by the RPC layer as belonging to the user represented by this    * UGI.    *     * @param tokenId    *          tokenIdentifier to be added    * @return true on successful add of new tokenIdentifier    */
+end_comment
+
+begin_function
 DECL|method|addTokenIdentifier (TokenIdentifier tokenId)
 specifier|public
 specifier|synchronized
@@ -5274,7 +5440,13 @@ name|tokenId
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the set of TokenIdentifiers belonging to this UGI    *     * @return the set of TokenIdentifiers belonging to this UGI    */
+end_comment
+
+begin_function
 DECL|method|getTokenIdentifiers ()
 specifier|public
 specifier|synchronized
@@ -5296,7 +5468,13 @@ name|class
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Add a token to this UGI    *     * @param token Token to be added    * @return true on successful add of new token    */
+end_comment
+
+begin_function
 DECL|method|addToken (Token<? extends TokenIdentifier> token)
 specifier|public
 specifier|synchronized
@@ -5332,7 +5510,13 @@ else|:
 literal|false
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Add a named token to this UGI    *     * @param alias Name of the token    * @param token Token to be added    * @return true on successful add of new token    */
+end_comment
+
+begin_function
 DECL|method|addToken (Text alias, Token<? extends TokenIdentifier> token)
 specifier|public
 specifier|synchronized
@@ -5365,7 +5549,13 @@ return|return
 literal|true
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Obtain the collection of tokens associated with this user.    *     * @return an unmodifiable collection of tokens associated with user    */
+end_comment
+
+begin_function
 specifier|public
 specifier|synchronized
 DECL|method|getTokens ()
@@ -5394,7 +5584,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Obtain the tokens in credentials form associated with this user.    *     * @return Credentials of tokens associated with this user    */
+end_comment
+
+begin_function
 DECL|method|getCredentials ()
 specifier|public
 specifier|synchronized
@@ -5411,7 +5607,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Add the given Credentials to this user.    * @param credentials of tokens and secrets    */
+end_comment
+
+begin_function
 DECL|method|addCredentials (Credentials credentials)
 specifier|public
 specifier|synchronized
@@ -5431,6 +5633,9 @@ name|credentials
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_function
 DECL|method|getCredentialsInternal ()
 specifier|private
 specifier|synchronized
@@ -5501,7 +5706,13 @@ return|return
 name|credentials
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the group names for this user.    * @return the list of users with the primary group first. If the command    *    fails, it returns an empty list.    */
+end_comment
+
+begin_function
 DECL|method|getGroupNames ()
 specifier|public
 specifier|synchronized
@@ -5570,7 +5781,13 @@ index|]
 return|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Return the username.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -5633,7 +5850,13 @@ name|toString
 argument_list|()
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Sets the authentication method in the subject    *     * @param authMethod    */
+end_comment
+
+begin_function
 specifier|public
 specifier|synchronized
 DECL|method|setAuthenticationMethod (AuthenticationMethod authMethod)
@@ -5652,7 +5875,42 @@ name|authMethod
 argument_list|)
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
+comment|/**    * Sets the authentication method in the subject    *     * @param authMethod    */
+end_comment
+
+begin_function
+DECL|method|setAuthenticationMethod (AuthMethod authMethod)
+specifier|public
+name|void
+name|setAuthenticationMethod
+parameter_list|(
+name|AuthMethod
+name|authMethod
+parameter_list|)
+block|{
+name|user
+operator|.
+name|setAuthenticationMethod
+argument_list|(
+name|AuthenticationMethod
+operator|.
+name|valueOf
+argument_list|(
+name|authMethod
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+end_function
+
+begin_comment
 comment|/**    * Get the authentication method from the subject    *     * @return AuthenticationMethod in the subject, null if not present.    */
+end_comment
+
+begin_function
 DECL|method|getAuthenticationMethod ()
 specifier|public
 specifier|synchronized
@@ -5667,7 +5925,13 @@ name|getAuthenticationMethod
 argument_list|()
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Returns the authentication method of a ugi. If the authentication method is    * PROXY, returns the authentication method of the real user.    *     * @param ugi    * @return AuthenticationMethod    */
+end_comment
+
+begin_function
 DECL|method|getRealAuthenticationMethod ( UserGroupInformation ugi)
 specifier|public
 specifier|static
@@ -5710,7 +5974,13 @@ return|return
 name|authMethod
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Compare the subjects to see if they are equal to each other.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|equals (Object o)
@@ -5769,7 +6039,13 @@ name|subject
 return|;
 block|}
 block|}
+end_function
+
+begin_comment
 comment|/**    * Return the hash of the subject.    */
+end_comment
+
+begin_function
 annotation|@
 name|Override
 DECL|method|hashCode ()
@@ -5787,7 +6063,13 @@ name|subject
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Get the underlying subject from this ugi.    * @return the subject that represents this user.    */
+end_comment
+
+begin_function
 DECL|method|getSubject ()
 specifier|protected
 name|Subject
@@ -5798,7 +6080,13 @@ return|return
 name|subject
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Run the given action as the user.    * @param<T> the return type of the run method    * @param action the method to execute    * @return the value from the run method    */
+end_comment
+
+begin_function
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -5840,7 +6128,13 @@ name|action
 argument_list|)
 return|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * Run the given action as the user, potentially throwing an exception.    * @param<T> the return type of the run method    * @param action the method to execute    * @return the value from the run method    * @throws IOException if the action throws an IOException    * @throws Error if the action throws an Error    * @throws RuntimeException if the action throws a RuntimeException    * @throws InterruptedException if the action throws an InterruptedException    * @throws UndeclaredThrowableException if the action throws something else    */
+end_comment
+
+begin_function
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -5988,6 +6282,9 @@ throw|;
 block|}
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|logPrivilegedAction (Subject subject, Object action)
 specifier|private
 name|void
@@ -6040,6 +6337,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+end_function
+
+begin_function
 DECL|method|print ()
 specifier|private
 name|void
@@ -6132,7 +6432,13 @@ name|println
 argument_list|()
 expr_stmt|;
 block|}
+end_function
+
+begin_comment
 comment|/**    * A test method to print out the current user's UGI.    * @param args if there are two arguments, read the user from the keytab    * and print it out.    * @throws Exception    */
+end_comment
+
+begin_function
 DECL|method|main (String [] args)
 specifier|public
 specifier|static
@@ -6294,8 +6600,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-end_class
+end_function
 
+unit|}
 end_unit
 
