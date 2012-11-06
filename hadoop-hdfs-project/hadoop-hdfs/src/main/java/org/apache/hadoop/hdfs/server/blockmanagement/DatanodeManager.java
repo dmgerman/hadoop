@@ -3055,6 +3055,15 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
+comment|// Over-replicated blocks will be detected and processed when
+comment|// the dead node comes back and send in its full block report.
+if|if
+condition|(
+name|node
+operator|.
+name|isAlive
+condition|)
+block|{
 name|blockManager
 operator|.
 name|processOverReplicatedBlocksOnReCommission
@@ -3062,6 +3071,7 @@ argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Generate new storage ID.    *     * @return unique storage ID    *     * Note: that collisions are still possible if somebody will try     * to bring in a data storage from a different cluster.    */
