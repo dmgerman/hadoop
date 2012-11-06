@@ -913,17 +913,14 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Collect all the blocks in all children of this INode.    * Count and return the number of files in the sub tree.    * Also clears references since this INode is deleted.    */
-DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
+comment|/**    * Collect all the blocks in all children of this INode. Count and return the    * number of files in the sub tree. Also clears references since this INode is    * deleted.    *     * @param info    *          Containing all the blocks collected from the children of this    *          INode. These blocks later should be removed from the blocksMap.    */
+DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
 specifier|abstract
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(
-name|List
-argument_list|<
-name|Block
-argument_list|>
-name|v
+name|BlocksMapUpdateInfo
+name|info
 parameter_list|)
 function_decl|;
 comment|/** Compute {@link ContentSummary}. */
@@ -1976,6 +1973,120 @@ argument_list|(
 literal|")"
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Information used for updating the blocksMap when deleting files.    */
+DECL|class|BlocksMapUpdateInfo
+specifier|public
+specifier|static
+class|class
+name|BlocksMapUpdateInfo
+block|{
+comment|/**      * The list of blocks that need to be removed from blocksMap      */
+DECL|field|toDeleteList
+specifier|private
+name|List
+argument_list|<
+name|Block
+argument_list|>
+name|toDeleteList
+decl_stmt|;
+DECL|method|BlocksMapUpdateInfo (List<Block> toDeleteList)
+specifier|public
+name|BlocksMapUpdateInfo
+parameter_list|(
+name|List
+argument_list|<
+name|Block
+argument_list|>
+name|toDeleteList
+parameter_list|)
+block|{
+name|this
+operator|.
+name|toDeleteList
+operator|=
+name|toDeleteList
+operator|==
+literal|null
+condition|?
+operator|new
+name|ArrayList
+argument_list|<
+name|Block
+argument_list|>
+argument_list|()
+else|:
+name|toDeleteList
+expr_stmt|;
+block|}
+DECL|method|BlocksMapUpdateInfo ()
+specifier|public
+name|BlocksMapUpdateInfo
+parameter_list|()
+block|{
+name|toDeleteList
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|Block
+argument_list|>
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * @return The list of blocks that need to be removed from blocksMap      */
+DECL|method|getToDeleteList ()
+specifier|public
+name|List
+argument_list|<
+name|Block
+argument_list|>
+name|getToDeleteList
+parameter_list|()
+block|{
+return|return
+name|toDeleteList
+return|;
+block|}
+comment|/**      * Add a to-be-deleted block into the      * {@link BlocksMapUpdateInfo#toDeleteList}      * @param toDelete the to-be-deleted block      */
+DECL|method|addDeleteBlock (Block toDelete)
+specifier|public
+name|void
+name|addDeleteBlock
+parameter_list|(
+name|Block
+name|toDelete
+parameter_list|)
+block|{
+if|if
+condition|(
+name|toDelete
+operator|!=
+literal|null
+condition|)
+block|{
+name|toDeleteList
+operator|.
+name|add
+argument_list|(
+name|toDelete
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**      * Clear {@link BlocksMapUpdateInfo#toDeleteList}      */
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+name|toDeleteList
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

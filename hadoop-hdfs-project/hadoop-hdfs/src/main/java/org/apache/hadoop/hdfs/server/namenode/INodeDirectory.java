@@ -136,22 +136,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|UnresolvedPathException
 import|;
 end_import
@@ -1717,15 +1701,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
+DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(
-name|List
-argument_list|<
-name|Block
-argument_list|>
-name|v
+name|BlocksMapUpdateInfo
+name|info
 parameter_list|)
 block|{
 name|int
@@ -1758,7 +1739,7 @@ name|child
 operator|.
 name|collectSubtreeBlocksAndClear
 argument_list|(
-name|v
+name|info
 argument_list|)
 expr_stmt|;
 block|}
