@@ -16956,6 +16956,13 @@ if|if
 condition|(
 name|isInStandbyState
 argument_list|()
+operator|||
+operator|!
+name|getEditLog
+argument_list|()
+operator|.
+name|isSegmentOpen
+argument_list|()
 condition|)
 block|{
 return|return
