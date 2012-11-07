@@ -4058,7 +4058,21 @@ argument_list|,
 name|assigned
 argument_list|)
 expr_stmt|;
-comment|// Reset scheduling opportunities
+comment|// Don't reset scheduling opportunities for non-local assignments
+comment|// otherwise the app will be delayed for each non-local assignment.
+comment|// This helps apps with many off-cluster requests schedule faster.
+if|if
+condition|(
+name|assignment
+operator|.
+name|getType
+argument_list|()
+operator|!=
+name|NodeType
+operator|.
+name|OFF_SWITCH
+condition|)
+block|{
 name|application
 operator|.
 name|resetSchedulingOpportunities
@@ -4066,6 +4080,7 @@ argument_list|(
 name|priority
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Done
 return|return
 name|assignment
