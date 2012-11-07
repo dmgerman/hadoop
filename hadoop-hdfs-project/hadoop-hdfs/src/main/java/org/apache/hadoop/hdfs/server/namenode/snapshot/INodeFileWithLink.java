@@ -24,16 +24,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -43,22 +33,6 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|Block
 import|;
 end_import
 
@@ -204,6 +178,7 @@ init|=
 name|getFileReplication
 argument_list|()
 decl_stmt|;
+comment|// i may be null since next will be set to null when the INode is deleted
 for|for
 control|(
 name|INodeFileWithLink
@@ -214,6 +189,10 @@ init|;
 name|i
 operator|!=
 name|this
+operator|&&
+name|i
+operator|!=
+literal|null
 condition|;
 name|i
 operator|=
@@ -252,16 +231,13 @@ block|}
 comment|/**    * {@inheritDoc}    *     * Remove the current inode from the circular linked list.    * If some blocks at the end of the block list no longer belongs to    * any other inode, collect them and update the block list.    */
 annotation|@
 name|Override
-DECL|method|collectSubtreeBlocksAndClear (List<Block> v)
+DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
 specifier|protected
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(
-name|List
-argument_list|<
-name|Block
-argument_list|>
-name|v
+name|BlocksMapUpdateInfo
+name|info
 parameter_list|)
 block|{
 if|if
@@ -271,19 +247,19 @@ operator|==
 name|this
 condition|)
 block|{
-comment|//this is the only remaining inode.
+comment|// this is the only remaining inode.
 name|super
 operator|.
 name|collectSubtreeBlocksAndClear
 argument_list|(
-name|v
+name|info
 argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-comment|//There are other inode(s) using the blocks.
-comment|//Compute max file size excluding this and find the last inode.
+comment|// There are other inode(s) using the blocks.
+comment|// Compute max file size excluding this and find the last inode.
 name|long
 name|max
 init|=
@@ -293,6 +269,14 @@ name|computeFileSize
 argument_list|(
 literal|true
 argument_list|)
+decl_stmt|;
+name|short
+name|maxReplication
+init|=
+name|next
+operator|.
+name|getFileReplication
+argument_list|()
 decl_stmt|;
 name|INodeFileWithLink
 name|last
@@ -344,6 +328,27 @@ operator|=
 name|size
 expr_stmt|;
 block|}
+specifier|final
+name|short
+name|rep
+init|=
+name|i
+operator|.
+name|getFileReplication
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|rep
+operator|>
+name|maxReplication
+condition|)
+block|{
+name|maxReplication
+operator|=
+name|rep
+expr_stmt|;
+block|}
 name|last
 operator|=
 name|i
@@ -353,10 +358,10 @@ name|collectBlocksBeyondMaxAndClear
 argument_list|(
 name|max
 argument_list|,
-name|v
+name|info
 argument_list|)
 expr_stmt|;
-comment|//remove this from the circular linked list.
+comment|// remove this from the circular linked list.
 name|last
 operator|.
 name|next
@@ -365,13 +370,24 @@ name|this
 operator|.
 name|next
 expr_stmt|;
+comment|// Set the replication of the current INode to the max of all the other
+comment|// linked INodes, so that in case the current INode is retrieved from the
+comment|// blocksMap before it is removed or updated, the correct replication
+comment|// number can be retrieved.
+name|this
+operator|.
+name|setFileReplication
+argument_list|(
+name|maxReplication
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|next
 operator|=
 literal|null
 expr_stmt|;
-comment|//clear parent
+comment|// clear parent
 name|parent
 operator|=
 literal|null
@@ -381,7 +397,7 @@ return|return
 literal|1
 return|;
 block|}
-DECL|method|collectBlocksBeyondMaxAndClear (final long max, final List<Block> v)
+DECL|method|collectBlocksBeyondMaxAndClear (final long max, final BlocksMapUpdateInfo info)
 specifier|private
 name|void
 name|collectBlocksBeyondMaxAndClear
@@ -391,11 +407,8 @@ name|long
 name|max
 parameter_list|,
 specifier|final
-name|List
-argument_list|<
-name|Block
-argument_list|>
-name|v
+name|BlocksMapUpdateInfo
+name|info
 parameter_list|)
 block|{
 specifier|final
@@ -451,7 +464,55 @@ name|getNumBytes
 argument_list|()
 expr_stmt|;
 block|}
-comment|//starting from block n, the data is beyond max.
+comment|// Replace the INode for all the remaining blocks in blocksMap
+name|BlocksMapINodeUpdateEntry
+name|entry
+init|=
+operator|new
+name|BlocksMapINodeUpdateEntry
+argument_list|(
+name|this
+argument_list|,
+name|next
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|info
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|n
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|info
+operator|.
+name|addUpdateBlock
+argument_list|(
+name|oldBlocks
+index|[
+name|i
+index|]
+argument_list|,
+name|entry
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// starting from block n, the data is beyond max.
 if|if
 condition|(
 name|n
@@ -461,7 +522,7 @@ operator|.
 name|length
 condition|)
 block|{
-comment|//resize the array.
+comment|// resize the array.
 specifier|final
 name|BlockInfo
 index|[]
@@ -532,10 +593,10 @@ name|newBlocks
 argument_list|)
 expr_stmt|;
 block|}
-comment|//collect the blocks beyond max.
+comment|// collect the blocks beyond max.
 if|if
 condition|(
-name|v
+name|info
 operator|!=
 literal|null
 condition|)
@@ -553,9 +614,9 @@ name|n
 operator|++
 control|)
 block|{
-name|v
+name|info
 operator|.
-name|add
+name|addDeleteBlock
 argument_list|(
 name|oldBlocks
 index|[

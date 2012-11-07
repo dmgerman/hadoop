@@ -463,6 +463,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|setFileReplication (short replication)
+specifier|protected
 name|void
 name|setFileReplication
 parameter_list|(
