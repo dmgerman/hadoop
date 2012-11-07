@@ -1790,29 +1790,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|isSync
-operator|&&
-operator|(
-name|out
-operator|!=
-literal|null
-operator|||
-name|checksumOut
-operator|!=
-literal|null
-operator|)
-condition|)
-block|{
-name|datanode
-operator|.
-name|metrics
-operator|.
-name|incrFsyncCount
-argument_list|()
-expr_stmt|;
-block|}
 name|long
 name|flushTotalNanos
 init|=
@@ -2000,6 +1977,19 @@ argument_list|(
 name|flushTotalNanos
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|isSync
+condition|)
+block|{
+name|datanode
+operator|.
+name|metrics
+operator|.
+name|incrFsyncCount
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * While writing to mirrorOut, failure to write to mirror should not    * affect this datanode unless it is caused by interruption.    */
@@ -2383,15 +2373,21 @@ operator|.
 name|getSyncBlock
 argument_list|()
 decl_stmt|;
-comment|// make sure the block gets sync'ed upon close
-name|this
-operator|.
-name|syncOnClose
-operator||=
+comment|// avoid double sync'ing on close
+if|if
+condition|(
 name|syncBlock
 operator|&&
 name|lastPacketInBlock
+condition|)
+block|{
+name|this
+operator|.
+name|syncOnClose
+operator|=
+literal|false
 expr_stmt|;
+block|}
 comment|// update received bytes
 name|long
 name|firstByteInBlock
@@ -2420,12 +2416,15 @@ name|offsetInBlock
 argument_list|)
 expr_stmt|;
 block|}
-comment|// put in queue for pending acks
+comment|// put in queue for pending acks, unless sync was requested
 if|if
 condition|(
 name|responder
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|syncBlock
 condition|)
 block|{
 operator|(
@@ -2530,13 +2529,10 @@ name|block
 argument_list|)
 expr_stmt|;
 block|}
-comment|// flush unless close() would flush anyway
+comment|// sync block if requested
 if|if
 condition|(
 name|syncBlock
-operator|&&
-operator|!
-name|lastPacketInBlock
 condition|)
 block|{
 name|flushOrSync
@@ -2947,13 +2943,10 @@ name|checksumLen
 argument_list|)
 expr_stmt|;
 block|}
-comment|/// flush entire packet, sync unless close() will sync
+comment|/// flush entire packet, sync if requested
 name|flushOrSync
 argument_list|(
 name|syncBlock
-operator|&&
-operator|!
-name|lastPacketInBlock
 argument_list|)
 expr_stmt|;
 name|replicaInfo
@@ -2998,6 +2991,37 @@ throw|throw
 name|iex
 throw|;
 block|}
+block|}
+comment|// if sync was requested, put in queue for pending acks here
+comment|// (after the fsync finished)
+if|if
+condition|(
+name|responder
+operator|!=
+literal|null
+operator|&&
+name|syncBlock
+condition|)
+block|{
+operator|(
+operator|(
+name|PacketResponder
+operator|)
+name|responder
+operator|.
+name|getRunnable
+argument_list|()
+operator|)
+operator|.
+name|enqueue
+argument_list|(
+name|seqno
+argument_list|,
+name|lastPacketInBlock
+argument_list|,
+name|offsetInBlock
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(
