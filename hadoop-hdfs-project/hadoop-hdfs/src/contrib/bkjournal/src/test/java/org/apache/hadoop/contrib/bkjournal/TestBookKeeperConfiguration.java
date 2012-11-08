@@ -868,6 +868,13 @@ argument_list|,
 name|nsi
 argument_list|)
 expr_stmt|;
+name|bkjm
+operator|.
+name|format
+argument_list|(
+name|nsi
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertNotNull
@@ -949,6 +956,13 @@ operator|+
 literal|"/hdfsjournal-DefaultBKPath"
 argument_list|)
 argument_list|,
+name|nsi
+argument_list|)
+expr_stmt|;
+name|bkjm
+operator|.
+name|format
+argument_list|(
 name|nsi
 argument_list|)
 expr_stmt|;

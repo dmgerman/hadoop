@@ -655,6 +655,11 @@ argument_list|)
 decl_stmt|;
 name|ci
 operator|.
+name|init
+argument_list|()
+expr_stmt|;
+name|ci
+operator|.
 name|update
 argument_list|(
 name|data
@@ -700,6 +705,11 @@ argument_list|,
 name|CURRENT_NODE_PATH
 argument_list|)
 decl_stmt|;
+name|ci
+operator|.
+name|init
+argument_list|()
+expr_stmt|;
 name|ci
 operator|.
 name|update
@@ -764,6 +774,11 @@ argument_list|,
 name|CURRENT_NODE_PATH
 argument_list|)
 decl_stmt|;
+name|ci
+operator|.
+name|init
+argument_list|()
+expr_stmt|;
 name|ci
 operator|.
 name|update
