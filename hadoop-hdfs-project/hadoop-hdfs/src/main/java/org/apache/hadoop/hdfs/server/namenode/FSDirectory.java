@@ -8686,7 +8686,7 @@ operator|.
 name|QUOTA_DONT_SET
 operator|&&
 name|nsQuota
-operator|<
+operator|!=
 name|HdfsConstants
 operator|.
 name|QUOTA_RESET
@@ -8704,7 +8704,7 @@ operator|.
 name|QUOTA_DONT_SET
 operator|&&
 name|dsQuota
-operator|<
+operator|!=
 name|HdfsConstants
 operator|.
 name|QUOTA_RESET
