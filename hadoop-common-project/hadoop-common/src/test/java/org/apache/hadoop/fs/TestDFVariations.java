@@ -56,6 +56,20 @@ name|EnumSet
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_class
 DECL|class|TestDFVariations
 specifier|public
@@ -252,6 +266,22 @@ argument_list|()
 operator|+
 literal|" mount"
 argument_list|,
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|df
+operator|.
+name|getDirPath
+argument_list|()
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+literal|2
+argument_list|)
+else|:
 literal|"/foo/bar"
 argument_list|,
 name|df
