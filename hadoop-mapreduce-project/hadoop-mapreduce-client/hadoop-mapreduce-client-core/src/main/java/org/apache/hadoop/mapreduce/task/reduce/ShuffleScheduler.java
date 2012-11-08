@@ -655,6 +655,15 @@ name|reportReadErrorImmediately
 init|=
 literal|true
 decl_stmt|;
+DECL|field|maxDelay
+specifier|private
+name|long
+name|maxDelay
+init|=
+name|MRJobConfig
+operator|.
+name|DEFAULT_MAX_SHUFFLE_FETCH_RETRY_DELAY
+decl_stmt|;
 DECL|method|ShuffleScheduler (JobConf job, TaskStatus status, ExceptionReporter reporter, Progress progress, Counters.Counter shuffledMapsCounter, Counters.Counter reduceShuffleBytes, Counters.Counter failedShuffleCounter)
 specifier|public
 name|ShuffleScheduler
@@ -816,6 +825,23 @@ operator|.
 name|SHUFFLE_NOTIFY_READERROR
 argument_list|,
 literal|true
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxDelay
+operator|=
+name|job
+operator|.
+name|getLong
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MAX_SHUFFLE_FETCH_RETRY_DELAY
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MAX_SHUFFLE_FETCH_RETRY_DELAY
 argument_list|)
 expr_stmt|;
 block|}
@@ -1061,7 +1087,7 @@ literal|" MB/s)"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|copyFailed (TaskAttemptID mapId, MapHost host, boolean readError)
+DECL|method|copyFailed (TaskAttemptID mapId, MapHost host, boolean readError, boolean connectExcpt)
 specifier|public
 specifier|synchronized
 name|void
@@ -1075,6 +1101,9 @@ name|host
 parameter_list|,
 name|boolean
 name|readError
+parameter_list|,
+name|boolean
+name|connectExcpt
 parameter_list|)
 block|{
 name|host
@@ -1243,6 +1272,8 @@ argument_list|,
 name|mapId
 argument_list|,
 name|readError
+argument_list|,
+name|connectExcpt
 argument_list|)
 expr_stmt|;
 name|checkReducerHealth
@@ -1267,6 +1298,18 @@ name|failures
 argument_list|)
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|delay
+operator|>
+name|maxDelay
+condition|)
+block|{
+name|delay
+operator|=
+name|maxDelay
+expr_stmt|;
+block|}
 name|penalties
 operator|.
 name|add
@@ -1291,7 +1334,7 @@ block|}
 comment|// Notify the JobTracker
 comment|// after every read error, if 'reportReadErrorImmediately' is true or
 comment|// after every 'maxFetchFailuresBeforeReporting' failures
-DECL|method|checkAndInformJobTracker ( int failures, TaskAttemptID mapId, boolean readError)
+DECL|method|checkAndInformJobTracker ( int failures, TaskAttemptID mapId, boolean readError, boolean connectExcpt)
 specifier|private
 name|void
 name|checkAndInformJobTracker
@@ -1304,10 +1347,15 @@ name|mapId
 parameter_list|,
 name|boolean
 name|readError
+parameter_list|,
+name|boolean
+name|connectExcpt
 parameter_list|)
 block|{
 if|if
 condition|(
+name|connectExcpt
+operator|||
 operator|(
 name|reportReadErrorImmediately
 operator|&&
