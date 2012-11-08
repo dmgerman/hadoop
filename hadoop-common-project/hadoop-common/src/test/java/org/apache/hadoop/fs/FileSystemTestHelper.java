@@ -299,6 +299,7 @@ return|return
 name|data
 return|;
 block|}
+comment|/*    * get testRootPath qualified for fSys    */
 DECL|method|getTestRootPath (FileSystem fSys)
 specifier|public
 specifier|static
@@ -322,6 +323,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+comment|/*    * get testRootPath + pathString qualified for fSys    */
 DECL|method|getTestRootPath (FileSystem fSys, String pathString)
 specifier|public
 specifier|static
@@ -351,9 +353,10 @@ argument_list|)
 return|;
 block|}
 comment|// the getAbsolutexxx method is needed because the root test dir
-comment|// can be messed up by changing the working dir.
+comment|// can be messed up by changing the working dir since the TEST_ROOT_PATH
+comment|// is often relative to the working directory of process
+comment|// running the unit tests.
 DECL|method|getAbsoluteTestRootDir (FileSystem fSys)
-specifier|public
 specifier|static
 name|String
 name|getAbsoluteTestRootDir
