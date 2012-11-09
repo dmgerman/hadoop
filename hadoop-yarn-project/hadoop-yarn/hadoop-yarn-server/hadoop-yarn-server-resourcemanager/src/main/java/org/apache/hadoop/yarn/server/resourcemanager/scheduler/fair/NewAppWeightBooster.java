@@ -93,10 +93,10 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|NewJobWeightBooster
+DECL|class|NewAppWeightBooster
 specifier|public
 class|class
-name|NewJobWeightBooster
+name|NewAppWeightBooster
 extends|extends
 name|Configured
 implements|implements

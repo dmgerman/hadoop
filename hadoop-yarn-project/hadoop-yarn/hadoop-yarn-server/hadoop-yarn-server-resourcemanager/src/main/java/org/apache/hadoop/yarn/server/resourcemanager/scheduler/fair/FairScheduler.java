@@ -1259,8 +1259,6 @@ name|getConf
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|conf
 return|;
 block|}
@@ -1271,8 +1269,6 @@ name|getQueueManager
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|queueMgr
 return|;
 block|}
@@ -1420,14 +1416,10 @@ block|}
 comment|/**   * Recompute the internal variables used by the scheduler - per-job weights,   * fair shares, deficits, minimum slot allocations, and amount of used and   * required resources per job.   */
 DECL|method|update ()
 specifier|protected
+specifier|synchronized
 name|void
 name|update
 parameter_list|()
-block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
 block|{
 name|queueMgr
 operator|.
@@ -1471,8 +1463,6 @@ name|FSQueueSchedulable
 argument_list|>
 name|queueScheds
 init|=
-name|this
-operator|.
 name|getQueueSchedulables
 argument_list|()
 decl_stmt|;
@@ -1538,7 +1528,6 @@ argument_list|(
 name|clusterCapacity
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Update the preemption fields for all QueueScheduables, i.e. the times since    * each queue last was at its guaranteed share and at> 1/2 of its fair share    * for each type of task.    */
 DECL|method|updatePreemptionVariables ()
@@ -1693,7 +1682,7 @@ name|desiredFairShare
 argument_list|)
 return|;
 block|}
-comment|/**    * Check for queues that need tasks preempted, either because they have been    * below their guaranteed share for minSharePreemptionTimeout or they    * have been below half their fair share for the fairSharePreemptionTimeout.    * If such queues exist, compute how many tasks of each type need to be    * preempted and then select the right ones using preemptTasks.    *    * This method computes and logs the number of tasks we want to preempt even    * if preemption is disabled, for debugging purposes.    */
+comment|/**    * Check for queues that need tasks preempted, either because they have been    * below their guaranteed share for minSharePreemptionTimeout or they    * have been below half their fair share for the fairSharePreemptionTimeout.    * If such queues exist, compute how many tasks of each type need to be    * preempted and then select the right ones using preemptTasks.    */
 DECL|method|preemptTasksIfNecessary ()
 specifier|protected
 name|void
@@ -1705,7 +1694,9 @@ condition|(
 operator|!
 name|preemptionEnabled
 condition|)
+block|{
 return|return;
+block|}
 name|long
 name|curTime
 init|=
@@ -1722,7 +1713,9 @@ name|lastPreemptCheckTime
 operator|<
 name|preemptionInterval
 condition|)
+block|{
 return|return;
+block|}
 name|lastPreemptCheckTime
 operator|=
 name|curTime
@@ -1821,7 +1814,9 @@ name|none
 argument_list|()
 argument_list|)
 condition|)
+block|{
 return|return;
+block|}
 name|Map
 argument_list|<
 name|RMContainer
@@ -2094,8 +2089,6 @@ argument_list|)
 decl_stmt|;
 comment|// TODO: Not sure if this ever actually adds this to the list of cleanup
 comment|// containers on the RMNode (see SchedulerNode.releaseContainer()).
-name|this
-operator|.
 name|completedContainer
 argument_list|(
 name|container
@@ -2608,8 +2601,6 @@ name|getContainerTokenSecretManager
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|rmContext
 operator|.
 name|getContainerTokenSecretManager
@@ -2719,8 +2710,6 @@ name|getMinimumResourceCapability
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|minimumAllocation
 return|;
 block|}
@@ -2733,8 +2722,6 @@ name|getMaximumResourceCapability
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|maximumAllocation
 return|;
 block|}
@@ -2745,8 +2732,6 @@ name|getNodeLocalityThreshold
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|nodeLocalityThreshold
 return|;
 block|}
@@ -2757,8 +2742,6 @@ name|getRackLocalityThreshold
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|rackLocalityThreshold
 return|;
 block|}
@@ -2769,8 +2752,6 @@ name|getClusterCapacity
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|clusterCapacity
 return|;
 block|}
@@ -2781,8 +2762,6 @@ name|getClock
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|clock
 return|;
 block|}
@@ -2832,8 +2811,6 @@ block|{
 name|FSQueue
 name|queue
 init|=
-name|this
-operator|.
 name|queueMgr
 operator|.
 name|getQueue
@@ -2859,8 +2836,6 @@ argument_list|,
 operator|new
 name|ActiveUsersManager
 argument_list|(
-name|this
-operator|.
 name|getRootQueueMetrics
 argument_list|()
 argument_list|)
@@ -3188,8 +3163,6 @@ comment|// Inform the queue
 name|FSQueue
 name|queue
 init|=
-name|this
-operator|.
 name|queueMgr
 operator|.
 name|getQueue
@@ -3205,7 +3178,7 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|removeJob
+name|removeApp
 argument_list|(
 name|application
 argument_list|)
@@ -3412,8 +3385,6 @@ name|RMNode
 name|node
 parameter_list|)
 block|{
-name|this
-operator|.
 name|nodes
 operator|.
 name|put
@@ -3472,8 +3443,6 @@ block|{
 name|FSSchedulerNode
 name|node
 init|=
-name|this
-operator|.
 name|nodes
 operator|.
 name|get
@@ -3580,8 +3549,6 @@ name|KILL
 argument_list|)
 expr_stmt|;
 block|}
-name|this
-operator|.
 name|nodes
 operator|.
 name|remove
@@ -4151,8 +4118,6 @@ name|FSQueueSchedulable
 argument_list|>
 name|scheds
 init|=
-name|this
-operator|.
 name|getQueueSchedulables
 argument_list|()
 decl_stmt|;
@@ -4336,8 +4301,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|this
-operator|.
 name|applications
 operator|.
 name|containsKey
@@ -4363,8 +4326,6 @@ return|return
 operator|new
 name|SchedulerAppReport
 argument_list|(
-name|this
-operator|.
 name|applications
 operator|.
 name|get
@@ -4408,7 +4369,6 @@ block|{
 case|case
 name|NODE_ADDED
 case|:
-block|{
 if|if
 condition|(
 operator|!
@@ -4445,12 +4405,10 @@ name|getAddedRMNode
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 case|case
 name|NODE_REMOVED
 case|:
-block|{
 if|if
 condition|(
 operator|!
@@ -4487,12 +4445,10 @@ name|getRemovedRMNode
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 case|case
 name|NODE_UPDATE
 case|:
-block|{
 if|if
 condition|(
 operator|!
@@ -4521,8 +4477,6 @@ name|NodeUpdateSchedulerEvent
 operator|)
 name|event
 decl_stmt|;
-name|this
-operator|.
 name|nodeUpdate
 argument_list|(
 name|nodeUpdatedEvent
@@ -4541,12 +4495,10 @@ name|getCompletedContainers
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 case|case
 name|APP_ADDED
 case|:
-block|{
 if|if
 condition|(
 operator|!
@@ -4626,12 +4578,10 @@ name|getUser
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 case|case
 name|APP_REMOVED
 case|:
-block|{
 if|if
 condition|(
 operator|!
@@ -4660,8 +4610,6 @@ name|AppRemovedSchedulerEvent
 operator|)
 name|event
 decl_stmt|;
-name|this
-operator|.
 name|removeApplication
 argument_list|(
 name|appRemovedEvent
@@ -4675,12 +4623,10 @@ name|getFinalAttemptState
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 case|case
 name|CONTAINER_EXPIRED
 case|:
-block|{
 if|if
 condition|(
 operator|!
@@ -4740,7 +4686,6 @@ operator|.
 name|EXPIRE
 argument_list|)
 expr_stmt|;
-block|}
 break|break;
 default|default:
 name|LOG
@@ -4792,8 +4737,6 @@ block|{
 if|if
 condition|(
 operator|!
-name|this
-operator|.
 name|initialized
 condition|)
 block|{
@@ -4807,8 +4750,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|rootMetrics
 operator|=
 name|QueueMetrics
@@ -5210,8 +5151,6 @@ name|getNumClusterNodes
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|nodes
 operator|.
 name|size

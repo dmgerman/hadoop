@@ -989,8 +989,6 @@ name|getApplicationId
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getApplicationId
@@ -1006,8 +1004,6 @@ name|getApplicationAttemptId
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getApplicationAttemptId
@@ -1047,8 +1043,6 @@ name|getUser
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getUser
@@ -1093,8 +1087,6 @@ name|priority
 parameter_list|)
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getResourceRequests
@@ -1110,8 +1102,6 @@ name|getNewContainerId
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getNewContainerId
@@ -1128,8 +1118,6 @@ name|getPriorities
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getPriorities
@@ -1149,8 +1137,6 @@ name|nodeAddress
 parameter_list|)
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getResourceRequest
@@ -1195,8 +1181,6 @@ name|priority
 parameter_list|)
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getResource
@@ -1215,8 +1199,6 @@ name|isPending
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|isPending
@@ -1230,8 +1212,6 @@ name|getQueueName
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|getQueueName
@@ -1276,8 +1256,6 @@ name|rmAppAttemptFinalState
 parameter_list|)
 block|{
 comment|// Cleanup all scheduling information
-name|this
-operator|.
 name|appSchedulingInfo
 operator|.
 name|stop
@@ -1321,8 +1299,6 @@ literal|null
 condition|)
 block|{
 comment|// Some unknown container sneaked into the system. Kill it.
-name|this
-operator|.
 name|rmContext
 operator|.
 name|getDispatcher
@@ -1713,8 +1689,6 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
-name|this
-operator|.
 name|schedulingOpportunities
 operator|.
 name|setCount
@@ -1744,8 +1718,6 @@ name|priority
 parameter_list|)
 block|{
 return|return
-name|this
-operator|.
 name|schedulingOpportunities
 operator|.
 name|count
@@ -1763,8 +1735,6 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
-name|this
-operator|.
 name|reReservations
 operator|.
 name|setCount
@@ -1784,8 +1754,6 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
-name|this
-operator|.
 name|reReservations
 operator|.
 name|add
@@ -1805,8 +1773,6 @@ name|priority
 parameter_list|)
 block|{
 return|return
-name|this
-operator|.
 name|reReservations
 operator|.
 name|count
@@ -2489,8 +2455,6 @@ name|Priority
 name|priority
 parameter_list|)
 block|{
-name|this
-operator|.
 name|lastScheduledContainer
 operator|.
 name|put
@@ -2503,8 +2467,6 @@ name|currentTimeMillis
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|schedulingOpportunities
 operator|.
 name|setCount
@@ -2653,8 +2615,6 @@ decl_stmt|;
 comment|// Relax locality constraints once we've surpassed threshold.
 if|if
 condition|(
-name|this
-operator|.
 name|getSchedulingOpportunities
 argument_list|(
 name|priority
@@ -2690,8 +2650,6 @@ operator|.
 name|RACK_LOCAL
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|resetSchedulingOpportunities
 argument_list|(
 name|priority
@@ -2722,8 +2680,6 @@ operator|.
 name|OFF_SWITCH
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
 name|resetSchedulingOpportunities
 argument_list|(
 name|priority
@@ -2766,8 +2722,6 @@ comment|// Update allowed locality level
 name|NodeType
 name|allowed
 init|=
-name|this
-operator|.
 name|allowedLocalityLevel
 operator|.
 name|get
@@ -2882,8 +2836,6 @@ name|RMContainerImpl
 argument_list|(
 name|container
 argument_list|,
-name|this
-operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|,
@@ -2892,8 +2844,6 @@ operator|.
 name|getNodeID
 argument_list|()
 argument_list|,
-name|this
-operator|.
 name|rmContext
 operator|.
 name|getDispatcher
@@ -2902,8 +2852,6 @@ operator|.
 name|getEventHandler
 argument_list|()
 argument_list|,
-name|this
-operator|.
 name|rmContext
 operator|.
 name|getContainerAllocationExpirer

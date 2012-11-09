@@ -71,7 +71,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A pluggable object for altering the weights of apps in the fair scheduler,  * which is used for example by {@link NewJobWeightBooster} to give higher  * weight to new jobs so that short jobs finish faster.  *  * May implement {@link Configurable} to access configuration parameters.  */
+comment|/**  * A pluggable object for altering the weights of apps in the fair scheduler,  * which is used for example by {@link NewAppWeightBooster} to give higher  * weight to new jobs so that short jobs finish faster.  *  * May implement {@link Configurable} to access configuration parameters.  */
 end_comment
 
 begin_interface
