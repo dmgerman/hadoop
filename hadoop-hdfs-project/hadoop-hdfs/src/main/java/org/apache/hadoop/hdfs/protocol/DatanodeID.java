@@ -90,7 +90,13 @@ specifier|private
 name|String
 name|hostName
 decl_stmt|;
-comment|// hostname
+comment|// hostname claimed by datanode
+DECL|field|peerHostName
+specifier|private
+name|String
+name|peerHostName
+decl_stmt|;
+comment|// hostname from the actual connection
 DECL|field|storageID
 specifier|private
 name|String
@@ -155,6 +161,15 @@ operator|.
 name|getIpcPort
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|peerHostName
+operator|=
+name|from
+operator|.
+name|getPeerHostName
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Create a DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param storageID data storage ID    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
@@ -234,6 +249,22 @@ operator|=
 name|ipAddr
 expr_stmt|;
 block|}
+DECL|method|setPeerHostName (String peerHostName)
+specifier|public
+name|void
+name|setPeerHostName
+parameter_list|(
+name|String
+name|peerHostName
+parameter_list|)
+block|{
+name|this
+operator|.
+name|peerHostName
+operator|=
+name|peerHostName
+expr_stmt|;
+block|}
 DECL|method|setStorageID (String storageID)
 specifier|public
 name|void
@@ -270,6 +301,17 @@ parameter_list|()
 block|{
 return|return
 name|hostName
+return|;
+block|}
+comment|/**    * @return hostname from the actual connection     */
+DECL|method|getPeerHostName ()
+specifier|public
+name|String
+name|getPeerHostName
+parameter_list|()
+block|{
+return|return
+name|peerHostName
 return|;
 block|}
 comment|/**    * @return IP:xferPort string    */
@@ -558,6 +600,13 @@ operator|=
 name|nodeReg
 operator|.
 name|getHostName
+argument_list|()
+expr_stmt|;
+name|peerHostName
+operator|=
+name|nodeReg
+operator|.
+name|getPeerHostName
 argument_list|()
 expr_stmt|;
 name|xferPort
