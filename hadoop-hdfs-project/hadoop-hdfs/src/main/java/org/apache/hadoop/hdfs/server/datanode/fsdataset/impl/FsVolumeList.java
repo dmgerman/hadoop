@@ -603,7 +603,7 @@ name|FsDatasetImpl
 operator|.
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Completed checkDirs. Removed "
 operator|+
