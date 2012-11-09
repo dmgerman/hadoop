@@ -70,6 +70,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|Security
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -592,6 +602,17 @@ argument_list|,
 literal|"true"
 argument_list|)
 expr_stmt|;
+name|Security
+operator|.
+name|addProvider
+argument_list|(
+operator|new
+name|SaslPlainServer
+operator|.
+name|SecurityProvider
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|encodeIdentifier (byte[] identifier)
 specifier|static
@@ -855,6 +876,17 @@ operator|)
 literal|82
 argument_list|,
 literal|"DIGEST-MD5"
+argument_list|)
+block|,
+DECL|enumConstant|PLAIN
+name|PLAIN
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|83
+argument_list|,
+literal|"PLAIN"
 argument_list|)
 block|;
 comment|/** The code for this method. */
