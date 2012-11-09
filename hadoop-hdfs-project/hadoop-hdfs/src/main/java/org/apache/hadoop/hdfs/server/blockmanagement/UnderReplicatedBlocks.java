@@ -626,7 +626,7 @@ if|if
 condition|(
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|isDebugEnabled
 argument_list|()
@@ -634,7 +634,7 @@ condition|)
 block|{
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
@@ -747,7 +747,7 @@ if|if
 condition|(
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|isDebugEnabled
 argument_list|()
@@ -755,7 +755,7 @@ condition|)
 block|{
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
@@ -813,7 +813,7 @@ if|if
 condition|(
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|isDebugEnabled
 argument_list|()
@@ -821,7 +821,7 @@ condition|)
 block|{
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(
@@ -994,7 +994,7 @@ if|if
 condition|(
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|isDebugEnabled
 argument_list|()
@@ -1002,7 +1002,7 @@ condition|)
 block|{
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|debug
 argument_list|(

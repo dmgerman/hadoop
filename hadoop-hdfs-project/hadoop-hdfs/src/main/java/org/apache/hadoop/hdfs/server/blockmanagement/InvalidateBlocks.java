@@ -381,7 +381,7 @@ condition|)
 block|{
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(

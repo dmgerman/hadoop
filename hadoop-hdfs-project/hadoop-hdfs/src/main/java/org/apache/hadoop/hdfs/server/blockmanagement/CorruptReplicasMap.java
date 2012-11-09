@@ -228,7 +228,7 @@ argument_list|)
 expr_stmt|;
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(
@@ -258,7 +258,7 @@ else|else
 block|{
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(
