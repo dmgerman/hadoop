@@ -243,25 +243,6 @@ argument_list|,
 literal|"test.txt"
 argument_list|)
 decl_stmt|;
-name|int
-name|seed
-init|=
-operator|new
-name|Random
-argument_list|()
-operator|.
-name|nextInt
-argument_list|()
-decl_stmt|;
-name|Random
-name|random
-init|=
-operator|new
-name|Random
-argument_list|(
-name|seed
-argument_list|)
-decl_stmt|;
 name|localFs
 operator|.
 name|delete
@@ -294,7 +275,6 @@ argument_list|,
 name|numLinesPerMap
 argument_list|)
 expr_stmt|;
-comment|// for a variety of lengths
 for|for
 control|(
 name|int
@@ -308,15 +288,6 @@ name|MAX_LENGTH
 condition|;
 name|length
 operator|+=
-name|random
-operator|.
-name|nextInt
-argument_list|(
-name|MAX_LENGTH
-operator|/
-literal|10
-argument_list|)
-operator|+
 literal|1
 control|)
 block|{
@@ -362,6 +333,8 @@ name|toString
 argument_list|(
 name|i
 argument_list|)
+operator|+
+literal|" some more text"
 argument_list|)
 expr_stmt|;
 name|writer
@@ -381,16 +354,49 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|int
+name|lastN
+init|=
+literal|0
+decl_stmt|;
+if|if
+condition|(
+name|length
+operator|!=
+literal|0
+condition|)
+block|{
+name|lastN
+operator|=
+name|length
+operator|%
+literal|5
+expr_stmt|;
+if|if
+condition|(
+name|lastN
+operator|==
+literal|0
+condition|)
+block|{
+name|lastN
+operator|=
+literal|5
+expr_stmt|;
+block|}
+block|}
 name|checkFormat
 argument_list|(
 name|job
 argument_list|,
 name|numLinesPerMap
+argument_list|,
+name|lastN
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkFormat (Job job, int expectedN)
+DECL|method|checkFormat (Job job, int expectedN, int lastN)
 name|void
 name|checkFormat
 parameter_list|(
@@ -399,6 +405,9 @@ name|job
 parameter_list|,
 name|int
 name|expectedN
+parameter_list|,
+name|int
+name|lastN
 parameter_list|)
 throws|throws
 name|IOException
@@ -425,7 +434,6 @@ argument_list|(
 name|job
 argument_list|)
 decl_stmt|;
-comment|// check all splits except last one
 name|int
 name|count
 init|=
@@ -444,8 +452,6 @@ name|splits
 operator|.
 name|size
 argument_list|()
-operator|-
-literal|1
 condition|;
 name|i
 operator|++
@@ -621,17 +627,48 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|i
+operator|==
+name|splits
+operator|.
+name|size
+argument_list|()
+operator|-
+literal|1
+condition|)
+block|{
 name|assertEquals
 argument_list|(
-literal|"number of lines in split is "
+literal|"number of lines in split("
 operator|+
-name|expectedN
+name|i
+operator|+
+literal|") is wrong"
+argument_list|,
+name|lastN
+argument_list|,
+name|count
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|assertEquals
+argument_list|(
+literal|"number of lines in split("
+operator|+
+name|i
+operator|+
+literal|") is wrong"
 argument_list|,
 name|expectedN
 argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|main (String[] args)
