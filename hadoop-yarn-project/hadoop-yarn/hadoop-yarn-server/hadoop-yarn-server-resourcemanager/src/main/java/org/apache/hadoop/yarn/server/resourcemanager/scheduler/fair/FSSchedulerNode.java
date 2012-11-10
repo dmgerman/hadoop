@@ -482,8 +482,6 @@ name|getRMNode
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|rmNode
 return|;
 block|}
@@ -494,8 +492,6 @@ name|getNodeID
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|rmNode
 operator|.
 name|getNodeID
@@ -509,8 +505,6 @@ name|getHttpAddress
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|rmNode
 operator|.
 name|getHttpAddress
@@ -526,8 +520,6 @@ name|getHostName
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|rmNode
 operator|.
 name|getHostName
@@ -543,8 +535,6 @@ name|getRackName
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|rmNode
 operator|.
 name|getRackName
@@ -649,8 +639,6 @@ name|getAvailableResource
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|availableResource
 return|;
 block|}
@@ -664,8 +652,6 @@ name|getUsedResource
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|usedResource
 return|;
 block|}
@@ -691,9 +677,11 @@ name|getId
 argument_list|()
 argument_list|)
 condition|)
+block|{
 return|return
 literal|true
 return|;
+block|}
 return|return
 literal|false
 return|;

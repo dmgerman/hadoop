@@ -2845,10 +2845,15 @@ literal|"<a href=\"browseDirectory.jsp"
 operator|+
 literal|"?dir="
 operator|+
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
 name|tempPath
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 operator|+
 literal|"&namenodeInfoPort="
 operator|+
@@ -2873,10 +2878,15 @@ name|print
 argument_list|(
 literal|"\">"
 operator|+
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
 name|parts
 index|[
 name|i
 index|]
+argument_list|)
 operator|+
 literal|"</a>"
 operator|+
@@ -2909,6 +2919,10 @@ name|out
 operator|.
 name|print
 argument_list|(
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
 name|parts
 index|[
 name|parts
@@ -2917,6 +2931,7 @@ name|length
 operator|-
 literal|1
 index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2976,18 +2991,23 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<input name=\"dir\" type=\"text\" width=\"50\" id\"dir\" value=\""
+literal|"<input name=\"dir\" type=\"text\" width=\"50\" id=\"dir\" value=\""
 operator|+
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
 name|file
+argument_list|)
 operator|+
-literal|"\">"
+literal|"\"/>"
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
 name|print
 argument_list|(
-literal|"<input name=\"go\" type=\"submit\" value=\"go\">"
+literal|"<input name=\"go\" type=\"submit\" value=\"go\"/>"
 argument_list|)
 expr_stmt|;
 name|out
@@ -3000,7 +3020,7 @@ literal|"value=\""
 operator|+
 name|namenodeInfoPort
 operator|+
-literal|"\">"
+literal|"\"/>"
 argument_list|)
 expr_stmt|;
 if|if
@@ -3023,7 +3043,7 @@ literal|"\" type=\"hidden\" value=\""
 operator|+
 name|tokenString
 operator|+
-literal|"\">"
+literal|"\"/>"
 argument_list|)
 expr_stmt|;
 block|}
@@ -3041,7 +3061,7 @@ literal|"value=\""
 operator|+
 name|nnAddress
 operator|+
-literal|"\">"
+literal|"\"/>"
 argument_list|)
 expr_stmt|;
 name|out

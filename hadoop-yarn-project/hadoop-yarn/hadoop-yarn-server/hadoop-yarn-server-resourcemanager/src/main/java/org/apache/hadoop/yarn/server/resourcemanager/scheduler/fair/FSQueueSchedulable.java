@@ -608,8 +608,6 @@ name|QueueMetrics
 operator|.
 name|forQueue
 argument_list|(
-name|this
-operator|.
 name|getName
 argument_list|()
 argument_list|,
@@ -800,8 +798,6 @@ name|toAdd
 operator|+
 literal|"; Total resource consumption for "
 operator|+
-name|this
-operator|.
 name|getName
 argument_list|()
 operator|+
@@ -855,8 +851,6 @@ name|debug
 argument_list|(
 literal|"The updated demand for "
 operator|+
-name|this
-operator|.
 name|getName
 argument_list|()
 operator|+
@@ -1012,8 +1006,6 @@ name|debug
 argument_list|(
 literal|"Node offered to queue: "
 operator|+
-name|this
-operator|.
 name|getName
 argument_list|()
 operator|+
@@ -1029,8 +1021,6 @@ name|Resources
 operator|.
 name|greaterThan
 argument_list|(
-name|this
-operator|.
 name|getResourceUsage
 argument_list|()
 argument_list|,
@@ -1405,14 +1395,10 @@ name|AccessControlList
 argument_list|>
 name|acls
 init|=
-name|this
-operator|.
 name|queueMgr
 operator|.
 name|getQueueAcls
 argument_list|(
-name|this
-operator|.
 name|getName
 argument_list|()
 argument_list|)
@@ -1593,14 +1579,10 @@ name|AccessControlList
 argument_list|>
 name|acls
 init|=
-name|this
-operator|.
 name|queueMgr
 operator|.
 name|getQueueAcls
 argument_list|(
-name|this
-operator|.
 name|getName
 argument_list|()
 argument_list|)

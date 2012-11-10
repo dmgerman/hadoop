@@ -555,16 +555,6 @@ DECL|field|checkpointManager
 name|Checkpointer
 name|checkpointManager
 decl_stmt|;
-comment|/** ClusterID to which BackupNode belongs to */
-DECL|field|clusterId
-name|String
-name|clusterId
-decl_stmt|;
-comment|/** Block pool Id of the peer namenode of this BackupNode */
-DECL|field|blockPoolId
-name|String
-name|blockPoolId
-decl_stmt|;
 DECL|method|BackupNode (Configuration conf, NamenodeRole role)
 name|BackupNode
 parameter_list|(
@@ -888,6 +878,16 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|namesystem
+operator|.
+name|setBlockPoolId
+argument_list|(
+name|nsInfo
+operator|.
+name|getBlockPoolID
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 literal|false
@@ -924,20 +924,6 @@ name|Long
 operator|.
 name|MAX_VALUE
 argument_list|)
-expr_stmt|;
-name|clusterId
-operator|=
-name|nsInfo
-operator|.
-name|getClusterID
-argument_list|()
-expr_stmt|;
-name|blockPoolId
-operator|=
-name|nsInfo
-operator|.
-name|getBlockPoolID
-argument_list|()
 expr_stmt|;
 comment|// register with the active name-node
 name|registerWith
@@ -1129,16 +1115,11 @@ expr_stmt|;
 block|}
 comment|/* @Override */
 comment|// NameNode
-DECL|method|setSafeMode (@uppressWarningsR) SafeModeAction action)
+DECL|method|setSafeMode (SafeModeAction action)
 specifier|public
 name|boolean
 name|setSafeMode
 parameter_list|(
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unused"
-argument_list|)
 name|SafeModeAction
 name|action
 parameter_list|)
@@ -2084,24 +2065,6 @@ argument_list|()
 assert|;
 return|return
 name|nsInfo
-return|;
-block|}
-DECL|method|getBlockPoolId ()
-name|String
-name|getBlockPoolId
-parameter_list|()
-block|{
-return|return
-name|blockPoolId
-return|;
-block|}
-DECL|method|getClusterId ()
-name|String
-name|getClusterId
-parameter_list|()
-block|{
-return|return
-name|clusterId
 return|;
 block|}
 annotation|@

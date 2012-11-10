@@ -1029,8 +1029,6 @@ name|app
 parameter_list|)
 block|{
 return|return
-name|this
-operator|.
 name|getQueue
 argument_list|(
 name|app
@@ -2897,11 +2895,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Remove an app    */
-DECL|method|removeJob (FSSchedulerApp app)
+DECL|method|removeApp (FSSchedulerApp app)
 specifier|public
 specifier|synchronized
 name|void
-name|removeJob
+name|removeApp
 parameter_list|(
 name|FSSchedulerApp
 name|app
@@ -2915,7 +2913,7 @@ name|getQueueName
 argument_list|()
 argument_list|)
 operator|.
-name|removeJob
+name|removeApp
 argument_list|(
 name|app
 argument_list|)
@@ -3291,7 +3289,7 @@ name|weights
 expr_stmt|;
 block|}
 block|}
-comment|/**   * Get a queue's min share preemption timeout, in milliseconds. This is the   * time after which jobs in the queue may kill other queues' tasks if they   * are below their min share.   */
+comment|/**    * Get a queue's min share preemption timeout, in milliseconds. This is the    * time after which jobs in the queue may kill other queues' tasks if they    * are below their min share.    */
 DECL|method|getMinSharePreemptionTimeout (String queueName)
 specifier|public
 name|long

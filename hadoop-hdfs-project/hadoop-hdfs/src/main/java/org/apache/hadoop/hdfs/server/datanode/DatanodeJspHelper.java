@@ -348,6 +348,20 @@ name|hadoop
 operator|.
 name|http
 operator|.
+name|HtmlQuoting
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
 name|HttpConfig
 import|;
 end_import
@@ -755,7 +769,12 @@ name|print
 argument_list|(
 literal|"<h3>File or directory : "
 operator|+
+name|StringEscapeUtils
+operator|.
+name|escapeHtml
+argument_list|(
 name|target
+argument_list|)
 operator|+
 literal|" does not exist</h3>"
 argument_list|)
@@ -1420,7 +1439,12 @@ name|datanodeUrl
 operator|+
 literal|"\">"
 operator|+
+name|HtmlQuoting
+operator|.
+name|quoteHtmlChars
+argument_list|(
 name|localFileName
+argument_list|)
 operator|+
 literal|"</a>"
 expr_stmt|;

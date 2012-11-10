@@ -688,8 +688,6 @@ name|getResourceUsage
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|app
 operator|.
 name|getCurrentConsumption
@@ -721,8 +719,6 @@ name|getMetrics
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
 name|queue
 operator|.
 name|getQueueSchedulable
@@ -1028,8 +1024,6 @@ argument_list|()
 operator|.
 name|reserveResource
 argument_list|(
-name|this
-operator|.
 name|app
 operator|.
 name|getUser
@@ -1048,8 +1042,6 @@ argument_list|()
 operator|.
 name|reserveResource
 argument_list|(
-name|this
-operator|.
 name|app
 operator|.
 name|getUser
@@ -1323,8 +1315,6 @@ argument_list|()
 operator|.
 name|setAvailableResourcesToQueue
 argument_list|(
-name|this
-operator|.
 name|scheduler
 operator|.
 name|getClusterCapacity
@@ -1338,8 +1328,6 @@ condition|(
 name|reserved
 condition|)
 block|{
-name|this
-operator|.
 name|unreserve
 argument_list|(
 name|application
@@ -1456,8 +1444,6 @@ operator|==
 literal|0
 condition|)
 block|{
-name|this
-operator|.
 name|unreserve
 argument_list|(
 name|app

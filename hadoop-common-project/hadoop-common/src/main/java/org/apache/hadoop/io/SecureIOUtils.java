@@ -390,7 +390,7 @@ name|stat
 init|=
 name|NativeIO
 operator|.
-name|fstat
+name|getFstat
 argument_list|(
 name|fis
 operator|.

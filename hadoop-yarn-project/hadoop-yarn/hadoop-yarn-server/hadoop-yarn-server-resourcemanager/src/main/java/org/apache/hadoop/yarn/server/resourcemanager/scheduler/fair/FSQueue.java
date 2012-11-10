@@ -221,10 +221,10 @@ name|appSchedulable
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeJob (FSSchedulerApp app)
+DECL|method|removeApp (FSSchedulerApp app)
 specifier|public
 name|void
-name|removeJob
+name|removeApp
 parameter_list|(
 name|FSSchedulerApp
 name|app

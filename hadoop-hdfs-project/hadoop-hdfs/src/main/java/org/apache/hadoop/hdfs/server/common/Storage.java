@@ -1475,7 +1475,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Storage directory "
 operator|+
@@ -1529,7 +1529,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 name|rootPath
 operator|+
@@ -1553,7 +1553,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Cannot access storage directory "
 operator|+
@@ -1575,7 +1575,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Cannot access storage directory "
 operator|+

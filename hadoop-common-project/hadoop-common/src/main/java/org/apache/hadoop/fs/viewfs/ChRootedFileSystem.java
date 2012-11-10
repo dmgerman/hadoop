@@ -651,37 +651,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getHomeDirectory ()
-specifier|public
-name|Path
-name|getHomeDirectory
-parameter_list|()
-block|{
-return|return
-operator|new
-name|Path
-argument_list|(
-literal|"/user/"
-operator|+
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"user.name"
-argument_list|)
-argument_list|)
-operator|.
-name|makeQualified
-argument_list|(
-name|getUri
-argument_list|()
-argument_list|,
-literal|null
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getWorkingDirectory ()
 specifier|public
 name|Path

@@ -273,6 +273,14 @@ name|zkc
 operator|=
 name|zkc
 expr_stmt|;
+block|}
+DECL|method|init ()
+name|void
+name|init
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 try|try
 block|{
 name|Stat
@@ -458,7 +466,7 @@ name|IOException
 argument_list|(
 literal|"Exception when setting the data "
 operator|+
-literal|"[layout version number,hostname,inprogressNode path]= ["
+literal|"["
 operator|+
 name|content
 operator|+
@@ -480,7 +488,7 @@ name|IOException
 argument_list|(
 literal|"Interrupted while setting the data "
 operator|+
-literal|"[layout version number,hostname,inprogressNode path]= ["
+literal|"["
 operator|+
 name|content
 operator|+
@@ -490,19 +498,26 @@ name|e
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
-literal|"Updated data[layout version number,hostname,inprogressNode path]"
-operator|+
-literal|"= ["
+literal|"Updated data["
 operator|+
 name|content
 operator|+
 literal|"] to CurrentInprogress"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Read the CurrentInprogress node data from Zookeeper and also get the znode    * version number. Return the 3rd field from the data. i.e saved path with    * #update api    *     * @return available inprogress node path. returns null if not available.    * @throws IOException    */
 DECL|method|read ()
@@ -651,7 +666,7 @@ else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"No data available in CurrentInprogress"
 argument_list|)
@@ -719,7 +734,7 @@ throw|;
 block|}
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Cleared the data from CurrentInprogress"
 argument_list|)

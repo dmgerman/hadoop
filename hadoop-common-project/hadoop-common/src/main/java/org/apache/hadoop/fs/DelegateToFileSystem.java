@@ -627,6 +627,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getHomeDirectory ()
+specifier|public
+name|Path
+name|getHomeDirectory
+parameter_list|()
+block|{
+return|return
+name|fsImpl
+operator|.
+name|getHomeDirectory
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getUriDefaultPort ()
 specifier|public
 name|int

@@ -778,7 +778,7 @@ condition|)
 block|{
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|warn
 argument_list|(
@@ -866,7 +866,7 @@ argument_list|)
 expr_stmt|;
 name|NameNode
 operator|.
-name|stateChangeLog
+name|blockStateChangeLog
 operator|.
 name|info
 argument_list|(

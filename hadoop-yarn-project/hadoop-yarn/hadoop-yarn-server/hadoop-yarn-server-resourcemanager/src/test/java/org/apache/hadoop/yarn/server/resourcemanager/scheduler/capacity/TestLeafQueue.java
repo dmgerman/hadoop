@@ -9711,7 +9711,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|4
 argument_list|,
 name|app_0
 operator|.
@@ -9721,7 +9721,7 @@ name|priority
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// should reset
+comment|// should NOT reset
 name|assertEquals
 argument_list|(
 literal|2
@@ -10913,7 +10913,7 @@ name|priority_2
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Another off-switch, shouldn allocate OFF_SWITCH P1
+comment|// Another off-switch, shouldn't allocate OFF_SWITCH P1
 name|a
 operator|.
 name|assignContainers
@@ -10964,7 +10964,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|3
 argument_list|,
 name|app_0
 operator|.
@@ -11308,7 +11308,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|app_0
 operator|.

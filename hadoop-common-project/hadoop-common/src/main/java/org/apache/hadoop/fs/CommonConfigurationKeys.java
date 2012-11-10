@@ -564,6 +564,29 @@ name|KERBEROS_TICKET_CACHE_PATH
 init|=
 literal|"hadoop.security.kerberos.ticket.cache.path"
 decl_stmt|;
+DECL|field|HADOOP_SECURITY_UID_NAME_CACHE_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_UID_NAME_CACHE_TIMEOUT_KEY
+init|=
+literal|"hadoop.security.uid.cache.secs"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_UID_NAME_CACHE_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|HADOOP_SECURITY_UID_NAME_CACHE_TIMEOUT_DEFAULT
+init|=
+literal|4
+operator|*
+literal|60
+operator|*
+literal|60
+decl_stmt|;
+comment|// 4 hours
 block|}
 end_class
 
