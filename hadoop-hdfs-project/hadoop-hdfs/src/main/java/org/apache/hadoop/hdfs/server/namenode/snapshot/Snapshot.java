@@ -102,7 +102,9 @@ name|dir
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** @return the root directory of the snapshot. */
 DECL|method|getRoot ()
+specifier|public
 name|INodeDirectoryWithSnapshot
 name|getRoot
 parameter_list|()
@@ -130,6 +132,47 @@ name|compareTo
 argument_list|(
 name|bytes
 argument_list|)
+return|;
+block|}
+comment|/** Compare snapshot IDs. */
+DECL|method|compareTo (Snapshot s)
+specifier|public
+name|int
+name|compareTo
+parameter_list|(
+name|Snapshot
+name|s
+parameter_list|)
+block|{
+return|return
+name|id
+operator|-
+name|s
+operator|.
+name|id
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|root
+operator|.
+name|getLocalName
+argument_list|()
 return|;
 block|}
 block|}
