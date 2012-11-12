@@ -24,6 +24,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|UnsupportedEncodingException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URLEncoder
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Arrays
@@ -137,7 +157,7 @@ return|;
 block|}
 block|}
 empty_stmt|;
-comment|/** Convert the parameters to a sorted String. */
+comment|/** Convert the parameters to a sorted String.    *    * @param separator URI parameter separator character    * @param parameters parameters to encode into a string    * @return the encoded URI string    */
 DECL|method|toSortedString (final String separator, final Param<?, ?>... parameters)
 specifier|public
 specifier|static
@@ -176,6 +196,8 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 for|for
 control|(
 name|Param
@@ -208,10 +230,50 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|URLEncoder
+operator|.
+name|encode
+argument_list|(
 name|p
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+literal|"UTF-8"
+argument_list|)
+operator|+
+literal|"="
+operator|+
+name|URLEncoder
+operator|.
+name|encode
+argument_list|(
+name|p
+operator|.
+name|getValueString
+argument_list|()
+argument_list|,
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|UnsupportedEncodingException
+name|e
+parameter_list|)
+block|{
+comment|// Sane systems know about UTF-8, so this should never happen.
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|e
+argument_list|)
+throw|;
 block|}
 return|return
 name|b
@@ -269,6 +331,14 @@ return|return
 name|value
 return|;
 block|}
+comment|/** @return the parameter value as a string */
+DECL|method|getValueString ()
+specifier|public
+specifier|abstract
+name|String
+name|getValueString
+parameter_list|()
+function_decl|;
 comment|/** @return the parameter name. */
 DECL|method|getName ()
 specifier|public

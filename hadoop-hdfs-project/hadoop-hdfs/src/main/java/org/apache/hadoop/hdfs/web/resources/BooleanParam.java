@@ -55,6 +55,22 @@ name|FALSE
 init|=
 literal|"false"
 decl_stmt|;
+comment|/** @return the parameter value as a string */
+annotation|@
+name|Override
+DECL|method|getValueString ()
+specifier|public
+name|String
+name|getValueString
+parameter_list|()
+block|{
+return|return
+name|value
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 DECL|method|BooleanParam (final Domain domain, final Boolean value)
 name|BooleanParam
 parameter_list|(

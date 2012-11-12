@@ -423,6 +423,22 @@ argument_list|()
 return|;
 block|}
 block|}
+comment|/** @return the parameter value as a string */
+annotation|@
+name|Override
+DECL|method|getValueString ()
+specifier|public
+name|String
+name|getValueString
+parameter_list|()
+block|{
+return|return
+name|value
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 DECL|method|HttpOpParam (final Domain<E> domain, final E value)
 name|HttpOpParam
 parameter_list|(

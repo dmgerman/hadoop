@@ -92,6 +92,25 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/** @return the parameter value as a string */
+annotation|@
+name|Override
+DECL|method|getValueString ()
+specifier|public
+name|String
+name|getValueString
+parameter_list|()
+block|{
+return|return
+name|Domain
+operator|.
+name|toString
+argument_list|(
+name|getValue
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/** The domain of the parameter. */
 DECL|class|Domain
 specifier|static
