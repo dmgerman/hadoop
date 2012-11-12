@@ -210,7 +210,7 @@ specifier|protected
 name|int
 name|waitInterval
 decl_stmt|;
-comment|//Time to wait between retrying notification
+comment|//Time (ms) to wait between retrying notification
 DECL|field|urlToNotify
 specifier|protected
 name|URL
@@ -288,7 +288,7 @@ name|MRJobConfig
 operator|.
 name|MR_JOB_END_RETRY_INTERVAL
 argument_list|,
-literal|5
+literal|5000
 argument_list|)
 argument_list|,
 name|conf
@@ -299,7 +299,7 @@ name|MRJobConfig
 operator|.
 name|MR_JOB_END_NOTIFICATION_MAX_RETRY_INTERVAL
 argument_list|,
-literal|5
+literal|5000
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -311,7 +311,7 @@ operator|<
 literal|0
 operator|)
 condition|?
-literal|5
+literal|5000
 else|:
 name|waitInterval
 expr_stmt|;
