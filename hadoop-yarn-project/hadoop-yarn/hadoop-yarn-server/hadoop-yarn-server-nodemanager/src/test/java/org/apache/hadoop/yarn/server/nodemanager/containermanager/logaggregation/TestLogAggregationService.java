@@ -2287,6 +2287,11 @@ name|acls
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|await
+argument_list|()
+expr_stmt|;
 name|ApplicationEvent
 name|expectedInitEvents
 index|[]
