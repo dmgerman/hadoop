@@ -148,16 +148,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -339,6 +329,22 @@ operator|.
 name|common
 operator|.
 name|InconsistentFSStateException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|ReadOnlyList
 import|;
 end_import
 
@@ -2472,7 +2478,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|List
+specifier|final
+name|ReadOnlyList
 argument_list|<
 name|INode
 argument_list|>
@@ -2480,21 +2487,21 @@ name|children
 init|=
 name|current
 operator|.
-name|getChildren
-argument_list|()
+name|getChildrenList
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|children
-operator|==
-literal|null
-operator|||
 name|children
 operator|.
 name|isEmpty
 argument_list|()
 condition|)
+block|{
 return|return;
+block|}
 comment|// print prefix (parent directory name)
 name|int
 name|prefixLen

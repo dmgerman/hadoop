@@ -228,6 +228,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|ReadOnlyList
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -335,6 +351,8 @@ argument_list|<
 name|INode
 argument_list|>
 name|children
+init|=
+literal|null
 decl_stmt|;
 DECL|method|INodeDirectory (String name, PermissionStatus permissions)
 specifier|public
@@ -353,12 +371,6 @@ name|name
 argument_list|,
 name|permissions
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|children
-operator|=
-literal|null
 expr_stmt|;
 block|}
 DECL|method|INodeDirectory (PermissionStatus permissions, long mTime)
@@ -380,12 +392,6 @@ name|mTime
 argument_list|,
 literal|0
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|children
-operator|=
-literal|null
 expr_stmt|;
 block|}
 comment|/** constructor */
@@ -437,8 +443,7 @@ name|children
 operator|=
 name|other
 operator|.
-name|getChildren
-argument_list|()
+name|children
 expr_stmt|;
 block|}
 comment|/** @return true unconditionally. */
@@ -583,89 +588,68 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|getChild (String name)
-name|INode
-name|getChild
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-return|return
-name|getChildINode
-argument_list|(
-name|DFSUtil
-operator|.
-name|string2Bytes
-argument_list|(
-name|name
-argument_list|)
-argument_list|)
-return|;
-block|}
-DECL|method|getChildINode (byte[] name)
+DECL|method|getChild (byte[] name, Snapshot snapshot)
 specifier|private
 name|INode
-name|getChildINode
+name|getChild
 parameter_list|(
 name|byte
 index|[]
 name|name
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 block|{
-if|if
-condition|(
-name|children
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-name|int
-name|low
+specifier|final
+name|ReadOnlyList
+argument_list|<
+name|INode
+argument_list|>
+name|c
 init|=
-name|Collections
+name|getChildrenList
+argument_list|(
+name|snapshot
+argument_list|)
+decl_stmt|;
+specifier|final
+name|int
+name|i
+init|=
+name|ReadOnlyList
+operator|.
+name|Util
 operator|.
 name|binarySearch
 argument_list|(
-name|children
+name|c
 argument_list|,
 name|name
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|low
-operator|>=
-literal|0
-condition|)
-block|{
 return|return
-name|children
+name|i
+operator|<
+literal|0
+condition|?
+literal|null
+else|:
+name|c
 operator|.
 name|get
 argument_list|(
-name|low
+name|i
 argument_list|)
 return|;
 block|}
-return|return
-literal|null
-return|;
-block|}
-comment|/**    * @return the INode of the last component in components, or null if the last    * component does not exist.    */
-DECL|method|getNode (byte[][] components, boolean resolveLink )
-specifier|private
-name|INode
-name|getNode
+comment|/** @return the {@link INodesInPath} containing only the last inode. */
+DECL|method|getINodesInPath (String path, boolean resolveLink )
+name|INodesInPath
+name|getINodesInPath
 parameter_list|(
-name|byte
-index|[]
-index|[]
-name|components
+name|String
+name|path
 parameter_list|,
 name|boolean
 name|resolveLink
@@ -673,28 +657,21 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 block|{
-name|INodesInPath
-name|inodesInPath
-init|=
+return|return
 name|getExistingPathINodes
 argument_list|(
-name|components
+name|getPathComponents
+argument_list|(
+name|path
+argument_list|)
 argument_list|,
 literal|1
 argument_list|,
 name|resolveLink
 argument_list|)
-decl_stmt|;
-return|return
-name|inodesInPath
-operator|.
-name|inodes
-index|[
-literal|0
-index|]
 return|;
 block|}
-comment|/**    * This is the external interface    */
+comment|/** @return the last inode in the path. */
 DECL|method|getNode (String path, boolean resolveLink)
 name|INode
 name|getNode
@@ -709,14 +686,16 @@ throws|throws
 name|UnresolvedLinkException
 block|{
 return|return
-name|getNode
-argument_list|(
-name|getPathComponents
+name|getINodesInPath
 argument_list|(
 name|path
-argument_list|)
 argument_list|,
 name|resolveLink
+argument_list|)
+operator|.
+name|getINode
+argument_list|(
+literal|0
 argument_list|)
 return|;
 block|}
@@ -1207,7 +1186,7 @@ name|curNode
 operator|=
 name|parentDir
 operator|.
-name|getChildINode
+name|getChild
 argument_list|(
 name|components
 index|[
@@ -1215,6 +1194,11 @@ name|count
 operator|+
 literal|1
 index|]
+argument_list|,
+name|existing
+operator|.
+name|getPathSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1969,38 +1953,36 @@ return|return
 name|summary
 return|;
 block|}
-comment|/**    * @return an empty list if the children list is null;    *         otherwise, return the children list.    *         The returned list should not be modified.    */
-DECL|method|getChildrenList ()
+comment|/**    * @return the current children list if the specified snapshot is null;    *         otherwise, return the children list corresponding to the snapshot.    *         Note that the returned list is never null.    */
+DECL|method|getChildrenList (final Snapshot snapshot)
 specifier|public
-name|List
+name|ReadOnlyList
 argument_list|<
 name|INode
 argument_list|>
 name|getChildrenList
-parameter_list|()
+parameter_list|(
+specifier|final
+name|Snapshot
+name|snapshot
+parameter_list|)
 block|{
+comment|//TODO: use snapshot to select children list
 return|return
 name|children
 operator|==
 literal|null
 condition|?
-name|EMPTY_LIST
+name|EMPTY_READ_ONLY_LIST
 else|:
+name|ReadOnlyList
+operator|.
+name|Util
+operator|.
+name|asReadOnlyList
+argument_list|(
 name|children
-return|;
-block|}
-comment|/** @return the children list which is possibly null. */
-DECL|method|getChildren ()
-specifier|public
-name|List
-argument_list|<
-name|INode
-argument_list|>
-name|getChildren
-parameter_list|()
-block|{
-return|return
-name|children
+argument_list|)
 return|;
 block|}
 comment|/** Set the children list. */
@@ -2164,15 +2146,34 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
-comment|/**      * @return the snapshot associated to the path.      * @see #snapshot      */
-DECL|method|getSnapshot ()
+comment|/**      * For non-snapshot paths, return the latest snapshot found in the path.      * For snapshot paths, return null.      */
+DECL|method|getLatestSnapshot ()
 specifier|public
 name|Snapshot
-name|getSnapshot
+name|getLatestSnapshot
 parameter_list|()
 block|{
 return|return
+name|isSnapshot
+condition|?
+literal|null
+else|:
 name|snapshot
+return|;
+block|}
+comment|/**      * For snapshot paths, return the snapshot specified in the path.      * For non-snapshot paths, return null.      */
+DECL|method|getPathSnapshot ()
+specifier|public
+name|Snapshot
+name|getPathSnapshot
+parameter_list|()
+block|{
+return|return
+name|isSnapshot
+condition|?
+name|snapshot
+else|:
+literal|null
 return|;
 block|}
 DECL|method|setSnapshot (Snapshot s)
@@ -2279,6 +2280,22 @@ expr_stmt|;
 block|}
 return|return
 name|inodes
+return|;
+block|}
+comment|/** @return the i-th inode. */
+DECL|method|getINode (int i)
+name|INode
+name|getINode
+parameter_list|(
+name|int
+name|i
+parameter_list|)
+block|{
+return|return
+name|inodes
+index|[
+name|i
+index|]
 return|;
 block|}
 comment|/**      * @return index of the {@link INodeDirectoryWithSnapshot} in      *         {@link #inodes} for snapshot path, else -1.      */
@@ -2495,7 +2512,14 @@ name|b
 operator|.
 name|append
 argument_list|(
-literal|"]"
+literal|"], length="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|inodes
+operator|.
+name|length
 argument_list|)
 expr_stmt|;
 block|}
