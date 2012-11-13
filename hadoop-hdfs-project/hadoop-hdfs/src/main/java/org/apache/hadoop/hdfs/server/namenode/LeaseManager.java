@@ -625,9 +625,17 @@ name|src
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|error
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 name|src
 operator|+
@@ -640,6 +648,7 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -2028,8 +2037,9 @@ control|)
 block|{
 try|try
 block|{
-if|if
-condition|(
+name|boolean
+name|completed
+init|=
 name|fsnamesystem
 operator|.
 name|internalReleaseLease
@@ -2042,11 +2052,23 @@ name|HdfsServerConstants
 operator|.
 name|NAMENODE_LEASE_HOLDER
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|completed
 condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Lease recovery for "
 operator|+
@@ -2055,19 +2077,12 @@ operator|+
 literal|" is complete. File closed."
 argument_list|)
 expr_stmt|;
-name|removing
-operator|.
-name|add
-argument_list|(
-name|p
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Started block recovery "
 operator|+
@@ -2078,6 +2093,7 @@ operator|+
 name|oldest
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
