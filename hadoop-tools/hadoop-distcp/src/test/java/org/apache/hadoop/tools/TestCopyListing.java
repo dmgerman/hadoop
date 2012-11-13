@@ -784,7 +784,7 @@ name|createFile
 argument_list|(
 name|fs
 argument_list|,
-literal|"/tmp/in/1.txt"
+literal|"/tmp/in/src1/1.txt"
 argument_list|)
 expr_stmt|;
 name|TestDistCpUtils
@@ -793,7 +793,7 @@ name|createFile
 argument_list|(
 name|fs
 argument_list|,
-literal|"/tmp/in/src/1.txt"
+literal|"/tmp/in/src2/1.txt"
 argument_list|)
 expr_stmt|;
 name|Path

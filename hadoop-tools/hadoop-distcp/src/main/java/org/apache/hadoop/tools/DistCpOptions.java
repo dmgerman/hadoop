@@ -829,7 +829,14 @@ name|this
 operator|.
 name|maxMaps
 operator|=
+name|Math
+operator|.
+name|max
+argument_list|(
 name|maxMaps
+argument_list|,
+literal|1
+argument_list|)
 expr_stmt|;
 block|}
 comment|/** Get the map bandwidth in MB    *    * @return Bandwidth in MB    */

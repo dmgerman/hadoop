@@ -863,7 +863,7 @@ return|return
 name|str
 return|;
 block|}
-comment|/** Apply a umask to this permission and return a new one */
+comment|/**    * Apply a umask to this permission and return a new one.    *    * The umask is used by create, mkdir, and other Hadoop filesystem operations.    * The mode argument for these operations is modified by removing the bits    * which are set in the umask.  Thus, the umask limits the permissions which    * newly created files and directories get.    *    * @param umask              The umask to use    *     * @return                   The effective permission    */
 DECL|method|applyUMask (FsPermission umask)
 specifier|public
 name|FsPermission

@@ -2947,6 +2947,99 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Make sure that when we transition to active in safe mode that we don't    * prematurely consider blocks missing just because not all DNs have reported    * yet.    *     * This is a regression test for HDFS-3921.    */
+annotation|@
+name|Test
+DECL|method|testNoPopulatingReplQueuesWhenStartingActiveInSafeMode ()
+specifier|public
+name|void
+name|testNoPopulatingReplQueuesWhenStartingActiveInSafeMode
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|DFSTestUtil
+operator|.
+name|createFile
+argument_list|(
+name|fs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|"/test"
+argument_list|)
+argument_list|,
+literal|15
+operator|*
+name|BLOCK_SIZE
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|3
+argument_list|,
+literal|1L
+argument_list|)
+expr_stmt|;
+comment|// Stop the DN so that when the NN restarts not all blocks wil be reported
+comment|// and the NN won't leave safe mode.
+name|cluster
+operator|.
+name|stopDataNode
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+comment|// Restart the namenode but don't wait for it to hear from all DNs (since
+comment|// one DN is deliberately shut down.)
+name|cluster
+operator|.
+name|restartNameNode
+argument_list|(
+literal|0
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|transitionToActive
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|cluster
+operator|.
+name|getNameNode
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|isInSafeMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// We shouldn't yet consider any blocks "missing" since we're in startup
+comment|// safemode, i.e. not all DNs may have reported.
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getMissingBlocksCount
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Print a big banner in the test log to make debug easier.    */
 DECL|method|banner (String string)
 specifier|static

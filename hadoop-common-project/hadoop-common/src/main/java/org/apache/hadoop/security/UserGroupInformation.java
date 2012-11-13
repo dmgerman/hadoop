@@ -1337,6 +1337,9 @@ block|{
 case|case
 name|SIMPLE
 case|:
+case|case
+name|TOKEN
+case|:
 name|useKerberos
 operator|=
 literal|false

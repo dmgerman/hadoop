@@ -2802,7 +2802,7 @@ block|}
 block|}
 return|;
 block|}
-comment|/**    * Create a directory with given name and permission, only when    * parent directory exists.    */
+comment|/**    * Create a directory, only when the parent directories exist.    *    * See {@link FsPermission#applyUMask(FsPermission)} for details of how    * the permission is applied.    *    * @param f           The path to create    * @param permission  The permission.  See FsPermission#applyUMask for     *                    details about how this is used to calculate the    *                    effective permission.    */
 DECL|method|mkdir (Path f, FsPermission permission)
 specifier|public
 name|boolean
@@ -2840,6 +2840,7 @@ literal|false
 argument_list|)
 return|;
 block|}
+comment|/**    * Create a directory and its parent directories.    *    * See {@link FsPermission#applyUMask(FsPermission)} for details of how    * the permission is applied.    *    * @param f           The path to create    * @param permission  The permission.  See FsPermission#applyUMask for     *                    details about how this is used to calculate the    *                    effective permission.    */
 annotation|@
 name|Override
 DECL|method|mkdirs (Path f, FsPermission permission)
