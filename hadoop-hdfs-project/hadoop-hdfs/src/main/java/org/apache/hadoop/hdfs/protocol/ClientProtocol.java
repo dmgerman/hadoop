@@ -268,6 +268,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|SnapshotAccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|EnumSetWritable
@@ -508,7 +528,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a new file entry in the namespace.    *<p>    * This will create an empty file specified by the source path.    * The path should reflect a full path originated at the root.    * The name-node does not have a notion of "current" directory for a client.    *<p>    * Once created, the file is visible and available for read to other clients.    * Although, other clients cannot {@link #delete(String, boolean)}, re-create or     * {@link #rename(String, String)} it until the file is completed    * or explicitly as a result of lease expiration.    *<p>    * Blocks have a maximum size.  Clients that intend to create    * multi-block files must also use     * {@link #addBlock(String, String, ExtendedBlock, DatanodeInfo[])}    *    * @param src path of the file being created.    * @param masked masked permission.    * @param clientName name of the current client.    * @param flag indicates whether the file should be     * overwritten if it already exists or create if it does not exist or append.    * @param createParent create missing parent directory if true    * @param replication block replication factor.    * @param blockSize maximum block size.    *     * @throws AccessControlException If access is denied    * @throws AlreadyBeingCreatedException if the path does not exist.    * @throws DSQuotaExceededException If file creation violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If file<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>src</code> is not a    *           directory.    * @throws NSQuotaExceededException If file creation violates name space     *           quota restriction    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    *    * RuntimeExceptions:    * @throws InvalidPathException Path<code>src</code> is invalid    */
+comment|/**    * Create a new file entry in the namespace.    *<p>    * This will create an empty file specified by the source path.    * The path should reflect a full path originated at the root.    * The name-node does not have a notion of "current" directory for a client.    *<p>    * Once created, the file is visible and available for read to other clients.    * Although, other clients cannot {@link #delete(String, boolean)}, re-create or     * {@link #rename(String, String)} it until the file is completed    * or explicitly as a result of lease expiration.    *<p>    * Blocks have a maximum size.  Clients that intend to create    * multi-block files must also use     * {@link #addBlock(String, String, ExtendedBlock, DatanodeInfo[])}    *    * @param src path of the file being created.    * @param masked masked permission.    * @param clientName name of the current client.    * @param flag indicates whether the file should be     * overwritten if it already exists or create if it does not exist or append.    * @param createParent create missing parent directory if true    * @param replication block replication factor.    * @param blockSize maximum block size.    *     * @throws AccessControlException If access is denied    * @throws AlreadyBeingCreatedException if the path does not exist.    * @throws DSQuotaExceededException If file creation violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If file<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>src</code> is not a    *           directory.    * @throws NSQuotaExceededException If file creation violates name space     *           quota restriction    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    *    * RuntimeExceptions:    * @throws InvalidPathException Path<code>src</code> is invalid    */
 DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize)
 specifier|public
 name|void
@@ -557,9 +577,11 @@ name|SafeModeException
 throws|,
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Append to the end of the file.     * @param src path of the file being created.    * @param clientName name of the current client.    * @return information about the last partial block if any.    * @throws AccessControlException if permission to append file is     * denied by the system. As usually on the client side the exception will     * be wrapped into {@link org.apache.hadoop.ipc.RemoteException}.    * Allows appending to an existing file if the server is    * configured with the parameter dfs.support.append set to true, otherwise    * throws an IOException.    *     * @throws AccessControlException If permission to append to file is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws DSQuotaExceededException If append violates disk space quota     *           restriction    * @throws SafeModeException append not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred.    *    * RuntimeExceptions:    * @throws UnsupportedOperationException if append is not supported    */
+comment|/**    * Append to the end of the file.     * @param src path of the file being created.    * @param clientName name of the current client.    * @return information about the last partial block if any.    * @throws AccessControlException if permission to append file is     * denied by the system. As usually on the client side the exception will     * be wrapped into {@link org.apache.hadoop.ipc.RemoteException}.    * Allows appending to an existing file if the server is    * configured with the parameter dfs.support.append set to true, otherwise    * throws an IOException.    *     * @throws AccessControlException If permission to append to file is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws DSQuotaExceededException If append violates disk space quota     *           restriction    * @throws SafeModeException append not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RuntimeExceptions:    * @throws UnsupportedOperationException if append is not supported    */
 DECL|method|append (String src, String clientName)
 specifier|public
 name|LocatedBlock
@@ -582,9 +604,11 @@ name|SafeModeException
 throws|,
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Set replication for an existing file.    *<p>    * The NameNode sets replication to the new value and returns.    * The actual block replication is not expected to be performed during      * this method call. The blocks will be populated or removed in the     * background as the result of the routine block maintenance procedures.    *     * @param src file name    * @param replication new replication    *     * @return true if successful;    *         false if file does not exist or is a directory    *    * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If replication violates disk space     *           quota restriction    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set replication for an existing file.    *<p>    * The NameNode sets replication to the new value and returns.    * The actual block replication is not expected to be performed during      * this method call. The blocks will be populated or removed in the     * background as the result of the routine block maintenance procedures.    *     * @param src file name    * @param replication new replication    *     * @return true if successful;    *         false if file does not exist or is a directory    *    * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If replication violates disk space     *           quota restriction    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setReplication (String src, short replication)
@@ -609,9 +633,11 @@ name|SafeModeException
 throws|,
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Set permissions for an existing file/directory.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set permissions for an existing file/directory.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setPermission (String src, FsPermission permission)
@@ -634,9 +660,11 @@ name|SafeModeException
 throws|,
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Set Owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    * @param src    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Set Owner of a path (i.e. a file or a directory).    * The parameters username and groupname cannot both be null.    * @param src    * @param username If it is null, the original username remains unchanged.    * @param groupname If it is null, the original groupname remains unchanged.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setOwner (String src, String username, String groupname)
@@ -661,6 +689,8 @@ throws|,
 name|SafeModeException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
@@ -813,7 +843,7 @@ function_decl|;
 comment|///////////////////////////////////////
 comment|// Namespace management
 comment|///////////////////////////////////////
-comment|/**    * Rename an item in the file system namespace.    * @param src existing file or directory name.    * @param dst new name.    * @return true if successful, or false if the old name does not exist    * or if the new name already belongs to the namespace.    *     * @throws IOException an I/O error occurred     */
+comment|/**    * Rename an item in the file system namespace.    * @param src existing file or directory name.    * @param dst new name.    * @return true if successful, or false if the old name does not exist    * or if the new name already belongs to the namespace.    *     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException an I/O error occurred     */
 DECL|method|rename (String src, String dst)
 specifier|public
 name|boolean
@@ -828,9 +858,11 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Moves blocks from srcs to trg and delete srcs    *     * @param trg existing file    * @param srcs - list of existing files (same block size, same replication)    * @throws IOException if some arguments are invalid    * @throws UnresolvedLinkException if<code>trg</code> or<code>srcs</code>    *           contains a symlink    */
+comment|/**    * Moves blocks from srcs to trg and delete srcs    *     * @param trg existing file    * @param srcs - list of existing files (same block size, same replication)    * @throws IOException if some arguments are invalid    * @throws UnresolvedLinkException if<code>trg</code> or<code>srcs</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|concat (String trg, String[] srcs)
 specifier|public
 name|void
@@ -847,8 +879,10 @@ throws|throws
 name|IOException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 function_decl|;
-comment|/**    * Rename src to dst.    *<ul>    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * Without OVERWRITE option, rename fails if the dst already exists.    * With OVERWRITE option, rename overwrites the dst, if it is a file     * or an empty directory. Rename fails if dst is a non-empty directory.    *<p>    * This implementation of rename is atomic.    *<p>    * @param src existing file or directory name.    * @param dst new name.    * @param options Rename options    *     * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If rename violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</options> has {@link Rename#OVERWRITE} option    *           false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws NSQuotaExceededException If rename violates namespace     *           quota restriction    * @throws ParentNotDirectoryException If parent of<code>dst</code>     *           is not a directory    * @throws SafeModeException rename not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> or    *<code>dst</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Rename src to dst.    *<ul>    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * Without OVERWRITE option, rename fails if the dst already exists.    * With OVERWRITE option, rename overwrites the dst, if it is a file     * or an empty directory. Rename fails if dst is a non-empty directory.    *<p>    * This implementation of rename is atomic.    *<p>    * @param src existing file or directory name.    * @param dst new name.    * @param options Rename options    *     * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If rename violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</options> has {@link Rename#OVERWRITE} option    *           false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws NSQuotaExceededException If rename violates namespace     *           quota restriction    * @throws ParentNotDirectoryException If parent of<code>dst</code>     *           is not a directory    * @throws SafeModeException rename not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> or    *<code>dst</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 DECL|method|rename2 (String src, String dst, Options.Rename... options)
 specifier|public
 name|void
@@ -883,9 +917,11 @@ name|SafeModeException
 throws|,
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally     * deleting non empty directories programmatically.     * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed     * from the file system.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally     * deleting non empty directories programmatically.     * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed     * from the file system.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 DECL|method|delete (String src, boolean recursive)
 specifier|public
 name|boolean
@@ -906,9 +942,11 @@ name|SafeModeException
 throws|,
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param masked The masked permission of the directory being created    * @param createParent create missing parent directory if true    *    * @return True if the operation success.    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws NSQuotaExceededException If file creation violates quota restriction    * @throws ParentNotDirectoryException If parent of<code>src</code>     *           is not a directory    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred.    *    * RunTimeExceptions:    * @throws InvalidPathException If<code>src</code> is invalid    */
+comment|/**    * Create a directory (or hierarchy of directories) with the given    * name and permission.    *    * @param src The path of the directory being created    * @param masked The masked permission of the directory being created    * @param createParent create missing parent directory if true    *    * @return True if the operation success.    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws NSQuotaExceededException If file creation violates quota restriction    * @throws ParentNotDirectoryException If parent of<code>src</code>     *           is not a directory    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RunTimeExceptions:    * @throws InvalidPathException If<code>src</code> is invalid    */
 annotation|@
 name|Idempotent
 DECL|method|mkdirs (String src, FsPermission masked, boolean createParent)
@@ -939,6 +977,8 @@ throws|,
 name|SafeModeException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
@@ -1263,7 +1303,7 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted     *                       at the directory    * @param diskspaceQuota Limit on disk space occupied all the files under    *                       this directory.     *<br><br>    *                           * The quota can have three types of values : (1) 0 or more will set     * the quota to that value, (2) {@link HdfsConstants#QUOTA_DONT_SET}  implies     * the quota will not be changed, and (3) {@link HdfsConstants#QUOTA_RESET}     * implies the quota will be reset. Any other value is a runtime error.    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size     *           is greater than the given quota    * @throws UnresolvedLinkException if the<code>path</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
+comment|/**    * Set the quota for a directory.    * @param path  The string representation of the path to the directory    * @param namespaceQuota Limit on the number of names in the tree rooted     *                       at the directory    * @param diskspaceQuota Limit on disk space occupied all the files under    *                       this directory.     *<br><br>    *                           * The quota can have three types of values : (1) 0 or more will set     * the quota to that value, (2) {@link HdfsConstants#QUOTA_DONT_SET}  implies     * the quota will not be changed, and (3) {@link HdfsConstants#QUOTA_RESET}     * implies the quota will be reset. Any other value is a runtime error.    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>path</code> is not found    * @throws QuotaExceededException if the directory size     *           is greater than the given quota    * @throws UnresolvedLinkException if the<code>path</code> contains a symlink.     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setQuota (String path, long namespaceQuota, long diskspaceQuota)
@@ -1286,6 +1326,8 @@ throws|,
 name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
@@ -1312,7 +1354,7 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Sets the modification and access time of the file to the specified time.    * @param src The string representation of the path    * @param mtime The number of milliseconds since Jan 1, 1970.    *              Setting mtime to -1 means that modification time should not be set    *              by this call.    * @param atime The number of milliseconds since Jan 1, 1970.    *              Setting atime to -1 means that access time should not be set    *              by this call.    *                  * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
+comment|/**    * Sets the modification and access time of the file to the specified time.    * @param src The string representation of the path    * @param mtime The number of milliseconds since Jan 1, 1970.    *              Setting mtime to -1 means that modification time should not be set    *              by this call.    * @param atime The number of milliseconds since Jan 1, 1970.    *              Setting atime to -1 means that access time should not be set    *              by this call.    *                  * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
 DECL|method|setTimes (String src, long mtime, long atime)
@@ -1336,9 +1378,11 @@ name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
 throws|,
+name|SnapshotAccessControlException
+throws|,
 name|IOException
 function_decl|;
-comment|/**    * Create symlink to a file or directory.    * @param target The path of the destination that the    *               link points to.    * @param link The path of the link being created.    * @param dirPerm permissions to use when creating parent directories    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    *    * @throws AccessControlException permission denied    * @throws FileAlreadyExistsException If file<code>link</code> already exists    * @throws FileNotFoundException If parent of<code>link</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnresolvedLinkException if<code>link</target> contains a symlink.     * @throws IOException If an I/O error occurred    */
+comment|/**    * Create symlink to a file or directory.    * @param target The path of the destination that the    *               link points to.    * @param link The path of the link being created.    * @param dirPerm permissions to use when creating parent directories    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    *    * @throws AccessControlException permission denied    * @throws FileAlreadyExistsException If file<code>link</code> already exists    * @throws FileNotFoundException If parent of<code>link</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnresolvedLinkException if<code>link</target> contains a symlink.     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
 DECL|method|createSymlink (String target, String link, FsPermission dirPerm, boolean createParent)
 specifier|public
 name|void
@@ -1368,6 +1412,8 @@ throws|,
 name|SafeModeException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;

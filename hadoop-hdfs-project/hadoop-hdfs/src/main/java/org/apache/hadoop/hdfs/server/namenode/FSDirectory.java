@@ -654,6 +654,26 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|SnapshotAccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
 name|Snapshot
 import|;
 end_import
@@ -1236,7 +1256,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    */
+comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    * @throws SnapshotAccessControlException     */
 DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, DatanodeDescriptor clientNode, long generationStamp)
 name|INodeFileUnderConstruction
 name|addFile
@@ -1271,6 +1291,8 @@ throws|,
 name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 name|waitForReady
 argument_list|()
@@ -2212,7 +2234,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, Rename...)} instead.    */
+comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, Rename...)} instead.    */
 annotation|@
 name|Deprecated
 DECL|method|renameTo (String src, String dst)
@@ -2231,6 +2253,8 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|FileAlreadyExistsException
+throws|,
+name|SnapshotAccessControlException
 block|{
 if|if
 condition|(
@@ -2426,7 +2450,7 @@ name|options
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @deprecated See {@link #renameTo(String, String)}    */
+comment|/**    * Change a path name    *     * @param src source path    * @param dst destination path    * @return true if rename succeeds; false otherwise    * @throws QuotaExceededException if the operation violates any quota limit    * @throws FileAlreadyExistsException if the src is a symlink that points to dst    * @throws SnapshotAccessControlException if path is in RO snapshot    * @deprecated See {@link #renameTo(String, String)}    */
 annotation|@
 name|Deprecated
 DECL|method|unprotectedRenameTo (String src, String dst, long timestamp)
@@ -2448,6 +2472,8 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|FileAlreadyExistsException
+throws|,
+name|SnapshotAccessControlException
 block|{
 assert|assert
 name|hasWriteLock
@@ -2458,7 +2484,7 @@ name|srcInodesInPath
 init|=
 name|rootDir
 operator|.
-name|getExistingPathINodes
+name|getMutableINodesInPath
 argument_list|(
 name|src
 argument_list|,
@@ -2701,6 +2727,22 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|dstInodesInPath
+operator|.
+name|isSnapshot
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|SnapshotAccessControlException
+argument_list|(
+literal|"Modification on RO snapshot is disallowed"
+argument_list|)
+throw|;
+block|}
 name|INode
 index|[]
 name|dstInodes
@@ -3106,7 +3148,7 @@ name|srcInodesInPath
 init|=
 name|rootDir
 operator|.
-name|getExistingPathINodes
+name|getMutableINodesInPath
 argument_list|(
 name|src
 argument_list|,
@@ -3334,18 +3376,15 @@ argument_list|(
 name|dst
 argument_list|)
 decl_stmt|;
+specifier|final
 name|INodesInPath
 name|dstInodesInPath
 init|=
 name|rootDir
 operator|.
-name|getExistingPathINodes
+name|getMutableINodesInPath
 argument_list|(
 name|dstComponents
-argument_list|,
-name|dstComponents
-operator|.
-name|length
 argument_list|,
 literal|false
 argument_list|)
@@ -4059,7 +4098,7 @@ literal|" failed."
 argument_list|)
 throw|;
 block|}
-comment|/**    * Set file replication    *     * @param src file name    * @param replication new replication    * @param oldReplication old replication - output parameter    * @return array of file blocks    * @throws QuotaExceededException    */
+comment|/**    * Set file replication    *     * @param src file name    * @param replication new replication    * @param oldReplication old replication - output parameter    * @return array of file blocks    * @throws QuotaExceededException    * @throws SnapshotAccessControlException     */
 DECL|method|setReplication (String src, short replication, short[] oldReplication)
 name|Block
 index|[]
@@ -4079,6 +4118,8 @@ throws|throws
 name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 name|waitForReady
 argument_list|()
@@ -4135,7 +4176,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedSetReplication (String src, short replication, short[] oldReplication )
+DECL|method|unprotectedSetReplication (String src, short replication, short[] oldReplication)
 name|Block
 index|[]
 name|unprotectedSetReplication
@@ -4154,6 +4195,8 @@ throws|throws
 name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 assert|assert
 name|hasWriteLock
@@ -4165,7 +4208,7 @@ name|inodesInPath
 init|=
 name|rootDir
 operator|.
-name|getExistingPathINodes
+name|getMutableINodesInPath
 argument_list|(
 name|src
 argument_list|,
@@ -4475,6 +4518,86 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|existsMutable (String src)
+name|boolean
+name|existsMutable
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
+block|{
+name|src
+operator|=
+name|normalizePath
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|INode
+name|inode
+init|=
+name|rootDir
+operator|.
+name|getMutableNode
+argument_list|(
+name|src
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|inode
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|inode
+operator|.
+name|isDirectory
+argument_list|()
+operator|||
+name|inode
+operator|.
+name|isSymlink
+argument_list|()
+condition|?
+literal|true
+else|:
+operator|(
+operator|(
+name|INodeFile
+operator|)
+name|inode
+operator|)
+operator|.
+name|getBlocks
+argument_list|()
+operator|!=
+literal|null
+return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|setPermission (String src, FsPermission permission)
 name|void
 name|setPermission
@@ -4489,6 +4612,8 @@ throws|throws
 name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 name|writeLock
 argument_list|()
@@ -4536,6 +4661,8 @@ throws|throws
 name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 assert|assert
 name|hasWriteLock
@@ -4546,7 +4673,7 @@ name|inode
 init|=
 name|rootDir
 operator|.
-name|getNode
+name|getMutableNode
 argument_list|(
 name|src
 argument_list|,
@@ -4595,6 +4722,8 @@ throws|throws
 name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 name|writeLock
 argument_list|()
@@ -4649,6 +4778,8 @@ throws|throws
 name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 assert|assert
 name|hasWriteLock
@@ -4659,7 +4790,7 @@ name|inode
 init|=
 name|rootDir
 operator|.
-name|getNode
+name|getMutableNode
 argument_list|(
 name|src
 argument_list|,
@@ -5073,7 +5204,7 @@ name|inodesInPath
 init|=
 name|rootDir
 operator|.
-name|getExistingPathINodes
+name|getMutableINodesInPath
 argument_list|(
 name|normalizePath
 argument_list|(
@@ -5421,7 +5552,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    *<br>    * Note: This is to be used by {@link FSEditLog} only.    *<br>    * @param src a string representation of a path to an inode    * @param mtime the time the inode is removed    */
+comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    *<br>    * Note: This is to be used by {@link FSEditLog} only.    *<br>    * @param src a string representation of a path to an inode    * @param mtime the time the inode is removed    * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|unprotectedDelete (String src, long mtime)
 name|void
 name|unprotectedDelete
@@ -5434,6 +5565,8 @@ name|mtime
 parameter_list|)
 throws|throws
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 assert|assert
 name|hasWriteLock
@@ -5457,7 +5590,7 @@ name|inodesInPath
 init|=
 name|rootDir
 operator|.
-name|getExistingPathINodes
+name|getMutableINodesInPath
 argument_list|(
 name|normalizePath
 argument_list|(
@@ -6371,6 +6504,43 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
+DECL|method|getMutableINode (String src)
+specifier|public
+name|INode
+name|getMutableINode
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|rootDir
+operator|.
+name|getMutableNode
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Get the parent node of path.    *     * @param path the path to explore    * @return its parent node    */
 DECL|method|getParent (byte[][] path)
 name|INodeDirectory
@@ -6407,7 +6577,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**     * Check whether the filepath could be created    */
+comment|/**     * Check whether the filepath could be created    * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|isValidToCreate (String src)
 name|boolean
 name|isValidToCreate
@@ -6417,6 +6587,8 @@ name|src
 parameter_list|)
 throws|throws
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 name|String
 name|srcs
@@ -6450,7 +6622,7 @@ argument_list|)
 operator|&&
 name|rootDir
 operator|.
-name|getNode
+name|getMutableNode
 argument_list|(
 name|srcs
 argument_list|,
@@ -6507,6 +6679,61 @@ init|=
 name|rootDir
 operator|.
 name|getNode
+argument_list|(
+name|src
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+return|return
+name|node
+operator|!=
+literal|null
+operator|&&
+name|node
+operator|.
+name|isDirectory
+argument_list|()
+return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Check whether the path specifies a directory    * @throws SnapshotAccessControlException if path is in RO snapshot    */
+DECL|method|isDirMutable (String src)
+name|boolean
+name|isDirMutable
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
+block|{
+name|src
+operator|=
+name|normalizePath
+argument_list|(
+name|src
+argument_list|)
+expr_stmt|;
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|INode
+name|node
+init|=
+name|rootDir
+operator|.
+name|getMutableNode
 argument_list|(
 name|src
 argument_list|,
@@ -7064,7 +7291,7 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a directory     * If ancestor directories do not exist, automatically create them.     * @param src string representation of the path to the directory    * @param permissions the permission of the directory    * @param isAutocreate if the permission of the directory should inherit    *                          from its parent or not. u+wx is implicitly added to    *                          the automatically created directories, and to the    *                          given directory if inheritPermission is true    * @param now creation time    * @return true if the operation succeeds false otherwise    * @throws FileNotFoundException if an ancestor or itself is a file    * @throws QuotaExceededException if directory creation violates     *                                any quota limit    * @throws UnresolvedLinkException if a symlink is encountered in src.                          */
+comment|/**    * Create a directory     * If ancestor directories do not exist, automatically create them.     * @param src string representation of the path to the directory    * @param permissions the permission of the directory    * @param isAutocreate if the permission of the directory should inherit    *                          from its parent or not. u+wx is implicitly added to    *                          the automatically created directories, and to the    *                          given directory if inheritPermission is true    * @param now creation time    * @return true if the operation succeeds false otherwise    * @throws FileNotFoundException if an ancestor or itself is a file    * @throws QuotaExceededException if directory creation violates     *                                any quota limit    * @throws UnresolvedLinkException if a symlink is encountered in src.                          * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|mkdirs (String src, PermissionStatus permissions, boolean inheritPermission, long now)
 name|boolean
 name|mkdirs
@@ -7087,6 +7314,8 @@ throws|,
 name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 name|src
 operator|=
@@ -7149,6 +7378,22 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|inodesInPath
+operator|.
+name|isSnapshot
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|SnapshotAccessControlException
+argument_list|(
+literal|"Modification on RO snapshot is disallowed"
+argument_list|)
+throw|;
+block|}
 name|INode
 index|[]
 name|inodes
@@ -9108,7 +9353,7 @@ operator|+=
 name|parentDiskspace
 expr_stmt|;
 block|}
-comment|/**    * See {@link ClientProtocol#setQuota(String, long, long)} for the contract.    * Sets quota for for a directory.    * @returns INodeDirectory if any of the quotas have changed. null other wise.    * @throws FileNotFoundException if the path does not exist or is a file    * @throws QuotaExceededException if the directory tree size is     *                                greater than the given quota    * @throws UnresolvedLinkException if a symlink is encountered in src.    */
+comment|/**    * See {@link ClientProtocol#setQuota(String, long, long)} for the contract.    * Sets quota for for a directory.    * @returns INodeDirectory if any of the quotas have changed. null other wise.    * @throws FileNotFoundException if the path does not exist or is a file    * @throws QuotaExceededException if the directory tree size is     *                                greater than the given quota    * @throws UnresolvedLinkException if a symlink is encountered in src.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|unprotectedSetQuota (String src, long nsQuota, long dsQuota)
 name|INodeDirectory
 name|unprotectedSetQuota
@@ -9128,6 +9373,8 @@ throws|,
 name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 assert|assert
 name|hasWriteLock
@@ -9198,24 +9445,18 @@ name|src
 argument_list|)
 decl_stmt|;
 specifier|final
-name|INodesInPath
-name|inodesInPath
-init|=
-name|rootDir
-operator|.
-name|getExistingPathINodes
-argument_list|(
-name|src
-argument_list|,
-literal|true
-argument_list|)
-decl_stmt|;
-specifier|final
 name|INode
 index|[]
 name|inodes
 init|=
-name|inodesInPath
+name|rootDir
+operator|.
+name|getMutableINodesInPath
+argument_list|(
+name|srcs
+argument_list|,
+literal|true
+argument_list|)
 operator|.
 name|getINodes
 argument_list|()
@@ -9477,7 +9718,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * See {@link ClientProtocol#setQuota(String, long, long)} for the     * contract.    * @see #unprotectedSetQuota(String, long, long)    */
+comment|/**    * See {@link ClientProtocol#setQuota(String, long, long)} for the     * contract.    * @throws SnapshotAccessControlException if path is in RO snapshot    * @see #unprotectedSetQuota(String, long, long)    */
 DECL|method|setQuota (String src, long nsQuota, long dsQuota)
 name|void
 name|setQuota
@@ -9497,6 +9738,8 @@ throws|,
 name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
 block|{
 name|writeLock
 argument_list|()

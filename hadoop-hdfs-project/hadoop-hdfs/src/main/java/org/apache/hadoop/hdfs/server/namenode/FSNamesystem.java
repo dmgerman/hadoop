@@ -7888,7 +7888,7 @@ name|valueOf
 argument_list|(
 name|dir
 operator|.
-name|getINode
+name|getMutableINode
 argument_list|(
 name|target
 argument_list|)
@@ -8079,7 +8079,7 @@ name|valueOf
 argument_list|(
 name|dir
 operator|.
-name|getINode
+name|getMutableINode
 argument_list|(
 name|src
 argument_list|)
@@ -8466,7 +8466,7 @@ name|inode
 init|=
 name|dir
 operator|.
-name|getINode
+name|getMutableINode
 argument_list|(
 name|src
 argument_list|)
@@ -9709,7 +9709,7 @@ name|pathExists
 init|=
 name|dir
 operator|.
-name|exists
+name|existsMutable
 argument_list|(
 name|src
 argument_list|)
@@ -14749,7 +14749,7 @@ if|if
 condition|(
 name|dir
 operator|.
-name|isDir
+name|isDirMutable
 argument_list|(
 name|src
 argument_list|)
