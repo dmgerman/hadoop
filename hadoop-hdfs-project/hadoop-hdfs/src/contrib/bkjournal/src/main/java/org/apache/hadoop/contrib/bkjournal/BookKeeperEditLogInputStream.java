@@ -580,11 +580,11 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"BookKeeper[%s,first=%d,last=%d]"
+literal|"BookKeeperLedger[ledgerId=%d,firstTxId=%d,lastTxId=%d]"
 argument_list|,
 name|lh
 operator|.
-name|toString
+name|getId
 argument_list|()
 argument_list|,
 name|firstTxId
@@ -688,6 +688,27 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+operator|(
+literal|"BookKeeperEditLogInputStream {"
+operator|+
+name|this
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"}"
+operator|)
+return|;
 block|}
 comment|/**    * Input stream implementation which can be used by     * FSEditLogOp.Reader    */
 DECL|class|LedgerInputStream
