@@ -652,6 +652,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -1102,6 +1116,18 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|//This is for testing purposes only
+annotation|@
+name|VisibleForTesting
+DECL|method|isReady ()
+name|boolean
+name|isReady
+parameter_list|()
+block|{
+return|return
+name|ready
+return|;
 block|}
 comment|// exposed for unit tests
 DECL|method|setReady (boolean flag)
@@ -9347,6 +9373,16 @@ name|void
 name|reset
 parameter_list|()
 block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|setReady
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|rootDir
 operator|=
 operator|new
@@ -9379,6 +9415,18 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+name|nameCache
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * create an hdfs file status from an inode    *     * @param path the local name    * @param node inode    * @param needLocation if block locations need to be included or not    * @return a file status    * @throws IOException if any error occurs    */
 DECL|method|createFileStatus (byte[] path, INode node, boolean needLocation)

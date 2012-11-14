@@ -4265,6 +4265,13 @@ argument_list|,
 name|dstNamesystem
 argument_list|)
 expr_stmt|;
+name|dstNamesystem
+operator|.
+name|dir
+operator|.
+name|imageLoadComplete
+argument_list|()
+expr_stmt|;
 block|}
 name|Checkpointer
 operator|.
