@@ -118,26 +118,6 @@ name|view
 operator|.
 name|JQueryUI
 operator|.
-name|THEMESWITCHER_ID
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|view
-operator|.
-name|JQueryUI
-operator|.
 name|initID
 import|;
 end_import
@@ -323,13 +303,6 @@ literal|"nav"
 argument_list|)
 argument_list|,
 literal|"{autoHeight:false, active:0}"
-argument_list|)
-expr_stmt|;
-name|set
-argument_list|(
-name|THEMESWITCHER_ID
-argument_list|,
-literal|"themeswitcher"
 argument_list|)
 expr_stmt|;
 block|}

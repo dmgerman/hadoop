@@ -268,13 +268,6 @@ argument_list|,
 literal|"{autoHeight:false, active:0}"
 argument_list|)
 expr_stmt|;
-name|set
-argument_list|(
-name|THEMESWITCHER_ID
-argument_list|,
-literal|"themeswitcher"
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override
