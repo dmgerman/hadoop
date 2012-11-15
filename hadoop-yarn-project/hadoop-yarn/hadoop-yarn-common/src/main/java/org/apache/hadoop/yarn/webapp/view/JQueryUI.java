@@ -379,7 +379,7 @@ name|link
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/jquery/themes-1.8.16/base/jquery-ui.css"
+literal|"static/jquery/themes-1.9.1/base/jquery-ui.css"
 argument_list|)
 argument_list|)
 operator|.
@@ -387,7 +387,7 @@ name|link
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/dt-1.7.5/css/jui-dt.css"
+literal|"static/dt-1.9.4/css/jui-dt.css"
 argument_list|)
 argument_list|)
 operator|.
@@ -395,7 +395,7 @@ name|script
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/jquery/jquery.min-1.6.4.js"
+literal|"static/jquery/jquery-1.8.2.min.js"
 argument_list|)
 argument_list|)
 operator|.
@@ -403,7 +403,7 @@ name|script
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/jquery/jquery-ui.min-1.8.16.js"
+literal|"static/jquery/jquery-ui-1.9.1.custom.min.js"
 argument_list|)
 argument_list|)
 operator|.
@@ -411,7 +411,7 @@ name|script
 argument_list|(
 name|root_url
 argument_list|(
-literal|"static/dt-1.7.5/js/jquery.dataTables.min.js"
+literal|"static/dt-1.9.4/js/jquery.dataTables.min.js"
 argument_list|)
 argument_list|)
 operator|.

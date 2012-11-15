@@ -359,6 +359,21 @@ return|return
 name|tableInit
 argument_list|()
 operator|.
+name|append
+argument_list|(
+literal|", 'aaData': jobsTableData"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", bDeferRender: true"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", bProcessing: true"
+argument_list|)
+operator|.
 comment|// Sort by id upon page load
 name|append
 argument_list|(
@@ -370,28 +385,10 @@ argument_list|(
 literal|", aoColumnDefs:["
 argument_list|)
 operator|.
-comment|// Maps Total
+comment|// Maps Total, Maps Completed, Reduces Total and Reduces Completed
 name|append
 argument_list|(
-literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7 ] }"
-argument_list|)
-operator|.
-comment|// Maps Completed
-name|append
-argument_list|(
-literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 8 ] }"
-argument_list|)
-operator|.
-comment|// Reduces Total
-name|append
-argument_list|(
-literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 9 ] }"
-argument_list|)
-operator|.
-comment|// Reduces Completed
-name|append
-argument_list|(
-literal|",{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 10 ] }"
+literal|"{'sType':'numeric', 'bSearchable': false, 'aTargets': [ 7, 8, 9, 10 ] }"
 argument_list|)
 operator|.
 name|append
