@@ -44,7 +44,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileOutputStream
 import|;
 end_import
 
@@ -65,6 +65,16 @@ operator|.
 name|io
 operator|.
 name|InputStreamReader
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStreamWriter
 import|;
 end_import
 
@@ -334,6 +344,20 @@ name|ToolRunner
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/** Utility methods */
 end_comment
@@ -515,7 +539,7 @@ name|out
 operator|.
 name|format
 argument_list|(
-literal|"%15dms (=%-15s: %s\n"
+literal|"%15dms (=%-15s: %s%n"
 argument_list|,
 name|delta
 argument_list|,
@@ -1375,19 +1399,6 @@ literal|") is not a directory."
 argument_list|)
 throw|;
 block|}
-DECL|field|DATE_FORMAT
-specifier|private
-specifier|static
-specifier|final
-name|SimpleDateFormat
-name|DATE_FORMAT
-init|=
-operator|new
-name|SimpleDateFormat
-argument_list|(
-literal|"-yyyyMMdd-HHmmssSSS"
-argument_list|)
-decl_stmt|;
 comment|/** Create a writer of a local file. */
 DECL|method|createWriter (File dir, String prefix)
 specifier|public
@@ -1409,6 +1420,15 @@ argument_list|(
 name|dir
 argument_list|)
 expr_stmt|;
+name|SimpleDateFormat
+name|dateFormat
+init|=
+operator|new
+name|SimpleDateFormat
+argument_list|(
+literal|"-yyyyMMdd-HHmmssSSS"
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 init|;
@@ -1426,7 +1446,7 @@ name|dir
 argument_list|,
 name|prefix
 operator|+
-name|DATE_FORMAT
+name|dateFormat
 operator|.
 name|format
 argument_list|(
@@ -1456,9 +1476,17 @@ operator|new
 name|PrintWriter
 argument_list|(
 operator|new
-name|FileWriter
+name|OutputStreamWriter
+argument_list|(
+operator|new
+name|FileOutputStream
 argument_list|(
 name|f
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 return|;
@@ -2038,6 +2066,10 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -2153,17 +2185,25 @@ name|outfile
 argument_list|)
 expr_stmt|;
 specifier|final
-name|PrintStream
+name|PrintWriter
 name|out
 init|=
 operator|new
-name|PrintStream
+name|PrintWriter
+argument_list|(
+operator|new
+name|OutputStreamWriter
 argument_list|(
 name|fs
 operator|.
 name|create
 argument_list|(
 name|outfile
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|,
 literal|true

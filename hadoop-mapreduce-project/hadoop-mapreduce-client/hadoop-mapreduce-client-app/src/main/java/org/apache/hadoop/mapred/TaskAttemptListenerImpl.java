@@ -1799,16 +1799,6 @@ operator|.
 name|getStateString
 argument_list|()
 expr_stmt|;
-comment|// Set the output-size when map-task finishes. Set by the task itself.
-name|taskAttemptStatus
-operator|.
-name|outputSize
-operator|=
-name|taskStatus
-operator|.
-name|getOutputSize
-argument_list|()
-expr_stmt|;
 comment|// Task sends the updated phase to the TT.
 name|taskAttemptStatus
 operator|.

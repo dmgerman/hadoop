@@ -5261,6 +5261,17 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+break|break;
+default|default:
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Illegal job state: "
+operator|+
+name|finalState
+argument_list|)
+throw|;
 block|}
 return|return
 name|finalState
@@ -7609,6 +7620,19 @@ name|counters
 argument_list|)
 expr_stmt|;
 break|break;
+default|default:
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Task type neither map nor reduce: "
+operator|+
+name|t
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+throw|;
 block|}
 name|this
 operator|.

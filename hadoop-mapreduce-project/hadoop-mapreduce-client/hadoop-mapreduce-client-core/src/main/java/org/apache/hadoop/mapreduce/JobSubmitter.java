@@ -496,6 +496,20 @@ name|ObjectMapper
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -3129,7 +3143,11 @@ name|getValue
 argument_list|()
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

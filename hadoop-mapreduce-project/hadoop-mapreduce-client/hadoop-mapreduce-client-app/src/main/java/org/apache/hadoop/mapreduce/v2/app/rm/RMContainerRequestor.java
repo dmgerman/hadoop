@@ -1386,7 +1386,12 @@ name|failures
 operator|==
 literal|null
 condition|?
+name|Integer
+operator|.
+name|valueOf
+argument_list|(
 literal|0
+argument_list|)
 else|:
 name|failures
 expr_stmt|;

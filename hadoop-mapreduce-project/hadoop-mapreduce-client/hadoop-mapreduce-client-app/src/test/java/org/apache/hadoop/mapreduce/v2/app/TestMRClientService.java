@@ -903,12 +903,6 @@ name|Phase
 operator|.
 name|MAP
 expr_stmt|;
-name|taskAttemptStatus
-operator|.
-name|outputSize
-operator|=
-literal|3
-expr_stmt|;
 comment|// send the status update
 name|app
 operator|.

@@ -876,10 +876,6 @@ name|shutDown
 argument_list|()
 expr_stmt|;
 block|}
-name|fetchers
-operator|=
-literal|null
-expr_stmt|;
 comment|// stop the scheduler
 name|scheduler
 operator|.

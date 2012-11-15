@@ -1000,10 +1000,6 @@ name|p
 argument_list|)
 expr_stmt|;
 block|}
-name|paths
-operator|=
-literal|null
-expr_stmt|;
 comment|// In one single iteration, process all the paths in a single pool.
 comment|// Processing one pool at a time ensures that a split contains paths
 comment|// from a single pool only.

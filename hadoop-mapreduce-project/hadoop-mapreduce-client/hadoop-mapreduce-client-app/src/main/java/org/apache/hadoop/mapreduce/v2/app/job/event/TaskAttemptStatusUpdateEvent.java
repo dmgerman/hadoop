@@ -190,11 +190,6 @@ specifier|public
 name|Phase
 name|phase
 decl_stmt|;
-DECL|field|outputSize
-specifier|public
-name|long
-name|outputSize
-decl_stmt|;
 DECL|field|fetchFailedMaps
 specifier|public
 name|List

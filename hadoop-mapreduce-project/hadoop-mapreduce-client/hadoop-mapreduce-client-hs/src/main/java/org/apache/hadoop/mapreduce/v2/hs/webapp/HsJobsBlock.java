@@ -242,7 +242,6 @@ name|AppContext
 name|appContext
 decl_stmt|;
 DECL|field|dateFormat
-specifier|static
 specifier|final
 name|SimpleDateFormat
 name|dateFormat

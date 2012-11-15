@@ -328,13 +328,6 @@ name|MINIMUM_COMPLETE_NUMBER_TO_SPECULATE
 init|=
 literal|1
 decl_stmt|;
-DECL|field|conf
-specifier|protected
-name|Configuration
-name|conf
-init|=
-literal|null
-decl_stmt|;
 DECL|field|context
 specifier|protected
 name|AppContext
@@ -518,12 +511,6 @@ name|AppContext
 name|context
 parameter_list|)
 block|{
-name|this
-operator|.
-name|conf
-operator|=
-name|conf
-expr_stmt|;
 name|this
 operator|.
 name|context
