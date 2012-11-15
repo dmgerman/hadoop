@@ -2518,7 +2518,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"logSync from second thread should bump txid up to 2"
+literal|"logSync from second thread should bump txid up to 3"
 argument_list|,
 literal|3
 argument_list|,
