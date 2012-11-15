@@ -173,12 +173,6 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/** The ID (e.g. snapshot ID) of this object. */
-DECL|field|id
-specifier|final
-name|int
-name|id
-decl_stmt|;
 comment|/** c-list: inode(s) created in current. */
 DECL|field|created
 specifier|private
@@ -197,20 +191,6 @@ name|INode
 argument_list|>
 name|deleted
 decl_stmt|;
-DECL|method|Diff (int id)
-name|Diff
-parameter_list|(
-name|int
-name|id
-parameter_list|)
-block|{
-name|this
-operator|.
-name|id
-operator|=
-name|id
-expr_stmt|;
-block|}
 comment|/**      * Insert the inode to created.      * @param i the insertion point defined      *          in {@link Collections#binarySearch(List, Object)}      */
 DECL|method|insertCreated (final INode inode, final int i)
 specifier|private
@@ -969,10 +949,6 @@ argument_list|()
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|"_"
-operator|+
-name|id
 operator|+
 literal|":\n  created="
 operator|+
