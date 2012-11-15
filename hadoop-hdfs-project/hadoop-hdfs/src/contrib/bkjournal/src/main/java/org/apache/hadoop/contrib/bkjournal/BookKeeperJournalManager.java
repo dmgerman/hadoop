@@ -889,13 +889,9 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|zkc
-operator|=
-operator|new
-name|ZooKeeper
-argument_list|(
-name|zkConnect
-argument_list|,
+name|int
+name|bkjmZKSessionTimeout
+init|=
 name|conf
 operator|.
 name|getInt
@@ -904,12 +900,30 @@ name|BKJM_ZK_SESSION_TIMEOUT
 argument_list|,
 name|BKJM_ZK_SESSION_TIMEOUT_DEFAULT
 argument_list|)
+decl_stmt|;
+name|zkc
+operator|=
+operator|new
+name|ZooKeeper
+argument_list|(
+name|zkConnect
+argument_list|,
+name|bkjmZKSessionTimeout
 argument_list|,
 operator|new
 name|ZkConnectionWatcher
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Configured zk session timeout + some extra grace period (here
+comment|// BKJM_ZK_SESSION_TIMEOUT_DEFAULT used as grace period)
+name|int
+name|zkConnectionLatchTimeout
+init|=
+name|bkjmZKSessionTimeout
+operator|+
+name|BKJM_ZK_SESSION_TIMEOUT_DEFAULT
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -917,7 +931,7 @@ name|zkConnectLatch
 operator|.
 name|await
 argument_list|(
-literal|6000
+name|zkConnectionLatchTimeout
 argument_list|,
 name|TimeUnit
 operator|.
