@@ -1783,6 +1783,10 @@ specifier|final
 name|String
 name|nnAddr
 init|=
+name|StringEscapeUtils
+operator|.
+name|escapeHtml
+argument_list|(
 name|req
 operator|.
 name|getParameter
@@ -1790,6 +1794,7 @@ argument_list|(
 name|JspHelper
 operator|.
 name|NAMENODE_ADDRESS
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -4287,6 +4292,10 @@ decl_stmt|;
 name|String
 name|nnAddr
 init|=
+name|StringEscapeUtils
+operator|.
+name|escapeHtml
+argument_list|(
 name|req
 operator|.
 name|getParameter
@@ -4294,6 +4303,7 @@ argument_list|(
 name|JspHelper
 operator|.
 name|NAMENODE_ADDRESS
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|int
