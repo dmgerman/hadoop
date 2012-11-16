@@ -332,27 +332,60 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|", aoColumns:[{sType:'title-numeric'}, null, null, null, "
+literal|", 'aaData': appsTableData"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"{sType:'title-numeric'}, {sType:'title-numeric'} , null, "
+literal|", bDeferRender: true"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"null,{sType:'title-numeric', bSearchable:false}, null]"
+literal|", bProcessing: true"
 argument_list|)
-decl_stmt|;
+operator|.
+name|append
+argument_list|(
+literal|"\n, aoColumnDefs: [\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"{'sType':'numeric', 'aTargets': [0]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopID }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', 'aTargets': [4, 5]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': renderHadoopDate }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [8]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopProgress }]"
+argument_list|)
 comment|// Sort by id upon page load
-name|init
 operator|.
 name|append
 argument_list|(
 literal|", aaSorting: [[0, 'desc']]"
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|String
 name|rows
 init|=
