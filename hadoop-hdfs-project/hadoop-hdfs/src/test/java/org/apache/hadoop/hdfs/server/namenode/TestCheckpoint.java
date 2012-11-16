@@ -8788,6 +8788,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 for|for
@@ -8818,6 +8820,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Now the secondary tries to checkpoint again with its
@@ -9155,6 +9159,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -9175,6 +9181,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Ensure that the 2NN can still perform a checkpoint.
@@ -9399,6 +9407,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -9419,6 +9429,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Ensure that the 2NN can still perform a checkpoint.

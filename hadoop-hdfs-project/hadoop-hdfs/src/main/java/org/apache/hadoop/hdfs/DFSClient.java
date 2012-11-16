@@ -8825,7 +8825,7 @@ name|type
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *     * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction)    */
+comment|/**    * Enter, leave or get safe mode.    *     * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction,boolean)    */
 DECL|method|setSafeMode (SafeModeAction action)
 specifier|public
 name|boolean
@@ -8838,11 +8838,37 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|setSafeMode
+argument_list|(
+name|action
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Enter, leave or get safe mode.    *     * @param action    *          One of SafeModeAction.GET, SafeModeAction.ENTER and    *          SafeModeActiob.LEAVE    * @param isChecked    *          If true, then check only active namenode's safemode status, else    *          check first namenode's status.    * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeActio,boolean)    */
+DECL|method|setSafeMode (SafeModeAction action, boolean isChecked)
+specifier|public
+name|boolean
+name|setSafeMode
+parameter_list|(
+name|SafeModeAction
+name|action
+parameter_list|,
+name|boolean
+name|isChecked
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
 name|namenode
 operator|.
 name|setSafeMode
 argument_list|(
 name|action
+argument_list|,
+name|isChecked
 argument_list|)
 return|;
 block|}

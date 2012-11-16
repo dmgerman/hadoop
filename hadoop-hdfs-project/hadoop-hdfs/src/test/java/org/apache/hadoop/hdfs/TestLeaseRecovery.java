@@ -894,6 +894,8 @@ operator|.
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -972,6 +974,8 @@ operator|.
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
