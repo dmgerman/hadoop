@@ -507,7 +507,7 @@ name|append
 argument_list|(
 name|StringEscapeUtils
 operator|.
-name|escapeJavaScript
+name|escapeHtml
 argument_list|(
 name|job
 operator|.
@@ -525,7 +525,7 @@ name|append
 argument_list|(
 name|StringEscapeUtils
 operator|.
-name|escapeJavaScript
+name|escapeHtml
 argument_list|(
 name|job
 operator|.
@@ -543,7 +543,7 @@ name|append
 argument_list|(
 name|StringEscapeUtils
 operator|.
-name|escapeJavaScript
+name|escapeHtml
 argument_list|(
 name|job
 operator|.

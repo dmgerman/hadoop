@@ -156,25 +156,70 @@ return|return
 name|tableInit
 argument_list|()
 operator|.
+name|append
+argument_list|(
+literal|", 'aaData': tasksTableData"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", bDeferRender: true"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", bProcessing: true"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, aoColumnDefs: [\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"{'sType':'numeric', 'aTargets': [0]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopID }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [1]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopProgress }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', 'aTargets': [3, 4]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': renderHadoopDate }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', 'aTargets': [5]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': renderHadoopElapsedTime }]"
+argument_list|)
 comment|// Sort by id upon page load
-name|append
-argument_list|(
-literal|", aaSorting: [[0, 'asc']]"
-argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|",aoColumns:[{sType:'title-numeric'},{sType:'title-numeric',"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"bSearchable:false},null,{sType:'title-numeric'},"
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"{sType:'title-numeric'},{sType:'title-numeric'}]}"
+literal|", aaSorting: [[0, 'asc']] }"
 argument_list|)
 operator|.
 name|toString
