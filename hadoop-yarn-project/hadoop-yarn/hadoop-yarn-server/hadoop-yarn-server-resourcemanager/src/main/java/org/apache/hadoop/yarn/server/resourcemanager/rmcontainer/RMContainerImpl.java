@@ -788,6 +788,21 @@ operator|new
 name|KillTransition
 argument_list|()
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|,
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|,
+name|RMContainerEventType
+operator|.
+name|EXPIRE
+argument_list|)
 comment|// Transitions from COMPLETED state
 operator|.
 name|addTransition
@@ -804,6 +819,10 @@ name|EnumSet
 operator|.
 name|of
 argument_list|(
+name|RMContainerEventType
+operator|.
+name|EXPIRE
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|RELEASED
@@ -856,6 +875,10 @@ name|of
 argument_list|(
 name|RMContainerEventType
 operator|.
+name|EXPIRE
+argument_list|,
+name|RMContainerEventType
+operator|.
 name|RELEASED
 argument_list|,
 name|RMContainerEventType
@@ -883,6 +906,10 @@ name|EnumSet
 operator|.
 name|of
 argument_list|(
+name|RMContainerEventType
+operator|.
+name|EXPIRE
+argument_list|,
 name|RMContainerEventType
 operator|.
 name|RELEASED
