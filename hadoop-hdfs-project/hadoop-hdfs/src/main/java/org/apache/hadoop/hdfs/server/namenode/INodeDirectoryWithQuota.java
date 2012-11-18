@@ -105,6 +105,8 @@ DECL|field|nsCount
 specifier|private
 name|long
 name|nsCount
+init|=
+literal|1L
 decl_stmt|;
 DECL|field|dsQuota
 specifier|private
@@ -116,6 +118,8 @@ DECL|field|diskspace
 specifier|private
 name|long
 name|diskspace
+init|=
+literal|0L
 decl_stmt|;
 comment|/** Convert an existing directory inode to one with the given quota    *     * @param nsQuota Namespace quota to be assigned to this inode    * @param dsQuota Diskspace quota to be assigned to this indoe    * @param other The other inode from which all other properties are copied    */
 DECL|method|INodeDirectoryWithQuota (long nsQuota, long dsQuota, INodeDirectory other)
@@ -172,12 +176,17 @@ operator|.
 name|getDsCount
 argument_list|()
 expr_stmt|;
-name|setQuota
-argument_list|(
+name|this
+operator|.
 name|nsQuota
-argument_list|,
+operator|=
+name|nsQuota
+expr_stmt|;
+name|this
+operator|.
 name|dsQuota
-argument_list|)
+operator|=
+name|dsQuota
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
@@ -216,12 +225,6 @@ name|dsQuota
 operator|=
 name|dsQuota
 expr_stmt|;
-name|this
-operator|.
-name|nsCount
-operator|=
-literal|1
-expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
 DECL|method|INodeDirectoryWithQuota (String name, PermissionStatus permissions, long nsQuota, long dsQuota)
@@ -258,12 +261,6 @@ operator|.
 name|dsQuota
 operator|=
 name|dsQuota
-expr_stmt|;
-name|this
-operator|.
-name|nsCount
-operator|=
-literal|1
 expr_stmt|;
 block|}
 comment|/** Get this directory's namespace quota    * @return this directory's namespace quota    */
@@ -357,9 +354,9 @@ name|diskspace
 return|;
 block|}
 comment|/** Update the size of the tree    *     * @param nsDelta the change of the tree size    * @param dsDelta change to disk space occupied    */
-DECL|method|updateNumItemsInTree (long nsDelta, long dsDelta)
+DECL|method|addSpaceConsumed (long nsDelta, long dsDelta)
 name|void
-name|updateNumItemsInTree
+name|addSpaceConsumed
 parameter_list|(
 name|long
 name|nsDelta
@@ -368,38 +365,16 @@ name|long
 name|dsDelta
 parameter_list|)
 block|{
-name|nsCount
-operator|+=
-name|nsDelta
-expr_stmt|;
-name|diskspace
-operator|+=
-name|dsDelta
-expr_stmt|;
-block|}
-comment|/** Update the size of the tree    *     * @param nsDelta the change of the tree size    * @param dsDelta change to disk space occupied    **/
-DECL|method|unprotectedUpdateNumItemsInTree (long nsDelta, long dsDelta)
-name|void
-name|unprotectedUpdateNumItemsInTree
-parameter_list|(
-name|long
-name|nsDelta
-parameter_list|,
-name|long
-name|dsDelta
-parameter_list|)
-block|{
-name|nsCount
-operator|=
+name|setSpaceConsumed
+argument_list|(
 name|nsCount
 operator|+
 name|nsDelta
-expr_stmt|;
-name|diskspace
-operator|=
+argument_list|,
 name|diskspace
 operator|+
 name|dsDelta
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Sets namespace and diskspace take by the directory rooted     * at this INode. This should be used carefully. It does not check     * for quota violations.    *     * @param namespace size of the directory to be set    * @param diskspace disk space take by all the nodes under this directory    */

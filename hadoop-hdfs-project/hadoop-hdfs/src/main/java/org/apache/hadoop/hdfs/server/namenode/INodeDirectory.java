@@ -248,6 +248,8 @@ argument_list|<
 name|INode
 argument_list|>
 name|children
+init|=
+literal|null
 decl_stmt|;
 DECL|method|INodeDirectory (String name, PermissionStatus permissions)
 name|INodeDirectory
@@ -265,12 +267,6 @@ name|name
 argument_list|,
 name|permissions
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|children
-operator|=
-literal|null
 expr_stmt|;
 block|}
 DECL|method|INodeDirectory (PermissionStatus permissions, long mTime)
@@ -293,40 +289,34 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|children
-operator|=
-literal|null
-expr_stmt|;
 block|}
 comment|/** constructor */
-DECL|method|INodeDirectory (byte[] localName, PermissionStatus permissions, long mTime)
+DECL|method|INodeDirectory (byte[] name, PermissionStatus permissions, long mtime)
 name|INodeDirectory
 parameter_list|(
 name|byte
 index|[]
-name|localName
+name|name
 parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
 name|long
-name|mTime
+name|mtime
 parameter_list|)
 block|{
-name|this
+name|super
 argument_list|(
+name|name
+argument_list|,
 name|permissions
 argument_list|,
-name|mTime
+literal|null
+argument_list|,
+name|mtime
+argument_list|,
+literal|0L
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|name
-operator|=
-name|localName
 expr_stmt|;
 block|}
 comment|/** copy constructor    *     * @param other    */
@@ -348,8 +338,7 @@ name|children
 operator|=
 name|other
 operator|.
-name|getChildren
-argument_list|()
+name|children
 expr_stmt|;
 block|}
 comment|/** @return true unconditionally. */
@@ -366,64 +355,11 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|removeChild (INode node)
-name|INode
-name|removeChild
-parameter_list|(
-name|INode
-name|node
-parameter_list|)
-block|{
-assert|assert
-name|children
-operator|!=
-literal|null
-assert|;
-name|int
-name|low
-init|=
-name|Collections
-operator|.
-name|binarySearch
-argument_list|(
-name|children
-argument_list|,
-name|node
-operator|.
-name|name
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|low
-operator|>=
-literal|0
-condition|)
-block|{
-return|return
-name|children
-operator|.
-name|remove
-argument_list|(
-name|low
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-return|return
-literal|null
-return|;
-block|}
-block|}
-comment|/** Replace a child that has the same name as newChild by newChild.    *     * @param newChild Child node to be added    */
-DECL|method|replaceChild (INode newChild)
+DECL|method|assertChildrenNonNull ()
+specifier|private
 name|void
-name|replaceChild
-parameter_list|(
-name|INode
-name|newChild
-parameter_list|)
+name|assertChildrenNonNull
+parameter_list|()
 block|{
 if|if
 condition|(
@@ -434,24 +370,92 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IllegalArgumentException
+name|AssertionError
 argument_list|(
-literal|"The directory is empty"
+literal|"children is null: "
+operator|+
+name|this
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|searchChildren (INode inode)
+specifier|private
 name|int
-name|low
-init|=
+name|searchChildren
+parameter_list|(
+name|INode
+name|inode
+parameter_list|)
+block|{
+return|return
 name|Collections
 operator|.
 name|binarySearch
 argument_list|(
 name|children
 argument_list|,
-name|newChild
+name|inode
 operator|.
-name|name
+name|getLocalNameBytes
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|removeChild (INode node)
+name|INode
+name|removeChild
+parameter_list|(
+name|INode
+name|node
+parameter_list|)
+block|{
+name|assertChildrenNonNull
+argument_list|()
+expr_stmt|;
+specifier|final
+name|int
+name|i
+init|=
+name|searchChildren
+argument_list|(
+name|node
+argument_list|)
+decl_stmt|;
+return|return
+name|i
+operator|>=
+literal|0
+condition|?
+name|children
+operator|.
+name|remove
+argument_list|(
+name|i
+argument_list|)
+else|:
+literal|null
+return|;
+block|}
+comment|/** Replace a child that has the same name as newChild by newChild.    *     * @param newChild Child node to be added    */
+DECL|method|replaceChild (INode newChild)
+name|void
+name|replaceChild
+parameter_list|(
+name|INode
+name|newChild
+parameter_list|)
+block|{
+name|assertChildrenNonNull
+argument_list|()
+expr_stmt|;
+specifier|final
+name|int
+name|low
+init|=
+name|searchChildren
+argument_list|(
+name|newChild
 argument_list|)
 decl_stmt|;
 if|if
@@ -853,7 +857,7 @@ operator|)
 name|curNode
 operator|)
 operator|.
-name|getLinkValue
+name|getSymlinkString
 argument_list|()
 decl_stmt|;
 if|if
@@ -1088,18 +1092,13 @@ name|DEFAULT_FILES_PER_DIRECTORY
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
 name|int
 name|low
 init|=
-name|Collections
-operator|.
-name|binarySearch
+name|searchChildren
 argument_list|(
-name|children
-argument_list|,
 name|node
-operator|.
-name|name
 argument_list|)
 decl_stmt|;
 if|if
@@ -1214,14 +1213,10 @@ name|newNode
 return|;
 block|}
 comment|/**    * Add new inode to the parent if specified.    * Optimized version of addNode() if parent is not null.    *     * @return  parent INode if new inode is inserted    *          or null if it already exists.    * @throws  FileNotFoundException if parent does not exist or     *          is not a directory.    */
-DECL|method|addToParent ( byte[] localname, INode newNode, INodeDirectory parent, boolean propagateModTime )
+DECL|method|addToParent (INode newNode, INodeDirectory parent, boolean propagateModTime)
 name|INodeDirectory
 name|addToParent
 parameter_list|(
-name|byte
-index|[]
-name|localname
-parameter_list|,
 name|INode
 name|newNode
 parameter_list|,
@@ -1235,12 +1230,6 @@ throws|throws
 name|FileNotFoundException
 block|{
 comment|// insert into the parent children list
-name|newNode
-operator|.
-name|name
-operator|=
-name|localname
-expr_stmt|;
 if|if
 condition|(
 name|parent
@@ -1400,8 +1389,8 @@ return|;
 block|}
 name|newNode
 operator|.
-name|name
-operator|=
+name|setLocalName
+argument_list|(
 name|pathComponents
 index|[
 name|pathComponents
@@ -1410,6 +1399,7 @@ name|length
 operator|-
 literal|1
 index|]
+argument_list|)
 expr_stmt|;
 comment|// insert into the parent children list
 name|INodeDirectory
@@ -1682,20 +1672,6 @@ literal|null
 condition|?
 name|EMPTY_LIST
 else|:
-name|children
-return|;
-block|}
-comment|/** @return the children list which is possibly null. */
-DECL|method|getChildren ()
-specifier|public
-name|List
-argument_list|<
-name|INode
-argument_list|>
-name|getChildren
-parameter_list|()
-block|{
-return|return
 name|children
 return|;
 block|}

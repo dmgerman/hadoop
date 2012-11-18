@@ -1168,14 +1168,19 @@ argument_list|)
 decl_stmt|;
 comment|// read rest of inode
 comment|// add to parent
+name|newNode
+operator|.
+name|setLocalName
+argument_list|(
+name|localName
+argument_list|)
+expr_stmt|;
 name|namesystem
 operator|.
 name|dir
 operator|.
 name|addToParent
 argument_list|(
-name|localName
-argument_list|,
 name|parent
 argument_list|,
 name|newNode
@@ -1310,11 +1315,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// add new inode
-name|parentINode
-operator|=
-name|fsDir
+name|newNode
 operator|.
-name|addToParent
+name|setLocalName
 argument_list|(
 name|pathComponents
 index|[
@@ -1324,7 +1327,14 @@ name|length
 operator|-
 literal|1
 index|]
-argument_list|,
+argument_list|)
+expr_stmt|;
+name|parentINode
+operator|=
+name|fsDir
+operator|.
+name|addToParent
+argument_list|(
 name|parentINode
 argument_list|,
 name|newNode
@@ -2472,6 +2482,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|List
 argument_list|<
 name|INode
@@ -2480,15 +2491,11 @@ name|children
 init|=
 name|current
 operator|.
-name|getChildren
+name|getChildrenList
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|children
-operator|==
-literal|null
-operator|||
 name|children
 operator|.
 name|isEmpty

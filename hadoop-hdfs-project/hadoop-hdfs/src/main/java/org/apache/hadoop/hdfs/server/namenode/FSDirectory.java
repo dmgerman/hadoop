@@ -1570,14 +1570,10 @@ return|return
 name|newNode
 return|;
 block|}
-DECL|method|addToParent (byte[] src, INodeDirectory parentINode, INode newNode, boolean propagateModTime)
+DECL|method|addToParent (INodeDirectory parentINode, INode newNode, boolean propagateModTime)
 name|INodeDirectory
 name|addToParent
 parameter_list|(
-name|byte
-index|[]
-name|src
-parameter_list|,
 name|INodeDirectory
 name|parentINode
 parameter_list|,
@@ -1607,8 +1603,6 @@ name|rootDir
 operator|.
 name|addToParent
 argument_list|(
-name|src
-argument_list|,
 name|newNode
 argument_list|,
 name|parentINode
@@ -2611,7 +2605,7 @@ operator|)
 name|srcInode
 operator|)
 operator|.
-name|getLinkValue
+name|getSymlinkString
 argument_list|()
 argument_list|)
 condition|)
@@ -3253,7 +3247,7 @@ operator|)
 name|srcInode
 operator|)
 operator|.
-name|getLinkValue
+name|getSymlinkString
 argument_list|()
 argument_list|)
 condition|)
@@ -3496,17 +3490,21 @@ name|error
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|dstInode
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+specifier|final
 name|List
 argument_list|<
 name|INode
 argument_list|>
 name|children
 init|=
-name|dstInode
-operator|.
-name|isDirectory
-argument_list|()
-condition|?
 operator|(
 operator|(
 name|INodeDirectory
@@ -3514,28 +3512,21 @@ operator|)
 name|dstInode
 operator|)
 operator|.
-name|getChildren
+name|getChildrenList
 argument_list|()
-else|:
-literal|null
 decl_stmt|;
 if|if
 condition|(
-name|children
-operator|!=
-literal|null
-operator|&&
+operator|!
 name|children
 operator|.
-name|size
+name|isEmpty
 argument_list|()
-operator|!=
-literal|0
 condition|)
 block|{
 name|error
 operator|=
-literal|"rename cannot overwrite non empty destination directory "
+literal|"rename destination directory is not empty: "
 operator|+
 name|dst
 expr_stmt|;
@@ -3557,6 +3548,7 @@ argument_list|(
 name|error
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 if|if
@@ -5725,7 +5717,8 @@ name|createFileStatus
 argument_list|(
 name|cur
 operator|.
-name|name
+name|getLocalNameBytes
+argument_list|()
 argument_list|,
 name|cur
 argument_list|,
@@ -6425,7 +6418,7 @@ index|]
 decl_stmt|;
 name|node
 operator|.
-name|unprotectedUpdateNumItemsInTree
+name|addSpaceConsumed
 argument_list|(
 name|nsDelta
 argument_list|,
