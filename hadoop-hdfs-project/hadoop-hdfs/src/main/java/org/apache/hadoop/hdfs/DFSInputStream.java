@@ -4993,6 +4993,21 @@ throw|;
 block|}
 if|if
 condition|(
+name|targetPos
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot seek to negative offset"
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|closed
 condition|)
 block|{
