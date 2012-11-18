@@ -387,25 +387,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// NOTE: errors for FNF is not how the shell works!
-if|if
-condition|(
-name|flag
-operator|!=
-literal|'e'
-condition|)
-name|displayError
-argument_list|(
-operator|new
-name|PathNotFoundException
-argument_list|(
-name|item
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|exitCode
 operator|=
 literal|1

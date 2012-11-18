@@ -1857,6 +1857,11 @@ argument_list|()
 condition|;
 control|)
 block|{
+name|boolean
+name|needSync
+init|=
+literal|false
+decl_stmt|;
 try|try
 block|{
 name|fsnamesystem
@@ -1875,6 +1880,8 @@ name|isInSafeMode
 argument_list|()
 condition|)
 block|{
+name|needSync
+operator|=
 name|checkLeases
 argument_list|()
 expr_stmt|;
@@ -1887,6 +1894,21 @@ operator|.
 name|writeUnlock
 argument_list|()
 expr_stmt|;
+comment|// lease reassignments should to be sync'ed.
+if|if
+condition|(
+name|needSync
+condition|)
+block|{
+name|fsnamesystem
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|logSync
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 name|Thread
 operator|.
@@ -1928,14 +1950,19 @@ block|}
 block|}
 block|}
 block|}
-comment|/** Check the leases beginning from the oldest. */
+comment|/** Check the leases beginning from the oldest.    *  @return true is sync is needed.    */
 DECL|method|checkLeases ()
 specifier|private
 specifier|synchronized
-name|void
+name|boolean
 name|checkLeases
 parameter_list|()
 block|{
+name|boolean
+name|needSync
+init|=
+literal|false
+decl_stmt|;
 assert|assert
 name|fsnamesystem
 operator|.
@@ -1972,7 +1999,9 @@ name|expiredHardLimit
 argument_list|()
 condition|)
 block|{
-return|return;
+return|return
+name|needSync
+return|;
 block|}
 name|LOG
 operator|.
@@ -2095,6 +2124,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// If a lease recovery happened, we need to sync later.
+if|if
+condition|(
+operator|!
+name|needSync
+operator|&&
+operator|!
+name|completed
+condition|)
+block|{
+name|needSync
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2143,6 +2187,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+return|return
+name|needSync
+return|;
 block|}
 annotation|@
 name|Override

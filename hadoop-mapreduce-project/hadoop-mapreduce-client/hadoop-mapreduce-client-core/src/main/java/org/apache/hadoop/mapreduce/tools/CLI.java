@@ -34,6 +34,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|OutputStreamWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -471,6 +481,20 @@ operator|.
 name|logaggregation
 operator|.
 name|LogDumper
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
 import|;
 end_import
 
@@ -2942,7 +2966,7 @@ name|printf
 argument_list|(
 name|prefix
 operator|+
-literal|"<command><args>\n"
+literal|"<command><args>%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -2951,7 +2975,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-submit<job-file>]\n"
+literal|"\t[-submit<job-file>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -2960,7 +2984,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-status<job-id>]\n"
+literal|"\t[-status<job-id>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -2969,7 +2993,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-counter<job-id><group-name><counter-name>]\n"
+literal|"\t[-counter<job-id><group-name><counter-name>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -2978,7 +3002,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-kill<job-id>]\n"
+literal|"\t[-kill<job-id>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -2993,7 +3017,7 @@ literal|"Valid values for priorities are: "
 operator|+
 name|jobPriorityValues
 operator|+
-literal|"\n"
+literal|"%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3002,7 +3026,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-events<job-id><from-event-#><#-of-events>]\n"
+literal|"\t[-events<job-id><from-event-#><#-of-events>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3011,7 +3035,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-history<jobHistoryFile>]\n"
+literal|"\t[-history<jobHistoryFile>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3020,7 +3044,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-list [all]]\n"
+literal|"\t[-list [all]]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3029,7 +3053,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-list-active-trackers]\n"
+literal|"\t[-list-active-trackers]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3038,7 +3062,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-list-blacklisted-trackers]\n"
+literal|"\t[-list-blacklisted-trackers]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3068,7 +3092,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-kill-task<task-attempt-id>]\n"
+literal|"\t[-kill-task<task-attempt-id>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3077,7 +3101,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-fail-task<task-attempt-id>]\n"
+literal|"\t[-fail-task<task-attempt-id>]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -3086,7 +3110,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-logs<job-id><task-attempt-id>]\n\n"
+literal|"\t[-logs<job-id><task-attempt-id>]%n%n"
 argument_list|)
 expr_stmt|;
 name|ToolRunner
@@ -3785,9 +3809,17 @@ argument_list|,
 operator|new
 name|PrintWriter
 argument_list|(
+operator|new
+name|OutputStreamWriter
+argument_list|(
 name|System
 operator|.
 name|out
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

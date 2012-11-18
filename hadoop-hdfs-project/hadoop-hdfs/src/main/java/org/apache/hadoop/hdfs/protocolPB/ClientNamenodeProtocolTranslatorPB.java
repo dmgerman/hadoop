@@ -3887,13 +3887,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|setSafeMode (SafeModeAction action)
+DECL|method|setSafeMode (SafeModeAction action, boolean isChecked)
 specifier|public
 name|boolean
 name|setSafeMode
 parameter_list|(
 name|SafeModeAction
 name|action
+parameter_list|,
+name|boolean
+name|isChecked
 parameter_list|)
 throws|throws
 name|IOException
@@ -3914,6 +3917,11 @@ name|convert
 argument_list|(
 name|action
 argument_list|)
+argument_list|)
+operator|.
+name|setChecked
+argument_list|(
+name|isChecked
 argument_list|)
 operator|.
 name|build

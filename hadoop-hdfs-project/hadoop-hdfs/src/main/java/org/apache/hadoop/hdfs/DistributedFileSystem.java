@@ -3132,7 +3132,7 @@ name|type
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *      * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(    *    HdfsConstants.SafeModeAction)    */
+comment|/**    * Enter, leave or get safe mode.    *      * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(    *    HdfsConstants.SafeModeAction,boolean)    */
 DECL|method|setSafeMode (HdfsConstants.SafeModeAction action)
 specifier|public
 name|boolean
@@ -3147,11 +3147,39 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|setSafeMode
+argument_list|(
+name|action
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**    * Enter, leave or get safe mode.    *     * @param action    *          One of SafeModeAction.ENTER, SafeModeAction.LEAVE and    *          SafeModeAction.GET    * @param isChecked    *          If true check only for Active NNs status, else check first NN's    *          status    * @see org.apache.hadoop.hdfs.protocol.ClientProtocol#setSafeMode(SafeModeAction, boolean)    */
+DECL|method|setSafeMode (HdfsConstants.SafeModeAction action, boolean isChecked)
+specifier|public
+name|boolean
+name|setSafeMode
+parameter_list|(
+name|HdfsConstants
+operator|.
+name|SafeModeAction
+name|action
+parameter_list|,
+name|boolean
+name|isChecked
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
 name|dfs
 operator|.
 name|setSafeMode
 argument_list|(
 name|action
+argument_list|,
+name|isChecked
 argument_list|)
 return|;
 block|}
@@ -3945,7 +3973,7 @@ name|getCanonicalServiceName
 argument_list|()
 return|;
 block|}
-comment|/**    * Utility function that returns if the NameNode is in safemode or not.    *    * @return true if NameNode is in safemode, false otherwise.    * @throws IOException when there is an issue communicating with the NameNode    */
+comment|/**    * Utility function that returns if the NameNode is in safemode or not. In HA    * mode, this API will return only ActiveNN's safemode status.    *     * @return true if NameNode is in safemode, false otherwise.    * @throws IOException    *           when there is an issue communicating with the NameNode    */
 DECL|method|isInSafeMode ()
 specifier|public
 name|boolean
@@ -3960,6 +3988,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_GET
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}

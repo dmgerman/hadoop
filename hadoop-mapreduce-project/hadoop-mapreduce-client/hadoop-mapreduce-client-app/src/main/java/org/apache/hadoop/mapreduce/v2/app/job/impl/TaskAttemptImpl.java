@@ -7641,6 +7641,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Task final state is not FAILED or KILLED: "
+operator|+
+name|finalState
+argument_list|)
+expr_stmt|;
 block|}
 if|if
 condition|(

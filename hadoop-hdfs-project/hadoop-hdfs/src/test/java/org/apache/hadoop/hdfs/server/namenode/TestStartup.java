@@ -2525,6 +2525,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|nnRpc
@@ -2676,6 +2678,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|nnRpc

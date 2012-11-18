@@ -912,6 +912,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|namenode
@@ -926,6 +928,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// write more files

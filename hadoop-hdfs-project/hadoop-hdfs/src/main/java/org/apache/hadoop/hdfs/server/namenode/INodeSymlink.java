@@ -65,7 +65,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An INode representing a symbolic link.  */
+comment|/**  * An {@link INode} representing a symbolic link.  */
 end_comment
 
 begin_class
@@ -82,19 +82,20 @@ name|INode
 block|{
 DECL|field|symlink
 specifier|private
+specifier|final
 name|byte
 index|[]
 name|symlink
 decl_stmt|;
 comment|// The target URI
-DECL|method|INodeSymlink (String value, long modTime, long atime, PermissionStatus permissions)
+DECL|method|INodeSymlink (String value, long mtime, long atime, PermissionStatus permissions)
 name|INodeSymlink
 parameter_list|(
 name|String
 name|value
 parameter_list|,
 name|long
-name|modTime
+name|mtime
 parameter_list|,
 name|long
 name|atime
@@ -107,29 +108,20 @@ name|super
 argument_list|(
 name|permissions
 argument_list|,
-name|modTime
+name|mtime
 argument_list|,
 name|atime
 argument_list|)
 expr_stmt|;
-assert|assert
-name|value
-operator|!=
-literal|null
-assert|;
-name|setLinkValue
+name|this
+operator|.
+name|symlink
+operator|=
+name|DFSUtil
+operator|.
+name|string2Bytes
 argument_list|(
 name|value
-argument_list|)
-expr_stmt|;
-name|setModificationTimeForce
-argument_list|(
-name|modTime
-argument_list|)
-expr_stmt|;
-name|setAccessTime
-argument_list|(
-name|atime
 argument_list|)
 expr_stmt|;
 block|}
@@ -197,30 +189,10 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|setLinkValue (String value)
-name|void
-name|setLinkValue
-parameter_list|(
-name|String
-name|value
-parameter_list|)
-block|{
-name|this
-operator|.
-name|symlink
-operator|=
-name|DFSUtil
-operator|.
-name|string2Bytes
-argument_list|(
-name|value
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|getLinkValue ()
+DECL|method|getSymlinkString ()
 specifier|public
 name|String
-name|getLinkValue
+name|getSymlinkString
 parameter_list|()
 block|{
 return|return

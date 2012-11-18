@@ -1592,6 +1592,8 @@ operator|.
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 if|if
@@ -2443,6 +2445,8 @@ operator|.
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|long
@@ -2840,6 +2844,8 @@ operator|.
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// int generatedFileIdx = 0;
@@ -5385,6 +5391,8 @@ operator|.
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 for|for

@@ -1395,6 +1395,8 @@ operator|.
 name|mapsPending
 expr_stmt|;
 break|break;
+default|default:
+break|break;
 block|}
 break|break;
 case|case
@@ -1427,8 +1429,23 @@ operator|.
 name|reducesPending
 expr_stmt|;
 break|break;
+default|default:
+break|break;
 block|}
 break|break;
+default|default:
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Task type is neither map nor reduce: "
+operator|+
+name|task
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+throw|;
 block|}
 comment|// Attempts counts
 name|Map
@@ -1661,6 +1678,19 @@ operator|+=
 name|killed
 expr_stmt|;
 break|break;
+default|default:
+throw|throw
+operator|new
+name|IllegalStateException
+argument_list|(
+literal|"Task type neither map nor reduce: "
+operator|+
+name|task
+operator|.
+name|getType
+argument_list|()
+argument_list|)
+throw|;
 block|}
 block|}
 block|}

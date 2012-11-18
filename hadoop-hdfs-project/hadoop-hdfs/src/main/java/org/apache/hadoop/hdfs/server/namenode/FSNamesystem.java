@@ -9480,6 +9480,11 @@ name|ParentNotDirectoryException
 throws|,
 name|IOException
 block|{
+name|boolean
+name|skipSync
+init|=
+literal|false
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -9512,18 +9517,41 @@ name|blockSize
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|StandbyException
+name|se
+parameter_list|)
+block|{
+name|skipSync
+operator|=
+literal|true
+expr_stmt|;
+throw|throw
+name|se
+throw|;
+block|}
 finally|finally
 block|{
 name|writeUnlock
 argument_list|()
 expr_stmt|;
-block|}
+comment|// There might be transactions logged while trying to recover the lease.
+comment|// They need to be sync'ed even when an exception was thrown.
+if|if
+condition|(
+operator|!
+name|skipSync
+condition|)
+block|{
 name|getEditLog
 argument_list|()
 operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|auditLog
@@ -10263,6 +10291,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|skipSync
+init|=
+literal|false
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -10374,11 +10407,40 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|StandbyException
+name|se
+parameter_list|)
+block|{
+name|skipSync
+operator|=
+literal|true
+expr_stmt|;
+throw|throw
+name|se
+throw|;
+block|}
 finally|finally
 block|{
 name|writeUnlock
 argument_list|()
 expr_stmt|;
+comment|// There might be transactions logged while trying to recover the lease.
+comment|// They need to be sync'ed even when an exception was thrown.
+if|if
+condition|(
+operator|!
+name|skipSync
+condition|)
+block|{
+name|getEditLog
+argument_list|()
+operator|.
+name|logSync
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 return|return
 literal|false
@@ -10885,6 +10947,11 @@ name|ParentNotDirectoryException
 throws|,
 name|IOException
 block|{
+name|boolean
+name|skipSync
+init|=
+literal|false
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -10951,18 +11018,41 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|StandbyException
+name|se
+parameter_list|)
+block|{
+name|skipSync
+operator|=
+literal|true
+expr_stmt|;
+throw|throw
+name|se
+throw|;
+block|}
 finally|finally
 block|{
 name|writeUnlock
 argument_list|()
 expr_stmt|;
-block|}
+comment|// There might be transactions logged while trying to recover the lease.
+comment|// They need to be sync'ed even when an exception was thrown.
+if|if
+condition|(
+operator|!
+name|skipSync
+condition|)
+block|{
 name|getEditLog
 argument_list|()
 operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+block|}
+block|}
 if|if
 condition|(
 name|lb
@@ -15089,7 +15179,7 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Move a file that is being written to be immutable.    * @param src The filename    * @param lease The lease for the client creating the file    * @param recoveryLeaseHolder reassign lease to this holder if the last block    *        needs recovery; keep current holder if null.    * @throws AlreadyBeingCreatedException if file is waiting to achieve minimal    *         replication;<br>    *         RecoveryInProgressException if lease recovery is in progress.<br>    *         IOException in case of an error.    * @return true  if file has been successfully finalized and closed or     *         false if block recovery has been initiated    */
+comment|/**    * Move a file that is being written to be immutable.    * @param src The filename    * @param lease The lease for the client creating the file    * @param recoveryLeaseHolder reassign lease to this holder if the last block    *        needs recovery; keep current holder if null.    * @throws AlreadyBeingCreatedException if file is waiting to achieve minimal    *         replication;<br>    *         RecoveryInProgressException if lease recovery is in progress.<br>    *         IOException in case of an error.    * @return true  if file has been successfully finalized and closed or     *         false if block recovery has been initiated. Since the lease owner    *         has been changed and logged, caller should call logSync().    */
 DECL|method|internalReleaseLease (Lease lease, String src, String recoveryLeaseHolder)
 name|boolean
 name|internalReleaseLease
@@ -15624,6 +15714,7 @@ condition|)
 return|return
 name|lease
 return|;
+comment|// The following transaction is not synced. Make sure it's sync'ed later.
 name|logReassignLease
 argument_list|(
 name|lease
@@ -23495,11 +23586,10 @@ name|String
 name|newHolder
 parameter_list|)
 block|{
-name|writeLock
+assert|assert
+name|hasWriteLock
 argument_list|()
-expr_stmt|;
-try|try
-block|{
+assert|;
 name|getEditLog
 argument_list|()
 operator|.
@@ -23511,19 +23601,6 @@ name|src
 argument_list|,
 name|newHolder
 argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
-name|getEditLog
-argument_list|()
-operator|.
-name|logSync
-argument_list|()
 expr_stmt|;
 block|}
 comment|/**    *     * @return true if delegation token operation is allowed    */

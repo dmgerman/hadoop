@@ -374,6 +374,20 @@ name|Logger
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/**  * A simple logger to handle the task-specific user logs.  * This class uses the system property<code>hadoop.log.dir</code>.  *   */
 end_comment
@@ -659,6 +673,10 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 decl_stmt|;

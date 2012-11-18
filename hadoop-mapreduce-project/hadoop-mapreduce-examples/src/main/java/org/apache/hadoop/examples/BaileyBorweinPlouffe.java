@@ -72,7 +72,27 @@ name|java
 operator|.
 name|io
 operator|.
+name|OutputStreamWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|PrintWriter
 import|;
 end_import
 
@@ -415,6 +435,20 @@ operator|.
 name|util
 operator|.
 name|ToolRunner
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
 import|;
 end_import
 
@@ -949,13 +983,21 @@ decl_stmt|;
 try|try
 block|{
 specifier|final
-name|PrintStream
+name|PrintWriter
 name|out
 init|=
 operator|new
-name|PrintStream
+name|PrintWriter
+argument_list|(
+operator|new
+name|OutputStreamWriter
 argument_list|(
 name|outputstream
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|,
 literal|true
 argument_list|)
@@ -1101,7 +1143,7 @@ block|}
 block|}
 block|}
 comment|/** Print out elements in a nice format. */
-DECL|method|print (PrintStream out, Iterator<T> iterator, String prefix, String format, int elementsPerGroup, int groupsPerLine)
+DECL|method|print (PrintWriter out, Iterator<T> iterator, String prefix, String format, int elementsPerGroup, int groupsPerLine)
 specifier|private
 specifier|static
 parameter_list|<
@@ -1110,7 +1152,7 @@ parameter_list|>
 name|void
 name|print
 parameter_list|(
-name|PrintStream
+name|PrintWriter
 name|out
 parameter_list|,
 name|Iterator

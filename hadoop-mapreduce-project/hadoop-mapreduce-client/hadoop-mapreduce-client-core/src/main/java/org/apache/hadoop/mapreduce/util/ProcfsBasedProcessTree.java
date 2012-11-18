@@ -44,6 +44,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FileNotFoundException
 import|;
 end_import
@@ -54,7 +64,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileReader
+name|IOException
 import|;
 end_import
 
@@ -64,7 +74,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|InputStreamReader
 import|;
 end_import
 
@@ -235,6 +245,20 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
 import|;
 end_import
 
@@ -1510,7 +1534,7 @@ specifier|final
 name|String
 name|PROCESSTREE_DUMP_FORMAT
 init|=
-literal|"\t|- %s %s %d %d %s %d %d %d %d %s\n"
+literal|"\t|- %s %s %d %d %s %d %d %d %d %s%n"
 decl_stmt|;
 comment|/**    * Get a dump of the process-tree.    *     * @return a string concatenating the dump of information of all the processes    *         in the process-tree    */
 DECL|method|getProcessTreeDump ()
@@ -1539,7 +1563,7 @@ literal|"\t|- PID PPID PGRPID SESSID CMD_NAME "
 operator|+
 literal|"USER_MODE_TIME(MILLIS) SYSTEM_TIME(MILLIS) VMEM_USAGE(BYTES) "
 operator|+
-literal|"RSSMEM_USAGE(PAGES) FULL_CMD_LINE\n"
+literal|"RSSMEM_USAGE(PAGES) FULL_CMD_LINE%n"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2024,7 +2048,7 @@ name|in
 init|=
 literal|null
 decl_stmt|;
-name|FileReader
+name|InputStreamReader
 name|fReader
 init|=
 literal|null
@@ -2048,7 +2072,10 @@ decl_stmt|;
 name|fReader
 operator|=
 operator|new
-name|FileReader
+name|InputStreamReader
+argument_list|(
+operator|new
+name|FileInputStream
 argument_list|(
 operator|new
 name|File
@@ -2057,6 +2084,11 @@ name|pidDir
 argument_list|,
 name|PROCFS_STAT_FILE
 argument_list|)
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 name|in
@@ -2939,7 +2971,7 @@ name|in
 init|=
 literal|null
 decl_stmt|;
-name|FileReader
+name|InputStreamReader
 name|fReader
 init|=
 literal|null
@@ -2949,7 +2981,10 @@ block|{
 name|fReader
 operator|=
 operator|new
-name|FileReader
+name|InputStreamReader
+argument_list|(
+operator|new
+name|FileInputStream
 argument_list|(
 operator|new
 name|File
@@ -2964,6 +2999,11 @@ argument_list|)
 argument_list|,
 name|PROCFS_CMDLINE_FILE
 argument_list|)
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 expr_stmt|;
 block|}

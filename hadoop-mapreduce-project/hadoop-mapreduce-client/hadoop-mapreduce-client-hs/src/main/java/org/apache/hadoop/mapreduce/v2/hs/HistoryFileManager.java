@@ -2932,6 +2932,8 @@ literal|". Continuing with next"
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
 name|serialNumberIndex
 operator|.
 name|add
@@ -2941,6 +2943,7 @@ argument_list|,
 name|timestampPart
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|addDirectoryToJobListCache (Path path)
 specifier|private

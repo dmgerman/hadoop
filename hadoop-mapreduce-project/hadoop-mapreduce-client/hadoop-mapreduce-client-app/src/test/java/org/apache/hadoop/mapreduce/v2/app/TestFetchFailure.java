@@ -2889,12 +2889,6 @@ literal|0
 expr_stmt|;
 name|status
 operator|.
-name|outputSize
-operator|=
-literal|0
-expr_stmt|;
-name|status
-operator|.
 name|phase
 operator|=
 name|phase

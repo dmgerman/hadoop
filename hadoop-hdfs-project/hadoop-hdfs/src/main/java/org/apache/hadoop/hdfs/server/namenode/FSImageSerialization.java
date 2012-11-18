@@ -956,7 +956,7 @@ operator|)
 name|node
 operator|)
 operator|.
-name|getLinkValue
+name|getSymlinkString
 argument_list|()
 argument_list|)
 expr_stmt|;

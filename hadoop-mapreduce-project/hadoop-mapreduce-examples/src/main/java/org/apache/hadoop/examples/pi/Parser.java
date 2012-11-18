@@ -44,7 +44,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileReader
+name|FileInputStream
 import|;
 end_import
 
@@ -54,7 +54,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileOutputStream
 import|;
 end_import
 
@@ -65,6 +65,26 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStreamReader
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStreamWriter
 import|;
 end_import
 
@@ -163,6 +183,20 @@ operator|.
 name|Bellard
 operator|.
 name|Parameter
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
 import|;
 end_import
 
@@ -463,9 +497,17 @@ operator|new
 name|BufferedReader
 argument_list|(
 operator|new
-name|FileReader
+name|InputStreamReader
+argument_list|(
+operator|new
+name|FileInputStream
 argument_list|(
 name|f
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -861,7 +903,10 @@ operator|new
 name|PrintWriter
 argument_list|(
 operator|new
-name|FileWriter
+name|OutputStreamWriter
+argument_list|(
+operator|new
+name|FileOutputStream
 argument_list|(
 operator|new
 name|File
@@ -872,6 +917,11 @@ name|p
 operator|+
 literal|".txt"
 argument_list|)
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|,
 literal|true

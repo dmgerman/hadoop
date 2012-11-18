@@ -209,14 +209,6 @@ argument_list|)
 operator|.
 name|div
 argument_list|(
-literal|"#themeswitcher"
-argument_list|)
-operator|.
-name|_
-argument_list|()
-operator|.
-name|div
-argument_list|(
 literal|".push"
 argument_list|)
 operator|.

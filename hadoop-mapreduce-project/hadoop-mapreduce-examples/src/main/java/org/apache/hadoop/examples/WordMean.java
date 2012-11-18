@@ -246,6 +246,20 @@ name|ToolRunner
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_class
 DECL|class|WordMean
 specifier|public
@@ -576,6 +590,10 @@ name|open
 argument_list|(
 name|file
 argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -725,11 +743,19 @@ return|;
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|br
+operator|!=
+literal|null
+condition|)
+block|{
 name|br
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|main (String[] args)

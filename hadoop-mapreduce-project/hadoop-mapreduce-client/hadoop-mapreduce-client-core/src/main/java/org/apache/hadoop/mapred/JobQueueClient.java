@@ -32,6 +32,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|OutputStreamWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -143,6 +153,20 @@ operator|.
 name|util
 operator|.
 name|ToolRunner
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
 import|;
 end_import
 
@@ -734,9 +758,17 @@ argument_list|,
 operator|new
 name|PrintWriter
 argument_list|(
+operator|new
+name|OutputStreamWriter
+argument_list|(
 name|System
 operator|.
 name|out
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -883,9 +915,17 @@ argument_list|,
 operator|new
 name|PrintWriter
 argument_list|(
+operator|new
+name|OutputStreamWriter
+argument_list|(
 name|System
 operator|.
 name|out
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1191,7 +1231,7 @@ name|printf
 argument_list|(
 name|prefix
 operator|+
-literal|"<command><args>\n"
+literal|"<command><args>%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -1200,7 +1240,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-list]\n"
+literal|"\t[-list]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -1209,7 +1249,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-info<job-queue-name> [-showJobs]]\n"
+literal|"\t[-info<job-queue-name> [-showJobs]]%n"
 argument_list|)
 expr_stmt|;
 name|System
@@ -1218,7 +1258,7 @@ name|err
 operator|.
 name|printf
 argument_list|(
-literal|"\t[-showacls] \n\n"
+literal|"\t[-showacls] %n%n"
 argument_list|)
 expr_stmt|;
 name|ToolRunner

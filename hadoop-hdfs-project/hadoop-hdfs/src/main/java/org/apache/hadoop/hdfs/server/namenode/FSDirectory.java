@@ -718,6 +718,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -945,6 +959,48 @@ name|namesystem
 operator|=
 name|ns
 expr_stmt|;
+name|int
+name|threshold
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_NAME_CACHE_THRESHOLD_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_NAME_CACHE_THRESHOLD_DEFAULT
+argument_list|)
+decl_stmt|;
+name|NameNode
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Caching file names occuring more than "
+operator|+
+name|threshold
+operator|+
+literal|" times"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|nameCache
+operator|=
+operator|new
+name|NameCache
+argument_list|<
+name|ByteArray
+argument_list|>
+argument_list|(
+name|threshold
+argument_list|)
+expr_stmt|;
 name|reset
 argument_list|()
 expr_stmt|;
@@ -1017,46 +1073,6 @@ argument_list|,
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_MAX_DIRECTORY_ITEMS_DEFAULT
-argument_list|)
-expr_stmt|;
-name|int
-name|threshold
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_NAME_CACHE_THRESHOLD_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_NAME_CACHE_THRESHOLD_DEFAULT
-argument_list|)
-decl_stmt|;
-name|NameNode
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Caching file names occuring more than "
-operator|+
-name|threshold
-operator|+
-literal|" times"
-argument_list|)
-expr_stmt|;
-name|nameCache
-operator|=
-operator|new
-name|NameCache
-argument_list|<
-name|ByteArray
-argument_list|>
-argument_list|(
-name|threshold
 argument_list|)
 expr_stmt|;
 block|}
@@ -1143,6 +1159,18 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|//This is for testing purposes only
+annotation|@
+name|VisibleForTesting
+DECL|method|isReady ()
+name|boolean
+name|isReady
+parameter_list|()
+block|{
+return|return
+name|ready
+return|;
 block|}
 comment|// exposed for unit tests
 DECL|method|setReady (boolean flag)
@@ -1587,14 +1615,10 @@ return|return
 name|newNode
 return|;
 block|}
-DECL|method|addToParent (byte[] src, INodeDirectory parentINode, INode newNode, boolean propagateModTime)
+DECL|method|addToParent (INodeDirectory parentINode, INode newNode, boolean propagateModTime)
 name|INodeDirectory
 name|addToParent
 parameter_list|(
-name|byte
-index|[]
-name|src
-parameter_list|,
 name|INodeDirectory
 name|parentINode
 parameter_list|,
@@ -1624,8 +1648,6 @@ name|rootDir
 operator|.
 name|addToParent
 argument_list|(
-name|src
-argument_list|,
 name|newNode
 argument_list|,
 name|parentINode
@@ -2632,7 +2654,7 @@ operator|)
 name|srcInode
 operator|)
 operator|.
-name|getLinkValue
+name|getSymlinkString
 argument_list|()
 argument_list|)
 condition|)
@@ -3290,7 +3312,7 @@ operator|)
 name|srcInode
 operator|)
 operator|.
-name|getLinkValue
+name|getSymlinkString
 argument_list|()
 argument_list|)
 condition|)
@@ -6289,7 +6311,8 @@ name|createFileStatus
 argument_list|(
 name|cur
 operator|.
-name|name
+name|getLocalNameBytes
+argument_list|()
 argument_list|,
 name|cur
 argument_list|,
@@ -7084,7 +7107,7 @@ index|]
 decl_stmt|;
 name|node
 operator|.
-name|unprotectedUpdateNumItemsInTree
+name|addSpaceConsumed
 argument_list|(
 name|nsDelta
 argument_list|,
@@ -10052,6 +10075,16 @@ name|void
 name|reset
 parameter_list|()
 block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|setReady
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 specifier|final
 name|INodeDirectoryWithQuota
 name|r
@@ -10096,6 +10129,18 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+name|nameCache
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * create an hdfs file status from an inode    *     * @param path the local name    * @param node inode    * @param needLocation if block locations need to be included or not    * @return a file status    * @throws IOException if any error occurs    */
 DECL|method|createFileStatus (byte[] path, INode node, boolean needLocation)

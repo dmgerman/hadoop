@@ -1076,6 +1076,7 @@ decl_stmt|;
 comment|// Whether to use username in place of "default" queue name
 DECL|field|userAsDefaultQueue
 specifier|private
+specifier|volatile
 name|boolean
 name|userAsDefaultQueue
 init|=
@@ -1252,6 +1253,26 @@ name|int
 name|maxAssign
 decl_stmt|;
 comment|// Max containers to assign per heartbeat
+DECL|method|FairScheduler ()
+specifier|public
+name|FairScheduler
+parameter_list|()
+block|{
+name|clock
+operator|=
+operator|new
+name|SystemClock
+argument_list|()
+expr_stmt|;
+name|queueMgr
+operator|=
+operator|new
+name|QueueManager
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getConf ()
 specifier|public
 name|FairSchedulerConfiguration
@@ -1375,7 +1396,7 @@ parameter_list|()
 block|{
 while|while
 condition|(
-name|initialized
+literal|true
 condition|)
 block|{
 try|try
@@ -1685,6 +1706,7 @@ block|}
 comment|/**    * Check for queues that need tasks preempted, either because they have been    * below their guaranteed share for minSharePreemptionTimeout or they    * have been below half their fair share for the fairSharePreemptionTimeout.    * If such queues exist, compute how many tasks of each type need to be    * preempted and then select the right ones using preemptTasks.    */
 DECL|method|preemptTasksIfNecessary ()
 specifier|protected
+specifier|synchronized
 name|void
 name|preemptTasksIfNecessary
 parameter_list|()
@@ -2607,8 +2629,10 @@ name|getContainerTokenSecretManager
 argument_list|()
 return|;
 block|}
+comment|// synchronized for sizeBasedWeight
 DECL|method|getAppWeight (AppSchedulable app)
 specifier|public
+specifier|synchronized
 name|double
 name|getAppWeight
 parameter_list|(
@@ -4773,14 +4797,6 @@ name|rmContext
 expr_stmt|;
 name|this
 operator|.
-name|clock
-operator|=
-operator|new
-name|SystemClock
-argument_list|()
-expr_stmt|;
-name|this
-operator|.
 name|eventLog
 operator|=
 operator|new
@@ -4868,22 +4884,6 @@ operator|.
 name|getMaxAssign
 argument_list|()
 expr_stmt|;
-name|Thread
-name|updateThread
-init|=
-operator|new
-name|Thread
-argument_list|(
-operator|new
-name|UpdateThread
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|updateThread
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|initialized
 operator|=
 literal|true
@@ -4896,14 +4896,6 @@ name|conf
 operator|.
 name|getSizeBasedWeight
 argument_list|()
-expr_stmt|;
-name|queueMgr
-operator|=
-operator|new
-name|QueueManager
-argument_list|(
-name|this
-argument_list|)
 expr_stmt|;
 try|try
 block|{
@@ -4929,6 +4921,36 @@ name|e
 argument_list|)
 throw|;
 block|}
+name|Thread
+name|updateThread
+init|=
+operator|new
+name|Thread
+argument_list|(
+operator|new
+name|UpdateThread
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|updateThread
+operator|.
+name|setName
+argument_list|(
+literal|"FairSchedulerUpdateThread"
+argument_list|)
+expr_stmt|;
+name|updateThread
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|updateThread
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{

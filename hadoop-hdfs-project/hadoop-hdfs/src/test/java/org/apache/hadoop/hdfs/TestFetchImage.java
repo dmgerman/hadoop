@@ -343,6 +343,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_ENTER
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|cluster
@@ -363,6 +365,8 @@ argument_list|(
 name|SafeModeAction
 operator|.
 name|SAFEMODE_LEAVE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|runFetchImage

@@ -372,14 +372,49 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|",aoColumnDefs:["
+literal|", 'aaData': tasksTableData"
 argument_list|)
 decl_stmt|;
 name|b
 operator|.
 name|append
 argument_list|(
-literal|"{'sType':'title-numeric', 'aTargets': [ 0, 4"
+literal|", bDeferRender: true"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", bProcessing: true"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|"\n, aoColumnDefs: [\n"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|"{'sType':'numeric', 'aTargets': [ 0 ]"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopID }"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", {'sType':'numeric', 'aTargets': [ 4"
 argument_list|)
 expr_stmt|;
 if|if
@@ -414,7 +449,49 @@ name|b
 operator|.
 name|append
 argument_list|(
-literal|" ] }]"
+literal|" ], 'mRender': renderHadoopElapsedTime }"
+argument_list|)
+expr_stmt|;
+name|b
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', 'aTargets': [ 2, 3, 5"
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|type
+operator|==
+name|TaskType
+operator|.
+name|REDUCE
+condition|)
+block|{
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", 6, 7, 8"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|//MAP
+name|b
+operator|.
+name|append
+argument_list|(
+literal|", 6"
+argument_list|)
+expr_stmt|;
+block|}
+name|b
+operator|.
+name|append
+argument_list|(
+literal|" ], 'mRender': renderHadoopDate }]"
 argument_list|)
 expr_stmt|;
 comment|// Sort by id upon page load
@@ -422,7 +499,7 @@ name|b
 operator|.
 name|append
 argument_list|(
-literal|", aaSorting: [[0, 'asc']]"
+literal|"\n, aaSorting: [[0, 'asc']]"
 argument_list|)
 expr_stmt|;
 name|b

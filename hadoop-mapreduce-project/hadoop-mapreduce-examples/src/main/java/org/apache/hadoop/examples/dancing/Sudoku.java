@@ -38,6 +38,20 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class uses the dancing links algorithm from Knuth to solve sudoku  * puzzles. It has solved 42x42 puzzles in 1.02 seconds.  */
 end_comment
@@ -453,6 +467,10 @@ operator|new
 name|InputStreamReader
 argument_list|(
 name|stream
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 decl_stmt|;

@@ -114,13 +114,6 @@ argument_list|,
 literal|"nav"
 argument_list|)
 expr_stmt|;
-name|set
-argument_list|(
-literal|"ui.themeswitcher.id"
-argument_list|,
-literal|"themeswitcher"
-argument_list|)
-expr_stmt|;
 name|render
 argument_list|(
 name|TwoColumnLayout

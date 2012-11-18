@@ -584,6 +584,20 @@ name|ConverterUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper class for MR applications  */
 end_comment
@@ -1121,6 +1135,10 @@ operator|new
 name|InputStreamReader
 argument_list|(
 name|classpathFileStream
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 expr_stmt|;

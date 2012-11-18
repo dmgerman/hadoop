@@ -1297,7 +1297,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"\n|%1$-30s|%2$-30s|%3$-10s|%4$-10s|%5$-10s"
+literal|"%n|%1$-30s|%2$-30s|%3$-10s|%4$-10s|%5$-10s"
 argument_list|,
 name|totalGroup
 operator|.

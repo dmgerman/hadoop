@@ -4465,6 +4465,11 @@ operator|.
 name|getAction
 argument_list|()
 argument_list|)
+argument_list|,
+name|req
+operator|.
+name|getChecked
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

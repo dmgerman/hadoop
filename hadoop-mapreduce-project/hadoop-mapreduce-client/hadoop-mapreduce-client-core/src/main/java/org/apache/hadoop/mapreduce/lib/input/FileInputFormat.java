@@ -2052,6 +2052,9 @@ expr_stmt|;
 block|}
 break|break;
 block|}
+default|default:
+continue|continue;
+comment|// nothing special to do for this character
 block|}
 block|}
 name|pathStrings

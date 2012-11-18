@@ -112,6 +112,20 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/**   * An {@link InputFormat} for plain text files.  Files are broken into lines.  * Either linefeed or carriage-return are used to signal end of line.  Keys are  * the position in the file, and values are the line of text..   */
 end_comment
@@ -258,13 +272,19 @@ literal|null
 operator|!=
 name|delimiter
 condition|)
+block|{
 name|recordDelimiterBytes
 operator|=
 name|delimiter
 operator|.
 name|getBytes
-argument_list|()
+argument_list|(
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 expr_stmt|;
+block|}
 return|return
 operator|new
 name|LineRecordReader
