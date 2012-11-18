@@ -169,6 +169,10 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|str
+operator|!=
+literal|null
+operator|&&
 name|pattern
 operator|!=
 literal|null
