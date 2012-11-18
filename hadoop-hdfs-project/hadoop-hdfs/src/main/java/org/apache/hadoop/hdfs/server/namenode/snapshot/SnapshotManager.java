@@ -209,7 +209,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Manage snapshottable directories and their snapshots. */
+comment|/**  * Manage snapshottable directories and their snapshots.  *   * This class includes operations that create, access, modify snapshots and/or  * snapshot-related data. In general, the locking structure of snapshot  * operations is:<br>  *   * 1. Lock the {@link FSNamesystem} lock in {@link FSNamesystem} before calling  * into {@link SnapshotManager} methods.<br>  * 2. Lock the {@link FSDirectory} lock for the {@link SnapshotManager} methods  * if necessary.  */
 end_comment
 
 begin_class
@@ -486,7 +486,7 @@ name|getAndDecrement
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a snapshot of the given path.    *     * @param snapshotName The name of the snapshot.    * @param path The directory path where the snapshot will be taken.    */
+comment|/**    * Create a snapshot of the given path.    * @param snapshotName    *          The name of the snapshot.    * @param path    *          The directory path where the snapshot will be taken.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
 DECL|method|createSnapshot (final String snapshotName, final String path )
 specifier|public
 name|void
@@ -522,11 +522,6 @@ argument_list|,
 name|path
 argument_list|)
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 specifier|final
 name|Snapshot
 name|s
@@ -558,11 +553,65 @@ comment|//create success, update id
 name|snapshotID
 operator|++
 expr_stmt|;
-block|}
 name|numSnapshots
 operator|.
 name|getAndIncrement
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Rename the given snapshot    * @param path    *          The directory path where the snapshot was taken    * @param oldSnapshotName    *          Old name of the snapshot    * @param newSnapshotName    *          New name of the snapshot    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) the snapshot with the    *           old name does not exist for the directory, and/or 3) there exists    *           a snapshot with the new name for the directory    */
+DECL|method|renameSnapshot (final String path, final String oldSnapshotName, final String newSnapshotName)
+specifier|public
+name|void
+name|renameSnapshot
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|oldSnapshotName
+parameter_list|,
+specifier|final
+name|String
+name|newSnapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Find the source root directory path where the snapshot was taken.
+comment|// All the check for path has been included in the valueOf method.
+specifier|final
+name|INodeDirectorySnapshottable
+name|srcRoot
+init|=
+name|INodeDirectorySnapshottable
+operator|.
+name|valueOf
+argument_list|(
+name|fsdir
+operator|.
+name|getINode
+argument_list|(
+name|path
+argument_list|)
+argument_list|,
+name|path
+argument_list|)
+decl_stmt|;
+comment|// Note that renameSnapshot and createSnapshot are synchronized externally
+comment|// through FSNamesystem's write lock
+name|srcRoot
+operator|.
+name|renameSnapshot
+argument_list|(
+name|path
+argument_list|,
+name|oldSnapshotName
+argument_list|,
+name|newSnapshotName
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a snapshot of subtrees by recursively coping the directory    * structure from the source directory to the snapshot destination directory.    * This creation algorithm requires O(N) running time and O(N) memory,    * where N = # files + # directories + # symlinks.     */

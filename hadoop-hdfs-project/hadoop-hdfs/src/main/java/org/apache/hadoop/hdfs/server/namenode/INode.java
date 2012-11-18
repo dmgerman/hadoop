@@ -1140,7 +1140,7 @@ return|;
 block|}
 comment|/**    * Set local file name    */
 DECL|method|setLocalName (String name)
-specifier|protected
+specifier|public
 name|void
 name|setLocalName
 parameter_list|(

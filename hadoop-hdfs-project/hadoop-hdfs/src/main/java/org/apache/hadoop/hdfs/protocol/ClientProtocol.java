@@ -1532,7 +1532,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a snapshot    * @param snapshotName name of the snapshot created    * @param snapshotRoot the path that is being snapshotted    */
+comment|/**    * Create a snapshot    * @param snapshotName name of the snapshot created    * @param snapshotRoot the path that is being snapshotted    * @throws IOException    */
 DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
 specifier|public
 name|void
@@ -1543,6 +1543,24 @@ name|snapshotName
 parameter_list|,
 name|String
 name|snapshotRoot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Rename a snapshot    * @param snapshotRoot the directory path where the snapshot was taken     * @param snapshotOldName old name of the snapshot    * @param snapshotNewName new name of the snapshot    * @throws IOException    */
+DECL|method|renameSnapshot (String snapshotRoot, String snapshotOldName, String snapshotNewName)
+specifier|public
+name|void
+name|renameSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|,
+name|String
+name|snapshotOldName
+parameter_list|,
+name|String
+name|snapshotNewName
 parameter_list|)
 throws|throws
 name|IOException

@@ -88,6 +88,22 @@ name|DistributedFileSystem
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper for writing snapshot related tests  */
 end_comment
@@ -124,7 +140,11 @@ name|Path
 argument_list|(
 name|snapshottedDir
 argument_list|,
-literal|".snapshot/"
+name|HdfsConstants
+operator|.
+name|DOT_SNAPSHOT_DIR
+operator|+
+literal|"/"
 operator|+
 name|snapshotName
 argument_list|)

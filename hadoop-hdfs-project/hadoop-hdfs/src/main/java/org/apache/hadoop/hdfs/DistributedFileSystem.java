@@ -4029,6 +4029,36 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Rename a snapshot    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    */
+DECL|method|renameSnapshot (String path, String snapshotOldName, String snapshotNewName)
+specifier|public
+name|void
+name|renameSnapshot
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|String
+name|snapshotOldName
+parameter_list|,
+name|String
+name|snapshotNewName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|renameSnapshot
+argument_list|(
+name|path
+argument_list|,
+name|snapshotOldName
+argument_list|,
+name|snapshotNewName
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
