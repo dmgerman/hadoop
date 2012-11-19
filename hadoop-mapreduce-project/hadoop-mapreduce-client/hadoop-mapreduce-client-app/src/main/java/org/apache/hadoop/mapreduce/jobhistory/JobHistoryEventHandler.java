@@ -3199,13 +3199,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 default|default:
-throw|throw
-operator|new
-name|YarnException
-argument_list|(
-literal|"Invalid event type"
-argument_list|)
-throw|;
+break|break;
 block|}
 block|}
 DECL|method|setSummarySlotSeconds (JobSummary summary, Counters allCounters)
