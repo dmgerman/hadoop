@@ -304,6 +304,26 @@ name|common
 operator|.
 name|HdfsServerConstants
 operator|.
+name|NamenodeRole
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
 name|StartupOption
 import|;
 end_import
@@ -791,7 +811,9 @@ argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
-return|return
+name|BackupNode
+name|bn
+init|=
 operator|(
 name|BackupNode
 operator|)
@@ -811,6 +833,24 @@ block|}
 argument_list|,
 name|c
 argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|bn
+operator|.
+name|getRole
+argument_list|()
+operator|+
+literal|" must be in SafeMode."
+argument_list|,
+name|bn
+operator|.
+name|isInSafeMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|bn
 return|;
 block|}
 DECL|method|waitCheckpointDone (MiniDFSCluster cluster, long txid)
@@ -2211,7 +2251,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Write to BN failed as expected: "
+literal|"Write to "
+operator|+
+name|backup
+operator|.
+name|getRole
+argument_list|()
+operator|+
+literal|" failed as expected: "
 argument_list|,
 name|eio
 argument_list|)
@@ -2226,6 +2273,65 @@ argument_list|(
 literal|"Write to BackupNode must be prohibited."
 argument_list|,
 name|canWrite
+argument_list|)
+expr_stmt|;
+comment|// Reads are allowed for BackupNode, but not for CheckpointNode
+name|boolean
+name|canRead
+init|=
+literal|true
+decl_stmt|;
+try|try
+block|{
+name|bnFS
+operator|.
+name|exists
+argument_list|(
+name|file2
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|eio
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Read from "
+operator|+
+name|backup
+operator|.
+name|getRole
+argument_list|()
+operator|+
+literal|" failed: "
+argument_list|,
+name|eio
+argument_list|)
+expr_stmt|;
+name|canRead
+operator|=
+literal|false
+expr_stmt|;
+block|}
+name|assertEquals
+argument_list|(
+literal|"Reads to BackupNode are allowed, but not CheckpointNode."
+argument_list|,
+name|canRead
+argument_list|,
+name|backup
+operator|.
+name|isRole
+argument_list|(
+name|NamenodeRole
+operator|.
+name|BACKUP
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil

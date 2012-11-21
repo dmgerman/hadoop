@@ -2604,7 +2604,7 @@ name|op
 decl_stmt|;
 name|fsDir
 operator|.
-name|unprotectedSymlink
+name|unprotectedAddSymlink
 argument_list|(
 name|symlinkOp
 operator|.

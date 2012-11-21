@@ -443,10 +443,6 @@ operator|.
 name|ROOT_NAME
 argument_list|,
 name|perms
-argument_list|,
-literal|0L
-argument_list|,
-literal|0L
 argument_list|)
 expr_stmt|;
 name|inodes

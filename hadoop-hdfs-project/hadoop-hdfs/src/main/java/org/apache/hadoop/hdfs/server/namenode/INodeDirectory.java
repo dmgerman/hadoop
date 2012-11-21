@@ -1654,44 +1654,6 @@ else|:
 name|newNode
 return|;
 block|}
-comment|/**    * Add new inode to the parent if specified.    * Optimized version of addNode() if parent is not null.    *     * @return  parent INode if new inode is inserted    *          or null if it already exists.    * @throws  FileNotFoundException if parent does not exist or     *          is not a directory.    */
-DECL|method|addToParent (INode newNode, INodeDirectory parent, boolean propagateModTime)
-name|INodeDirectory
-name|addToParent
-parameter_list|(
-name|INode
-name|newNode
-parameter_list|,
-name|INodeDirectory
-name|parent
-parameter_list|,
-name|boolean
-name|propagateModTime
-parameter_list|)
-throws|throws
-name|FileNotFoundException
-block|{
-comment|// insert into the parent children list
-if|if
-condition|(
-name|parent
-operator|.
-name|addChild
-argument_list|(
-name|newNode
-argument_list|,
-name|propagateModTime
-argument_list|)
-operator|==
-literal|null
-condition|)
-return|return
-literal|null
-return|;
-return|return
-name|parent
-return|;
-block|}
 DECL|method|getParent (byte[][] pathComponents )
 name|INodeDirectory
 name|getParent
