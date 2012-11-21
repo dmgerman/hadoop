@@ -2800,6 +2800,7 @@ block|}
 comment|/**    * Return a fully qualified version of the given symlink target if it    * has no scheme and authority. Partially and fully qualified paths     * are returned unmodified.    * @param pathFS The AbstractFileSystem of the path    * @param pathWithLink Path that contains the symlink    * @param target The symlink's absolute target    * @return Fully qualified version of the target.    */
 DECL|method|qualifySymlinkTarget (final AbstractFileSystem pathFS, Path pathWithLink, Path target)
 specifier|private
+specifier|static
 name|Path
 name|qualifySymlinkTarget
 parameter_list|(
@@ -6406,6 +6407,7 @@ block|}
 comment|/**    * Class used to perform an operation on and resolve symlinks in a    * path. The operation may potentially span multiple file systems.      */
 DECL|class|FSLinkResolver
 specifier|protected
+specifier|static
 specifier|abstract
 class|class
 name|FSLinkResolver
