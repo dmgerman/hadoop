@@ -527,6 +527,20 @@ operator|=
 name|blklist
 expr_stmt|;
 block|}
+comment|/** @return true unconditionally. */
+annotation|@
+name|Override
+DECL|method|isFile ()
+specifier|public
+specifier|final
+name|boolean
+name|isFile
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
 annotation|@
 name|Override

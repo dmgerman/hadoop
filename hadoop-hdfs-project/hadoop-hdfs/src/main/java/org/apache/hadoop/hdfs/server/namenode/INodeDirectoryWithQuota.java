@@ -64,6 +64,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|NSQuotaExceededException
 import|;
 end_import
@@ -95,12 +111,17 @@ name|INodeDirectoryWithQuota
 extends|extends
 name|INodeDirectory
 block|{
+comment|/** Name space quota */
 DECL|field|nsQuota
 specifier|private
 name|long
 name|nsQuota
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
 decl_stmt|;
-comment|/// NameSpace quota
+comment|/** Name space count */
 DECL|field|nsCount
 specifier|private
 name|long
@@ -108,12 +129,17 @@ name|nsCount
 init|=
 literal|1L
 decl_stmt|;
+comment|/** Disk space quota */
 DECL|field|dsQuota
 specifier|private
 name|long
 name|dsQuota
+init|=
+name|HdfsConstants
+operator|.
+name|QUOTA_RESET
 decl_stmt|;
-comment|/// disk space quota
+comment|/** Disk space count */
 DECL|field|diskspace
 specifier|private
 name|long
@@ -227,7 +253,7 @@ name|dsQuota
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota (String name, PermissionStatus permissions, long nsQuota, long dsQuota)
+DECL|method|INodeDirectoryWithQuota (String name, PermissionStatus permissions)
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|String
@@ -235,12 +261,6 @@ name|name
 parameter_list|,
 name|PermissionStatus
 name|permissions
-parameter_list|,
-name|long
-name|nsQuota
-parameter_list|,
-name|long
-name|dsQuota
 parameter_list|)
 block|{
 name|super
@@ -249,18 +269,6 @@ name|name
 argument_list|,
 name|permissions
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|nsQuota
-operator|=
-name|nsQuota
-expr_stmt|;
-name|this
-operator|.
-name|dsQuota
-operator|=
-name|dsQuota
 expr_stmt|;
 block|}
 comment|/** Get this directory's namespace quota    * @return this directory's namespace quota    */

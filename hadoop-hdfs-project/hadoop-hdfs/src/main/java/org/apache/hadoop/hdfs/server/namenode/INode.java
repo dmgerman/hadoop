@@ -464,7 +464,7 @@ name|OFFSET
 operator|)
 return|;
 block|}
-comment|/** Set the {@link PermissionStatus} */
+comment|/** Encode the {@link PermissionStatus} to a long. */
 DECL|method|toLong (PermissionStatus ps)
 specifier|static
 name|long
@@ -497,8 +497,6 @@ argument_list|)
 decl_stmt|;
 name|permission
 operator|=
-name|PermissionStatusFormat
-operator|.
 name|USER
 operator|.
 name|combine
@@ -526,8 +524,6 @@ argument_list|)
 decl_stmt|;
 name|permission
 operator|=
-name|PermissionStatusFormat
-operator|.
 name|GROUP
 operator|.
 name|combine
@@ -551,8 +547,6 @@ argument_list|()
 decl_stmt|;
 name|permission
 operator|=
-name|PermissionStatusFormat
-operator|.
 name|MODE
 operator|.
 name|combine
@@ -576,7 +570,7 @@ name|name
 init|=
 literal|null
 decl_stmt|;
-comment|/**     * Permission encoded using PermissionStatusFormat.    * Codes other than {@link #updatePermissionStatus(PermissionStatusFormat, long)}.    * should not modify it.    */
+comment|/**     * Permission encoded using {@link PermissionStatusFormat}.    * Codes other than {@link #clonePermissionStatus(INode)}    * and {@link #updatePermissionStatus(PermissionStatusFormat, long)}    * should not modify it.    */
 DECL|field|permission
 specifier|private
 name|long
@@ -803,39 +797,22 @@ operator|==
 literal|0
 return|;
 block|}
-comment|/** Set the {@link PermissionStatus} */
-DECL|method|setPermissionStatus (PermissionStatus ps)
-specifier|protected
+comment|/** Clone the {@link PermissionStatus}. */
+DECL|method|clonePermissionStatus (INode that)
 name|void
-name|setPermissionStatus
+name|clonePermissionStatus
 parameter_list|(
-name|PermissionStatus
-name|ps
+name|INode
+name|that
 parameter_list|)
 block|{
-name|setUser
-argument_list|(
-name|ps
+name|this
 operator|.
-name|getUserName
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|setGroup
-argument_list|(
-name|ps
+name|permission
+operator|=
+name|that
 operator|.
-name|getGroupName
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|setPermission
-argument_list|(
-name|ps
-operator|.
-name|getPermission
-argument_list|()
-argument_list|)
+name|permission
 expr_stmt|;
 block|}
 comment|/** Get the {@link PermissionStatus} */
@@ -1080,6 +1057,17 @@ name|toShort
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Check whether it's a file.    */
+DECL|method|isFile ()
+specifier|public
+name|boolean
+name|isFile
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * Check whether it's a directory    */
 DECL|method|isDirectory ()
