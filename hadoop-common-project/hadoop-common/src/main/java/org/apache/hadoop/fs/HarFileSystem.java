@@ -2488,29 +2488,6 @@ return|return
 name|name
 return|;
 block|}
-DECL|method|getChildren ()
-specifier|public
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|getChildren
-parameter_list|()
-block|{
-return|return
-name|children
-return|;
-block|}
-DECL|method|getFileName ()
-specifier|public
-name|String
-name|getFileName
-parameter_list|()
-block|{
-return|return
-name|name
-return|;
-block|}
 DECL|method|getPartName ()
 specifier|public
 name|String
@@ -2763,29 +2740,6 @@ argument_list|,
 name|bufferSize
 argument_list|)
 return|;
-block|}
-comment|/*    * create throws an exception in Har filesystem.    * The archive once created cannot be changed.    */
-DECL|method|create (Path f, int bufferSize)
-specifier|public
-name|FSDataOutputStream
-name|create
-parameter_list|(
-name|Path
-name|f
-parameter_list|,
-name|int
-name|bufferSize
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Har: Create not allowed"
-argument_list|)
-throw|;
 block|}
 annotation|@
 name|Override
@@ -4691,6 +4645,16 @@ block|{
 comment|// do nothing just a read.
 block|}
 block|}
+block|}
+comment|/*    * testing purposes only:    */
+DECL|method|getMetadata ()
+name|HarMetaData
+name|getMetadata
+parameter_list|()
+block|{
+return|return
+name|metadata
+return|;
 block|}
 block|}
 end_class
