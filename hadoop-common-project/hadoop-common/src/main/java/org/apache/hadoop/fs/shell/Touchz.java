@@ -76,10 +76,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
 name|PathIOException
 import|;
 end_import
@@ -94,10 +90,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
 name|PathIsDirectoryException
 import|;
 end_import
@@ -111,10 +103,6 @@ operator|.
 name|hadoop
 operator|.
 name|fs
-operator|.
-name|shell
-operator|.
-name|PathExceptions
 operator|.
 name|PathNotFoundException
 import|;

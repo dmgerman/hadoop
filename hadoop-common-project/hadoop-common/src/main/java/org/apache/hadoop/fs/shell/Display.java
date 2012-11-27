@@ -284,10 +284,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
 name|PathIsDirectoryException
 import|;
 end_import

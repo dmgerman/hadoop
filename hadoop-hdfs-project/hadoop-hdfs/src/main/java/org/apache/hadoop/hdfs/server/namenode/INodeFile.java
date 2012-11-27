@@ -191,7 +191,7 @@ implements|implements
 name|BlockCollection
 block|{
 comment|/** Cast INode to INodeFile. */
-DECL|method|valueOf (INode inode, String path)
+DECL|method|valueOf (INode inode, String path )
 specifier|public
 specifier|static
 name|INodeFile
@@ -204,7 +204,7 @@ name|String
 name|path
 parameter_list|)
 throws|throws
-name|IOException
+name|FileNotFoundException
 block|{
 if|if
 condition|(

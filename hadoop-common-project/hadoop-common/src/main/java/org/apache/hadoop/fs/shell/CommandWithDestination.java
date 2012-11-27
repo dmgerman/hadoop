@@ -124,10 +124,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
 name|PathExistsException
 import|;
 end_import
@@ -141,10 +137,6 @@ operator|.
 name|hadoop
 operator|.
 name|fs
-operator|.
-name|shell
-operator|.
-name|PathExceptions
 operator|.
 name|PathIOException
 import|;
@@ -160,10 +152,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
 name|PathIsDirectoryException
 import|;
 end_import
@@ -177,10 +165,6 @@ operator|.
 name|hadoop
 operator|.
 name|fs
-operator|.
-name|shell
-operator|.
-name|PathExceptions
 operator|.
 name|PathIsNotDirectoryException
 import|;
@@ -196,10 +180,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
 name|PathNotFoundException
 import|;
 end_import
@@ -213,10 +193,6 @@ operator|.
 name|hadoop
 operator|.
 name|fs
-operator|.
-name|shell
-operator|.
-name|PathExceptions
 operator|.
 name|PathOperationException
 import|;

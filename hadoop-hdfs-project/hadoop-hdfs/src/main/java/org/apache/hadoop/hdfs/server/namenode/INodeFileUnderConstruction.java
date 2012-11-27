@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -210,7 +220,7 @@ name|String
 name|path
 parameter_list|)
 throws|throws
-name|IOException
+name|FileNotFoundException
 block|{
 specifier|final
 name|INodeFile
@@ -236,7 +246,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|FileNotFoundException
 argument_list|(
 literal|"File is not under construction: "
 operator|+

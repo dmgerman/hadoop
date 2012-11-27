@@ -264,6 +264,24 @@ name|v2
 operator|.
 name|hs
 operator|.
+name|JobHistoryServer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|hs
+operator|.
 name|webapp
 operator|.
 name|dao
@@ -2348,7 +2366,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyHsInfoGeneric (String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion)
+DECL|method|verifyHsInfoGeneric (String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, long startedon)
 specifier|public
 name|void
 name|verifyHsInfoGeneric
@@ -2361,6 +2379,9 @@ name|hadoopBuildVersion
 parameter_list|,
 name|String
 name|hadoopVersion
+parameter_list|,
+name|long
+name|startedon
 parameter_list|)
 block|{
 name|WebServicesTestUtils
@@ -2405,6 +2426,17 @@ argument_list|,
 name|hadoopVersion
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"startedOn doesn't match: "
+argument_list|,
+name|JobHistoryServer
+operator|.
+name|historyServerTimeStamp
+argument_list|,
+name|startedon
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|verifyHSInfo (JSONObject info, TestAppContext ctx)
 specifier|public
@@ -2424,7 +2456,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|3
+literal|4
 argument_list|,
 name|info
 operator|.
@@ -2453,6 +2485,13 @@ operator|.
 name|getString
 argument_list|(
 literal|"hadoopVersion"
+argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getLong
+argument_list|(
+literal|"startedOn"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2597,6 +2636,15 @@ argument_list|(
 name|element
 argument_list|,
 literal|"hadoopVersion"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlLong
+argument_list|(
+name|element
+argument_list|,
+literal|"startedOn"
 argument_list|)
 argument_list|)
 expr_stmt|;

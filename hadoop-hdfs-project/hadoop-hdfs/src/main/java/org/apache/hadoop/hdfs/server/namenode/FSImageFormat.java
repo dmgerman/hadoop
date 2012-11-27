@@ -1316,6 +1316,8 @@ name|parentINode
 operator|=
 name|fsDir
 operator|.
+name|rootDir
+operator|.
 name|getParent
 argument_list|(
 name|pathComponents
@@ -1368,6 +1370,7 @@ block|{
 comment|// NOTE: This does not update space counts for parents
 if|if
 condition|(
+operator|!
 name|parent
 operator|.
 name|addChild
@@ -1376,8 +1379,6 @@ name|child
 argument_list|,
 literal|false
 argument_list|)
-operator|==
-literal|null
 condition|)
 block|{
 return|return;

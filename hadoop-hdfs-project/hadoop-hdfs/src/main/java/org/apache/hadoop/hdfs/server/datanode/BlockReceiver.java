@@ -3242,7 +3242,6 @@ argument_list|()
 expr_stmt|;
 comment|// start thread to processes responses
 block|}
-comment|/*         * Receive until the last packet.        */
 while|while
 condition|(
 name|receivePacket
@@ -3250,7 +3249,9 @@ argument_list|()
 operator|>=
 literal|0
 condition|)
-block|{}
+block|{
+comment|/* Receive until the last packet */
+block|}
 comment|// wait for all outstanding packet responses. And then
 comment|// indicate responder to gracefully shutdown.
 comment|// Mark that responder has been closed for future processing
@@ -3555,9 +3556,6 @@ operator||=
 operator|(
 literal|0xffL
 operator|&
-operator|(
-name|long
-operator|)
 name|checksum
 index|[
 name|i
@@ -3837,6 +3835,23 @@ name|LAST_IN_PIPELINE
 block|,
 name|HAS_DOWNSTREAM_IN_PIPELINE
 block|}
+DECL|field|MIRROR_ERROR_STATUS
+specifier|private
+specifier|static
+name|Status
+index|[]
+name|MIRROR_ERROR_STATUS
+init|=
+block|{
+name|Status
+operator|.
+name|SUCCESS
+block|,
+name|Status
+operator|.
+name|ERROR
+block|}
+decl_stmt|;
 comment|/**    * Processed responses from downstream datanodes in the pipeline    * and sends back replies to the originator.    */
 DECL|class|PacketResponder
 class|class
@@ -3846,7 +3861,7 @@ name|Runnable
 implements|,
 name|Closeable
 block|{
-comment|/** queue for packets waiting for ack */
+comment|/** queue for packets waiting for ack - synchronization using monitor lock */
 DECL|field|ackQueue
 specifier|private
 specifier|final
@@ -3875,7 +3890,7 @@ operator|.
 name|currentThread
 argument_list|()
 decl_stmt|;
-comment|/** is this responder running? */
+comment|/** is this responder running? - synchronization using monitor lock */
 DECL|field|running
 specifier|private
 specifier|volatile
@@ -4062,9 +4077,22 @@ name|toString
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|isRunning ()
+specifier|private
+name|boolean
+name|isRunning
+parameter_list|()
+block|{
+return|return
+name|running
+operator|&&
+name|datanode
+operator|.
+name|shouldRun
+return|;
+block|}
 comment|/**      * enqueue the seqno that is still be to acked by the downstream datanode.      * @param seqno      * @param lastPacketInBlock      * @param offsetInBlock      */
 DECL|method|enqueue (final long seqno, final boolean lastPacketInBlock, final long offsetInBlock)
-specifier|synchronized
 name|void
 name|enqueue
 parameter_list|(
@@ -4080,11 +4108,6 @@ specifier|final
 name|long
 name|offsetInBlock
 parameter_list|)
-block|{
-if|if
-condition|(
-name|running
-condition|)
 block|{
 specifier|final
 name|Packet
@@ -4125,6 +4148,16 @@ name|p
 argument_list|)
 expr_stmt|;
 block|}
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|running
+condition|)
+block|{
 name|ackQueue
 operator|.
 name|addLast
@@ -4136,6 +4169,70 @@ name|notifyAll
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+block|}
+comment|/** Wait for a packet with given {@code seqno} to be enqueued to ackQueue */
+DECL|method|waitForAckHead (long seqno)
+specifier|synchronized
+name|Packet
+name|waitForAckHead
+parameter_list|(
+name|long
+name|seqno
+parameter_list|)
+throws|throws
+name|InterruptedException
+block|{
+while|while
+condition|(
+name|isRunning
+argument_list|()
+operator|&&
+name|ackQueue
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|myString
+operator|+
+literal|": seqno="
+operator|+
+name|seqno
+operator|+
+literal|" waiting for local datanode to finish write."
+argument_list|)
+expr_stmt|;
+block|}
+name|wait
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|isRunning
+argument_list|()
+condition|?
+name|ackQueue
+operator|.
+name|getFirst
+argument_list|()
+else|:
+literal|null
+return|;
 block|}
 comment|/**      * wait for all pending packets to be acked. Then shutdown thread.      */
 annotation|@
@@ -4149,7 +4246,8 @@ parameter_list|()
 block|{
 while|while
 condition|(
-name|running
+name|isRunning
+argument_list|()
 operator|&&
 name|ackQueue
 operator|.
@@ -4157,10 +4255,6 @@ name|size
 argument_list|()
 operator|!=
 literal|0
-operator|&&
-name|datanode
-operator|.
-name|shouldRun
 condition|)
 block|{
 try|try
@@ -4247,11 +4341,8 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
-name|running
-operator|&&
-name|datanode
-operator|.
-name|shouldRun
+name|isRunning
+argument_list|()
 operator|&&
 operator|!
 name|lastPacketInBlock
@@ -4371,73 +4462,22 @@ operator|.
 name|LAST_IN_PIPELINE
 condition|)
 block|{
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-while|while
-condition|(
-name|running
-operator|&&
-name|datanode
-operator|.
-name|shouldRun
-operator|&&
-name|ackQueue
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|pkt
+operator|=
+name|waitForAckHead
 argument_list|(
-name|myString
-operator|+
-literal|": seqno="
-operator|+
 name|seqno
-operator|+
-literal|" waiting for local datanode to finish write."
 argument_list|)
 expr_stmt|;
-block|}
-name|wait
-argument_list|()
-expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
-name|running
-operator|||
-operator|!
-name|datanode
-operator|.
-name|shouldRun
+name|isRunning
+argument_list|()
 condition|)
 block|{
 break|break;
 block|}
-name|pkt
-operator|=
-name|ackQueue
-operator|.
-name|getFirst
-argument_list|()
-expr_stmt|;
 name|expected
 operator|=
 name|pkt
@@ -4482,7 +4522,8 @@ operator|.
 name|HAS_DOWNSTREAM_IN_PIPELINE
 condition|)
 block|{
-comment|// The total ack time includes the ack times of downstream nodes.
+comment|// The total ack time includes the ack times of downstream
+comment|// nodes.
 comment|// The value is 0 if this responder doesn't have a downstream
 comment|// DN in the pipeline.
 name|totalAckTimeNanos
@@ -4554,7 +4595,6 @@ name|lastPacketInBlock
 expr_stmt|;
 block|}
 block|}
-block|}
 catch|catch
 parameter_list|(
 name|InterruptedException
@@ -4615,7 +4655,7 @@ operator|||
 name|isInterrupted
 condition|)
 block|{
-comment|/* The receiver thread cancelled this thread.                 * We could also check any other status updates from the                 * receiver thread (e.g. if it is ok to write to replyOut).                 * It is prudent to not send any more status back to the client                * because this datanode has a problem. The upstream datanode                * will detect that this datanode is bad, and rightly so.                */
+comment|/*              * The receiver thread cancelled this thread. We could also check              * any other status updates from the receiver thread (e.g. if it is              * ok to write to replyOut). It is prudent to not send any more              * status back to the client because this datanode has a problem.              * The upstream datanode will detect that this datanode is bad, and              * rightly so.              */
 name|LOG
 operator|.
 name|info
@@ -4631,12 +4671,183 @@ literal|false
 expr_stmt|;
 continue|continue;
 block|}
-comment|// If this is the last packet in block, then close block
-comment|// file and finalize the block before responding success
 if|if
 condition|(
 name|lastPacketInBlock
 condition|)
+block|{
+comment|// Finalize the block and close the block file
+name|finalizeBlock
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
+block|}
+name|sendAckUpstream
+argument_list|(
+name|ack
+argument_list|,
+name|expected
+argument_list|,
+name|totalAckTimeNanos
+argument_list|,
+operator|(
+name|pkt
+operator|!=
+literal|null
+condition|?
+name|pkt
+operator|.
+name|offsetInBlock
+else|:
+literal|0
+operator|)
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|pkt
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// remove the packet from the ack queue
+name|removeAckHead
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"IOException in BlockReceiver.run(): "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|running
+condition|)
+block|{
+try|try
+block|{
+name|datanode
+operator|.
+name|checkDiskError
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+comment|// may throw an exception here
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"DataNode.checkDiskError failed in run() with: "
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|myString
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|running
+operator|=
+literal|false
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
+condition|)
+block|{
+comment|// failure not caused by interruption
+name|receiverThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|e
+parameter_list|)
+block|{
+if|if
+condition|(
+name|running
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|myString
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|running
+operator|=
+literal|false
+expr_stmt|;
+name|receiverThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|myString
+operator|+
+literal|" terminating"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Finalize the block and close the block file      * @param startTime time when BlockReceiver started receiving the block      */
+DECL|method|finalizeBlock (long startTime)
+specifier|private
+name|void
+name|finalizeBlock
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|BlockReceiver
 operator|.
@@ -4782,7 +4993,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// construct my ack message
+comment|/**      * @param ack Ack received from downstream      * @param seqno sequence number of ack to be sent upstream      * @param totalAckTimeNanos total ack time including all the downstream      *          nodes      * @param offsetInBlock offset in block for the data in packet      */
+DECL|method|sendAckUpstream (PipelineAck ack, long seqno, long totalAckTimeNanos, long offsetInBlock)
+specifier|private
+name|void
+name|sendAckUpstream
+parameter_list|(
+name|PipelineAck
+name|ack
+parameter_list|,
+name|long
+name|seqno
+parameter_list|,
+name|long
+name|totalAckTimeNanos
+parameter_list|,
+name|long
+name|offsetInBlock
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|Status
 index|[]
 name|replies
@@ -4797,29 +5028,7 @@ block|{
 comment|// ack read error
 name|replies
 operator|=
-operator|new
-name|Status
-index|[
-literal|2
-index|]
-expr_stmt|;
-name|replies
-index|[
-literal|0
-index|]
-operator|=
-name|Status
-operator|.
-name|SUCCESS
-expr_stmt|;
-name|replies
-index|[
-literal|1
-index|]
-operator|=
-name|Status
-operator|.
-name|ERROR
+name|MIRROR_ERROR_STATUS
 expr_stmt|;
 block|}
 else|else
@@ -4896,7 +5105,7 @@ init|=
 operator|new
 name|PipelineAck
 argument_list|(
-name|expected
+name|seqno
 argument_list|,
 name|replies
 argument_list|,
@@ -4910,8 +5119,6 @@ operator|.
 name|isSuccess
 argument_list|()
 operator|&&
-name|pkt
-operator|.
 name|offsetInBlock
 operator|>
 name|replicaInfo
@@ -4919,15 +5126,15 @@ operator|.
 name|getBytesAcked
 argument_list|()
 condition|)
+block|{
 name|replicaInfo
 operator|.
 name|setBytesAcked
 argument_list|(
-name|pkt
-operator|.
 name|offsetInBlock
 argument_list|)
 expr_stmt|;
+block|}
 comment|// send my ack back to upstream datanode
 name|replyAck
 operator|.
@@ -4961,139 +5168,6 @@ name|replyAck
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|pkt
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// remove the packet from the ack queue
-name|removeAckHead
-argument_list|()
-expr_stmt|;
-comment|// update bytes acked
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"IOException in BlockReceiver.run(): "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|running
-condition|)
-block|{
-try|try
-block|{
-name|datanode
-operator|.
-name|checkDiskError
-argument_list|(
-name|e
-argument_list|)
-expr_stmt|;
-comment|// may throw an exception here
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"DataNode.checkDiskError failed in run() with: "
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|myString
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|running
-operator|=
-literal|false
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|Thread
-operator|.
-name|interrupted
-argument_list|()
-condition|)
-block|{
-comment|// failure not caused by interruption
-name|receiverThread
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|e
-parameter_list|)
-block|{
-if|if
-condition|(
-name|running
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|myString
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|running
-operator|=
-literal|false
-expr_stmt|;
-name|receiverThread
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-name|myString
-operator|+
-literal|" terminating"
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**      * Remove a packet from the head of the ack queue      *       * This should be called only when the ack queue is not empty      */
 DECL|method|removeAckHead ()

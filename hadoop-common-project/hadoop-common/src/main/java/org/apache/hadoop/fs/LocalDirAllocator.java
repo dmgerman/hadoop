@@ -1801,6 +1801,7 @@ name|Path
 name|next
 parameter_list|()
 block|{
+specifier|final
 name|Path
 name|result
 init|=
@@ -1828,6 +1829,19 @@ name|next
 argument_list|,
 name|ie
 argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|result
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|NoSuchElementException
+argument_list|()
 throw|;
 block|}
 return|return
