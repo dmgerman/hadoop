@@ -76,11 +76,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|shell
-operator|.
-name|CopyCommands
-operator|.
-name|CopyFromLocal
+name|PathIOException
 import|;
 end_import
 
@@ -96,9 +92,9 @@ name|fs
 operator|.
 name|shell
 operator|.
-name|PathExceptions
+name|CopyCommands
 operator|.
-name|PathIOException
+name|CopyFromLocal
 import|;
 end_import
 

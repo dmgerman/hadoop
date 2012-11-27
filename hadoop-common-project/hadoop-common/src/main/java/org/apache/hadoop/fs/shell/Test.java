@@ -66,24 +66,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|shell
-operator|.
-name|PathExceptions
-operator|.
-name|PathNotFoundException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Perform shell-like file tests   */
 end_comment
