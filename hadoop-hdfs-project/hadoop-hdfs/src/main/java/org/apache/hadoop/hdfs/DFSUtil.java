@@ -1441,11 +1441,11 @@ literal|null
 return|;
 block|}
 comment|/**    * Given a list of path components returns a path as a UTF8 String    */
-DECL|method|byteArray2String (byte[][] pathComponents)
+DECL|method|byteArray2PathString (byte[][] pathComponents)
 specifier|public
 specifier|static
 name|String
-name|byteArray2String
+name|byteArray2PathString
 parameter_list|(
 name|byte
 index|[]
@@ -1573,6 +1573,56 @@ assert|;
 block|}
 return|return
 literal|null
+return|;
+block|}
+comment|/** Convert an object representing a path to a string. */
+DECL|method|path2String (final Object path)
+specifier|public
+specifier|static
+name|String
+name|path2String
+parameter_list|(
+specifier|final
+name|Object
+name|path
+parameter_list|)
+block|{
+return|return
+name|path
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|path
+operator|instanceof
+name|String
+condition|?
+operator|(
+name|String
+operator|)
+name|path
+else|:
+name|path
+operator|instanceof
+name|byte
+index|[]
+index|[]
+condition|?
+name|byteArray2PathString
+argument_list|(
+operator|(
+name|byte
+index|[]
+index|[]
+operator|)
+name|path
+argument_list|)
+else|:
+name|path
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 comment|/**    * Splits the array of bytes into array of arrays of bytes    * on byte separator    * @param bytes the array of bytes to split    * @param separator the delimiting byte    */

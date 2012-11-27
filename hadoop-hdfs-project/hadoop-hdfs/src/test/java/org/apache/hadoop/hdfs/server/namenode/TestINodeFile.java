@@ -100,6 +100,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|PathIsNotDirectoryException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -1157,13 +1171,13 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|FileNotFoundException
+name|e
 parameter_list|)
 block|{
 name|assertTrue
 argument_list|(
-name|ioe
+name|e
 operator|.
 name|getMessage
 argument_list|()
@@ -1273,24 +1287,10 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|PathIsNotDirectoryException
+name|e
 parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-name|ioe
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Path is not a directory"
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
+block|{       }
 block|}
 block|{
 comment|//cast from INodeFileUnderConstruction
@@ -1376,24 +1376,10 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|PathIsNotDirectoryException
+name|e
 parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-name|ioe
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"Path is not a directory"
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
+block|{       }
 block|}
 block|{
 comment|//cast from INodeDirectory
