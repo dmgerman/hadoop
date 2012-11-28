@@ -1950,7 +1950,7 @@ block|}
 block|}
 comment|/**    * Used by builder to create and return an instance of MiniDFSCluster    */
 DECL|method|MiniDFSCluster (Builder builder)
-specifier|private
+specifier|protected
 name|MiniDFSCluster
 parameter_list|(
 name|Builder
@@ -2169,13 +2169,13 @@ index|[]
 name|nameNodes
 decl_stmt|;
 DECL|field|numDataNodes
-specifier|private
+specifier|protected
 name|int
 name|numDataNodes
 decl_stmt|;
 DECL|field|dataNodes
-specifier|private
-name|ArrayList
+specifier|protected
+name|List
 argument_list|<
 name|DataNodeProperties
 argument_list|>
@@ -9851,7 +9851,7 @@ name|port
 return|;
 block|}
 DECL|method|setupDatanodeAddress (Configuration conf, boolean setupHostsFile, boolean checkDataNodeAddrConfig)
-specifier|private
+specifier|protected
 name|void
 name|setupDatanodeAddress
 parameter_list|(
