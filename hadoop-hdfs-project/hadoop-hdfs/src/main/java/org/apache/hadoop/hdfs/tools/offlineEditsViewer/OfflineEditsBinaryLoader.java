@@ -367,6 +367,18 @@ name|recoveryMode
 condition|)
 block|{
 comment|// Tell the visitor to clean up, then re-throw the exception
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Got IOException at position "
+operator|+
+name|inputStream
+operator|.
+name|getPosition
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|visitor
 operator|.
 name|close
@@ -406,6 +418,18 @@ name|recoveryMode
 condition|)
 block|{
 comment|// Tell the visitor to clean up, then re-throw the exception
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Got RuntimeException at position "
+operator|+
+name|inputStream
+operator|.
+name|getPosition
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|visitor
 operator|.
 name|close
