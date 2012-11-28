@@ -279,11 +279,6 @@ specifier|static
 class|class
 name|ReportTime
 block|{
-DECL|field|lastPing
-specifier|private
-name|long
-name|lastPing
-decl_stmt|;
 DECL|field|lastProgress
 specifier|private
 name|long
@@ -303,21 +298,6 @@ name|time
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setLastPing (long time)
-specifier|public
-specifier|synchronized
-name|void
-name|setLastPing
-parameter_list|(
-name|long
-name|time
-parameter_list|)
-block|{
-name|lastPing
-operator|=
-name|time
-expr_stmt|;
-block|}
 DECL|method|setLastProgress (long time)
 specifier|public
 specifier|synchronized
@@ -332,21 +312,6 @@ name|lastProgress
 operator|=
 name|time
 expr_stmt|;
-name|lastPing
-operator|=
-name|time
-expr_stmt|;
-block|}
-DECL|method|getLastPing ()
-specifier|public
-specifier|synchronized
-name|long
-name|getLastPing
-parameter_list|()
-block|{
-return|return
-name|lastPing
-return|;
 block|}
 DECL|method|getLastProgress ()
 specifier|public
@@ -375,19 +340,6 @@ name|TaskHeartbeatHandler
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|PING_TIMEOUT
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|PING_TIMEOUT
-init|=
-literal|5
-operator|*
-literal|60
-operator|*
-literal|1000
 decl_stmt|;
 comment|//thread which runs periodically to see the last time since a heartbeat is
 comment|//received from a task.
@@ -645,46 +597,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|pinged (TaskAttemptId attemptID)
-specifier|public
-name|void
-name|pinged
-parameter_list|(
-name|TaskAttemptId
-name|attemptID
-parameter_list|)
-block|{
-comment|//only put for the registered attempts
-comment|//TODO throw an exception if the task isn't registered.
-name|ReportTime
-name|time
-init|=
-name|runningAttempts
-operator|.
-name|get
-argument_list|(
-name|attemptID
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|time
-operator|!=
-literal|null
-condition|)
-block|{
-name|time
-operator|.
-name|setLastPing
-argument_list|(
-name|clock
-operator|.
-name|getTime
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 DECL|method|register (TaskAttemptId attemptID)
 specifier|public
 name|void
@@ -836,30 +748,9 @@ name|taskTimeOut
 operator|)
 operator|)
 decl_stmt|;
-name|boolean
-name|pingTimedOut
-init|=
-operator|(
-name|currentTime
-operator|>
-operator|(
-name|entry
-operator|.
-name|getValue
-argument_list|()
-operator|.
-name|getLastPing
-argument_list|()
-operator|+
-name|PING_TIMEOUT
-operator|)
-operator|)
-decl_stmt|;
 if|if
 condition|(
 name|taskTimedOut
-operator|||
-name|pingTimedOut
 condition|)
 block|{
 comment|// task is lost, remove from the list and raise lost event
