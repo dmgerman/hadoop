@@ -5241,6 +5241,9 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
+name|ERROR
+case|:
+case|case
 name|FAILED
 case|:
 name|metrics
