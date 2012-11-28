@@ -2925,10 +2925,10 @@ argument_list|(
 name|appAddedEvent1
 argument_list|)
 expr_stmt|;
-comment|// Scheduler should have one queue (the default)
+comment|// Scheduler should have two queues (the default and the one created for user1)
 name|assertEquals
 argument_list|(
-literal|1
+literal|2
 argument_list|,
 name|scheduler
 operator|.
@@ -2954,7 +2954,7 @@ argument_list|()
 operator|.
 name|getQueue
 argument_list|(
-literal|"default"
+literal|"user1"
 argument_list|)
 operator|.
 name|getApplications
@@ -2990,7 +2990,7 @@ argument_list|(
 name|appRemovedEvent1
 argument_list|)
 expr_stmt|;
-comment|// Default queue should have no apps
+comment|// Queue should have no apps
 name|assertEquals
 argument_list|(
 literal|0
@@ -3002,7 +3002,7 @@ argument_list|()
 operator|.
 name|getQueue
 argument_list|(
-literal|"default"
+literal|"user1"
 argument_list|)
 operator|.
 name|getApplications

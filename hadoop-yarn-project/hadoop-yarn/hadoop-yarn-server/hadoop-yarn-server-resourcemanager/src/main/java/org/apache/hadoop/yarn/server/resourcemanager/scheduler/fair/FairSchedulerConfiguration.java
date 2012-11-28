@@ -163,7 +163,7 @@ specifier|final
 name|boolean
 name|DEFAULT_USER_AS_DEFAULT_QUEUE
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|LOCALITY_THRESHOLD
 specifier|protected
