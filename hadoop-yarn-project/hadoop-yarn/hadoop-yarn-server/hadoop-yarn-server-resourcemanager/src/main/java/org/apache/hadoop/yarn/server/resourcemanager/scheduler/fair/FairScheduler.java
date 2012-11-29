@@ -508,7 +508,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 operator|.
 name|RMState
 import|;
@@ -2865,8 +2865,6 @@ argument_list|()
 argument_list|)
 argument_list|,
 name|rmContext
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 comment|// Inforce ACLs

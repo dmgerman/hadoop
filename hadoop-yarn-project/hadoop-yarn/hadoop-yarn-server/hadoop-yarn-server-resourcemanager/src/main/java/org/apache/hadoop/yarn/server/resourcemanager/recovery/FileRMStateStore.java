@@ -22,47 +22,15 @@ name|recovery
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
+begin_class
+DECL|class|FileRMStateStore
+specifier|public
+class|class
+name|FileRMStateStore
+implements|implements
 name|RMStateStore
-operator|.
-name|RMState
-import|;
-end_import
-
-begin_interface
-DECL|interface|Recoverable
-specifier|public
-interface|interface
-name|Recoverable
-block|{
-DECL|method|recover (RMState state)
-specifier|public
-name|void
-name|recover
-parameter_list|(
-name|RMState
-name|state
-parameter_list|)
-throws|throws
-name|Exception
-function_decl|;
-block|}
-end_interface
+block|{  }
+end_class
 
 end_unit
 

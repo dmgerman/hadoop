@@ -418,28 +418,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|ApplicationsStore
-operator|.
-name|ApplicationStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|resource
 operator|.
 name|Resources
@@ -954,7 +932,7 @@ specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
-DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext, ApplicationStore store)
+DECL|method|FiCaSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
 specifier|public
 name|FiCaSchedulerApp
 parameter_list|(
@@ -972,9 +950,6 @@ name|activeUsersManager
 parameter_list|,
 name|RMContext
 name|rmContext
-parameter_list|,
-name|ApplicationStore
-name|store
 parameter_list|)
 block|{
 name|this
@@ -997,8 +972,6 @@ argument_list|,
 name|queue
 argument_list|,
 name|activeUsersManager
-argument_list|,
-name|store
 argument_list|)
 expr_stmt|;
 name|this

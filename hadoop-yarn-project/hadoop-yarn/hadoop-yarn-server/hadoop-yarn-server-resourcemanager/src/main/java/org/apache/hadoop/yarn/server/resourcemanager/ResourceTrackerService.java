@@ -476,7 +476,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 operator|.
 name|RMState
 import|;
@@ -1849,35 +1849,6 @@ expr_stmt|;
 return|return
 name|nodeHeartBeatResponse
 return|;
-block|}
-DECL|method|recover (RMState state)
-specifier|public
-name|void
-name|recover
-parameter_list|(
-name|RMState
-name|state
-parameter_list|)
-block|{
-comment|//
-comment|//    List<RMNode> nodeManagers = state.getStoredNodeManagers();
-comment|//    for (RMNode nm : nodeManagers) {
-comment|//      createNewNode(nm.getNodeID(), nm.getNodeHostName(), nm
-comment|//          .getCommandPort(), nm.getHttpPort(), nm.getNode(), nm
-comment|//          .getTotalCapability());
-comment|//    }
-comment|//    for (Map.Entry<ApplicationId, ApplicationInfo> entry : state
-comment|//        .getStoredApplications().entrySet()) {
-comment|//      List<Container> containers = entry.getValue().getContainers();
-comment|//      List<Container> containersToAdd = new ArrayList<Container>();
-comment|//      for (Container c : containers) {
-comment|//        RMNode containerNode = this.rmContext.getNodesCollection()
-comment|//            .getNodeInfo(c.getNodeId());
-comment|//        containersToAdd.add(c);
-comment|//        containerNode.allocateContainer(entry.getKey(), containersToAdd);
-comment|//        containersToAdd.clear();
-comment|//      }
-comment|//    }
 block|}
 comment|/**    * resolving the network topology.    * @param hostName the hostname of this node.    * @return the resolved {@link Node} for this nodemanager.    */
 DECL|method|resolve (String hostName)

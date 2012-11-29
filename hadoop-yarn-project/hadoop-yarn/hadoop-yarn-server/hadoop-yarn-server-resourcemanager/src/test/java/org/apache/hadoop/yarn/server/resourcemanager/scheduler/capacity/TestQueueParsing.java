@@ -243,8 +243,6 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 operator|new
 name|RMContainerTokenSecretManager
 argument_list|(

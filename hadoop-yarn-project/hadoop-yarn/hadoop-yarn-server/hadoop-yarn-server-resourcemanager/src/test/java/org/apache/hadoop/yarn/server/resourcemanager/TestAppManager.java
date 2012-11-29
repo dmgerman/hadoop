@@ -274,26 +274,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|MemStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmapp
 operator|.
 name|MockRMApp
@@ -791,10 +771,6 @@ return|return
 operator|new
 name|RMContextImpl
 argument_list|(
-operator|new
-name|MemStore
-argument_list|()
-argument_list|,
 name|rmDispatcher
 argument_list|,
 name|containerAllocationExpirer
@@ -2386,18 +2362,6 @@ name|getState
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertNotNull
-argument_list|(
-literal|"app store is null"
-argument_list|,
-name|app
-operator|.
-name|getApplicationStore
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// wait for event to be processed
 name|int
 name|timeoutSecs
@@ -2721,18 +2685,6 @@ argument_list|,
 name|app
 operator|.
 name|getState
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertNotNull
-argument_list|(
-literal|"app store is null"
-argument_list|,
-name|app
-operator|.
-name|getApplicationStore
 argument_list|()
 argument_list|)
 expr_stmt|;

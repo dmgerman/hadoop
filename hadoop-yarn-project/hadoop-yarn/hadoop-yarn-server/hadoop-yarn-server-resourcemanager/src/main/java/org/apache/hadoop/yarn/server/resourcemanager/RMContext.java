@@ -98,46 +98,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|ApplicationsStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|NodeStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -299,16 +259,6 @@ block|{
 DECL|method|getDispatcher ()
 name|Dispatcher
 name|getDispatcher
-parameter_list|()
-function_decl|;
-DECL|method|getNodeStore ()
-name|NodeStore
-name|getNodeStore
-parameter_list|()
-function_decl|;
-DECL|method|getApplicationsStore ()
-name|ApplicationsStore
-name|getApplicationsStore
 parameter_list|()
 function_decl|;
 DECL|method|getRMApps ()

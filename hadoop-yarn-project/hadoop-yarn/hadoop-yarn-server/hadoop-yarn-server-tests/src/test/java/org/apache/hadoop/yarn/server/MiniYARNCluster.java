@@ -496,7 +496,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 import|;
 end_import
 
@@ -1036,7 +1036,7 @@ literal|":0"
 argument_list|)
 expr_stmt|;
 block|}
-name|Store
+name|RMStateStore
 name|store
 init|=
 name|StoreFactory

@@ -490,28 +490,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|ApplicationsStore
-operator|.
-name|ApplicationStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmapp
 operator|.
 name|RMAppNodeUpdateEvent
@@ -881,12 +859,6 @@ specifier|private
 specifier|final
 name|String
 name|clientTokenStr
-decl_stmt|;
-DECL|field|appStore
-specifier|private
-specifier|final
-name|ApplicationStore
-name|appStore
 decl_stmt|;
 DECL|field|dispatcher
 specifier|private
@@ -1655,7 +1627,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, String clientTokenStr, ApplicationStore appStore, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, String clientTokenStr, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -1682,9 +1654,6 @@ name|submissionContext
 parameter_list|,
 name|String
 name|clientTokenStr
-parameter_list|,
-name|ApplicationStore
-name|appStore
 parameter_list|,
 name|YarnScheduler
 name|scheduler
@@ -1761,12 +1730,6 @@ operator|.
 name|clientTokenStr
 operator|=
 name|clientTokenStr
-expr_stmt|;
-name|this
-operator|.
-name|appStore
-operator|=
-name|appStore
 expr_stmt|;
 name|this
 operator|.
@@ -2176,20 +2139,6 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|Override
-DECL|method|getApplicationStore ()
-specifier|public
-name|ApplicationStore
-name|getApplicationStore
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|appStore
-return|;
 block|}
 DECL|method|createApplicationState (RMAppState rmAppState)
 specifier|private
