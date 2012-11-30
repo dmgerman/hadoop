@@ -3916,6 +3916,37 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+DECL|method|testNoTrackingUrl ()
+specifier|public
+name|void
+name|testNoTrackingUrl
+parameter_list|()
+block|{
+name|Container
+name|amContainer
+init|=
+name|allocateApplicationAttempt
+argument_list|()
+decl_stmt|;
+name|launchApplicationAttempt
+argument_list|(
+name|amContainer
+argument_list|)
+expr_stmt|;
+name|runApplicationAttempt
+argument_list|(
+name|amContainer
+argument_list|,
+literal|"host"
+argument_list|,
+literal|8042
+argument_list|,
+literal|""
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
 DECL|method|testUnregisterToSuccessfulFinishing ()
 specifier|public
 name|void
