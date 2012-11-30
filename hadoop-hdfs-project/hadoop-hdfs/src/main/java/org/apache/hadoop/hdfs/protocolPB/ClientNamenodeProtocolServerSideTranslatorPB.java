@@ -5044,6 +5044,11 @@ name|req
 operator|.
 name|getClient
 argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getLastBlockLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

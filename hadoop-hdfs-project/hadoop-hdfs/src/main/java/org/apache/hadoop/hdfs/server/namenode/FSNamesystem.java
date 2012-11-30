@@ -14850,8 +14850,8 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
-comment|/** Persist all metadata about this file.    * @param src The string representation of the path    * @param clientName The string representation of the client    * @throws IOException if path does not exist    */
-DECL|method|fsync (String src, String clientName)
+comment|/** Persist all metadata about this file.    * @param src The string representation of the path    * @param clientName The string representation of the client    * @param lastBlockLength The length of the last block     *                        under construction reported from client.    * @throws IOException if path does not exist    */
+DECL|method|fsync (String src, String clientName, long lastBlockLength)
 name|void
 name|fsync
 parameter_list|(
@@ -14860,6 +14860,9 @@ name|src
 parameter_list|,
 name|String
 name|clientName
+parameter_list|,
+name|long
+name|lastBlockLength
 parameter_list|)
 throws|throws
 name|IOException
@@ -14921,6 +14924,21 @@ argument_list|,
 name|clientName
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|lastBlockLength
+operator|>
+literal|0
+condition|)
+block|{
+name|pendingFile
+operator|.
+name|updateLengthOfLastBlock
+argument_list|(
+name|lastBlockLength
+argument_list|)
+expr_stmt|;
+block|}
 name|dir
 operator|.
 name|persistBlocks

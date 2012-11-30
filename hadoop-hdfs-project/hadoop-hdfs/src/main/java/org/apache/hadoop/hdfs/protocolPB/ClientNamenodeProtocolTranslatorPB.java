@@ -4615,7 +4615,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|fsync (String src, String client)
+DECL|method|fsync (String src, String client, long lastBlockLength)
 specifier|public
 name|void
 name|fsync
@@ -4625,6 +4625,9 @@ name|src
 parameter_list|,
 name|String
 name|client
+parameter_list|,
+name|long
+name|lastBlockLength
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -4651,6 +4654,11 @@ operator|.
 name|setClient
 argument_list|(
 name|client
+argument_list|)
+operator|.
+name|setLastBlockLength
+argument_list|(
+name|lastBlockLength
 argument_list|)
 operator|.
 name|build

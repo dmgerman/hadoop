@@ -5034,7 +5034,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|fsync (String src, String clientName)
+DECL|method|fsync (String src, String clientName, long lastBlockLength)
 specifier|public
 name|void
 name|fsync
@@ -5044,6 +5044,9 @@ name|src
 parameter_list|,
 name|String
 name|clientName
+parameter_list|,
+name|long
+name|lastBlockLength
 parameter_list|)
 throws|throws
 name|IOException
@@ -5055,6 +5058,8 @@ argument_list|(
 name|src
 argument_list|,
 name|clientName
+argument_list|,
+name|lastBlockLength
 argument_list|)
 expr_stmt|;
 block|}
