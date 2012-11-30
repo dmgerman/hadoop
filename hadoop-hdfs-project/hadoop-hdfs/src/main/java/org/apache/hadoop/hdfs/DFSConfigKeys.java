@@ -1817,24 +1817,6 @@ name|DFS_CLIENT_LOCAL_INTERFACES
 init|=
 literal|"dfs.client.local.interfaces"
 decl_stmt|;
-DECL|field|DFS_NAMENODE_AUDIT_LOGGERS_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_NAMENODE_AUDIT_LOGGERS_KEY
-init|=
-literal|"dfs.namenode.audit.loggers"
-decl_stmt|;
-DECL|field|DFS_NAMENODE_DEFAULT_AUDIT_LOGGER_NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_NAMENODE_DEFAULT_AUDIT_LOGGER_NAME
-init|=
-literal|"default"
-decl_stmt|;
 comment|// Much code in hdfs is not yet updated to use these keys.
 DECL|field|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
 specifier|public
