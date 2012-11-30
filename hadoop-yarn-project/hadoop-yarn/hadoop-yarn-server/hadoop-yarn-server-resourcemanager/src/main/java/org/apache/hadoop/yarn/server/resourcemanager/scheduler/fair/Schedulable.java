@@ -203,14 +203,6 @@ name|void
 name|updateDemand
 parameter_list|()
 function_decl|;
-comment|/**    * Distribute the fair share assigned to this Schedulable among its    * children (used in queues where the internal scheduler is fair sharing).    */
-DECL|method|redistributeShare ()
-specifier|public
-specifier|abstract
-name|void
-name|redistributeShare
-parameter_list|()
-function_decl|;
 comment|/**    * Assign a container on this node if possible, and return the amount of    * resources assigned. If {@code reserved} is true, it means a reservation    * already exists on this node, and the schedulable should fulfill that    * reservation if possible.    */
 DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
 specifier|public

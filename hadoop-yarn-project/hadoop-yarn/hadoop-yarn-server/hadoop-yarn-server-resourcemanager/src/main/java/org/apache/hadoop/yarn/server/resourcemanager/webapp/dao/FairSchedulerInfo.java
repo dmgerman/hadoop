@@ -90,7 +90,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|FSQueue
+name|FSLeafQueue
 import|;
 end_import
 
@@ -149,7 +149,7 @@ name|fs
 expr_stmt|;
 name|Collection
 argument_list|<
-name|FSQueue
+name|FSLeafQueue
 argument_list|>
 name|queues
 init|=
@@ -158,7 +158,7 @@ operator|.
 name|getQueueManager
 argument_list|()
 operator|.
-name|getQueues
+name|getLeafQueues
 argument_list|()
 decl_stmt|;
 name|queueInfos
@@ -172,7 +172,7 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|FSQueue
+name|FSLeafQueue
 name|queue
 range|:
 name|queues

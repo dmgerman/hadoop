@@ -50,6 +50,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collections
 import|;
 end_import
@@ -994,6 +1004,10 @@ name|RMContainerTokenSecretManager
 import|;
 end_import
 
+begin_comment
+comment|/**  * A scheduler that schedules resources between a set of queues. The scheduler  * keeps track of the resources used by each queue, and attempts to maintain  * fairness by scheduling tasks at queues whose allocations are farthest below  * an ideal fair distribution.  *   * The fair scheduler supports hierarchical queues. All queues descend from a  * queue named "root". Available resources are distributed among the children  * of the root queue in the typical fair scheduling fashion. Then, the children  * distribute the resources assigned to them to their children in the same  * fashion.  Applications may only be scheduled on leaf queues. Queues can be  * specified as children of other queues by placing them as sub-elements of their  * parents in the fair scheduler configuration file.  *   * A queue's name starts with the names of its parents, with periods as  * separators.  So a queue named "queue1" under the root named, would be   * referred to as "root.queue1", and a queue named "queue2" under a queue  * named "parent1" would be referred to as "root.parent1.queue2".  */
+end_comment
+
 begin_class
 annotation|@
 name|LimitedPrivate
@@ -1124,13 +1138,13 @@ DECL|field|rootMetrics
 name|QueueMetrics
 name|rootMetrics
 decl_stmt|;
-comment|//Time when we last updated preemption vars
+comment|// Time when we last updated preemption vars
 DECL|field|lastPreemptionUpdateTime
 specifier|protected
 name|long
 name|lastPreemptionUpdateTime
 decl_stmt|;
-comment|//Time we last ran preemptTasksIfNecessary
+comment|// Time we last ran preemptTasksIfNecessary
 DECL|field|lastPreemptCheckTime
 specifier|private
 name|long
@@ -1246,7 +1260,8 @@ specifier|protected
 name|boolean
 name|assignMultiple
 decl_stmt|;
-comment|// Allocate multiple containers per heartbeat
+comment|// Allocate multiple containers per
+comment|// heartbeat
 DECL|field|maxAssign
 specifier|protected
 name|int
@@ -1291,54 +1306,6 @@ parameter_list|()
 block|{
 return|return
 name|queueMgr
-return|;
-block|}
-DECL|method|getQueueSchedulables ()
-specifier|public
-name|List
-argument_list|<
-name|FSQueueSchedulable
-argument_list|>
-name|getQueueSchedulables
-parameter_list|()
-block|{
-name|List
-argument_list|<
-name|FSQueueSchedulable
-argument_list|>
-name|scheds
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|FSQueueSchedulable
-argument_list|>
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|FSQueue
-name|queue
-range|:
-name|queueMgr
-operator|.
-name|getQueues
-argument_list|()
-control|)
-block|{
-name|scheds
-operator|.
-name|add
-argument_list|(
-name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|scheds
 return|;
 block|}
 DECL|method|getRMContainer (ContainerId containerId)
@@ -1434,7 +1401,7 @@ block|}
 block|}
 block|}
 block|}
-comment|/**   * Recompute the internal variables used by the scheduler - per-job weights,   * fair shares, deficits, minimum slot allocations, and amount of used and   * required resources per job.   */
+comment|/**    * Recompute the internal variables used by the scheduler - per-job weights,    * fair shares, deficits, minimum slot allocations, and amount of used and    * required resources per job.    */
 DECL|method|update ()
 specifier|protected
 specifier|synchronized
@@ -1456,90 +1423,34 @@ name|updatePreemptionVariables
 argument_list|()
 expr_stmt|;
 comment|// Determine if any queues merit preemption
-comment|// Update demands of apps and queues
-for|for
-control|(
 name|FSQueue
-name|queue
-range|:
+name|rootQueue
+init|=
 name|queueMgr
 operator|.
-name|getQueues
+name|getRootQueue
 argument_list|()
-control|)
-block|{
-name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
+decl_stmt|;
+comment|// Recursively update demands for all queues
+name|rootQueue
 operator|.
 name|updateDemand
 argument_list|()
 expr_stmt|;
-block|}
-comment|// Compute fair shares based on updated demands
-name|List
-argument_list|<
-name|FSQueueSchedulable
-argument_list|>
-name|queueScheds
-init|=
-name|getQueueSchedulables
-argument_list|()
-decl_stmt|;
-name|SchedulingAlgorithms
+name|rootQueue
 operator|.
-name|computeFairShares
+name|setFairShare
 argument_list|(
-name|queueScheds
-argument_list|,
 name|clusterCapacity
 argument_list|)
 expr_stmt|;
-comment|// Update queue metrics for this queue
-for|for
-control|(
-name|FSQueueSchedulable
-name|sched
-range|:
-name|queueScheds
-control|)
-block|{
-name|sched
+comment|// Recursively compute fair shares for all queues
+comment|// and update metrics
+name|rootQueue
 operator|.
-name|getMetrics
-argument_list|()
-operator|.
-name|setAvailableResourcesToQueue
-argument_list|(
-name|sched
-operator|.
-name|getFairShare
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Use the computed shares to assign shares within each queue
-for|for
-control|(
-name|FSQueue
-name|queue
-range|:
-name|queueMgr
-operator|.
-name|getQueues
-argument_list|()
-control|)
-block|{
-name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
-operator|.
-name|redistributeShare
+name|recomputeFairShares
 argument_list|()
 expr_stmt|;
-block|}
 comment|// Update recorded capacity of root queue (child queues are updated
 comment|// when fair share is calculated).
 name|rootMetrics
@@ -1571,10 +1482,12 @@ name|now
 expr_stmt|;
 for|for
 control|(
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 range|:
-name|getQueueSchedulables
+name|queueMgr
+operator|.
+name|getLeafQueues
 argument_list|()
 control|)
 block|{
@@ -1615,11 +1528,11 @@ block|}
 block|}
 block|}
 comment|/**    * Is a queue below its min share for the given task type?    */
-DECL|method|isStarvedForMinShare (FSQueueSchedulable sched)
+DECL|method|isStarvedForMinShare (FSLeafQueue sched)
 name|boolean
 name|isStarvedForMinShare
 parameter_list|(
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 parameter_list|)
 block|{
@@ -1655,12 +1568,12 @@ name|desiredShare
 argument_list|)
 return|;
 block|}
-comment|/**    * Is a queue being starved for fair share for the given task type?    * This is defined as being below half its fair share.    */
-DECL|method|isStarvedForFairShare (FSQueueSchedulable sched)
+comment|/**    * Is a queue being starved for fair share for the given task type? This is    * defined as being below half its fair share.    */
+DECL|method|isStarvedForFairShare (FSLeafQueue sched)
 name|boolean
 name|isStarvedForFairShare
 parameter_list|(
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 parameter_list|)
 block|{
@@ -1703,7 +1616,7 @@ name|desiredFairShare
 argument_list|)
 return|;
 block|}
-comment|/**    * Check for queues that need tasks preempted, either because they have been    * below their guaranteed share for minSharePreemptionTimeout or they    * have been below half their fair share for the fairSharePreemptionTimeout.    * If such queues exist, compute how many tasks of each type need to be    * preempted and then select the right ones using preemptTasks.    */
+comment|/**    * Check for queues that need tasks preempted, either because they have been    * below their guaranteed share for minSharePreemptionTimeout or they have    * been below half their fair share for the fairSharePreemptionTimeout. If    * such queues exist, compute how many tasks of each type need to be preempted    * and then select the right ones using preemptTasks.    */
 DECL|method|preemptTasksIfNecessary ()
 specifier|protected
 specifier|synchronized
@@ -1752,10 +1665,12 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 range|:
-name|getQueueSchedulables
+name|queueMgr
+operator|.
+name|getLeafQueues
 argument_list|()
 control|)
 block|{
@@ -1793,7 +1708,9 @@ condition|)
 block|{
 name|preemptResources
 argument_list|(
-name|getQueueSchedulables
+name|queueMgr
+operator|.
+name|getLeafQueues
 argument_list|()
 argument_list|,
 name|resToPreempt
@@ -1801,15 +1718,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Preempt a quantity of resources from a list of QueueSchedulables.    * The policy for this is to pick apps from queues that are over their fair    * share, but make sure that no queue is placed below its fair share in the    * process. We further prioritize preemption by choosing containers with    * lowest priority to preempt.    */
-DECL|method|preemptResources (List<FSQueueSchedulable> scheds, Resource toPreempt)
+comment|/**    * Preempt a quantity of resources from a list of QueueSchedulables. The    * policy for this is to pick apps from queues that are over their fair share,    * but make sure that no queue is placed below its fair share in the process.    * We further prioritize preemption by choosing containers with lowest    * priority to preempt.    */
+DECL|method|preemptResources (Collection<FSLeafQueue> scheds, Resource toPreempt)
 specifier|protected
 name|void
 name|preemptResources
 parameter_list|(
-name|List
+name|Collection
 argument_list|<
-name|FSQueueSchedulable
+name|FSLeafQueue
 argument_list|>
 name|scheds
 parameter_list|,
@@ -1860,7 +1777,7 @@ name|Map
 argument_list|<
 name|RMContainer
 argument_list|,
-name|FSQueueSchedulable
+name|FSLeafQueue
 argument_list|>
 name|queues
 init|=
@@ -1869,7 +1786,7 @@ name|HashMap
 argument_list|<
 name|RMContainer
 argument_list|,
-name|FSQueueSchedulable
+name|FSLeafQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1889,7 +1806,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 range|:
 name|scheds
@@ -2029,7 +1946,7 @@ range|:
 name|runningContainers
 control|)
 block|{
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 init|=
 name|queues
@@ -2084,9 +2001,6 @@ operator|+
 literal|") from queue "
 operator|+
 name|sched
-operator|.
-name|getQueue
-argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -2159,13 +2073,13 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Return the resource amount that this queue is allowed to preempt, if any.    * If the queue has been below its min share for at least its preemption    * timeout, it should preempt the difference between its current share and    * this min share. If it has been below half its fair share for at least the    * fairSharePreemptionTimeout, it should preempt enough tasks to get up to    * its full fair share. If both conditions hold, we preempt the max of the    * two amounts (this shouldn't happen unless someone sets the timeouts to    * be identical for some reason).    */
-DECL|method|resToPreempt (FSQueueSchedulable sched, long curTime)
+comment|/**    * Return the resource amount that this queue is allowed to preempt, if any.    * If the queue has been below its min share for at least its preemption    * timeout, it should preempt the difference between its current share and    * this min share. If it has been below half its fair share for at least the    * fairSharePreemptionTimeout, it should preempt enough tasks to get up to its    * full fair share. If both conditions hold, we preempt the max of the two    * amounts (this shouldn't happen unless someone sets the timeouts to be    * identical for some reason).    */
+DECL|method|resToPreempt (FSLeafQueue sched, long curTime)
 specifier|protected
 name|Resource
 name|resToPreempt
 parameter_list|(
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 parameter_list|,
 name|long
@@ -2385,7 +2299,7 @@ return|return
 name|resToPreempt
 return|;
 block|}
-comment|/**    * This updates the runnability of all apps based on whether or not    * any users/queues have exceeded their capacity.    */
+comment|/**    * This updates the runnability of all apps based on whether or not any    * users/queues have exceeded their capacity.    */
 DECL|method|updateRunnability ()
 specifier|private
 name|void
@@ -2408,12 +2322,12 @@ decl_stmt|;
 comment|// Start by marking everything as not runnable
 for|for
 control|(
-name|FSQueue
-name|p
+name|FSLeafQueue
+name|leafQueue
 range|:
 name|queueMgr
 operator|.
-name|getQueues
+name|getLeafQueues
 argument_list|()
 control|)
 block|{
@@ -2422,10 +2336,7 @@ control|(
 name|AppSchedulable
 name|a
 range|:
-name|p
-operator|.
-name|getQueueSchedulable
-argument_list|()
+name|leafQueue
 operator|.
 name|getAppSchedulables
 argument_list|()
@@ -2815,11 +2726,11 @@ return|return
 name|eventLog
 return|;
 block|}
-comment|/**    * Add a new application to the scheduler, with a given id, queue name,    * and user. This will accept a new app even if the user or queue is above    * configured limits, but the app will not be marked as runnable.    */
+comment|/**    * Add a new application to the scheduler, with a given id, queue name, and    * user. This will accept a new app even if the user or queue is above    * configured limits, but the app will not be marked as runnable.    */
+DECL|method|addApplication ( ApplicationAttemptId applicationAttemptId, String queueName, String user)
 specifier|protected
 specifier|synchronized
 name|void
-DECL|method|addApplication (ApplicationAttemptId applicationAttemptId, String queueName, String user)
 name|addApplication
 parameter_list|(
 name|ApplicationAttemptId
@@ -2832,16 +2743,36 @@ name|String
 name|user
 parameter_list|)
 block|{
-name|FSQueue
+name|FSLeafQueue
 name|queue
 init|=
 name|queueMgr
 operator|.
-name|getQueue
+name|getLeafQueue
 argument_list|(
 name|queueName
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|queue
+operator|==
+literal|null
+condition|)
+block|{
+comment|// queue is not an existing or createable leaf queue
+name|queue
+operator|=
+name|queueMgr
+operator|.
+name|getLeafQueue
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_QUEUE_NAME
+argument_list|)
+expr_stmt|;
+block|}
 name|FSSchedulerApp
 name|schedulerApp
 init|=
@@ -2853,9 +2784,6 @@ argument_list|,
 name|user
 argument_list|,
 name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
 argument_list|,
 operator|new
 name|ActiveUsersManager
@@ -2867,7 +2795,7 @@ argument_list|,
 name|rmContext
 argument_list|)
 decl_stmt|;
-comment|// Inforce ACLs
+comment|// Enforce ACLs
 name|UserGroupInformation
 name|userUgi
 decl_stmt|;
@@ -2896,6 +2824,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+comment|// Always a singleton list
 name|List
 argument_list|<
 name|QueueUserACLInfo
@@ -2904,15 +2833,11 @@ name|info
 init|=
 name|queue
 operator|.
-name|getQueueSchedulable
-argument_list|()
-operator|.
 name|getQueueUserAclInfo
 argument_list|(
 name|userUgi
 argument_list|)
 decl_stmt|;
-comment|// Always a signleton list
 if|if
 condition|(
 operator|!
@@ -2965,9 +2890,6 @@ name|schedulerApp
 argument_list|)
 expr_stmt|;
 name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
 operator|.
 name|getMetrics
 argument_list|()
@@ -3182,12 +3104,12 @@ name|rmAppAttemptFinalState
 argument_list|)
 expr_stmt|;
 comment|// Inform the queue
-name|FSQueue
+name|FSLeafQueue
 name|queue
 init|=
 name|queueMgr
 operator|.
-name|getQueue
+name|getLeafQueue
 argument_list|(
 name|application
 operator|.
@@ -3851,7 +3773,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Process a container which has launched on a node, as reported by the    * node.    */
+comment|/**    * Process a container which has launched on a node, as reported by the node.    */
 DECL|method|containerLaunchedOnNode (ContainerId containerId, FSSchedulerNode node)
 specifier|private
 name|void
@@ -4103,12 +4025,12 @@ operator|+
 name|nm
 argument_list|)
 expr_stmt|;
-name|FSQueue
+name|FSLeafQueue
 name|queue
 init|=
 name|queueMgr
 operator|.
-name|getQueue
+name|getLeafQueue
 argument_list|(
 name|reservedApplication
 operator|.
@@ -4117,9 +4039,6 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
 operator|.
 name|assignContainer
 argument_list|(
@@ -4145,12 +4064,21 @@ block|{
 comment|// At most one task is scheduled each iteration of this loop
 name|List
 argument_list|<
-name|FSQueueSchedulable
+name|FSLeafQueue
 argument_list|>
 name|scheds
 init|=
-name|getQueueSchedulables
+operator|new
+name|ArrayList
+argument_list|<
+name|FSLeafQueue
+argument_list|>
+argument_list|(
+name|queueMgr
+operator|.
+name|getLeafQueues
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|Collections
 operator|.
@@ -4172,7 +4100,7 @@ literal|false
 decl_stmt|;
 for|for
 control|(
-name|FSQueueSchedulable
+name|FSLeafQueue
 name|sched
 range|:
 name|scheds
@@ -4750,10 +4678,10 @@ comment|// NOT IMPLEMENTED
 block|}
 annotation|@
 name|Override
+DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 specifier|public
 specifier|synchronized
 name|void
-DECL|method|reinitialize (Configuration conf, RMContext rmContext)
 name|reinitialize
 parameter_list|(
 name|Configuration
@@ -5075,9 +5003,6 @@ argument_list|(
 name|queueName
 argument_list|)
 operator|.
-name|getQueueSchedulable
-argument_list|()
-operator|.
 name|getQueueInfo
 argument_list|(
 name|includeChildQueues
@@ -5127,48 +5052,16 @@ argument_list|>
 argument_list|()
 return|;
 block|}
-name|List
-argument_list|<
-name|QueueUserACLInfo
-argument_list|>
-name|userAcls
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|QueueUserACLInfo
-argument_list|>
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-name|FSQueue
-name|queue
-range|:
+return|return
 name|queueMgr
 operator|.
-name|getQueues
-argument_list|()
-control|)
-block|{
-name|userAcls
-operator|.
-name|addAll
-argument_list|(
-name|queue
-operator|.
-name|getQueueSchedulable
+name|getRootQueue
 argument_list|()
 operator|.
 name|getQueueUserAclInfo
 argument_list|(
 name|user
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|userAcls
 return|;
 block|}
 annotation|@

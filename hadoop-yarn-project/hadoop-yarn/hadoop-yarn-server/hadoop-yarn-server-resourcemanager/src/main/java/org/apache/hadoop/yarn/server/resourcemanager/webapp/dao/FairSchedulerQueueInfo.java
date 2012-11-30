@@ -90,7 +90,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|FSQueue
+name|AppSchedulable
 import|;
 end_import
 
@@ -112,29 +112,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|FSQueueSchedulable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|fair
-operator|.
-name|FSSchedulerApp
+name|FSLeafQueue
 import|;
 end_import
 
@@ -258,11 +236,11 @@ specifier|private
 name|String
 name|queueName
 decl_stmt|;
-DECL|method|FairSchedulerQueueInfo (FSQueue queue, FairScheduler scheduler)
+DECL|method|FairSchedulerQueueInfo (FSLeafQueue queue, FairScheduler scheduler)
 specifier|public
 name|FairSchedulerQueueInfo
 parameter_list|(
-name|FSQueue
+name|FSLeafQueue
 name|queue
 parameter_list|,
 name|FairScheduler
@@ -271,18 +249,18 @@ parameter_list|)
 block|{
 name|Collection
 argument_list|<
-name|FSSchedulerApp
+name|AppSchedulable
 argument_list|>
 name|apps
 init|=
 name|queue
 operator|.
-name|getApplications
+name|getAppSchedulables
 argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|FSSchedulerApp
+name|AppSchedulable
 name|app
 range|:
 name|apps
@@ -291,6 +269,9 @@ block|{
 if|if
 condition|(
 name|app
+operator|.
+name|getApp
+argument_list|()
 operator|.
 name|isPending
 argument_list|()
@@ -307,14 +288,6 @@ operator|++
 expr_stmt|;
 block|}
 block|}
-name|FSQueueSchedulable
-name|schedulable
-init|=
-name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
-decl_stmt|;
 name|QueueManager
 name|manager
 init|=
@@ -347,7 +320,7 @@ argument_list|()
 expr_stmt|;
 name|usedResources
 operator|=
-name|schedulable
+name|queue
 operator|.
 name|getResourceUsage
 argument_list|()
@@ -366,7 +339,7 @@ name|clusterMaxMem
 expr_stmt|;
 name|fairShare
 operator|=
-name|schedulable
+name|queue
 operator|.
 name|getFairShare
 argument_list|()
@@ -376,7 +349,7 @@ argument_list|()
 expr_stmt|;
 name|minResources
 operator|=
-name|schedulable
+name|queue
 operator|.
 name|getMinShare
 argument_list|()
