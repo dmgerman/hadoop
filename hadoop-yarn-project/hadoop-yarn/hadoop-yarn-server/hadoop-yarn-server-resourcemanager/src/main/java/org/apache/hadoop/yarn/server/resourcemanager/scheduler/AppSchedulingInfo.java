@@ -278,28 +278,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|ApplicationsStore
-operator|.
-name|ApplicationStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|resource
 operator|.
 name|Resources
@@ -515,7 +493,7 @@ init|=
 literal|true
 decl_stmt|;
 comment|// for app metrics
-DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, ApplicationStore store)
+DECL|method|AppSchedulingInfo (ApplicationAttemptId appAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager)
 specifier|public
 name|AppSchedulingInfo
 parameter_list|(
@@ -530,9 +508,6 @@ name|queue
 parameter_list|,
 name|ActiveUsersManager
 name|activeUsersManager
-parameter_list|,
-name|ApplicationStore
-name|store
 parameter_list|)
 block|{
 name|this
@@ -571,7 +546,6 @@ name|user
 operator|=
 name|user
 expr_stmt|;
-comment|//this.store = store;
 name|this
 operator|.
 name|activeUsersManager

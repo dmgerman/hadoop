@@ -492,7 +492,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 import|;
 end_import
 
@@ -767,7 +767,7 @@ name|InterruptedException
 throws|,
 name|IOException
 block|{
-name|Store
+name|RMStateStore
 name|store
 init|=
 name|StoreFactory

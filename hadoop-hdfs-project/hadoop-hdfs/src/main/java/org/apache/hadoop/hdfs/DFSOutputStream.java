@@ -352,6 +352,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
+operator|.
+name|SyncFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DSQuotaExceededException
@@ -7274,10 +7292,18 @@ block|{
 name|flushOrSync
 argument_list|(
 literal|false
+argument_list|,
+name|EnumSet
+operator|.
+name|noneOf
+argument_list|(
+name|SyncFlag
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * The expected semantics is all data have flushed out to all replicas     * and all replicas have done posix fsync equivalent - ie the OS has     * flushed it to the disk device (but the disk may have it in its cache).    *     * Note that only the current block is flushed to the disk device.    * To guarantee durable sync across block boundaries the stream should    * be created with {@link CreateFlag#SYNC_BLOCK}.    */
 annotation|@
 name|Override
 DECL|method|hsync ()
@@ -7288,19 +7314,56 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|flushOrSync
+name|hsync
 argument_list|(
-literal|true
+name|EnumSet
+operator|.
+name|noneOf
+argument_list|(
+name|SyncFlag
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|flushOrSync (boolean isSync)
+comment|/**    * The expected semantics is all data have flushed out to all replicas     * and all replicas have done posix fsync equivalent - ie the OS has     * flushed it to the disk device (but the disk may have it in its cache).    *     * Note that only the current block is flushed to the disk device.    * To guarantee durable sync across block boundaries the stream should    * be created with {@link CreateFlag#SYNC_BLOCK}.    *     * @param syncFlags    *          Indicate the semantic of the sync. Currently used to specify    *          whether or not to update the block length in NameNode.    */
+DECL|method|hsync (EnumSet<SyncFlag> syncFlags)
+specifier|public
+name|void
+name|hsync
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|SyncFlag
+argument_list|>
+name|syncFlags
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|flushOrSync
+argument_list|(
+literal|true
+argument_list|,
+name|syncFlags
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Flush/Sync buffered data to DataNodes.    *     * @param isSync    *          Whether or not to require all replicas to flush data to the disk    *          device    * @param syncFlags    *          Indicate extra detailed semantic of the flush/sync. Currently    *          mainly used to specify whether or not to update the file length in    *          the NameNode    * @throws IOException    */
+DECL|method|flushOrSync (boolean isSync, EnumSet<SyncFlag> syncFlags)
 specifier|private
 name|void
 name|flushOrSync
 parameter_list|(
 name|boolean
 name|isSync
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|SyncFlag
+argument_list|>
+name|syncFlags
 parameter_list|)
 throws|throws
 name|IOException
@@ -7317,6 +7380,24 @@ try|try
 block|{
 name|long
 name|toWaitFor
+decl_stmt|;
+name|long
+name|lastBlockLength
+init|=
+operator|-
+literal|1L
+decl_stmt|;
+name|boolean
+name|updateLength
+init|=
+name|syncFlags
+operator|.
+name|contains
+argument_list|(
+name|SyncFlag
+operator|.
+name|UPDATE_LENGTH
+argument_list|)
 decl_stmt|;
 synchronized|synchronized
 init|(
@@ -7519,9 +7600,44 @@ argument_list|(
 name|toWaitFor
 argument_list|)
 expr_stmt|;
-comment|// If any new blocks were allocated since the last flush,
-comment|// then persist block locations on namenode.
-comment|//
+if|if
+condition|(
+name|updateLength
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|streamer
+operator|!=
+literal|null
+operator|&&
+name|streamer
+operator|.
+name|block
+operator|!=
+literal|null
+condition|)
+block|{
+name|lastBlockLength
+operator|=
+name|streamer
+operator|.
+name|block
+operator|.
+name|getNumBytes
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|// If 1) any new blocks were allocated since the last flush, or 2) to
+comment|// update length in NN is requried, then persist block locations on
+comment|// namenode.
 if|if
 condition|(
 name|persistBlocks
@@ -7530,6 +7646,8 @@ name|getAndSet
 argument_list|(
 literal|false
 argument_list|)
+operator|||
+name|updateLength
 condition|)
 block|{
 try|try
@@ -7545,6 +7663,8 @@ argument_list|,
 name|dfsClient
 operator|.
 name|clientName
+argument_list|,
+name|lastBlockLength
 argument_list|)
 expr_stmt|;
 block|}

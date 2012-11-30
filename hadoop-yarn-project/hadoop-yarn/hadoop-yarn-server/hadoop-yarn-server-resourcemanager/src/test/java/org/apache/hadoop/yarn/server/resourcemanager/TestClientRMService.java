@@ -1353,8 +1353,6 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 name|yarnScheduler
 argument_list|,
 literal|null

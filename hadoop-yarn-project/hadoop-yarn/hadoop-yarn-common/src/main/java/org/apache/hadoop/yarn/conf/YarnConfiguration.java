@@ -962,39 +962,6 @@ name|RM_PREFIX
 operator|+
 literal|"store.class"
 decl_stmt|;
-comment|/** The address of the zookeeper instance to use with ZK store.*/
-DECL|field|RM_ZK_STORE_ADDRESS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_ZK_STORE_ADDRESS
-init|=
-name|RM_PREFIX
-operator|+
-literal|"zookeeper-store.address"
-decl_stmt|;
-comment|/** The zookeeper session timeout for the zookeeper store.*/
-DECL|field|RM_ZK_STORE_TIMEOUT_MS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|RM_ZK_STORE_TIMEOUT_MS
-init|=
-name|RM_PREFIX
-operator|+
-literal|"zookeeper-store.session.timeout-ms"
-decl_stmt|;
-DECL|field|DEFAULT_RM_ZK_STORE_TIMEOUT_MS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_RM_ZK_STORE_TIMEOUT_MS
-init|=
-literal|60000
-decl_stmt|;
 comment|/** The maximum number of completed applications RM keeps. */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
 specifier|public

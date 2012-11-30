@@ -3452,8 +3452,6 @@ name|getActiveUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3583,8 +3581,6 @@ name|getActiveUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -3720,8 +3716,6 @@ name|getActiveUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 decl_stmt|;

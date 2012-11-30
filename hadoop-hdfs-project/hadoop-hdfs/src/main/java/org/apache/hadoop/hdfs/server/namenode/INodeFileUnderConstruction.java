@@ -734,6 +734,65 @@ return|return
 name|ucBlock
 return|;
 block|}
+comment|/**    * Update the length for the last block    *     * @param lastBlockLength    *          The length of the last block reported from client    * @throws IOException    */
+DECL|method|updateLengthOfLastBlock (long lastBlockLength)
+name|void
+name|updateLengthOfLastBlock
+parameter_list|(
+name|long
+name|lastBlockLength
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|BlockInfo
+name|lastBlock
+init|=
+name|this
+operator|.
+name|getLastBlock
+argument_list|()
+decl_stmt|;
+assert|assert
+operator|(
+name|lastBlock
+operator|!=
+literal|null
+operator|)
+operator|:
+literal|"The last block for path "
+operator|+
+name|this
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|" is null when updating its length"
+assert|;
+assert|assert
+operator|(
+name|lastBlock
+operator|instanceof
+name|BlockInfoUnderConstruction
+operator|)
+operator|:
+literal|"The last block for path "
+operator|+
+name|this
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|" is not a BlockInfoUnderConstruction when updating its length"
+assert|;
+name|lastBlock
+operator|.
+name|setNumBytes
+argument_list|(
+name|lastBlockLength
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

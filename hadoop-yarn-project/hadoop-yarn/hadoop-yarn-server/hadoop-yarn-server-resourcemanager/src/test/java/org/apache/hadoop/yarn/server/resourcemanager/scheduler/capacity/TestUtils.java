@@ -662,8 +662,6 @@ init|=
 operator|new
 name|RMContextImpl
 argument_list|(
-literal|null
-argument_list|,
 name|nullDispatcher
 argument_list|,
 name|cae

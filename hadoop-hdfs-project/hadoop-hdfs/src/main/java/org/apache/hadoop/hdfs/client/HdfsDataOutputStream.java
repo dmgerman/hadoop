@@ -30,6 +30,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -194,6 +204,45 @@ name|getCurrentBlockReplication
 argument_list|()
 return|;
 block|}
+comment|/**    * Sync buffered data to DataNodes (flush to disk devices).    *     * @param syncFlags    *          Indicate the detailed semantic and actions of the hsync.    * @throws IOException    * @see FSDataOutputStream#hsync()    */
+DECL|method|hsync (EnumSet<SyncFlag> syncFlags)
+specifier|public
+name|void
+name|hsync
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|SyncFlag
+argument_list|>
+name|syncFlags
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+operator|(
+operator|(
+name|DFSOutputStream
+operator|)
+name|getWrappedStream
+argument_list|()
+operator|)
+operator|.
+name|hsync
+argument_list|(
+name|syncFlags
+argument_list|)
+expr_stmt|;
+block|}
+DECL|enum|SyncFlag
+specifier|public
+specifier|static
+enum|enum
+name|SyncFlag
+block|{
+comment|/**      * When doing sync to DataNodes, also update the metadata (block      * length) in the NameNode      */
+DECL|enumConstant|UPDATE_LENGTH
+name|UPDATE_LENGTH
+block|;   }
 block|}
 end_class
 

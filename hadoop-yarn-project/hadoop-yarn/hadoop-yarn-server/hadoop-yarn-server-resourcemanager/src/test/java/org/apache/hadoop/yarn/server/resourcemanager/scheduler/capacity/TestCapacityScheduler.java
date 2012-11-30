@@ -332,7 +332,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 import|;
 end_import
 
@@ -714,7 +714,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Store
+name|RMStateStore
 name|store
 init|=
 name|StoreFactory
@@ -1766,8 +1766,6 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 operator|new
 name|RMContainerTokenSecretManager
 argument_list|(
@@ -2429,8 +2427,6 @@ literal|null
 argument_list|,
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 operator|new
 name|RMContainerTokenSecretManager
 argument_list|(
@@ -2491,8 +2487,6 @@ argument_list|,
 operator|new
 name|RMContextImpl
 argument_list|(
-literal|null
-argument_list|,
 literal|null
 argument_list|,
 literal|null
@@ -2706,8 +2700,6 @@ argument_list|,
 operator|new
 name|RMContextImpl
 argument_list|(
-literal|null
-argument_list|,
 literal|null
 argument_list|,
 literal|null

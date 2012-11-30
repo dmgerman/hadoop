@@ -604,7 +604,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 operator|.
 name|RMState
 import|;
@@ -2141,8 +2141,6 @@ argument_list|,
 name|this
 operator|.
 name|rmContext
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|applications
@@ -4297,13 +4295,7 @@ name|RMState
 name|state
 parameter_list|)
 block|{
-comment|// TODO fix recovery
-comment|//    for (Map.Entry<ApplicationId, ApplicationInfo> entry: state.getStoredApplications().entrySet()) {
-comment|//      ApplicationId appId = entry.getKey();
-comment|//      ApplicationInfo appInfo = entry.getValue();
-comment|//      SchedulerApp app = applications.get(appId);
-comment|//      app.allocate(appInfo.getContainers());
-comment|//    }
+comment|// NOT IMPLEMENTED
 block|}
 annotation|@
 name|Override

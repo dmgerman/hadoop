@@ -368,8 +368,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 comment|// Default level should be node-local
@@ -715,8 +713,6 @@ argument_list|,
 literal|"user1"
 argument_list|,
 name|queue
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|,

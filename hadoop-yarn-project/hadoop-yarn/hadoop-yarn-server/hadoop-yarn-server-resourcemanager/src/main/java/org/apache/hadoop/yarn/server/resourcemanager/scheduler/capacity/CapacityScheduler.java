@@ -494,7 +494,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 operator|.
 name|RMState
 import|;
@@ -2427,8 +2427,6 @@ name|getActiveUsersManager
 argument_list|()
 argument_list|,
 name|rmContext
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 comment|// Submit to the queue
@@ -4280,18 +4278,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-comment|// TODO: VINDOKVFIXME recovery
-comment|//    applications.clear();
-comment|//    for (Map.Entry<ApplicationId, ApplicationInfo> entry : state.getStoredApplications().entrySet()) {
-comment|//      ApplicationId appId = entry.getKey();
-comment|//      ApplicationInfo appInfo = entry.getValue();
-comment|//      SchedulerApp app = applications.get(appId);
-comment|//      app.allocate(appInfo.getContainers());
-comment|//      for (Container c: entry.getValue().getContainers()) {
-comment|//        Queue queue = queues.get(appInfo.getApplicationSubmissionContext().getQueue());
-comment|//        queue.recoverContainer(clusterResource, applications.get(appId), c);
-comment|//      }
-comment|//    }
+comment|// NOT IMPLEMENTED
 block|}
 annotation|@
 name|Override

@@ -1336,10 +1336,10 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Write all metadata for this file into persistent storage.    * The file must be currently open for writing.    * @param src The string representation of the path    * @param client The string representation of the client    *     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
+comment|/**    * Write all metadata for this file into persistent storage.    * The file must be currently open for writing.    * @param src The string representation of the path    * @param client The string representation of the client    * @param lastBlockLength The length of the last block (under construction)     *                        to be reported to NameNode     * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if<code>src</code> contains a symlink.     * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|fsync (String src, String client)
+DECL|method|fsync (String src, String client, long lastBlockLength)
 specifier|public
 name|void
 name|fsync
@@ -1349,6 +1349,9 @@ name|src
 parameter_list|,
 name|String
 name|client
+parameter_list|,
+name|long
+name|lastBlockLength
 parameter_list|)
 throws|throws
 name|AccessControlException

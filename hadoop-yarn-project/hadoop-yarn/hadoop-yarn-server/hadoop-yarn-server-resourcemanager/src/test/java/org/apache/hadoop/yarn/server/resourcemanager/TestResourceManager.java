@@ -194,7 +194,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 import|;
 end_import
 
@@ -334,7 +334,7 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-name|Store
+name|RMStateStore
 name|store
 init|=
 name|StoreFactory

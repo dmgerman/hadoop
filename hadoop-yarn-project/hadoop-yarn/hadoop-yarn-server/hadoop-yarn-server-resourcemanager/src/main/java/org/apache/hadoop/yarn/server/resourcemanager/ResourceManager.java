@@ -438,7 +438,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 import|;
 end_import
 
@@ -458,7 +458,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 operator|.
 name|RMState
 import|;
@@ -1221,7 +1221,7 @@ decl_stmt|;
 DECL|field|store
 specifier|private
 specifier|final
-name|Store
+name|RMStateStore
 name|store
 decl_stmt|;
 DECL|field|resourceTracker
@@ -1234,11 +1234,11 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-DECL|method|ResourceManager (Store store)
+DECL|method|ResourceManager (RMStateStore store)
 specifier|public
 name|ResourceManager
 parameter_list|(
-name|Store
+name|RMStateStore
 name|store
 parameter_list|)
 block|{
@@ -1388,10 +1388,6 @@ operator|=
 operator|new
 name|RMContextImpl
 argument_list|(
-name|this
-operator|.
-name|store
-argument_list|,
 name|this
 operator|.
 name|rmDispatcher
@@ -3569,22 +3565,7 @@ name|state
 parameter_list|)
 throws|throws
 name|Exception
-block|{
-name|resourceTracker
-operator|.
-name|recover
-argument_list|(
-name|state
-argument_list|)
-expr_stmt|;
-name|scheduler
-operator|.
-name|recover
-argument_list|(
-name|state
-argument_list|)
-expr_stmt|;
-block|}
+block|{   }
 DECL|method|main (String argv[])
 specifier|public
 specifier|static
@@ -3627,7 +3608,7 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-name|Store
+name|RMStateStore
 name|store
 init|=
 name|StoreFactory
@@ -3670,7 +3651,6 @@ name|conf
 argument_list|)
 expr_stmt|;
 comment|//resourceManager.recover(store.restore());
-comment|//store.doneWithRecovery();
 name|resourceManager
 operator|.
 name|start

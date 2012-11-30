@@ -328,7 +328,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Store
+name|RMStateStore
 import|;
 end_import
 
@@ -581,7 +581,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|Store
+name|RMStateStore
 name|store
 init|=
 name|StoreFactory
@@ -787,8 +787,6 @@ init|=
 operator|new
 name|RMContextImpl
 argument_list|(
-literal|null
-argument_list|,
 name|dispatcher
 argument_list|,
 literal|null

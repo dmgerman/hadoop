@@ -472,7 +472,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|queue
 specifier|private
-name|FSQueue
+name|FSLeafQueue
 name|queue
 decl_stmt|;
 DECL|field|containerTokenSecretManager
@@ -480,7 +480,7 @@ specifier|private
 name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 decl_stmt|;
-DECL|method|AppSchedulable (FairScheduler scheduler, FSSchedulerApp app, FSQueue queue)
+DECL|method|AppSchedulable (FairScheduler scheduler, FSSchedulerApp app, FSLeafQueue queue)
 specifier|public
 name|AppSchedulable
 parameter_list|(
@@ -490,7 +490,7 @@ parameter_list|,
 name|FSSchedulerApp
 name|app
 parameter_list|,
-name|FSQueue
+name|FSLeafQueue
 name|queue
 parameter_list|)
 block|{
@@ -673,14 +673,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|redistributeShare ()
-specifier|public
-name|void
-name|redistributeShare
-parameter_list|()
-block|{}
-annotation|@
-name|Override
 DECL|method|getResourceUsage ()
 specifier|public
 name|Resource
@@ -720,9 +712,6 @@ parameter_list|()
 block|{
 return|return
 name|queue
-operator|.
-name|getQueueSchedulable
-argument_list|()
 operator|.
 name|getMetrics
 argument_list|()

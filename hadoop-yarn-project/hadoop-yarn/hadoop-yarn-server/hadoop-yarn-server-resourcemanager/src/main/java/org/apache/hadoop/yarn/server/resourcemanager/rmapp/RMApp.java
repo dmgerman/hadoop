@@ -180,28 +180,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|ApplicationsStore
-operator|.
-name|ApplicationStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmapp
 operator|.
 name|attempt
@@ -327,12 +305,6 @@ name|RMNode
 argument_list|>
 name|updatedNodes
 parameter_list|)
-function_decl|;
-comment|/**    * Application level metadata is stored in {@link ApplicationStore} which    * can persist the information.    * @return the {@link ApplicationStore}  for this {@link RMApp}.    */
-DECL|method|getApplicationStore ()
-name|ApplicationStore
-name|getApplicationStore
-parameter_list|()
 function_decl|;
 comment|/**    * The finish time of the {@link RMApp}    * @return the finish time of the application.,    */
 DECL|method|getFinishTime ()

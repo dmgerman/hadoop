@@ -480,14 +480,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|redistributeShare ()
-specifier|public
-name|void
-name|redistributeShare
-parameter_list|()
-block|{}
-annotation|@
-name|Override
 DECL|method|updateDemand ()
 specifier|public
 name|void
