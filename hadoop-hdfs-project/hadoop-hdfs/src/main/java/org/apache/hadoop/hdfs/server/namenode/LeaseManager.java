@@ -1398,7 +1398,7 @@ name|lastUpdate
 return|;
 block|}
 block|}
-DECL|method|changeLease (String src, String dst, String overwrite, String replaceBy)
+DECL|method|changeLease (String src, String dst)
 specifier|synchronized
 name|void
 name|changeLease
@@ -1408,12 +1408,6 @@ name|src
 parameter_list|,
 name|String
 name|dst
-parameter_list|,
-name|String
-name|overwrite
-parameter_list|,
-name|String
-name|replaceBy
 parameter_list|)
 block|{
 if|if
@@ -1443,14 +1437,6 @@ operator|+
 literal|", dest="
 operator|+
 name|dst
-operator|+
-literal|", overwrite="
-operator|+
-name|overwrite
-operator|+
-literal|", replaceBy="
-operator|+
-name|replaceBy
 argument_list|)
 expr_stmt|;
 block|}
@@ -1458,7 +1444,7 @@ specifier|final
 name|int
 name|len
 init|=
-name|overwrite
+name|src
 operator|.
 name|length
 argument_list|()
@@ -1504,12 +1490,12 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-comment|//overwrite must be a prefix of oldpath
+comment|// replace stem of src with new destination
 specifier|final
 name|String
 name|newpath
 init|=
-name|replaceBy
+name|dst
 operator|+
 name|oldpath
 operator|.

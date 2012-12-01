@@ -2811,6 +2811,17 @@ argument_list|(
 name|timestamp
 argument_list|)
 expr_stmt|;
+comment|// update moved leases with new filename
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|unprotectedChangeLease
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -3659,6 +3670,17 @@ operator|.
 name|setModificationTime
 argument_list|(
 name|timestamp
+argument_list|)
+expr_stmt|;
+comment|// update moved lease with new filename
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|unprotectedChangeLease
+argument_list|(
+name|src
+argument_list|,
+name|dst
 argument_list|)
 expr_stmt|;
 comment|// Collect the blocks and remove the lease for previous dst
