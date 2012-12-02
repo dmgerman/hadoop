@@ -6129,7 +6129,7 @@ operator|+
 name|totalBlocks
 operator|)
 operator|+
-literal|" total"
+literal|" total filesystem objects"
 argument_list|)
 expr_stmt|;
 name|blockManager
