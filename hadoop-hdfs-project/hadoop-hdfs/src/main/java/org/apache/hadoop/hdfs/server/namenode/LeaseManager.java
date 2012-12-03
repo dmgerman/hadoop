@@ -1398,7 +1398,7 @@ name|lastUpdate
 return|;
 block|}
 block|}
-DECL|method|changeLease (String src, String dst, String overwrite, String replaceBy)
+DECL|method|changeLease (String src, String dst)
 specifier|synchronized
 name|void
 name|changeLease
@@ -1408,12 +1408,6 @@ name|src
 parameter_list|,
 name|String
 name|dst
-parameter_list|,
-name|String
-name|overwrite
-parameter_list|,
-name|String
-name|replaceBy
 parameter_list|)
 block|{
 if|if
@@ -1443,14 +1437,6 @@ operator|+
 literal|", dest="
 operator|+
 name|dst
-operator|+
-literal|", overwrite="
-operator|+
-name|overwrite
-operator|+
-literal|", replaceBy="
-operator|+
-name|replaceBy
 argument_list|)
 expr_stmt|;
 block|}
@@ -1458,7 +1444,7 @@ specifier|final
 name|int
 name|len
 init|=
-name|overwrite
+name|src
 operator|.
 name|length
 argument_list|()
@@ -1504,12 +1490,12 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-comment|//overwrite must be a prefix of oldpath
+comment|// replace stem of src with new destination
 specifier|final
 name|String
 name|newpath
 init|=
-name|replaceBy
+name|dst
 operator|+
 name|oldpath
 operator|.
@@ -1959,6 +1945,96 @@ block|}
 block|}
 block|}
 block|}
+block|}
+comment|/**    * Get the list of inodes corresponding to valid leases.    * @return list of inodes    * @throws UnresolvedLinkException    */
+DECL|method|getINodesUnderConstruction ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|INodeFileUnderConstruction
+argument_list|>
+name|getINodesUnderConstruction
+parameter_list|()
+block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|INodeFileUnderConstruction
+argument_list|>
+name|inodes
+init|=
+operator|new
+name|TreeMap
+argument_list|<
+name|String
+argument_list|,
+name|INodeFileUnderConstruction
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|String
+name|p
+range|:
+name|sortedLeasesByPath
+operator|.
+name|keySet
+argument_list|()
+control|)
+block|{
+comment|// verify that path exists in namespace
+try|try
+block|{
+name|INode
+name|node
+init|=
+name|fsnamesystem
+operator|.
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|p
+argument_list|)
+decl_stmt|;
+name|inodes
+operator|.
+name|put
+argument_list|(
+name|p
+argument_list|,
+name|INodeFileUnderConstruction
+operator|.
+name|valueOf
+argument_list|(
+name|node
+argument_list|,
+name|p
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|ioe
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+return|return
+name|inodes
+return|;
 block|}
 comment|/** Check the leases beginning from the oldest.    *  @return true is sync is needed.    */
 DECL|method|checkLeases ()

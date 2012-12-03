@@ -2138,6 +2138,43 @@ name|publishMetrics
 argument_list|(
 name|sampleMetrics
 argument_list|()
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+end_function
+
+begin_comment
+comment|/**    * Requests an immediate publish of all metrics from sources to sinks.    */
+end_comment
+
+begin_function
+annotation|@
+name|Override
+DECL|method|publishMetricsNow ()
+specifier|public
+name|void
+name|publishMetricsNow
+parameter_list|()
+block|{
+if|if
+condition|(
+name|sinks
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|publishMetrics
+argument_list|(
+name|sampleMetrics
+argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2312,17 +2349,20 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Publish a metrics snapshot to all the sinks    * @param buffer  the metrics snapshot to publish    */
+comment|/**    * Publish a metrics snapshot to all the sinks    * @param buffer  the metrics snapshot to publish    * @param immediate  indicates that we should publish metrics immediately    *                   instead of using a separate thread.    */
 end_comment
 
 begin_function
-DECL|method|publishMetrics (MetricsBuffer buffer)
+DECL|method|publishMetrics (MetricsBuffer buffer, boolean immediate)
 specifier|synchronized
 name|void
 name|publishMetrics
 parameter_list|(
 name|MetricsBuffer
 name|buffer
+parameter_list|,
+name|boolean
+name|immediate
 parameter_list|)
 block|{
 name|int
@@ -2349,8 +2389,28 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
-name|dropped
-operator|+=
+name|boolean
+name|result
+decl_stmt|;
+if|if
+condition|(
+name|immediate
+condition|)
+block|{
+name|result
+operator|=
+name|sa
+operator|.
+name|putMetricsImmediate
+argument_list|(
+name|buffer
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|result
+operator|=
 name|sa
 operator|.
 name|putMetrics
@@ -2359,6 +2419,11 @@ name|buffer
 argument_list|,
 name|logicalTime
 argument_list|)
+expr_stmt|;
+block|}
+name|dropped
+operator|+=
+name|result
 condition|?
 literal|0
 else|:

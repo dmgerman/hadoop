@@ -388,9 +388,10 @@ operator|=
 literal|null
 expr_stmt|;
 comment|// clear parent
-name|parent
-operator|=
+name|setParent
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 block|}
 return|return

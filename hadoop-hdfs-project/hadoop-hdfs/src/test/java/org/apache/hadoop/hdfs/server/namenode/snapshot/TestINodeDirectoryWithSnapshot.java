@@ -1388,7 +1388,7 @@ argument_list|)
 decl_stmt|;
 name|newinode
 operator|.
-name|setModificationTime
+name|updateModificationTime
 argument_list|(
 name|oldinode
 operator|.

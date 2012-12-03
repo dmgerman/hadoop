@@ -548,7 +548,7 @@ name|line
 operator|.
 name|equals
 argument_list|(
-literal|"3 files and directories, 2 blocks = 5 total"
+literal|"3 files and directories, 2 blocks = 5 total filesystem objects"
 argument_list|)
 argument_list|)
 expr_stmt|;

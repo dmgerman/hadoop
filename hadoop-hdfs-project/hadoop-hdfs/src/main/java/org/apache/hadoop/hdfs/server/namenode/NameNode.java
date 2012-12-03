@@ -2859,24 +2859,11 @@ argument_list|,
 name|nsId
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|haEnabled
-condition|)
-block|{
 name|state
 operator|=
-name|ACTIVE_STATE
+name|createHAState
+argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-name|state
-operator|=
-name|STANDBY_STATE
-expr_stmt|;
-block|}
 name|this
 operator|.
 name|allowStaleStandbyReads
@@ -2956,6 +2943,21 @@ throw|throw
 name|e
 throw|;
 block|}
+block|}
+DECL|method|createHAState ()
+specifier|protected
+name|HAState
+name|createHAState
+parameter_list|()
+block|{
+return|return
+operator|!
+name|haEnabled
+condition|?
+name|ACTIVE_STATE
+else|:
+name|STANDBY_STATE
+return|;
 block|}
 DECL|method|createHAContext ()
 specifier|protected
@@ -6307,7 +6309,7 @@ return|;
 block|}
 comment|/**    * Shutdown the NN immediately in an ungraceful way. Used when it would be    * unsafe for the NN to continue operating, e.g. during a failed HA state    * transition.    *     * @param t exception which warrants the shutdown. Printed to the NN log    *          before exit.    * @throws ExitException thrown only for testing.    */
 DECL|method|doImmediateShutdown (Throwable t)
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|doImmediateShutdown
