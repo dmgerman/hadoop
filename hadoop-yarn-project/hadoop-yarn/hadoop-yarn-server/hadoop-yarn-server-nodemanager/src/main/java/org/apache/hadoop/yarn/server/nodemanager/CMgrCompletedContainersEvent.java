@@ -64,7 +64,12 @@ name|ContainerId
 argument_list|>
 name|containerToCleanup
 decl_stmt|;
-DECL|method|CMgrCompletedContainersEvent (List<ContainerId> containersToCleanup)
+DECL|field|reason
+specifier|private
+name|Reason
+name|reason
+decl_stmt|;
+DECL|method|CMgrCompletedContainersEvent (List<ContainerId> containersToCleanup, Reason reason)
 specifier|public
 name|CMgrCompletedContainersEvent
 parameter_list|(
@@ -73,6 +78,9 @@ argument_list|<
 name|ContainerId
 argument_list|>
 name|containersToCleanup
+parameter_list|,
+name|Reason
+name|reason
 parameter_list|)
 block|{
 name|super
@@ -87,6 +95,12 @@ operator|.
 name|containerToCleanup
 operator|=
 name|containersToCleanup
+expr_stmt|;
+name|this
+operator|.
+name|reason
+operator|=
+name|reason
 expr_stmt|;
 block|}
 DECL|method|getContainersToCleanup ()
@@ -103,6 +117,28 @@ name|this
 operator|.
 name|containerToCleanup
 return|;
+block|}
+DECL|method|getReason ()
+specifier|public
+name|Reason
+name|getReason
+parameter_list|()
+block|{
+return|return
+name|reason
+return|;
+block|}
+DECL|enum|Reason
+specifier|public
+specifier|static
+enum|enum
+name|Reason
+block|{
+DECL|enumConstant|ON_SHUTDOWN
+DECL|enumConstant|BY_RESOURCEMANAGER
+name|ON_SHUTDOWN
+block|,
+name|BY_RESOURCEMANAGER
 block|}
 block|}
 end_class
