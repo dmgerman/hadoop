@@ -100,20 +100,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
-operator|.
-name|ServiceFailedException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -285,26 +271,6 @@ operator|.
 name|common
 operator|.
 name|Storage
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|ha
-operator|.
-name|HAState
 import|;
 end_import
 
@@ -2145,39 +2111,6 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNameServiceId (Configuration conf)
-specifier|protected
-name|String
-name|getNameServiceId
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|DFSUtil
-operator|.
-name|getBackupNameServiceId
-argument_list|(
-name|conf
-argument_list|)
-return|;
-block|}
-DECL|method|createHAState ()
-specifier|protected
-name|HAState
-name|createHAState
-parameter_list|()
-block|{
-return|return
-operator|new
-name|BackupState
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-comment|// NameNode
 DECL|method|createHAContext ()
 specifier|protected
 name|NameNodeHAContext
@@ -2199,7 +2132,7 @@ name|NameNodeHAContext
 block|{
 annotation|@
 name|Override
-comment|// NameNodeHAContext
+comment|// NameNode
 DECL|method|checkOperation (OperationCategory op)
 specifier|public
 name|void
@@ -2275,88 +2208,26 @@ argument_list|)
 throw|;
 block|}
 block|}
-annotation|@
-name|Override
-comment|// NameNodeHAContext
-DECL|method|prepareToStopStandbyServices ()
-specifier|public
-name|void
-name|prepareToStopStandbyServices
-parameter_list|()
-throws|throws
-name|ServiceFailedException
-block|{     }
-comment|/**      * Start services for BackupNode.      *<p>      * The following services should be muted      * (not run or not pass any control commands to DataNodes)      * on BackupNode:      * {@link LeaseManager.Monitor} protected by SafeMode.      * {@link BlockManager.ReplicationMonitor} protected by SafeMode.      * {@link HeartbeatManager.Monitor} protected by SafeMode.      * {@link DecommissionManager.Monitor} need to prohibit refreshNodes().      * {@link PendingReplicationBlocks.PendingReplicationMonitor} harmless,      * because ReplicationMonitor is muted.      */
-annotation|@
-name|Override
-DECL|method|startActiveServices ()
-specifier|public
-name|void
-name|startActiveServices
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-try|try
-block|{
-name|namesystem
-operator|.
-name|startActiveServices
-argument_list|()
-expr_stmt|;
 block|}
-catch|catch
+annotation|@
+name|Override
+DECL|method|getNameServiceId (Configuration conf)
+specifier|protected
+name|String
+name|getNameServiceId
 parameter_list|(
-name|Throwable
-name|t
+name|Configuration
+name|conf
 parameter_list|)
 block|{
-name|doImmediateShutdown
-argument_list|(
-name|t
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-annotation|@
-name|Override
-DECL|method|stopActiveServices ()
-specifier|public
-name|void
-name|stopActiveServices
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-try|try
-block|{
-if|if
-condition|(
-name|namesystem
-operator|!=
-literal|null
-condition|)
-block|{
-name|namesystem
+return|return
+name|DFSUtil
 operator|.
-name|stopActiveServices
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|Throwable
-name|t
-parameter_list|)
-block|{
-name|doImmediateShutdown
+name|getBackupNameServiceId
 argument_list|(
-name|t
+name|conf
 argument_list|)
-expr_stmt|;
-block|}
-block|}
+return|;
 block|}
 block|}
 end_class

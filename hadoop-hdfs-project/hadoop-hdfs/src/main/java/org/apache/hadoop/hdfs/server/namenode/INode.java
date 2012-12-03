@@ -230,26 +230,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|Snapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|ReadOnlyList
@@ -319,67 +299,6 @@ name|byte
 index|[]
 argument_list|>
 block|{
-comment|/** A dummy INode which can be used as a probe object. */
-DECL|field|DUMMY
-specifier|public
-specifier|static
-specifier|final
-name|INode
-name|DUMMY
-init|=
-operator|new
-name|INode
-argument_list|()
-block|{
-annotation|@
-name|Override
-name|int
-name|collectSubtreeBlocksAndClear
-parameter_list|(
-name|BlocksMapUpdateInfo
-name|info
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
-annotation|@
-name|Override
-name|long
-index|[]
-name|computeContentSummary
-parameter_list|(
-name|long
-index|[]
-name|summary
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
-annotation|@
-name|Override
-name|DirCounts
-name|spaceConsumedInTree
-parameter_list|(
-name|DirCounts
-name|counts
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
-block|}
-decl_stmt|;
 DECL|field|EMPTY_READ_ONLY_LIST
 specifier|static
 specifier|final
@@ -396,34 +315,6 @@ operator|.
 name|emptyList
 argument_list|()
 decl_stmt|;
-comment|/**    * Assert that the snapshot parameter must be null since    * this class only take care current state.     * Subclasses should override the methods for handling the snapshot states.    */
-DECL|method|assertNull (Snapshot snapshot)
-specifier|static
-name|void
-name|assertNull
-parameter_list|(
-name|Snapshot
-name|snapshot
-parameter_list|)
-block|{
-if|if
-condition|(
-name|snapshot
-operator|!=
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|AssertionError
-argument_list|(
-literal|"snapshot is not null: "
-operator|+
-name|snapshot
-argument_list|)
-throw|;
-block|}
-block|}
 comment|/** Wrapper of two counters for namespace consumed and diskspace consumed. */
 DECL|class|DirCounts
 specifier|static
@@ -718,31 +609,26 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|parent
+specifier|protected
 name|INodeDirectory
 name|parent
 init|=
 literal|null
 decl_stmt|;
 DECL|field|modificationTime
-specifier|private
+specifier|protected
 name|long
 name|modificationTime
 init|=
 literal|0L
 decl_stmt|;
 DECL|field|accessTime
-specifier|private
+specifier|protected
 name|long
 name|accessTime
 init|=
 literal|0L
 decl_stmt|;
-comment|/** For creating the a {@link #DUMMY} object. */
-DECL|method|INode ()
-specifier|private
-name|INode
-parameter_list|()
-block|{}
 DECL|method|INode (byte[] name, long permission, INodeDirectory parent, long modificationTime, long accessTime)
 specifier|private
 name|INode
@@ -903,7 +789,8 @@ name|this
 argument_list|(
 name|other
 operator|.
-name|name
+name|getLocalNameBytes
+argument_list|()
 argument_list|,
 name|other
 operator|.
@@ -911,15 +798,18 @@ name|permission
 argument_list|,
 name|other
 operator|.
-name|parent
+name|getParent
+argument_list|()
 argument_list|,
 name|other
 operator|.
-name|modificationTime
+name|getModificationTime
+argument_list|()
 argument_list|,
 name|other
 operator|.
-name|accessTime
+name|getAccessTime
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1425,20 +1315,20 @@ name|String
 name|name
 parameter_list|)
 block|{
-name|setLocalName
-argument_list|(
+name|this
+operator|.
+name|name
+operator|=
 name|DFSUtil
 operator|.
 name|string2Bytes
 argument_list|(
 name|name
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set local file name    */
 DECL|method|setLocalName (byte[] name)
-specifier|public
 name|void
 name|setLocalName
 parameter_list|(
@@ -1511,7 +1401,6 @@ return|;
 block|}
 comment|/**    * Get parent directory     * @return parent INode    */
 DECL|method|getParent ()
-specifier|public
 name|INodeDirectory
 name|getParent
 parameter_list|()
@@ -1553,10 +1442,10 @@ name|modificationTime
 return|;
 block|}
 comment|/**    * Set last modification time of inode.    */
-DECL|method|updateModificationTime (long modtime)
+DECL|method|setModificationTime (long modtime)
 specifier|public
 name|void
-name|updateModificationTime
+name|setModificationTime
 parameter_list|(
 name|long
 name|modtime
@@ -1575,34 +1464,18 @@ operator|<=
 name|modtime
 condition|)
 block|{
-name|setModificationTime
-argument_list|(
-name|modtime
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|cloneModificationTime (INode that)
-name|void
-name|cloneModificationTime
-parameter_list|(
-name|INode
-name|that
-parameter_list|)
-block|{
 name|this
 operator|.
 name|modificationTime
 operator|=
-name|that
-operator|.
-name|modificationTime
+name|modtime
 expr_stmt|;
 block|}
+block|}
 comment|/**    * Always set the last modification time of inode.    */
-DECL|method|setModificationTime (long modtime)
+DECL|method|setModificationTimeForce (long modtime)
 name|void
-name|setModificationTime
+name|setModificationTimeForce
 parameter_list|(
 name|long
 name|modtime
@@ -1896,14 +1769,11 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|removeNode (Snapshot latestSnapshot)
+DECL|method|removeNode ()
 specifier|public
 name|boolean
 name|removeNode
-parameter_list|(
-name|Snapshot
-name|latestSnapshot
-parameter_list|)
+parameter_list|()
 block|{
 if|if
 condition|(
@@ -1923,8 +1793,6 @@ operator|.
 name|removeChild
 argument_list|(
 name|this
-argument_list|,
-name|latestSnapshot
 argument_list|)
 expr_stmt|;
 name|parent

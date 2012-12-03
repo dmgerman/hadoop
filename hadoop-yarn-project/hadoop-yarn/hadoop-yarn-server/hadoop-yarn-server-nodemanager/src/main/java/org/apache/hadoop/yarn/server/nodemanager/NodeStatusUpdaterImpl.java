@@ -2187,12 +2187,6 @@ operator|new
 name|CMgrCompletedContainersEvent
 argument_list|(
 name|containersToCleanup
-argument_list|,
-name|CMgrCompletedContainersEvent
-operator|.
-name|Reason
-operator|.
-name|BY_RESOURCEMANAGER
 argument_list|)
 argument_list|)
 expr_stmt|;

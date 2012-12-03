@@ -124,6 +124,30 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|CountDownLatch
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|TimeUnit
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -885,6 +909,19 @@ name|expectedMetrics
 operator|.
 name|length
 decl_stmt|;
+comment|// use latch to make sure we received required records before shutting
+comment|// down the MetricSystem
+name|CountDownLatch
+name|latch
+init|=
+operator|new
+name|CountDownLatch
+argument_list|(
+name|expectedCountFromGanglia30
+operator|+
+name|expectedCountFromGanglia31
+argument_list|)
+decl_stmt|;
 comment|// Setup test for GangliaSink30
 name|AbstractGangliaSink
 name|gsink30
@@ -910,7 +947,9 @@ name|mockds30
 init|=
 operator|new
 name|MockDatagramSocket
-argument_list|()
+argument_list|(
+name|latch
+argument_list|)
 decl_stmt|;
 name|GangliaMetricsTestHelper
 operator|.
@@ -946,7 +985,9 @@ name|mockds31
 init|=
 operator|new
 name|MockDatagramSocket
-argument_list|()
+argument_list|(
+name|latch
+argument_list|)
 decl_stmt|;
 name|GangliaMetricsTestHelper
 operator|.
@@ -982,10 +1023,23 @@ argument_list|)
 expr_stmt|;
 name|ms
 operator|.
-name|publishMetricsNow
+name|onTimerEvent
 argument_list|()
 expr_stmt|;
-comment|// publish the metrics
+comment|// trigger something interesting
+comment|// wait for all records and the stop MetricSystem.  Without this
+comment|// sometime the ms gets shutdown before all the sinks have consumed
+name|latch
+operator|.
+name|await
+argument_list|(
+literal|200
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
 name|ms
 operator|.
 name|stop
@@ -1256,6 +1310,11 @@ index|[]
 argument_list|>
 name|capture
 decl_stmt|;
+DECL|field|latch
+specifier|private
+name|CountDownLatch
+name|latch
+decl_stmt|;
 comment|/**      * @throws SocketException      */
 DECL|method|MockDatagramSocket ()
 specifier|public
@@ -1273,6 +1332,27 @@ name|byte
 index|[]
 argument_list|>
 argument_list|()
+expr_stmt|;
+block|}
+comment|/**      * @param latch      * @throws SocketException      */
+DECL|method|MockDatagramSocket (CountDownLatch latch)
+specifier|public
+name|MockDatagramSocket
+parameter_list|(
+name|CountDownLatch
+name|latch
+parameter_list|)
+throws|throws
+name|SocketException
+block|{
+name|this
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|latch
+operator|=
+name|latch
 expr_stmt|;
 block|}
 comment|/* (non-Javadoc)      * @see java.net.DatagramSocket#send(java.net.DatagramPacket)      */
@@ -1333,6 +1413,12 @@ name|add
 argument_list|(
 name|bytes
 argument_list|)
+expr_stmt|;
+comment|// decrement the latch
+name|latch
+operator|.
+name|countDown
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**      * @return the captured byte arrays      */

@@ -1935,7 +1935,7 @@ block|{
 comment|// file is closed
 name|file
 operator|.
-name|setModificationTime
+name|setModificationTimeForce
 argument_list|(
 name|now
 argument_list|)
@@ -2893,7 +2893,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|updateModificationTime
+name|setModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -2907,20 +2907,9 @@ operator|-
 literal|2
 index|]
 operator|.
-name|updateModificationTime
+name|setModificationTime
 argument_list|(
 name|timestamp
-argument_list|)
-expr_stmt|;
-comment|// update moved leases with new filename
-name|getFSNamesystem
-argument_list|()
-operator|.
-name|unprotectedChangeLease
-argument_list|(
-name|src
-argument_list|,
-name|dst
 argument_list|)
 expr_stmt|;
 return|return
@@ -3808,7 +3797,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|updateModificationTime
+name|setModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -3822,20 +3811,9 @@ operator|-
 literal|2
 index|]
 operator|.
-name|updateModificationTime
+name|setModificationTime
 argument_list|(
 name|timestamp
-argument_list|)
-expr_stmt|;
-comment|// update moved lease with new filename
-name|getFSNamesystem
-argument_list|()
-operator|.
-name|unprotectedChangeLease
-argument_list|(
-name|src
-argument_list|,
-name|dst
 argument_list|)
 expr_stmt|;
 comment|// Collect the blocks and remove the lease for previous dst
@@ -4923,11 +4901,6 @@ operator|.
 name|removeChild
 argument_list|(
 name|nodeToRemove
-argument_list|,
-name|trgINodesInPath
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|count
@@ -4936,14 +4909,14 @@ expr_stmt|;
 block|}
 name|trgInode
 operator|.
-name|setModificationTime
+name|setModificationTimeForce
 argument_list|(
 name|timestamp
 argument_list|)
 expr_stmt|;
 name|trgParent
 operator|.
-name|updateModificationTime
+name|setModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -5551,7 +5524,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|updateModificationTime
+name|setModificationTime
 argument_list|(
 name|mtime
 argument_list|)
@@ -5686,7 +5659,7 @@ literal|null
 return|;
 block|}
 comment|/**    * Replaces the specified INode.    */
-DECL|method|replaceINodeUnsynced (String path, INode oldnode, INode newnode, Snapshot latestSnapshot)
+DECL|method|replaceINodeUnsynced (String path, INode oldnode, INode newnode )
 specifier|private
 name|void
 name|replaceINodeUnsynced
@@ -5699,9 +5672,6 @@ name|oldnode
 parameter_list|,
 name|INode
 name|newnode
-parameter_list|,
-name|Snapshot
-name|latestSnapshot
 parameter_list|)
 throws|throws
 name|IOException
@@ -5713,9 +5683,7 @@ operator|!
 name|oldnode
 operator|.
 name|removeNode
-argument_list|(
-name|latestSnapshot
-argument_list|)
+argument_list|()
 condition|)
 block|{
 specifier|final
@@ -5757,7 +5725,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Replaces the specified INodeDirectory.    */
-DECL|method|replaceINodeDirectory (String path, INodeDirectory oldnode, INodeDirectory newnode, Snapshot latestSnapshot)
+DECL|method|replaceINodeDirectory (String path, INodeDirectory oldnode, INodeDirectory newnode)
 specifier|public
 name|void
 name|replaceINodeDirectory
@@ -5770,9 +5738,6 @@ name|oldnode
 parameter_list|,
 name|INodeDirectory
 name|newnode
-parameter_list|,
-name|Snapshot
-name|latestSnapshot
 parameter_list|)
 throws|throws
 name|IOException
@@ -5789,8 +5754,6 @@ argument_list|,
 name|oldnode
 argument_list|,
 name|newnode
-argument_list|,
-name|latestSnapshot
 argument_list|)
 expr_stmt|;
 comment|//update children's parent directory
@@ -5823,7 +5786,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Replaces the specified INodeFile with the specified one.    */
-DECL|method|replaceNode (String path, INodeFile oldnode, INodeFile newnode, Snapshot latestSnapshot)
+DECL|method|replaceNode (String path, INodeFile oldnode, INodeFile newnode )
 specifier|public
 name|void
 name|replaceNode
@@ -5836,9 +5799,6 @@ name|oldnode
 parameter_list|,
 name|INodeFile
 name|newnode
-parameter_list|,
-name|Snapshot
-name|latestSnapshot
 parameter_list|)
 throws|throws
 name|IOException
@@ -5855,8 +5815,6 @@ argument_list|,
 name|oldnode
 argument_list|,
 name|newnode
-argument_list|,
-name|latestSnapshot
 argument_list|)
 expr_stmt|;
 comment|//Currently, oldnode and newnode are assumed to contain the same blocks.
@@ -6173,46 +6131,42 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-specifier|final
-name|INodesInPath
-name|inodesInPath
+name|INode
+name|targetNode
 init|=
 name|rootDir
 operator|.
-name|getINodesInPath
+name|getNode
 argument_list|(
 name|srcs
 argument_list|,
 name|resolveLink
 argument_list|)
 decl_stmt|;
-specifier|final
-name|INode
-name|i
-init|=
-name|inodesInPath
-operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-return|return
-name|i
+if|if
+condition|(
+name|targetNode
 operator|==
 literal|null
-condition|?
+condition|)
+block|{
+return|return
 literal|null
-else|:
+return|;
+block|}
+else|else
+block|{
+return|return
 name|createFileStatus
 argument_list|(
 name|HdfsFileStatus
 operator|.
 name|EMPTY_NAME
 argument_list|,
-name|i
+name|targetNode
 argument_list|)
 return|;
+block|}
 block|}
 finally|finally
 block|{
@@ -6296,30 +6250,6 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 block|{
-return|return
-name|getINodesInPath
-argument_list|(
-name|src
-argument_list|)
-operator|.
-name|getINode
-argument_list|(
-literal|0
-argument_list|)
-return|;
-block|}
-comment|/**    * Get {@link INode} associated with the file / directory.    */
-DECL|method|getINodesInPath (String src)
-specifier|public
-name|INodesInPath
-name|getINodesInPath
-parameter_list|(
-name|String
-name|src
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -6328,7 +6258,7 @@ block|{
 return|return
 name|rootDir
 operator|.
-name|getINodesInPath
+name|getNode
 argument_list|(
 name|src
 argument_list|,
@@ -8514,11 +8444,6 @@ argument_list|(
 name|child
 argument_list|,
 literal|true
-argument_list|,
-name|inodesInPath
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -8652,11 +8577,6 @@ name|inodes
 index|[
 name|pos
 index|]
-argument_list|,
-name|inodesInPath
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -9250,8 +9170,9 @@ name|src
 argument_list|)
 decl_stmt|;
 specifier|final
-name|INodesInPath
-name|inodesInPath
+name|INode
+index|[]
+name|inodes
 init|=
 name|rootDir
 operator|.
@@ -9261,13 +9182,6 @@ name|srcs
 argument_list|,
 literal|true
 argument_list|)
-decl_stmt|;
-specifier|final
-name|INode
-index|[]
-name|inodes
-init|=
-name|inodesInPath
 operator|.
 name|getINodes
 argument_list|()
@@ -9425,11 +9339,6 @@ operator|.
 name|replaceChild
 argument_list|(
 name|newNode
-argument_list|,
-name|inodesInPath
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -9475,11 +9384,6 @@ operator|.
 name|replaceChild
 argument_list|(
 name|newNode
-argument_list|,
-name|inodesInPath
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -9762,7 +9666,7 @@ condition|)
 block|{
 name|inode
 operator|.
-name|setModificationTime
+name|setModificationTimeForce
 argument_list|(
 name|mtime
 argument_list|)
