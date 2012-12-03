@@ -2073,7 +2073,7 @@ argument_list|()
 decl_stmt|;
 name|fsDir
 operator|.
-name|replaceNode
+name|unprotectedReplaceNode
 argument_list|(
 name|addCloseOp
 operator|.

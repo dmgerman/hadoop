@@ -5182,9 +5182,53 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-comment|//
+name|unprotectedReplaceNode
+argument_list|(
+name|path
+argument_list|,
+name|oldnode
+argument_list|,
+name|newnode
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|unprotectedReplaceNode (String path, INodeFile oldnode, INodeFile newnode)
+name|void
+name|unprotectedReplaceNode
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|INodeFile
+name|oldnode
+parameter_list|,
+name|INodeFile
+name|newnode
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|UnresolvedLinkException
+block|{
+assert|assert
+name|hasWriteLock
+argument_list|()
+assert|;
+name|INodeDirectory
+name|parent
+init|=
+name|oldnode
+operator|.
+name|parent
+decl_stmt|;
 comment|// Remove the node from the namespace
-comment|//
 if|if
 condition|(
 operator|!
@@ -5219,16 +5263,28 @@ name|path
 argument_list|)
 throw|;
 block|}
-comment|/* Currently oldnode and newnode are assumed to contain the same        * blocks. Otherwise, blocks need to be removed from the blocksMap.        */
-name|rootDir
-operator|.
-name|addINode
-argument_list|(
-name|path
-argument_list|,
+comment|// Parent should be non-null, otherwise oldnode.removeNode() will return
+comment|// false
 name|newnode
+operator|.
+name|setLocalName
+argument_list|(
+name|oldnode
+operator|.
+name|getLocalNameBytes
+argument_list|()
 argument_list|)
 expr_stmt|;
+name|parent
+operator|.
+name|addChild
+argument_list|(
+name|newnode
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|/* Currently oldnode and newnode are assumed to contain the same      * blocks. Otherwise, blocks need to be removed from the blocksMap.      */
 name|int
 name|index
 init|=
@@ -5270,13 +5326,6 @@ expr_stmt|;
 comment|// inode refers to the block in BlocksMap
 name|index
 operator|++
-expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
 expr_stmt|;
 block|}
 block|}
