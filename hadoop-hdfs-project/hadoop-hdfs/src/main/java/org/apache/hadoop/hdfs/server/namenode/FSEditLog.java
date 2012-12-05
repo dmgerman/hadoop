@@ -3812,6 +3812,24 @@ return|return
 name|journalSet
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setJournalSetForTesting (JournalSet js)
+specifier|synchronized
+name|void
+name|setJournalSetForTesting
+parameter_list|(
+name|JournalSet
+name|js
+parameter_list|)
+block|{
+name|this
+operator|.
+name|journalSet
+operator|=
+name|js
+expr_stmt|;
+block|}
 comment|/**    * Used only by tests.    */
 annotation|@
 name|VisibleForTesting
@@ -4349,7 +4367,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Archive any log files that are older than the given txid.    */
+comment|/**    * Archive any log files that are older than the given txid.    *     * If the edit log is not open for write, then this call returns with no    * effect.    */
 annotation|@
 name|Override
 DECL|method|purgeLogsOlderThan (final long minTxIdToKeep)
@@ -4363,6 +4381,17 @@ name|long
 name|minTxIdToKeep
 parameter_list|)
 block|{
+comment|// Should not purge logs unless they are open for write.
+comment|// This prevents the SBN from purging logs on shared storage, for example.
+if|if
+condition|(
+operator|!
+name|isOpenForWrite
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 assert|assert
 name|curSegmentTxId
 operator|==
