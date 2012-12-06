@@ -34,6 +34,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|ha
 operator|.
 name|HAServiceProtocol
@@ -131,6 +145,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BackupState
 specifier|public
 class|class
@@ -191,6 +209,7 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// HAState
 DECL|method|enterState (HAContext context)
 specifier|public
 name|void
@@ -229,6 +248,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// HAState
 DECL|method|exitState (HAContext context)
 specifier|public
 name|void
@@ -267,6 +287,7 @@ block|}
 block|}
 annotation|@
 name|Override
+comment|// HAState
 DECL|method|prepareToExitState (HAContext context)
 specifier|public
 name|void

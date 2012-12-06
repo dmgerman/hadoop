@@ -56,6 +56,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -80,7 +96,7 @@ name|NNHAStatusHeartbeat
 block|{
 DECL|field|state
 specifier|private
-name|State
+name|HAServiceState
 name|state
 decl_stmt|;
 DECL|field|txid
@@ -92,11 +108,11 @@ name|HdfsConstants
 operator|.
 name|INVALID_TXID
 decl_stmt|;
-DECL|method|NNHAStatusHeartbeat (State state, long txid)
+DECL|method|NNHAStatusHeartbeat (HAServiceState state, long txid)
 specifier|public
 name|NNHAStatusHeartbeat
 parameter_list|(
-name|State
+name|HAServiceState
 name|state
 parameter_list|,
 name|long
@@ -118,7 +134,7 @@ expr_stmt|;
 block|}
 DECL|method|getState ()
 specifier|public
-name|State
+name|HAServiceState
 name|getState
 parameter_list|()
 block|{
@@ -136,21 +152,6 @@ return|return
 name|txid
 return|;
 block|}
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-DECL|enum|State
-specifier|public
-enum|enum
-name|State
-block|{
-DECL|enumConstant|ACTIVE
-name|ACTIVE
-block|,
-DECL|enumConstant|STANDBY
-name|STANDBY
-block|;   }
 block|}
 end_class
 
