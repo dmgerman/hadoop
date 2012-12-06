@@ -493,20 +493,6 @@ literal|"Application Submission Not Allowed"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|json ()
-specifier|public
-name|void
-name|json
-parameter_list|()
-block|{
-name|renderJSON
-argument_list|(
-name|AppsList
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 end_class
 
