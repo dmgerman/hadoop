@@ -323,6 +323,15 @@ name|SHUFFLE_SSL_ENABLED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+DECL|field|SHUFFLE_CONSUMER_PLUGIN
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SHUFFLE_CONSUMER_PLUGIN
+init|=
+literal|"mapreduce.job.reduce.shuffle.consumer.plugin.class"
+decl_stmt|;
 comment|/**    * Configuration key to enable/disable IFile readahead.    */
 DECL|field|MAPRED_IFILE_READAHEAD
 specifier|public
