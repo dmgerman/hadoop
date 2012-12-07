@@ -129,7 +129,6 @@ comment|// The test root is relative to the<wd>/build/test/data by default
 DECL|field|TEST_ROOT_DIR
 specifier|public
 specifier|static
-specifier|final
 name|String
 name|TEST_ROOT_DIR
 init|=

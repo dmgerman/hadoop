@@ -197,6 +197,12 @@ name|LoginException
 throws|,
 name|URISyntaxException
 block|{
+name|FileContextTestHelper
+operator|.
+name|TEST_ROOT_DIR
+operator|=
+literal|"/tmp/TestFcHdfsPermission"
+expr_stmt|;
 name|Configuration
 name|conf
 init|=

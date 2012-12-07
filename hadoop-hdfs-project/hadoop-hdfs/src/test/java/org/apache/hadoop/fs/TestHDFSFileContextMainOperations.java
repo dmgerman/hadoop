@@ -289,6 +289,12 @@ name|LoginException
 throws|,
 name|URISyntaxException
 block|{
+name|FileContextTestHelper
+operator|.
+name|TEST_ROOT_DIR
+operator|=
+literal|"/tmp/TestHDFSFileContextMainOperations"
+expr_stmt|;
 name|cluster
 operator|=
 operator|new

@@ -469,6 +469,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|FileContextTestHelper
+operator|.
+name|TEST_ROOT_DIR
+operator|=
+literal|"/tmp/TestFcHdfsSymlink"
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
