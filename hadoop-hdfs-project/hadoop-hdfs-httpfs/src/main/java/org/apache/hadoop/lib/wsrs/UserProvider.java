@@ -317,12 +317,8 @@ decl_stmt|;
 if|if
 condition|(
 name|len
-argument_list|<
+operator|<
 literal|1
-operator|||
-name|len
-argument_list|>
-literal|31
 condition|)
 block|{
 throw|throw
@@ -333,12 +329,10 @@ name|MessageFormat
 operator|.
 name|format
 argument_list|(
-literal|"Parameter [{0}], invalid value [{1}], it's length must be between 1 and 31"
+literal|"Parameter [{0}], it's length must be at least 1"
 argument_list|,
 name|getName
 argument_list|()
-argument_list|,
-name|str
 argument_list|)
 argument_list|)
 throw|;
