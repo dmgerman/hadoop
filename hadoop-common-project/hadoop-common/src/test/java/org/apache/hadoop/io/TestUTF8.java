@@ -40,6 +40,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|UTFDataFormatException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Random
@@ -621,8 +631,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|UTFDataFormatException
+name|utfde
 parameter_list|)
 block|{
 name|GenericTestUtils
@@ -631,7 +641,7 @@ name|assertExceptionContains
 argument_list|(
 literal|"Invalid UTF8 at ffff01020304"
 argument_list|,
-name|ioe
+name|utfde
 argument_list|)
 expr_stmt|;
 block|}
@@ -704,8 +714,8 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|ioe
+name|UTFDataFormatException
+name|utfde
 parameter_list|)
 block|{
 name|GenericTestUtils
@@ -714,7 +724,74 @@ name|assertExceptionContains
 argument_list|(
 literal|"Invalid UTF8 at f88880808004"
 argument_list|,
-name|ioe
+name|utfde
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Test that decoding invalid UTF8 due to truncation yields the correct    * exception type.    */
+DECL|method|testInvalidUTF8Truncated ()
+specifier|public
+name|void
+name|testInvalidUTF8Truncated
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Truncated CAT FACE character -- this is a 4-byte sequence, but we
+comment|// only have the first three bytes.
+name|byte
+index|[]
+name|truncated
+init|=
+operator|new
+name|byte
+index|[]
+block|{
+operator|(
+name|byte
+operator|)
+literal|0xF0
+block|,
+operator|(
+name|byte
+operator|)
+literal|0x9F
+block|,
+operator|(
+name|byte
+operator|)
+literal|0x90
+block|}
+decl_stmt|;
+try|try
+block|{
+name|UTF8
+operator|.
+name|fromBytes
+argument_list|(
+name|truncated
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"did not throw an exception"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|UTFDataFormatException
+name|utfde
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Truncated UTF8 at f09f90"
+argument_list|,
+name|utfde
 argument_list|)
 expr_stmt|;
 block|}

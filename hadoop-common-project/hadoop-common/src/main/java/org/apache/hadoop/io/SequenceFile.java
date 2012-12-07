@@ -7758,7 +7758,7 @@ name|keyClassName
 operator|=
 name|className
 operator|.
-name|toString
+name|toStringChecked
 argument_list|()
 expr_stmt|;
 comment|// key class name
@@ -7773,7 +7773,7 @@ name|valClassName
 operator|=
 name|className
 operator|.
-name|toString
+name|toStringChecked
 argument_list|()
 expr_stmt|;
 comment|// val class name
