@@ -1163,13 +1163,9 @@ name|l
 operator|.
 name|add
 argument_list|(
-operator|new
-name|HdfsVolumeId
-argument_list|(
-literal|null
-argument_list|,
-literal|false
-argument_list|)
+name|VolumeId
+operator|.
+name|INVALID_VOLUME_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -1361,8 +1357,6 @@ operator|new
 name|HdfsVolumeId
 argument_list|(
 name|volumeId
-argument_list|,
-literal|true
 argument_list|)
 decl_stmt|;
 comment|// Find out which index we are in the LocatedBlock's replicas

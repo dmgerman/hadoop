@@ -93,7 +93,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * HDFS-specific volume identifier which implements {@link VolumeId}. Can be  * used to differentiate between the data directories on a single datanode. This  * identifier is only unique on a per-datanode basis.  */
+comment|/**  * HDFS-specific volume identifier which implements {@link VolumeId}. Can be  * used to differentiate between the data directories on a single datanode. This  * identifier is only unique on a per-datanode basis.  *   * Note that invalid IDs are represented by {@link VolumeId#INVALID_VOLUME_ID}.  */
 end_comment
 
 begin_class
@@ -119,47 +119,50 @@ name|byte
 index|[]
 name|id
 decl_stmt|;
-DECL|field|isValid
-specifier|private
-specifier|final
-name|boolean
-name|isValid
-decl_stmt|;
-DECL|method|HdfsVolumeId (byte[] id, boolean isValid)
+DECL|method|HdfsVolumeId (byte[] id)
 specifier|public
 name|HdfsVolumeId
 parameter_list|(
 name|byte
 index|[]
 name|id
-parameter_list|,
-name|boolean
-name|isValid
 parameter_list|)
 block|{
+if|if
+condition|(
+name|id
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|NullPointerException
+argument_list|(
+literal|"A valid Id can only be constructed "
+operator|+
+literal|"with a non-null byte array."
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|id
 operator|=
 name|id
-expr_stmt|;
-name|this
-operator|.
-name|isValid
-operator|=
-name|isValid
 expr_stmt|;
 block|}
 annotation|@
 name|Override
 DECL|method|isValid ()
 specifier|public
+specifier|final
 name|boolean
 name|isValid
 parameter_list|()
 block|{
 return|return
-name|isValid
+literal|true
 return|;
 block|}
 annotation|@
@@ -173,6 +176,32 @@ name|VolumeId
 name|arg0
 parameter_list|)
 block|{
+if|if
+condition|(
+name|arg0
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|1
+return|;
+block|}
+if|if
+condition|(
+operator|!
+name|arg0
+operator|.
+name|isValid
+argument_list|()
+condition|)
+block|{
+comment|// any valid ID is greater
+comment|// than any invalid ID:
+return|return
+literal|1
+return|;
+block|}
 return|return
 name|hashCode
 argument_list|()
@@ -254,6 +283,9 @@ name|HdfsVolumeId
 operator|)
 name|obj
 decl_stmt|;
+comment|// NB: if (!obj.isValid()) { return false; } check is not necessary
+comment|// because we have class identity checking above, and for this class
+comment|// isValid() is always true.
 return|return
 operator|new
 name|EqualsBuilder

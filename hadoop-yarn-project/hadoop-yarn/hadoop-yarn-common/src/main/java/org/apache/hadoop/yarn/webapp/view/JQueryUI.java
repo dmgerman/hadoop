@@ -106,29 +106,6 @@ name|JQueryUI
 extends|extends
 name|HtmlBlock
 block|{
-comment|// Render choices (mostly for dataTables)
-DECL|enum|Render
-specifier|public
-enum|enum
-name|Render
-block|{
-comment|/** small (<~100 rows) table as html, most gracefully degradable */
-DECL|enumConstant|HTML
-name|HTML
-block|,
-comment|/** medium (<~2000 rows) table as js array */
-DECL|enumConstant|JS_ARRAY
-name|JS_ARRAY
-block|,
-comment|/** large (<~10000 rows) table loading from server */
-DECL|enumConstant|JS_LOAD
-name|JS_LOAD
-block|,
-comment|/** huge (>~10000 rows) table processing from server */
-DECL|enumConstant|JS_SERVER
-name|JS_SERVER
-block|}
-empty_stmt|;
 comment|// UI params
 DECL|field|ACCORDION
 specifier|public
@@ -1176,48 +1153,6 @@ operator|.
 name|append
 argument_list|(
 literal|"aLengthMenu:[20, 40, 60, 80, 100]"
-argument_list|)
-return|;
-block|}
-DECL|method|tableInitProgress (StringBuilder init, long numCells)
-specifier|public
-specifier|static
-name|StringBuilder
-name|tableInitProgress
-parameter_list|(
-name|StringBuilder
-name|init
-parameter_list|,
-name|long
-name|numCells
-parameter_list|)
-block|{
-return|return
-name|init
-operator|.
-name|append
-argument_list|(
-literal|", bProcessing:true, "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"oLanguage:{sProcessing:'Processing "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|numCells
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|" cells..."
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"<p><img src=\"/static/busy.gif\">'}"
 argument_list|)
 return|;
 block|}

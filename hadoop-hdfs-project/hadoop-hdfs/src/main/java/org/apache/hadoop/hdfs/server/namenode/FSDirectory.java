@@ -2912,6 +2912,17 @@ argument_list|(
 name|timestamp
 argument_list|)
 expr_stmt|;
+comment|// update moved leases with new filename
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|unprotectedChangeLease
+argument_list|(
+name|src
+argument_list|,
+name|dst
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -3814,6 +3825,17 @@ operator|.
 name|setModificationTime
 argument_list|(
 name|timestamp
+argument_list|)
+expr_stmt|;
+comment|// update moved lease with new filename
+name|getFSNamesystem
+argument_list|()
+operator|.
+name|unprotectedChangeLease
+argument_list|(
+name|src
+argument_list|,
+name|dst
 argument_list|)
 expr_stmt|;
 comment|// Collect the blocks and remove the lease for previous dst
@@ -5808,7 +5830,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|replaceINodeUnsynced
+name|unprotectedReplaceNode
 argument_list|(
 name|path
 argument_list|,
@@ -5817,8 +5839,100 @@ argument_list|,
 name|newnode
 argument_list|)
 expr_stmt|;
-comment|//Currently, oldnode and newnode are assumed to contain the same blocks.
-comment|//Otherwise, blocks need to be removed from the blocksMap.
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|unprotectedReplaceNode (String path, INodeFile oldnode, INodeFile newnode)
+name|void
+name|unprotectedReplaceNode
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|INodeFile
+name|oldnode
+parameter_list|,
+name|INodeFile
+name|newnode
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|UnresolvedLinkException
+block|{
+assert|assert
+name|hasWriteLock
+argument_list|()
+assert|;
+name|INodeDirectory
+name|parent
+init|=
+name|oldnode
+operator|.
+name|parent
+decl_stmt|;
+comment|// Remove the node from the namespace
+if|if
+condition|(
+operator|!
+name|oldnode
+operator|.
+name|removeNode
+argument_list|()
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"DIR* FSDirectory.replaceNode: "
+operator|+
+literal|"failed to remove "
+operator|+
+name|path
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"FSDirectory.replaceNode: "
+operator|+
+literal|"failed to remove "
+operator|+
+name|path
+argument_list|)
+throw|;
+block|}
+comment|// Parent should be non-null, otherwise oldnode.removeNode() will return
+comment|// false
+name|newnode
+operator|.
+name|setLocalName
+argument_list|(
+name|oldnode
+operator|.
+name|getLocalNameBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|parent
+operator|.
+name|addChild
+argument_list|(
+name|newnode
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|/* Currently oldnode and newnode are assumed to contain the same      * blocks. Otherwise, blocks need to be removed from the blocksMap.      */
 name|int
 name|index
 init|=
@@ -5860,13 +5974,6 @@ expr_stmt|;
 comment|// inode refers to the block in BlocksMap
 name|index
 operator|++
-expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -276,6 +276,12 @@ name|LoginException
 throws|,
 name|URISyntaxException
 block|{
+name|FileSystemTestHelper
+operator|.
+name|TEST_ROOT_DIR
+operator|=
+literal|"/tmp/TestViewFileSystemHdfs"
+expr_stmt|;
 name|SupportsBlocks
 operator|=
 literal|true

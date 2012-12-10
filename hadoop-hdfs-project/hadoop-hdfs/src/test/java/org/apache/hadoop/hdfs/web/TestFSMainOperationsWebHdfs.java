@@ -148,6 +148,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileSystemTestHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -387,6 +401,14 @@ name|void
 name|setupCluster
 parameter_list|()
 block|{
+comment|// Initialize the test root directory to a DFS like path
+comment|// since we are testing based on the MiniDFSCluster.
+name|FileSystemTestHelper
+operator|.
+name|TEST_ROOT_DIR
+operator|=
+literal|"/tmp/TestFSMainOperationsWebHdfs"
+expr_stmt|;
 specifier|final
 name|Configuration
 name|conf

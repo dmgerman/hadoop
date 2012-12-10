@@ -814,7 +814,7 @@ operator|+
 name|blocks
 operator|)
 operator|+
-literal|" total"
+literal|" total filesystem objects"
 decl_stmt|;
 if|if
 condition|(

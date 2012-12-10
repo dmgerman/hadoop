@@ -1143,7 +1143,7 @@ expr_stmt|;
 return|return
 name|ustr
 operator|.
-name|toString
+name|toStringChecked
 argument_list|()
 return|;
 block|}

@@ -759,19 +759,18 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|Node
+name|DatanodeDescriptor
 name|node
 range|:
 name|chosenNodes
 control|)
 block|{
-name|excludedNodes
-operator|.
-name|put
+comment|// add localMachine and related nodes to excludedNodes
+name|addToExcludedNodes
 argument_list|(
 name|node
 argument_list|,
-name|node
+name|excludedNodes
 argument_list|)
 expr_stmt|;
 name|adjustExcludedNodes
@@ -1252,7 +1251,7 @@ condition|(
 name|avoidStaleNodes
 condition|)
 block|{
-comment|// ecxludedNodes now has - initial excludedNodes, any nodes that were
+comment|// excludedNodes now has - initial excludedNodes, any nodes that were
 comment|// chosen and nodes that were tried but were not chosen because they
 comment|// were stale, decommissioned or for any other reason a node is not
 comment|// chosen for write. Retry again now not avoiding stale node
@@ -1409,6 +1408,14 @@ argument_list|(
 name|localMachine
 argument_list|)
 expr_stmt|;
+comment|// add localMachine and related nodes to excludedNode
+name|addToExcludedNodes
+argument_list|(
+name|localMachine
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
 return|return
 name|localMachine
 return|;
@@ -1431,6 +1438,46 @@ name|results
 argument_list|,
 name|avoidStaleNodes
 argument_list|)
+return|;
+block|}
+comment|/**    * Add<i>localMachine</i> and related nodes to<i>excludedNodes</i>    * for next replica choosing. In sub class, we can add more nodes within    * the same failure domain of localMachine    * @return number of new excluded nodes    */
+DECL|method|addToExcludedNodes (DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes)
+specifier|protected
+name|int
+name|addToExcludedNodes
+parameter_list|(
+name|DatanodeDescriptor
+name|localMachine
+parameter_list|,
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|)
+block|{
+name|Node
+name|node
+init|=
+name|excludedNodes
+operator|.
+name|put
+argument_list|(
+name|localMachine
+argument_list|,
+name|localMachine
+argument_list|)
+decl_stmt|;
+return|return
+name|node
+operator|==
+literal|null
+condition|?
+literal|1
+else|:
+literal|0
 return|;
 block|}
 comment|/* choose one node from the rack that<i>localMachine</i> is on.    * if no such node is available, choose one node from the rack where    * a second replica is on.    * if still no such node is available, choose a random node     * in the cluster.    * @return the chosen node    */
@@ -1919,6 +1966,14 @@ argument_list|(
 name|chosenNode
 argument_list|)
 expr_stmt|;
+comment|// add chosenNode and related nodes to excludedNode
+name|addToExcludedNodes
+argument_list|(
+name|chosenNode
+argument_list|,
+name|excludedNodes
+argument_list|)
+expr_stmt|;
 name|adjustExcludedNodes
 argument_list|(
 name|excludedNodes
@@ -2161,6 +2216,21 @@ name|add
 argument_list|(
 name|chosenNode
 argument_list|)
+expr_stmt|;
+comment|// add chosenNode and related nodes to excludedNode
+name|int
+name|newExcludedNodes
+init|=
+name|addToExcludedNodes
+argument_list|(
+name|chosenNode
+argument_list|,
+name|excludedNodes
+argument_list|)
+decl_stmt|;
+name|numOfAvailableNodes
+operator|-=
+name|newExcludedNodes
 expr_stmt|;
 name|adjustExcludedNodes
 argument_list|(

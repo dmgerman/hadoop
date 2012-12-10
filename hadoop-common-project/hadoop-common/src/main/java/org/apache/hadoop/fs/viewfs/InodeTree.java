@@ -533,8 +533,6 @@ specifier|final
 name|String
 name|pathComponent
 parameter_list|)
-throws|throws
-name|FileNotFoundException
 block|{
 return|return
 name|children
@@ -1653,19 +1651,11 @@ name|IOException
 argument_list|(
 literal|"ViewFs: Cannot initialize: Empty Mount table in config for "
 operator|+
-name|vName
-operator|==
-literal|null
-condition|?
-literal|"viewfs:///"
-else|:
-operator|(
 literal|"viewfs://"
 operator|+
 name|vName
 operator|+
 literal|"/"
-operator|)
 argument_list|)
 throw|;
 block|}
