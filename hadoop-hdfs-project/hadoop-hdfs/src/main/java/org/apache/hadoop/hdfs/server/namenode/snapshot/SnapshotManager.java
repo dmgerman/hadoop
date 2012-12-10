@@ -460,6 +460,8 @@ operator|new
 name|INodeDirectory
 argument_list|(
 name|s
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|fsdir
@@ -859,6 +861,8 @@ operator|new
 name|INodeDirectory
 argument_list|(
 name|srcChild
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|dstChild

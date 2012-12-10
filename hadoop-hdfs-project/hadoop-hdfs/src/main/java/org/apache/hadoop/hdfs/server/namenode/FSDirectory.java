@@ -9420,6 +9420,8 @@ operator|new
 name|INodeDirectory
 argument_list|(
 name|dirNode
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|INodeDirectory

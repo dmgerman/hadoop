@@ -1384,6 +1384,8 @@ operator|new
 name|INodeDirectory
 argument_list|(
 name|oldinode
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|newinode

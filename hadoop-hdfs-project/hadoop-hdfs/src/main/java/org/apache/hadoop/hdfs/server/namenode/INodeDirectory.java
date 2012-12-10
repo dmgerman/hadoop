@@ -457,13 +457,16 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** copy constructor    *     * @param other    */
-DECL|method|INodeDirectory (INodeDirectory other)
+comment|/**    * Copy constructor    * @param other The INodeDirectory to be copied    * @param adopt Indicate whether or not need to set the parent field of child    *              INodes to the new node    */
+DECL|method|INodeDirectory (INodeDirectory other, boolean adopt)
 specifier|public
 name|INodeDirectory
 parameter_list|(
 name|INodeDirectory
 name|other
+parameter_list|,
+name|boolean
+name|adopt
 parameter_list|)
 block|{
 name|super
@@ -481,6 +484,8 @@ name|children
 expr_stmt|;
 if|if
 condition|(
+name|adopt
+operator|&&
 name|this
 operator|.
 name|children
