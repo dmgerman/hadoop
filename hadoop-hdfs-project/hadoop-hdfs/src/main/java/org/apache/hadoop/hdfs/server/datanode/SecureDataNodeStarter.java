@@ -761,14 +761,14 @@ name|ss
 operator|.
 name|getLocalPort
 argument_list|()
-operator|>=
+operator|>
 literal|1023
 operator|||
 name|listener
 operator|.
 name|getPort
 argument_list|()
-operator|>=
+operator|>
 literal|1023
 operator|)
 operator|&&
