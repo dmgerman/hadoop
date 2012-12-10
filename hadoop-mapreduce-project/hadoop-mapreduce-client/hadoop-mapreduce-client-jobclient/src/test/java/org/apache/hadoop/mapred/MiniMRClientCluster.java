@@ -58,6 +58,15 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Stop and start back the cluster using the same configuration.    */
+DECL|method|restart ()
+specifier|public
+name|void
+name|restart
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 DECL|method|stop ()
 specifier|public
 name|void
