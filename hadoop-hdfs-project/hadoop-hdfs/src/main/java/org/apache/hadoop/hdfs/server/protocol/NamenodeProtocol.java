@@ -139,12 +139,6 @@ operator|=
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_USER_NAME_KEY
-argument_list|,
-name|clientPrincipal
-operator|=
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_USER_NAME_KEY
 argument_list|)
 annotation|@
 name|InterfaceAudience
