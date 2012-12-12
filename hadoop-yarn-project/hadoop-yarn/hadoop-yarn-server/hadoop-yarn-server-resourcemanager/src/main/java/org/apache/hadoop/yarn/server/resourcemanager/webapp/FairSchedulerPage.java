@@ -262,6 +262,46 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|HtmlPage
+operator|.
+name|Page
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|HtmlPage
+operator|.
+name|_
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1132,6 +1172,10 @@ literal|"#cs a span { font-weight: normal; font-size: 80% }"
 argument_list|,
 literal|"#cs-wrapper .ui-widget-header { padding: 0.2em 0.5em }"
 argument_list|,
+literal|".qstats { font-weight: normal; font-size: 80%; position: absolute }"
+argument_list|,
+literal|".qlegend { font-weight: normal; padding: 0 1em; margin: 1em }"
+argument_list|,
 literal|"table.info tr th {width: 50%}"
 argument_list|)
 operator|.
@@ -1160,7 +1204,9 @@ literal|"  $('#cs a span').addClass('ui-corner-all').css('position', 'absolute')
 argument_list|,
 literal|"  $('#cs').bind('loaded.jstree', function (e, data) {"
 argument_list|,
-literal|"    data.inst.open_all(); })."
+literal|"    data.inst.open_node('#pq', true);"
+argument_list|,
+literal|"   })."
 argument_list|,
 literal|"    jstree({"
 argument_list|,
@@ -1182,7 +1228,9 @@ literal|"    var q = $('.q', data.rslt.obj).first().text();"
 argument_list|,
 literal|"    if (q == 'root') q = '';"
 argument_list|,
-literal|"    $('#apps').dataTable().fnFilter(q, 3);"
+literal|"    else q = '^' + q.substr(q.lastIndexOf('.') + 1) + '$';"
+argument_list|,
+literal|"    $('#apps').dataTable().fnFilter(q, 3, true);"
 argument_list|,
 literal|"  });"
 argument_list|,
@@ -1278,6 +1326,63 @@ name|f
 operator|*
 literal|100
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAppsTableColumnDefs ()
+specifier|protected
+name|String
+name|getAppsTableColumnDefs
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+return|return
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"[\n"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"{'sType':'numeric', 'aTargets': [0]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopID }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', 'aTargets': [5, 6]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': renderHadoopDate }"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [9]"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", 'mRender': parseHadoopProgress }]"
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 block|}
