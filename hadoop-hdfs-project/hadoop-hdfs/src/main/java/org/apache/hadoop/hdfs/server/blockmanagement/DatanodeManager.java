@@ -3027,14 +3027,15 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|hostname
-operator|.
-name|equals
+operator|!
+name|isNameResolved
 argument_list|(
-name|ip
+name|dnAddress
 argument_list|)
 condition|)
 block|{
+comment|// Reject registration of unresolved datanode to prevent performance
+comment|// impact of repetitive DNS lookups later.
 name|LOG
 operator|.
 name|warn
@@ -4700,6 +4701,48 @@ expr_stmt|;
 block|}
 return|return
 name|names
+return|;
+block|}
+comment|/**    * Checks if name resolution was successful for the given address.  If IP    * address and host name are the same, then it means name resolution has    * failed.  As a special case, the loopback address is also considered    * acceptable.  This is particularly important on Windows, where 127.0.0.1 does    * not resolve to "localhost".    *     * @param address InetAddress to check    * @return boolean true if name resolution successful or address is loopback    */
+DECL|method|isNameResolved (InetAddress address)
+specifier|private
+specifier|static
+name|boolean
+name|isNameResolved
+parameter_list|(
+name|InetAddress
+name|address
+parameter_list|)
+block|{
+name|String
+name|hostname
+init|=
+name|address
+operator|.
+name|getHostName
+argument_list|()
+decl_stmt|;
+name|String
+name|ip
+init|=
+name|address
+operator|.
+name|getHostAddress
+argument_list|()
+decl_stmt|;
+return|return
+operator|!
+name|hostname
+operator|.
+name|equals
+argument_list|(
+name|ip
+argument_list|)
+operator|||
+name|address
+operator|.
+name|isLoopbackAddress
+argument_list|()
 return|;
 block|}
 DECL|method|setDatanodeDead (DatanodeDescriptor node)
