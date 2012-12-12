@@ -1420,6 +1420,57 @@ argument_list|)
 expr_stmt|;
 comment|// ensure rename dst exists
 block|}
+annotation|@
+name|Test
+DECL|method|testIsValidNameInvalidNames ()
+specifier|public
+name|void
+name|testIsValidNameInvalidNames
+parameter_list|()
+block|{
+name|String
+index|[]
+name|invalidNames
+init|=
+block|{
+literal|"/foo/../bar"
+block|,
+literal|"/foo/./bar"
+block|,
+literal|"/foo/:/bar"
+block|,
+literal|"/foo:bar"
+block|}
+decl_stmt|;
+for|for
+control|(
+name|String
+name|invalidName
+range|:
+name|invalidNames
+control|)
+block|{
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|invalidName
+operator|+
+literal|" is not valid"
+argument_list|,
+name|fc
+operator|.
+name|getDefaultFileSystem
+argument_list|()
+operator|.
+name|isValidName
+argument_list|(
+name|invalidName
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|oldRename (Path src, Path dst, boolean renameSucceeds, boolean exception)
 specifier|private
 name|void

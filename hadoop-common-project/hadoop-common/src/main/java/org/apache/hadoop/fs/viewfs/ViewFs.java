@@ -2912,6 +2912,22 @@ return|return
 name|result
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isValidName (String src)
+specifier|public
+name|boolean
+name|isValidName
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+block|{
+comment|// Prefix validated at mount time and rest of path validated by mount target.
+return|return
+literal|true
+return|;
+block|}
 comment|/*    * An instance of this class represents an internal dir of the viewFs     * ie internal dir of the mount table.    * It is a ready only mount tbale and create, mkdir or delete operations    * are not allowed.    * If called on create or mkdir then this target is the parent of the    * directory in which one is trying to create or mkdir; hence    * in this case the path name passed in is the last component.     * Otherwise this target is the end point of the path and hence    * the path name passed in is null.     */
 DECL|class|InternalDirOfViewFs
 specifier|static
