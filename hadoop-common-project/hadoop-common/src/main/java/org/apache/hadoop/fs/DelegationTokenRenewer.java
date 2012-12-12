@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -680,6 +694,22 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/** For testing purposes */
+annotation|@
+name|VisibleForTesting
+DECL|method|getRenewQueueLength ()
+specifier|protected
+name|int
+name|getRenewQueueLength
+parameter_list|()
+block|{
+return|return
+name|queue
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 comment|/**    * Create the singleton instance. However, the thread can be started lazily in    * {@link #addRenewAction(FileSystem)}    */
 DECL|field|INSTANCE
 specifier|private

@@ -50,6 +50,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -613,6 +625,18 @@ argument_list|(
 name|tfs
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"FileSystem not added to DelegationTokenRenewer"
+argument_list|,
+literal|1
+argument_list|,
+name|renewer
+operator|.
+name|getRenewQueueLength
+argument_list|()
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -671,19 +695,16 @@ literal|0
 operator|)
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"Token not removed"
+literal|"FileSystem not removed from DelegationTokenRenewer"
 argument_list|,
-operator|(
-name|tfs
+literal|0
+argument_list|,
+name|renewer
 operator|.
-name|testToken
-operator|.
-name|renewCount
-operator|<
-name|MAX_RENEWALS
-operator|)
+name|getRenewQueueLength
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
