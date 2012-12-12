@@ -239,6 +239,10 @@ operator|-
 literal|19
 argument_list|,
 literal|"Reserved for release 0.20.203"
+argument_list|,
+literal|true
+argument_list|,
+name|DELEGATION_TOKEN
 argument_list|)
 block|,
 DECL|enumConstant|RESERVED_REL20_204
@@ -247,7 +251,12 @@ argument_list|(
 operator|-
 literal|32
 argument_list|,
+operator|-
+literal|31
+argument_list|,
 literal|"Reserved for release 0.20.204"
+argument_list|,
+literal|true
 argument_list|)
 block|,
 DECL|enumConstant|RESERVED_REL22
@@ -260,6 +269,8 @@ operator|-
 literal|27
 argument_list|,
 literal|"Reserved for release 0.22"
+argument_list|,
+literal|true
 argument_list|)
 block|,
 DECL|enumConstant|RESERVED_REL23
@@ -272,6 +283,8 @@ operator|-
 literal|30
 argument_list|,
 literal|"Reserved for release 0.23"
+argument_list|,
+literal|true
 argument_list|)
 block|,
 DECL|enumConstant|FEDERATION
@@ -329,6 +342,22 @@ literal|"Serialize block lists with delta-encoded variable length ints, "
 operator|+
 literal|"add OP_UPDATE_BLOCKS"
 argument_list|)
+block|,
+DECL|enumConstant|RESERVED_REL1_2_0
+name|RESERVED_REL1_2_0
+argument_list|(
+operator|-
+literal|41
+argument_list|,
+operator|-
+literal|32
+argument_list|,
+literal|"Reserved for release 1.2.0"
+argument_list|,
+literal|true
+argument_list|,
+name|CONCAT
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final
@@ -345,7 +374,18 @@ specifier|final
 name|String
 name|description
 decl_stmt|;
-comment|/**      * Feature that is added at {@code currentLV}.       * @param lv new layout version with the addition of this feature      * @param description description of the feature      */
+DECL|field|reserved
+specifier|final
+name|boolean
+name|reserved
+decl_stmt|;
+DECL|field|specialFeatures
+specifier|final
+name|Feature
+index|[]
+name|specialFeatures
+decl_stmt|;
+comment|/**      * Feature that is added at layout version {@code lv} - 1.       * @param lv new layout version with the addition of this feature      * @param description description of the feature      */
 DECL|method|Feature (final int lv, final String description)
 name|Feature
 parameter_list|(
@@ -367,11 +407,13 @@ operator|+
 literal|1
 argument_list|,
 name|description
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Feature that is added at {@code currentLV}.      * @param lv new layout version with the addition of this feature      * @param ancestorLV layout version from which the new lv is derived      *          from.      * @param description description of the feature      */
-DECL|method|Feature (final int lv, final int ancestorLV, final String description)
+comment|/**      * Feature that is added at layout version {@code ancestoryLV}.      * @param lv new layout version with the addition of this feature      * @param ancestorLV layout version from which the new lv is derived from.      * @param description description of the feature      * @param reserved true when this is a layout version reserved for previous      *          verions      * @param features set of features that are to be enabled for this version      */
+DECL|method|Feature (final int lv, final int ancestorLV, final String description, boolean reserved, Feature... features)
 name|Feature
 parameter_list|(
 specifier|final
@@ -385,6 +427,13 @@ parameter_list|,
 specifier|final
 name|String
 name|description
+parameter_list|,
+name|boolean
+name|reserved
+parameter_list|,
+name|Feature
+modifier|...
+name|features
 parameter_list|)
 block|{
 name|this
@@ -404,6 +453,16 @@ operator|.
 name|description
 operator|=
 name|description
+expr_stmt|;
+name|this
+operator|.
+name|reserved
+operator|=
+name|reserved
+expr_stmt|;
+name|specialFeatures
+operator|=
+name|features
 expr_stmt|;
 block|}
 comment|/**       * Accessor method for feature layout version       * @return int lv value      */
@@ -437,6 +496,16 @@ parameter_list|()
 block|{
 return|return
 name|description
+return|;
+block|}
+DECL|method|isReservedForOldRelease ()
+specifier|public
+name|boolean
+name|isReservedForOldRelease
+parameter_list|()
+block|{
+return|return
+name|reserved
 return|;
 block|}
 block|}
@@ -554,6 +623,34 @@ argument_list|(
 name|ancestorSet
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|f
+operator|.
+name|specialFeatures
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|Feature
+name|specialFeature
+range|:
+name|f
+operator|.
+name|specialFeatures
+control|)
+block|{
+name|featureSet
+operator|.
+name|add
+argument_list|(
+name|specialFeature
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 name|featureSet
 operator|.
 name|add
@@ -573,68 +670,6 @@ name|featureSet
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Special initialization for 0.20.203 and 0.20.204
-comment|// to add Feature#DELEGATION_TOKEN
-name|specialInit
-argument_list|(
-name|Feature
-operator|.
-name|RESERVED_REL20_203
-operator|.
-name|lv
-argument_list|,
-name|Feature
-operator|.
-name|DELEGATION_TOKEN
-argument_list|)
-expr_stmt|;
-name|specialInit
-argument_list|(
-name|Feature
-operator|.
-name|RESERVED_REL20_204
-operator|.
-name|lv
-argument_list|,
-name|Feature
-operator|.
-name|DELEGATION_TOKEN
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|specialInit (int lv, Feature f)
-specifier|private
-specifier|static
-name|void
-name|specialInit
-parameter_list|(
-name|int
-name|lv
-parameter_list|,
-name|Feature
-name|f
-parameter_list|)
-block|{
-name|EnumSet
-argument_list|<
-name|Feature
-argument_list|>
-name|set
-init|=
-name|map
-operator|.
-name|get
-argument_list|(
-name|lv
-argument_list|)
-decl_stmt|;
-name|set
-operator|.
-name|add
-argument_list|(
-name|f
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Gets formatted string that describes {@link LayoutVersion} information.    */
 DECL|method|getString ()
@@ -824,18 +859,54 @@ operator|.
 name|values
 argument_list|()
 decl_stmt|;
-return|return
-name|values
-index|[
+for|for
+control|(
+name|int
+name|i
+init|=
 name|values
 operator|.
 name|length
 operator|-
 literal|1
+init|;
+name|i
+operator|>=
+literal|0
+condition|;
+name|i
+operator|--
+control|)
+block|{
+if|if
+condition|(
+operator|!
+name|values
+index|[
+name|i
+index|]
+operator|.
+name|isReservedForOldRelease
+argument_list|()
+condition|)
+block|{
+return|return
+name|values
+index|[
+name|i
 index|]
 operator|.
 name|lv
 return|;
+block|}
+block|}
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"All layout versions are reserved."
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

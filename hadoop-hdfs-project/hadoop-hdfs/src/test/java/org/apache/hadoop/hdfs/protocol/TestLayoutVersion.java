@@ -173,6 +173,34 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test to make sure release 1.2.0 support CONCAT    */
+annotation|@
+name|Test
+DECL|method|testRelease1_2_0 ()
+specifier|public
+name|void
+name|testRelease1_2_0
+parameter_list|()
+block|{
+name|assertTrue
+argument_list|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|CONCAT
+argument_list|,
+name|Feature
+operator|.
+name|RESERVED_REL1_2_0
+operator|.
+name|lv
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Given feature {@code f}, ensures the layout version of that feature    * supports all the features supported by it's ancestor.    */
 DECL|method|validateFeatureList (Feature f)
 specifier|private
@@ -227,6 +255,20 @@ control|)
 block|{
 name|assertTrue
 argument_list|(
+literal|"LV "
+operator|+
+name|lv
+operator|+
+literal|" does nto support "
+operator|+
+name|feature
+operator|+
+literal|" supported by the ancestor LV "
+operator|+
+name|f
+operator|.
+name|ancestorLV
+argument_list|,
 name|LayoutVersion
 operator|.
 name|supports
