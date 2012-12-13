@@ -1446,6 +1446,13 @@ specifier|private
 name|DelegationTokenToRenew
 name|dttr
 decl_stmt|;
+DECL|field|cancelled
+specifier|private
+name|boolean
+name|cancelled
+init|=
+literal|false
+decl_stmt|;
 DECL|method|RenewalTimerTask (DelegationTokenToRenew t)
 name|RenewalTimerTask
 parameter_list|(
@@ -1462,10 +1469,18 @@ annotation|@
 name|Override
 DECL|method|run ()
 specifier|public
+specifier|synchronized
 name|void
 name|run
 parameter_list|()
 block|{
+if|if
+condition|(
+name|cancelled
+condition|)
+block|{
+return|return;
+block|}
 name|Token
 argument_list|<
 name|?
@@ -1583,6 +1598,26 @@ name|dttr
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|cancel ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|cancel
+parameter_list|()
+block|{
+name|cancelled
+operator|=
+literal|true
+expr_stmt|;
+return|return
+name|super
+operator|.
+name|cancel
+argument_list|()
+return|;
 block|}
 block|}
 comment|/**    * set task to renew the token    */
