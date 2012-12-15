@@ -1012,6 +1012,11 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|tearDownDone
+specifier|private
+name|boolean
+name|tearDownDone
+decl_stmt|;
 DECL|field|RECOVERY_ID
 specifier|private
 specifier|final
@@ -1173,6 +1178,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|tearDownDone
+operator|=
+literal|false
+expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -1515,6 +1524,9 @@ name|IOException
 block|{
 if|if
 condition|(
+operator|!
+name|tearDownDone
+operator|&&
 name|dn
 operator|!=
 literal|null
@@ -1577,6 +1589,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|tearDownDone
+operator|=
+literal|true
+expr_stmt|;
 block|}
 block|}
 comment|/** Sync two replicas */
