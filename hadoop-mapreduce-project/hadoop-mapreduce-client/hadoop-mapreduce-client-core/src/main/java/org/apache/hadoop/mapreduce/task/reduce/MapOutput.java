@@ -100,6 +100,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -205,7 +233,21 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"MapReduce"
+block|}
+argument_list|)
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
 DECL|class|MapOutput
+specifier|public
 class|class
 name|MapOutput
 parameter_list|<
@@ -335,6 +377,7 @@ name|boolean
 name|primaryMapOutput
 decl_stmt|;
 DECL|method|MapOutput (TaskAttemptID mapId, MergeManager<K,V> merger, long size, JobConf conf, LocalDirAllocator localDirAllocator, int fetcher, boolean primaryMapOutput, MapOutputFile mapOutputFile)
+specifier|public
 name|MapOutput
 parameter_list|(
 name|TaskAttemptID
@@ -466,6 +509,7 @@ name|primaryMapOutput
 expr_stmt|;
 block|}
 DECL|method|MapOutput (TaskAttemptID mapId, MergeManager<K,V> merger, int size, boolean primaryMapOutput)
+specifier|public
 name|MapOutput
 parameter_list|(
 name|TaskAttemptID

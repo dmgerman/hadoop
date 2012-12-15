@@ -306,7 +306,9 @@ name|InterfaceAudience
 operator|.
 name|LimitedPrivate
 argument_list|(
-literal|"mapreduce"
+block|{
+literal|"MapReduce"
+block|}
 argument_list|)
 annotation|@
 name|InterfaceStability

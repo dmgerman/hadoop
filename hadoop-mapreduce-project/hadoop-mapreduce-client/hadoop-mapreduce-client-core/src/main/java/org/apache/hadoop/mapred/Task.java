@@ -2745,13 +2745,18 @@ block|}
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
 DECL|class|TaskReporter
-specifier|protected
+specifier|public
 class|class
 name|TaskReporter
 extends|extends
@@ -6870,13 +6875,18 @@ block|}
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
 DECL|class|CombinerRunner
-specifier|protected
+specifier|public
 specifier|static
 specifier|abstract
 class|class
@@ -6943,6 +6953,7 @@ expr_stmt|;
 block|}
 comment|/**      * Run the combiner over a set of inputs.      * @param iterator the key/value pairs to use as input      * @param collector the output collector      */
 DECL|method|combine (RawKeyValueIterator iterator, OutputCollector<K,V> collector )
+specifier|public
 specifier|abstract
 name|void
 name|combine
@@ -6970,6 +6981,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
+specifier|public
 specifier|static
 parameter_list|<
 name|K
@@ -7367,7 +7379,7 @@ argument_list|(
 literal|"unchecked"
 argument_list|)
 DECL|method|combine (RawKeyValueIterator kvIter, OutputCollector<K,V> combineCollector )
-specifier|protected
+specifier|public
 name|void
 name|combine
 parameter_list|(
@@ -7822,6 +7834,7 @@ argument_list|)
 annotation|@
 name|Override
 DECL|method|combine (RawKeyValueIterator iterator, OutputCollector<K,V> collector )
+specifier|public
 name|void
 name|combine
 parameter_list|(

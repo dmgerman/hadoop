@@ -571,7 +571,12 @@ argument_list|)
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|InterfaceStability
 operator|.
