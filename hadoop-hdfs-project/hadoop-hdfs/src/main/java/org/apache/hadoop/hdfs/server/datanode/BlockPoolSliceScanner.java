@@ -3003,6 +3003,26 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Shuts down this BlockPoolSliceScanner and releases any internal resources.    */
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+block|{
+if|if
+condition|(
+name|verificationLog
+operator|!=
+literal|null
+condition|)
+block|{
+name|verificationLog
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 DECL|method|scan ()
 specifier|private
 name|void
@@ -3039,9 +3059,13 @@ operator|.
 name|shouldRun
 operator|&&
 operator|!
-name|Thread
+name|datanode
 operator|.
-name|interrupted
+name|blockScanner
+operator|.
+name|blockScannerThread
+operator|.
+name|isInterrupted
 argument_list|()
 operator|&&
 name|datanode

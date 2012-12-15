@@ -479,6 +479,24 @@ name|scanBlockPoolSlice
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Call shutdown for each allocated BlockPoolSliceScanner.
+for|for
+control|(
+name|BlockPoolSliceScanner
+name|bpss
+range|:
+name|blockPoolScannerMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|bpss
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|// Wait for at least one block pool to be up
 DECL|method|waitForInit ()
@@ -1058,10 +1076,14 @@ block|}
 block|}
 DECL|method|shutdown ()
 specifier|public
-specifier|synchronized
 name|void
 name|shutdown
 parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 if|if
 condition|(
@@ -1075,6 +1097,33 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+comment|// We cannot join within the synchronized block, because it would create a
+comment|// deadlock situation.  blockScannerThread calls other synchronized methods.
+if|if
+condition|(
+name|blockScannerThread
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|blockScannerThread
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+comment|// shutting down anyway
+block|}
 block|}
 block|}
 DECL|method|addBlockPool (String blockPoolId)
