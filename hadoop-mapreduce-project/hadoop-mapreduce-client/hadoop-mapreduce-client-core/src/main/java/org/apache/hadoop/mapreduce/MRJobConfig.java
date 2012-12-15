@@ -78,6 +78,15 @@ name|MAP_CLASS_ATTR
 init|=
 literal|"mapreduce.job.map.class"
 decl_stmt|;
+DECL|field|MAP_OUTPUT_COLLECTOR_CLASS_ATTR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAP_OUTPUT_COLLECTOR_CLASS_ATTR
+init|=
+literal|"mapreduce.job.map.output.collector.class"
+decl_stmt|;
 DECL|field|COMBINE_CLASS_ATTR
 specifier|public
 specifier|static
