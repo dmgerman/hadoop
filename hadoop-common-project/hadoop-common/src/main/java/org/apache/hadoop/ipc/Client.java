@@ -544,9 +544,9 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|IpcConnectionContextProtos
+name|RpcHeaderProtos
 operator|.
-name|IpcConnectionContextProto
+name|RpcRequestHeaderProto
 import|;
 end_import
 
@@ -562,9 +562,11 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
 operator|.
-name|RpcPayloadHeaderProto
+name|RpcRequestHeaderProto
+operator|.
+name|OperationProto
 import|;
 end_import
 
@@ -580,25 +582,7 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
-operator|.
-name|RpcPayloadOperationProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|protobuf
-operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
 operator|.
 name|RpcResponseHeaderProto
 import|;
@@ -616,7 +600,9 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
+operator|.
+name|RpcResponseHeaderProto
 operator|.
 name|RpcStatusProto
 import|;
@@ -1143,7 +1129,7 @@ specifier|final
 name|Writable
 name|rpcRequest
 decl_stmt|;
-comment|// the serialized rpc request - RpcPayload
+comment|// the serialized rpc request
 DECL|field|rpcResponse
 name|Writable
 name|rpcResponse
@@ -1434,11 +1420,11 @@ name|IOException
 name|closeException
 decl_stmt|;
 comment|// close reason
-DECL|field|sendParamsLock
+DECL|field|sendRpcRequestLock
 specifier|private
 specifier|final
 name|Object
-name|sendParamsLock
+name|sendRpcRequestLock
 init|=
 operator|new
 name|Object
@@ -3556,7 +3542,7 @@ argument_list|(
 name|buf
 argument_list|)
 expr_stmt|;
-comment|// Write out the payload length
+comment|// Write out the packet length
 name|int
 name|bufLen
 init|=
@@ -3841,7 +3827,7 @@ argument_list|()
 condition|)
 block|{
 comment|//wait here for work - read or close connection
-name|receiveResponse
+name|receiveRpcResponse
 argument_list|()
 expr_stmt|;
 block|}
@@ -3904,11 +3890,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Initiates a call by sending the parameter to the remote server.      * Note: this is not called from the Connection thread, but by other      * threads.      */
-DECL|method|sendParam (final Call call)
+comment|/** Initiates a rpc call by sending the rpc request to the remote server.      * Note: this is not called from the Connection thread, but by other      * threads.      * @param call - the rpc request      */
+DECL|method|sendRpcRequest (final Call call)
 specifier|public
 name|void
-name|sendParam
+name|sendRpcRequest
 parameter_list|(
 specifier|final
 name|Call
@@ -3936,8 +3922,8 @@ comment|// properly. This also parallelizes the serialization.
 comment|//
 comment|// Format of a call on the wire:
 comment|// 0) Length of rest below (1 + 2)
-comment|// 1) PayloadHeader  - is serialized Delimited hence contains length
-comment|// 2) the Payload - the RpcRequest
+comment|// 1) RpcRequestHeader  - is serialized Delimited hence contains length
+comment|// 2) RpcRequest
 comment|//
 comment|// Items '1' and '2' are prepared here.
 specifier|final
@@ -3948,20 +3934,20 @@ operator|new
 name|DataOutputBuffer
 argument_list|()
 decl_stmt|;
-name|RpcPayloadHeaderProto
+name|RpcRequestHeaderProto
 name|header
 init|=
 name|ProtoUtil
 operator|.
-name|makeRpcPayloadHeader
+name|makeRpcRequestHeader
 argument_list|(
 name|call
 operator|.
 name|rpcKind
 argument_list|,
-name|RpcPayloadOperationProto
+name|OperationProto
 operator|.
-name|RPC_FINAL_PAYLOAD
+name|RPC_FINAL_PACKET
 argument_list|,
 name|call
 operator|.
@@ -3986,7 +3972,7 @@ argument_list|)
 expr_stmt|;
 synchronized|synchronized
 init|(
-name|sendParamsLock
+name|sendRpcRequestLock
 init|)
 block|{
 name|Future
@@ -4088,7 +4074,7 @@ argument_list|,
 name|totalLength
 argument_list|)
 expr_stmt|;
-comment|//PayloadHeader + RpcRequest
+comment|// RpcRequestHeader + RpcRequest
 name|out
 operator|.
 name|flush
@@ -4181,10 +4167,10 @@ block|}
 block|}
 block|}
 comment|/* Receive a response.      * Because only one receiver, so no synchronization on in.      */
-DECL|method|receiveResponse ()
+DECL|method|receiveRpcResponse ()
 specifier|private
 name|void
-name|receiveResponse
+name|receiveRpcResponse
 parameter_list|()
 block|{
 if|if
@@ -5230,12 +5216,12 @@ try|try
 block|{
 name|connection
 operator|.
-name|sendParam
+name|sendRpcRequest
 argument_list|(
 name|call
 argument_list|)
 expr_stmt|;
-comment|// send the parameter
+comment|// send the rpc request
 block|}
 catch|catch
 parameter_list|(
@@ -5271,7 +5257,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"interrupted waiting to send params to server"
+literal|"interrupted waiting to send rpc request to server"
 argument_list|,
 name|e
 argument_list|)

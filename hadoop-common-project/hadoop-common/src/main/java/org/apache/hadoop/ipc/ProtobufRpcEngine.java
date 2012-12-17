@@ -270,9 +270,9 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|HadoopRpcProtos
+name|ProtobufRpcEngineProtos
 operator|.
-name|HadoopRpcRequestProto
+name|RequestProto
 import|;
 end_import
 
@@ -935,7 +935,7 @@ expr_stmt|;
 block|}
 DECL|method|constructRpcRequest (Method method, Object[] params)
 specifier|private
-name|HadoopRpcRequestProto
+name|RequestProto
 name|constructRpcRequest
 parameter_list|(
 name|Method
@@ -948,15 +948,15 @@ parameter_list|)
 throws|throws
 name|ServiceException
 block|{
-name|HadoopRpcRequestProto
+name|RequestProto
 name|rpcRequest
 decl_stmt|;
-name|HadoopRpcRequestProto
+name|RequestProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|HadoopRpcRequestProto
+name|RequestProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -1126,7 +1126,7 @@ name|now
 argument_list|()
 expr_stmt|;
 block|}
-name|HadoopRpcRequestProto
+name|RequestProto
 name|rpcRequest
 init|=
 name|constructRpcRequest
@@ -1574,7 +1574,7 @@ implements|implements
 name|Writable
 block|{
 DECL|field|message
-name|HadoopRpcRequestProto
+name|RequestProto
 name|message
 decl_stmt|;
 annotation|@
@@ -1587,10 +1587,10 @@ specifier|public
 name|RpcRequestWritable
 parameter_list|()
 block|{     }
-DECL|method|RpcRequestWritable (HadoopRpcRequestProto message)
+DECL|method|RpcRequestWritable (RequestProto message)
 name|RpcRequestWritable
 parameter_list|(
-name|HadoopRpcRequestProto
+name|RequestProto
 name|message
 parameter_list|)
 block|{
@@ -1674,7 +1674,7 @@ argument_list|)
 expr_stmt|;
 name|message
 operator|=
-name|HadoopRpcRequestProto
+name|RequestProto
 operator|.
 name|parseFrom
 argument_list|(
@@ -2203,7 +2203,7 @@ name|RpcRequestWritable
 operator|)
 name|writableRequest
 decl_stmt|;
-name|HadoopRpcRequestProto
+name|RequestProto
 name|rpcRequest
 init|=
 name|request
