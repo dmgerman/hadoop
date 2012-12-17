@@ -36,24 +36,6 @@ name|InterfaceAudience
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INodeFile
-import|;
-end_import
-
 begin_comment
 comment|/**  *  INode representing a snapshot of a file.  */
 end_comment
@@ -76,15 +58,11 @@ specifier|final
 name|long
 name|size
 decl_stmt|;
-DECL|method|INodeFileSnapshot (INodeFile f, long size)
-specifier|public
+DECL|method|INodeFileSnapshot (INodeFileWithLink f)
 name|INodeFileSnapshot
 parameter_list|(
-name|INodeFile
+name|INodeFileWithLink
 name|f
-parameter_list|,
-name|long
-name|size
 parameter_list|)
 block|{
 name|super
@@ -96,7 +74,19 @@ name|this
 operator|.
 name|size
 operator|=
-name|size
+name|f
+operator|.
+name|computeFileSize
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|f
+operator|.
+name|insert
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

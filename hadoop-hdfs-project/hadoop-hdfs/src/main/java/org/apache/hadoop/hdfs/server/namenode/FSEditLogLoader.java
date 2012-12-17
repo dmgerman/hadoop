@@ -1866,7 +1866,7 @@ argument_list|)
 expr_stmt|;
 name|newFile
 operator|.
-name|setModificationTimeForce
+name|setModificationTime
 argument_list|(
 name|addCloseOp
 operator|.
@@ -1987,7 +1987,7 @@ argument_list|)
 expr_stmt|;
 name|oldFile
 operator|.
-name|setModificationTimeForce
+name|setModificationTime
 argument_list|(
 name|addCloseOp
 operator|.
@@ -2069,11 +2069,16 @@ init|=
 name|ucFile
 operator|.
 name|convertToInodeFile
+argument_list|(
+name|ucFile
+operator|.
+name|getModificationTime
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|fsDir
 operator|.
-name|unprotectedReplaceNode
+name|unprotectedReplaceINodeFile
 argument_list|(
 name|addCloseOp
 operator|.

@@ -1461,9 +1461,12 @@ name|length
 operator|==
 literal|0
 condition|)
+block|{
 return|return
 literal|""
 return|;
+block|}
+elseif|else
 if|if
 condition|(
 name|pathComponents
@@ -1472,6 +1475,14 @@ name|length
 operator|==
 literal|1
 operator|&&
+operator|(
+name|pathComponents
+index|[
+literal|0
+index|]
+operator|==
+literal|null
+operator|||
 name|pathComponents
 index|[
 literal|0
@@ -1480,6 +1491,7 @@ operator|.
 name|length
 operator|==
 literal|0
+operator|)
 condition|)
 block|{
 return|return
@@ -1565,15 +1577,14 @@ name|UnsupportedEncodingException
 name|ex
 parameter_list|)
 block|{
-assert|assert
-literal|false
-operator|:
-literal|"UTF8 encoding is not supported "
-assert|;
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"UTF-8 encoding is not supported."
+argument_list|)
+throw|;
 block|}
-return|return
-literal|null
-return|;
 block|}
 comment|/** Convert an object representing a path to a string. */
 DECL|method|path2String (final Object path)

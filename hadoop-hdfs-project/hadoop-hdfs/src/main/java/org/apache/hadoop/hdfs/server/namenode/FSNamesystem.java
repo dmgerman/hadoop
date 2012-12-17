@@ -10406,7 +10406,7 @@ argument_list|)
 decl_stmt|;
 name|dir
 operator|.
-name|replaceNode
+name|replaceINodeFile
 argument_list|(
 name|src
 argument_list|,
@@ -16059,11 +16059,14 @@ init|=
 name|pendingFile
 operator|.
 name|convertToInodeFile
+argument_list|(
+name|now
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|dir
 operator|.
-name|replaceNode
+name|replaceINodeFile
 argument_list|(
 name|src
 argument_list|,

@@ -1935,7 +1935,7 @@ block|{
 comment|// file is closed
 name|file
 operator|.
-name|setModificationTimeForce
+name|setModificationTime
 argument_list|(
 name|now
 argument_list|)
@@ -2893,7 +2893,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|setModificationTime
+name|updateModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -2907,7 +2907,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|setModificationTime
+name|updateModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -3808,7 +3808,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|setModificationTime
+name|updateModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -3822,7 +3822,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|setModificationTime
+name|updateModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -4931,14 +4931,14 @@ expr_stmt|;
 block|}
 name|trgInode
 operator|.
-name|setModificationTimeForce
+name|setModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
 expr_stmt|;
 name|trgParent
 operator|.
-name|setModificationTime
+name|updateModificationTime
 argument_list|(
 name|timestamp
 argument_list|)
@@ -5546,7 +5546,7 @@ operator|-
 literal|2
 index|]
 operator|.
-name|setModificationTime
+name|updateModificationTime
 argument_list|(
 name|mtime
 argument_list|)
@@ -5680,72 +5680,6 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Replaces the specified INode.    */
-DECL|method|replaceINodeUnsynced (String path, INode oldnode, INode newnode )
-specifier|private
-name|void
-name|replaceINodeUnsynced
-parameter_list|(
-name|String
-name|path
-parameter_list|,
-name|INode
-name|oldnode
-parameter_list|,
-name|INode
-name|newnode
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|//remove the old node from the namespace
-if|if
-condition|(
-operator|!
-name|oldnode
-operator|.
-name|removeNode
-argument_list|()
-condition|)
-block|{
-specifier|final
-name|String
-name|mess
-init|=
-literal|"FSDirectory.replaceINodeUnsynced: failed to remove "
-operator|+
-name|path
-decl_stmt|;
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|warn
-argument_list|(
-literal|"DIR* "
-operator|+
-name|mess
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|mess
-argument_list|)
-throw|;
-block|}
-comment|//add the new node
-name|rootDir
-operator|.
-name|addINode
-argument_list|(
-name|path
-argument_list|,
-name|newnode
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Replaces the specified INodeDirectory.    */
 DECL|method|replaceINodeDirectory (String path, INodeDirectory oldnode, INodeDirectory newnode)
 specifier|public
@@ -5769,7 +5703,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|replaceINodeUnsynced
+name|unprotectedReplaceINode
 argument_list|(
 name|path
 argument_list|,
@@ -5778,27 +5712,7 @@ argument_list|,
 name|newnode
 argument_list|)
 expr_stmt|;
-comment|//update children's parent directory
-for|for
-control|(
-name|INode
-name|i
-range|:
-name|newnode
-operator|.
-name|getChildrenList
-argument_list|(
-literal|null
-argument_list|)
-control|)
-block|{
-name|i
-operator|.
-name|parent
-operator|=
-name|newnode
-expr_stmt|;
-block|}
+comment|// Note that the parent of the children of the oldnode is already updated
 block|}
 finally|finally
 block|{
@@ -5808,10 +5722,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Replaces the specified INodeFile with the specified one.    */
-DECL|method|replaceNode (String path, INodeFile oldnode, INodeFile newnode )
+DECL|method|replaceINodeFile (String path, INodeFile oldnode, INodeFile newnode)
 specifier|public
 name|void
-name|replaceNode
+name|replaceINodeFile
 parameter_list|(
 name|String
 name|path
@@ -5830,7 +5744,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|unprotectedReplaceNode
+name|unprotectedReplaceINodeFile
 argument_list|(
 name|path
 argument_list|,
@@ -5847,9 +5761,127 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|unprotectedReplaceNode (String path, INodeFile oldnode, INodeFile newnode)
+DECL|method|unprotectedReplaceINode (String path, INode oldnode, INode newnode)
+specifier|private
 name|void
-name|unprotectedReplaceNode
+name|unprotectedReplaceINode
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|INode
+name|oldnode
+parameter_list|,
+name|INode
+name|newnode
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|hasWriteLock
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|INodeDirectory
+name|parent
+init|=
+name|oldnode
+operator|.
+name|getParent
+argument_list|()
+decl_stmt|;
+comment|// Remove the node from the namespace
+if|if
+condition|(
+name|parent
+operator|==
+literal|null
+condition|)
+block|{
+specifier|final
+name|String
+name|mess
+init|=
+literal|"FSDirectory.unprotectedReplaceINode: failed to remove "
+operator|+
+name|path
+decl_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"DIR* "
+operator|+
+name|mess
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|mess
+argument_list|)
+throw|;
+block|}
+specifier|final
+name|INode
+name|removed
+init|=
+name|parent
+operator|.
+name|removeChild
+argument_list|(
+name|oldnode
+argument_list|)
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|removed
+operator|==
+name|oldnode
+argument_list|,
+literal|"removed != oldnode=%s, removed=%s"
+argument_list|,
+name|oldnode
+argument_list|,
+name|removed
+argument_list|)
+expr_stmt|;
+name|parent
+operator|=
+name|oldnode
+operator|.
+name|getParent
+argument_list|()
+expr_stmt|;
+name|oldnode
+operator|.
+name|setParent
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+name|parent
+operator|.
+name|addChild
+argument_list|(
+name|newnode
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|unprotectedReplaceINodeFile (String path, INodeFile oldnode, INodeFile newnode)
+name|void
+name|unprotectedReplaceINodeFile
 parameter_list|(
 name|String
 name|path
@@ -5865,54 +5897,15 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
-assert|assert
-name|hasWriteLock
-argument_list|()
-assert|;
-name|INodeDirectory
-name|parent
-init|=
-name|oldnode
-operator|.
-name|parent
-decl_stmt|;
-comment|// Remove the node from the namespace
-if|if
-condition|(
-operator|!
-name|oldnode
-operator|.
-name|removeNode
-argument_list|()
-condition|)
-block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|warn
+name|unprotectedReplaceINode
 argument_list|(
-literal|"DIR* FSDirectory.replaceNode: "
-operator|+
-literal|"failed to remove "
-operator|+
 name|path
+argument_list|,
+name|oldnode
+argument_list|,
+name|newnode
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"FSDirectory.replaceNode: "
-operator|+
-literal|"failed to remove "
-operator|+
-name|path
-argument_list|)
-throw|;
-block|}
-comment|// Parent should be non-null, otherwise oldnode.removeNode() will return
-comment|// false
 name|newnode
 operator|.
 name|setLocalName
@@ -5921,15 +5914,6 @@ name|oldnode
 operator|.
 name|getLocalNameBytes
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|parent
-operator|.
-name|addChild
-argument_list|(
-name|newnode
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 comment|/* Currently oldnode and newnode are assumed to contain the same      * blocks. Otherwise, blocks need to be removed from the blocksMap.      */
@@ -6357,6 +6341,30 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 block|{
+return|return
+name|getINodesInPath
+argument_list|(
+name|src
+argument_list|)
+operator|.
+name|getINode
+argument_list|(
+literal|0
+argument_list|)
+return|;
+block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    */
+DECL|method|getINodesInPath (String src)
+specifier|public
+name|INodesInPath
+name|getINodesInPath
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+block|{
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -6365,7 +6373,44 @@ block|{
 return|return
 name|rootDir
 operator|.
-name|getNode
+name|getINodesInPath
+argument_list|(
+name|src
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Get {@link INode} associated with the file / directory.    */
+DECL|method|getMutableINodesInPath (String src )
+specifier|public
+name|INodesInPath
+name|getMutableINodesInPath
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+throws|,
+name|SnapshotAccessControlException
+block|{
+name|readLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|rootDir
+operator|.
+name|getMutableINodesInPath
 argument_list|(
 name|src
 argument_list|,
@@ -9455,17 +9500,20 @@ block|}
 else|else
 block|{
 comment|// a non-quota directory; so replace it with a directory with quota
+specifier|final
 name|INodeDirectoryWithQuota
 name|newNode
 init|=
 operator|new
 name|INodeDirectoryWithQuota
 argument_list|(
+name|dirNode
+argument_list|,
+literal|true
+argument_list|,
 name|nsQuota
 argument_list|,
 name|dsQuota
-argument_list|,
-name|dirNode
 argument_list|)
 decl_stmt|;
 comment|// non-root directory node; parent != null
@@ -9775,7 +9823,7 @@ condition|)
 block|{
 name|inode
 operator|.
-name|setModificationTimeForce
+name|setModificationTime
 argument_list|(
 name|mtime
 argument_list|)

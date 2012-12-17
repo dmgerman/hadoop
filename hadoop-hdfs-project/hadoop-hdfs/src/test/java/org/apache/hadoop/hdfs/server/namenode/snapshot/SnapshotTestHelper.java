@@ -657,6 +657,12 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|id
+name|int
+name|id
+init|=
+literal|0
+decl_stmt|;
 comment|/**      * Recursively generate the tree based on the height.      *       * @param parent The parent node      * @param level The remaining levels to generate      * @throws Exception      */
 DECL|method|genChildren (Node parent, int level)
 name|void
@@ -694,7 +700,10 @@ name|parent
 operator|.
 name|nodePath
 argument_list|,
-literal|"leftChild"
+literal|"left"
+operator|+
+operator|++
+name|id
 argument_list|)
 argument_list|,
 name|height
@@ -720,7 +729,10 @@ name|parent
 operator|.
 name|nodePath
 argument_list|,
-literal|"rightChild"
+literal|"right"
+operator|+
+operator|++
+name|id
 argument_list|)
 argument_list|,
 name|height
@@ -988,10 +1000,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**        * Create files and add them in the fileList. Initially the last element        * in the fileList is set to null (where we start file creation).        */
-DECL|method|initFileList (long fileLen, short replication, long seed, int numFiles)
+DECL|method|initFileList (String namePrefix, long fileLen, short replication, long seed, int numFiles)
 name|void
 name|initFileList
 parameter_list|(
+name|String
+name|namePrefix
+parameter_list|,
 name|long
 name|fileLen
 parameter_list|,
@@ -1041,7 +1056,9 @@ name|Path
 argument_list|(
 name|nodePath
 argument_list|,
-literal|"file"
+name|namePrefix
+operator|+
+literal|"-f"
 operator|+
 name|i
 argument_list|)

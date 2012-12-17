@@ -381,22 +381,19 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|name
+argument_list|,
 name|perm
+argument_list|,
+name|modificationTime
+argument_list|,
+name|modificationTime
 argument_list|,
 name|blocks
 argument_list|,
 name|blockReplication
 argument_list|,
-name|modificationTime
-argument_list|,
-name|modificationTime
-argument_list|,
 name|preferredBlockSize
-argument_list|)
-expr_stmt|;
-name|setLocalName
-argument_list|(
-name|name
 argument_list|)
 expr_stmt|;
 name|this
@@ -477,10 +474,13 @@ comment|//
 comment|// converts a INodeFileUnderConstruction into a INodeFile
 comment|// use the modification time as the access time
 comment|//
-DECL|method|convertToInodeFile ()
+DECL|method|convertToInodeFile (long mtime)
 name|INodeFile
 name|convertToInodeFile
-parameter_list|()
+parameter_list|(
+name|long
+name|mtime
+parameter_list|)
 block|{
 assert|assert
 name|allBlocksComplete
@@ -501,13 +501,19 @@ argument_list|()
 argument_list|)
 assert|;
 comment|//TODO SNAPSHOT: may convert to INodeFileWithLink
-name|INodeFile
-name|obj
-init|=
+return|return
 operator|new
 name|INodeFile
 argument_list|(
+name|getLocalNameBytes
+argument_list|()
+argument_list|,
 name|getPermissionStatus
+argument_list|()
+argument_list|,
+name|mtime
+argument_list|,
+name|getModificationTime
 argument_list|()
 argument_list|,
 name|getBlocks
@@ -516,18 +522,9 @@ argument_list|,
 name|getFileReplication
 argument_list|()
 argument_list|,
-name|getModificationTime
-argument_list|()
-argument_list|,
-name|getModificationTime
-argument_list|()
-argument_list|,
 name|getPreferredBlockSize
 argument_list|()
 argument_list|)
-decl_stmt|;
-return|return
-name|obj
 return|;
 block|}
 comment|/**    * @return true if all of the blocks in this file are marked as completed.    */
