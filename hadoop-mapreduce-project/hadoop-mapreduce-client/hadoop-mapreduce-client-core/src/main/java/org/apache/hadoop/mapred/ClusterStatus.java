@@ -486,6 +486,16 @@ argument_list|()
 return|;
 block|}
 block|}
+DECL|field|UNINITIALIZED_MEMORY_VALUE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|UNINITIALIZED_MEMORY_VALUE
+init|=
+operator|-
+literal|1
+decl_stmt|;
 DECL|field|numActiveTrackers
 specifier|private
 name|int
@@ -983,6 +993,32 @@ parameter_list|()
 block|{
 return|return
 name|status
+return|;
+block|}
+comment|/**    * Returns UNINITIALIZED_MEMORY_VALUE (-1)    */
+annotation|@
+name|Deprecated
+DECL|method|getMaxMemory ()
+specifier|public
+name|long
+name|getMaxMemory
+parameter_list|()
+block|{
+return|return
+name|UNINITIALIZED_MEMORY_VALUE
+return|;
+block|}
+comment|/**    * Returns UNINITIALIZED_MEMORY_VALUE (-1)    */
+annotation|@
+name|Deprecated
+DECL|method|getUsedMemory ()
+specifier|public
+name|long
+name|getUsedMemory
+parameter_list|()
+block|{
+return|return
+name|UNINITIALIZED_MEMORY_VALUE
 return|;
 block|}
 comment|/**    * Gets the list of blacklisted trackers along with reasons for blacklisting.    *     * @return the collection of {@link BlackListInfo} objects.     *     */
