@@ -1893,6 +1893,54 @@ name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.group"
 decl_stmt|;
+comment|/** The type of resource enforcement to use with the    *  linux container executor.    */
+DECL|field|NM_LINUX_CONTAINER_RESOURCES_HANDLER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_RESOURCES_HANDLER
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.resources-handler.class"
+decl_stmt|;
+comment|/** The path the linux container executor should use for cgroups */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_HIERARCHY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_HIERARCHY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.hierarchy"
+decl_stmt|;
+comment|/** Whether the linux container executor should mount cgroups if not found */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_MOUNT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_MOUNT
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.mount"
+decl_stmt|;
+comment|/** Where the linux container executor should mount cgroups if not found */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_MOUNT_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_MOUNT_PATH
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.mount-path"
+decl_stmt|;
 comment|/** T-file compression types used to compress aggregated logs.*/
 DECL|field|NM_LOG_AGG_COMPRESSION_TYPE
 specifier|public
