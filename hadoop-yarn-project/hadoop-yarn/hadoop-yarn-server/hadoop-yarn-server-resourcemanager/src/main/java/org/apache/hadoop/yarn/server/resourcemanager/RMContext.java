@@ -98,6 +98,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|recovery
+operator|.
+name|RMStateStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmapp
 operator|.
 name|RMApp
@@ -259,6 +279,11 @@ block|{
 DECL|method|getDispatcher ()
 name|Dispatcher
 name|getDispatcher
+parameter_list|()
+function_decl|;
+DECL|method|getStateStore ()
+name|RMStateStore
+name|getStateStore
 parameter_list|()
 function_decl|;
 DECL|method|getRMApps ()

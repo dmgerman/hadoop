@@ -128,9 +128,7 @@ name|rm
 init|=
 operator|new
 name|ResourceManager
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|rm
 operator|.

@@ -390,7 +390,6 @@ name|memory
 decl_stmt|;
 DECL|field|resourceTracker
 specifier|private
-specifier|final
 name|ResourceTrackerService
 name|resourceTracker
 decl_stmt|;
@@ -500,6 +499,21 @@ block|{
 return|return
 name|httpPort
 return|;
+block|}
+DECL|method|setResourceTrackerService (ResourceTrackerService resourceTracker)
+name|void
+name|setResourceTrackerService
+parameter_list|(
+name|ResourceTrackerService
+name|resourceTracker
+parameter_list|)
+block|{
+name|this
+operator|.
+name|resourceTracker
+operator|=
+name|resourceTracker
+expr_stmt|;
 block|}
 DECL|method|containerStatus (Container container)
 specifier|public

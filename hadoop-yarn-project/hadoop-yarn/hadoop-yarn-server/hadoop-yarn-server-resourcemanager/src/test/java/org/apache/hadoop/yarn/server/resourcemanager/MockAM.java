@@ -406,7 +406,6 @@ name|context
 decl_stmt|;
 DECL|field|amRMProtocol
 specifier|private
-specifier|final
 name|AMRMProtocol
 name|amRMProtocol
 decl_stmt|;
@@ -472,6 +471,21 @@ operator|.
 name|attemptId
 operator|=
 name|attemptId
+expr_stmt|;
+block|}
+DECL|method|setAMRMProtocol (AMRMProtocol amRMProtocol)
+name|void
+name|setAMRMProtocol
+parameter_list|(
+name|AMRMProtocol
+name|amRMProtocol
+parameter_list|)
+block|{
+name|this
+operator|.
+name|amRMProtocol
+operator|=
+name|amRMProtocol
 expr_stmt|;
 block|}
 DECL|method|waitForState (RMAppAttemptState finalState)
@@ -541,7 +555,11 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"AppAttempt State is : "
+literal|"AppAttempt : "
+operator|+
+name|attemptId
+operator|+
+literal|" State is : "
 operator|+
 name|attempt
 operator|.

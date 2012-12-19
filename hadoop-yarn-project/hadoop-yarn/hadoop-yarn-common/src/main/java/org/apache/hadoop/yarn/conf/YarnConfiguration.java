@@ -950,6 +950,26 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
+DECL|field|RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RECOVERY_ENABLED
+init|=
+name|RM_PREFIX
+operator|+
+literal|"recovery.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_RM_RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_RECOVERY_ENABLED
+init|=
+literal|false
+decl_stmt|;
 comment|/** The class to use as the persistent store.*/
 DECL|field|RM_STORE
 specifier|public
