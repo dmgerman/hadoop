@@ -996,6 +996,11 @@ name|item
 argument_list|)
 expr_stmt|;
 block|}
+name|postProcessPath
+argument_list|(
+name|item
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1031,6 +1036,18 @@ literal|"processPath() is not implemented"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Hook for commands to implement an operation to be applied on each    * path for the command after being processed successfully    * @param item a {@link PathData} object    * @throws IOException if anything goes wrong...    */
+DECL|method|postProcessPath (PathData item)
+specifier|protected
+name|void
+name|postProcessPath
+parameter_list|(
+name|PathData
+name|item
+parameter_list|)
+throws|throws
+name|IOException
+block|{       }
 comment|/**    *  Gets the directory listing for a path and invokes    *  {@link #processPaths(PathData, PathData...)}    *  @param item {@link PathData} for directory to recurse into    *  @throws IOException if anything goes wrong...    */
 DECL|method|recursePath (PathData item)
 specifier|protected
