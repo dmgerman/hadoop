@@ -1811,10 +1811,8 @@ name|getProcResourceValues
 parameter_list|()
 block|{
 name|pTree
-operator|=
-name|pTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|long

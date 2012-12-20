@@ -1734,22 +1734,11 @@ name|getProcessTree
 argument_list|()
 decl_stmt|;
 name|pTree
-operator|=
-name|pTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
-comment|// get the updated process-tree
-name|ptInfo
-operator|.
-name|setProcessTree
-argument_list|(
-name|pTree
-argument_list|)
-expr_stmt|;
-comment|// update ptInfo with proces-tree of
-comment|// updated state
+comment|// update process-tree
 name|long
 name|currentVmemUsage
 init|=

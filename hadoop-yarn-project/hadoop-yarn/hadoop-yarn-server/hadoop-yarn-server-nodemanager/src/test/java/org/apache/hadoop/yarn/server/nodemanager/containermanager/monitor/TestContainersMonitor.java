@@ -1018,7 +1018,7 @@ argument_list|)
 decl_stmt|;
 name|pTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|assertTrue
@@ -1055,7 +1055,7 @@ argument_list|)
 expr_stmt|;
 name|pTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|assertFalse
@@ -1080,7 +1080,7 @@ comment|// second iteration - now the tree has been over limit twice,
 comment|// hence it should be declared over limit.
 name|pTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|assertTrue
@@ -1115,7 +1115,7 @@ argument_list|)
 expr_stmt|;
 name|pTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|assertFalse
@@ -1137,7 +1137,7 @@ expr_stmt|;
 comment|// another iteration does not make any difference.
 name|pTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|assertFalse

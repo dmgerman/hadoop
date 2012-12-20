@@ -114,16 +114,12 @@ name|pid
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getProcessTree ()
+DECL|method|updateProcessTree ()
 specifier|public
-name|ResourceCalculatorProcessTree
-name|getProcessTree
+name|void
+name|updateProcessTree
 parameter_list|()
-block|{
-return|return
-name|this
-return|;
-block|}
+block|{     }
 DECL|method|getProcessTreeDump ()
 specifier|public
 name|String
