@@ -4131,6 +4131,13 @@ operator|.
 name|none
 argument_list|()
 argument_list|)
+operator|||
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|!=
+literal|null
 condition|)
 block|{
 name|eventLog
