@@ -258,6 +258,26 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|ReadOnlyList
@@ -289,6 +309,20 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -359,6 +393,34 @@ operator|.
 name|emptyList
 argument_list|()
 decl_stmt|;
+comment|/**    * Assert that the snapshot parameter must be null since this class only take    * care current state. Subclasses should override the methods for handling the    * snapshot states.    */
+DECL|method|assertNull (Snapshot snapshot)
+specifier|static
+name|void
+name|assertNull
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"snapshot is not null: "
+operator|+
+name|snapshot
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/** A pair of objects. */
 DECL|class|Pair
 specifier|public
@@ -758,21 +820,20 @@ init|=
 literal|0L
 decl_stmt|;
 DECL|field|parent
-specifier|protected
 name|INodeDirectory
 name|parent
 init|=
 literal|null
 decl_stmt|;
 DECL|field|modificationTime
-specifier|protected
+specifier|private
 name|long
 name|modificationTime
 init|=
 literal|0L
 decl_stmt|;
 DECL|field|accessTime
-specifier|protected
+specifier|private
 name|long
 name|accessTime
 init|=
@@ -938,8 +999,7 @@ name|this
 argument_list|(
 name|other
 operator|.
-name|getLocalNameBytes
-argument_list|()
+name|name
 argument_list|,
 name|other
 operator|.
@@ -947,25 +1007,21 @@ name|permission
 argument_list|,
 name|other
 operator|.
-name|getParent
-argument_list|()
+name|parent
 argument_list|,
 name|other
 operator|.
-name|getModificationTime
-argument_list|()
+name|modificationTime
 argument_list|,
 name|other
 operator|.
-name|getAccessTime
-argument_list|()
+name|accessTime
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a copy of this inode for snapshot.    *     * @return a pair of inodes, where the left inode is the current inode and    *         the right inode is the snapshot copy. The current inode usually is    *         the same object of this inode. However, in some cases, the inode    *         may be replaced with a new inode for maintaining snapshot data.    *         Then, the current inode is the new inode.    */
 DECL|method|createSnapshotCopy ()
 specifier|public
-specifier|abstract
 name|Pair
 argument_list|<
 name|?
@@ -978,7 +1034,21 @@ name|INode
 argument_list|>
 name|createSnapshotCopy
 parameter_list|()
-function_decl|;
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" does not support createSnapshotCopy()."
+argument_list|)
+throw|;
+block|}
 comment|/**    * Check whether this is the root inode.    */
 DECL|method|isRoot ()
 name|boolean
@@ -1012,6 +1082,37 @@ name|permission
 expr_stmt|;
 block|}
 comment|/** Get the {@link PermissionStatus} */
+DECL|method|getPermissionStatus (Snapshot snapshot)
+specifier|public
+name|PermissionStatus
+name|getPermissionStatus
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+return|return
+operator|new
+name|PermissionStatus
+argument_list|(
+name|getUserName
+argument_list|(
+name|snapshot
+argument_list|)
+argument_list|,
+name|getGroupName
+argument_list|(
+name|snapshot
+argument_list|)
+argument_list|,
+name|getFsPermission
+argument_list|(
+name|snapshot
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/** The same as getPermissionStatus(null). */
 DECL|method|getPermissionStatus ()
 specifier|public
 name|PermissionStatus
@@ -1019,21 +1120,13 @@ name|getPermissionStatus
 parameter_list|()
 block|{
 return|return
-operator|new
-name|PermissionStatus
+name|getPermissionStatus
 argument_list|(
-name|getUserName
-argument_list|()
-argument_list|,
-name|getGroupName
-argument_list|()
-argument_list|,
-name|getFsPermission
-argument_list|()
+literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|updatePermissionStatus (PermissionStatusFormat f, long n)
+DECL|method|updatePermissionStatus (PermissionStatusFormat f, long n, Snapshot latest)
 specifier|private
 name|void
 name|updatePermissionStatus
@@ -1043,8 +1136,16 @@ name|f
 parameter_list|,
 name|long
 name|n
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
+name|recordModification
+argument_list|(
+name|latest
+argument_list|)
+expr_stmt|;
 name|permission
 operator|=
 name|f
@@ -1057,12 +1158,15 @@ name|permission
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get user name */
-DECL|method|getUserName ()
+comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return user name    */
+DECL|method|getUserName (Snapshot snapshot)
 specifier|public
 name|String
 name|getUserName
-parameter_list|()
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
 block|{
 name|int
 name|n
@@ -1090,14 +1194,31 @@ name|n
 argument_list|)
 return|;
 block|}
+comment|/** The same as getUserName(null). */
+DECL|method|getUserName ()
+specifier|public
+name|String
+name|getUserName
+parameter_list|()
+block|{
+return|return
+name|getUserName
+argument_list|(
+literal|null
+argument_list|)
+return|;
+block|}
 comment|/** Set user */
-DECL|method|setUser (String user)
+DECL|method|setUser (String user, Snapshot latest)
 specifier|protected
 name|void
 name|setUser
 parameter_list|(
 name|String
 name|user
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
 name|int
@@ -1119,15 +1240,20 @@ operator|.
 name|USER
 argument_list|,
 name|n
+argument_list|,
+name|latest
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get group name */
-DECL|method|getGroupName ()
+comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return group name    */
+DECL|method|getGroupName (Snapshot snapshot)
 specifier|public
 name|String
 name|getGroupName
-parameter_list|()
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
 block|{
 name|int
 name|n
@@ -1155,14 +1281,31 @@ name|n
 argument_list|)
 return|;
 block|}
+comment|/** The same as getGroupName(null). */
+DECL|method|getGroupName ()
+specifier|public
+name|String
+name|getGroupName
+parameter_list|()
+block|{
+return|return
+name|getGroupName
+argument_list|(
+literal|null
+argument_list|)
+return|;
+block|}
 comment|/** Set group */
-DECL|method|setGroup (String group)
+DECL|method|setGroup (String group, Snapshot latest)
 specifier|protected
 name|void
 name|setGroup
 parameter_list|(
 name|String
 name|group
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
 name|int
@@ -1184,15 +1327,20 @@ operator|.
 name|GROUP
 argument_list|,
 name|n
+argument_list|,
+name|latest
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get the {@link FsPermission} */
-DECL|method|getFsPermission ()
+comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return permission.    */
+DECL|method|getFsPermission (Snapshot snapshot)
 specifier|public
 name|FsPermission
 name|getFsPermission
-parameter_list|()
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
 block|{
 return|return
 operator|new
@@ -1209,6 +1357,20 @@ name|retrieve
 argument_list|(
 name|permission
 argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/** The same as getFsPermission(null). */
+DECL|method|getFsPermission ()
+specifier|public
+name|FsPermission
+name|getFsPermission
+parameter_list|()
+block|{
+return|return
+name|getFsPermission
+argument_list|(
+literal|null
 argument_list|)
 return|;
 block|}
@@ -1233,26 +1395,85 @@ argument_list|)
 return|;
 block|}
 comment|/** Set the {@link FsPermission} of this {@link INode} */
-DECL|method|setPermission (FsPermission permission)
+DECL|method|setPermission (FsPermission permission, Snapshot latest)
 name|void
 name|setPermission
 parameter_list|(
 name|FsPermission
 name|permission
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
+specifier|final
+name|short
+name|mode
+init|=
+name|permission
+operator|.
+name|toShort
+argument_list|()
+decl_stmt|;
 name|updatePermissionStatus
 argument_list|(
 name|PermissionStatusFormat
 operator|.
 name|MODE
 argument_list|,
-name|permission
-operator|.
-name|toShort
-argument_list|()
+name|mode
+argument_list|,
+name|latest
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @return see {@link #createSnapshotCopy()}.     */
+DECL|method|recordModification (Snapshot latest)
+name|Pair
+argument_list|<
+name|?
+extends|extends
+name|INode
+argument_list|,
+name|?
+extends|extends
+name|INode
+argument_list|>
+name|recordModification
+parameter_list|(
+name|Snapshot
+name|latest
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|isDirectory
+argument_list|()
+argument_list|,
+literal|"this is an INodeDirectory, this=%s"
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
+return|return
+name|latest
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|parent
+operator|.
+name|saveChild2Snapshot
+argument_list|(
+name|this
+argument_list|,
+name|latest
+argument_list|)
+return|;
 block|}
 comment|/**    * Check whether it's a file.    */
 DECL|method|isFile ()
@@ -1483,20 +1704,20 @@ name|String
 name|name
 parameter_list|)
 block|{
-name|this
-operator|.
-name|name
-operator|=
+name|setLocalName
+argument_list|(
 name|DFSUtil
 operator|.
 name|string2Bytes
 argument_list|(
 name|name
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set local file name    */
 DECL|method|setLocalName (byte[] name)
+specifier|public
 name|void
 name|setLocalName
 parameter_list|(
@@ -1632,6 +1853,7 @@ return|;
 block|}
 comment|/**    * Get parent directory     * @return parent INode    */
 DECL|method|getParent ()
+specifier|public
 name|INodeDirectory
 name|getParent
 parameter_list|()
@@ -1659,12 +1881,15 @@ operator|=
 name|parent
 expr_stmt|;
 block|}
-comment|/**     * Get last modification time of inode.    * @return access time    */
-DECL|method|getModificationTime ()
+comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return modification time.    */
+DECL|method|getModificationTime (Snapshot snapshot)
 specifier|public
 name|long
 name|getModificationTime
-parameter_list|()
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
 block|{
 return|return
 name|this
@@ -1672,14 +1897,31 @@ operator|.
 name|modificationTime
 return|;
 block|}
+comment|/** The same as getModificationTime(null). */
+DECL|method|getModificationTime ()
+specifier|public
+name|long
+name|getModificationTime
+parameter_list|()
+block|{
+return|return
+name|getModificationTime
+argument_list|(
+literal|null
+argument_list|)
+return|;
+block|}
 comment|/** Update modification time if it is larger than the current value. */
-DECL|method|updateModificationTime (long modtime)
+DECL|method|updateModificationTime (long mtime, Snapshot latest)
 specifier|public
 name|void
 name|updateModificationTime
 parameter_list|(
 name|long
-name|modtime
+name|mtime
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
 assert|assert
@@ -1688,18 +1930,17 @@ argument_list|()
 assert|;
 if|if
 condition|(
-name|this
-operator|.
+name|mtime
+operator|>
 name|modificationTime
-operator|<=
-name|modtime
 condition|)
 block|{
-name|this
-operator|.
-name|modificationTime
-operator|=
-name|modtime
+name|setModificationTime
+argument_list|(
+name|mtime
+argument_list|,
+name|latest
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -1721,14 +1962,23 @@ name|modificationTime
 expr_stmt|;
 block|}
 comment|/**    * Always set the last modification time of inode.    */
-DECL|method|setModificationTime (long modtime)
+DECL|method|setModificationTime (long modtime, Snapshot latest)
+specifier|public
 name|void
 name|setModificationTime
 parameter_list|(
 name|long
 name|modtime
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
+name|recordModification
+argument_list|(
+name|latest
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|modificationTime
@@ -1736,7 +1986,21 @@ operator|=
 name|modtime
 expr_stmt|;
 block|}
-comment|/**    * Get access time of inode.    * @return access time    */
+comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return access time    */
+DECL|method|getAccessTime (Snapshot snapshot)
+specifier|public
+name|long
+name|getAccessTime
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+return|return
+name|accessTime
+return|;
+block|}
+comment|/** The same as getAccessTime(null). */
 DECL|method|getAccessTime ()
 specifier|public
 name|long
@@ -1744,18 +2008,29 @@ name|getAccessTime
 parameter_list|()
 block|{
 return|return
-name|accessTime
+name|getAccessTime
+argument_list|(
+literal|null
+argument_list|)
 return|;
 block|}
 comment|/**    * Set last access time of inode.    */
-DECL|method|setAccessTime (long atime)
+DECL|method|setAccessTime (long atime, Snapshot latest)
 name|void
 name|setAccessTime
 parameter_list|(
 name|long
 name|atime
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
+name|recordModification
+argument_list|(
+name|latest
+argument_list|)
+expr_stmt|;
 name|accessTime
 operator|=
 name|atime
@@ -2016,41 +2291,6 @@ operator|.
 name|toString
 argument_list|()
 return|;
-block|}
-DECL|method|removeNode ()
-specifier|public
-name|boolean
-name|removeNode
-parameter_list|()
-block|{
-if|if
-condition|(
-name|parent
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-else|else
-block|{
-name|parent
-operator|.
-name|removeChild
-argument_list|(
-name|this
-argument_list|)
-expr_stmt|;
-name|parent
-operator|=
-literal|null
-expr_stmt|;
-return|return
-literal|true
-return|;
-block|}
 block|}
 DECL|field|EMPTY_BYTES
 specifier|private
@@ -2325,6 +2565,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|dumpTreeRecursively ()
 specifier|public
+specifier|final
 name|StringBuffer
 name|dumpTreeRecursively
 parameter_list|()
@@ -2350,6 +2591,8 @@ argument_list|,
 operator|new
 name|StringBuilder
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 return|return
@@ -2362,7 +2605,7 @@ block|}
 comment|/**    * Dump tree recursively.    * @param prefix The prefix string that each line should print.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix)
+DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, Snapshot snapshot)
 specifier|public
 name|void
 name|dumpTreeRecursively
@@ -2372,6 +2615,9 @@ name|out
 parameter_list|,
 name|StringBuilder
 name|prefix
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 block|{
 name|out
@@ -2420,7 +2666,7 @@ argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|println
+name|print
 argument_list|(
 name|parent
 operator|==
@@ -2432,8 +2678,54 @@ name|parent
 operator|.
 name|getLocalName
 argument_list|()
+operator|+
+literal|"/"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|this
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+name|out
+operator|.
+name|println
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+specifier|final
+name|INodeDirectory
+name|dir
+init|=
+operator|(
+name|INodeDirectory
+operator|)
+name|this
+decl_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|", size="
+operator|+
+name|dir
+operator|.
+name|getChildrenList
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Information used for updating the blocksMap when deleting files.    */
 DECL|class|BlocksMapUpdateInfo

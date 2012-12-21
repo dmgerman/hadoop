@@ -126,7 +126,6 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|INodeSymlink (INodeSymlink that)
-specifier|public
 name|INodeSymlink
 parameter_list|(
 name|INodeSymlink

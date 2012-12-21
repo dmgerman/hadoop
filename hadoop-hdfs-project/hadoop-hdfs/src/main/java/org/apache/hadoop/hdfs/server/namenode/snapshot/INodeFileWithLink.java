@@ -169,7 +169,6 @@ return|;
 block|}
 comment|/** Insert inode to the circular linked list. */
 DECL|method|insert (INodeFileWithLink inode)
-specifier|public
 name|void
 name|insert
 parameter_list|(
@@ -411,6 +410,8 @@ operator|.
 name|setFileReplication
 argument_list|(
 name|maxReplication
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|this
@@ -420,9 +421,10 @@ operator|=
 literal|null
 expr_stmt|;
 comment|// clear parent
-name|parent
-operator|=
+name|setParent
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 block|}
 return|return

@@ -42,18 +42,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|assertNotNull
 import|;
 end_import
@@ -864,15 +852,6 @@ operator|.
 name|getBlockCollection
 argument_list|()
 decl_stmt|;
-comment|// The INode in the blocksMap should be no longer the original INode for
-comment|// file0
-name|assertFalse
-argument_list|(
-name|bcAfterDeletion
-operator|==
-name|inode
-argument_list|)
-expr_stmt|;
 comment|// Compare the INode in the blocksMap with INodes for snapshots
 name|Path
 name|snapshot1File0

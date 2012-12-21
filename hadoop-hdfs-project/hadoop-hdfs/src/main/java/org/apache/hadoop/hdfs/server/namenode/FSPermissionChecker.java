@@ -417,7 +417,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Check whether current user have permissions to access the path.    * Traverse is always checked.    *    * Parent path means the parent directory for the path.    * Ancestor path means the last (the closest) existing ancestor directory    * of the path.    * Note that if the parent path exists,    * then the parent path and the ancestor path are the same.    *    * For example, suppose the path is "/foo/bar/baz".    * No matter baz is a file or a directory,    * the parent path is "/foo/bar".    * If bar exists, then the ancestor path is also "/foo/bar".    * If bar does not exist and foo exists,    * then the ancestor path is "/foo".    * Further, if both foo and bar do not exist,    * then the ancestor path is "/".    *    * @param doCheckOwner Require user to be the owner of the path?    * @param ancestorAccess The access required by the ancestor of the path.    * @param parentAccess The access required by the parent of the path.    * @param access The access required by the path.    * @param subAccess If path is a directory,    * it is the access required of the path and all the sub-directories.    * If path is not a directory, there is no effect.    * @return a PermissionChecker object which caches data for later use.    * @throws AccessControlException    * @throws UnresolvedLinkException    */
+comment|/**    * Check whether current user have permissions to access the path.    * Traverse is always checked.    *    * Parent path means the parent directory for the path.    * Ancestor path means the last (the closest) existing ancestor directory    * of the path.    * Note that if the parent path exists,    * then the parent path and the ancestor path are the same.    *    * For example, suppose the path is "/foo/bar/baz".    * No matter baz is a file or a directory,    * the parent path is "/foo/bar".    * If bar exists, then the ancestor path is also "/foo/bar".    * If bar does not exist and foo exists,    * then the ancestor path is "/foo".    * Further, if both foo and bar do not exist,    * then the ancestor path is "/".    *    * @param doCheckOwner Require user to be the owner of the path?    * @param ancestorAccess The access required by the ancestor of the path.    * @param parentAccess The access required by the parent of the path.    * @param access The access required by the path.    * @param subAccess If path is a directory,    * it is the access required of the path and all the sub-directories.    * If path is not a directory, there is no effect.    * @throws AccessControlException    * @throws UnresolvedLinkException    */
 DECL|method|checkPermission (String path, INodeDirectory root, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess)
 name|void
 name|checkPermission
@@ -502,6 +502,15 @@ literal|true
 argument_list|)
 decl_stmt|;
 specifier|final
+name|Snapshot
+name|snapshot
+init|=
+name|inodesInPath
+operator|.
+name|getPathSnapshot
+argument_list|()
+decl_stmt|;
+specifier|final
 name|INode
 index|[]
 name|inodes
@@ -543,8 +552,23 @@ argument_list|(
 name|inodes
 argument_list|,
 name|ancestorIndex
+argument_list|,
+name|snapshot
 argument_list|)
 expr_stmt|;
+specifier|final
+name|INode
+name|last
+init|=
+name|inodes
+index|[
+name|inodes
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+decl_stmt|;
 if|if
 condition|(
 name|parentAccess
@@ -566,14 +590,7 @@ name|length
 operator|>
 literal|1
 operator|&&
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
 operator|!=
 literal|null
 condition|)
@@ -589,14 +606,9 @@ operator|-
 literal|2
 index|]
 argument_list|,
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
+argument_list|,
+name|snapshot
 argument_list|)
 expr_stmt|;
 block|}
@@ -619,6 +631,8 @@ name|inodes
 argument_list|,
 name|ancestorIndex
 argument_list|,
+name|snapshot
+argument_list|,
 name|ancestorAccess
 argument_list|)
 expr_stmt|;
@@ -646,6 +660,8 @@ name|length
 operator|-
 literal|2
 argument_list|,
+name|snapshot
+argument_list|,
 name|parentAccess
 argument_list|)
 expr_stmt|;
@@ -659,14 +675,9 @@ condition|)
 block|{
 name|check
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
+argument_list|,
+name|snapshot
 argument_list|,
 name|access
 argument_list|)
@@ -679,27 +690,11 @@ operator|!=
 literal|null
 condition|)
 block|{
-specifier|final
-name|Snapshot
-name|s
-init|=
-name|inodesInPath
-operator|.
-name|getPathSnapshot
-argument_list|()
-decl_stmt|;
 name|checkSubAccess
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
 argument_list|,
-name|s
+name|snapshot
 argument_list|,
 name|subAccess
 argument_list|)
@@ -712,25 +707,23 @@ condition|)
 block|{
 name|checkOwner
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
+argument_list|,
+name|snapshot
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkOwner (INode inode)
+DECL|method|checkOwner (INode inode, Snapshot snapshot )
 specifier|private
 name|void
 name|checkOwner
 parameter_list|(
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -748,7 +741,9 @@ argument_list|(
 name|inode
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -762,7 +757,7 @@ literal|"Permission denied"
 argument_list|)
 throw|;
 block|}
-DECL|method|checkTraverse (INode[] inodes, int last )
+DECL|method|checkTraverse (INode[] inodes, int last, Snapshot snapshot )
 specifier|private
 name|void
 name|checkTraverse
@@ -773,6 +768,9 @@ name|inodes
 parameter_list|,
 name|int
 name|last
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -798,6 +796,8 @@ name|inodes
 index|[
 name|j
 index|]
+argument_list|,
+name|snapshot
 argument_list|,
 name|FsAction
 operator|.
@@ -883,6 +883,8 @@ name|check
 argument_list|(
 name|d
 argument_list|,
+name|snapshot
+argument_list|,
 name|access
 argument_list|)
 expr_stmt|;
@@ -921,7 +923,7 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|check (INode[] inodes, int i, FsAction access )
+DECL|method|check (INode[] inodes, int i, Snapshot snapshot, FsAction access )
 specifier|private
 name|void
 name|check
@@ -932,6 +934,9 @@ name|inodes
 parameter_list|,
 name|int
 name|i
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|,
 name|FsAction
 name|access
@@ -952,17 +957,22 @@ index|]
 else|:
 literal|null
 argument_list|,
+name|snapshot
+argument_list|,
 name|access
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|check (INode inode, FsAction access )
+DECL|method|check (INode inode, Snapshot snapshot, FsAction access )
 specifier|private
 name|void
 name|check
 parameter_list|(
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|,
 name|FsAction
 name|access
@@ -985,7 +995,9 @@ init|=
 name|inode
 operator|.
 name|getFsPermission
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -996,7 +1008,9 @@ argument_list|(
 name|inode
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -1027,7 +1041,9 @@ argument_list|(
 name|inode
 operator|.
 name|getGroupName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -1085,7 +1101,7 @@ name|inode
 argument_list|)
 throw|;
 block|}
-DECL|method|checkStickyBit (INode parent, INode inode)
+DECL|method|checkStickyBit (INode parent, INode inode, Snapshot snapshot )
 specifier|private
 name|void
 name|checkStickyBit
@@ -1095,6 +1111,9 @@ name|parent
 parameter_list|,
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -1105,7 +1124,9 @@ operator|!
 name|parent
 operator|.
 name|getFsPermission
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 operator|.
 name|getStickyBit
 argument_list|()
@@ -1119,7 +1140,9 @@ condition|(
 name|parent
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 operator|.
 name|equals
 argument_list|(
@@ -1135,7 +1158,9 @@ condition|(
 name|inode
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 operator|.
 name|equals
 argument_list|(

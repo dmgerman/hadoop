@@ -100,6 +100,26 @@ name|QuotaExceededException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+import|;
+end_import
+
 begin_comment
 comment|/**  * Directory INode class that has a quota restriction  */
 end_comment
@@ -304,25 +324,38 @@ return|return
 name|dsQuota
 return|;
 block|}
-comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param dsQuota diskspace quota to be set    *                                    */
-DECL|method|setQuota (long newNsQuota, long newDsQuota)
+comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param dsQuota diskspace quota to be set    */
+DECL|method|setQuota (long nsQuota, long dsQuota, Snapshot latest)
+specifier|public
 name|void
 name|setQuota
 parameter_list|(
 name|long
-name|newNsQuota
+name|nsQuota
 parameter_list|,
 name|long
-name|newDsQuota
+name|dsQuota
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
+name|recordModification
+argument_list|(
+name|latest
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|nsQuota
 operator|=
-name|newNsQuota
+name|nsQuota
 expr_stmt|;
+name|this
+operator|.
 name|dsQuota
 operator|=
-name|newDsQuota
+name|dsQuota
 expr_stmt|;
 block|}
 annotation|@
