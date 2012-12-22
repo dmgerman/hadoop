@@ -1637,6 +1637,17 @@ name|YARN_PREFIX
 operator|+
 literal|"log.server.url"
 decl_stmt|;
+DECL|field|YARN_TRACKING_URL_GENERATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_TRACKING_URL_GENERATOR
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"tracking.url.generator"
+decl_stmt|;
 comment|/** Amount of memory in GB that can be allocated for containers.*/
 DECL|field|NM_PMEM_MB
 specifier|public
