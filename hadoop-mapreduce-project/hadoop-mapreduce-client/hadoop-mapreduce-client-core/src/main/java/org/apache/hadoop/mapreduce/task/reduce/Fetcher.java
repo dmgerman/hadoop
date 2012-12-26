@@ -1638,7 +1638,7 @@ literal|"for url="
 operator|+
 name|msgToEncode
 operator|+
-literal|" sent hash and receievd reply"
+literal|" sent hash and received reply"
 argument_list|)
 expr_stmt|;
 block|}
