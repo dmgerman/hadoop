@@ -712,6 +712,11 @@ return|return
 operator|new
 name|INodeDirectoryWithQuota
 argument_list|(
+name|namesystem
+operator|.
+name|allocateNewInodeId
+argument_list|()
+argument_list|,
 name|INodeDirectory
 operator|.
 name|ROOT_NAME
@@ -1349,12 +1354,22 @@ return|return
 literal|null
 return|;
 block|}
+name|long
+name|id
+init|=
+name|namesystem
+operator|.
+name|allocateNewInodeId
+argument_list|()
+decl_stmt|;
 name|INodeFileUnderConstruction
 name|newNode
 init|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|replication
@@ -1445,10 +1460,13 @@ return|return
 name|newNode
 return|;
 block|}
-DECL|method|unprotectedAddFile ( String path, PermissionStatus permissions, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
+DECL|method|unprotectedAddFile ( long id, String path, PermissionStatus permissions, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
 name|INode
 name|unprotectedAddFile
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|String
 name|path
 parameter_list|,
@@ -1495,6 +1513,8 @@ operator|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|replication
@@ -1518,6 +1538,8 @@ operator|=
 operator|new
 name|INodeFile
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|BlockInfo
@@ -6708,6 +6730,11 @@ argument_list|)
 expr_stmt|;
 name|unprotectedMkdir
 argument_list|(
+name|namesystem
+operator|.
+name|allocateNewInodeId
+argument_list|()
+argument_list|,
 name|inodesInPath
 argument_list|,
 name|i
@@ -6819,10 +6846,13 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|unprotectedMkdir (String src, PermissionStatus permissions, long timestamp)
+DECL|method|unprotectedMkdir (long inodeId, String src, PermissionStatus permissions, long timestamp)
 name|INode
 name|unprotectedMkdir
 parameter_list|(
+name|long
+name|inodeId
+parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -6890,6 +6920,8 @@ literal|1
 decl_stmt|;
 name|unprotectedMkdir
 argument_list|(
+name|inodeId
+argument_list|,
 name|inodesInPath
 argument_list|,
 name|pos
@@ -6912,11 +6944,14 @@ index|]
 return|;
 block|}
 comment|/** create a directory at index pos.    * The parent path to the directory is at [0, pos-1].    * All ancestors exist. Newly created one stored at index pos.    */
-DECL|method|unprotectedMkdir (INodesInPath inodesInPath, int pos, byte[] name, PermissionStatus permission, long timestamp)
+DECL|method|unprotectedMkdir (long inodeId, INodesInPath inodesInPath, int pos, byte[] name, PermissionStatus permission, long timestamp)
 specifier|private
 name|void
 name|unprotectedMkdir
 parameter_list|(
+name|long
+name|inodeId
+parameter_list|,
 name|INodesInPath
 name|inodesInPath
 parameter_list|,
@@ -6947,6 +6982,8 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
+name|inodeId
+argument_list|,
 name|name
 argument_list|,
 name|permission
@@ -9552,6 +9589,14 @@ name|newNode
 init|=
 literal|null
 decl_stmt|;
+name|long
+name|id
+init|=
+name|namesystem
+operator|.
+name|allocateNewInodeId
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -9561,6 +9606,8 @@ name|newNode
 operator|=
 name|unprotectedAddSymlink
 argument_list|(
+name|id
+argument_list|,
 name|path
 argument_list|,
 name|target
@@ -9659,10 +9706,13 @@ name|newNode
 return|;
 block|}
 comment|/**    * Add the specified path into the namespace. Invoked from edit log processing.    */
-DECL|method|unprotectedAddSymlink (String path, String target, long mtime, long atime, PermissionStatus perm)
+DECL|method|unprotectedAddSymlink (long id, String path, String target, long mtime, long atime, PermissionStatus perm)
 name|INodeSymlink
 name|unprotectedAddSymlink
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|String
 name|path
 parameter_list|,
@@ -9694,6 +9744,8 @@ init|=
 operator|new
 name|INodeSymlink
 argument_list|(
+name|id
+argument_list|,
 name|target
 argument_list|,
 name|mtime

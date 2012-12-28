@@ -3447,6 +3447,74 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
+DECL|field|inodeId
+specifier|private
+name|INodeId
+name|inodeId
+decl_stmt|;
+comment|/**    * Set the last allocated inode id when fsimage is loaded or editlog is    * applied.     * @throws IOException    */
+DECL|method|resetLastInodeId (long newValue)
+specifier|public
+name|void
+name|resetLastInodeId
+parameter_list|(
+name|long
+name|newValue
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|inodeId
+operator|.
+name|resetLastInodeId
+argument_list|(
+name|newValue
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Should only be used for tests to reset to any value */
+DECL|method|resetLastInodeIdWithoutChecking (long newValue)
+name|void
+name|resetLastInodeIdWithoutChecking
+parameter_list|(
+name|long
+name|newValue
+parameter_list|)
+block|{
+name|inodeId
+operator|.
+name|resetLastInodeIdWithoutChecking
+argument_list|(
+name|newValue
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getLastInodeId ()
+specifier|public
+name|long
+name|getLastInodeId
+parameter_list|()
+block|{
+return|return
+name|inodeId
+operator|.
+name|getLastInodeId
+argument_list|()
+return|;
+block|}
+DECL|method|allocateNewInodeId ()
+specifier|public
+name|long
+name|allocateNewInodeId
+parameter_list|()
+block|{
+return|return
+name|inodeId
+operator|.
+name|allocateNewInodeId
+argument_list|()
+return|;
+block|}
 comment|/**    * Clear all loaded data    */
 DECL|method|clear ()
 name|void
@@ -3476,6 +3544,15 @@ name|leaseManager
 operator|.
 name|removeAllLeases
 argument_list|()
+expr_stmt|;
+name|inodeId
+operator|.
+name|resetLastInodeIdWithoutChecking
+argument_list|(
+name|INodeId
+operator|.
+name|LAST_RESERVED_ID
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -4180,6 +4257,14 @@ name|DFS_HA_STANDBY_CHECKPOINTS_KEY
 argument_list|,
 name|DFS_HA_STANDBY_CHECKPOINTS_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|inodeId
+operator|=
+operator|new
+name|INodeId
+argument_list|()
 expr_stmt|;
 comment|// For testing purposes, allow the DT secret manager to be started regardless
 comment|// of whether security is enabled.
@@ -10250,6 +10335,11 @@ init|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|file
+operator|.
+name|getId
+argument_list|()
+argument_list|,
 name|file
 operator|.
 name|getLocalNameBytes

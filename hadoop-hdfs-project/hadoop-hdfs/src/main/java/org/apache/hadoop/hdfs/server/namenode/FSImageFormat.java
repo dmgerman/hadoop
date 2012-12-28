@@ -772,6 +772,16 @@ operator|+
 name|compression
 argument_list|)
 expr_stmt|;
+comment|// reset INodeId. TODO: remove this after inodeId is persisted in fsimage
+name|namesystem
+operator|.
+name|resetLastInodeIdWithoutChecking
+argument_list|(
+name|INodeId
+operator|.
+name|LAST_RESERVED_ID
+argument_list|)
+expr_stmt|;
 comment|// load all inodes
 name|LOG
 operator|.
@@ -1495,6 +1505,14 @@ init|=
 name|getLayoutVersion
 argument_list|()
 decl_stmt|;
+name|long
+name|inodeId
+init|=
+name|namesystem
+operator|.
+name|allocateNewInodeId
+argument_list|()
+decl_stmt|;
 name|short
 name|replication
 init|=
@@ -1721,6 +1739,8 @@ name|INode
 operator|.
 name|newINode
 argument_list|(
+name|inodeId
+argument_list|,
 name|permissions
 argument_list|,
 name|blocks

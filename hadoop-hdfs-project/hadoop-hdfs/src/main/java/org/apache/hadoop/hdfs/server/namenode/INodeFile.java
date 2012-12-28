@@ -466,9 +466,12 @@ name|BlockInfo
 index|[]
 name|blocks
 decl_stmt|;
-DECL|method|INodeFile (PermissionStatus permissions, BlockInfo[] blklist, short replication, long modificationTime, long atime, long preferredBlockSize)
+DECL|method|INodeFile (long id, PermissionStatus permissions, BlockInfo[] blklist, short replication, long modificationTime, long atime, long preferredBlockSize)
 name|INodeFile
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
@@ -491,6 +494,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|modificationTime

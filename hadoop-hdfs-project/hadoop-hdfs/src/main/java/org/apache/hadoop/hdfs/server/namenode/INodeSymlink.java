@@ -88,9 +88,12 @@ index|[]
 name|symlink
 decl_stmt|;
 comment|// The target URI
-DECL|method|INodeSymlink (String value, long mtime, long atime, PermissionStatus permissions)
+DECL|method|INodeSymlink (long id, String value, long mtime, long atime, PermissionStatus permissions)
 name|INodeSymlink
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|String
 name|value
 parameter_list|,
@@ -106,6 +109,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|mtime

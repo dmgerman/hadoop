@@ -236,6 +236,10 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 name|p
 argument_list|,
 literal|0L
@@ -360,6 +364,10 @@ init|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 literal|null
 argument_list|,
 name|replication
@@ -455,6 +463,10 @@ operator|=
 operator|new
 name|INodeDirectory
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 name|p
 argument_list|,
 literal|0L
@@ -479,6 +491,10 @@ argument_list|,
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 name|p
 argument_list|,
 name|replication
