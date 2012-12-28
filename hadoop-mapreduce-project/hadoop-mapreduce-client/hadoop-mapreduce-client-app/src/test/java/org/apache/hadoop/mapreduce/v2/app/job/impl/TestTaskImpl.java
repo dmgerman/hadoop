@@ -230,20 +230,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|OutputCommitter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|jobhistory
 operator|.
 name|JobHistoryParser
@@ -745,11 +731,6 @@ specifier|private
 name|TaskAttemptListener
 name|taskAttemptListener
 decl_stmt|;
-DECL|field|committer
-specifier|private
-name|OutputCommitter
-name|committer
-decl_stmt|;
 DECL|field|jobToken
 specifier|private
 name|Token
@@ -878,7 +859,7 @@ DECL|field|taskType
 name|TaskType
 name|taskType
 decl_stmt|;
-DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext, TaskType taskType)
+DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext, TaskType taskType)
 specifier|public
 name|MockTaskImpl
 parameter_list|(
@@ -899,9 +880,6 @@ name|conf
 parameter_list|,
 name|TaskAttemptListener
 name|taskAttemptListener
-parameter_list|,
-name|OutputCommitter
-name|committer
 parameter_list|,
 name|Token
 argument_list|<
@@ -951,8 +929,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|taskAttemptListener
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,
@@ -1017,8 +993,6 @@ argument_list|,
 name|partition
 argument_list|,
 name|conf
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,
@@ -1109,7 +1083,7 @@ specifier|private
 name|TaskType
 name|taskType
 decl_stmt|;
-DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, AppContext appContext, TaskType taskType)
+DECL|method|MockTaskAttemptImpl (TaskId taskId, int id, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Path jobFile, int partition, JobConf conf, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, AppContext appContext, TaskType taskType)
 specifier|public
 name|MockTaskAttemptImpl
 parameter_list|(
@@ -1133,9 +1107,6 @@ name|partition
 parameter_list|,
 name|JobConf
 name|conf
-parameter_list|,
-name|OutputCommitter
-name|committer
 parameter_list|,
 name|Token
 argument_list|<
@@ -1173,8 +1144,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|dataLocations
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,
@@ -1376,15 +1345,6 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|committer
-operator|=
-name|mock
-argument_list|(
-name|OutputCommitter
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
 name|jobToken
 operator|=
 operator|(
@@ -1557,8 +1517,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|taskAttemptListener
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,
@@ -3207,8 +3165,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|taskAttemptListener
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,

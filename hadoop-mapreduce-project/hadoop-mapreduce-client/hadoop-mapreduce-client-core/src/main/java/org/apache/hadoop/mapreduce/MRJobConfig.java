@@ -1838,6 +1838,29 @@ name|DEFAULT_MR_AM_TO_RM_WAIT_INTERVAL_MS
 init|=
 literal|360000
 decl_stmt|;
+comment|/**    * How long to wait in milliseconds for the output committer to cancel    * an operation when the job is being killed    */
+DECL|field|MR_AM_COMMITTER_CANCEL_TIMEOUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_COMMITTER_CANCEL_TIMEOUT_MS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.committer.cancel-timeout"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_COMMITTER_CANCEL_TIMEOUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_COMMITTER_CANCEL_TIMEOUT_MS
+init|=
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
 comment|/**    * Boolean. Create the base dirs in the JobHistoryEventHandler    * Set to false for multi-user clusters.  This is an internal config that    * is set by the MR framework and read by it too.    */
 DECL|field|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 specifier|public

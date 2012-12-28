@@ -250,20 +250,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|OutputCommitter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|TaskAttemptID
 import|;
 end_import
@@ -1233,12 +1219,6 @@ specifier|final
 name|Path
 name|jobFile
 decl_stmt|;
-DECL|field|committer
-specifier|protected
-specifier|final
-name|OutputCommitter
-name|committer
-decl_stmt|;
 DECL|field|partition
 specifier|protected
 specifier|final
@@ -2161,7 +2141,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|TaskImpl (JobId jobId, TaskType taskType, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
+DECL|method|TaskImpl (JobId jobId, TaskType taskType, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
 specifier|public
 name|TaskImpl
 parameter_list|(
@@ -2185,9 +2165,6 @@ name|conf
 parameter_list|,
 name|TaskAttemptListener
 name|taskAttemptListener
-parameter_list|,
-name|OutputCommitter
-name|committer
 parameter_list|,
 name|Token
 argument_list|<
@@ -2344,12 +2321,6 @@ operator|.
 name|eventHandler
 operator|=
 name|eventHandler
-expr_stmt|;
-name|this
-operator|.
-name|committer
-operator|=
-name|committer
 expr_stmt|;
 name|this
 operator|.
