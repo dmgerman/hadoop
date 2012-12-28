@@ -177,7 +177,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** The directory with snapshots. */
+comment|/**  * The directory with snapshots. It maintains a list of snapshot diffs for  * storing snapshot data. When there are modifications to the directory, the old  * data is stored in the latest snapshot, if there is any.  */
 end_comment
 
 begin_class
@@ -1432,14 +1432,14 @@ block|}
 comment|/** Compare diffs with snapshot ID. */
 annotation|@
 name|Override
-DECL|method|compareTo (final Snapshot that_snapshot)
+DECL|method|compareTo (final Snapshot that)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
 specifier|final
 name|Snapshot
-name|that_snapshot
+name|that
 parameter_list|)
 block|{
 return|return
@@ -1453,7 +1453,7 @@ name|this
 operator|.
 name|snapshot
 argument_list|,
-name|that_snapshot
+name|that
 argument_list|)
 return|;
 block|}
@@ -1557,26 +1557,53 @@ name|getSnapshotINode
 parameter_list|()
 block|{
 comment|// get from this diff, then the posterior diff and then the current inode
-return|return
-name|snapshotINode
-operator|!=
-literal|null
-condition|?
-name|snapshotINode
-else|:
-name|posteriorDiff
-operator|!=
-literal|null
-condition|?
-name|posteriorDiff
+for|for
+control|(
+name|SnapshotDiff
+name|d
+init|=
+name|this
+init|;
+condition|;
+name|d
+operator|=
+name|d
 operator|.
-name|getSnapshotINode
-argument_list|()
-else|:
+name|posteriorDiff
+control|)
+block|{
+if|if
+condition|(
+name|d
+operator|.
+name|snapshotINode
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|d
+operator|.
+name|snapshotINode
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|d
+operator|.
+name|posteriorDiff
+operator|==
+literal|null
+condition|)
+block|{
+return|return
 name|INodeDirectoryWithSnapshot
 operator|.
 name|this
 return|;
+block|}
+block|}
 block|}
 comment|/**      * @return The children list of a directory in a snapshot.      *         Since the snapshot is read-only, the logical view of the list is      *         never changed although the internal data structure may mutate.      */
 DECL|method|getChildrenList ()
@@ -1743,11 +1770,28 @@ name|boolean
 name|checkPosterior
 parameter_list|)
 block|{
+for|for
+control|(
+name|SnapshotDiff
+name|d
+init|=
+name|this
+init|;
+condition|;
+name|d
+operator|=
+name|d
+operator|.
+name|posteriorDiff
+control|)
+block|{
 specifier|final
 name|INode
 index|[]
 name|array
 init|=
+name|d
+operator|.
 name|diff
 operator|.
 name|accessPrevious
@@ -1762,7 +1806,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// this diff is able to find it
+comment|// the diff is able to find it
 return|return
 name|array
 index|[
@@ -1782,23 +1826,18 @@ return|return
 literal|null
 return|;
 block|}
-else|else
-block|{
-comment|// return the posterior INode.
-return|return
-name|posteriorDiff
-operator|!=
-literal|null
-condition|?
-name|posteriorDiff
+elseif|else
+if|if
+condition|(
+name|d
 operator|.
-name|getChild
-argument_list|(
-name|name
-argument_list|,
-literal|true
-argument_list|)
-else|:
+name|posteriorDiff
+operator|==
+literal|null
+condition|)
+block|{
+comment|// no more posterior diff, get from current inode.
+return|return
 name|INodeDirectoryWithSnapshot
 operator|.
 name|this
@@ -1810,6 +1849,7 @@ argument_list|,
 literal|null
 argument_list|)
 return|;
+block|}
 block|}
 block|}
 annotation|@
@@ -2280,6 +2320,7 @@ literal|null
 argument_list|)
 return|;
 block|}
+comment|/** Save the snapshot copy to the latest snapshot. */
 DECL|method|save2Snapshot (Snapshot latest, INodeDirectory snapshotCopy)
 specifier|public
 name|Pair

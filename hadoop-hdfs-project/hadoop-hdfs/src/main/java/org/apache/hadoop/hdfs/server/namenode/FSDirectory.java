@@ -9597,9 +9597,9 @@ name|replaceSelf4Quota
 argument_list|(
 name|latest
 argument_list|,
-name|oldNsQuota
+name|nsQuota
 argument_list|,
-name|oldDsQuota
+name|dsQuota
 argument_list|)
 return|;
 block|}
