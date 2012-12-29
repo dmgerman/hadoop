@@ -1936,7 +1936,7 @@ block|}
 block|}
 comment|/**    * Remove a block from the file.    */
 DECL|method|removeBlock (String path, INodeFileUnderConstruction fileNode, Block block)
-name|boolean
+name|void
 name|removeBlock
 parameter_list|(
 name|String
@@ -1968,19 +1968,6 @@ argument_list|,
 name|block
 argument_list|)
 expr_stmt|;
-comment|// write modified block locations to log
-name|fsImage
-operator|.
-name|getEditLog
-argument_list|()
-operator|.
-name|logOpenFile
-argument_list|(
-name|path
-argument_list|,
-name|fileNode
-argument_list|)
-expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1988,9 +1975,6 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-return|return
-literal|true
-return|;
 block|}
 DECL|method|unprotectedRemoveBlock (String path, INodeFileUnderConstruction fileNode, Block block)
 name|void
