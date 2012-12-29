@@ -2120,17 +2120,6 @@ expr_stmt|;
 comment|//
 comment|// Take a checkpoint
 comment|//
-name|backup
-operator|=
-name|startBackupNode
-argument_list|(
-name|conf
-argument_list|,
-name|op
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
 name|long
 name|txid
 init|=
@@ -2142,6 +2131,17 @@ operator|.
 name|getTransactionID
 argument_list|()
 decl_stmt|;
+name|backup
+operator|=
+name|startBackupNode
+argument_list|(
+name|conf
+argument_list|,
+name|op
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
 name|waitCheckpointDone
 argument_list|(
 name|cluster
