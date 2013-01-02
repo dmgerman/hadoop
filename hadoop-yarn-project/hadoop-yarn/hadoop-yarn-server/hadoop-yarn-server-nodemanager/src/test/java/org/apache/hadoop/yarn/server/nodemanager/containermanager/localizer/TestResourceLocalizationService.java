@@ -2843,6 +2843,16 @@ name|req
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|verify
+argument_list|(
+name|mockLocallilzerTracker
+argument_list|)
+operator|.
+name|cleanupPrivLocalizers
+argument_list|(
+literal|"container_314159265358979_0003_01_000042"
+argument_list|)
+expr_stmt|;
 name|req2
 operator|.
 name|remove
