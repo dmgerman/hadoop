@@ -1521,6 +1521,11 @@ decl_stmt|;
 comment|// For each priority, see if we can schedule a node local, rack local
 comment|// or off-switch request. Rack of off-switch requests may be delayed
 comment|// (not scheduled) in order to promote better locality.
+synchronized|synchronized
+init|(
+name|app
+init|)
+block|{
 for|for
 control|(
 name|Priority
@@ -1732,6 +1737,7 @@ argument_list|,
 name|reserved
 argument_list|)
 return|;
+block|}
 block|}
 block|}
 return|return
