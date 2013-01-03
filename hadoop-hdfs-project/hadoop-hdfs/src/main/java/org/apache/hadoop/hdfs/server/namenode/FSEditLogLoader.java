@@ -1051,35 +1051,6 @@ operator|.
 name|getLastInodeId
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"edit log length: "
-operator|+
-name|in
-operator|.
-name|length
-argument_list|()
-operator|+
-literal|", start txid: "
-operator|+
-name|expectedStartingTxId
-operator|+
-literal|", last txid: "
-operator|+
-name|lastTxId
-argument_list|)
-expr_stmt|;
-block|}
 try|try
 block|{
 while|while
