@@ -486,7 +486,7 @@ literal|0
 argument_list|,
 name|GenerationStamp
 operator|.
-name|FIRST_VALID_STAMP
+name|LAST_RESERVED_STAMP
 argument_list|)
 argument_list|,
 name|ONE_TARGET
@@ -598,7 +598,7 @@ literal|0
 argument_list|,
 name|GenerationStamp
 operator|.
-name|FIRST_VALID_STAMP
+name|LAST_RESERVED_STAMP
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -3452,7 +3452,7 @@ specifier|private
 name|INodeId
 name|inodeId
 decl_stmt|;
-comment|/**    * Set the last allocated inode id when fsimage is loaded or editlog is    * applied.     * @throws IOException    */
+comment|/**    * Set the last allocated inode id when fsimage or editlog is loaded.     */
 DECL|method|resetLastInodeId (long newValue)
 specifier|public
 name|void
@@ -3464,13 +3464,30 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|inodeId
 operator|.
-name|resetLastInodeId
+name|skipTo
 argument_list|(
 name|newValue
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalStateException
+name|ise
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ise
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/** Should only be used for tests to reset to any value */
 DECL|method|resetLastInodeIdWithoutChecking (long newValue)
@@ -3483,12 +3500,13 @@ parameter_list|)
 block|{
 name|inodeId
 operator|.
-name|resetLastInodeIdWithoutChecking
+name|setCurrentValue
 argument_list|(
 name|newValue
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** @return the last inode ID. */
 DECL|method|getLastInodeId ()
 specifier|public
 name|long
@@ -3498,10 +3516,11 @@ block|{
 return|return
 name|inodeId
 operator|.
-name|getLastInodeId
+name|getCurrentValue
 argument_list|()
 return|;
 block|}
+comment|/** Allocate a new inode ID. */
 DECL|method|allocateNewInodeId ()
 specifier|public
 name|long
@@ -3511,7 +3530,7 @@ block|{
 return|return
 name|inodeId
 operator|.
-name|allocateNewInodeId
+name|nextValue
 argument_list|()
 return|;
 block|}
@@ -3533,11 +3552,11 @@ argument_list|()
 expr_stmt|;
 name|generationStamp
 operator|.
-name|setStamp
+name|setCurrentValue
 argument_list|(
 name|GenerationStamp
 operator|.
-name|FIRST_VALID_STAMP
+name|LAST_RESERVED_STAMP
 argument_list|)
 expr_stmt|;
 name|leaseManager
@@ -3547,7 +3566,7 @@ argument_list|()
 expr_stmt|;
 name|inodeId
 operator|.
-name|resetLastInodeIdWithoutChecking
+name|setCurrentValue
 argument_list|(
 name|INodeId
 operator|.
@@ -12935,14 +12954,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Increment the generation stamp for every new block.
-name|nextGenerationStamp
-argument_list|()
-expr_stmt|;
 name|b
 operator|.
 name|setGenerationStamp
 argument_list|(
-name|getGenerationStamp
+name|nextGenerationStamp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -21307,7 +21323,7 @@ parameter_list|)
 block|{
 name|generationStamp
 operator|.
-name|setStamp
+name|setCurrentValue
 argument_list|(
 name|stamp
 argument_list|)
@@ -21322,7 +21338,7 @@ block|{
 return|return
 name|generationStamp
 operator|.
-name|getStamp
+name|getCurrentValue
 argument_list|()
 return|;
 block|}
@@ -21355,12 +21371,13 @@ name|safeMode
 argument_list|)
 throw|;
 block|}
+specifier|final
 name|long
 name|gs
 init|=
 name|generationStamp
 operator|.
-name|nextStamp
+name|nextValue
 argument_list|()
 decl_stmt|;
 name|getEditLog

@@ -184,7 +184,7 @@ name|BLOCK_GENERATION_STAMP
 init|=
 name|GenerationStamp
 operator|.
-name|FIRST_VALID_STAMP
+name|LAST_RESERVED_STAMP
 decl_stmt|;
 DECL|method|addFiles (FSEditLog editLog, int numFiles, short replication, int blocksPerFile, long startingBlockId, FileNameGenerator nameGenerator)
 specifier|static
