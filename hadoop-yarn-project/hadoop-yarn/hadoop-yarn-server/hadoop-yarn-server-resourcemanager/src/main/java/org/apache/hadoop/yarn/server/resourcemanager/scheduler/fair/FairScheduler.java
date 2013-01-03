@@ -4020,7 +4020,12 @@ literal|0
 decl_stmt|;
 while|while
 condition|(
-literal|true
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|==
+literal|null
 condition|)
 block|{
 comment|// At most one task is scheduled each iteration of this loop
