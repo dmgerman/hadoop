@@ -2210,6 +2210,65 @@ argument_list|,
 name|defaultMinSharePreemptionTimeout
 argument_list|)
 expr_stmt|;
+comment|// Root queue should have empty ACLs.  As a queue's ACL is the union of
+comment|// its ACL and all its parents' ACLs, setting the roots' to empty will
+comment|// neither allow nor prohibit more access to its children.
+name|Map
+argument_list|<
+name|QueueACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|rootAcls
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|QueueACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|rootAcls
+operator|.
+name|put
+argument_list|(
+name|QueueACL
+operator|.
+name|SUBMIT_APPLICATIONS
+argument_list|,
+operator|new
+name|AccessControlList
+argument_list|(
+literal|" "
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|rootAcls
+operator|.
+name|put
+argument_list|(
+name|QueueACL
+operator|.
+name|ADMINISTER_QUEUE
+argument_list|,
+operator|new
+name|AccessControlList
+argument_list|(
+literal|" "
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|queueAcls
+operator|.
+name|put
+argument_list|(
+name|ROOT_QUEUE
+argument_list|,
+name|rootAcls
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|String
