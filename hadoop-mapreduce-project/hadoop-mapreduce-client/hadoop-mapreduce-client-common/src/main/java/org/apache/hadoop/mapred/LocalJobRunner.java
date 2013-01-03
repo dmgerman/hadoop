@@ -621,11 +621,6 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|LocalJobRunner
 specifier|public
 class|class
@@ -3893,7 +3888,11 @@ throws|,
 name|InterruptedException
 block|{
 return|return
-literal|null
+operator|new
+name|TaskTrackerInfo
+index|[
+literal|0
+index|]
 return|;
 block|}
 comment|/**     * Get all blacklisted trackers in cluster.     * @return array of TaskTrackerInfo    */
@@ -3909,7 +3908,11 @@ throws|,
 name|InterruptedException
 block|{
 return|return
-literal|null
+operator|new
+name|TaskTrackerInfo
+index|[
+literal|0
+index|]
 return|;
 block|}
 DECL|method|getTaskCompletionEvents ( org.apache.hadoop.mapreduce.JobID jobid , int fromEventId, int maxEvents)
