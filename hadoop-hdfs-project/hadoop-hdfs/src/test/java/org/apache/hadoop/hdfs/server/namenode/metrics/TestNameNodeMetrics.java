@@ -1506,13 +1506,6 @@ argument_list|(
 name|bm
 argument_list|)
 expr_stmt|;
-name|BlockManagerTestUtil
-operator|.
-name|updateState
-argument_list|(
-name|bm
-argument_list|)
-expr_stmt|;
 name|MetricsRecordBuilder
 name|rb
 init|=
@@ -1539,15 +1532,6 @@ argument_list|,
 name|rb
 argument_list|)
 expr_stmt|;
-name|assertGauge
-argument_list|(
-literal|"ScheduledReplicationBlocks"
-argument_list|,
-literal|1L
-argument_list|,
-name|rb
-argument_list|)
-expr_stmt|;
 name|fs
 operator|.
 name|delete
@@ -1563,7 +1547,7 @@ comment|// for the blocks of the deleted file will be removed from both
 comment|// corruptReplicas and pendingReplications. The corresponding
 comment|// metrics (CorruptBlocks and PendingReplicationBlocks) will only be updated
 comment|// when BlockManager#computeDatanodeWork is run where the
-comment|// BlockManager#udpateState is called. And in
+comment|// BlockManager#updateState is called. And in
 comment|// BlockManager#computeDatanodeWork the metric ScheduledReplicationBlocks
 comment|// will also be updated.
 name|rb
