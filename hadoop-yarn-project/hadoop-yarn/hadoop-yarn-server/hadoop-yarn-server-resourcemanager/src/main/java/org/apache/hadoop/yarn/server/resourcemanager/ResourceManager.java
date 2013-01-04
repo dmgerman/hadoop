@@ -452,26 +452,6 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|Recoverable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
 name|RMStateStore
 import|;
 end_import
@@ -515,6 +495,26 @@ operator|.
 name|recovery
 operator|.
 name|RMStateStoreFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|Recoverable
 import|;
 end_import
 
@@ -846,7 +846,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|DelegationTokenRenewer
+name|ClientToAMTokenSecretManagerInRM
 import|;
 end_import
 
@@ -866,7 +866,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ClientToAMTokenSecretManagerInRM
+name|DelegationTokenRenewer
 import|;
 end_import
 
