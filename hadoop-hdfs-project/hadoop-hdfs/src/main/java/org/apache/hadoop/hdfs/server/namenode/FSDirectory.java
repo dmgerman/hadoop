@@ -4654,7 +4654,6 @@ argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
-specifier|final
 name|INode
 name|inode
 init|=
@@ -4687,6 +4686,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|inode
+operator|=
 name|inode
 operator|.
 name|setUser
@@ -8852,6 +8853,20 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|inodesInPath
+operator|.
+name|setINode
+argument_list|(
+name|pos
+operator|-
+literal|1
+argument_list|,
+name|removedNode
+operator|.
+name|getParent
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|INode
 operator|.
 name|DirCounts
@@ -9897,6 +9912,8 @@ operator|-
 literal|1
 condition|)
 block|{
+name|inode
+operator|=
 name|inode
 operator|.
 name|setModificationTime

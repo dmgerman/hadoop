@@ -264,6 +264,26 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|INodeDirectoryWithSnapshot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
 name|Snapshot
 import|;
 end_import
@@ -1128,7 +1148,7 @@ return|;
 block|}
 DECL|method|updatePermissionStatus (PermissionStatusFormat f, long n, Snapshot latest)
 specifier|private
-name|void
+name|INode
 name|updatePermissionStatus
 parameter_list|(
 name|PermissionStatusFormat
@@ -1141,11 +1161,38 @@ name|Snapshot
 name|latest
 parameter_list|)
 block|{
+name|Pair
+argument_list|<
+name|?
+extends|extends
+name|INode
+argument_list|,
+name|?
+extends|extends
+name|INode
+argument_list|>
+name|pair
+init|=
 name|recordModification
 argument_list|(
 name|latest
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+name|INode
+name|nodeToUpdate
+init|=
+name|pair
+operator|!=
+literal|null
+condition|?
+name|pair
+operator|.
+name|left
+else|:
+name|this
+decl_stmt|;
+name|nodeToUpdate
+operator|.
 name|permission
 operator|=
 name|f
@@ -1157,6 +1204,9 @@ argument_list|,
 name|permission
 argument_list|)
 expr_stmt|;
+return|return
+name|nodeToUpdate
+return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return user name    */
 DECL|method|getUserName (Snapshot snapshot)
@@ -1211,7 +1261,7 @@ block|}
 comment|/** Set user */
 DECL|method|setUser (String user, Snapshot latest)
 specifier|protected
-name|void
+name|INode
 name|setUser
 parameter_list|(
 name|String
@@ -1233,6 +1283,7 @@ argument_list|(
 name|user
 argument_list|)
 decl_stmt|;
+return|return
 name|updatePermissionStatus
 argument_list|(
 name|PermissionStatusFormat
@@ -1243,7 +1294,7 @@ name|n
 argument_list|,
 name|latest
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return group name    */
 DECL|method|getGroupName (Snapshot snapshot)
@@ -1298,7 +1349,7 @@ block|}
 comment|/** Set group */
 DECL|method|setGroup (String group, Snapshot latest)
 specifier|protected
-name|void
+name|INode
 name|setGroup
 parameter_list|(
 name|String
@@ -1320,6 +1371,7 @@ argument_list|(
 name|group
 argument_list|)
 decl_stmt|;
+return|return
 name|updatePermissionStatus
 argument_list|(
 name|PermissionStatusFormat
@@ -1330,7 +1382,7 @@ name|n
 argument_list|,
 name|latest
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return permission.    */
 DECL|method|getFsPermission (Snapshot snapshot)
@@ -1396,7 +1448,7 @@ return|;
 block|}
 comment|/** Set the {@link FsPermission} of this {@link INode} */
 DECL|method|setPermission (FsPermission permission, Snapshot latest)
-name|void
+name|INode
 name|setPermission
 parameter_list|(
 name|FsPermission
@@ -1415,6 +1467,7 @@ operator|.
 name|toShort
 argument_list|()
 decl_stmt|;
+return|return
 name|updatePermissionStatus
 argument_list|(
 name|PermissionStatusFormat
@@ -1425,7 +1478,7 @@ name|mode
 argument_list|,
 name|latest
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @return see {@link #createSnapshotCopy()}.     */
 DECL|method|recordModification (Snapshot latest)
@@ -1964,7 +2017,7 @@ block|}
 comment|/**    * Always set the last modification time of inode.    */
 DECL|method|setModificationTime (long modtime, Snapshot latest)
 specifier|public
-name|void
+name|INode
 name|setModificationTime
 parameter_list|(
 name|long
@@ -1974,17 +2027,45 @@ name|Snapshot
 name|latest
 parameter_list|)
 block|{
+name|Pair
+argument_list|<
+name|?
+extends|extends
+name|INode
+argument_list|,
+name|?
+extends|extends
+name|INode
+argument_list|>
+name|pair
+init|=
 name|recordModification
 argument_list|(
 name|latest
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+name|INode
+name|nodeToUpdate
+init|=
+name|pair
+operator|!=
+literal|null
+condition|?
+name|pair
+operator|.
+name|left
+else|:
 name|this
+decl_stmt|;
+name|nodeToUpdate
 operator|.
 name|modificationTime
 operator|=
 name|modtime
 expr_stmt|;
+return|return
+name|nodeToUpdate
+return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return access time    */
 DECL|method|getAccessTime (Snapshot snapshot)
@@ -2016,7 +2097,7 @@ return|;
 block|}
 comment|/**    * Set last access time of inode.    */
 DECL|method|setAccessTime (long atime, Snapshot latest)
-name|void
+name|INode
 name|setAccessTime
 parameter_list|(
 name|long
@@ -2026,15 +2107,45 @@ name|Snapshot
 name|latest
 parameter_list|)
 block|{
+name|Pair
+argument_list|<
+name|?
+extends|extends
+name|INode
+argument_list|,
+name|?
+extends|extends
+name|INode
+argument_list|>
+name|pair
+init|=
 name|recordModification
 argument_list|(
 name|latest
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+name|INode
+name|nodeToUpdate
+init|=
+name|pair
+operator|!=
+literal|null
+condition|?
+name|pair
+operator|.
+name|left
+else|:
+name|this
+decl_stmt|;
+name|nodeToUpdate
+operator|.
 name|accessTime
 operator|=
 name|atime
 expr_stmt|;
+return|return
+name|nodeToUpdate
+return|;
 block|}
 comment|/**    * Is this inode being constructed?    */
 DECL|method|isUnderConstruction ()

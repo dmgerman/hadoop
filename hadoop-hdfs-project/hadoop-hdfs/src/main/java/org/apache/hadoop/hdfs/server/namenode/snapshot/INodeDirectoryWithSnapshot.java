@@ -1525,6 +1525,10 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+name|snapshotINode
+operator|=
+name|snapshotCopy
+expr_stmt|;
 return|return
 operator|new
 name|Pair

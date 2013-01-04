@@ -82,6 +82,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -511,6 +521,14 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|&&
+operator|!
+name|file
+operator|.
+name|equals
+argument_list|(
+name|snapshotDir
+argument_list|)
 condition|)
 block|{
 name|String
@@ -866,14 +884,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Randomly retrieve a node from the directory tree.      *       * @param random A random instance passed by user.      * @param excludedList Excluded list, i.e., the randomly generated node      *          cannot be one of the nodes in this list.      * @return a random node from the tree.      */
-DECL|method|getRandomDirNode (Random random, ArrayList<Node> excludedList)
+DECL|method|getRandomDirNode (Random random, List<Node> excludedList)
 name|Node
 name|getRandomDirNode
 parameter_list|(
 name|Random
 name|random
 parameter_list|,
-name|ArrayList
+name|List
 argument_list|<
 name|Node
 argument_list|>
@@ -933,6 +951,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|excludedList
+operator|==
+literal|null
+operator|||
 operator|!
 name|excludedList
 operator|.

@@ -709,7 +709,7 @@ comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Si
 annotation|@
 name|Override
 DECL|method|setPermission (FsPermission permission, Snapshot latest)
-name|void
+name|INode
 name|setPermission
 parameter_list|(
 name|FsPermission
@@ -719,6 +719,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 block|{
+return|return
 name|super
 operator|.
 name|setPermission
@@ -732,7 +733,7 @@ argument_list|)
 argument_list|,
 name|latest
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/** @return the replication factor of the file. */
 DECL|method|getFileReplication ()
