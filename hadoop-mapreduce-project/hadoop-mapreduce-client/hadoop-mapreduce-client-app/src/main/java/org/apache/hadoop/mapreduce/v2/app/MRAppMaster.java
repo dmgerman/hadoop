@@ -1176,6 +1176,26 @@ name|v2
 operator|.
 name|app
 operator|.
+name|rm
+operator|.
+name|RMHeartbeatHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|speculate
 operator|.
 name|DefaultSpeculator
@@ -2311,6 +2331,28 @@ name|dispatcher
 argument_list|)
 expr_stmt|;
 block|}
+comment|//service to handle requests from JobClient
+name|clientService
+operator|=
+name|createClientService
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|addIfService
+argument_list|(
+name|clientService
+argument_list|)
+expr_stmt|;
+name|containerAllocator
+operator|=
+name|createContainerAllocator
+argument_list|(
+name|clientService
+argument_list|,
+name|context
+argument_list|)
+expr_stmt|;
 comment|//service to handle requests to TaskUmbilicalProtocol
 name|taskAttemptListener
 operator|=
@@ -2324,7 +2366,7 @@ argument_list|(
 name|taskAttemptListener
 argument_list|)
 expr_stmt|;
-comment|//service to do the task cleanup
+comment|//service to handle the output committer
 name|committerEventHandler
 operator|=
 name|createCommitterEventHandler
@@ -2337,19 +2379,6 @@ expr_stmt|;
 name|addIfService
 argument_list|(
 name|committerEventHandler
-argument_list|)
-expr_stmt|;
-comment|//service to handle requests from JobClient
-name|clientService
-operator|=
-name|createClientService
-argument_list|(
-name|context
-argument_list|)
-expr_stmt|;
-name|addIfService
-argument_list|(
-name|clientService
 argument_list|)
 expr_stmt|;
 comment|//service to log job history events
@@ -2505,15 +2534,6 @@ name|speculatorEventDispatcher
 argument_list|)
 expr_stmt|;
 comment|// service to allocate containers from RM (if non-uber) or to fake it (uber)
-name|containerAllocator
-operator|=
-name|createContainerAllocator
-argument_list|(
-name|clientService
-argument_list|,
-name|context
-argument_list|)
-expr_stmt|;
 name|addIfService
 argument_list|(
 name|containerAllocator
@@ -3731,6 +3751,9 @@ argument_list|(
 name|context
 argument_list|,
 name|jobTokenSecretManager
+argument_list|,
+name|getRMHeartbeatHandler
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
@@ -3759,6 +3782,9 @@ argument_list|(
 name|context
 argument_list|,
 name|committer
+argument_list|,
+name|getRMHeartbeatHandler
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -3784,6 +3810,19 @@ name|clientService
 argument_list|,
 name|context
 argument_list|)
+return|;
+block|}
+DECL|method|getRMHeartbeatHandler ()
+specifier|protected
+name|RMHeartbeatHandler
+name|getRMHeartbeatHandler
+parameter_list|()
+block|{
+return|return
+operator|(
+name|RMHeartbeatHandler
+operator|)
+name|containerAllocator
 return|;
 block|}
 specifier|protected
@@ -3976,6 +4015,8 @@ extends|extends
 name|AbstractService
 implements|implements
 name|ContainerAllocator
+implements|,
+name|RMHeartbeatHandler
 block|{
 DECL|field|clientService
 specifier|private
@@ -4210,6 +4251,50 @@ operator|.
 name|setShouldUnregister
 argument_list|(
 name|shouldUnregister
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLastHeartbeatTime ()
+specifier|public
+name|long
+name|getLastHeartbeatTime
+parameter_list|()
+block|{
+return|return
+operator|(
+operator|(
+name|RMCommunicator
+operator|)
+name|containerAllocator
+operator|)
+operator|.
+name|getLastHeartbeatTime
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|runOnNextHeartbeat (Runnable callback)
+specifier|public
+name|void
+name|runOnNextHeartbeat
+parameter_list|(
+name|Runnable
+name|callback
+parameter_list|)
+block|{
+operator|(
+operator|(
+name|RMCommunicator
+operator|)
+name|containerAllocator
+operator|)
+operator|.
+name|runOnNextHeartbeat
+argument_list|(
+name|callback
 argument_list|)
 expr_stmt|;
 block|}

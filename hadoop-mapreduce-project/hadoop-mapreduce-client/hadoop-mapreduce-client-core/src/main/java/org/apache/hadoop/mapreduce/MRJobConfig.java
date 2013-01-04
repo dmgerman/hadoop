@@ -1861,6 +1861,29 @@ literal|60
 operator|*
 literal|1000
 decl_stmt|;
+comment|/**    * Defines a time window in milliseconds for output committer operations.    * If contact with the RM has occurred within this window then commit    * operations are allowed, otherwise the AM will not allow output committer    * operations until contact with the RM has been re-established.    */
+DECL|field|MR_AM_COMMIT_WINDOW_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_COMMIT_WINDOW_MS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"job.committer.commit-window"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_COMMIT_WINDOW_MS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_COMMIT_WINDOW_MS
+init|=
+literal|10
+operator|*
+literal|1000
+decl_stmt|;
 comment|/**    * Boolean. Create the base dirs in the JobHistoryEventHandler    * Set to false for multi-user clusters.  This is an internal config that    * is set by the MR framework and read by it too.    */
 DECL|field|MR_AM_CREATE_JH_INTERMEDIATE_BASE_DIR
 specifier|public
