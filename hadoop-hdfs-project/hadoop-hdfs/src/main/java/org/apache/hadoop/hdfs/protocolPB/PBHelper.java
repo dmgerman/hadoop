@@ -832,26 +832,6 @@ name|proto
 operator|.
 name|HdfsProtos
 operator|.
-name|BlockTokenIdentifierProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|HdfsProtos
-operator|.
 name|BlockWithLocationsProto
 import|;
 end_import
@@ -2085,6 +2065,24 @@ operator|.
 name|io
 operator|.
 name|Text
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|proto
+operator|.
+name|SecurityProtos
+operator|.
+name|TokenProto
 import|;
 end_import
 
@@ -4919,7 +4917,7 @@ block|}
 DECL|method|convert (Token<?> tok)
 specifier|public
 specifier|static
-name|BlockTokenIdentifierProto
+name|TokenProto
 name|convert
 parameter_list|(
 name|Token
@@ -4930,7 +4928,7 @@ name|tok
 parameter_list|)
 block|{
 return|return
-name|BlockTokenIdentifierProto
+name|TokenProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -4987,7 +4985,7 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|convert ( BlockTokenIdentifierProto blockToken)
+DECL|method|convert ( TokenProto blockToken)
 specifier|public
 specifier|static
 name|Token
@@ -4996,7 +4994,7 @@ name|BlockTokenIdentifier
 argument_list|>
 name|convert
 parameter_list|(
-name|BlockTokenIdentifierProto
+name|TokenProto
 name|blockToken
 parameter_list|)
 block|{
@@ -5043,7 +5041,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|convertDelegationToken ( BlockTokenIdentifierProto blockToken)
+DECL|method|convertDelegationToken ( TokenProto blockToken)
 specifier|public
 specifier|static
 name|Token
@@ -5052,7 +5050,7 @@ name|DelegationTokenIdentifier
 argument_list|>
 name|convertDelegationToken
 parameter_list|(
-name|BlockTokenIdentifierProto
+name|TokenProto
 name|blockToken
 parameter_list|)
 block|{

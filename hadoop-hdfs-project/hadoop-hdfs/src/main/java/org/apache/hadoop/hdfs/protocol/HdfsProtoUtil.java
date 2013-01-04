@@ -188,6 +188,24 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|proto
+operator|.
+name|SecurityProtos
+operator|.
+name|TokenProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -255,9 +273,7 @@ comment|//// Block Token ////
 DECL|method|toProto (Token<?> blockToken)
 specifier|public
 specifier|static
-name|HdfsProtos
-operator|.
-name|BlockTokenIdentifierProto
+name|TokenProto
 name|toProto
 parameter_list|(
 name|Token
@@ -268,9 +284,7 @@ name|blockToken
 parameter_list|)
 block|{
 return|return
-name|HdfsProtos
-operator|.
-name|BlockTokenIdentifierProto
+name|TokenProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -327,7 +341,7 @@ name|build
 argument_list|()
 return|;
 block|}
-DECL|method|fromProto (HdfsProtos.BlockTokenIdentifierProto proto)
+DECL|method|fromProto (TokenProto proto)
 specifier|public
 specifier|static
 name|Token
@@ -336,9 +350,7 @@ name|BlockTokenIdentifier
 argument_list|>
 name|fromProto
 parameter_list|(
-name|HdfsProtos
-operator|.
-name|BlockTokenIdentifierProto
+name|TokenProto
 name|proto
 parameter_list|)
 block|{
