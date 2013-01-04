@@ -241,6 +241,13 @@ argument_list|(
 literal|"CLASSPATH"
 argument_list|)
 block|,
+comment|/**      * $APP_CLASSPATH      */
+DECL|enumConstant|APP_CLASSPATH
+name|APP_CLASSPATH
+argument_list|(
+literal|"APP_CLASSPATH"
+argument_list|)
+block|,
 comment|/**      * $LD_LIBRARY_PATH      */
 DECL|enumConstant|LD_LIBRARY_PATH
 name|LD_LIBRARY_PATH
