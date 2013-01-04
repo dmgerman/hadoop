@@ -905,15 +905,18 @@ return|return
 name|JOB_HISTORY_FILE_FILTER
 return|;
 block|}
-comment|/**    * Gets the configured directory prefix for In Progress history files.    * @param conf    * @return A string representation of the prefix.    */
+comment|/**    * Gets the configured directory prefix for In Progress history files.    * @param conf the configuration for hte job    * @param jobId the id of the job the history file is for.    * @return A string representation of the prefix.    */
 specifier|public
 specifier|static
 name|String
-DECL|method|getConfiguredHistoryStagingDirPrefix (Configuration conf)
+DECL|method|getConfiguredHistoryStagingDirPrefix (Configuration conf, String jobId)
 name|getConfiguredHistoryStagingDirPrefix
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|jobId
 parameter_list|)
 throws|throws
 name|IOException
@@ -930,7 +933,7 @@ name|getShortUserName
 argument_list|()
 decl_stmt|;
 name|Path
-name|path
+name|stagingPath
 init|=
 name|MRApps
 operator|.
@@ -939,6 +942,17 @@ argument_list|(
 name|conf
 argument_list|,
 name|user
+argument_list|)
+decl_stmt|;
+name|Path
+name|path
+init|=
+operator|new
+name|Path
+argument_list|(
+name|stagingPath
+argument_list|,
+name|jobId
 argument_list|)
 decl_stmt|;
 name|String

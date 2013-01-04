@@ -1736,7 +1736,7 @@ init|=
 literal|null
 decl_stmt|;
 name|String
-name|jobName
+name|jobId
 init|=
 name|TypeConverter
 operator|.
@@ -1759,6 +1759,8 @@ operator|.
 name|getConfiguredHistoryStagingDirPrefix
 argument_list|(
 name|conf
+argument_list|,
+name|jobId
 argument_list|)
 decl_stmt|;
 name|Path
@@ -1808,7 +1810,7 @@ name|getStagingJobHistoryFile
 argument_list|(
 name|histDirPath
 argument_list|,
-name|jobName
+name|jobId
 argument_list|,
 operator|(
 name|applicationAttemptId

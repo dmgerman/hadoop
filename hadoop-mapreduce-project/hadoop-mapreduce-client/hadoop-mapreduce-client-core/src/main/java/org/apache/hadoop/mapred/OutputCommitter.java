@@ -55,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<code>OutputCommitter</code> describes the commit of task output for a   * Map-Reduce job.  *  *<p>The Map-Reduce framework relies on the<code>OutputCommitter</code> of   * the job to:<p>  *<ol>  *<li>  *   Setup the job during initialization. For example, create the temporary   *   output directory for the job during the initialization of the job.  *</li>  *<li>  *   Cleanup the job after the job completion. For example, remove the  *   temporary output directory after the job completion.   *</li>  *<li>  *   Setup the task temporary output.  *</li>   *<li>  *   Check whether a task needs a commit. This is to avoid the commit  *   procedure if a task does not need commit.  *</li>  *<li>  *   Commit of the task output.  *</li>    *<li>  *   Discard the task commit.  *</li>  *</ol>  *   * @see FileOutputCommitter   * @see JobContext  * @see TaskAttemptContext   */
+comment|/**  *<code>OutputCommitter</code> describes the commit of task output for a   * Map-Reduce job.  *  *<p>The Map-Reduce framework relies on the<code>OutputCommitter</code> of   * the job to:<p>  *<ol>  *<li>  *   Setup the job during initialization. For example, create the temporary   *   output directory for the job during the initialization of the job.  *</li>  *<li>  *   Cleanup the job after the job completion. For example, remove the  *   temporary output directory after the job completion.   *</li>  *<li>  *   Setup the task temporary output.  *</li>   *<li>  *   Check whether a task needs a commit. This is to avoid the commit  *   procedure if a task does not need commit.  *</li>  *<li>  *   Commit of the task output.  *</li>    *<li>  *   Discard the task commit.  *</li>  *</ol>  * The methods in this class can be called from several different processes and  * from several different contexts.  It is important to know which process and  * which context each is called from.  Each method should be marked accordingly  * in its documentation.  It is also important to note that not all methods are  * guaranteed to be called once and only once.  If a method is not guaranteed to  * have this property the output committer needs to handle this appropriately.   * Also note it will only be in rare situations where they may be called   * multiple times for the same task.  *   * @see FileOutputCommitter   * @see JobContext  * @see TaskAttemptContext   */
 end_comment
 
 begin_class
@@ -83,7 +83,7 @@ name|mapreduce
 operator|.
 name|OutputCommitter
 block|{
-comment|/**    * For the framework to setup the job output during initialization    *     * @param jobContext Context of the job whose output is being written.    * @throws IOException if temporary output could not be created    */
+comment|/**    * For the framework to setup the job output during initialization.  This is    * called from the application master process for the entire job. This will be    * called multiple times, once per job attempt.    *     * @param jobContext Context of the job whose output is being written.    * @throws IOException if temporary output could not be created    */
 DECL|method|setupJob (JobContext jobContext)
 specifier|public
 specifier|abstract
@@ -96,7 +96,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * For cleaning up the job's output after job completion    *     * @param jobContext Context of the job whose output is being written.    * @throws IOException    * @deprecated Use {@link #commitJob(JobContext)} or     *                 {@link #abortJob(JobContext, int)} instead.    */
+comment|/**    * For cleaning up the job's output after job completion.  This is called    * from the application master process for the entire job. This may be called    * multiple times.    *     * @param jobContext Context of the job whose output is being written.    * @throws IOException    * @deprecated Use {@link #commitJob(JobContext)} or     *                 {@link #abortJob(JobContext, int)} instead.    */
 annotation|@
 name|Deprecated
 DECL|method|cleanupJob (JobContext jobContext)
@@ -110,7 +110,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{ }
-comment|/**    * For committing job's output after successful job completion. Note that this    * is invoked for jobs with final runstate as SUCCESSFUL.	    *     * @param jobContext Context of the job whose output is being written.    * @throws IOException     */
+comment|/**    * For committing job's output after successful job completion. Note that this    * is invoked for jobs with final runstate as SUCCESSFUL.  This is called    * from the application master process for the entire job. This is guaranteed    * to only be called once.  If it throws an exception the entire job will    * fail.    *     * @param jobContext Context of the job whose output is being written.    * @throws IOException     */
 DECL|method|commitJob (JobContext jobContext)
 specifier|public
 name|void
@@ -128,7 +128,7 @@ name|jobContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * For aborting an unsuccessful job's output. Note that this is invoked for     * jobs with final runstate as {@link JobStatus#FAILED} or     * {@link JobStatus#KILLED}    *     * @param jobContext Context of the job whose output is being written.    * @param status final runstate of the job    * @throws IOException    */
+comment|/**    * For aborting an unsuccessful job's output. Note that this is invoked for     * jobs with final runstate as {@link JobStatus#FAILED} or     * {@link JobStatus#KILLED}. This is called from the application    * master process for the entire job. This may be called multiple times.    *     * @param jobContext Context of the job whose output is being written.    * @param status final runstate of the job    * @throws IOException    */
 DECL|method|abortJob (JobContext jobContext, int status)
 specifier|public
 name|void
@@ -149,7 +149,7 @@ name|jobContext
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Sets up output for the task.    *     * @param taskContext Context of the task whose output is being written.    * @throws IOException    */
+comment|/**    * Sets up output for the task. This is called from each individual task's    * process that will output to HDFS, and it is called just for that task. This    * may be called multiple times for the same task, but for different task    * attempts.    *     * @param taskContext Context of the task whose output is being written.    * @throws IOException    */
 DECL|method|setupTask (TaskAttemptContext taskContext)
 specifier|public
 specifier|abstract
@@ -162,7 +162,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Check whether task needs a commit    *     * @param taskContext    * @return true/false    * @throws IOException    */
+comment|/**    * Check whether task needs a commit.  This is called from each individual    * task's process that will output to HDFS, and it is called just for that    * task.    *     * @param taskContext    * @return true/false    * @throws IOException    */
 DECL|method|needsTaskCommit (TaskAttemptContext taskContext)
 specifier|public
 specifier|abstract
@@ -175,7 +175,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * To promote the task's temporary output to final output location    *     * The task's output is moved to the job's output directory.    *     * @param taskContext Context of the task whose output is being written.    * @throws IOException if commit is not     */
+comment|/**    * To promote the task's temporary output to final output location.    * If {@link #needsTaskCommit(TaskAttemptContext)} returns true and this    * task is the task that the AM determines finished first, this method    * is called to commit an individual task's output.  This is to mark    * that tasks output as complete, as {@link #commitJob(JobContext)} will     * also be called later on if the entire job finished successfully. This    * is called from a task's process. This may be called multiple times for the    * same task, but different task attempts.  It should be very rare for this to    * be called multiple times and requires odd networking failures to make this    * happen. In the future the Hadoop framework may eliminate this race.    *     * @param taskContext Context of the task whose output is being written.    * @throws IOException if commit is not     */
 DECL|method|commitTask (TaskAttemptContext taskContext)
 specifier|public
 specifier|abstract
@@ -188,7 +188,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Discard the task output    *     * @param taskContext    * @throws IOException    */
+comment|/**    * Discard the task output. This is called from a task's process to clean     * up a single task's output that can not yet been committed. This may be    * called multiple times for the same task, but for different task attempts.    *     * @param taskContext    * @throws IOException    */
 DECL|method|abortTask (TaskAttemptContext taskContext)
 specifier|public
 specifier|abstract
@@ -214,7 +214,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Recover the task output.     *     * The retry-count for the job will be passed via the     * {@link MRConstants#APPLICATION_ATTEMPT_ID} key in      * {@link TaskAttemptContext#getConfiguration()} for the     *<code>OutputCommitter</code>.    *     * If an exception is thrown the task will be attempted again.     *     * @param taskContext Context of the task whose output is being recovered    * @throws IOException    */
+comment|/**    * Recover the task output.     *     * The retry-count for the job will be passed via the     * {@link MRConstants#APPLICATION_ATTEMPT_ID} key in      * {@link TaskAttemptContext#getConfiguration()} for the     *<code>OutputCommitter</code>. This is called from the application master    * process, but it is called individually for each task.    *     * If an exception is thrown the task will be attempted again.     *     * @param taskContext Context of the task whose output is being recovered    * @throws IOException    */
 DECL|method|recoverTask (TaskAttemptContext taskContext)
 specifier|public
 name|void

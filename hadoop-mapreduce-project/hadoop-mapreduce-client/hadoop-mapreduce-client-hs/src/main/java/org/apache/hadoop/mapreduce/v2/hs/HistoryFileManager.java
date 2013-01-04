@@ -3646,6 +3646,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+elseif|else
+if|if
+condition|(
+name|old
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|old
+operator|.
+name|isMovePending
+argument_list|()
+condition|)
+block|{
+comment|//This is a duplicate so just delete it
+name|fileInfo
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Searches the job history file FileStatus list for the specified JobId.    *     * @param fileStatusList    *          fileStatus list of Job History Files.    * @param jobId    *          The JobId to find.    * @return A FileInfo object for the jobId, null if not found.    * @throws IOException    */
