@@ -1239,13 +1239,13 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|resMgrDelegate
-operator|.
-name|cancelDelegationToken
+throw|throw
+operator|new
+name|UnsupportedOperationException
 argument_list|(
-name|arg0
+literal|"Use Token.renew instead"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 annotation|@
 name|Override
@@ -2819,14 +2819,13 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-return|return
-name|resMgrDelegate
-operator|.
-name|renewDelegationToken
+throw|throw
+operator|new
+name|UnsupportedOperationException
 argument_list|(
-name|arg0
+literal|"Use Token.renew instead"
 argument_list|)
-return|;
+throw|;
 block|}
 annotation|@
 name|Override
