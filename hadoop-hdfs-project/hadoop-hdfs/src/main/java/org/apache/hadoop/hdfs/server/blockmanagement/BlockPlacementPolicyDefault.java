@@ -1251,10 +1251,11 @@ condition|(
 name|avoidStaleNodes
 condition|)
 block|{
-comment|// excludedNodes now has - initial excludedNodes, any nodes that were
-comment|// chosen and nodes that were tried but were not chosen because they
-comment|// were stale, decommissioned or for any other reason a node is not
-comment|// chosen for write. Retry again now not avoiding stale node
+comment|// Retry chooseTarget again, this time not avoiding stale nodes.
+comment|// excludedNodes contains the initial excludedNodes and nodes that were
+comment|// not chosen because they were stale, decommissioned, etc.
+comment|// We need to additionally exclude the nodes that were added to the
+comment|// result list in the successful calls to choose*() above.
 for|for
 control|(
 name|Node
@@ -1273,6 +1274,17 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Set numOfReplicas, since it can get out of sync with the result list
+comment|// if the NotEnoughReplicasException was thrown in chooseRandom().
+name|numOfReplicas
+operator|=
+name|totalReplicasExpected
+operator|-
+name|results
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
 return|return
 name|chooseTarget
 argument_list|(
@@ -2530,7 +2542,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|" is not chosen because the node is staled "
+literal|" is not chosen because the node is stale "
 argument_list|)
 expr_stmt|;
 block|}
