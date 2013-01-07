@@ -435,6 +435,19 @@ operator|=
 name|clusterId
 expr_stmt|;
 block|}
+DECL|method|BlockPoolSliceStorage ()
+specifier|private
+name|BlockPoolSliceStorage
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|NodeType
+operator|.
+name|DATA_NODE
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Analyze storage directories. Recover from previous transitions if required.    *     * @param datanode Datanode to which this storage belongs to    * @param nsInfo namespace information    * @param dataDirs storage directories of block pool    * @param startOpt startup option    * @throws IOException on error    */
 DECL|method|recoverTransitionRead (DataNode datanode, NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt)
 name|void
@@ -1700,11 +1713,11 @@ argument_list|()
 condition|)
 return|return;
 comment|// read attributes out of the VERSION file of previous directory
-name|DataStorage
+name|BlockPoolSliceStorage
 name|prevInfo
 init|=
 operator|new
-name|DataStorage
+name|BlockPoolSliceStorage
 argument_list|()
 decl_stmt|;
 name|prevInfo
