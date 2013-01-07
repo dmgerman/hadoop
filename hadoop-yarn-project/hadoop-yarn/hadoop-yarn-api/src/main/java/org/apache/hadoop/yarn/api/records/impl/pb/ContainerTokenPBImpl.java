@@ -78,13 +78,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|security
 operator|.
 name|proto
 operator|.
-name|YarnProtos
+name|SecurityProtos
 operator|.
-name|ContainerTokenProto
+name|TokenProto
 import|;
 end_import
 
@@ -96,13 +96,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|security
 operator|.
 name|proto
 operator|.
-name|YarnProtos
+name|SecurityProtos
 operator|.
-name|ContainerTokenProtoOrBuilder
+name|TokenProtoOrBuilder
 import|;
 end_import
 
@@ -114,24 +114,24 @@ name|ContainerTokenPBImpl
 extends|extends
 name|ProtoBase
 argument_list|<
-name|ContainerTokenProto
+name|TokenProto
 argument_list|>
 implements|implements
 name|ContainerToken
 block|{
 DECL|field|proto
 specifier|private
-name|ContainerTokenProto
+name|TokenProto
 name|proto
 init|=
-name|ContainerTokenProto
+name|TokenProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
 specifier|private
-name|ContainerTokenProto
+name|TokenProto
 operator|.
 name|Builder
 name|builder
@@ -162,17 +162,17 @@ parameter_list|()
 block|{
 name|builder
 operator|=
-name|ContainerTokenProto
+name|TokenProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|ContainerTokenPBImpl (ContainerTokenProto proto)
+DECL|method|ContainerTokenPBImpl (TokenProto proto)
 specifier|public
 name|ContainerTokenPBImpl
 parameter_list|(
-name|ContainerTokenProto
+name|TokenProto
 name|proto
 parameter_list|)
 block|{
@@ -190,7 +190,7 @@ block|}
 DECL|method|getProto ()
 specifier|public
 specifier|synchronized
-name|ContainerTokenProto
+name|TokenProto
 name|getProto
 parameter_list|()
 block|{
@@ -315,7 +315,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|ContainerTokenProto
+name|TokenProto
 operator|.
 name|newBuilder
 argument_list|(
@@ -337,7 +337,7 @@ name|ByteBuffer
 name|getIdentifier
 parameter_list|()
 block|{
-name|ContainerTokenProtoOrBuilder
+name|TokenProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -434,7 +434,7 @@ name|ByteBuffer
 name|getPassword
 parameter_list|()
 block|{
-name|ContainerTokenProtoOrBuilder
+name|TokenProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -531,7 +531,7 @@ name|String
 name|getKind
 parameter_list|()
 block|{
-name|ContainerTokenProtoOrBuilder
+name|TokenProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -610,7 +610,7 @@ name|String
 name|getService
 parameter_list|()
 block|{
-name|ContainerTokenProtoOrBuilder
+name|TokenProtoOrBuilder
 name|p
 init|=
 name|viaProto

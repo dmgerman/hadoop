@@ -32,6 +32,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|proto
+operator|.
+name|SecurityProtos
+operator|.
+name|TokenProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -273,24 +291,6 @@ operator|.
 name|YarnProtos
 operator|.
 name|ContainerStatusProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|proto
-operator|.
-name|YarnProtos
-operator|.
-name|ContainerTokenProto
 import|;
 end_import
 
@@ -1735,12 +1735,12 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertFromProtoFormat (ContainerTokenProto p)
+DECL|method|convertFromProtoFormat (TokenProto p)
 specifier|private
 name|ContainerTokenPBImpl
 name|convertFromProtoFormat
 parameter_list|(
-name|ContainerTokenProto
+name|TokenProto
 name|p
 parameter_list|)
 block|{
@@ -1754,7 +1754,7 @@ return|;
 block|}
 DECL|method|convertToProtoFormat (ContainerToken t)
 specifier|private
-name|ContainerTokenProto
+name|TokenProto
 name|convertToProtoFormat
 parameter_list|(
 name|ContainerToken
