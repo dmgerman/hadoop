@@ -574,6 +574,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|SnapshottableDirectoryStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -4088,6 +4104,23 @@ argument_list|,
 name|snapshotNewName
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * @return All the snapshottable directories    * @throws IOException    */
+DECL|method|getSnapshottableDirListing ()
+specifier|public
+name|SnapshottableDirectoryStatus
+index|[]
+name|getSnapshottableDirListing
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|getSnapshottableDirListing
+argument_list|()
+return|;
 block|}
 block|}
 end_class

@@ -1009,6 +1009,18 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Get listing of all the snapshottable directories    *     * @return Information about all the current snapshottable directory    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|Idempotent
+DECL|method|getSnapshottableDirListing ()
+specifier|public
+name|SnapshottableDirectoryStatus
+index|[]
+name|getSnapshottableDirListing
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|///////////////////////////////////////
 comment|// System issues and management
 comment|///////////////////////////////////////

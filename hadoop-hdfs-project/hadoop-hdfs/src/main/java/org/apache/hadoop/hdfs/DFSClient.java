@@ -1422,6 +1422,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|SnapshottableDirectoryStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|UnresolvedPathException
 import|;
 end_import
@@ -8972,6 +8988,26 @@ argument_list|,
 name|snapshotNewName
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Get all the current snapshottable directories.    * @return All the current snapshottable directories    * @throws IOException    * @see ClientProtocol#getSnapshottableDirListing()    */
+DECL|method|getSnapshottableDirListing ()
+specifier|public
+name|SnapshottableDirectoryStatus
+index|[]
+name|getSnapshottableDirListing
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
+return|return
+name|namenode
+operator|.
+name|getSnapshottableDirListing
+argument_list|()
+return|;
 block|}
 comment|/**    * Allow snapshot on a directory.    *     * @see ClientProtocol#allowSnapshot(String snapshotRoot)    */
 DECL|method|allowSnapshot (String snapshotRoot)

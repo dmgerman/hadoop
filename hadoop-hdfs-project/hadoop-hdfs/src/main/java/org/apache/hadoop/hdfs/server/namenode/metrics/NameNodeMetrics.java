@@ -423,6 +423,15 @@ DECL|field|renameSnapshotOps
 name|MutableCounterLong
 name|renameSnapshotOps
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of listSnapshottableDirectory operations"
+argument_list|)
+DECL|field|listSnapshottableDirOps
+name|MutableCounterLong
+name|listSnapshottableDirOps
+decl_stmt|;
 DECL|field|transactions
 annotation|@
 name|Metric
@@ -930,6 +939,18 @@ name|incrRenameSnapshotOps
 parameter_list|()
 block|{
 name|renameSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrListSnapshottableDirOps ()
+specifier|public
+name|void
+name|incrListSnapshottableDirOps
+parameter_list|()
+block|{
+name|listSnapshottableDirOps
 operator|.
 name|incr
 argument_list|()
