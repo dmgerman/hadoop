@@ -1460,6 +1460,13 @@ argument_list|(
 name|maxThreads
 argument_list|)
 decl_stmt|;
+name|threadPool
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|webServer
 operator|.
 name|setThreadPool
