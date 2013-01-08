@@ -3412,6 +3412,13 @@ name|jobid
 init|=
 literal|0
 decl_stmt|;
+comment|// used for making sure that local jobs run in different jvms don't
+comment|// collide on staging or job directories
+DECL|field|randid
+specifier|private
+name|int
+name|randid
+decl_stmt|;
 DECL|method|getNewJobID ()
 specifier|public
 specifier|synchronized
@@ -3440,6 +3447,8 @@ operator|.
 name|JobID
 argument_list|(
 literal|"local"
+operator|+
+name|randid
 argument_list|,
 operator|++
 name|jobid
@@ -4091,6 +4100,17 @@ decl_stmt|;
 name|String
 name|user
 decl_stmt|;
+name|randid
+operator|=
+name|rand
+operator|.
+name|nextInt
+argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|ugi
@@ -4105,10 +4125,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-name|rand
-operator|.
-name|nextInt
-argument_list|()
+name|randid
 expr_stmt|;
 block|}
 else|else
@@ -4117,10 +4134,7 @@ name|user
 operator|=
 literal|"dummy"
 operator|+
-name|rand
-operator|.
-name|nextInt
-argument_list|()
+name|randid
 expr_stmt|;
 block|}
 return|return
