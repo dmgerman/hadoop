@@ -866,7 +866,7 @@ name|containerDir
 argument_list|,
 name|dirPerm
 argument_list|,
-literal|false
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
