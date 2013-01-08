@@ -178,6 +178,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -973,19 +987,25 @@ literal|0L
 decl_stmt|;
 DECL|field|excessBlocksCount
 specifier|private
-specifier|volatile
-name|long
+name|AtomicLong
 name|excessBlocksCount
 init|=
+operator|new
+name|AtomicLong
+argument_list|(
 literal|0L
+argument_list|)
 decl_stmt|;
 DECL|field|postponedMisreplicatedBlocksCount
 specifier|private
-specifier|volatile
-name|long
+name|AtomicLong
 name|postponedMisreplicatedBlocksCount
 init|=
+operator|new
+name|AtomicLong
+argument_list|(
 literal|0L
+argument_list|)
 decl_stmt|;
 comment|/** Used by metrics */
 DECL|method|getPendingReplicationBlocksCount ()
@@ -1054,6 +1074,9 @@ parameter_list|()
 block|{
 return|return
 name|excessBlocksCount
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 comment|/** Used by metrics */
@@ -1065,6 +1088,9 @@ parameter_list|()
 block|{
 return|return
 name|postponedMisreplicatedBlocksCount
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 comment|/** Used by metrics */
@@ -5429,7 +5455,9 @@ argument_list|)
 condition|)
 block|{
 name|postponedMisreplicatedBlocksCount
-operator|++
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -7658,7 +7686,9 @@ name|remove
 argument_list|()
 expr_stmt|;
 name|postponedMisreplicatedBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 continue|continue;
 block|}
@@ -7709,7 +7739,9 @@ name|remove
 argument_list|()
 expr_stmt|;
 name|postponedMisreplicatedBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -11210,7 +11242,9 @@ argument_list|)
 condition|)
 block|{
 name|excessBlocksCount
-operator|++
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -11400,7 +11434,9 @@ argument_list|)
 condition|)
 block|{
 name|excessBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -13078,7 +13114,9 @@ argument_list|)
 condition|)
 block|{
 name|postponedMisreplicatedBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 block|}
