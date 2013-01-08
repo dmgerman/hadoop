@@ -541,19 +541,6 @@ name|getCanonicalHostName
 argument_list|()
 return|;
 block|}
-DECL|field|lsDateFormat
-specifier|private
-specifier|static
-specifier|final
-name|SimpleDateFormat
-name|lsDateFormat
-init|=
-operator|new
-name|SimpleDateFormat
-argument_list|(
-literal|"yyyy-MM-dd HH:mm"
-argument_list|)
-decl_stmt|;
 comment|/**    * Get the default chunk size.    * @param conf the configuration    * @return the number of bytes to chunk in    */
 DECL|method|getDefaultChunkSize (Configuration conf)
 specifier|private
@@ -1453,7 +1440,11 @@ index|[
 literal|5
 index|]
 operator|=
-name|lsDateFormat
+operator|new
+name|SimpleDateFormat
+argument_list|(
+literal|"yyyy-MM-dd HH:mm"
+argument_list|)
 operator|.
 name|format
 argument_list|(

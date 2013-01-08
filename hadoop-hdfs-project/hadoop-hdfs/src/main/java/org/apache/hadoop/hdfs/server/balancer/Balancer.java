@@ -6014,7 +6014,7 @@ name|formatter
 operator|.
 name|format
 argument_list|(
-literal|"%-24s %10d  %19s  %18s  %17s\n"
+literal|"%-24s %10d  %19s  %18s  %17s%n"
 argument_list|,
 name|DateFormat
 operator|.

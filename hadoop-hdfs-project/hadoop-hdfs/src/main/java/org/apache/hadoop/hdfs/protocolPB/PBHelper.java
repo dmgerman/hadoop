@@ -5664,6 +5664,14 @@ name|SHUTDOWN
 argument_list|)
 expr_stmt|;
 break|break;
+default|default:
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Invalid action"
+argument_list|)
+throw|;
 block|}
 name|Block
 index|[]

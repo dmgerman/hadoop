@@ -19586,6 +19586,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unexpected safe mode action"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 return|return
