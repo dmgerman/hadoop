@@ -810,6 +810,23 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setTimeout (int timeoutMs)
+specifier|public
+name|void
+name|setTimeout
+parameter_list|(
+name|int
+name|timeoutMs
+parameter_list|)
+block|{
+name|writer
+operator|.
+name|setTimeout
+argument_list|(
+name|timeoutMs
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
