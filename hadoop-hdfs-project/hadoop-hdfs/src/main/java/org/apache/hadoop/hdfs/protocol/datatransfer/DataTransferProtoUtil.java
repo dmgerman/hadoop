@@ -324,23 +324,7 @@ name|getChecksumType
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|type
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Can't convert checksum to protobuf: "
-operator|+
-name|checksum
-argument_list|)
-throw|;
-block|}
+comment|// ChecksumType#valueOf never returns null
 return|return
 name|ChecksumProto
 operator|.

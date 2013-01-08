@@ -7574,11 +7574,6 @@ name|encryptionKey
 operator|==
 literal|null
 operator|||
-operator|(
-name|encryptionKey
-operator|!=
-literal|null
-operator|&&
 name|encryptionKey
 operator|.
 name|expiryDate
@@ -7587,7 +7582,6 @@ name|Time
 operator|.
 name|now
 argument_list|()
-operator|)
 condition|)
 block|{
 name|LOG

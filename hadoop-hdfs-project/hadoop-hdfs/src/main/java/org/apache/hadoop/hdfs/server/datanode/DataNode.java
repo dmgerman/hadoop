@@ -9592,7 +9592,7 @@ name|syncList
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get namenode corresponding to a block pool    * @param bpid Block pool Id    * @return Namenode corresponding to the bpid    * @throws IOException    */
+comment|/**    * Get the NameNode corresponding to the given block pool.    *    * @param bpid Block pool Id    * @return Namenode corresponding to the bpid    * @throws IOException if unable to get the corresponding NameNode    */
 DECL|method|getActiveNamenodeForBP (String bpid)
 specifier|public
 name|DatanodeProtocolClientSideTranslatorPB
@@ -9707,27 +9707,6 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|nn
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Unable to synchronize block "
-operator|+
-name|rBlock
-operator|+
-literal|", since this DN "
-operator|+
-literal|" has not acknowledged any NN as active."
-argument_list|)
-throw|;
-block|}
 name|long
 name|recoveryId
 init|=

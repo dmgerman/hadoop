@@ -3079,11 +3079,19 @@ name|ret
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|secondary
+operator|!=
+literal|null
+condition|)
+block|{
 name|secondary
 operator|.
 name|startCheckpointThread
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|startCheckpointThread ()
 specifier|public

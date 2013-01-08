@@ -572,13 +572,6 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|fp
-operator|!=
-literal|null
-condition|)
-block|{
 name|fp
 operator|.
 name|close
@@ -588,7 +581,6 @@ name|fp
 operator|=
 literal|null
 expr_stmt|;
-block|}
 block|}
 finally|finally
 block|{
