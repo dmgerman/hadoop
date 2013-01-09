@@ -100,6 +100,22 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|unix
+operator|.
+name|DomainSocket
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -476,6 +492,21 @@ operator|+
 name|enclosedPeer
 operator|+
 literal|")"
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDomainSocket ()
+specifier|public
+name|DomainSocket
+name|getDomainSocket
+parameter_list|()
+block|{
+return|return
+name|enclosedPeer
+operator|.
+name|getDomainSocket
+argument_list|()
 return|;
 block|}
 block|}

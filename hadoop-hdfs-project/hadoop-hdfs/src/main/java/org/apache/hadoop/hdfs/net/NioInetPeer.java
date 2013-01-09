@@ -98,6 +98,22 @@ name|SocketOutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|unix
+operator|.
+name|DomainSocket
+import|;
+end_import
+
 begin_comment
 comment|/**  * Represents a peer that we communicate with by using non-blocking I/O   * on a Socket.  */
 end_comment
@@ -423,6 +439,18 @@ name|toString
 argument_list|()
 operator|+
 literal|")"
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDomainSocket ()
+specifier|public
+name|DomainSocket
+name|getDomainSocket
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

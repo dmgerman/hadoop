@@ -84,6 +84,22 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|unix
+operator|.
+name|DomainSocket
+import|;
+end_import
+
 begin_comment
 comment|/**  * Represents a connection to a peer.  */
 end_comment
@@ -202,6 +218,13 @@ DECL|method|isLocal ()
 specifier|public
 name|boolean
 name|isLocal
+parameter_list|()
+function_decl|;
+comment|/**    * @return               The DomainSocket associated with the current    *                       peer, or null if there is none.    */
+DECL|method|getDomainSocket ()
+specifier|public
+name|DomainSocket
+name|getDomainSocket
 parameter_list|()
 function_decl|;
 block|}
