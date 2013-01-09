@@ -2180,10 +2180,10 @@ specifier|final
 name|String
 name|authority
 decl_stmt|;
-DECL|field|socketCache
+DECL|field|peerCache
 specifier|final
-name|SocketCache
-name|socketCache
+name|PeerCache
+name|peerCache
 decl_stmt|;
 DECL|field|dfsClientConf
 specifier|final
@@ -3316,9 +3316,9 @@ expr_stmt|;
 block|}
 name|this
 operator|.
-name|socketCache
+name|peerCache
 operator|=
-name|SocketCache
+name|PeerCache
 operator|.
 name|getInstance
 argument_list|(

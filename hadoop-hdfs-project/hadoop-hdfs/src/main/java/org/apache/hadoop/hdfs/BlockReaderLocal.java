@@ -2969,12 +2969,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|close ()
+DECL|method|close (PeerCache peerCache)
 specifier|public
 specifier|synchronized
 name|void
 name|close
-parameter_list|()
+parameter_list|(
+name|PeerCache
+name|peerCache
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -3112,42 +3115,6 @@ argument_list|,
 name|len
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|takeSocket ()
-specifier|public
-name|Socket
-name|takeSocket
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|hasSentStatusCode ()
-specifier|public
-name|boolean
-name|hasSentStatusCode
-parameter_list|()
-block|{
-return|return
-literal|false
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getStreams ()
-specifier|public
-name|IOStreamPair
-name|getStreams
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
 block|}
 block|}
 end_class

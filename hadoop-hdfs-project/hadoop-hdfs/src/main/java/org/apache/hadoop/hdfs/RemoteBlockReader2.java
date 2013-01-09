@@ -98,16 +98,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|Socket
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -178,6 +168,38 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|net
+operator|.
+name|Peer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|DatanodeID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|ExtendedBlock
@@ -199,24 +221,6 @@ operator|.
 name|datatransfer
 operator|.
 name|DataTransferProtoUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|datatransfer
-operator|.
-name|IOStreamPair
 import|;
 end_import
 
@@ -422,20 +426,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
-operator|.
-name|SocketInputWrapper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|security
 operator|.
 name|token
@@ -455,6 +445,20 @@ operator|.
 name|util
 operator|.
 name|DataChecksum
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -489,15 +493,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|dnSock
-name|Socket
-name|dnSock
-decl_stmt|;
-comment|// for now just sending the status code (e.g. checksumOk) after the read.
-DECL|field|ioStreams
+DECL|field|peer
+specifier|final
 specifier|private
-name|IOStreamPair
-name|ioStreams
+name|Peer
+name|peer
+decl_stmt|;
+DECL|field|datanodeID
+specifier|final
+specifier|private
+name|DatanodeID
+name|datanodeID
 decl_stmt|;
 DECL|field|in
 specifier|private
@@ -600,6 +606,18 @@ name|dataLeft
 init|=
 literal|0
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|getPeer ()
+specifier|public
+name|Peer
+name|getPeer
+parameter_list|()
+block|{
+return|return
+name|peer
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|read (byte[] buf, int off, int len)
@@ -1222,7 +1240,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, ReadableByteChannel in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Socket dnSock, IOStreamPair ioStreams)
+DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID)
 specifier|protected
 name|RemoteBlockReader2
 parameter_list|(
@@ -1234,9 +1252,6 @@ name|bpid
 parameter_list|,
 name|long
 name|blockId
-parameter_list|,
-name|ReadableByteChannel
-name|in
 parameter_list|,
 name|DataChecksum
 name|checksum
@@ -1253,31 +1268,34 @@ parameter_list|,
 name|long
 name|bytesToRead
 parameter_list|,
-name|Socket
-name|dnSock
+name|Peer
+name|peer
 parameter_list|,
-name|IOStreamPair
-name|ioStreams
+name|DatanodeID
+name|datanodeID
 parameter_list|)
 block|{
 comment|// Path is used only for printing block and file information in debug
 name|this
 operator|.
-name|dnSock
+name|peer
 operator|=
-name|dnSock
+name|peer
 expr_stmt|;
 name|this
 operator|.
-name|ioStreams
+name|datanodeID
 operator|=
-name|ioStreams
+name|datanodeID
 expr_stmt|;
 name|this
 operator|.
 name|in
 operator|=
-name|in
+name|peer
+operator|.
+name|getInputStreamChannel
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1347,12 +1365,15 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|close ()
+DECL|method|close (PeerCache peerCache)
 specifier|public
 specifier|synchronized
 name|void
 name|close
-parameter_list|()
+parameter_list|(
+name|PeerCache
+name|peerCache
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -1372,59 +1393,32 @@ literal|null
 expr_stmt|;
 if|if
 condition|(
-name|dnSock
+name|peerCache
 operator|!=
 literal|null
+operator|&&
+name|sentStatusCode
 condition|)
 block|{
-name|dnSock
+name|peerCache
+operator|.
+name|put
+argument_list|(
+name|datanodeID
+argument_list|,
+name|peer
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|peer
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
 block|}
 comment|// in will be closed when its Socket is closed.
-block|}
-comment|/**    * Take the socket used to talk to the DN.    */
-annotation|@
-name|Override
-DECL|method|takeSocket ()
-specifier|public
-name|Socket
-name|takeSocket
-parameter_list|()
-block|{
-assert|assert
-name|hasSentStatusCode
-argument_list|()
-operator|:
-literal|"BlockReader shouldn't give back sockets mid-read"
-assert|;
-name|Socket
-name|res
-init|=
-name|dnSock
-decl_stmt|;
-name|dnSock
-operator|=
-literal|null
-expr_stmt|;
-return|return
-name|res
-return|;
-block|}
-comment|/**    * Whether the BlockReader has reached the end of its input stream    * and successfully sent a status code back to the datanode.    */
-annotation|@
-name|Override
-DECL|method|hasSentStatusCode ()
-specifier|public
-name|boolean
-name|hasSentStatusCode
-parameter_list|()
-block|{
-return|return
-name|sentStatusCode
-return|;
 block|}
 comment|/**    * When the reader reaches end of the read, it sends a status response    * (e.g. CHECKSUM_OK) to the DN. Failure to do so could lead to the DN    * closing our connection (which we will re-open), but won't affect    * data correctness.    */
 DECL|method|sendReadResult (Status statusCode)
@@ -1441,15 +1435,16 @@ name|sentStatusCode
 operator|:
 literal|"already sent status code to "
 operator|+
-name|dnSock
+name|peer
 assert|;
 try|try
 block|{
 name|writeReadResult
 argument_list|(
-name|ioStreams
+name|peer
 operator|.
-name|out
+name|getOutputStream
+argument_list|()
 argument_list|,
 name|statusCode
 argument_list|)
@@ -1476,9 +1471,9 @@ name|statusCode
 operator|+
 literal|") to datanode "
 operator|+
-name|dnSock
+name|peer
 operator|.
-name|getInetAddress
+name|getRemoteAddressString
 argument_list|()
 operator|+
 literal|": "
@@ -1634,16 +1629,13 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param sock  An established Socket to the DN. The BlockReader will not close it normally.    *             This socket must have an associated Channel.    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (Socket sock, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, DataEncryptionKey encryptionKey, IOStreamPair ioStreams)
+comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param sock  An established Socket to the DN. The BlockReader will not close it normally.    *             This socket must have an associated Channel.    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @param peer  The Peer to use    * @param datanodeID  The DatanodeID this peer is connected to    * @return New BlockReader instance, or null on error.    */
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID)
 specifier|public
 specifier|static
 name|BlockReader
 name|newBlockReader
 parameter_list|(
-name|Socket
-name|sock
-parameter_list|,
 name|String
 name|file
 parameter_list|,
@@ -1662,63 +1654,21 @@ parameter_list|,
 name|long
 name|len
 parameter_list|,
-name|int
-name|bufferSize
-parameter_list|,
 name|boolean
 name|verifyChecksum
 parameter_list|,
 name|String
 name|clientName
 parameter_list|,
-name|DataEncryptionKey
-name|encryptionKey
+name|Peer
+name|peer
 parameter_list|,
-name|IOStreamPair
-name|ioStreams
+name|DatanodeID
+name|datanodeID
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|ReadableByteChannel
-name|ch
-decl_stmt|;
-if|if
-condition|(
-name|ioStreams
-operator|.
-name|in
-operator|instanceof
-name|SocketInputWrapper
-condition|)
-block|{
-name|ch
-operator|=
-operator|(
-operator|(
-name|SocketInputWrapper
-operator|)
-name|ioStreams
-operator|.
-name|in
-operator|)
-operator|.
-name|getReadableByteChannel
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-name|ch
-operator|=
-operator|(
-name|ReadableByteChannel
-operator|)
-name|ioStreams
-operator|.
-name|in
-expr_stmt|;
-block|}
 comment|// in and out will be closed when sock is closed (by the caller)
 specifier|final
 name|DataOutputStream
@@ -1730,9 +1680,10 @@ argument_list|(
 operator|new
 name|BufferedOutputStream
 argument_list|(
-name|ioStreams
+name|peer
 operator|.
-name|out
+name|getOutputStream
+argument_list|()
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1764,9 +1715,10 @@ init|=
 operator|new
 name|DataInputStream
 argument_list|(
-name|ioStreams
+name|peer
 operator|.
-name|in
+name|getInputStream
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|BlockOpResponseProto
@@ -1786,7 +1738,7 @@ name|checkSuccess
 argument_list|(
 name|status
 argument_list|,
-name|sock
+name|peer
 argument_list|,
 name|block
 argument_list|,
@@ -1880,8 +1832,6 @@ operator|.
 name|getBlockId
 argument_list|()
 argument_list|,
-name|ch
-argument_list|,
 name|checksum
 argument_list|,
 name|verifyChecksum
@@ -1892,13 +1842,13 @@ name|firstChunkOffset
 argument_list|,
 name|len
 argument_list|,
-name|sock
+name|peer
 argument_list|,
-name|ioStreams
+name|datanodeID
 argument_list|)
 return|;
 block|}
-DECL|method|checkSuccess ( BlockOpResponseProto status, Socket sock, ExtendedBlock block, String file)
+DECL|method|checkSuccess ( BlockOpResponseProto status, Peer peer, ExtendedBlock block, String file)
 specifier|static
 name|void
 name|checkSuccess
@@ -1906,8 +1856,8 @@ parameter_list|(
 name|BlockOpResponseProto
 name|status
 parameter_list|,
-name|Socket
-name|sock
+name|Peer
+name|peer
 parameter_list|,
 name|ExtendedBlock
 name|block
@@ -1948,16 +1898,16 @@ name|InvalidBlockTokenException
 argument_list|(
 literal|"Got access token error for OP_READ_BLOCK, self="
 operator|+
-name|sock
+name|peer
 operator|.
-name|getLocalSocketAddress
+name|getLocalAddressString
 argument_list|()
 operator|+
 literal|", remote="
 operator|+
-name|sock
+name|peer
 operator|.
-name|getRemoteSocketAddress
+name|getRemoteAddressString
 argument_list|()
 operator|+
 literal|", for file "
@@ -1995,16 +1945,16 @@ name|IOException
 argument_list|(
 literal|"Got error for OP_READ_BLOCK, self="
 operator|+
-name|sock
+name|peer
 operator|.
-name|getLocalSocketAddress
+name|getLocalAddressString
 argument_list|()
 operator|+
 literal|", remote="
 operator|+
-name|sock
+name|peer
 operator|.
-name|getRemoteSocketAddress
+name|getRemoteAddressString
 argument_list|()
 operator|+
 literal|", for file "
@@ -2035,18 +1985,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-block|}
-annotation|@
-name|Override
-DECL|method|getStreams ()
-specifier|public
-name|IOStreamPair
-name|getStreams
-parameter_list|()
-block|{
-return|return
-name|ioStreams
-return|;
 block|}
 block|}
 end_class
