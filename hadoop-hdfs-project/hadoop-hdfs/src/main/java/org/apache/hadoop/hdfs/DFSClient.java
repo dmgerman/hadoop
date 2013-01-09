@@ -6007,7 +6007,7 @@ name|ioBufferSize
 argument_list|)
 return|;
 block|}
-comment|/**    * Call {@link #create(String, FsPermission, EnumSet, short, long,     * Progressable, int, ChecksumOpt)} with default<code>permission</code>    * {@link FsPermission#getDefault()}.    *     * @param src File name    * @param overwrite overwrite an existing file if true    * @param replication replication factor for the file    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffersize    *     * @return output stream    */
+comment|/**    * Call {@link #create(String, FsPermission, EnumSet, short, long,     * Progressable, int, ChecksumOpt)} with default<code>permission</code>    * {@link FsPermission#getFileDefault()}.    *     * @param src File name    * @param overwrite overwrite an existing file if true    * @param replication replication factor for the file    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffersize    *     * @return output stream    */
 DECL|method|create (String src, boolean overwrite, short replication, long blockSize, Progressable progress, int buffersize)
 specifier|public
 name|OutputStream
@@ -6041,7 +6041,7 @@ name|src
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getFileDefault
 argument_list|()
 argument_list|,
 name|overwrite
@@ -6139,7 +6139,7 @@ name|checksumOpt
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpt checksum options    *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
+comment|/**    * Create a new dfs file with the specified block replication     * with write-progress reporting and return an output stream for writing    * into the file.      *     * @param src File name    * @param permission The permission of the directory being created.    *          If null, use default permission {@link FsPermission#getFileDefault()}    * @param flag indicates create a new file or create/overwrite an    *          existing file or append to an existing file    * @param createParent create missing parent directory if true    * @param replication block replication    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffer size     * @param checksumOpt checksum options    *     * @return output stream    *     * @see ClientProtocol#create(String, FsPermission, String, EnumSetWritable,    * boolean, short, long) for detailed description of exceptions thrown    */
 DECL|method|create (String src, FsPermission permission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
@@ -6192,7 +6192,7 @@ name|permission
 operator|=
 name|FsPermission
 operator|.
-name|getDefault
+name|getFileDefault
 argument_list|()
 expr_stmt|;
 block|}

@@ -425,7 +425,7 @@ name|doFilePermissionCheck
 argument_list|(
 name|FileContext
 operator|.
-name|DEFAULT_PERM
+name|FILE_DEFAULT_PERM
 operator|.
 name|applyUMask
 argument_list|(

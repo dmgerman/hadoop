@@ -413,7 +413,7 @@ argument_list|()
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getDirDefault
 argument_list|()
 argument_list|,
 literal|true
