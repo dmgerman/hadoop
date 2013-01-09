@@ -6544,6 +6544,14 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+comment|// set job classloader if configured
+name|MRApps
+operator|.
+name|setJobClassLoader
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|initAndStartAppMaster
 argument_list|(
 name|appMaster
