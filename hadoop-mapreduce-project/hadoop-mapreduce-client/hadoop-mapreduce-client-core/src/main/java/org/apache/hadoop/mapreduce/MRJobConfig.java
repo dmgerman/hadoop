@@ -1553,6 +1553,27 @@ name|DEFAULT_MR_AM_COMMAND_OPTS
 init|=
 literal|"-Xmx1024m"
 decl_stmt|;
+comment|/** Admin command opts passed to the MR app master.*/
+DECL|field|MR_AM_ADMIN_COMMAND_OPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_ADMIN_COMMAND_OPTS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"admin-command-opts"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_ADMIN_COMMAND_OPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_MR_AM_ADMIN_COMMAND_OPTS
+init|=
+literal|""
+decl_stmt|;
 comment|/** Root Logging level passed to the MR app master.*/
 DECL|field|MR_AM_LOG_LEVEL
 specifier|public

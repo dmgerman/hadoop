@@ -2384,6 +2384,26 @@ argument_list|,
 name|vargs
 argument_list|)
 expr_stmt|;
+comment|// Add AM admin command opts before user command opts
+comment|// so that it can be overridden by user
+name|vargs
+operator|.
+name|add
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_ADMIN_COMMAND_OPTS
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_ADMIN_COMMAND_OPTS
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|vargs
 operator|.
 name|add
