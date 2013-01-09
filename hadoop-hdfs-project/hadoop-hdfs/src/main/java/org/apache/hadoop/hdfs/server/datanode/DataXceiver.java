@@ -288,22 +288,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|net
-operator|.
-name|Peer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -750,6 +734,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|SocketInputWrapper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -836,12 +834,19 @@ name|DataNode
 operator|.
 name|ClientTraceLog
 decl_stmt|;
-DECL|field|peer
+DECL|field|s
 specifier|private
 specifier|final
-name|Peer
-name|peer
+name|Socket
+name|s
 decl_stmt|;
+DECL|field|isLocal
+specifier|private
+specifier|final
+name|boolean
+name|isLocal
+decl_stmt|;
+comment|//is a local connection?
 DECL|field|remoteAddress
 specifier|private
 specifier|final
@@ -889,7 +894,7 @@ comment|//the start time of receiving an Op
 DECL|field|socketIn
 specifier|private
 specifier|final
-name|InputStream
+name|SocketInputWrapper
 name|socketIn
 decl_stmt|;
 DECL|field|socketOut
@@ -903,14 +908,14 @@ specifier|private
 name|String
 name|previousOpClientName
 decl_stmt|;
-DECL|method|create (Peer peer, DataNode dn, DataXceiverServer dataXceiverServer)
+DECL|method|create (Socket s, DataNode dn, DataXceiverServer dataXceiverServer)
 specifier|public
 specifier|static
 name|DataXceiver
 name|create
 parameter_list|(
-name|Peer
-name|peer
+name|Socket
+name|s
 parameter_list|,
 name|DataNode
 name|dn
@@ -925,7 +930,7 @@ return|return
 operator|new
 name|DataXceiver
 argument_list|(
-name|peer
+name|s
 argument_list|,
 name|dn
 argument_list|,
@@ -933,12 +938,12 @@ name|dataXceiverServer
 argument_list|)
 return|;
 block|}
-DECL|method|DataXceiver (Peer peer, DataNode datanode, DataXceiverServer dataXceiverServer)
+DECL|method|DataXceiver (Socket s, DataNode datanode, DataXceiverServer dataXceiverServer)
 specifier|private
 name|DataXceiver
 parameter_list|(
-name|Peer
-name|peer
+name|Socket
+name|s
 parameter_list|,
 name|DataNode
 name|datanode
@@ -951,9 +956,9 @@ name|IOException
 block|{
 name|this
 operator|.
-name|peer
+name|s
 operator|=
-name|peer
+name|s
 expr_stmt|;
 name|this
 operator|.
@@ -968,19 +973,44 @@ name|this
 operator|.
 name|socketIn
 operator|=
-name|peer
+name|NetUtils
 operator|.
 name|getInputStream
-argument_list|()
+argument_list|(
+name|s
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
 name|socketOut
 operator|=
-name|peer
+name|NetUtils
 operator|.
 name|getOutputStream
+argument_list|(
+name|s
+argument_list|,
+name|dnConf
+operator|.
+name|socketWriteTimeout
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isLocal
+operator|=
+name|s
+operator|.
+name|getInetAddress
 argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|s
+operator|.
+name|getLocalAddress
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -1007,16 +1037,22 @@ name|connectToDnViaHostname
 expr_stmt|;
 name|remoteAddress
 operator|=
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getRemoteSocketAddress
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 expr_stmt|;
 name|localAddress
 operator|=
-name|peer
+name|s
 operator|.
-name|getLocalAddressString
+name|getLocalSocketAddress
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 expr_stmt|;
 if|if
@@ -1174,25 +1210,15 @@ literal|null
 decl_stmt|;
 name|dataXceiverServer
 operator|.
-name|addPeer
+name|childSockets
+operator|.
+name|add
 argument_list|(
-name|peer
+name|s
 argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|peer
-operator|.
-name|setWriteTimeout
-argument_list|(
-name|datanode
-operator|.
-name|getDnConf
-argument_list|()
-operator|.
-name|socketWriteTimeout
-argument_list|)
-expr_stmt|;
 name|InputStream
 name|input
 init|=
@@ -1246,16 +1272,14 @@ literal|"Failed to read expected encryption handshake from client "
 operator|+
 literal|"at "
 operator|+
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getInetAddress
 argument_list|()
 operator|+
-literal|". Perhaps the client "
+literal|". Perhaps the client is running an "
 operator|+
-literal|"is running an older version of Hadoop which does not support "
-operator|+
-literal|"encryption"
+literal|"older version of Hadoop which does not support encryption"
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1328,9 +1352,9 @@ name|socketKeepaliveTimeout
 operator|>
 literal|0
 assert|;
-name|peer
+name|socketIn
 operator|.
-name|setReadTimeout
+name|setTimeout
 argument_list|(
 name|dnConf
 operator|.
@@ -1340,9 +1364,9 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|peer
+name|socketIn
 operator|.
-name|setReadTimeout
+name|setTimeout
 argument_list|(
 name|dnConf
 operator|.
@@ -1403,7 +1427,10 @@ name|debug
 argument_list|(
 literal|"Cached "
 operator|+
-name|peer
+name|s
+operator|.
+name|toString
+argument_list|()
 operator|+
 literal|" closing after "
 operator|+
@@ -1430,9 +1457,9 @@ operator|!=
 literal|0
 condition|)
 block|{
-name|peer
+name|s
 operator|.
-name|setReadTimeout
+name|setSoTimeout
 argument_list|(
 name|dnConf
 operator|.
@@ -1457,7 +1484,7 @@ block|}
 do|while
 condition|(
 operator|!
-name|peer
+name|s
 operator|.
 name|isClosed
 argument_list|()
@@ -1549,18 +1576,27 @@ argument_list|(
 literal|"Cleaning up"
 argument_list|)
 expr_stmt|;
-name|dataXceiverServer
-operator|.
-name|closePeer
-argument_list|(
-name|peer
-argument_list|)
-expr_stmt|;
 name|IOUtils
 operator|.
 name|closeStream
 argument_list|(
 name|in
+argument_list|)
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeSocket
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+name|dataXceiverServer
+operator|.
+name|childSockets
+operator|.
+name|remove
+argument_list|(
+name|s
 argument_list|)
 expr_stmt|;
 block|}
@@ -1856,14 +1892,14 @@ name|warn
 argument_list|(
 literal|"Client "
 operator|+
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getInetAddress
 argument_list|()
 operator|+
-literal|" did not send a valid status code after reading. "
+literal|" did not send a valid status "
 operator|+
-literal|"Will close connection."
+literal|"code after reading. Will close connection."
 argument_list|)
 expr_stmt|;
 name|IOUtils
@@ -2032,10 +2068,7 @@ name|metrics
 operator|.
 name|incrReadsFromClient
 argument_list|(
-name|peer
-operator|.
 name|isLocal
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2249,14 +2282,14 @@ name|debug
 argument_list|(
 literal|"writeBlock receive buf size "
 operator|+
-name|peer
+name|s
 operator|.
 name|getReceiveBufferSize
 argument_list|()
 operator|+
 literal|" tcp no delay "
 operator|+
-name|peer
+name|s
 operator|.
 name|getTcpNoDelay
 argument_list|()
@@ -2407,14 +2440,20 @@ name|block
 argument_list|,
 name|in
 argument_list|,
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getRemoteSocketAddress
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|,
-name|peer
+name|s
 operator|.
-name|getLocalAddressString
+name|getLocalSocketAddress
+argument_list|()
+operator|.
+name|toString
 argument_list|()
 argument_list|,
 name|stage
@@ -3197,10 +3236,7 @@ name|metrics
 operator|.
 name|incrWritesFromClient
 argument_list|(
-name|peer
-operator|.
 name|isLocal
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -3236,7 +3272,7 @@ name|IOException
 block|{
 name|checkAccess
 argument_list|(
-name|socketOut
+literal|null
 argument_list|,
 literal|true
 argument_list|,
@@ -3731,18 +3767,14 @@ operator|.
 name|getBlockId
 argument_list|()
 operator|+
-literal|" "
+literal|" to "
 operator|+
-literal|"to "
-operator|+
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getRemoteSocketAddress
 argument_list|()
 operator|+
-literal|" because threads "
-operator|+
-literal|"quota is exceeded."
+literal|" because threads quota is exceeded."
 decl_stmt|;
 name|LOG
 operator|.
@@ -3876,9 +3908,9 @@ name|block
 operator|+
 literal|" to "
 operator|+
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getRemoteSocketAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4108,14 +4140,12 @@ argument_list|()
 operator|+
 literal|" from "
 operator|+
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getRemoteSocketAddress
 argument_list|()
 operator|+
-literal|" because threads "
-operator|+
-literal|"quota is exceeded."
+literal|" because threads quota is exceeded."
 decl_stmt|;
 name|LOG
 operator|.
@@ -4527,9 +4557,9 @@ name|block
 operator|+
 literal|" from "
 operator|+
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getRemoteSocketAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4621,9 +4651,9 @@ name|warn
 argument_list|(
 literal|"Error writing reply back to "
 operator|+
-name|peer
+name|s
 operator|.
-name|getRemoteAddressString
+name|getRemoteSocketAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4845,12 +4875,12 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|checkAccess (OutputStream out, final boolean reply, final ExtendedBlock blk, final Token<BlockTokenIdentifier> t, final Op op, final BlockTokenSecretManager.AccessMode mode)
+DECL|method|checkAccess (DataOutputStream out, final boolean reply, final ExtendedBlock blk, final Token<BlockTokenIdentifier> t, final Op op, final BlockTokenSecretManager.AccessMode mode)
 specifier|private
 name|void
 name|checkAccess
 parameter_list|(
-name|OutputStream
+name|DataOutputStream
 name|out
 parameter_list|,
 specifier|final
@@ -4946,6 +4976,31 @@ condition|(
 name|reply
 condition|)
 block|{
+if|if
+condition|(
+name|out
+operator|==
+literal|null
+condition|)
+block|{
+name|out
+operator|=
+operator|new
+name|DataOutputStream
+argument_list|(
+name|NetUtils
+operator|.
+name|getOutputStream
+argument_list|(
+name|s
+argument_list|,
+name|dnConf
+operator|.
+name|socketWriteTimeout
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|BlockOpResponseProto
 operator|.
 name|Builder
