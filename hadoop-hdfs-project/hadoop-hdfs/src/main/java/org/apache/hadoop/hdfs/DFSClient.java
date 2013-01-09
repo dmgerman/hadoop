@@ -2211,12 +2211,7 @@ name|DataEncryptionKey
 name|encryptionKey
 decl_stmt|;
 comment|/**    * DFSClient configuration     */
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
 DECL|class|Conf
-specifier|public
 specifier|static
 class|class
 name|Conf
@@ -2348,7 +2343,6 @@ name|int
 name|getFileBlockStorageLocationsTimeout
 decl_stmt|;
 DECL|method|Conf (Configuration conf)
-specifier|public
 name|Conf
 parameter_list|(
 name|Configuration
