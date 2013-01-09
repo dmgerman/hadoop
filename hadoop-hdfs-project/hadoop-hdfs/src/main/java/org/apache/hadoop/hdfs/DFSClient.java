@@ -830,22 +830,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|conf
 operator|.
 name|Configuration
@@ -1374,22 +1358,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsProtoUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|LocatedBlock
 import|;
 end_import
@@ -1589,6 +1557,22 @@ operator|.
 name|DataTransferProtos
 operator|.
 name|Status
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
+name|PBHelper
 import|;
 end_import
 
@@ -2936,7 +2920,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Same as this(nameNodeUri, conf, null);    * @see #DFSClient(InetSocketAddress, Configuration, org.apache.hadoop.fs.FileSystem.Statistics)    */
+comment|/**    * Same as this(nameNodeUri, conf, null);    * @see #DFSClient(URI, Configuration, FileSystem.Statistics)    */
 DECL|method|DFSClient (URI nameNodeUri, Configuration conf )
 specifier|public
 name|DFSClient
@@ -2960,7 +2944,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Same as this(nameNodeUri, null, conf, stats);    * @see #DFSClient(InetSocketAddress, ClientProtocol, Configuration, org.apache.hadoop.fs.FileSystem.Statistics)     */
+comment|/**    * Same as this(nameNodeUri, null, conf, stats);    * @see #DFSClient(URI, ClientProtocol, Configuration, FileSystem.Statistics)     */
 DECL|method|DFSClient (URI nameNodeUri, Configuration conf, FileSystem.Statistics stats)
 specifier|public
 name|DFSClient
@@ -6023,7 +6007,7 @@ name|ioBufferSize
 argument_list|)
 return|;
 block|}
-comment|/**    * Call {@link #create(String, FsPermission, EnumSet, short, long,     * Progressable, int)} with default<code>permission</code>    * {@link FsPermission#getDefault()}.    *     * @param src File name    * @param overwrite overwrite an existing file if true    * @param replication replication factor for the file    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffersize    *     * @return output stream    */
+comment|/**    * Call {@link #create(String, FsPermission, EnumSet, short, long,     * Progressable, int, ChecksumOpt)} with default<code>permission</code>    * {@link FsPermission#getDefault()}.    *     * @param src File name    * @param overwrite overwrite an existing file if true    * @param replication replication factor for the file    * @param blockSize maximum block size    * @param progress interface for reporting client progress    * @param buffersize underlying buffersize    *     * @return output stream    */
 DECL|method|create (String src, boolean overwrite, short replication, long blockSize, Progressable progress, int buffersize)
 specifier|public
 name|OutputStream
@@ -6390,7 +6374,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|/**    * Same as {{@link #create(String, FsPermission, EnumSet, short, long,    *  Progressable, int)} except that the permission    *  is absolute (ie has already been masked with umask.    */
+comment|/**    * Same as {{@link #create(String, FsPermission, EnumSet, short, long,    *  Progressable, int, ChecksumOpt)} except that the permission    *  is absolute (ie has already been masked with umask.    */
 DECL|method|primitiveCreate (String src, FsPermission absPermission, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, ChecksumOpt checksumOpt)
 specifier|public
 name|DFSOutputStream
@@ -7144,7 +7128,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Delete file or directory.    * See {@link ClientProtocol#delete(String)}.     */
+comment|/**    * Delete file or directory.    * See {@link ClientProtocol#delete(String, boolean)}.     */
 annotation|@
 name|Deprecated
 DECL|method|delete (String src)
@@ -8068,7 +8052,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
 name|vintPrefixed
 argument_list|(
@@ -8293,9 +8277,9 @@ operator|.
 name|Type
 name|ct
 init|=
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
-name|fromProto
+name|convert
 argument_list|(
 name|checksumData
 operator|.
@@ -8840,7 +8824,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**    * Enter, leave or get safe mode.    *     * @param action    *          One of SafeModeAction.GET, SafeModeAction.ENTER and    *          SafeModeActiob.LEAVE    * @param isChecked    *          If true, then check only active namenode's safemode status, else    *          check first namenode's status.    * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeActio,boolean)    */
+comment|/**    * Enter, leave or get safe mode.    *     * @param action    *          One of SafeModeAction.GET, SafeModeAction.ENTER and    *          SafeModeActiob.LEAVE    * @param isChecked    *          If true, then check only active namenode's safemode status, else    *          check first namenode's status.    * @see ClientProtocol#setSafeMode(HdfsConstants.SafeModeAction, boolean)    */
 DECL|method|setSafeMode (SafeModeAction action, boolean isChecked)
 specifier|public
 name|boolean

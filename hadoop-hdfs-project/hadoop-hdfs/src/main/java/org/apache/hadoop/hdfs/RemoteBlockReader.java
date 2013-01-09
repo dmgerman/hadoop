@@ -17,24 +17,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|HdfsProtoUtil
-operator|.
-name|vintPrefixed
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -301,6 +283,22 @@ operator|.
 name|DataTransferProtos
 operator|.
 name|Status
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
+name|PBHelper
 import|;
 end_import
 
@@ -1749,6 +1747,8 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
+name|PBHelper
+operator|.
 name|vintPrefixed
 argument_list|(
 name|in
