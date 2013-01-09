@@ -331,8 +331,8 @@ name|fileLocalName
 argument_list|)
 return|;
 block|}
-comment|/**    * Create snapshot for a dir using a given snapshot name    *     * @param hdfs DistributedFileSystem instance    * @param snapshottedDir The dir to be snapshotted    * @param snapshotName The name of the snapshot    * @return The path of the snapshot root    */
-DECL|method|createSnapshot (DistributedFileSystem hdfs, Path snapshottedDir, String snapshotName)
+comment|/**    * Create snapshot for a dir using a given snapshot name    *     * @param hdfs DistributedFileSystem instance    * @param snapshotRoot The dir to be snapshotted    * @param snapshotName The name of the snapshot    * @return The path of the snapshot root    */
+DECL|method|createSnapshot (DistributedFileSystem hdfs, Path snapshotRoot, String snapshotName)
 specifier|public
 specifier|static
 name|Path
@@ -342,7 +342,7 @@ name|DistributedFileSystem
 name|hdfs
 parameter_list|,
 name|Path
-name|snapshottedDir
+name|snapshotRoot
 parameter_list|,
 name|String
 name|snapshotName
@@ -356,7 +356,7 @@ name|hdfs
 operator|.
 name|exists
 argument_list|(
-name|snapshottedDir
+name|snapshotRoot
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -364,7 +364,7 @@ name|hdfs
 operator|.
 name|allowSnapshot
 argument_list|(
-name|snapshottedDir
+name|snapshotRoot
 operator|.
 name|toString
 argument_list|()
@@ -374,12 +374,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-name|snapshotName
+name|snapshotRoot
 argument_list|,
-name|snapshottedDir
-operator|.
-name|toString
-argument_list|()
+name|snapshotName
 argument_list|)
 expr_stmt|;
 return|return
@@ -387,7 +384,7 @@ name|SnapshotTestHelper
 operator|.
 name|getSnapshotRoot
 argument_list|(
-name|snapshottedDir
+name|snapshotRoot
 argument_list|,
 name|snapshotName
 argument_list|)

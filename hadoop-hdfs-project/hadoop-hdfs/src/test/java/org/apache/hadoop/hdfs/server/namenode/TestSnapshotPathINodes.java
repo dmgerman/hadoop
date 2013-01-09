@@ -1184,12 +1184,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-literal|"s1"
-argument_list|,
 name|sub1
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+literal|"s1"
 argument_list|)
 expr_stmt|;
 comment|// The path when accessing the snapshot file of file1 is
@@ -1578,12 +1575,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-literal|"s2"
-argument_list|,
 name|sub1
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+literal|"s2"
 argument_list|)
 expr_stmt|;
 comment|// Delete the original file /TestSnapshot/sub1/file1
@@ -1898,12 +1892,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-literal|"s4"
-argument_list|,
 name|sub1
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+literal|"s4"
 argument_list|)
 expr_stmt|;
 comment|// Add a new file /TestSnapshot/sub1/file3
@@ -2345,12 +2336,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-literal|"s3"
-argument_list|,
 name|sub1
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+literal|"s3"
 argument_list|)
 expr_stmt|;
 comment|// Modify file1

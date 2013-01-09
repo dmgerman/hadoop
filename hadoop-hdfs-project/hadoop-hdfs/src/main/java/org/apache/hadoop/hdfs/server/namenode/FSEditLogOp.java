@@ -12100,13 +12100,13 @@ name|CreateSnapshotOp
 extends|extends
 name|FSEditLogOp
 block|{
-DECL|field|snapshotName
-name|String
-name|snapshotName
-decl_stmt|;
 DECL|field|snapshotRoot
 name|String
 name|snapshotRoot
+decl_stmt|;
+DECL|field|snapshotName
+name|String
+name|snapshotName
 decl_stmt|;
 DECL|method|CreateSnapshotOp ()
 specifier|public
@@ -12190,7 +12190,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|snapshotName
+name|snapshotRoot
 operator|=
 name|FSImageSerialization
 operator|.
@@ -12199,7 +12199,7 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-name|snapshotRoot
+name|snapshotName
 operator|=
 name|FSImageSerialization
 operator|.
@@ -12226,7 +12226,7 @@ name|FSImageSerialization
 operator|.
 name|writeString
 argument_list|(
-name|snapshotName
+name|snapshotRoot
 argument_list|,
 name|out
 argument_list|)
@@ -12235,7 +12235,7 @@ name|FSImageSerialization
 operator|.
 name|writeString
 argument_list|(
-name|snapshotRoot
+name|snapshotName
 argument_list|,
 name|out
 argument_list|)
@@ -12260,9 +12260,9 @@ name|addSaxString
 argument_list|(
 name|contentHandler
 argument_list|,
-literal|"SNAPSHOTNAME"
+literal|"SNAPSHOTROOT"
 argument_list|,
-name|snapshotName
+name|snapshotRoot
 argument_list|)
 expr_stmt|;
 name|XMLUtils
@@ -12271,9 +12271,9 @@ name|addSaxString
 argument_list|(
 name|contentHandler
 argument_list|,
-literal|"SNAPSHOTROOT"
+literal|"SNAPSHOTNAME"
 argument_list|,
-name|snapshotRoot
+name|snapshotName
 argument_list|)
 expr_stmt|;
 block|}
@@ -12289,15 +12289,6 @@ parameter_list|)
 throws|throws
 name|InvalidXmlException
 block|{
-name|snapshotName
-operator|=
-name|st
-operator|.
-name|getValue
-argument_list|(
-literal|"SNAPSHOTNAME"
-argument_list|)
-expr_stmt|;
 name|snapshotRoot
 operator|=
 name|st
@@ -12305,6 +12296,15 @@ operator|.
 name|getValue
 argument_list|(
 literal|"SNAPSHOTROOT"
+argument_list|)
+expr_stmt|;
+name|snapshotName
+operator|=
+name|st
+operator|.
+name|getValue
+argument_list|(
+literal|"SNAPSHOTNAME"
 argument_list|)
 expr_stmt|;
 block|}
@@ -12327,21 +12327,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"CreateSnapshotOp [snapshotName="
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-name|snapshotName
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|", snapshotRoot="
+literal|"CreateSnapshotOp [snapshotRoot="
 argument_list|)
 expr_stmt|;
 name|builder
@@ -12349,6 +12335,20 @@ operator|.
 name|append
 argument_list|(
 name|snapshotRoot
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", snapshotName="
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+name|snapshotName
 argument_list|)
 expr_stmt|;
 name|builder
@@ -12374,13 +12374,13 @@ name|DeleteSnapshotOp
 extends|extends
 name|FSEditLogOp
 block|{
-DECL|field|snapshotName
-name|String
-name|snapshotName
-decl_stmt|;
 DECL|field|snapshotRoot
 name|String
 name|snapshotRoot
+decl_stmt|;
+DECL|field|snapshotName
+name|String
+name|snapshotName
 decl_stmt|;
 DECL|method|DeleteSnapshotOp ()
 name|DeleteSnapshotOp
@@ -12462,7 +12462,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|snapshotName
+name|snapshotRoot
 operator|=
 name|FSImageSerialization
 operator|.
@@ -12471,7 +12471,7 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-name|snapshotRoot
+name|snapshotName
 operator|=
 name|FSImageSerialization
 operator|.
@@ -12498,7 +12498,7 @@ name|FSImageSerialization
 operator|.
 name|writeString
 argument_list|(
-name|snapshotName
+name|snapshotRoot
 argument_list|,
 name|out
 argument_list|)
@@ -12507,7 +12507,7 @@ name|FSImageSerialization
 operator|.
 name|writeString
 argument_list|(
-name|snapshotRoot
+name|snapshotName
 argument_list|,
 name|out
 argument_list|)
@@ -12532,9 +12532,9 @@ name|addSaxString
 argument_list|(
 name|contentHandler
 argument_list|,
-literal|"SNAPSHOTNAME"
+literal|"SNAPSHOTROOT"
 argument_list|,
-name|snapshotName
+name|snapshotRoot
 argument_list|)
 expr_stmt|;
 name|XMLUtils
@@ -12543,9 +12543,9 @@ name|addSaxString
 argument_list|(
 name|contentHandler
 argument_list|,
-literal|"SNAPSHOTROOT"
+literal|"SNAPSHOTNAME"
 argument_list|,
-name|snapshotRoot
+name|snapshotName
 argument_list|)
 expr_stmt|;
 block|}
@@ -12561,15 +12561,6 @@ parameter_list|)
 throws|throws
 name|InvalidXmlException
 block|{
-name|snapshotName
-operator|=
-name|st
-operator|.
-name|getValue
-argument_list|(
-literal|"SNAPSHOTNAME"
-argument_list|)
-expr_stmt|;
 name|snapshotRoot
 operator|=
 name|st
@@ -12577,6 +12568,15 @@ operator|.
 name|getValue
 argument_list|(
 literal|"SNAPSHOTROOT"
+argument_list|)
+expr_stmt|;
+name|snapshotName
+operator|=
+name|st
+operator|.
+name|getValue
+argument_list|(
+literal|"SNAPSHOTNAME"
 argument_list|)
 expr_stmt|;
 block|}
@@ -12599,21 +12599,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"DeleteSnapshotOp [snapshotName="
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-name|snapshotName
-argument_list|)
-expr_stmt|;
-name|builder
-operator|.
-name|append
-argument_list|(
-literal|", snapshotRoot="
+literal|"DeleteSnapshotOp [snapshotRoot="
 argument_list|)
 expr_stmt|;
 name|builder
@@ -12621,6 +12607,20 @@ operator|.
 name|append
 argument_list|(
 name|snapshotRoot
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", snapshotName="
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+name|snapshotName
 argument_list|)
 expr_stmt|;
 name|builder

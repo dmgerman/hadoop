@@ -417,6 +417,15 @@ decl_stmt|;
 annotation|@
 name|Metric
 argument_list|(
+literal|"Number of deleteSnapshot operations"
+argument_list|)
+DECL|field|deleteSnapshotOps
+name|MutableCounterLong
+name|deleteSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
 literal|"Number of renameSnapshot operations"
 argument_list|)
 DECL|field|renameSnapshotOps
@@ -927,6 +936,18 @@ name|incrCreateSnapshotOps
 parameter_list|()
 block|{
 name|createSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrDeleteSnapshotOps ()
+specifier|public
+name|void
+name|incrDeleteSnapshotOps
+parameter_list|()
+block|{
+name|deleteSnapshotOps
 operator|.
 name|incr
 argument_list|()

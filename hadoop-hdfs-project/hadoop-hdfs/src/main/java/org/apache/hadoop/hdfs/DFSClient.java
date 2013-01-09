@@ -8928,17 +8928,17 @@ name|isChecked
 argument_list|)
 return|;
 block|}
-comment|/**    * Create one snapshot.    *     * @see ClientProtocol#createSnapshot(String snapshotName, String    *      snapshotRoot)    */
-DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+comment|/**    * Create one snapshot.    *     * @param snapshotRoot The directory where the snapshot is to be taken    * @param snapshotName Name of the snapshot    * @see ClientProtocol#createSnapshot(String, String)    */
+DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
 name|void
 name|createSnapshot
 parameter_list|(
 name|String
-name|snapshotName
+name|snapshotRoot
 parameter_list|,
 name|String
-name|snapshotRoot
+name|snapshotName
 parameter_list|)
 throws|throws
 name|IOException
@@ -8950,9 +8950,34 @@ name|namenode
 operator|.
 name|createSnapshot
 argument_list|(
-name|snapshotName
-argument_list|,
 name|snapshotRoot
+argument_list|,
+name|snapshotName
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Delete a snapshot of a snapshottable directory.    *     * @param snapshotRoot The snapshottable directory that the     *                    to-be-deleted snapshot belongs to    * @param snapshotName The name of the to-be-deleted snapshot    * @throws IOException    * @see ClientProtocol#deleteSnapshot(String, String)    */
+DECL|method|deleteSnapshot (String snapshotRoot, String snapshotName)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+name|String
+name|snapshotRoot
+parameter_list|,
+name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|namenode
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|snapshotRoot
+argument_list|,
+name|snapshotName
 argument_list|)
 expr_stmt|;
 block|}

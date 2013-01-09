@@ -1552,17 +1552,32 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a snapshot    * @param snapshotName name of the snapshot created    * @param snapshotRoot the path that is being snapshotted    * @throws IOException    */
-DECL|method|createSnapshot (String snapshotName, String snapshotRoot)
+comment|/**    * Create a snapshot    * @param snapshotRoot the path that is being snapshotted    * @param snapshotName name of the snapshot created    * @throws IOException    */
+DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
 name|void
 name|createSnapshot
 parameter_list|(
 name|String
-name|snapshotName
+name|snapshotRoot
 parameter_list|,
 name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Delete a specific snapshot of a snapshottable directory    * @param snapshotRoot  The snapshottable directory    * @param snapshotName Name of the snapshot for the snapshottable directory    * @throws IOException    */
+DECL|method|deleteSnapshot (String snapshotRoot, String snapshotName)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+name|String
 name|snapshotRoot
+parameter_list|,
+name|String
+name|snapshotName
 parameter_list|)
 throws|throws
 name|IOException

@@ -146,6 +146,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INodeDirectory
 import|;
 end_import
@@ -431,19 +451,19 @@ name|getAndDecrement
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a snapshot of the given path.    * @param snapshotName    *          The name of the snapshot.    * @param path    *          The directory path where the snapshot will be taken.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
-DECL|method|createSnapshot (final String snapshotName, final String path )
+comment|/**    * Create a snapshot of the given path.    * @param path    *          The directory path where the snapshot will be taken.    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
+DECL|method|createSnapshot (final String path, final String snapshotName )
 specifier|public
 name|void
 name|createSnapshot
 parameter_list|(
 specifier|final
 name|String
-name|snapshotName
+name|path
 parameter_list|,
 specifier|final
 name|String
-name|path
+name|snapshotName
 parameter_list|)
 throws|throws
 name|IOException
@@ -492,6 +512,76 @@ expr_stmt|;
 name|numSnapshots
 operator|.
 name|getAndIncrement
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Delete a snapshot for a snapshottable directory    * @param path Path to the directory where the snapshot was taken    * @param snapshotName Name of the snapshot to be deleted    * @param collectedBlocks Used to collect information to update blocksMap     * @throws IOException    */
+DECL|method|deleteSnapshot (final String path, final String snapshotName, BlocksMapUpdateInfo collectedBlocks)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|,
+specifier|final
+name|String
+name|snapshotName
+parameter_list|,
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// parse the path, and check if the path is a snapshot path
+name|INodesInPath
+name|inodesInPath
+init|=
+name|fsdir
+operator|.
+name|getMutableINodesInPath
+argument_list|(
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// transfer the inode for path to an INodeDirectorySnapshottable.
+comment|// the INodeDirectorySnapshottable#valueOf method will throw Exception
+comment|// if the path is not for a snapshottable directory
+name|INodeDirectorySnapshottable
+name|dir
+init|=
+name|INodeDirectorySnapshottable
+operator|.
+name|valueOf
+argument_list|(
+name|inodesInPath
+operator|.
+name|getLastINode
+argument_list|()
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|dir
+operator|.
+name|removeSnapshot
+argument_list|(
+name|snapshotName
+argument_list|,
+name|collectedBlocks
+argument_list|)
+expr_stmt|;
+name|numSnapshots
+operator|.
+name|getAndDecrement
 argument_list|()
 expr_stmt|;
 block|}

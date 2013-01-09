@@ -4051,16 +4051,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createSnapshot (String snapshotName, String path)
+DECL|method|createSnapshot (Path path, String snapshotName)
 specifier|public
 name|void
 name|createSnapshot
 parameter_list|(
-name|String
-name|snapshotName
+name|Path
+name|path
 parameter_list|,
 name|String
-name|path
+name|snapshotName
 parameter_list|)
 throws|throws
 name|IOException
@@ -4069,19 +4069,22 @@ name|dfs
 operator|.
 name|createSnapshot
 argument_list|(
-name|snapshotName
-argument_list|,
+name|getPathName
+argument_list|(
 name|path
+argument_list|)
+argument_list|,
+name|snapshotName
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Rename a snapshot    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    */
-DECL|method|renameSnapshot (String path, String snapshotOldName, String snapshotNewName)
+DECL|method|renameSnapshot (Path path, String snapshotOldName, String snapshotNewName)
 specifier|public
 name|void
 name|renameSnapshot
 parameter_list|(
-name|String
+name|Path
 name|path
 parameter_list|,
 name|String
@@ -4097,7 +4100,10 @@ name|dfs
 operator|.
 name|renameSnapshot
 argument_list|(
+name|getPathName
+argument_list|(
 name|path
+argument_list|)
 argument_list|,
 name|snapshotOldName
 argument_list|,
@@ -4121,6 +4127,35 @@ operator|.
 name|getSnapshottableDirListing
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|deleteSnapshot (Path snapshotDir, String snapshotName)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+name|Path
+name|snapshotDir
+parameter_list|,
+name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|getPathName
+argument_list|(
+name|snapshotDir
+argument_list|)
+argument_list|,
+name|snapshotName
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

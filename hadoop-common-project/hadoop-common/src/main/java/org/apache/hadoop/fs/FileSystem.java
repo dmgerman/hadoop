@@ -6716,17 +6716,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**    * Create a snapshot    * @param snapshotName The name of the snapshot    * @param path The directory where snapshots will be taken.    */
-DECL|method|createSnapshot (String snapshotName, String path)
+comment|/**    * Create a snapshot    * @param path The directory where snapshots will be taken.    * @param snapshotName The name of the snapshot    */
+DECL|method|createSnapshot (Path path, String snapshotName)
 specifier|public
 name|void
 name|createSnapshot
 parameter_list|(
-name|String
-name|snapshotName
+name|Path
+name|path
 parameter_list|,
 name|String
-name|path
+name|snapshotName
 parameter_list|)
 throws|throws
 name|IOException
@@ -6742,6 +6742,35 @@ name|getSimpleName
 argument_list|()
 operator|+
 literal|" doesn't support createSnapshot"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Delete a snapshot of a directory    * @param path  The directory that the to-be-deleted snapshot belongs to    * @param snapshotName The name of the snapshot    */
+DECL|method|deleteSnapshot (Path path, String snapshotName)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support deleteSnapshot"
 argument_list|)
 throw|;
 block|}

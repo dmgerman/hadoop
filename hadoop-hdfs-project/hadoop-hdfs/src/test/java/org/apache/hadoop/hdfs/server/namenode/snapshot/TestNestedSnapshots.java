@@ -826,12 +826,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-name|s1name
-argument_list|,
 name|foo
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+name|s1name
 argument_list|)
 expr_stmt|;
 name|print
@@ -881,12 +878,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-name|s2name
-argument_list|,
 name|bar
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+name|s2name
 argument_list|)
 expr_stmt|;
 name|print
@@ -1203,9 +1197,9 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
-name|snapshotName
+name|dir
 argument_list|,
-name|dirStr
+name|snapshotName
 argument_list|)
 expr_stmt|;
 comment|//create a file occasionally
@@ -1255,11 +1249,11 @@ name|hdfs
 operator|.
 name|createSnapshot
 argument_list|(
+name|dir
+argument_list|,
 literal|"s"
 operator|+
 name|s
-argument_list|,
-name|dirStr
 argument_list|)
 expr_stmt|;
 name|Assert

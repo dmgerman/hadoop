@@ -681,9 +681,6 @@ operator|.
 name|renameSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 literal|"s3"
 argument_list|,
@@ -747,9 +744,6 @@ operator|.
 name|renameSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 literal|"s1"
 argument_list|,
@@ -789,9 +783,6 @@ operator|.
 name|renameSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 literal|"s22"
 argument_list|,
@@ -907,9 +898,6 @@ operator|.
 name|renameSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 literal|"s1"
 argument_list|,
@@ -1076,9 +1064,6 @@ operator|.
 name|renameSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 literal|"wrongName"
 argument_list|,
@@ -1166,9 +1151,6 @@ operator|.
 name|renameSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 literal|"s1"
 argument_list|,

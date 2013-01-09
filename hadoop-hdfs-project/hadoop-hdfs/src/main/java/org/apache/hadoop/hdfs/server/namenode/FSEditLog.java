@@ -3881,15 +3881,15 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logCreateSnapshot (String snapName, String snapRoot)
+DECL|method|logCreateSnapshot (String snapRoot, String snapName)
 name|void
 name|logCreateSnapshot
 parameter_list|(
 name|String
-name|snapName
+name|snapRoot
 parameter_list|,
 name|String
-name|snapRoot
+name|snapName
 parameter_list|)
 block|{
 name|CreateSnapshotOp
@@ -3905,14 +3905,14 @@ name|get
 argument_list|()
 argument_list|)
 operator|.
-name|setSnapshotName
-argument_list|(
-name|snapName
-argument_list|)
-operator|.
 name|setSnapshotRoot
 argument_list|(
 name|snapRoot
+argument_list|)
+operator|.
+name|setSnapshotName
+argument_list|(
+name|snapName
 argument_list|)
 decl_stmt|;
 name|logEdit
@@ -3921,15 +3921,15 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logDeleteSnapshot (String snapName, String snapRoot)
+DECL|method|logDeleteSnapshot (String snapRoot, String snapName)
 name|void
 name|logDeleteSnapshot
 parameter_list|(
 name|String
-name|snapName
+name|snapRoot
 parameter_list|,
 name|String
-name|snapRoot
+name|snapName
 parameter_list|)
 block|{
 name|DeleteSnapshotOp
@@ -3945,14 +3945,14 @@ name|get
 argument_list|()
 argument_list|)
 operator|.
-name|setSnapshotName
-argument_list|(
-name|snapName
-argument_list|)
-operator|.
 name|setSnapshotRoot
 argument_list|(
 name|snapRoot
+argument_list|)
+operator|.
+name|setSnapshotName
+argument_list|(
+name|snapName
 argument_list|)
 decl_stmt|;
 name|logEdit
