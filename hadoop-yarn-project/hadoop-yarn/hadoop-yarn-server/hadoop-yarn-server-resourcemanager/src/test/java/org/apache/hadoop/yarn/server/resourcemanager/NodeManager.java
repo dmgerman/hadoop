@@ -757,7 +757,7 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|NodeManager (String hostName, int containerManagerPort, int httpPort, String rackName, int memory, ResourceTrackerService resourceTrackerService, RMContext rmContext)
+DECL|method|NodeManager (String hostName, int containerManagerPort, int httpPort, String rackName, Resource capability, ResourceTrackerService resourceTrackerService, RMContext rmContext)
 specifier|public
 name|NodeManager
 parameter_list|(
@@ -773,8 +773,8 @@ parameter_list|,
 name|String
 name|rackName
 parameter_list|,
-name|int
-name|memory
+name|Resource
+name|capability
 parameter_list|,
 name|ResourceTrackerService
 name|resourceTrackerService
@@ -821,12 +821,7 @@ name|this
 operator|.
 name|capability
 operator|=
-name|Resources
-operator|.
-name|createResource
-argument_list|(
-name|memory
-argument_list|)
+name|capability
 expr_stmt|;
 name|Resources
 operator|.
@@ -947,7 +942,10 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|memory
+name|capability
+operator|.
+name|getMemory
+argument_list|()
 argument_list|,
 name|schedulerNode
 operator|.
@@ -955,6 +953,24 @@ name|getAvailableResource
 argument_list|()
 operator|.
 name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|capability
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|,
+name|schedulerNode
+operator|.
+name|getAvailableResource
+argument_list|()
+operator|.
+name|getVirtualCores
 argument_list|()
 argument_list|)
 expr_stmt|;

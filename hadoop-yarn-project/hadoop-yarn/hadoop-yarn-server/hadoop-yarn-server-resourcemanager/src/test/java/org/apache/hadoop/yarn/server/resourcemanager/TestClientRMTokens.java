@@ -1658,6 +1658,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|512
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 operator|.
@@ -1676,6 +1678,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|5120
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 operator|.

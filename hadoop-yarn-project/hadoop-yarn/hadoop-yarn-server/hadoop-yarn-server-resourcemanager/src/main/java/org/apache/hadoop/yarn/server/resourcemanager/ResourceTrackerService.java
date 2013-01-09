@@ -1379,9 +1379,6 @@ operator|+
 literal|"registered with capability: "
 operator|+
 name|capability
-operator|.
-name|getMemory
-argument_list|()
 operator|+
 literal|", assigned nodeId "
 operator|+

@@ -569,6 +569,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|512
+argument_list|,
+literal|1
 argument_list|)
 decl_stmt|;
 name|Priority
@@ -1034,6 +1036,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|512
+argument_list|,
+literal|1
 argument_list|)
 decl_stmt|;
 name|Priority

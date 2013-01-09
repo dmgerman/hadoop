@@ -496,6 +496,21 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|availableResource
+operator|.
+name|setVirtualCores
+argument_list|(
+name|node
+operator|.
+name|getTotalCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getRMNode ()
 specifier|public

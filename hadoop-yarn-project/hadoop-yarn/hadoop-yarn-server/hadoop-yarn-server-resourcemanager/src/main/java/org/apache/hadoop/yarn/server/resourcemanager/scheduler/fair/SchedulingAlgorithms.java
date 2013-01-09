@@ -132,26 +132,6 @@ name|Resource
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
-name|Resources
-import|;
-end_import
-
 begin_comment
 comment|/**  * Utility class containing scheduling algorithms used in the fair scheduler.  */
 end_comment

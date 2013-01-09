@@ -2096,6 +2096,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|1024
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2112,6 +2114,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|10240
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;

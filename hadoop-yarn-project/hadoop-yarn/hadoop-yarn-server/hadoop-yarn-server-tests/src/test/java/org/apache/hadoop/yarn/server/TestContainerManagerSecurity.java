@@ -1771,6 +1771,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|2048
+argument_list|,
+literal|1
 argument_list|)
 decl_stmt|;
 name|ContainerTokenIdentifier
@@ -2733,6 +2735,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|1024
+argument_list|,
+literal|1
 argument_list|)
 argument_list|,
 name|Collections
@@ -3254,6 +3258,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|1024
+argument_list|,
+literal|1
 argument_list|)
 argument_list|,
 literal|1
@@ -3826,6 +3832,14 @@ name|getResource
 argument_list|()
 operator|.
 name|getMemory
+argument_list|()
+argument_list|,
+name|tokenId
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|getVirtualCores
 argument_list|()
 argument_list|)
 argument_list|,

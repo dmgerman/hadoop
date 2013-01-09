@@ -2538,7 +2538,7 @@ return|return
 name|report
 return|;
 block|}
-DECL|method|newResource (int memory)
+DECL|method|newResource (int memory, int vCores)
 specifier|public
 specifier|static
 name|Resource
@@ -2546,6 +2546,9 @@ name|newResource
 parameter_list|(
 name|int
 name|memory
+parameter_list|,
+name|int
+name|vCores
 parameter_list|)
 block|{
 name|Resource
@@ -2565,6 +2568,13 @@ operator|.
 name|setMemory
 argument_list|(
 name|memory
+argument_list|)
+expr_stmt|;
+name|resource
+operator|.
+name|setVirtualCores
+argument_list|(
+name|vCores
 argument_list|)
 expr_stmt|;
 return|return

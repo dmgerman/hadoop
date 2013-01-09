@@ -130,20 +130,6 @@ name|Joiner
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Splitter
-import|;
-end_import
-
 begin_class
 DECL|class|YarnConfiguration
 specifier|public
@@ -152,23 +138,6 @@ name|YarnConfiguration
 extends|extends
 name|Configuration
 block|{
-DECL|field|ADDR_SPLITTER
-specifier|private
-specifier|static
-specifier|final
-name|Splitter
-name|ADDR_SPLITTER
-init|=
-name|Splitter
-operator|.
-name|on
-argument_list|(
-literal|':'
-argument_list|)
-operator|.
-name|trimResults
-argument_list|()
-decl_stmt|;
 DECL|field|JOINER
 specifier|private
 specifier|static
@@ -455,7 +424,7 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_RM_SCHEDULER_PORT
 decl_stmt|;
-comment|/** Miniumum memory request grant-able by the RM scheduler. */
+comment|/** Miniumum request grant-able by the RM scheduler. */
 DECL|field|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 specifier|public
 specifier|static
@@ -476,7 +445,27 @@ name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
 init|=
 literal|1024
 decl_stmt|;
-comment|/** Maximum memory request grant-able by the RM scheduler. */
+DECL|field|RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.minimum-allocation-vcores"
+decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+init|=
+literal|1
+decl_stmt|;
+comment|/** Maximum request grant-able by the RM scheduler. */
 DECL|field|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
 specifier|public
 specifier|static
@@ -496,6 +485,26 @@ name|int
 name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
 init|=
 literal|8192
+decl_stmt|;
+DECL|field|RM_SCHEDULER_MAXIMUM_ALLOCATION_CORES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_CORES
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.maximum-allocation-vcores"
+decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_CORES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_CORES
+init|=
+literal|32
 decl_stmt|;
 comment|/** Number of threads to handle scheduler interface.*/
 DECL|field|RM_SCHEDULER_CLIENT_THREAD_COUNT
@@ -1671,6 +1680,7 @@ literal|8
 operator|*
 literal|1024
 decl_stmt|;
+comment|/** Conversion ratio for physical memory to virtual memory. */
 DECL|field|NM_VMEM_PMEM_RATIO
 specifier|public
 specifier|static
@@ -1690,6 +1700,48 @@ name|float
 name|DEFAULT_NM_VMEM_PMEM_RATIO
 init|=
 literal|2.1f
+decl_stmt|;
+comment|/** Number of Physical CPU Cores which can be allocated for containers.*/
+DECL|field|NM_VCORES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_VCORES
+init|=
+name|NM_PREFIX
+operator|+
+literal|"resource.cpu-cores"
+decl_stmt|;
+DECL|field|DEFAULT_NM_VCORES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_VCORES
+init|=
+literal|8
+decl_stmt|;
+comment|/** Conversion ratio for physical cores to virtual cores. */
+DECL|field|NM_VCORES_PCORES_RATIO
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_VCORES_PCORES_RATIO
+init|=
+name|NM_PREFIX
+operator|+
+literal|"vcores-pcores-ratio"
+decl_stmt|;
+DECL|field|DEFAULT_NM_VCORES_PCORES_RATIO
+specifier|public
+specifier|static
+specifier|final
+name|float
+name|DEFAULT_NM_VCORES_PCORES_RATIO
+init|=
+literal|2.0f
 decl_stmt|;
 comment|/** NM Webapp address.**/
 DECL|field|NM_WEBAPP_ADDRESS

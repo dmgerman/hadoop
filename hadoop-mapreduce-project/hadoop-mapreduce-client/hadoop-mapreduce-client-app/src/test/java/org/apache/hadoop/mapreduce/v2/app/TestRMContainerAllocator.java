@@ -7625,6 +7625,8 @@ operator|.
 name|newResource
 argument_list|(
 name|memory
+argument_list|,
+literal|1
 argument_list|)
 decl_stmt|;
 if|if
@@ -8141,6 +8143,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|1024
+argument_list|,
+literal|1
 argument_list|)
 argument_list|,
 name|BuilderUtils
@@ -8148,6 +8152,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|10240
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 argument_list|)
@@ -8522,6 +8528,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|1024
+argument_list|,
+literal|1
 argument_list|)
 return|;
 block|}
@@ -8539,6 +8547,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|10240
+argument_list|,
+literal|1
 argument_list|)
 return|;
 block|}

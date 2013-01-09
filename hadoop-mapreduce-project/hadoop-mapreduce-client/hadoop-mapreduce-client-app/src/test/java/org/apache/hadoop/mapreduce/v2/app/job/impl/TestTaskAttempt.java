@@ -1832,6 +1832,8 @@ operator|.
 name|newResource
 argument_list|(
 name|minContainerSize
+argument_list|,
+literal|1
 argument_list|)
 argument_list|,
 name|BuilderUtils
@@ -1839,6 +1841,8 @@ operator|.
 name|newResource
 argument_list|(
 literal|10240
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 argument_list|)

@@ -516,6 +516,26 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
+name|ResourceCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
 name|Resources
 import|;
 end_import
@@ -1368,6 +1388,11 @@ name|initialized
 init|=
 literal|false
 decl_stmt|;
+DECL|field|calculator
+specifier|private
+name|ResourceCalculator
+name|calculator
+decl_stmt|;
 DECL|method|CapacityScheduler ()
 specifier|public
 name|CapacityScheduler
@@ -1449,6 +1474,48 @@ parameter_list|()
 block|{
 return|return
 name|maximumAllocation
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationComparator ()
+specifier|public
+name|Comparator
+argument_list|<
+name|FiCaSchedulerApp
+argument_list|>
+name|getApplicationComparator
+parameter_list|()
+block|{
+return|return
+name|applicationComparator
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getResourceCalculator ()
+specifier|public
+name|ResourceCalculator
+name|getResourceCalculator
+parameter_list|()
+block|{
+return|return
+name|calculator
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getQueueComparator ()
+specifier|public
+name|Comparator
+argument_list|<
+name|CSQueue
+argument_list|>
+name|getQueueComparator
+parameter_list|()
+block|{
+return|return
+name|queueComparator
 return|;
 block|}
 annotation|@
@@ -1547,6 +1614,17 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|calculator
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getResourceCalculator
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|rmContext
 operator|=
 name|rmContext
@@ -1561,6 +1639,37 @@ expr_stmt|;
 name|initialized
 operator|=
 literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Initialized CapacityScheduler with "
+operator|+
+literal|"calculator="
+operator|+
+name|getResourceCalculator
+argument_list|()
+operator|.
+name|getClass
+argument_list|()
+operator|+
+literal|", "
+operator|+
+literal|"minimumAllocation=<"
+operator|+
+name|getMinimumResourceCapability
+argument_list|()
+operator|+
+literal|">, "
+operator|+
+literal|"maximumAllocation=<"
+operator|+
+name|getMaximumResourceCapability
+argument_list|()
+operator|+
+literal|">"
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -1706,10 +1815,6 @@ name|queues
 argument_list|,
 name|queues
 argument_list|,
-name|queueComparator
-argument_list|,
-name|applicationComparator
-argument_list|,
 name|noop
 argument_list|)
 expr_stmt|;
@@ -1777,10 +1882,6 @@ argument_list|,
 name|newQueues
 argument_list|,
 name|queues
-argument_list|,
-name|queueComparator
-argument_list|,
-name|applicationComparator
 argument_list|,
 name|noop
 argument_list|)
@@ -1972,7 +2073,7 @@ name|CapacityScheduler
 operator|.
 name|class
 argument_list|)
-DECL|method|parseQueue ( CapacitySchedulerContext csContext, CapacitySchedulerConfiguration conf, CSQueue parent, String queueName, Map<String, CSQueue> queues, Map<String, CSQueue> oldQueues, Comparator<CSQueue> queueComparator, Comparator<FiCaSchedulerApp> applicationComparator, QueueHook hook)
+DECL|method|parseQueue ( CapacitySchedulerContext csContext, CapacitySchedulerConfiguration conf, CSQueue parent, String queueName, Map<String, CSQueue> queues, Map<String, CSQueue> oldQueues, QueueHook hook)
 specifier|static
 name|CSQueue
 name|parseQueue
@@ -2004,18 +2105,6 @@ argument_list|,
 name|CSQueue
 argument_list|>
 name|oldQueues
-parameter_list|,
-name|Comparator
-argument_list|<
-name|CSQueue
-argument_list|>
-name|queueComparator
-parameter_list|,
-name|Comparator
-argument_list|<
-name|FiCaSchedulerApp
-argument_list|>
-name|applicationComparator
 parameter_list|,
 name|QueueHook
 name|hook
@@ -2095,8 +2184,6 @@ name|queueName
 argument_list|,
 name|parent
 argument_list|,
-name|applicationComparator
-argument_list|,
 name|oldQueues
 operator|.
 name|get
@@ -2127,8 +2214,6 @@ argument_list|(
 name|csContext
 argument_list|,
 name|queueName
-argument_list|,
-name|queueComparator
 argument_list|,
 name|parent
 argument_list|,
@@ -2187,10 +2272,6 @@ argument_list|,
 name|queues
 argument_list|,
 name|oldQueues
-argument_list|,
-name|queueComparator
-argument_list|,
-name|applicationComparator
 argument_list|,
 name|hook
 argument_list|)
@@ -2771,6 +2852,8 @@ operator|.
 name|createResource
 argument_list|(
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -2843,10 +2926,12 @@ name|normalizeRequests
 argument_list|(
 name|ask
 argument_list|,
-name|minimumAllocation
-operator|.
-name|getMemory
+name|calculator
+argument_list|,
+name|getClusterResources
 argument_list|()
+argument_list|,
+name|minimumAllocation
 argument_list|)
 expr_stmt|;
 comment|// Release containers

@@ -41,28 +41,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
-name|Resources
-operator|.
-name|multiply
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -353,6 +331,26 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
+name|Resources
 import|;
 end_import
 
@@ -2064,6 +2062,8 @@ name|_decrPendingResources
 argument_list|(
 name|containers
 argument_list|,
+name|Resources
+operator|.
 name|multiply
 argument_list|(
 name|res
