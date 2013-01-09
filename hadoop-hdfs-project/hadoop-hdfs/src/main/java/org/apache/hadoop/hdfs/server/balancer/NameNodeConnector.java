@@ -437,6 +437,15 @@ argument_list|(
 literal|"/system/balancer.id"
 argument_list|)
 decl_stmt|;
+DECL|field|MAX_NOT_CHANGED_INTERATIONS
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|MAX_NOT_CHANGED_INTERATIONS
+init|=
+literal|5
+decl_stmt|;
 DECL|field|nameNodeUri
 specifier|final
 name|URI
@@ -488,6 +497,14 @@ DECL|field|keyUpdaterInterval
 specifier|private
 name|long
 name|keyUpdaterInterval
+decl_stmt|;
+comment|// used for balancer
+DECL|field|notChangedIterations
+specifier|private
+name|int
+name|notChangedIterations
+init|=
+literal|0
 decl_stmt|;
 DECL|field|blockTokenSecretManager
 specifier|private
@@ -789,6 +806,60 @@ literal|"Another balancer is running"
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|shouldContinue (long dispatchBlockMoveBytes)
+name|boolean
+name|shouldContinue
+parameter_list|(
+name|long
+name|dispatchBlockMoveBytes
+parameter_list|)
+block|{
+if|if
+condition|(
+name|dispatchBlockMoveBytes
+operator|>
+literal|0
+condition|)
+block|{
+name|notChangedIterations
+operator|=
+literal|0
+expr_stmt|;
+block|}
+else|else
+block|{
+name|notChangedIterations
+operator|++
+expr_stmt|;
+if|if
+condition|(
+name|notChangedIterations
+operator|>=
+name|MAX_NOT_CHANGED_INTERATIONS
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"No block has been moved for "
+operator|+
+name|notChangedIterations
+operator|+
+literal|" iterations. Exiting..."
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+block|}
+return|return
+literal|true
+return|;
 block|}
 comment|/** Get an access token for a block. */
 DECL|method|getAccessToken (ExtendedBlock eb )

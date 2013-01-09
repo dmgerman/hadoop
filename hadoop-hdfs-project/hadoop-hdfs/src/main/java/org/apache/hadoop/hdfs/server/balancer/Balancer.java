@@ -926,6 +926,15 @@ name|MAX_NUM_CONCURRENT_MOVES
 init|=
 literal|5
 decl_stmt|;
+DECL|field|MAX_NO_PENDING_BLOCK_INTERATIONS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_NO_PENDING_BLOCK_INTERATIONS
+init|=
+literal|5
+decl_stmt|;
 DECL|field|USAGE
 specifier|private
 specifier|static
@@ -3317,6 +3326,11 @@ name|isTimeUp
 init|=
 literal|false
 decl_stmt|;
+name|int
+name|noPendingBlockIteration
+init|=
+literal|0
+decl_stmt|;
 while|while
 condition|(
 operator|!
@@ -3399,6 +3413,27 @@ expr_stmt|;
 return|return;
 block|}
 block|}
+else|else
+block|{
+comment|// source node cannot find a pendingBlockToMove, iteration +1
+name|noPendingBlockIteration
+operator|++
+expr_stmt|;
+comment|// in case no blocks can be moved for source node's task,
+comment|// jump out of while-loop after 5 iterations.
+if|if
+condition|(
+name|noPendingBlockIteration
+operator|>=
+name|MAX_NO_PENDING_BLOCK_INTERATIONS
+condition|)
+block|{
+name|scheduledSize
+operator|=
+literal|0
+expr_stmt|;
+block|}
+block|}
 comment|// check if time is up or not
 if|if
 condition|(
@@ -3464,6 +3499,8 @@ name|UnsupportedActionException
 block|{
 if|if
 condition|(
+operator|!
+operator|(
 name|BlockPlacementPolicy
 operator|.
 name|getInstance
@@ -3476,6 +3513,7 @@ literal|null
 argument_list|)
 operator|instanceof
 name|BlockPlacementPolicyDefault
+operator|)
 condition|)
 block|{
 throw|throw
@@ -4795,13 +4833,6 @@ operator|new
 name|BytesMoved
 argument_list|()
 decl_stmt|;
-DECL|field|notChangedIterations
-specifier|private
-name|int
-name|notChangedIterations
-init|=
-literal|0
-decl_stmt|;
 comment|/* Start a thread to dispatch block moves for each source.     * The thread selects blocks to move& sends request to proxy source to    * initiate block move. The process is flow controlled. Block selection is    * blocked if there are too many un-confirmed block moves.    * Return the total number of bytes successfully moved in this iteration.    */
 DECL|method|dispatchBlockMoves ()
 specifier|private
@@ -6058,51 +6089,24 @@ expr_stmt|;
 comment|/* For each pair of<source, target>, start a thread that repeatedly         * decide a block to be moved and its proxy source,         * then initiates the move until all bytes are moved or no more block        * available to move.        * Exit no byte has been moved for 5 consecutive iterations.        */
 if|if
 condition|(
+operator|!
+name|this
+operator|.
+name|nnc
+operator|.
+name|shouldContinue
+argument_list|(
 name|dispatchBlockMoves
 argument_list|()
-operator|>
-literal|0
-condition|)
-block|{
-name|notChangedIterations
-operator|=
-literal|0
-expr_stmt|;
-block|}
-else|else
-block|{
-name|notChangedIterations
-operator|++
-expr_stmt|;
-if|if
-condition|(
-name|notChangedIterations
-operator|>=
-literal|5
-condition|)
-block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"No block has been moved for 5 iterations. Exiting..."
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 return|return
 name|ReturnStatus
 operator|.
 name|NO_MOVE_PROGRESS
 return|;
 block|}
-block|}
-comment|// clean all lists
-name|resetData
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 return|return
 name|ReturnStatus
 operator|.
@@ -6385,6 +6389,14 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+comment|// clean all lists
+name|b
+operator|.
+name|resetData
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|r
