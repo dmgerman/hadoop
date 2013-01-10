@@ -46,7 +46,17 @@ name|java
 operator|.
 name|io
 operator|.
-name|PrintStream
+name|OutputStreamWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|PrintWriter
 import|;
 end_import
 
@@ -134,6 +144,20 @@ name|FSEditLogOpCodes
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/**  * StatisticsEditsVisitor implements text version of EditsVisitor  * that aggregates counts of op codes processed  *  */
 end_comment
@@ -157,7 +181,7 @@ block|{
 DECL|field|out
 specifier|final
 specifier|private
-name|PrintStream
+name|PrintWriter
 name|out
 decl_stmt|;
 DECL|field|version
@@ -204,9 +228,17 @@ operator|.
 name|out
 operator|=
 operator|new
-name|PrintStream
+name|PrintWriter
+argument_list|(
+operator|new
+name|OutputStreamWriter
 argument_list|(
 name|out
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
