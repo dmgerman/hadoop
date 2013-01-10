@@ -437,12 +437,12 @@ argument_list|(
 literal|"/system/balancer.id"
 argument_list|)
 decl_stmt|;
-DECL|field|MAX_NOT_CHANGED_INTERATIONS
+DECL|field|MAX_NOT_CHANGED_ITERATIONS
 specifier|private
 specifier|static
 specifier|final
 name|int
-name|MAX_NOT_CHANGED_INTERATIONS
+name|MAX_NOT_CHANGED_ITERATIONS
 init|=
 literal|5
 decl_stmt|;
@@ -836,7 +836,7 @@ if|if
 condition|(
 name|notChangedIterations
 operator|>=
-name|MAX_NOT_CHANGED_INTERATIONS
+name|MAX_NOT_CHANGED_ITERATIONS
 condition|)
 block|{
 name|System
