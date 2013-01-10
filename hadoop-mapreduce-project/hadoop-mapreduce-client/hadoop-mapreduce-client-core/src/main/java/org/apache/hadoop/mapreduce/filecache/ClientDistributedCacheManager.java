@@ -40,6 +40,26 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -198,8 +218,53 @@ specifier|public
 class|class
 name|ClientDistributedCacheManager
 block|{
+comment|/**    * Determines timestamps of files to be cached, and stores those    * in the configuration. Determines the visibilities of the distributed cache    * files and archives. The visibility of a cache path is "public" if the leaf    * component has READ permissions for others, and the parent subdirs have     * EXECUTE permissions for others.    *     * This is an internal method!    *     * @param job    * @throws IOException    */
+DECL|method|determineTimestampsAndCacheVisibilities (Configuration job)
+specifier|public
+specifier|static
+name|void
+name|determineTimestampsAndCacheVisibilities
+parameter_list|(
+name|Configuration
+name|job
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|determineTimestamps
+argument_list|(
+name|job
+argument_list|,
+name|statCache
+argument_list|)
+expr_stmt|;
+name|determineCacheVisibilities
+argument_list|(
+name|job
+argument_list|,
+name|statCache
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Determines timestamps of files to be cached, and stores those    * in the configuration.  This is intended to be used internally by JobClient    * after all cache files have been added.    *     * This is an internal method!    *     * @param job Configuration of a job.    * @throws IOException    */
-DECL|method|determineTimestamps (Configuration job)
+DECL|method|determineTimestamps (Configuration job, Map<URI, FileStatus> statCache)
 specifier|public
 specifier|static
 name|void
@@ -207,6 +272,14 @@ name|determineTimestamps
 parameter_list|(
 name|Configuration
 name|job
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -240,6 +313,8 @@ name|tarchives
 index|[
 literal|0
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 decl_stmt|;
 name|StringBuilder
@@ -303,6 +378,8 @@ name|tarchives
 index|[
 name|i
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 expr_stmt|;
 name|archiveFileSizes
@@ -404,6 +481,8 @@ name|tfiles
 index|[
 literal|0
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 decl_stmt|;
 name|StringBuilder
@@ -467,6 +546,8 @@ name|tfiles
 index|[
 name|i
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 expr_stmt|;
 name|fileSizes
@@ -720,7 +801,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Determines the visibilities of the distributed cache files and     * archives. The visibility of a cache path is "public" if the leaf component    * has READ permissions for others, and the parent subdirs have     * EXECUTE permissions for others    * @param job    * @throws IOException    */
-DECL|method|determineCacheVisibilities (Configuration job)
+DECL|method|determineCacheVisibilities (Configuration job, Map<URI, FileStatus> statCache)
 specifier|public
 specifier|static
 name|void
@@ -728,6 +809,14 @@ name|determineCacheVisibilities
 parameter_list|(
 name|Configuration
 name|job
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -768,6 +857,8 @@ name|tarchives
 index|[
 literal|0
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 argument_list|)
 argument_list|)
@@ -812,6 +903,8 @@ name|tarchives
 index|[
 name|i
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 argument_list|)
 argument_list|)
@@ -864,6 +957,8 @@ name|tfiles
 index|[
 literal|0
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 argument_list|)
 argument_list|)
@@ -908,6 +1003,8 @@ name|tfiles
 index|[
 name|i
 index|]
+argument_list|,
+name|statCache
 argument_list|)
 argument_list|)
 argument_list|)
@@ -1025,17 +1122,26 @@ name|timestamps
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns {@link FileStatus} of a given cache file on hdfs.    *     * @param conf configuration    * @param cache cache file     * @return {@link FileStatus} of a given cache file on hdfs    * @throws IOException    */
-DECL|method|getFileStatus (Configuration conf, URI cache)
+comment|/**    * Gets the file status for the given URI.  If the URI is in the cache,    * returns it.  Otherwise, fetches it and adds it to the cache.    */
+DECL|method|getFileStatus (Configuration job, URI uri, Map<URI, FileStatus> statCache)
+specifier|private
 specifier|static
 name|FileStatus
 name|getFileStatus
 parameter_list|(
 name|Configuration
-name|conf
+name|job
 parameter_list|,
 name|URI
-name|cache
+name|uri
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1047,34 +1153,24 @@ name|FileSystem
 operator|.
 name|get
 argument_list|(
-name|cache
+name|uri
 argument_list|,
-name|conf
-argument_list|)
-decl_stmt|;
-name|Path
-name|filePath
-init|=
-operator|new
-name|Path
-argument_list|(
-name|cache
-operator|.
-name|getPath
-argument_list|()
+name|job
 argument_list|)
 decl_stmt|;
 return|return
-name|fileSystem
-operator|.
 name|getFileStatus
 argument_list|(
-name|filePath
+name|fileSystem
+argument_list|,
+name|uri
+argument_list|,
+name|statCache
 argument_list|)
 return|;
 block|}
 comment|/**    * Returns a boolean to denote whether a cache file is visible to all(public)    * or not    * @param conf    * @param uri    * @return true if the path in the uri is visible to all, false otherwise    * @throws IOException    */
-DECL|method|isPublic (Configuration conf, URI uri)
+DECL|method|isPublic (Configuration conf, URI uri, Map<URI, FileStatus> statCache)
 specifier|static
 name|boolean
 name|isPublic
@@ -1084,6 +1180,14 @@ name|conf
 parameter_list|,
 name|URI
 name|uri
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1125,6 +1229,8 @@ argument_list|,
 name|FsAction
 operator|.
 name|READ
+argument_list|,
+name|statCache
 argument_list|)
 condition|)
 block|{
@@ -1141,11 +1247,13 @@ name|current
 operator|.
 name|getParent
 argument_list|()
+argument_list|,
+name|statCache
 argument_list|)
 return|;
 block|}
 comment|/**    * Returns true if all ancestors of the specified path have the 'execute'    * permission set for all users (i.e. that other users can traverse    * the directory heirarchy to the given path)    */
-DECL|method|ancestorsHaveExecutePermissions (FileSystem fs, Path path)
+DECL|method|ancestorsHaveExecutePermissions (FileSystem fs, Path path, Map<URI, FileStatus> statCache)
 specifier|static
 name|boolean
 name|ancestorsHaveExecutePermissions
@@ -1155,6 +1263,14 @@ name|fs
 parameter_list|,
 name|Path
 name|path
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1184,6 +1300,8 @@ argument_list|,
 name|FsAction
 operator|.
 name|EXECUTE
+argument_list|,
+name|statCache
 argument_list|)
 condition|)
 block|{
@@ -1204,7 +1322,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Checks for a given path whether the Other permissions on it     * imply the permission in the passed FsAction    * @param fs    * @param path    * @param action    * @return true if the path in the uri is visible to all, false otherwise    * @throws IOException    */
-DECL|method|checkPermissionOfOther (FileSystem fs, Path path, FsAction action)
+DECL|method|checkPermissionOfOther (FileSystem fs, Path path, FsAction action, Map<URI, FileStatus> statCache)
 specifier|private
 specifier|static
 name|boolean
@@ -1218,6 +1336,14 @@ name|path
 parameter_list|,
 name|FsAction
 name|action
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1225,11 +1351,16 @@ block|{
 name|FileStatus
 name|status
 init|=
-name|fs
-operator|.
 name|getFileStatus
 argument_list|(
+name|fs
+argument_list|,
 name|path
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
+name|statCache
 argument_list|)
 decl_stmt|;
 name|FsPermission
@@ -1264,6 +1395,73 @@ return|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+DECL|method|getFileStatus (FileSystem fs, URI uri, Map<URI, FileStatus> statCache)
+specifier|private
+specifier|static
+name|FileStatus
+name|getFileStatus
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
+name|URI
+name|uri
+parameter_list|,
+name|Map
+argument_list|<
+name|URI
+argument_list|,
+name|FileStatus
+argument_list|>
+name|statCache
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FileStatus
+name|stat
+init|=
+name|statCache
+operator|.
+name|get
+argument_list|(
+name|uri
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|stat
+operator|==
+literal|null
+condition|)
+block|{
+name|stat
+operator|=
+name|fs
+operator|.
+name|getFileStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|uri
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|statCache
+operator|.
+name|put
+argument_list|(
+name|uri
+argument_list|,
+name|stat
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|stat
 return|;
 block|}
 block|}

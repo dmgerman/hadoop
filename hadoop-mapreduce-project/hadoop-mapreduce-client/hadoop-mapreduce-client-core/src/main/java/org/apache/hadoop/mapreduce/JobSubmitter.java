@@ -1604,17 +1604,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|//  set the timestamps of the archives and files
-name|ClientDistributedCacheManager
-operator|.
-name|determineTimestamps
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 comment|//  set the public/private visibility of the archives and files
 name|ClientDistributedCacheManager
 operator|.
-name|determineCacheVisibilities
+name|determineTimestampsAndCacheVisibilities
 argument_list|(
 name|conf
 argument_list|)
