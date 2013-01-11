@@ -774,11 +774,11 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Get the process-tree with latest state. If the root-process is not alive,    * an empty tree will be returned.    *     * @return the process-tree with latest state.    */
-DECL|method|getProcessTree ()
+comment|/**    * Update the process-tree with latest state. If the root-process is not alive,    * tree will become empty.    */
+DECL|method|updateProcessTree ()
 specifier|public
-name|ProcfsBasedProcessTree
-name|getProcessTree
+name|void
+name|updateProcessTree
 parameter_list|()
 block|{
 if|if
@@ -924,9 +924,7 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
-name|this
-return|;
+return|return;
 block|}
 comment|// Add each process to its parent.
 for|for
@@ -1176,9 +1174,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|this
-return|;
 block|}
 comment|/**    * Is the root-process alive?    *     * @return true if the root-process is alive, false otherwise.    */
 DECL|method|isAlive ()

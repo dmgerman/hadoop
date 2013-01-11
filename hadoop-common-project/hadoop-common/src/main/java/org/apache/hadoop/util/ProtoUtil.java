@@ -98,7 +98,7 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
 operator|.
 name|*
 import|;
@@ -741,30 +741,32 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|makeRpcPayloadHeader (RPC.RpcKind rpcKind, RpcPayloadOperationProto operation, int callId)
+DECL|method|makeRpcRequestHeader (RPC.RpcKind rpcKind, RpcRequestHeaderProto.OperationProto operation, int callId)
 specifier|public
 specifier|static
-name|RpcPayloadHeaderProto
-name|makeRpcPayloadHeader
+name|RpcRequestHeaderProto
+name|makeRpcRequestHeader
 parameter_list|(
 name|RPC
 operator|.
 name|RpcKind
 name|rpcKind
 parameter_list|,
-name|RpcPayloadOperationProto
+name|RpcRequestHeaderProto
+operator|.
+name|OperationProto
 name|operation
 parameter_list|,
 name|int
 name|callId
 parameter_list|)
 block|{
-name|RpcPayloadHeaderProto
+name|RpcRequestHeaderProto
 operator|.
 name|Builder
 name|result
 init|=
-name|RpcPayloadHeaderProto
+name|RpcRequestHeaderProto
 operator|.
 name|newBuilder
 argument_list|()

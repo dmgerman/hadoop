@@ -416,10 +416,17 @@ block|}
 block|}
 block|}
 return|return
+name|Math
+operator|.
+name|max
+argument_list|(
 name|used
 operator|.
 name|longValue
 argument_list|()
+argument_list|,
+literal|0L
+argument_list|)
 return|;
 block|}
 comment|/**    * @return the path of which we're keeping track of disk usage    */

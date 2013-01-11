@@ -335,7 +335,44 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, aoColumnDefs: [\n"
+literal|"\n, aoColumnDefs: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getAppsTableColumnDefs
+argument_list|()
+argument_list|)
+comment|// Sort by id upon page load
+operator|.
+name|append
+argument_list|(
+literal|", aaSorting: [[0, 'desc']]}"
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+DECL|method|getAppsTableColumnDefs ()
+specifier|protected
+name|String
+name|getAppsTableColumnDefs
+parameter_list|()
+block|{
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+return|return
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"[\n"
 argument_list|)
 operator|.
 name|append
@@ -366,12 +403,6 @@ operator|.
 name|append
 argument_list|(
 literal|", 'mRender': parseHadoopProgress }]"
-argument_list|)
-comment|// Sort by id upon page load
-operator|.
-name|append
-argument_list|(
-literal|", aaSorting: [[0, 'desc']]}"
 argument_list|)
 operator|.
 name|toString

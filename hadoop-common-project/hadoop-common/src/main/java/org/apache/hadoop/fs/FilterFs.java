@@ -1273,6 +1273,26 @@ name|renewer
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isValidName (String src)
+specifier|public
+name|boolean
+name|isValidName
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+block|{
+return|return
+name|myFs
+operator|.
+name|isValidName
+argument_list|(
+name|src
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

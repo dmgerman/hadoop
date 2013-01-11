@@ -68,13 +68,21 @@ block|,
 DECL|enumConstant|CONTAINER_FINISHED
 name|CONTAINER_FINISHED
 block|,
+comment|// Source: RMStateStore
+DECL|enumConstant|ATTEMPT_SAVED
+name|ATTEMPT_SAVED
+block|,
 comment|// Source: Scheduler
 DECL|enumConstant|APP_REJECTED
 name|APP_REJECTED
 block|,
 DECL|enumConstant|APP_ACCEPTED
 name|APP_ACCEPTED
-block|,  }
+block|,
+comment|// Source: RMAttemptImpl.recover
+DECL|enumConstant|RECOVER
+name|RECOVER
+block|}
 end_enum
 
 end_unit

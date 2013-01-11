@@ -137,12 +137,12 @@ name|String
 name|root
 parameter_list|)
 block|{   }
-comment|/**    * Get the process-tree with latest state. If the root-process is not alive,    * an empty tree will be returned.    *    * Each call to this function should increment the age of the running    * processes that already exist in the process tree. Age is used other API's    * of the interface.    *    * @return the process-tree with latest state.    */
-DECL|method|getProcessTree ()
+comment|/**    * Update the process-tree with latest state.    *    * Each call to this function should increment the age of the running    * processes that already exist in the process tree. Age is used other API's    * of the interface.    *    */
+DECL|method|updateProcessTree ()
 specifier|public
 specifier|abstract
-name|ResourceCalculatorProcessTree
-name|getProcessTree
+name|void
+name|updateProcessTree
 parameter_list|()
 function_decl|;
 comment|/**    * Get a dump of the process-tree.    *    * @return a string concatenating the dump of information of all the processes    *         in the process-tree    */

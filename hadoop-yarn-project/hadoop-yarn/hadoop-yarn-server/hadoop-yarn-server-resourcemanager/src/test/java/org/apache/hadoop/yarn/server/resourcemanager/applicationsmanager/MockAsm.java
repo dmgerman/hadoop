@@ -184,6 +184,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationSubmissionContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -760,6 +778,22 @@ DECL|method|getUser ()
 specifier|public
 name|String
 name|getUser
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationSubmissionContext ()
+specifier|public
+name|ApplicationSubmissionContext
+name|getApplicationSubmissionContext
 parameter_list|()
 block|{
 throw|throw

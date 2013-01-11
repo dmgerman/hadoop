@@ -744,7 +744,27 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
+operator|.
+name|RpcResponseHeaderProto
+operator|.
+name|RpcStatusProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
 operator|.
 name|*
 import|;
@@ -1306,7 +1326,7 @@ name|getBytes
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|/**    * Serialization type for ConnectionContext and RpcPayloadHeader    */
+comment|/**    * Serialization type for ConnectionContext and RpcRequestHeader    */
 DECL|enum|IpcSerializationType
 specifier|public
 enum|enum
@@ -1395,7 +1415,7 @@ comment|// 3 : Introduce the protocol into the RPC connection header
 comment|// 4 : Introduced SASL security layer
 comment|// 5 : Introduced use of {@link ArrayPrimitiveWritable$Internal}
 comment|//     in ObjectWritable to efficiently transmit arrays of primitives
-comment|// 6 : Made RPC payload header explicit
+comment|// 6 : Made RPC Request header explicit
 comment|// 7 : Changed Ipc Connection Header to use Protocol buffers
 comment|// 8 : SASL server always sends a final response
 DECL|field|CURRENT_VERSION
@@ -8199,10 +8219,10 @@ name|buf
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|RpcPayloadHeaderProto
+name|RpcRequestHeaderProto
 name|header
 init|=
-name|RpcPayloadHeaderProto
+name|RpcRequestHeaderProto
 operator|.
 name|parseDelimitedFrom
 argument_list|(
@@ -8241,7 +8261,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|" IPC Server: No rpc op in rpcPayloadHeader"
+literal|" IPC Server: No rpc op in rpcRequestHeader"
 argument_list|)
 throw|;
 block|}
@@ -8252,9 +8272,11 @@ operator|.
 name|getRpcOp
 argument_list|()
 operator|!=
-name|RpcPayloadOperationProto
+name|RpcRequestHeaderProto
 operator|.
-name|RPC_FINAL_PAYLOAD
+name|OperationProto
+operator|.
+name|RPC_FINAL_PACKET
 condition|)
 block|{
 throw|throw
@@ -8286,7 +8308,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|" IPC Server: No rpc kind in rpcPayloadHeader"
+literal|" IPC Server: No rpc kind in rpcRequestHeader"
 argument_list|)
 throw|;
 block|}

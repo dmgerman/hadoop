@@ -994,9 +994,43 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+try|try
+block|{
 name|initZK
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|KeeperException
+name|ke
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Unable to start failover controller. Unable to connect "
+operator|+
+literal|"to ZooKeeper quorum at "
+operator|+
+name|zkQuorum
+operator|+
+literal|". Please check the "
+operator|+
+literal|"configured value for "
+operator|+
+name|ZK_QUORUM_KEY
+operator|+
+literal|" and ensure that "
+operator|+
+literal|"ZooKeeper is running."
+argument_list|)
+expr_stmt|;
+return|return
+name|ERR_CODE_NO_ZK
+return|;
+block|}
 if|if
 condition|(
 name|args
@@ -1116,8 +1150,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-try|try
-block|{
 if|if
 condition|(
 operator|!
@@ -1141,57 +1173,6 @@ expr_stmt|;
 return|return
 name|ERR_CODE_NO_PARENT_ZNODE
 return|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-if|if
-condition|(
-name|ioe
-operator|.
-name|getCause
-argument_list|()
-operator|instanceof
-name|KeeperException
-operator|.
-name|ConnectionLossException
-condition|)
-block|{
-name|LOG
-operator|.
-name|fatal
-argument_list|(
-literal|"Unable to start failover controller. Unable to connect "
-operator|+
-literal|"to ZooKeeper quorum at "
-operator|+
-name|zkQuorum
-operator|+
-literal|". Please check the "
-operator|+
-literal|"configured value for "
-operator|+
-name|ZK_QUORUM_KEY
-operator|+
-literal|" and ensure that "
-operator|+
-literal|"ZooKeeper is running."
-argument_list|)
-expr_stmt|;
-return|return
-name|ERR_CODE_NO_ZK
-return|;
-block|}
-else|else
-block|{
-throw|throw
-name|ioe
-throw|;
-block|}
 block|}
 try|try
 block|{
@@ -1551,6 +1532,8 @@ throws|throws
 name|HadoopIllegalArgumentException
 throws|,
 name|IOException
+throws|,
+name|KeeperException
 block|{
 name|zkQuorum
 operator|=

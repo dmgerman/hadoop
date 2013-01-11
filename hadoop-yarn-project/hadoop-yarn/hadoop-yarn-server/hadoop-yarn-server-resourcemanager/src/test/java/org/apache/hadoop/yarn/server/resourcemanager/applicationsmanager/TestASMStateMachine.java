@@ -282,7 +282,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|StoreFactory
+name|RMStateStoreFactory
 import|;
 end_import
 

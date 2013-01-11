@@ -229,6 +229,12 @@ name|ApplicationId
 name|getApplicationId
 parameter_list|()
 function_decl|;
+comment|/**    * The application submission context for this {@link RMApp}    * @return the {@link ApplicationSubmissionContext} for this {@link RMApp}    */
+DECL|method|getApplicationSubmissionContext ()
+name|ApplicationSubmissionContext
+name|getApplicationSubmissionContext
+parameter_list|()
+function_decl|;
 comment|/**    * The current state of the {@link RMApp}.    * @return the current state {@link RMAppState} for this application.    */
 DECL|method|getState ()
 name|RMAppState

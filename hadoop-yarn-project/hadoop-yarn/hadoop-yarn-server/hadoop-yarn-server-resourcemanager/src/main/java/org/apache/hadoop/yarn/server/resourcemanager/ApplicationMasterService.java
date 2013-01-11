@@ -1824,6 +1824,8 @@ name|appAttemptId
 argument_list|)
 expr_stmt|;
 comment|// Oh damn! Sending reboot isn't enough. RM state is corrupted. TODO:
+comment|// Reboot is not useful since after AM reboots, it will send register and
+comment|// get an exception. Might as well throw an exception here.
 name|allocateResponse
 operator|.
 name|setAMResponse

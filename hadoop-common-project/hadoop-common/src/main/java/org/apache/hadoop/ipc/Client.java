@@ -226,6 +226,66 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ExecutionException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ExecutorService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Executors
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Future
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|RejectedExecutionException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|TimeUnit
 import|;
 end_import
@@ -484,9 +544,9 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|IpcConnectionContextProtos
+name|RpcHeaderProtos
 operator|.
-name|IpcConnectionContextProto
+name|RpcRequestHeaderProto
 import|;
 end_import
 
@@ -502,9 +562,11 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
 operator|.
-name|RpcPayloadHeaderProto
+name|RpcRequestHeaderProto
+operator|.
+name|OperationProto
 import|;
 end_import
 
@@ -520,25 +582,7 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
-operator|.
-name|RpcPayloadOperationProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|protobuf
-operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
 operator|.
 name|RpcResponseHeaderProto
 import|;
@@ -556,7 +600,9 @@ name|ipc
 operator|.
 name|protobuf
 operator|.
-name|RpcPayloadHeaderProtos
+name|RpcHeaderProtos
+operator|.
+name|RpcResponseHeaderProto
 operator|.
 name|RpcStatusProto
 import|;
@@ -770,6 +816,22 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ThreadFactoryBuilder
+import|;
+end_import
+
 begin_comment
 comment|/** A client for an IPC service.  IPC calls take a single {@link Writable} as a  * parameter, and return a {@link Writable} as their value.  A service runs on  * a port and is defined by a parameter class and a value class.  *   * @see Server  */
 end_comment
@@ -892,6 +954,36 @@ name|PING_CALL_ID
 init|=
 operator|-
 literal|1
+decl_stmt|;
+comment|/**    * Executor on which IPC calls' parameters are sent. Deferring    * the sending of parameters to a separate thread isolates them    * from thread interruptions in the calling code.    */
+DECL|field|SEND_PARAMS_EXECUTOR
+specifier|private
+specifier|static
+specifier|final
+name|ExecutorService
+name|SEND_PARAMS_EXECUTOR
+init|=
+name|Executors
+operator|.
+name|newCachedThreadPool
+argument_list|(
+operator|new
+name|ThreadFactoryBuilder
+argument_list|()
+operator|.
+name|setDaemon
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|setNameFormat
+argument_list|(
+literal|"IPC Parameter Sending Thread #%d"
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
 decl_stmt|;
 comment|/**    * set the ping interval value in configuration    *     * @param conf Configuration    * @param pingInterval the ping interval    */
 DECL|method|setPingInterval (Configuration conf, int pingInterval)
@@ -1037,7 +1129,7 @@ specifier|final
 name|Writable
 name|rpcRequest
 decl_stmt|;
-comment|// the serialized rpc request - RpcPayload
+comment|// the serialized rpc request
 DECL|field|rpcResponse
 name|Writable
 name|rpcResponse
@@ -1328,6 +1420,16 @@ name|IOException
 name|closeException
 decl_stmt|;
 comment|// close reason
+DECL|field|sendRpcRequestLock
+specifier|private
+specifier|final
+name|Object
+name|sendRpcRequestLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|method|Connection (ConnectionId remoteId)
 specifier|public
 name|Connection
@@ -3440,7 +3542,7 @@ argument_list|(
 name|buf
 argument_list|)
 expr_stmt|;
-comment|// Write out the payload length
+comment|// Write out the packet length
 name|int
 name|bufLen
 init|=
@@ -3725,7 +3827,7 @@ argument_list|()
 condition|)
 block|{
 comment|//wait here for work - read or close connection
-name|receiveResponse
+name|receiveRpcResponse
 argument_list|()
 expr_stmt|;
 block|}
@@ -3788,15 +3890,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Initiates a call by sending the parameter to the remote server.      * Note: this is not called from the Connection thread, but by other      * threads.      */
-DECL|method|sendParam (Call call)
+comment|/** Initiates a rpc call by sending the rpc request to the remote server.      * Note: this is not called from the Connection thread, but by other      * threads.      * @param call - the rpc request      */
+DECL|method|sendRpcRequest (final Call call)
 specifier|public
 name|void
-name|sendParam
+name|sendRpcRequest
 parameter_list|(
+specifier|final
 name|Call
 name|call
 parameter_list|)
+throws|throws
+name|InterruptedException
+throws|,
+name|IOException
 block|{
 if|if
 condition|(
@@ -3808,67 +3915,39 @@ condition|)
 block|{
 return|return;
 block|}
+comment|// Serialize the call to be sent. This is done from the actual
+comment|// caller thread, rather than the SEND_PARAMS_EXECUTOR thread,
+comment|// so that if the serialization throws an error, it is reported
+comment|// properly. This also parallelizes the serialization.
+comment|//
+comment|// Format of a call on the wire:
+comment|// 0) Length of rest below (1 + 2)
+comment|// 1) RpcRequestHeader  - is serialized Delimited hence contains length
+comment|// 2) RpcRequest
+comment|//
+comment|// Items '1' and '2' are prepared here.
+specifier|final
 name|DataOutputBuffer
 name|d
 init|=
-literal|null
-decl_stmt|;
-try|try
-block|{
-synchronized|synchronized
-init|(
-name|this
-operator|.
-name|out
-init|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-name|LOG
-operator|.
-name|debug
-argument_list|(
-name|getName
-argument_list|()
-operator|+
-literal|" sending #"
-operator|+
-name|call
-operator|.
-name|id
-argument_list|)
-expr_stmt|;
-comment|// Serializing the data to be written.
-comment|// Format:
-comment|// 0) Length of rest below (1 + 2)
-comment|// 1) PayloadHeader  - is serialized Delimited hence contains length
-comment|// 2) the Payload - the RpcRequest
-comment|//
-name|d
-operator|=
 operator|new
 name|DataOutputBuffer
 argument_list|()
-expr_stmt|;
-name|RpcPayloadHeaderProto
+decl_stmt|;
+name|RpcRequestHeaderProto
 name|header
 init|=
 name|ProtoUtil
 operator|.
-name|makeRpcPayloadHeader
+name|makeRpcRequestHeader
 argument_list|(
 name|call
 operator|.
 name|rpcKind
 argument_list|,
-name|RpcPayloadOperationProto
+name|OperationProto
 operator|.
-name|RPC_FINAL_PAYLOAD
+name|RPC_FINAL_PACKET
 argument_list|,
 name|call
 operator|.
@@ -3889,6 +3968,74 @@ operator|.
 name|write
 argument_list|(
 name|d
+argument_list|)
+expr_stmt|;
+synchronized|synchronized
+init|(
+name|sendRpcRequestLock
+init|)
+block|{
+name|Future
+argument_list|<
+name|?
+argument_list|>
+name|senderFuture
+init|=
+name|SEND_PARAMS_EXECUTOR
+operator|.
+name|submit
+argument_list|(
+operator|new
+name|Runnable
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+try|try
+block|{
+synchronized|synchronized
+init|(
+name|Connection
+operator|.
+name|this
+operator|.
+name|out
+init|)
+block|{
+if|if
+condition|(
+name|shouldCloseConnection
+operator|.
+name|get
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|getName
+argument_list|()
+operator|+
+literal|" sending #"
+operator|+
+name|call
+operator|.
+name|id
 argument_list|)
 expr_stmt|;
 name|byte
@@ -3927,7 +4074,7 @@ argument_list|,
 name|totalLength
 argument_list|)
 expr_stmt|;
-comment|//PayloadHeader + RpcRequest
+comment|// RpcRequestHeader + RpcRequest
 name|out
 operator|.
 name|flush
@@ -3941,6 +4088,9 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+comment|// exception at this point would leave the connection in an
+comment|// unrecoverable state (eg half a call left on the wire).
+comment|// So, close the connection, killing any outstanding calls
 name|markClosed
 argument_list|(
 name|e
@@ -3960,11 +4110,67 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|senderFuture
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ExecutionException
+name|e
+parameter_list|)
+block|{
+name|Throwable
+name|cause
+init|=
+name|e
+operator|.
+name|getCause
+argument_list|()
+decl_stmt|;
+comment|// cause should only be a RuntimeException as the Runnable above
+comment|// catches IOException
+if|if
+condition|(
+name|cause
+operator|instanceof
+name|RuntimeException
+condition|)
+block|{
+throw|throw
+operator|(
+name|RuntimeException
+operator|)
+name|cause
+throw|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"unexpected checked exception"
+argument_list|,
+name|cause
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
+block|}
 comment|/* Receive a response.      * Because only one receiver, so no synchronization on in.      */
-DECL|method|receiveResponse ()
+DECL|method|receiveRpcResponse ()
 specifier|private
 name|void
-name|receiveResponse
+name|receiveRpcResponse
 parameter_list|()
 block|{
 if|if
@@ -5006,14 +5212,64 @@ argument_list|,
 name|call
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|connection
 operator|.
-name|sendParam
+name|sendRpcRequest
 argument_list|(
 name|call
 argument_list|)
 expr_stmt|;
-comment|// send the parameter
+comment|// send the rpc request
+block|}
+catch|catch
+parameter_list|(
+name|RejectedExecutionException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"connection has been closed"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"interrupted waiting to send rpc request to server"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|boolean
 name|interrupted
 init|=

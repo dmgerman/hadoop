@@ -1296,6 +1296,24 @@ name|sb
 operator|.
 name|append
 argument_list|(
+literal|"; modification_time="
+operator|+
+name|modification_time
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; access_time="
+operator|+
+name|access_time
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
 literal|"; owner="
 operator|+
 name|owner
@@ -1319,6 +1337,32 @@ operator|+
 name|permission
 argument_list|)
 expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; isSymlink="
+operator|+
+name|isSymlink
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|isSymlink
+argument_list|()
+condition|)
+block|{
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"; symlink="
+operator|+
+name|symlink
+argument_list|)
+expr_stmt|;
+block|}
 name|sb
 operator|.
 name|append

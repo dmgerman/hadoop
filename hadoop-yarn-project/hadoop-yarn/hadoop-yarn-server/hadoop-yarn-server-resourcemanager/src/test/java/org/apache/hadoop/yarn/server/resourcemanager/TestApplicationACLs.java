@@ -512,7 +512,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|StoreFactory
+name|RMStateStoreFactory
 import|;
 end_import
 
@@ -770,7 +770,7 @@ block|{
 name|RMStateStore
 name|store
 init|=
-name|StoreFactory
+name|RMStateStoreFactory
 operator|.
 name|getStore
 argument_list|(

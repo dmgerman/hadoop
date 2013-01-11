@@ -843,6 +843,8 @@ operator|.
 name|getLogDirs
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"cgroups=none"
 argument_list|)
 argument_list|,
 name|readMockParams
@@ -1490,6 +1492,8 @@ operator|.
 name|getLogDirs
 argument_list|()
 argument_list|)
+argument_list|,
+literal|"cgroups=none"
 argument_list|)
 argument_list|,
 name|readMockParams

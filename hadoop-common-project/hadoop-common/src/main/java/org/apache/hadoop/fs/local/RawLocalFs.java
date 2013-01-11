@@ -712,6 +712,24 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|isValidName (String src)
+specifier|public
+name|boolean
+name|isValidName
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+block|{
+comment|// Different local file systems have different validation rules.  Skip
+comment|// validation here and just let the OS handle it.  This is consistent with
+comment|// RawLocalFileSystem.
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getLinkTarget (Path f)
 specifier|public
 name|Path

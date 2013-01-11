@@ -188,14 +188,14 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
-DECL|field|RESOURCE_CALCULATOR_PLUGIN
+DECL|field|RESOURCE_CALCULATOR_PROCESS_TREE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RESOURCE_CALCULATOR_PLUGIN
+name|RESOURCE_CALCULATOR_PROCESS_TREE
 init|=
-literal|"mapreduce.job.resourcecalculatorplugin"
+literal|"mapreduce.job.process-tree.class"
 decl_stmt|;
 DECL|field|STATIC_RESOLUTIONS
 specifier|public

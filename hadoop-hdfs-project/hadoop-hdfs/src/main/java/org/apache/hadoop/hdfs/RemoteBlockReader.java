@@ -1810,10 +1810,10 @@ argument_list|>
 name|startOffset
 operator|||
 name|firstChunkOffset
-operator|>=
+operator|<=
 operator|(
 name|startOffset
-operator|+
+operator|-
 name|checksum
 operator|.
 name|getBytesPerChecksum

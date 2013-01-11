@@ -270,7 +270,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|testEq (final boolean eq, Comparable<? super T> id1, Comparable<? super T> id2)
+DECL|method|testEq (final boolean eq, Comparable<T> id1, Comparable<T> id2)
 specifier|private
 parameter_list|<
 name|T
@@ -284,16 +284,12 @@ name|eq
 parameter_list|,
 name|Comparable
 argument_list|<
-name|?
-super|super
 name|T
 argument_list|>
 name|id1
 parameter_list|,
 name|Comparable
 argument_list|<
-name|?
-super|super
 name|T
 argument_list|>
 name|id2
@@ -587,7 +583,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|testEqMany (final boolean eq, Comparable<? super T>... volumeIds)
+DECL|method|testEqMany (final boolean eq, Comparable<T>... volumeIds)
 specifier|private
 parameter_list|<
 name|T
@@ -601,8 +597,6 @@ name|eq
 parameter_list|,
 name|Comparable
 argument_list|<
-name|?
-super|super
 name|T
 argument_list|>
 modifier|...
@@ -611,8 +605,6 @@ parameter_list|)
 block|{
 name|Comparable
 argument_list|<
-name|?
-super|super
 name|T
 argument_list|>
 name|vidNext

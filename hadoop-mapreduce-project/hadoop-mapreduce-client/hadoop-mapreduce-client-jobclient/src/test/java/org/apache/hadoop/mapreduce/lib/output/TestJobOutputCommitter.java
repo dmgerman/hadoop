@@ -259,7 +259,7 @@ argument_list|)
 operator|+
 literal|"/"
 operator|+
-literal|"test-job-cleanup"
+literal|"test-job-output-committer"
 argument_list|)
 operator|.
 name|toString

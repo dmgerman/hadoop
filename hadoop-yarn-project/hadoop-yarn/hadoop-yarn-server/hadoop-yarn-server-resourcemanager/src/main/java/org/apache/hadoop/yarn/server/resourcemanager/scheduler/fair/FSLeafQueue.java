@@ -949,6 +949,14 @@ range|:
 name|appScheds
 control|)
 block|{
+if|if
+condition|(
+name|sched
+operator|.
+name|getRunnable
+argument_list|()
+condition|)
+block|{
 return|return
 name|sched
 operator|.
@@ -959,6 +967,7 @@ argument_list|,
 name|reserved
 argument_list|)
 return|;
+block|}
 block|}
 return|return
 name|Resources

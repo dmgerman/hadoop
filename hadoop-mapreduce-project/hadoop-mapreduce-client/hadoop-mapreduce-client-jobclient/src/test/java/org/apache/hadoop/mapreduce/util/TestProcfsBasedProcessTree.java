@@ -810,10 +810,8 @@ name|DEFAULT_SLEEPTIME_BEFORE_SIGKILL
 argument_list|)
 decl_stmt|;
 name|p
-operator|=
-name|p
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// initialize
@@ -868,10 +866,8 @@ break|break;
 block|}
 block|}
 name|p
-operator|=
-name|p
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// reconstruct
@@ -1060,10 +1056,8 @@ expr_stmt|;
 block|}
 comment|// ProcessTree is gone now. Any further calls should be sane.
 name|p
-operator|=
-name|p
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|assertFalse
@@ -1680,7 +1674,7 @@ decl_stmt|;
 comment|// build the process tree.
 name|processTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// verify cumulative memory
@@ -1833,7 +1827,7 @@ expr_stmt|;
 comment|// build the process tree.
 name|processTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// verify cumulative cpu time again
@@ -2082,7 +2076,7 @@ decl_stmt|;
 comment|// build the process tree.
 name|processTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// verify cumulative memory
@@ -2164,7 +2158,7 @@ expr_stmt|;
 comment|// check memory includes the new process.
 name|processTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 name|assertEquals
@@ -2318,7 +2312,7 @@ expr_stmt|;
 comment|// refresh process tree
 name|processTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// processes older than 2 iterations should be same as before.
@@ -2887,7 +2881,7 @@ decl_stmt|;
 comment|// build the process tree.
 name|processTree
 operator|.
-name|getProcessTree
+name|updateProcessTree
 argument_list|()
 expr_stmt|;
 comment|// Get the process-tree dump

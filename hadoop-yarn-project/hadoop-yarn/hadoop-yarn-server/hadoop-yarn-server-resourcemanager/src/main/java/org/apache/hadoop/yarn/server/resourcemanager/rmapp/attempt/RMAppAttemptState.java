@@ -37,6 +37,7 @@ DECL|enumConstant|ALLOCATED
 DECL|enumConstant|LAUNCHED
 DECL|enumConstant|FAILED
 DECL|enumConstant|RUNNING
+DECL|enumConstant|FINISHING
 name|NEW
 block|,
 name|SUBMITTED
@@ -51,15 +52,23 @@ name|FAILED
 block|,
 name|RUNNING
 block|,
-DECL|enumConstant|FINISHING
-DECL|enumConstant|FINISHED
-DECL|enumConstant|KILLED
 name|FINISHING
 block|,
+DECL|enumConstant|FINISHED
+DECL|enumConstant|KILLED
+DECL|enumConstant|ALLOCATED_SAVING
+DECL|enumConstant|LAUNCHED_UNMANAGED_SAVING
+DECL|enumConstant|RECOVERED
 name|FINISHED
 block|,
 name|KILLED
-block|, }
+block|,
+name|ALLOCATED_SAVING
+block|,
+name|LAUNCHED_UNMANAGED_SAVING
+block|,
+name|RECOVERED
+block|}
 end_enum
 
 end_unit

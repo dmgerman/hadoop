@@ -682,13 +682,13 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Get the process-tree with latest state. If the root-process is not alive,    * an empty tree will be returned.    *    * @return the process-tree with latest state.    */
+comment|/**    * Update process-tree with latest state. If the root-process is not alive,    * tree will be empty.    *    */
 annotation|@
 name|Override
-DECL|method|getProcessTree ()
+DECL|method|updateProcessTree ()
 specifier|public
-name|ResourceCalculatorProcessTree
-name|getProcessTree
+name|void
+name|updateProcessTree
 parameter_list|()
 block|{
 if|if
@@ -834,9 +834,7 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
-name|this
-return|;
+return|return;
 block|}
 comment|// Add each process to its parent.
 for|for
@@ -1086,9 +1084,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|this
-return|;
 block|}
 comment|/** Verify that the given process id is same as its process group id.    * @return true if the process id matches else return false.    */
 annotation|@

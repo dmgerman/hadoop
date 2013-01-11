@@ -230,6 +230,20 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * A cache of input stream sockets to Data Node.  */
 end_comment
@@ -309,9 +323,9 @@ name|this
 operator|.
 name|createTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
@@ -921,9 +935,9 @@ name|entry
 operator|==
 literal|null
 operator|||
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|entry
@@ -1053,9 +1067,9 @@ control|(
 name|long
 name|lastExpiryTime
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 init|;
 operator|!
@@ -1076,9 +1090,9 @@ specifier|final
 name|long
 name|elapsed
 init|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 operator|-
 name|lastExpiryTime
@@ -1097,9 +1111,9 @@ argument_list|)
 expr_stmt|;
 name|lastExpiryTime
 operator|=
-name|System
+name|Time
 operator|.
-name|currentTimeMillis
+name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}

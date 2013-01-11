@@ -950,6 +950,26 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 7 days
+DECL|field|RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RECOVERY_ENABLED
+init|=
+name|RM_PREFIX
+operator|+
+literal|"recovery.enabled"
+decl_stmt|;
+DECL|field|DEFAULT_RM_RECOVERY_ENABLED
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_RECOVERY_ENABLED
+init|=
+literal|false
+decl_stmt|;
 comment|/** The class to use as the persistent store.*/
 DECL|field|RM_STORE
 specifier|public
@@ -1617,6 +1637,17 @@ name|YARN_PREFIX
 operator|+
 literal|"log.server.url"
 decl_stmt|;
+DECL|field|YARN_TRACKING_URL_GENERATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_TRACKING_URL_GENERATOR
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"tracking.url.generator"
+decl_stmt|;
 comment|/** Amount of memory in GB that can be allocated for containers.*/
 DECL|field|NM_PMEM_MB
 specifier|public
@@ -1892,6 +1923,54 @@ init|=
 name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.group"
+decl_stmt|;
+comment|/** The type of resource enforcement to use with the    *  linux container executor.    */
+DECL|field|NM_LINUX_CONTAINER_RESOURCES_HANDLER
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_RESOURCES_HANDLER
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.resources-handler.class"
+decl_stmt|;
+comment|/** The path the linux container executor should use for cgroups */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_HIERARCHY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_HIERARCHY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.hierarchy"
+decl_stmt|;
+comment|/** Whether the linux container executor should mount cgroups if not found */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_MOUNT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_MOUNT
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.mount"
+decl_stmt|;
+comment|/** Where the linux container executor should mount cgroups if not found */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_MOUNT_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_MOUNT_PATH
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.mount-path"
 decl_stmt|;
 comment|/** T-file compression types used to compress aggregated logs.*/
 DECL|field|NM_LOG_AGG_COMPRESSION_TYPE

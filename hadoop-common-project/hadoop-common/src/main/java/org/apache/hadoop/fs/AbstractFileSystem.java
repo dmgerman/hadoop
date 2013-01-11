@@ -521,10 +521,9 @@ return|return
 name|statistics
 return|;
 block|}
-comment|/**    * Prohibits names which contain a ".", "..", ":" or "/"     */
+comment|/**    * Returns true if the specified string is considered valid in the path part    * of a URI by this file system.  The default implementation enforces the rules    * of HDFS, but subclasses may override this method to implement specific    * validation rules for specific file systems.    *     * @param src String source filename to check, path part of the URI    * @return boolean true if the specified string is considered valid    */
 DECL|method|isValidName (String src)
-specifier|private
-specifier|static
+specifier|public
 name|boolean
 name|isValidName
 parameter_list|(
@@ -532,7 +531,7 @@ name|String
 name|src
 parameter_list|)
 block|{
-comment|// Check for ".." "." ":" "/"
+comment|// Prohibit ".." "." and anything containing ":"
 name|StringTokenizer
 name|tokens
 init|=
@@ -568,7 +567,7 @@ name|element
 operator|.
 name|equals
 argument_list|(
-literal|"target/generated-sources"
+literal|".."
 argument_list|)
 operator|||
 name|element

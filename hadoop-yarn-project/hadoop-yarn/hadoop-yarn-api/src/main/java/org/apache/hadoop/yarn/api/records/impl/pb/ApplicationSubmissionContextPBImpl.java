@@ -977,7 +977,6 @@ name|proto
 else|:
 name|builder
 decl_stmt|;
-comment|//There is a default so cancelTokens should never be null
 return|return
 name|p
 operator|.
