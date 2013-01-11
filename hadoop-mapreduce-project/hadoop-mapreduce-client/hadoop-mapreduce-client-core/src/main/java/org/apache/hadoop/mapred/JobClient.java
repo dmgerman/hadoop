@@ -498,14 +498,6 @@ name|getDelegationTokenCalled
 init|=
 literal|false
 decl_stmt|;
-comment|/* notes the renewer that will renew the delegation token */
-DECL|field|dtRenewer
-specifier|private
-name|String
-name|dtRenewer
-init|=
-literal|null
-decl_stmt|;
 comment|/* do we need a HS delegation token for this client */
 DECL|field|HS_DELEGATION_TOKEN_REQUIRED
 specifier|static
@@ -514,14 +506,6 @@ name|String
 name|HS_DELEGATION_TOKEN_REQUIRED
 init|=
 literal|"mapreduce.history.server.delegationtoken.required"
-decl_stmt|;
-DECL|field|HS_DELEGATION_TOKEN_RENEWER
-specifier|static
-specifier|final
-name|String
-name|HS_DELEGATION_TOKEN_RENEWER
-init|=
-literal|"mapreduce.history.server.delegationtoken.renewer"
 decl_stmt|;
 static|static
 block|{
@@ -1785,19 +1769,6 @@ expr_stmt|;
 name|getDelegationTokenCalled
 operator|=
 literal|false
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|HS_DELEGATION_TOKEN_RENEWER
-argument_list|,
-name|dtRenewer
-argument_list|)
-expr_stmt|;
-name|dtRenewer
-operator|=
-literal|null
 expr_stmt|;
 block|}
 name|Job
@@ -4159,13 +4130,6 @@ block|{
 name|getDelegationTokenCalled
 operator|=
 literal|true
-expr_stmt|;
-name|dtRenewer
-operator|=
-name|renewer
-operator|.
-name|toString
-argument_list|()
 expr_stmt|;
 return|return
 name|clientUgi
