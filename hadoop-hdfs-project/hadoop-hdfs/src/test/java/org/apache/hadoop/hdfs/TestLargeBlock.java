@@ -743,6 +743,11 @@ block|}
 comment|/**    * Test for block size of 2GB + 512B    * @throws IOException in case of errors    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testLargeBlockSize ()
 specifier|public
 name|void
