@@ -1166,12 +1166,7 @@ operator|.
 name|newHashSet
 argument_list|()
 decl_stmt|;
-comment|//
-comment|// Keeps a TreeSet for every named node. Each treeset contains
-comment|// a list of the blocks that are "extra" at that location. We'll
-comment|// eventually remove these extras.
-comment|// Mapping: StorageID -> TreeSet<Block>
-comment|//
+comment|/**    * Maps a StorageID to the set of blocks that are "extra" for this    * DataNode. We'll eventually remove these extras.    */
 DECL|field|excessReplicateMap
 specifier|public
 specifier|final
@@ -1198,10 +1193,7 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|//
-comment|// Store set of Blocks that need to be replicated 1 or more times.
-comment|// We also store pending replication-orders.
-comment|//
+comment|/**    * Store set of Blocks that need to be replicated 1 or more times.    * We also store pending replication-orders.    */
 DECL|field|neededReplications
 specifier|public
 specifier|final

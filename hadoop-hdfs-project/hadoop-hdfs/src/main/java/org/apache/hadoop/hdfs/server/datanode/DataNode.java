@@ -5644,6 +5644,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * @return a unique storage ID of form "DS-randInt-ipaddr-port-timestamp"    */
 DECL|method|createNewStorageId (int port)
 specifier|static
 name|String
@@ -5653,7 +5654,15 @@ name|int
 name|port
 parameter_list|)
 block|{
-comment|/* Return       * "DS-randInt-ipaddr-currentTimeMillis"      * It is considered extermely rare for all these numbers to match      * on a different machine accidentally for the following       * a) SecureRandom(INT_MAX) is pretty much random (1 in 2 billion), and      * b) Good chance ip address would be different, and      * c) Even on the same machine, Datanode is designed to use different ports.      * d) Good chance that these are started at different times.      * For a confict to occur all the 4 above have to match!.      * The format of this string can be changed anytime in future without      * affecting its functionality.      */
+comment|// It is unlikely that we will create a non-unique storage ID
+comment|// for the following reasons:
+comment|// a) SecureRandom is a cryptographically strong random number generator
+comment|// b) IP addresses will likely differ on different hosts
+comment|// c) DataNode xfer ports will differ on the same host
+comment|// d) StorageIDs will likely be generated at different times (in ms)
+comment|// A conflict requires that all four conditions are violated.
+comment|// NB: The format of this string can be changed in the future without
+comment|// requiring that old SotrageIDs be updated.
 name|String
 name|ip
 init|=
@@ -5681,7 +5690,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Could not find ip address of \"default\" inteface."
+literal|"Could not find an IP address for the \"default\" inteface."
 argument_list|)
 expr_stmt|;
 block|}
