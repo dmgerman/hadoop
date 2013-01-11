@@ -331,6 +331,29 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Request short circuit access file descriptors from a DataNode.    *    * @param blk             The block to get file descriptors for.    * @param blockToken      Security token for accessing the block.    * @param maxVersion      Maximum version of the block data the client     *                        can understand.    */
+DECL|method|requestShortCircuitFds (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, int maxVersion)
+specifier|public
+name|void
+name|requestShortCircuitFds
+parameter_list|(
+specifier|final
+name|ExtendedBlock
+name|blk
+parameter_list|,
+specifier|final
+name|Token
+argument_list|<
+name|BlockTokenIdentifier
+argument_list|>
+name|blockToken
+parameter_list|,
+name|int
+name|maxVersion
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Receive a block from a source datanode    * and then notifies the namenode    * to remove the copy from the original datanode.    * Note that the source datanode and the original datanode can be different.    * It is used for balancing purpose.    *     * @param blk the block being replaced.    * @param blockToken security token for accessing the block.    * @param delHint the hint for deleting the block in the original datanode.    * @param source the source datanode for receiving the block.    */
 DECL|method|replaceBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String delHint, final DatanodeInfo source)
 specifier|public

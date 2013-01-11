@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -256,7 +266,7 @@ name|hdfs
 operator|.
 name|net
 operator|.
-name|EncryptedPeer
+name|DomainPeer
 import|;
 end_import
 
@@ -386,24 +396,6 @@ name|protocol
 operator|.
 name|datatransfer
 operator|.
-name|IOStreamPair
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|datatransfer
-operator|.
 name|InvalidEncryptionKeyException
 import|;
 end_import
@@ -425,26 +417,6 @@ operator|.
 name|block
 operator|.
 name|BlockTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|block
-operator|.
-name|DataEncryptionKey
 import|;
 end_import
 
@@ -536,9 +508,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|net
 operator|.
-name|AccessControlException
+name|unix
+operator|.
+name|DomainSocket
 import|;
 end_import
 
@@ -555,6 +529,20 @@ operator|.
 name|token
 operator|.
 name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|FileInputStreamCache
 import|;
 end_import
 
@@ -662,6 +650,12 @@ name|blockEnd
 init|=
 operator|-
 literal|1
+decl_stmt|;
+DECL|field|fileInputStreamCache
+specifier|private
+specifier|final
+name|FileInputStreamCache
+name|fileInputStreamCache
 decl_stmt|;
 comment|/**    * This variable tracks the number of failures since the start of the    * most recent user-facing operation. That is to say, it should be reset    * whenever the user makes a call on this stream, and if at any point    * during the retry logic, the failure count exceeds a threshold,    * the errors will be thrown back to the operation.    *    * Specifically this counts the number of times the client has gone    * back to the namenode to get a new list of block locations, and is    * capped at maxBlockAcquireFailures    */
 DECL|field|failures
@@ -794,6 +788,44 @@ operator|=
 name|dfsClient
 operator|.
 name|peerCache
+expr_stmt|;
+name|this
+operator|.
+name|fileInputStreamCache
+operator|=
+operator|new
+name|FileInputStreamCache
+argument_list|(
+name|dfsClient
+operator|.
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_READ_SHORTCIRCUIT_STREAMS_CACHE_SIZE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_READ_SHORTCIRCUIT_STREAMS_CACHE_SIZE_DEFAULT
+argument_list|)
+argument_list|,
+name|dfsClient
+operator|.
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_READ_SHORTCIRCUIT_STREAMS_CACHE_EXPIRY_MS_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_READ_SHORTCIRCUIT_STREAMS_CACHE_EXPIRY_MS_DEFAULT
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|prefetchSize
 operator|=
@@ -1416,11 +1448,12 @@ operator|+
 name|lastBlockBeingWrittenLength
 return|;
 block|}
-DECL|method|blockUnderConstruction ()
-specifier|private
+comment|// Short circuit local reads are forbidden for files that are
+comment|// under construction.  See HDFS-2757.
+DECL|method|shortCircuitForbidden ()
 specifier|synchronized
 name|boolean
-name|blockUnderConstruction
+name|shortCircuitForbidden
 parameter_list|()
 block|{
 return|return
@@ -2156,6 +2189,8 @@ operator|.
 name|close
 argument_list|(
 name|peerCache
+argument_list|,
+name|fileInputStreamCache
 argument_list|)
 expr_stmt|;
 name|blockReader
@@ -2484,6 +2519,8 @@ operator|.
 name|close
 argument_list|(
 name|peerCache
+argument_list|,
+name|fileInputStreamCache
 argument_list|)
 expr_stmt|;
 name|blockReader
@@ -2492,6 +2529,11 @@ literal|null
 expr_stmt|;
 block|}
 name|super
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|fileInputStreamCache
 operator|.
 name|close
 argument_list|()
@@ -3938,30 +3980,6 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|AccessControlException
-name|ex
-parameter_list|)
-block|{
-name|DFSClient
-operator|.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Short circuit access failed "
-argument_list|,
-name|ex
-argument_list|)
-expr_stmt|;
-name|dfsClient
-operator|.
-name|disableShortCircuit
-argument_list|()
-expr_stmt|;
-continue|continue;
-block|}
-catch|catch
-parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -4112,6 +4130,8 @@ operator|.
 name|close
 argument_list|(
 name|peerCache
+argument_list|,
+name|fileInputStreamCache
 argument_list|)
 expr_stmt|;
 block|}
@@ -4150,8 +4170,47 @@ name|sock
 init|=
 literal|null
 decl_stmt|;
+name|DomainSocket
+name|domSock
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
+name|domSock
+operator|=
+name|dfsClient
+operator|.
+name|getDomainSocketFactory
+argument_list|()
+operator|.
+name|create
+argument_list|(
+name|addr
+argument_list|,
+name|this
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|domSock
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// Create a UNIX Domain peer.
+name|peer
+operator|=
+operator|new
+name|DomainPeer
+argument_list|(
+name|domSock
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// Create a conventional TCP-based Peer.
 name|sock
 operator|=
 name|dfsClient
@@ -4196,6 +4255,7 @@ name|getDataEncryptionKey
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|success
 operator|=
 literal|true
@@ -4224,6 +4284,13 @@ operator|.
 name|closeQuietly
 argument_list|(
 name|sock
+argument_list|)
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeQuietly
+argument_list|(
+name|domSock
 argument_list|)
 expr_stmt|;
 block|}
@@ -4271,63 +4338,108 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Can't local read a block under construction, see HDFS-2757
-if|if
-condition|(
-name|dfsClient
-operator|.
-name|shouldTryShortCircuitRead
-argument_list|(
-name|dnAddr
-argument_list|)
-operator|&&
-operator|!
-name|blockUnderConstruction
-argument_list|()
-condition|)
-block|{
-return|return
-name|DFSClient
-operator|.
-name|getLocalBlockReader
-argument_list|(
-name|dfsClient
-operator|.
-name|conf
-argument_list|,
-name|src
-argument_list|,
-name|block
-argument_list|,
-name|blockToken
-argument_list|,
-name|chosenNode
-argument_list|,
-name|dfsClient
-operator|.
-name|hdfsTimeout
-argument_list|,
-name|startOffset
-argument_list|,
-name|dfsClient
-operator|.
-name|connectToDnViaHostname
-argument_list|()
-argument_list|)
-return|;
-block|}
 name|IOException
 name|err
 init|=
 literal|null
 decl_stmt|;
-name|boolean
-name|fromCache
+comment|// Firstly, we check to see if we have cached any file descriptors for
+comment|// local blocks.  If so, we can just re-use those file descriptors.
+name|FileInputStream
+name|fis
+index|[]
 init|=
-literal|true
+name|fileInputStreamCache
+operator|.
+name|get
+argument_list|(
+name|chosenNode
+argument_list|,
+name|block
+argument_list|)
 decl_stmt|;
-comment|// Allow retry since there is no way of knowing whether the cached socket
-comment|// is good until we actually use it.
+if|if
+condition|(
+name|fis
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"got FileInputStreams for "
+operator|+
+name|block
+operator|+
+literal|" from "
+operator|+
+literal|"the FileInputStreamCache."
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|BlockReaderLocal
+argument_list|(
+name|dfsClient
+operator|.
+name|conf
+argument_list|,
+name|file
+argument_list|,
+name|block
+argument_list|,
+name|startOffset
+argument_list|,
+name|len
+argument_list|,
+name|fis
+index|[
+literal|0
+index|]
+argument_list|,
+name|fis
+index|[
+literal|1
+index|]
+argument_list|,
+name|chosenNode
+argument_list|,
+name|verifyChecksum
+argument_list|)
+return|;
+block|}
+comment|// We retry several times here.
+comment|// On the first nCachedConnRetry times, we try to fetch a socket from
+comment|// the socketCache and use it.  This may fail, since the old socket may
+comment|// have been closed by the peer.
+comment|// After that, we try to create a new socket using newPeer().
+comment|// This may create either a TCP socket or a UNIX domain socket, depending
+comment|// on the configuration and whether the peer is remote.
+comment|// If we try to create a UNIX domain socket and fail, we will not try that
+comment|// again.  Instead, we'll try to create a TCP socket.  Only after we've
+comment|// failed to create a TCP-based BlockReader will we throw an IOException
+comment|// from this function.  Throwing an IOException from here is basically
+comment|// equivalent to declaring the DataNode bad.
+name|boolean
+name|triedNonDomainSocketReader
+init|=
+literal|false
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -4336,10 +4448,13 @@ init|=
 literal|0
 init|;
 name|retries
-operator|<=
+operator|<
 name|nCachedConnRetry
 operator|&&
-name|fromCache
+operator|(
+operator|!
+name|triedNonDomainSocketReader
+operator|)
 condition|;
 operator|++
 name|retries
@@ -4350,9 +4465,6 @@ name|peer
 init|=
 literal|null
 decl_stmt|;
-comment|// Don't use the cache on the last attempt - it's possible that there
-comment|// are arbitrarily many unusable sockets in the cache, but we don't
-comment|// want to fail the read.
 if|if
 condition|(
 name|retries
@@ -4384,16 +4496,59 @@ argument_list|(
 name|dnAddr
 argument_list|)
 expr_stmt|;
-name|fromCache
+if|if
+condition|(
+name|peer
+operator|.
+name|getDomainSocket
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|triedNonDomainSocketReader
 operator|=
-literal|false
+literal|true
 expr_stmt|;
 block|}
+block|}
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
 try|try
 block|{
-comment|// The OP_READ_BLOCK request is sent as we make the BlockReader
+name|boolean
+name|allowShortCircuitLocalReads
+init|=
+operator|(
+name|peer
+operator|.
+name|getDomainSocket
+argument_list|()
+operator|!=
+literal|null
+operator|)
+operator|&&
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|shortCircuitLocalReads
+operator|&&
+operator|(
+operator|!
+name|shortCircuitForbidden
+argument_list|()
+operator|)
+decl_stmt|;
+comment|// Here we will try to send either an OP_READ_BLOCK request or an
+comment|// OP_REQUEST_SHORT_CIRCUIT_FDS, depending on what kind of block reader
+comment|// we're trying to create.
 name|BlockReader
-name|reader
+name|blockReader
 init|=
 name|BlockReaderFactory
 operator|.
@@ -4420,10 +4575,21 @@ argument_list|,
 name|peer
 argument_list|,
 name|chosenNode
+argument_list|,
+name|dfsClient
+operator|.
+name|getDomainSocketFactory
+argument_list|()
+argument_list|,
+name|allowShortCircuitLocalReads
 argument_list|)
 decl_stmt|;
+name|success
+operator|=
+literal|true
+expr_stmt|;
 return|return
-name|reader
+name|blockReader
 return|;
 block|}
 catch|catch
@@ -4439,13 +4605,58 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Error making BlockReader. Closing stale "
+literal|"Error making BlockReader. "
+operator|+
+literal|"Closing stale "
 operator|+
 name|peer
 argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|peer
+operator|.
+name|getDomainSocket
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// If the Peer that we got the error from was a DomainPeer,
+comment|// mark the socket path as bad, so that newDataSocket will not try
+comment|// to re-open this socket for a while.
+name|dfsClient
+operator|.
+name|getDomainSocketFactory
+argument_list|()
+operator|.
+name|disableDomainSocketPath
+argument_list|(
+name|peer
+operator|.
+name|getDomainSocket
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|err
+operator|=
+name|ex
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|success
+condition|)
+block|{
 name|IOUtils
 operator|.
 name|closeQuietly
@@ -4453,10 +4664,7 @@ argument_list|(
 name|peer
 argument_list|)
 expr_stmt|;
-name|err
-operator|=
-name|ex
-expr_stmt|;
+block|}
 block|}
 block|}
 throw|throw
@@ -5084,9 +5292,10 @@ if|if
 condition|(
 name|diff
 operator|<=
-name|DFSClient
+name|blockReader
 operator|.
-name|TCP_WINDOW_SIZE
+name|available
+argument_list|()
 condition|)
 block|{
 try|try

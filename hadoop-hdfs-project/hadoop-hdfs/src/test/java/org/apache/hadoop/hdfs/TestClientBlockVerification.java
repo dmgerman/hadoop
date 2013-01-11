@@ -355,6 +355,8 @@ operator|.
 name|close
 argument_list|(
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -428,6 +430,8 @@ operator|.
 name|close
 argument_list|(
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -499,6 +503,8 @@ name|reader
 operator|.
 name|close
 argument_list|(
+literal|null
+argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
@@ -628,6 +634,8 @@ name|reader
 operator|.
 name|close
 argument_list|(
+literal|null
+argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;

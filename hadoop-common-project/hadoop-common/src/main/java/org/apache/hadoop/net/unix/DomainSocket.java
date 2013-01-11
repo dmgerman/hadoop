@@ -369,6 +369,7 @@ comment|/**    * Disable validation of the server bind paths.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|disableBindPathValidation ()
+specifier|public
 specifier|static
 name|void
 name|disableBindPathValidation

@@ -158,6 +158,15 @@ name|byte
 operator|)
 literal|86
 argument_list|)
+block|,
+DECL|enumConstant|REQUEST_SHORT_CIRCUIT_FDS
+name|REQUEST_SHORT_CIRCUIT_FDS
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|87
+argument_list|)
 block|;
 comment|/** The code for this operation. */
 DECL|field|code

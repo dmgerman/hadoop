@@ -1365,7 +1365,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|close (PeerCache peerCache)
+DECL|method|close (PeerCache peerCache, FileInputStreamCache fisCache)
 specifier|public
 specifier|synchronized
 name|void
@@ -1373,6 +1373,9 @@ name|close
 parameter_list|(
 name|PeerCache
 name|peerCache
+parameter_list|,
+name|FileInputStreamCache
+name|fisCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1985,6 +1988,24 @@ argument_list|)
 throw|;
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|available ()
+specifier|public
+name|int
+name|available
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// An optimistic estimate of how much data is available
+comment|// to us without doing network I/O.
+return|return
+name|DFSClient
+operator|.
+name|TCP_WINDOW_SIZE
+return|;
 block|}
 block|}
 end_class

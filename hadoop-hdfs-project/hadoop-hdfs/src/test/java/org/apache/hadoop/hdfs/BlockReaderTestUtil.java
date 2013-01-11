@@ -256,6 +256,22 @@ name|NetUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|unix
+operator|.
+name|DomainSocket
+import|;
+end_import
+
 begin_comment
 comment|/**  * A helper class to setup the cluster, and get to BlockReader and DataNode for a block.  */
 end_comment
@@ -803,6 +819,10 @@ name|nodes
 index|[
 literal|0
 index|]
+argument_list|,
+literal|null
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -844,6 +864,43 @@ argument_list|(
 name|ipcport
 argument_list|)
 return|;
+block|}
+DECL|method|haveRequiredResources ()
+specifier|public
+name|boolean
+name|haveRequiredResources
+parameter_list|()
+block|{
+if|if
+condition|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_DOMAIN_SOCKET_PATH_KEY
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// To use UNIX Domain sockets, we must have the native code loaded.
+return|return
+name|DomainSocket
+operator|.
+name|getLoadingFailureReason
+argument_list|()
+operator|==
+literal|null
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 block|}
 end_class

@@ -176,6 +176,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|BlockReader
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|BlockReaderFactory
 import|;
 end_import
@@ -1539,6 +1553,9 @@ name|getBlockId
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|BlockReader
+name|blockReader
+init|=
 name|BlockReaderFactory
 operator|.
 name|newBlockReader
@@ -1571,9 +1588,21 @@ name|s
 argument_list|)
 argument_list|,
 name|datanode
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|)
+decl_stmt|;
+name|blockReader
+operator|.
+name|close
+argument_list|(
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
-comment|// nothing - if it fails - it will throw and exception
 block|}
 comment|/**    * Count datanodes that have copies of the blocks for a file    * put it into the map    * @param map    * @param path    * @param size    * @return    * @throws IOException    */
 DECL|method|countNNBlocks (Map<String, BlockLocs> map, String path, long size)

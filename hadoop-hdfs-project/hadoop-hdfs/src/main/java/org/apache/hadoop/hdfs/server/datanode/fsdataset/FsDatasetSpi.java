@@ -38,6 +38,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -1027,6 +1037,17 @@ argument_list|<
 name|ExtendedBlock
 argument_list|>
 name|blocks
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+DECL|method|getShortCircuitFdsForRead (ExtendedBlock block)
+name|FileInputStream
+index|[]
+name|getShortCircuitFdsForRead
+parameter_list|(
+name|ExtendedBlock
+name|block
 parameter_list|)
 throws|throws
 name|IOException
