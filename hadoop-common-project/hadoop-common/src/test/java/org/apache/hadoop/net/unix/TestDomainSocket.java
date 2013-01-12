@@ -164,18 +164,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|ExecutionException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|ExecutorService
 import|;
 end_import
@@ -213,18 +201,6 @@ operator|.
 name|concurrent
 operator|.
 name|TimeUnit
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|TimeoutException
 import|;
 end_import
 
@@ -366,22 +342,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Shell
-operator|.
-name|ExitCodeException
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -446,10 +406,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Before
-DECL|method|checkPrecondition ()
+DECL|method|before ()
 specifier|public
 name|void
-name|checkPrecondition
+name|before
 parameter_list|()
 block|{
 name|Assume
