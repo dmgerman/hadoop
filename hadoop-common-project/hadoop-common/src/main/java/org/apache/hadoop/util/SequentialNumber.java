@@ -58,6 +58,8 @@ specifier|public
 specifier|abstract
 class|class
 name|SequentialNumber
+implements|implements
+name|IdGenerator
 block|{
 DECL|field|currentValue
 specifier|private
