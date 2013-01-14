@@ -54,8 +54,26 @@ name|INodeFile
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFileUnderConstruction
+import|;
+end_import
+
 begin_comment
-comment|/**  * Represent an {@link INodeFile} that is snapshotted.  * Note that snapshot files are represented by {@link INodeFileSnapshot}.  */
+comment|/**  * Represent an {@link INodeFileUnderConstruction} that is snapshotted.  * Note that snapshot files are represented by  * {@link INodeFileUnderConstructionSnapshot}.  */
 end_comment
 
 begin_class
@@ -63,12 +81,12 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|INodeFileWithLink
+DECL|class|INodeFileUnderConstructionWithLink
 specifier|public
 class|class
-name|INodeFileWithLink
+name|INodeFileUnderConstructionWithLink
 extends|extends
-name|INodeFile
+name|INodeFileUnderConstruction
 implements|implements
 name|FileWithLink
 block|{
@@ -77,11 +95,11 @@ specifier|private
 name|FileWithLink
 name|next
 decl_stmt|;
-DECL|method|INodeFileWithLink (INodeFile f)
+DECL|method|INodeFileUnderConstructionWithLink (INodeFileUnderConstruction f)
 specifier|public
-name|INodeFileWithLink
+name|INodeFileUnderConstructionWithLink
 parameter_list|(
-name|INodeFile
+name|INodeFileUnderConstruction
 name|f
 parameter_list|)
 block|{
@@ -98,13 +116,69 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createSnapshotCopy ()
+DECL|method|toINodeFile (final long mtime)
+specifier|protected
+name|INodeFileWithLink
+name|toINodeFile
+parameter_list|(
+specifier|final
+name|long
+name|mtime
+parameter_list|)
+block|{
+name|assertAllBlocksComplete
+argument_list|()
+expr_stmt|;
+specifier|final
+name|long
+name|atime
+init|=
+name|getModificationTime
+argument_list|()
+decl_stmt|;
+specifier|final
+name|INodeFileWithLink
+name|f
+init|=
+operator|new
+name|INodeFileWithLink
+argument_list|(
+name|this
+argument_list|)
+decl_stmt|;
+name|f
+operator|.
+name|setModificationTime
+argument_list|(
+name|mtime
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|f
+operator|.
+name|setAccessTime
+argument_list|(
+name|atime
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+return|return
+name|f
+return|;
+block|}
+annotation|@
+name|Override
 specifier|public
 name|Pair
 argument_list|<
-name|INodeFileWithLink
+name|?
+extends|extends
+name|INodeFileUnderConstruction
 argument_list|,
-name|INodeFileSnapshot
+DECL|method|createSnapshotCopy ()
+name|INodeFileUnderConstructionSnapshot
 argument_list|>
 name|createSnapshotCopy
 parameter_list|()
@@ -113,15 +187,15 @@ return|return
 operator|new
 name|Pair
 argument_list|<
-name|INodeFileWithLink
+name|INodeFileUnderConstructionWithLink
 argument_list|,
-name|INodeFileSnapshot
+name|INodeFileUnderConstructionSnapshot
 argument_list|>
 argument_list|(
 name|this
 argument_list|,
 operator|new
-name|INodeFileSnapshot
+name|INodeFileUnderConstructionSnapshot
 argument_list|(
 name|this
 argument_list|)
@@ -236,7 +310,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
-specifier|public
+specifier|protected
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(

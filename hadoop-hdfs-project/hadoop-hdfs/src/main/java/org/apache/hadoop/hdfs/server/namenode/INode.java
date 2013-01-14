@@ -2077,6 +2077,7 @@ return|;
 block|}
 comment|/**    * Set last access time of inode.    */
 DECL|method|setAccessTime (long atime, Snapshot latest)
+specifier|public
 name|INode
 name|setAccessTime
 parameter_list|(
