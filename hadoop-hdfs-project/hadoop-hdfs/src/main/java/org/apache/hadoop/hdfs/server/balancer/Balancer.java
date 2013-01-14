@@ -46,9 +46,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|protocolPB
 operator|.
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
 name|vintPrefixed
 import|;
@@ -926,12 +926,12 @@ name|MAX_NUM_CONCURRENT_MOVES
 init|=
 literal|5
 decl_stmt|;
-DECL|field|MAX_NO_PENDING_BLOCK_INTERATIONS
-specifier|public
+DECL|field|MAX_NO_PENDING_BLOCK_ITERATIONS
+specifier|private
 specifier|static
 specifier|final
 name|int
-name|MAX_NO_PENDING_BLOCK_INTERATIONS
+name|MAX_NO_PENDING_BLOCK_ITERATIONS
 init|=
 literal|5
 decl_stmt|;
@@ -3425,7 +3425,7 @@ if|if
 condition|(
 name|noPendingBlockIteration
 operator|>=
-name|MAX_NO_PENDING_BLOCK_INTERATIONS
+name|MAX_NO_PENDING_BLOCK_ITERATIONS
 condition|)
 block|{
 name|scheduledSize

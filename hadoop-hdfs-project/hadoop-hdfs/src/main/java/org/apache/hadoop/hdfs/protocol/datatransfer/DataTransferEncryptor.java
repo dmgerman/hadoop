@@ -30,9 +30,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|protocolPB
 operator|.
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
 name|vintPrefixed
 import|;
@@ -427,6 +427,20 @@ operator|.
 name|security
 operator|.
 name|SaslOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
 import|;
 end_import
 
@@ -1869,6 +1883,10 @@ name|nonce
 argument_list|,
 literal|false
 argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 return|;
 block|}
@@ -1999,6 +2017,10 @@ name|encryptionKey
 argument_list|,
 literal|false
 argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 operator|.
 name|toCharArray

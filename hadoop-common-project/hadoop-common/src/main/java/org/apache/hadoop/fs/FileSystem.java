@@ -2920,7 +2920,7 @@ name|f
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getFileDefault
 argument_list|()
 operator|.
 name|applyUMask
@@ -3385,7 +3385,7 @@ name|f
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getFileDefault
 argument_list|()
 argument_list|,
 name|overwrite
@@ -5972,7 +5972,7 @@ name|f
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getDirDefault
 argument_list|()
 argument_list|)
 return|;

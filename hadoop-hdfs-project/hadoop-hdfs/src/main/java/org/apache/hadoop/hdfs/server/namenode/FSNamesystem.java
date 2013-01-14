@@ -950,7 +950,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileOutputStream
 import|;
 end_import
 
@@ -961,6 +961,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStreamWriter
 import|;
 end_import
 
@@ -2825,6 +2835,20 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
 import|;
 end_import
 
@@ -6375,11 +6399,19 @@ operator|new
 name|BufferedWriter
 argument_list|(
 operator|new
-name|FileWriter
+name|OutputStreamWriter
+argument_list|(
+operator|new
+name|FileOutputStream
 argument_list|(
 name|file
 argument_list|,
 literal|true
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 argument_list|)
@@ -12918,12 +12950,10 @@ init|=
 operator|new
 name|Block
 argument_list|(
-name|DFSUtil
-operator|.
-name|getRandom
+name|getFSImage
 argument_list|()
 operator|.
-name|nextLong
+name|getUniqueBlockId
 argument_list|()
 argument_list|,
 literal|0
@@ -12931,28 +12961,6 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-while|while
-condition|(
-name|isValidBlock
-argument_list|(
-name|b
-argument_list|)
-condition|)
-block|{
-name|b
-operator|.
-name|setBlockId
-argument_list|(
-name|DFSUtil
-operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextLong
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Increment the generation stamp for every new block.
 name|b
 operator|.
@@ -20532,29 +20540,6 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Returns whether the given block is one pointed-to by a file.    */
-DECL|method|isValidBlock (Block b)
-specifier|private
-name|boolean
-name|isValidBlock
-parameter_list|(
-name|Block
-name|b
-parameter_list|)
-block|{
-return|return
-operator|(
-name|blockManager
-operator|.
-name|getBlockCollection
-argument_list|(
-name|b
-argument_list|)
-operator|!=
-literal|null
-operator|)
-return|;
 block|}
 DECL|method|createFsOwnerPermissions (FsPermission permission)
 name|PermissionStatus

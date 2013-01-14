@@ -274,6 +274,13 @@ name|DEFAULT_REPLICATION_FACTOR
 init|=
 literal|2
 decl_stmt|;
+DECL|field|verifyChecksums
+specifier|protected
+name|boolean
+name|verifyChecksums
+init|=
+literal|true
+decl_stmt|;
 static|static
 block|{
 comment|// The client-trace log ends up causing a lot of blocking threads
@@ -1650,6 +1657,14 @@ name|filepath
 operator|.
 name|toString
 argument_list|()
+argument_list|,
+name|dfsClient
+operator|.
+name|dfsClientConf
+operator|.
+name|ioBufferSize
+argument_list|,
+name|verifyChecksums
 argument_list|)
 expr_stmt|;
 for|for
@@ -2012,6 +2027,28 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|runTestWorkload
+argument_list|(
+operator|new
+name|MixedWorkloadHelper
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testParallelNoChecksums ()
+specifier|public
+name|void
+name|testParallelNoChecksums
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|verifyChecksums
+operator|=
+literal|false
+expr_stmt|;
 name|runTestWorkload
 argument_list|(
 operator|new

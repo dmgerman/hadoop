@@ -514,7 +514,6 @@ name|DataStorage
 extends|extends
 name|Storage
 block|{
-comment|// Constants
 DECL|field|BLOCK_SUBDIR_PREFIX
 specifier|public
 specifier|final
@@ -575,21 +574,21 @@ name|STORAGE_DIR_TMP
 init|=
 literal|"tmp"
 decl_stmt|;
-comment|/** Access to this variable is guarded by "this" */
+comment|/** Unique storage ID. {@see DataNode#createNewStorageId(int)} for details */
 DECL|field|storageID
 specifier|private
 name|String
 name|storageID
 decl_stmt|;
-comment|// flag to ensure initialzing storage occurs only once
-DECL|field|initilized
+comment|// Flag to ensure we only initialize storage once
+DECL|field|initialized
 specifier|private
 name|boolean
-name|initilized
+name|initialized
 init|=
 literal|false
 decl_stmt|;
-comment|// BlockPoolStorage is map of<Block pool Id, BlockPoolStorage>
+comment|// Maps block pool IDs to block pool storage
 DECL|field|bpStorageMap
 specifier|private
 name|Map
@@ -765,7 +764,7 @@ name|IOException
 block|{
 if|if
 condition|(
-name|initilized
+name|initialized
 condition|)
 block|{
 comment|// DN storage has been initialized, no need to do anything
@@ -1089,7 +1088,7 @@ expr_stmt|;
 comment|// 4. mark DN storage is initilized
 name|this
 operator|.
-name|initilized
+name|initialized
 operator|=
 literal|true
 expr_stmt|;

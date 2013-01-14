@@ -30,9 +30,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
+name|protocolPB
 operator|.
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
 name|vintPrefixed
 import|;

@@ -2003,7 +2003,7 @@ block|{
 comment|// Unfortunately, the ZooKeeper constructor connects to ZooKeeper and
 comment|// may trigger the Connected event immediately. So, if we register the
 comment|// watcher after constructing ZooKeeper, we may miss that event. Instead,
-comment|// we construct the watcher first, and have it queue any events it receives
+comment|// we construct the watcher first, and have it block any events it receives
 comment|// before we can set its ZooKeeper reference.
 name|WatcherWithClientRef
 name|watcher
@@ -3530,20 +3530,17 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-comment|/**      * If any events arrive before the reference to ZooKeeper is set,      * they get queued up and later forwarded when the reference is      * available.      */
-DECL|field|queuedEvents
+comment|/**      * Latch used to wait until the reference to ZooKeeper is set.      */
+DECL|field|hasSetZooKeeper
 specifier|private
-specifier|final
-name|List
-argument_list|<
-name|WatchedEvent
-argument_list|>
-name|queuedEvents
+name|CountDownLatch
+name|hasSetZooKeeper
 init|=
-name|Lists
-operator|.
-name|newLinkedList
-argument_list|()
+operator|new
+name|CountDownLatch
+argument_list|(
+literal|1
+argument_list|)
 decl_stmt|;
 DECL|method|WatcherWithClientRef ()
 specifier|private
@@ -3558,11 +3555,10 @@ name|ZooKeeper
 name|zk
 parameter_list|)
 block|{
-name|this
-operator|.
+name|setZooKeeperRef
+argument_list|(
 name|zk
-operator|=
-name|zk
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Waits for the next event from ZooKeeper to arrive.      *       * @param connectionTimeoutMs zookeeper connection timeout in milliseconds      * @throws KeeperException if the connection attempt times out. This will      * be a ZooKeeper ConnectionLoss exception code.      * @throws IOException if interrupted while connecting to ZooKeeper      */
@@ -3607,17 +3603,11 @@ operator|+
 literal|" milliseconds"
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
 name|zk
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
 throw|throw
 name|KeeperException
 operator|.
@@ -3657,7 +3647,6 @@ block|}
 block|}
 DECL|method|setZooKeeperRef (ZooKeeper zk)
 specifier|private
-specifier|synchronized
 name|void
 name|setZooKeeperRef
 parameter_list|(
@@ -3684,23 +3673,9 @@ name|zk
 operator|=
 name|zk
 expr_stmt|;
-for|for
-control|(
-name|WatchedEvent
-name|e
-range|:
-name|queuedEvents
-control|)
-block|{
-name|forwardEvent
-argument_list|(
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-name|queuedEvents
+name|hasSetZooKeeper
 operator|.
-name|clear
+name|countDown
 argument_list|()
 expr_stmt|;
 block|}
@@ -3708,42 +3683,8 @@ annotation|@
 name|Override
 DECL|method|process (WatchedEvent event)
 specifier|public
-specifier|synchronized
 name|void
 name|process
-parameter_list|(
-name|WatchedEvent
-name|event
-parameter_list|)
-block|{
-if|if
-condition|(
-name|zk
-operator|!=
-literal|null
-condition|)
-block|{
-name|forwardEvent
-argument_list|(
-name|event
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|queuedEvents
-operator|.
-name|add
-argument_list|(
-name|event
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|method|forwardEvent (WatchedEvent event)
-specifier|private
-name|void
-name|forwardEvent
 parameter_list|(
 name|WatchedEvent
 name|event
@@ -3756,6 +3697,17 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|hasSetZooKeeper
+operator|.
+name|await
+argument_list|(
+name|zkSessionTimeout
+argument_list|,
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+expr_stmt|;
 name|ActiveStandbyElector
 operator|.
 name|this

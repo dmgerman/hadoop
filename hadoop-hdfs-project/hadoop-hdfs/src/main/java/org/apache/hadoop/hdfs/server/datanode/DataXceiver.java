@@ -396,22 +396,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsProtoUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|datatransfer
 operator|.
 name|BlockConstructionStage
@@ -643,6 +627,22 @@ operator|.
 name|DataTransferProtos
 operator|.
 name|Status
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocolPB
+operator|.
+name|PBHelper
 import|;
 end_import
 
@@ -1244,8 +1244,6 @@ specifier|private
 name|OutputStream
 name|getOutputStream
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|socketOut
@@ -2055,7 +2053,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|readBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length)
+DECL|method|readBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum)
 specifier|public
 name|void
 name|readBlock
@@ -2082,6 +2080,10 @@ parameter_list|,
 specifier|final
 name|long
 name|length
+parameter_list|,
+specifier|final
+name|boolean
+name|sendChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -2233,6 +2235,8 @@ literal|true
 argument_list|,
 literal|false
 argument_list|,
+name|sendChecksum
+argument_list|,
 name|datanode
 argument_list|,
 name|clientTraceFmt
@@ -2321,7 +2325,7 @@ name|ClientReadStatusProto
 operator|.
 name|parseFrom
 argument_list|(
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
 name|vintPrefixed
 argument_list|(
@@ -3205,7 +3209,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
 name|vintPrefixed
 argument_list|(
@@ -4041,9 +4045,9 @@ argument_list|)
 operator|.
 name|setCrcType
 argument_list|(
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
-name|toProto
+name|convert
 argument_list|(
 name|checksum
 operator|.
@@ -4281,6 +4285,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|,
 name|datanode
 argument_list|,
@@ -4844,7 +4850,7 @@ name|BlockOpResponseProto
 operator|.
 name|parseFrom
 argument_list|(
-name|HdfsProtoUtil
+name|PBHelper
 operator|.
 name|vintPrefixed
 argument_list|(

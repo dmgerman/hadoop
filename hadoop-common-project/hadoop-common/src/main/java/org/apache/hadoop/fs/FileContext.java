@@ -514,6 +514,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Default permission for directory and symlink    * In previous versions, this default permission was also used to    * create files, so files created end up with ugo+x permission.    * See HADOOP-9155 for detail.     * Two new constants are added to solve this, please use     * {@link FileContext#DIR_DEFAULT_PERM} for directory, and use    * {@link FileContext#FILE_DEFAULT_PERM} for file.    * This constant is kept for compatibility.    */
 DECL|field|DEFAULT_PERM
 specifier|public
 specifier|static
@@ -524,6 +525,32 @@ init|=
 name|FsPermission
 operator|.
 name|getDefault
+argument_list|()
+decl_stmt|;
+comment|/**    * Default permission for directory    */
+DECL|field|DIR_DEFAULT_PERM
+specifier|public
+specifier|static
+specifier|final
+name|FsPermission
+name|DIR_DEFAULT_PERM
+init|=
+name|FsPermission
+operator|.
+name|getDirDefault
+argument_list|()
+decl_stmt|;
+comment|/**    * Default permission for file    */
+DECL|field|FILE_DEFAULT_PERM
+specifier|public
+specifier|static
+specifier|final
+name|FsPermission
+name|FILE_DEFAULT_PERM
+init|=
+name|FsPermission
+operator|.
+name|getFileDefault
 argument_list|()
 decl_stmt|;
 comment|/**    * Priority of the FileContext shutdown hook.    */
@@ -1637,10 +1664,7 @@ operator|.
 name|getValue
 argument_list|()
 else|:
-name|FsPermission
-operator|.
-name|getDefault
-argument_list|()
+name|FILE_DEFAULT_PERM
 decl_stmt|;
 name|permission
 operator|=
@@ -1769,7 +1793,7 @@ literal|null
 condition|?
 name|FsPermission
 operator|.
-name|getDefault
+name|getDirDefault
 argument_list|()
 else|:
 name|permission
@@ -5689,7 +5713,7 @@ name|qDst
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getDirDefault
 argument_list|()
 argument_list|,
 literal|true

@@ -344,6 +344,20 @@ name|DataChecksum
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * Reads a block from the disk and sends it to a recipient.  *   * Data sent from the BlockeSender in the following format:  *<br><b>Data format:</b><pre>  *    +--------------------------------------------------+  *    | ChecksumHeader | Sequence of data PACKETS...     |  *    +--------------------------------------------------+   *</pre>     *<b>ChecksumHeader format:</b><pre>  *    +--------------------------------------------------+  *    | 1 byte CHECKSUM_TYPE | 4 byte BYTES_PER_CHECKSUM |  *    +--------------------------------------------------+   *</pre>     * An empty packet is sent to mark the end of block and read completion.  *   * PACKET Contains a packet header, checksum and data. Amount of data  * carried is set by BUFFER_SIZE.  *<pre>  *   +-----------------------------------------------------+  *   | Variable length header. See {@link PacketHeader}    |  *   +-----------------------------------------------------+  *   | x byte checksum data. x is defined below            |  *   +-----------------------------------------------------+  *   | actual data ......                                  |  *   +-----------------------------------------------------+  *   *   Data is made of Chunks. Each chunk is of length<= BYTES_PER_CHECKSUM.  *   A checksum is calculated for each chunk.  *    *   x = (length of data + BYTE_PER_CHECKSUM - 1)/BYTES_PER_CHECKSUM *  *       CHECKSUM_SIZE  *    *   CHECKSUM_SIZE depends on CHECKSUM_TYPE (usually, 4 for CRC32)   *</pre>  *    *  The client reads data until it receives a packet with   *  "LastPacketInBlock" set to true or with a zero length. If there is   *  no checksum error, it replies to DataNode with OP_STATUS_CHECKSUM_OK.  */
 end_comment
@@ -601,8 +615,8 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
-comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk    * @param verifyChecksum verify checksum while reading the data    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
-DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, DataNode datanode, String clientTraceFmt)
+comment|/**    * Constructor    *     * @param block Block that is being read    * @param startOffset starting offset to read from    * @param length length of data to read    * @param corruptChecksumOk    * @param verifyChecksum verify checksum while reading the data    * @param sendChecksum send checksum to client.    * @param datanode datanode from which the block is being read    * @param clientTraceFmt format string used to print client trace logs    * @throws IOException    */
+DECL|method|BlockSender (ExtendedBlock block, long startOffset, long length, boolean corruptChecksumOk, boolean verifyChecksum, boolean sendChecksum, DataNode datanode, String clientTraceFmt)
 name|BlockSender
 parameter_list|(
 name|ExtendedBlock
@@ -619,6 +633,9 @@ name|corruptChecksumOk
 parameter_list|,
 name|boolean
 name|verifyChecksum
+parameter_list|,
+name|boolean
+name|sendChecksum
 parameter_list|,
 name|DataNode
 name|datanode
@@ -683,6 +700,23 @@ name|datanode
 operator|=
 name|datanode
 expr_stmt|;
+if|if
+condition|(
+name|verifyChecksum
+condition|)
+block|{
+comment|// To simplify implementation, callers may not specify verification
+comment|// without sending.
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|sendChecksum
+argument_list|,
+literal|"If verifying checksum, currently must also send it."
+argument_list|)
+expr_stmt|;
+block|}
 specifier|final
 name|Replica
 name|replica
@@ -855,7 +889,16 @@ expr_stmt|;
 comment|/*         * (corruptChecksumOK, meta_file_exist): operation        * True,   True: will verify checksum          * True,  False: No verify, e.g., need to read data from a corrupted file         * False,  True: will verify checksum        * False, False: throws IOException file not found        */
 name|DataChecksum
 name|csum
+init|=
+literal|null
 decl_stmt|;
+if|if
+condition|(
+name|verifyChecksum
+operator|||
+name|sendChecksum
+condition|)
+block|{
 specifier|final
 name|InputStream
 name|metaIn
@@ -976,7 +1019,20 @@ operator|+
 name|block
 argument_list|)
 expr_stmt|;
-comment|// This only decides the buffer size. Use BUFFER_SIZE?
+block|}
+block|}
+if|if
+condition|(
+name|csum
+operator|==
+literal|null
+condition|)
+block|{
+comment|// The number of bytes per checksum here determines the alignment
+comment|// of reads: we always start reading at a checksum chunk boundary,
+comment|// even if the checksum type is NULL. So, choosing too big of a value
+comment|// would risk sending too much unnecessary data. 512 (1 disk sector)
+comment|// is likely to result in minimal extra IO.
 name|csum
 operator|=
 name|DataChecksum
@@ -989,9 +1045,7 @@ name|Type
 operator|.
 name|NULL
 argument_list|,
-literal|16
-operator|*
-literal|1024
+literal|512
 argument_list|)
 expr_stmt|;
 block|}
@@ -2721,6 +2775,15 @@ condition|(
 name|endOffset
 operator|>
 name|offset
+operator|&&
+operator|!
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
 condition|)
 block|{
 name|manageOsCache
@@ -2763,6 +2826,19 @@ name|seqno
 operator|++
 expr_stmt|;
 block|}
+comment|// If this thread was interrupted, then it did not send the full block.
+if|if
+condition|(
+operator|!
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+condition|)
+block|{
 try|try
 block|{
 comment|// send an empty packet to mark the end of the block
@@ -2803,6 +2879,7 @@ name|sentEntireByteRange
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

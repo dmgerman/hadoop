@@ -722,26 +722,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|common
 operator|.
 name|fica
@@ -3883,9 +3863,6 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
-operator|new
-name|CSAssignment
-argument_list|(
 name|assignReservedContainer
 argument_list|(
 name|application
@@ -3896,14 +3873,7 @@ name|reservedContainer
 argument_list|,
 name|clusterResource
 argument_list|)
-argument_list|,
-name|NodeType
-operator|.
-name|NODE_LOCAL
-argument_list|)
 return|;
-comment|// Don't care about locality constraints
-comment|// for reserved containers
 block|}
 comment|// Try to assign containers to applications in order
 for|for
@@ -4173,10 +4143,10 @@ return|return
 name|NULL_ASSIGNMENT
 return|;
 block|}
-DECL|method|assignReservedContainer (FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, Resource clusterResource)
 specifier|private
 specifier|synchronized
-name|Resource
+name|CSAssignment
+DECL|method|assignReservedContainer (FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, Resource clusterResource)
 name|assignReservedContainer
 parameter_list|(
 name|FiCaSchedulerApp
@@ -4214,50 +4184,15 @@ literal|0
 condition|)
 block|{
 comment|// Release
-name|Container
-name|container
-init|=
-name|rmContainer
-operator|.
-name|getContainer
-argument_list|()
-decl_stmt|;
-name|completedContainer
+return|return
+operator|new
+name|CSAssignment
 argument_list|(
-name|clusterResource
-argument_list|,
 name|application
 argument_list|,
-name|node
-argument_list|,
 name|rmContainer
-argument_list|,
-name|SchedulerUtils
-operator|.
-name|createAbnormalContainerStatus
-argument_list|(
-name|container
-operator|.
-name|getId
-argument_list|()
-argument_list|,
-name|SchedulerUtils
-operator|.
-name|UNRESERVED_CONTAINER
 argument_list|)
-argument_list|,
-name|RMContainerEventType
-operator|.
-name|RELEASED
-argument_list|)
-expr_stmt|;
-return|return
-name|container
-operator|.
-name|getResource
-argument_list|()
 return|;
-comment|// Ugh, return resource to force re-sort
 block|}
 comment|// Try to assign if we have sufficient resources
 name|assignContainersOnNode
@@ -4276,10 +4211,18 @@ expr_stmt|;
 comment|// Doesn't matter... since it's already charged for at time of reservation
 comment|// "re-reservation" is *free*
 return|return
+operator|new
+name|CSAssignment
+argument_list|(
 name|Resources
 operator|.
 name|none
 argument_list|()
+argument_list|,
+name|NodeType
+operator|.
+name|NODE_LOCAL
+argument_list|)
 return|;
 block|}
 DECL|method|assignToQueue (Resource clusterResource, Resource required)

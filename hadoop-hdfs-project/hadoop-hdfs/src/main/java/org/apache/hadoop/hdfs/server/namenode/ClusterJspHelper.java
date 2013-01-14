@@ -360,6 +360,20 @@ name|XMLOutputter
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Charsets
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class generates the data that is needed to be displayed on cluster web   * console.  */
 end_comment
@@ -4624,6 +4638,10 @@ name|connection
 operator|.
 name|getInputStream
 argument_list|()
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 decl_stmt|;

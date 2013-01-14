@@ -696,7 +696,7 @@ literal|0
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getDirDefault
 argument_list|()
 argument_list|,
 literal|""
@@ -745,7 +745,7 @@ literal|0
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getFileDefault
 argument_list|()
 argument_list|,
 literal|""

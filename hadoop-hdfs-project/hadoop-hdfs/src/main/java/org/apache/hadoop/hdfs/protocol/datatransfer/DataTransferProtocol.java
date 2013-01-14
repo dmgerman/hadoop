@@ -213,8 +213,8 @@ name|DATA_TRANSFER_VERSION
 init|=
 literal|28
 decl_stmt|;
-comment|/**     * Read a block.    *     * @param blk the block being read.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param blockOffset offset of the block.    * @param length maximum number of bytes for this read.    */
-DECL|method|readBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length)
+comment|/**     * Read a block.    *     * @param blk the block being read.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param blockOffset offset of the block.    * @param length maximum number of bytes for this read.    * @param sendChecksum if false, the DN should skip reading and sending    *        checksums    */
+DECL|method|readBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum)
 specifier|public
 name|void
 name|readBlock
@@ -241,6 +241,10 @@ parameter_list|,
 specifier|final
 name|long
 name|length
+parameter_list|,
+specifier|final
+name|boolean
+name|sendChecksum
 parameter_list|)
 throws|throws
 name|IOException

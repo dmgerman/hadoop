@@ -1188,7 +1188,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get the default permission. */
+comment|/**    * Get the default permission for directory and symlink.    * In previous versions, this default permission was also used to    * create files, so files created end up with ugo+x permission.    * See HADOOP-9155 for detail.     * Two new methods are added to solve this, please use     * {@link FsPermission#getDirDefault()} for directory, and use    * {@link FsPermission#getFileDefault()} for file.    * This method is kept for compatibility.    */
 DECL|method|getDefault ()
 specifier|public
 specifier|static
@@ -1204,6 +1204,44 @@ operator|(
 name|short
 operator|)
 literal|00777
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the default permission for directory.    */
+DECL|method|getDirDefault ()
+specifier|public
+specifier|static
+name|FsPermission
+name|getDirDefault
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FsPermission
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|00777
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the default permission for file.    */
+DECL|method|getFileDefault ()
+specifier|public
+specifier|static
+name|FsPermission
+name|getFileDefault
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FsPermission
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|00666
 argument_list|)
 return|;
 block|}
