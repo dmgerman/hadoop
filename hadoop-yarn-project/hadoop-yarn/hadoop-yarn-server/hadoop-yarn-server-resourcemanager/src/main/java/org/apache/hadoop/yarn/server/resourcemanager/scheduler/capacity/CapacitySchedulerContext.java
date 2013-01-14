@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Comparator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -94,6 +104,50 @@ name|RMContainerTokenSecretManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
+name|ResourceCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
+import|;
+end_import
+
 begin_comment
 comment|/**  * Read-only interface to {@link CapacityScheduler} context.  */
 end_comment
@@ -143,6 +197,27 @@ comment|/**    * Get the yarn configuration.    */
 DECL|method|getConf ()
 name|Configuration
 name|getConf
+parameter_list|()
+function_decl|;
+DECL|method|getApplicationComparator ()
+name|Comparator
+argument_list|<
+name|FiCaSchedulerApp
+argument_list|>
+name|getApplicationComparator
+parameter_list|()
+function_decl|;
+DECL|method|getResourceCalculator ()
+name|ResourceCalculator
+name|getResourceCalculator
+parameter_list|()
+function_decl|;
+DECL|method|getQueueComparator ()
+name|Comparator
+argument_list|<
+name|CSQueue
+argument_list|>
+name|getQueueComparator
 parameter_list|()
 function_decl|;
 block|}

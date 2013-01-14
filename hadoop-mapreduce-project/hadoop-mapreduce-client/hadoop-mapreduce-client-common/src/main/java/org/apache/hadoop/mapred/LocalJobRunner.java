@@ -621,11 +621,6 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|LocalJobRunner
 specifier|public
 class|class
@@ -3417,6 +3412,13 @@ name|jobid
 init|=
 literal|0
 decl_stmt|;
+comment|// used for making sure that local jobs run in different jvms don't
+comment|// collide on staging or job directories
+DECL|field|randid
+specifier|private
+name|int
+name|randid
+decl_stmt|;
 DECL|method|getNewJobID ()
 specifier|public
 specifier|synchronized
@@ -3445,6 +3447,8 @@ operator|.
 name|JobID
 argument_list|(
 literal|"local"
+operator|+
+name|randid
 argument_list|,
 operator|++
 name|jobid
@@ -3893,7 +3897,11 @@ throws|,
 name|InterruptedException
 block|{
 return|return
-literal|null
+operator|new
+name|TaskTrackerInfo
+index|[
+literal|0
+index|]
 return|;
 block|}
 comment|/**     * Get all blacklisted trackers in cluster.     * @return array of TaskTrackerInfo    */
@@ -3909,7 +3917,11 @@ throws|,
 name|InterruptedException
 block|{
 return|return
-literal|null
+operator|new
+name|TaskTrackerInfo
+index|[
+literal|0
+index|]
 return|;
 block|}
 DECL|method|getTaskCompletionEvents ( org.apache.hadoop.mapreduce.JobID jobid , int fromEventId, int maxEvents)
@@ -4088,6 +4100,17 @@ decl_stmt|;
 name|String
 name|user
 decl_stmt|;
+name|randid
+operator|=
+name|rand
+operator|.
+name|nextInt
+argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|ugi
@@ -4102,10 +4125,7 @@ operator|.
 name|getShortUserName
 argument_list|()
 operator|+
-name|rand
-operator|.
-name|nextInt
-argument_list|()
+name|randid
 expr_stmt|;
 block|}
 else|else
@@ -4114,10 +4134,7 @@ name|user
 operator|=
 literal|"dummy"
 operator|+
-name|rand
-operator|.
-name|nextInt
-argument_list|()
+name|randid
 expr_stmt|;
 block|}
 return|return

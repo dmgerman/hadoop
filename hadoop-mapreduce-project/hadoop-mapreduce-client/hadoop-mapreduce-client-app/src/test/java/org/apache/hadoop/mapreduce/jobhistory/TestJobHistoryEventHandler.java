@@ -26,19 +26,7 @@ name|framework
 operator|.
 name|Assert
 operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-operator|.
-name|assertTrue
+name|*
 import|;
 end_import
 
@@ -50,7 +38,7 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|any
+name|*
 import|;
 end_import
 
@@ -62,55 +50,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|spy
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|times
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|verify
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
+name|*
 import|;
 end_import
 
@@ -451,18 +391,6 @@ operator|.
 name|mockito
 operator|.
 name|Mockito
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|mockito
-operator|.
-name|verification
-operator|.
-name|VerificationMode
 import|;
 end_import
 
@@ -1882,15 +1810,30 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|mockAppContext (JobId jobId)
+DECL|method|mockAppContext (ApplicationId appId)
 specifier|private
 name|AppContext
 name|mockAppContext
 parameter_list|(
-name|JobId
-name|jobId
+name|ApplicationId
+name|appId
 parameter_list|)
 block|{
+name|JobId
+name|jobId
+init|=
+name|TypeConverter
+operator|.
+name|toYarn
+argument_list|(
+name|TypeConverter
+operator|.
+name|fromYarn
+argument_list|(
+name|appId
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|AppContext
 name|mockContext
 init|=
@@ -1963,6 +1906,19 @@ operator|.
 name|thenReturn
 argument_list|(
 name|mockJob
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|mockContext
+operator|.
+name|getApplicationID
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|appId
 argument_list|)
 expr_stmt|;
 return|return
@@ -2050,7 +2006,7 @@ name|mockAppContext
 init|=
 name|mockAppContext
 argument_list|(
-name|jobId
+name|appId
 argument_list|)
 decl_stmt|;
 block|}

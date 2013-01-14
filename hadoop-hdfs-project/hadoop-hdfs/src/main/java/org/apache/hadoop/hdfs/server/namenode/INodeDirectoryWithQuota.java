@@ -243,9 +243,12 @@ name|dsQuota
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota (PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
+DECL|method|INodeDirectoryWithQuota (long id, PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
 name|INodeDirectoryWithQuota
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
@@ -261,6 +264,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|modificationTime
@@ -280,9 +285,12 @@ name|dsQuota
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota (String name, PermissionStatus permissions)
+DECL|method|INodeDirectoryWithQuota (long id, String name, PermissionStatus permissions)
 name|INodeDirectoryWithQuota
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|String
 name|name
 parameter_list|,
@@ -292,6 +300,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|name
 argument_list|,
 name|permissions

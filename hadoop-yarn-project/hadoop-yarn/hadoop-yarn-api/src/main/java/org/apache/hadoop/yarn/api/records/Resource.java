@@ -48,6 +48,22 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
 name|Stable
 import|;
 end_import
@@ -115,6 +131,33 @@ name|int
 name|memory
 parameter_list|)
 function_decl|;
+comment|/**    * Get<em>number of virtual cpu cores</em> of the resource.    *     * We refer to<em>virtual cores</em> to clarify that these represent    *<em>normalized</em> cores which may have a m:n relationship w.r.t    * physical cores available on the compute nodes. Furthermore, they also     * represent<em>idealized</em> cores since the cluster might be composed    * of<em>heterogenous</em> nodes.    *       * @return<em>num of virtual cpu cores</em> of the resource    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getVirtualCores ()
+specifier|public
+specifier|abstract
+name|int
+name|getVirtualCores
+parameter_list|()
+function_decl|;
+comment|/**    * Set<em>number of virtual cpu cores</em> of the resource.    *     * We refer to<em>virtual cores</em> to clarify that these represent    *<em>normalized</em> cores which may have a m:n relationship w.r.t    * physical cores available on the compute nodes. Furthermore, they also     * represent<em>idealized</em> cores since the cluster might be composed    * of<em>heterogenous</em> nodes.    *       * @param vCores<em>number of virtual cpu cores</em> of the resource    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|setVirtualCores (int vCores)
+specifier|public
+specifier|abstract
+name|void
+name|setVirtualCores
+parameter_list|(
+name|int
+name|vCores
+parameter_list|)
+function_decl|;
 annotation|@
 name|Override
 DECL|method|hashCode ()
@@ -127,20 +170,28 @@ specifier|final
 name|int
 name|prime
 init|=
-literal|31
+literal|263167
 decl_stmt|;
 name|int
 name|result
 init|=
-literal|1
+literal|3571
 decl_stmt|;
+name|result
+operator|=
+literal|939769357
+operator|+
+name|getMemory
+argument_list|()
+expr_stmt|;
+comment|// prime * result = 939769357 initially
 name|result
 operator|=
 name|prime
 operator|*
 name|result
 operator|+
-name|getMemory
+name|getVirtualCores
 argument_list|()
 expr_stmt|;
 return|return
@@ -178,13 +229,12 @@ literal|false
 return|;
 if|if
 condition|(
-name|getClass
-argument_list|()
-operator|!=
+operator|!
+operator|(
 name|obj
-operator|.
-name|getClass
-argument_list|()
+operator|instanceof
+name|Resource
+operator|)
 condition|)
 return|return
 literal|false
@@ -206,10 +256,20 @@ name|other
 operator|.
 name|getMemory
 argument_list|()
+operator|||
+name|getVirtualCores
+argument_list|()
+operator|!=
+name|other
+operator|.
+name|getVirtualCores
+argument_list|()
 condition|)
+block|{
 return|return
 literal|false
 return|;
+block|}
 return|return
 literal|true
 return|;
@@ -223,10 +283,17 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"memory: "
+literal|"<memory:"
 operator|+
 name|getMemory
 argument_list|()
+operator|+
+literal|", vCores:"
+operator|+
+name|getVirtualCores
+argument_list|()
+operator|+
+literal|">"
 return|;
 block|}
 block|}

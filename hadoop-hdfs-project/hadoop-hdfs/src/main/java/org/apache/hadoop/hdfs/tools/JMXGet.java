@@ -313,7 +313,7 @@ specifier|final
 name|String
 name|format
 init|=
-literal|"%s=%s\n"
+literal|"%s=%s%n"
 decl_stmt|;
 DECL|field|hadoopObjectNames
 specifier|private
@@ -604,10 +604,18 @@ name|key
 operator|+
 literal|"; val = "
 operator|+
+operator|(
+name|val
+operator|==
+literal|null
+condition|?
+literal|"null"
+else|:
 name|val
 operator|.
 name|getClass
 argument_list|()
+operator|)
 operator|+
 literal|":"
 operator|+

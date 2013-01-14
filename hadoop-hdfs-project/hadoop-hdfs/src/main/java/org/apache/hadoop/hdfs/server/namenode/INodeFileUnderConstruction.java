@@ -358,6 +358,11 @@ name|INodeFileUnderConstruction
 argument_list|(
 name|file
 operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|file
+operator|.
 name|getLocalNameBytes
 argument_list|()
 argument_list|,
@@ -426,9 +431,12 @@ name|DatanodeDescriptor
 name|clientNode
 decl_stmt|;
 comment|// if client is a cluster node too.
-DECL|method|INodeFileUnderConstruction (PermissionStatus permissions, short replication, long preferredBlockSize, long modTime, String clientName, String clientMachine, DatanodeDescriptor clientNode)
+DECL|method|INodeFileUnderConstruction (long id, PermissionStatus permissions, short replication, long preferredBlockSize, long modTime, String clientName, String clientMachine, DatanodeDescriptor clientNode)
 name|INodeFileUnderConstruction
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
@@ -453,6 +461,8 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
+name|id
+argument_list|,
 literal|null
 argument_list|,
 name|replication
@@ -480,9 +490,12 @@ name|clientNode
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INodeFileUnderConstruction (byte[] name, short blockReplication, long modificationTime, long preferredBlockSize, BlockInfo[] blocks, PermissionStatus perm, String clientName, String clientMachine, DatanodeDescriptor clientNode)
+DECL|method|INodeFileUnderConstruction (long id, byte[] name, short blockReplication, long modificationTime, long preferredBlockSize, BlockInfo[] blocks, PermissionStatus perm, String clientName, String clientMachine, DatanodeDescriptor clientNode)
 name|INodeFileUnderConstruction
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|byte
 index|[]
 name|name
@@ -515,6 +528,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|name
 argument_list|,
 name|perm
@@ -659,6 +674,9 @@ return|return
 operator|new
 name|INodeFile
 argument_list|(
+name|getId
+argument_list|()
+argument_list|,
 name|getLocalNameBytes
 argument_list|()
 argument_list|,

@@ -2721,6 +2721,15 @@ condition|(
 name|endOffset
 operator|>
 name|offset
+operator|&&
+operator|!
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
 condition|)
 block|{
 name|manageOsCache
@@ -2763,6 +2772,19 @@ name|seqno
 operator|++
 expr_stmt|;
 block|}
+comment|// If this thread was interrupted, then it did not send the full block.
+if|if
+condition|(
+operator|!
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|isInterrupted
+argument_list|()
+condition|)
+block|{
 try|try
 block|{
 comment|// send an empty packet to mark the end of the block
@@ -2803,6 +2825,7 @@ name|sentEntireByteRange
 operator|=
 literal|true
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{

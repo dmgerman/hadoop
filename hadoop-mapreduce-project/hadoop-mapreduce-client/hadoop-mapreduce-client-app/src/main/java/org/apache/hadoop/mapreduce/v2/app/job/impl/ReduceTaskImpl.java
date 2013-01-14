@@ -100,20 +100,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|OutputCommitter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|jobhistory
 operator|.
 name|JobHistoryParser
@@ -337,7 +323,7 @@ specifier|final
 name|int
 name|numMapTasks
 decl_stmt|;
-DECL|method|ReduceTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path jobFile, JobConf conf, int numMapTasks, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
+DECL|method|ReduceTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path jobFile, JobConf conf, int numMapTasks, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
 specifier|public
 name|ReduceTaskImpl
 parameter_list|(
@@ -361,9 +347,6 @@ name|numMapTasks
 parameter_list|,
 name|TaskAttemptListener
 name|taskAttemptListener
-parameter_list|,
-name|OutputCommitter
-name|committer
 parameter_list|,
 name|Token
 argument_list|<
@@ -412,8 +395,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|taskAttemptListener
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,
@@ -486,8 +467,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|taskAttemptListener
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,

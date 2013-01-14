@@ -1290,7 +1290,7 @@ name|editLog
 return|;
 block|}
 comment|/**    * Create an aborted in-progress log in the given directory, containing    * only a specified number of "mkdirs" operations.    */
-DECL|method|createAbortedLogWithMkdirs (File editsLogDir, int numDirs, long firstTxId)
+DECL|method|createAbortedLogWithMkdirs (File editsLogDir, int numDirs, long firstTxId, long newInodeId)
 specifier|public
 specifier|static
 name|void
@@ -1304,6 +1304,9 @@ name|numDirs
 parameter_list|,
 name|long
 name|firstTxId
+parameter_list|,
+name|long
+name|newInodeId
 parameter_list|)
 throws|throws
 name|IOException
@@ -1380,6 +1383,12 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
+name|newInodeId
+operator|+
+name|i
+operator|-
+literal|1
+argument_list|,
 name|dirName
 argument_list|,
 name|perms

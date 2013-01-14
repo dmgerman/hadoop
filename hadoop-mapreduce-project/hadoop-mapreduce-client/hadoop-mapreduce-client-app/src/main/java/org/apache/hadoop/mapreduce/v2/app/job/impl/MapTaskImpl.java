@@ -100,20 +100,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|OutputCommitter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|jobhistory
 operator|.
 name|JobHistoryParser
@@ -355,7 +341,7 @@ specifier|final
 name|TaskSplitMetaInfo
 name|taskSplitMetaInfo
 decl_stmt|;
-DECL|method|MapTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskSplitMetaInfo taskSplitMetaInfo, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
+DECL|method|MapTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskSplitMetaInfo taskSplitMetaInfo, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
 specifier|public
 name|MapTaskImpl
 parameter_list|(
@@ -379,9 +365,6 @@ name|taskSplitMetaInfo
 parameter_list|,
 name|TaskAttemptListener
 name|taskAttemptListener
-parameter_list|,
-name|OutputCommitter
-name|committer
 parameter_list|,
 name|Token
 argument_list|<
@@ -430,8 +413,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|taskAttemptListener
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,
@@ -504,8 +485,6 @@ argument_list|,
 name|conf
 argument_list|,
 name|taskAttemptListener
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,

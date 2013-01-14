@@ -1216,7 +1216,7 @@ name|parent
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getDirDefault
 argument_list|()
 argument_list|)
 condition|)
@@ -2607,7 +2607,7 @@ name|parent
 argument_list|,
 name|FsPermission
 operator|.
-name|getDefault
+name|getDirDefault
 argument_list|()
 argument_list|)
 operator|)

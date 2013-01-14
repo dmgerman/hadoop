@@ -950,7 +950,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileWriter
+name|FileOutputStream
 import|;
 end_import
 
@@ -961,6 +961,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|OutputStreamWriter
 import|;
 end_import
 
@@ -2972,6 +2982,20 @@ name|common
 operator|.
 name|base
 operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
 name|Preconditions
 import|;
 end_import
@@ -3587,6 +3611,93 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
+DECL|field|inodeId
+specifier|private
+name|INodeId
+name|inodeId
+decl_stmt|;
+comment|/**    * Set the last allocated inode id when fsimage or editlog is loaded.     */
+DECL|method|resetLastInodeId (long newValue)
+specifier|public
+name|void
+name|resetLastInodeId
+parameter_list|(
+name|long
+name|newValue
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|inodeId
+operator|.
+name|skipTo
+argument_list|(
+name|newValue
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalStateException
+name|ise
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ise
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/** Should only be used for tests to reset to any value */
+DECL|method|resetLastInodeIdWithoutChecking (long newValue)
+name|void
+name|resetLastInodeIdWithoutChecking
+parameter_list|(
+name|long
+name|newValue
+parameter_list|)
+block|{
+name|inodeId
+operator|.
+name|setCurrentValue
+argument_list|(
+name|newValue
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** @return the last inode ID. */
+DECL|method|getLastInodeId ()
+specifier|public
+name|long
+name|getLastInodeId
+parameter_list|()
+block|{
+return|return
+name|inodeId
+operator|.
+name|getCurrentValue
+argument_list|()
+return|;
+block|}
+comment|/** Allocate a new inode ID. */
+DECL|method|allocateNewInodeId ()
+specifier|public
+name|long
+name|allocateNewInodeId
+parameter_list|()
+block|{
+return|return
+name|inodeId
+operator|.
+name|nextValue
+argument_list|()
+return|;
+block|}
 comment|/**    * Clear all loaded data    */
 DECL|method|clear ()
 name|void
@@ -3605,17 +3716,26 @@ argument_list|()
 expr_stmt|;
 name|generationStamp
 operator|.
-name|setStamp
+name|setCurrentValue
 argument_list|(
 name|GenerationStamp
 operator|.
-name|FIRST_VALID_STAMP
+name|LAST_RESERVED_STAMP
 argument_list|)
 expr_stmt|;
 name|leaseManager
 operator|.
 name|removeAllLeases
 argument_list|()
+expr_stmt|;
+name|inodeId
+operator|.
+name|setCurrentValue
+argument_list|(
+name|INodeId
+operator|.
+name|LAST_RESERVED_ID
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -4320,6 +4440,14 @@ name|DFS_HA_STANDBY_CHECKPOINTS_KEY
 argument_list|,
 name|DFS_HA_STANDBY_CHECKPOINTS_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|inodeId
+operator|=
+operator|new
+name|INodeId
+argument_list|()
 expr_stmt|;
 comment|// For testing purposes, allow the DT secret manager to be started regardless
 comment|// of whether security is enabled.
@@ -6421,11 +6549,19 @@ operator|new
 name|BufferedWriter
 argument_list|(
 operator|new
-name|FileWriter
+name|OutputStreamWriter
+argument_list|(
+operator|new
+name|FileOutputStream
 argument_list|(
 name|file
 argument_list|,
 literal|true
+argument_list|)
+argument_list|,
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 argument_list|)
@@ -13039,12 +13175,10 @@ init|=
 operator|new
 name|Block
 argument_list|(
-name|DFSUtil
-operator|.
-name|getRandom
+name|getFSImage
 argument_list|()
 operator|.
-name|nextLong
+name|getUniqueBlockId
 argument_list|()
 argument_list|,
 literal|0
@@ -13052,37 +13186,12 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-while|while
-condition|(
-name|isValidBlock
-argument_list|(
-name|b
-argument_list|)
-condition|)
-block|{
-name|b
-operator|.
-name|setBlockId
-argument_list|(
-name|DFSUtil
-operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextLong
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|// Increment the generation stamp for every new block.
-name|nextGenerationStamp
-argument_list|()
-expr_stmt|;
 name|b
 operator|.
 name|setGenerationStamp
 argument_list|(
-name|getGenerationStamp
+name|nextGenerationStamp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -19912,6 +20021,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 break|break;
+default|default:
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Unexpected safe mode action"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 return|return
@@ -20851,29 +20968,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Returns whether the given block is one pointed-to by a file.    */
-DECL|method|isValidBlock (Block b)
-specifier|private
-name|boolean
-name|isValidBlock
-parameter_list|(
-name|Block
-name|b
-parameter_list|)
-block|{
-return|return
-operator|(
-name|blockManager
-operator|.
-name|getBlockCollection
-argument_list|(
-name|b
-argument_list|)
-operator|!=
-literal|null
-operator|)
-return|;
-block|}
 DECL|method|createFsOwnerPermissions (FsPermission permission)
 name|PermissionStatus
 name|createFsOwnerPermissions
@@ -21649,7 +21743,7 @@ parameter_list|)
 block|{
 name|generationStamp
 operator|.
-name|setStamp
+name|setCurrentValue
 argument_list|(
 name|stamp
 argument_list|)
@@ -21664,7 +21758,7 @@ block|{
 return|return
 name|generationStamp
 operator|.
-name|getStamp
+name|getCurrentValue
 argument_list|()
 return|;
 block|}
@@ -21697,12 +21791,13 @@ name|safeMode
 argument_list|)
 throw|;
 block|}
+specifier|final
 name|long
 name|gs
 init|=
 name|generationStamp
 operator|.
-name|nextStamp
+name|nextValue
 argument_list|()
 decl_stmt|;
 name|getEditLog

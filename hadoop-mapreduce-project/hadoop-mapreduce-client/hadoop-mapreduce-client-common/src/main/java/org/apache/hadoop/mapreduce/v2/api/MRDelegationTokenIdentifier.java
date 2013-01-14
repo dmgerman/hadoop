@@ -42,6 +42,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -103,6 +119,9 @@ comment|/**  * {@link TokenIdentifier} that identifies delegation tokens   * iss
 end_comment
 
 begin_class
+annotation|@
+name|Private
+comment|// TODO Move to a different package.
 DECL|class|MRDelegationTokenIdentifier
 specifier|public
 class|class

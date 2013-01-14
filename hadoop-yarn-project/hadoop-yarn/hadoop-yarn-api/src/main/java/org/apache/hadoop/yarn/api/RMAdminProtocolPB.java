@@ -56,7 +56,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.yarn.server.nodemanager.api.RMAdminProtocolPB"
+literal|"org.apache.hadoop.yarn.api.RMAdminProtocolPB"
 argument_list|,
 name|protocolVersion
 operator|=

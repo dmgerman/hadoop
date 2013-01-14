@@ -1002,6 +1002,20 @@ name|ProtoUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class enables the current JobClient (0.22 hadoop) to run on YARN.  */
 end_comment
@@ -1239,13 +1253,13 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|resMgrDelegate
-operator|.
-name|cancelDelegationToken
+throw|throw
+operator|new
+name|UnsupportedOperationException
 argument_list|(
-name|arg0
+literal|"Use Token.renew instead"
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 annotation|@
 name|Override
@@ -1326,8 +1340,9 @@ name|getClusterMetrics
 argument_list|()
 return|;
 block|}
-DECL|method|getDelegationTokenFromHS ( MRClientProtocol hsProxy, Text renewer)
-specifier|private
+annotation|@
+name|VisibleForTesting
+DECL|method|getDelegationTokenFromHS (MRClientProtocol hsProxy)
 name|Token
 argument_list|<
 name|?
@@ -1336,9 +1351,6 @@ name|getDelegationTokenFromHS
 parameter_list|(
 name|MRClientProtocol
 name|hsProxy
-parameter_list|,
-name|Text
-name|renewer
 parameter_list|)
 throws|throws
 name|IOException
@@ -1361,10 +1373,12 @@ name|request
 operator|.
 name|setRenewer
 argument_list|(
-name|renewer
+name|Master
 operator|.
-name|toString
-argument_list|()
+name|getMasterPrincipal
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|DelegationToken
@@ -1686,19 +1700,6 @@ init|=
 name|getDelegationTokenFromHS
 argument_list|(
 name|hsProxy
-argument_list|,
-operator|new
-name|Text
-argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|JobClient
-operator|.
-name|HS_DELEGATION_TOKEN_RENEWER
-argument_list|)
-argument_list|)
 argument_list|)
 decl_stmt|;
 name|ts
@@ -2009,6 +2010,24 @@ argument_list|,
 name|MRJobConfig
 operator|.
 name|DEFAULT_MR_AM_VMEM_MB
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|capability
+operator|.
+name|setVirtualCores
+argument_list|(
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_CPU_VCORES
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_CPU_VCORES
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2364,6 +2383,26 @@ argument_list|,
 name|logSize
 argument_list|,
 name|vargs
+argument_list|)
+expr_stmt|;
+comment|// Add AM admin command opts before user command opts
+comment|// so that it can be overridden by user
+name|vargs
+operator|.
+name|add
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_ADMIN_COMMAND_OPTS
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_ADMIN_COMMAND_OPTS
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|vargs
@@ -2819,14 +2858,13 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-return|return
-name|resMgrDelegate
-operator|.
-name|renewDelegationToken
+throw|throw
+operator|new
+name|UnsupportedOperationException
 argument_list|(
-name|arg0
+literal|"Use Token.renew instead"
 argument_list|)
-return|;
+throw|;
 block|}
 annotation|@
 name|Override

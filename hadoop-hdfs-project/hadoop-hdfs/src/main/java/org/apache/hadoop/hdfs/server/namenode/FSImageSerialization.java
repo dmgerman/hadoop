@@ -576,10 +576,15 @@ literal|0
 operator|:
 literal|"Unexpected block locations"
 assert|;
+comment|//TODO: get inodeId from fsimage after inodeId is persisted
 return|return
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 name|name
 argument_list|,
 name|blockReplication

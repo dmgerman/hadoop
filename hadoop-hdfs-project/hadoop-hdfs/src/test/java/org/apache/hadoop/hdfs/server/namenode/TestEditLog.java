@@ -1035,6 +1035,11 @@ init|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|namesystem
+operator|.
+name|allocateNewInodeId
+argument_list|()
+argument_list|,
 name|p
 argument_list|,
 name|replication
@@ -1835,6 +1840,17 @@ operator|.
 name|rollEditLog
 argument_list|()
 expr_stmt|;
+comment|// Remember the current lastInodeId and will reset it back to test
+comment|// loading editlog segments.The transactions in the following allocate new
+comment|// inode id to write to editlogs but doesn't create ionde in namespace
+name|long
+name|originalLastInodeId
+init|=
+name|namesystem
+operator|.
+name|getLastInodeId
+argument_list|()
+decl_stmt|;
 comment|// Create threads and make them run transactions concurrently.
 name|Thread
 name|threadId
@@ -1988,6 +2004,13 @@ comment|// Verify that we can read in all the transactions that we have written.
 comment|// If there were any corruptions, it is likely that the reading in
 comment|// of these transactions will throw an exception.
 comment|//
+name|namesystem
+operator|.
+name|resetLastInodeIdWithoutChecking
+argument_list|(
+name|originalLastInodeId
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Iterator

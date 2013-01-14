@@ -823,6 +823,8 @@ operator|.
 name|createResource
 argument_list|(
 name|memory
+argument_list|,
+literal|1
 argument_list|)
 decl_stmt|;
 name|request
@@ -1089,6 +1091,8 @@ operator|.
 name|createResource
 argument_list|(
 name|capability
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;

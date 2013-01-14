@@ -671,23 +671,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|meta
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Meta file not found for block "
-operator|+
-name|this
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
 name|HardLink
 operator|.
 name|getLinkCount

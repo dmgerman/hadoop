@@ -404,6 +404,26 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
+name|ResourceCalculator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
 name|Resources
 import|;
 end_import
@@ -657,6 +677,8 @@ operator|.
 name|createResource
 argument_list|(
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 DECL|field|rootQueue
@@ -731,7 +753,13 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|ParentQueue (CapacitySchedulerContext cs, String queueName, Comparator<CSQueue> comparator, CSQueue parent, CSQueue old)
+DECL|field|resourceCalculator
+specifier|private
+specifier|final
+name|ResourceCalculator
+name|resourceCalculator
+decl_stmt|;
+DECL|method|ParentQueue (CapacitySchedulerContext cs, String queueName, CSQueue parent, CSQueue old)
 specifier|public
 name|ParentQueue
 parameter_list|(
@@ -740,12 +768,6 @@ name|cs
 parameter_list|,
 name|String
 name|queueName
-parameter_list|,
-name|Comparator
-argument_list|<
-name|CSQueue
-argument_list|>
-name|comparator
 parameter_list|,
 name|CSQueue
 name|parent
@@ -782,6 +804,15 @@ name|parent
 operator|==
 literal|null
 operator|)
+expr_stmt|;
+name|this
+operator|.
+name|resourceCalculator
+operator|=
+name|cs
+operator|.
+name|getResourceCalculator
+argument_list|()
 expr_stmt|;
 comment|// must be called after parent and queueName is set
 name|this
@@ -1024,7 +1055,10 @@ name|this
 operator|.
 name|queueComparator
 operator|=
-name|comparator
+name|cs
+operator|.
+name|getQueueComparator
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1236,6 +1270,8 @@ name|CSQueueUtils
 operator|.
 name|updateQueueStatistics
 argument_list|(
+name|resourceCalculator
+argument_list|,
 name|this
 argument_list|,
 name|parent
@@ -1947,11 +1983,6 @@ operator|+
 literal|"usedResources="
 operator|+
 name|usedResources
-operator|.
-name|getMemory
-argument_list|()
-operator|+
-literal|"MB, "
 operator|+
 literal|"usedCapacity="
 operator|+
@@ -2745,6 +2776,8 @@ operator|.
 name|createResource
 argument_list|(
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 argument_list|,
 name|NodeType
@@ -2756,6 +2789,8 @@ while|while
 condition|(
 name|canAssign
 argument_list|(
+name|clusterResource
+argument_list|,
 name|node
 argument_list|)
 condition|)
@@ -2819,6 +2854,10 @@ name|Resources
 operator|.
 name|greaterThan
 argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
 name|assignedToChild
 operator|.
 name|getResource
@@ -3002,20 +3041,18 @@ comment|// Check how of the cluster's absolute capacity we are currently using..
 name|float
 name|currentCapacity
 init|=
-call|(
-name|float
-call|)
+name|Resources
+operator|.
+name|divide
 argument_list|(
-name|usedResources
-operator|.
-name|getMemory
-argument_list|()
-argument_list|)
-operator|/
+name|resourceCalculator
+argument_list|,
 name|clusterResource
-operator|.
-name|getMemory
-argument_list|()
+argument_list|,
+name|usedResources
+argument_list|,
+name|clusterResource
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -3034,9 +3071,6 @@ operator|+
 literal|" used="
 operator|+
 name|usedResources
-operator|.
-name|getMemory
-argument_list|()
 operator|+
 literal|" current-capacity ("
 operator|+
@@ -3059,11 +3093,14 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|canAssign (FiCaSchedulerNode node)
+DECL|method|canAssign (Resource clusterResource, FiCaSchedulerNode node)
 specifier|private
 name|boolean
 name|canAssign
 parameter_list|(
+name|Resource
+name|clusterResource
+parameter_list|,
 name|FiCaSchedulerNode
 name|node
 parameter_list|)
@@ -3082,6 +3119,10 @@ name|Resources
 operator|.
 name|greaterThanOrEqual
 argument_list|(
+name|resourceCalculator
+argument_list|,
+name|clusterResource
+argument_list|,
 name|node
 operator|.
 name|getAvailableResource
@@ -3113,6 +3154,8 @@ name|Resources
 operator|.
 name|createResource
 argument_list|(
+literal|0
+argument_list|,
 literal|0
 argument_list|)
 argument_list|,
@@ -3218,9 +3261,6 @@ name|assignment
 operator|.
 name|getResource
 argument_list|()
-operator|.
-name|getMemory
-argument_list|()
 operator|+
 literal|", "
 operator|+
@@ -3238,6 +3278,10 @@ name|Resources
 operator|.
 name|greaterThan
 argument_list|(
+name|resourceCalculator
+argument_list|,
+name|cluster
+argument_list|,
 name|assignment
 operator|.
 name|getResource
@@ -3512,6 +3556,8 @@ name|CSQueueUtils
 operator|.
 name|updateQueueStatistics
 argument_list|(
+name|resourceCalculator
+argument_list|,
 name|this
 argument_list|,
 name|parent
@@ -3550,6 +3596,8 @@ name|CSQueueUtils
 operator|.
 name|updateQueueStatistics
 argument_list|(
+name|resourceCalculator
+argument_list|,
 name|this
 argument_list|,
 name|parent
@@ -3597,6 +3645,8 @@ name|CSQueueUtils
 operator|.
 name|updateQueueStatistics
 argument_list|(
+name|resourceCalculator
+argument_list|,
 name|this
 argument_list|,
 name|parent

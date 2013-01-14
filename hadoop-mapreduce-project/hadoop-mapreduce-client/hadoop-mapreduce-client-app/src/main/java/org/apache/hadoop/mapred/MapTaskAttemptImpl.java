@@ -54,20 +54,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|OutputCommitter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|TypeConverter
 import|;
 end_import
@@ -265,7 +251,7 @@ specifier|final
 name|TaskSplitMetaInfo
 name|splitInfo
 decl_stmt|;
-DECL|method|MapTaskAttemptImpl (TaskId taskId, int attempt, EventHandler eventHandler, Path jobFile, int partition, TaskSplitMetaInfo splitInfo, JobConf conf, TaskAttemptListener taskAttemptListener, OutputCommitter committer, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, AppContext appContext)
+DECL|method|MapTaskAttemptImpl (TaskId taskId, int attempt, EventHandler eventHandler, Path jobFile, int partition, TaskSplitMetaInfo splitInfo, JobConf conf, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, AppContext appContext)
 specifier|public
 name|MapTaskAttemptImpl
 parameter_list|(
@@ -292,9 +278,6 @@ name|conf
 parameter_list|,
 name|TaskAttemptListener
 name|taskAttemptListener
-parameter_list|,
-name|OutputCommitter
-name|committer
 parameter_list|,
 name|Token
 argument_list|<
@@ -332,8 +315,6 @@ name|splitInfo
 operator|.
 name|getLocations
 argument_list|()
-argument_list|,
-name|committer
 argument_list|,
 name|jobToken
 argument_list|,

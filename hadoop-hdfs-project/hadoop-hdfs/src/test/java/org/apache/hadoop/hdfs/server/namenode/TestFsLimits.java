@@ -438,6 +438,12 @@ operator|=
 operator|new
 name|INodeDirectoryWithQuota
 argument_list|(
+name|getMockNamesystem
+argument_list|()
+operator|.
+name|allocateNewInodeId
+argument_list|()
+argument_list|,
 name|INodeDirectory
 operator|.
 name|ROOT_NAME
@@ -849,6 +855,12 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
+name|getMockNamesystem
+argument_list|()
+operator|.
+name|allocateNewInodeId
+argument_list|()
+argument_list|,
 name|name
 argument_list|,
 name|perms

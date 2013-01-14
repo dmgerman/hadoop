@@ -3497,7 +3497,7 @@ literal|"%-26s : status : %-6s type : %-6s"
 operator|+
 literal|" scan time : "
 operator|+
-literal|"%-15d %s\n"
+literal|"%-15d %s%n"
 argument_list|,
 name|info
 operator|.
@@ -3580,35 +3580,35 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"\nTotal Blocks                 : %6d"
+literal|"%nTotal Blocks                 : %6d"
 operator|+
-literal|"\nVerified in last hour        : %6d"
+literal|"%nVerified in last hour        : %6d"
 operator|+
-literal|"\nVerified in last day         : %6d"
+literal|"%nVerified in last day         : %6d"
 operator|+
-literal|"\nVerified in last week        : %6d"
+literal|"%nVerified in last week        : %6d"
 operator|+
-literal|"\nVerified in last four weeks  : %6d"
+literal|"%nVerified in last four weeks  : %6d"
 operator|+
-literal|"\nVerified in SCAN_PERIOD      : %6d"
+literal|"%nVerified in SCAN_PERIOD      : %6d"
 operator|+
-literal|"\nNot yet verified             : %6d"
+literal|"%nNot yet verified             : %6d"
 operator|+
-literal|"\nVerified since restart       : %6d"
+literal|"%nVerified since restart       : %6d"
 operator|+
-literal|"\nScans since restart          : %6d"
+literal|"%nScans since restart          : %6d"
 operator|+
-literal|"\nScan errors since restart    : %6d"
+literal|"%nScan errors since restart    : %6d"
 operator|+
-literal|"\nTransient scan errors        : %6d"
+literal|"%nTransient scan errors        : %6d"
 operator|+
-literal|"\nCurrent scan rate limit KBps : %6d"
+literal|"%nCurrent scan rate limit KBps : %6d"
 operator|+
-literal|"\nProgress this period         : %6.0f%%"
+literal|"%nProgress this period         : %6.0f%%"
 operator|+
-literal|"\nTime left in cur period      : %6.2f%%"
+literal|"%nTime left in cur period      : %6.2f%%"
 operator|+
-literal|"\n"
+literal|"%n"
 argument_list|,
 name|total
 argument_list|,

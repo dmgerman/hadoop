@@ -749,6 +749,22 @@ name|conf
 parameter_list|)
 block|{
 name|String
+name|jobId
+init|=
+name|TypeConverter
+operator|.
+name|fromYarn
+argument_list|(
+name|context
+operator|.
+name|getApplicationID
+argument_list|()
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|String
 name|stagingDirStr
 init|=
 literal|null
@@ -772,6 +788,8 @@ operator|.
 name|getConfiguredHistoryStagingDirPrefix
 argument_list|(
 name|conf
+argument_list|,
+name|jobId
 argument_list|)
 expr_stmt|;
 name|doneDirStr
@@ -4463,7 +4481,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Moving "
+literal|"Copying "
 operator|+
 name|fromPath
 operator|.
@@ -4554,15 +4572,6 @@ name|JobHistoryUtils
 operator|.
 name|HISTORY_INTERMEDIATE_FILE_PERMISSIONS
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|stagingDirFS
-operator|.
-name|delete
-argument_list|(
-name|fromPath
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}

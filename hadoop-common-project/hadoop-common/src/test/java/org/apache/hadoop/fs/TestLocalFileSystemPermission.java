@@ -403,7 +403,7 @@ name|assertEquals
 argument_list|(
 name|FsPermission
 operator|.
-name|getDefault
+name|getFileDefault
 argument_list|()
 operator|.
 name|applyUMask

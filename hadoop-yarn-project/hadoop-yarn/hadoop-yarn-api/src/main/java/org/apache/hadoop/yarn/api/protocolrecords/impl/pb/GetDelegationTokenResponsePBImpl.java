@@ -32,6 +32,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|proto
+operator|.
+name|SecurityProtos
+operator|.
+name|TokenProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -97,24 +115,6 @@ operator|.
 name|pb
 operator|.
 name|DelegationTokenPBImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|proto
-operator|.
-name|YarnProtos
-operator|.
-name|DelegationTokenProto
 import|;
 end_import
 
@@ -436,12 +436,12 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-DECL|method|convertFromProtoFormat (DelegationTokenProto p)
+DECL|method|convertFromProtoFormat (TokenProto p)
 specifier|private
 name|DelegationTokenPBImpl
 name|convertFromProtoFormat
 parameter_list|(
-name|DelegationTokenProto
+name|TokenProto
 name|p
 parameter_list|)
 block|{
@@ -455,7 +455,7 @@ return|;
 block|}
 DECL|method|convertToProtoFormat (DelegationToken t)
 specifier|private
-name|DelegationTokenProto
+name|TokenProto
 name|convertToProtoFormat
 parameter_list|(
 name|DelegationToken

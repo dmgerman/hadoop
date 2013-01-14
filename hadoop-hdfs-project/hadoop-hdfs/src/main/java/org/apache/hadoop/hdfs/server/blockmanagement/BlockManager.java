@@ -178,6 +178,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -973,19 +987,25 @@ literal|0L
 decl_stmt|;
 DECL|field|excessBlocksCount
 specifier|private
-specifier|volatile
-name|long
+name|AtomicLong
 name|excessBlocksCount
 init|=
+operator|new
+name|AtomicLong
+argument_list|(
 literal|0L
+argument_list|)
 decl_stmt|;
 DECL|field|postponedMisreplicatedBlocksCount
 specifier|private
-specifier|volatile
-name|long
+name|AtomicLong
 name|postponedMisreplicatedBlocksCount
 init|=
+operator|new
+name|AtomicLong
+argument_list|(
 literal|0L
+argument_list|)
 decl_stmt|;
 comment|/** Used by metrics */
 DECL|method|getPendingReplicationBlocksCount ()
@@ -1054,6 +1074,9 @@ parameter_list|()
 block|{
 return|return
 name|excessBlocksCount
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 comment|/** Used by metrics */
@@ -1065,6 +1088,9 @@ parameter_list|()
 block|{
 return|return
 name|postponedMisreplicatedBlocksCount
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 comment|/** Used by metrics */
@@ -1140,12 +1166,7 @@ operator|.
 name|newHashSet
 argument_list|()
 decl_stmt|;
-comment|//
-comment|// Keeps a TreeSet for every named node. Each treeset contains
-comment|// a list of the blocks that are "extra" at that location. We'll
-comment|// eventually remove these extras.
-comment|// Mapping: StorageID -> TreeSet<Block>
-comment|//
+comment|/**    * Maps a StorageID to the set of blocks that are "extra" for this    * DataNode. We'll eventually remove these extras.    */
 DECL|field|excessReplicateMap
 specifier|public
 specifier|final
@@ -1172,10 +1193,7 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|//
-comment|// Store set of Blocks that need to be replicated 1 or more times.
-comment|// We also store pending replication-orders.
-comment|//
+comment|/**    * Store set of Blocks that need to be replicated 1 or more times.    * We also store pending replication-orders.    */
 DECL|field|neededReplications
 specifier|public
 specifier|final
@@ -1200,10 +1218,15 @@ specifier|final
 name|short
 name|maxReplication
 decl_stmt|;
-comment|/** The maximum number of outgoing replication streams    *  a given node should have at one time     */
+comment|/**    * The maximum number of outgoing replication streams a given node should have    * at one time considering all but the highest priority replications needed.     */
 DECL|field|maxReplicationStreams
 name|int
 name|maxReplicationStreams
+decl_stmt|;
+comment|/**    * The maximum number of outgoing replication streams a given node should have    * at one time.    */
+DECL|field|replicationStreamsHardLimit
+name|int
+name|replicationStreamsHardLimit
 decl_stmt|;
 comment|/** Minimum copies needed or else write is disallowed */
 DECL|field|minReplication
@@ -1553,6 +1576,23 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
+name|replicationStreamsHardLimit
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_REPLICATION_STREAMS_HARD_LIMIT_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|shouldCheckForEnoughRacks
 operator|=
 name|conf
@@ -1563,8 +1603,12 @@ name|DFSConfigKeys
 operator|.
 name|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
 argument_list|)
-operator|!=
+operator|==
 literal|null
+condition|?
+literal|false
+else|:
+literal|true
 expr_stmt|;
 name|this
 operator|.
@@ -2363,6 +2407,10 @@ argument_list|,
 name|containingLiveReplicasNodes
 argument_list|,
 name|numReplicas
+argument_list|,
+name|UnderReplicatedBlocks
+operator|.
+name|LEVEL
 argument_list|)
 expr_stmt|;
 assert|assert
@@ -5399,7 +5447,9 @@ argument_list|)
 condition|)
 block|{
 name|postponedMisreplicatedBlocksCount
-operator|++
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -5763,6 +5813,8 @@ argument_list|,
 name|liveReplicaNodes
 argument_list|,
 name|numReplicas
+argument_list|,
+name|priority
 argument_list|)
 expr_stmt|;
 if|if
@@ -6640,9 +6692,10 @@ return|return
 name|targets
 return|;
 block|}
-comment|/**    * Parse the data-nodes the block belongs to and choose one,    * which will be the replication source.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we choose a random node among those that did not reach their    * replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    */
-DECL|method|chooseSourceDatanode ( Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> nodesContainingLiveReplicas, NumberReplicas numReplicas)
-specifier|private
+comment|/**    * Parse the data-nodes the block belongs to and choose one,    * which will be the replication source.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we choose a random node among those that did not reach their    * replication limits.  However, if the replication is of the highest priority    * and all nodes have reached their replication limits, we will choose a    * random node despite the replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    *    * @param block Block for which a replication source is needed    * @param containingNodes List to be populated with nodes found to contain the     *                        given block    * @param nodesContainingLiveReplicas List to be populated with nodes found to    *                                    contain live replicas of the given block    * @param numReplicas NumberReplicas instance to be initialized with the     *                                   counts of live, corrupt, excess, and    *                                   decommissioned replicas of the given    *                                   block.    * @param priority integer representing replication priority of the given    *                 block    * @return the DatanodeDescriptor of the chosen node from which to replicate    *         the given block    */
+annotation|@
+name|VisibleForTesting
+DECL|method|chooseSourceDatanode ( Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> nodesContainingLiveReplicas, NumberReplicas numReplicas, int priority)
 name|DatanodeDescriptor
 name|chooseSourceDatanode
 parameter_list|(
@@ -6663,6 +6716,9 @@ name|nodesContainingLiveReplicas
 parameter_list|,
 name|NumberReplicas
 name|numReplicas
+parameter_list|,
+name|int
+name|priority
 parameter_list|)
 block|{
 name|containingNodes
@@ -6853,6 +6909,12 @@ condition|)
 continue|continue;
 if|if
 condition|(
+name|priority
+operator|!=
+name|UnderReplicatedBlocks
+operator|.
+name|QUEUE_HIGHEST_PRIORITY
+operator|&&
 name|node
 operator|.
 name|getNumberOfBlocksToBeReplicated
@@ -6860,8 +6922,22 @@ argument_list|()
 operator|>=
 name|maxReplicationStreams
 condition|)
+block|{
 continue|continue;
 comment|// already reached replication limit
+block|}
+if|if
+condition|(
+name|node
+operator|.
+name|getNumberOfBlocksToBeReplicated
+argument_list|()
+operator|>=
+name|replicationStreamsHardLimit
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// the block must not be scheduled for removal on srcNode
 if|if
 condition|(
@@ -7602,7 +7678,9 @@ name|remove
 argument_list|()
 expr_stmt|;
 name|postponedMisreplicatedBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 continue|continue;
 block|}
@@ -7653,7 +7731,9 @@ name|remove
 argument_list|()
 expr_stmt|;
 name|postponedMisreplicatedBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -11154,7 +11234,9 @@ argument_list|)
 condition|)
 block|{
 name|excessBlocksCount
-operator|++
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -11344,7 +11426,9 @@ argument_list|)
 condition|)
 block|{
 name|excessBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -13022,7 +13106,9 @@ argument_list|)
 condition|)
 block|{
 name|postponedMisreplicatedBlocksCount
-operator|--
+operator|.
+name|decrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -422,10 +422,13 @@ name|children
 init|=
 literal|null
 decl_stmt|;
-DECL|method|INodeDirectory (String name, PermissionStatus permissions)
+DECL|method|INodeDirectory (long id, String name, PermissionStatus permissions)
 specifier|public
 name|INodeDirectory
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|String
 name|name
 parameter_list|,
@@ -435,16 +438,21 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|name
 argument_list|,
 name|permissions
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INodeDirectory (PermissionStatus permissions, long mTime)
+DECL|method|INodeDirectory (long id, PermissionStatus permissions, long mTime)
 specifier|public
 name|INodeDirectory
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
@@ -454,6 +462,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|mTime
@@ -463,9 +473,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** constructor */
-DECL|method|INodeDirectory (byte[] name, PermissionStatus permissions, long mtime)
+DECL|method|INodeDirectory (long id, byte[] name, PermissionStatus permissions, long mtime)
 name|INodeDirectory
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|byte
 index|[]
 name|name
@@ -479,6 +492,8 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+name|id
+argument_list|,
 name|name
 argument_list|,
 name|permissions

@@ -332,7 +332,7 @@ operator|.
 name|resourcemanager
 operator|.
 name|NodeManager
-DECL|method|registerNode (String hostName, int containerManagerPort, int httpPort, String rackName, int memory)
+DECL|method|registerNode (String hostName, int containerManagerPort, int httpPort, String rackName, Resource capability)
 name|registerNode
 parameter_list|(
 name|String
@@ -347,8 +347,8 @@ parameter_list|,
 name|String
 name|rackName
 parameter_list|,
-name|int
-name|memory
+name|Resource
+name|capability
 parameter_list|)
 throws|throws
 name|IOException
@@ -377,7 +377,7 @@ name|httpPort
 argument_list|,
 name|rackName
 argument_list|,
-name|memory
+name|capability
 argument_list|,
 name|resourceManager
 operator|.
@@ -448,7 +448,14 @@ name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 argument_list|,
+name|Resources
+operator|.
+name|createResource
+argument_list|(
 name|memory
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|nm1
@@ -489,9 +496,16 @@ name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 argument_list|,
+name|Resources
+operator|.
+name|createResource
+argument_list|(
 name|memory
 operator|/
 literal|2
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|nm2
@@ -553,6 +567,8 @@ operator|.
 name|createResource
 argument_list|(
 name|memory1
+argument_list|,
+literal|1
 argument_list|)
 decl_stmt|;
 name|Priority
@@ -629,6 +645,8 @@ operator|.
 name|createResource
 argument_list|(
 name|memory2
+argument_list|,
+literal|1
 argument_list|)
 decl_stmt|;
 name|Priority
@@ -929,7 +947,14 @@ name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 argument_list|,
+name|Resources
+operator|.
+name|createResource
+argument_list|(
 name|memory
+argument_list|,
+literal|1
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|nm1

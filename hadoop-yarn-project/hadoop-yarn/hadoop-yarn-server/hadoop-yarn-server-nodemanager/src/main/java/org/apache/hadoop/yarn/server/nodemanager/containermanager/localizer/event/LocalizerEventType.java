@@ -35,9 +35,6 @@ block|{
 comment|/** See {@link LocalizerResourceRequestEvent} */
 DECL|enumConstant|REQUEST_RESOURCE_LOCALIZATION
 name|REQUEST_RESOURCE_LOCALIZATION
-block|,
-DECL|enumConstant|ABORT_LOCALIZATION
-name|ABORT_LOCALIZATION
 block|}
 end_enum
 

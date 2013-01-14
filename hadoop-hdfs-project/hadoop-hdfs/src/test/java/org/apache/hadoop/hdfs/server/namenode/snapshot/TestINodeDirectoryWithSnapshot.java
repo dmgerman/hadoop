@@ -1243,6 +1243,8 @@ return|return
 operator|new
 name|INodeDirectory
 argument_list|(
+name|n
+argument_list|,
 name|String
 operator|.
 name|format
@@ -1821,6 +1823,8 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
+literal|0
+argument_list|,
 literal|"foo"
 argument_list|,
 name|PERM

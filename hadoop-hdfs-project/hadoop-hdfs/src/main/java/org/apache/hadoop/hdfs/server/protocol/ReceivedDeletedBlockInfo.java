@@ -310,15 +310,6 @@ name|other
 operator|.
 name|status
 operator|&&
-operator|(
-name|this
-operator|.
-name|delHints
-operator|==
-name|other
-operator|.
-name|delHints
-operator|||
 name|this
 operator|.
 name|delHints
@@ -335,7 +326,6 @@ name|other
 operator|.
 name|delHints
 argument_list|)
-operator|)
 return|;
 block|}
 annotation|@

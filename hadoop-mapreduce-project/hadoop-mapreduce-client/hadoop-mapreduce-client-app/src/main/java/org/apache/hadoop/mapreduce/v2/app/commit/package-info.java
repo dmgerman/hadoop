@@ -11,7 +11,7 @@ name|Private
 end_annotation
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.app.taskclean
+DECL|package|org.apache.hadoop.mapreduce.v2.app.commit
 package|package
 name|org
 operator|.
@@ -25,7 +25,7 @@ name|v2
 operator|.
 name|app
 operator|.
-name|taskclean
+name|commit
 package|;
 end_package
 

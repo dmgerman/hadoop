@@ -814,6 +814,20 @@ name|common
 operator|.
 name|base
 operator|.
+name|Charsets
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
 name|Joiner
 import|;
 end_import
@@ -1413,31 +1427,15 @@ name|String
 name|str
 parameter_list|)
 block|{
-try|try
-block|{
 return|return
 name|str
 operator|.
 name|getBytes
 argument_list|(
-literal|"UTF8"
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
-return|;
-block|}
-catch|catch
-parameter_list|(
-name|UnsupportedEncodingException
-name|e
-parameter_list|)
-block|{
-assert|assert
-literal|false
-operator|:
-literal|"UTF8 encoding is not supported "
-assert|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 comment|/**    * Given a list of path components returns a path as a UTF8 String    */
@@ -1500,8 +1498,6 @@ operator|.
 name|SEPARATOR
 return|;
 block|}
-try|try
-block|{
 name|StringBuilder
 name|result
 init|=
@@ -1538,7 +1534,9 @@ index|[
 name|i
 index|]
 argument_list|,
-literal|"UTF-8"
+name|Charsets
+operator|.
+name|UTF_8
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1570,21 +1568,6 @@ operator|.
 name|toString
 argument_list|()
 return|;
-block|}
-catch|catch
-parameter_list|(
-name|UnsupportedEncodingException
-name|ex
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|AssertionError
-argument_list|(
-literal|"UTF-8 encoding is not supported."
-argument_list|)
-throw|;
-block|}
 block|}
 comment|/** Convert an object representing a path to a string. */
 DECL|method|path2String (final Object path)

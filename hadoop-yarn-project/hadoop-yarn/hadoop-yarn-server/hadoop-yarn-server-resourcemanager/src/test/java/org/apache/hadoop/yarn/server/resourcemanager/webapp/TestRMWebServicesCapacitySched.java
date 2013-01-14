@@ -3242,7 +3242,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"usedResources doesn't match"
+literal|"usedResources doesn't match "
 argument_list|,
 name|info
 operator|.
@@ -3250,7 +3250,7 @@ name|usedResources
 operator|.
 name|matches
 argument_list|(
-literal|"memory: 0"
+literal|"<memory:0, vCores:0>"
 argument_list|)
 argument_list|)
 expr_stmt|;

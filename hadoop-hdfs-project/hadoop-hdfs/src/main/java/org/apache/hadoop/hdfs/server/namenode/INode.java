@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -802,6 +812,13 @@ name|permission
 return|;
 block|}
 block|}
+comment|/**    * The inode id    */
+DECL|field|id
+specifier|final
+specifier|private
+name|long
+name|id
+decl_stmt|;
 comment|/**    *  The inode name is in java UTF8 encoding;     *  The name in HdfsFileStatus should keep the same encoding as this.    *  if this encoding is changed, implicitly getFileInfo and listStatus in    *  clientProtocol are changed; The decoding at the client    *  side should change accordingly.    */
 DECL|field|name
 specifier|private
@@ -839,10 +856,13 @@ name|accessTime
 init|=
 literal|0L
 decl_stmt|;
-DECL|method|INode (byte[] name, long permission, INodeDirectory parent, long modificationTime, long accessTime)
+DECL|method|INode (long id, byte[] name, long permission, INodeDirectory parent, long modificationTime, long accessTime)
 specifier|private
 name|INode
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|byte
 index|[]
 name|name
@@ -860,6 +880,12 @@ name|long
 name|accessTime
 parameter_list|)
 block|{
+name|this
+operator|.
+name|id
+operator|=
+name|id
+expr_stmt|;
 name|this
 operator|.
 name|name
@@ -891,9 +917,12 @@ operator|=
 name|accessTime
 expr_stmt|;
 block|}
-DECL|method|INode (byte[] name, PermissionStatus permissions, INodeDirectory parent, long modificationTime, long accessTime)
+DECL|method|INode (long id, byte[] name, PermissionStatus permissions, INodeDirectory parent, long modificationTime, long accessTime)
 name|INode
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|byte
 index|[]
 name|name
@@ -913,6 +942,8 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
+name|id
+argument_list|,
 name|name
 argument_list|,
 name|PermissionStatusFormat
@@ -930,9 +961,12 @@ name|accessTime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INode (PermissionStatus permissions, long mtime, long atime)
+DECL|method|INode (long id, PermissionStatus permissions, long mtime, long atime)
 name|INode
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
@@ -945,9 +979,16 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
+name|id
+argument_list|,
 literal|null
 argument_list|,
+name|PermissionStatusFormat
+operator|.
+name|toLong
+argument_list|(
 name|permissions
+argument_list|)
 argument_list|,
 literal|null
 argument_list|,
@@ -957,10 +998,13 @@ name|atime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|INode (String name, PermissionStatus permissions)
+DECL|method|INode (long id, String name, PermissionStatus permissions)
 specifier|protected
 name|INode
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|String
 name|name
 parameter_list|,
@@ -970,6 +1014,8 @@ parameter_list|)
 block|{
 name|this
 argument_list|(
+name|id
+argument_list|,
 name|DFSUtil
 operator|.
 name|string2Bytes
@@ -999,6 +1045,10 @@ name|this
 argument_list|(
 name|other
 operator|.
+name|id
+argument_list|,
+name|other
+operator|.
 name|name
 argument_list|,
 name|other
@@ -1018,6 +1068,19 @@ operator|.
 name|accessTime
 argument_list|)
 expr_stmt|;
+block|}
+comment|/** Get inode id */
+DECL|method|getId ()
+specifier|public
+name|long
+name|getId
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|id
+return|;
 block|}
 comment|/**    * Create a copy of this inode for snapshot.    *     * @return a pair of inodes, where the left inode is the current inode and    *         the right inode is the snapshot copy. The current inode usually is    *         the same object of this inode. However, in some cases, the inode    *         may be replaced with a new inode for maintaining snapshot data.    *         Then, the current inode is the new inode.    */
 DECL|method|createSnapshotCopy ()
@@ -2528,12 +2591,15 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an INode; the inode's name is not set yet    *     * @param permissions permissions    * @param blocks blocks if a file    * @param symlink symblic link if a symbolic link    * @param replication replication factor    * @param modificationTime modification time    * @param atime access time    * @param nsQuota namespace quota    * @param dsQuota disk quota    * @param preferredBlockSize block size    * @return an inode    */
-DECL|method|newINode (PermissionStatus permissions, BlockInfo[] blocks, String symlink, short replication, long modificationTime, long atime, long nsQuota, long dsQuota, long preferredBlockSize)
+comment|/**    * Create an INode; the inode's name is not set yet    *     * @param id preassigned inode id    * @param permissions permissions    * @param blocks blocks if a file    * @param symlink symblic link if a symbolic link    * @param replication replication factor    * @param modificationTime modification time    * @param atime access time    * @param nsQuota namespace quota    * @param dsQuota disk quota    * @param preferredBlockSize block size    * @return an inode    */
+DECL|method|newINode (long id, PermissionStatus permissions, BlockInfo[] blocks, String symlink, short replication, long modificationTime, long atime, long nsQuota, long dsQuota, long preferredBlockSize)
 specifier|static
 name|INode
 name|newINode
 parameter_list|(
+name|long
+name|id
+parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
@@ -2578,6 +2644,8 @@ return|return
 operator|new
 name|INodeSymlink
 argument_list|(
+name|id
+argument_list|,
 name|symlink
 argument_list|,
 name|modificationTime
@@ -2612,6 +2680,8 @@ return|return
 operator|new
 name|INodeDirectoryWithQuota
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|modificationTime
@@ -2627,6 +2697,8 @@ return|return
 operator|new
 name|INodeDirectory
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|modificationTime
@@ -2638,6 +2710,8 @@ return|return
 operator|new
 name|INodeFile
 argument_list|(
+name|id
+argument_list|,
 name|permissions
 argument_list|,
 name|blocks

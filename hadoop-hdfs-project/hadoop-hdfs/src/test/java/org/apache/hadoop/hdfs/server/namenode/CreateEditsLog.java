@@ -184,7 +184,7 @@ name|BLOCK_GENERATION_STAMP
 init|=
 name|GenerationStamp
 operator|.
-name|FIRST_VALID_STAMP
+name|LAST_RESERVED_STAMP
 decl_stmt|;
 DECL|method|addFiles (FSEditLog editLog, int numFiles, short replication, int blocksPerFile, long startingBlockId, FileNameGenerator nameGenerator)
 specifier|static
@@ -236,6 +236,10 @@ init|=
 operator|new
 name|INodeDirectory
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 name|p
 argument_list|,
 literal|0L
@@ -360,6 +364,10 @@ init|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 literal|null
 argument_list|,
 name|replication
@@ -455,6 +463,10 @@ operator|=
 operator|new
 name|INodeDirectory
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 name|p
 argument_list|,
 literal|0L
@@ -479,6 +491,10 @@ argument_list|,
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
+argument_list|,
 name|p
 argument_list|,
 name|replication
