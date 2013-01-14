@@ -467,6 +467,34 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Sending DataTransferOp "
+operator|+
+name|proto
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|proto
+argument_list|)
+expr_stmt|;
+block|}
 name|op
 argument_list|(
 name|out
@@ -489,7 +517,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|readBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length)
+DECL|method|readBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum)
 specifier|public
 name|void
 name|readBlock
@@ -516,6 +544,10 @@ parameter_list|,
 specifier|final
 name|long
 name|length
+parameter_list|,
+specifier|final
+name|boolean
+name|sendChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -550,6 +582,11 @@ operator|.
 name|setLen
 argument_list|(
 name|length
+argument_list|)
+operator|.
+name|setSendChecksums
+argument_list|(
+name|sendChecksum
 argument_list|)
 operator|.
 name|build

@@ -1715,6 +1715,8 @@ argument_list|,
 name|startOffset
 argument_list|,
 name|len
+argument_list|,
+name|verifyChecksum
 argument_list|)
 expr_stmt|;
 comment|//
