@@ -4450,7 +4450,7 @@ init|;
 name|retries
 operator|<
 name|nCachedConnRetry
-operator|&&
+operator|||
 operator|(
 operator|!
 name|triedNonDomainSocketReader
