@@ -54,13 +54,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
+name|security
 operator|.
 name|proto
 operator|.
-name|MRServiceProtos
+name|SecurityProtos
 operator|.
 name|GetDelegationTokenResponseProto
 import|;
@@ -74,13 +72,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
+name|security
 operator|.
 name|proto
 operator|.
-name|MRServiceProtos
+name|SecurityProtos
 operator|.
 name|GetDelegationTokenResponseProtoOrBuilder
 import|;
@@ -271,7 +267,7 @@ condition|(
 operator|!
 name|p
 operator|.
-name|hasMRDelegationToken
+name|hasToken
 argument_list|()
 condition|)
 block|{
@@ -287,7 +283,7 @@ name|convertFromProtoFormat
 argument_list|(
 name|p
 operator|.
-name|getMRDelegationToken
+name|getToken
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -319,7 +315,7 @@ literal|null
 condition|)
 name|builder
 operator|.
-name|clearMRDelegationToken
+name|getToken
 argument_list|()
 expr_stmt|;
 name|this
@@ -374,7 +370,7 @@ condition|)
 block|{
 name|builder
 operator|.
-name|setMRDelegationToken
+name|setToken
 argument_list|(
 name|convertToProtoFormat
 argument_list|(

@@ -54,13 +54,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
-operator|.
-name|v2
+name|security
 operator|.
 name|proto
 operator|.
-name|MRServiceProtos
+name|SecurityProtos
 operator|.
 name|CancelDelegationTokenResponseProto
 import|;
