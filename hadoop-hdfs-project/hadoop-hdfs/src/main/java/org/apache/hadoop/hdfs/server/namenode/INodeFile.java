@@ -1126,7 +1126,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
-specifier|protected
+specifier|public
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(

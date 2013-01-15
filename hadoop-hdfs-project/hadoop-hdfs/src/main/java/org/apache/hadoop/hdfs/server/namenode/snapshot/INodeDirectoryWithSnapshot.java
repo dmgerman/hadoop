@@ -142,6 +142,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFile
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|ReadOnlyList
@@ -188,7 +206,7 @@ name|INodeDirectoryWithSnapshot
 extends|extends
 name|INodeDirectoryWithQuota
 block|{
-comment|/**    * The difference between the current state and a previous snapshot    * of an INodeDirectory.    *     *<pre>    * Two lists are maintained in the algorithm:    * - c-list for newly created inodes    * - d-list for the deleted inodes    *    * Denote the state of an inode by the following    *   (0, 0): neither in c-list nor d-list    *   (c, 0): in c-list but not in d-list    *   (0, d): in d-list but not in c-list    *   (c, d): in both c-list and d-list    *    * For each case below, ( , ) at the end shows the result state of the inode.    *    * Case 1. Suppose the inode i is NOT in the previous snapshot.        (0, 0)    *   1.1. create i in current: add it to c-list                        (c, 0)    *   1.1.1. create i in current and then create: impossible    *   1.1.2. create i in current and then delete: remove it from c-list (0, 0)    *   1.1.3. create i in current and then modify: replace it in c-list  (c, 0)    *    *   1.2. delete i from current: impossible    *    *   1.3. modify i in current: impossible    *    * Case 2. Suppose the inode i is ALREADY in the previous snapshot.    (0, 0)    *   2.1. create i in current: impossible    *    *   2.2. delete i from current: add it to d-list                      (0, d)    *   2.2.1. delete i from current and then create: add it to c-list    (c, d)    *   2.2.2. delete i from current and then delete: impossible    *   2.2.2. delete i from current and then modify: impossible    *    *   2.3. modify i in current: put it in both c-list and d-list        (c, d)    *   2.3.1. modify i in current and then create: impossible    *   2.3.2. modify i in current and then delete: remove it from c-list (0, d)    *   2.3.3. modify i in current and then modify: replace it in c-list  (c, d)    *</pre>    */
+comment|/**    * The difference between the current state and a previous snapshot    * of an INodeDirectory.    *     *<pre>    * Two lists are maintained in the algorithm:    * - c-list for newly created inodes    * - d-list for the deleted inodes    *    * Denote the state of an inode by the following    *   (0, 0): neither in c-list nor d-list    *   (c, 0): in c-list but not in d-list    *   (0, d): in d-list but not in c-list    *   (c, d): in both c-list and d-list    *    * For each case below, ( , ) at the end shows the result state of the inode.    *    * Case 1. Suppose the inode i is NOT in the previous snapshot.        (0, 0)    *   1.1. create i in current: add it to c-list                        (c, 0)    *   1.1.1. create i in current and then create: impossible    *   1.1.2. create i in current and then delete: remove it from c-list (0, 0)    *   1.1.3. create i in current and then modify: replace it in c-list (c', 0)    *    *   1.2. delete i from current: impossible    *    *   1.3. modify i in current: impossible    *    * Case 2. Suppose the inode i is ALREADY in the previous snapshot.    (0, 0)    *   2.1. create i in current: impossible    *    *   2.2. delete i from current: add it to d-list                      (0, d)    *   2.2.1. delete i from current and then create: add it to c-list    (c, d)    *   2.2.2. delete i from current and then delete: impossible    *   2.2.2. delete i from current and then modify: impossible    *    *   2.3. modify i in current: put it in both c-list and d-list        (c, d)    *   2.3.1. modify i in current and then create: impossible    *   2.3.2. modify i in current and then delete: remove it from c-list (0, d)    *   2.3.3. modify i in current and then modify: replace it in c-list (c', d)    *</pre>    */
 DECL|class|Diff
 specifier|static
 class|class
@@ -753,7 +771,7 @@ operator|>=
 literal|0
 condition|)
 block|{
-comment|// Case 1.1.3: inode is already in c-list,
+comment|// Case 1.1.3 and 2.3.3: inode is already in c-list,
 name|previous
 operator|=
 name|created
@@ -764,6 +782,11 @@ name|c
 argument_list|,
 name|newinode
 argument_list|)
+expr_stmt|;
+comment|//TODO: fix a bug that previous != oldinode.  Set it to oldinode for now
+name|previous
+operator|=
+name|oldinode
 expr_stmt|;
 block|}
 else|else
@@ -1211,16 +1234,16 @@ name|created
 argument_list|)
 return|;
 block|}
-comment|/**      * Combine the posterior diff with this diff. This function needs to called      * before the posterior diff is to be deleted. In general we have:      *       *<pre>      * 1. For (c, 0) in the posterior diff, check the inode in this diff:      * 1.1 (c', 0) in this diff: impossible      * 1.2 (0, d') in this diff: put in created --> (c, d')      * 1.3 (c', d') in this diff: impossible      * 1.4 (0, 0) in this diff: put in created --> (c, 0)      * This is the same logic with {@link #create(INode)}.      *       * 2. For (0, d) in the posterior diff,      * 2.1 (c', 0) in this diff: remove from old created --> (0, 0)      * 2.2 (0, d') in this diff: impossible      * 2.3 (c', d') in this diff: remove from old created --> (0, d')      * 2.4 (0, 0) in this diff: put in deleted --> (0, d)      * This is the same logic with {@link #delete(INode)}.      *       * 3. For (c, d) in the posterior diff,      * 3.1 (c', 0) in this diff: replace old created --> (c, 0)      * 3.2 (0, d') in this diff: impossible      * 3.3 (c', d') in this diff: replace old created --> (c, d')      * 3.4 (0, 0) in this diff: put in created and deleted --> (c, d)      * This is the same logic with {@link #modify(INode, INode)}.      *</pre>      *       * Note that after this function the postDiff will be deleted.      *       * @param the posterior diff to combine      * @param collectedBlocks Used in case 2.3, 3.1, and 3.3 to collect       *                        information for blocksMap update      */
-DECL|method|combinePostDiff (Diff postDiff, BlocksMapUpdateInfo collectedBlocks)
+comment|/**      * Combine the posterior diff with this diff. This function needs to called      * before the posterior diff is to be deleted. In general we have:      *       *<pre>      * 1. For (c, 0) in the posterior diff, check the inode in this diff:      * 1.1 (c', 0) in this diff: impossible      * 1.2 (0, d') in this diff: put in created --> (c, d')      * 1.3 (c', d') in this diff: impossible      * 1.4 (0, 0) in this diff: put in created --> (c, 0)      * This is the same logic with {@link #create(INode)}.      *       * 2. For (0, d) in the posterior diff,      * 2.1 (c', 0) in this diff: remove from old created --> (0, 0)      * 2.2 (0, d') in this diff: impossible      * 2.3 (c', d') in this diff: remove from old created --> (0, d')      * 2.4 (0, 0) in this diff: put in deleted --> (0, d)      * This is the same logic with {@link #delete(INode)}.      *       * 3. For (c, d) in the posterior diff,      * 3.1 (c', 0) in this diff: replace old created --> (c, 0)      * 3.2 (0, d') in this diff: impossible      * 3.3 (c', d') in this diff: replace old created --> (c, d')      * 3.4 (0, 0) in this diff: put in created and deleted --> (c, d)      * This is the same logic with {@link #modify(INode, INode)}.      *</pre>      *       * Note that after this function the postDiff will be deleted.      *       * @param the posterior diff to combine      * @param deletedINodeProcesser Used in case 2.1, 2.3, 3.1, and 3.3      *                              to process the deleted inodes.      */
+DECL|method|combinePostDiff (Diff postDiff, Processor deletedINodeProcesser)
 name|void
 name|combinePostDiff
 parameter_list|(
 name|Diff
 name|postDiff
 parameter_list|,
-name|BlocksMapUpdateInfo
-name|collectedBlocks
+name|Processor
+name|deletedINodeProcesser
 parameter_list|)
 block|{
 while|while
@@ -1240,8 +1263,9 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+specifier|final
 name|INode
-name|node
+name|c
 init|=
 name|postDiff
 operator|.
@@ -1259,6 +1283,7 @@ operator|-
 literal|1
 argument_list|)
 decl_stmt|;
+specifier|final
 name|int
 name|deletedIndex
 init|=
@@ -1268,7 +1293,7 @@ name|postDiff
 operator|.
 name|deleted
 argument_list|,
-name|node
+name|c
 argument_list|)
 decl_stmt|;
 if|if
@@ -1278,102 +1303,19 @@ operator|<
 literal|0
 condition|)
 block|{
-comment|// for case 1
+comment|// case 1
 name|create
 argument_list|(
-name|node
+name|c
 argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-comment|// case 3
-name|int
-name|createdIndex
-init|=
-name|search
-argument_list|(
-name|created
-argument_list|,
-name|node
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|createdIndex
-operator|<
-literal|0
-condition|)
-block|{
-comment|// 3.4
-name|create
-argument_list|(
-name|node
-argument_list|)
-expr_stmt|;
-name|insertDeleted
-argument_list|(
-name|node
-argument_list|,
-name|search
-argument_list|(
-name|deleted
-argument_list|,
-name|node
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// 3.1 and 3.3
-name|created
-operator|.
-name|set
-argument_list|(
-name|createdIndex
-argument_list|,
-name|node
-argument_list|)
-expr_stmt|;
-comment|// for 3.1 and 3.3, if the node is an INodeFileWithLink, need to
-comment|// remove d in the posterior diff from the circular list, also do
-comment|// possible block deletion and blocksMap updating
+specifier|final
 name|INode
-name|dInPost
+name|d
 init|=
-name|postDiff
-operator|.
-name|deleted
-operator|.
-name|get
-argument_list|(
-name|deletedIndex
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|dInPost
-operator|instanceof
-name|INodeFileWithLink
-condition|)
-block|{
-comment|// dInPost must be an INodeFileWithLink
-operator|(
-operator|(
-name|INodeFileWithLink
-operator|)
-name|dInPost
-operator|)
-operator|.
-name|collectSubtreeBlocksAndClear
-argument_list|(
-name|collectedBlocks
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// also remove the inode from the deleted list
 name|postDiff
 operator|.
 name|deleted
@@ -1382,7 +1324,43 @@ name|remove
 argument_list|(
 name|deletedIndex
 argument_list|)
+decl_stmt|;
+comment|// case 3
+specifier|final
+name|Triple
+argument_list|<
+name|Integer
+argument_list|,
+name|INode
+argument_list|,
+name|Integer
+argument_list|>
+name|triple
+init|=
+name|modify
+argument_list|(
+name|d
+argument_list|,
+name|c
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|deletedINodeProcesser
+operator|!=
+literal|null
+condition|)
+block|{
+name|deletedINodeProcesser
+operator|.
+name|process
+argument_list|(
+name|triple
+operator|.
+name|middle
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 while|while
@@ -1437,32 +1415,20 @@ argument_list|(
 name|node
 argument_list|)
 decl_stmt|;
-comment|// for 2.3, if the node is an INodeFileWithLink, need to remove c' from
-comment|// the circular list
-name|INode
-name|cInCurrent
-init|=
+if|if
+condition|(
+name|deletedINodeProcesser
+operator|!=
+literal|null
+condition|)
+block|{
+name|deletedINodeProcesser
+operator|.
+name|process
+argument_list|(
 name|triple
 operator|.
 name|middle
-decl_stmt|;
-if|if
-condition|(
-name|cInCurrent
-operator|instanceof
-name|INodeFileWithLink
-condition|)
-block|{
-operator|(
-operator|(
-name|INodeFileWithLink
-operator|)
-name|cInCurrent
-operator|)
-operator|.
-name|collectSubtreeBlocksAndClear
-argument_list|(
-name|collectedBlocks
 argument_list|)
 expr_stmt|;
 block|}
@@ -1908,33 +1874,48 @@ literal|null
 condition|)
 block|{
 specifier|final
-name|ReadOnlyList
-argument_list|<
-name|INode
-argument_list|>
-name|posterior
+name|Diff
+name|combined
 init|=
-name|posteriorDiff
-operator|!=
-literal|null
-condition|?
-name|posteriorDiff
-operator|.
-name|getChildrenList
+operator|new
+name|Diff
 argument_list|()
-else|:
-name|INodeDirectoryWithSnapshot
+decl_stmt|;
+for|for
+control|(
+name|SnapshotDiff
+name|d
+init|=
+name|SnapshotDiff
 operator|.
 name|this
+init|;
+name|d
+operator|!=
+literal|null
+condition|;
+name|d
+operator|=
+name|d
 operator|.
-name|getChildrenList
+name|posteriorDiff
+control|)
+block|{
+name|combined
+operator|.
+name|combinePostDiff
 argument_list|(
+name|d
+operator|.
+name|diff
+argument_list|,
 literal|null
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|children
 operator|=
-name|diff
+name|combined
 operator|.
 name|apply2Current
 argument_list|(
@@ -1944,7 +1925,14 @@ name|Util
 operator|.
 name|asList
 argument_list|(
-name|posterior
+name|INodeDirectoryWithSnapshot
+operator|.
+name|this
+operator|.
+name|getChildrenList
+argument_list|(
+literal|null
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2150,6 +2138,22 @@ name|diff
 return|;
 block|}
 block|}
+comment|/** An interface for passing a method to process inodes. */
+DECL|interface|Processor
+specifier|static
+interface|interface
+name|Processor
+block|{
+comment|/** Process the given inode. */
+DECL|method|process (INode inode)
+name|void
+name|process
+parameter_list|(
+name|INode
+name|inode
+parameter_list|)
+function_decl|;
+block|}
 comment|/** Create an {@link INodeDirectoryWithSnapshot} with the given snapshot.*/
 DECL|method|newInstance (INodeDirectory dir, Snapshot latest)
 specifier|public
@@ -2264,13 +2268,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Delete the snapshot with the given name. The synchronization of the diff    * list will be done outside.    *     * If the diff to remove is not the first one in the diff list, we need to     * combine the diff with its previous one:    *     * @param snapshot The snapshot to be deleted    * @param collectedBlocks Used to collect information for blocksMap update    * @return The SnapshotDiff containing the deleted snapshot.     *         Null if the snapshot with the given name does not exist.     */
-DECL|method|deleteSnapshotDiff (Snapshot snapshot, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|deleteSnapshotDiff (Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
 name|SnapshotDiff
 name|deleteSnapshotDiff
 parameter_list|(
 name|Snapshot
 name|snapshot
 parameter_list|,
+specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
@@ -2345,7 +2350,47 @@ name|diffToRemove
 operator|.
 name|diff
 argument_list|,
+operator|new
+name|Processor
+argument_list|()
+block|{
+comment|/** Collect blocks for deleted files. */
+annotation|@
+name|Override
+specifier|public
+name|void
+name|process
+parameter_list|(
+name|INode
+name|inode
+parameter_list|)
+block|{
+if|if
+condition|(
+name|inode
+operator|!=
+literal|null
+operator|&&
+name|inode
+operator|instanceof
+name|INodeFile
+condition|)
+block|{
+operator|(
+operator|(
+name|INodeFile
+operator|)
+name|inode
+operator|)
+operator|.
+name|collectSubtreeBlocksAndClear
+argument_list|(
 name|collectedBlocks
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 name|previousDiff
