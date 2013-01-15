@@ -1775,8 +1775,6 @@ name|RMAppAttemptImpl
 argument_list|(
 name|applicationAttemptId
 argument_list|,
-literal|null
-argument_list|,
 name|rmContext
 argument_list|,
 name|scheduler

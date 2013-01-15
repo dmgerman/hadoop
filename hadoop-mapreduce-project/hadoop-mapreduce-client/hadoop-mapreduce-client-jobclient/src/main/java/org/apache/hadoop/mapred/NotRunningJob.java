@@ -848,7 +848,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|FinalApplicationStatus
+name|ApplicationReport
 import|;
 end_import
 
@@ -866,7 +866,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationReport
+name|FinalApplicationStatus
 import|;
 end_import
 
@@ -1017,8 +1017,7 @@ name|class
 argument_list|)
 decl_stmt|;
 comment|// Setting AppState to NEW and finalStatus to UNDEFINED as they are never
-comment|// used
-comment|// for a non running job
+comment|// used for a non running job
 return|return
 name|BuilderUtils
 operator|.
@@ -1038,7 +1037,7 @@ literal|"N/A"
 argument_list|,
 literal|0
 argument_list|,
-literal|""
+literal|null
 argument_list|,
 name|YarnApplicationState
 operator|.

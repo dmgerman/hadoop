@@ -202,6 +202,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ClientToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -513,7 +531,7 @@ annotation|@
 name|Override
 DECL|method|getClientToken ()
 specifier|public
-name|String
+name|ClientToken
 name|getClientToken
 parameter_list|()
 block|{
@@ -689,12 +707,12 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|setClientToken (String clientToken)
+DECL|method|setClientToken (ClientToken clientToken)
 specifier|public
 name|void
 name|setClientToken
 parameter_list|(
-name|String
+name|ClientToken
 name|clientToken
 parameter_list|)
 block|{

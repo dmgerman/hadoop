@@ -60,7 +60,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|ApplicationAttemptId
 import|;
 end_import
 
@@ -76,14 +76,14 @@ argument_list|<
 name|ClientTokenIdentifier
 argument_list|>
 block|{
-DECL|method|getMasterKey (ApplicationId applicationId)
+DECL|method|getMasterKey ( ApplicationAttemptId applicationAttemptId)
 specifier|public
 specifier|abstract
 name|SecretKey
 name|getMasterKey
 parameter_list|(
-name|ApplicationId
-name|applicationId
+name|ApplicationAttemptId
+name|applicationAttemptId
 parameter_list|)
 function_decl|;
 annotation|@
@@ -111,7 +111,7 @@ name|getMasterKey
 argument_list|(
 name|identifier
 operator|.
-name|getApplicationID
+name|getApplicationAttemptID
 argument_list|()
 argument_list|)
 argument_list|)
@@ -140,7 +140,7 @@ name|getMasterKey
 argument_list|(
 name|identifier
 operator|.
-name|getApplicationID
+name|getApplicationAttemptID
 argument_list|()
 argument_list|)
 decl_stmt|;
