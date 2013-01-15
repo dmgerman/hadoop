@@ -1384,10 +1384,9 @@ name|reserved
 argument_list|)
 expr_stmt|;
 return|return
-name|Resources
+name|FairScheduler
 operator|.
-name|none
-argument_list|()
+name|CONTAINER_RESERVED
 return|;
 block|}
 block|}

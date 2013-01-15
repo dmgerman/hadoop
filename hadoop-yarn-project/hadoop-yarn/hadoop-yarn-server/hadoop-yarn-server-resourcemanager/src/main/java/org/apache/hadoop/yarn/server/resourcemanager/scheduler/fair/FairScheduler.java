@@ -1073,6 +1073,23 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// Value that container assignment methods return when a container is
+comment|// reserved
+DECL|field|CONTAINER_RESERVED
+specifier|public
+specifier|static
+specifier|final
+name|Resource
+name|CONTAINER_RESERVED
+init|=
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+decl_stmt|;
 comment|// How often fair shares are re-calculated (ms)
 DECL|field|UPDATE_INTERVAL
 specifier|protected
