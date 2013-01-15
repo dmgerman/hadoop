@@ -283,7 +283,9 @@ block|{
 operator|new
 name|Service
 argument_list|(
-literal|"security.client.protocol.acl"
+name|CommonConfigurationKeys
+operator|.
+name|SECURITY_CLIENT_PROTOCOL_ACL
 argument_list|,
 name|ClientProtocol
 operator|.
@@ -293,7 +295,9 @@ block|,
 operator|new
 name|Service
 argument_list|(
-literal|"security.client.datanode.protocol.acl"
+name|CommonConfigurationKeys
+operator|.
+name|SECURITY_CLIENT_DATANODE_PROTOCOL_ACL
 argument_list|,
 name|ClientDatanodeProtocol
 operator|.
@@ -303,7 +307,9 @@ block|,
 operator|new
 name|Service
 argument_list|(
-literal|"security.datanode.protocol.acl"
+name|CommonConfigurationKeys
+operator|.
+name|SECURITY_DATANODE_PROTOCOL_ACL
 argument_list|,
 name|DatanodeProtocol
 operator|.
@@ -313,7 +319,9 @@ block|,
 operator|new
 name|Service
 argument_list|(
-literal|"security.inter.datanode.protocol.acl"
+name|CommonConfigurationKeys
+operator|.
+name|SECURITY_INTER_DATANODE_PROTOCOL_ACL
 argument_list|,
 name|InterDatanodeProtocol
 operator|.
@@ -323,7 +331,9 @@ block|,
 operator|new
 name|Service
 argument_list|(
-literal|"security.namenode.protocol.acl"
+name|CommonConfigurationKeys
+operator|.
+name|SECURITY_NAMENODE_PROTOCOL_ACL
 argument_list|,
 name|NamenodeProtocol
 operator|.
@@ -333,7 +343,9 @@ block|,
 operator|new
 name|Service
 argument_list|(
-literal|"security.qjournal.service.protocol.acl"
+name|CommonConfigurationKeys
+operator|.
+name|SECURITY_QJOURNAL_SERVICE_PROTOCOL_ACL
 argument_list|,
 name|QJournalProtocol
 operator|.
