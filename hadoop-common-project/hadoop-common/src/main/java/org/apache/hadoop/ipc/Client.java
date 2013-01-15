@@ -946,6 +946,12 @@ name|refCount
 init|=
 literal|1
 decl_stmt|;
+DECL|field|connectionTimeout
+specifier|private
+specifier|final
+name|int
+name|connectionTimeout
+decl_stmt|;
 DECL|field|PING_CALL_ID
 specifier|final
 specifier|static
@@ -1076,6 +1082,33 @@ return|return
 operator|-
 literal|1
 return|;
+block|}
+comment|/**    * set the connection timeout value in configuration    *     * @param conf Configuration    * @param timeout the socket connect timeout value    */
+DECL|method|setConnectTimeout (Configuration conf, int timeout)
+specifier|public
+specifier|static
+specifier|final
+name|void
+name|setConnectTimeout
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|int
+name|timeout
+parameter_list|)
+block|{
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_CONNECT_TIMEOUT_KEY
+argument_list|,
+name|timeout
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Increment this client's reference count    *    */
 DECL|method|incCount ()
@@ -2441,7 +2474,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// connection time out is 20s
 name|NetUtils
 operator|.
 name|connect
@@ -2452,7 +2484,7 @@ name|socket
 argument_list|,
 name|server
 argument_list|,
-literal|20000
+name|connectionTimeout
 argument_list|)
 expr_stmt|;
 if|if
@@ -4682,6 +4714,23 @@ operator|.
 name|socketFactory
 operator|=
 name|factory
+expr_stmt|;
+name|this
+operator|.
+name|connectionTimeout
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_CONNECT_TIMEOUT_KEY
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_CONNECT_TIMEOUT_DEFAULT
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Construct an IPC client with the default SocketFactory    * @param valueClass    * @param conf    */
