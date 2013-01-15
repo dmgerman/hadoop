@@ -6286,7 +6286,9 @@ name|MRJobConfig
 operator|.
 name|MAP_CPU_VCORES
 argument_list|,
-literal|1
+name|MRJobConfig
+operator|.
+name|DEFAULT_MAP_CPU_VCORES
 argument_list|)
 argument_list|,
 name|conf
@@ -6297,10 +6299,12 @@ name|MRJobConfig
 operator|.
 name|REDUCE_CPU_VCORES
 argument_list|,
-literal|1
+name|MRJobConfig
+operator|.
+name|DEFAULT_REDUCE_CPU_VCORES
 argument_list|)
 argument_list|)
-operator|<
+operator|<=
 name|sysCPUSizeForUberSlot
 operator|)
 decl_stmt|;
