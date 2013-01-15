@@ -799,7 +799,7 @@ assert|;
 if|if
 condition|(
 name|checkClosed
-operator|&
+operator|&&
 operator|(
 operator|(
 name|newCount

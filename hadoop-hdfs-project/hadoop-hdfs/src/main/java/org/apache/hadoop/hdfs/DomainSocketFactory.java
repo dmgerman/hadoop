@@ -301,7 +301,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 name|feature
 operator|+
@@ -502,7 +502,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 literal|"error creating DomainSocket"
 argument_list|,
