@@ -2156,7 +2156,7 @@ name|newFile
 init|=
 name|ucFile
 operator|.
-name|toINodeFile
+name|convertToInodeFile
 argument_list|(
 name|ucFile
 operator|.
