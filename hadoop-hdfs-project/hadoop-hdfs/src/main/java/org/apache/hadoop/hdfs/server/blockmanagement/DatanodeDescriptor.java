@@ -1878,11 +1878,6 @@ argument_list|(
 name|nodeReg
 argument_list|)
 expr_stmt|;
-name|firstBlockReport
-operator|=
-literal|true
-expr_stmt|;
-comment|// must re-process IBR after re-registration
 block|}
 comment|/**    * @return balancer bandwidth in bytes per second for this datanode    */
 DECL|method|getBalancerBandwidth ()

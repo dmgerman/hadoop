@@ -2236,6 +2236,7 @@ return|;
 block|}
 comment|/** Add a datanode. */
 DECL|method|addDatanode (final DatanodeDescriptor node)
+specifier|private
 name|void
 name|addDatanode
 parameter_list|(
