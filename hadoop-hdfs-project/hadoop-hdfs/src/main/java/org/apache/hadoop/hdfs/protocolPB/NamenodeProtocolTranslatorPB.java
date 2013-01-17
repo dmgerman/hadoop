@@ -619,12 +619,12 @@ init|=
 literal|null
 decl_stmt|;
 comment|/*    * Protobuf requests with no parameters instantiated only once    */
-DECL|field|GET_BLOCKKEYS
+DECL|field|VOID_GET_BLOCKKEYS_REQUEST
 specifier|private
 specifier|static
 specifier|final
 name|GetBlockKeysRequestProto
-name|GET_BLOCKKEYS
+name|VOID_GET_BLOCKKEYS_REQUEST
 init|=
 name|GetBlockKeysRequestProto
 operator|.
@@ -634,12 +634,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-DECL|field|GET_TRANSACTIONID
+DECL|field|VOID_GET_TRANSACTIONID_REQUEST
 specifier|private
 specifier|static
 specifier|final
 name|GetTransactionIdRequestProto
-name|GET_TRANSACTIONID
+name|VOID_GET_TRANSACTIONID_REQUEST
 init|=
 name|GetTransactionIdRequestProto
 operator|.
@@ -649,12 +649,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-DECL|field|ROLL_EDITLOG
+DECL|field|VOID_ROLL_EDITLOG_REQUEST
 specifier|private
 specifier|static
 specifier|final
 name|RollEditLogRequestProto
-name|ROLL_EDITLOG
+name|VOID_ROLL_EDITLOG_REQUEST
 init|=
 name|RollEditLogRequestProto
 operator|.
@@ -664,12 +664,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-DECL|field|VERSION_REQUEST
+DECL|field|VOID_VERSION_REQUEST
 specifier|private
 specifier|static
 specifier|final
 name|VersionRequestProto
-name|VERSION_REQUEST
+name|VOID_VERSION_REQUEST
 init|=
 name|VersionRequestProto
 operator|.
@@ -819,7 +819,7 @@ name|getBlockKeys
 argument_list|(
 name|NULL_CONTROLLER
 argument_list|,
-name|GET_BLOCKKEYS
+name|VOID_GET_BLOCKKEYS_REQUEST
 argument_list|)
 decl_stmt|;
 return|return
@@ -876,7 +876,7 @@ name|getTransactionId
 argument_list|(
 name|NULL_CONTROLLER
 argument_list|,
-name|GET_TRANSACTIONID
+name|VOID_GET_TRANSACTIONID_REQUEST
 argument_list|)
 operator|.
 name|getTxId
@@ -967,7 +967,7 @@ name|rollEditLog
 argument_list|(
 name|NULL_CONTROLLER
 argument_list|,
-name|ROLL_EDITLOG
+name|VOID_ROLL_EDITLOG_REQUEST
 argument_list|)
 operator|.
 name|getSignature
@@ -1014,7 +1014,7 @@ name|versionRequest
 argument_list|(
 name|NULL_CONTROLLER
 argument_list|,
-name|VERSION_REQUEST
+name|VOID_VERSION_REQUEST
 argument_list|)
 operator|.
 name|getInfo
