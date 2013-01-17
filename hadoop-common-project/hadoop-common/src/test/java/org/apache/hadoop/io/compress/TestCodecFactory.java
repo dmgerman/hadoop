@@ -1599,6 +1599,48 @@ argument_list|,
 name|codec
 argument_list|)
 expr_stmt|;
+name|Configuration
+name|conf
+init|=
+operator|new
+name|Configuration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"io.compression.codecs"
+argument_list|,
+literal|"   org.apache.hadoop.io.compress.GzipCodec   , "
+operator|+
+literal|"    org.apache.hadoop.io.compress.DefaultCodec  , "
+operator|+
+literal|" org.apache.hadoop.io.compress.BZip2Codec   "
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|CompressionCodecFactory
+operator|.
+name|getCodecClasses
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+name|fail
+argument_list|(
+literal|"IllegalArgumentException is unexpected"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
