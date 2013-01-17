@@ -188,6 +188,20 @@ name|BlockUCState
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * I-node for file being written.  */
 end_comment
@@ -413,7 +427,53 @@ operator|=
 name|clientNode
 expr_stmt|;
 block|}
+DECL|method|INodeFileUnderConstruction (final INodeFile that, final String clientName, final String clientMachine, final DatanodeDescriptor clientNode)
+specifier|protected
+name|INodeFileUnderConstruction
+parameter_list|(
+specifier|final
+name|INodeFile
+name|that
+parameter_list|,
+specifier|final
+name|String
+name|clientName
+parameter_list|,
+specifier|final
+name|String
+name|clientMachine
+parameter_list|,
+specifier|final
+name|DatanodeDescriptor
+name|clientNode
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|that
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|clientName
+operator|=
+name|clientName
+expr_stmt|;
+name|this
+operator|.
+name|clientMachine
+operator|=
+name|clientMachine
+expr_stmt|;
+name|this
+operator|.
+name|clientNode
+operator|=
+name|clientNode
+expr_stmt|;
+block|}
 DECL|method|getClientName ()
+specifier|public
 name|String
 name|getClientName
 parameter_list|()
@@ -438,6 +498,7 @@ name|clientName
 expr_stmt|;
 block|}
 DECL|method|getClientMachine ()
+specifier|public
 name|String
 name|getClientMachine
 parameter_list|()
@@ -447,6 +508,7 @@ name|clientMachine
 return|;
 block|}
 DECL|method|getClientNode ()
+specifier|public
 name|DatanodeDescriptor
 name|getClientNode
 parameter_list|()
@@ -468,37 +530,19 @@ return|return
 literal|true
 return|;
 block|}
-comment|//
-comment|// converts a INodeFileUnderConstruction into a INodeFile
-comment|// use the modification time as the access time
-comment|//
-DECL|method|convertToInodeFile (long mtime)
+comment|/**    * Converts an INodeFileUnderConstruction to an INodeFile.    * The original modification time is used as the access time.    * The new modification is the specified mtime.    */
+DECL|method|toINodeFile (long mtime)
+specifier|protected
 name|INodeFile
-name|convertToInodeFile
+name|toINodeFile
 parameter_list|(
 name|long
 name|mtime
 parameter_list|)
 block|{
-assert|assert
-name|allBlocksComplete
+name|assertAllBlocksComplete
 argument_list|()
-operator|:
-literal|"Can't finalize inode "
-operator|+
-name|this
-operator|+
-literal|" since it contains non-complete blocks! Blocks are "
-operator|+
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|getBlocks
-argument_list|()
-argument_list|)
-assert|;
-comment|//TODO SNAPSHOT: may convert to INodeFileWithLink
+expr_stmt|;
 return|return
 operator|new
 name|INodeFile
@@ -528,39 +572,74 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * @return true if all of the blocks in this file are marked as completed.    */
-DECL|method|allBlocksComplete ()
-specifier|private
-name|boolean
-name|allBlocksComplete
+comment|/** Assert all blocks are complete. */
+DECL|method|assertAllBlocksComplete ()
+specifier|protected
+name|void
+name|assertAllBlocksComplete
 parameter_list|()
 block|{
-for|for
-control|(
+specifier|final
 name|BlockInfo
-name|b
-range|:
+index|[]
+name|blocks
+init|=
 name|getBlocks
 argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|blocks
+operator|.
+name|length
+condition|;
+name|i
+operator|++
 control|)
 block|{
-if|if
-condition|(
-operator|!
-name|b
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|blocks
+index|[
+name|i
+index|]
 operator|.
 name|isComplete
 argument_list|()
-condition|)
-block|{
-return|return
-literal|false
-return|;
+argument_list|,
+literal|"Failed to finalize"
+operator|+
+literal|" %s %s since blocks[%s] is non-complete, where blocks=%s."
+argument_list|,
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|,
+name|this
+argument_list|,
+name|i
+argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|getBlocks
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
-block|}
-return|return
-literal|true
-return|;
 block|}
 comment|/**    * Remove a block from the block list. This block should be    * the last one on the list.    */
 DECL|method|removeLastBlock (Block oldblock)

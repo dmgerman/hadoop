@@ -1442,10 +1442,42 @@ argument_list|,
 name|hdfs
 argument_list|)
 decl_stmt|;
-comment|//      TODO: fix append for snapshots
-comment|//      Modification append = new FileAppend(
-comment|//          node.fileList.get((node.nullFileIndex + 2) % node.fileList.size()),
-comment|//          hdfs, (int) BLOCKSIZE);
+name|Modification
+name|append
+init|=
+operator|new
+name|FileAppend
+argument_list|(
+name|node
+operator|.
+name|fileList
+operator|.
+name|get
+argument_list|(
+operator|(
+name|node
+operator|.
+name|nullFileIndex
+operator|+
+literal|2
+operator|)
+operator|%
+name|node
+operator|.
+name|fileList
+operator|.
+name|size
+argument_list|()
+argument_list|)
+argument_list|,
+name|hdfs
+argument_list|,
+operator|(
+name|int
+operator|)
+name|BLOCKSIZE
+argument_list|)
+decl_stmt|;
 name|Modification
 name|chmod
 init|=
@@ -1626,8 +1658,13 @@ argument_list|(
 name|delete
 argument_list|)
 expr_stmt|;
-comment|// TODO: fix append for snapshots
-comment|//      mList.add(append);
+name|mList
+operator|.
+name|add
+argument_list|(
+name|append
+argument_list|)
+expr_stmt|;
 name|mList
 operator|.
 name|add

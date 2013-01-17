@@ -2195,8 +2195,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file while modifying file after snapshot.    */
-comment|//  TODO: disable it temporarily since it uses append.
-comment|//  @Test
+annotation|@
+name|Test
 DECL|method|testSnapshotPathINodesAfterModification ()
 specifier|public
 name|void

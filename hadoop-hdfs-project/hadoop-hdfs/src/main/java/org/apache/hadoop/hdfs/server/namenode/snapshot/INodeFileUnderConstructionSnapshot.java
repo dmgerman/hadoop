@@ -36,8 +36,26 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFileUnderConstruction
+import|;
+end_import
+
 begin_comment
-comment|/**  *  INode representing a snapshot of a file.  */
+comment|/**  *  INode representing a snapshot of an {@link INodeFileUnderConstruction}.  */
 end_comment
 
 begin_class
@@ -45,12 +63,12 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|INodeFileSnapshot
+DECL|class|INodeFileUnderConstructionSnapshot
 specifier|public
 class|class
-name|INodeFileSnapshot
+name|INodeFileUnderConstructionSnapshot
 extends|extends
-name|INodeFileWithSnapshot
+name|INodeFileUnderConstructionWithSnapshot
 block|{
 comment|/** The file size at snapshot creation time. */
 DECL|field|size
@@ -58,16 +76,31 @@ specifier|final
 name|long
 name|size
 decl_stmt|;
-DECL|method|INodeFileSnapshot (INodeFileWithSnapshot f)
-name|INodeFileSnapshot
+DECL|method|INodeFileUnderConstructionSnapshot (INodeFileUnderConstructionWithSnapshot f)
+name|INodeFileUnderConstructionSnapshot
 parameter_list|(
-name|INodeFileWithSnapshot
+name|INodeFileUnderConstructionWithSnapshot
 name|f
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|f
+argument_list|,
+name|f
+operator|.
+name|getClientName
+argument_list|()
+argument_list|,
+name|f
+operator|.
+name|getClientMachine
+argument_list|()
+argument_list|,
+name|f
+operator|.
+name|getClientNode
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this

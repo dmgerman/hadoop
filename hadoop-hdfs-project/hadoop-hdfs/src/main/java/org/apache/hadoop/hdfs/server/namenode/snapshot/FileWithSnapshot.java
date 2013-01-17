@@ -72,154 +72,213 @@ name|INodeFile
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INode
+operator|.
+name|BlocksMapINodeUpdateEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
-comment|/**  * INodeFile with a link to the next element.  * This class is used to represent the original file that is snapshotted.  * The snapshot files are represented by {@link INodeFileSnapshot}.  * The link of all the snapshot files and the original file form a circular  * linked list so that all elements are accessible by any of the elements.  */
+comment|/**  * {@link INodeFile} with a link to the next element.  * The link of all the snapshot files and the original file form a circular  * linked list so that all elements are accessible by any of the elements.  */
 end_comment
 
-begin_class
+begin_interface
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|INodeFileWithLink
+DECL|interface|FileWithSnapshot
 specifier|public
-class|class
-name|INodeFileWithLink
-extends|extends
-name|INodeFile
+interface|interface
+name|FileWithSnapshot
 block|{
-DECL|field|next
-specifier|private
-name|INodeFileWithLink
-name|next
-decl_stmt|;
-DECL|method|INodeFileWithLink (INodeFile f)
+comment|/** @return the {@link INodeFile} view of this object. */
+DECL|method|asINodeFile ()
 specifier|public
-name|INodeFileWithLink
-parameter_list|(
 name|INodeFile
-name|f
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|f
-argument_list|)
-expr_stmt|;
-name|next
-operator|=
-name|this
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|createSnapshotCopy ()
-specifier|public
-name|Pair
-argument_list|<
-name|INodeFileWithLink
-argument_list|,
-name|INodeFileSnapshot
-argument_list|>
-name|createSnapshotCopy
+name|asINodeFile
 parameter_list|()
-block|{
-return|return
-operator|new
-name|Pair
-argument_list|<
-name|INodeFileWithLink
-argument_list|,
-name|INodeFileSnapshot
-argument_list|>
-argument_list|(
-name|this
-argument_list|,
-operator|new
-name|INodeFileSnapshot
-argument_list|(
-name|this
-argument_list|)
-argument_list|)
-return|;
-block|}
-DECL|method|setNext (INodeFileWithLink next)
+function_decl|;
+comment|/** @return the next element. */
+DECL|method|getNext ()
+specifier|public
+name|FileWithSnapshot
+name|getNext
+parameter_list|()
+function_decl|;
+comment|/** Set the next element. */
+DECL|method|setNext (FileWithSnapshot next)
+specifier|public
 name|void
 name|setNext
 parameter_list|(
-name|INodeFileWithLink
+name|FileWithSnapshot
 name|next
 parameter_list|)
-block|{
-name|this
-operator|.
-name|next
-operator|=
-name|next
-expr_stmt|;
-block|}
-DECL|method|getNext ()
-name|INodeFileWithLink
-name|getNext
-parameter_list|()
-block|{
-return|return
-name|next
-return|;
-block|}
+function_decl|;
 comment|/** Insert inode to the circular linked list. */
-DECL|method|insert (INodeFileWithLink inode)
+DECL|method|insert (FileWithSnapshot inode)
+specifier|public
 name|void
 name|insert
 parameter_list|(
-name|INodeFileWithLink
+name|FileWithSnapshot
 name|inode
 parameter_list|)
+function_decl|;
+comment|/** Utility methods for the classes which implement the interface. */
+DECL|class|Util
+specifier|static
+class|class
+name|Util
 block|{
-name|inode
-operator|.
-name|setNext
-argument_list|(
-name|this
+comment|/** Replace the old file with the new file in the circular linked list. */
+DECL|method|replace (FileWithSnapshot oldFile, FileWithSnapshot newFile)
+specifier|static
+name|void
+name|replace
+parameter_list|(
+name|FileWithSnapshot
+name|oldFile
+parameter_list|,
+name|FileWithSnapshot
+name|newFile
+parameter_list|)
+block|{
+comment|//set next element
+name|FileWithSnapshot
+name|i
+init|=
+name|oldFile
 operator|.
 name|getNext
 argument_list|()
-argument_list|)
-expr_stmt|;
-name|this
+decl_stmt|;
+name|newFile
 operator|.
 name|setNext
 argument_list|(
-name|inode
+name|i
+argument_list|)
+expr_stmt|;
+name|oldFile
+operator|.
+name|setNext
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+comment|//find previous element and update it
+for|for
+control|(
+init|;
+name|i
+operator|.
+name|getNext
+argument_list|()
+operator|!=
+name|oldFile
+condition|;
+name|i
+operator|=
+name|i
+operator|.
+name|getNext
+argument_list|()
+control|)
+empty_stmt|;
+name|i
+operator|.
+name|setNext
+argument_list|(
+name|newFile
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return the max file replication of the elements    *         in the circular linked list.    */
-annotation|@
-name|Override
-DECL|method|getBlockReplication ()
-specifier|public
+comment|/**      * @return the max file replication of the elements      *         in the circular linked list.      */
+DECL|method|getBlockReplication (final FileWithSnapshot file)
+specifier|static
 name|short
 name|getBlockReplication
-parameter_list|()
+parameter_list|(
+specifier|final
+name|FileWithSnapshot
+name|file
+parameter_list|)
 block|{
 name|short
 name|max
 init|=
+name|file
+operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|getFileReplication
 argument_list|()
 decl_stmt|;
 comment|// i may be null since next will be set to null when the INode is deleted
 for|for
 control|(
-name|INodeFileWithLink
+name|FileWithSnapshot
 name|i
 init|=
-name|next
+name|file
+operator|.
+name|getNext
+argument_list|()
 init|;
 name|i
 operator|!=
-name|this
+name|file
 operator|&&
 name|i
 operator|!=
@@ -239,6 +298,9 @@ name|replication
 init|=
 name|i
 operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|getFileReplication
 argument_list|()
 decl_stmt|;
@@ -259,42 +321,50 @@ return|return
 name|max
 return|;
 block|}
-comment|/**    * {@inheritDoc}    *     * Remove the current inode from the circular linked list.    * If some blocks at the end of the block list no longer belongs to    * any other inode, collect them and update the block list.    */
-annotation|@
-name|Override
-DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
-specifier|public
+comment|/**      * Remove the current inode from the circular linked list.      * If some blocks at the end of the block list no longer belongs to      * any other inode, collect them and update the block list.      */
+DECL|method|collectSubtreeBlocksAndClear (final FileWithSnapshot file, final BlocksMapUpdateInfo info)
+specifier|static
 name|int
 name|collectSubtreeBlocksAndClear
 parameter_list|(
+specifier|final
+name|FileWithSnapshot
+name|file
+parameter_list|,
+specifier|final
 name|BlocksMapUpdateInfo
 name|info
 parameter_list|)
 block|{
-if|if
-condition|(
+specifier|final
+name|FileWithSnapshot
 name|next
-operator|==
-name|this
-condition|)
-block|{
-comment|// this is the only remaining inode.
-name|super
+init|=
+name|file
 operator|.
-name|collectSubtreeBlocksAndClear
+name|getNext
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
 argument_list|(
-name|info
+name|next
+operator|!=
+name|file
+argument_list|,
+literal|"this is the only remaining inode."
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
 comment|// There are other inode(s) using the blocks.
 comment|// Compute max file size excluding this and find the last inode.
 name|long
 name|max
 init|=
 name|next
+operator|.
+name|asINodeFile
+argument_list|()
 operator|.
 name|computeFileSize
 argument_list|(
@@ -306,17 +376,20 @@ name|maxReplication
 init|=
 name|next
 operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|getFileReplication
 argument_list|()
 decl_stmt|;
-name|INodeFileWithLink
+name|FileWithSnapshot
 name|last
 init|=
 name|next
 decl_stmt|;
 for|for
 control|(
-name|INodeFileWithLink
+name|FileWithSnapshot
 name|i
 init|=
 name|next
@@ -326,7 +399,7 @@ argument_list|()
 init|;
 name|i
 operator|!=
-name|this
+name|file
 condition|;
 name|i
 operator|=
@@ -342,6 +415,9 @@ name|size
 init|=
 name|i
 operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|computeFileSize
 argument_list|(
 literal|true
@@ -365,6 +441,9 @@ name|rep
 init|=
 name|i
 operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|getFileReplication
 argument_list|()
 decl_stmt|;
@@ -387,6 +466,8 @@ expr_stmt|;
 block|}
 name|collectBlocksBeyondMaxAndClear
 argument_list|(
+name|file
+argument_list|,
 name|max
 argument_list|,
 name|info
@@ -395,17 +476,19 @@ expr_stmt|;
 comment|// remove this from the circular linked list.
 name|last
 operator|.
+name|setNext
+argument_list|(
 name|next
-operator|=
-name|this
-operator|.
-name|next
+argument_list|)
 expr_stmt|;
 comment|// Set the replication of the current INode to the max of all the other
 comment|// linked INodes, so that in case the current INode is retrieved from the
 comment|// blocksMap before it is removed or updated, the correct replication
 comment|// number can be retrieved.
-name|this
+name|file
+operator|.
+name|asINodeFile
+argument_list|()
 operator|.
 name|setFileReplication
 argument_list|(
@@ -414,28 +497,37 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|this
+name|file
 operator|.
-name|next
-operator|=
+name|setNext
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 comment|// clear parent
+name|file
+operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|setParent
 argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 literal|1
 return|;
 block|}
-DECL|method|collectBlocksBeyondMaxAndClear (final long max, final BlocksMapUpdateInfo info)
-specifier|private
+DECL|method|collectBlocksBeyondMaxAndClear (final FileWithSnapshot file, final long max, final BlocksMapUpdateInfo info)
+specifier|static
 name|void
 name|collectBlocksBeyondMaxAndClear
 parameter_list|(
+specifier|final
+name|FileWithSnapshot
+name|file
+parameter_list|,
 specifier|final
 name|long
 name|max
@@ -450,6 +542,11 @@ name|BlockInfo
 index|[]
 name|oldBlocks
 init|=
+name|file
+operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|getBlocks
 argument_list|()
 decl_stmt|;
@@ -499,15 +596,31 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// Replace the INode for all the remaining blocks in blocksMap
+specifier|final
+name|FileWithSnapshot
+name|next
+init|=
+name|file
+operator|.
+name|getNext
+argument_list|()
+decl_stmt|;
+specifier|final
 name|BlocksMapINodeUpdateEntry
 name|entry
 init|=
 operator|new
 name|BlocksMapINodeUpdateEntry
 argument_list|(
-name|this
+name|file
+operator|.
+name|asINodeFile
+argument_list|()
 argument_list|,
 name|next
+operator|.
+name|asINodeFile
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -602,14 +715,14 @@ expr_stmt|;
 block|}
 for|for
 control|(
-name|INodeFileWithLink
+name|FileWithSnapshot
 name|i
 init|=
 name|next
 init|;
 name|i
 operator|!=
-name|this
+name|file
 condition|;
 name|i
 operator|=
@@ -620,6 +733,9 @@ argument_list|()
 control|)
 block|{
 name|i
+operator|.
+name|asINodeFile
+argument_list|()
 operator|.
 name|setBlocks
 argument_list|(
@@ -661,6 +777,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
+name|file
+operator|.
+name|asINodeFile
+argument_list|()
+operator|.
 name|setBlocks
 argument_list|(
 literal|null
@@ -669,7 +790,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-end_class
+block|}
+end_interface
 
 end_unit
 

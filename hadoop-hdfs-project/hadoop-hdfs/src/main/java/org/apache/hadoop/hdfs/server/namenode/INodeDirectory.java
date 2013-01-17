@@ -226,7 +226,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeFileWithLink
+name|INodeFileWithSnapshot
 import|;
 end_import
 
@@ -1119,9 +1119,9 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Replace a child {@link INodeFile} with an {@link INodeFileWithLink}. */
+comment|/** Replace a child {@link INodeFile} with an {@link INodeFileWithSnapshot}. */
 DECL|method|replaceINodeFile (final INodeFile child)
-name|INodeFileWithLink
+name|INodeFileWithSnapshot
 name|replaceINodeFile
 parameter_list|(
 specifier|final
@@ -1140,7 +1140,7 @@ operator|!
 operator|(
 name|child
 operator|instanceof
-name|INodeFileWithLink
+name|INodeFileWithSnapshot
 operator|)
 argument_list|,
 literal|"Child file is already an INodeFileWithLink, child="
@@ -1149,11 +1149,11 @@ name|child
 argument_list|)
 expr_stmt|;
 specifier|final
-name|INodeFileWithLink
+name|INodeFileWithSnapshot
 name|newChild
 init|=
 operator|new
-name|INodeFileWithLink
+name|INodeFileWithSnapshot
 argument_list|(
 name|child
 argument_list|)

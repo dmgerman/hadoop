@@ -239,7 +239,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class tests the replication handling/calculation of snapshots. In  * particular, {@link INodeFile#getFileReplication()} and  * {@link INodeFileWithLink#getBlockReplication()} are tested to make sure  * the number of replication is calculated correctly with/without snapshots.  */
+comment|/**  * This class tests the replication handling/calculation of snapshots. In  * particular, {@link INodeFile#getFileReplication()} and  * {@link INodeFileWithSnapshot#getBlockReplication()} are tested to make sure  * the number of replication is calculated correctly with/without snapshots.  */
 end_comment
 
 begin_class
@@ -621,7 +621,7 @@ name|s
 argument_list|)
 return|;
 block|}
-comment|/**    * Check the replication for both the current file and all its prior snapshots    *     * @param currentFile    *          the Path of the current file    * @param snapshotRepMap    *          A map maintaining all the snapshots of the current file, as well    *          as their expected replication number stored in their corresponding    *          INodes    * @param expectedBlockRep    *          The expected replication number that should be returned by    *          {@link INodeFileWithLink#getBlockReplication()} of all the INodes    * @throws Exception    */
+comment|/**    * Check the replication for both the current file and all its prior snapshots    *     * @param currentFile    *          the Path of the current file    * @param snapshotRepMap    *          A map maintaining all the snapshots of the current file, as well    *          as their expected replication number stored in their corresponding    *          INodes    * @param expectedBlockRep    *          The expected replication number that should be returned by    *          {@link INodeFileWithSnapshot#getBlockReplication()} of all the INodes    * @throws Exception    */
 DECL|method|checkSnapshotFileReplication (Path currentFile, Map<Path, Short> snapshotRepMap, short expectedBlockRep)
 specifier|private
 name|void
