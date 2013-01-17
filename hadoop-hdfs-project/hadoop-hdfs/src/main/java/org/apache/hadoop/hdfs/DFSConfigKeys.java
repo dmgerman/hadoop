@@ -2669,7 +2669,7 @@ specifier|final
 name|int
 name|DFS_CLIENT_READ_SHORTCIRCUIT_STREAMS_CACHE_SIZE_DEFAULT
 init|=
-literal|10
+literal|100
 decl_stmt|;
 DECL|field|DFS_CLIENT_READ_SHORTCIRCUIT_STREAMS_CACHE_EXPIRY_MS_KEY
 specifier|public
@@ -2687,7 +2687,7 @@ specifier|final
 name|long
 name|DFS_CLIENT_READ_SHORTCIRCUIT_STREAMS_CACHE_EXPIRY_MS_DEFAULT
 init|=
-literal|60000
+literal|5000
 decl_stmt|;
 DECL|field|DFS_CLIENT_READ_SHORTCIRCUIT_BUFFER_SIZE_DEFAULT
 specifier|public
