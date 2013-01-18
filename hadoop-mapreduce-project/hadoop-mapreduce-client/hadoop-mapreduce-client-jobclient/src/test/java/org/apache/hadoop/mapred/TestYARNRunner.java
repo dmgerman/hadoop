@@ -1138,6 +1138,17 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_PRINCIPAL
+argument_list|,
+literal|"mapred/host@REALM"
+argument_list|)
+expr_stmt|;
 name|clientCache
 operator|=
 operator|new
