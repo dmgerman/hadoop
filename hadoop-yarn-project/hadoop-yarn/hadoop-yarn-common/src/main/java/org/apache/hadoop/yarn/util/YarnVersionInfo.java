@@ -54,9 +54,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|yarn
 operator|.
-name|VersionInfo
+name|YarnVersionAnnotation
 import|;
 end_import
 
@@ -105,8 +105,6 @@ DECL|class|YarnVersionInfo
 specifier|public
 class|class
 name|YarnVersionInfo
-extends|extends
-name|VersionInfo
 block|{
 DECL|field|LOG
 specifier|private
@@ -124,26 +122,51 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|YARN_VERSION_INFO
+DECL|field|myPackage
 specifier|private
 specifier|static
-name|YarnVersionInfo
-name|YARN_VERSION_INFO
-init|=
-operator|new
-name|YarnVersionInfo
-argument_list|()
+name|Package
+name|myPackage
 decl_stmt|;
-DECL|method|YarnVersionInfo ()
-specifier|protected
-name|YarnVersionInfo
-parameter_list|()
+DECL|field|version
+specifier|private
+specifier|static
+name|YarnVersionAnnotation
+name|version
+decl_stmt|;
+static|static
 block|{
-name|super
+name|myPackage
+operator|=
+name|YarnVersionAnnotation
+operator|.
+name|class
+operator|.
+name|getPackage
+argument_list|()
+expr_stmt|;
+name|version
+operator|=
+name|myPackage
+operator|.
+name|getAnnotation
 argument_list|(
-literal|"yarn"
+name|YarnVersionAnnotation
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Get the meta-data for the Yarn package.    * @return    */
+DECL|method|getPackage ()
+specifier|static
+name|Package
+name|getPackage
+parameter_list|()
+block|{
+return|return
+name|myPackage
+return|;
 block|}
 comment|/**    * Get the Yarn version.    * @return the Yarn version string, eg. "0.6.3-dev"    */
 DECL|method|getVersion ()
@@ -154,10 +177,16 @@ name|getVersion
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|version
+operator|!=
+literal|null
+condition|?
+name|version
 operator|.
-name|_getVersion
+name|version
 argument_list|()
+else|:
+literal|"Unknown"
 return|;
 block|}
 comment|/**    * Get the subversion revision number for the root directory    * @return the revision number, eg. "451451"    */
@@ -169,10 +198,16 @@ name|getRevision
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|version
+operator|!=
+literal|null
+condition|?
+name|version
 operator|.
-name|_getRevision
+name|revision
 argument_list|()
+else|:
+literal|"Unknown"
 return|;
 block|}
 comment|/**    * Get the branch on which this originated.    * @return The branch name, e.g. "trunk" or "branches/branch-0.20"    */
@@ -184,10 +219,16 @@ name|getBranch
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|version
+operator|!=
+literal|null
+condition|?
+name|version
 operator|.
-name|_getBranch
+name|branch
 argument_list|()
+else|:
+literal|"Unknown"
 return|;
 block|}
 comment|/**    * The date that Yarn was compiled.    * @return the compilation date in unix date format    */
@@ -199,10 +240,16 @@ name|getDate
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|version
+operator|!=
+literal|null
+condition|?
+name|version
 operator|.
-name|_getDate
+name|date
 argument_list|()
+else|:
+literal|"Unknown"
 return|;
 block|}
 comment|/**    * The user that compiled Yarn.    * @return the username of the user    */
@@ -214,10 +261,16 @@ name|getUser
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|version
+operator|!=
+literal|null
+condition|?
+name|version
 operator|.
-name|_getUser
+name|user
 argument_list|()
+else|:
+literal|"Unknown"
 return|;
 block|}
 comment|/**    * Get the subversion URL for the root Yarn directory.    */
@@ -229,10 +282,16 @@ name|getUrl
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|version
+operator|!=
+literal|null
+condition|?
+name|version
 operator|.
-name|_getUrl
+name|url
 argument_list|()
+else|:
+literal|"Unknown"
 return|;
 block|}
 comment|/**    * Get the checksum of the source files from which Yarn was    * built.    **/
@@ -244,10 +303,16 @@ name|getSrcChecksum
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|version
+operator|!=
+literal|null
+condition|?
+name|version
 operator|.
-name|_getSrcChecksum
+name|srcChecksum
 argument_list|()
+else|:
+literal|"Unknown"
 return|;
 block|}
 comment|/**    * Returns the buildVersion which includes version,     * revision, user and date.     */
@@ -259,9 +324,30 @@ name|getBuildVersion
 parameter_list|()
 block|{
 return|return
-name|YARN_VERSION_INFO
+name|YarnVersionInfo
 operator|.
-name|_getBuildVersion
+name|getVersion
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+name|YarnVersionInfo
+operator|.
+name|getRevision
+argument_list|()
+operator|+
+literal|" by "
+operator|+
+name|YarnVersionInfo
+operator|.
+name|getUser
+argument_list|()
+operator|+
+literal|" source checksum "
+operator|+
+name|YarnVersionInfo
+operator|.
+name|getSrcChecksum
 argument_list|()
 return|;
 block|}
@@ -282,8 +368,7 @@ name|debug
 argument_list|(
 literal|"version: "
 operator|+
-name|getVersion
-argument_list|()
+name|version
 argument_list|)
 expr_stmt|;
 name|System
