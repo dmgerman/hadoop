@@ -272,7 +272,7 @@ specifier|final
 name|boolean
 name|DEFAULT_ASSIGN_MULTIPLE
 init|=
-literal|true
+literal|false
 decl_stmt|;
 comment|/** Whether to give more weight to apps requiring many resources. */
 DECL|field|SIZE_BASED_WEIGHT
