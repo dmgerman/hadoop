@@ -270,8 +270,9 @@ condition|(
 name|conf
 operator|.
 name|domainSocketPath
-operator|==
-literal|null
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|LOG
@@ -284,7 +285,7 @@ literal|" is disabled because you have not set "
 operator|+
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_DOMAIN_SOCKET_PATH_KEY
+name|DFS_DOMAIN_SOCKET_PATH_KEY
 argument_list|)
 expr_stmt|;
 block|}

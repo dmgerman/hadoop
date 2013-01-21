@@ -1294,7 +1294,7 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_DOMAIN_SOCKET_PATH_KEY
+name|DFS_DOMAIN_SOCKET_PATH_KEY
 argument_list|,
 operator|new
 name|File
@@ -1304,7 +1304,7 @@ operator|.
 name|getDir
 argument_list|()
 argument_list|,
-literal|"TestShortCircuitLocalRead.__PORT__.sock"
+literal|"TestShortCircuitLocalRead._PORT.sock"
 argument_list|)
 operator|.
 name|getAbsolutePath

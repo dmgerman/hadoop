@@ -3071,14 +3071,23 @@ name|DFS_BLOCK_LOCAL_PATH_ACCESS_USER_KEY
 init|=
 literal|"dfs.block.local-path-access.user"
 decl_stmt|;
-DECL|field|DFS_DATANODE_DOMAIN_SOCKET_PATH_KEY
+DECL|field|DFS_DOMAIN_SOCKET_PATH_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_DATANODE_DOMAIN_SOCKET_PATH_KEY
+name|DFS_DOMAIN_SOCKET_PATH_KEY
 init|=
-literal|"dfs.datanode.domain.socket.path"
+literal|"dfs.domain.socket.path"
+decl_stmt|;
+DECL|field|DFS_DOMAIN_SOCKET_PATH_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DOMAIN_SOCKET_PATH_DEFAULT
+init|=
+literal|""
 decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_HA_NAMENODES_KEY_PREFIX

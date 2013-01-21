@@ -2637,11 +2637,15 @@ name|domainSocketPath
 operator|=
 name|conf
 operator|.
-name|get
+name|getTrimmed
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_DATANODE_DOMAIN_SOCKET_PATH_KEY
+name|DFS_DOMAIN_SOCKET_PATH_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DOMAIN_SOCKET_PATH_DEFAULT
 argument_list|)
 expr_stmt|;
 name|skipShortCircuitChecksums

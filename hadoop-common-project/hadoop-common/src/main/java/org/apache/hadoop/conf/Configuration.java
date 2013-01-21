@@ -2827,6 +2827,37 @@ argument_list|()
 return|;
 block|}
 block|}
+comment|/**    * Get the value of the<code>name</code> property as a trimmed<code>String</code>,     *<code>defaultVal</code> if no such property exists.     * See @{Configuration#getTrimmed} for more details.    *     * @param name          the property name.    * @param defaultVal    the property default value.    * @return              the value of the<code>name</code> or defaultVal     *                      if it is not set.    */
+DECL|method|getTrimmed (String name, String defaultValue)
+specifier|public
+name|String
+name|getTrimmed
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|String
+name|defaultValue
+parameter_list|)
+block|{
+name|String
+name|ret
+init|=
+name|getTrimmed
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+return|return
+name|ret
+operator|==
+literal|null
+condition|?
+name|defaultValue
+else|:
+name|ret
+return|;
+block|}
 comment|/**    * Get the value of the<code>name</code> property, without doing    *<a href="#VariableExpansion">variable expansion</a>.If the key is     * deprecated, it returns the value of the first key which replaces     * the deprecated key and is not null.    *     * @param name the property name.    * @return the value of the<code>name</code> property or     *         its replacing property and null if no such property exists.    */
 DECL|method|getRaw (String name)
 specifier|public

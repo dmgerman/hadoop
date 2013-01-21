@@ -495,7 +495,7 @@ name|DomainSocket
 operator|.
 name|getEffectivePath
 argument_list|(
-literal|"/var/run/hdfs/sock.__PORT__"
+literal|"/var/run/hdfs/sock._PORT"
 argument_list|,
 literal|100
 argument_list|)

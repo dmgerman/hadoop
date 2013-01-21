@@ -404,7 +404,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|/**    * Given a path and a port, compute the effective path by replacing    * occurrences of __PORT__ with the port.  This is mainly to make it     * possible to run multiple DataNodes locally for testing purposes.    *    * @param path            The source path    * @param port            Port number to use    *    * @return                The effective path    */
+comment|/**    * Given a path and a port, compute the effective path by replacing    * occurrences of _PORT with the port.  This is mainly to make it     * possible to run multiple DataNodes locally for testing purposes.    *    * @param path            The source path    * @param port            Port number to use    *    * @return                The effective path    */
 DECL|method|getEffectivePath (String path, int port)
 specifier|public
 specifier|static
@@ -423,7 +423,7 @@ name|path
 operator|.
 name|replace
 argument_list|(
-literal|"__PORT__"
+literal|"_PORT"
 argument_list|,
 name|String
 operator|.
