@@ -689,6 +689,13 @@ argument_list|(
 name|args
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|initSuccess
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
