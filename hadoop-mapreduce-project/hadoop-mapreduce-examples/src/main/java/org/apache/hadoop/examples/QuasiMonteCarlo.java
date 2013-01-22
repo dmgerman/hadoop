@@ -48,6 +48,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Random
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -325,25 +335,19 @@ init|=
 literal|"A map/reduce program that estimates Pi using a quasi-Monte Carlo method."
 decl_stmt|;
 comment|/** tmp directory for input/output */
-DECL|field|TMP_DIR
+DECL|field|TMP_DIR_PREFIX
 specifier|static
 specifier|private
 specifier|final
-name|Path
-name|TMP_DIR
+name|String
+name|TMP_DIR_PREFIX
 init|=
-operator|new
-name|Path
-argument_list|(
 name|QuasiMonteCarlo
 operator|.
 name|class
 operator|.
 name|getSimpleName
 argument_list|()
-operator|+
-literal|"_TMP_3_141592654"
-argument_list|)
 decl_stmt|;
 comment|/** 2-dimensional Halton sequence {H(i)},    * where H(i) is a 2-dimensional point and i>= 1 is the index.    * Halton sequence is used to generate sample points for Pi estimation.     */
 DECL|class|HaltonSequence
@@ -1076,15 +1080,28 @@ throws|throws
 name|IOException
 block|{
 comment|//write output to a file
+name|Configuration
+name|conf
+init|=
+name|context
+operator|.
+name|getConfiguration
+argument_list|()
+decl_stmt|;
 name|Path
 name|outDir
 init|=
 operator|new
 name|Path
 argument_list|(
-name|TMP_DIR
-argument_list|,
-literal|"out"
+name|conf
+operator|.
+name|get
+argument_list|(
+name|FileOutputFormat
+operator|.
+name|OUTDIR
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|Path
@@ -1097,14 +1114,6 @@ name|outDir
 argument_list|,
 literal|"reduce-out"
 argument_list|)
-decl_stmt|;
-name|Configuration
-name|conf
-init|=
-name|context
-operator|.
-name|getConfiguration
-argument_list|()
 decl_stmt|;
 name|FileSystem
 name|fileSys
@@ -1169,7 +1178,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Run a map/reduce job for estimating Pi.    *    * @return the estimated value of Pi    */
-DECL|method|estimatePi (int numMaps, long numPoints, Configuration conf )
+DECL|method|estimatePi (int numMaps, long numPoints, Path tmpDir, Configuration conf )
 specifier|public
 specifier|static
 name|BigDecimal
@@ -1180,6 +1189,9 @@ name|numMaps
 parameter_list|,
 name|long
 name|numPoints
+parameter_list|,
+name|Path
+name|tmpDir
 parameter_list|,
 name|Configuration
 name|conf
@@ -1300,7 +1312,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|TMP_DIR
+name|tmpDir
 argument_list|,
 literal|"in"
 argument_list|)
@@ -1312,7 +1324,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|TMP_DIR
+name|tmpDir
 argument_list|,
 literal|"out"
 argument_list|)
@@ -1352,7 +1364,7 @@ name|fs
 operator|.
 name|exists
 argument_list|(
-name|TMP_DIR
+name|tmpDir
 argument_list|)
 condition|)
 block|{
@@ -1366,7 +1378,7 @@ name|fs
 operator|.
 name|makeQualified
 argument_list|(
-name|TMP_DIR
+name|tmpDir
 argument_list|)
 operator|+
 literal|" already exists.  Please remove it first."
@@ -1690,7 +1702,7 @@ name|fs
 operator|.
 name|delete
 argument_list|(
-name|TMP_DIR
+name|tmpDir
 argument_list|,
 literal|true
 argument_list|)
@@ -1777,6 +1789,46 @@ literal|1
 index|]
 argument_list|)
 decl_stmt|;
+name|long
+name|now
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
+name|int
+name|rand
+init|=
+operator|new
+name|Random
+argument_list|()
+operator|.
+name|nextInt
+argument_list|(
+name|Integer
+operator|.
+name|MAX_VALUE
+argument_list|)
+decl_stmt|;
+specifier|final
+name|Path
+name|tmpDir
+init|=
+operator|new
+name|Path
+argument_list|(
+name|TMP_DIR_PREFIX
+operator|+
+literal|"_"
+operator|+
+name|now
+operator|+
+literal|"_"
+operator|+
+name|rand
+argument_list|)
+decl_stmt|;
 name|System
 operator|.
 name|out
@@ -1812,6 +1864,8 @@ argument_list|(
 name|nMaps
 argument_list|,
 name|nSamples
+argument_list|,
+name|tmpDir
 argument_list|,
 name|getConf
 argument_list|()
