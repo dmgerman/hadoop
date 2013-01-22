@@ -161,7 +161,7 @@ decl_stmt|;
 DECL|field|merger
 specifier|private
 specifier|final
-name|MergeManager
+name|MergeManagerImpl
 argument_list|<
 name|K
 argument_list|,
@@ -187,11 +187,11 @@ specifier|private
 name|int
 name|length
 decl_stmt|;
-DECL|method|InMemoryReader (MergeManager<K,V> merger, TaskAttemptID taskAttemptId, byte[] data, int start, int length)
+DECL|method|InMemoryReader (MergeManagerImpl<K,V> merger, TaskAttemptID taskAttemptId, byte[] data, int start, int length)
 specifier|public
 name|InMemoryReader
 parameter_list|(
-name|MergeManager
+name|MergeManagerImpl
 argument_list|<
 name|K
 argument_list|,

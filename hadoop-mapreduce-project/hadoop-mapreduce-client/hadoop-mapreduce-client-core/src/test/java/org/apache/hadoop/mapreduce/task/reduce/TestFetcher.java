@@ -315,7 +315,7 @@ specifier|private
 name|HttpURLConnection
 name|connection
 decl_stmt|;
-DECL|method|FakeFetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManager<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey jobTokenSecret, HttpURLConnection connection)
+DECL|method|FakeFetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManagerImpl<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey jobTokenSecret, HttpURLConnection connection)
 specifier|public
 name|FakeFetcher
 parameter_list|(
@@ -333,7 +333,7 @@ name|V
 argument_list|>
 name|scheduler
 parameter_list|,
-name|MergeManager
+name|MergeManagerImpl
 argument_list|<
 name|K
 argument_list|,
@@ -471,7 +471,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|MergeManager
+name|MergeManagerImpl
 argument_list|<
 name|Text
 argument_list|,
@@ -481,7 +481,7 @@ name|mm
 init|=
 name|mock
 argument_list|(
-name|MergeManager
+name|MergeManagerImpl
 operator|.
 name|class
 argument_list|)
@@ -923,7 +923,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|MergeManager
+name|MergeManagerImpl
 argument_list|<
 name|Text
 argument_list|,
@@ -933,7 +933,7 @@ name|mm
 init|=
 name|mock
 argument_list|(
-name|MergeManager
+name|MergeManagerImpl
 operator|.
 name|class
 argument_list|)
@@ -1253,26 +1253,7 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-comment|//Defaults to WAIT, which is what we want to test
-name|MapOutput
-argument_list|<
-name|Text
-argument_list|,
-name|Text
-argument_list|>
-name|mapOut
-init|=
-operator|new
-name|MapOutput
-argument_list|<
-name|Text
-argument_list|,
-name|Text
-argument_list|>
-argument_list|(
-name|map1ID
-argument_list|)
-decl_stmt|;
+comment|//Defaults to null, which is what we want to test
 name|when
 argument_list|(
 name|mm
@@ -1296,7 +1277,7 @@ argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|mapOut
+literal|null
 argument_list|)
 expr_stmt|;
 name|underTest
