@@ -88,6 +88,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|TaskCompletionEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|Counters
@@ -430,7 +444,7 @@ name|int
 name|maxEvents
 parameter_list|)
 function_decl|;
-name|TaskAttemptCompletionEvent
+name|TaskCompletionEvent
 index|[]
 DECL|method|getMapAttemptCompletionEvents (int startIndex, int maxEvents)
 name|getMapAttemptCompletionEvents

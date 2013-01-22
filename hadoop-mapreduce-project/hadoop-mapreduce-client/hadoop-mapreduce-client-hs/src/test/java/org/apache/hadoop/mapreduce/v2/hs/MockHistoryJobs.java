@@ -86,6 +86,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|TaskCompletionEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|JobACL
@@ -944,7 +958,7 @@ annotation|@
 name|Override
 DECL|method|getMapAttemptCompletionEvents ( int startIndex, int maxEvents)
 specifier|public
-name|TaskAttemptCompletionEvent
+name|TaskCompletionEvent
 index|[]
 name|getMapAttemptCompletionEvents
 parameter_list|(
