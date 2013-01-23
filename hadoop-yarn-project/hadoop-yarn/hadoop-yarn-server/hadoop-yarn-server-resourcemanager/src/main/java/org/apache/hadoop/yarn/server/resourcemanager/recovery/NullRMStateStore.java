@@ -30,6 +30,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -81,6 +97,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Unstable
 DECL|class|NullRMStateStore
 specifier|public
 class|class
@@ -125,9 +143,13 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-return|return
-literal|null
-return|;
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Cannot load state from null store"
+argument_list|)
+throw|;
 block|}
 annotation|@
 name|Override

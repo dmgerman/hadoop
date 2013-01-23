@@ -991,6 +991,18 @@ name|RM_PREFIX
 operator|+
 literal|"store.class"
 decl_stmt|;
+comment|/** URI for FileSystemRMStateStore */
+DECL|field|FS_RM_STATE_STORE_URI
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_RM_STATE_STORE_URI
+init|=
+name|RM_PREFIX
+operator|+
+literal|"fs.rm-state-store.uri"
+decl_stmt|;
 comment|/** The maximum number of completed applications RM keeps. */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
 specifier|public

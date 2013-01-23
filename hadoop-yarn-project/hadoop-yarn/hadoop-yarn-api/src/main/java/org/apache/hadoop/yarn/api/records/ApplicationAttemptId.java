@@ -114,6 +114,15 @@ argument_list|<
 name|ApplicationAttemptId
 argument_list|>
 block|{
+DECL|field|appAttemptIdStrPrefix
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|appAttemptIdStrPrefix
+init|=
+literal|"appattempt_"
+decl_stmt|;
 comment|/**    * Get the<code>ApplicationId</code> of the<code>ApplicationAttempId</code>.     * @return<code>ApplicationId</code> of the<code>ApplicationAttempId</code>    */
 annotation|@
 name|Public
@@ -418,7 +427,7 @@ init|=
 operator|new
 name|StringBuilder
 argument_list|(
-literal|"appattempt_"
+name|appAttemptIdStrPrefix
 argument_list|)
 decl_stmt|;
 name|sb
