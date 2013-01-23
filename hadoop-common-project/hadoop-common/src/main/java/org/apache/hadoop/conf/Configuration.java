@@ -2827,7 +2827,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Get the value of the<code>name</code> property as a trimmed<code>String</code>,     *<code>defaultVal</code> if no such property exists.     * See @{Configuration#getTrimmed} for more details.    *     * @param name          the property name.    * @param defaultVal    the property default value.    * @return              the value of the<code>name</code> or defaultVal     *                      if it is not set.    */
+comment|/**    * Get the value of the<code>name</code> property as a trimmed<code>String</code>,     *<code>defaultValue</code> if no such property exists.     * See @{Configuration#getTrimmed} for more details.    *     * @param name          the property name.    * @param defaultValue  the property default value.    * @return              the value of the<code>name</code> or defaultValue    *                      if it is not set.    */
 DECL|method|getTrimmed (String name, String defaultValue)
 specifier|public
 name|String
