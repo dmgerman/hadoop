@@ -581,11 +581,6 @@ specifier|final
 name|int
 name|height
 decl_stmt|;
-DECL|field|fs
-specifier|final
-name|FileSystem
-name|fs
-decl_stmt|;
 comment|/** Top node of the directory tree */
 DECL|field|topNode
 specifier|final
@@ -624,12 +619,6 @@ operator|.
 name|height
 operator|=
 name|height
-expr_stmt|;
-name|this
-operator|.
-name|fs
-operator|=
-name|fs
 expr_stmt|;
 name|this
 operator|.
@@ -681,6 +670,8 @@ argument_list|,
 name|height
 operator|-
 literal|1
+argument_list|,
+name|fs
 argument_list|)
 expr_stmt|;
 block|}
@@ -750,8 +741,9 @@ name|id
 init|=
 literal|0
 decl_stmt|;
-comment|/**      * Recursively generate the tree based on the height.      *       * @param parent The parent node      * @param level The remaining levels to generate      * @throws Exception      */
-DECL|method|genChildren (Node parent, int level)
+comment|/**      * Recursively generate the tree based on the height.      *       * @param parent The parent node      * @param level The remaining levels to generate      * @param fs The FileSystem where to generate the files/dirs      * @throws Exception      */
+DECL|method|genChildren (Node parent, int level, FileSystem fs)
+specifier|private
 name|void
 name|genChildren
 parameter_list|(
@@ -760,6 +752,9 @@ name|parent
 parameter_list|,
 name|int
 name|level
+parameter_list|,
+name|FileSystem
+name|fs
 parameter_list|)
 throws|throws
 name|Exception
@@ -866,6 +861,8 @@ argument_list|,
 name|level
 operator|-
 literal|1
+argument_list|,
+name|fs
 argument_list|)
 expr_stmt|;
 name|genChildren
@@ -877,6 +874,8 @@ argument_list|,
 name|level
 operator|-
 literal|1
+argument_list|,
+name|fs
 argument_list|)
 expr_stmt|;
 block|}
@@ -1024,11 +1023,6 @@ name|Node
 argument_list|>
 name|nonSnapshotChildren
 decl_stmt|;
-DECL|field|fs
-specifier|final
-name|FileSystem
-name|fs
-decl_stmt|;
 DECL|method|Node (Path path, int level, Node parent, FileSystem fs)
 name|Node
 parameter_list|(
@@ -1076,12 +1070,6 @@ name|Node
 argument_list|>
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|fs
-operator|=
-name|fs
-expr_stmt|;
 name|fs
 operator|.
 name|mkdirs
@@ -1091,10 +1079,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**        * Create files and add them in the fileList. Initially the last element        * in the fileList is set to null (where we start file creation).        */
-DECL|method|initFileList (String namePrefix, long fileLen, short replication, long seed, int numFiles)
+DECL|method|initFileList (FileSystem fs, String namePrefix, long fileLen, short replication, long seed, int numFiles)
 name|void
 name|initFileList
 parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|,
 name|String
 name|namePrefix
 parameter_list|,

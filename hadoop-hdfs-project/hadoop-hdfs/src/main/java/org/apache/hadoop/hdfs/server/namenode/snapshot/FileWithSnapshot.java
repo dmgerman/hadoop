@@ -164,15 +164,32 @@ name|FileWithSnapshot
 name|next
 parameter_list|)
 function_decl|;
-comment|/** Insert inode to the circular linked list. */
-DECL|method|insert (FileWithSnapshot inode)
+comment|/** Insert inode to the circular linked list, after the current node. */
+DECL|method|insertAfter (FileWithSnapshot inode)
 specifier|public
 name|void
-name|insert
+name|insertAfter
 parameter_list|(
 name|FileWithSnapshot
 name|inode
 parameter_list|)
+function_decl|;
+comment|/** Insert inode to the circular linked list, before the current node. */
+DECL|method|insertBefore (FileWithSnapshot inode)
+specifier|public
+name|void
+name|insertBefore
+parameter_list|(
+name|FileWithSnapshot
+name|inode
+parameter_list|)
+function_decl|;
+comment|/** Remove self from the circular list */
+DECL|method|removeSelf ()
+specifier|public
+name|void
+name|removeSelf
+parameter_list|()
 function_decl|;
 comment|/** Utility methods for the classes which implement the interface. */
 DECL|class|Util
@@ -180,6 +197,46 @@ specifier|static
 class|class
 name|Util
 block|{
+comment|/** @return The previous node in the circular linked list */
+DECL|method|getPrevious (FileWithSnapshot file)
+specifier|static
+name|FileWithSnapshot
+name|getPrevious
+parameter_list|(
+name|FileWithSnapshot
+name|file
+parameter_list|)
+block|{
+name|FileWithSnapshot
+name|previous
+init|=
+name|file
+operator|.
+name|getNext
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|previous
+operator|.
+name|getNext
+argument_list|()
+operator|!=
+name|file
+condition|)
+block|{
+name|previous
+operator|=
+name|previous
+operator|.
+name|getNext
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|previous
+return|;
+block|}
 comment|/** Replace the old file with the new file in the circular linked list. */
 DECL|method|replace (FileWithSnapshot oldFile, FileWithSnapshot newFile)
 specifier|static

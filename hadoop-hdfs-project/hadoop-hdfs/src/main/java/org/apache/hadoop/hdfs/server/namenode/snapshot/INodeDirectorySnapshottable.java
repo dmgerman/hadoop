@@ -196,20 +196,6 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
 name|base
 operator|.
 name|Preconditions
@@ -316,10 +302,8 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|/**    * @return {@link #snapshotsByNames}    */
-annotation|@
-name|VisibleForTesting
 DECL|method|getSnapshotsByNames ()
-name|List
+name|ReadOnlyList
 argument_list|<
 name|Snapshot
 argument_list|>
@@ -327,7 +311,16 @@ name|getSnapshotsByNames
 parameter_list|()
 block|{
 return|return
+name|ReadOnlyList
+operator|.
+name|Util
+operator|.
+name|asReadOnlyList
+argument_list|(
+name|this
+operator|.
 name|snapshotsByNames
+argument_list|)
 return|;
 block|}
 comment|/** Number of snapshots allowed. */
@@ -378,8 +371,7 @@ name|getNumSnapshots
 parameter_list|()
 block|{
 return|return
-name|getSnapshotsByNames
-argument_list|()
+name|snapshotsByNames
 operator|.
 name|size
 argument_list|()
@@ -666,6 +658,25 @@ block|{
 return|return
 literal|true
 return|;
+block|}
+comment|/**    * Simply add a snapshot into the {@link #snapshotsByNames}. Used by FSImage    * loading.    */
+DECL|method|addSnapshot (Snapshot snapshot)
+name|void
+name|addSnapshot
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+name|this
+operator|.
+name|snapshotsByNames
+operator|.
+name|add
+argument_list|(
+name|snapshot
+argument_list|)
+expr_stmt|;
 block|}
 comment|/** Add a snapshot. */
 DECL|method|addSnapshot (int id, String name)

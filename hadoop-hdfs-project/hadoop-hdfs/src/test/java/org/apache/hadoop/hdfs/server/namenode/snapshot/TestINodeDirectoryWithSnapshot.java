@@ -889,6 +889,8 @@ name|i
 index|]
 argument_list|,
 literal|null
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -1776,6 +1778,8 @@ operator|.
 name|delete
 argument_list|(
 name|inode
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -1815,6 +1819,8 @@ operator|.
 name|delete
 argument_list|(
 name|inode
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|assertDiff
@@ -1974,6 +1980,8 @@ argument_list|(
 name|oldinode
 argument_list|,
 name|newinode
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
@@ -2017,6 +2025,8 @@ argument_list|(
 name|oldinode
 argument_list|,
 name|newinode
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|assertDiff

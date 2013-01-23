@@ -116,7 +116,7 @@ argument_list|)
 expr_stmt|;
 name|f
 operator|.
-name|insert
+name|insertAfter
 argument_list|(
 name|this
 argument_list|)

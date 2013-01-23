@@ -36,6 +36,42 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSImage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INodeFile
+import|;
+end_import
+
 begin_comment
 comment|/**  *  INode representing a snapshot of a file.  */
 end_comment
@@ -53,10 +89,10 @@ extends|extends
 name|INodeFileWithSnapshot
 block|{
 comment|/** The file size at snapshot creation time. */
-DECL|field|size
+DECL|field|snapshotFileSize
 specifier|final
 name|long
-name|size
+name|snapshotFileSize
 decl_stmt|;
 DECL|method|INodeFileSnapshot (INodeFileWithSnapshot f)
 name|INodeFileSnapshot
@@ -72,7 +108,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|size
+name|snapshotFileSize
 operator|=
 name|f
 operator|.
@@ -83,10 +119,34 @@ argument_list|)
 expr_stmt|;
 name|f
 operator|.
-name|insert
+name|insertAfter
 argument_list|(
 name|this
 argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * A constructor that only sets the basic attributes and the size. Used while    * loading {@link FSImage}    */
+DECL|method|INodeFileSnapshot (INodeFile f, long size)
+specifier|public
+name|INodeFileSnapshot
+parameter_list|(
+name|INodeFile
+name|f
+parameter_list|,
+name|long
+name|size
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|f
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|snapshotFileSize
+operator|=
+name|size
 expr_stmt|;
 block|}
 annotation|@
@@ -103,7 +163,7 @@ block|{
 comment|//ignore includesBlockInfoUnderConstruction
 comment|//since files in a snapshot are considered as closed.
 return|return
-name|size
+name|snapshotFileSize
 return|;
 block|}
 block|}

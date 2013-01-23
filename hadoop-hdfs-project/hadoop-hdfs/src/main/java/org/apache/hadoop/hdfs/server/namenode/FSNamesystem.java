@@ -14334,7 +14334,6 @@ return|;
 block|}
 comment|/**    * From the given list, incrementally remove the blocks from blockManager    * Writelock is dropped and reacquired every BLOCK_DELETION_INCREMENT to    * ensure that other waiters on the lock can get in. See HDFS-2938    *     * @param blocks    *          An instance of {@link BlocksMapUpdateInfo} which contains a list    *          of blocks that need to be removed from blocksMap    */
 DECL|method|removeBlocks (BlocksMapUpdateInfo blocks)
-specifier|private
 name|void
 name|removeBlocks
 parameter_list|(
@@ -25204,6 +25203,16 @@ argument_list|()
 operator|.
 name|isAvoidingStaleDataNodesForWrite
 argument_list|()
+return|;
+block|}
+DECL|method|getSnapshotManager ()
+specifier|public
+name|SnapshotManager
+name|getSnapshotManager
+parameter_list|()
+block|{
+return|return
+name|snapshotManager
 return|;
 block|}
 comment|/** Allow snapshot on a directroy. */
