@@ -122,6 +122,21 @@ specifier|final
 name|RefreshAuthorizationPolicyProtocol
 name|impl
 decl_stmt|;
+specifier|private
+specifier|final
+specifier|static
+name|RefreshServiceAclResponseProto
+DECL|field|VOID_REFRESH_SERVICE_ACL_RESPONSE
+name|VOID_REFRESH_SERVICE_ACL_RESPONSE
+init|=
+name|RefreshServiceAclResponseProto
+operator|.
+name|newBuilder
+argument_list|()
+operator|.
+name|build
+argument_list|()
+decl_stmt|;
 DECL|method|RefreshAuthorizationPolicyProtocolServerSideTranslatorPB ( RefreshAuthorizationPolicyProtocol impl)
 specifier|public
 name|RefreshAuthorizationPolicyProtocolServerSideTranslatorPB
@@ -176,13 +191,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|RefreshServiceAclResponseProto
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|build
-argument_list|()
+name|VOID_REFRESH_SERVICE_ACL_RESPONSE
 return|;
 block|}
 block|}

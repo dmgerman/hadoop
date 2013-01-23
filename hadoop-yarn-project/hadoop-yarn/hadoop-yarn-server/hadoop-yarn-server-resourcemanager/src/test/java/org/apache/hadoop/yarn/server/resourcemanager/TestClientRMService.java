@@ -26,30 +26,6 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
-operator|.
-name|mock
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|when
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
 name|Matchers
 operator|.
 name|anyBoolean
@@ -65,6 +41,30 @@ operator|.
 name|Matchers
 operator|.
 name|anyString
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -1929,8 +1929,6 @@ argument_list|,
 literal|null
 argument_list|,
 name|queueName
-argument_list|,
-literal|null
 argument_list|,
 literal|null
 argument_list|,

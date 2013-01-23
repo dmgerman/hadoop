@@ -22,32 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -124,97 +98,8 @@ specifier|public
 interface|interface
 name|ContainerToken
 extends|extends
-name|DelegationToken
-block|{
-comment|/**    * Get the token identifier.    * @return token identifier    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getIdentifier ()
-name|ByteBuffer
-name|getIdentifier
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Stable
-DECL|method|setIdentifier (ByteBuffer identifier)
-name|void
-name|setIdentifier
-parameter_list|(
-name|ByteBuffer
-name|identifier
-parameter_list|)
-function_decl|;
-comment|/**    * Get the token password    * @return token password    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getPassword ()
-name|ByteBuffer
-name|getPassword
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Stable
-DECL|method|setPassword (ByteBuffer password)
-name|void
-name|setPassword
-parameter_list|(
-name|ByteBuffer
-name|password
-parameter_list|)
-function_decl|;
-comment|/**    * Get the token kind.    * @return token kind    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getKind ()
-name|String
-name|getKind
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Stable
-DECL|method|setKind (String kind)
-name|void
-name|setKind
-parameter_list|(
-name|String
-name|kind
-parameter_list|)
-function_decl|;
-comment|/**    * Get the service to which the token is allocated.    * @return service to which the token is allocated    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getService ()
-name|String
-name|getService
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Stable
-DECL|method|setService (String service)
-name|void
-name|setService
-parameter_list|(
-name|String
-name|service
-parameter_list|)
-function_decl|;
-block|}
+name|Token
+block|{}
 end_interface
 
 end_unit

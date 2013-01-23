@@ -1782,6 +1782,15 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+name|ret
+operator|.
+name|setHeaderBufferSize
+argument_list|(
+literal|1024
+operator|*
+literal|64
+argument_list|)
+expr_stmt|;
 return|return
 name|ret
 return|;

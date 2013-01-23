@@ -178,7 +178,7 @@ decl_stmt|;
 DECL|field|manager
 specifier|protected
 specifier|final
-name|MergeManager
+name|MergeManagerImpl
 argument_list|<
 name|K
 argument_list|,
@@ -205,11 +205,11 @@ specifier|final
 name|int
 name|mergeFactor
 decl_stmt|;
-DECL|method|MergeThread (MergeManager<K,V> manager, int mergeFactor, ExceptionReporter reporter)
+DECL|method|MergeThread (MergeManagerImpl<K,V> manager, int mergeFactor, ExceptionReporter reporter)
 specifier|public
 name|MergeThread
 parameter_list|(
-name|MergeManager
+name|MergeManagerImpl
 argument_list|<
 name|K
 argument_list|,

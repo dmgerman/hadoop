@@ -274,7 +274,7 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getClientToken ()
-name|String
+name|ClientToken
 name|getClientToken
 parameter_list|()
 function_decl|;
@@ -282,11 +282,11 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setClientToken (String clientToken)
+DECL|method|setClientToken (ClientToken clientToken)
 name|void
 name|setClientToken
 parameter_list|(
-name|String
+name|ClientToken
 name|clientToken
 parameter_list|)
 function_decl|;

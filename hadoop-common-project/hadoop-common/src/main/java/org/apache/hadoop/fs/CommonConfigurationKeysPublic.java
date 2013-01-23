@@ -564,6 +564,27 @@ literal|10000
 decl_stmt|;
 comment|// 10s
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|IPC_CLIENT_CONNECT_TIMEOUT_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CLIENT_CONNECT_TIMEOUT_KEY
+init|=
+literal|"ipc.client.connect.timeout"
+decl_stmt|;
+comment|/** Default value for IPC_CLIENT_CONNECT_TIMEOUT_KEY */
+DECL|field|IPC_CLIENT_CONNECT_TIMEOUT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_CLIENT_CONNECT_TIMEOUT_DEFAULT
+init|=
+literal|20000
+decl_stmt|;
+comment|// 20s
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|IPC_CLIENT_CONNECT_MAX_RETRIES_KEY
 specifier|public
 specifier|static

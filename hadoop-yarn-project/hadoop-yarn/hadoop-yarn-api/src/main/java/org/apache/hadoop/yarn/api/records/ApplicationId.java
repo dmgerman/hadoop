@@ -114,6 +114,15 @@ argument_list|<
 name|ApplicationId
 argument_list|>
 block|{
+DECL|field|appIdStrPrefix
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|appIdStrPrefix
+init|=
+literal|"application_"
+decl_stmt|;
 comment|/**    * Get the short integer identifier of the<code>ApplicationId</code>    * which is unique for all applications started by a particular instance    * of the<code>ResourceManager</code>.    * @return short integer identifier of the<code>ApplicationId</code>    */
 annotation|@
 name|Public
@@ -292,7 +301,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"application_"
+name|appIdStrPrefix
 operator|+
 name|this
 operator|.

@@ -1633,7 +1633,6 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getBPServiceActors ()
-specifier|synchronized
 name|List
 argument_list|<
 name|BPServiceActor

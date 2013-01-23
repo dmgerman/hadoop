@@ -2068,7 +2068,7 @@ name|assertEquals
 argument_list|(
 literal|"Enemy should not see app client token!"
 argument_list|,
-name|UNAVAILABLE
+literal|null
 argument_list|,
 name|appReport
 operator|.

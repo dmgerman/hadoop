@@ -84,6 +84,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|TaskCompletionEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|Counters
@@ -101,6 +115,20 @@ operator|.
 name|mapreduce
 operator|.
 name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|TypeConverter
 import|;
 end_import
 
@@ -1141,7 +1169,7 @@ name|getStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|TaskAttemptCompletionEvent
+name|TaskCompletionEvent
 name|mapEvents
 index|[]
 init|=
@@ -1152,6 +1180,17 @@ argument_list|(
 literal|0
 argument_list|,
 literal|2
+argument_list|)
+decl_stmt|;
+name|TaskCompletionEvent
+name|convertedEvents
+index|[]
+init|=
+name|TypeConverter
+operator|.
+name|fromYarn
+argument_list|(
+name|events
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1177,7 +1216,7 @@ name|Arrays
 operator|.
 name|copyOfRange
 argument_list|(
-name|events
+name|convertedEvents
 argument_list|,
 literal|0
 argument_list|,
@@ -1217,7 +1256,7 @@ name|assertEquals
 argument_list|(
 literal|"Unexpected map event"
 argument_list|,
-name|events
+name|convertedEvents
 index|[
 literal|2
 index|]
@@ -2739,7 +2778,7 @@ name|getStatus
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|TaskAttemptCompletionEvent
+name|TaskCompletionEvent
 name|mapEvents
 index|[]
 init|=
@@ -2750,6 +2789,17 @@ argument_list|(
 literal|0
 argument_list|,
 literal|2
+argument_list|)
+decl_stmt|;
+name|TaskCompletionEvent
+name|convertedEvents
+index|[]
+init|=
+name|TypeConverter
+operator|.
+name|fromYarn
+argument_list|(
+name|events
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -2775,7 +2825,7 @@ name|Arrays
 operator|.
 name|copyOfRange
 argument_list|(
-name|events
+name|convertedEvents
 argument_list|,
 literal|0
 argument_list|,
@@ -2815,7 +2865,7 @@ name|assertEquals
 argument_list|(
 literal|"Unexpected map event"
 argument_list|,
-name|events
+name|convertedEvents
 index|[
 literal|2
 index|]

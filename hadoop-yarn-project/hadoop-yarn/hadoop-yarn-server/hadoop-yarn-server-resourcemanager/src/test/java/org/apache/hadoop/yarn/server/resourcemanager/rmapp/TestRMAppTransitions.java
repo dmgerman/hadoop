@@ -1154,11 +1154,6 @@ argument_list|,
 name|maxRetries
 argument_list|)
 expr_stmt|;
-name|String
-name|clientTokenStr
-init|=
-literal|"bogusstring"
-decl_stmt|;
 name|YarnScheduler
 name|scheduler
 init|=
@@ -1213,8 +1208,6 @@ argument_list|,
 name|queue
 argument_list|,
 name|submissionContext
-argument_list|,
-name|clientTokenStr
 argument_list|,
 name|scheduler
 argument_list|,
