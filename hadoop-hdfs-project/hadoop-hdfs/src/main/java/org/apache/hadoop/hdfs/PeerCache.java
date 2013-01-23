@@ -398,7 +398,7 @@ decl_stmt|;
 comment|/** A map for per user per datanode. */
 DECL|field|multimap
 specifier|private
-specifier|static
+specifier|final
 name|LinkedListMultimap
 argument_list|<
 name|Key
@@ -414,13 +414,13 @@ argument_list|()
 decl_stmt|;
 DECL|field|capacity
 specifier|private
-specifier|static
+specifier|final
 name|int
 name|capacity
 decl_stmt|;
 DECL|field|expiryPeriod
 specifier|private
-specifier|static
+specifier|final
 name|long
 name|expiryPeriod
 decl_stmt|;
@@ -430,24 +430,12 @@ specifier|static
 name|PeerCache
 name|instance
 init|=
-operator|new
-name|PeerCache
-argument_list|()
+literal|null
 decl_stmt|;
-DECL|field|isInitedOnce
-specifier|private
-specifier|static
-name|boolean
-name|isInitedOnce
-init|=
-literal|false
-decl_stmt|;
-DECL|method|getInstance (int c, long e)
-specifier|public
-specifier|static
-specifier|synchronized
+annotation|@
+name|VisibleForTesting
+DECL|method|PeerCache (int c, long e)
 name|PeerCache
-name|getInstance
 parameter_list|(
 name|int
 name|c
@@ -456,18 +444,14 @@ name|long
 name|e
 parameter_list|)
 block|{
-comment|// capacity is only initialized once
-if|if
-condition|(
-name|isInitedOnce
-operator|==
-literal|false
-condition|)
-block|{
+name|this
+operator|.
 name|capacity
 operator|=
 name|c
 expr_stmt|;
+name|this
+operator|.
 name|expiryPeriod
 operator|=
 name|e
@@ -507,9 +491,38 @@ literal|"when cache is enabled."
 argument_list|)
 throw|;
 block|}
-name|isInitedOnce
+block|}
+DECL|method|getInstance (int c, long e)
+specifier|public
+specifier|static
+specifier|synchronized
+name|PeerCache
+name|getInstance
+parameter_list|(
+name|int
+name|c
+parameter_list|,
+name|long
+name|e
+parameter_list|)
+block|{
+comment|// capacity is only initialized once
+if|if
+condition|(
+name|instance
+operator|==
+literal|null
+condition|)
+block|{
+name|instance
 operator|=
-literal|true
+operator|new
+name|PeerCache
+argument_list|(
+name|c
+argument_list|,
+name|e
+argument_list|)
 expr_stmt|;
 block|}
 else|else
@@ -517,10 +530,14 @@ block|{
 comment|//already initialized once
 if|if
 condition|(
+name|instance
+operator|.
 name|capacity
 operator|!=
 name|c
 operator|||
+name|instance
+operator|.
 name|expiryPeriod
 operator|!=
 name|e
@@ -532,10 +549,14 @@ name|info
 argument_list|(
 literal|"capacity and expiry periods already set to "
 operator|+
+name|instance
+operator|.
 name|capacity
 operator|+
 literal|" and "
 operator|+
+name|instance
+operator|.
 name|expiryPeriod
 operator|+
 literal|" respectively. Cannot set it to "
@@ -1187,6 +1208,56 @@ name|multimap
 operator|.
 name|clear
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|close ()
+name|void
+name|close
+parameter_list|()
+block|{
+name|clear
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|daemon
+operator|!=
+literal|null
+condition|)
+block|{
+name|daemon
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|daemon
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"failed to join thread"
+argument_list|)
+throw|;
+block|}
+block|}
+name|daemon
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}
