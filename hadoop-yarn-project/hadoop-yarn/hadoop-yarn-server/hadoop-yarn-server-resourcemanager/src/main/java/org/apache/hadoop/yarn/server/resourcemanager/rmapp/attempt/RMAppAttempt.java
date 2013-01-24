@@ -94,7 +94,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|FinalApplicationStatus
+name|ApplicationSubmissionContext
 import|;
 end_import
 
@@ -112,7 +112,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationSubmissionContext
+name|ClientToken
 import|;
 end_import
 
@@ -149,6 +149,24 @@ operator|.
 name|records
 operator|.
 name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|FinalApplicationStatus
 import|;
 end_import
 
@@ -281,7 +299,7 @@ parameter_list|()
 function_decl|;
 comment|/**    * The token required by the clients to talk to the application attempt    * @return the token required by the clients to talk to the application attempt    */
 DECL|method|getClientToken ()
-name|String
+name|ClientToken
 name|getClientToken
 parameter_list|()
 function_decl|;

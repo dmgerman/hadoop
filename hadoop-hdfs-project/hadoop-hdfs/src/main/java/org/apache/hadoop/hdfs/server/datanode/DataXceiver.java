@@ -1601,7 +1601,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|readBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length)
+DECL|method|readBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum)
 specifier|public
 name|void
 name|readBlock
@@ -1628,6 +1628,10 @@ parameter_list|,
 specifier|final
 name|long
 name|length
+parameter_list|,
+specifier|final
+name|boolean
+name|sendChecksum
 parameter_list|)
 throws|throws
 name|IOException
@@ -1778,6 +1782,8 @@ argument_list|,
 literal|true
 argument_list|,
 literal|false
+argument_list|,
+name|sendChecksum
 argument_list|,
 name|datanode
 argument_list|,
@@ -3823,6 +3829,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|true
 argument_list|,
 name|datanode
 argument_list|,

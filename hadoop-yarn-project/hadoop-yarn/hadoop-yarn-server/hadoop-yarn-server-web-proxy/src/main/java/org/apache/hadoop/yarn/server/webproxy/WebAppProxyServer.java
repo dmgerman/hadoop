@@ -327,6 +327,19 @@ name|PROXY_PRINCIPAL
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Wait for service to finish.    * (Normally, it runs forever.)    */
+DECL|method|join ()
+specifier|private
+name|void
+name|join
+parameter_list|()
+block|{
+name|proxy
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -402,6 +415,11 @@ expr_stmt|;
 name|proxy
 operator|.
 name|start
+argument_list|()
+expr_stmt|;
+name|proxy
+operator|.
+name|join
 argument_list|()
 expr_stmt|;
 block|}

@@ -60,7 +60,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|ApplicationAttemptId
 import|;
 end_import
 
@@ -79,12 +79,12 @@ specifier|final
 name|SecretKey
 name|masterKey
 decl_stmt|;
-DECL|method|ClientToAMTokenSecretManager (ApplicationId applicationID, byte[] secretKeyBytes)
+DECL|method|ClientToAMTokenSecretManager ( ApplicationAttemptId applicationAttemptID, byte[] secretKeyBytes)
 specifier|public
 name|ClientToAMTokenSecretManager
 parameter_list|(
-name|ApplicationId
-name|applicationID
+name|ApplicationAttemptId
+name|applicationAttemptID
 parameter_list|,
 name|byte
 index|[]
@@ -108,13 +108,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getMasterKey (ApplicationId applicationID)
+DECL|method|getMasterKey (ApplicationAttemptId applicationAttemptID)
 specifier|public
 name|SecretKey
 name|getMasterKey
 parameter_list|(
-name|ApplicationId
-name|applicationID
+name|ApplicationAttemptId
+name|applicationAttemptID
 parameter_list|)
 block|{
 comment|// Only one client-token and one master-key for AM, just return that.

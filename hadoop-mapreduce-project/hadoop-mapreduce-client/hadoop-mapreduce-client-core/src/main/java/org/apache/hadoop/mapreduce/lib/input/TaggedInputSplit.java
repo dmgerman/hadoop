@@ -774,6 +774,21 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|inputSplit
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

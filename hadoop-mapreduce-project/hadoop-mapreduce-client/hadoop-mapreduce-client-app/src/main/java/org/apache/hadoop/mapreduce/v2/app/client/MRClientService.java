@@ -1486,7 +1486,7 @@ name|this
 operator|.
 name|appContext
 operator|.
-name|getApplicationID
+name|getApplicationAttemptId
 argument_list|()
 argument_list|,
 name|bytes

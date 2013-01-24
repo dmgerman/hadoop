@@ -498,6 +498,11 @@ name|proto
 operator|.
 name|getLen
 argument_list|()
+argument_list|,
+name|proto
+operator|.
+name|getSendChecksums
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

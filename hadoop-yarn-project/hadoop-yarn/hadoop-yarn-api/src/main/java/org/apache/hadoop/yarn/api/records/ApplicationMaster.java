@@ -145,15 +145,15 @@ name|state
 parameter_list|)
 function_decl|;
 DECL|method|getClientToken ()
-name|String
+name|ClientToken
 name|getClientToken
 parameter_list|()
 function_decl|;
-DECL|method|setClientToken (String clientToken)
+DECL|method|setClientToken (ClientToken clientToken)
 name|void
 name|setClientToken
 parameter_list|(
-name|String
+name|ClientToken
 name|clientToken
 parameter_list|)
 function_decl|;

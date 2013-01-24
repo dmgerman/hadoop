@@ -877,12 +877,12 @@ specifier|final
 name|DatanodeProtocolPB
 name|rpcProxy
 decl_stmt|;
-DECL|field|VERSION_REQUEST
+DECL|field|VOID_VERSION_REQUEST
 specifier|private
 specifier|static
 specifier|final
 name|VersionRequestProto
-name|VERSION_REQUEST
+name|VOID_VERSION_REQUEST
 init|=
 name|VersionRequestProto
 operator|.
@@ -1877,7 +1877,7 @@ name|versionRequest
 argument_list|(
 name|NULL_CONTROLLER
 argument_list|,
-name|VERSION_REQUEST
+name|VOID_VERSION_REQUEST
 argument_list|)
 operator|.
 name|getInfo

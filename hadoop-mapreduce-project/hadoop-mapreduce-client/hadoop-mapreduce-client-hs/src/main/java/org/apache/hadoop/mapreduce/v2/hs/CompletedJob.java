@@ -230,6 +230,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|TaskCompletionEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|Counters
@@ -1331,7 +1345,7 @@ name|Override
 DECL|method|getMapAttemptCompletionEvents ( int startIndex, int maxEvents)
 specifier|public
 specifier|synchronized
-name|TaskAttemptCompletionEvent
+name|TaskCompletionEvent
 index|[]
 name|getMapAttemptCompletionEvents
 parameter_list|(
@@ -1354,6 +1368,10 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
+name|TypeConverter
+operator|.
+name|fromYarn
+argument_list|(
 name|getAttemptCompletionEvents
 argument_list|(
 name|mapCompletionEvents
@@ -1361,6 +1379,7 @@ argument_list|,
 name|startIndex
 argument_list|,
 name|maxEvents
+argument_list|)
 argument_list|)
 return|;
 block|}

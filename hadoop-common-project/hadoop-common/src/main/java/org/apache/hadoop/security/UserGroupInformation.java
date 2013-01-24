@@ -54,6 +54,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -3254,8 +3264,9 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// load the token storage file and put all of the tokens into the
-comment|// user.
+comment|// Load the token storage file and put all of the tokens into the
+comment|// user. Don't use the FileSystem API for reading since it has a lock
+comment|// cycle (HADOOP-9212).
 name|Credentials
 name|cred
 init|=
@@ -3264,10 +3275,8 @@ operator|.
 name|readTokenStorageFile
 argument_list|(
 operator|new
-name|Path
+name|File
 argument_list|(
-literal|"file:///"
-operator|+
 name|fileLocation
 argument_list|)
 argument_list|,

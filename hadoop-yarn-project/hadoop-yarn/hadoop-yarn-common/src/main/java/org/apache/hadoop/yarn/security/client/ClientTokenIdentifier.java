@@ -138,7 +138,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|ApplicationAttemptId
 import|;
 end_import
 
@@ -179,10 +179,10 @@ argument_list|(
 literal|"YARN_CLIENT_TOKEN"
 argument_list|)
 decl_stmt|;
-DECL|field|applicationId
+DECL|field|applicationAttemptId
 specifier|private
-name|ApplicationId
-name|applicationId
+name|ApplicationAttemptId
+name|applicationAttemptId
 decl_stmt|;
 comment|// TODO: Add more information in the tokenID such that it is not
 comment|// transferrable, more secure etc.
@@ -191,11 +191,11 @@ specifier|public
 name|ClientTokenIdentifier
 parameter_list|()
 block|{   }
-DECL|method|ClientTokenIdentifier (ApplicationId id)
+DECL|method|ClientTokenIdentifier (ApplicationAttemptId id)
 specifier|public
 name|ClientTokenIdentifier
 parameter_list|(
-name|ApplicationId
+name|ApplicationAttemptId
 name|id
 parameter_list|)
 block|{
@@ -204,21 +204,21 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|applicationId
+name|applicationAttemptId
 operator|=
 name|id
 expr_stmt|;
 block|}
-DECL|method|getApplicationID ()
+DECL|method|getApplicationAttemptID ()
 specifier|public
-name|ApplicationId
-name|getApplicationID
+name|ApplicationAttemptId
+name|getApplicationAttemptID
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|applicationId
+name|applicationAttemptId
 return|;
 block|}
 annotation|@
@@ -240,7 +240,10 @@ name|writeLong
 argument_list|(
 name|this
 operator|.
-name|applicationId
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
 operator|.
 name|getClusterTimestamp
 argument_list|()
@@ -252,9 +255,24 @@ name|writeInt
 argument_list|(
 name|this
 operator|.
-name|applicationId
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
 operator|.
 name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeInt
+argument_list|(
+name|this
+operator|.
+name|applicationAttemptId
+operator|.
+name|getAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -274,8 +292,12 @@ name|IOException
 block|{
 name|this
 operator|.
-name|applicationId
+name|applicationAttemptId
 operator|=
+name|BuilderUtils
+operator|.
+name|newApplicationAttemptId
+argument_list|(
 name|BuilderUtils
 operator|.
 name|newApplicationId
@@ -284,6 +306,12 @@ name|in
 operator|.
 name|readLong
 argument_list|()
+argument_list|,
+name|in
+operator|.
+name|readInt
+argument_list|()
+argument_list|)
 argument_list|,
 name|in
 operator|.
@@ -316,7 +344,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|applicationId
+name|applicationAttemptId
 operator|==
 literal|null
 condition|)
@@ -332,7 +360,7 @@ name|createRemoteUser
 argument_list|(
 name|this
 operator|.
-name|applicationId
+name|applicationAttemptId
 operator|.
 name|toString
 argument_list|()

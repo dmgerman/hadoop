@@ -2916,6 +2916,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|fileLen
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|sendRecvData
@@ -2958,6 +2960,8 @@ operator|-
 literal|1L
 argument_list|,
 name|fileLen
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|sendRecvData
@@ -2993,6 +2997,8 @@ argument_list|,
 name|fileLen
 argument_list|,
 name|fileLen
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|sendRecvData
@@ -3084,6 +3090,8 @@ name|nextInt
 argument_list|(
 name|oneMil
 argument_list|)
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|sendRecvData
@@ -3149,6 +3157,8 @@ argument_list|,
 name|fileLen
 operator|+
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|sendRecvData
@@ -3184,6 +3194,8 @@ argument_list|,
 literal|0L
 argument_list|,
 name|fileLen
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|readFile

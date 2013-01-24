@@ -964,12 +964,7 @@ name|newContainerToken
 argument_list|(
 name|nodeId
 argument_list|,
-name|ByteBuffer
-operator|.
-name|wrap
-argument_list|(
 name|password
-argument_list|)
 argument_list|,
 name|tokenIdentifier
 argument_list|)

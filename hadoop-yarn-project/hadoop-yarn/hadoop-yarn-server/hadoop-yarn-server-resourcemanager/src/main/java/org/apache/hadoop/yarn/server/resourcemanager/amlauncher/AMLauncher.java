@@ -1588,7 +1588,10 @@ argument_list|()
 operator|.
 name|getMasterKey
 argument_list|(
-name|applicationId
+name|application
+operator|.
+name|getAppAttemptId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|String

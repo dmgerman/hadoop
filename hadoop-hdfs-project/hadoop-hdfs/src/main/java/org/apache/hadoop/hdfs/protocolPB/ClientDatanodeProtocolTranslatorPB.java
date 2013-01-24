@@ -678,12 +678,12 @@ specifier|final
 name|ClientDatanodeProtocolPB
 name|rpcProxy
 decl_stmt|;
-DECL|field|REFRESH_NAMENODES
+DECL|field|VOID_REFRESH_NAMENODES
 specifier|private
 specifier|final
 specifier|static
 name|RefreshNamenodesRequestProto
-name|REFRESH_NAMENODES
+name|VOID_REFRESH_NAMENODES
 init|=
 name|RefreshNamenodesRequestProto
 operator|.
@@ -1163,7 +1163,7 @@ name|refreshNamenodes
 argument_list|(
 name|NULL_CONTROLLER
 argument_list|,
-name|REFRESH_NAMENODES
+name|VOID_REFRESH_NAMENODES
 argument_list|)
 expr_stmt|;
 block|}

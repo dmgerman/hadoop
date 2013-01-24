@@ -66,7 +66,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|ApplicationAttemptId
 import|;
 end_import
 
@@ -101,7 +101,7 @@ DECL|field|masterKeys
 specifier|private
 name|Map
 argument_list|<
-name|ApplicationId
+name|ApplicationAttemptId
 argument_list|,
 name|SecretKey
 argument_list|>
@@ -110,20 +110,20 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|ApplicationId
+name|ApplicationAttemptId
 argument_list|,
 name|SecretKey
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|registerApplication (ApplicationId applicationID)
+DECL|method|registerApplication ( ApplicationAttemptId applicationAttemptID)
 specifier|public
 specifier|synchronized
 name|void
 name|registerApplication
 parameter_list|(
-name|ApplicationId
-name|applicationID
+name|ApplicationAttemptId
+name|applicationAttemptID
 parameter_list|)
 block|{
 name|this
@@ -132,21 +132,21 @@ name|masterKeys
 operator|.
 name|put
 argument_list|(
-name|applicationID
+name|applicationAttemptID
 argument_list|,
 name|generateSecret
 argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|unRegisterApplication (ApplicationId applicationID)
+DECL|method|unRegisterApplication ( ApplicationAttemptId applicationAttemptID)
 specifier|public
 specifier|synchronized
 name|void
 name|unRegisterApplication
 parameter_list|(
-name|ApplicationId
-name|applicationID
+name|ApplicationAttemptId
+name|applicationAttemptID
 parameter_list|)
 block|{
 name|this
@@ -155,20 +155,20 @@ name|masterKeys
 operator|.
 name|remove
 argument_list|(
-name|applicationID
+name|applicationAttemptID
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getMasterKey (ApplicationId applicationID)
+DECL|method|getMasterKey ( ApplicationAttemptId applicationAttemptID)
 specifier|public
 specifier|synchronized
 name|SecretKey
 name|getMasterKey
 parameter_list|(
-name|ApplicationId
-name|applicationID
+name|ApplicationAttemptId
+name|applicationAttemptID
 parameter_list|)
 block|{
 return|return
@@ -178,7 +178,7 @@ name|masterKeys
 operator|.
 name|get
 argument_list|(
-name|applicationID
+name|applicationAttemptID
 argument_list|)
 return|;
 block|}

@@ -541,7 +541,7 @@ specifier|private
 name|int
 name|port
 init|=
-literal|12345
+literal|0
 decl_stmt|;
 DECL|field|secondsToRun
 specifier|public
@@ -1334,6 +1334,46 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|getPort ()
+specifier|public
+name|int
+name|getPort
+parameter_list|()
+block|{
+if|if
+condition|(
+name|port
+operator|==
+literal|0
+condition|)
+block|{
+name|port
+operator|=
+name|NetUtils
+operator|.
+name|getFreeSocketPort
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|port
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Could not find a free port"
+argument_list|)
+throw|;
+block|}
+block|}
+return|return
+name|port
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -1365,7 +1405,8 @@ name|host
 operator|+
 literal|"\nport="
 operator|+
-name|port
+name|getPort
+argument_list|()
 operator|+
 literal|"\nsecondsToRun="
 operator|+
@@ -1482,7 +1523,8 @@ name|setPort
 argument_list|(
 name|opts
 operator|.
-name|port
+name|getPort
+argument_list|()
 argument_list|)
 operator|.
 name|setNumHandlers
@@ -1550,7 +1592,8 @@ name|setPort
 argument_list|(
 name|opts
 operator|.
-name|port
+name|getPort
+argument_list|()
 argument_list|)
 operator|.
 name|setNumHandlers
@@ -2292,7 +2335,8 @@ name|host
 argument_list|,
 name|opts
 operator|.
-name|port
+name|getPort
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if

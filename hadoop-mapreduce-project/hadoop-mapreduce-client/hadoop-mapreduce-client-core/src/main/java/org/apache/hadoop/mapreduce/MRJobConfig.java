@@ -2067,6 +2067,17 @@ name|MR_AM_PREFIX
 operator|+
 literal|"env"
 decl_stmt|;
+DECL|field|MR_AM_ADMIN_USER_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_ADMIN_USER_ENV
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"admin.user.env"
+decl_stmt|;
 DECL|field|MAPRED_MAP_ADMIN_JAVA_OPTS
 specifier|public
 specifier|static

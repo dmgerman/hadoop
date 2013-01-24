@@ -18,6 +18,16 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -876,6 +886,20 @@ comment|//Expected an IOException
 block|}
 block|}
 annotation|@
+name|Before
+DECL|method|before ()
+specifier|public
+name|void
+name|before
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|cleanupImpl
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
 name|After
 DECL|method|tearDown ()
 specifier|public
@@ -885,11 +909,36 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|cleanupImpl
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|cleanupImpl ()
+specifier|private
+name|void
+name|cleanupImpl
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 name|FileUtil
 operator|.
 name|fullyDelete
 argument_list|(
 name|del
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+operator|!
+name|del
+operator|.
+name|exists
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|FileUtil
@@ -897,6 +946,19 @@ operator|.
 name|fullyDelete
 argument_list|(
 name|tmp
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+operator|!
+name|tmp
+operator|.
+name|exists
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|FileUtil
@@ -904,6 +966,19 @@ operator|.
 name|fullyDelete
 argument_list|(
 name|partitioned
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+operator|!
+name|partitioned
+operator|.
+name|exists
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1346,6 +1421,7 @@ expr_stmt|;
 block|}
 DECL|field|xSubDir
 specifier|private
+specifier|final
 name|File
 name|xSubDir
 init|=
@@ -1354,11 +1430,26 @@ name|File
 argument_list|(
 name|del
 argument_list|,
-literal|"xsubdir"
+literal|"xSubDir"
+argument_list|)
+decl_stmt|;
+DECL|field|xSubSubDir
+specifier|private
+specifier|final
+name|File
+name|xSubSubDir
+init|=
+operator|new
+name|File
+argument_list|(
+name|xSubDir
+argument_list|,
+literal|"xSubSubDir"
 argument_list|)
 decl_stmt|;
 DECL|field|ySubDir
 specifier|private
+specifier|final
 name|File
 name|ySubDir
 init|=
@@ -1367,11 +1458,13 @@ name|File
 argument_list|(
 name|del
 argument_list|,
-literal|"ysubdir"
+literal|"ySubDir"
 argument_list|)
 decl_stmt|;
 DECL|field|file1Name
+specifier|private
 specifier|static
+specifier|final
 name|String
 name|file1Name
 init|=
@@ -1379,6 +1472,7 @@ literal|"file1"
 decl_stmt|;
 DECL|field|file2
 specifier|private
+specifier|final
 name|File
 name|file2
 init|=
@@ -1390,8 +1484,23 @@ argument_list|,
 literal|"file2"
 argument_list|)
 decl_stmt|;
+DECL|field|file22
+specifier|private
+specifier|final
+name|File
+name|file22
+init|=
+operator|new
+name|File
+argument_list|(
+name|xSubSubDir
+argument_list|,
+literal|"file22"
+argument_list|)
+decl_stmt|;
 DECL|field|file3
 specifier|private
+specifier|final
 name|File
 name|file3
 init|=
@@ -1405,6 +1514,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|zlink
 specifier|private
+specifier|final
 name|File
 name|zlink
 init|=
@@ -1416,7 +1526,7 @@ argument_list|,
 literal|"zlink"
 argument_list|)
 decl_stmt|;
-comment|/**    * Creates a directory which can not be deleted completely.    *     * Directory structure. The naming is important in that {@link MyFile}    * is used to return them in alphabetical order when listed.    *     *                     del(+w)    *                       |    *    .---------------------------------------,    *    |            |              |           |    *  file1(!w)   xsubdir(-w)   ysubdir(+w)   zlink    *                 |              |    *               file2          file3    *    * @throws IOException    */
+comment|/**    * Creates a directory which can not be deleted completely.    *     * Directory structure. The naming is important in that {@link MyFile}    * is used to return them in alphabetical order when listed.    *     *                     del(+w)    *                       |    *    .---------------------------------------,    *    |            |              |           |    *  file1(!w)   xSubDir(-rwx)   ySubDir(+w)   zlink    *              |  |              |    *              | file2(-rwx)   file3    *              |    *            xSubSubDir(-rwx)     *              |    *             file22(-rwx)    *                 * @throws IOException    */
 DECL|method|setupDirsAndNonWritablePermissions ()
 specifier|private
 name|void
@@ -1464,11 +1574,34 @@ operator|.
 name|createNewFile
 argument_list|()
 expr_stmt|;
-name|xSubDir
+name|xSubSubDir
 operator|.
-name|setWritable
+name|mkdirs
+argument_list|()
+expr_stmt|;
+name|file22
+operator|.
+name|createNewFile
+argument_list|()
+expr_stmt|;
+name|revokePermissions
 argument_list|(
-literal|false
+name|file22
+argument_list|)
+expr_stmt|;
+name|revokePermissions
+argument_list|(
+name|xSubSubDir
+argument_list|)
+expr_stmt|;
+name|revokePermissions
+argument_list|(
+name|file2
+argument_list|)
+expr_stmt|;
+name|revokePermissions
+argument_list|(
+name|xSubDir
 argument_list|)
 expr_stmt|;
 name|ySubDir
@@ -1530,31 +1663,103 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Validates the return value.
-comment|// Validates the existence of directory "xsubdir" and the file "file1"
-comment|// Sets writable permissions for the non-deleted dir "xsubdir" so that it can
-comment|// be deleted in tearDown().
-DECL|method|validateAndSetWritablePermissions (boolean ret)
+DECL|method|grantPermissions (final File f)
 specifier|private
+specifier|static
 name|void
-name|validateAndSetWritablePermissions
+name|grantPermissions
 parameter_list|(
-name|boolean
-name|ret
+specifier|final
+name|File
+name|f
 parameter_list|)
 block|{
-name|xSubDir
+name|f
+operator|.
+name|setReadable
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|f
 operator|.
 name|setWritable
 argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|f
+operator|.
+name|setExecutable
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|revokePermissions (final File f)
+specifier|private
+specifier|static
+name|void
+name|revokePermissions
+parameter_list|(
+specifier|final
+name|File
+name|f
+parameter_list|)
+block|{
+name|f
+operator|.
+name|setWritable
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|f
+operator|.
+name|setExecutable
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+name|f
+operator|.
+name|setReadable
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Validates the return value.
+comment|// Validates the existence of the file "file1"
+DECL|method|validateAndSetWritablePermissions ( final boolean expectedRevokedPermissionDirsExist, final boolean ret)
+specifier|private
+name|void
+name|validateAndSetWritablePermissions
+parameter_list|(
+specifier|final
+name|boolean
+name|expectedRevokedPermissionDirsExist
+parameter_list|,
+specifier|final
+name|boolean
+name|ret
+parameter_list|)
+block|{
+name|grantPermissions
+argument_list|(
+name|xSubDir
+argument_list|)
+expr_stmt|;
+name|grantPermissions
+argument_list|(
+name|xSubSubDir
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-literal|"The return value should have been false!"
+literal|"The return value should have been false."
 argument_list|,
 name|ret
 argument_list|)
@@ -1563,7 +1768,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-literal|"The file file1 should not have been deleted!"
+literal|"The file file1 should not have been deleted."
 argument_list|,
 operator|new
 name|File
@@ -1579,9 +1784,11 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"The directory xsubdir should not have been deleted!"
+literal|"The directory xSubDir *should* not have been deleted."
+argument_list|,
+name|expectedRevokedPermissionDirsExist
 argument_list|,
 name|xSubDir
 operator|.
@@ -1591,9 +1798,11 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"The file file2 should not have been deleted!"
+literal|"The file file2 *should* not have been deleted."
+argument_list|,
+name|expectedRevokedPermissionDirsExist
 argument_list|,
 name|file2
 operator|.
@@ -1603,9 +1812,37 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
+name|assertEquals
+argument_list|(
+literal|"The directory xSubSubDir *should* not have been deleted."
+argument_list|,
+name|expectedRevokedPermissionDirsExist
+argument_list|,
+name|xSubSubDir
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"The file file22 *should* not have been deleted."
+argument_list|,
+name|expectedRevokedPermissionDirsExist
+argument_list|,
+name|file22
+operator|.
+name|exists
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
-literal|"The directory ysubdir should have been deleted!"
+literal|"The directory ySubDir should have been deleted."
 argument_list|,
 name|ySubDir
 operator|.
@@ -1617,7 +1854,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-literal|"The link zlink should have been deleted!"
+literal|"The link zlink should have been deleted."
 argument_list|,
 name|zlink
 operator|.
@@ -1662,6 +1899,46 @@ argument_list|)
 decl_stmt|;
 name|validateAndSetWritablePermissions
 argument_list|(
+literal|true
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testFailFullyDeleteGrantPermissions ()
+specifier|public
+name|void
+name|testFailFullyDeleteGrantPermissions
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupDirsAndNonWritablePermissions
+argument_list|()
+expr_stmt|;
+name|boolean
+name|ret
+init|=
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+operator|new
+name|MyFile
+argument_list|(
+name|del
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+comment|// this time the directories with revoked permissions *should* be deleted:
+name|validateAndSetWritablePermissions
+argument_list|(
+literal|false
+argument_list|,
 name|ret
 argument_list|)
 expr_stmt|;
@@ -1815,6 +2092,7 @@ index|[]
 name|listFiles
 parameter_list|()
 block|{
+specifier|final
 name|File
 index|[]
 name|files
@@ -1824,6 +2102,17 @@ operator|.
 name|listFiles
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|files
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|List
 argument_list|<
 name|File
@@ -1923,6 +2212,46 @@ argument_list|)
 decl_stmt|;
 name|validateAndSetWritablePermissions
 argument_list|(
+literal|true
+argument_list|,
+name|ret
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testFailFullyDeleteContentsGrantPermissions ()
+specifier|public
+name|void
+name|testFailFullyDeleteContentsGrantPermissions
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|setupDirsAndNonWritablePermissions
+argument_list|()
+expr_stmt|;
+name|boolean
+name|ret
+init|=
+name|FileUtil
+operator|.
+name|fullyDeleteContents
+argument_list|(
+operator|new
+name|MyFile
+argument_list|(
+name|del
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+comment|// this time the directories with revoked permissions *should* be deleted:
+name|validateAndSetWritablePermissions
+argument_list|(
+literal|false
+argument_list|,
 name|ret
 argument_list|)
 expr_stmt|;

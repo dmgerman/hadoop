@@ -138,18 +138,6 @@ name|util
 operator|.
 name|concurrent
 operator|.
-name|CopyOnWriteArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
 name|atomic
 operator|.
 name|AtomicInteger
@@ -409,32 +397,6 @@ operator|.
 name|protocolrecords
 operator|.
 name|FinishApplicationMasterRequest
-import|;
-end_import
-
-begin_comment
-comment|//import org.apache.hadoop.yarn.api.protocolrecords.GetContainerStatusRequest;
-end_comment
-
-begin_comment
-comment|//import org.apache.hadoop.yarn.api.protocolrecords.GetContainerStatusResponse;
-end_comment
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|RegisterApplicationMasterRequest
 import|;
 end_import
 
@@ -736,6 +698,56 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|AMRMClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|AMRMClient
+operator|.
+name|ContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|AMRMClientImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -807,7 +819,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An ApplicationMaster for executing shell commands on a set of launched containers using the YARN framework.   *   *<p>This class is meant to act as an example on how to write yarn-based application masters.</p>  *   *<p> The ApplicationMaster is started on a container by the<code>ResourceManager</code>'s launcher.   * The first thing that the<code>ApplicationMaster</code> needs to do is to connect and register itself with   * the<code>ResourceManager</code>. The registration sets up information within the<code>ResourceManager</code>  * regarding what host:port the ApplicationMaster is listening on to provide any form of functionality to a client  * as well as a tracking url that a client can use to keep track of status/job history if needed.</p>  *   *<p> The<code>ApplicationMaster</code> needs to send a heartbeat to the<code>ResourceManager</code> at regular intervals  * to inform the<code>ResourceManager</code> that it is up and alive. The {@link AMRMProtocol#allocate} to the   *<code>ResourceManager</code> from the<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p> For the actual handling of the job, the<code>ApplicationMaster</code> has to request the   *<code>ResourceManager</code> via {@link AllocateRequest} for the required no. of containers using {@link ResourceRequest}  * with the necessary resource specifications such as node location, computational (memory/disk/cpu) resource requirements.  * The<code>ResourceManager</code> responds with an {@link AllocateResponse} that informs the<code>ApplicationMaster</code>   * of the set of newly allocated containers, completed containers as well as current state of available resources.</p>  *   *<p> For each allocated container, the<code>ApplicationMaster</code> can then set up the necessary launch context via   * {@link ContainerLaunchContext} to specify the allocated container id, local resources required by the executable,   * the environment to be setup for the executable, commands to execute, etc. and submit a {@link StartContainerRequest}   * to the {@link ContainerManager} to launch and execute the defined commands on the given allocated container.</p>  *    *<p> The<code>ApplicationMaster</code> can monitor the launched container by either querying the<code>ResourceManager</code>   * using {@link AMRMProtocol#allocate} to get updates on completed containers or via the {@link ContainerManager}   * by querying for the status of the allocated container's {@link ContainerId}.  *   *<p> After the job has been completed, the<code>ApplicationMaster</code> has to send a {@link FinishApplicationMasterRequest}   * to the<code>ResourceManager</code> to inform it that the<code>ApplicationMaster</code> has been completed.   */
+comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link AMRMProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManager} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link AMRMProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManager} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
 end_comment
 
 begin_class
@@ -855,7 +867,7 @@ decl_stmt|;
 comment|// Handle to communicate with the Resource Manager
 DECL|field|resourceManager
 specifier|private
-name|AMRMProtocol
+name|AMRMClient
 name|resourceManager
 decl_stmt|;
 comment|// Application Attempt Id ( combination of attemptId and fail count )
@@ -874,7 +886,7 @@ name|appMasterHostname
 init|=
 literal|""
 decl_stmt|;
-comment|// Port on which the app master listens for status update requests from clients
+comment|// Port on which the app master listens for status updates from clients
 DECL|field|appMasterRpcPort
 specifier|private
 name|int
@@ -912,16 +924,6 @@ DECL|field|requestPriority
 specifier|private
 name|int
 name|requestPriority
-decl_stmt|;
-comment|// Incremental counter for rpc calls to the RM
-DECL|field|rmRequestID
-specifier|private
-name|AtomicInteger
-name|rmRequestID
-init|=
-operator|new
-name|AtomicInteger
-argument_list|()
 decl_stmt|;
 comment|// Simple flag to denote whether all works is done
 DECL|field|appDone
@@ -963,7 +965,7 @@ name|AtomicInteger
 argument_list|()
 decl_stmt|;
 comment|// Count of containers already requested from the RM
-comment|// Needed as once requested, we should not request for containers again and again.
+comment|// Needed as once requested, we should not request for containers again.
 comment|// Only request for more if the original requirement changes.
 DECL|field|numRequestedContainers
 specifier|private
@@ -1043,22 +1045,6 @@ name|String
 name|ExecShellStringPath
 init|=
 literal|"ExecShellScript.sh"
-decl_stmt|;
-comment|// Containers to be released
-DECL|field|releasedContainers
-specifier|private
-name|CopyOnWriteArrayList
-argument_list|<
-name|ContainerId
-argument_list|>
-name|releasedContainers
-init|=
-operator|new
-name|CopyOnWriteArrayList
-argument_list|<
-name|ContainerId
-argument_list|>
-argument_list|()
 decl_stmt|;
 comment|// Launch threads
 DECL|field|launchThreads
@@ -1420,7 +1406,7 @@ comment|// Set up the configuration and RPC
 name|conf
 operator|=
 operator|new
-name|Configuration
+name|YarnConfiguration
 argument_list|()
 expr_stmt|;
 name|rpc
@@ -1433,7 +1419,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Parse command line options    * @param args Command line args     * @return Whether init successful and run should be invoked     * @throws ParseException    * @throws IOException     */
+comment|/**    * Parse command line options    *    * @param args Command line args    * @return Whether init successful and run should be invoked    * @throws ParseException    * @throws IOException    */
 DECL|method|init (String[] args)
 specifier|public
 name|boolean
@@ -1647,17 +1633,6 @@ operator|.
 name|getenv
 argument_list|()
 decl_stmt|;
-name|appAttemptID
-operator|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|ApplicationAttemptId
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|envs
@@ -2152,7 +2127,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Helper function to print usage     * @param opts Parsed command line options    */
+comment|/**    * Helper function to print usage    *    * @param opts Parsed command line options    */
 DECL|method|printUsage (Options opts)
 specifier|private
 name|void
@@ -2174,7 +2149,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Main run function for the application master    * @throws YarnRemoteException    */
+comment|/**    * Main run function for the application master    *    * @throws YarnRemoteException    */
 DECL|method|run ()
 specifier|public
 name|boolean
@@ -2193,20 +2168,48 @@ expr_stmt|;
 comment|// Connect to ResourceManager
 name|resourceManager
 operator|=
-name|connectToRM
+operator|new
+name|AMRMClientImpl
+argument_list|(
+name|appAttemptID
+argument_list|)
+expr_stmt|;
+name|resourceManager
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|resourceManager
+operator|.
+name|start
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 comment|// Setup local RPC Server to accept status requests directly from clients
-comment|// TODO need to setup a protocol for client to be able to communicate to the RPC server
-comment|// TODO use the rpc port info to register with the RM for the client to send requests to this app master
+comment|// TODO need to setup a protocol for client to be able to communicate to
+comment|// the RPC server
+comment|// TODO use the rpc port info to register with the RM for the client to
+comment|// send requests to this app master
 comment|// Register self with ResourceManager
 name|RegisterApplicationMasterResponse
 name|response
 init|=
-name|registerToRM
-argument_list|()
+name|resourceManager
+operator|.
+name|registerApplicationMaster
+argument_list|(
+name|appMasterHostname
+argument_list|,
+name|appMasterRpcPort
+argument_list|,
+name|appMasterTrackingUrl
+argument_list|)
 decl_stmt|;
-comment|// Dump out information about cluster capability as seen by the resource manager
+comment|// Dump out information about cluster capability as seen by the
+comment|// resource manager
 name|int
 name|minMem
 init|=
@@ -2247,9 +2250,11 @@ operator|+
 name|maxMem
 argument_list|)
 expr_stmt|;
-comment|// A resource ask has to be atleast the minimum of the capability of the cluster, the value has to be
-comment|// a multiple of the min value and cannot exceed the max.
-comment|// If it is not an exact multiple of min, the RM will allocate to the nearest multiple of min
+comment|// A resource ask has to be atleast the minimum of the capability of the
+comment|// cluster, the value has to be a multiple of the min value and cannot
+comment|// exceed the max.
+comment|// If it is not an exact multiple of min, the RM will allocate to the
+comment|// nearest multiple of min
 if|if
 condition|(
 name|containerMemory
@@ -2261,7 +2266,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Container memory specified below min threshold of cluster. Using min value."
+literal|"Container memory specified below min threshold of cluster."
+operator|+
+literal|" Using min value."
 operator|+
 literal|", specified="
 operator|+
@@ -2289,7 +2296,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Container memory specified above max threshold of cluster. Using max value."
+literal|"Container memory specified above max threshold of cluster."
+operator|+
+literal|" Using max value."
 operator|+
 literal|", specified="
 operator|+
@@ -2306,16 +2315,20 @@ name|maxMem
 expr_stmt|;
 block|}
 comment|// Setup heartbeat emitter
-comment|// TODO poll RM every now and then with an empty request to let RM know that we are alive
-comment|// The heartbeat interval after which an AM is timed out by the RM is defined by a config setting:
-comment|// RM_AM_EXPIRY_INTERVAL_MS with default defined by DEFAULT_RM_AM_EXPIRY_INTERVAL_MS
-comment|// The allocate calls to the RM count as heartbeats so, for now, this additional heartbeat emitter
-comment|// is not required.
+comment|// TODO poll RM every now and then with an empty request to let RM know
+comment|// that we are alive
+comment|// The heartbeat interval after which an AM is timed out by the RM is
+comment|// defined by a config setting:
+comment|// RM_AM_EXPIRY_INTERVAL_MS with default defined by
+comment|// DEFAULT_RM_AM_EXPIRY_INTERVAL_MS
+comment|// The allocate calls to the RM count as heartbeats so, for now,
+comment|// this additional heartbeat emitter is not required.
 comment|// Setup ask for containers from RM
 comment|// Send request for containers to RM
-comment|// Until we get our fully allocated quota, we keep on polling RM for containers
-comment|// Keep looping until all the containers are launched and shell script executed on them
-comment|// ( regardless of success/failure).
+comment|// Until we get our fully allocated quota, we keep on polling RM for
+comment|// containers
+comment|// Keep looping until all the containers are launched and shell script
+comment|// executed on them ( regardless of success/failure).
 name|int
 name|loopCounter
 init|=
@@ -2407,8 +2420,8 @@ expr_stmt|;
 block|}
 comment|// No. of containers to request
 comment|// For the first loop, askCount will be equal to total containers needed
-comment|// From that point on, askCount will always be 0 as current implementation
-comment|// does not change its ask on container failures.
+comment|// From that point on, askCount will always be 0 as current
+comment|// implementation does not change its ask on container failures.
 name|int
 name|askCount
 init|=
@@ -2426,20 +2439,6 @@ argument_list|(
 name|askCount
 argument_list|)
 expr_stmt|;
-comment|// Setup request to be sent to RM to allocate containers
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|resourceReq
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|ResourceRequest
-argument_list|>
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|askCount
@@ -2447,7 +2446,7 @@ operator|>
 literal|0
 condition|)
 block|{
-name|ResourceRequest
+name|ContainerRequest
 name|containerAsk
 init|=
 name|setupContainerAskForRM
@@ -2455,9 +2454,9 @@ argument_list|(
 name|askCount
 argument_list|)
 decl_stmt|;
-name|resourceReq
+name|resourceManager
 operator|.
-name|add
+name|addContainerRequest
 argument_list|(
 name|containerAsk
 argument_list|)
@@ -2479,9 +2478,7 @@ name|AMResponse
 name|amResp
 init|=
 name|sendContainerAskToRM
-argument_list|(
-name|resourceReq
-argument_list|)
+argument_list|()
 decl_stmt|;
 comment|// Retrieve list of allocated containers from the response
 name|List
@@ -2583,7 +2580,8 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|//+ ", containerToken" + allocatedContainer.getContainerToken().getIdentifier().toString());
+comment|// + ", containerToken"
+comment|// +allocatedContainer.getContainerToken().getIdentifier().toString());
 name|LaunchContainerRunnable
 name|runnableLaunchContainer
 init|=
@@ -2602,7 +2600,8 @@ argument_list|(
 name|runnableLaunchContainer
 argument_list|)
 decl_stmt|;
-comment|// launch and start the container on a separate thread to keep the main thread unblocked
+comment|// launch and start the container on a separate thread to keep
+comment|// the main thread unblocked
 comment|// as all containers may not be allocated at one go.
 name|launchThreads
 operator|.
@@ -2672,7 +2671,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Got container status for containerID= "
+literal|"Got container status for containerID="
 operator|+
 name|containerStatus
 operator|.
@@ -2894,8 +2893,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// When the application completes, it should send a finish application signal
-comment|// to the RM
+comment|// When the application completes, it should send a finish application
+comment|// signal to the RM
 name|LOG
 operator|.
 name|info
@@ -2903,25 +2902,14 @@ argument_list|(
 literal|"Application completed. Signalling finish to RM"
 argument_list|)
 expr_stmt|;
-name|FinishApplicationMasterRequest
-name|finishReq
-init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|FinishApplicationMasterRequest
-operator|.
-name|class
-argument_list|)
+name|FinalApplicationStatus
+name|appStatus
 decl_stmt|;
-name|finishReq
-operator|.
-name|setAppAttemptId
-argument_list|(
-name|appAttemptID
-argument_list|)
-expr_stmt|;
+name|String
+name|appMessage
+init|=
+literal|null
+decl_stmt|;
 name|boolean
 name|isSuccess
 init|=
@@ -2937,30 +2925,23 @@ operator|==
 literal|0
 condition|)
 block|{
-name|finishReq
-operator|.
-name|setFinishApplicationStatus
-argument_list|(
+name|appStatus
+operator|=
 name|FinalApplicationStatus
 operator|.
 name|SUCCEEDED
-argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-name|finishReq
-operator|.
-name|setFinishApplicationStatus
-argument_list|(
+name|appStatus
+operator|=
 name|FinalApplicationStatus
 operator|.
 name|FAILED
-argument_list|)
 expr_stmt|;
-name|String
-name|diagnostics
-init|=
+name|appMessage
+operator|=
 literal|"Diagnostics."
 operator|+
 literal|", total="
@@ -2987,13 +2968,6 @@ name|numFailedContainers
 operator|.
 name|get
 argument_list|()
-decl_stmt|;
-name|finishReq
-operator|.
-name|setDiagnostics
-argument_list|(
-name|diagnostics
-argument_list|)
 expr_stmt|;
 name|isSuccess
 operator|=
@@ -3002,16 +2976,29 @@ expr_stmt|;
 block|}
 name|resourceManager
 operator|.
-name|finishApplicationMaster
+name|unregisterApplicationMaster
 argument_list|(
-name|finishReq
+name|appStatus
+argument_list|,
+name|appMessage
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 return|return
 name|isSuccess
 return|;
 block|}
-comment|/**    * Thread to connect to the {@link ContainerManager} and     * launch the container that will execute the shell command.     */
+finally|finally
+block|{
+name|resourceManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Thread to connect to the {@link ContainerManager} and launch the container    * that will execute the shell command.    */
 DECL|class|LaunchContainerRunnable
 specifier|private
 class|class
@@ -3243,9 +3230,10 @@ name|LocalResource
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|// The container for the eventual shell commands needs its own local resources too.
-comment|// In this scenario, if a shell script is specified, we need to have it copied
-comment|// and made available to the container.
+comment|// The container for the eventual shell commands needs its own local
+comment|// resources too.
+comment|// In this scenario, if a shell script is specified, we need to have it
+comment|// copied and made available to the container.
 if|if
 condition|(
 operator|!
@@ -3314,9 +3302,9 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error when trying to use shell script path specified in env"
+literal|"Error when trying to use shell script path specified"
 operator|+
-literal|", path="
+literal|" in env, path="
 operator|+
 name|shellScriptPath
 argument_list|)
@@ -3424,11 +3412,6 @@ name|shellArgs
 argument_list|)
 expr_stmt|;
 comment|// Add log redirect params
-comment|// TODO
-comment|// We should redirect the output to hdfs instead of local logs
-comment|// so as to be able to look at the final output after the containers
-comment|// have been released.
-comment|// Could use a path suffixed with /AppId/AppAttempId/ContainerId/std[out|err]
 name|vargs
 operator|.
 name|add
@@ -3572,190 +3555,34 @@ comment|// TODO do we need to release this container?
 block|}
 comment|// Get container status?
 comment|// Left commented out as the shell scripts are short lived
-comment|// and we are relying on the status for completed containers from RM to detect status
-comment|//    GetContainerStatusRequest statusReq = Records.newRecord(GetContainerStatusRequest.class);
-comment|//    statusReq.setContainerId(container.getId());
-comment|//    GetContainerStatusResponse statusResp;
-comment|//try {
-comment|//statusResp = cm.getContainerStatus(statusReq);
-comment|//    LOG.info("Container Status"
-comment|//    + ", id=" + container.getId()
-comment|//    + ", status=" +statusResp.getStatus());
-comment|//} catch (YarnRemoteException e) {
-comment|//e.printStackTrace();
-comment|//}
+comment|// and we are relying on the status for completed containers
+comment|// from RM to detect status
+comment|// GetContainerStatusRequest statusReq =
+comment|// Records.newRecord(GetContainerStatusRequest.class);
+comment|// statusReq.setContainerId(container.getId());
+comment|// GetContainerStatusResponse statusResp;
+comment|// try {
+comment|// statusResp = cm.getContainerStatus(statusReq);
+comment|// LOG.info("Container Status"
+comment|// + ", id=" + container.getId()
+comment|// + ", status=" +statusResp.getStatus());
+comment|// } catch (YarnRemoteException e) {
+comment|// e.printStackTrace();
+comment|// }
 block|}
 block|}
-comment|/**    * Connect to the Resource Manager    * @return Handle to communicate with the RM    */
-DECL|method|connectToRM ()
-specifier|private
-name|AMRMProtocol
-name|connectToRM
-parameter_list|()
-block|{
-name|YarnConfiguration
-name|yarnConf
-init|=
-operator|new
-name|YarnConfiguration
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-name|InetSocketAddress
-name|rmAddress
-init|=
-name|yarnConf
-operator|.
-name|getSocketAddr
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_SCHEDULER_ADDRESS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_SCHEDULER_ADDRESS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_SCHEDULER_PORT
-argument_list|)
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Connecting to ResourceManager at "
-operator|+
-name|rmAddress
-argument_list|)
-expr_stmt|;
-return|return
-operator|(
-operator|(
-name|AMRMProtocol
-operator|)
-name|rpc
-operator|.
-name|getProxy
-argument_list|(
-name|AMRMProtocol
-operator|.
-name|class
-argument_list|,
-name|rmAddress
-argument_list|,
-name|conf
-argument_list|)
-operator|)
-return|;
-block|}
-comment|/**     * Register the Application Master to the Resource Manager    * @return the registration response from the RM    * @throws YarnRemoteException    */
-DECL|method|registerToRM ()
-specifier|private
-name|RegisterApplicationMasterResponse
-name|registerToRM
-parameter_list|()
-throws|throws
-name|YarnRemoteException
-block|{
-name|RegisterApplicationMasterRequest
-name|appMasterRequest
-init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|RegisterApplicationMasterRequest
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-comment|// set the required info into the registration request:
-comment|// application attempt id,
-comment|// host on which the app master is running
-comment|// rpc port on which the app master accepts requests from the client
-comment|// tracking url for the app master
-name|appMasterRequest
-operator|.
-name|setApplicationAttemptId
-argument_list|(
-name|appAttemptID
-argument_list|)
-expr_stmt|;
-name|appMasterRequest
-operator|.
-name|setHost
-argument_list|(
-name|appMasterHostname
-argument_list|)
-expr_stmt|;
-name|appMasterRequest
-operator|.
-name|setRpcPort
-argument_list|(
-name|appMasterRpcPort
-argument_list|)
-expr_stmt|;
-name|appMasterRequest
-operator|.
-name|setTrackingUrl
-argument_list|(
-name|appMasterTrackingUrl
-argument_list|)
-expr_stmt|;
-return|return
-name|resourceManager
-operator|.
-name|registerApplicationMaster
-argument_list|(
-name|appMasterRequest
-argument_list|)
-return|;
-block|}
-comment|/**    * Setup the request that will be sent to the RM for the container ask.    * @param numContainers Containers to ask for from RM    * @return the setup ResourceRequest to be sent to RM    */
+comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @param numContainers Containers to ask for from RM    * @return the setup ResourceRequest to be sent to RM    */
 DECL|method|setupContainerAskForRM (int numContainers)
 specifier|private
-name|ResourceRequest
+name|ContainerRequest
 name|setupContainerAskForRM
 parameter_list|(
 name|int
 name|numContainers
 parameter_list|)
 block|{
-name|ResourceRequest
-name|request
-init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|ResourceRequest
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 comment|// setup requirements for hosts
-comment|// whether a particular rack/host is needed
-comment|// Refer to apis under org.apache.hadoop.net for more
-comment|// details on how to get figure out rack/host mapping.
 comment|// using * as any host will do for the distributed shell app
-name|request
-operator|.
-name|setHostName
-argument_list|(
-literal|"*"
-argument_list|)
-expr_stmt|;
-comment|// set no. of containers needed
-name|request
-operator|.
-name|setNumContainers
-argument_list|(
-name|numContainers
-argument_list|)
-expr_stmt|;
 comment|// set the priority for the request
 name|Priority
 name|pri
@@ -3775,13 +3602,6 @@ operator|.
 name|setPriority
 argument_list|(
 name|requestPriority
-argument_list|)
-expr_stmt|;
-name|request
-operator|.
-name|setPriority
-argument_list|(
-name|pri
 argument_list|)
 expr_stmt|;
 comment|// Set up resource type requirements
@@ -3805,79 +3625,51 @@ argument_list|(
 name|containerMemory
 argument_list|)
 expr_stmt|;
+name|ContainerRequest
 name|request
-operator|.
-name|setCapability
+init|=
+operator|new
+name|ContainerRequest
 argument_list|(
 name|capability
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|pri
+argument_list|,
+name|numContainers
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Requested container ask: "
+operator|+
+name|request
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
 name|request
 return|;
 block|}
-comment|/**    * Ask RM to allocate given no. of containers to this Application Master    * @param requestedContainers Containers to ask for from RM    * @return Response from RM to AM with allocated containers     * @throws YarnRemoteException    */
-DECL|method|sendContainerAskToRM (List<ResourceRequest> requestedContainers)
+comment|/**    * Ask RM to allocate given no. of containers to this Application Master    *    * @param requestedContainers Containers to ask for from RM    * @return Response from RM to AM with allocated containers    * @throws YarnRemoteException    */
+DECL|method|sendContainerAskToRM ()
 specifier|private
 name|AMResponse
 name|sendContainerAskToRM
-parameter_list|(
-name|List
-argument_list|<
-name|ResourceRequest
-argument_list|>
-name|requestedContainers
-parameter_list|)
+parameter_list|()
 throws|throws
 name|YarnRemoteException
 block|{
-name|AllocateRequest
-name|req
+name|float
+name|progressIndicator
 init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|AllocateRequest
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|req
-operator|.
-name|setResponseId
-argument_list|(
-name|rmRequestID
-operator|.
-name|incrementAndGet
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|req
-operator|.
-name|setApplicationAttemptId
-argument_list|(
-name|appAttemptID
-argument_list|)
-expr_stmt|;
-name|req
-operator|.
-name|addAllAsks
-argument_list|(
-name|requestedContainers
-argument_list|)
-expr_stmt|;
-name|req
-operator|.
-name|addAllReleases
-argument_list|(
-name|releasedContainers
-argument_list|)
-expr_stmt|;
-name|req
-operator|.
-name|setProgress
-argument_list|(
 operator|(
 name|float
 operator|)
@@ -3887,78 +3679,18 @@ name|get
 argument_list|()
 operator|/
 name|numTotalContainers
-argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
 literal|"Sending request to RM for containers"
 operator|+
-literal|", requestedSet="
-operator|+
-name|requestedContainers
-operator|.
-name|size
-argument_list|()
-operator|+
-literal|", releasedSet="
-operator|+
-name|releasedContainers
-operator|.
-name|size
-argument_list|()
-operator|+
 literal|", progress="
 operator|+
-name|req
-operator|.
-name|getProgress
-argument_list|()
+name|progressIndicator
 argument_list|)
 expr_stmt|;
-for|for
-control|(
-name|ResourceRequest
-name|rsrcReq
-range|:
-name|requestedContainers
-control|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Requested container ask: "
-operator|+
-name|rsrcReq
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-for|for
-control|(
-name|ContainerId
-name|id
-range|:
-name|releasedContainers
-control|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Released container, id="
-operator|+
-name|id
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 name|AllocateResponse
 name|resp
 init|=
@@ -3966,7 +3698,7 @@ name|resourceManager
 operator|.
 name|allocate
 argument_list|(
-name|req
+name|progressIndicator
 argument_list|)
 decl_stmt|;
 return|return

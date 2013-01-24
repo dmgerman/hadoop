@@ -710,12 +710,12 @@ specifier|final
 name|DatanodeProtocol
 name|impl
 decl_stmt|;
-DECL|field|ERROR_REPORT_RESPONSE_PROTO
 specifier|private
 specifier|static
 specifier|final
 name|ErrorReportResponseProto
-name|ERROR_REPORT_RESPONSE_PROTO
+DECL|field|VOID_ERROR_REPORT_RESPONSE_PROTO
+name|VOID_ERROR_REPORT_RESPONSE_PROTO
 init|=
 name|ErrorReportResponseProto
 operator|.
@@ -729,8 +729,8 @@ specifier|private
 specifier|static
 specifier|final
 name|BlockReceivedAndDeletedResponseProto
-DECL|field|BLOCK_RECEIVED_AND_DELETE_RESPONSE
-name|BLOCK_RECEIVED_AND_DELETE_RESPONSE
+DECL|field|VOID_BLOCK_RECEIVED_AND_DELETE_RESPONSE
+name|VOID_BLOCK_RECEIVED_AND_DELETE_RESPONSE
 init|=
 name|BlockReceivedAndDeletedResponseProto
 operator|.
@@ -740,12 +740,12 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-DECL|field|REPORT_BAD_BLOCK_RESPONSE
 specifier|private
 specifier|static
 specifier|final
 name|ReportBadBlocksResponseProto
-name|REPORT_BAD_BLOCK_RESPONSE
+DECL|field|VOID_REPORT_BAD_BLOCK_RESPONSE
+name|VOID_REPORT_BAD_BLOCK_RESPONSE
 init|=
 name|ReportBadBlocksResponseProto
 operator|.
@@ -759,8 +759,8 @@ specifier|private
 specifier|static
 specifier|final
 name|CommitBlockSynchronizationResponseProto
-DECL|field|COMMIT_BLOCK_SYNCHRONIZATION_RESPONSE_PROTO
-name|COMMIT_BLOCK_SYNCHRONIZATION_RESPONSE_PROTO
+DECL|field|VOID_COMMIT_BLOCK_SYNCHRONIZATION_RESPONSE_PROTO
+name|VOID_COMMIT_BLOCK_SYNCHRONIZATION_RESPONSE_PROTO
 init|=
 name|CommitBlockSynchronizationResponseProto
 operator|.
@@ -1495,7 +1495,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|BLOCK_RECEIVED_AND_DELETE_RESPONSE
+name|VOID_BLOCK_RECEIVED_AND_DELETE_RESPONSE
 return|;
 block|}
 annotation|@
@@ -1557,7 +1557,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|ERROR_REPORT_RESPONSE_PROTO
+name|VOID_ERROR_REPORT_RESPONSE_PROTO
 return|;
 block|}
 annotation|@
@@ -1724,7 +1724,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|REPORT_BAD_BLOCK_RESPONSE
+name|VOID_REPORT_BAD_BLOCK_RESPONSE
 return|;
 block|}
 annotation|@
@@ -1891,7 +1891,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|COMMIT_BLOCK_SYNCHRONIZATION_RESPONSE_PROTO
+name|VOID_COMMIT_BLOCK_SYNCHRONIZATION_RESPONSE_PROTO
 return|;
 block|}
 block|}
