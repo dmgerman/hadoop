@@ -10615,17 +10615,12 @@ condition|)
 block|{
 name|file
 operator|=
-operator|(
-name|INodeFile
-operator|)
 name|file
 operator|.
 name|recordModification
 argument_list|(
 name|latestSnapshot
 argument_list|)
-operator|.
-name|left
 expr_stmt|;
 block|}
 specifier|final

@@ -912,7 +912,7 @@ argument_list|)
 expr_stmt|;
 name|s
 operator|.
-name|save2Snapshot
+name|saveSelf2Snapshot
 argument_list|(
 name|latest
 argument_list|,
@@ -951,7 +951,7 @@ argument_list|)
 expr_stmt|;
 name|s
 operator|.
-name|save2Snapshot
+name|saveSelf2Snapshot
 argument_list|(
 name|latest
 argument_list|,
@@ -1184,16 +1184,7 @@ annotation|@
 name|Override
 DECL|method|recordModification (Snapshot latest)
 specifier|public
-name|Pair
-argument_list|<
-name|?
-extends|extends
-name|INode
-argument_list|,
-name|?
-extends|extends
-name|INode
-argument_list|>
+name|INodeDirectory
 name|recordModification
 parameter_list|(
 name|Snapshot
@@ -1208,36 +1199,35 @@ literal|null
 condition|)
 block|{
 return|return
-literal|null
+name|this
 return|;
 block|}
-return|return
+specifier|final
+name|INodeDirectoryWithSnapshot
+name|withSnapshot
+init|=
 name|replaceSelf4INodeDirectoryWithSnapshot
 argument_list|(
 name|latest
 argument_list|)
+decl_stmt|;
+name|withSnapshot
 operator|.
-name|save2Snapshot
+name|saveSelf2Snapshot
 argument_list|(
 name|latest
 argument_list|,
 name|this
 argument_list|)
+expr_stmt|;
+return|return
+name|withSnapshot
 return|;
 block|}
-comment|/**    * Save the child to the latest snapshot.    *     * @return a pair of inodes, where the left inode is the original child and    *         the right inode is the snapshot copy of the child; see also    *         {@link INode#createSnapshotCopy()}.    */
-DECL|method|saveChild2Snapshot ( INode child, Snapshot latest)
+comment|/**    * Save the child to the latest snapshot.    *     * @return the child inode, which may be replaced.    */
+DECL|method|saveChild2Snapshot (INode child, Snapshot latest)
 specifier|public
-name|Pair
-argument_list|<
-name|?
-extends|extends
 name|INode
-argument_list|,
-name|?
-extends|extends
-name|INode
-argument_list|>
 name|saveChild2Snapshot
 parameter_list|(
 name|INode
@@ -1255,7 +1245,7 @@ literal|null
 condition|)
 block|{
 return|return
-literal|null
+name|child
 return|;
 block|}
 return|return

@@ -660,7 +660,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Delete an inode from current state.      * @return a triple for undo.      */
-DECL|method|delete (final INode inode, boolean updateCircularList)
+DECL|method|delete (final INode inode)
 name|Triple
 argument_list|<
 name|Integer
@@ -674,9 +674,6 @@ parameter_list|(
 specifier|final
 name|INode
 name|inode
-parameter_list|,
-name|boolean
-name|updateCircularList
 parameter_list|)
 block|{
 specifier|final
@@ -717,27 +714,6 @@ argument_list|(
 name|c
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|updateCircularList
-operator|&&
-name|previous
-operator|instanceof
-name|FileWithSnapshot
-condition|)
-block|{
-comment|// also we should remove previous from the circular list
-operator|(
-operator|(
-name|FileWithSnapshot
-operator|)
-name|previous
-operator|)
-operator|.
-name|removeSelf
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 else|else
 block|{
@@ -841,7 +817,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**      * Modify an inode in current state.      * @return a triple for undo.      */
-DECL|method|modify (final INode oldinode, final INode newinode, boolean updateCircularList)
+DECL|method|modify (final INode oldinode, final INode newinode)
 name|Triple
 argument_list|<
 name|Integer
@@ -859,9 +835,6 @@ parameter_list|,
 specifier|final
 name|INode
 name|newinode
-parameter_list|,
-name|boolean
-name|updateCircularList
 parameter_list|)
 block|{
 if|if
@@ -929,50 +902,6 @@ argument_list|,
 name|newinode
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|updateCircularList
-operator|&&
-name|newinode
-operator|instanceof
-name|FileWithSnapshot
-condition|)
-block|{
-comment|// also should remove oldinode from the circular list
-name|FileWithSnapshot
-name|newNodeWithLink
-init|=
-operator|(
-name|FileWithSnapshot
-operator|)
-name|newinode
-decl_stmt|;
-name|FileWithSnapshot
-name|oldNodeWithLink
-init|=
-operator|(
-name|FileWithSnapshot
-operator|)
-name|oldinode
-decl_stmt|;
-name|newNodeWithLink
-operator|.
-name|setNext
-argument_list|(
-name|oldNodeWithLink
-operator|.
-name|getNext
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|oldNodeWithLink
-operator|.
-name|setNext
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
 comment|//TODO: fix a bug that previous != oldinode.  Set it to oldinode for now
 name|previous
 operator|=
@@ -1424,8 +1353,8 @@ name|created
 argument_list|)
 return|;
 block|}
-comment|/**      * Combine the posterior diff with this diff. This function needs to called      * before the posterior diff is to be deleted. In general we have:      *       *<pre>      * 1. For (c, 0) in the posterior diff, check the inode in this diff:      * 1.1 (c', 0) in this diff: impossible      * 1.2 (0, d') in this diff: put in created --> (c, d')      * 1.3 (c', d') in this diff: impossible      * 1.4 (0, 0) in this diff: put in created --> (c, 0)      * This is the same logic with {@link #create(INode)}.      *       * 2. For (0, d) in the posterior diff,      * 2.1 (c', 0) in this diff: remove from old created --> (0, 0)      * 2.2 (0, d') in this diff: impossible      * 2.3 (c', d') in this diff: remove from old created --> (0, d')      * 2.4 (0, 0) in this diff: put in deleted --> (0, d)      * This is the same logic with {@link #delete(INode)}.      *       * 3. For (c, d) in the posterior diff,      * 3.1 (c', 0) in this diff: replace old created --> (c, 0)      * 3.2 (0, d') in this diff: impossible      * 3.3 (c', d') in this diff: replace old created --> (c, d')      * 3.4 (0, 0) in this diff: put in created and deleted --> (c, d)      * This is the same logic with {@link #modify(INode, INode)}.      *</pre>      *       * Note that after this function the postDiff will be deleted.      *       * @param the posterior diff to combine      * @param deletedINodeProcesser Used in case 2.1, 2.3, 3.1, and 3.3      *                              to process the deleted inodes.      * @param updateCircularList Whether to update the circular linked list       *                           while combining the diffs.                                   */
-DECL|method|combinePostDiff (Diff postDiff, Processor deletedINodeProcesser, boolean updateCircularList)
+comment|/**      * Combine the posterior diff with this diff. This function needs to called      * before the posterior diff is to be deleted. In general we have:      *       *<pre>      * 1. For (c, 0) in the posterior diff, check the inode in this diff:      * 1.1 (c', 0) in this diff: impossible      * 1.2 (0, d') in this diff: put in created --> (c, d')      * 1.3 (c', d') in this diff: impossible      * 1.4 (0, 0) in this diff: put in created --> (c, 0)      * This is the same logic with {@link #create(INode)}.      *       * 2. For (0, d) in the posterior diff,      * 2.1 (c', 0) in this diff: remove from old created --> (0, 0)      * 2.2 (0, d') in this diff: impossible      * 2.3 (c', d') in this diff: remove from old created --> (0, d')      * 2.4 (0, 0) in this diff: put in deleted --> (0, d)      * This is the same logic with {@link #delete(INode)}.      *       * 3. For (c, d) in the posterior diff,      * 3.1 (c', 0) in this diff: replace old created --> (c, 0)      * 3.2 (0, d') in this diff: impossible      * 3.3 (c', d') in this diff: replace old created --> (c, d')      * 3.4 (0, 0) in this diff: put in created and deleted --> (c, d)      * This is the same logic with {@link #modify(INode, INode)}.      *</pre>      *       * Note that after this function the postDiff will be deleted.      *       * @param the posterior diff to combine      * @param deletedINodeProcesser Used in case 2.1, 2.3, 3.1, and 3.3      *                              to process the deleted inodes.      */
+DECL|method|combinePostDiff (Diff postDiff, Processor deletedINodeProcesser)
 name|void
 name|combinePostDiff
 parameter_list|(
@@ -1434,9 +1363,6 @@ name|postDiff
 parameter_list|,
 name|Processor
 name|deletedINodeProcesser
-parameter_list|,
-name|boolean
-name|updateCircularList
 parameter_list|)
 block|{
 specifier|final
@@ -1633,8 +1559,6 @@ init|=
 name|delete
 argument_list|(
 name|d
-argument_list|,
-name|updateCircularList
 argument_list|)
 decl_stmt|;
 if|if
@@ -1688,8 +1612,6 @@ argument_list|(
 name|d
 argument_list|,
 name|c
-argument_list|,
-name|updateCircularList
 argument_list|)
 decl_stmt|;
 if|if
@@ -2430,14 +2352,9 @@ argument_list|()
 return|;
 block|}
 comment|/** Copy the INode state to the snapshot if it is not done already. */
-DECL|method|checkAndInitINode ( INodeDirectory snapshotCopy)
+DECL|method|checkAndInitINode (INodeDirectory snapshotCopy)
 specifier|private
-name|Pair
-argument_list|<
-name|INodeDirectory
-argument_list|,
-name|INodeDirectory
-argument_list|>
+name|void
 name|checkAndInitINode
 parameter_list|(
 name|INodeDirectory
@@ -2447,23 +2364,10 @@ block|{
 if|if
 condition|(
 name|snapshotINode
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
-comment|// already initialized.
-return|return
-literal|null
-return|;
-block|}
-specifier|final
-name|INodeDirectoryWithSnapshot
-name|dir
-init|=
-name|INodeDirectoryWithSnapshot
-operator|.
-name|this
-decl_stmt|;
 if|if
 condition|(
 name|snapshotCopy
@@ -2476,7 +2380,9 @@ operator|=
 operator|new
 name|INodeDirectory
 argument_list|(
-name|dir
+name|INodeDirectoryWithSnapshot
+operator|.
+name|this
 argument_list|,
 literal|false
 argument_list|)
@@ -2486,20 +2392,7 @@ name|snapshotINode
 operator|=
 name|snapshotCopy
 expr_stmt|;
-return|return
-operator|new
-name|Pair
-argument_list|<
-name|INodeDirectory
-argument_list|,
-name|INodeDirectory
-argument_list|>
-argument_list|(
-name|dir
-argument_list|,
-name|snapshotCopy
-argument_list|)
-return|;
+block|}
 block|}
 comment|/** @return the snapshot object of this diff. */
 DECL|method|getSnapshot ()
@@ -2644,8 +2537,6 @@ operator|.
 name|diff
 argument_list|,
 literal|null
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -3265,8 +3156,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 name|previousDiff
@@ -3604,37 +3493,29 @@ annotation|@
 name|Override
 DECL|method|recordModification (Snapshot latest)
 specifier|public
-name|Pair
-argument_list|<
-name|INodeDirectory
-argument_list|,
-name|INodeDirectory
-argument_list|>
+name|INodeDirectoryWithSnapshot
 name|recordModification
 parameter_list|(
 name|Snapshot
 name|latest
 parameter_list|)
 block|{
-return|return
-name|save2Snapshot
+name|saveSelf2Snapshot
 argument_list|(
 name|latest
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+return|return
+name|this
 return|;
 block|}
 comment|/** Save the snapshot copy to the latest snapshot. */
-DECL|method|save2Snapshot (Snapshot latest, INodeDirectory snapshotCopy)
+DECL|method|saveSelf2Snapshot (Snapshot latest, INodeDirectory snapshotCopy)
 specifier|public
-name|Pair
-argument_list|<
-name|INodeDirectory
-argument_list|,
-name|INodeDirectory
-argument_list|>
-name|save2Snapshot
+name|void
+name|saveSelf2Snapshot
 parameter_list|(
 name|Snapshot
 name|latest
@@ -3643,13 +3524,13 @@ name|INodeDirectory
 name|snapshotCopy
 parameter_list|)
 block|{
-return|return
+if|if
+condition|(
 name|latest
-operator|==
+operator|!=
 literal|null
-condition|?
-literal|null
-else|:
+condition|)
+block|{
 name|checkAndAddLatestSnapshotDiff
 argument_list|(
 name|latest
@@ -3659,22 +3540,14 @@ name|checkAndInitINode
 argument_list|(
 name|snapshotCopy
 argument_list|)
-return|;
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
-DECL|method|saveChild2Snapshot ( INode child, Snapshot latest)
+DECL|method|saveChild2Snapshot (INode child, Snapshot latest)
 specifier|public
-name|Pair
-argument_list|<
-name|?
-extends|extends
 name|INode
-argument_list|,
-name|?
-extends|extends
-name|INode
-argument_list|>
 name|saveChild2Snapshot
 parameter_list|(
 name|INode
@@ -3699,6 +3572,17 @@ argument_list|,
 name|child
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|latest
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+name|child
+return|;
+block|}
 specifier|final
 name|SnapshotDiff
 name|diff
@@ -3727,7 +3611,7 @@ condition|)
 block|{
 comment|// it was already saved in the latest snapshot earlier.
 return|return
-literal|null
+name|child
 return|;
 block|}
 specifier|final
@@ -3748,6 +3632,28 @@ operator|.
 name|createSnapshotCopy
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|p
+operator|.
+name|left
+operator|!=
+name|p
+operator|.
+name|right
+condition|)
+block|{
+specifier|final
+name|Triple
+argument_list|<
+name|Integer
+argument_list|,
+name|INode
+argument_list|,
+name|Integer
+argument_list|>
+name|triple
+init|=
 name|diff
 operator|.
 name|diff
@@ -3761,12 +3667,67 @@ argument_list|,
 name|p
 operator|.
 name|left
-argument_list|,
-literal|true
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|triple
+operator|.
+name|middle
+operator|!=
+literal|null
+operator|&&
+name|p
+operator|.
+name|left
+operator|instanceof
+name|FileWithSnapshot
+condition|)
+block|{
+comment|// also should remove oldinode from the circular list
+name|FileWithSnapshot
+name|newNodeWithLink
+init|=
+operator|(
+name|FileWithSnapshot
+operator|)
+name|p
+operator|.
+name|left
+decl_stmt|;
+name|FileWithSnapshot
+name|oldNodeWithLink
+init|=
+operator|(
+name|FileWithSnapshot
+operator|)
+name|p
+operator|.
+name|right
+decl_stmt|;
+name|newNodeWithLink
+operator|.
+name|setNext
+argument_list|(
+name|oldNodeWithLink
+operator|.
+name|getNext
+argument_list|()
 argument_list|)
 expr_stmt|;
+name|oldNodeWithLink
+operator|.
+name|setNext
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 name|p
+operator|.
+name|left
 return|;
 block|}
 annotation|@
@@ -3911,8 +3872,6 @@ operator|.
 name|delete
 argument_list|(
 name|child
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -3931,15 +3890,19 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|removed
-operator|==
-literal|null
-operator|&&
 name|undoInfo
 operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|removed
+operator|==
+literal|null
+condition|)
+block|{
+comment|//remove failed, undo
 name|diff
 operator|.
 name|undoDelete
@@ -3949,6 +3912,41 @@ argument_list|,
 name|undoInfo
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|//clean up the previously created file, if there is any.
+specifier|final
+name|INode
+name|previous
+init|=
+name|undoInfo
+operator|.
+name|middle
+decl_stmt|;
+if|if
+condition|(
+name|previous
+operator|!=
+literal|null
+operator|&&
+name|previous
+operator|instanceof
+name|FileWithSnapshot
+condition|)
+block|{
+operator|(
+operator|(
+name|FileWithSnapshot
+operator|)
+name|previous
+operator|)
+operator|.
+name|removeSelf
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 return|return
 name|removed
