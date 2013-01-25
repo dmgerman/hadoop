@@ -3585,7 +3585,7 @@ block|{
 name|int
 name|skipComponents
 init|=
-literal|0
+literal|1
 decl_stmt|;
 name|File
 name|prefixFile
