@@ -2299,7 +2299,6 @@ name|deletedList
 expr_stmt|;
 block|}
 DECL|method|getDiff ()
-specifier|public
 name|Diff
 name|getDiff
 parameter_list|()

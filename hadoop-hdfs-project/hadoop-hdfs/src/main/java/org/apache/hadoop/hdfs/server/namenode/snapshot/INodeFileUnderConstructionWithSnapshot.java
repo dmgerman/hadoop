@@ -148,6 +148,40 @@ name|clientNode
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * The constructor that creates an    * {@link INodeFileUnderConstructionWithSnapshot} based on an    * {@link INodeFileUnderConstruction}    *     * @param child The given {@link INodeFileUnderConstruction} instance    */
+DECL|method|INodeFileUnderConstructionWithSnapshot ( INodeFileUnderConstruction child)
+specifier|public
+name|INodeFileUnderConstructionWithSnapshot
+parameter_list|(
+name|INodeFileUnderConstruction
+name|child
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|child
+argument_list|,
+name|child
+operator|.
+name|getClientName
+argument_list|()
+argument_list|,
+name|child
+operator|.
+name|getClientMachine
+argument_list|()
+argument_list|,
+name|child
+operator|.
+name|getClientNode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|next
+operator|=
+name|this
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toINodeFile (final long mtime)
@@ -198,12 +232,11 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|Util
-operator|.
-name|replace
-argument_list|(
+comment|// link f with this
 name|this
-argument_list|,
+operator|.
+name|insertBefore
+argument_list|(
 name|f
 argument_list|)
 expr_stmt|;

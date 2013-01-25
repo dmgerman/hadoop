@@ -150,12 +150,10 @@ argument_list|,
 name|clientNode
 argument_list|)
 decl_stmt|;
-name|Util
-operator|.
-name|replace
-argument_list|(
 name|this
-argument_list|,
+operator|.
+name|insertBefore
+argument_list|(
 name|f
 argument_list|)
 expr_stmt|;
