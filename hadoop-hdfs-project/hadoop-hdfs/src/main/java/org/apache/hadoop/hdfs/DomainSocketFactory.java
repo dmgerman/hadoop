@@ -348,8 +348,9 @@ condition|(
 name|conf
 operator|.
 name|domainSocketPath
-operator|==
-literal|null
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 return|return
 literal|null
