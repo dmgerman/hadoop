@@ -16318,17 +16318,18 @@ condition|)
 block|{
 if|if
 condition|(
-operator|!
-operator|(
 name|pendingFile
-operator|instanceof
-name|INodeFileUnderConstructionWithSnapshot
-operator|)
+operator|.
+name|getClass
+argument_list|()
+operator|==
+name|INodeFileUnderConstruction
+operator|.
+name|class
 condition|)
 block|{
-comment|// replace INodeFileUnderConstruction with
-comment|// INodeFileUnderConstructionWithSnapshot. This replacement does not
-comment|// need to be recorded in snapshot.
+comment|// Replace it with INodeFileUnderConstructionWithSnapshot.
+comment|// This replacement does not need to be recorded in snapshot.
 name|INodeFileUnderConstructionWithSnapshot
 name|pendingFileWithSnaphsot
 init|=

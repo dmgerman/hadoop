@@ -113,11 +113,11 @@ specifier|private
 name|FileWithSnapshot
 name|next
 decl_stmt|;
-DECL|method|INodeFileUnderConstructionWithSnapshot (final FileWithSnapshot f, final String clientName, final String clientMachine, final DatanodeDescriptor clientNode)
+DECL|method|INodeFileUnderConstructionWithSnapshot (final INodeFile f, final String clientName, final String clientMachine, final DatanodeDescriptor clientNode)
 name|INodeFileUnderConstructionWithSnapshot
 parameter_list|(
 specifier|final
-name|FileWithSnapshot
+name|INodeFile
 name|f
 parameter_list|,
 specifier|final
@@ -136,9 +136,6 @@ block|{
 name|super
 argument_list|(
 name|f
-operator|.
-name|asINodeFile
-argument_list|()
 argument_list|,
 name|clientName
 argument_list|,
@@ -147,39 +144,39 @@ argument_list|,
 name|clientNode
 argument_list|)
 expr_stmt|;
+name|next
+operator|=
+name|this
+expr_stmt|;
 block|}
-comment|/**    * The constructor that creates an    * {@link INodeFileUnderConstructionWithSnapshot} based on an    * {@link INodeFileUnderConstruction}    *     * @param child The given {@link INodeFileUnderConstruction} instance    */
-DECL|method|INodeFileUnderConstructionWithSnapshot ( INodeFileUnderConstruction child)
+comment|/**    * Construct an {@link INodeFileUnderConstructionWithSnapshot} based on an    * {@link INodeFileUnderConstruction}.    *     * @param f The given {@link INodeFileUnderConstruction} instance    */
+DECL|method|INodeFileUnderConstructionWithSnapshot (INodeFileUnderConstruction f)
 specifier|public
 name|INodeFileUnderConstructionWithSnapshot
 parameter_list|(
 name|INodeFileUnderConstruction
-name|child
+name|f
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
-name|child
+name|f
 argument_list|,
-name|child
+name|f
 operator|.
 name|getClientName
 argument_list|()
 argument_list|,
-name|child
+name|f
 operator|.
 name|getClientMachine
 argument_list|()
 argument_list|,
-name|child
+name|f
 operator|.
 name|getClientNode
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|next
-operator|=
-name|this
 expr_stmt|;
 block|}
 annotation|@

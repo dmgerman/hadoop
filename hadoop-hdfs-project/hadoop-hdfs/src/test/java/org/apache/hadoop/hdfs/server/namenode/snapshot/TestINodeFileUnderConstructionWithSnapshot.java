@@ -310,7 +310,7 @@ name|snapshot
 operator|.
 name|INodeDirectoryWithSnapshot
 operator|.
-name|Diff
+name|ChildrenDiff
 import|;
 end_import
 
@@ -683,7 +683,7 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Diff
+name|ChildrenDiff
 name|diff
 init|=
 name|dirNode
@@ -1272,7 +1272,7 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Diff
+name|ChildrenDiff
 name|diff
 init|=
 name|dirNode

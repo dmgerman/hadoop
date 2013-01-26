@@ -242,7 +242,7 @@ name|snapshot
 operator|.
 name|INodeDirectoryWithSnapshot
 operator|.
-name|Diff
+name|ChildrenDiff
 import|;
 end_import
 
@@ -560,8 +560,8 @@ return|return
 name|currentChild
 return|;
 block|}
-comment|/**    * Search the given {@link Diff} to find an inode matching the specific name.    * @param createdNodeName The name of the node for searching.    * @param diff The given {@link Diff} where to search the node.    * @return The matched inode. Return null if no matched inode can be found.    */
-DECL|method|findCreated (byte[] createdNodeName, Diff diff)
+comment|/**    * Search the given {@link ChildrenDiff} to find an inode matching the specific name.    * @param createdNodeName The name of the node for searching.    * @param diff The given {@link ChildrenDiff} where to search the node.    * @return The matched inode. Return null if no matched inode can be found.    */
+DECL|method|findCreated (byte[] createdNodeName, ChildrenDiff diff)
 specifier|private
 specifier|static
 name|INode
@@ -571,7 +571,7 @@ name|byte
 index|[]
 name|createdNodeName
 parameter_list|,
-name|Diff
+name|ChildrenDiff
 name|diff
 parameter_list|)
 block|{

@@ -1120,9 +1120,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Replace a child {@link INodeFile} with an {@link INodeFileWithSnapshot}. */
-DECL|method|replaceINodeFile (final INodeFile child)
+DECL|method|replaceChild4INodeFileWithSnapshot (final INodeFile child)
 name|INodeFileWithSnapshot
-name|replaceINodeFile
+name|replaceChild4INodeFileWithSnapshot
 parameter_list|(
 specifier|final
 name|INodeFile
@@ -3584,6 +3584,21 @@ argument_list|,
 name|prefix
 argument_list|,
 name|snapshot
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|", childrenSize="
+operator|+
+name|getChildrenList
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
