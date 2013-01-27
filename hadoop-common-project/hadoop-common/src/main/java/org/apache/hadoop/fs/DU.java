@@ -66,6 +66,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Shell
@@ -241,10 +255,20 @@ name|this
 argument_list|(
 name|path
 argument_list|,
-literal|600000L
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|FS_DU_INTERVAL_KEY
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|FS_DU_INTERVAL_DEFAULT
+argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//10 minutes default refresh interval
 block|}
 comment|/**    * This thread refreshes the "used" variable.    *     * Future improvements could be to not permanently    * run this thread, instead run when getUsed is called.    **/
 DECL|class|DURefreshThread
