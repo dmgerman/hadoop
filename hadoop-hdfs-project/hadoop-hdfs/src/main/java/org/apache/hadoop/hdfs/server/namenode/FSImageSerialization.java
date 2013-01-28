@@ -250,6 +250,26 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|FileWithSnapshot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
 name|INodeDirectorySnapshottable
 import|;
 end_import
@@ -310,7 +330,27 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeFileWithSnapshot
+name|INodeFileUnderConstructionSnapshot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|INodeFileUnderConstructionWithSnapshot
 import|;
 end_import
 
@@ -480,17 +520,25 @@ block|}
 comment|// Helper function that reads in an INodeUnderConstruction
 comment|// from the input stream
 comment|//
-DECL|method|readINodeUnderConstruction ( DataInputStream in)
+DECL|method|readINodeUnderConstruction ( DataInputStream in, boolean supportSnapshot)
 specifier|static
 name|INodeFileUnderConstruction
 name|readINodeUnderConstruction
 parameter_list|(
 name|DataInputStream
 name|in
+parameter_list|,
+name|boolean
+name|supportSnapshot
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|boolean
+name|withSnapshot
+init|=
+literal|false
+decl_stmt|;
 name|byte
 index|[]
 name|name
@@ -623,6 +671,19 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|supportSnapshot
+condition|)
+block|{
+name|withSnapshot
+operator|=
+name|in
+operator|.
+name|readBoolean
+argument_list|()
+expr_stmt|;
+block|}
 name|PermissionStatus
 name|perm
 init|=
@@ -667,7 +728,9 @@ operator|:
 literal|"Unexpected block locations"
 assert|;
 comment|//TODO: get inodeId from fsimage after inodeId is persisted
-return|return
+name|INodeFileUnderConstruction
+name|node
+init|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
@@ -693,6 +756,17 @@ name|clientMachine
 argument_list|,
 literal|null
 argument_list|)
+decl_stmt|;
+return|return
+name|withSnapshot
+condition|?
+operator|new
+name|INodeFileUnderConstructionWithSnapshot
+argument_list|(
+name|node
+argument_list|)
+else|:
+name|node
 return|;
 block|}
 comment|// Helper function that writes an INodeUnderConstruction
@@ -798,6 +872,15 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+name|cons
+operator|instanceof
+name|INodeFileUnderConstructionWithSnapshot
+argument_list|)
+expr_stmt|;
 name|cons
 operator|.
 name|getPermissionStatus
@@ -1149,8 +1232,8 @@ name|filePerm
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Serialize a {@link INodeFile} node    * @param node The node to write    * @param out The {@link DataOutput} where the fields are written    * @param writeBlock Whether to write block information    */
-DECL|method|writeINodeFile (INodeFile node, DataOutput out, boolean writeBlock)
+comment|/**    * Serialize a {@link INodeFile} node    * @param node The node to write    * @param out The {@link DataOutputStream} where the fields are written    * @param writeBlock Whether to write block information    */
+DECL|method|writeINodeFile (INodeFile node, DataOutputStream out, boolean writeBlock)
 specifier|public
 specifier|static
 name|void
@@ -1159,7 +1242,7 @@ parameter_list|(
 name|INodeFile
 name|node
 parameter_list|,
-name|DataOutput
+name|DataOutputStream
 name|out
 parameter_list|,
 name|boolean
@@ -1306,18 +1389,17 @@ condition|(
 name|node
 operator|instanceof
 name|INodeFileSnapshot
+operator|||
+name|node
+operator|instanceof
+name|INodeFileUnderConstructionSnapshot
 condition|)
 block|{
 name|out
 operator|.
 name|writeLong
 argument_list|(
-operator|(
-operator|(
-name|INodeFileSnapshot
-operator|)
 name|node
-operator|)
 operator|.
 name|computeFileSize
 argument_list|(
@@ -1325,6 +1407,61 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|node
+operator|instanceof
+name|INodeFileUnderConstructionSnapshot
+condition|)
+block|{
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|writeString
+argument_list|(
+operator|(
+operator|(
+name|INodeFileUnderConstruction
+operator|)
+name|node
+operator|)
+operator|.
+name|getClientName
+argument_list|()
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+name|writeString
+argument_list|(
+operator|(
+operator|(
+name|INodeFileUnderConstruction
+operator|)
+name|node
+operator|)
+operator|.
+name|getClientMachine
+argument_list|()
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1342,7 +1479,7 @@ name|writeBoolean
 argument_list|(
 name|node
 operator|instanceof
-name|INodeFileWithSnapshot
+name|FileWithSnapshot
 argument_list|)
 expr_stmt|;
 block|}
@@ -1387,7 +1524,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Save one inode's attributes to the image.    */
-DECL|method|saveINode2Image (INode node, DataOutput out)
+DECL|method|saveINode2Image (INode node, DataOutputStream out)
 specifier|static
 name|void
 name|saveINode2Image
@@ -1395,7 +1532,7 @@ parameter_list|(
 name|INode
 name|node
 parameter_list|,
-name|DataOutput
+name|DataOutputStream
 name|out
 parameter_list|)
 throws|throws

@@ -324,6 +324,26 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|INodeFileUnderConstructionSnapshot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
 name|INodeFileWithSnapshot
 import|;
 end_import
@@ -2559,8 +2579,8 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an INode; the inode's name is not set yet    *     * @param id preassigned inode id    * @param permissions permissions    * @param blocks blocks if a file    * @param symlink symblic link if a symbolic link    * @param replication replication factor    * @param modificationTime modification time    * @param atime access time    * @param nsQuota namespace quota    * @param dsQuota disk quota    * @param preferredBlockSize block size    * @param numBlocks number of blocks    * @param withLink whether the node is INodeWithLink    * @param computeFileSize non-negative computeFileSize means the node is     *                        INodeFileSnapshot    * @param snapshottable whether the node is {@link INodeDirectorySnapshottable}    * @param withSnapshot whether the node is {@link INodeDirectoryWithSnapshot}                           * @return an inode    */
-DECL|method|newINode (long id, PermissionStatus permissions, BlockInfo[] blocks, String symlink, short replication, long modificationTime, long atime, long nsQuota, long dsQuota, long preferredBlockSize, int numBlocks, boolean withLink, long computeFileSize, boolean snapshottable, boolean withSnapshot)
+comment|/**    * Create an INode; the inode's name is not set yet    *     * @param id preassigned inode id    * @param permissions permissions    * @param blocks blocks if a file    * @param symlink symblic link if a symbolic link    * @param replication replication factor    * @param modificationTime modification time    * @param atime access time    * @param nsQuota namespace quota    * @param dsQuota disk quota    * @param preferredBlockSize block size    * @param numBlocks number of blocks    * @param withLink whether the node is INodeWithLink    * @param computeFileSize non-negative computeFileSize means the node is     *                        INodeFileSnapshot    * @param snapshottable whether the node is {@link INodeDirectorySnapshottable}    * @param withSnapshot whether the node is {@link INodeDirectoryWithSnapshot}    * @param underConstruction whether the node is     *                          {@link INodeFileUnderConstructionSnapshot}    * @param clientName clientName of {@link INodeFileUnderConstructionSnapshot}    * @param clientMachine clientMachine of     *                      {@link INodeFileUnderConstructionSnapshot}    * @return an inode    */
+DECL|method|newINode (long id, PermissionStatus permissions, BlockInfo[] blocks, String symlink, short replication, long modificationTime, long atime, long nsQuota, long dsQuota, long preferredBlockSize, int numBlocks, boolean withLink, long computeFileSize, boolean snapshottable, boolean withSnapshot, boolean underConstruction, String clientName, String clientMachine)
 specifier|static
 name|INode
 name|newINode
@@ -2610,6 +2630,15 @@ name|snapshottable
 parameter_list|,
 name|boolean
 name|withSnapshot
+parameter_list|,
+name|boolean
+name|underConstruction
+parameter_list|,
+name|String
+name|clientName
+parameter_list|,
+name|String
+name|clientMachine
 parameter_list|)
 block|{
 if|if
@@ -2748,11 +2777,28 @@ argument_list|,
 name|preferredBlockSize
 argument_list|)
 decl_stmt|;
-return|return
+if|if
+condition|(
 name|computeFileSize
 operator|>=
 literal|0
+condition|)
+block|{
+return|return
+name|underConstruction
 condition|?
+operator|new
+name|INodeFileUnderConstructionSnapshot
+argument_list|(
+name|fileNode
+argument_list|,
+name|computeFileSize
+argument_list|,
+name|clientName
+argument_list|,
+name|clientMachine
+argument_list|)
+else|:
 operator|new
 name|INodeFileSnapshot
 argument_list|(
@@ -2760,8 +2806,11 @@ name|fileNode
 argument_list|,
 name|computeFileSize
 argument_list|)
-else|:
-operator|(
+return|;
+block|}
+else|else
+block|{
+return|return
 name|withLink
 condition|?
 operator|new
@@ -2771,8 +2820,8 @@ name|fileNode
 argument_list|)
 else|:
 name|fileNode
-operator|)
 return|;
+block|}
 block|}
 comment|/**    * Dump the subtree starting from this inode.    * @return a text representation of the tree.    */
 annotation|@

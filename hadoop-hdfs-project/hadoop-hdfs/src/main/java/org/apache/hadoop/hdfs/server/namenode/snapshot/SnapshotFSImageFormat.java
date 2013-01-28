@@ -643,25 +643,20 @@ operator|.
 name|isFile
 argument_list|()
 operator|&&
-operator|(
+name|INodeFile
+operator|.
+name|isOfSameFile
+argument_list|(
 operator|(
 name|INodeFile
 operator|)
 name|c
-operator|)
-operator|.
-name|getBlocks
-argument_list|()
-operator|==
-operator|(
+argument_list|,
 operator|(
 name|INodeFile
 operator|)
 name|d
-operator|)
-operator|.
-name|getBlocks
-argument_list|()
+argument_list|)
 condition|)
 block|{
 return|return
@@ -958,12 +953,13 @@ literal|" in deleted list while loading FSImage."
 argument_list|)
 throw|;
 block|}
-comment|// deleted must be an INodeFileSnapshot
-name|INodeFileSnapshot
+comment|// deleted must be an FileWithSnapshot (INodeFileSnapshot or
+comment|// INodeFileUnderConstructionSnapshot)
+name|FileWithSnapshot
 name|deletedWithLink
 init|=
 operator|(
-name|INodeFileSnapshot
+name|FileWithSnapshot
 operator|)
 name|deleted
 decl_stmt|;
@@ -988,7 +984,12 @@ name|INodeFileWithSnapshot
 operator|)
 name|cNode
 decl_stmt|;
-name|deletedWithLink
+operator|(
+operator|(
+name|INodeFile
+operator|)
+name|deleted
+operator|)
 operator|.
 name|setBlocks
 argument_list|(

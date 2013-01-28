@@ -28,7 +28,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataOutput
+name|DataOutputStream
 import|;
 end_import
 
@@ -372,12 +372,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Serialize {@link #created} */
-DECL|method|writeCreated (DataOutput out)
+DECL|method|writeCreated (DataOutputStream out)
 specifier|private
 name|void
 name|writeCreated
 parameter_list|(
-name|DataOutput
+name|DataOutputStream
 name|out
 parameter_list|)
 throws|throws
@@ -440,12 +440,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Serialize {@link #deleted} */
-DECL|method|writeDeleted (DataOutput out)
+DECL|method|writeDeleted (DataOutputStream out)
 specifier|private
 name|void
 name|writeDeleted
 parameter_list|(
-name|DataOutput
+name|DataOutputStream
 name|out
 parameter_list|)
 throws|throws
@@ -580,15 +580,14 @@ comment|// with totally different blocks in the created and deleted list of
 comment|// the same SnapshotDiff.
 if|if
 condition|(
+name|INodeFile
+operator|.
+name|isOfSameFile
+argument_list|(
 name|cNode
-operator|.
-name|getBlocks
-argument_list|()
-operator|==
+argument_list|,
 name|dNode
-operator|.
-name|getBlocks
-argument_list|()
+argument_list|)
 condition|)
 block|{
 name|FSImageSerialization
@@ -622,12 +621,12 @@ block|}
 block|}
 block|}
 comment|/** Serialize to out */
-DECL|method|write (DataOutput out)
+DECL|method|write (DataOutputStream out)
 specifier|private
 name|void
 name|write
 parameter_list|(
-name|DataOutput
+name|DataOutputStream
 name|out
 parameter_list|)
 throws|throws
@@ -1328,11 +1327,11 @@ name|diff
 return|;
 block|}
 comment|/** Serialize fields to out */
-DECL|method|write (DataOutput out)
+DECL|method|write (DataOutputStream out)
 name|void
 name|write
 parameter_list|(
-name|DataOutput
+name|DataOutputStream
 name|out
 parameter_list|)
 throws|throws
