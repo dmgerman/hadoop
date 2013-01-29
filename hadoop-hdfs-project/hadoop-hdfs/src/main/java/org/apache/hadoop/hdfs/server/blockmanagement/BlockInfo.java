@@ -297,9 +297,7 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|DatanodeDescriptor
-name|node
-init|=
+return|return
 operator|(
 name|DatanodeDescriptor
 operator|)
@@ -309,38 +307,6 @@ name|index
 operator|*
 literal|3
 index|]
-decl_stmt|;
-assert|assert
-name|node
-operator|==
-literal|null
-operator|||
-name|DatanodeDescriptor
-operator|.
-name|class
-operator|.
-name|getName
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|node
-operator|.
-name|getClass
-argument_list|()
-operator|.
-name|getName
-argument_list|()
-argument_list|)
-operator|:
-literal|"DatanodeDescriptor is expected at "
-operator|+
-name|index
-operator|*
-literal|3
-assert|;
-return|return
-name|node
 return|;
 block|}
 DECL|method|getPrevious (int index)

@@ -250,6 +250,26 @@ name|input
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|Hadoop20JHParser (LineReader reader)
+specifier|public
+name|Hadoop20JHParser
+parameter_list|(
+name|LineReader
+name|reader
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|reader
+operator|=
+name|reader
+expr_stmt|;
+block|}
 DECL|field|liveEmitters
 name|Map
 argument_list|<

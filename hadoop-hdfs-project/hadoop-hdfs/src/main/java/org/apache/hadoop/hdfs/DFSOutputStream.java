@@ -3782,39 +3782,91 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Failed to add a datanode.  "
-operator|+
-literal|"User may turn off this feature by setting "
-operator|+
-name|DFSConfigKeys
+operator|new
+name|StringBuilder
+argument_list|()
 operator|.
-name|DFS_CLIENT_WRITE_REPLACE_DATANODE_ON_FAILURE_POLICY_KEY
-operator|+
-literal|" in configuration, where the current policy is "
-operator|+
-name|dfsClient
+name|append
+argument_list|(
+literal|"Failed to replace a bad datanode on the existing pipeline "
+argument_list|)
 operator|.
-name|dtpReplaceDatanodeOnFailure
-operator|+
-literal|".  (Nodes: current="
-operator|+
+name|append
+argument_list|(
+literal|"due to no more good datanodes being available to try. "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"(Nodes: current="
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|nodes
 argument_list|)
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", original="
-operator|+
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 name|original
 argument_list|)
-operator|+
-literal|")"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"). "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"The current failed datanode replacement policy is "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|dfsClient
+operator|.
+name|dtpReplaceDatanodeOnFailure
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", and "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"a client may configure this via '"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_WRITE_REPLACE_DATANODE_ON_FAILURE_POLICY_KEY
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"' in its configuration."
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
 block|}
