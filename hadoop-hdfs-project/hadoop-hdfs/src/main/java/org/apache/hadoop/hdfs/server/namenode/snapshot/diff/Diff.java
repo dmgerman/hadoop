@@ -554,6 +554,37 @@ name|d
 argument_list|)
 return|;
 block|}
+comment|/** @return true if no changes contained in the diff */
+DECL|method|isEmpty ()
+specifier|public
+name|boolean
+name|isEmpty
+parameter_list|()
+block|{
+return|return
+operator|(
+name|created
+operator|==
+literal|null
+operator|||
+name|created
+operator|.
+name|isEmpty
+argument_list|()
+operator|)
+operator|&&
+operator|(
+name|deleted
+operator|==
+literal|null
+operator|||
+name|deleted
+operator|.
+name|isEmpty
+argument_list|()
+operator|)
+return|;
+block|}
 comment|/**    * Insert the element to created.    * @param i the insertion point defined    *          in {@link Collections#binarySearch(List, Object)}    */
 DECL|method|insertCreated (final E element, final int i)
 specifier|private
