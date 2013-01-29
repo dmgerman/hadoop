@@ -2649,7 +2649,15 @@ name|children
 operator|==
 literal|null
 condition|?
-name|EMPTY_READ_ONLY_LIST
+name|ReadOnlyList
+operator|.
+name|Util
+operator|.
+expr|<
+name|INode
+operator|>
+name|emptyList
+argument_list|()
 else|:
 name|ReadOnlyList
 operator|.

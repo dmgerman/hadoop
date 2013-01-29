@@ -264,7 +264,7 @@ name|snapshot
 operator|.
 name|INodeDirectoryWithSnapshot
 operator|.
-name|SnapshotDiff
+name|DirectoryDiff
 import|;
 end_import
 
@@ -402,13 +402,16 @@ block|{
 comment|// # of SnapshotDiff
 name|List
 argument_list|<
-name|SnapshotDiff
+name|DirectoryDiff
 argument_list|>
 name|diffs
 init|=
 name|sNode
 operator|.
-name|getSnapshotDiffs
+name|getDiffs
+argument_list|()
+operator|.
+name|asList
 argument_list|()
 decl_stmt|;
 comment|// Record the SnapshotDiff in reversed order, so that we can find the
@@ -444,7 +447,7 @@ name|i
 operator|--
 control|)
 block|{
-name|SnapshotDiff
+name|DirectoryDiff
 name|sdiff
 init|=
 name|diffs
@@ -484,12 +487,12 @@ comment|// the INode in the created list should be a reference to another INode
 comment|// in posterior SnapshotDiffs or one of the current children
 for|for
 control|(
-name|SnapshotDiff
+name|DirectoryDiff
 name|postDiff
 range|:
 name|parent
 operator|.
-name|getSnapshotDiffs
+name|getDiffs
 argument_list|()
 control|)
 block|{
@@ -502,7 +505,7 @@ name|createdNodeName
 argument_list|,
 name|postDiff
 operator|.
-name|getDiff
+name|getChildrenDiff
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1214,7 +1217,7 @@ name|i
 operator|++
 control|)
 block|{
-name|SnapshotDiff
+name|DirectoryDiff
 name|diff
 init|=
 name|loadSnapshotDiff
@@ -1228,7 +1231,10 @@ argument_list|)
 decl_stmt|;
 name|parentWithSnapshot
 operator|.
-name|insertDiff
+name|getDiffs
+argument_list|()
+operator|.
+name|insert
 argument_list|(
 name|diff
 argument_list|)
@@ -1402,7 +1408,7 @@ comment|/**    * Load {@link SnapshotDiff} from fsimage.    * @param parent The 
 DECL|method|loadSnapshotDiff ( INodeDirectoryWithSnapshot parent, DataInputStream in, FSImageFormat.Loader loader)
 specifier|private
 specifier|static
-name|SnapshotDiff
+name|DirectoryDiff
 name|loadSnapshotDiff
 parameter_list|(
 name|INodeDirectoryWithSnapshot
@@ -1494,39 +1500,47 @@ name|loader
 argument_list|)
 decl_stmt|;
 comment|// 6. Compose the SnapshotDiff
-name|SnapshotDiff
+name|List
+argument_list|<
+name|DirectoryDiff
+argument_list|>
+name|diffs
+init|=
+name|parent
+operator|.
+name|getDiffs
+argument_list|()
+operator|.
+name|asList
+argument_list|()
+decl_stmt|;
+name|DirectoryDiff
 name|sdiff
 init|=
 name|parent
 operator|.
 expr|new
-name|SnapshotDiff
+name|DirectoryDiff
 argument_list|(
 name|snapshot
 argument_list|,
-name|childrenSize
-argument_list|,
 name|snapshotINode
 argument_list|,
-name|parent
-operator|.
-name|getSnapshotDiffs
-argument_list|()
+name|diffs
 operator|.
 name|isEmpty
 argument_list|()
 condition|?
 literal|null
 else|:
-name|parent
-operator|.
-name|getSnapshotDiffs
-argument_list|()
+name|diffs
 operator|.
 name|get
 argument_list|(
 literal|0
 argument_list|)
+argument_list|,
+name|childrenSize
 argument_list|,
 name|createdList
 argument_list|,

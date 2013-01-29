@@ -206,7 +206,7 @@ name|snapshot
 operator|.
 name|INodeDirectoryWithSnapshot
 operator|.
-name|SnapshotDiff
+name|DirectoryDiff
 import|;
 end_import
 
@@ -566,13 +566,16 @@ expr_stmt|;
 block|}
 name|List
 argument_list|<
-name|SnapshotDiff
+name|DirectoryDiff
 argument_list|>
 name|listByTime
 init|=
 name|srcRoot
 operator|.
-name|getSnapshotDiffs
+name|getDiffs
+argument_list|()
+operator|.
+name|asList
 argument_list|()
 decl_stmt|;
 name|assertEquals

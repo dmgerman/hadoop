@@ -766,7 +766,7 @@ operator|)
 name|dir
 operator|)
 operator|.
-name|getSnapshotDiffs
+name|getDiffs
 argument_list|()
 else|:
 literal|null
@@ -1190,6 +1190,9 @@ literal|"\"."
 argument_list|)
 throw|;
 block|}
+name|getDiffs
+argument_list|()
+operator|.
 name|addSnapshotDiff
 argument_list|(
 name|s
@@ -1244,7 +1247,7 @@ return|return
 name|s
 return|;
 block|}
-comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding SnapshotDiff.    *     * @param snapshotName The name of the snapshot to be removed    * @param collectedBlocks Used to collect information to update blocksMap    * @return The removed snapshot. Null if no snapshot with the given name     *         exists.    */
+comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding DirectoryDiff.    *     * @param snapshotName The name of the snapshot to be removed    * @param collectedBlocks Used to collect information to update blocksMap    * @return The removed snapshot. Null if no snapshot with the given name     *         exists.    */
 DECL|method|removeSnapshot (String snapshotName, BlocksMapUpdateInfo collectedBlocks)
 name|Snapshot
 name|removeSnapshot
@@ -1324,7 +1327,7 @@ name|snapshot
 return|;
 block|}
 block|}
-comment|/**    * Recursively delete SnapshotDiff associated with the given snapshot under a    * directory    */
+comment|/**    * Recursively delete DirectoryDiff associated with the given snapshot under a    * directory    */
 DECL|method|deleteDiffsForSnapshot (Snapshot snapshot, INodeDirectory dir, BlocksMapUpdateInfo collectedBlocks)
 specifier|private
 name|void
@@ -1356,6 +1359,9 @@ operator|)
 name|dir
 decl_stmt|;
 name|sdir
+operator|.
+name|getDiffs
+argument_list|()
 operator|.
 name|deleteSnapshotDiff
 argument_list|(
@@ -1774,10 +1780,10 @@ literal|0
 decl_stmt|;
 for|for
 control|(
-name|SnapshotDiff
+name|DirectoryDiff
 name|diff
 range|:
-name|getSnapshotDiffs
+name|getDiffs
 argument_list|()
 control|)
 block|{
@@ -1890,25 +1896,25 @@ block|{
 specifier|final
 name|Iterator
 argument_list|<
-name|SnapshotDiff
+name|DirectoryDiff
 argument_list|>
 name|i
 init|=
-name|getSnapshotDiffs
+name|getDiffs
 argument_list|()
 operator|.
 name|iterator
 argument_list|()
 decl_stmt|;
 specifier|private
-name|SnapshotDiff
+name|DirectoryDiff
 name|next
 init|=
 name|findNext
 argument_list|()
 decl_stmt|;
 specifier|private
-name|SnapshotDiff
+name|DirectoryDiff
 name|findNext
 parameter_list|()
 block|{
@@ -1923,7 +1929,7 @@ condition|;
 control|)
 block|{
 specifier|final
-name|SnapshotDiff
+name|DirectoryDiff
 name|diff
 init|=
 name|i

@@ -718,12 +718,7 @@ name|println
 argument_list|(
 literal|"previous = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|previous
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -741,12 +736,7 @@ name|println
 argument_list|(
 literal|"current  = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|current
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -757,12 +747,7 @@ name|println
 argument_list|(
 literal|"c        = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|c
-argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -836,12 +821,7 @@ name|println
 argument_list|(
 literal|"previous = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|previous
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -852,12 +832,7 @@ name|println
 argument_list|(
 literal|"p        = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|p
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -875,12 +850,7 @@ name|println
 argument_list|(
 literal|"current  = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|current
-argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -978,12 +948,7 @@ name|println
 argument_list|(
 literal|"previous = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|previous
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -1001,12 +966,7 @@ name|println
 argument_list|(
 literal|"current  = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|current
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -1017,12 +977,7 @@ name|println
 argument_list|(
 literal|"c        = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|c
-argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1067,12 +1022,7 @@ name|println
 argument_list|(
 literal|"previous = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|previous
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -1083,12 +1033,7 @@ name|println
 argument_list|(
 literal|"p        = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|p
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|System
@@ -1106,12 +1051,7 @@ name|println
 argument_list|(
 literal|"current  = "
 operator|+
-name|Diff
-operator|.
-name|toString
-argument_list|(
 name|current
-argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -1480,28 +1420,6 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|toString (Diff<byte[], INode> diff)
-specifier|static
-name|String
-name|toString
-parameter_list|(
-name|Diff
-argument_list|<
-name|byte
-index|[]
-argument_list|,
-name|INode
-argument_list|>
-name|diff
-parameter_list|)
-block|{
-return|return
-name|diff
-operator|.
-name|toString
-argument_list|()
-return|;
-block|}
 DECL|method|toString (INode inode)
 specifier|static
 name|String
@@ -1698,10 +1616,10 @@ condition|)
 block|{
 name|before
 operator|=
-name|toString
-argument_list|(
 name|diff
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 expr_stmt|;
 block|}
 specifier|final
@@ -1724,10 +1642,10 @@ specifier|final
 name|String
 name|after
 init|=
-name|toString
-argument_list|(
 name|diff
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 comment|//undo
 name|diff
@@ -1845,10 +1763,10 @@ condition|)
 block|{
 name|before
 operator|=
-name|toString
-argument_list|(
 name|diff
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 expr_stmt|;
 block|}
 specifier|final
@@ -1874,10 +1792,10 @@ specifier|final
 name|String
 name|after
 init|=
-name|toString
-argument_list|(
 name|diff
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 comment|//undo
 name|diff
@@ -2046,10 +1964,10 @@ condition|)
 block|{
 name|before
 operator|=
-name|toString
-argument_list|(
 name|diff
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 expr_stmt|;
 block|}
 specifier|final
@@ -2077,10 +1995,10 @@ specifier|final
 name|String
 name|after
 init|=
-name|toString
-argument_list|(
 name|diff
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 comment|//undo
 name|diff
@@ -2145,10 +2063,10 @@ name|assertEquals
 argument_list|(
 name|s
 argument_list|,
-name|toString
-argument_list|(
 name|diff
-argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
