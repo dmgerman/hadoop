@@ -1711,6 +1711,28 @@ literal|" txns"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Wait for the service to finish.    * (Normally, it runs forever.)    */
+DECL|method|join ()
+specifier|private
+name|void
+name|join
+parameter_list|()
+block|{
+try|try
+block|{
+name|infoServer
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{     }
+block|}
 comment|/**    * Shut down this instance of the datanode.    * Returns only after shutdown is complete.    */
 DECL|method|shutdown ()
 specifier|public
@@ -3089,6 +3111,11 @@ block|{
 name|secondary
 operator|.
 name|startCheckpointThread
+argument_list|()
+expr_stmt|;
+name|secondary
+operator|.
+name|join
 argument_list|()
 expr_stmt|;
 block|}

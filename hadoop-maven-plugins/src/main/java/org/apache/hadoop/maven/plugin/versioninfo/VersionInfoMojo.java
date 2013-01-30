@@ -311,12 +311,6 @@ argument_list|(
 name|name
 operator|=
 literal|"version-info"
-argument_list|,
-name|defaultPhase
-operator|=
-name|LifecyclePhase
-operator|.
-name|INITIALIZE
 argument_list|)
 DECL|class|VersionInfoMojo
 specifier|public

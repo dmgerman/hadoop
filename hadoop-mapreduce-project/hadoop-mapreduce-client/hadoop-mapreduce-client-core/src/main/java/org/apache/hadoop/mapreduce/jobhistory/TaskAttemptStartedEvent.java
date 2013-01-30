@@ -165,8 +165,8 @@ operator|new
 name|TaskAttemptStarted
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an event to record the start of an attempt    * @param attemptId Id of the attempt    * @param taskType Type of task    * @param startTime Start time of the attempt    * @param trackerName Name of the Task Tracker where attempt is running    * @param httpPort The port number of the tracker    * @param shufflePort The shuffle port number of the container    * @param containerId The containerId for the task attempt.    */
-DECL|method|TaskAttemptStartedEvent ( TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort, int shufflePort, ContainerId containerId)
+comment|/**    * Create an event to record the start of an attempt    * @param attemptId Id of the attempt    * @param taskType Type of task    * @param startTime Start time of the attempt    * @param trackerName Name of the Task Tracker where attempt is running    * @param httpPort The port number of the tracker    * @param shufflePort The shuffle port number of the container    * @param containerId The containerId for the task attempt.    * @param locality The locality of the task attempt    * @param avataar The avataar of the task attempt    */
+DECL|method|TaskAttemptStartedEvent ( TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort, int shufflePort, ContainerId containerId, String locality, String avataar)
 specifier|public
 name|TaskAttemptStartedEvent
 parameter_list|(
@@ -190,6 +190,12 @@ name|shufflePort
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|String
+name|locality
+parameter_list|,
+name|String
+name|avataar
 parameter_list|)
 block|{
 name|datum
@@ -275,10 +281,46 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|locality
+operator|!=
+literal|null
+condition|)
+block|{
+name|datum
+operator|.
+name|locality
+operator|=
+operator|new
+name|Utf8
+argument_list|(
+name|locality
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|avataar
+operator|!=
+literal|null
+condition|)
+block|{
+name|datum
+operator|.
+name|avataar
+operator|=
+operator|new
+name|Utf8
+argument_list|(
+name|avataar
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// TODO Remove after MrV1 is removed.
 comment|// Using a dummy containerId to prevent jobHistory parse failures.
-DECL|method|TaskAttemptStartedEvent (TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort, int shufflePort)
+DECL|method|TaskAttemptStartedEvent (TaskAttemptID attemptId, TaskType taskType, long startTime, String trackerName, int httpPort, int shufflePort, String locality, String avataar)
 specifier|public
 name|TaskAttemptStartedEvent
 parameter_list|(
@@ -299,6 +341,12 @@ name|httpPort
 parameter_list|,
 name|int
 name|shufflePort
+parameter_list|,
+name|String
+name|locality
+parameter_list|,
+name|String
+name|avataar
 parameter_list|)
 block|{
 name|this
@@ -321,6 +369,10 @@ name|toContainerId
 argument_list|(
 literal|"container_-1_-1_-1_-1"
 argument_list|)
+argument_list|,
+name|locality
+argument_list|,
+name|avataar
 argument_list|)
 expr_stmt|;
 block|}
@@ -523,6 +575,64 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+return|;
+block|}
+comment|/** Get the locality */
+DECL|method|getLocality ()
+specifier|public
+name|String
+name|getLocality
+parameter_list|()
+block|{
+if|if
+condition|(
+name|datum
+operator|.
+name|locality
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|datum
+operator|.
+name|locality
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+comment|/** Get the avataar */
+DECL|method|getAvataar ()
+specifier|public
+name|String
+name|getAvataar
+parameter_list|()
+block|{
+if|if
+condition|(
+name|datum
+operator|.
+name|avataar
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|datum
+operator|.
+name|avataar
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 block|}

@@ -688,6 +688,35 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|join ()
+specifier|public
+name|void
+name|join
+parameter_list|()
+block|{
+if|if
+condition|(
+name|proxyServer
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+name|proxyServer
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{       }
+block|}
+block|}
 block|}
 end_class
 

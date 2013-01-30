@@ -3806,7 +3806,7 @@ argument_list|,
 literal|100
 argument_list|)
 operator|+
-literal|"<td align=\"right\" class=\"pcremaining`\">"
+literal|"<td align=\"right\" class=\"pcremaining\">"
 operator|+
 name|percentRemaining
 operator|+
