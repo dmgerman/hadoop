@@ -555,6 +555,33 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|concat (Path f, Path[] psrcs)
+specifier|public
+name|void
+name|concat
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|Path
+index|[]
+name|psrcs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|fs
+operator|.
+name|concat
+argument_list|(
+name|f
+argument_list|,
+name|psrcs
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
 specifier|public
 name|FSDataOutputStream

@@ -60,29 +60,62 @@ name|Op
 block|{
 DECL|enumConstant|APPEND
 name|APPEND
-parameter_list|(
+argument_list|(
+literal|true
+argument_list|,
 name|HttpURLConnection
 operator|.
 name|HTTP_OK
-parameter_list|)
-operator|,
+argument_list|)
+block|,
+DECL|enumConstant|CONCAT
+name|CONCAT
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_OK
+argument_list|)
+block|,
 DECL|enumConstant|NULL
-constructor|NULL(HttpURLConnection.HTTP_NOT_IMPLEMENTED
-block|)
-enum|;
+name|NULL
+argument_list|(
+literal|false
+argument_list|,
+name|HttpURLConnection
+operator|.
+name|HTTP_NOT_IMPLEMENTED
+argument_list|)
+block|;
+DECL|field|doOutputAndRedirect
+specifier|final
+name|boolean
+name|doOutputAndRedirect
+decl_stmt|;
 DECL|field|expectedHttpResponseCode
 specifier|final
 name|int
 name|expectedHttpResponseCode
 decl_stmt|;
-DECL|method|Op (final int expectedHttpResponseCode)
+DECL|method|Op (final boolean doOutputAndRedirect, final int expectedHttpResponseCode)
 name|Op
 parameter_list|(
+specifier|final
+name|boolean
+name|doOutputAndRedirect
+parameter_list|,
 specifier|final
 name|int
 name|expectedHttpResponseCode
 parameter_list|)
 block|{
+name|this
+operator|.
+name|doOutputAndRedirect
+operator|=
+name|doOutputAndRedirect
+expr_stmt|;
 name|this
 operator|.
 name|expectedHttpResponseCode
@@ -113,7 +146,7 @@ name|getDoOutput
 parameter_list|()
 block|{
 return|return
-literal|true
+name|doOutputAndRedirect
 return|;
 block|}
 annotation|@
@@ -125,7 +158,7 @@ name|getRedirect
 parameter_list|()
 block|{
 return|return
-literal|true
+name|doOutputAndRedirect
 return|;
 block|}
 annotation|@
@@ -158,9 +191,6 @@ name|this
 return|;
 block|}
 block|}
-end_class
-
-begin_decl_stmt
 DECL|field|DOMAIN
 specifier|private
 specifier|static
@@ -186,13 +216,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-end_decl_stmt
-
-begin_comment
 comment|/**    * Constructor.    * @param str a string representation of the parameter value.    */
-end_comment
-
-begin_constructor
 DECL|method|PostOpParam (final String str)
 specifier|public
 name|PostOpParam
@@ -215,9 +239,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-end_constructor
-
-begin_function
 annotation|@
 name|Override
 DECL|method|getName ()
@@ -230,8 +251,8 @@ return|return
 name|NAME
 return|;
 block|}
-end_function
+block|}
+end_class
 
-unit|}
 end_unit
 
