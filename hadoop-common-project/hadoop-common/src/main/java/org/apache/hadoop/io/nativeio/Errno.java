@@ -130,6 +130,15 @@ block|,
 DECL|enumConstant|ERANGE
 name|ERANGE
 block|,
+DECL|enumConstant|ELOOP
+name|ELOOP
+block|,
+DECL|enumConstant|ENAMETOOLONG
+name|ENAMETOOLONG
+block|,
+DECL|enumConstant|ENOTEMPTY
+name|ENOTEMPTY
+block|,
 DECL|enumConstant|UNKNOWN
 name|UNKNOWN
 block|; }

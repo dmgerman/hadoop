@@ -3648,6 +3648,40 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Concat existing files together.    * @param trg the path to the target destination.    * @param psrcs the paths to the sources to use for the concatenation.    * @throws IOException    */
+DECL|method|concat (final Path trg, final Path [] psrcs)
+specifier|public
+name|void
+name|concat
+parameter_list|(
+specifier|final
+name|Path
+name|trg
+parameter_list|,
+specifier|final
+name|Path
+index|[]
+name|psrcs
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not implemented by the "
+operator|+
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" FileSystem implementation"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Get replication.    *     * @deprecated Use getFileStatus() instead    * @param src file name    * @return file replication    * @throws IOException    */
 annotation|@
 name|Deprecated

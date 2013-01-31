@@ -738,6 +738,24 @@ name|web
 operator|.
 name|resources
 operator|.
+name|ConcatSourcesParam
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|resources
+operator|.
 name|CreateParentParam
 import|;
 end_import
@@ -3944,7 +3962,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|postRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
+DECL|method|postRoot ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
 specifier|public
 name|Response
 name|postRoot
@@ -4030,6 +4048,24 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+name|ConcatSourcesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ConcatSourcesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ConcatSourcesParam
+name|concatSrcs
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 name|BufferSizeParam
 operator|.
 name|NAME
@@ -4064,6 +4100,8 @@ argument_list|,
 name|ROOT
 argument_list|,
 name|op
+argument_list|,
+name|concatSrcs
 argument_list|,
 name|bufferSize
 argument_list|)
@@ -4103,7 +4141,7 @@ operator|.
 name|APPLICATION_JSON
 block|}
 argument_list|)
-DECL|method|post ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
+DECL|method|post ( @ontext final UserGroupInformation ugi, @QueryParam(DelegationParam.NAME) @DefaultValue(DelegationParam.DEFAULT) final DelegationParam delegation, @QueryParam(UserParam.NAME) @DefaultValue(UserParam.DEFAULT) final UserParam username, @QueryParam(DoAsParam.NAME) @DefaultValue(DoAsParam.DEFAULT) final DoAsParam doAsUser, @PathParam(UriFsPathParam.NAME) final UriFsPathParam path, @QueryParam(PostOpParam.NAME) @DefaultValue(PostOpParam.DEFAULT) final PostOpParam op, @QueryParam(ConcatSourcesParam.NAME) @DefaultValue(ConcatSourcesParam.DEFAULT) final ConcatSourcesParam concatSrcs, @QueryParam(BufferSizeParam.NAME) @DefaultValue(BufferSizeParam.DEFAULT) final BufferSizeParam bufferSize )
 specifier|public
 name|Response
 name|post
@@ -4200,6 +4238,24 @@ parameter_list|,
 annotation|@
 name|QueryParam
 argument_list|(
+name|ConcatSourcesParam
+operator|.
+name|NAME
+argument_list|)
+annotation|@
+name|DefaultValue
+argument_list|(
+name|ConcatSourcesParam
+operator|.
+name|DEFAULT
+argument_list|)
+specifier|final
+name|ConcatSourcesParam
+name|concatSrcs
+parameter_list|,
+annotation|@
+name|QueryParam
+argument_list|(
 name|BufferSizeParam
 operator|.
 name|NAME
@@ -4233,6 +4289,8 @@ argument_list|,
 name|path
 argument_list|,
 name|op
+argument_list|,
+name|concatSrcs
 argument_list|,
 name|bufferSize
 argument_list|)
@@ -4290,6 +4348,8 @@ argument_list|()
 argument_list|,
 name|op
 argument_list|,
+name|concatSrcs
+argument_list|,
 name|bufferSize
 argument_list|)
 return|;
@@ -4309,7 +4369,7 @@ block|}
 argument_list|)
 return|;
 block|}
-DECL|method|post ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PostOpParam op, final BufferSizeParam bufferSize )
+DECL|method|post ( final UserGroupInformation ugi, final DelegationParam delegation, final UserParam username, final DoAsParam doAsUser, final String fullpath, final PostOpParam op, final ConcatSourcesParam concatSrcs, final BufferSizeParam bufferSize )
 specifier|private
 name|Response
 name|post
@@ -4337,6 +4397,10 @@ parameter_list|,
 specifier|final
 name|PostOpParam
 name|op
+parameter_list|,
+specifier|final
+name|ConcatSourcesParam
+name|concatSrcs
 parameter_list|,
 specifier|final
 name|BufferSizeParam
@@ -4419,6 +4483,35 @@ name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
 argument_list|)
+operator|.
+name|build
+argument_list|()
+return|;
+block|}
+case|case
+name|CONCAT
+case|:
+block|{
+name|namenode
+operator|.
+name|getRpcServer
+argument_list|()
+operator|.
+name|concat
+argument_list|(
+name|fullpath
+argument_list|,
+name|concatSrcs
+operator|.
+name|getAbsolutePaths
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|Response
+operator|.
+name|ok
+argument_list|()
 operator|.
 name|build
 argument_list|()
