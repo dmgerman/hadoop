@@ -2376,7 +2376,7 @@ argument_list|()
 return|;
 block|}
 DECL|field|EMPTY_BYTES
-specifier|private
+specifier|public
 specifier|static
 specifier|final
 name|byte

@@ -25838,7 +25838,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Get the list of all the current snapshottable directories    * @return The list of all the current snapshottable directories    * @throws IOException    */
+comment|/**    * Get the list of snapshottable directories that are owned     * by the current user. Return all the snapshottable directories if the     * current user is a super user.    * @return The list of all the current snapshottable directories    * @throws IOException    */
 DECL|method|getSnapshottableDirListing ()
 specifier|public
 name|SnapshottableDirectoryStatus
@@ -25848,6 +25848,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|SnapshottableDirectoryStatus
+index|[]
+name|status
+init|=
+literal|null
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -25860,15 +25866,44 @@ operator|.
 name|READ
 argument_list|)
 expr_stmt|;
-name|SnapshottableDirectoryStatus
-index|[]
-name|status
+name|FSPermissionChecker
+name|checker
 init|=
+operator|new
+name|FSPermissionChecker
+argument_list|(
+name|fsOwner
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
+name|supergroup
+argument_list|)
+decl_stmt|;
+name|status
+operator|=
 name|snapshotManager
 operator|.
 name|getSnapshottableDirListing
+argument_list|(
+name|checker
+operator|.
+name|isSuper
+condition|?
+literal|null
+else|:
+name|checker
+operator|.
+name|user
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|readUnlock
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|auditLog
@@ -25903,13 +25938,6 @@ block|}
 return|return
 name|status
 return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Compute the difference between two snapshots (or between a snapshot and the    * current status) of a snapshottable directory.    *     * @param path The full path of the snapshottable directory.    * @param fromSnapshot Name of the snapshot to calculate the diff from. Null    *          or empty string indicates the current tree.    * @param toSnapshot Name of the snapshot to calculated the diff to. Null or    *          empty string indicates the current tree.    * @return The difference between {@code fromSnapshot} and {@code toSnapshot},    *         i.e., applying difference to source will get target.    * @throws IOException    */
 DECL|method|getSnapshotDiffReport (String path, String fromSnapshot, String toSnapshot)
