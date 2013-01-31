@@ -390,6 +390,26 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|balancer
+operator|.
+name|Balancer
+operator|.
+name|Cli
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|datanode
 operator|.
 name|SimulatedFSDataset
@@ -407,6 +427,20 @@ operator|.
 name|util
 operator|.
 name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Tool
 import|;
 end_import
 
@@ -1830,8 +1864,8 @@ name|balanced
 condition|)
 do|;
 block|}
-comment|/** This test start a cluster with specified number of nodes,     * and fills it to be 30% full (with a single file replicated identically    * to all datanodes);    * It then adds one new empty node and starts balancing.    *     * @param conf - configuration    * @param capacities - array of capacities of original nodes in cluster    * @param racks - array of racks for original nodes in cluster    * @param newCapacity - new node's capacity    * @param newRack - new node's rack    * @throws Exception    */
-DECL|method|doTest (Configuration conf, long[] capacities, String[] racks, long newCapacity, String newRack)
+comment|/** This test start a cluster with specified number of nodes,     * and fills it to be 30% full (with a single file replicated identically    * to all datanodes);    * It then adds one new empty node and starts balancing.    *     * @param conf - configuration    * @param capacities - array of capacities of original nodes in cluster    * @param racks - array of racks for original nodes in cluster    * @param newCapacity - new node's capacity    * @param newRack - new node's rack    * @param useTool - if true run test via Cli with command-line argument     *   parsing, etc.   Otherwise invoke balancer API directly.    * @throws Exception    */
+DECL|method|doTest (Configuration conf, long[] capacities, String[] racks, long newCapacity, String newRack, boolean useTool)
 specifier|private
 name|void
 name|doTest
@@ -1852,6 +1886,9 @@ name|newCapacity
 parameter_list|,
 name|String
 name|newRack
+parameter_list|,
+name|boolean
+name|useTool
 parameter_list|)
 throws|throws
 name|Exception
@@ -2006,6 +2043,23 @@ operator|+=
 name|newCapacity
 expr_stmt|;
 comment|// run balancer and validate results
+if|if
+condition|(
+name|useTool
+condition|)
+block|{
+name|runBalancerCli
+argument_list|(
+name|conf
+argument_list|,
+name|totalUsedSpace
+argument_list|,
+name|totalCapacity
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|runBalancer
 argument_list|(
 name|conf
@@ -2015,6 +2069,7 @@ argument_list|,
 name|totalCapacity
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2129,14 +2184,122 @@ name|cluster
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|runBalancerCli (Configuration conf, long totalUsedSpace, long totalCapacity)
+specifier|private
+name|void
+name|runBalancerCli
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|long
+name|totalUsedSpace
+parameter_list|,
+name|long
+name|totalCapacity
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+name|waitForHeartBeat
+argument_list|(
+name|totalUsedSpace
+argument_list|,
+name|totalCapacity
+argument_list|,
+name|client
+argument_list|,
+name|cluster
+argument_list|)
+expr_stmt|;
+specifier|final
+name|String
+index|[]
+name|args
+init|=
+block|{
+literal|"-policy"
+block|,
+literal|"datanode"
+block|}
+decl_stmt|;
+specifier|final
+name|Tool
+name|tool
+init|=
+operator|new
+name|Cli
+argument_list|()
+decl_stmt|;
+name|tool
+operator|.
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+specifier|final
+name|int
+name|r
+init|=
+name|tool
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+decl_stmt|;
+comment|// start rebalancing
+name|assertEquals
+argument_list|(
+literal|"Tools should exit 0 on success"
+argument_list|,
+literal|0
+argument_list|,
+name|r
+argument_list|)
+expr_stmt|;
+name|waitForHeartBeat
+argument_list|(
+name|totalUsedSpace
+argument_list|,
+name|totalCapacity
+argument_list|,
+name|client
+argument_list|,
+name|cluster
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Rebalancing with default ctor."
+argument_list|)
+expr_stmt|;
+name|waitForBalancer
+argument_list|(
+name|totalUsedSpace
+argument_list|,
+name|totalCapacity
+argument_list|,
+name|client
+argument_list|,
+name|cluster
+argument_list|)
+expr_stmt|;
+block|}
 comment|/** one-node cluster test*/
-DECL|method|oneNodeTest (Configuration conf)
+DECL|method|oneNodeTest (Configuration conf, boolean useTool)
 specifier|private
 name|void
 name|oneNodeTest
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|useTool
 parameter_list|)
 throws|throws
 name|Exception
@@ -2165,6 +2328,8 @@ operator|/
 literal|2
 argument_list|,
 name|RACK0
+argument_list|,
+name|useTool
 argument_list|)
 expr_stmt|;
 block|}
@@ -2205,6 +2370,8 @@ argument_list|,
 name|CAPACITY
 argument_list|,
 name|RACK2
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2228,6 +2395,8 @@ expr_stmt|;
 name|oneNodeTest
 argument_list|(
 name|conf
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -2387,6 +2556,8 @@ expr_stmt|;
 name|oneNodeTest
 argument_list|(
 name|conf
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|twoNodeTest
@@ -2850,6 +3021,43 @@ name|IllegalArgumentException
 name|e
 parameter_list|)
 block|{      }
+block|}
+comment|/**    * Verify balancer exits 0 on success.    */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
+DECL|method|testExitZeroOnSuccess ()
+specifier|public
+name|void
+name|testExitZeroOnSuccess
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|Configuration
+name|conf
+init|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+decl_stmt|;
+name|initConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|oneNodeTest
+argument_list|(
+name|conf
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * @param args    */
 DECL|method|main (String[] args)

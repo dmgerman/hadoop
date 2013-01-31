@@ -5840,16 +5840,17 @@ DECL|enum|ReturnStatus
 enum|enum
 name|ReturnStatus
 block|{
+comment|// These int values will map directly to the balancer process's exit code.
 DECL|enumConstant|SUCCESS
 name|SUCCESS
 argument_list|(
-literal|1
+literal|0
 argument_list|)
 block|,
 DECL|enumConstant|IN_PROGRESS
 name|IN_PROGRESS
 argument_list|(
-literal|0
+literal|1
 argument_list|)
 block|,
 DECL|enumConstant|ALREADY_RUNNING
@@ -6673,7 +6674,7 @@ name|Configured
 implements|implements
 name|Tool
 block|{
-comment|/** Parse arguments and then run Balancer */
+comment|/**      * Parse arguments and then run Balancer.      *       * @param args command specific arguments.      * @return exit code. 0 indicates success, non-zero indicates failure.      */
 annotation|@
 name|Override
 DECL|method|run (String[] args)
