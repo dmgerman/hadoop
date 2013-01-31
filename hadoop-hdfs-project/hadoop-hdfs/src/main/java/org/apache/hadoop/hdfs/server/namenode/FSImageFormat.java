@@ -2682,7 +2682,7 @@ name|iip
 init|=
 name|fsDir
 operator|.
-name|getINodesInPath
+name|getLastINodeInPath
 argument_list|(
 name|path
 argument_list|)

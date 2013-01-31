@@ -494,7 +494,7 @@ name|inodesInPath
 init|=
 name|root
 operator|.
-name|getExistingPathINodes
+name|getINodesInPath
 argument_list|(
 name|path
 argument_list|,

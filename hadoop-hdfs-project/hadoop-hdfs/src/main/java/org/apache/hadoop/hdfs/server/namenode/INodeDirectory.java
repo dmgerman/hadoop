@@ -687,24 +687,6 @@ return|return
 name|i
 return|;
 block|}
-DECL|method|getExistingChild (int i)
-specifier|protected
-name|INode
-name|getExistingChild
-parameter_list|(
-name|int
-name|i
-parameter_list|)
-block|{
-return|return
-name|children
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-return|;
-block|}
 DECL|method|removeChild (INode node)
 name|INode
 name|removeChild
@@ -1319,9 +1301,9 @@ argument_list|)
 return|;
 block|}
 comment|/** @return the {@link INodesInPath} containing only the last inode. */
-DECL|method|getINodesInPath (String path, boolean resolveLink )
+DECL|method|getLastINodeInPath (String path, boolean resolveLink )
 name|INodesInPath
-name|getINodesInPath
+name|getLastINodeInPath
 parameter_list|(
 name|String
 name|path
@@ -1346,6 +1328,44 @@ name|resolveLink
 argument_list|)
 return|;
 block|}
+comment|/** @return the {@link INodesInPath} containing all inodes in the path. */
+DECL|method|getINodesInPath (String path, boolean resolveLink )
+name|INodesInPath
+name|getINodesInPath
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|boolean
+name|resolveLink
+parameter_list|)
+throws|throws
+name|UnresolvedLinkException
+block|{
+specifier|final
+name|byte
+index|[]
+index|[]
+name|components
+init|=
+name|getPathComponents
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+return|return
+name|getExistingPathINodes
+argument_list|(
+name|components
+argument_list|,
+name|components
+operator|.
+name|length
+argument_list|,
+name|resolveLink
+argument_list|)
+return|;
+block|}
 comment|/** @return the last inode in the path. */
 DECL|method|getNode (String path, boolean resolveLink)
 name|INode
@@ -1361,7 +1381,7 @@ throws|throws
 name|UnresolvedLinkException
 block|{
 return|return
-name|getINodesInPath
+name|getLastINodeInPath
 argument_list|(
 name|path
 argument_list|,
@@ -1375,9 +1395,9 @@ argument_list|)
 return|;
 block|}
 comment|/**    * @return the INode of the last component in src, or null if the last    * component does not exist.    * @throws UnresolvedLinkException if symlink can't be resolved    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|getMutableNode (String src, boolean resolveLink)
+DECL|method|getINode4Write (String src, boolean resolveLink)
 name|INode
-name|getMutableNode
+name|getINode4Write
 parameter_list|(
 name|String
 name|src
@@ -1390,35 +1410,22 @@ name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
 block|{
-name|INode
-index|[]
-name|inodes
-init|=
-name|getMutableINodesInPath
+return|return
+name|getINodesInPath4Write
 argument_list|(
 name|src
 argument_list|,
 name|resolveLink
 argument_list|)
 operator|.
-name|getINodes
+name|getLastINode
 argument_list|()
-decl_stmt|;
-return|return
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
 return|;
 block|}
 comment|/**    * @return the INodesInPath of the components in src    * @throws UnresolvedLinkException if symlink can't be resolved    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|getMutableINodesInPath (String src, boolean resolveLink)
+DECL|method|getINodesInPath4Write (String src, boolean resolveLink)
 name|INodesInPath
-name|getMutableINodesInPath
+name|getINodesInPath4Write
 parameter_list|(
 name|String
 name|src
@@ -1431,38 +1438,19 @@ name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
 block|{
-return|return
-name|getMutableINodesInPath
-argument_list|(
+specifier|final
+name|byte
+index|[]
+index|[]
+name|components
+init|=
 name|INode
 operator|.
 name|getPathComponents
 argument_list|(
 name|src
 argument_list|)
-argument_list|,
-name|resolveLink
-argument_list|)
-return|;
-block|}
-comment|/**    * @return the INodesInPath of the components in src    * @throws UnresolvedLinkException if symlink can't be resolved    * @throws SnapshotAccessControlException if path is in RO snapshot    */
-DECL|method|getMutableINodesInPath (byte[][] components, boolean resolveLink)
-name|INodesInPath
-name|getMutableINodesInPath
-parameter_list|(
-name|byte
-index|[]
-index|[]
-name|components
-parameter_list|,
-name|boolean
-name|resolveLink
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-throws|,
-name|SnapshotAccessControlException
-block|{
+decl_stmt|;
 name|INodesInPath
 name|inodesInPath
 init|=
@@ -1489,7 +1477,7 @@ throw|throw
 operator|new
 name|SnapshotAccessControlException
 argument_list|(
-literal|"Modification on RO snapshot is disallowed"
+literal|"Modification on a read-only snapshot is disallowed"
 argument_list|)
 throw|;
 block|}
@@ -2045,43 +2033,6 @@ name|bytes2String
 argument_list|(
 name|pathComponent
 argument_list|)
-argument_list|)
-return|;
-block|}
-comment|/**    * Retrieve the existing INodes along the given path. The first INode    * always exist and is this INode.    *     * @param path the path to explore    * @param resolveLink indicates whether UnresolvedLinkException should     *        be thrown when the path refers to a symbolic link.    * @return INodes array containing the existing INodes in the order they    *         appear when following the path from the root INode to the    *         deepest INodes. The array size will be the number of expected    *         components in the path, and non existing components will be    *         filled with null    *             * @see #getExistingPathINodes(byte[][], int, boolean)    */
-DECL|method|getExistingPathINodes (String path, boolean resolveLink)
-name|INodesInPath
-name|getExistingPathINodes
-parameter_list|(
-name|String
-name|path
-parameter_list|,
-name|boolean
-name|resolveLink
-parameter_list|)
-throws|throws
-name|UnresolvedLinkException
-block|{
-name|byte
-index|[]
-index|[]
-name|components
-init|=
-name|getPathComponents
-argument_list|(
-name|path
-argument_list|)
-decl_stmt|;
-return|return
-name|getExistingPathINodes
-argument_list|(
-name|components
-argument_list|,
-name|components
-operator|.
-name|length
-argument_list|,
-name|resolveLink
 argument_list|)
 return|;
 block|}
@@ -3080,6 +3031,23 @@ return|return
 name|inodes
 index|[
 name|inodes
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+return|;
+block|}
+DECL|method|getLastLocalName ()
+name|byte
+index|[]
+name|getLastLocalName
+parameter_list|()
+block|{
+return|return
+name|path
+index|[
+name|path
 operator|.
 name|length
 operator|-

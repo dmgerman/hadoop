@@ -329,7 +329,7 @@ name|iip
 init|=
 name|fsdir
 operator|.
-name|getINodesInPath
+name|getLastINodeInPath
 argument_list|(
 name|path
 argument_list|)
@@ -423,7 +423,7 @@ name|iip
 init|=
 name|fsdir
 operator|.
-name|getINodesInPath
+name|getLastINodeInPath
 argument_list|(
 name|path
 argument_list|)
@@ -517,7 +517,7 @@ name|i
 init|=
 name|fsdir
 operator|.
-name|getMutableINodesInPath
+name|getINodesInPath4Write
 argument_list|(
 name|path
 argument_list|)
@@ -583,7 +583,7 @@ name|inodesInPath
 init|=
 name|fsdir
 operator|.
-name|getMutableINodesInPath
+name|getINodesInPath4Write
 argument_list|(
 name|path
 operator|.
@@ -1037,7 +1037,7 @@ name|inodesInPath
 init|=
 name|fsdir
 operator|.
-name|getMutableINodesInPath
+name|getINodesInPath4Write
 argument_list|(
 name|path
 operator|.
