@@ -459,6 +459,7 @@ block|}
 annotation|@
 name|Private
 DECL|method|getTaskAttemptPath (TaskAttemptContext context)
+specifier|public
 name|Path
 name|getTaskAttemptPath
 parameter_list|(
