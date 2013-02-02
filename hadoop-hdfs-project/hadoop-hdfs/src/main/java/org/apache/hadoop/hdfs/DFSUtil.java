@@ -1073,7 +1073,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * Comparator for sorting DataNodeInfo[] based on decommissioned/stale states.    * Decommissioned/stale nodes are moved to the end of the array on sorting    * with this compartor.    */
+comment|/**    * Comparator for sorting DataNodeInfo[] based on decommissioned/stale states.    * Decommissioned/stale nodes are moved to the end of the array on sorting    * with this comparator.    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -1094,7 +1094,7 @@ specifier|private
 name|long
 name|staleInterval
 decl_stmt|;
-comment|/**      * Constructor of DecomStaleComparator      *       * @param interval      *          The time invertal for marking datanodes as stale is passed from      *          outside, since the interval may be changed dynamically      */
+comment|/**      * Constructor of DecomStaleComparator      *       * @param interval      *          The time interval for marking datanodes as stale is passed from      *          outside, since the interval may be changed dynamically      */
 DECL|method|DecomStaleComparator (long interval)
 specifier|public
 name|DecomStaleComparator

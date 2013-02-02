@@ -24970,7 +24970,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|isAvoidingStaleDataNodesForWrite
+name|shouldAvoidStaleDataNodesForWrite
 argument_list|()
 return|;
 block|}

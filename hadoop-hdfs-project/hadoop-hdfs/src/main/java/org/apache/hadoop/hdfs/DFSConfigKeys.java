@@ -1351,26 +1351,26 @@ name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
-comment|// Whether to enable datanode's stale state detection and usage
-DECL|field|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
+comment|// Whether to enable datanode's stale state detection and usage for reads
+DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 init|=
-literal|"dfs.namenode.check.stale.datanode"
+literal|"dfs.namenode.avoid.read.stale.datanode"
 decl_stmt|;
-DECL|field|DFS_NAMENODE_CHECK_STALE_DATANODE_DEFAULT
+DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_DEFAULT
 specifier|public
 specifier|static
 specifier|final
 name|boolean
-name|DFS_NAMENODE_CHECK_STALE_DATANODE_DEFAULT
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-comment|// Whether to enable datanode's stale state detection and usage
+comment|// Whether to enable datanode's stale state detection and usage for writes
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
 specifier|public
 specifier|static
@@ -1432,8 +1432,8 @@ init|=
 literal|3
 decl_stmt|;
 comment|// i.e. min_interval is 3 * heartbeat_interval = 9s
-comment|// When the number stale datanodes marked as stale reached this certian ratio,
-comment|// stop avoiding writing to stale nodes so as to prevent causing hotspots.
+comment|// When the percentage of stale datanodes reaches this ratio,
+comment|// allow writing to stale nodes to prevent hotspots.
 DECL|field|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_KEY
 specifier|public
 specifier|static
