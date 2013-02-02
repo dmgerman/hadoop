@@ -441,6 +441,15 @@ DECL|field|listSnapshottableDirOps
 name|MutableCounterLong
 name|listSnapshottableDirOps
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of snapshotDiffReport operations"
+argument_list|)
+DECL|field|snapshotDiffReportOps
+name|MutableCounterLong
+name|snapshotDiffReportOps
+decl_stmt|;
 DECL|field|transactions
 annotation|@
 name|Metric
@@ -972,6 +981,18 @@ name|incrListSnapshottableDirOps
 parameter_list|()
 block|{
 name|listSnapshottableDirOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrSnapshotDiffReportOps ()
+specifier|public
+name|void
+name|incrSnapshotDiffReportOps
+parameter_list|()
+block|{
+name|snapshotDiffReportOps
 operator|.
 name|incr
 argument_list|()

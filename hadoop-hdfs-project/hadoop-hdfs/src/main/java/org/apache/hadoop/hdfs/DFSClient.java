@@ -1306,6 +1306,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|SnapshotDiffReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 operator|.
 name|DatanodeReportType
@@ -9441,6 +9457,43 @@ argument_list|(
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    * @see ClientProtocol#getSnapshotDiffReport(String, String, String)    */
+DECL|method|getSnapshotDiffReport (Path snapshotDir, String fromSnapshot, String toSnapshot)
+specifier|public
+name|SnapshotDiffReport
+name|getSnapshotDiffReport
+parameter_list|(
+name|Path
+name|snapshotDir
+parameter_list|,
+name|String
+name|fromSnapshot
+parameter_list|,
+name|String
+name|toSnapshot
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkOpen
+argument_list|()
+expr_stmt|;
+return|return
+name|namenode
+operator|.
+name|getSnapshotDiffReport
+argument_list|(
+name|snapshotDir
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|fromSnapshot
+argument_list|,
+name|toSnapshot
+argument_list|)
+return|;
 block|}
 comment|/**    * Save namespace image.    *     * @see ClientProtocol#saveNamespace()    */
 DECL|method|saveNamespace ()

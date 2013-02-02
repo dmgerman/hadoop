@@ -246,7 +246,7 @@ name|snapshot
 operator|.
 name|INodeDirectorySnapshottable
 operator|.
-name|SnapshotDiffReport
+name|SnapshotDiffInfo
 import|;
 end_import
 
@@ -1001,7 +1001,7 @@ block|}
 comment|/**    * Compute the difference between two snapshots of a directory, or between a    * snapshot of the directory and its current tree.    */
 DECL|method|diff (final String path, final String from, final String to)
 specifier|public
-name|SnapshotDiffReport
+name|SnapshotDiffInfo
 name|diff
 parameter_list|(
 specifier|final

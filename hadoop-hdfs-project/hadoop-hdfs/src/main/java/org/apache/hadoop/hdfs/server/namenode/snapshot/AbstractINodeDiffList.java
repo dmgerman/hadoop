@@ -265,6 +265,25 @@ operator|-
 literal|1
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|previous
+operator|.
+name|snapshotINode
+operator|==
+literal|null
+condition|)
+block|{
+comment|// TODO: add a new testcase for this
+name|previous
+operator|.
+name|snapshotINode
+operator|=
+name|removed
+operator|.
+name|snapshotINode
+expr_stmt|;
+block|}
 name|previous
 operator|.
 name|combinePosteriorAndCollectBlocks

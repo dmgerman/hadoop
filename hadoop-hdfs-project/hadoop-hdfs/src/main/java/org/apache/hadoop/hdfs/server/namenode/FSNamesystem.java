@@ -1696,6 +1696,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|SnapshotDiffReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsConstants
 operator|.
 name|DatanodeReportType
@@ -1717,6 +1733,24 @@ operator|.
 name|HdfsConstants
 operator|.
 name|SafeModeAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|SnapshotDiffReport
+operator|.
+name|DiffReportEntry
 import|;
 end_import
 
@@ -2454,7 +2488,7 @@ name|snapshot
 operator|.
 name|INodeDirectorySnapshottable
 operator|.
-name|SnapshotDiffReport
+name|SnapshotDiffInfo
 import|;
 end_import
 
@@ -25939,7 +25973,7 @@ return|return
 name|status
 return|;
 block|}
-comment|/**    * Compute the difference between two snapshots (or between a snapshot and the    * current status) of a snapshottable directory.    *     * @param path The full path of the snapshottable directory.    * @param fromSnapshot Name of the snapshot to calculate the diff from. Null    *          or empty string indicates the current tree.    * @param toSnapshot Name of the snapshot to calculated the diff to. Null or    *          empty string indicates the current tree.    * @return The difference between {@code fromSnapshot} and {@code toSnapshot},    *         i.e., applying difference to source will get target.    * @throws IOException    */
+comment|/**    * Get the difference between two snapshots (or between a snapshot and the    * current status) of a snapshottable directory.    *     * @param path The full path of the snapshottable directory.    * @param fromSnapshot Name of the snapshot to calculate the diff from. Null    *          or empty string indicates the current tree.    * @param toSnapshot Name of the snapshot to calculated the diff to. Null or    *          empty string indicates the current tree.    * @return A report about the difference between {@code fromSnapshot} and     *         {@code toSnapshot}. Modified/deleted/created/renamed files and     *         directories belonging to the snapshottable directories are listed     *         and labeled as M/-/+/R respectively.     * @throws IOException    */
 DECL|method|getSnapshotDiffReport (String path, String fromSnapshot, String toSnapshot)
 specifier|public
 name|SnapshotDiffReport
@@ -25957,7 +25991,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|SnapshotDiffReport
+name|SnapshotDiffInfo
 name|diffs
 init|=
 literal|null
@@ -26027,6 +26061,31 @@ expr_stmt|;
 block|}
 return|return
 name|diffs
+operator|!=
+literal|null
+condition|?
+name|diffs
+operator|.
+name|generateReport
+argument_list|()
+else|:
+operator|new
+name|SnapshotDiffReport
+argument_list|(
+name|path
+argument_list|,
+name|fromSnapshot
+argument_list|,
+name|toSnapshot
+argument_list|,
+name|Collections
+operator|.
+expr|<
+name|DiffReportEntry
+operator|>
+name|emptyList
+argument_list|()
+argument_list|)
 return|;
 block|}
 comment|/**    * Delete a snapshot of a snapshottable directory    * @param snapshotRoot The snapshottable directory    * @param snapshotName The name of the to-be-deleted snapshot    * @throws SafeModeException    * @throws IOException    */
