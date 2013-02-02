@@ -472,15 +472,31 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
+DECL|method|destroySubtreeAndCollectBlocks (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 name|int
-name|collectSubtreeBlocksAndClear
+name|destroySubtreeAndCollectBlocks
 parameter_list|(
+specifier|final
+name|Snapshot
+name|snapshot
+parameter_list|,
+specifier|final
 name|BlocksMapUpdateInfo
-name|info
+name|collectedBlocks
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 if|if
 condition|(
 name|next
@@ -496,9 +512,11 @@ comment|// this is the only remaining inode.
 return|return
 name|super
 operator|.
-name|collectSubtreeBlocksAndClear
+name|destroySubtreeAndCollectBlocks
 argument_list|(
-name|info
+literal|null
+argument_list|,
+name|collectedBlocks
 argument_list|)
 return|;
 block|}
@@ -511,7 +529,7 @@ name|collectSubtreeBlocksAndClear
 argument_list|(
 name|this
 argument_list|,
-name|info
+name|collectedBlocks
 argument_list|)
 return|;
 block|}

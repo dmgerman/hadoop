@@ -304,12 +304,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
+DECL|method|destroySubtreeAndCollectBlocks (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
 name|int
-name|collectSubtreeBlocksAndClear
+name|destroySubtreeAndCollectBlocks
 parameter_list|(
+specifier|final
+name|Snapshot
+name|snapshot
+parameter_list|,
+specifier|final
 name|BlocksMapUpdateInfo
-name|info
+name|collectedBlocks
 parameter_list|)
 block|{
 return|return

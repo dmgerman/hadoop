@@ -1556,14 +1556,17 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Collect all the blocks in all children of this INode. Count and return the    * number of files in the sub tree. Also clears references since this INode is    * deleted.    *     * @param info    *          Containing all the blocks collected from the children of this    *          INode. These blocks later should be removed/updated in the    *          blocksMap.    */
-DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
+comment|/**    * Destroy the subtree under this inode and collect the blocks from the    * descents for further block deletion/update. If snapshot is null, the    * subtree resides in the current state; otherwise, the subtree resides in the    * given snapshot. The method also clears the references in the deleted inodes    * and remove the corresponding snapshot information, if there is any.    *     * @param snapshot the snapshot to be deleted; null means the current state.    * @param collectedBlocks blocks collected from the descents for further block    *                        deletion/update will be added to the given map.    * @return the number of deleted files in the subtree.    */
+DECL|method|destroySubtreeAndCollectBlocks (Snapshot snapshot, BlocksMapUpdateInfo collectedBlocks)
 specifier|abstract
 name|int
-name|collectSubtreeBlocksAndClear
+name|destroySubtreeAndCollectBlocks
 parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|,
 name|BlocksMapUpdateInfo
-name|info
+name|collectedBlocks
 parameter_list|)
 function_decl|;
 comment|/** Compute {@link ContentSummary}. */

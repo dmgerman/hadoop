@@ -189,16 +189,12 @@ name|isSnapshotCreation
 parameter_list|)
 function_decl|;
 comment|/**    * Delete the snapshot with the given name. The synchronization of the diff    * list will be done outside.    *     * If the diff to remove is not the first one in the diff list, we need to     * combine the diff with its previous one:    *     * @param snapshot The snapshot to be deleted    * @param collectedBlocks Used to collect information for blocksMap update    * @return The SnapshotDiff containing the deleted snapshot.     *         Null if the snapshot with the given name does not exist.     */
-DECL|method|deleteSnapshotDiff (Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|deleteSnapshotDiff (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
 specifier|final
-name|AbstractINodeDiff
-argument_list|<
-name|N
-argument_list|,
 name|D
-argument_list|>
 name|deleteSnapshotDiff
 parameter_list|(
+specifier|final
 name|Snapshot
 name|snapshot
 parameter_list|,

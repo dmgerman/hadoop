@@ -1255,15 +1255,31 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|collectSubtreeBlocksAndClear (BlocksMapUpdateInfo info)
+DECL|method|destroySubtreeAndCollectBlocks (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 name|int
-name|collectSubtreeBlocksAndClear
+name|destroySubtreeAndCollectBlocks
 parameter_list|(
+specifier|final
+name|Snapshot
+name|snapshot
+parameter_list|,
+specifier|final
 name|BlocksMapUpdateInfo
-name|info
+name|collectedBlocks
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
 name|parent
 operator|=
 literal|null
@@ -1274,7 +1290,7 @@ name|blocks
 operator|!=
 literal|null
 operator|&&
-name|info
+name|collectedBlocks
 operator|!=
 literal|null
 condition|)
@@ -1287,7 +1303,7 @@ range|:
 name|blocks
 control|)
 block|{
-name|info
+name|collectedBlocks
 operator|.
 name|addDeleteBlock
 argument_list|(
