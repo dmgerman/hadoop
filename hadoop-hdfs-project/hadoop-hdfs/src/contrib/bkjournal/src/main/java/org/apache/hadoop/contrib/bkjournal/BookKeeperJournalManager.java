@@ -2588,6 +2588,8 @@ name|currentLedgerList
 init|=
 name|getLedgerList
 argument_list|(
+name|fromTxId
+argument_list|,
 name|inProgressOk
 argument_list|)
 decl_stmt|;
@@ -2632,6 +2634,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Check once again, required in case of InProgress and is case of any
+comment|// gap.
 if|if
 condition|(
 name|fromTxId
@@ -2728,6 +2732,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// If mismatches then there might be some gap, so we should not check
+comment|// further.
 return|return;
 block|}
 name|streams
@@ -3744,6 +3750,33 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|getLedgerList
+argument_list|(
+operator|-
+literal|1
+argument_list|,
+name|inProgressOk
+argument_list|)
+return|;
+block|}
+DECL|method|getLedgerList (long fromTxId, boolean inProgressOk)
+specifier|private
+name|List
+argument_list|<
+name|EditLogLedgerMetadata
+argument_list|>
+name|getLedgerList
+parameter_list|(
+name|long
+name|fromTxId
+parameter_list|,
+name|boolean
+name|inProgressOk
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|List
 argument_list|<
 name|EditLogLedgerMetadata
@@ -3820,6 +3853,29 @@ argument_list|,
 name|legderMetadataPath
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|editLogLedgerMetadata
+operator|.
+name|getLastTxId
+argument_list|()
+operator|!=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
+operator|&&
+name|editLogLedgerMetadata
+operator|.
+name|getLastTxId
+argument_list|()
+operator|<
+name|fromTxId
+condition|)
+block|{
+comment|// exclude already read closed edits, but include inprogress edits
+comment|// as this will be handled in caller
+continue|continue;
+block|}
 name|ledgers
 operator|.
 name|add
