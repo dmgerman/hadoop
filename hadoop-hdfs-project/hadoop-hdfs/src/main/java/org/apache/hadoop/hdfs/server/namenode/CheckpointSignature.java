@@ -538,6 +538,25 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+DECL|method|namespaceIdMatches (FSImage si)
+name|boolean
+name|namespaceIdMatches
+parameter_list|(
+name|FSImage
+name|si
+parameter_list|)
+block|{
+return|return
+name|namespaceID
+operator|==
+name|si
+operator|.
+name|getStorage
+argument_list|()
+operator|.
+name|namespaceID
+return|;
+block|}
 DECL|method|validateStorageInfo (FSImage si)
 name|void
 name|validateStorageInfo

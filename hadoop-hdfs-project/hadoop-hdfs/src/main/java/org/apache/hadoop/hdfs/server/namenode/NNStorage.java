@@ -2419,16 +2419,8 @@ block|}
 comment|// Set Block pool ID in version with federation support
 if|if
 condition|(
-name|LayoutVersion
-operator|.
-name|supports
-argument_list|(
-name|Feature
-operator|.
-name|FEDERATION
-argument_list|,
-name|layoutVersion
-argument_list|)
+name|versionSupportsFederation
+argument_list|()
 condition|)
 block|{
 name|String
@@ -2567,16 +2559,8 @@ expr_stmt|;
 comment|// Set blockpoolID in version with federation support
 if|if
 condition|(
-name|LayoutVersion
-operator|.
-name|supports
-argument_list|(
-name|Feature
-operator|.
-name|FEDERATION
-argument_list|,
-name|layoutVersion
-argument_list|)
+name|versionSupportsFederation
+argument_list|()
 condition|)
 block|{
 name|props
