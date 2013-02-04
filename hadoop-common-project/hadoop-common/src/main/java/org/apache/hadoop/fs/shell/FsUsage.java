@@ -227,9 +227,15 @@ name|humanReadable
 condition|?
 name|StringUtils
 operator|.
-name|humanReadableInt
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
 argument_list|(
 name|size
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
 else|:
 name|String
