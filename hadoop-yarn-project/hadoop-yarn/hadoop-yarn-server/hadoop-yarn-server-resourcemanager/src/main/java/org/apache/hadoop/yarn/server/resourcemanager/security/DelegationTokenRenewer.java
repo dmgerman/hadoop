@@ -1285,7 +1285,6 @@ block|}
 comment|/**    * Add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @throws IOException    */
 DECL|method|addApplication ( ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd)
 specifier|public
-specifier|synchronized
 name|void
 name|addApplication
 parameter_list|(
