@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -114,6 +124,8 @@ DECL|class|LineReader
 specifier|public
 class|class
 name|LineReader
+implements|implements
+name|Closeable
 block|{
 DECL|field|DEFAULT_BUFFER_SIZE
 specifier|private
