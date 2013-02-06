@@ -4433,6 +4433,28 @@ operator|/
 name|capacity
 return|;
 block|}
+comment|/** Convert percentage to a string. */
+DECL|method|percent2String (double percentage)
+specifier|public
+specifier|static
+name|String
+name|percent2String
+parameter_list|(
+name|double
+name|percentage
+parameter_list|)
+block|{
+return|return
+name|StringUtils
+operator|.
+name|format
+argument_list|(
+literal|"%.2f%%"
+argument_list|,
+name|percentage
+argument_list|)
+return|;
+block|}
 comment|/**    * Round bytes to GiB (gibibyte)    * @param bytes number of bytes    * @return number of GiB    */
 DECL|method|roundBytesToGB (long bytes)
 specifier|public

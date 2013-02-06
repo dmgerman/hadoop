@@ -47,7 +47,7 @@ import|;
 end_import
 
 begin_import
-import|import
+import|import static
 name|org
 operator|.
 name|apache
@@ -57,6 +57,10 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
 import|;
 end_import
 
@@ -156,29 +160,39 @@ literal|null
 condition|?
 literal|""
 else|:
-operator|(
 literal|" of "
 operator|+
 name|pathName
 operator|)
-operator|)
 operator|+
-literal|" is exceeded: quota="
+literal|" is exceeded: quota = "
 operator|+
-name|StringUtils
-operator|.
-name|humanReadableInt
+name|quota
+operator|+
+literal|" B = "
+operator|+
+name|long2String
 argument_list|(
 name|quota
+argument_list|,
+literal|"B"
+argument_list|,
+literal|2
 argument_list|)
 operator|+
-literal|" diskspace consumed="
+literal|" but diskspace consumed = "
 operator|+
-name|StringUtils
-operator|.
-name|humanReadableInt
+name|count
+operator|+
+literal|" B = "
+operator|+
+name|long2String
 argument_list|(
 name|count
+argument_list|,
+literal|"B"
+argument_list|,
+literal|2
 argument_list|)
 return|;
 block|}

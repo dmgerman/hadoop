@@ -19,6 +19,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+operator|.
+name|percent2String
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -53,6 +69,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -1273,14 +1303,12 @@ name|append
 argument_list|(
 literal|"DFS Used%: "
 operator|+
-name|StringUtils
-operator|.
-name|limitDecimalTo2
+name|percent2String
 argument_list|(
 name|usedPercent
 argument_list|)
 operator|+
-literal|"%\n"
+literal|"\n"
 argument_list|)
 expr_stmt|;
 name|buffer
@@ -1289,14 +1317,12 @@ name|append
 argument_list|(
 literal|"DFS Remaining%: "
 operator|+
-name|StringUtils
-operator|.
-name|limitDecimalTo2
+name|percent2String
 argument_list|(
 name|remainingPercent
 argument_list|)
 operator|+
-literal|"%\n"
+literal|"\n"
 argument_list|)
 expr_stmt|;
 name|buffer
@@ -1469,24 +1495,15 @@ name|append
 argument_list|(
 literal|" "
 operator|+
-name|StringUtils
-operator|.
-name|limitDecimalTo2
+name|percent2String
 argument_list|(
-operator|(
-operator|(
-literal|1.0
-operator|*
 name|u
-operator|)
 operator|/
-name|c
+operator|(
+name|double
 operator|)
-operator|*
-literal|100
+name|c
 argument_list|)
-operator|+
-literal|"%"
 argument_list|)
 expr_stmt|;
 name|buffer

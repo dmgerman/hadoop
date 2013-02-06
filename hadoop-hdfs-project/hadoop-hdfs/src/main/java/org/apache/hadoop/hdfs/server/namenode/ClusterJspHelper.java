@@ -3172,14 +3172,12 @@ name|doc
 argument_list|,
 literal|"DFS Used%"
 argument_list|,
-name|StringUtils
+name|DFSUtil
 operator|.
-name|limitDecimalTo2
+name|percent2String
 argument_list|(
 name|dfsUsedPercent
 argument_list|)
-operator|+
-literal|"%"
 argument_list|)
 expr_stmt|;
 comment|// dfsRemainingPercent
@@ -3189,14 +3187,12 @@ name|doc
 argument_list|,
 literal|"DFS Remaining%"
 argument_list|,
-name|StringUtils
+name|DFSUtil
 operator|.
-name|limitDecimalTo2
+name|percent2String
 argument_list|(
 name|dfsRemainingPercent
 argument_list|)
-operator|+
-literal|"%"
 argument_list|)
 expr_stmt|;
 name|doc
