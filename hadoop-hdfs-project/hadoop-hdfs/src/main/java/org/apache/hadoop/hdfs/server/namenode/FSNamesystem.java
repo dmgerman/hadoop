@@ -9527,9 +9527,9 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Create a new file entry in the namespace.    *     * For description of parameters and exceptions thrown see     * {@link ClientProtocol#create()}    */
+comment|/**    * Create a new file entry in the namespace.    *     * For description of parameters and exceptions thrown see     * {@link ClientProtocol#create()}, except it returns valid  file status    * upon success    */
 DECL|method|startFile (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize)
-name|void
+name|HdfsFileStatus
 name|startFile
 parameter_list|(
 name|String
@@ -9576,6 +9576,7 @@ name|IOException
 block|{
 try|try
 block|{
+return|return
 name|startFileInt
 argument_list|(
 name|src
@@ -9594,7 +9595,7 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 catch|catch
 parameter_list|(
@@ -9640,7 +9641,7 @@ block|}
 block|}
 DECL|method|startFileInt (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize)
 specifier|private
-name|void
+name|HdfsFileStatus
 name|startFileInt
 parameter_list|(
 name|String
@@ -9690,6 +9691,10 @@ name|skipSync
 init|=
 literal|false
 decl_stmt|;
+specifier|final
+name|HdfsFileStatus
+name|stat
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -9719,6 +9724,17 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|)
+expr_stmt|;
+name|stat
+operator|=
+name|dir
+operator|.
+name|getFileInfo
+argument_list|(
+name|src
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -9766,19 +9782,6 @@ name|isExternalInvocation
 argument_list|()
 condition|)
 block|{
-specifier|final
-name|HdfsFileStatus
-name|stat
-init|=
-name|dir
-operator|.
-name|getFileInfo
-argument_list|(
-name|src
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
 name|logAuditEvent
 argument_list|(
 name|UserGroupInformation
@@ -9799,6 +9802,9 @@ name|stat
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|stat
+return|;
 block|}
 comment|/**    * Create new or open an existing file for append.<p>    *     * In case of opening the file for append, the method returns the last    * block of the file if this is a partial block, which can still be used    * for writing more data. The client uses the returned block locations    * to form the data pipeline for this block.<br>    * The method returns null if the last block is full or if this is a     * new file. The client then allocates a new block with the next call    * using {@link NameNode#addBlock()}.<p>    *    * For description of parameters and exceptions thrown see     * {@link ClientProtocol#create()}    *     * @return the last block locations if the block is partial or null otherwise    */
 DECL|method|startFileInternal (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize)
@@ -11385,12 +11391,15 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The client would like to obtain an additional block for the indicated    * filename (which is being written-to).  Return an array that consists    * of the block, plus a set of machines.  The first on this list should    * be where the client writes data.  Subsequent items in the list must    * be provided in the connection to the first datanode.    *    * Make sure the previous blocks have been reported by datanodes and    * are replicated.  Will return an empty 2-elt array if we want the    * client to "try again later".    */
-DECL|method|getAdditionalBlock (String src, String clientName, ExtendedBlock previous, HashMap<Node, Node> excludedNodes )
+DECL|method|getAdditionalBlock (String src, long fileId, String clientName, ExtendedBlock previous, HashMap<Node, Node> excludedNodes)
 name|LocatedBlock
 name|getAdditionalBlock
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|clientName
@@ -11480,6 +11489,8 @@ init|=
 name|analyzeFileState
 argument_list|(
 name|src
+argument_list|,
+name|fileId
 argument_list|,
 name|clientName
 argument_list|,
@@ -11608,6 +11619,8 @@ init|=
 name|analyzeFileState
 argument_list|(
 name|src
+argument_list|,
+name|fileId
 argument_list|,
 name|clientName
 argument_list|,
@@ -11738,12 +11751,15 @@ name|offset
 argument_list|)
 return|;
 block|}
-DECL|method|analyzeFileState (String src, String clientName, ExtendedBlock previous, LocatedBlock[] onRetryBlock)
+DECL|method|analyzeFileState (String src, long fileId, String clientName, ExtendedBlock previous, LocatedBlock[] onRetryBlock)
 name|INodesInPath
 name|analyzeFileState
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|clientName
@@ -11845,6 +11861,8 @@ init|=
 name|checkLease
 argument_list|(
 name|src
+argument_list|,
+name|fileId
 argument_list|,
 name|clientName
 argument_list|,
@@ -12582,6 +12600,8 @@ throws|throws
 name|LeaseExpiredException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|FileNotFoundException
 block|{
 assert|assert
 name|hasReadOrWriteLock
@@ -12591,6 +12611,10 @@ return|return
 name|checkLease
 argument_list|(
 name|src
+argument_list|,
+name|INodeId
+operator|.
+name|GRANDFATHER_INODE_ID
 argument_list|,
 name|holder
 argument_list|,
@@ -12603,13 +12627,16 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|checkLease (String src, String holder, INode file)
+DECL|method|checkLease (String src, long fileId, String holder, INode file)
 specifier|private
 name|INodeFileUnderConstruction
 name|checkLease
 parameter_list|(
 name|String
 name|src
+parameter_list|,
+name|long
+name|fileId
 parameter_list|,
 name|String
 name|holder
@@ -12619,6 +12646,8 @@ name|file
 parameter_list|)
 throws|throws
 name|LeaseExpiredException
+throws|,
+name|FileNotFoundException
 block|{
 assert|assert
 name|hasReadOrWriteLock
@@ -12772,6 +12801,15 @@ name|holder
 argument_list|)
 throw|;
 block|}
+name|INodeId
+operator|.
+name|checkId
+argument_list|(
+name|fileId
+argument_list|,
+name|pendingFile
+argument_list|)
+expr_stmt|;
 return|return
 name|pendingFile
 return|;
