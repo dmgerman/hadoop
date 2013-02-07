@@ -4102,6 +4102,35 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// auto destroy when empty
+if|if
+condition|(
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_READ_SHORTCIRCUIT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_READ_SHORTCIRCUIT_DEFAULT
+argument_list|)
+operator|||
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC_DEFAULT
+argument_list|)
+condition|)
+block|{
 name|DomainPeerServer
 name|domainPeerServer
 init|=
@@ -4154,6 +4183,7 @@ name|getBindPath
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|getDomainPeerServer (Configuration conf, int port)
