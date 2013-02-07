@@ -183,10 +183,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|MiniDFSCluster
-operator|.
-name|getBaseDirectory
-argument_list|()
+literal|"/tmp/TestFileLengthOnClusterRestart"
 argument_list|,
 literal|"test"
 argument_list|)
