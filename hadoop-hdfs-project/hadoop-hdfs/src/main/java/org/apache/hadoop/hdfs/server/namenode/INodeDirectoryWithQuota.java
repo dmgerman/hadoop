@@ -170,7 +170,7 @@ literal|0L
 decl_stmt|;
 comment|/** Convert an existing directory inode to one with the given quota    *     * @param nsQuota Namespace quota to be assigned to this inode    * @param dsQuota Diskspace quota to be assigned to this indoe    * @param other The other inode from which all other properties are copied    */
 DECL|method|INodeDirectoryWithQuota (INodeDirectory other, boolean adopt, long nsQuota, long dsQuota)
-specifier|protected
+specifier|public
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|INodeDirectory

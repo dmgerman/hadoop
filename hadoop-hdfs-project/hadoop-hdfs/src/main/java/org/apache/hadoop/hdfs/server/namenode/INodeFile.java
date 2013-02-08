@@ -735,87 +735,34 @@ name|blklist
 expr_stmt|;
 block|}
 DECL|method|INodeFile (INodeFile that)
-specifier|protected
-name|INodeFile
-parameter_list|(
-name|INodeFile
-name|that
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|that
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|header
-operator|=
-name|that
-operator|.
-name|header
-expr_stmt|;
-name|this
-operator|.
-name|blocks
-operator|=
-name|that
-operator|.
-name|blocks
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|recordModification (final Snapshot latest)
-name|INodeFile
-name|recordModification
-parameter_list|(
-specifier|final
-name|Snapshot
-name|latest
-parameter_list|)
-block|{
-comment|//TODO: change it to use diff list
-return|return
-operator|(
-name|INodeFile
-operator|)
-name|super
-operator|.
-name|recordModification
-argument_list|(
-name|latest
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|createSnapshotCopy ()
 specifier|public
-name|Pair
-argument_list|<
-name|?
-extends|extends
 name|INodeFile
-argument_list|,
-name|?
-extends|extends
+parameter_list|(
 name|INodeFile
-argument_list|>
-name|createSnapshotCopy
-parameter_list|()
+name|that
+parameter_list|)
 block|{
-return|return
-name|parent
-operator|.
-name|replaceChild4INodeFileWithSnapshot
+name|super
 argument_list|(
-name|this
+name|that
 argument_list|)
+expr_stmt|;
+name|this
 operator|.
-name|createSnapshotCopy
-argument_list|()
-return|;
+name|header
+operator|=
+name|that
+operator|.
+name|header
+expr_stmt|;
+name|this
+operator|.
+name|blocks
+operator|=
+name|that
+operator|.
+name|blocks
+expr_stmt|;
 block|}
 comment|/** @return true unconditionally. */
 annotation|@
@@ -875,10 +822,43 @@ name|clientNode
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|recordModification (final Snapshot latest)
+specifier|public
+name|INodeFile
+name|recordModification
+parameter_list|(
+specifier|final
+name|Snapshot
+name|latest
+parameter_list|)
+block|{
+return|return
+name|latest
+operator|==
+literal|null
+condition|?
+name|this
+else|:
+name|parent
+operator|.
+name|replaceChild4INodeFileWithSnapshot
+argument_list|(
+name|this
+argument_list|)
+operator|.
+name|recordModification
+argument_list|(
+name|latest
+argument_list|)
+return|;
+block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
 annotation|@
 name|Override
 DECL|method|setPermission (FsPermission permission, Snapshot latest)
+specifier|final
 name|INode
 name|setPermission
 parameter_list|(
@@ -906,6 +886,25 @@ argument_list|)
 return|;
 block|}
 comment|/** @return the replication factor of the file. */
+DECL|method|getFileReplication (Snapshot snapshot)
+specifier|public
+name|short
+name|getFileReplication
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+return|return
+name|HeaderFormat
+operator|.
+name|getReplication
+argument_list|(
+name|header
+argument_list|)
+return|;
+block|}
+comment|/** The same as getFileReplication(null). */
 DECL|method|getFileReplication ()
 specifier|public
 specifier|final
@@ -914,11 +913,9 @@ name|getFileReplication
 parameter_list|()
 block|{
 return|return
-name|HeaderFormat
-operator|.
-name|getReplication
+name|getFileReplication
 argument_list|(
-name|header
+literal|null
 argument_list|)
 return|;
 block|}
@@ -932,7 +929,9 @@ parameter_list|()
 block|{
 return|return
 name|getFileReplication
-argument_list|()
+argument_list|(
+literal|null
+argument_list|)
 return|;
 block|}
 DECL|method|setFileReplication (short replication, Snapshot latest)
@@ -1280,10 +1279,6 @@ return|return
 literal|0
 return|;
 block|}
-name|parent
-operator|=
-literal|null
-expr_stmt|;
 if|if
 condition|(
 name|blocks
@@ -1324,6 +1319,9 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+name|clearReferences
+argument_list|()
+expr_stmt|;
 return|return
 literal|1
 return|;
@@ -1362,6 +1360,8 @@ operator|+=
 name|computeFileSize
 argument_list|(
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|summary
@@ -1382,7 +1382,7 @@ return|return
 name|summary
 return|;
 block|}
-comment|/** Compute file size.    * May or may not include BlockInfoUnderConstruction.    */
+comment|/** The same as computeFileSize(includesBlockInfoUnderConstruction, null). */
 DECL|method|computeFileSize (boolean includesBlockInfoUnderConstruction)
 specifier|public
 name|long
@@ -1390,6 +1390,28 @@ name|computeFileSize
 parameter_list|(
 name|boolean
 name|includesBlockInfoUnderConstruction
+parameter_list|)
+block|{
+return|return
+name|computeFileSize
+argument_list|(
+name|includesBlockInfoUnderConstruction
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/** Compute file size.    * May or may not include BlockInfoUnderConstruction.    */
+DECL|method|computeFileSize (boolean includesBlockInfoUnderConstruction, Snapshot snapshot)
+specifier|public
+name|long
+name|computeFileSize
+parameter_list|(
+name|boolean
+name|includesBlockInfoUnderConstruction
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 block|{
 if|if
@@ -1736,6 +1758,8 @@ operator|+
 name|computeFileSize
 argument_list|(
 literal|true
+argument_list|,
+name|snapshot
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -7903,6 +7903,11 @@ operator|.
 name|computeFileSize
 argument_list|(
 literal|false
+argument_list|,
+name|iip
+operator|.
+name|getPathSnapshot
+argument_list|()
 argument_list|)
 argument_list|,
 name|inode
@@ -16401,9 +16406,6 @@ expr_stmt|;
 block|}
 name|pendingFile
 operator|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
 name|pendingFile
 operator|.
 name|recordModification

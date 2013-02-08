@@ -228,7 +228,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeFileSnapshot
+name|INodeFileWithSnapshot
 import|;
 end_import
 
@@ -1513,16 +1513,18 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// The last INode should be the INode for sub1
+specifier|final
+name|INode
+name|last
+init|=
+name|nodesInPath
+operator|.
+name|getLastINode
+argument_list|()
+decl_stmt|;
 name|assertEquals
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
 operator|.
 name|getFullPathName
 argument_list|()
@@ -1535,16 +1537,9 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
 operator|instanceof
-name|INodeFileSnapshot
+name|INodeFileWithSnapshot
 argument_list|)
 expr_stmt|;
 block|}
@@ -2476,7 +2471,7 @@ name|assertTrue
 argument_list|(
 name|snapshotFileNode
 operator|instanceof
-name|INodeFileSnapshot
+name|INodeFileWithSnapshot
 argument_list|)
 expr_stmt|;
 comment|// The modification time of the snapshot INode should be the same with the

@@ -304,46 +304,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeFileSnapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|INodeFileUnderConstructionSnapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
 name|INodeFileWithSnapshot
 import|;
 end_import
@@ -415,20 +375,6 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
 import|;
 end_import
 
@@ -1080,36 +1026,6 @@ operator|.
 name|id
 return|;
 block|}
-comment|/**    * Create a copy of this inode for snapshot.    *     * @return a pair of inodes, where the left inode is the current inode and    *         the right inode is the snapshot copy. The current inode usually is    *         the same object of this inode. However, in some cases, the inode    *         may be replaced with a new inode for maintaining snapshot data.    *         Then, the current inode is the new inode.    */
-DECL|method|createSnapshotCopy ()
-specifier|public
-name|Pair
-argument_list|<
-name|?
-extends|extends
-name|INode
-argument_list|,
-name|?
-extends|extends
-name|INode
-argument_list|>
-name|createSnapshotCopy
-parameter_list|()
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|(
-name|getClass
-argument_list|()
-operator|.
-name|getSimpleName
-argument_list|()
-operator|+
-literal|" does not support createSnapshotCopy()."
-argument_list|)
-throw|;
-block|}
 comment|/**    * Check whether this is the root inode.    */
 DECL|method|isRoot ()
 name|boolean
@@ -1502,6 +1418,7 @@ return|;
 block|}
 comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @return The current inode, which usually is the same object of this inode.    *         However, in some cases, this inode may be replaced with a new inode    *         for maintaining snapshots. The current inode is then the new inode.    */
 DECL|method|recordModification (final Snapshot latest)
+specifier|abstract
 name|INode
 name|recordModification
 parameter_list|(
@@ -1509,31 +1426,7 @@ specifier|final
 name|Snapshot
 name|latest
 parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-name|isDirectory
-argument_list|()
-argument_list|,
-literal|"this is an INodeDirectory, this=%s"
-argument_list|,
-name|this
-argument_list|)
-expr_stmt|;
-return|return
-name|parent
-operator|.
-name|saveChild2Snapshot
-argument_list|(
-name|this
-argument_list|,
-name|latest
-argument_list|)
-return|;
-block|}
+function_decl|;
 comment|/**    * Check whether it's a file.    */
 DECL|method|isFile ()
 specifier|public
@@ -1556,7 +1449,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Destroy the subtree under this inode and collect the blocks from the    * descents for further block deletion/update. If snapshot is null, the    * subtree resides in the current state; otherwise, the subtree resides in the    * given snapshot. The method also clears the references in the deleted inodes    * and remove the corresponding snapshot information, if there is any.    *     * @param snapshot the snapshot to be deleted; null means the current state.    * @param collectedBlocks blocks collected from the descents for further block    *                        deletion/update will be added to the given map.    * @return the number of deleted files in the subtree.    */
+comment|/**    * Destroy the subtree under this inode and collect the blocks from the    * descents for further block deletion/update. If snapshot is null, the    * subtree resides in the current state; otherwise, the subtree resides in the    * given snapshot. The method also clears the references in the deleted inodes    * and remove the corresponding snapshot information, if there is any.    *     * @param snapshot the snapshot to be deleted; null means the current state.    * @param collectedBlocks blocks collected from the descents for further block    *                        deletion/update will be added to the given map.    * @return the number of deleted inodes in the subtree.    */
 DECL|method|destroySubtreeAndCollectBlocks (Snapshot snapshot, BlocksMapUpdateInfo collectedBlocks)
 specifier|abstract
 name|int
@@ -1834,13 +1727,7 @@ name|toString
 parameter_list|()
 block|{
 return|return
-name|name
-operator|==
-literal|null
-condition|?
-literal|"<name==null>"
-else|:
-name|getFullPathName
+name|getLocalName
 argument_list|()
 return|;
 block|}
@@ -1950,6 +1837,19 @@ operator|=
 name|parent
 expr_stmt|;
 block|}
+comment|/** Clear references to other objects. */
+DECL|method|clearReferences ()
+specifier|public
+name|void
+name|clearReferences
+parameter_list|()
+block|{
+name|setParent
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return modification time.    */
 DECL|method|getModificationTime (Snapshot snapshot)
 specifier|public
@@ -1969,6 +1869,7 @@ block|}
 comment|/** The same as getModificationTime(null). */
 DECL|method|getModificationTime ()
 specifier|public
+specifier|final
 name|long
 name|getModificationTime
 parameter_list|()
@@ -1983,7 +1884,8 @@ block|}
 comment|/** Update modification time if it is larger than the current value. */
 DECL|method|updateModificationTime (long mtime, Snapshot latest)
 specifier|public
-name|void
+specifier|final
+name|INode
 name|updateModificationTime
 parameter_list|(
 name|long
@@ -2000,18 +1902,22 @@ assert|;
 if|if
 condition|(
 name|mtime
-operator|>
+operator|<=
 name|modificationTime
 condition|)
 block|{
+return|return
+name|this
+return|;
+block|}
+return|return
 name|setModificationTime
 argument_list|(
 name|mtime
 argument_list|,
 name|latest
 argument_list|)
-expr_stmt|;
-block|}
+return|;
 block|}
 DECL|method|cloneModificationTime (INode that)
 name|void
@@ -2033,6 +1939,7 @@ block|}
 comment|/**    * Always set the last modification time of inode.    */
 DECL|method|setModificationTime (long modtime, Snapshot latest)
 specifier|public
+specifier|final
 name|INode
 name|setModificationTime
 parameter_list|(
@@ -2685,13 +2592,10 @@ else|:
 operator|(
 name|withSnapshot
 condition|?
+operator|new
 name|INodeDirectoryWithSnapshot
-operator|.
-name|newInstance
 argument_list|(
 name|dir
-argument_list|,
-literal|null
 argument_list|)
 else|:
 name|dir
@@ -2720,39 +2624,12 @@ argument_list|,
 name|preferredBlockSize
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|computeFileSize
-operator|>=
-literal|0
-condition|)
-block|{
-return|return
-name|underConstruction
-condition|?
-operator|new
-name|INodeFileUnderConstructionSnapshot
-argument_list|(
-name|fileNode
-argument_list|,
-name|computeFileSize
-argument_list|,
-name|clientName
-argument_list|,
-name|clientMachine
-argument_list|)
-else|:
-operator|new
-name|INodeFileSnapshot
-argument_list|(
-name|fileNode
-argument_list|,
-name|computeFileSize
-argument_list|)
-return|;
-block|}
-else|else
-block|{
+comment|//    TODO: fix image for file diff.
+comment|//    if (computeFileSize>= 0) {
+comment|//      return underConstruction ? new INodeFileUnderConstructionSnapshot(
+comment|//          fileNode, computeFileSize, clientName, clientMachine)
+comment|//          : new INodeFileWithSnapshot(fileNode, computeFileSize);
+comment|//    } else {
 return|return
 name|withLink
 condition|?
@@ -2760,11 +2637,13 @@ operator|new
 name|INodeFileWithSnapshot
 argument_list|(
 name|fileNode
+argument_list|,
+literal|null
 argument_list|)
 else|:
 name|fileNode
 return|;
-block|}
+comment|//    }
 block|}
 comment|/**    * Dump the subtree starting from this inode.    * @return a text representation of the tree.    */
 annotation|@

@@ -146,6 +146,35 @@ name|D
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|method|AbstractINodeDiffList (final List<D> diffs)
+name|AbstractINodeDiffList
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|D
+argument_list|>
+name|diffs
+parameter_list|)
+block|{
+if|if
+condition|(
+name|diffs
+operator|!=
+literal|null
+condition|)
+block|{
+name|this
+operator|.
+name|diffs
+operator|.
+name|addAll
+argument_list|(
+name|diffs
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** @return this list as a unmodifiable {@link List}. */
 DECL|method|asList ()
 specifier|final
@@ -173,19 +202,13 @@ name|getCurrentINode
 parameter_list|()
 function_decl|;
 comment|/** Add a {@link AbstractINodeDiff} for the given snapshot and inode. */
-DECL|method|addSnapshotDiff (Snapshot snapshot, N inode, boolean isSnapshotCreation)
+DECL|method|addSnapshotDiff (Snapshot snapshot)
 specifier|abstract
 name|D
 name|addSnapshotDiff
 parameter_list|(
 name|Snapshot
 name|snapshot
-parameter_list|,
-name|N
-name|inode
-parameter_list|,
-name|boolean
-name|isSnapshotCreation
 parameter_list|)
 function_decl|;
 comment|/**    * Delete the snapshot with the given name. The synchronization of the diff    * list will be done outside.    *     * If the diff to remove is not the first one in the diff list, we need to     * combine the diff with its previous one:    *     * @param snapshot The snapshot to be deleted    * @param collectedBlocks Used to collect information for blocksMap update    * @return The SnapshotDiff containing the deleted snapshot.     *         Null if the snapshot with the given name does not exist.     */
@@ -242,9 +265,29 @@ decl_stmt|;
 if|if
 condition|(
 name|snapshotIndex
-operator|>
+operator|==
 literal|0
 condition|)
+block|{
+if|if
+condition|(
+name|removed
+operator|.
+name|snapshotINode
+operator|!=
+literal|null
+condition|)
+block|{
+name|removed
+operator|.
+name|snapshotINode
+operator|.
+name|clearReferences
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+else|else
 block|{
 comment|// combine the to-be-removed diff with its previous diff
 specifier|final
@@ -274,7 +317,6 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// TODO: add a new testcase for this
 name|previous
 operator|.
 name|snapshotINode
@@ -284,10 +326,31 @@ operator|.
 name|snapshotINode
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|removed
+operator|.
+name|snapshotINode
+operator|!=
+literal|null
+condition|)
+block|{
+name|removed
+operator|.
+name|snapshotINode
+operator|.
+name|clearReferences
+argument_list|()
+expr_stmt|;
+block|}
 name|previous
 operator|.
 name|combinePosteriorAndCollectBlocks
 argument_list|(
+name|getCurrentINode
+argument_list|()
+argument_list|,
 name|removed
 argument_list|,
 name|collectedBlocks
@@ -317,22 +380,17 @@ return|;
 block|}
 block|}
 comment|/** Append the diff at the end of the list. */
-DECL|method|append (D diff)
+DECL|method|addLast (D diff)
 specifier|final
 name|D
-name|append
+name|addLast
 parameter_list|(
 name|D
 name|diff
 parameter_list|)
 block|{
 specifier|final
-name|AbstractINodeDiff
-argument_list|<
-name|N
-argument_list|,
 name|D
-argument_list|>
 name|last
 init|=
 name|getLast
@@ -364,16 +422,34 @@ return|return
 name|diff
 return|;
 block|}
-comment|/** Insert the diff to the beginning of the list. */
-DECL|method|insert (D diff)
+comment|/** Add the diff to the beginning of the list. */
+DECL|method|addFirst (D diff)
 specifier|final
 name|void
-name|insert
+name|addFirst
 parameter_list|(
 name|D
 name|diff
 parameter_list|)
 block|{
+specifier|final
+name|D
+name|first
+init|=
+name|diffs
+operator|.
+name|isEmpty
+argument_list|()
+condition|?
+literal|null
+else|:
+name|diffs
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 name|diffs
 operator|.
 name|add
@@ -381,6 +457,13 @@ argument_list|(
 literal|0
 argument_list|,
 name|diff
+argument_list|)
+expr_stmt|;
+name|diff
+operator|.
+name|setPosterior
+argument_list|(
+name|first
 argument_list|)
 expr_stmt|;
 block|}
@@ -534,6 +617,36 @@ literal|null
 return|;
 block|}
 block|}
+DECL|method|getSnapshotINode (Snapshot snapshot)
+name|N
+name|getSnapshotINode
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+specifier|final
+name|D
+name|diff
+init|=
+name|getDiff
+argument_list|(
+name|snapshot
+argument_list|)
+decl_stmt|;
+return|return
+name|diff
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|diff
+operator|.
+name|getSnapshotINode
+argument_list|()
+return|;
+block|}
 comment|/**    * Check if the latest snapshot diff exists.  If not, add it.    * @return the latest snapshot diff, which is never null.    */
 DECL|method|checkAndAddLatestSnapshotDiff (Snapshot latest)
 specifier|final
@@ -570,13 +683,42 @@ else|:
 name|addSnapshotDiff
 argument_list|(
 name|latest
-argument_list|,
+argument_list|)
+return|;
+block|}
+comment|/** Save the snapshot copy to the latest snapshot. */
+DECL|method|saveSelf2Snapshot (Snapshot latest, N snapshotCopy)
+name|void
+name|saveSelf2Snapshot
+parameter_list|(
+name|Snapshot
+name|latest
+parameter_list|,
+name|N
+name|snapshotCopy
+parameter_list|)
+block|{
+if|if
+condition|(
+name|latest
+operator|!=
+literal|null
+condition|)
+block|{
+name|checkAndAddLatestSnapshotDiff
+argument_list|(
+name|latest
+argument_list|)
+operator|.
+name|checkAndInitINode
+argument_list|(
 name|getCurrentINode
 argument_list|()
 argument_list|,
-literal|false
+name|snapshotCopy
 argument_list|)
-return|;
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -605,7 +747,13 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"diffs="
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|": "
 operator|+
 name|diffs
 return|;

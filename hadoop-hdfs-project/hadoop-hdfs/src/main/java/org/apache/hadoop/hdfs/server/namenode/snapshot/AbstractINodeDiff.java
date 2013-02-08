@@ -228,10 +228,13 @@ name|posterior
 expr_stmt|;
 block|}
 comment|/** Copy the INode state to the snapshot if it is not done already. */
-DECL|method|checkAndInitINode (N snapshotCopy)
+DECL|method|checkAndInitINode (N currentINode, N snapshotCopy)
 name|void
 name|checkAndInitINode
 parameter_list|(
+name|N
+name|currentINode
+parameter_list|,
 name|N
 name|snapshotCopy
 parameter_list|)
@@ -250,29 +253,12 @@ operator|==
 literal|null
 condition|)
 block|{
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-specifier|final
-name|N
-name|right
-init|=
-operator|(
-name|N
-operator|)
-name|getCurrentINode
-argument_list|()
-operator|.
-name|createSnapshotCopy
-argument_list|()
-operator|.
-name|right
-decl_stmt|;
 name|snapshotCopy
 operator|=
-name|right
+name|createSnapshotCopyOfCurrentINode
+argument_list|(
+name|currentINode
+argument_list|)
 expr_stmt|;
 block|}
 name|snapshotINode
@@ -281,12 +267,15 @@ name|snapshotCopy
 expr_stmt|;
 block|}
 block|}
-comment|/** @return the current inode. */
-DECL|method|getCurrentINode ()
+comment|/** @return a snapshot copy of the current inode. */
+DECL|method|createSnapshotCopyOfCurrentINode (N currentINode)
 specifier|abstract
 name|N
-name|getCurrentINode
-parameter_list|()
+name|createSnapshotCopyOfCurrentINode
+parameter_list|(
+name|N
+name|currentINode
+parameter_list|)
 function_decl|;
 comment|/** @return the inode corresponding to the snapshot. */
 DECL|method|getSnapshotINode ()
@@ -294,7 +283,8 @@ name|N
 name|getSnapshotINode
 parameter_list|()
 block|{
-comment|// get from this diff, then the posterior diff and then the current inode
+comment|// get from this diff, then the posterior diff
+comment|// and then null for the current inode
 for|for
 control|(
 name|AbstractINodeDiff
@@ -341,18 +331,21 @@ literal|null
 condition|)
 block|{
 return|return
-name|getCurrentINode
-argument_list|()
+literal|null
 return|;
 block|}
 block|}
 block|}
 comment|/** Combine the posterior diff and collect blocks for deletion. */
-DECL|method|combinePosteriorAndCollectBlocks (final D posterior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|combinePosteriorAndCollectBlocks (final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|abstract
 name|void
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
+specifier|final
+name|N
+name|currentINode
+parameter_list|,
 specifier|final
 name|D
 name|posterior
@@ -362,6 +355,42 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 function_decl|;
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|snapshot
+operator|+
+literal|" (post="
+operator|+
+operator|(
+name|posteriorDiff
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|posteriorDiff
+operator|.
+name|snapshot
+operator|)
+operator|+
+literal|")"
+return|;
+block|}
 block|}
 end_class
 
