@@ -1098,6 +1098,9 @@ operator|+
 literal|", inode="
 operator|+
 name|inode
+operator|.
+name|getFullPathName
+argument_list|()
 argument_list|)
 throw|;
 block|}

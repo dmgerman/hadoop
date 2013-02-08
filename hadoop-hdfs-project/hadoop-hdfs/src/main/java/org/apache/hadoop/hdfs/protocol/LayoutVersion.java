@@ -363,10 +363,10 @@ DECL|enumConstant|SNAPSHOT
 name|SNAPSHOT
 argument_list|(
 operator|-
-literal|41
+literal|42
 argument_list|,
 operator|-
-literal|39
+literal|40
 argument_list|,
 literal|"Support for snapshot feature"
 argument_list|,

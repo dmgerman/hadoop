@@ -958,14 +958,6 @@ throw|;
 block|}
 comment|// deleted must be an FileWithSnapshot (INodeFileSnapshot or
 comment|// INodeFileUnderConstructionSnapshot)
-name|FileWithSnapshot
-name|deletedWithLink
-init|=
-operator|(
-name|FileWithSnapshot
-operator|)
-name|deleted
-decl_stmt|;
 name|INodeFile
 name|cNode
 init|=
@@ -978,14 +970,6 @@ name|get
 argument_list|(
 name|c
 argument_list|)
-decl_stmt|;
-name|INodeFileWithSnapshot
-name|cNodeWithLink
-init|=
-operator|(
-name|INodeFileWithSnapshot
-operator|)
-name|cNode
 decl_stmt|;
 operator|(
 operator|(
@@ -1000,14 +984,6 @@ name|cNode
 operator|.
 name|getBlocks
 argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// insert deleted into the circular list
-name|cNodeWithLink
-operator|.
-name|insertBefore
-argument_list|(
-name|deletedWithLink
 argument_list|)
 expr_stmt|;
 block|}

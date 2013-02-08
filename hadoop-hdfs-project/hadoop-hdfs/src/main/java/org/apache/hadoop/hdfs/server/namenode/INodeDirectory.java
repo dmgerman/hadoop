@@ -1082,7 +1082,6 @@ argument_list|)
 return|;
 block|}
 DECL|method|replaceChild (final N newChild)
-specifier|private
 specifier|final
 parameter_list|<
 name|N
@@ -1164,8 +1163,6 @@ operator|new
 name|INodeFileWithSnapshot
 argument_list|(
 name|child
-argument_list|,
-literal|null
 argument_list|)
 argument_list|)
 return|;

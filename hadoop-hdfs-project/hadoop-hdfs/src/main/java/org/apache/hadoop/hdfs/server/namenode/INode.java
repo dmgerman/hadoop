@@ -46,6 +46,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Arrays
 import|;
 end_import
@@ -56,27 +66,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
+name|List
 import|;
 end_import
 
@@ -209,24 +199,6 @@ operator|.
 name|protocol
 operator|.
 name|Block
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
-name|BlockCollection
 import|;
 end_import
 
@@ -2429,8 +2401,8 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an INode; the inode's name is not set yet    *     * @param id preassigned inode id    * @param permissions permissions    * @param blocks blocks if a file    * @param symlink symblic link if a symbolic link    * @param replication replication factor    * @param modificationTime modification time    * @param atime access time    * @param nsQuota namespace quota    * @param dsQuota disk quota    * @param preferredBlockSize block size    * @param numBlocks number of blocks    * @param withLink whether the node is INodeWithLink    * @param computeFileSize non-negative computeFileSize means the node is     *                        INodeFileSnapshot    * @param snapshottable whether the node is {@link INodeDirectorySnapshottable}    * @param withSnapshot whether the node is {@link INodeDirectoryWithSnapshot}    * @param underConstruction whether the node is     *                          {@link INodeFileUnderConstructionSnapshot}    * @param clientName clientName of {@link INodeFileUnderConstructionSnapshot}    * @param clientMachine clientMachine of     *                      {@link INodeFileUnderConstructionSnapshot}    * @return an inode    */
-DECL|method|newINode (long id, PermissionStatus permissions, BlockInfo[] blocks, String symlink, short replication, long modificationTime, long atime, long nsQuota, long dsQuota, long preferredBlockSize, int numBlocks, boolean withLink, long computeFileSize, boolean snapshottable, boolean withSnapshot, boolean underConstruction, String clientName, String clientMachine)
+comment|/**    * Create an INode; the inode's name is not set yet    *     * @param id preassigned inode id    * @param permissions permissions    * @param blocks blocks if a file    * @param symlink symblic link if a symbolic link    * @param replication replication factor    * @param modificationTime modification time    * @param atime access time    * @param nsQuota namespace quota    * @param dsQuota disk quota    * @param preferredBlockSize block size    * @param numBlocks number of blocks    * @param computeFileSize non-negative computeFileSize means the node is     *                        INodeFileSnapshot    * @param snapshottable whether the node is {@link INodeDirectorySnapshottable}    * @param withSnapshot whether the node has snapshots    * @param underConstruction whether the node is     *                          {@link INodeFileUnderConstructionSnapshot}    * @param clientName clientName of {@link INodeFileUnderConstructionSnapshot}    * @param clientMachine clientMachine of     *                      {@link INodeFileUnderConstructionSnapshot}    * @return an inode    */
+DECL|method|newINode (long id, PermissionStatus permissions, BlockInfo[] blocks, String symlink, short replication, long modificationTime, long atime, long nsQuota, long dsQuota, long preferredBlockSize, int numBlocks, long computeFileSize, boolean snapshottable, boolean withSnapshot, boolean underConstruction, String clientName, String clientMachine)
 specifier|static
 name|INode
 name|newINode
@@ -2468,9 +2440,6 @@ name|preferredBlockSize
 parameter_list|,
 name|int
 name|numBlocks
-parameter_list|,
-name|boolean
-name|withLink
 parameter_list|,
 name|long
 name|computeFileSize
@@ -2631,14 +2600,12 @@ comment|//          fileNode, computeFileSize, clientName, clientMachine)
 comment|//          : new INodeFileWithSnapshot(fileNode, computeFileSize);
 comment|//    } else {
 return|return
-name|withLink
+name|withSnapshot
 condition|?
 operator|new
 name|INodeFileWithSnapshot
 argument_list|(
 name|fileNode
-argument_list|,
-literal|null
 argument_list|)
 else|:
 name|fileNode
@@ -2810,48 +2777,75 @@ specifier|public
 specifier|static
 class|class
 name|BlocksMapUpdateInfo
-implements|implements
-name|Iterable
-argument_list|<
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|Block
-argument_list|,
-name|BlocksMapINodeUpdateEntry
-argument_list|>
-argument_list|>
 block|{
-DECL|field|updateMap
+comment|/**      * The list of blocks that need to be removed from blocksMap      */
+DECL|field|toDeleteList
 specifier|private
-specifier|final
-name|Map
+name|List
 argument_list|<
 name|Block
-argument_list|,
-name|BlocksMapINodeUpdateEntry
 argument_list|>
-name|updateMap
+name|toDeleteList
 decl_stmt|;
+DECL|method|BlocksMapUpdateInfo (List<Block> toDeleteList)
+specifier|public
+name|BlocksMapUpdateInfo
+parameter_list|(
+name|List
+argument_list|<
+name|Block
+argument_list|>
+name|toDeleteList
+parameter_list|)
+block|{
+name|this
+operator|.
+name|toDeleteList
+operator|=
+name|toDeleteList
+operator|==
+literal|null
+condition|?
+operator|new
+name|ArrayList
+argument_list|<
+name|Block
+argument_list|>
+argument_list|()
+else|:
+name|toDeleteList
+expr_stmt|;
+block|}
 DECL|method|BlocksMapUpdateInfo ()
 specifier|public
 name|BlocksMapUpdateInfo
 parameter_list|()
 block|{
-name|updateMap
+name|toDeleteList
 operator|=
 operator|new
-name|HashMap
+name|ArrayList
 argument_list|<
 name|Block
-argument_list|,
-name|BlocksMapINodeUpdateEntry
 argument_list|>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**      * Add a to-be-deleted block. This block should belongs to a file without      * snapshots. We thus only need to put a block-null pair into the updateMap.      *       * @param toDelete the to-be-deleted block      */
+comment|/**      * @return The list of blocks that need to be removed from blocksMap      */
+DECL|method|getToDeleteList ()
+specifier|public
+name|List
+argument_list|<
+name|Block
+argument_list|>
+name|getToDeleteList
+parameter_list|()
+block|{
+return|return
+name|toDeleteList
+return|;
+block|}
+comment|/**      * Add a to-be-deleted block into the      * {@link BlocksMapUpdateInfo#toDeleteList}      * @param toDelete the to-be-deleted block      */
 DECL|method|addDeleteBlock (Block toDelete)
 specifier|public
 name|void
@@ -2868,146 +2862,27 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|updateMap
+name|toDeleteList
 operator|.
-name|put
+name|add
 argument_list|(
 name|toDelete
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Add a given block, as well as its old and new BlockCollection      * information, into the updateMap.      *       * @param toUpdateBlock      *          The given block      * @param entry      *          The BlocksMapINodeUpdateEntry instance containing both the      *          original BlockCollection of the given block and the new      *          BlockCollection of the given block for updating the blocksMap.      *          The new BlockCollection should be the INode of one of the      *          corresponding file's snapshot.      */
-DECL|method|addUpdateBlock (Block toUpdateBlock, BlocksMapINodeUpdateEntry entry)
-specifier|public
-name|void
-name|addUpdateBlock
-parameter_list|(
-name|Block
-name|toUpdateBlock
-parameter_list|,
-name|BlocksMapINodeUpdateEntry
-name|entry
-parameter_list|)
-block|{
-name|updateMap
-operator|.
-name|put
-argument_list|(
-name|toUpdateBlock
-argument_list|,
-name|entry
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**      * Clear {@link BlocksMapUpdateInfo#updateMap}      */
+comment|/**      * Clear {@link BlocksMapUpdateInfo#toDeleteList}      */
 DECL|method|clear ()
 specifier|public
 name|void
 name|clear
 parameter_list|()
 block|{
-name|updateMap
+name|toDeleteList
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|iterator ()
-specifier|public
-name|Iterator
-argument_list|<
-name|Map
-operator|.
-name|Entry
-argument_list|<
-name|Block
-argument_list|,
-name|BlocksMapINodeUpdateEntry
-argument_list|>
-argument_list|>
-name|iterator
-parameter_list|()
-block|{
-return|return
-name|updateMap
-operator|.
-name|entrySet
-argument_list|()
-operator|.
-name|iterator
-argument_list|()
-return|;
-block|}
-block|}
-comment|/**    * When deleting a file with snapshot, we cannot directly remove its record    * from blocksMap. Instead, we should consider replacing the original record    * in blocksMap with INode of snapshot.    */
-DECL|class|BlocksMapINodeUpdateEntry
-specifier|public
-specifier|static
-class|class
-name|BlocksMapINodeUpdateEntry
-block|{
-comment|/**      * The BlockCollection of the file to be deleted      */
-DECL|field|toDelete
-specifier|private
-specifier|final
-name|BlockCollection
-name|toDelete
-decl_stmt|;
-comment|/**      * The BlockCollection of the to-be-deleted file's snapshot      */
-DECL|field|toReplace
-specifier|private
-specifier|final
-name|BlockCollection
-name|toReplace
-decl_stmt|;
-DECL|method|BlocksMapINodeUpdateEntry (BlockCollection toDelete, BlockCollection toReplace)
-specifier|public
-name|BlocksMapINodeUpdateEntry
-parameter_list|(
-name|BlockCollection
-name|toDelete
-parameter_list|,
-name|BlockCollection
-name|toReplace
-parameter_list|)
-block|{
-name|this
-operator|.
-name|toDelete
-operator|=
-name|toDelete
-expr_stmt|;
-name|this
-operator|.
-name|toReplace
-operator|=
-name|toReplace
-expr_stmt|;
-block|}
-DECL|method|getToDelete ()
-specifier|public
-name|BlockCollection
-name|getToDelete
-parameter_list|()
-block|{
-return|return
-name|toDelete
-return|;
-block|}
-DECL|method|getToReplace ()
-specifier|public
-name|BlockCollection
-name|getToReplace
-parameter_list|()
-block|{
-return|return
-name|toReplace
-return|;
 block|}
 block|}
 block|}

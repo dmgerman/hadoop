@@ -1778,13 +1778,6 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|SnapshotTestHelper
-operator|.
-name|checkCircularList
-argument_list|(
-name|nodeFile13
-argument_list|)
-expr_stmt|;
 name|assertEquals
 argument_list|(
 name|REP_1
@@ -1811,13 +1804,6 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|SnapshotTestHelper
-operator|.
-name|checkCircularList
-argument_list|(
-name|nodeFile12
-argument_list|)
-expr_stmt|;
 name|assertEquals
 argument_list|(
 name|REP_1

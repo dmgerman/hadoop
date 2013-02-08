@@ -2490,17 +2490,15 @@ operator|.
 name|getModificationTime
 argument_list|()
 argument_list|,
-name|ssInodes
-index|[
-name|ssInodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|snapshotFileNode
 operator|.
 name|getModificationTime
+argument_list|(
+name|ssNodesInPath
+operator|.
+name|getPathSnapshot
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Check the INode for /TestSnapshot/sub1/file1 again
