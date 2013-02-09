@@ -87,8 +87,8 @@ specifier|private
 name|LocatedBlocks
 name|locations
 decl_stmt|;
-comment|/**    * Constructor    *     * @param length size    * @param isdir if this is directory    * @param block_replication the file's replication factor    * @param blocksize the file's block size    * @param modification_time most recent modification time    * @param access_time most recent access time    * @param permission permission    * @param owner owner    * @param group group    * @param symlink symbolic link    * @param path local path name in java UTF8 format     * @param locations block locations    */
-DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, LocatedBlocks locations)
+comment|/**    * Constructor    *     * @param length size    * @param isdir if this is directory    * @param block_replication the file's replication factor    * @param blocksize the file's block size    * @param modification_time most recent modification time    * @param access_time most recent access time    * @param permission permission    * @param owner owner    * @param group group    * @param symlink symbolic link    * @param path local path name in java UTF8 format     * @param fileId the file id    * @param locations block locations    */
+DECL|method|HdfsLocatedFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId, LocatedBlocks locations)
 specifier|public
 name|HdfsLocatedFileStatus
 parameter_list|(
@@ -127,6 +127,9 @@ name|byte
 index|[]
 name|path
 parameter_list|,
+name|long
+name|fileId
+parameter_list|,
 name|LocatedBlocks
 name|locations
 parameter_list|)
@@ -154,6 +157,8 @@ argument_list|,
 name|symlink
 argument_list|,
 name|path
+argument_list|,
+name|fileId
 argument_list|)
 expr_stmt|;
 name|this

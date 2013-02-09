@@ -618,6 +618,20 @@ name|hadoop
 operator|.
 name|net
 operator|.
+name|ConnectTimeoutException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
 name|NetUtils
 import|;
 end_import
@@ -2513,7 +2527,7 @@ return|return;
 block|}
 catch|catch
 parameter_list|(
-name|SocketTimeoutException
+name|ConnectTimeoutException
 name|toe
 parameter_list|)
 block|{
@@ -2531,7 +2545,7 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
-name|handleConnectionFailure
+name|handleConnectionTimeout
 argument_list|(
 name|timeoutFailures
 operator|++
@@ -3221,11 +3235,11 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/* Handle connection failures      *      * If the current number of retries is equal to the max number of retries,      * stop retrying and throw the exception; Otherwise backoff 1 second and      * try connecting again.      *      * This Method is only called from inside setupIOstreams(), which is      * synchronized. Hence the sleep is synchronized; the locks will be retained.      *      * @param curRetries current number of retries      * @param maxRetries max number of retries allowed      * @param ioe failure reason      * @throws IOException if max number of retries is reached      */
-DECL|method|handleConnectionFailure ( int curRetries, int maxRetries, IOException ioe)
+comment|/* Handle connection failures due to timeout on connect      *      * If the current number of retries is equal to the max number of retries,      * stop retrying and throw the exception; Otherwise backoff 1 second and      * try connecting again.      *      * This Method is only called from inside setupIOstreams(), which is      * synchronized. Hence the sleep is synchronized; the locks will be retained.      *      * @param curRetries current number of retries      * @param maxRetries max number of retries allowed      * @param ioe failure reason      * @throws IOException if max number of retries is reached      */
+DECL|method|handleConnectionTimeout ( int curRetries, int maxRetries, IOException ioe)
 specifier|private
 name|void
-name|handleConnectionFailure
+name|handleConnectionTimeout
 parameter_list|(
 name|int
 name|curRetries

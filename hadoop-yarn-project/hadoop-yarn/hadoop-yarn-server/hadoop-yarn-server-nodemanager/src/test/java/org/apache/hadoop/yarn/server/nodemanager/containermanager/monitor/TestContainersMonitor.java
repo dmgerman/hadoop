@@ -1764,9 +1764,9 @@ name|cId
 operator|+
 literal|"\\] is running beyond virtual memory limits. Current usage: "
 operator|+
-literal|"[0-9.]+m?b of [0-9.]+m?b physical memory used; "
+literal|"[0-9.]+ ?[KMGTPE]?B of [0-9.]+ ?[KMGTPE]?B physical memory used; "
 operator|+
-literal|"[0-9.]+m?b of [0-9.]+m?b virtual memory used. "
+literal|"[0-9.]+ ?[KMGTPE]?B of [0-9.]+ ?[KMGTPE]?B virtual memory used. "
 operator|+
 literal|"Killing container.\nDump of the process-tree for "
 operator|+

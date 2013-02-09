@@ -1021,6 +1021,16 @@ name|Counter
 argument_list|>
 name|realGroup
 decl_stmt|;
+DECL|method|Group ()
+specifier|protected
+name|Group
+parameter_list|()
+block|{
+name|realGroup
+operator|=
+literal|null
+expr_stmt|;
+block|}
 DECL|method|Group (GenericGroup group)
 name|Group
 parameter_list|(

@@ -60,6 +60,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -629,7 +645,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the {@link Path} of the task's temporary output directory     * for the map-reduce job.    *     *<p><i>Note</i>: Task output path is set by the framework.    *</p>    * @param conf The configuration of the job.    * @param outputDir the {@link Path} of the output directory     * for the map-reduce job.    */
+annotation|@
+name|Private
 DECL|method|setWorkOutputPath (JobConf conf, Path outputDir)
+specifier|public
 specifier|static
 name|void
 name|setWorkOutputPath

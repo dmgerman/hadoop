@@ -700,11 +700,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resourcetracker
+name|event
 operator|.
 name|InlineDispatcher
 import|;

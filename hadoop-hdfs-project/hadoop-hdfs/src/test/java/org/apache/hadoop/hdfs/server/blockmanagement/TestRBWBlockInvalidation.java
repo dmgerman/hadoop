@@ -429,10 +429,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|MiniDFSCluster
-operator|.
-name|getBaseDirectory
-argument_list|()
+literal|"/tmp/TestRBWBlockInvalidation"
 argument_list|,
 literal|"foo1"
 argument_list|)

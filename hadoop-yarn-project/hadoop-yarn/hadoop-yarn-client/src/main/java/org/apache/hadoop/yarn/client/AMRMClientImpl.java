@@ -1065,6 +1065,15 @@ name|void
 name|stop
 parameter_list|()
 block|{
+if|if
+condition|(
+name|this
+operator|.
+name|rmClient
+operator|!=
+literal|null
+condition|)
+block|{
 name|RPC
 operator|.
 name|stopProxy
@@ -1074,6 +1083,7 @@ operator|.
 name|rmClient
 argument_list|)
 expr_stmt|;
+block|}
 name|super
 operator|.
 name|stop

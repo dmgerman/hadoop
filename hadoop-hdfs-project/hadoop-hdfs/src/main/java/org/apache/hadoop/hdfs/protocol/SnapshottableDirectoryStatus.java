@@ -131,6 +131,7 @@ index|[]
 name|parentFullPath
 parameter_list|)
 block|{
+comment|//TODO: fix fileId
 name|this
 operator|.
 name|dirStatus
@@ -159,6 +160,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|localName
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 name|this

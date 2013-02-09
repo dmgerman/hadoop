@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.resourcetracker
+DECL|package|org.apache.hadoop.yarn.event
 package|package
 name|org
 operator|.
@@ -14,11 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resourcetracker
+name|event
 package|;
 end_package
 
@@ -99,6 +95,15 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|SuppressWarnings
+argument_list|(
+block|{
+literal|"unchecked"
+block|,
+literal|"rawtypes"
+block|}
+argument_list|)
 DECL|class|InlineDispatcher
 specifier|public
 class|class
@@ -237,6 +242,7 @@ argument_list|()
 return|;
 block|}
 DECL|class|EmptyEventHandler
+specifier|public
 specifier|static
 class|class
 name|EmptyEventHandler

@@ -1410,7 +1410,6 @@ literal|"unchecked"
 argument_list|)
 DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime)
 specifier|protected
-specifier|synchronized
 name|void
 name|submitApplication
 parameter_list|(

@@ -544,6 +544,8 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|// use custom comparator to make sure ResourceRequest objects differing only in
+comment|// numContainers dont end up as duplicates
 DECL|field|ask
 specifier|private
 specifier|final
@@ -558,7 +560,23 @@ name|TreeSet
 argument_list|<
 name|ResourceRequest
 argument_list|>
+argument_list|(
+operator|new
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|BuilderUtils
+operator|.
+name|ResourceRequestComparator
 argument_list|()
+argument_list|)
 decl_stmt|;
 DECL|field|release
 specifier|private
@@ -1531,9 +1549,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// to be sent to RM on next heartbeat
-name|ask
-operator|.
-name|add
+name|addResourceRequestToAsk
 argument_list|(
 name|zeroedRequest
 argument_list|)
@@ -1957,9 +1973,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// Note this down for next interaction with ResourceManager
-name|ask
-operator|.
-name|add
+name|addResourceRequestToAsk
 argument_list|(
 name|remoteRequest
 argument_list|)
@@ -2155,6 +2169,18 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|remoteRequest
+operator|.
+name|getNumContainers
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// based on blacklisting comments above we can end up decrementing more
+comment|// than requested. so guard for that.
 name|remoteRequest
 operator|.
 name|setNumContainers
@@ -2167,6 +2193,7 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|remoteRequest
@@ -2220,27 +2247,14 @@ name|priority
 argument_list|)
 expr_stmt|;
 block|}
-comment|//remove from ask if it may have
-name|ask
-operator|.
-name|remove
+block|}
+comment|// send the updated resource request to RM
+comment|// send 0 container count requests also to cancel previous requests
+name|addResourceRequestToAsk
 argument_list|(
 name|remoteRequest
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|ask
-operator|.
-name|add
-argument_list|(
-name|remoteRequest
-argument_list|)
-expr_stmt|;
-comment|//this will override the request if ask doesn't
-comment|//already have it.
-block|}
 if|if
 condition|(
 name|LOG
@@ -2289,6 +2303,44 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|addResourceRequestToAsk (ResourceRequest remoteRequest)
+specifier|private
+name|void
+name|addResourceRequestToAsk
+parameter_list|(
+name|ResourceRequest
+name|remoteRequest
+parameter_list|)
+block|{
+comment|// because objects inside the resource map can be deleted ask can end up
+comment|// containing an object that matches new resource object but with different
+comment|// numContainers. So exisintg values must be replaced explicitly
+if|if
+condition|(
+name|ask
+operator|.
+name|contains
+argument_list|(
+name|remoteRequest
+argument_list|)
+condition|)
+block|{
+name|ask
+operator|.
+name|remove
+argument_list|(
+name|remoteRequest
+argument_list|)
+expr_stmt|;
+block|}
+name|ask
+operator|.
+name|add
+argument_list|(
+name|remoteRequest
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|release (ContainerId containerId)
 specifier|protected

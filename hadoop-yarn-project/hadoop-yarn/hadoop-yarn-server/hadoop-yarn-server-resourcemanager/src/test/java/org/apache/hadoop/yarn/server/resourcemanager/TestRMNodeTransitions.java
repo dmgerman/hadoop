@@ -236,13 +236,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|event
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|HeartbeatResponse
+name|InlineDispatcher
 import|;
 end_import
 
@@ -258,11 +254,11 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
+name|api
 operator|.
-name|resourcetracker
+name|records
 operator|.
-name|InlineDispatcher
+name|HeartbeatResponse
 import|;
 end_import
 

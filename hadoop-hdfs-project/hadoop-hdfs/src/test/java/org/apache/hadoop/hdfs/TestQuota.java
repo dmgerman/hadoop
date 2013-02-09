@@ -419,9 +419,9 @@ parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-literal|"The DiskSpace quota is exceeded: quota=1.0k "
+literal|"The DiskSpace quota is exceeded: quota = 1024 B = 1 KB"
 operator|+
-literal|"diskspace consumed=1.0k"
+literal|" but diskspace consumed = 1024 B = 1 KB"
 argument_list|,
 name|e
 operator|.

@@ -1073,7 +1073,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|/**    * Comparator for sorting DataNodeInfo[] based on decommissioned/stale states.    * Decommissioned/stale nodes are moved to the end of the array on sorting    * with this compartor.    */
+comment|/**    * Comparator for sorting DataNodeInfo[] based on decommissioned/stale states.    * Decommissioned/stale nodes are moved to the end of the array on sorting    * with this comparator.    */
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -1094,7 +1094,7 @@ specifier|private
 name|long
 name|staleInterval
 decl_stmt|;
-comment|/**      * Constructor of DecomStaleComparator      *       * @param interval      *          The time invertal for marking datanodes as stale is passed from      *          outside, since the interval may be changed dynamically      */
+comment|/**      * Constructor of DecomStaleComparator      *       * @param interval      *          The time interval for marking datanodes as stale is passed from      *          outside, since the interval may be changed dynamically      */
 DECL|method|DecomStaleComparator (long interval)
 specifier|public
 name|DecomStaleComparator
@@ -3948,6 +3948,51 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+comment|// checks if defaultUri is ip:port format
+comment|// and convert it to hostname:port format
+if|if
+condition|(
+name|defaultUri
+operator|!=
+literal|null
+operator|&&
+operator|(
+name|defaultUri
+operator|.
+name|getPort
+argument_list|()
+operator|!=
+operator|-
+literal|1
+operator|)
+condition|)
+block|{
+name|defaultUri
+operator|=
+name|createUri
+argument_list|(
+name|defaultUri
+operator|.
+name|getScheme
+argument_list|()
+argument_list|,
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|defaultUri
+operator|.
+name|getHost
+argument_list|()
+argument_list|,
+name|defaultUri
+operator|.
+name|getPort
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|defaultUri
@@ -4478,6 +4523,28 @@ literal|100.0f
 operator|)
 operator|/
 name|capacity
+return|;
+block|}
+comment|/** Convert percentage to a string. */
+DECL|method|percent2String (double percentage)
+specifier|public
+specifier|static
+name|String
+name|percent2String
+parameter_list|(
+name|double
+name|percentage
+parameter_list|)
+block|{
+return|return
+name|StringUtils
+operator|.
+name|format
+argument_list|(
+literal|"%.2f%%"
+argument_list|,
+name|percentage
+argument_list|)
 return|;
 block|}
 comment|/**    * Round bytes to GiB (gibibyte)    * @param bytes number of bytes    * @return number of GiB    */
