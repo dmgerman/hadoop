@@ -600,7 +600,12 @@ block|}
 return|return
 name|expectedOutput
 operator|+
-literal|"\n"
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
 return|;
 block|}
 DECL|method|runTool (Configuration conf, String[] args, boolean success)
