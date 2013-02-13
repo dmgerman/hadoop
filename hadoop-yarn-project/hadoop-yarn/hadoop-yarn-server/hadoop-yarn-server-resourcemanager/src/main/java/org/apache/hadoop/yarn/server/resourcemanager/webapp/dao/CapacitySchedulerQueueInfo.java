@@ -230,6 +230,11 @@ specifier|protected
 name|CapacitySchedulerQueueInfoList
 name|queues
 decl_stmt|;
+DECL|field|resourcesUsed
+specifier|protected
+name|ResourceInfo
+name|resourcesUsed
+decl_stmt|;
 DECL|method|CapacitySchedulerQueueInfo ()
 name|CapacitySchedulerQueueInfo
 parameter_list|()
@@ -371,6 +376,17 @@ operator|.
 name|getState
 argument_list|()
 expr_stmt|;
+name|resourcesUsed
+operator|=
+operator|new
+name|ResourceInfo
+argument_list|(
+name|q
+operator|.
+name|getUsedResources
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getCapacity ()
 specifier|public
@@ -507,6 +523,16 @@ return|return
 name|this
 operator|.
 name|queues
+return|;
+block|}
+DECL|method|getResourcesUsed ()
+specifier|public
+name|ResourceInfo
+name|getResourcesUsed
+parameter_list|()
+block|{
+return|return
+name|resourcesUsed
 return|;
 block|}
 comment|/**    * Limit a value to a specified range.    * @param val the value to be capped    * @param low the lower bound of the range (inclusive)    * @param hi the upper bound of the range (inclusive)    * @return the capped value    */
