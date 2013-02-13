@@ -355,6 +355,25 @@ condition|)
 return|return
 literal|null
 return|;
+comment|// If we can't do anything with the domain socket, don't create it.
+if|if
+condition|(
+operator|!
+operator|(
+name|conf
+operator|.
+name|domainSocketDataTraffic
+operator|||
+name|conf
+operator|.
+name|shortCircuitLocalReads
+operator|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|// UNIX domain sockets can only be used to talk to local peers
 if|if
 condition|(
