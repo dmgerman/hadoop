@@ -1081,7 +1081,7 @@ name|loader
 operator|.
 name|loadINodeWithLocalName
 argument_list|(
-literal|false
+literal|true
 argument_list|,
 name|in
 argument_list|)

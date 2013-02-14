@@ -3457,6 +3457,8 @@ operator|.
 name|rootDir
 argument_list|,
 name|out
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// save the rest of the nodes
@@ -3628,6 +3630,8 @@ argument_list|(
 name|child
 argument_list|,
 name|out
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 if|if

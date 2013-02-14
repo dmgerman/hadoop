@@ -1228,7 +1228,7 @@ literal|null
 argument_list|,
 name|s
 argument_list|)
-operator|<
+operator|>
 literal|0
 argument_list|)
 expr_stmt|;
@@ -1246,7 +1246,7 @@ name|s
 argument_list|,
 literal|null
 argument_list|)
-operator|>
+operator|<
 literal|0
 argument_list|)
 expr_stmt|;

@@ -1608,6 +1608,29 @@ name|this
 argument_list|)
 return|;
 block|}
+comment|/**     * @return The full path name represented in a list of byte array    */
+DECL|method|getRelativePathNameBytes (INode ancestor)
+specifier|public
+name|byte
+index|[]
+index|[]
+name|getRelativePathNameBytes
+parameter_list|(
+name|INode
+name|ancestor
+parameter_list|)
+block|{
+return|return
+name|FSDirectory
+operator|.
+name|getRelativePathNameBytes
+argument_list|(
+name|this
+argument_list|,
+name|ancestor
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -2211,16 +2234,6 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|field|EMPTY_BYTES
-specifier|public
-specifier|static
-specifier|final
-name|byte
-index|[]
-name|EMPTY_BYTES
-init|=
-block|{}
-decl_stmt|;
 annotation|@
 name|Override
 DECL|method|compareTo (byte[] bytes)
@@ -2243,6 +2256,8 @@ name|name
 operator|==
 literal|null
 condition|?
+name|DFSUtil
+operator|.
 name|EMPTY_BYTES
 else|:
 name|name
@@ -2256,6 +2271,8 @@ name|bytes
 operator|==
 literal|null
 condition|?
+name|DFSUtil
+operator|.
 name|EMPTY_BYTES
 else|:
 name|bytes

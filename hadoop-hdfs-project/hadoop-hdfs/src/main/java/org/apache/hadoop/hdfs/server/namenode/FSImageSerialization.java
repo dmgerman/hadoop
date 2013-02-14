@@ -1265,7 +1265,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Save one inode's attributes to the image.    */
-DECL|method|saveINode2Image (INode node, DataOutputStream out)
+DECL|method|saveINode2Image (INode node, DataOutputStream out, boolean writeUnderConstruction)
 specifier|public
 specifier|static
 name|void
@@ -1276,6 +1276,9 @@ name|node
 parameter_list|,
 name|DataOutputStream
 name|out
+parameter_list|,
+name|boolean
+name|writeUnderConstruction
 parameter_list|)
 throws|throws
 name|IOException
@@ -1330,7 +1333,7 @@ name|node
 argument_list|,
 name|out
 argument_list|,
-literal|false
+name|writeUnderConstruction
 argument_list|)
 expr_stmt|;
 block|}

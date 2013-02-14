@@ -2947,6 +2947,15 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|snapshot
+operator|==
+literal|null
+operator|||
+operator|(
+name|s
+operator|!=
+literal|null
+operator|&&
 name|Snapshot
 operator|.
 name|ID_COMPARATOR
@@ -2959,6 +2968,7 @@ name|s
 argument_list|)
 operator|<
 literal|0
+operator|)
 condition|)
 block|{
 name|snapshot

@@ -200,7 +200,7 @@ name|byte
 index|[]
 argument_list|>
 block|{
-comment|/** Compare snapshot IDs with null<= s for any snapshot s. */
+comment|/**    * Compare snapshot IDs. Null indicates the current status thus is greater    * than non-null snapshots.    */
 DECL|field|ID_COMPARATOR
 specifier|public
 specifier|static
@@ -231,6 +231,7 @@ name|Snapshot
 name|right
 parameter_list|)
 block|{
+comment|// null means the current state, thus should be the largest
 if|if
 condition|(
 name|left
@@ -245,7 +246,6 @@ literal|null
 condition|?
 literal|0
 else|:
-operator|-
 literal|1
 return|;
 block|}
@@ -256,6 +256,7 @@ name|right
 operator|==
 literal|null
 condition|?
+operator|-
 literal|1
 else|:
 name|left
@@ -324,6 +325,15 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|latest
+operator|==
+literal|null
+operator|||
+operator|(
+name|s
+operator|!=
+literal|null
+operator|&&
 name|ID_COMPARATOR
 operator|.
 name|compare
@@ -334,6 +344,7 @@ name|s
 argument_list|)
 operator|<
 literal|0
+operator|)
 condition|)
 block|{
 name|latest
@@ -345,6 +356,33 @@ block|}
 block|}
 return|return
 name|latest
+return|;
+block|}
+comment|/**     * Get the name of the given snapshot.     * @param s The given snapshot.    * @return The name of the snapshot, or an empty string if {@code s} is null    */
+DECL|method|getSnapshotName (Snapshot s)
+specifier|public
+specifier|static
+name|String
+name|getSnapshotName
+parameter_list|(
+name|Snapshot
+name|s
+parameter_list|)
+block|{
+return|return
+name|s
+operator|!=
+literal|null
+condition|?
+name|s
+operator|.
+name|getRoot
+argument_list|()
+operator|.
+name|getLocalName
+argument_list|()
+else|:
+literal|""
 return|;
 block|}
 comment|/** The root directory of the snapshot. */
