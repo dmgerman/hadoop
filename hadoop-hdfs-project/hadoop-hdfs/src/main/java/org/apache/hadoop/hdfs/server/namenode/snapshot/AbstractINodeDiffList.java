@@ -636,12 +636,18 @@ literal|null
 return|;
 block|}
 block|}
-DECL|method|getSnapshotINode (Snapshot snapshot)
+comment|/**    * @return the inode corresponding to the given snapshot.    *         Note that the current inode is returned if there is no change    *         between the given snapshot and the current state.     */
+DECL|method|getSnapshotINode (final Snapshot snapshot, final N currentINode)
 name|N
 name|getSnapshotINode
 parameter_list|(
+specifier|final
 name|Snapshot
 name|snapshot
+parameter_list|,
+specifier|final
+name|N
+name|currentINode
 parameter_list|)
 block|{
 specifier|final
@@ -653,7 +659,10 @@ argument_list|(
 name|snapshot
 argument_list|)
 decl_stmt|;
-return|return
+specifier|final
+name|N
+name|inode
+init|=
 name|diff
 operator|==
 literal|null
@@ -664,6 +673,15 @@ name|diff
 operator|.
 name|getSnapshotINode
 argument_list|()
+decl_stmt|;
+return|return
+name|inode
+operator|==
+literal|null
+condition|?
+name|currentINode
+else|:
+name|inode
 return|;
 block|}
 comment|/**    * Check if the latest snapshot diff exists.  If not, add it.    * @return the latest snapshot diff, which is never null.    */

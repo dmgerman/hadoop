@@ -704,6 +704,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getSnapshotINode (final Snapshot snapshot)
+specifier|public
+name|INodeFile
+name|getSnapshotINode
+parameter_list|(
+specifier|final
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+return|return
+name|this
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|recordModification (final Snapshot latest)
 specifier|public
 name|INodeFile
@@ -769,6 +785,7 @@ block|}
 comment|/** @return the replication factor of the file. */
 DECL|method|getFileReplication (Snapshot snapshot)
 specifier|public
+specifier|final
 name|short
 name|getFileReplication
 parameter_list|(
@@ -776,6 +793,23 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|getFileReplication
+argument_list|()
+return|;
+block|}
 return|return
 name|HeaderFormat
 operator|.

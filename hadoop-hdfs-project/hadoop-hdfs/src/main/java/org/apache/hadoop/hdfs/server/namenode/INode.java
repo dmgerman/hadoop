@@ -325,55 +325,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/** A pair of objects. */
-DECL|class|Pair
-specifier|public
-specifier|static
-class|class
-name|Pair
-parameter_list|<
-name|L
-parameter_list|,
-name|R
-parameter_list|>
-block|{
-DECL|field|left
-specifier|public
-specifier|final
-name|L
-name|left
-decl_stmt|;
-DECL|field|right
-specifier|public
-specifier|final
-name|R
-name|right
-decl_stmt|;
-DECL|method|Pair (L left, R right)
-specifier|public
-name|Pair
-parameter_list|(
-name|L
-name|left
-parameter_list|,
-name|R
-name|right
-parameter_list|)
-block|{
-name|this
-operator|.
-name|left
-operator|=
-name|left
-expr_stmt|;
-name|this
-operator|.
-name|right
-operator|=
-name|right
-expr_stmt|;
-block|}
-block|}
 comment|/** Wrapper of two counters for namespace consumed and diskspace consumed. */
 DECL|class|DirCounts
 specifier|static
@@ -880,6 +831,7 @@ block|}
 comment|/** Get the {@link PermissionStatus} */
 DECL|method|getPermissionStatus (Snapshot snapshot)
 specifier|public
+specifier|final
 name|PermissionStatus
 name|getPermissionStatus
 parameter_list|(
@@ -911,6 +863,7 @@ block|}
 comment|/** The same as getPermissionStatus(null). */
 DECL|method|getPermissionStatus ()
 specifier|public
+specifier|final
 name|PermissionStatus
 name|getPermissionStatus
 parameter_list|()
@@ -966,6 +919,7 @@ block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return user name    */
 DECL|method|getUserName (Snapshot snapshot)
 specifier|public
+specifier|final
 name|String
 name|getUserName
 parameter_list|(
@@ -973,6 +927,23 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|getUserName
+argument_list|()
+return|;
+block|}
 name|int
 name|n
 init|=
@@ -1002,6 +973,7 @@ block|}
 comment|/** The same as getUserName(null). */
 DECL|method|getUserName ()
 specifier|public
+specifier|final
 name|String
 name|getUserName
 parameter_list|()
@@ -1054,6 +1026,7 @@ block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return group name    */
 DECL|method|getGroupName (Snapshot snapshot)
 specifier|public
+specifier|final
 name|String
 name|getGroupName
 parameter_list|(
@@ -1061,6 +1034,23 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|getGroupName
+argument_list|()
+return|;
+block|}
 name|int
 name|n
 init|=
@@ -1090,6 +1080,7 @@ block|}
 comment|/** The same as getGroupName(null). */
 DECL|method|getGroupName ()
 specifier|public
+specifier|final
 name|String
 name|getGroupName
 parameter_list|()
@@ -1142,6 +1133,7 @@ block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return permission.    */
 DECL|method|getFsPermission (Snapshot snapshot)
 specifier|public
+specifier|final
 name|FsPermission
 name|getFsPermission
 parameter_list|(
@@ -1149,6 +1141,23 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|getFsPermission
+argument_list|()
+return|;
+block|}
 return|return
 operator|new
 name|FsPermission
@@ -1170,6 +1179,7 @@ block|}
 comment|/** The same as getFsPermission(null). */
 DECL|method|getFsPermission ()
 specifier|public
+specifier|final
 name|FsPermission
 name|getFsPermission
 parameter_list|()
@@ -1233,6 +1243,21 @@ name|mode
 argument_list|,
 name|latest
 argument_list|)
+return|;
+block|}
+comment|/**    * @return if the given snapshot is null, return this;    *     otherwise return the corresponding snapshot inode.    */
+DECL|method|getSnapshotINode (final Snapshot snapshot)
+specifier|public
+name|INode
+name|getSnapshotINode
+parameter_list|(
+specifier|final
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+return|return
+name|this
 return|;
 block|}
 comment|/** Is this inode in the latest snapshot? */
@@ -1719,6 +1744,7 @@ block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return modification time.    */
 DECL|method|getModificationTime (Snapshot snapshot)
 specifier|public
+specifier|final
 name|long
 name|getModificationTime
 parameter_list|(
@@ -1726,6 +1752,22 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|modificationTime
+return|;
+block|}
 return|return
 name|this
 operator|.
@@ -1838,6 +1880,7 @@ block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return access time    */
 DECL|method|getAccessTime (Snapshot snapshot)
 specifier|public
+specifier|final
 name|long
 name|getAccessTime
 parameter_list|(
@@ -1845,6 +1888,22 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 block|{
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|accessTime
+return|;
+block|}
 return|return
 name|accessTime
 return|;
@@ -1852,6 +1911,7 @@ block|}
 comment|/** The same as getAccessTime(null). */
 DECL|method|getAccessTime ()
 specifier|public
+specifier|final
 name|long
 name|getAccessTime
 parameter_list|()
@@ -2421,33 +2481,9 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|", permission="
+literal|", "
 operator|+
-name|getFsPermission
-argument_list|(
-name|snapshot
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|print
-argument_list|(
-literal|", group="
-operator|+
-name|getGroupName
-argument_list|(
-name|snapshot
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|out
-operator|.
-name|print
-argument_list|(
-literal|", user="
-operator|+
-name|getUserName
+name|getPermissionStatus
 argument_list|(
 name|snapshot
 argument_list|)
