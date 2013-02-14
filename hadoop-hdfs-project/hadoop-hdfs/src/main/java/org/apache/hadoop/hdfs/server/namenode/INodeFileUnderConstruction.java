@@ -619,12 +619,11 @@ name|latest
 parameter_list|)
 block|{
 return|return
+name|isInLatestSnapshot
+argument_list|(
 name|latest
-operator|==
-literal|null
+argument_list|)
 condition|?
-name|this
-else|:
 name|parent
 operator|.
 name|replaceChild4INodeFileUcWithSnapshot
@@ -636,6 +635,8 @@ name|recordModification
 argument_list|(
 name|latest
 argument_list|)
+else|:
+name|this
 return|;
 block|}
 comment|/** Assert all blocks are complete. */

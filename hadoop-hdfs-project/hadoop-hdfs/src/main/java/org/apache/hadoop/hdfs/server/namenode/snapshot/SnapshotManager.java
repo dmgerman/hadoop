@@ -909,6 +909,11 @@ argument_list|()
 argument_list|,
 name|dir
 operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|dir
+operator|.
 name|getNumSnapshots
 argument_list|()
 argument_list|,

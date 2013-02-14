@@ -2295,11 +2295,6 @@ argument_list|,
 name|ucFile
 argument_list|,
 name|newFile
-argument_list|,
-name|iip
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

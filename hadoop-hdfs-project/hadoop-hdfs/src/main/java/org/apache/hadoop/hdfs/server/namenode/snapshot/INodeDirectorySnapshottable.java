@@ -1255,9 +1255,11 @@ init|=
 name|getDiffs
 argument_list|()
 operator|.
-name|addSnapshotDiff
+name|addDiff
 argument_list|(
 name|s
+argument_list|,
+name|this
 argument_list|)
 decl_stmt|;
 name|d

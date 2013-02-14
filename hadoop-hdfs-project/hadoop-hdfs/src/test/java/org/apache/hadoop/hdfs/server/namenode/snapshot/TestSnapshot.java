@@ -1625,8 +1625,9 @@ block|}
 argument_list|)
 expr_stmt|;
 comment|// check fsimage saving/loading
-comment|//      TODO: fix fsimage
-comment|//      checkFSImage();
+name|checkFSImage
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * A simple test that updates a sub-directory of a snapshottable directory    * with snapshots    */

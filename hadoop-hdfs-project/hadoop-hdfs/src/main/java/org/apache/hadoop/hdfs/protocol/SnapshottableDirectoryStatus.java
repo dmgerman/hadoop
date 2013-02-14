@@ -97,7 +97,7 @@ name|byte
 index|[]
 name|parentFullPath
 decl_stmt|;
-DECL|method|SnapshottableDirectoryStatus (long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] localName, int snapshotNumber, int snapshotQuota, byte[] parentFullPath)
+DECL|method|SnapshottableDirectoryStatus (long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] localName, long inodeId, int snapshotNumber, int snapshotQuota, byte[] parentFullPath)
 specifier|public
 name|SnapshottableDirectoryStatus
 parameter_list|(
@@ -120,6 +120,9 @@ name|byte
 index|[]
 name|localName
 parameter_list|,
+name|long
+name|inodeId
+parameter_list|,
 name|int
 name|snapshotNumber
 parameter_list|,
@@ -131,7 +134,6 @@ index|[]
 name|parentFullPath
 parameter_list|)
 block|{
-comment|//TODO: fix fileId
 name|this
 operator|.
 name|dirStatus
@@ -161,7 +163,7 @@ literal|null
 argument_list|,
 name|localName
 argument_list|,
-literal|0L
+name|inodeId
 argument_list|)
 expr_stmt|;
 name|this

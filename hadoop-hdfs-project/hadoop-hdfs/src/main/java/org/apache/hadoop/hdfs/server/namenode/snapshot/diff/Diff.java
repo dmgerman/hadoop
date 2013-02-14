@@ -480,6 +480,25 @@ else|:
 name|deleted
 return|;
 block|}
+DECL|method|searchCreatedIndex (final K name)
+specifier|public
+name|int
+name|searchCreatedIndex
+parameter_list|(
+specifier|final
+name|K
+name|name
+parameter_list|)
+block|{
+return|return
+name|search
+argument_list|(
+name|created
+argument_list|,
+name|name
+argument_list|)
+return|;
+block|}
 comment|/**    * @return null if the element is not found;    *         otherwise, return the element in the c-list.    */
 DECL|method|searchCreated (final K name)
 specifier|public
@@ -495,10 +514,8 @@ specifier|final
 name|int
 name|c
 init|=
-name|search
+name|searchCreatedIndex
 argument_list|(
-name|created
-argument_list|,
 name|name
 argument_list|)
 decl_stmt|;

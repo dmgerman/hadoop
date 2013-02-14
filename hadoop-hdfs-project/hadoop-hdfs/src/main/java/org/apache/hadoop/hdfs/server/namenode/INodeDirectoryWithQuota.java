@@ -243,11 +243,15 @@ name|dsQuota
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota (long id, PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
+DECL|method|INodeDirectoryWithQuota (long id, byte[] name, PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|long
 name|id
+parameter_list|,
+name|byte
+index|[]
+name|name
 parameter_list|,
 name|PermissionStatus
 name|permissions
@@ -265,6 +269,8 @@ block|{
 name|super
 argument_list|(
 name|id
+argument_list|,
+name|name
 argument_list|,
 name|permissions
 argument_list|,
@@ -285,13 +291,14 @@ name|dsQuota
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota (long id, String name, PermissionStatus permissions)
+DECL|method|INodeDirectoryWithQuota (long id, byte[] name, PermissionStatus permissions)
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|long
 name|id
 parameter_list|,
-name|String
+name|byte
+index|[]
 name|name
 parameter_list|,
 name|PermissionStatus
@@ -305,6 +312,8 @@ argument_list|,
 name|name
 argument_list|,
 name|permissions
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 block|}
@@ -350,18 +359,25 @@ name|Snapshot
 name|latest
 parameter_list|)
 block|{
+specifier|final
+name|INodeDirectoryWithQuota
+name|nodeToUpdate
+init|=
+operator|(
+name|INodeDirectoryWithQuota
+operator|)
 name|recordModification
 argument_list|(
 name|latest
 argument_list|)
-expr_stmt|;
-name|this
+decl_stmt|;
+name|nodeToUpdate
 operator|.
 name|nsQuota
 operator|=
 name|nsQuota
 expr_stmt|;
-name|this
+name|nodeToUpdate
 operator|.
 name|dsQuota
 operator|=

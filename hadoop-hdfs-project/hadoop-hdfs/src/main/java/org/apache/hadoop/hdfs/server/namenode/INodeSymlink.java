@@ -118,14 +118,18 @@ index|[]
 name|symlink
 decl_stmt|;
 comment|// The target URI
-DECL|method|INodeSymlink (long id, String value, long mtime, long atime, PermissionStatus permissions)
+DECL|method|INodeSymlink (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, String symlink)
 name|INodeSymlink
 parameter_list|(
 name|long
 name|id
 parameter_list|,
-name|String
-name|value
+name|byte
+index|[]
+name|name
+parameter_list|,
+name|PermissionStatus
+name|permissions
 parameter_list|,
 name|long
 name|mtime
@@ -133,13 +137,15 @@ parameter_list|,
 name|long
 name|atime
 parameter_list|,
-name|PermissionStatus
-name|permissions
+name|String
+name|symlink
 parameter_list|)
 block|{
 name|super
 argument_list|(
 name|id
+argument_list|,
+name|name
 argument_list|,
 name|permissions
 argument_list|,
@@ -156,7 +162,7 @@ name|DFSUtil
 operator|.
 name|string2Bytes
 argument_list|(
-name|value
+name|symlink
 argument_list|)
 expr_stmt|;
 block|}
@@ -172,43 +178,13 @@ argument_list|(
 name|that
 argument_list|)
 expr_stmt|;
-comment|//copy symlink
 name|this
 operator|.
 name|symlink
 operator|=
-operator|new
-name|byte
-index|[
 name|that
 operator|.
 name|symlink
-operator|.
-name|length
-index|]
-expr_stmt|;
-name|System
-operator|.
-name|arraycopy
-argument_list|(
-name|that
-operator|.
-name|symlink
-argument_list|,
-literal|0
-argument_list|,
-name|this
-operator|.
-name|symlink
-argument_list|,
-literal|0
-argument_list|,
-name|that
-operator|.
-name|symlink
-operator|.
-name|length
-argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -222,6 +198,11 @@ name|latest
 parameter_list|)
 block|{
 return|return
+name|isInLatestSnapshot
+argument_list|(
+name|latest
+argument_list|)
+condition|?
 name|parent
 operator|.
 name|saveChild2Snapshot
@@ -236,6 +217,8 @@ argument_list|(
 name|this
 argument_list|)
 argument_list|)
+else|:
+name|this
 return|;
 block|}
 comment|/** @return true unconditionally. */
@@ -300,6 +283,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|destroySubtreeAndCollectBlocks (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
+specifier|public
 name|int
 name|destroySubtreeAndCollectBlocks
 parameter_list|(

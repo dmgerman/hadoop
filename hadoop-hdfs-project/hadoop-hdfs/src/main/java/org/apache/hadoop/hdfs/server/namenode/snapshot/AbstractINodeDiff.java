@@ -24,6 +24,44 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSImageSerialization
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -103,6 +141,51 @@ argument_list|<
 name|Snapshot
 argument_list|>
 block|{
+comment|/** A factory for creating diff and snapshot copy of an inode. */
+DECL|class|Factory
+specifier|static
+specifier|abstract
+class|class
+name|Factory
+parameter_list|<
+name|N
+extends|extends
+name|INode
+parameter_list|,
+name|D
+extends|extends
+name|AbstractINodeDiff
+parameter_list|<
+name|N
+parameter_list|,
+name|D
+parameter_list|>
+parameter_list|>
+block|{
+comment|/** @return an {@link AbstractINodeDiff}. */
+DECL|method|createDiff (Snapshot snapshot, N currentINode)
+specifier|abstract
+name|D
+name|createDiff
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|,
+name|N
+name|currentINode
+parameter_list|)
+function_decl|;
+comment|/** @return a snapshot copy of the current inode. */
+DECL|method|createSnapshotCopy (N currentINode)
+specifier|abstract
+name|N
+name|createSnapshotCopy
+parameter_list|(
+name|N
+name|currentINode
+parameter_list|)
+function_decl|;
+block|}
 comment|/** The snapshot will be obtained after this diff is applied. */
 DECL|field|snapshot
 specifier|final
@@ -227,16 +310,24 @@ operator|=
 name|posterior
 expr_stmt|;
 block|}
-comment|/** Copy the INode state to the snapshot if it is not done already. */
-DECL|method|checkAndInitINode (N currentINode, N snapshotCopy)
+comment|/** Save the INode state to the snapshot if it is not done already. */
+DECL|method|saveSnapshotCopy (N snapshotCopy, Factory<N, D> factory, N currentINode)
 name|void
-name|checkAndInitINode
+name|saveSnapshotCopy
 parameter_list|(
 name|N
-name|currentINode
+name|snapshotCopy
+parameter_list|,
+name|Factory
+argument_list|<
+name|N
+argument_list|,
+name|D
+argument_list|>
+name|factory
 parameter_list|,
 name|N
-name|snapshotCopy
+name|currentINode
 parameter_list|)
 block|{
 if|if
@@ -255,7 +346,9 @@ condition|)
 block|{
 name|snapshotCopy
 operator|=
-name|createSnapshotCopyOfCurrentINode
+name|factory
+operator|.
+name|createSnapshotCopy
 argument_list|(
 name|currentINode
 argument_list|)
@@ -267,16 +360,6 @@ name|snapshotCopy
 expr_stmt|;
 block|}
 block|}
-comment|/** @return a snapshot copy of the current inode. */
-DECL|method|createSnapshotCopyOfCurrentINode (N currentINode)
-specifier|abstract
-name|N
-name|createSnapshotCopyOfCurrentINode
-parameter_list|(
-name|N
-name|currentINode
-parameter_list|)
-function_decl|;
 comment|/** @return the inode corresponding to the snapshot. */
 DECL|method|getSnapshotINode ()
 name|N
@@ -391,6 +474,45 @@ operator|+
 literal|")"
 return|;
 block|}
+DECL|method|writeSnapshotPath (DataOutputStream out)
+name|void
+name|writeSnapshotPath
+parameter_list|(
+name|DataOutputStream
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Assume the snapshot is recorded before.
+comment|// The root path is sufficient for looking up the Snapshot object.
+name|FSImageSerialization
+operator|.
+name|writeString
+argument_list|(
+name|snapshot
+operator|.
+name|getRoot
+argument_list|()
+operator|.
+name|getFullPathName
+argument_list|()
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|write (DataOutputStream out)
+specifier|abstract
+name|void
+name|write
+parameter_list|(
+name|DataOutputStream
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_class
 

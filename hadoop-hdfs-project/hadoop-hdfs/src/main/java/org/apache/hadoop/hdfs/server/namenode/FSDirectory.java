@@ -1641,17 +1641,19 @@ name|INodeFile
 argument_list|(
 name|id
 argument_list|,
+literal|null
+argument_list|,
 name|permissions
+argument_list|,
+name|modificationTime
+argument_list|,
+name|atime
 argument_list|,
 name|BlockInfo
 operator|.
 name|EMPTY_ARRAY
 argument_list|,
 name|replication
-argument_list|,
-name|modificationTime
-argument_list|,
-name|atime
 argument_list|,
 name|preferredBlockSize
 argument_list|)
@@ -5517,7 +5519,7 @@ return|return
 literal|0
 return|;
 block|}
-comment|// check latest snapshot
+comment|// record modification
 specifier|final
 name|Snapshot
 name|latestSnapshot
@@ -5527,41 +5529,6 @@ operator|.
 name|getLatestSnapshot
 argument_list|()
 decl_stmt|;
-specifier|final
-name|INode
-name|snapshotCopy
-init|=
-operator|(
-operator|(
-name|INodeDirectory
-operator|)
-name|inodesInPath
-operator|.
-name|getINode
-argument_list|(
-operator|-
-literal|2
-argument_list|)
-operator|)
-operator|.
-name|getChild
-argument_list|(
-name|targetNode
-operator|.
-name|getLocalNameBytes
-argument_list|()
-argument_list|,
-name|latestSnapshot
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|snapshotCopy
-operator|==
-name|targetNode
-condition|)
-block|{
-comment|// it is also in a snapshot, record modification before delete it
 name|targetNode
 operator|=
 name|targetNode
@@ -5571,24 +5538,17 @@ argument_list|(
 name|latestSnapshot
 argument_list|)
 expr_stmt|;
-block|}
+name|inodesInPath
+operator|.
+name|setLastINode
+argument_list|(
+name|targetNode
+argument_list|)
+expr_stmt|;
 comment|// Remove the node from the namespace
-specifier|final
-name|INode
-name|removed
-init|=
 name|removeLastINode
 argument_list|(
 name|inodesInPath
-argument_list|)
-decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|removed
-operator|==
-name|targetNode
 argument_list|)
 expr_stmt|;
 comment|// set the parent's modification time
@@ -5604,6 +5564,7 @@ argument_list|,
 name|latestSnapshot
 argument_list|)
 expr_stmt|;
+comment|// collect block
 specifier|final
 name|int
 name|inodesRemoved
@@ -5762,7 +5723,7 @@ literal|null
 return|;
 block|}
 comment|/**    * Replaces the specified INodeFile with the specified one.    */
-DECL|method|replaceINodeFile (String path, INodeFile oldnode, INodeFile newnode, Snapshot latest)
+DECL|method|replaceINodeFile (String path, INodeFile oldnode, INodeFile newnode)
 name|void
 name|replaceINodeFile
 parameter_list|(
@@ -5774,9 +5735,6 @@ name|oldnode
 parameter_list|,
 name|INodeFile
 name|newnode
-parameter_list|,
-name|Snapshot
-name|latest
 parameter_list|)
 throws|throws
 name|IOException
@@ -5793,8 +5751,6 @@ argument_list|,
 name|oldnode
 argument_list|,
 name|newnode
-argument_list|,
-name|latest
 argument_list|)
 expr_stmt|;
 block|}
@@ -5806,7 +5762,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Replace an INodeFile and record modification for the latest snapshot. */
-DECL|method|unprotectedReplaceINodeFile (final String path, final INodeFile oldnode, final INodeFile newnode, final Snapshot latest)
+DECL|method|unprotectedReplaceINodeFile (final String path, final INodeFile oldnode, final INodeFile newnode)
 name|void
 name|unprotectedReplaceINodeFile
 parameter_list|(
@@ -5821,10 +5777,6 @@ parameter_list|,
 specifier|final
 name|INodeFile
 name|newnode
-parameter_list|,
-specifier|final
-name|Snapshot
-name|latest
 parameter_list|)
 block|{
 name|Preconditions
@@ -5842,6 +5794,8 @@ argument_list|()
 operator|.
 name|replaceChild
 argument_list|(
+name|oldnode
+argument_list|,
 name|newnode
 argument_list|)
 expr_stmt|;
@@ -8727,6 +8681,18 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|removedNode
+operator|==
+name|inodes
+index|[
+name|pos
+index|]
+argument_list|)
+expr_stmt|;
 name|inodesInPath
 operator|.
 name|setINode
@@ -10568,13 +10534,15 @@ name|INodeSymlink
 argument_list|(
 name|id
 argument_list|,
-name|target
+literal|null
+argument_list|,
+name|perm
 argument_list|,
 name|mtime
 argument_list|,
 name|atime
 argument_list|,
-name|perm
+name|target
 argument_list|)
 decl_stmt|;
 return|return
