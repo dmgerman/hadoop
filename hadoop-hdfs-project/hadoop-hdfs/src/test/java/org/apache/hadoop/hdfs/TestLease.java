@@ -312,6 +312,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|HdfsConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|HdfsFileStatus
 import|;
 end_import
@@ -721,7 +737,7 @@ argument_list|)
 expr_stmt|;
 comment|// We don't need to wait the lease renewer thread to act.
 comment|// call renewLease() manually.
-comment|// make it look like lease has already expired.
+comment|// make it look like the soft limit has been exceeded.
 name|LeaseRenewer
 name|originalRenewer
 init|=
@@ -739,7 +755,78 @@ operator|.
 name|now
 argument_list|()
 operator|-
-literal|300000
+name|HdfsConstants
+operator|.
+name|LEASE_SOFTLIMIT_PERIOD
+operator|-
+literal|1000
+expr_stmt|;
+try|try
+block|{
+name|dfs
+operator|.
+name|renewLease
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{}
+comment|// Things should continue to work it passes hard limit without
+comment|// renewing.
+try|try
+block|{
+name|d_out
+operator|.
+name|write
+argument_list|(
+name|buf
+argument_list|,
+literal|0
+argument_list|,
+literal|1024
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Write worked beyond the soft limit as expected."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Write failed."
+argument_list|)
+expr_stmt|;
+block|}
+comment|// make it look like the hard limit has been exceeded.
+name|dfs
+operator|.
+name|lastLeaseRenewal
+operator|=
+name|Time
+operator|.
+name|now
+argument_list|()
+operator|-
+name|HdfsConstants
+operator|.
+name|LEASE_HARDLIMIT_PERIOD
+operator|-
+literal|1000
 expr_stmt|;
 name|dfs
 operator|.

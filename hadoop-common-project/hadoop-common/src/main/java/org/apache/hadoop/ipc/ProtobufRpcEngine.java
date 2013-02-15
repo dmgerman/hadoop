@@ -479,7 +479,7 @@ name|RpcKind
 operator|.
 name|RPC_PROTOCOL_BUFFER
 argument_list|,
-name|RpcRequestWritable
+name|RpcRequestWrapper
 operator|.
 name|class
 argument_list|,
@@ -905,7 +905,7 @@ name|conf
 argument_list|,
 name|factory
 argument_list|,
-name|RpcResponseWritable
+name|RpcResponseWrapper
 operator|.
 name|class
 argument_list|)
@@ -1136,7 +1136,7 @@ argument_list|,
 name|args
 argument_list|)
 decl_stmt|;
-name|RpcResponseWritable
+name|RpcResponseWrapper
 name|val
 init|=
 literal|null
@@ -1196,7 +1196,7 @@ block|{
 name|val
 operator|=
 operator|(
-name|RpcResponseWritable
+name|RpcResponseWrapper
 operator|)
 name|client
 operator|.
@@ -1209,7 +1209,7 @@ operator|.
 name|RPC_PROTOCOL_BUFFER
 argument_list|,
 operator|new
-name|RpcRequestWritable
+name|RpcRequestWrapper
 argument_list|(
 name|rpcRequest
 argument_list|)
@@ -1564,12 +1564,12 @@ name|remoteId
 return|;
 block|}
 block|}
-comment|/**    * Writable Wrapper for Protocol Buffer Requests    */
-DECL|class|RpcRequestWritable
+comment|/**    * Wrapper for Protocol Buffer Requests    *     * Note while this wrapper is writable, the request on the wire is in    * Protobuf. Several methods on {@link org.apache.hadoop.ipc.Server and RPC}     * use type Writable as a wrapper to work across multiple RpcEngine kinds.    */
+DECL|class|RpcRequestWrapper
 specifier|private
 specifier|static
 class|class
-name|RpcRequestWritable
+name|RpcRequestWrapper
 implements|implements
 name|Writable
 block|{
@@ -1582,13 +1582,13 @@ name|SuppressWarnings
 argument_list|(
 literal|"unused"
 argument_list|)
-DECL|method|RpcRequestWritable ()
+DECL|method|RpcRequestWrapper ()
 specifier|public
-name|RpcRequestWritable
+name|RpcRequestWrapper
 parameter_list|()
 block|{     }
-DECL|method|RpcRequestWritable (RequestProto message)
-name|RpcRequestWritable
+DECL|method|RpcRequestWrapper (RequestProto message)
+name|RpcRequestWrapper
 parameter_list|(
 name|RequestProto
 name|message
@@ -1705,12 +1705,12 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Writable Wrapper for Protocol Buffer Responses    */
-DECL|class|RpcResponseWritable
+comment|/**    *  Wrapper for Protocol Buffer Responses    *     * Note while this wrapper is writable, the request on the wire is in    * Protobuf. Several methods on {@link org.apache.hadoop.ipc.Server and RPC}     * use type Writable as a wrapper to work across multiple RpcEngine kinds.    */
+DECL|class|RpcResponseWrapper
 specifier|private
 specifier|static
 class|class
-name|RpcResponseWritable
+name|RpcResponseWrapper
 implements|implements
 name|Writable
 block|{
@@ -1724,14 +1724,14 @@ name|SuppressWarnings
 argument_list|(
 literal|"unused"
 argument_list|)
-DECL|method|RpcResponseWritable ()
+DECL|method|RpcResponseWrapper ()
 specifier|public
-name|RpcResponseWritable
+name|RpcResponseWrapper
 parameter_list|()
 block|{     }
-DECL|method|RpcResponseWritable (Message message)
+DECL|method|RpcResponseWrapper (Message message)
 specifier|public
-name|RpcResponseWritable
+name|RpcResponseWrapper
 parameter_list|(
 name|Message
 name|message
@@ -1852,7 +1852,7 @@ operator|.
 name|getDefault
 argument_list|()
 argument_list|,
-name|RpcResponseWritable
+name|RpcResponseWrapper
 operator|.
 name|class
 argument_list|)
@@ -2195,11 +2195,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|RpcRequestWritable
+name|RpcRequestWrapper
 name|request
 init|=
 operator|(
-name|RpcRequestWritable
+name|RpcRequestWrapper
 operator|)
 name|writableRequest
 decl_stmt|;
@@ -2501,7 +2501,7 @@ throw|;
 block|}
 return|return
 operator|new
-name|RpcResponseWritable
+name|RpcResponseWrapper
 argument_list|(
 name|result
 argument_list|)

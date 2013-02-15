@@ -1129,13 +1129,15 @@ name|submitApp
 argument_list|(
 literal|200
 argument_list|,
-literal|""
+literal|"someApp"
 argument_list|,
-literal|""
+literal|"someUser"
 argument_list|,
 literal|null
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|ApplicationAttemptId

@@ -444,6 +444,15 @@ argument_list|,
 literal|"\t\n"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+literal|"mapreduce.job.maps"
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
 name|FileSystem
 name|localFs
 init|=

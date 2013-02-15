@@ -1718,6 +1718,15 @@ name|DFS_NAMENODE_EDITS_DIR_REQUIRED_KEY
 init|=
 literal|"dfs.namenode.edits.dir.required"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_EDITS_DIR_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_EDITS_DIR_DEFAULT
+init|=
+literal|"file:///tmp/hadoop/dfs/name"
+decl_stmt|;
 DECL|field|DFS_CLIENT_READ_PREFETCH_SIZE_KEY
 specifier|public
 specifier|static

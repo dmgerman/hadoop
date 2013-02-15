@@ -573,8 +573,6 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|instance
-operator|.
 name|put
 argument_list|(
 name|e

@@ -4010,7 +4010,7 @@ name|elapsed
 operator|>
 name|HdfsConstants
 operator|.
-name|LEASE_SOFTLIMIT_PERIOD
+name|LEASE_HARDLIMIT_PERIOD
 condition|)
 block|{
 name|LOG
@@ -4034,7 +4034,7 @@ operator|+
 operator|(
 name|HdfsConstants
 operator|.
-name|LEASE_SOFTLIMIT_PERIOD
+name|LEASE_HARDLIMIT_PERIOD
 operator|/
 literal|1000
 operator|)

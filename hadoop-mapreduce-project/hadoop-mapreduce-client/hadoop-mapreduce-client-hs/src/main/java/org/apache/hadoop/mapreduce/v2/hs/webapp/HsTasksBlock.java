@@ -1690,30 +1690,6 @@ name|_
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|formatTime (long elapsed)
-specifier|private
-name|String
-name|formatTime
-parameter_list|(
-name|long
-name|elapsed
-parameter_list|)
-block|{
-return|return
-name|elapsed
-operator|<
-literal|0
-condition|?
-literal|"N/A"
-else|:
-name|StringUtils
-operator|.
-name|formatTime
-argument_list|(
-name|elapsed
-argument_list|)
-return|;
-block|}
 block|}
 end_class
 
