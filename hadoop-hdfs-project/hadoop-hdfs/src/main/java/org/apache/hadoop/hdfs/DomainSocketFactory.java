@@ -503,7 +503,7 @@ name|setAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_TIMEO
+name|RECEIVE_TIMEOUT
 argument_list|,
 name|conf
 operator|.

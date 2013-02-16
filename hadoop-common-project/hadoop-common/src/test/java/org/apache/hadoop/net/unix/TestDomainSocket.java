@@ -1479,7 +1479,7 @@ name|getAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_BUF_SIZE
+name|RECEIVE_BUFFER_SIZE
 argument_list|)
 decl_stmt|;
 name|int
@@ -1495,7 +1495,7 @@ name|setAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_BUF_SIZE
+name|RECEIVE_BUFFER_SIZE
 argument_list|,
 name|newBufSize
 argument_list|)
@@ -1509,7 +1509,7 @@ name|getAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_BUF_SIZE
+name|RECEIVE_BUFFER_SIZE
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1533,7 +1533,7 @@ name|setAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_TIMEO
+name|RECEIVE_TIMEOUT
 argument_list|,
 name|newTimeout
 argument_list|)
@@ -1547,7 +1547,7 @@ name|getAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_TIMEO
+name|RECEIVE_TIMEOUT
 argument_list|)
 decl_stmt|;
 name|Assert

@@ -203,7 +203,7 @@ name|setAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_TIMEO
+name|RECEIVE_TIMEOUT
 argument_list|,
 name|timeoutMs
 argument_list|)
@@ -226,7 +226,7 @@ name|getAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_BUF_SIZE
+name|RECEIVE_BUFFER_SIZE
 argument_list|)
 return|;
 block|}
@@ -264,7 +264,7 @@ name|setAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|SND_TIMEO
+name|SEND_TIMEOUT
 argument_list|,
 name|timeoutMs
 argument_list|)

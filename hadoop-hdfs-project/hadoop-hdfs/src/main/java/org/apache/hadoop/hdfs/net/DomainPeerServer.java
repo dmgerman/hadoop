@@ -235,7 +235,7 @@ name|setAttribute
 argument_list|(
 name|DomainSocket
 operator|.
-name|RCV_BUF_SIZE
+name|RECEIVE_BUFFER_SIZE
 argument_list|,
 name|size
 argument_list|)

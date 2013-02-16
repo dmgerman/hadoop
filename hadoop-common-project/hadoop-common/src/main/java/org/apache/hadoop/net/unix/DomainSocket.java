@@ -284,8 +284,6 @@ else|else
 block|{
 name|String
 name|problem
-init|=
-literal|"DomainSocket#anchorNative got error: unknown"
 decl_stmt|;
 try|try
 block|{
@@ -434,14 +432,14 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Status bits    *     * Bit 30: 0 = DomainSocket open, 1 = DomainSocket closed    * Bits 29 to 0: the reference count.    */
-DECL|field|status
+comment|/**    * Tracks the reference count of the file descriptor, and also whether it is    * open or closed.    */
+DECL|class|Status
 specifier|private
-specifier|final
-name|AtomicInteger
-name|status
-decl_stmt|;
-comment|/**    * Bit mask representing a closed domain socket.     */
+specifier|static
+class|class
+name|Status
+block|{
+comment|/**      * Bit mask representing a closed domain socket.       */
 DECL|field|STATUS_CLOSED_MASK
 specifier|private
 specifier|static
@@ -452,6 +450,223 @@ init|=
 literal|1
 operator|<<
 literal|30
+decl_stmt|;
+comment|/**      * Status bits      *       * Bit 30: 0 = DomainSocket open, 1 = DomainSocket closed      * Bits 29 to 0: the reference count.      */
+DECL|field|bits
+specifier|private
+specifier|final
+name|AtomicInteger
+name|bits
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|method|Status ()
+name|Status
+parameter_list|()
+block|{ }
+comment|/**      * Increment the reference count of the underlying file descriptor.      *      * @throws ClosedChannelException      If the file descriptor is closed.      */
+DECL|method|reference ()
+name|void
+name|reference
+parameter_list|()
+throws|throws
+name|ClosedChannelException
+block|{
+name|int
+name|curBits
+init|=
+name|bits
+operator|.
+name|incrementAndGet
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|curBits
+operator|&
+name|STATUS_CLOSED_MASK
+operator|)
+operator|!=
+literal|0
+condition|)
+block|{
+name|bits
+operator|.
+name|decrementAndGet
+argument_list|()
+expr_stmt|;
+throw|throw
+operator|new
+name|ClosedChannelException
+argument_list|()
+throw|;
+block|}
+block|}
+comment|/**      * Decrement the reference count of the underlying file descriptor.      *      * @param checkClosed        Whether to throw an exception if the file      *                           descriptor is closed.      *      * @throws AsynchronousCloseException  If the file descriptor is closed and      *                                     checkClosed is set.      */
+DECL|method|unreference (boolean checkClosed)
+name|void
+name|unreference
+parameter_list|(
+name|boolean
+name|checkClosed
+parameter_list|)
+throws|throws
+name|AsynchronousCloseException
+block|{
+name|int
+name|newCount
+init|=
+name|bits
+operator|.
+name|decrementAndGet
+argument_list|()
+decl_stmt|;
+assert|assert
+operator|(
+name|newCount
+operator|&
+operator|~
+name|STATUS_CLOSED_MASK
+operator|)
+operator|>=
+literal|0
+assert|;
+if|if
+condition|(
+name|checkClosed
+operator|&&
+operator|(
+operator|(
+name|newCount
+operator|&
+name|STATUS_CLOSED_MASK
+operator|)
+operator|!=
+literal|0
+operator|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|AsynchronousCloseException
+argument_list|()
+throw|;
+block|}
+block|}
+comment|/**      * Return true if the file descriptor is currently open.      *       * @return                 True if the file descriptor is currently open.      */
+DECL|method|isOpen ()
+name|boolean
+name|isOpen
+parameter_list|()
+block|{
+return|return
+operator|(
+operator|(
+name|bits
+operator|.
+name|get
+argument_list|()
+operator|&
+name|STATUS_CLOSED_MASK
+operator|)
+operator|==
+literal|0
+operator|)
+return|;
+block|}
+comment|/**      * Mark the file descriptor as closed.      *      * Once the file descriptor is closed, it cannot be reopened.      *      * @return                         The current reference count.      * @throws ClosedChannelException  If someone else closes the file       *                                 descriptor before we do.      */
+DECL|method|setClosed ()
+name|int
+name|setClosed
+parameter_list|()
+throws|throws
+name|ClosedChannelException
+block|{
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+name|int
+name|curBits
+init|=
+name|bits
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|(
+name|curBits
+operator|&
+name|STATUS_CLOSED_MASK
+operator|)
+operator|!=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|ClosedChannelException
+argument_list|()
+throw|;
+block|}
+if|if
+condition|(
+name|bits
+operator|.
+name|compareAndSet
+argument_list|(
+name|curBits
+argument_list|,
+name|curBits
+operator||
+name|STATUS_CLOSED_MASK
+argument_list|)
+condition|)
+block|{
+return|return
+name|curBits
+operator|&
+operator|(
+operator|~
+name|STATUS_CLOSED_MASK
+operator|)
+return|;
+block|}
+block|}
+block|}
+comment|/**      * Get the current reference count.      *      * @return                 The current reference count.      */
+DECL|method|getReferenceCount ()
+name|int
+name|getReferenceCount
+parameter_list|()
+block|{
+return|return
+name|bits
+operator|.
+name|get
+argument_list|()
+operator|&
+operator|(
+operator|~
+name|STATUS_CLOSED_MASK
+operator|)
+return|;
+block|}
+block|}
+comment|/**    * The socket status.    */
+DECL|field|status
+specifier|private
+specifier|final
+name|Status
+name|status
 decl_stmt|;
 comment|/**    * The file descriptor associated with this UNIX domain socket.    */
 DECL|field|fd
@@ -516,10 +731,8 @@ operator|.
 name|status
 operator|=
 operator|new
-name|AtomicInteger
-argument_list|(
-literal|0
-argument_list|)
+name|Status
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -628,7 +841,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -662,7 +877,9 @@ return|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -726,99 +943,7 @@ name|fd
 argument_list|)
 return|;
 block|}
-comment|/**    * Increment the reference count of the underlying file descriptor.    *    * @throws SocketException  If the file descriptor is closed.    */
-DECL|method|fdRef ()
-specifier|private
-name|void
-name|fdRef
-parameter_list|()
-throws|throws
-name|ClosedChannelException
-block|{
-name|int
-name|bits
-init|=
-name|status
-operator|.
-name|incrementAndGet
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|(
-name|bits
-operator|&
-name|STATUS_CLOSED_MASK
-operator|)
-operator|!=
-literal|0
-condition|)
-block|{
-name|status
-operator|.
-name|decrementAndGet
-argument_list|()
-expr_stmt|;
-throw|throw
-operator|new
-name|ClosedChannelException
-argument_list|()
-throw|;
-block|}
-block|}
-comment|/**    * Decrement the reference count of the underlying file descriptor.    */
-DECL|method|fdUnref (boolean checkClosed)
-specifier|private
-name|void
-name|fdUnref
-parameter_list|(
-name|boolean
-name|checkClosed
-parameter_list|)
-throws|throws
-name|AsynchronousCloseException
-block|{
-name|int
-name|newCount
-init|=
-name|status
-operator|.
-name|decrementAndGet
-argument_list|()
-decl_stmt|;
-assert|assert
-operator|(
-name|newCount
-operator|&
-operator|~
-name|STATUS_CLOSED_MASK
-operator|)
-operator|>=
-literal|0
-assert|;
-if|if
-condition|(
-name|checkClosed
-operator|&&
-operator|(
-operator|(
-name|newCount
-operator|&
-name|STATUS_CLOSED_MASK
-operator|)
-operator|!=
-literal|0
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|AsynchronousCloseException
-argument_list|()
-throw|;
-block|}
-block|}
-comment|/**    * Return true if the file descriptor is currently open.    *     * @return                 True if the file descriptor is currently open.    */
+comment|/**   * Return true if the file descriptor is currently open.   *   * @return                 True if the file descriptor is currently open.   */
 DECL|method|isOpen ()
 specifier|public
 name|boolean
@@ -826,18 +951,10 @@ name|isOpen
 parameter_list|()
 block|{
 return|return
-operator|(
-operator|(
 name|status
 operator|.
-name|get
+name|isOpen
 argument_list|()
-operator|&
-name|STATUS_CLOSED_MASK
-operator|)
-operator|==
-literal|0
-operator|)
 return|;
 block|}
 comment|/**    * @return                 The socket path.    */
@@ -884,39 +1001,39 @@ return|return
 name|channel
 return|;
 block|}
-DECL|field|SND_BUF_SIZE
+DECL|field|SEND_BUFFER_SIZE
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|SND_BUF_SIZE
+name|SEND_BUFFER_SIZE
 init|=
 literal|1
 decl_stmt|;
-DECL|field|RCV_BUF_SIZE
+DECL|field|RECEIVE_BUFFER_SIZE
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|RCV_BUF_SIZE
+name|RECEIVE_BUFFER_SIZE
 init|=
 literal|2
 decl_stmt|;
-DECL|field|SND_TIMEO
+DECL|field|SEND_TIMEOUT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|SND_TIMEO
+name|SEND_TIMEOUT
 init|=
 literal|3
 decl_stmt|;
-DECL|field|RCV_TIMEO
+DECL|field|RECEIVE_TIMEOUT
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|RCV_TIMEO
+name|RECEIVE_TIMEOUT
 init|=
 literal|4
 decl_stmt|;
@@ -953,7 +1070,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -979,7 +1098,9 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -1012,7 +1133,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|int
@@ -1044,7 +1167,9 @@ return|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -1103,50 +1228,26 @@ name|IOException
 block|{
 comment|// Set the closed bit on this DomainSocket
 name|int
-name|bits
+name|refCount
 decl_stmt|;
-while|while
-condition|(
-literal|true
-condition|)
+try|try
 block|{
-name|bits
+name|refCount
 operator|=
 name|status
 operator|.
-name|get
+name|setClosed
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-operator|(
-name|bits
-operator|&
-name|STATUS_CLOSED_MASK
-operator|)
-operator|!=
-literal|0
-condition|)
+block|}
+catch|catch
+parameter_list|(
+name|ClosedChannelException
+name|e
+parameter_list|)
 block|{
+comment|// Someone else already closed the DomainSocket.
 return|return;
-comment|// already closed
-block|}
-if|if
-condition|(
-name|status
-operator|.
-name|compareAndSet
-argument_list|(
-name|bits
-argument_list|,
-name|bits
-operator||
-name|STATUS_CLOSED_MASK
-argument_list|)
-condition|)
-block|{
-break|break;
-block|}
 block|}
 comment|// Wait for all references to go away
 name|boolean
@@ -1161,14 +1262,7 @@ literal|false
 decl_stmt|;
 while|while
 condition|(
-operator|(
-name|bits
-operator|&
-operator|(
-operator|~
-name|STATUS_CLOSED_MASK
-operator|)
-operator|)
+name|refCount
 operator|>
 literal|0
 condition|)
@@ -1232,19 +1326,21 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-name|bits
+name|refCount
 operator|=
 name|status
 operator|.
-name|get
+name|getReferenceCount
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Close the file descriptor.  After this point, the file descriptor
-comment|// number will be reused by something else.  Although this DomainSocket
-comment|// object continues to hold the old file descriptor number (it's a final
-comment|// field), we never use it again because we look at the closed bit and
-comment|// realize that this DomainSocket is not usable.
+comment|// At this point, nobody has a reference to the file descriptor,
+comment|// and nobody will be able to get one in the future either.
+comment|// We now call close(2) on the file descriptor.
+comment|// After this point, the file descriptor number will be reused by
+comment|// something else.  Although this DomainSocket object continues to hold
+comment|// the old file descriptor number (it's a final field), we never use it
+comment|// again because this DomainSocket is closed.
 name|close0
 argument_list|(
 name|fd
@@ -1265,20 +1361,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/*    * Clean up if the user forgets to close the socket.    */
-DECL|method|finalize ()
-specifier|protected
-name|void
-name|finalize
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|close
-argument_list|()
-expr_stmt|;
-block|}
-DECL|method|sendFileDescriptors0 (int fd, FileDescriptor jfds[], byte jbuf[], int offset, int length)
+DECL|method|sendFileDescriptors0 (int fd, FileDescriptor descriptors[], byte jbuf[], int offset, int length)
 specifier|private
 specifier|native
 specifier|static
@@ -1289,7 +1372,7 @@ name|int
 name|fd
 parameter_list|,
 name|FileDescriptor
-name|jfds
+name|descriptors
 index|[]
 parameter_list|,
 name|byte
@@ -1305,14 +1388,14 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Send some FileDescriptor objects to the process on the other side of this    * socket.    *     * @param jfds              The file descriptors to send.    * @param jbuf              Some bytes to send.  You must send at least    *                          one byte.    * @param offset            The offset in the jbuf array to start at.    * @param length            Length of the jbuf array to use.    */
-DECL|method|sendFileDescriptors (FileDescriptor jfds[], byte jbuf[], int offset, int length)
+comment|/**    * Send some FileDescriptor objects to the process on the other side of this    * socket.    *     * @param descriptors       The file descriptors to send.    * @param jbuf              Some bytes to send.  You must send at least    *                          one byte.    * @param offset            The offset in the jbuf array to start at.    * @param length            Length of the jbuf array to use.    */
+DECL|method|sendFileDescriptors (FileDescriptor descriptors[], byte jbuf[], int offset, int length)
 specifier|public
 name|void
 name|sendFileDescriptors
 parameter_list|(
 name|FileDescriptor
-name|jfds
+name|descriptors
 index|[]
 parameter_list|,
 name|byte
@@ -1328,7 +1411,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -1342,7 +1427,7 @@ name|sendFileDescriptors0
 argument_list|(
 name|fd
 argument_list|,
-name|jfds
+name|descriptors
 argument_list|,
 name|jbuf
 argument_list|,
@@ -1358,14 +1443,16 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|receiveFileDescriptors0 (int fd, FileDescriptor[] jfds, byte jbuf[], int offset, int length)
+DECL|method|receiveFileDescriptors0 (int fd, FileDescriptor[] descriptors, byte jbuf[], int offset, int length)
 specifier|private
 specifier|static
 specifier|native
@@ -1377,7 +1464,7 @@ name|fd
 parameter_list|,
 name|FileDescriptor
 index|[]
-name|jfds
+name|descriptors
 parameter_list|,
 name|byte
 name|jbuf
@@ -1392,15 +1479,15 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Receive some FileDescriptor objects from the process on the other side of    * this socket.    *    * @param jfds              (output parameter) Array of FileDescriptors.    *                          We will fill as many slots as possible with file    *                          descriptors passed from the remote process.  The    *                          other slots will contain NULL.    * @param jbuf              (output parameter) Buffer to read into.    *                          The UNIX domain sockets API requires you to read    *                          at least one byte from the remote process, even    *                          if all you care about is the file descriptors    *                          you will receive.    * @param offset            Offset into the byte buffer to load data    * @param length            Length of the byte buffer to use for data    *    * @return                  The number of bytes read.  This will be -1 if we    *                          reached EOF (similar to SocketInputStream);    *                          otherwise, it will be positive.    * @throws                  IOException if there was an I/O error.    */
-DECL|method|receiveFileDescriptors (FileDescriptor[] jfds, byte jbuf[], int offset, int length)
+comment|/**    * Receive some FileDescriptor objects from the process on the other side of    * this socket.    *    * @param descriptors       (output parameter) Array of FileDescriptors.    *                          We will fill as many slots as possible with file    *                          descriptors passed from the remote process.  The    *                          other slots will contain NULL.    * @param jbuf              (output parameter) Buffer to read into.    *                          The UNIX domain sockets API requires you to read    *                          at least one byte from the remote process, even    *                          if all you care about is the file descriptors    *                          you will receive.    * @param offset            Offset into the byte buffer to load data    * @param length            Length of the byte buffer to use for data    *    * @return                  The number of bytes read.  This will be -1 if we    *                          reached EOF (similar to SocketInputStream);    *                          otherwise, it will be positive.    * @throws                  IOException if there was an I/O error.    */
+DECL|method|receiveFileDescriptors (FileDescriptor[] descriptors, byte jbuf[], int offset, int length)
 specifier|public
 name|int
 name|receiveFileDescriptors
 parameter_list|(
 name|FileDescriptor
 index|[]
-name|jfds
+name|descriptors
 parameter_list|,
 name|byte
 name|jbuf
@@ -1415,7 +1502,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -1432,7 +1521,7 @@ name|receiveFileDescriptors0
 argument_list|(
 name|fd
 argument_list|,
-name|jfds
+name|descriptors
 argument_list|,
 name|jbuf
 argument_list|,
@@ -1451,7 +1540,9 @@ return|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -1459,14 +1550,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Receive some FileDescriptor objects from the process on the other side of    * this socket, and wrap them in FileInputStream objects.    *    * See {@link DomainSocket#recvFileInputStreams(ByteBuffer)}    */
-DECL|method|recvFileInputStreams (FileInputStream[] fis, byte buf[], int offset, int length)
+DECL|method|recvFileInputStreams (FileInputStream[] streams, byte buf[], int offset, int length)
 specifier|public
 name|int
 name|recvFileInputStreams
 parameter_list|(
 name|FileInputStream
 index|[]
-name|fis
+name|streams
 parameter_list|,
 name|byte
 name|buf
@@ -1482,13 +1573,13 @@ throws|throws
 name|IOException
 block|{
 name|FileDescriptor
-name|fds
+name|descriptors
 index|[]
 init|=
 operator|new
 name|FileDescriptor
 index|[
-name|fis
+name|streams
 operator|.
 name|length
 index|]
@@ -1507,7 +1598,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|fis
+name|streams
 operator|.
 name|length
 condition|;
@@ -1515,7 +1606,7 @@ name|i
 operator|++
 control|)
 block|{
-name|fis
+name|streams
 index|[
 name|i
 index|]
@@ -1523,7 +1614,9 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 try|try
@@ -1535,7 +1628,7 @@ name|receiveFileDescriptors0
 argument_list|(
 name|fd
 argument_list|,
-name|fds
+name|descriptors
 argument_list|,
 name|buf
 argument_list|,
@@ -1557,7 +1650,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|fds
+name|descriptors
 operator|.
 name|length
 condition|;
@@ -1567,7 +1660,7 @@ control|)
 block|{
 if|if
 condition|(
-name|fds
+name|descriptors
 index|[
 name|i
 index|]
@@ -1575,7 +1668,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|fis
+name|streams
 index|[
 name|j
 operator|++
@@ -1584,13 +1677,13 @@ operator|=
 operator|new
 name|FileInputStream
 argument_list|(
-name|fds
+name|descriptors
 index|[
 name|i
 index|]
 argument_list|)
 expr_stmt|;
-name|fds
+name|descriptors
 index|[
 name|i
 index|]
@@ -1624,7 +1717,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|fds
+name|descriptors
 operator|.
 name|length
 condition|;
@@ -1634,7 +1727,7 @@ control|)
 block|{
 if|if
 condition|(
-name|fds
+name|descriptors
 index|[
 name|i
 index|]
@@ -1646,7 +1739,7 @@ try|try
 block|{
 name|closeFileDescriptor0
 argument_list|(
-name|fds
+name|descriptors
 index|[
 name|i
 index|]
@@ -1671,7 +1764,7 @@ block|}
 elseif|else
 if|if
 condition|(
-name|fis
+name|streams
 index|[
 name|i
 index|]
@@ -1681,7 +1774,7 @@ condition|)
 block|{
 try|try
 block|{
-name|fis
+name|streams
 index|[
 name|i
 index|]
@@ -1706,7 +1799,7 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|fis
+name|streams
 index|[
 name|i
 index|]
@@ -1717,7 +1810,9 @@ block|}
 block|}
 block|}
 block|}
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 operator|!
 name|success
@@ -1847,7 +1942,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -1909,7 +2006,9 @@ return|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -1936,7 +2035,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -1976,7 +2077,9 @@ return|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -1993,7 +2096,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -2027,7 +2132,9 @@ return|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -2099,7 +2206,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -2153,7 +2262,9 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -2180,7 +2291,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -2214,7 +2327,9 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
@@ -2284,7 +2399,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|fdRef
+name|status
+operator|.
+name|reference
 argument_list|()
 expr_stmt|;
 name|boolean
@@ -2420,7 +2537,9 @@ return|;
 block|}
 finally|finally
 block|{
-name|fdUnref
+name|status
+operator|.
+name|unreference
 argument_list|(
 name|exc
 argument_list|)
