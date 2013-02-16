@@ -109,7 +109,13 @@ specifier|final
 name|Object
 name|value
 decl_stmt|;
-DECL|method|Item (String key, String url, Object value)
+DECL|field|isRaw
+specifier|public
+specifier|final
+name|boolean
+name|isRaw
+decl_stmt|;
+DECL|method|Item (String key, String url, Object value, boolean isRaw)
 name|Item
 parameter_list|(
 name|String
@@ -120,6 +126,9 @@ name|url
 parameter_list|,
 name|Object
 name|value
+parameter_list|,
+name|boolean
+name|isRaw
 parameter_list|)
 block|{
 name|this
@@ -140,8 +149,14 @@ name|value
 operator|=
 name|value
 expr_stmt|;
+name|this
+operator|.
+name|isRaw
+operator|=
+name|isRaw
+expr_stmt|;
 block|}
-DECL|method|of (String key, Object value)
+DECL|method|of (String key, Object value, boolean isRaw)
 specifier|public
 specifier|static
 name|Item
@@ -152,6 +167,9 @@ name|key
 parameter_list|,
 name|Object
 name|value
+parameter_list|,
+name|boolean
+name|isRaw
 parameter_list|)
 block|{
 return|return
@@ -163,6 +181,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|value
+argument_list|,
+name|isRaw
 argument_list|)
 return|;
 block|}
@@ -191,6 +211,8 @@ argument_list|,
 name|url
 argument_list|,
 name|value
+argument_list|,
+literal|false
 argument_list|)
 return|;
 block|}
@@ -294,6 +316,8 @@ argument_list|(
 name|key
 argument_list|,
 name|value
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -329,6 +353,39 @@ argument_list|,
 name|url
 argument_list|,
 name|anchor
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|//Value is raw HTML and shouldn't be escaped
+DECL|method|_r (String key, Object value)
+specifier|public
+name|ResponseInfo
+name|_r
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|Object
+name|value
+parameter_list|)
+block|{
+name|items
+operator|.
+name|add
+argument_list|(
+name|Item
+operator|.
+name|of
+argument_list|(
+name|key
+argument_list|,
+name|value
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -145,6 +145,12 @@ specifier|protected
 name|int
 name|userLimit
 decl_stmt|;
+DECL|field|users
+specifier|protected
+name|UsersInfo
+name|users
+decl_stmt|;
+comment|// To add another level in the XML
 DECL|field|userLimitFactor
 specifier|protected
 name|float
@@ -222,6 +228,17 @@ name|q
 operator|.
 name|getUserLimit
 argument_list|()
+expr_stmt|;
+name|users
+operator|=
+operator|new
+name|UsersInfo
+argument_list|(
+name|q
+operator|.
+name|getUsers
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|userLimitFactor
 operator|=
@@ -309,6 +326,17 @@ parameter_list|()
 block|{
 return|return
 name|userLimit
+return|;
+block|}
+comment|//Placing here because of JERSEY-1199
+DECL|method|getUsers ()
+specifier|public
+name|UsersInfo
+name|getUsers
+parameter_list|()
+block|{
+return|return
+name|users
 return|;
 block|}
 DECL|method|getUserLimitFactor ()

@@ -148,8 +148,6 @@ name|IOException
 name|e
 parameter_list|)
 block|{      }
-try|try
-block|{
 name|conf
 operator|.
 name|set
@@ -157,50 +155,6 @@ argument_list|(
 name|MRConfig
 operator|.
 name|FRAMEWORK_NAME
-argument_list|,
-name|MRConfig
-operator|.
-name|LOCAL_FRAMEWORK_NAME
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
-argument_list|,
-literal|"127.0.0.1:0"
-argument_list|)
-expr_stmt|;
-operator|new
-name|Cluster
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Cluster with Local Framework name should use local JT address"
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{      }
-try|try
-block|{
-name|conf
-operator|.
-name|set
-argument_list|(
-name|JTConfig
-operator|.
-name|JT_IPC_ADDRESS
 argument_list|,
 literal|"local"
 argument_list|)
@@ -229,13 +183,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{      }
 block|}
 annotation|@
 name|Test

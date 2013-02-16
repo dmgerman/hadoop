@@ -208,6 +208,20 @@ name|StandbyException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|ConnectTimeoutException
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * A collection of useful implementations of {@link RetryPolicy}.  *</p>  */
 end_comment
@@ -2382,6 +2396,10 @@ operator|||
 name|e
 operator|instanceof
 name|StandbyException
+operator|||
+name|e
+operator|instanceof
+name|ConnectTimeoutException
 operator|||
 name|isWrappedStandbyException
 argument_list|(

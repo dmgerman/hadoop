@@ -156,6 +156,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|setTestPaths
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/tmp/TestListFilesInDFS"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|cluster
 operator|=
 operator|new

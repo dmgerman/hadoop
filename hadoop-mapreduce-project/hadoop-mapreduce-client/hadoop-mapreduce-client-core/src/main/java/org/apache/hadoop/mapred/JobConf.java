@@ -120,6 +120,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -942,7 +958,10 @@ return|return
 name|credentials
 return|;
 block|}
+annotation|@
+name|Private
 DECL|method|setCredentials (Credentials credentials)
+specifier|public
 name|void
 name|setCredentials
 parameter_list|(

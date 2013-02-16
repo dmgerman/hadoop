@@ -776,6 +776,16 @@ operator|+
 name|getCapability
 argument_list|()
 operator|+
+literal|", # Containers: "
+operator|+
+name|getNumContainers
+argument_list|()
+operator|+
+literal|", Location: "
+operator|+
+name|getHostName
+argument_list|()
+operator|+
 literal|"}"
 return|;
 block|}

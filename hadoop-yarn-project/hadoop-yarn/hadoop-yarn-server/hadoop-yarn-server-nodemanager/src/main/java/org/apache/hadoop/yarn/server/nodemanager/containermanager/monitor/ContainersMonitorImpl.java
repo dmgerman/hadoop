@@ -139,6 +139,8 @@ operator|.
 name|util
 operator|.
 name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
 import|;
 end_import
 
@@ -740,22 +742,30 @@ name|warn
 argument_list|(
 literal|"NodeManager configured with "
 operator|+
-name|StringUtils
+name|TraditionalBinaryPrefix
 operator|.
-name|humanReadableInt
+name|long2String
 argument_list|(
 name|maxPmemAllottedForContainers
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
 operator|+
 literal|" physical memory allocated to containers, which is more than "
 operator|+
 literal|"80% of the total physical memory available ("
 operator|+
-name|StringUtils
+name|TraditionalBinaryPrefix
 operator|.
-name|humanReadableInt
+name|long2String
 argument_list|(
 name|totalPhysicalMemoryOnNM
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
 operator|+
 literal|"). Thrashing might happen."
@@ -2166,36 +2176,52 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%sb of %sb physical memory used; "
+literal|"%sB of %sB physical memory used; "
 operator|+
-literal|"%sb of %sb virtual memory used"
+literal|"%sB of %sB virtual memory used"
 argument_list|,
-name|StringUtils
+name|TraditionalBinaryPrefix
 operator|.
-name|humanReadableInt
+name|long2String
 argument_list|(
 name|currentPmemUsage
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
 argument_list|,
-name|StringUtils
+name|TraditionalBinaryPrefix
 operator|.
-name|humanReadableInt
+name|long2String
 argument_list|(
 name|pmemLimit
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
 argument_list|,
-name|StringUtils
+name|TraditionalBinaryPrefix
 operator|.
-name|humanReadableInt
+name|long2String
 argument_list|(
 name|currentVmemUsage
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
 argument_list|,
-name|StringUtils
+name|TraditionalBinaryPrefix
 operator|.
-name|humanReadableInt
+name|long2String
 argument_list|(
 name|vmemLimit
+argument_list|,
+literal|""
+argument_list|,
+literal|1
 argument_list|)
 argument_list|)
 return|;

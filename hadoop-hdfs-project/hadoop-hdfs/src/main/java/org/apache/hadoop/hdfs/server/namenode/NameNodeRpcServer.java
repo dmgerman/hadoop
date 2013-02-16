@@ -3005,7 +3005,7 @@ name|Override
 comment|// ClientProtocol
 DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize)
 specifier|public
-name|void
+name|HdfsFileStatus
 name|create
 parameter_list|(
 name|String
@@ -3092,6 +3092,9 @@ literal|" levels."
 argument_list|)
 throw|;
 block|}
+name|HdfsFileStatus
+name|fileStatus
+init|=
 name|namesystem
 operator|.
 name|startFile
@@ -3129,7 +3132,7 @@ name|replication
 argument_list|,
 name|blockSize
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|metrics
 operator|.
 name|incrFilesCreated
@@ -3140,6 +3143,9 @@ operator|.
 name|incrCreateFileOps
 argument_list|()
 expr_stmt|;
+return|return
+name|fileStatus
+return|;
 block|}
 annotation|@
 name|Override
@@ -3338,8 +3344,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// ClientProtocol
-DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes)
+DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId)
 specifier|public
 name|LocatedBlock
 name|addBlock
@@ -3356,6 +3361,9 @@ parameter_list|,
 name|DatanodeInfo
 index|[]
 name|excludedNodes
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 throws|throws
 name|IOException
@@ -3375,6 +3383,10 @@ argument_list|(
 literal|"*BLOCK* NameNode.addBlock: file "
 operator|+
 name|src
+operator|+
+literal|" fileId="
+operator|+
+name|fileId
 operator|+
 literal|" for "
 operator|+
@@ -3441,6 +3453,8 @@ operator|.
 name|getAdditionalBlock
 argument_list|(
 name|src
+argument_list|,
+name|fileId
 argument_list|,
 name|clientName
 argument_list|,

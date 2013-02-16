@@ -1575,6 +1575,18 @@ name|getListenerAddress
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// enable RM to short-circuit token operations directly to itself
+name|RMDelegationTokenIdentifier
+operator|.
+name|Renewer
+operator|.
+name|setSecretManager
+argument_list|(
+name|rmDTSecretManager
+argument_list|,
+name|clientBindAddress
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|start

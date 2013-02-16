@@ -668,7 +668,7 @@ name|setBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 argument_list|,
 literal|true
 argument_list|)

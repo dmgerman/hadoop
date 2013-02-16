@@ -138,6 +138,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Abstract base class for MapWritable and SortedMapWritable  *   * Unlike org.apache.nutch.crawl.MapWritable, this class allows creation of  * MapWritable&lt;Writable, MapWritable&gt; so the CLASS_TO_ID and ID_TO_CLASS  * maps travel with the class instead of being static.  *   * Class ids range from 1 to 127 so there can be at most 127 distinct classes  * in any specific map instance.  */
 end_comment
@@ -170,8 +184,9 @@ argument_list|>
 name|conf
 decl_stmt|;
 comment|/* Class to id mappings */
+annotation|@
+name|VisibleForTesting
 DECL|field|classToIdMap
-specifier|private
 name|Map
 argument_list|<
 name|Class
@@ -190,8 +205,9 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 comment|/* Id to Class mappings */
+annotation|@
+name|VisibleForTesting
 DECL|field|idToClassMap
-specifier|private
 name|Map
 argument_list|<
 name|Byte

@@ -872,15 +872,7 @@ name|getTaskType
 parameter_list|()
 block|{
 return|return
-name|TaskType
-operator|.
-name|valueOf
-argument_list|(
 name|taskType
-operator|.
-name|toString
-argument_list|()
-argument_list|)
 return|;
 block|}
 comment|/** Get the task status */

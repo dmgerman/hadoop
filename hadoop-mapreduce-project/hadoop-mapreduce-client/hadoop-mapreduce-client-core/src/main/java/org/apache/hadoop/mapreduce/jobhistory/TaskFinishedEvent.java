@@ -453,15 +453,7 @@ name|getTaskId
 parameter_list|()
 block|{
 return|return
-name|TaskID
-operator|.
-name|forName
-argument_list|(
 name|taskid
-operator|.
-name|toString
-argument_list|()
-argument_list|)
 return|;
 block|}
 comment|/** Get successful task attempt id */
@@ -471,27 +463,8 @@ name|TaskAttemptID
 name|getSuccessfulTaskAttemptId
 parameter_list|()
 block|{
-if|if
-condition|(
-name|successfulAttemptId
-operator|!=
-literal|null
-condition|)
-block|{
 return|return
-name|TaskAttemptID
-operator|.
-name|forName
-argument_list|(
 name|successfulAttemptId
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-return|;
-block|}
-return|return
-literal|null
 return|;
 block|}
 comment|/** Get the task finish time */
@@ -524,15 +497,7 @@ name|getTaskType
 parameter_list|()
 block|{
 return|return
-name|TaskType
-operator|.
-name|valueOf
-argument_list|(
 name|taskType
-operator|.
-name|toString
-argument_list|()
-argument_list|)
 return|;
 block|}
 comment|/** Get task status */

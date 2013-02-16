@@ -959,13 +959,6 @@ specifier|final
 name|int
 name|blockInvalidateLimit
 decl_stmt|;
-comment|/** Whether or not to check stale DataNodes for read/write */
-DECL|field|checkForStaleDataNodes
-specifier|private
-specifier|final
-name|boolean
-name|checkForStaleDataNodes
-decl_stmt|;
 comment|/** The interval for judging stale DataNodes for read/write */
 DECL|field|staleInterval
 specifier|private
@@ -973,12 +966,26 @@ specifier|final
 name|long
 name|staleInterval
 decl_stmt|;
-comment|/** Whether or not to avoid using stale DataNodes for writing */
+comment|/** Whether or not to avoid using stale DataNodes for reading */
+DECL|field|avoidStaleDataNodesForRead
+specifier|private
+specifier|final
+name|boolean
+name|avoidStaleDataNodesForRead
+decl_stmt|;
+comment|/**    * Whether or not to avoid using stale DataNodes for writing.    * Note that, even if this is configured, the policy may be    * temporarily disabled when a high percentage of the nodes    * are marked as stale.    */
 DECL|field|avoidStaleDataNodesForWrite
 specifier|private
-specifier|volatile
+specifier|final
 name|boolean
 name|avoidStaleDataNodesForWrite
+decl_stmt|;
+comment|/**    * When the ratio of stale datanodes reaches this number, stop avoiding     * writing to stale datanodes, i.e., continue using stale nodes for writing.    */
+DECL|field|ratioUseStaleDataNodesForWrite
+specifier|private
+specifier|final
+name|float
+name|ratioUseStaleDataNodesForWrite
 decl_stmt|;
 comment|/** The number of stale DataNodes */
 DECL|field|numStaleNodes
@@ -1235,7 +1242,9 @@ operator|.
 name|blockInvalidateLimit
 argument_list|)
 expr_stmt|;
-name|checkForStaleDataNodes
+name|this
+operator|.
+name|avoidStaleDataNodesForRead
 operator|=
 name|conf
 operator|.
@@ -1243,13 +1252,32 @@ name|getBoolean
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 argument_list|,
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_CHECK_STALE_DATANODE_DEFAULT
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|avoidStaleDataNodesForWrite
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
 name|staleInterval
 operator|=
 name|getStaleIntervalFromConf
@@ -1259,13 +1287,48 @@ argument_list|,
 name|heartbeatExpireInterval
 argument_list|)
 expr_stmt|;
-name|avoidStaleDataNodesForWrite
+name|this
+operator|.
+name|ratioUseStaleDataNodesForWrite
 operator|=
-name|getAvoidStaleForWriteFromConf
-argument_list|(
 name|conf
+operator|.
+name|getFloat
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_KEY
 argument_list|,
-name|checkForStaleDataNodes
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_DEFAULT
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|(
+name|ratioUseStaleDataNodesForWrite
+operator|>
+literal|0
+operator|&&
+name|ratioUseStaleDataNodesForWrite
+operator|<=
+literal|1.0f
+operator|)
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_USE_STALE_DATANODE_FOR_WRITE_RATIO_KEY
+operator|+
+literal|" = '"
+operator|+
+name|ratioUseStaleDataNodesForWrite
+operator|+
+literal|"' is invalid. "
+operator|+
+literal|"It should be a positive non-zero float value, not greater than 1.0f."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1421,73 +1484,6 @@ expr_stmt|;
 block|}
 return|return
 name|staleInterval
-return|;
-block|}
-DECL|method|getAvoidStaleForWriteFromConf (Configuration conf, boolean checkForStale)
-specifier|static
-name|boolean
-name|getAvoidStaleForWriteFromConf
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|boolean
-name|checkForStale
-parameter_list|)
-block|{
-name|boolean
-name|avoid
-init|=
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_DEFAULT
-argument_list|)
-decl_stmt|;
-name|boolean
-name|avoidStaleDataNodesForWrite
-init|=
-name|checkForStale
-operator|&&
-name|avoid
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|checkForStale
-operator|&&
-name|avoid
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Cannot set "
-operator|+
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_CHECK_STALE_DATANODE_KEY
-operator|+
-literal|" as false while setting "
-operator|+
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
-operator|+
-literal|" as true."
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|avoidStaleDataNodesForWrite
 return|;
 block|}
 DECL|method|activate (final Configuration conf)
@@ -1736,7 +1732,7 @@ name|DatanodeInfo
 argument_list|>
 name|comparator
 init|=
-name|checkForStaleDataNodes
+name|avoidStaleDataNodesForRead
 condition|?
 operator|new
 name|DFSUtil
@@ -3742,41 +3738,28 @@ expr_stmt|;
 block|}
 block|}
 comment|/* Getter and Setter for stale DataNodes related attributes */
-comment|/**    * @return whether or not to avoid writing to stale datanodes    */
-DECL|method|isAvoidingStaleDataNodesForWrite ()
+comment|/**    * Whether stale datanodes should be avoided as targets on the write path.    * The result of this function may change if the number of stale datanodes    * eclipses a configurable threshold.    *     * @return whether stale datanodes should be avoided on the write path    */
+DECL|method|shouldAvoidStaleDataNodesForWrite ()
 specifier|public
 name|boolean
-name|isAvoidingStaleDataNodesForWrite
+name|shouldAvoidStaleDataNodesForWrite
 parameter_list|()
 block|{
+comment|// If # stale exceeds maximum staleness ratio, disable stale
+comment|// datanode avoidance on the write path
 return|return
 name|avoidStaleDataNodesForWrite
-return|;
-block|}
-comment|/**    * Set the value of {@link DatanodeManager#avoidStaleDataNodesForWrite}.     * The HeartbeatManager disable avoidStaleDataNodesForWrite when more than    * half of the DataNodes are marked as stale.    *     * @param avoidStaleDataNodesForWrite    *          The value to set to    *          {@link DatanodeManager#avoidStaleDataNodesForWrite}    */
-DECL|method|setAvoidStaleDataNodesForWrite (boolean avoidStaleDataNodesForWrite)
-name|void
-name|setAvoidStaleDataNodesForWrite
-parameter_list|(
-name|boolean
-name|avoidStaleDataNodesForWrite
-parameter_list|)
-block|{
-name|this
+operator|&&
+operator|(
+name|numStaleNodes
+operator|<=
+name|heartbeatManager
 operator|.
-name|avoidStaleDataNodesForWrite
-operator|=
-name|avoidStaleDataNodesForWrite
-expr_stmt|;
-block|}
-comment|/**    * @return Whether or not to check stale DataNodes for R/W    */
-DECL|method|isCheckingForStaleDataNodes ()
-name|boolean
-name|isCheckingForStaleDataNodes
-parameter_list|()
-block|{
-return|return
-name|checkForStaleDataNodes
+name|getLiveDatanodeCount
+argument_list|()
+operator|*
+name|ratioUseStaleDataNodesForWrite
+operator|)
 return|;
 block|}
 comment|/**    * @return The time interval used to mark DataNodes as stale.    */
@@ -4151,6 +4134,8 @@ operator|.
 name|substring
 argument_list|(
 name|idx
+operator|+
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;

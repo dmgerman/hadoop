@@ -9290,6 +9290,11 @@ else|:
 literal|null
 argument_list|,
 name|path
+argument_list|,
+name|node
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -9479,6 +9484,11 @@ else|:
 literal|null
 argument_list|,
 name|path
+argument_list|,
+name|node
+operator|.
+name|getId
+argument_list|()
 argument_list|,
 name|loc
 argument_list|)

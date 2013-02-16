@@ -167,6 +167,11 @@ specifier|private
 name|String
 name|group
 decl_stmt|;
+DECL|field|fileId
+specifier|private
+name|long
+name|fileId
+decl_stmt|;
 DECL|field|EMPTY_NAME
 specifier|public
 specifier|static
@@ -181,8 +186,8 @@ index|[
 literal|0
 index|]
 decl_stmt|;
-comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    */
-DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path)
+comment|/**    * Constructor    * @param length the number of bytes the file has    * @param isdir if the path is a directory    * @param block_replication the replication factor    * @param blocksize the block size    * @param modification_time modification time    * @param access_time access time    * @param permission permission    * @param owner the owner of the path    * @param group the group of the path    * @param path the local name in java UTF8 encoding the same as that in-memory    * @param fileId the file id    */
+DECL|method|HdfsFileStatus (long length, boolean isdir, int block_replication, long blocksize, long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] symlink, byte[] path, long fileId)
 specifier|public
 name|HdfsFileStatus
 parameter_list|(
@@ -220,6 +225,9 @@ parameter_list|,
 name|byte
 index|[]
 name|path
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 block|{
 name|this
@@ -332,6 +340,12 @@ operator|.
 name|path
 operator|=
 name|path
+expr_stmt|;
+name|this
+operator|.
+name|fileId
+operator|=
+name|fileId
 expr_stmt|;
 block|}
 comment|/**    * Get the length of this file, in bytes.    * @return the length of this file, in bytes.    */
@@ -630,6 +644,17 @@ parameter_list|()
 block|{
 return|return
 name|symlink
+return|;
+block|}
+DECL|method|getFileId ()
+specifier|final
+specifier|public
+name|long
+name|getFileId
+parameter_list|()
+block|{
+return|return
+name|fileId
 return|;
 block|}
 block|}

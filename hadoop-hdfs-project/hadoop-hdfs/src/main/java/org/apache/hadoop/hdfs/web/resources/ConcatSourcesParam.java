@@ -40,7 +40,7 @@ specifier|final
 name|String
 name|NAME
 init|=
-literal|"srcs"
+literal|"sources"
 decl_stmt|;
 DECL|field|DEFAULT
 specifier|public
