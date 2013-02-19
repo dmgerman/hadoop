@@ -148,7 +148,7 @@ argument_list|,
 name|V
 argument_list|>
 block|{
-comment|/** The identify function.  Input key/value pair is written directly to    * output.*/
+comment|/** The identity function.  Input key/value pair is written directly to    * output.*/
 DECL|method|map (K key, V val, OutputCollector<K, V> output, Reporter reporter)
 specifier|public
 name|void
