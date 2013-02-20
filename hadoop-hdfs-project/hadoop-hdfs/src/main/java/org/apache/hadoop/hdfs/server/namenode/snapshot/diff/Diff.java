@@ -456,7 +456,7 @@ return|;
 block|}
 comment|/** @return the deleted list, which is never null. */
 DECL|method|getDeletedList ()
-specifier|protected
+specifier|public
 name|List
 argument_list|<
 name|E

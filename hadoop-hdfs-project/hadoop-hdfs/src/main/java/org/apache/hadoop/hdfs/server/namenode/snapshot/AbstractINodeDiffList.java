@@ -182,6 +182,7 @@ expr_stmt|;
 block|}
 comment|/** @return this list as a unmodifiable {@link List}. */
 DECL|method|asList ()
+specifier|public
 specifier|final
 name|List
 argument_list|<
@@ -488,6 +489,7 @@ expr_stmt|;
 block|}
 comment|/** @return the last diff. */
 DECL|method|getLast ()
+specifier|public
 specifier|final
 name|D
 name|getLast
@@ -553,6 +555,7 @@ return|;
 block|}
 comment|/**    * @return the diff corresponding to the given snapshot.    *         When the diff is null, it means that the current state and    *         the corresponding snapshot state are the same.     */
 DECL|method|getDiff (Snapshot snapshot)
+specifier|public
 specifier|final
 name|D
 name|getDiff
@@ -822,6 +825,7 @@ return|;
 block|}
 comment|/** Save the snapshot copy to the latest snapshot. */
 DECL|method|saveSelf2Snapshot (Snapshot latest, N currentINode, N snapshotCopy)
+specifier|public
 name|void
 name|saveSelf2Snapshot
 parameter_list|(

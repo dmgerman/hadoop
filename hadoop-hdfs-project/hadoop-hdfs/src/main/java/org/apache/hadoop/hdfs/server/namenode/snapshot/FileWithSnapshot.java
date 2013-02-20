@@ -146,6 +146,7 @@ name|FileWithSnapshot
 block|{
 comment|/**    * The difference of an {@link INodeFile} between two snapshots.    */
 DECL|class|FileDiff
+specifier|public
 specifier|static
 class|class
 name|FileDiff
@@ -159,6 +160,7 @@ argument_list|>
 block|{
 comment|/** The file size at snapshot creation time. */
 DECL|field|fileSize
+specifier|private
 specifier|final
 name|long
 name|fileSize
@@ -187,11 +189,7 @@ operator|=
 name|file
 operator|.
 name|computeFileSize
-argument_list|(
-literal|true
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/** Constructor used by FSImage loading */
@@ -226,6 +224,17 @@ name|fileSize
 operator|=
 name|fileSize
 expr_stmt|;
+block|}
+comment|/** @return the file size in the snapshot. */
+DECL|method|getFileSize ()
+specifier|public
+name|long
+name|getFileSize
+parameter_list|()
+block|{
+return|return
+name|fileSize
+return|;
 block|}
 annotation|@
 name|Override
@@ -468,12 +477,14 @@ parameter_list|()
 function_decl|;
 comment|/** Utility methods for the classes which implement the interface. */
 DECL|class|Util
+specifier|public
 specifier|static
 class|class
 name|Util
 block|{
 comment|/**       * @return block replication, which is the max file replication among      *         the file and the diff list.      */
 DECL|method|getBlockReplication (final FileWithSnapshot file)
+specifier|public
 specifier|static
 name|short
 name|getBlockReplication
@@ -509,9 +520,6 @@ range|:
 name|file
 operator|.
 name|getDiffs
-argument_list|()
-operator|.
-name|asList
 argument_list|()
 control|)
 block|{
@@ -648,11 +656,7 @@ name|asINodeFile
 argument_list|()
 operator|.
 name|computeFileSize
-argument_list|(
-literal|true
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 name|collectBlocksBeyondMax

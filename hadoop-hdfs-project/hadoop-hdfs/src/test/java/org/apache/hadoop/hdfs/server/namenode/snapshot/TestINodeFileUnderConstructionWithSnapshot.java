@@ -705,9 +705,7 @@ argument_list|,
 name|fileNode
 operator|.
 name|computeFileSize
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// 3. create snapshot --> append
@@ -768,9 +766,7 @@ argument_list|,
 name|fileNode
 operator|.
 name|computeFileSize
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -941,9 +937,7 @@ argument_list|,
 name|fileNode
 operator|.
 name|computeFileSize
-argument_list|(
-literal|true
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|INodeDirectorySnapshottable
@@ -1030,8 +1024,6 @@ name|fileNode
 operator|.
 name|computeFileSize
 argument_list|(
-literal|true
-argument_list|,
 name|s0
 argument_list|)
 argument_list|)
@@ -1117,8 +1109,6 @@ name|fileNode
 operator|.
 name|computeFileSize
 argument_list|(
-literal|true
-argument_list|,
 name|s1
 argument_list|)
 argument_list|)
@@ -1175,8 +1165,6 @@ name|fileNode
 operator|.
 name|computeFileSize
 argument_list|(
-literal|true
-argument_list|,
 name|s1
 argument_list|)
 argument_list|)

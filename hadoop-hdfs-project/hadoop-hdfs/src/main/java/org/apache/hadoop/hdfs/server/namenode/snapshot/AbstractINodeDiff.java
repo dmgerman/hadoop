@@ -275,6 +275,7 @@ return|;
 block|}
 comment|/** @return the snapshot object of this diff. */
 DECL|method|getSnapshot ()
+specifier|public
 specifier|final
 name|Snapshot
 name|getSnapshot
