@@ -3249,6 +3249,12 @@ specifier|final
 name|UserGroupInformation
 name|fsOwner
 decl_stmt|;
+DECL|field|fsOwnerShortUserName
+specifier|private
+specifier|final
+name|String
+name|fsOwnerShortUserName
+decl_stmt|;
 DECL|field|supergroup
 specifier|private
 specifier|final
@@ -4073,6 +4079,15 @@ operator|=
 name|UserGroupInformation
 operator|.
 name|getCurrentUser
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|fsOwnerShortUserName
+operator|=
+name|fsOwner
+operator|.
+name|getShortUserName
 argument_list|()
 expr_stmt|;
 name|this
@@ -6513,14 +6528,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 name|File
 name|file
 init|=
@@ -6843,6 +6858,12 @@ name|resultingStat
 init|=
 literal|null
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -6875,6 +6896,8 @@ throw|;
 block|}
 name|checkOwner
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
@@ -7060,6 +7083,12 @@ name|resultingStat
 init|=
 literal|null
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -7090,20 +7119,20 @@ name|safeMode
 argument_list|)
 throw|;
 block|}
-name|FSPermissionChecker
-name|pc
-init|=
 name|checkOwner
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 operator|!
 name|pc
 operator|.
-name|isSuper
+name|isSuperUser
+argument_list|()
 condition|)
 block|{
 if|if
@@ -7115,7 +7144,8 @@ operator|&&
 operator|!
 name|pc
 operator|.
-name|user
+name|getUser
+argument_list|()
 operator|.
 name|equals
 argument_list|(
@@ -7127,7 +7157,7 @@ throw|throw
 operator|new
 name|AccessControlException
 argument_list|(
-literal|"Non-super user cannot change owner."
+literal|"Non-super user cannot change owner"
 argument_list|)
 throw|;
 block|}
@@ -7153,8 +7183,6 @@ argument_list|(
 literal|"User does not belong to "
 operator|+
 name|group
-operator|+
-literal|" ."
 argument_list|)
 throw|;
 block|}
@@ -7383,11 +7411,19 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 block|{
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 try|try
 block|{
 return|return
 name|getBlockLocationsInt
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|offset
@@ -7444,11 +7480,14 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|getBlockLocationsInt (String src, long offset, long length, boolean doAccessTime, boolean needBlockToken, boolean checkSafeMode)
+DECL|method|getBlockLocationsInt (FSPermissionChecker pc, String src, long offset, long length, boolean doAccessTime, boolean needBlockToken, boolean checkSafeMode)
 specifier|private
 name|LocatedBlocks
 name|getBlockLocationsInt
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -7481,6 +7520,8 @@ condition|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -8076,6 +8117,12 @@ name|resultingStat
 init|=
 literal|null
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -8108,6 +8155,8 @@ throw|;
 block|}
 name|concatInternal
 argument_list|(
+name|pc
+argument_list|,
 name|target
 argument_list|,
 name|srcs
@@ -8183,11 +8232,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/** See {@link #concat(String, String[])} */
-DECL|method|concatInternal (String target, String [] srcs)
+DECL|method|concatInternal (FSPermissionChecker pc, String target, String [] srcs)
 specifier|private
 name|void
 name|concatInternal
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|target
 parameter_list|,
@@ -8212,6 +8264,8 @@ condition|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|target
 argument_list|,
 name|FsAction
@@ -8230,6 +8284,8 @@ control|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|aSrc
 argument_list|,
 name|FsAction
@@ -8240,6 +8296,8 @@ expr_stmt|;
 comment|// read the file
 name|checkParentAccess
 argument_list|(
+name|pc
+argument_list|,
 name|aSrc
 argument_list|,
 name|FsAction
@@ -8800,6 +8858,12 @@ literal|" configuration parameter."
 argument_list|)
 throw|;
 block|}
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -8820,6 +8884,8 @@ condition|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -9030,6 +9096,12 @@ name|resultingStat
 init|=
 literal|null
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -9056,6 +9128,8 @@ expr_stmt|;
 block|}
 name|createSymlinkInternal
 argument_list|(
+name|pc
+argument_list|,
 name|target
 argument_list|,
 name|link
@@ -9130,11 +9204,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a symbolic link.    */
-DECL|method|createSymlinkInternal (String target, String link, PermissionStatus dirPerms, boolean createParent)
+DECL|method|createSymlinkInternal (FSPermissionChecker pc, String target, String link, PermissionStatus dirPerms, boolean createParent)
 specifier|private
 name|void
 name|createSymlinkInternal
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|target
 parameter_list|,
@@ -9251,6 +9328,8 @@ condition|)
 block|{
 name|checkAncestorAccess
 argument_list|(
+name|pc
+argument_list|,
 name|link
 argument_list|,
 name|FsAction
@@ -9378,6 +9457,12 @@ specifier|final
 name|boolean
 name|isFile
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -9415,6 +9500,8 @@ condition|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -9538,6 +9625,12 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -9557,6 +9650,8 @@ condition|)
 block|{
 name|checkTraverse
 argument_list|(
+name|pc
+argument_list|,
 name|filename
 argument_list|)
 expr_stmt|;
@@ -9843,6 +9938,12 @@ specifier|final
 name|HdfsFileStatus
 name|stat
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -9857,6 +9958,8 @@ argument_list|)
 expr_stmt|;
 name|startFileInternal
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|permissions
@@ -9955,11 +10058,14 @@ name|stat
 return|;
 block|}
 comment|/**    * Create new or open an existing file for append.<p>    *     * In case of opening the file for append, the method returns the last    * block of the file if this is a partial block, which can still be used    * for writing more data. The client uses the returned block locations    * to form the data pipeline for this block.<br>    * The method returns null if the last block is full or if this is a     * new file. The client then allocates a new block with the next call    * using {@link NameNode#addBlock()}.<p>    *    * For description of parameters and exceptions thrown see     * {@link ClientProtocol#create()}    *     * @return the last block locations if the block is partial or null otherwise    */
-DECL|method|startFileInternal (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize)
+DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize)
 specifier|private
 name|LocatedBlock
 name|startFileInternal
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -10165,6 +10271,8 @@ condition|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -10177,6 +10285,8 @@ else|else
 block|{
 name|checkAncestorAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -10657,6 +10767,12 @@ name|skipSync
 init|=
 literal|false
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -10746,6 +10862,8 @@ condition|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -11334,6 +11452,12 @@ name|lb
 init|=
 literal|null
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -11350,6 +11474,8 @@ name|lb
 operator|=
 name|startFileInternal
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 literal|null
@@ -13644,6 +13770,12 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -13660,6 +13792,8 @@ name|status
 operator|=
 name|renameToInternal
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|dst
@@ -13739,11 +13873,14 @@ block|}
 comment|/** @deprecated See {@link #renameTo(String, String)} */
 annotation|@
 name|Deprecated
-DECL|method|renameToInternal (String src, String dst)
+DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst)
 specifier|private
 name|boolean
 name|renameToInternal
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -13836,6 +13973,8 @@ name|dst
 decl_stmt|;
 name|checkParentAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -13845,6 +13984,8 @@ argument_list|)
 expr_stmt|;
 name|checkAncestorAccess
 argument_list|(
+name|pc
+argument_list|,
 name|actualdst
 argument_list|,
 name|FsAction
@@ -13926,6 +14067,12 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -13940,6 +14087,8 @@ argument_list|)
 expr_stmt|;
 name|renameToInternal
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|dst
@@ -14047,11 +14196,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|renameToInternal (String src, String dst, Options.Rename... options)
+DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst, Options.Rename... options)
 specifier|private
 name|void
 name|renameToInternal
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -14117,6 +14269,8 @@ condition|)
 block|{
 name|checkParentAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -14126,6 +14280,8 @@ argument_list|)
 expr_stmt|;
 name|checkAncestorAccess
 argument_list|(
+name|pc
+argument_list|,
 name|dst
 argument_list|,
 name|FsAction
@@ -14308,6 +14464,24 @@ return|return
 name|status
 return|;
 block|}
+DECL|method|getPermissionChecker ()
+specifier|private
+name|FSPermissionChecker
+name|getPermissionChecker
+parameter_list|()
+throws|throws
+name|AccessControlException
+block|{
+return|return
+operator|new
+name|FSPermissionChecker
+argument_list|(
+name|fsOwnerShortUserName
+argument_list|,
+name|supergroup
+argument_list|)
+return|;
+block|}
 comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    *     * @see ClientProtocol#delete(String, boolean) for description of exceptions    */
 DECL|method|deleteInternal (String src, boolean recursive, boolean enforcePermission)
 specifier|private
@@ -14337,6 +14511,12 @@ name|collectedBlocks
 init|=
 operator|new
 name|BlocksMapUpdateInfo
+argument_list|()
+decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
 argument_list|()
 decl_stmt|;
 name|writeLock
@@ -14401,6 +14581,8 @@ condition|)
 block|{
 name|checkPermission
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 literal|false
@@ -14816,6 +14998,12 @@ name|stat
 init|=
 literal|null
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -14856,6 +15044,8 @@ condition|)
 block|{
 name|checkTraverse
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
@@ -15072,6 +15262,12 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -15088,6 +15284,8 @@ name|status
 operator|=
 name|mkdirsInternal
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|permissions
@@ -15157,11 +15355,14 @@ name|status
 return|;
 block|}
 comment|/**    * Create all the necessary directories    */
-DECL|method|mkdirsInternal (String src, PermissionStatus permissions, boolean createParent)
+DECL|method|mkdirsInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, boolean createParent)
 specifier|private
 name|boolean
 name|mkdirsInternal
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|src
 parameter_list|,
@@ -15205,6 +15406,8 @@ condition|)
 block|{
 name|checkTraverse
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
@@ -15251,6 +15454,8 @@ condition|)
 block|{
 name|checkAncestorAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -15325,6 +15530,17 @@ name|UnresolvedLinkException
 throws|,
 name|StandbyException
 block|{
+name|FSPermissionChecker
+name|pc
+init|=
+operator|new
+name|FSPermissionChecker
+argument_list|(
+name|fsOwnerShortUserName
+argument_list|,
+name|supergroup
+argument_list|)
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -15344,6 +15560,8 @@ condition|)
 block|{
 name|checkPermission
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 literal|false
@@ -15395,6 +15613,9 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -15424,15 +15645,6 @@ argument_list|,
 name|safeMode
 argument_list|)
 throw|;
-block|}
-if|if
-condition|(
-name|isPermissionEnabled
-condition|)
-block|{
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 block|}
 name|dir
 operator|.
@@ -17008,6 +17220,12 @@ block|{
 name|DirectoryListing
 name|dl
 decl_stmt|;
+name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -17037,6 +17255,8 @@ condition|)
 block|{
 name|checkPathAccess
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|,
 name|FsAction
@@ -17049,6 +17269,8 @@ else|else
 block|{
 name|checkTraverse
 argument_list|(
+name|pc
+argument_list|,
 name|src
 argument_list|)
 expr_stmt|;
@@ -18040,14 +18262,14 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -18099,14 +18321,14 @@ parameter_list|)
 throws|throws
 name|AccessControlException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 comment|// if it is disabled - enable it and vice versa.
 if|if
 condition|(
@@ -18180,6 +18402,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -18191,9 +18416,6 @@ name|OperationCategory
 operator|.
 name|WRITE
 argument_list|)
-expr_stmt|;
-name|checkSuperuserPrivilege
-argument_list|()
 expr_stmt|;
 name|getFSImage
 argument_list|()
@@ -20709,6 +20931,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -20720,9 +20945,6 @@ name|OperationCategory
 operator|.
 name|JOURNAL
 argument_list|)
-expr_stmt|;
-name|checkSuperuserPrivilege
-argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -20944,11 +21166,14 @@ name|permission
 argument_list|)
 return|;
 block|}
-DECL|method|checkOwner (String path )
+DECL|method|checkOwner (FSPermissionChecker pc, String path)
 specifier|private
-name|FSPermissionChecker
+name|void
 name|checkOwner
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|path
 parameter_list|)
@@ -20957,9 +21182,10 @@ name|AccessControlException
 throws|,
 name|UnresolvedLinkException
 block|{
-return|return
 name|checkPermission
 argument_list|(
+name|pc
+argument_list|,
 name|path
 argument_list|,
 literal|true
@@ -20972,13 +21198,16 @@ literal|null
 argument_list|,
 literal|null
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-DECL|method|checkPathAccess (String path, FsAction access )
+DECL|method|checkPathAccess (FSPermissionChecker pc, String path, FsAction access)
 specifier|private
-name|FSPermissionChecker
+name|void
 name|checkPathAccess
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|path
 parameter_list|,
@@ -20990,9 +21219,10 @@ name|AccessControlException
 throws|,
 name|UnresolvedLinkException
 block|{
-return|return
 name|checkPermission
 argument_list|(
+name|pc
+argument_list|,
 name|path
 argument_list|,
 literal|false
@@ -21005,13 +21235,16 @@ name|access
 argument_list|,
 literal|null
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-DECL|method|checkParentAccess (String path, FsAction access )
+DECL|method|checkParentAccess (FSPermissionChecker pc, String path, FsAction access)
 specifier|private
-name|FSPermissionChecker
+name|void
 name|checkParentAccess
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|path
 parameter_list|,
@@ -21023,9 +21256,10 @@ name|AccessControlException
 throws|,
 name|UnresolvedLinkException
 block|{
-return|return
 name|checkPermission
 argument_list|(
+name|pc
+argument_list|,
 name|path
 argument_list|,
 literal|false
@@ -21038,13 +21272,16 @@ literal|null
 argument_list|,
 literal|null
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-DECL|method|checkAncestorAccess (String path, FsAction access )
+DECL|method|checkAncestorAccess (FSPermissionChecker pc, String path, FsAction access)
 specifier|private
-name|FSPermissionChecker
+name|void
 name|checkAncestorAccess
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|path
 parameter_list|,
@@ -21056,9 +21293,10 @@ name|AccessControlException
 throws|,
 name|UnresolvedLinkException
 block|{
-return|return
 name|checkPermission
 argument_list|(
+name|pc
+argument_list|,
 name|path
 argument_list|,
 literal|false
@@ -21071,13 +21309,16 @@ literal|null
 argument_list|,
 literal|null
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-DECL|method|checkTraverse (String path )
+DECL|method|checkTraverse (FSPermissionChecker pc, String path)
 specifier|private
-name|FSPermissionChecker
+name|void
 name|checkTraverse
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|path
 parameter_list|)
@@ -21086,9 +21327,10 @@ name|AccessControlException
 throws|,
 name|UnresolvedLinkException
 block|{
-return|return
 name|checkPermission
 argument_list|(
+name|pc
+argument_list|,
 name|path
 argument_list|,
 literal|false
@@ -21101,7 +21343,7 @@ literal|null
 argument_list|,
 literal|null
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -21119,22 +21361,27 @@ name|isPermissionEnabled
 condition|)
 block|{
 name|FSPermissionChecker
+name|pc
+init|=
+name|getPermissionChecker
+argument_list|()
+decl_stmt|;
+name|pc
 operator|.
 name|checkSuperuserPrivilege
-argument_list|(
-name|fsOwner
-argument_list|,
-name|supergroup
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Check whether current user have permissions to access the path.    * For more details of the parameters, see    * {@link FSPermissionChecker#checkPermission(String, INodeDirectory, boolean, FsAction, FsAction, FsAction, FsAction)}.    */
-DECL|method|checkPermission (String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess)
+comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission()}.    */
+DECL|method|checkPermission (FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess)
 specifier|private
-name|FSPermissionChecker
+name|void
 name|checkPermission
 parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
 name|String
 name|path
 parameter_list|,
@@ -21158,26 +21405,13 @@ name|AccessControlException
 throws|,
 name|UnresolvedLinkException
 block|{
-name|FSPermissionChecker
-name|pc
-init|=
-operator|new
-name|FSPermissionChecker
-argument_list|(
-name|fsOwner
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|,
-name|supergroup
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 operator|!
 name|pc
 operator|.
-name|isSuper
+name|isSuperUser
+argument_list|()
 condition|)
 block|{
 name|dir
@@ -21219,9 +21453,6 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-return|return
-name|pc
-return|;
 block|}
 comment|/**    * Check to see if we have exceeded the limit on the number    * of inodes.    */
 DECL|method|checkFsObjectLimit ()
@@ -22876,6 +23107,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkSuperuserPrivilege
+argument_list|()
+expr_stmt|;
 name|readLock
 argument_list|()
 expr_stmt|;
@@ -22905,9 +23139,6 @@ literal|"replication queues have not been initialized."
 argument_list|)
 throw|;
 block|}
-name|checkSuperuserPrivilege
-argument_list|()
-expr_stmt|;
 comment|// print a limited # of corrupt files per call
 name|int
 name|count
