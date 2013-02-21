@@ -2146,7 +2146,10 @@ name|queueState
 init|=
 name|jqi
 operator|.
-name|getQueueState
+name|getState
+argument_list|()
+operator|.
+name|getStateName
 argument_list|()
 decl_stmt|;
 if|if

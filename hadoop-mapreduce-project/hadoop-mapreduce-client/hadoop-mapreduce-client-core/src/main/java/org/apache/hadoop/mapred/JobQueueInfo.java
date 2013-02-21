@@ -209,8 +209,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the queue name of the JobQueueInfo    *     * @param queueName Name of the job queue.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setQueueName (String queueName)
-specifier|protected
+specifier|public
 name|void
 name|setQueueName
 parameter_list|(
@@ -227,8 +231,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the scheduling information associated to particular job queue    *     * @param schedulingInfo    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setSchedulingInfo (String schedulingInfo)
-specifier|protected
+specifier|public
 name|void
 name|setSchedulingInfo
 parameter_list|(
@@ -245,8 +253,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the state of the queue    * @param state state of the queue.    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setQueueState (String state)
-specifier|protected
+specifier|public
 name|void
 name|setQueueState
 parameter_list|(
@@ -267,7 +279,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Use getState() instead    */
+annotation|@
+name|Deprecated
 DECL|method|getQueueState ()
+specifier|public
 name|String
 name|getQueueState
 parameter_list|()
@@ -282,8 +298,12 @@ name|toString
 argument_list|()
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setChildren (List<JobQueueInfo> children)
-specifier|protected
+specifier|public
 name|void
 name|setChildren
 parameter_list|(
@@ -379,8 +399,12 @@ return|return
 name|list
 return|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setProperties (Properties props)
-specifier|protected
+specifier|public
 name|void
 name|setProperties
 parameter_list|(
@@ -458,8 +482,12 @@ name|children
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setJobStatuses (org.apache.hadoop.mapreduce.JobStatus[] stats)
-specifier|protected
+specifier|public
 name|void
 name|setJobStatuses
 parameter_list|(
