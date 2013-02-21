@@ -286,15 +286,34 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroySubtreeAndCollectBlocks (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 name|int
-name|destroySubtreeAndCollectBlocks
+name|cleanSubtree
 parameter_list|(
 specifier|final
 name|Snapshot
 name|snapshot
 parameter_list|,
+name|Snapshot
+name|prior
+parameter_list|,
+specifier|final
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+parameter_list|)
+block|{
+return|return
+literal|1
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|destroyAndCollectBlocks ( final BlocksMapUpdateInfo collectedBlocks)
+specifier|public
+name|int
+name|destroyAndCollectBlocks
+parameter_list|(
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks

@@ -1299,14 +1299,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroySubtreeAndCollectBlocks (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 name|int
-name|destroySubtreeAndCollectBlocks
+name|cleanSubtree
 parameter_list|(
 specifier|final
 name|Snapshot
 name|snapshot
+parameter_list|,
+name|Snapshot
+name|prior
 parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
@@ -1316,26 +1319,35 @@ block|{
 if|if
 condition|(
 name|snapshot
-operator|!=
+operator|==
+literal|null
+operator|&&
+name|prior
+operator|==
 literal|null
 condition|)
 block|{
-comment|// never delete blocks for snapshot since the current file still exists
+comment|// this only happens when deleting the current file
 return|return
-literal|0
-return|;
-block|}
-return|return
-name|destroySelfAndCollectBlocks
+name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
 argument_list|)
 return|;
 block|}
-DECL|method|destroySelfAndCollectBlocks (BlocksMapUpdateInfo collectedBlocks)
+else|else
+block|{
+return|return
+literal|0
+return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|destroyAndCollectBlocks (BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 name|int
-name|destroySelfAndCollectBlocks
+name|destroyAndCollectBlocks
 parameter_list|(
 name|BlocksMapUpdateInfo
 name|collectedBlocks

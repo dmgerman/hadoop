@@ -445,14 +445,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroySubtreeAndCollectBlocks (final Snapshot snapshot, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 name|int
-name|destroySubtreeAndCollectBlocks
+name|cleanSubtree
 parameter_list|(
 specifier|final
 name|Snapshot
 name|snapshot
+parameter_list|,
+name|Snapshot
+name|prior
 parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
@@ -466,35 +469,16 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// delete the current file
+name|recordModification
+argument_list|(
+name|prior
+argument_list|)
+expr_stmt|;
 name|isCurrentFileDeleted
 operator|=
 literal|true
 expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|diffs
-operator|.
-name|deleteSnapshotDiff
-argument_list|(
-name|snapshot
-argument_list|,
-name|this
-argument_list|,
-name|collectedBlocks
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
-comment|//snapshot diff not found and nothing is deleted.
-return|return
-literal|0
-return|;
-block|}
-block|}
 name|Util
 operator|.
 name|collectBlocksAndClear
@@ -504,6 +488,25 @@ argument_list|,
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+comment|// delete a snapshot
+return|return
+name|diffs
+operator|.
+name|deleteSnapshotDiff
+argument_list|(
+name|snapshot
+argument_list|,
+name|prior
+argument_list|,
+name|this
+argument_list|,
+name|collectedBlocks
+argument_list|)
+return|;
+block|}
 return|return
 literal|1
 return|;

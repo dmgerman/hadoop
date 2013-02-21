@@ -271,8 +271,8 @@ block|}
 block|}
 block|}
 decl_stmt|;
-comment|/** @return the latest snapshot taken on the given inode. */
-DECL|method|findLatestSnapshot (INode inode)
+comment|/**    * Find the latest snapshot that 1) covers the given inode (which means the    * snapshot was either taken on the inode or taken on an ancestor of the    * inode), and 2) was taken before the given snapshot (if the given snapshot     * is not null).    *     * @param inode the given inode that the returned snapshot needs to cover    * @param anchor the returned snapshot should be taken before this snapshot.    * @return the latest snapshot covers the given inode and was taken before the    *         the given snapshot (if it is not null).    */
+DECL|method|findLatestSnapshot (INode inode, Snapshot anchor)
 specifier|public
 specifier|static
 name|Snapshot
@@ -280,6 +280,9 @@ name|findLatestSnapshot
 parameter_list|(
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|anchor
 parameter_list|)
 block|{
 name|Snapshot
@@ -306,7 +309,7 @@ if|if
 condition|(
 name|inode
 operator|instanceof
-name|INodeDirectorySnapshottable
+name|INodeDirectoryWithSnapshot
 condition|)
 block|{
 specifier|final
@@ -315,13 +318,18 @@ name|s
 init|=
 operator|(
 operator|(
-name|INodeDirectorySnapshottable
+name|INodeDirectoryWithSnapshot
 operator|)
 name|inode
 operator|)
 operator|.
-name|getLastSnapshot
+name|getDiffs
 argument_list|()
+operator|.
+name|getPrior
+argument_list|(
+name|anchor
+argument_list|)
 decl_stmt|;
 if|if
 condition|(

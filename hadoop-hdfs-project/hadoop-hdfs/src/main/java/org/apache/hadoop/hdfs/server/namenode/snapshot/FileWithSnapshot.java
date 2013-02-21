@@ -239,7 +239,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|combinePosteriorAndCollectBlocks (INodeFile currentINode, FileDiff posterior, BlocksMapUpdateInfo collectedBlocks)
-name|void
+name|int
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
 name|INodeFile
@@ -264,6 +264,9 @@ argument_list|,
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+return|return
+literal|0
+return|;
 block|}
 annotation|@
 name|Override
@@ -359,6 +362,35 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|destroyAndCollectBlocks (INodeFile currentINode, BlocksMapUpdateInfo collectedBlocks)
+name|int
+name|destroyAndCollectBlocks
+parameter_list|(
+name|INodeFile
+name|currentINode
+parameter_list|,
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+parameter_list|)
+block|{
+name|Util
+operator|.
+name|collectBlocksAndClear
+argument_list|(
+operator|(
+name|FileWithSnapshot
+operator|)
+name|currentINode
+argument_list|,
+name|collectedBlocks
+argument_list|)
+expr_stmt|;
+return|return
+literal|0
+return|;
 block|}
 block|}
 DECL|class|FileDiffFactory
@@ -601,7 +633,7 @@ operator|.
 name|asINodeFile
 argument_list|()
 operator|.
-name|destroySelfAndCollectBlocks
+name|destroyAndCollectBlocks
 argument_list|(
 name|info
 argument_list|)

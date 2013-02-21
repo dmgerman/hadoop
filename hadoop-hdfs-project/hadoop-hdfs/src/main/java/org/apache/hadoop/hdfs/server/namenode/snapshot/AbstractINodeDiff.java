@@ -188,7 +188,6 @@ function_decl|;
 block|}
 comment|/** The snapshot will be obtained after this diff is applied. */
 DECL|field|snapshot
-specifier|final
 name|Snapshot
 name|snapshot
 decl_stmt|;
@@ -284,6 +283,22 @@ block|{
 return|return
 name|snapshot
 return|;
+block|}
+DECL|method|setSnapshot (Snapshot snapshot)
+specifier|final
+name|void
+name|setSnapshot
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+name|this
+operator|.
+name|snapshot
+operator|=
+name|snapshot
+expr_stmt|;
 block|}
 comment|/** @return the posterior diff. */
 DECL|method|getPosterior ()
@@ -423,7 +438,7 @@ block|}
 comment|/** Combine the posterior diff and collect blocks for deletion. */
 DECL|method|combinePosteriorAndCollectBlocks (final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|abstract
-name|void
+name|int
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
 specifier|final
@@ -433,6 +448,21 @@ parameter_list|,
 specifier|final
 name|D
 name|posterior
+parameter_list|,
+specifier|final
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+parameter_list|)
+function_decl|;
+comment|/**    * Delete and clear self.    * @param collectedBlocks Used to collect blocks for deletion.    * @return number of inodes/diff destroyed.    */
+DECL|method|destroyAndCollectBlocks (final N currentINode, final BlocksMapUpdateInfo collectedBlocks)
+specifier|abstract
+name|int
+name|destroyAndCollectBlocks
+parameter_list|(
+specifier|final
+name|N
+name|currentINode
 parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
