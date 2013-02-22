@@ -4286,6 +4286,25 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setMaxOpSize (int maxOpSize)
+specifier|public
+name|void
+name|setMaxOpSize
+parameter_list|(
+name|int
+name|maxOpSize
+parameter_list|)
+block|{
+name|reader
+operator|.
+name|setMaxOpSize
+argument_list|(
+name|maxOpSize
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test

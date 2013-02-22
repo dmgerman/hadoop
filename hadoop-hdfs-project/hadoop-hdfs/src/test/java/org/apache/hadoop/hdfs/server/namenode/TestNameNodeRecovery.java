@@ -603,6 +603,16 @@ argument_list|(
 name|TEST_LOG_NAME
 argument_list|)
 expr_stmt|;
+name|elfis
+operator|.
+name|setMaxOpSize
+argument_list|(
+name|elts
+operator|.
+name|getMaxOpSize
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// reading through normally will get you an exception
 name|Set
 argument_list|<
@@ -883,9 +893,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * A test scenario for the edit log    */
-DECL|interface|EditLogTestSetup
+DECL|class|EditLogTestSetup
 specifier|private
-interface|interface
+specifier|static
+specifier|abstract
+class|class
 name|EditLogTestSetup
 block|{
 comment|/**       * Set up the edit log.      */
@@ -923,6 +935,19 @@ argument_list|>
 name|getValidTxIds
 parameter_list|()
 function_decl|;
+comment|/**      * Return the maximum opcode size we will use for input.      */
+DECL|method|getMaxOpSize ()
+specifier|public
+name|int
+name|getMaxOpSize
+parameter_list|()
+block|{
+return|return
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_OP_SIZE_DEFAULT
+return|;
+block|}
 block|}
 DECL|method|padEditLog (EditLogOutputStream elos, int paddingLength)
 specifier|static
@@ -1030,7 +1055,7 @@ name|toWrite
 expr_stmt|;
 block|}
 block|}
-DECL|method|addDeleteOpcode (EditLogOutputStream elos, OpInstanceCache cache)
+DECL|method|addDeleteOpcode (EditLogOutputStream elos, OpInstanceCache cache, long txId, String path)
 specifier|static
 name|void
 name|addDeleteOpcode
@@ -1040,6 +1065,12 @@ name|elos
 parameter_list|,
 name|OpInstanceCache
 name|cache
+parameter_list|,
+name|long
+name|txId
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -1058,14 +1089,14 @@ name|op
 operator|.
 name|setTransactionId
 argument_list|(
-literal|0x0
+name|txId
 argument_list|)
 expr_stmt|;
 name|op
 operator|.
 name|setPath
 argument_list|(
-literal|"/foo"
+name|path
 argument_list|)
 expr_stmt|;
 name|op
@@ -1089,7 +1120,7 @@ specifier|private
 specifier|static
 class|class
 name|EltsTestEmptyLog
-implements|implements
+extends|extends
 name|EditLogTestSetup
 block|{
 DECL|field|paddingLength
@@ -1254,13 +1285,133 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Test using a non-default maximum opcode length.    */
+DECL|class|EltsTestNonDefaultMaxOpSize
+specifier|private
+specifier|static
+class|class
+name|EltsTestNonDefaultMaxOpSize
+extends|extends
+name|EditLogTestSetup
+block|{
+DECL|method|EltsTestNonDefaultMaxOpSize ()
+specifier|public
+name|EltsTestNonDefaultMaxOpSize
+parameter_list|()
+block|{     }
+annotation|@
+name|Override
+DECL|method|addTransactionsToLog (EditLogOutputStream elos, OpInstanceCache cache)
+specifier|public
+name|void
+name|addTransactionsToLog
+parameter_list|(
+name|EditLogOutputStream
+name|elos
+parameter_list|,
+name|OpInstanceCache
+name|cache
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|addDeleteOpcode
+argument_list|(
+name|elos
+argument_list|,
+name|cache
+argument_list|,
+literal|0
+argument_list|,
+literal|"/foo"
+argument_list|)
+expr_stmt|;
+name|addDeleteOpcode
+argument_list|(
+name|elos
+argument_list|,
+name|cache
+argument_list|,
+literal|1
+argument_list|,
+literal|"/supercalifragalisticexpialadocius.supercalifragalisticexpialadocius"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLastValidTxId ()
+specifier|public
+name|long
+name|getLastValidTxId
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getValidTxIds ()
+specifier|public
+name|Set
+argument_list|<
+name|Long
+argument_list|>
+name|getValidTxIds
+parameter_list|()
+block|{
+return|return
+name|Sets
+operator|.
+name|newHashSet
+argument_list|(
+literal|0L
+argument_list|)
+return|;
+block|}
+DECL|method|getMaxOpSize ()
+specifier|public
+name|int
+name|getMaxOpSize
+parameter_list|()
+block|{
+return|return
+literal|30
+return|;
+block|}
+block|}
+comment|/** Test an empty edit log with extra-long padding */
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|180000
+argument_list|)
+DECL|method|testNonDefaultMaxOpSize ()
+specifier|public
+name|void
+name|testNonDefaultMaxOpSize
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|runEditLogTest
+argument_list|(
+operator|new
+name|EltsTestNonDefaultMaxOpSize
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Test the scenario where an edit log contains some padding (0xff) bytes    * followed by valid opcode data.    *    * These edit logs are corrupt, but all the opcodes should be recoverable    * with recovery mode.    */
 DECL|class|EltsTestOpcodesAfterPadding
 specifier|private
 specifier|static
 class|class
 name|EltsTestOpcodesAfterPadding
-implements|implements
+extends|extends
 name|EditLogTestSetup
 block|{
 DECL|field|paddingLength
@@ -1311,6 +1462,10 @@ argument_list|(
 name|elos
 argument_list|,
 name|cache
+argument_list|,
+literal|0
+argument_list|,
+literal|"/foo"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1408,7 +1563,7 @@ specifier|private
 specifier|static
 class|class
 name|EltsTestGarbageInEditLog
-implements|implements
+extends|extends
 name|EditLogTestSetup
 block|{
 DECL|field|BAD_TXID
