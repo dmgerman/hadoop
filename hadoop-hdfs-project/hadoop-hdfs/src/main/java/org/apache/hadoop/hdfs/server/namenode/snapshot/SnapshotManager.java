@@ -404,6 +404,24 @@ name|getAndIncrement
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Add a snapshottable dir into {@link #snapshottables}. Called when loading    * fsimage.    * @param dir The snapshottable dir to be added.    */
+DECL|method|addSnapshottable (INodeDirectorySnapshottable dir)
+specifier|public
+name|void
+name|addSnapshottable
+parameter_list|(
+name|INodeDirectorySnapshottable
+name|dir
+parameter_list|)
+block|{
+name|snapshottables
+operator|.
+name|add
+argument_list|(
+name|dir
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Set the given snapshottable directory to non-snapshottable.    *     * @throws SnapshotException if there are snapshots in the directory.    */
 DECL|method|resetSnapshottable (final String path )
 specifier|public

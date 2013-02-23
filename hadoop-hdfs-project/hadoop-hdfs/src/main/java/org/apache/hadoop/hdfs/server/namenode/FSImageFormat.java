@@ -1583,6 +1583,30 @@ argument_list|,
 name|parentPath
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|snapshottableParent
+operator|.
+name|getParent
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// not root
+name|this
+operator|.
+name|namesystem
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|addSnapshottable
+argument_list|(
+name|snapshottableParent
+argument_list|)
+expr_stmt|;
+block|}
 comment|// load snapshots and snapshotQuota
 name|SnapshotFSImageFormat
 operator|.
