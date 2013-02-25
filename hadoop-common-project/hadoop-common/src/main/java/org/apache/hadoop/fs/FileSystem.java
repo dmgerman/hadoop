@@ -6779,6 +6779,38 @@ literal|" doesn't support createSnapshot"
 argument_list|)
 throw|;
 block|}
+comment|/**    * Rename a snapshot    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    */
+DECL|method|renameSnapshot (Path path, String snapshotOldName, String snapshotNewName)
+specifier|public
+name|void
+name|renameSnapshot
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|String
+name|snapshotOldName
+parameter_list|,
+name|String
+name|snapshotNewName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support renameSnapshot"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Delete a snapshot of a directory    * @param path  The directory that the to-be-deleted snapshot belongs to    * @param snapshotName The name of the snapshot    */
 DECL|method|deleteSnapshot (Path path, String snapshotName)
 specifier|public

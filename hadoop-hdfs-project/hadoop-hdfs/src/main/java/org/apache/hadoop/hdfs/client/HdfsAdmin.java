@@ -350,6 +350,46 @@ name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Allow snapshot on a directory.    * @param the path of the directory where snapshots will be taken    */
+DECL|method|allowSnapshot (String path)
+specifier|public
+name|void
+name|allowSnapshot
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|allowSnapshot
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Disallow snapshot on a directory.    * @param path of the snapshottable directory.    */
+DECL|method|disallowSnapshot (String path)
+specifier|public
+name|void
+name|disallowSnapshot
+parameter_list|(
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|dfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

@@ -2249,7 +2249,7 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allow snapshot on a directory.    * Usage: java DFSAdmin -allowSnapshot<snapshotRoot>    * @param argv List of of command line parameters.    * @exception IOException    */
+comment|/**    * Allow snapshot on a directory.    * Usage: java DFSAdmin -allowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
 DECL|method|allowSnapshot (String[] argv)
 specifier|public
 name|void
@@ -2295,7 +2295,7 @@ literal|" succeeded"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allow snapshot on a directory.    * Usage: java DFSAdmin -disallowSnapshot<snapshotRoot>    * @param argv List of of command line parameters.    * @exception IOException    */
+comment|/**    * Allow snapshot on a directory.    * Usage: java DFSAdmin -disallowSnapshot snapshotDir    * @param argv List of of command line parameters.    * @exception IOException    */
 DECL|method|disallowSnapshot (String[] argv)
 specifier|public
 name|void
@@ -2841,6 +2841,10 @@ literal|"\t[-setBalancerBandwidth<bandwidth>]\n"
 operator|+
 literal|"\t[-fetchImage<local directory>]\n"
 operator|+
+literal|"\t[-allowSnapshot<snapshotDir>]\n"
+operator|+
+literal|"\t[-disallowSnapshot<snapshotDir>]\n"
+operator|+
 literal|"\t[-help [cmd]]\n"
 decl_stmt|;
 name|String
@@ -3030,6 +3034,20 @@ operator|+
 literal|"\tDownloads the most recent fsimage from the Name Node and saves it in"
 operator|+
 literal|"\tthe specified local directory.\n"
+decl_stmt|;
+name|String
+name|allowSnapshot
+init|=
+literal|"-allowSnapshot<snapshotDir>:\n"
+operator|+
+literal|"\tAllow snapshots to be taken on a directory.\n"
+decl_stmt|;
+name|String
+name|disallowSnapshot
+init|=
+literal|"-disallowSnapshot<snapshotDir>:\n"
+operator|+
+literal|"\tDo not allow snapshots to be taken on a directory any more.\n"
 decl_stmt|;
 name|String
 name|help
@@ -3476,6 +3494,48 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"allowSnapshot"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|allowSnapshot
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"disallowSnapshot"
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|disallowSnapshot
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"help"
 operator|.
 name|equals
@@ -3691,6 +3751,24 @@ operator|.
 name|println
 argument_list|(
 name|fetchImage
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|allowSnapshot
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|disallowSnapshot
 argument_list|)
 expr_stmt|;
 name|System
@@ -4356,14 +4434,14 @@ name|println
 argument_list|(
 literal|"Usage: java DFSAdmin"
 operator|+
-literal|" [-allowSnapshot<snapshotRoot>]"
+literal|" [-allowSnapshot<snapshotDir>]"
 argument_list|)
 expr_stmt|;
 block|}
 elseif|else
 if|if
 condition|(
-literal|"-disallowsnapshot"
+literal|"-disallowSnapshot"
 operator|.
 name|equalsIgnoreCase
 argument_list|(
@@ -4379,7 +4457,7 @@ name|println
 argument_list|(
 literal|"Usage: java DFSAdmin"
 operator|+
-literal|" [-disallowSnapshot<snapshotRoot>]"
+literal|" [-disallowSnapshot<snapshotDir>]"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4865,7 +4943,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"           [-allowSnapshot<snapshotRoot>]"
+literal|"           [-allowSnapshot<snapshotDir>]"
 argument_list|)
 expr_stmt|;
 name|System
@@ -4874,7 +4952,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"           [-disallowSnapshot<snapshotRoot>]"
+literal|"           [-disallowSnapshot<snapshotDir>]"
 argument_list|)
 expr_stmt|;
 name|System
@@ -5193,7 +5271,7 @@ name|argv
 operator|.
 name|length
 operator|!=
-literal|3
+literal|2
 condition|)
 block|{
 name|printUsage

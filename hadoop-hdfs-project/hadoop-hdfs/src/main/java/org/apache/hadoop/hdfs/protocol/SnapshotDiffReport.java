@@ -404,13 +404,17 @@ argument_list|()
 condition|)
 block|{
 return|return
-literal|"."
+name|Path
+operator|.
+name|CUR_DIR
 return|;
 block|}
 else|else
 block|{
 return|return
-literal|"."
+name|Path
+operator|.
+name|CUR_DIR
 operator|+
 name|Path
 operator|.
@@ -708,7 +712,7 @@ name|str
 operator|.
 name|append
 argument_list|(
-literal|"Diffence between snapshot "
+literal|"Difference between "
 operator|+
 name|from
 operator|+

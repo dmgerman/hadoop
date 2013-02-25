@@ -396,6 +396,22 @@ name|hdfs
 operator|.
 name|client
 operator|.
+name|HdfsAdmin
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
 name|HdfsDataInputStream
 import|;
 end_import
@@ -4025,7 +4041,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Allow snapshot on a directory.    *     * @param path the directory to be taken snapshots    * @throws IOException    */
+comment|/** @see HdfsAdmin#allowSnapshot(String) */
 DECL|method|allowSnapshot (String path)
 specifier|public
 name|void
@@ -4045,7 +4061,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Disallow snapshot on a directory.    * @param path the snapshottable directory.    * @throws IOException on error    */
+comment|/** @see HdfsAdmin#disallowSnapshot(String) */
 DECL|method|disallowSnapshot (String path)
 specifier|public
 name|void
@@ -4094,7 +4110,8 @@ name|snapshotName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Rename a snapshot    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|renameSnapshot (Path path, String snapshotOldName, String snapshotNewName)
 specifier|public
 name|void
