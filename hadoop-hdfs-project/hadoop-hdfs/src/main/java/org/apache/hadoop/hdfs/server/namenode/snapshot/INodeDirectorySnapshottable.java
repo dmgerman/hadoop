@@ -1028,6 +1028,27 @@ name|i
 argument_list|)
 return|;
 block|}
+comment|/** @return {@link #snapshotsByNames} as a {@link ReadOnlyList} */
+DECL|method|getSnapshotList ()
+specifier|public
+name|ReadOnlyList
+argument_list|<
+name|Snapshot
+argument_list|>
+name|getSnapshotList
+parameter_list|()
+block|{
+return|return
+name|ReadOnlyList
+operator|.
+name|Util
+operator|.
+name|asReadOnlyList
+argument_list|(
+name|snapshotsByNames
+argument_list|)
+return|;
+block|}
 comment|/**    * Rename a snapshot    * @param path    *          The directory path where the snapshot was taken. Used for    *          generating exception message.    * @param oldName    *          Old name of the snapshot    * @param newName    *          New name the snapshot will be renamed to    * @throws SnapshotException    *           Throw SnapshotException when either the snapshot with the old    *           name does not exist or a snapshot with the new name already    *           exists    */
 DECL|method|renameSnapshot (String path, String oldName, String newName)
 specifier|public
