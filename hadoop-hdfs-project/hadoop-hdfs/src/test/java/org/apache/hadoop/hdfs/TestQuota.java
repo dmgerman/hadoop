@@ -288,6 +288,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -1025,10 +1035,6 @@ name|replication
 argument_list|)
 expr_stmt|;
 comment|// 10.s: but writing fileLen bytes should result in an quota exception
-name|hasException
-operator|=
-literal|false
-expr_stmt|;
 try|try
 block|{
 name|fout
@@ -1047,6 +1053,11 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -1054,10 +1065,6 @@ name|QuotaExceededException
 name|e
 parameter_list|)
 block|{
-name|hasException
-operator|=
-literal|true
-expr_stmt|;
 name|IOUtils
 operator|.
 name|closeStream
@@ -1066,11 +1073,6 @@ name|fout
 argument_list|)
 expr_stmt|;
 block|}
-name|assertTrue
-argument_list|(
-name|hasException
-argument_list|)
-expr_stmt|;
 comment|//delete the file
 name|dfs
 operator|.

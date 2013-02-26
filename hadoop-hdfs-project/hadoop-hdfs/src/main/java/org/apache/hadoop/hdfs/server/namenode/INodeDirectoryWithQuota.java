@@ -715,6 +715,71 @@ argument_list|)
 throw|;
 block|}
 block|}
+DECL|method|namespaceString ()
+name|String
+name|namespaceString
+parameter_list|()
+block|{
+return|return
+literal|"namespace: "
+operator|+
+operator|(
+name|nsQuota
+operator|<
+literal|0
+condition|?
+literal|"-"
+else|:
+name|namespace
+operator|+
+literal|"/"
+operator|+
+name|nsQuota
+operator|)
+return|;
+block|}
+DECL|method|diskspaceString ()
+name|String
+name|diskspaceString
+parameter_list|()
+block|{
+return|return
+literal|"diskspace: "
+operator|+
+operator|(
+name|dsQuota
+operator|<
+literal|0
+condition|?
+literal|"-"
+else|:
+name|diskspace
+operator|+
+literal|"/"
+operator|+
+name|dsQuota
+operator|)
+return|;
+block|}
+DECL|method|quotaString ()
+name|String
+name|quotaString
+parameter_list|()
+block|{
+return|return
+literal|", Quota["
+operator|+
+name|namespaceString
+argument_list|()
+operator|+
+literal|", "
+operator|+
+name|diskspaceString
+argument_list|()
+operator|+
+literal|"]"
+return|;
+block|}
 block|}
 end_class
 

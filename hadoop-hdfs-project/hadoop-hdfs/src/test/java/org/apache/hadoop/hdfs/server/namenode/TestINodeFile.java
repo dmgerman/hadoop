@@ -1125,10 +1125,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testAppendBlocks ()
+DECL|method|testConcatBlocks ()
 specifier|public
 name|void
-name|testAppendBlocks
+name|testConcatBlocks
 parameter_list|()
 block|{
 name|INodeFile
@@ -1169,14 +1169,9 @@ argument_list|)
 decl_stmt|;
 name|origFile
 operator|.
-name|appendBlocks
+name|concatBlocks
 argument_list|(
 name|appendFiles
-argument_list|,
-name|getTotalBlocks
-argument_list|(
-name|appendFiles
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1191,54 +1186,6 @@ argument_list|,
 literal|5L
 argument_list|)
 expr_stmt|;
-block|}
-comment|/**     * Gives the count of blocks for a given number of files    * @param files Array of INode files    * @return total count of blocks    */
-DECL|method|getTotalBlocks (INodeFile[] files)
-specifier|private
-name|int
-name|getTotalBlocks
-parameter_list|(
-name|INodeFile
-index|[]
-name|files
-parameter_list|)
-block|{
-name|int
-name|nBlocks
-init|=
-literal|0
-decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|files
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-name|nBlocks
-operator|+=
-name|files
-index|[
-name|i
-index|]
-operator|.
-name|numBlocks
-argument_list|()
-expr_stmt|;
-block|}
-return|return
-name|nBlocks
-return|;
 block|}
 comment|/**     * Creates the required number of files with one block each    * @param nCount Number of INodes to create    * @return Array of INode files    */
 DECL|method|createINodeFiles (int nCount, String fileNamePrefix)

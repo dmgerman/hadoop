@@ -686,10 +686,10 @@ return|return
 name|i
 return|;
 block|}
-comment|/**    * Remove the specified child from this directory.    *     * @param child the child inode to be removed    * @param latest See {@link INode#recordModification(Snapshot)}.    * @return the removed child inode.    */
+comment|/**    * Remove the specified child from this directory.    *     * @param child the child inode to be removed    * @param latest See {@link INode#recordModification(Snapshot)}.    */
 DECL|method|removeChild (INode child, Snapshot latest)
 specifier|public
-name|INode
+name|boolean
 name|removeChild
 parameter_list|(
 name|INode
@@ -699,9 +699,6 @@ name|Snapshot
 name|latest
 parameter_list|)
 block|{
-name|assertChildrenNonNull
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|isInLatestSnapshot
@@ -722,6 +719,28 @@ name|latest
 argument_list|)
 return|;
 block|}
+return|return
+name|removeChild
+argument_list|(
+name|child
+argument_list|)
+return|;
+block|}
+comment|/**     * Remove the specified child from this directory.    * The basic remove method which actually calls children.remove(..).    *    * @param child the child inode to be removed    *     * @return true if the child is removed; false if the child is not found.    */
+DECL|method|removeChild (final INode child)
+specifier|protected
+specifier|final
+name|boolean
+name|removeChild
+parameter_list|(
+specifier|final
+name|INode
+name|child
+parameter_list|)
+block|{
+name|assertChildrenNonNull
+argument_list|()
+expr_stmt|;
 specifier|final
 name|int
 name|i
@@ -734,19 +753,56 @@ name|getLocalNameBytes
 argument_list|()
 argument_list|)
 decl_stmt|;
-return|return
+if|if
+condition|(
 name|i
-operator|>=
+operator|<
 literal|0
-condition|?
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+specifier|final
+name|INode
+name|removed
+init|=
 name|children
 operator|.
 name|remove
 argument_list|(
 name|i
 argument_list|)
-else|:
-literal|null
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|removed
+operator|==
+name|child
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+comment|/**    * Remove the specified child and all its snapshot copies from this directory.    */
+DECL|method|removeChildAndAllSnapshotCopies (INode child)
+specifier|public
+name|boolean
+name|removeChildAndAllSnapshotCopies
+parameter_list|(
+name|INode
+name|child
+parameter_list|)
+block|{
+return|return
+name|removeChild
+argument_list|(
+name|child
+argument_list|)
 return|;
 block|}
 comment|/**    * Replace itself with {@link INodeDirectoryWithQuota} or    * {@link INodeDirectoryWithSnapshot} depending on the latest snapshot.    */
@@ -1079,6 +1135,33 @@ name|clearReferences
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|replaceChildFile (final INodeFile oldChild, final INodeFile newChild)
+specifier|private
+name|void
+name|replaceChildFile
+parameter_list|(
+specifier|final
+name|INodeFile
+name|oldChild
+parameter_list|,
+specifier|final
+name|INodeFile
+name|newChild
+parameter_list|)
+block|{
+name|replaceChild
+argument_list|(
+name|oldChild
+argument_list|,
+name|newChild
+argument_list|)
+expr_stmt|;
+name|newChild
+operator|.
+name|updateBlockCollection
+argument_list|()
+expr_stmt|;
+block|}
 comment|/** Replace a child {@link INodeFile} with an {@link INodeFileWithSnapshot}. */
 DECL|method|replaceChild4INodeFileWithSnapshot ( final INodeFile child)
 name|INodeFileWithSnapshot
@@ -1115,7 +1198,7 @@ argument_list|(
 name|child
 argument_list|)
 decl_stmt|;
-name|replaceChild
+name|replaceChildFile
 argument_list|(
 name|child
 argument_list|,
@@ -1164,7 +1247,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|replaceChild
+name|replaceChildFile
 argument_list|(
 name|child
 argument_list|,
@@ -3740,7 +3823,7 @@ argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|println
+name|print
 argument_list|(
 literal|", childrenSize="
 operator|+
@@ -3752,6 +3835,20 @@ operator|.
 name|size
 argument_list|()
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|this
+operator|instanceof
+name|INodeDirectoryWithQuota
+condition|)
+block|{
+comment|//      out.print(((INodeDirectoryWithQuota)this).quotaString());
+block|}
+name|out
+operator|.
+name|println
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
