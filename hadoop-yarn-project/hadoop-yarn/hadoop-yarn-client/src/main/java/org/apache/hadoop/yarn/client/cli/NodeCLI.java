@@ -26,6 +26,26 @@ name|java
 operator|.
 name|io
 operator|.
+name|ByteArrayOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -193,7 +213,14 @@ specifier|final
 name|String
 name|NODES_PATTERN
 init|=
-literal|"%16s\t%10s\t%17s\t%26s\t%18s\n"
+literal|"%16s\t%10s\t%17s\t%26s\t%18s"
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
 decl_stmt|;
 DECL|method|main (String[] args)
 specifier|public
@@ -535,6 +562,8 @@ name|nodeIdStr
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|NodeId
 name|nodeId
@@ -557,12 +586,22 @@ operator|.
 name|getNodeReports
 argument_list|()
 decl_stmt|;
-name|StringBuffer
+comment|// Use PrintWriter.println, which uses correct platform line ending.
+name|ByteArrayOutputStream
+name|baos
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|PrintWriter
 name|nodeReportStr
 init|=
 operator|new
-name|StringBuffer
-argument_list|()
+name|PrintWriter
+argument_list|(
+name|baos
+argument_list|)
 decl_stmt|;
 name|NodeReport
 name|nodeReport
@@ -599,21 +638,21 @@ name|report
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 literal|"Node Report : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tNode-Id : "
+literal|"\tNode-Id : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -623,14 +662,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tRack : "
+literal|"\tRack : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -640,14 +679,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tNode-State : "
+literal|"\tNode-State : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -657,14 +696,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tNode-Http-Address : "
+literal|"\tNode-Http-Address : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -674,14 +713,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tHealth-Status(isNodeHealthy) : "
+literal|"\tHealth-Status(isNodeHealthy) : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -694,14 +733,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tLast-Last-Health-Update : "
+literal|"\tLast-Last-Health-Update : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -714,14 +753,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tHealth-Report : "
+literal|"\tHealth-Report : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -734,14 +773,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tContainers : "
+literal|"\tContainers : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -751,14 +790,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tMemory-Used : "
+literal|"\tMemory-Used : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 operator|(
 name|nodeReport
@@ -786,14 +825,14 @@ argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tMemory-Capacity : "
+literal|"\tMemory-Capacity : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|nodeReport
 operator|.
@@ -814,7 +853,7 @@ condition|)
 block|{
 name|nodeReportStr
 operator|.
-name|append
+name|print
 argument_list|(
 literal|"Could not find the node report for node id : "
 operator|+
@@ -822,14 +861,21 @@ name|nodeIdStr
 argument_list|)
 expr_stmt|;
 block|}
+name|nodeReportStr
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|sysout
 operator|.
 name|println
 argument_list|(
-name|nodeReportStr
+name|baos
 operator|.
 name|toString
-argument_list|()
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

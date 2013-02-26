@@ -26,6 +26,26 @@ name|java
 operator|.
 name|io
 operator|.
+name|ByteArrayOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -193,7 +213,14 @@ specifier|final
 name|String
 name|APPLICATIONS_PATTERN
 init|=
-literal|"%30s\t%20s\t%10s\t%10s\t%18s\t%18s\t%35s\n"
+literal|"%30s\t%20s\t%10s\t%10s\t%18s\t%18s\t%35s"
+operator|+
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
 decl_stmt|;
 DECL|method|main (String[] args)
 specifier|public
@@ -636,6 +663,8 @@ name|applicationId
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|ApplicationReport
 name|appReport
@@ -652,12 +681,22 @@ name|applicationId
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|StringBuffer
+comment|// Use PrintWriter.println, which uses correct platform line ending.
+name|ByteArrayOutputStream
+name|baos
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|PrintWriter
 name|appReportStr
 init|=
 operator|new
-name|StringBuffer
-argument_list|()
+name|PrintWriter
+argument_list|(
+name|baos
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -668,21 +707,21 @@ condition|)
 block|{
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 literal|"Application Report : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tApplication-Id : "
+literal|"\tApplication-Id : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -692,14 +731,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tApplication-Name : "
+literal|"\tApplication-Name : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -709,14 +748,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tUser : "
+literal|"\tUser : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -726,14 +765,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tQueue : "
+literal|"\tQueue : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -743,14 +782,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tStart-Time : "
+literal|"\tStart-Time : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -760,14 +799,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tFinish-Time : "
+literal|"\tFinish-Time : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -777,14 +816,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tState : "
+literal|"\tState : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -794,14 +833,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tFinal-State : "
+literal|"\tFinal-State : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -811,14 +850,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tTracking-URL : "
+literal|"\tTracking-URL : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|println
 argument_list|(
 name|appReport
 operator|.
@@ -828,14 +867,14 @@ argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n\tDiagnostics : "
+literal|"\tDiagnostics : "
 argument_list|)
 expr_stmt|;
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
 name|appReport
 operator|.
@@ -848,7 +887,7 @@ else|else
 block|{
 name|appReportStr
 operator|.
-name|append
+name|print
 argument_list|(
 literal|"Application with id '"
 operator|+
@@ -858,14 +897,21 @@ literal|"' doesn't exist in RM."
 argument_list|)
 expr_stmt|;
 block|}
+name|appReportStr
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|sysout
 operator|.
 name|println
 argument_list|(
-name|appReportStr
+name|baos
 operator|.
 name|toString
-argument_list|()
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
