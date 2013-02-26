@@ -211,7 +211,7 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get an instance of the configured TrashPolicy based on the value     * of the configuration paramater fs.trash.classname.    *    * @param conf the configuration to be used    * @param fs the file system to be used    * @param home the home directory    * @return an instance of TrashPolicy    */
+comment|/**    * Get an instance of the configured TrashPolicy based on the value     * of the configuration parameter fs.trash.classname.    *    * @param conf the configuration to be used    * @param fs the file system to be used    * @param home the home directory    * @return an instance of TrashPolicy    */
 DECL|method|getInstance (Configuration conf, FileSystem fs, Path home)
 specifier|public
 specifier|static
@@ -227,8 +227,6 @@ parameter_list|,
 name|Path
 name|home
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Class
 argument_list|<
@@ -256,9 +254,6 @@ decl_stmt|;
 name|TrashPolicy
 name|trash
 init|=
-operator|(
-name|TrashPolicy
-operator|)
 name|ReflectionUtils
 operator|.
 name|newInstance

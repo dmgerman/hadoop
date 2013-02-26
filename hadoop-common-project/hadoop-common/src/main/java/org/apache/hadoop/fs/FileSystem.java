@@ -5976,7 +5976,7 @@ name|Path
 name|getWorkingDirectory
 parameter_list|()
 function_decl|;
-comment|/**    * Note: with the new FilesContext class, getWorkingDirectory()    * will be removed.     * The working directory is implemented in FilesContext.    *     * Some file systems like LocalFileSystem have an initial workingDir    * that we use as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an inital workingDir.    *     * @return if there is built in notion of workingDir then it    * is returned; else a null is returned.    */
+comment|/**    * Note: with the new FilesContext class, getWorkingDirectory()    * will be removed.     * The working directory is implemented in FilesContext.    *     * Some file systems like LocalFileSystem have an initial workingDir    * that we use as the starting workingDir. For other file systems    * like HDFS there is no built in notion of an initial workingDir.    *     * @return if there is built in notion of workingDir then it    * is returned; else a null is returned.    */
 DECL|method|getInitialWorkingDirectory ()
 specifier|protected
 name|Path
