@@ -287,6 +287,16 @@ name|HeartbeatResponse
 name|getLastHeartBeatResponse
 parameter_list|()
 function_decl|;
+comment|/**    * Get and clear the list of containerUpdates accumulated across NM    * heartbeats.    *     * @return containerUpdates accumulated across NM heartbeats.    */
+DECL|method|pullContainerUpdates ()
+specifier|public
+name|List
+argument_list|<
+name|UpdatedContainerInfo
+argument_list|>
+name|pullContainerUpdates
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
