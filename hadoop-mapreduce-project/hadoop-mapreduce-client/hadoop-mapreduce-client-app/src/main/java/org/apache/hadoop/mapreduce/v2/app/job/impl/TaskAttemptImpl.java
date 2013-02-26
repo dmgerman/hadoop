@@ -2535,7 +2535,6 @@ name|TA_CONTAINER_COMPLETED
 argument_list|,
 name|CLEANUP_CONTAINER_TRANSITION
 argument_list|)
-comment|// ^ If RM kills the container due to expiry, preemption etc.
 operator|.
 name|addTransition
 argument_list|(

@@ -7511,6 +7511,28 @@ name|i
 operator|++
 control|)
 block|{
+if|if
+condition|(
+name|inode
+operator|==
+literal|null
+condition|)
+block|{
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"Could not get full path."
+operator|+
+literal|" Corresponding file might have deleted already."
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+block|}
 name|inodes
 index|[
 name|depth
