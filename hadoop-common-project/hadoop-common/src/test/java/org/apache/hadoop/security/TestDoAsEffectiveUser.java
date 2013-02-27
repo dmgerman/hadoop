@@ -1049,7 +1049,7 @@ name|assertEquals
 argument_list|(
 name|PROXY_USER_NAME
 operator|+
-literal|" (auth:SIMPLE) via "
+literal|" (auth:PROXY) via "
 operator|+
 name|REAL_USER_NAME
 operator|+
@@ -1297,7 +1297,7 @@ name|assertEquals
 argument_list|(
 name|PROXY_USER_NAME
 operator|+
-literal|" (auth:SIMPLE) via "
+literal|" (auth:PROXY) via "
 operator|+
 name|REAL_USER_NAME
 operator|+
