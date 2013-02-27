@@ -2689,6 +2689,11 @@ name|reduceCombineInputCounter
 argument_list|)
 expr_stmt|;
 block|}
+name|writer
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|compressAwarePath
 operator|=
 operator|new
@@ -2701,11 +2706,6 @@ operator|.
 name|getRawLength
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
@@ -3108,6 +3108,11 @@ argument_list|,
 name|jobConf
 argument_list|)
 expr_stmt|;
+name|writer
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|compressAwarePath
 operator|=
 operator|new
@@ -3120,11 +3125,6 @@ operator|.
 name|getRawLength
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -4082,7 +4082,6 @@ argument_list|,
 name|mergePhase
 argument_list|)
 decl_stmt|;
-specifier|final
 name|Writer
 argument_list|<
 name|K
@@ -4129,7 +4128,11 @@ argument_list|,
 name|job
 argument_list|)
 expr_stmt|;
-comment|// add to list of final disk outputs.
+name|writer
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|onDiskMapOutputs
 operator|.
 name|add
@@ -4146,6 +4149,11 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|writer
+operator|=
+literal|null
+expr_stmt|;
+comment|// add to list of final disk outputs.
 block|}
 catch|catch
 parameter_list|(
