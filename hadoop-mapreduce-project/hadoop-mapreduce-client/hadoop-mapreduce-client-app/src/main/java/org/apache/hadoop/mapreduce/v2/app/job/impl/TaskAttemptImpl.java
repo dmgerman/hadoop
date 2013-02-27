@@ -6737,6 +6737,11 @@ argument_list|)
 argument_list|,
 name|taskAttempt
 operator|.
+name|getCounters
+argument_list|()
+argument_list|,
+name|taskAttempt
+operator|.
 name|getProgressSplitBlock
 argument_list|()
 operator|.

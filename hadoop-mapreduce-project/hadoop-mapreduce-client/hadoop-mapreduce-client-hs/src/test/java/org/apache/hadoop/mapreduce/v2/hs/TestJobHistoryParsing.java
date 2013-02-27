@@ -3016,6 +3016,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testCountersForFailedTask ()
 specifier|public
 name|void
@@ -3363,6 +3368,28 @@ argument_list|()
 operator|.
 name|getCounters
 argument_list|()
+argument_list|)
+expr_stmt|;
+comment|//Make sure all the completedTask has counters, and the counters are not empty
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ct
+operator|.
+name|getReport
+argument_list|()
+operator|.
+name|getCounters
+argument_list|()
+operator|.
+name|getAllCounterGroups
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|>
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
