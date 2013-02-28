@@ -164,6 +164,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|NSQuotaExceededException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|SnapshotDiffReport
 import|;
 end_import
@@ -1307,6 +1323,8 @@ name|name
 parameter_list|)
 throws|throws
 name|SnapshotException
+throws|,
+name|NSQuotaExceededException
 block|{
 comment|//check snapshot quota
 specifier|final
@@ -1538,6 +1556,8 @@ argument_list|,
 name|snapshot
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|cleanSubtree
 argument_list|(
 name|snapshot
@@ -1547,6 +1567,23 @@ argument_list|,
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NSQuotaExceededException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"BUG: removeSnapshot increases namespace usage."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|snapshot
 return|;
@@ -2051,6 +2088,8 @@ specifier|final
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
 if|if
 condition|(

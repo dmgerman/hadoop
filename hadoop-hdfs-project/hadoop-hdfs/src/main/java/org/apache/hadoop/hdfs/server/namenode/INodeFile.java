@@ -122,6 +122,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|NSQuotaExceededException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -823,6 +839,8 @@ specifier|final
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
 return|return
 name|isInLatestSnapshot
@@ -848,6 +866,31 @@ block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
 annotation|@
 name|Override
+DECL|method|setPermission (FsPermission permission)
+specifier|final
+name|void
+name|setPermission
+parameter_list|(
+name|FsPermission
+name|permission
+parameter_list|)
+block|{
+name|super
+operator|.
+name|setPermission
+argument_list|(
+name|permission
+operator|.
+name|applyUMask
+argument_list|(
+name|UMASK
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
+annotation|@
+name|Override
 DECL|method|setPermission (FsPermission permission, Snapshot latest)
 specifier|final
 name|INode
@@ -859,6 +902,8 @@ parameter_list|,
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
 return|return
 name|super
@@ -958,45 +1003,17 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|setFileReplication (short replication, Snapshot latest)
+comment|/** Set the replication factor of this file. */
+DECL|method|setFileReplication (short replication)
 specifier|public
+specifier|final
 name|void
 name|setFileReplication
 parameter_list|(
 name|short
 name|replication
-parameter_list|,
-name|Snapshot
-name|latest
 parameter_list|)
 block|{
-specifier|final
-name|INodeFile
-name|nodeToUpdate
-init|=
-name|recordModification
-argument_list|(
-name|latest
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|nodeToUpdate
-operator|!=
-name|this
-condition|)
-block|{
-name|nodeToUpdate
-operator|.
-name|setFileReplication
-argument_list|(
-name|replication
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|header
 operator|=
 name|HeaderFormat
@@ -1008,6 +1025,42 @@ argument_list|,
 name|replication
 argument_list|)
 expr_stmt|;
+block|}
+comment|/** Set the replication factor of this file. */
+DECL|method|setFileReplication (short replication, Snapshot latest)
+specifier|public
+specifier|final
+name|INodeFile
+name|setFileReplication
+parameter_list|(
+name|short
+name|replication
+parameter_list|,
+name|Snapshot
+name|latest
+parameter_list|)
+throws|throws
+name|NSQuotaExceededException
+block|{
+specifier|final
+name|INodeFile
+name|nodeToUpdate
+init|=
+name|recordModification
+argument_list|(
+name|latest
+argument_list|)
+decl_stmt|;
+name|nodeToUpdate
+operator|.
+name|setFileReplication
+argument_list|(
+name|replication
+argument_list|)
+expr_stmt|;
+return|return
+name|nodeToUpdate
+return|;
 block|}
 comment|/** @return preferred block size (in bytes) of the file. */
 annotation|@
@@ -1351,6 +1404,8 @@ specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
 if|if
 condition|(
@@ -1452,7 +1507,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (Quota.Counts counts)
+DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache)
+specifier|public
+specifier|final
 name|Quota
 operator|.
 name|Counts
@@ -1462,6 +1519,9 @@ name|Quota
 operator|.
 name|Counts
 name|counts
+parameter_list|,
+name|boolean
+name|useCache
 parameter_list|)
 block|{
 name|counts
@@ -2001,6 +2061,7 @@ name|size
 return|;
 block|}
 DECL|method|diskspaceConsumed ()
+specifier|final
 name|long
 name|diskspaceConsumed
 parameter_list|()

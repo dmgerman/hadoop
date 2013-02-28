@@ -100,26 +100,6 @@ name|QuotaExceededException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|Snapshot
-import|;
-end_import
-
 begin_comment
 comment|/**  * Directory INode class that has a quota restriction  */
 end_comment
@@ -345,7 +325,7 @@ name|dsQuota
 return|;
 block|}
 comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param dsQuota diskspace quota to be set    */
-DECL|method|setQuota (long nsQuota, long dsQuota, Snapshot latest)
+DECL|method|setQuota (long nsQuota, long dsQuota)
 specifier|public
 name|void
 name|setQuota
@@ -355,30 +335,15 @@ name|nsQuota
 parameter_list|,
 name|long
 name|dsQuota
-parameter_list|,
-name|Snapshot
-name|latest
 parameter_list|)
 block|{
-specifier|final
-name|INodeDirectoryWithQuota
-name|nodeToUpdate
-init|=
-operator|(
-name|INodeDirectoryWithQuota
-operator|)
-name|recordModification
-argument_list|(
-name|latest
-argument_list|)
-decl_stmt|;
-name|nodeToUpdate
+name|this
 operator|.
 name|nsQuota
 operator|=
 name|nsQuota
 expr_stmt|;
-name|nodeToUpdate
+name|this
 operator|.
 name|dsQuota
 operator|=
@@ -387,7 +352,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (Quota.Counts counts)
+DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache)
 specifier|public
 specifier|final
 name|Quota
@@ -399,7 +364,15 @@ name|Quota
 operator|.
 name|Counts
 name|counts
+parameter_list|,
+name|boolean
+name|useCache
 parameter_list|)
+block|{
+if|if
+condition|(
+name|useCache
+condition|)
 block|{
 comment|// use cache value
 name|counts
@@ -424,6 +397,19 @@ argument_list|,
 name|diskspace
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|super
+operator|.
+name|computeQuotaUsage
+argument_list|(
+name|counts
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|counts
 return|;
@@ -554,8 +540,7 @@ operator|!=
 name|getDsQuota
 argument_list|()
 operator|&&
-name|diskspaceConsumed
-argument_list|()
+name|diskspace
 operator|!=
 name|computed
 condition|)
@@ -573,8 +558,7 @@ argument_list|()
 operator|+
 literal|". Cached = "
 operator|+
-name|diskspaceConsumed
-argument_list|()
+name|diskspace
 operator|+
 literal|" != Computed = "
 operator|+
@@ -593,14 +577,60 @@ return|return
 name|namespace
 return|;
 block|}
-DECL|method|diskspaceConsumed ()
-name|long
-name|diskspaceConsumed
-parameter_list|()
+annotation|@
+name|Override
+DECL|method|addNamespaceConsumed (final int delta)
+specifier|public
+specifier|final
+name|void
+name|addNamespaceConsumed
+parameter_list|(
+specifier|final
+name|int
+name|delta
+parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
-return|return
-name|diskspace
-return|;
+if|if
+condition|(
+name|isQuotaSet
+argument_list|()
+condition|)
+block|{
+comment|// The following steps are important:
+comment|// check quotas in this inode and all ancestors before changing counts
+comment|// so that no change is made if there is any quota violation.
+comment|// (1) verify quota in this inode
+name|verifyNamespaceQuota
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+comment|// (2) verify quota and then add count in ancestors
+name|super
+operator|.
+name|addNamespaceConsumed
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+comment|// (3) add count in this inode
+name|namespace
+operator|+=
+name|delta
+expr_stmt|;
+block|}
+else|else
+block|{
+name|super
+operator|.
+name|addNamespaceConsumed
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/** Update the size of the tree    *     * @param nsDelta the change of the tree size    * @param dsDelta change to disk space occupied    */
 DECL|method|addSpaceConsumed (long nsDelta, long dsDelta)
@@ -648,6 +678,44 @@ operator|=
 name|diskspace
 expr_stmt|;
 block|}
+comment|/** Verify if the namespace quota is violated after applying delta. */
+DECL|method|verifyNamespaceQuota (long delta)
+name|void
+name|verifyNamespaceQuota
+parameter_list|(
+name|long
+name|delta
+parameter_list|)
+throws|throws
+name|NSQuotaExceededException
+block|{
+if|if
+condition|(
+name|Quota
+operator|.
+name|isViolated
+argument_list|(
+name|nsQuota
+argument_list|,
+name|namespace
+argument_list|,
+name|delta
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|NSQuotaExceededException
+argument_list|(
+name|nsQuota
+argument_list|,
+name|namespace
+operator|+
+name|delta
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/** Verify if the namespace count disk space satisfies the quota restriction     * @throws QuotaExceededException if the given quota is less than the count    */
 DECL|method|verifyQuota (long nsDelta, long dsDelta)
 name|void
@@ -662,32 +730,11 @@ parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
-if|if
-condition|(
-name|Quota
-operator|.
-name|isViolated
+name|verifyNamespaceQuota
 argument_list|(
-name|nsQuota
-argument_list|,
-name|namespace
-argument_list|,
 name|nsDelta
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|NSQuotaExceededException
-argument_list|(
-name|nsQuota
-argument_list|,
-name|namespace
-operator|+
-name|nsDelta
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 if|if
 condition|(
 name|Quota

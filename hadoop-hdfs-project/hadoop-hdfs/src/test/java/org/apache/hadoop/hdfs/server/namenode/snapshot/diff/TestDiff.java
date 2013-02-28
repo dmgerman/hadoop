@@ -1937,7 +1937,7 @@ argument_list|)
 decl_stmt|;
 name|newinode
 operator|.
-name|updateModificationTime
+name|setModificationTime
 argument_list|(
 name|oldinode
 operator|.
@@ -1945,8 +1945,6 @@ name|getModificationTime
 argument_list|()
 operator|+
 literal|1
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|current

@@ -1242,8 +1242,6 @@ argument_list|(
 name|nsQuota
 argument_list|,
 name|dsQuota
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1959,10 +1957,6 @@ operator|.
 name|addChild
 argument_list|(
 name|child
-argument_list|,
-literal|false
-argument_list|,
-literal|null
 argument_list|)
 condition|)
 block|{

@@ -556,6 +556,17 @@ argument_list|,
 name|path
 argument_list|)
 decl_stmt|;
+name|fsdir
+operator|.
+name|verifyMaxComponentLength
+argument_list|(
+name|snapshotName
+argument_list|,
+name|path
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|srcRoot
 operator|.
 name|addSnapshot

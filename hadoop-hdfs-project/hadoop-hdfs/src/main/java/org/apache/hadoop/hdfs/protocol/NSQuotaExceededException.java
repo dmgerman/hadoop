@@ -72,6 +72,11 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|field|prefix
+specifier|private
+name|String
+name|prefix
+decl_stmt|;
 DECL|method|NSQuotaExceededException ()
 specifier|public
 name|NSQuotaExceededException
@@ -133,7 +138,8 @@ operator|==
 literal|null
 condition|)
 block|{
-return|return
+name|msg
+operator|=
 literal|"The NameSpace quota (directories and files)"
 operator|+
 operator|(
@@ -157,14 +163,45 @@ operator|+
 literal|" file count="
 operator|+
 name|count
-return|;
-block|}
-else|else
+expr_stmt|;
+if|if
+condition|(
+name|prefix
+operator|!=
+literal|null
+condition|)
 block|{
+name|msg
+operator|=
+name|prefix
+operator|+
+literal|": "
+operator|+
+name|msg
+expr_stmt|;
+block|}
+block|}
 return|return
 name|msg
 return|;
 block|}
+comment|/** Set a prefix for the error message. */
+DECL|method|setMessagePrefix (final String prefix)
+specifier|public
+name|void
+name|setMessagePrefix
+parameter_list|(
+specifier|final
+name|String
+name|prefix
+parameter_list|)
+block|{
+name|this
+operator|.
+name|prefix
+operator|=
+name|prefix
+expr_stmt|;
 block|}
 block|}
 end_class

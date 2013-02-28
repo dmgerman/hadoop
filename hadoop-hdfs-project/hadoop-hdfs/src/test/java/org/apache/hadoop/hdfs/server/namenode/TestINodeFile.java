@@ -793,10 +793,6 @@ operator|.
 name|addChild
 argument_list|(
 name|inf
-argument_list|,
-literal|false
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -830,10 +826,6 @@ operator|.
 name|addChild
 argument_list|(
 name|dir
-argument_list|,
-literal|false
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals

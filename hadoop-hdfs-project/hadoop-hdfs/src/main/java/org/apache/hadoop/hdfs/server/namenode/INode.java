@@ -212,6 +212,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|NSQuotaExceededException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -293,6 +309,20 @@ operator|.
 name|annotations
 operator|.
 name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -858,9 +888,9 @@ literal|null
 argument_list|)
 return|;
 block|}
-DECL|method|updatePermissionStatus (PermissionStatusFormat f, long n, Snapshot latest)
+DECL|method|updatePermissionStatus (PermissionStatusFormat f, long n)
 specifier|private
-name|INode
+name|void
 name|updatePermissionStatus
 parameter_list|(
 name|PermissionStatusFormat
@@ -868,21 +898,9 @@ name|f
 parameter_list|,
 name|long
 name|n
-parameter_list|,
-name|Snapshot
-name|latest
 parameter_list|)
 block|{
-specifier|final
-name|INode
-name|nodeToUpdate
-init|=
-name|recordModification
-argument_list|(
-name|latest
-argument_list|)
-decl_stmt|;
-name|nodeToUpdate
+name|this
 operator|.
 name|permission
 operator|=
@@ -895,9 +913,6 @@ argument_list|,
 name|permission
 argument_list|)
 expr_stmt|;
-return|return
-name|nodeToUpdate
-return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return user name    */
 DECL|method|getUserName (Snapshot snapshot)
@@ -969,16 +984,13 @@ argument_list|)
 return|;
 block|}
 comment|/** Set user */
-DECL|method|setUser (String user, Snapshot latest)
-specifier|protected
-name|INode
+DECL|method|setUser (String user)
+specifier|final
+name|void
 name|setUser
 parameter_list|(
 name|String
 name|user
-parameter_list|,
-name|Snapshot
-name|latest
 parameter_list|)
 block|{
 name|int
@@ -993,7 +1005,6 @@ argument_list|(
 name|user
 argument_list|)
 decl_stmt|;
-return|return
 name|updatePermissionStatus
 argument_list|(
 name|PermissionStatusFormat
@@ -1001,9 +1012,42 @@ operator|.
 name|USER
 argument_list|,
 name|n
-argument_list|,
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Set user */
+DECL|method|setUser (String user, Snapshot latest)
+specifier|final
+name|INode
+name|setUser
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|Snapshot
+name|latest
+parameter_list|)
+throws|throws
+name|NSQuotaExceededException
+block|{
+specifier|final
+name|INode
+name|nodeToUpdate
+init|=
+name|recordModification
+argument_list|(
 name|latest
 argument_list|)
+decl_stmt|;
+name|nodeToUpdate
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
+return|return
+name|nodeToUpdate
 return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return group name    */
@@ -1076,16 +1120,13 @@ argument_list|)
 return|;
 block|}
 comment|/** Set group */
-DECL|method|setGroup (String group, Snapshot latest)
-specifier|protected
-name|INode
+DECL|method|setGroup (String group)
+specifier|final
+name|void
 name|setGroup
 parameter_list|(
 name|String
 name|group
-parameter_list|,
-name|Snapshot
-name|latest
 parameter_list|)
 block|{
 name|int
@@ -1100,7 +1141,6 @@ argument_list|(
 name|group
 argument_list|)
 decl_stmt|;
-return|return
 name|updatePermissionStatus
 argument_list|(
 name|PermissionStatusFormat
@@ -1108,9 +1148,42 @@ operator|.
 name|GROUP
 argument_list|,
 name|n
-argument_list|,
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Set group */
+DECL|method|setGroup (String group, Snapshot latest)
+specifier|final
+name|INode
+name|setGroup
+parameter_list|(
+name|String
+name|group
+parameter_list|,
+name|Snapshot
+name|latest
+parameter_list|)
+throws|throws
+name|NSQuotaExceededException
+block|{
+specifier|final
+name|INode
+name|nodeToUpdate
+init|=
+name|recordModification
+argument_list|(
 name|latest
 argument_list|)
+decl_stmt|;
+name|nodeToUpdate
+operator|.
+name|setGroup
+argument_list|(
+name|group
+argument_list|)
+expr_stmt|;
+return|return
+name|nodeToUpdate
 return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return permission.    */
@@ -1195,15 +1268,12 @@ argument_list|)
 return|;
 block|}
 comment|/** Set the {@link FsPermission} of this {@link INode} */
-DECL|method|setPermission (FsPermission permission, Snapshot latest)
-name|INode
+DECL|method|setPermission (FsPermission permission)
+name|void
 name|setPermission
 parameter_list|(
 name|FsPermission
 name|permission
-parameter_list|,
-name|Snapshot
-name|latest
 parameter_list|)
 block|{
 specifier|final
@@ -1215,7 +1285,6 @@ operator|.
 name|toShort
 argument_list|()
 decl_stmt|;
-return|return
 name|updatePermissionStatus
 argument_list|(
 name|PermissionStatusFormat
@@ -1223,9 +1292,41 @@ operator|.
 name|MODE
 argument_list|,
 name|mode
-argument_list|,
+argument_list|)
+expr_stmt|;
+block|}
+comment|/** Set the {@link FsPermission} of this {@link INode} */
+DECL|method|setPermission (FsPermission permission, Snapshot latest)
+name|INode
+name|setPermission
+parameter_list|(
+name|FsPermission
+name|permission
+parameter_list|,
+name|Snapshot
+name|latest
+parameter_list|)
+throws|throws
+name|NSQuotaExceededException
+block|{
+specifier|final
+name|INode
+name|nodeToUpdate
+init|=
+name|recordModification
+argument_list|(
 name|latest
 argument_list|)
+decl_stmt|;
+name|nodeToUpdate
+operator|.
+name|setPermission
+argument_list|(
+name|permission
+argument_list|)
+expr_stmt|;
+return|return
+name|nodeToUpdate
 return|;
 block|}
 comment|/**    * @return if the given snapshot is null, return this;    *     otherwise return the corresponding snapshot inode.    */
@@ -1298,6 +1399,8 @@ specifier|final
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 function_decl|;
 comment|/**    * Check whether it's a file.    */
 DECL|method|isFile ()
@@ -1338,6 +1441,8 @@ parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 function_decl|;
 comment|/**    * Destroy self and clear everything! If the INode is a file, this method    * collects its blocks for further block deletion. If the INode is a     * directory, the method goes down the subtree and collects blocks from the     * descents, and clears its parent/children references as well. The method     * also clears the diff list if the INode contains snapshot diff list.    *     * @param collectedBlocks blocks collected from the descents for further block    *                        deletion/update will be added to this map.    * @return the number of deleted inodes in the subtree.    */
 DECL|method|destroyAndCollectBlocks ( BlocksMapUpdateInfo collectedBlocks)
@@ -1614,6 +1719,34 @@ name|Counts
 name|counts
 parameter_list|)
 function_decl|;
+comment|/**    * Check and add namespace consumed to itself and the ancestors.    * @throws NSQuotaExceededException if quote is violated.    */
+DECL|method|addNamespaceConsumed (int delta)
+specifier|public
+name|void
+name|addNamespaceConsumed
+parameter_list|(
+name|int
+name|delta
+parameter_list|)
+throws|throws
+name|NSQuotaExceededException
+block|{
+if|if
+condition|(
+name|parent
+operator|!=
+literal|null
+condition|)
+block|{
+name|parent
+operator|.
+name|addNamespaceConsumed
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Get the quota set for this inode    * @return the quota if it is set; -1 otherwise    */
 DECL|method|getNsQuota ()
 specifier|public
@@ -1672,11 +1805,14 @@ name|Quota
 operator|.
 name|Counts
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
 comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    *     * @param counts The subtree counts for returning.    * @return The same objects as the counts parameter.    */
-DECL|method|computeQuotaUsage (Quota.Counts counts)
+DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache)
+specifier|public
 specifier|abstract
 name|Quota
 operator|.
@@ -1687,6 +1823,9 @@ name|Quota
 operator|.
 name|Counts
 name|counts
+parameter_list|,
+name|boolean
+name|useCache
 parameter_list|)
 function_decl|;
 comment|/**    * @return null if the local name is null; otherwise, return the local name.    */
@@ -2057,11 +2196,17 @@ parameter_list|,
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
-assert|assert
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 name|isDirectory
 argument_list|()
-assert|;
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|mtime
@@ -2099,19 +2244,39 @@ operator|.
 name|modificationTime
 expr_stmt|;
 block|}
-comment|/**    * Always set the last modification time of inode.    */
-DECL|method|setModificationTime (long modtime, Snapshot latest)
+comment|/** Set the last modification time of inode. */
+DECL|method|setModificationTime (long modificationTime)
+specifier|public
+specifier|final
+name|void
+name|setModificationTime
+parameter_list|(
+name|long
+name|modificationTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|modificationTime
+operator|=
+name|modificationTime
+expr_stmt|;
+block|}
+comment|/** Set the last modification time of inode. */
+DECL|method|setModificationTime (long modificationTime, Snapshot latest)
 specifier|public
 specifier|final
 name|INode
 name|setModificationTime
 parameter_list|(
 name|long
-name|modtime
+name|modificationTime
 parameter_list|,
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
 specifier|final
 name|INode
@@ -2124,9 +2289,10 @@ argument_list|)
 decl_stmt|;
 name|nodeToUpdate
 operator|.
+name|setModificationTime
+argument_list|(
 name|modificationTime
-operator|=
-name|modtime
+argument_list|)
 expr_stmt|;
 return|return
 name|nodeToUpdate
@@ -2179,17 +2345,36 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Set last access time of inode.    */
-DECL|method|setAccessTime (long atime, Snapshot latest)
+DECL|method|setAccessTime (long accessTime)
+specifier|public
+name|void
+name|setAccessTime
+parameter_list|(
+name|long
+name|accessTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|accessTime
+operator|=
+name|accessTime
+expr_stmt|;
+block|}
+comment|/**    * Set last access time of inode.    */
+DECL|method|setAccessTime (long accessTime, Snapshot latest)
 specifier|public
 name|INode
 name|setAccessTime
 parameter_list|(
 name|long
-name|atime
+name|accessTime
 parameter_list|,
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
 specifier|final
 name|INode
@@ -2202,9 +2387,10 @@ argument_list|)
 decl_stmt|;
 name|nodeToUpdate
 operator|.
+name|setAccessTime
+argument_list|(
 name|accessTime
-operator|=
-name|atime
+argument_list|)
 expr_stmt|;
 return|return
 name|nodeToUpdate

@@ -84,6 +84,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|NSQuotaExceededException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -220,6 +236,8 @@ parameter_list|(
 name|Snapshot
 name|latest
 parameter_list|)
+throws|throws
+name|NSQuotaExceededException
 block|{
 return|return
 name|isInLatestSnapshot
@@ -325,17 +343,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (final Quota.Counts counts)
+DECL|method|computeQuotaUsage (Quota.Counts counts, boolean updateCache)
+specifier|public
 name|Quota
 operator|.
 name|Counts
 name|computeQuotaUsage
 parameter_list|(
-specifier|final
 name|Quota
 operator|.
 name|Counts
 name|counts
+parameter_list|,
+name|boolean
+name|updateCache
 parameter_list|)
 block|{
 name|counts
