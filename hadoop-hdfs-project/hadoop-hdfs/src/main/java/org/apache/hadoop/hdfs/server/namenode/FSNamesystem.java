@@ -17992,10 +17992,18 @@ return|return
 name|stats
 return|;
 block|}
-comment|/**    * Total raw bytes including non-dfs used space.    */
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"CapacityTotal"
+block|,
+literal|"Total raw capacity of data nodes in bytes"
+block|}
+argument_list|)
 DECL|method|getCapacityTotal ()
 specifier|public
 name|long
@@ -18011,6 +18019,13 @@ return|;
 block|}
 annotation|@
 name|Metric
+argument_list|(
+block|{
+literal|"CapacityTotalGB"
+block|,
+literal|"Total raw capacity of data nodes in GB"
+block|}
+argument_list|)
 DECL|method|getCapacityTotalGB ()
 specifier|public
 name|float
@@ -18027,10 +18042,18 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Total used space by data nodes    */
 annotation|@
 name|Override
 comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"CapacityUsed"
+block|,
+literal|"Total used capacity across all data nodes in bytes"
+block|}
+argument_list|)
 DECL|method|getCapacityUsed ()
 specifier|public
 name|long
@@ -18046,6 +18069,13 @@ return|;
 block|}
 annotation|@
 name|Metric
+argument_list|(
+block|{
+literal|"CapacityUsedGB"
+block|,
+literal|"Total used capacity across all data nodes in GB"
+block|}
+argument_list|)
 DECL|method|getCapacityUsedGB ()
 specifier|public
 name|float
@@ -18064,6 +18094,16 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// FSNamesystemMBean
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"CapacityRemaining"
+block|,
+literal|"Remaining capacity in bytes"
+block|}
+argument_list|)
 DECL|method|getCapacityRemaining ()
 specifier|public
 name|long
@@ -18079,6 +18119,13 @@ return|;
 block|}
 annotation|@
 name|Metric
+argument_list|(
+block|{
+literal|"CapacityRemainingGB"
+block|,
+literal|"Remaining capacity in GB"
+block|}
+argument_list|)
 DECL|method|getCapacityRemainingGB ()
 specifier|public
 name|float
@@ -18093,6 +18140,28 @@ argument_list|(
 name|getCapacityRemaining
 argument_list|()
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Metric
+argument_list|(
+block|{
+literal|"CapacityUsedNonDFS"
+block|,
+literal|"Total space used by data nodes for non DFS purposes in bytes"
+block|}
+argument_list|)
+DECL|method|getCapacityUsedNonDFS ()
+specifier|public
+name|long
+name|getCapacityUsedNonDFS
+parameter_list|()
+block|{
+return|return
+name|datanodeStatistics
+operator|.
+name|getCapacityUsedNonDFS
+argument_list|()
 return|;
 block|}
 comment|/**    * Total number of connections.    */
