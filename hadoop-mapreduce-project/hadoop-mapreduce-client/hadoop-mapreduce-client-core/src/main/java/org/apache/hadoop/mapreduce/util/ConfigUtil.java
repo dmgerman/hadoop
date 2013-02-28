@@ -4105,6 +4105,19 @@ operator|.
 name|MAPREDUCE_JOB_USER_CLASSPATH_FIRST
 argument_list|)
 expr_stmt|;
+name|Configuration
+operator|.
+name|addDeprecation
+argument_list|(
+name|JTConfig
+operator|.
+name|JT_MAX_JOB_SPLIT_METAINFO_SIZE
+argument_list|,
+name|MRJobConfig
+operator|.
+name|SPLIT_METAINFO_MAXSIZE
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|main (String[] args)
 specifier|public
