@@ -2775,6 +2775,24 @@ name|getIsNodeHealthy
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Node "
+operator|+
+name|rmNode
+operator|.
+name|nodeId
+operator|+
+literal|" reported UNHEALTHY with details: "
+operator|+
+name|remoteNodeHealthStatus
+operator|.
+name|getHealthReport
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|rmNode
 operator|.
 name|nodeUpdateQueue
