@@ -1940,6 +1940,38 @@ name|getHostAddress
 argument_list|()
 return|;
 block|}
+comment|/** Returns the RPC remote user when invoked inside an RPC.  Note this    *  may be different than the current user if called within another doAs    *  @return connection's UGI or null if not an RPC    */
+DECL|method|getRemoteUser ()
+specifier|public
+specifier|static
+name|UserGroupInformation
+name|getRemoteUser
+parameter_list|()
+block|{
+name|Call
+name|call
+init|=
+name|CurCall
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+return|return
+operator|(
+name|call
+operator|!=
+literal|null
+operator|)
+condition|?
+name|call
+operator|.
+name|connection
+operator|.
+name|user
+else|:
+literal|null
+return|;
+block|}
 comment|/** Return true if the invocation was through an RPC.    */
 DECL|method|isRpcInvocation ()
 specifier|public
