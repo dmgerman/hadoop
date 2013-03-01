@@ -281,6 +281,16 @@ argument_list|>
 name|getAppsToCleanup
 parameter_list|()
 function_decl|;
+comment|/**    * Update a {@link HeartbeatResponse} with the list of containers and    * applications to clean up for this node.    * @param response the {@link HeartbeatResponse} to update    */
+DECL|method|updateHeartbeatResponseForCleanup (HeartbeatResponse response)
+specifier|public
+name|void
+name|updateHeartbeatResponseForCleanup
+parameter_list|(
+name|HeartbeatResponse
+name|response
+parameter_list|)
+function_decl|;
 DECL|method|getLastHeartBeatResponse ()
 specifier|public
 name|HeartbeatResponse

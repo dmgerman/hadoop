@@ -1008,6 +1008,17 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|updateHeartbeatResponseForCleanup (HeartbeatResponse response)
+specifier|public
+name|void
+name|updateHeartbeatResponseForCleanup
+parameter_list|(
+name|HeartbeatResponse
+name|response
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
 DECL|method|getLastHeartBeatResponse ()
 specifier|public
 name|HeartbeatResponse
