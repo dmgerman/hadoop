@@ -174,6 +174,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Date
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -185,6 +195,22 @@ operator|.
 name|framework
 operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|time
+operator|.
+name|DateFormatUtils
 import|;
 end_import
 
@@ -1491,7 +1517,20 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\tLast-Last-Health-Update : 0"
+literal|"\tLast-Health-Update : "
+operator|+
+name|DateFormatUtils
+operator|.
+name|format
+argument_list|(
+operator|new
+name|Date
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+literal|"E dd/MMM/yy hh:mm:ss:SSzz"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|pw

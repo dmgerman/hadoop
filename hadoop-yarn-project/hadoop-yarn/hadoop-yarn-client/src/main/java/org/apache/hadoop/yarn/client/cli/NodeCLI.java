@@ -56,6 +56,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Date
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -113,6 +123,22 @@ operator|.
 name|cli
 operator|.
 name|Options
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|time
+operator|.
+name|DateFormatUtils
 import|;
 end_import
 
@@ -735,12 +761,19 @@ name|nodeReportStr
 operator|.
 name|print
 argument_list|(
-literal|"\tLast-Last-Health-Update : "
+literal|"\tLast-Health-Update : "
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
 operator|.
 name|println
+argument_list|(
+name|DateFormatUtils
+operator|.
+name|format
+argument_list|(
+operator|new
+name|Date
 argument_list|(
 name|nodeReport
 operator|.
@@ -749,6 +782,10 @@ argument_list|()
 operator|.
 name|getLastHealthReportTime
 argument_list|()
+argument_list|)
+argument_list|,
+literal|"E dd/MMM/yy hh:mm:ss:SSzz"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|nodeReportStr
