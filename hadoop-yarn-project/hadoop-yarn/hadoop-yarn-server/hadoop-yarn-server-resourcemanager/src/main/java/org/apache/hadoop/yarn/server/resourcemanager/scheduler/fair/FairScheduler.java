@@ -5153,9 +5153,17 @@ name|queueName
 argument_list|)
 condition|)
 block|{
-return|return
-literal|null
-return|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"queue "
+operator|+
+name|queueName
+operator|+
+literal|" does not exist"
+argument_list|)
+throw|;
 block|}
 return|return
 name|queueMgr
