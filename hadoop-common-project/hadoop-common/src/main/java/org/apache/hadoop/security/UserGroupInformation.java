@@ -624,6 +624,20 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * User and group information for Hadoop.  * This class wraps around a JAAS Subject and provides methods to determine the  * user's username and groups. It supports both the Windows, Unix and Kerberos   * login modules.  */
 end_comment
@@ -3472,7 +3486,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
+annotation|@
+name|VisibleForTesting
 DECL|method|setLoginUser (UserGroupInformation ugi)
+specifier|public
 specifier|synchronized
 specifier|static
 name|void
