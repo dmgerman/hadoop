@@ -155,6 +155,13 @@ specifier|final
 name|long
 name|checkpointTxnCount
 decl_stmt|;
+comment|/** maxium number of retries when merge errors occur */
+DECL|field|maxRetriesOnMergeError
+specifier|private
+specifier|final
+name|int
+name|maxRetriesOnMergeError
+decl_stmt|;
 DECL|method|CheckpointConf (Configuration conf)
 specifier|public
 name|CheckpointConf
@@ -194,6 +201,17 @@ argument_list|(
 name|DFS_NAMENODE_CHECKPOINT_TXNS_KEY
 argument_list|,
 name|DFS_NAMENODE_CHECKPOINT_TXNS_DEFAULT
+argument_list|)
+expr_stmt|;
+name|maxRetriesOnMergeError
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFS_NAMENODE_CHECKPOINT_MAX_RETRIES_KEY
+argument_list|,
+name|DFS_NAMENODE_CHECKPOINT_MAX_RETRIES_DEFAULT
 argument_list|)
 expr_stmt|;
 name|warnForDeprecatedConfigs
@@ -292,6 +310,16 @@ parameter_list|()
 block|{
 return|return
 name|checkpointTxnCount
+return|;
+block|}
+DECL|method|getMaxRetriesOnMergeError ()
+specifier|public
+name|int
+name|getMaxRetriesOnMergeError
+parameter_list|()
+block|{
+return|return
+name|maxRetriesOnMergeError
 return|;
 block|}
 block|}
