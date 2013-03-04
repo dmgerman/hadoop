@@ -62,6 +62,26 @@ name|api
 operator|.
 name|records
 operator|.
+name|Phase
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|TaskAttemptId
 import|;
 end_import
@@ -178,6 +198,11 @@ function_decl|;
 DECL|method|getProgress ()
 name|float
 name|getProgress
+parameter_list|()
+function_decl|;
+DECL|method|getPhase ()
+name|Phase
+name|getPhase
 parameter_list|()
 function_decl|;
 DECL|method|getState ()

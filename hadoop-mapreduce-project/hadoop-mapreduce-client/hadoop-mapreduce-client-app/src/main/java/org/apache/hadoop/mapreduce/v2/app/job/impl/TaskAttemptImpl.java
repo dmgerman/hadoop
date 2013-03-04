@@ -5842,6 +5842,36 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|getPhase ()
+specifier|public
+name|Phase
+name|getPhase
+parameter_list|()
+block|{
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|reportedStatus
+operator|.
+name|phase
+return|;
+block|}
+finally|finally
+block|{
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
 DECL|method|getState ()
 specifier|public
 name|TaskAttemptState
