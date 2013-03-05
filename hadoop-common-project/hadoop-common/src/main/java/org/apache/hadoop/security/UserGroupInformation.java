@@ -6590,9 +6590,7 @@ throw|throw
 operator|new
 name|UndeclaredThrowableException
 argument_list|(
-name|pae
-argument_list|,
-literal|"Unknown exception in doAs"
+name|cause
 argument_list|)
 throw|;
 block|}
