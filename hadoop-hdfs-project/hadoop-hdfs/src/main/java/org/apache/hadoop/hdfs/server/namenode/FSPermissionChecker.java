@@ -876,10 +876,10 @@ name|directories
 operator|.
 name|push
 argument_list|(
-operator|(
-name|INodeDirectory
-operator|)
 name|inode
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|)
 init|;
 operator|!
@@ -932,10 +932,10 @@ name|directories
 operator|.
 name|push
 argument_list|(
-operator|(
-name|INodeDirectory
-operator|)
 name|child
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

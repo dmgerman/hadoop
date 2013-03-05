@@ -376,7 +376,7 @@ name|INode
 implements|implements
 name|BlockCollection
 block|{
-comment|/** Cast INode to INodeFile. */
+comment|/** The same as valueOf(inode, path, false). */
 DECL|method|valueOf (INode inode, String path )
 specifier|public
 specifier|static
@@ -392,12 +392,53 @@ parameter_list|)
 throws|throws
 name|FileNotFoundException
 block|{
+return|return
+name|valueOf
+argument_list|(
+name|inode
+argument_list|,
+name|path
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/** Cast INode to INodeFile. */
+DECL|method|valueOf (INode inode, String path, boolean acceptNull)
+specifier|public
+specifier|static
+name|INodeFile
+name|valueOf
+parameter_list|(
+name|INode
+name|inode
+parameter_list|,
+name|String
+name|path
+parameter_list|,
+name|boolean
+name|acceptNull
+parameter_list|)
+throws|throws
+name|FileNotFoundException
+block|{
 if|if
 condition|(
 name|inode
 operator|==
 literal|null
 condition|)
+block|{
+if|if
+condition|(
+name|acceptNull
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
 block|{
 throw|throw
 operator|new
@@ -409,14 +450,14 @@ name|path
 argument_list|)
 throw|;
 block|}
+block|}
 if|if
 condition|(
 operator|!
-operator|(
 name|inode
-operator|instanceof
-name|INodeFile
-operator|)
+operator|.
+name|isFile
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -430,10 +471,10 @@ argument_list|)
 throw|;
 block|}
 return|return
-operator|(
-name|INodeFile
-operator|)
 name|inode
+operator|.
+name|asFile
+argument_list|()
 return|;
 block|}
 DECL|field|UMASK
@@ -768,6 +809,31 @@ return|return
 literal|true
 return|;
 block|}
+comment|/** @return this object. */
+annotation|@
+name|Override
+DECL|method|asFile ()
+specifier|public
+specifier|final
+name|INodeFile
+name|asFile
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
+block|}
+comment|/** Is this file under construction? */
+DECL|method|isUnderConstruction ()
+specifier|public
+name|boolean
+name|isUnderConstruction
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/** Convert this file to an {@link INodeFileUnderConstruction}. */
 DECL|method|toUnderConstruction ( String clientName, String clientMachine, DatanodeDescriptor clientNode)
 specifier|public
@@ -786,14 +852,11 @@ parameter_list|)
 block|{
 name|Preconditions
 operator|.
-name|checkArgument
+name|checkState
 argument_list|(
 operator|!
-operator|(
-name|this
-operator|instanceof
-name|INodeFileUnderConstruction
-operator|)
+name|isUnderConstruction
+argument_list|()
 argument_list|,
 literal|"file is already an INodeFileUnderConstruction"
 argument_list|)

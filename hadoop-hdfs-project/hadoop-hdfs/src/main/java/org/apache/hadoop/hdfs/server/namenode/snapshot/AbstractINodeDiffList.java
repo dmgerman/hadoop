@@ -216,7 +216,7 @@ name|diffs
 argument_list|)
 return|;
 block|}
-comment|/** clear the diff list,  */
+comment|/** Get the size of the list and then clear it. */
 DECL|method|clear ()
 name|int
 name|clear

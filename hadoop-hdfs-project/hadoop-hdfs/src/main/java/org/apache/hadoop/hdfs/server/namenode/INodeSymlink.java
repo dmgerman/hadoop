@@ -276,6 +276,19 @@ return|return
 literal|true
 return|;
 block|}
+comment|/** @return this object. */
+annotation|@
+name|Override
+DECL|method|asSymlink ()
+specifier|public
+name|INodeSymlink
+name|asSymlink
+parameter_list|()
+block|{
+return|return
+name|this
+return|;
+block|}
 DECL|method|getSymlinkString ()
 specifier|public
 name|String

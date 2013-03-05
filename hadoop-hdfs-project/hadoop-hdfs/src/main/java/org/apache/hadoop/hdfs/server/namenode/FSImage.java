@@ -3832,10 +3832,10 @@ condition|)
 block|{
 name|updateCountForQuotaRecursively
 argument_list|(
-operator|(
-name|INodeDirectory
-operator|)
 name|child
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|,
 name|counts
 argument_list|)

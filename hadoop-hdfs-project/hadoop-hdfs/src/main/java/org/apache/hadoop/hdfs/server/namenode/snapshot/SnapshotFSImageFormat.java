@@ -770,9 +770,6 @@ operator|.
 name|readBoolean
 argument_list|()
 condition|?
-operator|(
-name|INodeFile
-operator|)
 name|loader
 operator|.
 name|loadINodeWithLocalName
@@ -781,6 +778,9 @@ literal|true
 argument_list|,
 name|in
 argument_list|)
+operator|.
+name|asFile
+argument_list|()
 else|:
 literal|null
 decl_stmt|;
@@ -1203,12 +1203,10 @@ operator|.
 name|readInt
 argument_list|()
 decl_stmt|;
-name|INodeDirectory
-name|rootNode
+specifier|final
+name|INode
+name|root
 init|=
-operator|(
-name|INodeDirectory
-operator|)
 name|loader
 operator|.
 name|loadINodeWithLocalName
@@ -1224,7 +1222,10 @@ name|Snapshot
 argument_list|(
 name|snapshotId
 argument_list|,
-name|rootNode
+name|root
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|,
 name|parent
 argument_list|)
@@ -1428,9 +1429,6 @@ operator|.
 name|readBoolean
 argument_list|()
 condition|?
-operator|(
-name|INodeDirectory
-operator|)
 name|loader
 operator|.
 name|loadINodeWithLocalName
@@ -1439,6 +1437,9 @@ literal|true
 argument_list|,
 name|in
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 else|:
 literal|null
 return|;

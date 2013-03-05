@@ -4918,7 +4918,8 @@ operator|.
 name|inode
 operator|=
 operator|(
-name|INodeFile
+operator|(
+name|INode
 operator|)
 name|blockManager
 operator|.
@@ -4926,6 +4927,10 @@ name|getBlockCollection
 argument_list|(
 name|block
 argument_list|)
+operator|)
+operator|.
+name|asFile
+argument_list|()
 expr_stmt|;
 block|}
 block|}

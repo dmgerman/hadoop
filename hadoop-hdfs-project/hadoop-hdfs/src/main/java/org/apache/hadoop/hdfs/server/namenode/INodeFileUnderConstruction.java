@@ -553,11 +553,12 @@ return|return
 name|clientNode
 return|;
 block|}
-comment|/**    * Is this inode being constructed?    */
+comment|/** @return true unconditionally. */
 annotation|@
 name|Override
 DECL|method|isUnderConstruction ()
 specifier|public
+specifier|final
 name|boolean
 name|isUnderConstruction
 parameter_list|()

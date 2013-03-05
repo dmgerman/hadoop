@@ -811,10 +811,10 @@ name|dirList
 operator|.
 name|add
 argument_list|(
-operator|(
-name|INodeDirectory
-operator|)
 name|node
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1993,8 +1993,9 @@ name|INodeDirectory
 name|copy
 init|=
 name|currentDir
-operator|instanceof
-name|INodeDirectoryWithQuota
+operator|.
+name|isQuotaSet
+argument_list|()
 condition|?
 operator|new
 name|INodeDirectoryWithQuota
