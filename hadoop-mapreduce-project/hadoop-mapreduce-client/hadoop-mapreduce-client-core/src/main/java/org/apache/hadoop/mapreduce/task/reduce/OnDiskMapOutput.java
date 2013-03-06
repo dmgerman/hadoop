@@ -300,6 +300,11 @@ specifier|final
 name|OutputStream
 name|disk
 decl_stmt|;
+DECL|field|compressedSize
+specifier|private
+name|long
+name|compressedSize
+decl_stmt|;
 DECL|method|OnDiskMapOutput (TaskAttemptID mapId, TaskAttemptID reduceId, MergeManagerImpl<K, V> merger, long size, JobConf conf, MapOutputFile mapOutputFile, int fetcher, boolean primaryMapOutput)
 specifier|public
 name|OnDiskMapOutput
@@ -614,6 +619,12 @@ literal|")"
 argument_list|)
 throw|;
 block|}
+name|this
+operator|.
+name|compressedSize
+operator|=
+name|compressedLength
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -644,6 +655,10 @@ name|outputPath
 argument_list|,
 name|getSize
 argument_list|()
+argument_list|,
+name|this
+operator|.
+name|compressedSize
 argument_list|)
 decl_stmt|;
 name|merger
