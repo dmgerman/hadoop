@@ -359,6 +359,8 @@ try|try
 block|{
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|fd
@@ -373,6 +375,8 @@ name|getStartOffset
 argument_list|()
 argument_list|,
 name|NativeIO
+operator|.
+name|POSIX
 operator|.
 name|POSIX_FADV_DONTNEED
 argument_list|)

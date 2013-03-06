@@ -3090,6 +3090,8 @@ condition|)
 block|{
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|outFd
@@ -3099,6 +3101,8 @@ argument_list|,
 name|lastCacheDropOffset
 argument_list|,
 name|NativeIO
+operator|.
+name|POSIX
 operator|.
 name|POSIX_FADV_DONTNEED
 argument_list|)
@@ -3111,6 +3115,8 @@ condition|)
 block|{
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
 name|syncFileRangeIfPossible
 argument_list|(
 name|outFd
@@ -3120,6 +3126,8 @@ argument_list|,
 name|CACHE_DROP_LAG_BYTES
 argument_list|,
 name|NativeIO
+operator|.
+name|POSIX
 operator|.
 name|SYNC_FILE_RANGE_WRITE
 argument_list|)

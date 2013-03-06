@@ -66,6 +66,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -314,6 +324,36 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -543,20 +583,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Path
-name|p
-init|=
-operator|new
-name|Path
-argument_list|(
-literal|"file://"
-operator|+
-name|dir
-operator|.
-name|getAbsolutePath
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -567,11 +593,28 @@ decl_stmt|;
 name|FileSystem
 name|fs
 init|=
-name|p
+name|FileSystem
 operator|.
-name|getFileSystem
+name|getLocal
 argument_list|(
 name|conf
+argument_list|)
+decl_stmt|;
+name|Path
+name|p
+init|=
+name|fs
+operator|.
+name|makeQualified
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|dir
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|fs
@@ -584,9 +627,14 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testJobIDtoString ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testJobIDtoString ()
 specifier|public
 name|void
 name|testJobIDtoString
@@ -641,9 +689,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testToJobID ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testToJobID ()
 specifier|public
 name|void
 name|testToJobID
@@ -697,16 +750,20 @@ argument_list|)
 expr_stmt|;
 comment|// tests against some proto.id and not a job.id field
 block|}
-DECL|method|testJobIDShort ()
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|,
 name|expected
 operator|=
 name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
+DECL|method|testJobIDShort ()
 specifier|public
 name|void
 name|testJobIDShort
@@ -721,9 +778,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|//TODO_get.set
-DECL|method|testTaskIDtoString ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testTaskIDtoString ()
 specifier|public
 name|void
 name|testTaskIDtoString
@@ -874,9 +936,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testToTaskID ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testToTaskID ()
 specifier|public
 name|void
 name|testToTaskID
@@ -981,16 +1048,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testTaskIDShort ()
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|,
 name|expected
 operator|=
 name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
+DECL|method|testTaskIDShort ()
 specifier|public
 name|void
 name|testTaskIDShort
@@ -1004,16 +1075,20 @@ literal|"task_0_0000_m"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testTaskIDBadType ()
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|,
 name|expected
 operator|=
 name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
+DECL|method|testTaskIDBadType ()
 specifier|public
 name|void
 name|testTaskIDBadType
@@ -1028,9 +1103,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|//TODO_get.set
-DECL|method|testTaskAttemptIDtoString ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testTaskAttemptIDtoString ()
 specifier|public
 name|void
 name|testTaskAttemptIDtoString
@@ -1144,9 +1224,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testToTaskAttemptID ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testToTaskAttemptID ()
 specifier|public
 name|void
 name|testToTaskAttemptID
@@ -1240,16 +1325,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testTaskAttemptIDShort ()
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|,
 name|expected
 operator|=
 name|IllegalArgumentException
 operator|.
 name|class
 argument_list|)
+DECL|method|testTaskAttemptIDShort ()
 specifier|public
 name|void
 name|testTaskAttemptIDShort
@@ -1263,9 +1352,14 @@ literal|"attempt_0_0_0_m_0"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testGetJobFileWithUser ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testGetJobFileWithUser ()
 specifier|public
 name|void
 name|testGetJobFileWithUser
@@ -1326,9 +1420,14 @@ name|jobFile
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testSetClasspath ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testSetClasspath ()
 specifier|public
 name|void
 name|testSetClasspath
@@ -1384,7 +1483,18 @@ argument_list|)
 operator|.
 name|startsWith
 argument_list|(
-literal|"$PWD:"
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|PWD
+operator|.
+name|$
+argument_list|()
+operator|+
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1418,7 +1528,9 @@ name|replaceAll
 argument_list|(
 literal|",\\s*"
 argument_list|,
-literal|":"
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 operator|.
 name|trim
@@ -1470,7 +1582,9 @@ name|replaceAll
 argument_list|(
 literal|",\\s*"
 argument_list|,
-literal|":"
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 operator|.
 name|trim
@@ -1493,9 +1607,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testSetClasspathWithArchives ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testSetClasspathWithArchives ()
 specifier|public
 name|void
 name|testSetClasspathWithArchives
@@ -1551,6 +1670,31 @@ operator|.
 name|getConfiguration
 argument_list|()
 decl_stmt|;
+name|String
+name|testTGZQualifiedPath
+init|=
+name|FileSystem
+operator|.
+name|getLocal
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|makeQualified
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|testTGZ
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -1559,12 +1703,7 @@ name|MRJobConfig
 operator|.
 name|CLASSPATH_ARCHIVES
 argument_list|,
-literal|"file://"
-operator|+
-name|testTGZ
-operator|.
-name|getAbsolutePath
-argument_list|()
+name|testTGZQualifiedPath
 argument_list|)
 expr_stmt|;
 name|conf
@@ -1575,12 +1714,7 @@ name|MRJobConfig
 operator|.
 name|CACHE_ARCHIVES
 argument_list|,
-literal|"file://"
-operator|+
-name|testTGZ
-operator|.
-name|getAbsolutePath
-argument_list|()
+name|testTGZQualifiedPath
 operator|+
 literal|"#testTGZ"
 argument_list|)
@@ -1622,7 +1756,18 @@ argument_list|)
 operator|.
 name|startsWith
 argument_list|(
-literal|"$PWD:"
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|PWD
+operator|.
+name|$
+argument_list|()
+operator|+
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1656,7 +1801,9 @@ name|replaceAll
 argument_list|(
 literal|",\\s*"
 argument_list|,
-literal|":"
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 operator|.
 name|trim
@@ -1694,9 +1841,14 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testSetClasspathWithUserPrecendence ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testSetClasspathWithUserPrecendence ()
 specifier|public
 name|void
 name|testSetClasspathWithUserPrecendence
@@ -1771,24 +1923,70 @@ argument_list|(
 literal|"CLASSPATH"
 argument_list|)
 decl_stmt|;
-name|assertSame
+name|String
+name|expectedClasspath
+init|=
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|File
+operator|.
+name|pathSeparator
+argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|PWD
+operator|.
+name|$
+argument_list|()
+argument_list|,
+literal|"job.jar/job.jar"
+argument_list|,
+literal|"job.jar/classes/"
+argument_list|,
+literal|"job.jar/lib/*"
+argument_list|,
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|PWD
+operator|.
+name|$
+argument_list|()
+operator|+
+literal|"/*"
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|assertTrue
 argument_list|(
 literal|"MAPREDUCE_JOB_USER_CLASSPATH_FIRST set, but not taking effect!"
 argument_list|,
 name|env_str
 operator|.
-name|indexOf
+name|startsWith
 argument_list|(
-literal|"$PWD:job.jar/job.jar:job.jar/classes/:job.jar/lib/*:$PWD/*"
+name|expectedClasspath
 argument_list|)
-argument_list|,
-literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testSetClasspathWithNoUserPrecendence ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testSetClasspathWithNoUserPrecendence ()
 specifier|public
 name|void
 name|testSetClasspathWithNoUserPrecendence
@@ -1863,41 +2061,75 @@ argument_list|(
 literal|"CLASSPATH"
 argument_list|)
 decl_stmt|;
-name|int
-name|index
+name|String
+name|expectedClasspath
 init|=
-name|env_str
+name|StringUtils
 operator|.
-name|indexOf
+name|join
 argument_list|(
-literal|"job.jar/job.jar:job.jar/classes/:job.jar/lib/*:$PWD/*"
+name|File
+operator|.
+name|pathSeparator
+argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+literal|"job.jar/job.jar"
+argument_list|,
+literal|"job.jar/classes/"
+argument_list|,
+literal|"job.jar/lib/*"
+argument_list|,
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|PWD
+operator|.
+name|$
+argument_list|()
+operator|+
+literal|"/*"
+argument_list|)
 argument_list|)
 decl_stmt|;
-name|assertNotSame
+name|assertTrue
 argument_list|(
-literal|"MAPREDUCE_JOB_USER_CLASSPATH_FIRST false, and job.jar is not"
+literal|"MAPREDUCE_JOB_USER_CLASSPATH_FIRST false, and job.jar is not in"
 operator|+
-literal|" in the classpath!"
+literal|" the classpath!"
 argument_list|,
-name|index
-argument_list|,
-operator|-
-literal|1
+name|env_str
+operator|.
+name|contains
+argument_list|(
+name|expectedClasspath
+argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertNotSame
+name|assertFalse
 argument_list|(
 literal|"MAPREDUCE_JOB_USER_CLASSPATH_FIRST false, but taking effect!"
 argument_list|,
-name|index
-argument_list|,
-literal|0
+name|env_str
+operator|.
+name|startsWith
+argument_list|(
+name|expectedClasspath
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testSetClasspathWithJobClassloader ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
+DECL|method|testSetClasspathWithJobClassloader ()
 specifier|public
 name|void
 name|testSetClasspathWithJobClassloader
@@ -1969,47 +2201,88 @@ argument_list|(
 literal|"APP_CLASSPATH"
 argument_list|)
 decl_stmt|;
-name|assertSame
+name|assertFalse
 argument_list|(
-literal|"MAPREDUCE_JOB_CLASSLOADER true, but job.jar is"
+literal|"MAPREDUCE_JOB_CLASSLOADER true, but job.jar is in the"
 operator|+
-literal|" in the classpath!"
+literal|" classpath!"
 argument_list|,
 name|cp
 operator|.
-name|indexOf
+name|contains
 argument_list|(
-literal|"jar:job"
+literal|"jar"
+operator|+
+name|File
+operator|.
+name|pathSeparator
+operator|+
+literal|"job"
 argument_list|)
-argument_list|,
-operator|-
-literal|1
 argument_list|)
 expr_stmt|;
-name|assertSame
+name|assertFalse
 argument_list|(
-literal|"MAPREDUCE_JOB_CLASSLOADER true, but PWD is"
-operator|+
-literal|" in the classpath!"
+literal|"MAPREDUCE_JOB_CLASSLOADER true, but PWD is in the classpath!"
 argument_list|,
 name|cp
 operator|.
-name|indexOf
+name|contains
 argument_list|(
 literal|"PWD"
 argument_list|)
-argument_list|,
-operator|-
-literal|1
 argument_list|)
 expr_stmt|;
+name|String
+name|expectedAppClasspath
+init|=
+name|StringUtils
+operator|.
+name|join
+argument_list|(
+name|File
+operator|.
+name|pathSeparator
+argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|PWD
+operator|.
+name|$
+argument_list|()
+argument_list|,
+literal|"job.jar/job.jar"
+argument_list|,
+literal|"job.jar/classes/"
+argument_list|,
+literal|"job.jar/lib/*"
+argument_list|,
+name|ApplicationConstants
+operator|.
+name|Environment
+operator|.
+name|PWD
+operator|.
+name|$
+argument_list|()
+operator|+
+literal|"/*"
+argument_list|)
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"MAPREDUCE_JOB_CLASSLOADER true, but job.jar is not"
+literal|"MAPREDUCE_JOB_CLASSLOADER true, but job.jar is not in the app"
 operator|+
-literal|" in the app classpath!"
+literal|" classpath!"
 argument_list|,
-literal|"$PWD:job.jar/job.jar:job.jar/classes/:job.jar/lib/*:$PWD/*"
+name|expectedAppClasspath
 argument_list|,
 name|appCp
 argument_list|)
@@ -2017,6 +2290,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testSetupDistributedCacheEmpty ()
 specifier|public
 name|void
@@ -2077,6 +2355,10 @@ argument_list|)
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|,
 name|expected
 operator|=
 name|InvalidJobConfException
@@ -2328,6 +2610,10 @@ argument_list|)
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|,
 name|expected
 operator|=
 name|InvalidJobConfException
@@ -2545,6 +2831,11 @@ literal|"deprecation"
 argument_list|)
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testSetupDistributedCache ()
 specifier|public
 name|void

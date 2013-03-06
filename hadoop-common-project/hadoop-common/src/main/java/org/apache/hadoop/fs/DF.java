@@ -167,7 +167,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Filesystem disk space usage statistics.  * Uses the unix 'df' program to get mount points, and java.io.File for  * space utilization. Tested on Linux, FreeBSD, Cygwin. */
+comment|/** Filesystem disk space usage statistics.  * Uses the unix 'df' program to get mount points, and java.io.File for  * space utilization. Tested on Linux, FreeBSD, Windows. */
 end_comment
 
 begin_class
@@ -743,6 +743,54 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|run ()
+specifier|protected
+name|void
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|WINDOWS
+condition|)
+block|{
+try|try
+block|{
+name|this
+operator|.
+name|mount
+operator|=
+name|dirFile
+operator|.
+name|getCanonicalPath
+argument_list|()
+operator|.
+name|substring
+argument_list|(
+literal|0
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{       }
+return|return;
+block|}
+name|super
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getExecString ()
 specifier|protected
 name|String
@@ -752,6 +800,25 @@ parameter_list|()
 block|{
 comment|// ignoring the error since the exit code it enough
 return|return
+operator|(
+name|WINDOWS
+operator|)
+condition|?
+operator|new
+name|String
+index|[]
+block|{
+literal|"cmd"
+block|,
+literal|"/c"
+block|,
+literal|"df -k "
+operator|+
+name|dirPath
+operator|+
+literal|" 2>nul"
+block|}
+else|:
 operator|new
 name|String
 index|[]

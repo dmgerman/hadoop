@@ -88,6 +88,20 @@ name|ReflectionUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_comment
 comment|/**  * Plugin to calculate resource information on the system.  *  */
 end_comment
@@ -109,6 +123,28 @@ name|ResourceCalculatorPlugin
 extends|extends
 name|Configured
 block|{
+DECL|field|processPid
+specifier|protected
+name|String
+name|processPid
+init|=
+literal|null
+decl_stmt|;
+comment|/**    * set the pid of the process for which<code>getProcResourceValues</code>    * will be invoked    *     * @param pid    */
+DECL|method|setProcessPid (String pid)
+specifier|public
+name|void
+name|setProcessPid
+parameter_list|(
+name|String
+name|pid
+parameter_list|)
+block|{
+name|processPid
+operator|=
+name|pid
+expr_stmt|;
+block|}
 comment|/**    * Obtain the total size of the virtual memory present in the system.    *    * @return virtual memory size in bytes.    */
 DECL|method|getVirtualMemorySize ()
 specifier|public
@@ -213,29 +249,29 @@ block|}
 comment|// No class given, try a os specific class
 try|try
 block|{
-name|String
-name|osName
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"os.name"
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|osName
+name|Shell
 operator|.
-name|startsWith
-argument_list|(
-literal|"Linux"
-argument_list|)
+name|LINUX
 condition|)
 block|{
 return|return
 operator|new
 name|LinuxResourceCalculatorPlugin
+argument_list|()
+return|;
+block|}
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+return|return
+operator|new
+name|WindowsResourceCalculatorPlugin
 argument_list|()
 return|;
 block|}

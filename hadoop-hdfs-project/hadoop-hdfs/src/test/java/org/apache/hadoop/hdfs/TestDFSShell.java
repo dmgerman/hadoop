@@ -817,6 +817,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testZeroSizeFile ()
 specifier|public
 name|void
@@ -1115,6 +1120,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testRecrusiveRm ()
 specifier|public
 name|void
@@ -1275,6 +1285,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDu ()
 specifier|public
 name|void
@@ -1604,6 +1619,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testPut ()
 specifier|public
 name|void
@@ -2297,6 +2317,11 @@ block|}
 comment|/** check command error outputs and exit statuses. */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testErrOutPut ()
 specifier|public
 name|void
@@ -3442,6 +3467,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testURIPaths ()
 specifier|public
 name|void
@@ -4231,6 +4261,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testText ()
 specifier|public
 name|void
@@ -5144,6 +5179,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCopyToLocal ()
 specifier|public
 name|void
@@ -5713,6 +5753,11 @@ return|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCount ()
 specifier|public
 name|void
@@ -6784,6 +6829,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testFilePermissions ()
 specifier|public
 name|void
@@ -7171,6 +7221,11 @@ block|}
 comment|/**    * Tests various options of DFSShell.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|120000
+argument_list|)
 DECL|method|testDFSShell ()
 specifier|public
 name|void
@@ -9206,6 +9261,11 @@ function_decl|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testRemoteException ()
 specifier|public
 name|void
@@ -9482,6 +9542,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGet ()
 specifier|public
 name|void
@@ -9500,6 +9565,33 @@ name|LOG
 argument_list|)
 expr_stmt|;
 specifier|final
+name|String
+name|fname
+init|=
+literal|"testGet.txt"
+decl_stmt|;
+name|Path
+name|root
+init|=
+operator|new
+name|Path
+argument_list|(
+literal|"/test/get"
+argument_list|)
+decl_stmt|;
+specifier|final
+name|Path
+name|remotef
+init|=
+operator|new
+name|Path
+argument_list|(
+name|root
+argument_list|,
+name|fname
+argument_list|)
+decl_stmt|;
+specifier|final
 name|Configuration
 name|conf
 init|=
@@ -9507,147 +9599,6 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-comment|// Race can happen here: block scanner is reading the file when test tries
-comment|// to corrupt the test file, which will fail the test on Windows platform.
-comment|// Disable block scanner to avoid this race.
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_SCAN_PERIOD_HOURS_KEY
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-expr_stmt|;
-name|MiniDFSCluster
-name|cluster
-init|=
-operator|new
-name|MiniDFSCluster
-operator|.
-name|Builder
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|numDataNodes
-argument_list|(
-literal|2
-argument_list|)
-operator|.
-name|build
-argument_list|()
-decl_stmt|;
-name|DistributedFileSystem
-name|dfs
-init|=
-operator|(
-name|DistributedFileSystem
-operator|)
-name|cluster
-operator|.
-name|getFileSystem
-argument_list|()
-decl_stmt|;
-try|try
-block|{
-specifier|final
-name|String
-name|fname
-init|=
-literal|"testGet.txt"
-decl_stmt|;
-specifier|final
-name|File
-name|localf
-init|=
-name|createLocalFile
-argument_list|(
-operator|new
-name|File
-argument_list|(
-name|TEST_ROOT_DIR
-argument_list|,
-name|fname
-argument_list|)
-argument_list|)
-decl_stmt|;
-specifier|final
-name|String
-name|localfcontent
-init|=
-name|DFSTestUtil
-operator|.
-name|readFile
-argument_list|(
-name|localf
-argument_list|)
-decl_stmt|;
-specifier|final
-name|Path
-name|root
-init|=
-name|mkdir
-argument_list|(
-name|dfs
-argument_list|,
-operator|new
-name|Path
-argument_list|(
-literal|"/test/get"
-argument_list|)
-argument_list|)
-decl_stmt|;
-specifier|final
-name|Path
-name|remotef
-init|=
-operator|new
-name|Path
-argument_list|(
-name|root
-argument_list|,
-name|fname
-argument_list|)
-decl_stmt|;
-name|dfs
-operator|.
-name|copyFromLocalFile
-argument_list|(
-literal|false
-argument_list|,
-literal|false
-argument_list|,
-operator|new
-name|Path
-argument_list|(
-name|localf
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-argument_list|,
-name|remotef
-argument_list|)
-expr_stmt|;
-specifier|final
-name|FsShell
-name|shell
-init|=
-operator|new
-name|FsShell
-argument_list|()
-decl_stmt|;
-name|shell
-operator|.
-name|setConf
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|TestGetRunner
 name|runner
 init|=
@@ -9661,8 +9612,16 @@ name|count
 init|=
 literal|0
 decl_stmt|;
-annotation|@
-name|Override
+specifier|private
+name|FsShell
+name|shell
+init|=
+operator|new
+name|FsShell
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 specifier|public
 name|String
 name|run
@@ -9832,6 +9791,102 @@ return|;
 block|}
 block|}
 decl_stmt|;
+name|File
+name|localf
+init|=
+name|createLocalFile
+argument_list|(
+operator|new
+name|File
+argument_list|(
+name|TEST_ROOT_DIR
+argument_list|,
+name|fname
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|MiniDFSCluster
+name|cluster
+init|=
+literal|null
+decl_stmt|;
+name|DistributedFileSystem
+name|dfs
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+literal|2
+argument_list|)
+operator|.
+name|format
+argument_list|(
+literal|true
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|dfs
+operator|=
+operator|(
+name|DistributedFileSystem
+operator|)
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+expr_stmt|;
+name|mkdir
+argument_list|(
+name|dfs
+argument_list|,
+name|root
+argument_list|)
+expr_stmt|;
+name|dfs
+operator|.
+name|copyFromLocalFile
+argument_list|(
+literal|false
+argument_list|,
+literal|false
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|localf
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+argument_list|,
+name|remotef
+argument_list|)
+expr_stmt|;
+name|String
+name|localfcontent
+init|=
+name|DFSTestUtil
+operator|.
+name|readFile
+argument_list|(
+name|localf
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
 name|localfcontent
@@ -9858,7 +9913,7 @@ literal|"-ignoreCrc"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|//find and modify the block files
+comment|// find block files to modify later
 name|List
 argument_list|<
 name|File
@@ -9870,6 +9925,24 @@ argument_list|(
 name|cluster
 argument_list|)
 decl_stmt|;
+comment|// Shut down cluster and then corrupt the block files by overwriting a
+comment|// portion with junk data.  We must shut down the cluster so that threads
+comment|// in the data node do not hold locks on the block files while we try to
+comment|// write into them.  Particularly on Windows, the data node's use of the
+comment|// FileChannel.transferTo method can cause block files to be memory mapped
+comment|// in read-only mode during the transfer to a client, and this causes a
+comment|// locking conflict.  The call to shutdown the cluster blocks until all
+comment|// DataXceiver threads exit, preventing this problem.
+name|dfs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 name|show
 argument_list|(
 literal|"files="
@@ -9881,6 +9954,40 @@ name|corrupt
 argument_list|(
 name|files
 argument_list|)
+expr_stmt|;
+comment|// Start the cluster again, but do not reformat, so prior files remain.
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+literal|2
+argument_list|)
+operator|.
+name|format
+argument_list|(
+literal|false
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|dfs
+operator|=
+operator|(
+name|DistributedFileSystem
+operator|)
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
@@ -9942,13 +10049,15 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|localf
-operator|.
-name|delete
-argument_list|()
-expr_stmt|;
 block|}
 finally|finally
+block|{
+if|if
+condition|(
+literal|null
+operator|!=
+name|dfs
+condition|)
 block|{
 try|try
 block|{
@@ -9963,16 +10072,35 @@ parameter_list|(
 name|Exception
 name|e
 parameter_list|)
-block|{}
+block|{         }
+block|}
+if|if
+condition|(
+literal|null
+operator|!=
+name|cluster
+condition|)
+block|{
 name|cluster
 operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+name|localf
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testLsr ()
 specifier|public
 name|void
@@ -10341,6 +10469,11 @@ block|}
 comment|/**    * default setting is file:// which is not a DFS    * so DFSAdmin should throw and catch InvalidArgumentException    * and return -1 exit code.    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testInvalidShell ()
 specifier|public
 name|void
@@ -10400,6 +10533,11 @@ block|}
 comment|// force Copy Option is -f
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCopyCommandsWithForceOption ()
 specifier|public
 name|void
@@ -11112,6 +11250,11 @@ block|}
 comment|/**    * Test that the server trash configuration is respected when    * the client configuration is not set.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testServerConfigRespected ()
 specifier|public
 name|void
@@ -11131,6 +11274,11 @@ block|}
 comment|/**    * Test that server trash configuration is respected even when the    * client configuration is set.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testServerConfigRespectedWithClient ()
 specifier|public
 name|void
@@ -11150,6 +11298,11 @@ block|}
 comment|/**    * Test that the client trash configuration is respected when    * the server configuration is not set.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testClientConfigRespected ()
 specifier|public
 name|void
@@ -11169,6 +11322,11 @@ block|}
 comment|/**    * Test that trash is disabled by default.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testNoTrashConfig ()
 specifier|public
 name|void

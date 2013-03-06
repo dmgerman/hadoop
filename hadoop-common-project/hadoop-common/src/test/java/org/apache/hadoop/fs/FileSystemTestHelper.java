@@ -370,12 +370,14 @@ comment|// NOTE: can't cache because of different filesystems!
 comment|//if (absTestRootDir == null)
 if|if
 condition|(
-name|TEST_ROOT_DIR
-operator|.
-name|startsWith
+operator|new
+name|Path
 argument_list|(
-literal|"/"
+name|TEST_ROOT_DIR
 argument_list|)
+operator|.
+name|isAbsolute
+argument_list|()
 condition|)
 block|{
 name|absTestRootDir

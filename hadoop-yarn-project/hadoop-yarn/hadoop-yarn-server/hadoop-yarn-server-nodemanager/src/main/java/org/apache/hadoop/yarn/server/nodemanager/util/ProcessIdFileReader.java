@@ -104,6 +104,36 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|ConverterUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper functionality to read the pid from a file.  */
 end_comment
@@ -259,6 +289,42 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// On Windows, pid is expected to be a container ID, so find first
+comment|// line that parses successfully as a container ID.
+try|try
+block|{
+name|ConverterUtils
+operator|.
+name|toContainerId
+argument_list|(
+name|temp
+argument_list|)
+expr_stmt|;
+name|processId
+operator|=
+name|temp
+expr_stmt|;
+break|break;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+comment|// do nothing
+block|}
+block|}
+else|else
+block|{
+comment|// Otherwise, find first line containing a numeric pid.
 try|try
 block|{
 name|Long
@@ -292,6 +358,7 @@ name|e
 parameter_list|)
 block|{
 comment|// do nothing
+block|}
 block|}
 block|}
 block|}

@@ -292,6 +292,20 @@ name|CommonConfigurationKeysPublic
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_class
 DECL|class|TestUserGroupInformation
 specifier|public
@@ -487,6 +501,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testSimpleLogin ()
 specifier|public
 name|void
@@ -507,6 +526,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testTokenLogin ()
 specifier|public
 name|void
@@ -527,6 +551,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testProxyLogin ()
 specifier|public
 name|void
@@ -663,6 +692,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGetRealAuthenticationMethod ()
 specifier|public
 name|void
@@ -751,6 +785,11 @@ block|}
 comment|/** Test login method */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testLogin ()
 specifier|public
 name|void
@@ -865,6 +904,11 @@ block|}
 comment|/**    * given user name - get all the groups.    * Needs to happen before creating the test users    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGetServerSideGroups ()
 specifier|public
 name|void
@@ -916,6 +960,54 @@ operator|.
 name|trim
 argument_list|()
 decl_stmt|;
+comment|// If on windows domain, token format is DOMAIN\\user and we want to
+comment|// extract only the user name
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|int
+name|sp
+init|=
+name|userName
+operator|.
+name|lastIndexOf
+argument_list|(
+literal|'\\'
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|sp
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|userName
+operator|=
+name|userName
+operator|.
+name|substring
+argument_list|(
+name|sp
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+comment|// user names are case insensitive on Windows. Make consistent
+name|userName
+operator|=
+name|userName
+operator|.
+name|toLowerCase
+argument_list|()
+expr_stmt|;
+block|}
 comment|// get the groups
 name|pp
 operator|=
@@ -926,9 +1018,17 @@ argument_list|()
 operator|.
 name|exec
 argument_list|(
-literal|"id -Gn "
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|Shell
+operator|.
+name|WINUTILS
 operator|+
-name|userName
+literal|" groups -F"
+else|:
+literal|"id -Gn"
 argument_list|)
 expr_stmt|;
 name|br
@@ -980,17 +1080,25 @@ name|String
 argument_list|>
 argument_list|()
 decl_stmt|;
+name|String
+index|[]
+name|tokens
+init|=
+name|line
+operator|.
+name|split
+argument_list|(
+name|Shell
+operator|.
+name|TOKEN_SEPARATOR_REGEX
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|String
 name|s
 range|:
-name|line
-operator|.
-name|split
-argument_list|(
-literal|"[\\s]"
-argument_list|)
+name|tokens
 control|)
 block|{
 name|groups
@@ -1010,14 +1118,35 @@ operator|.
 name|getCurrentUser
 argument_list|()
 decl_stmt|;
-name|assertEquals
-argument_list|(
-name|userName
-argument_list|,
+name|String
+name|loginUserName
+init|=
 name|login
 operator|.
 name|getShortUserName
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// user names are case insensitive on Windows. Make consistent
+name|loginUserName
+operator|=
+name|loginUserName
+operator|.
+name|toLowerCase
+argument_list|()
+expr_stmt|;
+block|}
+name|assertEquals
+argument_list|(
+name|userName
+argument_list|,
+name|loginUserName
 argument_list|)
 expr_stmt|;
 name|String
@@ -1151,6 +1280,11 @@ block|}
 comment|/** test constructor */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testConstructor ()
 specifier|public
 name|void
@@ -1268,6 +1402,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testEquals ()
 specifier|public
 name|void
@@ -1367,6 +1506,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testEqualsWithRealUser ()
 specifier|public
 name|void
@@ -1441,6 +1585,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGettingGroups ()
 specifier|public
 name|void
@@ -1499,6 +1648,11 @@ argument_list|)
 comment|// from Mockito mocks
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testAddToken ()
 specifier|public
 parameter_list|<
@@ -1723,6 +1877,11 @@ argument_list|)
 comment|// from Mockito mocks
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGetCreds ()
 specifier|public
 parameter_list|<
@@ -1912,6 +2071,11 @@ argument_list|)
 comment|// from Mockito mocks
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testAddCreds ()
 specifier|public
 parameter_list|<
@@ -2094,6 +2258,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGetCredsNotSame ()
 specifier|public
 parameter_list|<
@@ -2259,6 +2428,11 @@ argument_list|)
 comment|// from Mockito mocks
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testAddNamedToken ()
 specifier|public
 parameter_list|<
@@ -2400,6 +2574,11 @@ argument_list|)
 comment|// from Mockito mocks
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUGITokens ()
 specifier|public
 parameter_list|<
@@ -2727,6 +2906,11 @@ end_class
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testTokenIdentifiers ()
 specifier|public
 name|void
@@ -2909,6 +3093,11 @@ end_function
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testTestAuthMethod ()
 specifier|public
 name|void
@@ -2975,6 +3164,11 @@ end_function
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUGIAuthMethod ()
 specifier|public
 name|void
@@ -3067,6 +3261,11 @@ end_function
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUGIAuthMethodInRealUser ()
 specifier|public
 name|void
@@ -3291,6 +3490,11 @@ end_function
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testLoginObjectInSubject ()
 specifier|public
 name|void
@@ -3383,6 +3587,11 @@ end_function
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testLoginModuleCommit ()
 specifier|public
 name|void
@@ -3559,6 +3768,11 @@ end_comment
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUGIUnderNonHadoopContext ()
 specifier|public
 name|void
@@ -3626,6 +3840,11 @@ end_comment
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testHasSufficientTimeElapsed ()
 specifier|public
 name|void

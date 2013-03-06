@@ -38,6 +38,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -59,6 +71,20 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
 import|;
 end_import
 
@@ -148,6 +174,22 @@ operator|new
 name|Path
 argument_list|(
 name|basePath
+argument_list|)
+decl_stmt|;
+comment|// Matches anything containing<,>, :, ", |, ?, *, or anything that ends with
+comment|// space or dot.
+DECL|field|WIN_INVALID_FILE_NAME_PATTERN
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|WIN_INVALID_FILE_NAME_PATTERN
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^(.*?[<>\\:\"\\|\\?\\*].*?)|(.*?[ \\.])$"
 argument_list|)
 decl_stmt|;
 DECL|field|fc1
@@ -266,6 +308,17 @@ range|:
 name|fileNames
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|isTestableFileNameOnPlatform
+argument_list|(
+name|f
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// Create a file on fc2's file system using fc1
 name|Path
 name|testPath
@@ -856,6 +909,17 @@ range|:
 name|dirNames
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|isTestableFileNameOnPlatform
+argument_list|(
+name|f
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// Create a file on fc2's file system using fc1
 name|Path
 name|testPath
@@ -1666,6 +1730,17 @@ range|:
 name|dirNames
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|isTestableFileNameOnPlatform
+argument_list|(
+name|f
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
 comment|// Create a file on fc2's file system using fc1
 name|Path
 name|testPath
@@ -2237,6 +2312,17 @@ range|:
 name|dirs
 control|)
 block|{
+if|if
+condition|(
+operator|!
+name|isTestableFileNameOnPlatform
+argument_list|(
+name|d
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
 name|testDirs
 operator|.
 name|add
@@ -2362,7 +2448,10 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|6
+name|testDirs
+operator|.
+name|size
+argument_list|()
 argument_list|,
 name|paths
 operator|.
@@ -2378,9 +2467,10 @@ literal|0
 init|;
 name|i
 operator|<
-name|dirs
+name|testDirs
 operator|.
-name|length
+name|size
+argument_list|()
 condition|;
 name|i
 operator|++
@@ -2412,10 +2502,15 @@ if|if
 condition|(
 name|qualifiedPath
 argument_list|(
-name|dirs
-index|[
+name|testDirs
+operator|.
+name|get
+argument_list|(
 name|i
-index|]
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|,
 name|fc1
 argument_list|)
@@ -2442,10 +2537,12 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|dirs
-index|[
+name|testDirs
+operator|.
+name|get
+argument_list|(
 name|i
-index|]
+argument_list|)
 operator|+
 literal|" not found"
 argument_list|,
@@ -2641,7 +2738,10 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|6
+name|testDirs
+operator|.
+name|size
+argument_list|()
 argument_list|,
 name|dirLen
 argument_list|)
@@ -2673,6 +2773,50 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Returns true if the argument is a file name that is testable on the platform    * currently running the test.  This is intended for use by tests so that they    * can skip checking file names that aren't supported by the underlying    * platform.  The current implementation specifically checks for patterns that    * are not valid file names on Windows when the tests are running on Windows.    *     * @param fileName String file name to check    * @return boolean true if the argument is valid as a file name    */
+DECL|method|isTestableFileNameOnPlatform (String fileName)
+specifier|private
+specifier|static
+name|boolean
+name|isTestableFileNameOnPlatform
+parameter_list|(
+name|String
+name|fileName
+parameter_list|)
+block|{
+name|boolean
+name|valid
+init|=
+literal|true
+decl_stmt|;
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// Disallow reserved characters:<,>, :, ", |, ?, *.
+comment|// Disallow trailing space or period.
+comment|// See http://msdn.microsoft.com/en-us/library/windows/desktop/aa365247(v=vs.85).aspx
+name|valid
+operator|=
+operator|!
+name|WIN_INVALID_FILE_NAME_PATTERN
+operator|.
+name|matcher
+argument_list|(
+name|fileName
+argument_list|)
+operator|.
+name|matches
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|valid
+return|;
 block|}
 block|}
 end_class

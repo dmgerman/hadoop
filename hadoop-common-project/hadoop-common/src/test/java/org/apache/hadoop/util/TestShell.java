@@ -353,6 +353,16 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// setExecutable does not work on Windows
+return|return;
+block|}
 name|String
 name|rootDir
 init|=

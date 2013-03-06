@@ -220,6 +220,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -264,6 +278,11 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCommandLine ()
 specifier|public
 name|void
@@ -327,13 +346,27 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"[exec $JAVA_HOME/bin/java"
+literal|"["
+operator|+
+name|envVar
+argument_list|(
+literal|"JAVA_HOME"
+argument_list|)
+operator|+
+literal|"/bin/java"
 operator|+
 literal|" -Djava.net.preferIPv4Stack=true"
 operator|+
 literal|" -Dhadoop.metrics.log.level=WARN"
 operator|+
-literal|"  -Xmx200m -Djava.io.tmpdir=$PWD/tmp"
+literal|"  -Xmx200m -Djava.io.tmpdir="
+operator|+
+name|envVar
+argument_list|(
+literal|"PWD"
+argument_list|)
+operator|+
+literal|"/tmp"
 operator|+
 literal|" -Dlog4j.configuration=container-log4j.properties"
 operator|+
@@ -499,6 +532,33 @@ block|}
 block|}
 return|;
 block|}
+block|}
+comment|/**    * Returns platform-specific string for retrieving the value of an environment    * variable with the given name.  On Unix, this returns $name.  On Windows,    * this returns %name%.    *     * @param name String environment variable name    * @return String for retrieving value of environment variable    */
+DECL|method|envVar (String name)
+specifier|private
+specifier|static
+name|String
+name|envVar
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|'%'
+operator|+
+name|name
+operator|+
+literal|'%'
+else|:
+literal|'$'
+operator|+
+name|name
+return|;
 block|}
 block|}
 end_class
