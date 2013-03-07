@@ -2275,17 +2275,17 @@ block|}
 comment|// else we are talking to an insecure cluster
 block|}
 block|}
-name|UserGroupInformation
-name|userUgi
-init|=
-name|ugi
-decl_stmt|;
 if|if
 condition|(
 operator|!
 name|hasToken
 condition|)
 block|{
+name|UserGroupInformation
+name|userUgi
+init|=
+name|ugi
+decl_stmt|;
 name|UserGroupInformation
 name|realUgi
 init|=
@@ -2321,7 +2321,6 @@ operator|=
 name|realUgi
 expr_stmt|;
 block|}
-block|}
 name|authParams
 operator|.
 name|add
@@ -2336,6 +2335,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|authParams
 operator|.
