@@ -1340,13 +1340,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|fsDataOStream
-operator|.
-name|hflush
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|writeApplicationOwner (String user)
 specifier|public

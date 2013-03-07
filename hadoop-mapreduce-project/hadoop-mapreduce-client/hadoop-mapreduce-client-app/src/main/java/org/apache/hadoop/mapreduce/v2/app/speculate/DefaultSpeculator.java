@@ -794,6 +794,14 @@ name|speculationBackgroundThread
 init|=
 literal|null
 decl_stmt|;
+DECL|field|stopped
+specifier|private
+specifier|volatile
+name|boolean
+name|stopped
+init|=
+literal|false
+decl_stmt|;
 DECL|field|eventQueue
 specifier|private
 name|BlockingQueue
@@ -1162,6 +1170,9 @@ block|{
 while|while
 condition|(
 operator|!
+name|stopped
+operator|&&
+operator|!
 name|Thread
 operator|.
 name|currentThread
@@ -1259,24 +1270,22 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|stopped
+condition|)
+block|{
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Background thread returning, interrupted : "
-operator|+
+literal|"Background thread returning, interrupted"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|e
-operator|.
-name|printStackTrace
-argument_list|(
-name|System
-operator|.
-name|out
-argument_list|)
-expr_stmt|;
+block|}
 return|return;
 block|}
 block|}
@@ -1312,6 +1321,10 @@ name|void
 name|stop
 parameter_list|()
 block|{
+name|stopped
+operator|=
+literal|true
+expr_stmt|;
 comment|// this could be called before background thread is established
 if|if
 condition|(

@@ -227,6 +227,20 @@ operator|.
 name|util
 operator|.
 name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
 operator|.
 name|ExitCodeException
 import|;
@@ -605,6 +619,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testProcessTree ()
 specifier|public
 name|void
@@ -613,15 +632,12 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-try|try
-block|{
 if|if
 condition|(
 operator|!
-name|ProcfsBasedProcessTree
+name|Shell
 operator|.
-name|isAvailable
-argument_list|()
+name|LINUX
 condition|)
 block|{
 name|System
@@ -635,6 +651,18 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+try|try
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|ProcfsBasedProcessTree
+operator|.
+name|isAvailable
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -652,6 +680,15 @@ name|stringifyException
 argument_list|(
 name|e
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"ProcfsBaseProcessTree should be available on Linux"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1580,6 +1617,11 @@ block|}
 comment|/**    * A basic test that creates a few process directories and writes    * stat files. Verifies that the cpu time and memory is correctly    * computed.    * @throws IOException if there was a problem setting up the    *                      fake procfs directories or files.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCpuAndMemoryForProcessTree ()
 specifier|public
 name|void
@@ -2003,6 +2045,11 @@ block|}
 comment|/**    * Tests that cumulative memory is computed only for    * processes older than a given age.    * @throws IOException if there was a problem setting up the    *                      fake procfs directories or files.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testMemForOlderProcesses ()
 specifier|public
 name|void
@@ -2598,6 +2645,11 @@ block|}
 comment|/**    * Verifies ProcfsBasedProcessTree.checkPidPgrpidForMatch() in case of    * 'constructProcessInfo() returning null' by not writing stat file for the    * mock process    * @throws IOException if there was a problem setting up the    *                      fake procfs directories or files.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDestroyProcessTree ()
 specifier|public
 name|void
@@ -2675,6 +2727,11 @@ block|}
 comment|/**    * Test the correctness of process-tree dump.    *    * @throws IOException    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testProcessTreeDump ()
 specifier|public
 name|void

@@ -281,10 +281,30 @@ argument_list|>
 name|getAppsToCleanup
 parameter_list|()
 function_decl|;
+comment|/**    * Update a {@link HeartbeatResponse} with the list of containers and    * applications to clean up for this node.    * @param response the {@link HeartbeatResponse} to update    */
+DECL|method|updateHeartbeatResponseForCleanup (HeartbeatResponse response)
+specifier|public
+name|void
+name|updateHeartbeatResponseForCleanup
+parameter_list|(
+name|HeartbeatResponse
+name|response
+parameter_list|)
+function_decl|;
 DECL|method|getLastHeartBeatResponse ()
 specifier|public
 name|HeartbeatResponse
 name|getLastHeartBeatResponse
+parameter_list|()
+function_decl|;
+comment|/**    * Get and clear the list of containerUpdates accumulated across NM    * heartbeats.    *     * @return containerUpdates accumulated across NM heartbeats.    */
+DECL|method|pullContainerUpdates ()
+specifier|public
+name|List
+argument_list|<
+name|UpdatedContainerInfo
+argument_list|>
+name|pullContainerUpdates
 parameter_list|()
 function_decl|;
 block|}

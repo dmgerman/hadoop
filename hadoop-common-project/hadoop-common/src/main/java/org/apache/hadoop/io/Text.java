@@ -484,7 +484,7 @@ return|return
 name|length
 return|;
 block|}
-comment|/**    * Returns the Unicode Scalar Value (32-bit integer value)    * for the character at<code>position</code>. Note that this    * method avoids using the converter or doing String instatiation    * @return the Unicode scalar value at position or -1    *          if the position is invalid or points to a    *          trailing byte    */
+comment|/**    * Returns the Unicode Scalar Value (32-bit integer value)    * for the character at<code>position</code>. Note that this    * method avoids using the converter or doing String instantiation    * @return the Unicode scalar value at position or -1    *          if the position is invalid or points to a    *          trailing byte    */
 DECL|method|charAt (int position)
 specifier|public
 name|int
@@ -2199,17 +2199,12 @@ block|{
 name|int
 name|aByte
 init|=
-operator|(
-operator|(
-name|int
-operator|)
 name|utf8
 index|[
 name|count
 index|]
 operator|&
 literal|0xFF
-operator|)
 decl_stmt|;
 switch|switch
 condition|(

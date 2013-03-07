@@ -688,6 +688,11 @@ block|}
 comment|/** Two buffer dirs. The first dir does not exist& is on a read-only disk;    * The second dir exists& is RW    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|test0 ()
 specifier|public
 name|void
@@ -772,16 +777,16 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"chmod"
-block|,
+name|Shell
+operator|.
+name|getSetPermissionCommand
+argument_list|(
 literal|"u+w"
-block|,
+argument_list|,
+literal|false
+argument_list|,
 name|BUFFER_DIR_ROOT
-block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|rmBufferDirs
@@ -792,6 +797,11 @@ block|}
 comment|/** Two buffer dirs. The first dir exists& is on a read-only disk;    * The second dir exists& is RW    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testROBufferDirAndRWBufferDir ()
 specifier|public
 name|void
@@ -876,16 +886,16 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"chmod"
-block|,
+name|Shell
+operator|.
+name|getSetPermissionCommand
+argument_list|(
 literal|"u+w"
-block|,
+argument_list|,
+literal|false
+argument_list|,
 name|BUFFER_DIR_ROOT
-block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|rmBufferDirs
@@ -896,6 +906,11 @@ block|}
 comment|/** Two buffer dirs. Both do not exist but on a RW disk.    * Check if tmp dirs are allocated in a round-robin    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDirsNotExist ()
 specifier|public
 name|void
@@ -1021,6 +1036,11 @@ block|}
 comment|/** Two buffer dirs. Both exists and on a R/W disk.    * Later disk1 becomes read-only.    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testRWBufferDirBecomesRO ()
 specifier|public
 name|void
@@ -1179,6 +1199,11 @@ literal|100
 decl_stmt|;
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCreateManyFiles ()
 specifier|public
 name|void
@@ -1370,6 +1395,11 @@ block|}
 comment|/** Two buffer dirs. The first dir does not exist& is on a read-only disk;    * The second dir exists& is RW    * getLocalPathForWrite with checkAccess set to false should create a parent    * directory. With checkAccess true, the directory should not be created.    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testLocalPathForWriteDirCreation ()
 specifier|public
 name|void
@@ -1517,16 +1547,16 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"chmod"
-block|,
+name|Shell
+operator|.
+name|getSetPermissionCommand
+argument_list|(
 literal|"u+w"
-block|,
+argument_list|,
+literal|false
+argument_list|,
 name|BUFFER_DIR_ROOT
-block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|rmBufferDirs
@@ -1537,6 +1567,11 @@ block|}
 comment|/*    * Test when mapred.local.dir not configured and called    * getLocalPathForWrite    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testShouldNotthrowNPE ()
 specifier|public
 name|void
@@ -1608,6 +1643,11 @@ block|}
 comment|/** Test no side effect files are left over. After creating a temp    * temp file, remove both the temp file and its parent. Verify that    * no files or directories are left over as can happen when File objects    * are mistakenly created from fully qualified path strings.    * @throws IOException    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testNoSideEffects ()
 specifier|public
 name|void
@@ -1696,16 +1736,16 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"chmod"
-block|,
+name|Shell
+operator|.
+name|getSetPermissionCommand
+argument_list|(
 literal|"u+w"
-block|,
+argument_list|,
+literal|false
+argument_list|,
 name|BUFFER_DIR_ROOT
-block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|rmBufferDirs
@@ -1716,6 +1756,11 @@ block|}
 comment|/**    * Test getLocalPathToRead() returns correct filename and "file" schema.    *    * @throws IOException    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGetLocalPathToRead ()
 specifier|public
 name|void
@@ -1832,16 +1877,16 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"chmod"
-block|,
+name|Shell
+operator|.
+name|getSetPermissionCommand
+argument_list|(
 literal|"u+w"
-block|,
+argument_list|,
+literal|false
+argument_list|,
 name|BUFFER_DIR_ROOT
-block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|rmBufferDirs
@@ -1852,6 +1897,11 @@ block|}
 comment|/**    * Test that {@link LocalDirAllocator#getAllLocalPathsToRead(String, Configuration)}     * returns correct filenames and "file" schema.    *    * @throws IOException    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testGetAllLocalPathsToRead ()
 specifier|public
 name|void
@@ -2145,6 +2195,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testRemoveContext ()
 specifier|public
 name|void

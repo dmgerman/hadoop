@@ -1460,6 +1460,8 @@ try|try
 block|{
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|blockInFd
@@ -1471,6 +1473,8 @@ operator|-
 name|lastCacheDropOffset
 argument_list|,
 name|NativeIO
+operator|.
+name|POSIX
 operator|.
 name|POSIX_FADV_DONTNEED
 argument_list|)
@@ -2624,6 +2628,8 @@ block|{
 comment|// Advise that this file descriptor will be accessed sequentially.
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|blockInFd
@@ -2633,6 +2639,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|NativeIO
+operator|.
+name|POSIX
 operator|.
 name|POSIX_FADV_SEQUENTIAL
 argument_list|)
@@ -3024,6 +3032,8 @@ condition|)
 block|{
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|blockInFd
@@ -3033,6 +3043,8 @@ argument_list|,
 name|dropLength
 argument_list|,
 name|NativeIO
+operator|.
+name|POSIX
 operator|.
 name|POSIX_FADV_DONTNEED
 argument_list|)

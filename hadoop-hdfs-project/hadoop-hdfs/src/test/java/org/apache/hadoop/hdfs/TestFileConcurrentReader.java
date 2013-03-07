@@ -847,6 +847,11 @@ block|}
 comment|/**    * Test that that writes to an incomplete block are available to a reader    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUnfinishedBlockRead ()
 specifier|public
 name|void
@@ -913,6 +918,11 @@ block|}
 comment|/**    * test case: if the BlockSender decides there is only one packet to send,    * the previous computation of the pktSize based on transferToAllowed    * would result in too small a buffer to do the buffer-copy needed    * for partial chunks.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUnfinishedBlockPacketBufferOverrun ()
 specifier|public
 name|void
@@ -1022,6 +1032,11 @@ comment|// new blocks.  This makes it almost 100% sure we can reproduce
 comment|// case of client getting a DN that hasn't yet created the blocks
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testImmediateReadOfNewFile ()
 specifier|public
 name|void
@@ -1404,6 +1419,11 @@ comment|// for some reason, using tranferTo evokes the race condition more often
 comment|// so test separately
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUnfinishedBlockCRCErrorTransferTo ()
 specifier|public
 name|void
@@ -1426,6 +1446,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUnfinishedBlockCRCErrorTransferToVerySmallWrite ()
 specifier|public
 name|void
@@ -1449,8 +1474,6 @@ block|}
 comment|// fails due to issue w/append, disable
 annotation|@
 name|Ignore
-annotation|@
-name|Test
 DECL|method|_testUnfinishedBlockCRCErrorTransferToAppend ()
 specifier|public
 name|void
@@ -1473,6 +1496,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUnfinishedBlockCRCErrorNormalTransfer ()
 specifier|public
 name|void
@@ -1495,6 +1523,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testUnfinishedBlockCRCErrorNormalTransferVerySmallWrite ()
 specifier|public
 name|void
@@ -1518,8 +1551,6 @@ block|}
 comment|// fails due to issue w/append, disable
 annotation|@
 name|Ignore
-annotation|@
-name|Test
 DECL|method|_testUnfinishedBlockCRCErrorNormalTransferAppend ()
 specifier|public
 name|void
@@ -1658,17 +1689,6 @@ literal|false
 argument_list|)
 decl_stmt|;
 specifier|final
-name|FSDataOutputStream
-name|initialOutputStream
-init|=
-name|fileSystem
-operator|.
-name|create
-argument_list|(
-name|file
-argument_list|)
-decl_stmt|;
-specifier|final
 name|Thread
 name|writer
 init|=
@@ -1679,12 +1699,6 @@ operator|new
 name|Runnable
 argument_list|()
 block|{
-specifier|private
-name|FSDataOutputStream
-name|outputStream
-init|=
-name|initialOutputStream
-decl_stmt|;
 annotation|@
 name|Override
 specifier|public
@@ -1692,6 +1706,42 @@ name|void
 name|run
 parameter_list|()
 block|{
+try|try
+block|{
+name|FSDataOutputStream
+name|outputStream
+init|=
+name|fileSystem
+operator|.
+name|create
+argument_list|(
+name|file
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|syncType
+operator|==
+name|SyncType
+operator|.
+name|APPEND
+condition|)
+block|{
+name|outputStream
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|outputStream
+operator|=
+name|fileSystem
+operator|.
+name|append
+argument_list|(
+name|file
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 for|for
@@ -1714,8 +1764,6 @@ condition|;
 name|i
 operator|++
 control|)
-block|{
-try|try
 block|{
 specifier|final
 name|byte
@@ -1755,24 +1803,6 @@ name|hflush
 argument_list|()
 expr_stmt|;
 block|}
-else|else
-block|{
-comment|// append
-name|outputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
-name|outputStream
-operator|=
-name|fileSystem
-operator|.
-name|append
-argument_list|(
-name|file
-argument_list|)
-expr_stmt|;
-block|}
 name|writerStarted
 operator|.
 name|set
@@ -1780,6 +1810,7 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1804,6 +1835,13 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
+name|outputStream
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 name|writerDone
 operator|.
@@ -1811,11 +1849,6 @@ name|set
 argument_list|(
 literal|true
 argument_list|)
-expr_stmt|;
-name|outputStream
-operator|.
-name|close
-argument_list|()
 expr_stmt|;
 block|}
 catch|catch
@@ -2038,11 +2071,6 @@ name|interrupt
 argument_list|()
 expr_stmt|;
 block|}
-name|initialOutputStream
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|validateSequentialBytes (byte[] buf, int startPos, int len)
 specifier|private

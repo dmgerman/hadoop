@@ -2856,11 +2856,13 @@ name|ApplicationEvent
 index|[]
 block|{
 operator|new
-name|ApplicationFinishEvent
+name|ApplicationEvent
 argument_list|(
 name|appId
 argument_list|,
-literal|"Application failed to init aggregation: KABOOM!"
+name|ApplicationEventType
+operator|.
+name|APPLICATION_LOG_HANDLING_FAILED
 argument_list|)
 block|}
 decl_stmt|;
@@ -3173,13 +3175,13 @@ name|ApplicationEvent
 index|[]
 block|{
 operator|new
-name|ApplicationFinishEvent
+name|ApplicationEvent
 argument_list|(
 name|appId
 argument_list|,
-literal|"Application failed to init aggregation: "
-operator|+
-name|e
+name|ApplicationEventType
+operator|.
+name|APPLICATION_LOG_HANDLING_FAILED
 argument_list|)
 block|}
 decl_stmt|;

@@ -96,6 +96,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|server
@@ -126,6 +140,11 @@ name|TestProcessIdFileReader
 block|{
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testNullPath ()
 specifier|public
 name|void
@@ -172,6 +191,11 @@ assert|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testSimpleGet ()
 specifier|public
 name|void
@@ -204,6 +228,17 @@ name|testFile
 init|=
 literal|null
 decl_stmt|;
+name|String
+name|expectedProcessId
+init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"container_1353742680940_0002_01_000001"
+else|:
+literal|"56789"
+decl_stmt|;
 try|try
 block|{
 name|testFile
@@ -229,7 +264,7 @@ name|fileWriter
 operator|.
 name|println
 argument_list|(
-literal|"56789"
+name|expectedProcessId
 argument_list|)
 expr_stmt|;
 name|fileWriter
@@ -265,7 +300,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"56789"
+name|expectedProcessId
 argument_list|,
 name|processId
 argument_list|)
@@ -295,6 +330,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testComplexGet ()
 specifier|public
 name|void
@@ -326,6 +366,25 @@ name|File
 name|testFile
 init|=
 literal|null
+decl_stmt|;
+name|String
+name|processIdInFile
+init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|" container_1353742680940_0002_01_000001 "
+else|:
+literal|" 23 "
+decl_stmt|;
+name|String
+name|expectedProcessId
+init|=
+name|processIdInFile
+operator|.
+name|trim
+argument_list|()
 decl_stmt|;
 try|try
 block|{
@@ -387,7 +446,7 @@ name|fileWriter
 operator|.
 name|println
 argument_list|(
-literal|" 23 "
+name|processIdInFile
 argument_list|)
 expr_stmt|;
 name|fileWriter
@@ -430,7 +489,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"23"
+name|expectedProcessId
 argument_list|,
 name|processId
 argument_list|)

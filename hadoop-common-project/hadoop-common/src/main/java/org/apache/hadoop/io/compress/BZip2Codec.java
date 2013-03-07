@@ -66,6 +66,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configurable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -132,42 +160,6 @@ name|compress
 operator|.
 name|bzip2
 operator|.
-name|BZip2DummyCompressor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
-name|bzip2
-operator|.
-name|BZip2DummyDecompressor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
-name|bzip2
-operator|.
 name|CBZip2InputStream
 import|;
 end_import
@@ -190,8 +182,26 @@ name|CBZip2OutputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|bzip2
+operator|.
+name|Bzip2Factory
+import|;
+end_import
+
 begin_comment
-comment|/**  * This class provides CompressionOutputStream and CompressionInputStream for  * compression and decompression. Currently we dont have an implementation of  * the Compressor and Decompressor interfaces, so those methods of  * CompressionCodec which have a Compressor or Decompressor type argument, throw  * UnsupportedOperationException.  */
+comment|/**  * This class provides output and input streams for bzip2 compression  * and decompression.  It uses the native bzip2 library on the system  * if possible, else it uses a pure-Java implementation of the bzip2  * algorithm.  The configuration parameter  * io.compression.codec.bzip2.library can be used to control this  * behavior.  *  * In the pure-Java mode, the Compressor and Decompressor interfaces  * are not implemented.  Therefore, in that mode, those methods of  * CompressionCodec which have a Compressor or Decompressor type  * argument, throw UnsupportedOperationException.  *  * Currently, support for splittability is available only in the  * pure-Java mode; therefore, if a SplitCompressionInputStream is  * requested, the pure-Java implementation is used, regardless of the  * setting of the configuration parameter mentioned above.  */
 end_comment
 
 begin_class
@@ -208,6 +218,8 @@ specifier|public
 class|class
 name|BZip2Codec
 implements|implements
+name|Configurable
+implements|,
 name|SplittableCompressionCodec
 block|{
 DECL|field|HEADER
@@ -252,13 +264,50 @@ operator|.
 name|length
 argument_list|()
 decl_stmt|;
-comment|/**   * Creates a new instance of BZip2Codec   */
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
+comment|/**    * Set the configuration to be used by this object.    *    * @param conf the configuration object.    */
+annotation|@
+name|Override
+DECL|method|setConf (Configuration conf)
+specifier|public
+name|void
+name|setConf
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
+block|}
+comment|/**    * Return the configuration used by this object.    *    * @return the configuration object used by this objec.    */
+annotation|@
+name|Override
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|conf
+return|;
+block|}
+comment|/**   * Creates a new instance of BZip2Codec.   */
 DECL|method|BZip2Codec ()
 specifier|public
 name|BZip2Codec
 parameter_list|()
 block|{ }
-comment|/**   * Creates CompressionOutputStream for BZip2   *   * @param out   *            The output Stream   * @return The BZip2 CompressionOutputStream   * @throws java.io.IOException   *             Throws IO exception   */
+comment|/**    * Create a {@link CompressionOutputStream} that will write to the given    * {@link OutputStream}.    *    * @param out        the location for the final output stream    * @return a stream the user can write uncompressed data to, to have it     *         compressed    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|createOutputStream (OutputStream out)
@@ -273,14 +322,16 @@ throws|throws
 name|IOException
 block|{
 return|return
-operator|new
-name|BZip2CompressionOutputStream
+name|createOutputStream
 argument_list|(
 name|out
+argument_list|,
+name|createCompressor
+argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**   * Creates a compressor using given OutputStream.    *   * @return CompressionOutputStream     @throws java.io.IOException    */
+comment|/**    * Create a {@link CompressionOutputStream} that will write to the given    * {@link OutputStream} with the given {@link Compressor}.    *    * @param out        the location for the final output stream    * @param compressor compressor to use    * @return a stream the user can write uncompressed data to, to have it     *         compressed    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|createOutputStream (OutputStream out, Compressor compressor)
@@ -298,13 +349,40 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|createOutputStream
+name|Bzip2Factory
+operator|.
+name|isNativeBzip2Loaded
+argument_list|(
+name|conf
+argument_list|)
+condition|?
+operator|new
+name|CompressorStream
+argument_list|(
+name|out
+argument_list|,
+name|compressor
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+literal|"io.file.buffer.size"
+argument_list|,
+literal|4
+operator|*
+literal|1024
+argument_list|)
+argument_list|)
+else|:
+operator|new
+name|BZip2CompressionOutputStream
 argument_list|(
 name|out
 argument_list|)
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @return BZip2DummyCompressor.class   */
+comment|/**    * Get the type of {@link Compressor} needed by this {@link CompressionCodec}.    *    * @return the type of compressor needed by this codec.    */
 annotation|@
 name|Override
 DECL|method|getCompressorType ()
@@ -313,28 +391,21 @@ name|Class
 argument_list|<
 name|?
 extends|extends
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
 name|Compressor
 argument_list|>
 name|getCompressorType
 parameter_list|()
 block|{
 return|return
-name|BZip2DummyCompressor
+name|Bzip2Factory
 operator|.
-name|class
+name|getBzip2CompressorType
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @return Compressor   */
+comment|/**    * Create a new {@link Compressor} for use by this {@link CompressionCodec}.    *    * @return a new compressor for use by this codec    */
 annotation|@
 name|Override
 DECL|method|createCompressor ()
@@ -344,12 +415,15 @@ name|createCompressor
 parameter_list|()
 block|{
 return|return
-operator|new
-name|BZip2DummyCompressor
-argument_list|()
+name|Bzip2Factory
+operator|.
+name|getBzip2Compressor
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
-comment|/**   * Creates CompressionInputStream to be used to read off uncompressed data.   *   * @param in   *            The InputStream   * @return Returns CompressionInputStream for BZip2   * @throws java.io.IOException   *             Throws IOException   */
+comment|/**    * Create a {@link CompressionInputStream} that will read from the given    * input stream and return a stream for uncompressed data.    *    * @param in the stream to read compressed bytes from    * @return a stream to read uncompressed bytes from    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|createInputStream (InputStream in)
@@ -364,14 +438,16 @@ throws|throws
 name|IOException
 block|{
 return|return
-operator|new
-name|BZip2CompressionInputStream
+name|createInputStream
 argument_list|(
 name|in
+argument_list|,
+name|createDecompressor
+argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @return CompressionInputStream   */
+comment|/**    * Create a {@link CompressionInputStream} that will read from the given    * {@link InputStream} with the given {@link Decompressor}, and return a     * stream for uncompressed data.    *    * @param in           the stream to read compressed bytes from    * @param decompressor decompressor to use    * @return a stream to read uncompressed bytes from    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|createInputStream (InputStream in, Decompressor decompressor)
@@ -389,15 +465,40 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|createInputStream
+name|Bzip2Factory
+operator|.
+name|isNativeBzip2Loaded
+argument_list|(
+name|conf
+argument_list|)
+condition|?
+operator|new
+name|DecompressorStream
+argument_list|(
+name|in
+argument_list|,
+name|decompressor
+argument_list|,
+name|conf
+operator|.
+name|getInt
+argument_list|(
+literal|"io.file.buffer.size"
+argument_list|,
+literal|4
+operator|*
+literal|1024
+argument_list|)
+argument_list|)
+else|:
+operator|new
+name|BZip2CompressionInputStream
 argument_list|(
 name|in
 argument_list|)
 return|;
 block|}
 comment|/**    * Creates CompressionInputStream to be used to read off uncompressed data    * in one of the two reading modes. i.e. Continuous or Blocked reading modes    *    * @param seekableIn The InputStream    * @param start The start offset into the compressed stream    * @param end The end offset into the compressed stream    * @param readMode Controls whether progress is reported continuously or    *                 only at block boundaries.    *    * @return CompressionInputStream for BZip2 aligned at block boundaries    */
-annotation|@
-name|Override
 DECL|method|createInputStream (InputStream seekableIn, Decompressor decompressor, long start, long end, READ_MODE readMode)
 specifier|public
 name|SplitCompressionInputStream
@@ -565,7 +666,7 @@ return|return
 name|in
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @return BZip2DummyDecompressor.class   */
+comment|/**    * Get the type of {@link Decompressor} needed by this {@link CompressionCodec}.    *    * @return the type of decompressor needed by this codec.    */
 annotation|@
 name|Override
 DECL|method|getDecompressorType ()
@@ -574,28 +675,21 @@ name|Class
 argument_list|<
 name|?
 extends|extends
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|compress
-operator|.
 name|Decompressor
 argument_list|>
 name|getDecompressorType
 parameter_list|()
 block|{
 return|return
-name|BZip2DummyDecompressor
+name|Bzip2Factory
 operator|.
-name|class
+name|getBzip2DecompressorType
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
-comment|/**   * This functionality is currently not supported.   *   * @return Decompressor   */
+comment|/**    * Create a new {@link Decompressor} for use by this {@link CompressionCodec}.    *    * @return a new decompressor for use by this codec    */
 annotation|@
 name|Override
 DECL|method|createDecompressor ()
@@ -605,9 +699,12 @@ name|createDecompressor
 parameter_list|()
 block|{
 return|return
-operator|new
-name|BZip2DummyDecompressor
-argument_list|()
+name|Bzip2Factory
+operator|.
+name|getBzip2Decompressor
+argument_list|(
+name|conf
+argument_list|)
 return|;
 block|}
 comment|/**   * .bz2 is recognized as the default extension for compressed BZip2 files   *   * @return A String telling the default bzip2 file extension   */
@@ -695,8 +792,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|finish ()
 specifier|public
 name|void
@@ -761,8 +856,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|resetState ()
 specifier|public
 name|void
@@ -778,8 +871,6 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|write (int b)
 specifier|public
 name|void
@@ -810,8 +901,6 @@ name|b
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|write (byte[] b, int off, int len)
 specifier|public
 name|void
@@ -853,8 +942,6 @@ name|len
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1288,8 +1375,6 @@ name|bufferedIn
 return|;
 block|}
 comment|// end of method
-annotation|@
-name|Override
 DECL|method|close ()
 specifier|public
 name|void
@@ -1316,8 +1401,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/**     * This method updates compressed stream position exactly when the     * client of this code has read off at least one byte passed any BZip2     * end of block marker.     *     * This mechanism is very helpful to deal with data level record     * boundaries. Please see constructor and next methods of     * org.apache.hadoop.mapred.LineRecordReader as an example usage of this     * feature.  We elaborate it with an example in the following:     *     * Assume two different scenarios of the BZip2 compressed stream, where     * [m] represent end of block, \n is line delimiter and . represent compressed     * data.     *     * ............[m]......\n.......     *     * ..........\n[m]......\n.......     *     * Assume that end is right after [m].  In the first case the reading     * will stop at \n and there is no need to read one more line.  (To see the     * reason of reading one more line in the next() method is explained in LineRecordReader.)     * While in the second example LineRecordReader needs to read one more line     * (till the second \n).  Now since BZip2Codecs only update position     * at least one byte passed a maker, so it is straight forward to differentiate     * between the two cases mentioned.     *     */
-annotation|@
-name|Override
 DECL|method|read (byte[] b, int off, int len)
 specifier|public
 name|int
@@ -1433,8 +1516,6 @@ return|return
 name|result
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|read ()
 specifier|public
 name|int
@@ -1523,8 +1604,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|resetState ()
 specifier|public
 name|void
@@ -1541,8 +1620,6 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-annotation|@
-name|Override
 DECL|method|getPos ()
 specifier|public
 name|long

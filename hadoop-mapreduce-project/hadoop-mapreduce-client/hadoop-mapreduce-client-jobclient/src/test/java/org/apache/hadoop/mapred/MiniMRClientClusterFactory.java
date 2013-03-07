@@ -193,7 +193,7 @@ literal|"target"
 argument_list|,
 name|caller
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 operator|+
 literal|"-tmpDir"
@@ -331,7 +331,7 @@ name|MiniMRYarnCluster
 argument_list|(
 name|caller
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 argument_list|,
 name|noOfNMs
@@ -348,7 +348,7 @@ literal|"minimrclientcluster.caller.name"
 argument_list|,
 name|caller
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 argument_list|)
 expr_stmt|;

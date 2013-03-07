@@ -1098,6 +1098,7 @@ name|mergePhase
 argument_list|)
 return|;
 block|}
+specifier|public
 specifier|static
 parameter_list|<
 name|K

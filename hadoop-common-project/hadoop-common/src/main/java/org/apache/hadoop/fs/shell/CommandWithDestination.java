@@ -52,6 +52,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|LinkedList
@@ -308,6 +328,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|String
 name|pathString
 init|=
@@ -335,7 +357,7 @@ operator|new
 name|PathData
 argument_list|(
 operator|new
-name|File
+name|URI
 argument_list|(
 name|pathString
 argument_list|)
@@ -344,6 +366,23 @@ name|getConf
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"unexpected URISyntaxException"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    *  The last arg is expected to be a remote path, if only one argument is    *  given then the destination will be the remote user's directory     *  @param args is the list of arguments    *  @throws PathIOException if path doesn't exist or matches too many times     */
 DECL|method|getRemoteDestination (LinkedList<String> args)

@@ -4321,6 +4321,11 @@ name|fromYarn
 argument_list|(
 name|taId
 argument_list|)
+argument_list|,
+name|task
+operator|.
+name|getCounters
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

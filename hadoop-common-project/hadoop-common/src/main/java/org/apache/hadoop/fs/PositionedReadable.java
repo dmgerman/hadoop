@@ -116,7 +116,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Read number of bytes equalt to the length of the buffer, from a given    * position within a file. This does not    * change the current offset of a file, and is thread-safe.    */
+comment|/**    * Read number of bytes equal to the length of the buffer, from a given    * position within a file. This does not    * change the current offset of a file, and is thread-safe.    */
 DECL|method|readFully (long position, byte[] buffer)
 specifier|public
 name|void

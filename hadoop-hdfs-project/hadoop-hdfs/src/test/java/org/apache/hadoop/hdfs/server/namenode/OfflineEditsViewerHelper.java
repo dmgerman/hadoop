@@ -770,7 +770,7 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"/file_create"
+literal|"/file_create_u\1F431"
 argument_list|)
 decl_stmt|;
 name|FSDataOutputStream

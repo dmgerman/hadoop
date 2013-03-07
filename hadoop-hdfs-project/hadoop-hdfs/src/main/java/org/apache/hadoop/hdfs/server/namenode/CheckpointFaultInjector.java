@@ -84,6 +84,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+DECL|method|duringMerge ()
+specifier|public
+name|void
+name|duringMerge
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 DECL|method|afterSecondaryUploadsNewImage ()
 specifier|public
 name|void

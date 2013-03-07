@@ -150,6 +150,20 @@ name|DiskErrorException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_class
 DECL|class|TestDiskChecker
 specifier|public
@@ -178,9 +192,14 @@ argument_list|(
 literal|"000"
 argument_list|)
 decl_stmt|;
-DECL|method|testMkdirs_dirExists ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testMkdirs_dirExists ()
 specifier|public
 name|void
 name|testMkdirs_dirExists
@@ -198,9 +217,14 @@ name|defaultPerm
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testMkdirs_noDir ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testMkdirs_noDir ()
 specifier|public
 name|void
 name|testMkdirs_noDir
@@ -218,9 +242,14 @@ name|defaultPerm
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testMkdirs_dirExists_badUmask ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testMkdirs_dirExists_badUmask ()
 specifier|public
 name|void
 name|testMkdirs_dirExists_badUmask
@@ -238,9 +267,14 @@ name|invalidPerm
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testMkdirs_noDir_badUmask ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testMkdirs_noDir_badUmask ()
 specifier|public
 name|void
 name|testMkdirs_noDir_badUmask
@@ -464,9 +498,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|testCheckDir_normal ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testCheckDir_normal ()
 specifier|public
 name|void
 name|testCheckDir_normal
@@ -488,9 +527,14 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testCheckDir_notDir ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testCheckDir_notDir ()
 specifier|public
 name|void
 name|testCheckDir_notDir
@@ -512,9 +556,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testCheckDir_notReadable ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testCheckDir_notReadable ()
 specifier|public
 name|void
 name|testCheckDir_notReadable
@@ -536,9 +585,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testCheckDir_notWritable ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testCheckDir_notWritable ()
 specifier|public
 name|void
 name|testCheckDir_notWritable
@@ -560,9 +614,14 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testCheckDir_notListable ()
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
+DECL|method|testCheckDir_notListable ()
 specifier|public
 name|void
 name|testCheckDir_notListable
@@ -815,6 +874,11 @@ block|}
 comment|/**    * These test cases test to test the creation of a local folder with correct    * permission for result of mapper.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCheckDir_normal_local ()
 specifier|public
 name|void
@@ -835,6 +899,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCheckDir_notDir_local ()
 specifier|public
 name|void
@@ -855,6 +924,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCheckDir_notReadable_local ()
 specifier|public
 name|void
@@ -875,6 +949,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCheckDir_notWritable_local ()
 specifier|public
 name|void
@@ -895,6 +974,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCheckDir_notListable_local ()
 specifier|public
 name|void
@@ -952,27 +1036,24 @@ operator|.
 name|mkdir
 argument_list|()
 expr_stmt|;
-name|Runtime
+name|Shell
 operator|.
-name|getRuntime
-argument_list|()
-operator|.
-name|exec
+name|execCommand
 argument_list|(
-literal|"chmod "
-operator|+
+name|Shell
+operator|.
+name|getSetPermissionCommand
+argument_list|(
 name|perm
-operator|+
-literal|"  "
-operator|+
+argument_list|,
+literal|false
+argument_list|,
 name|localDir
 operator|.
 name|getAbsolutePath
 argument_list|()
 argument_list|)
-operator|.
-name|waitFor
-argument_list|()
+argument_list|)
 expr_stmt|;
 try|try
 block|{

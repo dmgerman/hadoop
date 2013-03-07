@@ -75,7 +75,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface that alll the serializers have to implement.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
+comment|/**  * Interface that all the serializers have to implement.  *   * @deprecated Replaced by<a href="http://hadoop.apache.org/avro/">Avro</a>.  */
 end_comment
 
 begin_interface

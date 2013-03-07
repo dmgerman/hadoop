@@ -1641,6 +1641,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testReconnectedNode ()
 specifier|public
 name|void
@@ -1780,10 +1785,6 @@ operator|new
 name|NodeUpdateSchedulerEvent
 argument_list|(
 name|n1
-argument_list|,
-name|emptyList
-argument_list|,
-name|emptyList
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1855,10 +1856,6 @@ operator|new
 name|NodeUpdateSchedulerEvent
 argument_list|(
 name|n1
-argument_list|,
-name|emptyList
-argument_list|,
-name|emptyList
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1882,6 +1879,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testHeadroom ()
 specifier|public
 name|void
@@ -2222,10 +2224,6 @@ operator|new
 name|NodeUpdateSchedulerEvent
 argument_list|(
 name|n1
-argument_list|,
-name|emptyStatus
-argument_list|,
-name|emptyStatus
 argument_list|)
 argument_list|)
 expr_stmt|;

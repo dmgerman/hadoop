@@ -152,9 +152,29 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|PrintWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Date
 import|;
 end_import
 
@@ -175,6 +195,22 @@ operator|.
 name|framework
 operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|time
+operator|.
+name|DateFormatUtils
 import|;
 end_import
 
@@ -623,20 +659,113 @@ argument_list|(
 name|applicationId
 argument_list|)
 expr_stmt|;
+name|ByteArrayOutputStream
+name|baos
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|PrintWriter
+name|pw
+init|=
+operator|new
+name|PrintWriter
+argument_list|(
+name|baos
+argument_list|)
+decl_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"Application Report : "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tApplication-Id : application_1234_0005"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tApplication-Name : appname"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tUser : user"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tQueue : queue"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tStart-Time : 0"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tFinish-Time : 0"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tState : FINISHED"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tFinal-State : SUCCEEDED"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tTracking-URL : N/A"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tDiagnostics : diagnostics"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|String
 name|appReportStr
 init|=
-literal|"Application Report : \n\t"
-operator|+
-literal|"Application-Id : application_1234_0005\n\t"
-operator|+
-literal|"Application-Name : appname\n\tUser : user\n\t"
-operator|+
-literal|"Queue : queue\n\tStart-Time : 0\n\tFinish-Time : 0\n\t"
-operator|+
-literal|"State : FINISHED\n\tFinal-State : SUCCEEDED\n\t"
-operator|+
-literal|"Tracking-URL : N/A\n\tDiagnostics : diagnostics\n"
+name|baos
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 decl_stmt|;
 name|Assert
 operator|.
@@ -813,50 +942,91 @@ operator|.
 name|getApplicationList
 argument_list|()
 expr_stmt|;
-name|StringBuffer
-name|appsReportStrBuf
+name|ByteArrayOutputStream
+name|baos
 init|=
 operator|new
-name|StringBuffer
+name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
-name|appsReportStrBuf
-operator|.
-name|append
+name|PrintWriter
+name|pw
+init|=
+operator|new
+name|PrintWriter
 argument_list|(
-literal|"Total Applications:1\n"
+name|baos
+argument_list|)
+decl_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"Total Applications:1"
 argument_list|)
 expr_stmt|;
-name|appsReportStrBuf
+name|pw
 operator|.
-name|append
+name|print
 argument_list|(
 literal|"                Application-Id\t    Application-Name"
-operator|+
-literal|"\t      User\t     Queue\t             State\t       "
-operator|+
-literal|"Final-State\t                       Tracking-URL\n"
 argument_list|)
 expr_stmt|;
-name|appsReportStrBuf
+name|pw
 operator|.
-name|append
+name|print
+argument_list|(
+literal|"\t      User\t     Queue\t             State\t       "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"Final-State\t                       Tracking-URL"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
 argument_list|(
 literal|"         application_1234_0005\t             "
-operator|+
-literal|"appname\t      user\t     queue\t          FINISHED\t         "
-operator|+
-literal|"SUCCEEDED\t                                N/A\n"
 argument_list|)
 expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"appname\t      user\t     queue\t          FINISHED\t         "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"SUCCEEDED\t                                N/A"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|String
+name|appsReportStr
+init|=
+name|baos
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+decl_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|appsReportStrBuf
-operator|.
-name|toString
-argument_list|()
+name|appsReportStr
 argument_list|,
 name|sysOutStream
 operator|.
@@ -1050,64 +1220,105 @@ operator|.
 name|getNodeReports
 argument_list|()
 expr_stmt|;
-name|StringBuffer
-name|nodesReportStr
+name|ByteArrayOutputStream
+name|baos
 init|=
 operator|new
-name|StringBuffer
+name|ByteArrayOutputStream
 argument_list|()
 decl_stmt|;
-name|nodesReportStr
+name|PrintWriter
+name|pw
+init|=
+operator|new
+name|PrintWriter
+argument_list|(
+name|baos
+argument_list|)
+decl_stmt|;
+name|pw
 operator|.
-name|append
+name|println
 argument_list|(
 literal|"Total Nodes:3"
 argument_list|)
 expr_stmt|;
-name|nodesReportStr
+name|pw
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n         Node-Id\tNode-State\tNode-Http-Address\t"
-operator|+
+literal|"         Node-Id\tNode-State\tNode-Http-Address\t"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|"Health-Status(isNodeHealthy)\tRunning-Containers"
 argument_list|)
 expr_stmt|;
-name|nodesReportStr
+name|pw
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n         host0:0\t   RUNNING\t       host1:8888"
-operator|+
+literal|"         host0:0\t   RUNNING\t       host1:8888"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|"\t                     false\t                 0"
 argument_list|)
 expr_stmt|;
-name|nodesReportStr
+name|pw
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n         host1:0\t   RUNNING\t       host1:8888"
-operator|+
+literal|"         host1:0\t   RUNNING\t       host1:8888"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|"\t                     false\t                 0"
 argument_list|)
 expr_stmt|;
-name|nodesReportStr
+name|pw
 operator|.
-name|append
+name|print
 argument_list|(
-literal|"\n         host2:0\t   RUNNING\t       host1:8888"
-operator|+
-literal|"\t                     false\t                 0\n"
+literal|"         host2:0\t   RUNNING\t       host1:8888"
 argument_list|)
 expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\t                     false\t                 0"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|String
+name|nodesReportStr
+init|=
+name|baos
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
+decl_stmt|;
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
 name|nodesReportStr
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|sysOutStream
 operator|.
@@ -1244,18 +1455,126 @@ operator|.
 name|getNodeReports
 argument_list|()
 expr_stmt|;
+name|ByteArrayOutputStream
+name|baos
+init|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+decl_stmt|;
+name|PrintWriter
+name|pw
+init|=
+operator|new
+name|PrintWriter
+argument_list|(
+name|baos
+argument_list|)
+decl_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"Node Report : "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tNode-Id : host0:0"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tRack : rack1"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tNode-State : RUNNING"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tNode-Http-Address : host1:8888"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tHealth-Status(isNodeHealthy) : false"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tLast-Health-Update : "
+operator|+
+name|DateFormatUtils
+operator|.
+name|format
+argument_list|(
+operator|new
+name|Date
+argument_list|(
+literal|0
+argument_list|)
+argument_list|,
+literal|"E dd/MMM/yy hh:mm:ss:SSzz"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tHealth-Report : null"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tContainers : 0"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tMemory-Used : 0M"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tMemory-Capacity : 0"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|String
 name|nodeStatusStr
 init|=
-literal|"Node Report : \n\tNode-Id : host0:0\n\t"
-operator|+
-literal|"Rack : rack1\n\tNode-State : RUNNING\n\t"
-operator|+
-literal|"Node-Http-Address : host1:8888\n\tHealth-Status(isNodeHealthy) "
-operator|+
-literal|": false\n\tLast-Last-Health-Update : 0\n\tHealth-Report : null"
-operator|+
-literal|"\n\tContainers : 0\n\tMemory-Used : 0M\n\tMemory-Capacity : 0"
+name|baos
+operator|.
+name|toString
+argument_list|(
+literal|"UTF-8"
+argument_list|)
 decl_stmt|;
 name|verify
 argument_list|(

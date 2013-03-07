@@ -135,6 +135,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testFileContextResolveAfs ()
 specifier|public
 name|void
@@ -173,14 +178,17 @@ decl_stmt|;
 name|Path
 name|linkPath
 init|=
+name|localFs
+operator|.
+name|makeQualified
+argument_list|(
 operator|new
 name|Path
 argument_list|(
-literal|"file://"
-operator|+
 name|TEST_ROOT_DIR_LOCAL
-operator|+
-literal|"/TestFileContextResolveAfs2"
+argument_list|,
+literal|"TestFileContextResolveAfs2"
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|localFs

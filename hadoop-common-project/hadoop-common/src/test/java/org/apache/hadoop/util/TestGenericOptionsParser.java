@@ -226,12 +226,17 @@ index|]
 operator|=
 literal|"-files"
 expr_stmt|;
+comment|// Convert a file to a URI as File.toString() is not a valid URI on
+comment|// all platforms and GenericOptionsParser accepts only valid URIs
 name|args
 index|[
 literal|1
 index|]
 operator|=
 name|tmpFile
+operator|.
+name|toURI
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -293,6 +298,9 @@ operator|new
 name|URI
 argument_list|(
 name|tmpFile
+operator|.
+name|toURI
+argument_list|()
 operator|.
 name|toString
 argument_list|()
@@ -817,6 +825,9 @@ literal|1
 index|]
 operator|=
 name|tmpFile
+operator|.
+name|toURI
+argument_list|()
 operator|.
 name|toString
 argument_list|()

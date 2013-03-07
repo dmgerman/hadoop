@@ -404,7 +404,7 @@ throw|;
 block|}
 comment|//fork off ls to see if the file exists.
 comment|// java file.exists() will not work on
-comment|// cygwin since it is a symlink
+comment|// Windows since it is a symlink
 name|String
 index|[]
 name|argv

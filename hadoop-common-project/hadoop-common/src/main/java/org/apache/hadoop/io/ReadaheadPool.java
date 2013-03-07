@@ -701,6 +701,8 @@ try|try
 block|{
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|fd
@@ -710,6 +712,8 @@ argument_list|,
 name|len
 argument_list|,
 name|NativeIO
+operator|.
+name|POSIX
 operator|.
 name|POSIX_FADV_WILLNEED
 argument_list|)

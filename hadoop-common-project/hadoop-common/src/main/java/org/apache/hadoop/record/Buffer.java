@@ -577,9 +577,6 @@ operator|*
 name|hash
 operator|)
 operator|+
-operator|(
-name|int
-operator|)
 name|b
 index|[
 name|i
