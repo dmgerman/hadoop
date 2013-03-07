@@ -2231,6 +2231,14 @@ operator|.
 name|Op
 operator|.
 name|RENEWDELEGATIONTOKEN
+operator|&&
+name|op
+operator|!=
+name|PutOpParam
+operator|.
+name|Op
+operator|.
+name|CANCELDELEGATIONTOKEN
 condition|)
 block|{
 synchronized|synchronized
