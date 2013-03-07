@@ -838,13 +838,6 @@ name|output
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|30000
-argument_list|)
 DECL|method|testChmodInternal (String mode, String expectedPerm)
 specifier|private
 name|void
@@ -916,13 +909,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|30000
-argument_list|)
 DECL|method|testNewFileChmodInternal (String expectedPerm)
 specifier|private
 name|void
@@ -1009,13 +995,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|30000
-argument_list|)
 DECL|method|testChmodInternalR (String mode, String expectedPerm, String expectedPermx)
 specifier|private
 name|void
