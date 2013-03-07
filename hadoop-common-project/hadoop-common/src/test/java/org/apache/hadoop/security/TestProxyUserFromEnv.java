@@ -185,6 +185,40 @@ operator|.
 name|trim
 argument_list|()
 decl_stmt|;
+comment|// On Windows domain joined machine, whoami returns the username
+comment|// in the DOMAIN\\username format, so we trim the domain part before
+comment|// the comparison. We don't have to special case for Windows
+comment|// given that Unix systems do not allow slashes in usernames.
+name|int
+name|backslashIndex
+init|=
+name|realUser
+operator|.
+name|indexOf
+argument_list|(
+literal|'\\'
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|backslashIndex
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+name|realUser
+operator|=
+name|realUser
+operator|.
+name|substring
+argument_list|(
+name|backslashIndex
+operator|+
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 name|assertEquals
 argument_list|(
 name|realUser
