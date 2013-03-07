@@ -213,7 +213,14 @@ specifier|final
 name|String
 name|BOGUS_FILE
 init|=
+operator|new
+name|File
+argument_list|(
 literal|"/xxxx-this-does-not-exist"
+argument_list|)
+operator|.
+name|getPath
+argument_list|()
 decl_stmt|;
 annotation|@
 name|Test
