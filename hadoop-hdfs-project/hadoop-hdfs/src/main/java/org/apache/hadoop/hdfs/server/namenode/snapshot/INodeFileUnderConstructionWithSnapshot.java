@@ -524,7 +524,13 @@ argument_list|)
 return|;
 block|}
 return|return
+name|prior
+operator|==
+literal|null
+condition|?
 literal|1
+else|:
+literal|0
 return|;
 block|}
 annotation|@

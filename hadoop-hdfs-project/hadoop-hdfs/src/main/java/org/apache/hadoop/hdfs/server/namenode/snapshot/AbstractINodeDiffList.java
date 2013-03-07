@@ -218,6 +218,7 @@ return|;
 block|}
 comment|/** Get the size of the list and then clear it. */
 DECL|method|clear ()
+specifier|public
 name|int
 name|clear
 parameter_list|()
