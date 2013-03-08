@@ -724,7 +724,7 @@ name|tokenString
 init|=
 name|webhdfs
 operator|.
-name|getRenewToken
+name|getDelegationToken
 argument_list|()
 operator|.
 name|encodeToUrlString
@@ -1165,7 +1165,7 @@ name|tokenString
 init|=
 name|webhdfs
 operator|.
-name|getRenewToken
+name|getDelegationToken
 argument_list|()
 operator|.
 name|encodeToUrlString
@@ -2307,17 +2307,6 @@ name|getDefaultPort
 argument_list|()
 return|;
 block|}
-comment|// don't automatically get a token
-annotation|@
-name|Override
-DECL|method|initDelegationToken ()
-specifier|protected
-name|void
-name|initDelegationToken
-parameter_list|()
-throws|throws
-name|IOException
-block|{}
 block|}
 block|}
 end_class
