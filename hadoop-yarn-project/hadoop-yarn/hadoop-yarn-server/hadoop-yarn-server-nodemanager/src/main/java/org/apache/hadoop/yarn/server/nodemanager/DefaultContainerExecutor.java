@@ -1151,6 +1151,11 @@ name|toString
 argument_list|()
 argument_list|,
 name|containerIdStr
+argument_list|,
+name|this
+operator|.
+name|getConf
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|LOG
