@@ -2764,6 +2764,8 @@ specifier|final
 name|int
 name|DFS_IMAGE_TRANSFER_TIMEOUT_DEFAULT
 init|=
+literal|10
+operator|*
 literal|60
 operator|*
 literal|1000
