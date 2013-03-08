@@ -841,7 +841,7 @@ argument_list|,
 name|renewTokenUrl
 argument_list|)
 expr_stmt|;
-comment|// send user+token
+comment|// send token
 name|URL
 name|cancelTokenUrl
 init|=
@@ -899,21 +899,12 @@ argument_list|)
 operator|.
 name|toString
 argument_list|()
-block|,
-operator|new
-name|DelegationParam
-argument_list|(
-name|tokenString
-argument_list|)
-operator|.
-name|toString
-argument_list|()
-block|}
+block|,         }
 argument_list|,
 name|cancelTokenUrl
 argument_list|)
 expr_stmt|;
-comment|// send user+token
+comment|// send token
 name|URL
 name|fileStatusUrl
 init|=
@@ -943,18 +934,6 @@ operator|.
 name|GETFILESTATUS
 operator|.
 name|toQueryString
-argument_list|()
-block|,
-operator|new
-name|UserParam
-argument_list|(
-name|ugi
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|)
-operator|.
-name|toString
 argument_list|()
 block|,
 operator|new
@@ -1333,7 +1312,7 @@ argument_list|,
 name|renewTokenUrl
 argument_list|)
 expr_stmt|;
-comment|// send effective+token
+comment|// send token
 name|URL
 name|cancelTokenUrl
 init|=
@@ -1376,6 +1355,21 @@ name|UserParam
 argument_list|(
 name|ugi
 operator|.
+name|getRealUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+block|,
+operator|new
+name|DoAsParam
+argument_list|(
+name|ugi
+operator|.
 name|getShortUserName
 argument_list|()
 argument_list|)
@@ -1391,21 +1385,12 @@ argument_list|)
 operator|.
 name|toString
 argument_list|()
-block|,
-operator|new
-name|DelegationParam
-argument_list|(
-name|tokenString
-argument_list|)
-operator|.
-name|toString
-argument_list|()
-block|}
+block|,         }
 argument_list|,
 name|cancelTokenUrl
 argument_list|)
 expr_stmt|;
-comment|// send effective+token
+comment|// send token
 name|URL
 name|fileStatusUrl
 init|=
@@ -1435,18 +1420,6 @@ operator|.
 name|GETFILESTATUS
 operator|.
 name|toQueryString
-argument_list|()
-block|,
-operator|new
-name|UserParam
-argument_list|(
-name|ugi
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|)
-operator|.
-name|toString
 argument_list|()
 block|,
 operator|new

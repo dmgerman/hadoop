@@ -1264,7 +1264,6 @@ operator|<=
 literal|0
 condition|)
 block|{
-comment|// Set the ping interval as timeout
 name|Configuration
 name|conf
 init|=
