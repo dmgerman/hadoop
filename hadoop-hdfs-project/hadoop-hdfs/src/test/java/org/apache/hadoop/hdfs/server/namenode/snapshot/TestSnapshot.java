@@ -1226,6 +1226,11 @@ block|}
 comment|/**    * Main test, where we will go in the following loop:    *<pre>    *    Create snapshot and check the creation<--+      * -> Change the current/live files/dir         |     * -> Check previous snapshots -----------------+    *</pre>    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testSnapshot ()
 specifier|public
 name|void
@@ -1516,6 +1521,11 @@ block|}
 comment|/**    * A simple test that updates a sub-directory of a snapshottable directory    * with snapshots    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testUpdateDirectory ()
 specifier|public
 name|void
@@ -1664,6 +1674,11 @@ block|}
 comment|/**    * Creating snapshots for a directory that is not snapshottable must fail.    *     * TODO: Listing/Deleting snapshots for a directory that is not snapshottable    * should also fail.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testSnapshottableDirectory ()
 specifier|public
 name|void

@@ -1129,6 +1129,11 @@ block|}
 comment|/** Test the computation and representation of diff between snapshots */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testDiffReport ()
 specifier|public
 name|void
@@ -1847,6 +1852,11 @@ block|}
 comment|/**    * Make changes under a sub-directory, then delete the sub-directory. Make    * sure the diff report computation correctly retrieve the diff from the    * deleted sub-directory.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testDiffReport2 ()
 specifier|public
 name|void

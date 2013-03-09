@@ -334,6 +334,11 @@ block|}
 comment|/**    * Test listing snapshots under a snapshottable directory    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testListSnapshots ()
 specifier|public
 name|void

@@ -435,6 +435,11 @@ block|}
 comment|/**    * Test listing all the snapshottable directories    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testListSnapshottableDir ()
 specifier|public
 name|void
@@ -1054,6 +1059,11 @@ block|}
 comment|/**    * Test the listing with different user names to make sure only directories    * that are owned by the user are listed.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testListWithDifferentUser ()
 specifier|public
 name|void

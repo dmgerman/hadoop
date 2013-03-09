@@ -760,6 +760,11 @@ block|}
 comment|/**    * Test deleting a file with snapshots. Need to check the blocksMap to make    * sure the corresponding record is updated correctly.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testDeletionWithSnapshots ()
 specifier|public
 name|void

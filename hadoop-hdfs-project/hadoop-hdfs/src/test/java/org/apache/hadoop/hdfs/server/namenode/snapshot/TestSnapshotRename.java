@@ -637,6 +637,11 @@ block|}
 comment|/**    * Rename snapshot(s), and check the correctness of the snapshot list within    * {@link INodeDirectorySnapshottable}    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSnapshotList ()
 specifier|public
 name|void
@@ -839,6 +844,11 @@ block|}
 comment|/**    * Test FileStatus of snapshot file before/after rename    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSnapshotRename ()
 specifier|public
 name|void
@@ -1017,6 +1027,11 @@ block|}
 comment|/**    * Test rename a non-existing snapshot    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRenameNonExistingSnapshot ()
 specifier|public
 name|void
@@ -1093,6 +1108,11 @@ block|}
 comment|/**    * Test rename a snapshot to another existing snapshot     */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRenameToExistingSnapshot ()
 specifier|public
 name|void

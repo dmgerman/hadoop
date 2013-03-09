@@ -477,6 +477,11 @@ block|}
 comment|/**    * Create a snapshot for /test/foo and create another snapshot for    * /test/foo/bar.  Files created before the snapshots should appear in both    * snapshots and the files created after the snapshots should not appear in    * any of the snapshots.      */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testNestedSnapshots ()
 specifier|public
 name|void
@@ -871,6 +876,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testSnapshotLimit ()
 specifier|public
 name|void
@@ -1126,6 +1136,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testSnapshotWithQuota ()
 specifier|public
 name|void
@@ -1498,6 +1513,11 @@ block|}
 comment|/**    * Test {@link Snapshot#ID_COMPARATOR}.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testIdCmp ()
 specifier|public
 name|void

@@ -528,6 +528,11 @@ block|}
 comment|/** Test allow-snapshot operation. */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testAllowSnapshot ()
 specifier|public
 name|void
@@ -848,6 +853,11 @@ block|}
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for normal (non-snapshot) file.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testNonSnapshotPathINodes ()
 specifier|public
 name|void
@@ -1160,6 +1170,11 @@ block|}
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testSnapshotPathINodes ()
 specifier|public
 name|void
@@ -1546,6 +1561,11 @@ block|}
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file after deleting the original file.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testSnapshotPathINodesAfterDeletion ()
 specifier|public
 name|void
@@ -1887,6 +1907,11 @@ decl_stmt|;
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file while adding a new file after snapshot.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testSnapshotPathINodesWithAddedFile ()
 specifier|public
 name|void
@@ -2216,6 +2241,11 @@ block|}
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file while modifying file after snapshot.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testSnapshotPathINodesAfterModification ()
 specifier|public
 name|void

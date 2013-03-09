@@ -530,6 +530,11 @@ block|}
 comment|/**    * Test replication number calculation for a normal file without snapshots.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReplicationWithoutSnapshot ()
 specifier|public
 name|void
@@ -763,6 +768,11 @@ block|}
 comment|/**    * Test replication number calculation for a file with snapshots.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReplicationWithSnapshot ()
 specifier|public
 name|void
@@ -956,6 +966,11 @@ block|}
 comment|/**    * Test replication for a file with snapshots, also including the scenario    * where the original file is deleted    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testReplicationAfterDeletion ()
 specifier|public
 name|void

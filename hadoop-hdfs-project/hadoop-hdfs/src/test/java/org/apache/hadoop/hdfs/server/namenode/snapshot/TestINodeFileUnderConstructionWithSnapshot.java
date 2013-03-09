@@ -558,6 +558,11 @@ block|}
 comment|/**    * Test snapshot after file appending    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSnapshotAfterAppending ()
 specifier|public
 name|void
@@ -835,6 +840,11 @@ block|}
 comment|/**    * Test snapshot during file appending, before the corresponding    * {@link FSDataOutputStream} instance closes.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSnapshotWhileAppending ()
 specifier|public
 name|void

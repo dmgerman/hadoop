@@ -639,6 +639,11 @@ block|}
 comment|/**    * Deleting snapshottable directory with snapshots must fail.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testDeleteDirectoryWithSnapshot ()
 specifier|public
 name|void
@@ -768,6 +773,11 @@ block|}
 comment|/**    * Deleting directory with snapshottable descendant with snapshots must fail.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testDeleteDirectoryWithSnapshot2 ()
 specifier|public
 name|void
@@ -949,6 +959,11 @@ block|}
 comment|/**    * Test deleting a directory which is a descendant of a snapshottable    * directory. In the test we need to cover the following cases:    *     *<pre>    * 1. Delete current INodeFile/INodeDirectory without taking any snapshot.    * 2. Delete current INodeFile/INodeDirectory while snapshots have been taken     *    on ancestor(s).    * 3. Delete current INodeFileWithSnapshot.    * 4. Delete current INodeDirectoryWithSnapshot.    *</pre>    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testDeleteCurrentFileDirectory ()
 specifier|public
 name|void
@@ -1768,6 +1783,11 @@ block|}
 comment|/**    * Test deleting the earliest (first) snapshot. In this simplest scenario, the     * snapshots are taken on the same directory, and we do not need to combine    * snapshot diffs.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testDeleteEarliestSnapshot1 ()
 specifier|public
 name|void
@@ -2097,6 +2117,11 @@ block|}
 comment|/**    * Test deleting the earliest (first) snapshot. In this more complicated     * scenario, the snapshots are taken across directories.    *<pre>    * The test covers the following scenarios:    * 1. delete the first diff in the diff list of a directory    * 2. delete the first diff in the diff list of a file    *</pre>    * Also, the recursive cleanTree process should cover both INodeFile and     * INodeDirectory.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testDeleteEarliestSnapshot2 ()
 specifier|public
 name|void
@@ -2598,6 +2623,11 @@ block|}
 comment|/**    * Test deleting snapshots in a more complicated scenario: need to combine    * snapshot diffs, but no need to handle diffs distributed in a dir tree    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testCombineSnapshotDiff1 ()
 specifier|public
 name|void
@@ -2617,6 +2647,11 @@ block|}
 comment|/**    * Test deleting snapshots in more complicated scenarios (snapshot diffs are    * distributed in the directory sub-tree)    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testCombineSnapshotDiff2 ()
 specifier|public
 name|void
@@ -3283,6 +3318,11 @@ block|}
 comment|/** Test deleting snapshots with modification on the metadata of directory */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testDeleteSnapshotWithDirModification ()
 specifier|public
 name|void
@@ -3488,6 +3528,11 @@ block|}
 comment|/**     * A test covering the case where the snapshot diff to be deleted is renamed     * to its previous snapshot.     */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testRenameSnapshotDiff ()
 specifier|public
 name|void

@@ -454,6 +454,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -484,6 +488,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -515,6 +523,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -543,6 +555,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRename ()
 specifier|public
 name|void
@@ -641,6 +658,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -668,6 +689,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -697,6 +722,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -726,6 +755,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -770,6 +803,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -799,6 +836,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
@@ -830,6 +871,10 @@ block|}
 annotation|@
 name|Test
 argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|,
 name|expected
 operator|=
 name|SnapshotAccessControlException
