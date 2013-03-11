@@ -911,7 +911,8 @@ argument_list|(
 name|latest
 argument_list|)
 condition|?
-name|parent
+name|getParent
+argument_list|()
 operator|.
 name|replaceChild4INodeFileWithSnapshot
 argument_list|(

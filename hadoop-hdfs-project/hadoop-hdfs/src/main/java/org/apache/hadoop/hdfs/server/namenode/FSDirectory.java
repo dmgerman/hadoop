@@ -7526,7 +7526,8 @@ name|i
 operator|=
 name|i
 operator|.
-name|parent
+name|getParent
+argument_list|()
 control|)
 block|{
 name|depth
@@ -7596,7 +7597,8 @@ name|inode
 operator|=
 name|inode
 operator|.
-name|parent
+name|getParent
+argument_list|()
 expr_stmt|;
 block|}
 return|return

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode.snapshot.diff
+DECL|package|org.apache.hadoop.hdfs.util
 package|package
 name|org
 operator|.
@@ -14,13 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|diff
+name|util
 package|;
 end_package
 
@@ -146,13 +140,23 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
+name|util
 operator|.
-name|namenode
+name|Diff
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|snapshot
+name|apache
 operator|.
-name|diff
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
 operator|.
 name|Diff
 operator|.
@@ -170,13 +174,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|diff
+name|util
 operator|.
 name|Diff
 operator|.
@@ -284,6 +282,11 @@ block|}
 comment|/** Test directory diff. */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testDiff ()
 specifier|public
 name|void

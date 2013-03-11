@@ -567,9 +567,10 @@ control|)
 block|{
 name|child
 operator|.
-name|parent
-operator|=
+name|setParent
+argument_list|(
 name|this
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -2401,9 +2402,10 @@ expr_stmt|;
 block|}
 name|node
 operator|.
-name|parent
-operator|=
+name|setParent
+argument_list|(
 name|this
+argument_list|)
 expr_stmt|;
 name|children
 operator|.
