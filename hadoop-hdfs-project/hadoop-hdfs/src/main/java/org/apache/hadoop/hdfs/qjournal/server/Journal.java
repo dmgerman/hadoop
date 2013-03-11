@@ -1212,6 +1212,13 @@ argument_list|(
 name|committedTxnId
 argument_list|)
 expr_stmt|;
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|curSegment
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getStorage ()
 name|JNStorage
