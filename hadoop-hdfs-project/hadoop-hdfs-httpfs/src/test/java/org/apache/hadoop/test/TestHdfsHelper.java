@@ -435,10 +435,8 @@ init|=
 operator|new
 name|Path
 argument_list|(
-literal|"./"
+literal|"/tmp/"
 operator|+
-name|TEST_DIR_ROOT
-argument_list|,
 name|testName
 operator|+
 literal|"-"
