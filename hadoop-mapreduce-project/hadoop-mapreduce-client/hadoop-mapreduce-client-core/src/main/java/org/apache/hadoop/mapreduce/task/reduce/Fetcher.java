@@ -1217,11 +1217,6 @@ comment|// Construct the url and connect
 name|DataInputStream
 name|input
 decl_stmt|;
-name|boolean
-name|connectSucceeded
-init|=
-literal|false
-decl_stmt|;
 try|try
 block|{
 name|URL
@@ -1291,10 +1286,6 @@ name|connection
 argument_list|,
 name|connectionTimeout
 argument_list|)
-expr_stmt|;
-name|connectSucceeded
-operator|=
-literal|true
 expr_stmt|;
 name|input
 operator|=
@@ -1457,12 +1448,6 @@ argument_list|)
 expr_stmt|;
 comment|// If connect did not succeed, just mark all the maps as failed,
 comment|// indirectly penalizing the host
-if|if
-condition|(
-operator|!
-name|connectSucceeded
-condition|)
-block|{
 for|for
 control|(
 name|TaskAttemptID
@@ -1479,37 +1464,7 @@ name|left
 argument_list|,
 name|host
 argument_list|,
-name|connectSucceeded
-argument_list|,
-name|connectExcpt
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-comment|// If we got a read error at this stage, it implies there was a problem
-comment|// with the first map, typically lost map. So, penalize only that map
-comment|// and add the rest
-name|TaskAttemptID
-name|firstMap
-init|=
-name|maps
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-name|scheduler
-operator|.
-name|copyFailed
-argument_list|(
-name|firstMap
-argument_list|,
-name|host
-argument_list|,
-name|connectSucceeded
+literal|false
 argument_list|,
 name|connectExcpt
 argument_list|)
