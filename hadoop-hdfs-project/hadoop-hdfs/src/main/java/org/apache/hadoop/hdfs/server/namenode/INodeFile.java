@@ -124,7 +124,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|NSQuotaExceededException
+name|QuotaExceededException
 import|;
 end_import
 
@@ -213,8 +213,6 @@ operator|.
 name|server
 operator|.
 name|namenode
-operator|.
-name|INode
 operator|.
 name|Content
 operator|.
@@ -903,7 +901,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 return|return
 name|isInLatestSnapshot
@@ -967,7 +965,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 return|return
 name|super
@@ -1104,7 +1102,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|INodeFile
@@ -1454,7 +1452,9 @@ annotation|@
 name|Override
 DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|Quota
+operator|.
+name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
@@ -1469,7 +1469,7 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -1483,36 +1483,32 @@ literal|null
 condition|)
 block|{
 comment|// this only happens when deleting the current file
-return|return
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
 argument_list|)
-return|;
+expr_stmt|;
 block|}
-else|else
-block|{
 return|return
-literal|0
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
 return|;
-block|}
 block|}
 annotation|@
 name|Override
 DECL|method|destroyAndCollectBlocks (BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|void
 name|destroyAndCollectBlocks
 parameter_list|(
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 block|{
-name|int
-name|total
-init|=
-literal|1
-decl_stmt|;
 if|if
 condition|(
 name|blocks
@@ -1563,8 +1559,6 @@ operator|instanceof
 name|FileWithSnapshot
 condition|)
 block|{
-name|total
-operator|+=
 operator|(
 operator|(
 name|FileWithSnapshot
@@ -1579,9 +1573,6 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-return|return
-name|total
-return|;
 block|}
 annotation|@
 name|Override
@@ -2153,6 +2144,7 @@ name|size
 return|;
 block|}
 DECL|method|diskspaceConsumed ()
+specifier|public
 specifier|final
 name|long
 name|diskspaceConsumed

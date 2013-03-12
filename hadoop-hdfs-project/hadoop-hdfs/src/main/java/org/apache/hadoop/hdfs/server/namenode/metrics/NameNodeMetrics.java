@@ -820,12 +820,12 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incrFilesDeleted (int delta)
+DECL|method|incrFilesDeleted (long delta)
 specifier|public
 name|void
 name|incrFilesDeleted
 parameter_list|(
-name|int
+name|long
 name|delta
 parameter_list|)
 block|{

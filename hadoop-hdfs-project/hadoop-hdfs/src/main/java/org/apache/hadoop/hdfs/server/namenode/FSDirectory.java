@@ -1301,12 +1301,12 @@ operator|=
 name|flag
 expr_stmt|;
 block|}
-DECL|method|incrDeletedFileCount (int count)
+DECL|method|incrDeletedFileCount (long count)
 specifier|private
 name|void
 name|incrDeletedFileCount
 parameter_list|(
-name|int
+name|long
 name|count
 parameter_list|)
 block|{
@@ -3819,7 +3819,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 comment|// Collect the blocks and remove the lease for previous dst
-name|int
+name|long
 name|filesDeleted
 init|=
 operator|-
@@ -3862,6 +3862,13 @@ name|getLatestSnapshot
 argument_list|()
 argument_list|,
 name|collectedBlocks
+argument_list|)
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
 argument_list|)
 expr_stmt|;
 name|getFSNamesystem
@@ -4404,7 +4411,7 @@ name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
 block|{
@@ -4455,7 +4462,7 @@ name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
 block|{
@@ -4533,7 +4540,7 @@ name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
 block|{
@@ -4591,7 +4598,7 @@ name|FileNotFoundException
 throws|,
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
 block|{
@@ -4696,7 +4703,7 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
 block|{
@@ -4765,7 +4772,7 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
 block|{
@@ -5032,7 +5039,7 @@ name|now
 argument_list|()
 decl_stmt|;
 specifier|final
-name|int
+name|long
 name|filesRemoved
 decl_stmt|;
 name|writeLock
@@ -5438,7 +5445,7 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
 block|{
@@ -5470,7 +5477,7 @@ literal|false
 argument_list|)
 decl_stmt|;
 specifier|final
-name|int
+name|long
 name|filesRemoved
 init|=
 name|deleteAllowed
@@ -5513,7 +5520,7 @@ block|}
 block|}
 comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param iip the inodes resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
 DECL|method|unprotectedDelete (INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, long mtime)
-name|int
+name|long
 name|unprotectedDelete
 parameter_list|(
 name|INodesInPath
@@ -5526,7 +5533,7 @@ name|long
 name|mtime
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 assert|assert
 name|hasWriteLock
@@ -5600,7 +5607,7 @@ argument_list|)
 expr_stmt|;
 comment|// collect block
 specifier|final
-name|int
+name|long
 name|inodesRemoved
 init|=
 name|targetNode
@@ -5612,6 +5619,13 @@ argument_list|,
 name|latestSnapshot
 argument_list|,
 name|collectedBlocks
+argument_list|)
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
 argument_list|)
 decl_stmt|;
 if|if
@@ -7369,7 +7383,7 @@ index|]
 decl_stmt|;
 name|node
 operator|.
-name|addSpaceConsumed
+name|addSpaceConsumed2Cache
 argument_list|(
 name|nsDelta
 argument_list|,
@@ -9237,7 +9251,7 @@ name|INodesInPath
 name|inodesInPath
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|Snapshot
@@ -9701,13 +9715,42 @@ operator|instanceof
 name|INodeDirectoryWithQuota
 condition|)
 block|{
-comment|// a directory with quota; so set the quota to the new value
-operator|(
+name|INodeDirectoryWithQuota
+name|quotaNode
+init|=
 operator|(
 name|INodeDirectoryWithQuota
 operator|)
 name|dirNode
-operator|)
+decl_stmt|;
+name|Quota
+operator|.
+name|Counts
+name|counts
+init|=
+literal|null
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|quotaNode
+operator|.
+name|isQuotaSet
+argument_list|()
+condition|)
+block|{
+comment|// dirNode must be an INodeDirectoryWithSnapshot whose quota has not
+comment|// been set yet
+name|counts
+operator|=
+name|quotaNode
+operator|.
+name|computeQuotaUsage
+argument_list|()
+expr_stmt|;
+block|}
+comment|// a directory with quota; so set the quota to the new value
+name|quotaNode
 operator|.
 name|setQuota
 argument_list|(
@@ -9718,8 +9761,45 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+name|quotaNode
+operator|.
+name|isQuotaSet
+argument_list|()
+operator|&&
+name|counts
+operator|!=
+literal|null
+condition|)
+block|{
+name|quotaNode
+operator|.
+name|setSpaceConsumed
+argument_list|(
+name|counts
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
+argument_list|,
+name|counts
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|DISKSPACE
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 operator|!
-name|dirNode
+name|quotaNode
 operator|.
 name|isQuotaSet
 argument_list|()
@@ -9731,7 +9811,7 @@ condition|)
 block|{
 comment|// will not come here for root because root's nsQuota is always set
 return|return
-name|dirNode
+name|quotaNode
 operator|.
 name|replaceSelf4INodeDirectory
 argument_list|()
@@ -9897,7 +9977,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 name|boolean
 name|status
@@ -9973,7 +10053,7 @@ parameter_list|)
 throws|throws
 name|UnresolvedLinkException
 throws|,
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 assert|assert
 name|hasWriteLock
@@ -10035,7 +10115,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 assert|assert
 name|hasWriteLock

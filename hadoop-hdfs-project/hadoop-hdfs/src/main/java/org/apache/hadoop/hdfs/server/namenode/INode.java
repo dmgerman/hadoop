@@ -214,7 +214,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|NSQuotaExceededException
+name|QuotaExceededException
 import|;
 end_import
 
@@ -231,8 +231,6 @@ operator|.
 name|server
 operator|.
 name|namenode
-operator|.
-name|INode
 operator|.
 name|Content
 operator|.
@@ -373,6 +371,10 @@ operator|.
 name|SignedBytes
 import|;
 end_import
+
+begin_comment
+comment|//import org.apache.hadoop.hdfs.util.EnumCounters;
+end_comment
 
 begin_comment
 comment|/**  * We keep an in-memory representation of the file/block hierarchy.  * This is a base INode class containing common fields for file and   * directory inodes.  */
@@ -1063,7 +1065,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|INode
@@ -1199,7 +1201,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|INode
@@ -1342,7 +1344,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|INode
@@ -1435,7 +1437,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 function_decl|;
 comment|/**    * Check whether it's a file.    */
 DECL|method|isFile ()
@@ -1499,11 +1501,13 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a {@link FileWithSnapshot}.    * Call {@link INode#recordModification(Snapshot)} to capture the     * current states. Mark the INode as deleted.    *     * 1.4 The current inode is a {@link INodeDirectoryWithSnapshot}.    * Call {@link INode#recordModification(Snapshot)} to capture the     * current states. Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean {@link FileWithSnapshot}: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectoryWithSnapshot}: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *     * @param snapshot    *          The snapshot to delete. Null means to delete the current    *          file/directory.    * @param prior    *          The latest snapshot before the to-be-deleted snapshot. When    *          deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @return the number of deleted inodes in the subtree.    */
+comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a {@link FileWithSnapshot}.    * Call {@link INode#recordModification(Snapshot)} to capture the     * current states. Mark the INode as deleted.    *     * 1.4 The current inode is a {@link INodeDirectoryWithSnapshot}.    * Call {@link INode#recordModification(Snapshot)} to capture the     * current states. Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean {@link FileWithSnapshot}: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectoryWithSnapshot}: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *     * @param snapshot    *          The snapshot to delete. Null means to delete the current    *          file/directory.    * @param prior    *          The latest snapshot before the to-be-deleted snapshot. When    *          deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @return quota usage delta when deleting a snapshot    */
 DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 specifier|abstract
-name|int
+name|Quota
+operator|.
+name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
@@ -1517,166 +1521,19 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 function_decl|;
-comment|/**    * Destroy self and clear everything! If the INode is a file, this method    * collects its blocks for further block deletion. If the INode is a     * directory, the method goes down the subtree and collects blocks from the     * descents, and clears its parent/children references as well. The method     * also clears the diff list if the INode contains snapshot diff list.    *     * @param collectedBlocks blocks collected from the descents for further block    *                        deletion/update will be added to this map.    * @return the number of deleted inodes in the subtree.    */
+comment|/**    * Destroy self and clear everything! If the INode is a file, this method    * collects its blocks for further block deletion. If the INode is a     * directory, the method goes down the subtree and collects blocks from the     * descents, and clears its parent/children references as well. The method     * also clears the diff list if the INode contains snapshot diff list.    *     * @param collectedBlocks blocks collected from the descents for further block    *                        deletion/update will be added to this map.    */
 DECL|method|destroyAndCollectBlocks ( BlocksMapUpdateInfo collectedBlocks)
 specifier|public
 specifier|abstract
-name|int
+name|void
 name|destroyAndCollectBlocks
 parameter_list|(
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 function_decl|;
-comment|/**    * The content types such as file, directory and symlink to be computed    * in {@link INode#computeContentSummary(CountsMap)}.    */
-DECL|enum|Content
-specifier|public
-enum|enum
-name|Content
-block|{
-comment|/** The number of files. */
-DECL|enumConstant|FILE
-name|FILE
-block|,
-comment|/** The number of directories. */
-DECL|enumConstant|DIRECTORY
-name|DIRECTORY
-block|,
-comment|/** The number of symlinks. */
-DECL|enumConstant|SYMLINK
-name|SYMLINK
-block|,
-comment|/** The total of file length in bytes. */
-DECL|enumConstant|LENGTH
-name|LENGTH
-block|,
-comment|/** The total of disk space usage in bytes including replication. */
-DECL|enumConstant|DISKSPACE
-name|DISKSPACE
-block|,
-comment|/** The number of snapshots. */
-DECL|enumConstant|SNAPSHOT
-name|SNAPSHOT
-block|,
-comment|/** The number of snapshottable directories. */
-DECL|enumConstant|SNAPSHOTTABLE_DIRECTORY
-name|SNAPSHOTTABLE_DIRECTORY
-block|;
-comment|/** Content counts. */
-DECL|class|Counts
-specifier|public
-specifier|static
-class|class
-name|Counts
-extends|extends
-name|EnumCounters
-argument_list|<
-name|Content
-argument_list|>
-block|{
-DECL|method|Counts ()
-specifier|private
-name|Counts
-parameter_list|()
-block|{
-name|super
-argument_list|(
-name|Content
-operator|.
-name|values
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-DECL|field|FACTORY
-specifier|private
-specifier|static
-specifier|final
-name|EnumCounters
-operator|.
-name|Factory
-argument_list|<
-name|Content
-argument_list|,
-name|Counts
-argument_list|>
-name|FACTORY
-init|=
-operator|new
-name|EnumCounters
-operator|.
-name|Factory
-argument_list|<
-name|Content
-argument_list|,
-name|Counts
-argument_list|>
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|Counts
-name|newInstance
-parameter_list|()
-block|{
-return|return
-operator|new
-name|Counts
-argument_list|()
-return|;
-block|}
-block|}
-decl_stmt|;
-comment|/** A map of counters for the current state and the snapshots. */
-DECL|class|CountsMap
-specifier|public
-specifier|static
-class|class
-name|CountsMap
-extends|extends
-name|EnumCounters
-operator|.
-name|Map
-argument_list|<
-name|CountsMap
-operator|.
-name|Key
-argument_list|,
-name|Content
-argument_list|,
-name|Counts
-argument_list|>
-block|{
-comment|/** The key type of the map. */
-DECL|enum|Key
-DECL|enumConstant|CURRENT
-DECL|enumConstant|SNAPSHOT
-specifier|public
-specifier|static
-enum|enum
-name|Key
-block|{
-name|CURRENT
-block|,
-name|SNAPSHOT
-block|}
-DECL|method|CountsMap ()
-specifier|private
-name|CountsMap
-parameter_list|()
-block|{
-name|super
-argument_list|(
-name|FACTORY
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/** Compute {@link ContentSummary}. */
 DECL|method|computeContentSummary ()
 specifier|public
@@ -1794,17 +1651,20 @@ name|Counts
 name|counts
 parameter_list|)
 function_decl|;
-comment|/**    * Check and add namespace consumed to itself and the ancestors.    * @throws NSQuotaExceededException if quote is violated.    */
-DECL|method|addNamespaceConsumed (int delta)
+comment|/**    * Check and add namespace/diskspace consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
+DECL|method|addSpaceConsumed (long nsDelta, long dsDelta)
 specifier|public
 name|void
-name|addNamespaceConsumed
+name|addSpaceConsumed
 parameter_list|(
-name|int
-name|delta
+name|long
+name|nsDelta
+parameter_list|,
+name|long
+name|dsDelta
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -1815,9 +1675,11 @@ condition|)
 block|{
 name|parent
 operator|.
-name|addNamespaceConsumed
+name|addSpaceConsumed
 argument_list|(
-name|delta
+name|nsDelta
+argument_list|,
+name|dsDelta
 argument_list|)
 expr_stmt|;
 block|}
@@ -2204,7 +2066,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 name|Preconditions
 operator|.
@@ -2283,7 +2145,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|INode
@@ -2381,7 +2243,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|INode

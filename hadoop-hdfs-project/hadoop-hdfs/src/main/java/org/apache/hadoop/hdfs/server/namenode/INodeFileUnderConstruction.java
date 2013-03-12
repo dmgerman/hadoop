@@ -108,7 +108,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|NSQuotaExceededException
+name|QuotaExceededException
 import|;
 end_import
 
@@ -635,7 +635,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 return|return
 name|isInLatestSnapshot

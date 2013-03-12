@@ -86,7 +86,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|NSQuotaExceededException
+name|QuotaExceededException
 import|;
 end_import
 
@@ -103,8 +103,6 @@ operator|.
 name|server
 operator|.
 name|namenode
-operator|.
-name|INode
 operator|.
 name|Content
 operator|.
@@ -237,7 +235,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 return|return
 name|isInLatestSnapshot
@@ -320,7 +318,9 @@ annotation|@
 name|Override
 DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|Quota
+operator|.
+name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
@@ -336,14 +336,19 @@ name|collectedBlocks
 parameter_list|)
 block|{
 return|return
-literal|1
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|destroyAndCollectBlocks ( final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|void
 name|destroyAndCollectBlocks
 parameter_list|(
 specifier|final
@@ -351,9 +356,7 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 block|{
-return|return
-literal|1
-return|;
+comment|// do nothing
 block|}
 annotation|@
 name|Override

@@ -92,6 +92,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|Quota
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INode
 operator|.
 name|BlocksMapUpdateInfo
@@ -438,7 +456,9 @@ block|}
 comment|/** Combine the posterior diff and collect blocks for deletion. */
 DECL|method|combinePosteriorAndCollectBlocks (final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|abstract
-name|int
+name|Quota
+operator|.
+name|Counts
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
 specifier|final
@@ -454,11 +474,13 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 function_decl|;
-comment|/**    * Delete and clear self.    * @param collectedBlocks Used to collect blocks for deletion.    * @return number of inodes/diff destroyed.    */
-DECL|method|destroyAndCollectBlocks (final N currentINode, final BlocksMapUpdateInfo collectedBlocks)
+comment|/**    * Delete and clear self.    * @param collectedBlocks Used to collect blocks for deletion.    * @return quota usage delta    */
+DECL|method|destroyDiffAndCollectBlocks (final N currentINode, final BlocksMapUpdateInfo collectedBlocks)
 specifier|abstract
-name|int
-name|destroyAndCollectBlocks
+name|Quota
+operator|.
+name|Counts
+name|destroyDiffAndCollectBlocks
 parameter_list|(
 specifier|final
 name|N

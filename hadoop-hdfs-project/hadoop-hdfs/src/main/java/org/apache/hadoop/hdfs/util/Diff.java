@@ -130,7 +130,7 @@ block|{
 comment|/** Process the given element. */
 DECL|method|process (E element)
 specifier|public
-name|int
+name|void
 name|process
 parameter_list|(
 name|E
@@ -424,7 +424,7 @@ expr_stmt|;
 block|}
 comment|/** @return the created list, which is never null. */
 DECL|method|getCreatedList ()
-specifier|protected
+specifier|public
 name|List
 argument_list|<
 name|E
@@ -1518,7 +1518,7 @@ block|}
 comment|/**    * Combine this diff with a posterior diff.  We have the following cases:    *     *<pre>    * 1. For (c, 0) in the posterior diff, check the element in this diff:    * 1.1 (c', 0)  in this diff: impossible    * 1.2 (0, d')  in this diff: put in c-list --> (c, d')    * 1.3 (c', d') in this diff: impossible    * 1.4 (0, 0)   in this diff: put in c-list --> (c, 0)    * This is the same logic as {@link #create(E)}.    *     * 2. For (0, d) in the posterior diff,    * 2.1 (c', 0)  in this diff: remove from c-list --> (0, 0)    * 2.2 (0, d')  in this diff: impossible    * 2.3 (c', d') in this diff: remove from c-list --> (0, d')    * 2.4 (0, 0)   in this diff: put in d-list --> (0, d)    * This is the same logic as {@link #delete(E)}.    *     * 3. For (c, d) in the posterior diff,    * 3.1 (c', 0)  in this diff: replace the element in c-list --> (c, 0)    * 3.2 (0, d')  in this diff: impossible    * 3.3 (c', d') in this diff: replace the element in c-list --> (c, d')    * 3.4 (0, 0)   in this diff: put in c-list and d-list --> (c, d)    * This is the same logic as {@link #modify(E, E)}.    *</pre>    *     * @param the posterior diff to combine with.    * @param deletedProcesser    *     process the deleted/overwritten elements in case 2.1, 2.3, 3.1 and 3.3.    */
 DECL|method|combinePosterior (final Diff<K, E> posterior, final Processor<E> deletedProcesser)
 specifier|public
-name|int
+name|void
 name|combinePosterior
 parameter_list|(
 specifier|final
@@ -1597,11 +1597,6 @@ name|next
 argument_list|()
 else|:
 literal|null
-decl_stmt|;
-name|int
-name|deletedNum
-init|=
-literal|0
 decl_stmt|;
 for|for
 control|(
@@ -1699,8 +1694,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|deletedNum
-operator|+=
 name|deletedProcesser
 operator|.
 name|process
@@ -1750,8 +1743,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|deletedNum
-operator|+=
 name|deletedProcesser
 operator|.
 name|process
@@ -1792,9 +1783,6 @@ literal|null
 expr_stmt|;
 block|}
 block|}
-return|return
-name|deletedNum
-return|;
 block|}
 annotation|@
 name|Override

@@ -48,7 +48,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|NSQuotaExceededException
+name|QuotaExceededException
 import|;
 end_import
 
@@ -103,6 +103,24 @@ operator|.
 name|namenode
 operator|.
 name|INodeFileUnderConstruction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|Quota
 import|;
 end_import
 
@@ -407,7 +425,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -461,7 +479,9 @@ annotation|@
 name|Override
 DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|Quota
+operator|.
+name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
@@ -476,7 +496,7 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -504,6 +524,14 @@ argument_list|,
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+return|return
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
+return|;
 block|}
 else|else
 block|{
@@ -523,15 +551,6 @@ name|collectedBlocks
 argument_list|)
 return|;
 block|}
-return|return
-name|prior
-operator|==
-literal|null
-condition|?
-literal|1
-else|:
-literal|0
-return|;
 block|}
 annotation|@
 name|Override

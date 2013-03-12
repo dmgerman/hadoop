@@ -100,6 +100,20 @@ name|QuotaExceededException
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Directory INode class that has a quota restriction  */
 end_comment
@@ -372,6 +386,9 @@ block|{
 if|if
 condition|(
 name|useCache
+operator|&&
+name|isQuotaSet
+argument_list|()
 condition|)
 block|{
 comment|// use cache value
@@ -579,18 +596,22 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addNamespaceConsumed (final int delta)
+DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta)
 specifier|public
 specifier|final
 name|void
-name|addNamespaceConsumed
+name|addSpaceConsumed
 parameter_list|(
 specifier|final
-name|int
-name|delta
+name|long
+name|nsDelta
+parameter_list|,
+specifier|final
+name|long
+name|dsDelta
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -602,40 +623,50 @@ comment|// The following steps are important:
 comment|// check quotas in this inode and all ancestors before changing counts
 comment|// so that no change is made if there is any quota violation.
 comment|// (1) verify quota in this inode
-name|verifyNamespaceQuota
+name|verifyQuota
 argument_list|(
-name|delta
+name|nsDelta
+argument_list|,
+name|dsDelta
 argument_list|)
 expr_stmt|;
 comment|// (2) verify quota and then add count in ancestors
 name|super
 operator|.
-name|addNamespaceConsumed
+name|addSpaceConsumed
 argument_list|(
-name|delta
+name|nsDelta
+argument_list|,
+name|dsDelta
 argument_list|)
 expr_stmt|;
 comment|// (3) add count in this inode
-name|namespace
-operator|+=
-name|delta
+name|addSpaceConsumed2Cache
+argument_list|(
+name|nsDelta
+argument_list|,
+name|dsDelta
+argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
 name|super
 operator|.
-name|addNamespaceConsumed
+name|addSpaceConsumed
 argument_list|(
-name|delta
+name|nsDelta
+argument_list|,
+name|dsDelta
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/** Update the size of the tree    *     * @param nsDelta the change of the tree size    * @param dsDelta change to disk space occupied    */
-DECL|method|addSpaceConsumed (long nsDelta, long dsDelta)
+DECL|method|addSpaceConsumed2Cache (long nsDelta, long dsDelta)
+specifier|protected
 name|void
-name|addSpaceConsumed
+name|addSpaceConsumed2Cache
 parameter_list|(
 name|long
 name|nsDelta
@@ -825,6 +856,34 @@ name|diskspaceString
 argument_list|()
 operator|+
 literal|"]"
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNamespace ()
+specifier|public
+name|long
+name|getNamespace
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|namespace
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDiskspace ()
+specifier|public
+name|long
+name|getDiskspace
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|diskspace
 return|;
 block|}
 block|}

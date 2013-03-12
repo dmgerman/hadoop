@@ -20,6 +20,22 @@ name|namenode
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|EnumCounters
+import|;
+end_import
+
 begin_comment
 comment|/** Quota types. */
 end_comment
@@ -52,6 +68,7 @@ argument_list|>
 block|{
 comment|/** @return a new counter with the given namespace and diskspace usages. */
 DECL|method|newInstance (long namespace, long diskspace)
+specifier|public
 specifier|static
 name|Counts
 name|newInstance
@@ -91,6 +108,22 @@ argument_list|)
 expr_stmt|;
 return|return
 name|c
+return|;
+block|}
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|Counts
+name|newInstance
+parameter_list|()
+block|{
+return|return
+name|newInstance
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
 return|;
 block|}
 DECL|method|Counts ()

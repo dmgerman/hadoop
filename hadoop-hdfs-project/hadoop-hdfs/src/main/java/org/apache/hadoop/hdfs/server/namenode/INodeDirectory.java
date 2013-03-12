@@ -166,7 +166,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|NSQuotaExceededException
+name|QuotaExceededException
 import|;
 end_import
 
@@ -199,8 +199,6 @@ operator|.
 name|server
 operator|.
 name|namenode
-operator|.
-name|INode
 operator|.
 name|Content
 operator|.
@@ -717,7 +715,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -847,7 +845,7 @@ name|long
 name|dsQuota
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 name|Preconditions
 operator|.
@@ -943,7 +941,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 name|Preconditions
 operator|.
@@ -1299,7 +1297,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 return|return
 name|isInLatestSnapshot
@@ -1337,7 +1335,7 @@ name|INode
 name|snapshotCopy
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 if|if
 condition|(
@@ -2247,7 +2245,7 @@ name|Snapshot
 name|latest
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
 specifier|final
 name|int
@@ -2699,7 +2697,9 @@ block|}
 comment|/**    * Call {@link INode#cleanSubtree(SnapshotDeletionInfo, BlocksMapUpdateInfo)}    * recursively down the subtree.    */
 DECL|method|cleanSubtreeRecursively (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|Quota
+operator|.
+name|Counts
 name|cleanSubtreeRecursively
 parameter_list|(
 specifier|final
@@ -2714,16 +2714,25 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
-name|int
-name|total
+name|Quota
+operator|.
+name|Counts
+name|counts
 init|=
-literal|0
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
 decl_stmt|;
 comment|// in case of deletion snapshot, since this call happens after we modify
 comment|// the diff list, the snapshot to be deleted has been combined or renamed
-comment|// to its latest previous snapshot.
+comment|// to its latest previous snapshot. (besides, we also need to consider nodes
+comment|// created after prior but before snapshot. this will be done in
+comment|// INodeDirectoryWithSnapshot#cleanSubtree
 name|Snapshot
 name|s
 init|=
@@ -2750,8 +2759,11 @@ name|s
 argument_list|)
 control|)
 block|{
-name|total
-operator|+=
+name|Quota
+operator|.
+name|Counts
+name|childCounts
+init|=
 name|child
 operator|.
 name|cleanSubtree
@@ -2762,17 +2774,24 @@ name|prior
 argument_list|,
 name|collectedBlocks
 argument_list|)
+decl_stmt|;
+name|counts
+operator|.
+name|add
+argument_list|(
+name|childCounts
+argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|total
+name|counts
 return|;
 block|}
 annotation|@
 name|Override
 DECL|method|destroyAndCollectBlocks ( final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|void
 name|destroyAndCollectBlocks
 parameter_list|(
 specifier|final
@@ -2780,11 +2799,6 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 block|{
-name|int
-name|total
-init|=
-literal|0
-decl_stmt|;
 for|for
 control|(
 name|INode
@@ -2796,8 +2810,6 @@ literal|null
 argument_list|)
 control|)
 block|{
-name|total
-operator|+=
 name|child
 operator|.
 name|destroyAndCollectBlocks
@@ -2809,18 +2821,14 @@ block|}
 name|clearReferences
 argument_list|()
 expr_stmt|;
-name|total
-operator|++
-expr_stmt|;
-return|return
-name|total
-return|;
 block|}
 annotation|@
 name|Override
 DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
 specifier|public
-name|int
+name|Quota
+operator|.
+name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
@@ -2835,13 +2843,8 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 throws|throws
-name|NSQuotaExceededException
+name|QuotaExceededException
 block|{
-name|int
-name|total
-init|=
-literal|0
-decl_stmt|;
 if|if
 condition|(
 name|prior
@@ -2854,19 +2857,28 @@ literal|null
 condition|)
 block|{
 comment|// destroy the whole subtree and collect blocks that should be deleted
-name|total
-operator|+=
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
 argument_list|)
 expr_stmt|;
+return|return
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
+return|;
 block|}
 else|else
 block|{
 comment|// process recursively down the subtree
-name|total
-operator|+=
+name|Quota
+operator|.
+name|Counts
+name|counts
+init|=
 name|cleanSubtreeRecursively
 argument_list|(
 name|snapshot
@@ -2875,11 +2887,48 @@ name|prior
 argument_list|,
 name|collectedBlocks
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|isQuotaSet
+argument_list|()
+condition|)
+block|{
+operator|(
+operator|(
+name|INodeDirectoryWithQuota
+operator|)
+name|this
+operator|)
+operator|.
+name|addSpaceConsumed2Cache
+argument_list|(
+operator|-
+name|counts
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
+argument_list|,
+operator|-
+name|counts
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|DISKSPACE
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|total
+name|counts
 return|;
+block|}
 block|}
 comment|/**    * Compare the metadata with another INodeDirectory    */
 DECL|method|metadataEquals (INodeDirectory other)
