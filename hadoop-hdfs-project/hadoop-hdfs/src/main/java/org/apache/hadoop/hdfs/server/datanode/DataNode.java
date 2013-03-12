@@ -8253,6 +8253,62 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|// Small wrapper around the DiskChecker class that provides means to mock
+comment|// DiskChecker static methods and unittest DataNode#getDataDirsFromURIs.
+DECL|class|DataNodeDiskChecker
+specifier|static
+class|class
+name|DataNodeDiskChecker
+block|{
+DECL|field|expectedPermission
+specifier|private
+name|FsPermission
+name|expectedPermission
+decl_stmt|;
+DECL|method|DataNodeDiskChecker (FsPermission expectedPermission)
+specifier|public
+name|DataNodeDiskChecker
+parameter_list|(
+name|FsPermission
+name|expectedPermission
+parameter_list|)
+block|{
+name|this
+operator|.
+name|expectedPermission
+operator|=
+name|expectedPermission
+expr_stmt|;
+block|}
+DECL|method|checkDir (LocalFileSystem localFS, Path path)
+specifier|public
+name|void
+name|checkDir
+parameter_list|(
+name|LocalFileSystem
+name|localFS
+parameter_list|,
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|DiskErrorException
+throws|,
+name|IOException
+block|{
+name|DiskChecker
+operator|.
+name|checkDir
+argument_list|(
+name|localFS
+argument_list|,
+name|path
+argument_list|,
+name|expectedPermission
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Make an instance of DataNode after ensuring that at least one of the    * given data directories (and their parent directories, if necessary)    * can be created.    * @param dataDirs List of directories, where the new DataNode instance should    * keep its files.    * @param conf Configuration instance to use.    * @param resources Secure resources needed to run under Kerberos    * @return DataNode instance for given list of data dirs and conf, or null if    * no directory from this directory list can be created.    * @throws IOException    */
 DECL|method|makeInstance (Collection<URI> dataDirs, Configuration conf, SecureResources resources)
 specifier|static
@@ -8300,6 +8356,15 @@ name|DFS_DATANODE_DATA_DIR_PERMISSION_DEFAULT
 argument_list|)
 argument_list|)
 decl_stmt|;
+name|DataNodeDiskChecker
+name|dataNodeDiskChecker
+init|=
+operator|new
+name|DataNodeDiskChecker
+argument_list|(
+name|permission
+argument_list|)
+decl_stmt|;
 name|ArrayList
 argument_list|<
 name|File
@@ -8312,7 +8377,7 @@ name|dataDirs
 argument_list|,
 name|localFS
 argument_list|,
-name|permission
+name|dataNodeDiskChecker
 argument_list|)
 decl_stmt|;
 name|DefaultMetricsSystem
@@ -8345,7 +8410,7 @@ argument_list|)
 return|;
 block|}
 comment|// DataNode ctor expects AbstractList instead of List or Collection...
-DECL|method|getDataDirsFromURIs (Collection<URI> dataDirs, LocalFileSystem localFS, FsPermission permission)
+DECL|method|getDataDirsFromURIs (Collection<URI> dataDirs, LocalFileSystem localFS, DataNodeDiskChecker dataNodeDiskChecker)
 specifier|static
 name|ArrayList
 argument_list|<
@@ -8362,8 +8427,8 @@ parameter_list|,
 name|LocalFileSystem
 name|localFS
 parameter_list|,
-name|FsPermission
-name|permission
+name|DataNodeDiskChecker
+name|dataNodeDiskChecker
 parameter_list|)
 throws|throws
 name|IOException
@@ -8455,7 +8520,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|DiskChecker
+name|dataNodeDiskChecker
 operator|.
 name|checkDir
 argument_list|(
@@ -8469,8 +8534,6 @@ operator|.
 name|toURI
 argument_list|()
 argument_list|)
-argument_list|,
-name|permission
 argument_list|)
 expr_stmt|;
 name|dirs
