@@ -3138,7 +3138,7 @@ literal|"localhost"
 block|,
 literal|"3w.org"
 block|,
-literal|"UnknownHost"
+literal|"UnknownHost123"
 block|}
 argument_list|)
 decl_stmt|;
