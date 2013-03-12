@@ -145,6 +145,13 @@ name|Type
 name|getType
 parameter_list|()
 function_decl|;
+comment|/** @return true if the operation cannot use a token */
+DECL|method|getRequireAuth ()
+specifier|public
+name|boolean
+name|getRequireAuth
+parameter_list|()
+function_decl|;
 comment|/** @return true if the operation will do output. */
 DECL|method|getDoOutput ()
 specifier|public
@@ -357,6 +364,21 @@ return|return
 name|op
 operator|.
 name|getType
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRequireAuth ()
+specifier|public
+name|boolean
+name|getRequireAuth
+parameter_list|()
+block|{
+return|return
+name|op
+operator|.
+name|getRequireAuth
 argument_list|()
 return|;
 block|}

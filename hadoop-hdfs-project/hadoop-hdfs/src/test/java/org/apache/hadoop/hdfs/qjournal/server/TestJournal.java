@@ -298,37 +298,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Test
+name|*
 import|;
 end_import
 
@@ -525,6 +495,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testEpochHandling ()
 specifier|public
 name|void
@@ -718,6 +693,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testMaintainCommittedTxId ()
 specifier|public
 name|void
@@ -836,6 +816,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testRestartJournal ()
 specifier|public
 name|void
@@ -981,6 +966,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testFormatResetsCachedValues ()
 specifier|public
 name|void
@@ -1045,6 +1035,12 @@ name|isFormatted
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Close the journal in preparation for reformatting it.
+name|journal
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|journal
 operator|.
 name|format
@@ -1084,6 +1080,11 @@ block|}
 comment|/**    * Test that, if the writer crashes at the very beginning of a segment,    * before any transactions are written, that the next newEpoch() call    * returns the prior segment txid as its most recent segment.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testNewEpochAtBeginningOfSegment ()
 specifier|public
 name|void
@@ -1189,6 +1190,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testJournalLocking ()
 specifier|public
 name|void
@@ -1324,10 +1330,20 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
+name|journal2
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Test finalizing a segment after some batch of edits were missed.    * This should fail, since we validate the log before finalization.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testFinalizeWhenEditsAreMissed ()
 specifier|public
 name|void
@@ -1482,6 +1498,11 @@ block|}
 comment|/**    * Ensure that finalizing a segment which doesn't exist throws the    * appropriate exception.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testFinalizeMissingSegment ()
 specifier|public
 name|void
@@ -1541,6 +1562,11 @@ block|}
 comment|/**    * Assume that a client is writing to a journal, but loses its connection    * in the middle of a segment. Thus, any future journal() calls in that    * segment may fail, because some txns were missed while the connection was    * down.    *    * Eventually, the connection comes back, and the NN tries to start a new    * segment at a higher txid. This should abort the old one and succeed.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testAbortOldSegmentIfFinalizeIsMissed ()
 specifier|public
 name|void
@@ -1685,6 +1711,11 @@ block|}
 comment|/**    * Test behavior of startLogSegment() when a segment with the    * same transaction ID already exists.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testStartLogSegmentWhenAlreadyExists ()
 specifier|public
 name|void
@@ -1926,6 +1957,11 @@ return|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testNamespaceVerification ()
 specifier|public
 name|void

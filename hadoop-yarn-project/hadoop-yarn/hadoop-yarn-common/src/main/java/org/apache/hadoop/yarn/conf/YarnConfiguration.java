@@ -1268,6 +1268,27 @@ name|NM_PREFIX
 operator|+
 literal|"container-executor.class"
 decl_stmt|;
+comment|/**      * Adjustment to make to the container os scheduling priority.    * The valid values for this could vary depending on the platform.    * On Linux, higher values mean run the containers at a less     * favorable priority than the NM.     * The value specified is an int.    */
+DECL|field|NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"container-executor.os.sched.priority.adjustment"
+decl_stmt|;
+DECL|field|DEFAULT_NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_CONTAINER_EXECUTOR_SCHED_PRIORITY
+init|=
+literal|0
+decl_stmt|;
 comment|/** Number of threads container manager uses.*/
 DECL|field|NM_CONTAINER_MGR_THREAD_COUNT
 specifier|public

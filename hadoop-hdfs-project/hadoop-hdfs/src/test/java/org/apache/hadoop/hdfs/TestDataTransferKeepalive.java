@@ -497,6 +497,13 @@ operator|)
 operator|.
 name|dfs
 expr_stmt|;
+name|dfsClient
+operator|.
+name|socketCache
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 name|String
 name|poolId
 init|=
