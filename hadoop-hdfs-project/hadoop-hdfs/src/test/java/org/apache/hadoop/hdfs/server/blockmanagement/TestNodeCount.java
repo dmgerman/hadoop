@@ -614,6 +614,9 @@ operator|.
 name|contains
 argument_list|(
 name|block
+operator|.
+name|getLocalBlock
+argument_list|()
 argument_list|)
 condition|)
 block|{
