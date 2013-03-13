@@ -304,6 +304,22 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_NAMENODE_ACCESSTIME_PRECISION_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_NAMENODE_AUDIT_LOGGERS_KEY
 import|;
 end_import
@@ -4490,7 +4506,7 @@ name|getLong
 argument_list|(
 name|DFS_NAMENODE_ACCESSTIME_PRECISION_KEY
 argument_list|,
-literal|0
+name|DFS_NAMENODE_ACCESSTIME_PRECISION_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
