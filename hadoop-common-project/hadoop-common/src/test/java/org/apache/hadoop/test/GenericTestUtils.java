@@ -846,6 +846,30 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+DECL|field|fireCounter
+specifier|private
+specifier|final
+name|AtomicInteger
+name|fireCounter
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+DECL|field|resultCounter
+specifier|private
+specifier|final
+name|AtomicInteger
+name|resultCounter
+init|=
+operator|new
+name|AtomicInteger
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 comment|// Result fields set after proceed() is called.
 DECL|field|thrown
 specifier|private
@@ -921,6 +945,11 @@ name|info
 argument_list|(
 literal|"DelayAnswer firing fireLatch"
 argument_list|)
+expr_stmt|;
+name|fireCounter
+operator|.
+name|getAndIncrement
+argument_list|()
 expr_stmt|;
 name|fireLatch
 operator|.
@@ -1017,6 +1046,11 @@ throw|;
 block|}
 finally|finally
 block|{
+name|resultCounter
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
 name|resultLatch
 operator|.
 name|countDown
@@ -1059,6 +1093,32 @@ parameter_list|()
 block|{
 return|return
 name|returnValue
+return|;
+block|}
+DECL|method|getFireCount ()
+specifier|public
+name|int
+name|getFireCount
+parameter_list|()
+block|{
+return|return
+name|fireCounter
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getResultCount ()
+specifier|public
+name|int
+name|getResultCount
+parameter_list|()
+block|{
+return|return
+name|resultCounter
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 block|}
