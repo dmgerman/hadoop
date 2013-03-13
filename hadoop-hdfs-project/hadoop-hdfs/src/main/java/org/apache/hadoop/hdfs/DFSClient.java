@@ -4530,11 +4530,14 @@ throw|;
 block|}
 block|}
 comment|/**    * Get {@link BlockReader} for short circuited local reads.    */
-DECL|method|getLocalBlockReader (Configuration conf, String src, ExtendedBlock blk, Token<BlockTokenIdentifier> accessToken, DatanodeInfo chosenNode, int socketTimeout, long offsetIntoBlock, boolean connectToDnViaHostname)
+DECL|method|getLocalBlockReader (UserGroupInformation ugi, Configuration conf, String src, ExtendedBlock blk, Token<BlockTokenIdentifier> accessToken, DatanodeInfo chosenNode, int socketTimeout, long offsetIntoBlock, boolean connectToDnViaHostname)
 specifier|static
 name|BlockReader
 name|getLocalBlockReader
 parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
@@ -4574,6 +4577,8 @@ name|BlockReaderLocal
 operator|.
 name|newBlockReader
 argument_list|(
+name|ugi
+argument_list|,
 name|conf
 argument_list|,
 name|src
@@ -7607,7 +7612,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Get the checksum of a file.    * @param src The file path    * @param clientName the name of the client requesting the checksum.    * @param namenode the RPC proxy for the namenode    * @param socketFactory to create sockets to connect to DNs    * @param socketTimeout timeout to use when connecting and waiting for a response    * @param encryptionKey the key needed to communicate with DNs in this cluster    * @param connectToDnViaHostname {@see #connectToDnViaHostname()}    * @return The checksum     */
+comment|/**    * Get the checksum of a file.    * @param src The file path    * @param clientName the name of the client requesting the checksum.    * @param namenode the RPC proxy for the namenode    * @param socketFactory to create sockets to connect to DNs    * @param socketTimeout timeout to use when connecting and waiting for a response    * @param encryptionKey the key needed to communicate with DNs in this cluster    * @param connectToDnViaHostname {@link #connectToDnViaHostname()}    * @return The checksum     */
 DECL|method|getFileChecksum (String src, String clientName, ClientProtocol namenode, SocketFactory socketFactory, int socketTimeout, DataEncryptionKey encryptionKey, boolean connectToDnViaHostname)
 specifier|static
 name|MD5MD5CRC32FileChecksum
@@ -10008,10 +10013,28 @@ name|void
 name|disableShortCircuit
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Short circuit is disabled"
+argument_list|)
+expr_stmt|;
 name|shortCircuitLocalReads
 operator|=
 literal|false
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getShortCircuitLocalReads ()
+name|boolean
+name|getShortCircuitLocalReads
+parameter_list|()
+block|{
+return|return
+name|shortCircuitLocalReads
+return|;
 block|}
 block|}
 end_class

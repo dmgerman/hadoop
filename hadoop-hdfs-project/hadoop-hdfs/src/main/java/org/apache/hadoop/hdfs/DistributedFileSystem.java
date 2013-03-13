@@ -698,6 +698,20 @@ name|Progressable
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/****************************************************************  * Implementation of the abstract FileSystem for the DFS system.  * This object is the way end-user code interacts with a Hadoop  * DistributedFileSystem.  *  *****************************************************************/
 end_comment
@@ -2972,13 +2986,12 @@ operator|+
 literal|"]"
 return|;
 block|}
-comment|/** @deprecated DFSClient should not be accessed directly. */
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
 annotation|@
-name|Deprecated
+name|VisibleForTesting
 DECL|method|getClient ()
 specifier|public
 name|DFSClient
