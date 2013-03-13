@@ -1630,6 +1630,7 @@ name|parent
 operator|.
 name|addSpaceConsumed
 argument_list|(
+operator|-
 name|counts
 operator|.
 name|get
@@ -1639,6 +1640,7 @@ operator|.
 name|NAMESPACE
 argument_list|)
 argument_list|,
+operator|-
 name|counts
 operator|.
 name|get

@@ -1012,6 +1012,18 @@ argument_list|(
 name|toRemoveList
 argument_list|)
 expr_stmt|;
+comment|// modify the numSnapshottableDirs metrics
+name|numSnapshottableDirs
+operator|.
+name|addAndGet
+argument_list|(
+operator|-
+name|toRemoveList
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Compute the difference between two snapshots of a directory, or between a    * snapshot of the directory and its current tree.    */

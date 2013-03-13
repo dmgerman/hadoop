@@ -47,12 +47,34 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|io
 operator|.
 name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -398,9 +420,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ipc
+name|test
 operator|.
-name|RemoteException
+name|GenericTestUtils
 import|;
 end_import
 
@@ -1524,7 +1546,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|300000
+literal|60000
 argument_list|)
 DECL|method|testUpdateDirectory ()
 specifier|public
@@ -1671,13 +1693,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creating snapshots for a directory that is not snapshottable must fail.    *     * TODO: Listing/Deleting snapshots for a directory that is not snapshottable    * should also fail.    */
+comment|/**    * Creating snapshots for a directory that is not snapshottable must fail.    */
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|300000
+literal|60000
 argument_list|)
 DECL|method|testSnapshottableDirectory ()
 specifier|public
@@ -1748,27 +1770,8 @@ argument_list|,
 name|seed
 argument_list|)
 expr_stmt|;
-name|exception
-operator|.
-name|expect
-argument_list|(
-name|RemoteException
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-name|exception
-operator|.
-name|expectMessage
-argument_list|(
-literal|"Directory is not a snapshottable directory: "
-operator|+
-name|dir
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
+try|try
+block|{
 name|hdfs
 operator|.
 name|createSnapshot
@@ -1778,6 +1781,114 @@ argument_list|,
 literal|"s1"
 argument_list|)
 expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception expected: "
+operator|+
+name|dir
+operator|+
+literal|" is not snapshottable"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Directory is not a snapshottable directory: "
+operator|+
+name|dir
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|hdfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|dir
+argument_list|,
+literal|"s1"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception expected: "
+operator|+
+name|dir
+operator|+
+literal|" is not a snapshottale dir"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Directory is not a snapshottable directory: "
+operator|+
+name|dir
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+try|try
+block|{
+name|hdfs
+operator|.
+name|renameSnapshot
+argument_list|(
+name|dir
+argument_list|,
+literal|"s1"
+argument_list|,
+literal|"s2"
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception expected: "
+operator|+
+name|dir
+operator|+
+literal|" is not a snapshottale dir"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Directory is not a snapshottable directory: "
+operator|+
+name|dir
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Prepare a list of modifications. A modification may be a file creation,    * file deletion, or a modification operation such as appending to an existing    * file.    */
 DECL|method|prepareModifications (TestDirectoryTree.Node[] nodes)
