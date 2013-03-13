@@ -312,6 +312,22 @@ name|fs
 operator|.
 name|permission
 operator|.
+name|FsAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
 name|FsPermission
 import|;
 end_import
@@ -1220,6 +1236,11 @@ block|}
 comment|/**    * Verify that a saveNamespace command brings faulty directories    * in fs.name.dir and fs.edit.dir back online.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testReinsertnamedirsInSavenamespace ()
 specifier|public
 name|void
@@ -1309,6 +1330,16 @@ name|fsImage
 operator|=
 name|spyImage
 expr_stmt|;
+name|FileSystem
+name|fs
+init|=
+name|FileSystem
+operator|.
+name|getLocal
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|File
 name|rootDir
 init|=
@@ -1322,25 +1353,60 @@ operator|.
 name|getRoot
 argument_list|()
 decl_stmt|;
+name|Path
+name|rootPath
+init|=
+operator|new
+name|Path
+argument_list|(
 name|rootDir
 operator|.
-name|setExecutable
-argument_list|(
-literal|false
+name|getPath
+argument_list|()
+argument_list|,
+literal|"current"
 argument_list|)
-expr_stmt|;
-name|rootDir
-operator|.
-name|setWritable
+decl_stmt|;
+specifier|final
+name|FsPermission
+name|permissionNone
+init|=
+operator|new
+name|FsPermission
 argument_list|(
-literal|false
+operator|(
+name|short
+operator|)
+literal|0
 argument_list|)
-expr_stmt|;
-name|rootDir
-operator|.
-name|setReadable
+decl_stmt|;
+specifier|final
+name|FsPermission
+name|permissionAll
+init|=
+operator|new
+name|FsPermission
 argument_list|(
-literal|false
+name|FsAction
+operator|.
+name|ALL
+argument_list|,
+name|FsAction
+operator|.
+name|READ_EXECUTE
+argument_list|,
+name|FsAction
+operator|.
+name|READ_EXECUTE
+argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|setPermission
+argument_list|(
+name|rootPath
+argument_list|,
+name|permissionNone
 argument_list|)
 expr_stmt|;
 try|try
@@ -1409,25 +1475,13 @@ operator|==
 literal|1
 argument_list|)
 expr_stmt|;
-name|rootDir
+name|fs
 operator|.
-name|setExecutable
+name|setPermission
 argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|rootDir
-operator|.
-name|setWritable
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|rootDir
-operator|.
-name|setReadable
-argument_list|(
-literal|true
+name|rootPath
+argument_list|,
+name|permissionAll
 argument_list|)
 expr_stmt|;
 comment|// The next call to savenamespace should try inserting the
@@ -1554,25 +1608,13 @@ name|exists
 argument_list|()
 condition|)
 block|{
-name|rootDir
+name|fs
 operator|.
-name|setExecutable
+name|setPermission
 argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|rootDir
-operator|.
-name|setWritable
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-name|rootDir
-operator|.
-name|setReadable
-argument_list|(
-literal|true
+name|rootPath
+argument_list|,
+name|permissionAll
 argument_list|)
 expr_stmt|;
 block|}
@@ -1612,6 +1654,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testRTEWhileSavingSecondImage ()
 specifier|public
 name|void
@@ -1630,6 +1677,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testIOEWhileSavingSecondImage ()
 specifier|public
 name|void
@@ -1648,6 +1700,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCrashInAllImageDirs ()
 specifier|public
 name|void
@@ -1666,6 +1723,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCrashWhenWritingVersionFiles ()
 specifier|public
 name|void
@@ -1684,6 +1746,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testCrashWhenWritingVersionFileInOneDir ()
 specifier|public
 name|void
@@ -1703,6 +1770,11 @@ block|}
 comment|/**    * Test case where savenamespace fails in all directories    * and then the NN shuts down. Here we should recover from the    * failed checkpoint since it only affected ".ckpt" files, not    * valid image files    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testFailedSaveNamespace ()
 specifier|public
 name|void
@@ -1720,6 +1792,11 @@ block|}
 comment|/**    * Test case where saveNamespace fails in all directories, but then    * the operator restores the directories and calls it again.    * This should leave the NN in a clean state for next start.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testFailedSaveNamespaceWithRecovery ()
 specifier|public
 name|void
@@ -2020,6 +2097,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testSaveWhileEditsRolled ()
 specifier|public
 name|void
@@ -2167,6 +2249,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testTxIdPersistence ()
 specifier|public
 name|void
@@ -2740,6 +2827,11 @@ block|}
 comment|/**    * Test for save namespace should succeed when parent directory renamed with    * open lease and destination directory exist.     * This test is a regression for HDFS-2827    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testSaveNamespaceWithRenamedLease ()
 specifier|public
 name|void
@@ -2891,6 +2983,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testSaveNamespaceWithDanglingLease ()
 specifier|public
 name|void
