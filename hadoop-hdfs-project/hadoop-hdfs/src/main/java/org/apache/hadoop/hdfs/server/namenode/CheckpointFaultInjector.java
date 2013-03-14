@@ -137,6 +137,14 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|afterMD5Rename ()
+specifier|public
+name|void
+name|afterMD5Rename
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 block|}
 end_class
 

@@ -5431,11 +5431,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|renameCheckpoint
-argument_list|(
-name|txid
-argument_list|)
-expr_stmt|;
+comment|// Write and rename MD5 file
 name|List
 argument_list|<
 name|StorageDirectory
@@ -5506,6 +5502,20 @@ operator|.
 name|reportErrorsOnDirectories
 argument_list|(
 name|badSds
+argument_list|)
+expr_stmt|;
+name|CheckpointFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|afterMD5Rename
+argument_list|()
+expr_stmt|;
+comment|// Rename image from tmp file
+name|renameCheckpoint
+argument_list|(
+name|txid
 argument_list|)
 expr_stmt|;
 comment|// So long as this is the newest image available,
