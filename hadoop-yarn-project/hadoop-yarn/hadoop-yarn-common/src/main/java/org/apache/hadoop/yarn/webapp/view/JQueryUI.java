@@ -625,6 +625,19 @@ name|defaultInit
 init|=
 literal|"{bJQueryUI: true, sPaginationType: 'full_numbers'}"
 decl_stmt|;
+name|String
+name|stateSaveInit
+init|=
+literal|"bStateSave : true, "
+operator|+
+literal|"\"fnStateSave\": function (oSettings, oData) { "
+operator|+
+literal|"sessionStorage.setItem( oSettings.sTableId, JSON.stringify(oData) ); }, "
+operator|+
+literal|"\"fnStateLoad\": function (oSettings) { "
+operator|+
+literal|"return JSON.parse( sessionStorage.getItem(oSettings.sTableId) );}, "
+decl_stmt|;
 for|for
 control|(
 name|String
@@ -675,6 +688,37 @@ operator|=
 name|defaultInit
 expr_stmt|;
 block|}
+comment|// for inserting stateSaveInit
+name|int
+name|pos
+init|=
+name|init
+operator|.
+name|indexOf
+argument_list|(
+literal|'{'
+argument_list|)
+operator|+
+literal|1
+decl_stmt|;
+name|init
+operator|=
+operator|new
+name|StringBuffer
+argument_list|(
+name|init
+argument_list|)
+operator|.
+name|insert
+argument_list|(
+name|pos
+argument_list|,
+name|stateSaveInit
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
 name|list
 operator|.
 name|add
@@ -768,6 +812,36 @@ operator|=
 name|defaultInit
 expr_stmt|;
 block|}
+name|int
+name|pos
+init|=
+name|init
+operator|.
+name|indexOf
+argument_list|(
+literal|'{'
+argument_list|)
+operator|+
+literal|1
+decl_stmt|;
+name|init
+operator|=
+operator|new
+name|StringBuffer
+argument_list|(
+name|init
+argument_list|)
+operator|.
+name|insert
+argument_list|(
+name|pos
+argument_list|,
+name|stateSaveInit
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
 name|list
 operator|.
 name|add
