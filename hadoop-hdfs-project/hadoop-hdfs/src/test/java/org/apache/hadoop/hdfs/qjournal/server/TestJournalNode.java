@@ -408,6 +408,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -543,6 +557,24 @@ DECL|field|journalId
 specifier|private
 name|String
 name|journalId
+decl_stmt|;
+DECL|field|TEST_BUILD_DATA
+specifier|private
+name|File
+name|TEST_BUILD_DATA
+init|=
+operator|new
+name|File
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.build.data"
+argument_list|,
+literal|"build/test/data"
+argument_list|)
+argument_list|)
 decl_stmt|;
 static|static
 block|{
@@ -696,6 +728,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testJournal ()
 specifier|public
 name|void
@@ -950,6 +987,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testReturnsSegmentInfoAtEpochTransition ()
 specifier|public
 name|void
@@ -1126,6 +1168,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testHttpServer ()
 specifier|public
 name|void
@@ -1405,6 +1452,11 @@ block|}
 comment|/**    * Test that the JournalNode performs correctly as a Paxos    *<em>Acceptor</em> process.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testAcceptRecoveryBehavior ()
 specifier|public
 name|void
@@ -1739,6 +1791,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testFailToStartWithBadConfig ()
 specifier|public
 name|void
@@ -1773,6 +1830,27 @@ literal|"should be an absolute path"
 argument_list|)
 expr_stmt|;
 comment|// Existing file which is not a directory
+name|File
+name|existingFile
+init|=
+operator|new
+name|File
+argument_list|(
+name|TEST_BUILD_DATA
+argument_list|,
+literal|"testjournalnodefile"
+argument_list|)
+decl_stmt|;
+name|assertTrue
+argument_list|(
+name|existingFile
+operator|.
+name|createNewFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+try|try
+block|{
 name|conf
 operator|.
 name|set
@@ -1781,16 +1859,28 @@ name|DFSConfigKeys
 operator|.
 name|DFS_JOURNALNODE_EDITS_DIR_KEY
 argument_list|,
-literal|"/dev/null"
+name|existingFile
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertJNFailsToStart
 argument_list|(
 name|conf
 argument_list|,
-literal|"is not a directory"
+literal|"Not a directory"
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|existingFile
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+block|}
 comment|// Directory which cannot be created
 name|conf
 operator|.
@@ -1800,6 +1890,12 @@ name|DFSConfigKeys
 operator|.
 name|DFS_JOURNALNODE_EDITS_DIR_KEY
 argument_list|,
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"\\\\cannotBeCreated"
+else|:
 literal|"/proc/does-not-exist"
 argument_list|)
 expr_stmt|;
@@ -1807,7 +1903,7 @@ name|assertJNFailsToStart
 argument_list|(
 name|conf
 argument_list|,
-literal|"Could not create"
+literal|"Can not create directory"
 argument_list|)
 expr_stmt|;
 block|}
