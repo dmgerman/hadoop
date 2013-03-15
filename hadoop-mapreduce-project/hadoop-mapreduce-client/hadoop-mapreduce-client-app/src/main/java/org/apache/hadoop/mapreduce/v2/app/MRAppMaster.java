@@ -520,6 +520,22 @@ name|mapreduce
 operator|.
 name|security
 operator|.
+name|TokenCache
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|JobTokenSecretManager
@@ -2749,11 +2765,34 @@ operator|.
 name|isRecoverySupported
 argument_list|()
 decl_stmt|;
+comment|// If a shuffle secret was not provided by the job client then this app
+comment|// attempt will generate one.  However that disables recovery if there
+comment|// are reducers as the shuffle secret would be app attempt specific.
+name|boolean
+name|shuffleKeyValidForRecovery
+init|=
+operator|(
+name|numReduceTasks
+operator|>
+literal|0
+operator|&&
+name|TokenCache
+operator|.
+name|getShuffleSecretKey
+argument_list|(
+name|fsTokens
+argument_list|)
+operator|!=
+literal|null
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|recoveryEnabled
 operator|&&
 name|recoverySupportedByCommitter
+operator|&&
+name|shuffleKeyValidForRecovery
 operator|&&
 name|appAttemptID
 operator|.
@@ -2816,6 +2855,10 @@ operator|+
 literal|" recoverySupportedByCommitter: "
 operator|+
 name|recoverySupportedByCommitter
+operator|+
+literal|" shuffleKeyValidForRecovery: "
+operator|+
+name|shuffleKeyValidForRecovery
 operator|+
 literal|" ApplicationAttemptID: "
 operator|+
@@ -3372,6 +3415,16 @@ name|get
 argument_list|(
 name|conf
 argument_list|)
+return|;
+block|}
+DECL|method|getCredentials ()
+specifier|protected
+name|Credentials
+name|getCredentials
+parameter_list|()
+block|{
+return|return
+name|fsTokens
 return|;
 block|}
 comment|/**    * clean up staging directories for the job.    * @throws IOException    */

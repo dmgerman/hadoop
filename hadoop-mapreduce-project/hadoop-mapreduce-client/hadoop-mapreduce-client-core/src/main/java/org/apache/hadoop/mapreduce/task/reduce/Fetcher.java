@@ -555,11 +555,11 @@ specifier|final
 name|int
 name|readTimeout
 decl_stmt|;
-DECL|field|jobTokenSecret
+DECL|field|shuffleSecretKey
 specifier|private
 specifier|final
 name|SecretKey
-name|jobTokenSecret
+name|shuffleSecretKey
 decl_stmt|;
 DECL|field|stopped
 specifier|private
@@ -581,7 +581,7 @@ specifier|static
 name|SSLFactory
 name|sslFactory
 decl_stmt|;
-DECL|method|Fetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManager<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey jobTokenSecret)
+DECL|method|Fetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManager<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey shuffleKey)
 specifier|public
 name|Fetcher
 parameter_list|(
@@ -617,7 +617,7 @@ name|ExceptionReporter
 name|exceptionReporter
 parameter_list|,
 name|SecretKey
-name|jobTokenSecret
+name|shuffleKey
 parameter_list|)
 block|{
 name|this
@@ -671,9 +671,9 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|jobTokenSecret
+name|shuffleSecretKey
 operator|=
-name|jobTokenSecret
+name|shuffleKey
 expr_stmt|;
 name|ioErrs
 operator|=
@@ -1257,7 +1257,7 @@ name|hashFromString
 argument_list|(
 name|msgToEncode
 argument_list|,
-name|jobTokenSecret
+name|shuffleSecretKey
 argument_list|)
 decl_stmt|;
 comment|// put url hash into http header
@@ -1391,7 +1391,7 @@ name|replyHash
 argument_list|,
 name|encHash
 argument_list|,
-name|jobTokenSecret
+name|shuffleSecretKey
 argument_list|)
 expr_stmt|;
 name|LOG
