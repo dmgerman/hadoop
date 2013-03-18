@@ -636,6 +636,17 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+name|MockCompletedJob
+name|mockJob
+init|=
+operator|new
+name|MockCompletedJob
+argument_list|(
+name|j
+argument_list|)
+decl_stmt|;
+comment|// use MockCompletedJob to set everything below to make sure
+comment|// consistent with what history server would do
 name|ret
 operator|.
 name|full
@@ -644,17 +655,13 @@ name|put
 argument_list|(
 name|id
 argument_list|,
-operator|new
-name|MockCompletedJob
-argument_list|(
-name|j
-argument_list|)
+name|mockJob
 argument_list|)
 expr_stmt|;
 name|JobReport
 name|report
 init|=
-name|j
+name|mockJob
 operator|.
 name|getReport
 argument_list|()
@@ -675,24 +682,24 @@ operator|.
 name|getFinishTime
 argument_list|()
 argument_list|,
-name|j
+name|mockJob
 operator|.
 name|getUserName
 argument_list|()
 argument_list|,
-name|j
+name|mockJob
 operator|.
 name|getName
 argument_list|()
 argument_list|,
 name|id
 argument_list|,
-name|j
+name|mockJob
 operator|.
 name|getCompletedMaps
 argument_list|()
 argument_list|,
-name|j
+name|mockJob
 operator|.
 name|getCompletedReduces
 argument_list|()
@@ -701,7 +708,7 @@ name|String
 operator|.
 name|valueOf
 argument_list|(
-name|j
+name|mockJob
 operator|.
 name|getState
 argument_list|()
@@ -712,7 +719,7 @@ name|info
 operator|.
 name|setQueueName
 argument_list|(
-name|j
+name|mockJob
 operator|.
 name|getQueueName
 argument_list|()
@@ -803,10 +810,12 @@ name|int
 name|getCompletedMaps
 parameter_list|()
 block|{
+comment|// we always return total since this is history server
+comment|// and PartialJob also assumes completed - total
 return|return
 name|job
 operator|.
-name|getCompletedMaps
+name|getTotalMaps
 argument_list|()
 return|;
 block|}
@@ -818,10 +827,12 @@ name|int
 name|getCompletedReduces
 parameter_list|()
 block|{
+comment|// we always return total since this is history server
+comment|// and PartialJob also assumes completed - total
 return|return
 name|job
 operator|.
-name|getCompletedReduces
+name|getTotalReduces
 argument_list|()
 return|;
 block|}

@@ -555,11 +555,11 @@ specifier|final
 name|int
 name|readTimeout
 decl_stmt|;
-DECL|field|jobTokenSecret
+DECL|field|shuffleSecretKey
 specifier|private
 specifier|final
 name|SecretKey
-name|jobTokenSecret
+name|shuffleSecretKey
 decl_stmt|;
 DECL|field|stopped
 specifier|private
@@ -581,7 +581,7 @@ specifier|static
 name|SSLFactory
 name|sslFactory
 decl_stmt|;
-DECL|method|Fetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManager<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey jobTokenSecret)
+DECL|method|Fetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManager<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey shuffleKey)
 specifier|public
 name|Fetcher
 parameter_list|(
@@ -617,7 +617,7 @@ name|ExceptionReporter
 name|exceptionReporter
 parameter_list|,
 name|SecretKey
-name|jobTokenSecret
+name|shuffleKey
 parameter_list|)
 block|{
 name|this
@@ -671,9 +671,9 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|jobTokenSecret
+name|shuffleSecretKey
 operator|=
-name|jobTokenSecret
+name|shuffleKey
 expr_stmt|;
 name|ioErrs
 operator|=
@@ -1217,11 +1217,6 @@ comment|// Construct the url and connect
 name|DataInputStream
 name|input
 decl_stmt|;
-name|boolean
-name|connectSucceeded
-init|=
-literal|false
-decl_stmt|;
 try|try
 block|{
 name|URL
@@ -1262,7 +1257,7 @@ name|hashFromString
 argument_list|(
 name|msgToEncode
 argument_list|,
-name|jobTokenSecret
+name|shuffleSecretKey
 argument_list|)
 decl_stmt|;
 comment|// put url hash into http header
@@ -1291,10 +1286,6 @@ name|connection
 argument_list|,
 name|connectionTimeout
 argument_list|)
-expr_stmt|;
-name|connectSucceeded
-operator|=
-literal|true
 expr_stmt|;
 name|input
 operator|=
@@ -1400,7 +1391,7 @@ name|replyHash
 argument_list|,
 name|encHash
 argument_list|,
-name|jobTokenSecret
+name|shuffleSecretKey
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -1457,12 +1448,6 @@ argument_list|)
 expr_stmt|;
 comment|// If connect did not succeed, just mark all the maps as failed,
 comment|// indirectly penalizing the host
-if|if
-condition|(
-operator|!
-name|connectSucceeded
-condition|)
-block|{
 for|for
 control|(
 name|TaskAttemptID
@@ -1479,37 +1464,7 @@ name|left
 argument_list|,
 name|host
 argument_list|,
-name|connectSucceeded
-argument_list|,
-name|connectExcpt
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-comment|// If we got a read error at this stage, it implies there was a problem
-comment|// with the first map, typically lost map. So, penalize only that map
-comment|// and add the rest
-name|TaskAttemptID
-name|firstMap
-init|=
-name|maps
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-decl_stmt|;
-name|scheduler
-operator|.
-name|copyFailed
-argument_list|(
-name|firstMap
-argument_list|,
-name|host
-argument_list|,
-name|connectSucceeded
+literal|false
 argument_list|,
 name|connectExcpt
 argument_list|)

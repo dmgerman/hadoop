@@ -1948,11 +1948,11 @@ argument_list|)
 decl_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringMatch
+name|checkStringContains
 argument_list|(
 literal|"exception message"
 argument_list|,
-literal|"No enum const class org.apache.hadoop.mapreduce.v2.api.records.JobState.InvalidState"
+literal|"org.apache.hadoop.mapreduce.v2.api.records.JobState.InvalidState"
 argument_list|,
 name|message
 argument_list|)

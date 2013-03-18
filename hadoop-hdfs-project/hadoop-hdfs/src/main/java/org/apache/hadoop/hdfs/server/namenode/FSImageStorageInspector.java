@@ -42,6 +42,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -142,10 +152,13 @@ name|isUpgradeFinalized
 parameter_list|()
 function_decl|;
 comment|/**    * Get the image files which should be loaded into the filesystem.    * @throws IOException if not enough files are available (eg no image found in any directory)    */
-DECL|method|getLatestImage ()
+DECL|method|getLatestImages ()
 specifier|abstract
+name|List
+argument_list|<
 name|FSImageFile
-name|getLatestImage
+argument_list|>
+name|getLatestImages
 parameter_list|()
 throws|throws
 name|IOException

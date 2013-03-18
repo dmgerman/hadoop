@@ -410,6 +410,15 @@ name|StandbyException
 block|{
 name|namesystem
 operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
+expr_stmt|;
+name|namesystem
+operator|.
 name|readLock
 argument_list|()
 expr_stmt|;

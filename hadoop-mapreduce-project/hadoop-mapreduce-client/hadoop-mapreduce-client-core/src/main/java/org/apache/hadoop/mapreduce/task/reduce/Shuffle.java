@@ -732,7 +732,7 @@ name|this
 argument_list|,
 name|reduceTask
 operator|.
-name|getJobTokenSecret
+name|getShuffleSecret
 argument_list|()
 argument_list|)
 expr_stmt|;

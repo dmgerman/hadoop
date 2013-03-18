@@ -277,7 +277,7 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:0}"
+literal|"{autoHeight:false, active:1}"
 argument_list|)
 expr_stmt|;
 block|}

@@ -2863,7 +2863,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|testSetPermission ()
-specifier|private
+specifier|protected
 name|void
 name|testSetPermission
 parameter_list|()

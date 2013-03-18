@@ -7873,38 +7873,42 @@ operator|+
 literal|" to jobTokenSecretManager"
 argument_list|)
 expr_stmt|;
-comment|// Upload the jobTokens onto the remote FS so that ContainerManager can
-comment|// localize it to be used by the Containers(tasks)
-name|Credentials
-name|tokenStorage
-init|=
-operator|new
-name|Credentials
-argument_list|()
-decl_stmt|;
+comment|// If the job client did not setup the shuffle secret then reuse
+comment|// the job token secret for the shuffle.
+if|if
+condition|(
 name|TokenCache
 operator|.
-name|setJobToken
+name|getShuffleSecretKey
+argument_list|(
+name|job
+operator|.
+name|fsTokens
+argument_list|)
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Shuffle secret key missing from job credentials."
+operator|+
+literal|" Using job token secret as shuffle secret."
+argument_list|)
+expr_stmt|;
+name|TokenCache
+operator|.
+name|setShuffleSecretKey
 argument_list|(
 name|job
 operator|.
 name|jobToken
-argument_list|,
-name|tokenStorage
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
 operator|.
-name|isSecurityEnabled
+name|getPassword
 argument_list|()
-condition|)
-block|{
-name|tokenStorage
-operator|.
-name|addAll
-argument_list|(
+argument_list|,
 name|job
 operator|.
 name|fsTokens

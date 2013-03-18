@@ -762,6 +762,11 @@ block|}
 comment|/**    * The corrupt block has to be removed when the number of valid replicas    * matches replication factor for the file. The above condition should hold    * true as long as there is one good replica. This test verifies that.    *     * The test strategy :     *   Bring up Cluster with 2 DataNodes    *   Create a file of replication factor 2     *   Corrupt one replica of a block of the file     *   Verify that there is  one good replicas and 1 corrupt replica     *     (corrupt replica should not be removed since number of good     *     replicas (1) is less than replication factor (2)).    *   Set the replication factor to 1     *   Verify that the corrupt replica is removed.     *     (corrupt replica should  be removed since number of good    *      replicas (1) is equal to replication factor (1))    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testWithReplicationFactorAsOne ()
 specifier|public
 name|void
@@ -969,13 +974,28 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// wait for 3 seconds so that all block reports are processed.
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+literal|10
+condition|;
+name|i
+operator|++
+control|)
+block|{
 try|try
 block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|3000
+literal|1000
 argument_list|)
 expr_stmt|;
 block|}
@@ -984,7 +1004,25 @@ parameter_list|(
 name|InterruptedException
 name|ignored
 parameter_list|)
-block|{       }
+block|{         }
+if|if
+condition|(
+name|countReplicas
+argument_list|(
+name|namesystem
+argument_list|,
+name|block
+argument_list|)
+operator|.
+name|corruptReplicas
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+break|break;
+block|}
+block|}
 name|assertEquals
 argument_list|(
 literal|1

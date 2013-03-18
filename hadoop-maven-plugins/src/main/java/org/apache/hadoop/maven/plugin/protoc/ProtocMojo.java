@@ -227,10 +227,8 @@ annotation|@
 name|Parameter
 DECL|field|imports
 specifier|private
-name|List
-argument_list|<
 name|File
-argument_list|>
+index|[]
 name|imports
 decl_stmt|;
 annotation|@

@@ -342,8 +342,13 @@ name|latestImage
 init|=
 name|inspector
 operator|.
-name|getLatestImage
+name|getLatestImages
 argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
 decl_stmt|;
 name|assertEquals
 argument_list|(

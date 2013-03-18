@@ -346,6 +346,18 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Logger
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -1585,6 +1597,31 @@ argument_list|,
 literal|"22222222222222222222222222222222"
 argument_list|)
 expr_stmt|;
+comment|// Attach our own log appender so we can verify output
+specifier|final
+name|LogVerificationAppender
+name|appender
+init|=
+operator|new
+name|LogVerificationAppender
+argument_list|()
+decl_stmt|;
+specifier|final
+name|Logger
+name|logger
+init|=
+name|Logger
+operator|.
+name|getRootLogger
+argument_list|()
+decl_stmt|;
+name|logger
+operator|.
+name|addAppender
+argument_list|(
+name|appender
+argument_list|)
+expr_stmt|;
 comment|// Upgrade should now fail
 try|try
 block|{
@@ -1633,7 +1670,7 @@ name|msg
 operator|.
 name|contains
 argument_list|(
-literal|"is corrupt with MD5 checksum"
+literal|"Failed to load an FSImage file"
 argument_list|)
 condition|)
 block|{
@@ -1641,6 +1678,25 @@ throw|throw
 name|ioe
 throw|;
 block|}
+name|int
+name|md5failures
+init|=
+name|appender
+operator|.
+name|countExceptionsWithMessage
+argument_list|(
+literal|" is corrupt with MD5 checksum of "
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Upgrade did not fail with bad MD5"
+argument_list|,
+literal|1
+argument_list|,
+name|md5failures
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|recoverAllLeases (DFSClient dfs, Path path)

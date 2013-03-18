@@ -4709,7 +4709,9 @@ name|getLength
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Add shuffle token
+comment|// Add shuffle secret key
+comment|// The secret key is converted to a JobToken to preserve backwards
+comment|// compatibility with an older ShuffleHandler running on an NM.
 name|LOG
 operator|.
 name|info
@@ -4717,6 +4719,71 @@ argument_list|(
 literal|"Putting shuffle token in serviceData"
 argument_list|)
 expr_stmt|;
+name|byte
+index|[]
+name|shuffleSecret
+init|=
+name|TokenCache
+operator|.
+name|getShuffleSecretKey
+argument_list|(
+name|credentials
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|shuffleSecret
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Cannot locate shuffle secret in credentials."
+operator|+
+literal|" Using job token as shuffle secret."
+argument_list|)
+expr_stmt|;
+name|shuffleSecret
+operator|=
+name|jobToken
+operator|.
+name|getPassword
+argument_list|()
+expr_stmt|;
+block|}
+name|Token
+argument_list|<
+name|JobTokenIdentifier
+argument_list|>
+name|shuffleToken
+init|=
+operator|new
+name|Token
+argument_list|<
+name|JobTokenIdentifier
+argument_list|>
+argument_list|(
+name|jobToken
+operator|.
+name|getIdentifier
+argument_list|()
+argument_list|,
+name|shuffleSecret
+argument_list|,
+name|jobToken
+operator|.
+name|getKind
+argument_list|()
+argument_list|,
+name|jobToken
+operator|.
+name|getService
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|serviceData
 operator|.
 name|put
@@ -4729,7 +4796,7 @@ name|ShuffleHandler
 operator|.
 name|serializeServiceData
 argument_list|(
-name|jobToken
+name|shuffleToken
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -322,6 +322,22 @@ name|mapreduce
 operator|.
 name|security
 operator|.
+name|TokenCache
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|JobTokenSecretManager
@@ -1564,7 +1580,27 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-block|{   }
+block|{
+comment|// Fake a shuffle secret that normally is provided by the job client.
+name|String
+name|shuffleSecret
+init|=
+literal|"fake-shuffle-secret"
+decl_stmt|;
+name|TokenCache
+operator|.
+name|setShuffleSecretKey
+argument_list|(
+name|shuffleSecret
+operator|.
+name|getBytes
+argument_list|()
+argument_list|,
+name|getCredentials
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getApplicationAttemptId ( ApplicationId applicationId, int startCount)
 specifier|private
 specifier|static

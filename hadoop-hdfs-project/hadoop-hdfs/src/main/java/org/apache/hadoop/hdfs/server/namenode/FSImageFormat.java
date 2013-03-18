@@ -1119,19 +1119,21 @@ name|in
 argument_list|)
 expr_stmt|;
 comment|// make sure to read to the end of file
-name|int
+name|boolean
 name|eof
 init|=
+operator|(
 name|in
 operator|.
 name|read
 argument_list|()
-decl_stmt|;
-assert|assert
-name|eof
 operator|==
 operator|-
 literal|1
+operator|)
+decl_stmt|;
+assert|assert
+name|eof
 operator|:
 literal|"Should have reached the end of image file "
 operator|+

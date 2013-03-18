@@ -4743,6 +4743,8 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|InetSocketAddress
 name|addr
 init|=
@@ -4837,6 +4839,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+finally|finally
+block|{
+name|server
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Test
 argument_list|(
@@ -4895,6 +4906,8 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|int
 name|numConcurrentRPC
 init|=
@@ -5171,6 +5184,15 @@ operator|==
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|server
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|main (String[] args)
 specifier|public

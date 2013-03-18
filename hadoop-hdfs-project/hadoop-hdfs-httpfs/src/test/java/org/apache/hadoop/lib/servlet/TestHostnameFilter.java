@@ -239,6 +239,8 @@ name|IOException
 throws|,
 name|ServletException
 block|{
+comment|// Hostname was set to "localhost", but may get resolved automatically to
+comment|// "127.0.0.1" depending on OS.
 name|assertTrue
 argument_list|(
 name|HostnameFilter
@@ -249,6 +251,16 @@ operator|.
 name|contains
 argument_list|(
 literal|"localhost"
+argument_list|)
+operator|||
+name|HostnameFilter
+operator|.
+name|get
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"127.0.0.1"
 argument_list|)
 argument_list|)
 expr_stmt|;

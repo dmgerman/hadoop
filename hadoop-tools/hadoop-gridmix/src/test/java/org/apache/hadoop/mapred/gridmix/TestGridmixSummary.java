@@ -1547,7 +1547,7 @@ name|assertEquals
 argument_list|(
 literal|"Mismatch in expected data size"
 argument_list|,
-literal|"1.0k"
+literal|"1 K"
 argument_list|,
 name|es
 operator|.
@@ -1636,7 +1636,7 @@ name|assertEquals
 argument_list|(
 literal|"Mismatch in expected data size"
 argument_list|,
-literal|"10.0g"
+literal|"10 G"
 argument_list|,
 name|es
 operator|.
