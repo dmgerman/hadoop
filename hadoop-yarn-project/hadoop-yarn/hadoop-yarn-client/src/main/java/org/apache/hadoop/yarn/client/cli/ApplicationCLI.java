@@ -869,6 +869,40 @@ name|appReportStr
 operator|.
 name|print
 argument_list|(
+literal|"\tRPC Port : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+name|appReport
+operator|.
+name|getRpcPort
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tAM Host : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+name|appReport
+operator|.
+name|getHost
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
 literal|"\tDiagnostics : "
 argument_list|)
 expr_stmt|;

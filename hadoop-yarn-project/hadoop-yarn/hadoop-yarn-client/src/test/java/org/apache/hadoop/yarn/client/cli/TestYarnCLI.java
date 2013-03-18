@@ -749,6 +749,20 @@ name|pw
 operator|.
 name|println
 argument_list|(
+literal|"\tRPC Port : 124"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tAM Host : host"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
 literal|"\tDiagnostics : diagnostics"
 argument_list|)
 expr_stmt|;
