@@ -262,6 +262,8 @@ argument_list|,
 name|start
 argument_list|,
 name|length
+operator|-
+name|start
 argument_list|)
 expr_stmt|;
 name|this
@@ -299,6 +301,10 @@ operator|+
 name|offset
 argument_list|,
 name|length
+operator|-
+name|start
+operator|-
+name|offset
 argument_list|)
 expr_stmt|;
 name|bytesRead
