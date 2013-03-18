@@ -3737,6 +3737,14 @@ literal|"/"
 operator|+
 name|mapId
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3746,6 +3754,7 @@ operator|+
 name|base
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Index file
 name|Path
 name|indexFileName
@@ -3776,6 +3785,14 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -3793,6 +3810,7 @@ operator|+
 name|indexFileName
 argument_list|)
 expr_stmt|;
+block|}
 specifier|final
 name|IndexRecord
 name|info
