@@ -385,6 +385,14 @@ return|return
 name|names
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reloadCachedMappings ()
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|()
+block|{     }
 block|}
 block|}
 end_class

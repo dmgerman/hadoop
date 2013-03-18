@@ -537,6 +537,20 @@ name|rawMapping
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reloadCachedMappings ()
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|()
+block|{
+name|cache
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

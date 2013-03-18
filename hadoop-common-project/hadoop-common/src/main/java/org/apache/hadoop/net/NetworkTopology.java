@@ -1701,6 +1701,21 @@ argument_list|)
 argument_list|)
 throw|;
 block|}
+name|int
+name|newDepth
+init|=
+name|NodeBase
+operator|.
+name|locationToDepth
+argument_list|(
+name|node
+operator|.
+name|getNetworkLocation
+argument_list|()
+argument_list|)
+operator|+
+literal|1
+decl_stmt|;
 name|netlock
 operator|.
 name|writeLock
@@ -1711,6 +1726,47 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+operator|(
+name|depthOfAllLeaves
+operator|!=
+operator|-
+literal|1
+operator|)
+operator|&&
+operator|(
+name|depthOfAllLeaves
+operator|!=
+name|newDepth
+operator|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Error: can't add leaf node at depth "
+operator|+
+name|newDepth
+operator|+
+literal|" to topology:\n"
+operator|+
+name|oldTopoStr
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|InvalidTopologyException
+argument_list|(
+literal|"Invalid network topology. "
+operator|+
+literal|"You cannot have a rack and a non-rack node at the same "
+operator|+
+literal|"level of the network topology."
+argument_list|)
+throw|;
+block|}
 name|Node
 name|rack
 init|=
@@ -1808,47 +1864,6 @@ operator|.
 name|getLevel
 argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-if|if
-condition|(
-name|depthOfAllLeaves
-operator|!=
-name|node
-operator|.
-name|getLevel
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Error: can't add leaf node at depth "
-operator|+
-name|node
-operator|.
-name|getLevel
-argument_list|()
-operator|+
-literal|" to topology:\n"
-operator|+
-name|oldTopoStr
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|InvalidTopologyException
-argument_list|(
-literal|"Invalid network topology. "
-operator|+
-literal|"You cannot have a rack and a non-rack node at the same "
-operator|+
-literal|"level of the network topology."
-argument_list|)
-throw|;
-block|}
 block|}
 block|}
 block|}

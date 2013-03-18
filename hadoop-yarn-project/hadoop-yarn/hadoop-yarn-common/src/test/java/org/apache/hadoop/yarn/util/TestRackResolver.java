@@ -335,6 +335,16 @@ return|return
 name|returnList
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|reloadCachedMappings ()
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|()
+block|{
+comment|// nothing to do here, since RawScriptBasedMapping has no cache.
+block|}
 block|}
 annotation|@
 name|Test
