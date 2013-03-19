@@ -370,7 +370,7 @@ specifier|public
 class|class
 name|INodeFile
 extends|extends
-name|INode
+name|INodeWithAdditionalFields
 implements|implements
 name|BlockCollection
 block|{
@@ -1549,7 +1549,7 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
-name|clearReferences
+name|clear
 argument_list|()
 expr_stmt|;
 if|if

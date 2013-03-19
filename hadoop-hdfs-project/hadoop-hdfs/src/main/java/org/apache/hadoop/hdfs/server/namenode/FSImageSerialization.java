@@ -457,13 +457,13 @@ literal|0
 argument_list|)
 decl_stmt|;
 block|}
-DECL|method|writePermissionStatus (INode inode, DataOutput out )
+DECL|method|writePermissionStatus (INodeWithAdditionalFields inode, DataOutput out)
 specifier|private
 specifier|static
 name|void
 name|writePermissionStatus
 parameter_list|(
-name|INode
+name|INodeWithAdditionalFields
 name|inode
 parameter_list|,
 name|DataOutput

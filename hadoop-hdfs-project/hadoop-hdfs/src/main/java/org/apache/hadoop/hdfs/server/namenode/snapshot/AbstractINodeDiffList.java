@@ -490,7 +490,7 @@ name|removed
 operator|.
 name|snapshotINode
 operator|.
-name|clearReferences
+name|clear
 argument_list|()
 expr_stmt|;
 block|}

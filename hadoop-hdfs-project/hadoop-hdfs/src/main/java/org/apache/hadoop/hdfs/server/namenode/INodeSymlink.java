@@ -146,7 +146,7 @@ specifier|public
 class|class
 name|INodeSymlink
 extends|extends
-name|INode
+name|INodeWithAdditionalFields
 block|{
 DECL|field|symlink
 specifier|private

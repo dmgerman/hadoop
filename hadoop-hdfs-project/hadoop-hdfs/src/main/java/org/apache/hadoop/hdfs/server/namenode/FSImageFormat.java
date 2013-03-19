@@ -1190,12 +1190,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Update the root node's attributes */
-DECL|method|updateRootAttr (INode root)
+DECL|method|updateRootAttr (INodeWithAdditionalFields root)
 specifier|private
 name|void
 name|updateRootAttr
 parameter_list|(
-name|INode
+name|INodeWithAdditionalFields
 name|root
 parameter_list|)
 block|{
@@ -1427,7 +1427,7 @@ argument_list|)
 throw|;
 block|}
 specifier|final
-name|INode
+name|INodeWithAdditionalFields
 name|root
 init|=
 name|loadINode
@@ -1797,7 +1797,7 @@ name|in
 argument_list|)
 expr_stmt|;
 specifier|final
-name|INode
+name|INodeWithAdditionalFields
 name|newNode
 init|=
 name|loadINode
@@ -2126,7 +2126,7 @@ return|;
 block|}
 comment|/**    * load an inode from fsimage except for its name    *     * @param in data input stream from which image is read    * @return an inode    */
 DECL|method|loadINode (final byte[] localName, boolean isSnapshotINode, DataInputStream in)
-name|INode
+name|INodeWithAdditionalFields
 name|loadINode
 parameter_list|(
 specifier|final
