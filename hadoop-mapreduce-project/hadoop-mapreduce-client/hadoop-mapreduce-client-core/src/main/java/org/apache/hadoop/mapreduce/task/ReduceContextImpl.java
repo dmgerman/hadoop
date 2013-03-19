@@ -1214,11 +1214,6 @@ name|next
 operator|.
 name|getLength
 argument_list|()
-operator|-
-name|next
-operator|.
-name|getPosition
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|value

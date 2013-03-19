@@ -6892,18 +6892,10 @@ operator|%
 name|METASIZE
 operator|)
 decl_stmt|;
-comment|// Cast one of the operands to long to ensure large values don't cause int
-comment|// overflow
 name|kvindex
 operator|=
-call|(
-name|int
-call|)
-argument_list|(
 operator|(
 operator|(
-name|long
-operator|)
 name|aligned
 operator|-
 name|METASIZE
@@ -6916,7 +6908,7 @@ operator|%
 name|kvbuffer
 operator|.
 name|length
-argument_list|)
+operator|)
 operator|/
 literal|4
 expr_stmt|;
@@ -6985,20 +6977,12 @@ name|METASIZE
 operator|)
 decl_stmt|;
 comment|// set start/end to point to first meta record
-comment|// Cast one of the operands to long to ensure large values don't cause int
-comment|// overflow
 name|kvstart
 operator|=
 name|kvend
 operator|=
-call|(
-name|int
-call|)
-argument_list|(
 operator|(
 operator|(
-name|long
-operator|)
 name|aligned
 operator|-
 name|METASIZE
@@ -7011,7 +6995,7 @@ operator|%
 name|kvbuffer
 operator|.
 name|length
-argument_list|)
+operator|)
 operator|/
 literal|4
 expr_stmt|;
@@ -9735,10 +9719,6 @@ argument_list|,
 name|this
 operator|.
 name|length
-operator|-
-name|this
-operator|.
-name|start
 argument_list|)
 expr_stmt|;
 block|}
