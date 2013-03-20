@@ -335,12 +335,12 @@ specifier|final
 name|int
 name|prime
 init|=
-literal|31
+literal|371237
 decl_stmt|;
 name|int
 name|result
 init|=
-literal|1
+literal|6521
 decl_stmt|;
 name|long
 name|clusterTimestamp

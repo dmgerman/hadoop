@@ -67,12 +67,12 @@ specifier|final
 name|int
 name|prime
 init|=
-literal|31
+literal|517861
 decl_stmt|;
 name|int
 name|result
 init|=
-literal|1
+literal|9511
 decl_stmt|;
 name|result
 operator|=
