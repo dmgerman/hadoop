@@ -296,24 +296,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|AMResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerId
 import|;
 end_import
@@ -1011,7 +993,7 @@ expr_stmt|;
 block|}
 DECL|method|makeRemoteRequest ()
 specifier|protected
-name|AMResponse
+name|AllocateResponse
 name|makeRemoteRequest
 parameter_list|()
 throws|throws
@@ -1062,24 +1044,16 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 decl_stmt|;
-name|AMResponse
-name|response
-init|=
-name|allocateResponse
-operator|.
-name|getAMResponse
-argument_list|()
-decl_stmt|;
 name|lastResponseID
 operator|=
-name|response
+name|allocateResponse
 operator|.
 name|getResponseId
 argument_list|()
 expr_stmt|;
 name|availableResources
 operator|=
-name|response
+name|allocateResponse
 operator|.
 name|getAvailableResources
 argument_list|()
@@ -1138,7 +1112,7 @@ argument_list|()
 operator|+
 literal|" newContainers="
 operator|+
-name|response
+name|allocateResponse
 operator|.
 name|getAllocatedContainers
 argument_list|()
@@ -1148,7 +1122,7 @@ argument_list|()
 operator|+
 literal|" finishedContainers="
 operator|+
-name|response
+name|allocateResponse
 operator|.
 name|getCompletedContainersStatuses
 argument_list|()
@@ -1177,7 +1151,7 @@ name|clear
 argument_list|()
 expr_stmt|;
 return|return
-name|response
+name|allocateResponse
 return|;
 block|}
 comment|// May be incorrect if there's multiple NodeManagers running on a single host.

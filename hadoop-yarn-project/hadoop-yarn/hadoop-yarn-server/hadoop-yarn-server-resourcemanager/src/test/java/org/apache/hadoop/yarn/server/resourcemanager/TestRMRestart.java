@@ -76,9 +76,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|AMResponse
+name|AllocateResponse
 import|;
 end_import
 
@@ -1464,8 +1464,8 @@ name|getApplicationMasterService
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|AMResponse
-name|amResponse
+name|AllocateResponse
+name|allocResponse
 init|=
 name|am1
 operator|.
@@ -1490,7 +1490,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|amResponse
+name|allocResponse
 operator|.
 name|getReboot
 argument_list|()

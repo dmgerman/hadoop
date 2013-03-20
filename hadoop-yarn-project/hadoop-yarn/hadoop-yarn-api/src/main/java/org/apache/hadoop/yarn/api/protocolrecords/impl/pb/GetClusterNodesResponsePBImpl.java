@@ -421,7 +421,8 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|//Once this is called. containerList will never be null - untill a getProto is called.
+comment|// Once this is called. containerList will never be null - until a getProto
+comment|// is called.
 DECL|method|initLocalNodeManagerInfosList ()
 specifier|private
 name|void

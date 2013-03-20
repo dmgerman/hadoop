@@ -3309,9 +3309,6 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 operator|.
-name|getAMResponse
-argument_list|()
-operator|.
 name|getAllocatedContainers
 argument_list|()
 decl_stmt|;
@@ -3381,9 +3378,6 @@ name|allocate
 argument_list|(
 name|allocateRequest
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 operator|.
 name|getAllocatedContainers
 argument_list|()

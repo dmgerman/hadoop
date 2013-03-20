@@ -450,24 +450,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|AMResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -2474,8 +2456,8 @@ operator|+
 name|askCount
 argument_list|)
 expr_stmt|;
-name|AMResponse
-name|amResp
+name|AllocateResponse
+name|allocResp
 init|=
 name|sendContainerAskToRM
 argument_list|()
@@ -2487,7 +2469,7 @@ name|Container
 argument_list|>
 name|allocatedContainers
 init|=
-name|amResp
+name|allocResp
 operator|.
 name|getAllocatedContainers
 argument_list|()
@@ -2621,7 +2603,7 @@ comment|// TODO should we do anything if the available resources are not enough?
 name|Resource
 name|availableResources
 init|=
-name|amResp
+name|allocResp
 operator|.
 name|getAvailableResources
 argument_list|()
@@ -2642,7 +2624,7 @@ name|ContainerStatus
 argument_list|>
 name|completedContainers
 init|=
-name|amResp
+name|allocResp
 operator|.
 name|getCompletedContainersStatuses
 argument_list|()
@@ -3661,7 +3643,7 @@ block|}
 comment|/**    * Ask RM to allocate given no. of containers to this Application Master    *    * @param requestedContainers Containers to ask for from RM    * @return Response from RM to AM with allocated containers    * @throws YarnRemoteException    */
 DECL|method|sendContainerAskToRM ()
 specifier|private
-name|AMResponse
+name|AllocateResponse
 name|sendContainerAskToRM
 parameter_list|()
 throws|throws
@@ -3691,21 +3673,13 @@ operator|+
 name|progressIndicator
 argument_list|)
 expr_stmt|;
-name|AllocateResponse
-name|resp
-init|=
+return|return
 name|resourceManager
 operator|.
 name|allocate
 argument_list|(
 name|progressIndicator
 argument_list|)
-decl_stmt|;
-return|return
-name|resp
-operator|.
-name|getAMResponse
-argument_list|()
 return|;
 block|}
 block|}
