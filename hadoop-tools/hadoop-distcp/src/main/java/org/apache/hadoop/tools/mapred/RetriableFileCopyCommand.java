@@ -662,8 +662,6 @@ name|outStream
 argument_list|,
 name|BUFFER_SIZE
 argument_list|,
-literal|true
-argument_list|,
 name|context
 argument_list|)
 return|;
@@ -967,7 +965,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|copyBytes (FileStatus sourceFileStatus, OutputStream outStream, int bufferSize, boolean mustCloseStream, Mapper.Context context)
+DECL|method|copyBytes (FileStatus sourceFileStatus, OutputStream outStream, int bufferSize, Mapper.Context context)
 specifier|private
 name|long
 name|copyBytes
@@ -980,9 +978,6 @@ name|outStream
 parameter_list|,
 name|int
 name|bufferSize
-parameter_list|,
-name|boolean
-name|mustCloseStream
 parameter_list|,
 name|Mapper
 operator|.
@@ -1088,10 +1083,6 @@ block|}
 block|}
 finally|finally
 block|{
-if|if
-condition|(
-name|mustCloseStream
-condition|)
 name|IOUtils
 operator|.
 name|cleanup

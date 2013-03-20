@@ -546,10 +546,7 @@ name|createFiles
 argument_list|(
 literal|"singlefile1/file1"
 argument_list|,
-name|target
-operator|.
-name|toString
-argument_list|()
+literal|"target"
 argument_list|)
 expr_stmt|;
 name|runTest
