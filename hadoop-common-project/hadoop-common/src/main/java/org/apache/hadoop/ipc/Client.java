@@ -832,6 +832,18 @@ name|ThreadFactoryBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|CodedOutputStream
+import|;
+end_import
+
 begin_comment
 comment|/** A client for an IPC service.  IPC calls take a single {@link Writable} as a  * parameter, and return a {@link Writable} as their value.  A service runs on  * a port and is defined by a parameter class and a value class.  *   * @see Server  */
 end_comment
@@ -1288,11 +1300,11 @@ name|callComplete
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|getRpcResult ()
+DECL|method|getRpcResponse ()
 specifier|public
 specifier|synchronized
 name|Writable
-name|getRpcResult
+name|getRpcResponse
 parameter_list|()
 block|{
 return|return
@@ -4220,6 +4232,14 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|int
+name|totalLen
+init|=
+name|in
+operator|.
+name|readInt
+argument_list|()
+decl_stmt|;
 name|RpcResponseHeaderProto
 name|header
 init|=
@@ -4245,6 +4265,23 @@ literal|"Response is null."
 argument_list|)
 throw|;
 block|}
+name|int
+name|headerLen
+init|=
+name|header
+operator|.
+name|getSerializedSize
+argument_list|()
+decl_stmt|;
+name|headerLen
+operator|+=
+name|CodedOutputStream
+operator|.
+name|computeRawVarint32Size
+argument_list|(
+name|headerLen
+argument_list|)
+expr_stmt|;
 name|int
 name|callId
 init|=
@@ -4333,10 +4370,76 @@ argument_list|(
 name|callId
 argument_list|)
 expr_stmt|;
+comment|// verify that length was correct
+comment|// only for ProtobufEngine where len can be verified easily
+if|if
+condition|(
+name|call
+operator|.
+name|getRpcResponse
+argument_list|()
+operator|instanceof
+name|ProtobufRpcEngine
+operator|.
+name|RpcWrapper
+condition|)
+block|{
+name|ProtobufRpcEngine
+operator|.
+name|RpcWrapper
+name|resWrapper
+init|=
+operator|(
+name|ProtobufRpcEngine
+operator|.
+name|RpcWrapper
+operator|)
+name|call
+operator|.
+name|getRpcResponse
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|totalLen
+operator|!=
+name|headerLen
+operator|+
+name|resWrapper
+operator|.
+name|getLength
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RpcClientException
+argument_list|(
+literal|"RPC response length mismatch on rpc success"
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 else|else
 block|{
 comment|// Rpc Request failed
+comment|// Verify that length was correct
+if|if
+condition|(
+name|totalLen
+operator|!=
+name|headerLen
+condition|)
+block|{
+throw|throw
+operator|new
+name|RpcClientException
+argument_list|(
+literal|"RPC response length mismatch on rpc error"
+argument_list|)
+throw|;
+block|}
 specifier|final
 name|String
 name|exceptionClassName
@@ -5464,7 +5567,7 @@ block|{
 return|return
 name|call
 operator|.
-name|getRpcResult
+name|getRpcResponse
 argument_list|()
 return|;
 block|}
