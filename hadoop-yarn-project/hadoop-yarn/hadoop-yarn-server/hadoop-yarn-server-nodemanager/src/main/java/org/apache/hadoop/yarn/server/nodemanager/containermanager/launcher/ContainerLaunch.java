@@ -3269,6 +3269,19 @@ name|name
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|inputClassPath
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|inputClassPath
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|environment
 operator|.
 name|put
@@ -3290,6 +3303,7 @@ name|pwd
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**      * Modifiable environment variables      */
 comment|// allow containers to override these variables
