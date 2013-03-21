@@ -604,7 +604,9 @@ block|}
 comment|/** clear the created list */
 DECL|method|destroyCreatedList ( final INodeDirectoryWithSnapshot currentINode, final BlocksMapUpdateInfo collectedBlocks)
 specifier|private
-name|void
+name|Quota
+operator|.
+name|Counts
 name|destroyCreatedList
 parameter_list|(
 specifier|final
@@ -616,6 +618,18 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 block|{
+name|Quota
+operator|.
+name|Counts
+name|counts
+init|=
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
+decl_stmt|;
 specifier|final
 name|List
 argument_list|<
@@ -640,6 +654,15 @@ control|)
 block|{
 name|c
 operator|.
+name|computeQuotaUsage
+argument_list|(
+name|counts
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|c
+operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
@@ -659,6 +682,9 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+return|return
+name|counts
+return|;
 block|}
 comment|/** clear the deleted list */
 DECL|method|destroyDeletedList ( final BlocksMapUpdateInfo collectedBlocks)
@@ -3655,6 +3681,10 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|counts
+operator|.
+name|add
+argument_list|(
 name|lastDiff
 operator|.
 name|diff
@@ -3664,6 +3694,7 @@ argument_list|(
 name|this
 argument_list|,
 name|collectedBlocks
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

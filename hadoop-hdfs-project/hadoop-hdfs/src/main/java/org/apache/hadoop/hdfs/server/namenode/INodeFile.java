@@ -1471,6 +1471,18 @@ parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
+name|Quota
+operator|.
+name|Counts
+name|counts
+init|=
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|snapshot
@@ -1483,6 +1495,13 @@ literal|null
 condition|)
 block|{
 comment|// this only happens when deleting the current file
+name|computeQuotaUsage
+argument_list|(
+name|counts
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
@@ -1490,12 +1509,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|Quota
-operator|.
-name|Counts
-operator|.
-name|newInstance
-argument_list|()
+name|counts
 return|;
 block|}
 annotation|@
