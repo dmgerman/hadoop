@@ -144,6 +144,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|conf
@@ -359,7 +373,7 @@ name|TestDistributedShell
 operator|.
 name|class
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 argument_list|,
 literal|1
@@ -527,6 +541,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDSShell ()
 specifier|public
 name|void
@@ -550,6 +569,12 @@ literal|"2"
 block|,
 literal|"--shell_command"
 block|,
+name|Shell
+operator|.
+name|WINDOWS
+operator|?
+literal|"dir"
+operator|:
 literal|"ls"
 block|,
 literal|"--master_memory"
@@ -635,6 +660,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDSShellWithNoArgs ()
 specifier|public
 name|void
