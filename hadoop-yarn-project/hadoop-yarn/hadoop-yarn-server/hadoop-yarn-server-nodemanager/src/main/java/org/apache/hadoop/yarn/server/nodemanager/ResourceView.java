@@ -31,9 +31,19 @@ name|long
 name|getVmemAllocatedForContainers
 parameter_list|()
 function_decl|;
+DECL|method|isVmemCheckEnabled ()
+name|boolean
+name|isVmemCheckEnabled
+parameter_list|()
+function_decl|;
 DECL|method|getPmemAllocatedForContainers ()
 name|long
 name|getPmemAllocatedForContainers
+parameter_list|()
+function_decl|;
+DECL|method|isPmemCheckEnabled ()
+name|boolean
+name|isPmemCheckEnabled
 parameter_list|()
 function_decl|;
 block|}
