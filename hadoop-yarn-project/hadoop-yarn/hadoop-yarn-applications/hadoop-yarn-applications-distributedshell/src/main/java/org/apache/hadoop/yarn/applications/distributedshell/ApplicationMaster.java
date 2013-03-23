@@ -2095,6 +2095,21 @@ literal|"1"
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|numTotalContainers
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Cannot run distributed shell with no containers"
+argument_list|)
+throw|;
+block|}
 name|requestPriority
 operator|=
 name|Integer
