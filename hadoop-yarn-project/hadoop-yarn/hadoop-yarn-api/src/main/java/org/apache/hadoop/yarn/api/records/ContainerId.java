@@ -286,12 +286,12 @@ specifier|final
 name|int
 name|prime
 init|=
-literal|31
+literal|435569
 decl_stmt|;
 name|int
 name|result
 init|=
-literal|1
+literal|7507
 decl_stmt|;
 name|result
 operator|=

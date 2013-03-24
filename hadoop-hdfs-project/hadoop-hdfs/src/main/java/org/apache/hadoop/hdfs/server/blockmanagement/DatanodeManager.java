@@ -706,6 +706,22 @@ name|hadoop
 operator|.
 name|net
 operator|.
+name|NetworkTopology
+operator|.
+name|InvalidTopologyException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
 name|Node
 import|;
 end_import
@@ -2266,14 +2282,15 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-name|host2DatanodeMap
+name|networktopology
 operator|.
 name|add
 argument_list|(
 name|node
 argument_list|)
 expr_stmt|;
-name|networktopology
+comment|// may throw InvalidTopologyException
+name|host2DatanodeMap
 operator|.
 name|add
 argument_list|(
@@ -3064,6 +3081,8 @@ name|hostname
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
 name|nodeReg
 operator|.
 name|setExportedKeys
@@ -3225,7 +3244,7 @@ block|}
 else|else
 block|{
 comment|// nodeS is found
-comment|/* The registering datanode is a replacement node for the existing            data storage, which from now on will be served by a new node.           If this message repeats, both nodes might have same storageID            by (insanely rare) random chance. User needs to restart one of the           nodes with its data cleared (or user can just remove the StorageID           value in "VERSION" file under the data directory of the datanode,           but this is might not work if VERSION file format has changed         */
+comment|/* The registering datanode is a replacement node for the existing              data storage, which from now on will be served by a new node.             If this message repeats, both nodes might have same storageID              by (insanely rare) random chance. User needs to restart one of the             nodes with its data cleared (or user can just remove the StorageID             value in "VERSION" file under the data directory of the datanode,             but this is might not work if VERSION file format has changed           */
 name|NameNode
 operator|.
 name|stateChangeLog
@@ -3249,6 +3268,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
 comment|// update cluster map
 name|getNetworkTopology
 argument_list|()
@@ -3300,6 +3326,31 @@ argument_list|(
 name|nodeS
 argument_list|)
 expr_stmt|;
+name|success
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|success
+condition|)
+block|{
+name|removeDatanode
+argument_list|(
+name|nodeS
+argument_list|)
+expr_stmt|;
+name|wipeDatanode
+argument_list|(
+name|nodeS
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return;
 block|}
 comment|// this is a new datanode serving a new data storage
@@ -3356,7 +3407,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// register new datanode
 name|DatanodeDescriptor
 name|nodeDescr
 init|=
@@ -3370,11 +3420,26 @@ operator|.
 name|DEFAULT_RACK
 argument_list|)
 decl_stmt|;
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
 name|resolveNetworkLocation
 argument_list|(
 name|nodeDescr
 argument_list|)
 expr_stmt|;
+name|networktopology
+operator|.
+name|add
+argument_list|(
+name|nodeDescr
+argument_list|)
+expr_stmt|;
+comment|// register new datanode
 name|addDatanode
 argument_list|(
 name|nodeDescr
@@ -3395,6 +3460,50 @@ argument_list|(
 name|nodeDescr
 argument_list|)
 expr_stmt|;
+name|success
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|success
+condition|)
+block|{
+name|removeDatanode
+argument_list|(
+name|nodeDescr
+argument_list|)
+expr_stmt|;
+name|wipeDatanode
+argument_list|(
+name|nodeDescr
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InvalidTopologyException
+name|e
+parameter_list|)
+block|{
+comment|// If the network location is invalid, clear the cached mappings
+comment|// so that we have a chance to re-add this DataNode with the
+comment|// correct network location later.
+name|dnsToSwitchMapping
+operator|.
+name|reloadCachedMappings
+argument_list|()
+expr_stmt|;
+throw|throw
+name|e
+throw|;
+block|}
 block|}
 comment|/**    * Rereads conf to get hosts and exclude list file names.    * Rereads the files to update the hosts and exclude lists.  It    * checks if any of the hosts have changed states:    */
 DECL|method|refreshNodes (final Configuration conf)

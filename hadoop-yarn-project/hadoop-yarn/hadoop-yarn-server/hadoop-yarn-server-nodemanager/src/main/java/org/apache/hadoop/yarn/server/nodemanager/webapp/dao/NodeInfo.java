@@ -173,6 +173,16 @@ specifier|protected
 name|long
 name|totalPmemAllocatedContainersMB
 decl_stmt|;
+DECL|field|vmemCheckEnabled
+specifier|protected
+name|boolean
+name|vmemCheckEnabled
+decl_stmt|;
+DECL|field|pmemCheckEnabled
+specifier|protected
+name|boolean
+name|pmemCheckEnabled
+decl_stmt|;
 DECL|field|lastNodeUpdateTime
 specifier|protected
 name|long
@@ -279,6 +289,15 @@ name|BYTES_IN_MB
 expr_stmt|;
 name|this
 operator|.
+name|vmemCheckEnabled
+operator|=
+name|resourceView
+operator|.
+name|isVmemCheckEnabled
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|totalPmemAllocatedContainersMB
 operator|=
 name|resourceView
@@ -287,6 +306,15 @@ name|getPmemAllocatedForContainers
 argument_list|()
 operator|/
 name|BYTES_IN_MB
+expr_stmt|;
+name|this
+operator|.
+name|pmemCheckEnabled
+operator|=
+name|resourceView
+operator|.
+name|isPmemCheckEnabled
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -523,6 +551,18 @@ operator|.
 name|totalVmemAllocatedContainersMB
 return|;
 block|}
+DECL|method|isVmemCheckEnabled ()
+specifier|public
+name|boolean
+name|isVmemCheckEnabled
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|vmemCheckEnabled
+return|;
+block|}
 DECL|method|getTotalPmemAllocated ()
 specifier|public
 name|long
@@ -533,6 +573,18 @@ return|return
 name|this
 operator|.
 name|totalPmemAllocatedContainersMB
+return|;
+block|}
+DECL|method|isPmemCheckEnabled ()
+specifier|public
+name|boolean
+name|isPmemCheckEnabled
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|pmemCheckEnabled
 return|;
 block|}
 block|}

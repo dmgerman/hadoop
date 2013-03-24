@@ -450,24 +450,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|AMResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -648,6 +630,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Priority
 import|;
 end_import
@@ -701,22 +701,6 @@ operator|.
 name|client
 operator|.
 name|AMRMClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|client
-operator|.
-name|AMRMClient
 operator|.
 name|ContainerRequest
 import|;
@@ -734,7 +718,7 @@ name|yarn
 operator|.
 name|client
 operator|.
-name|AMRMClientImpl
+name|AMRMClientAsync
 import|;
 end_import
 
@@ -867,7 +851,7 @@ decl_stmt|;
 comment|// Handle to communicate with the Resource Manager
 DECL|field|resourceManager
 specifier|private
-name|AMRMClient
+name|AMRMClientAsync
 name|resourceManager
 decl_stmt|;
 comment|// Application Attempt Id ( combination of attemptId and fail count )
@@ -924,14 +908,6 @@ DECL|field|requestPriority
 specifier|private
 name|int
 name|requestPriority
-decl_stmt|;
-comment|// Simple flag to denote whether all works is done
-DECL|field|appDone
-specifier|private
-name|boolean
-name|appDone
-init|=
-literal|false
 decl_stmt|;
 comment|// Counter for completed containers ( complete denotes successful or failed )
 DECL|field|numCompletedContainers
@@ -1045,6 +1021,18 @@ name|String
 name|ExecShellStringPath
 init|=
 literal|"ExecShellScript.sh"
+decl_stmt|;
+DECL|field|done
+specifier|private
+specifier|volatile
+name|boolean
+name|done
+decl_stmt|;
+DECL|field|success
+specifier|private
+specifier|volatile
+name|boolean
+name|success
 decl_stmt|;
 comment|// Launch threads
 DECL|field|launchThreads
@@ -2107,6 +2095,21 @@ literal|"1"
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|numTotalContainers
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Cannot run distributed shell with no containers"
+argument_list|)
+throw|;
+block|}
 name|requestPriority
 operator|=
 name|Integer
@@ -2165,13 +2168,25 @@ argument_list|(
 literal|"Starting ApplicationMaster"
 argument_list|)
 expr_stmt|;
-comment|// Connect to ResourceManager
+name|AMRMClientAsync
+operator|.
+name|CallbackHandler
+name|allocListener
+init|=
+operator|new
+name|RMCallbackHandler
+argument_list|()
+decl_stmt|;
 name|resourceManager
 operator|=
 operator|new
-name|AMRMClientImpl
+name|AMRMClientAsync
 argument_list|(
 name|appAttemptID
+argument_list|,
+literal|1000
+argument_list|,
+name|allocListener
 argument_list|)
 expr_stmt|;
 name|resourceManager
@@ -2186,14 +2201,13 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 comment|// Setup local RPC Server to accept status requests directly from clients
 comment|// TODO need to setup a protocol for client to be able to communicate to
 comment|// the RPC server
 comment|// TODO use the rpc port info to register with the RM for the client to
 comment|// send requests to this app master
 comment|// Register self with ResourceManager
+comment|// This will start heartbeating to the RM
 name|RegisterApplicationMasterResponse
 name|response
 init|=
@@ -2314,88 +2328,88 @@ operator|=
 name|maxMem
 expr_stmt|;
 block|}
-comment|// Setup heartbeat emitter
-comment|// TODO poll RM every now and then with an empty request to let RM know
-comment|// that we are alive
-comment|// The heartbeat interval after which an AM is timed out by the RM is
-comment|// defined by a config setting:
-comment|// RM_AM_EXPIRY_INTERVAL_MS with default defined by
-comment|// DEFAULT_RM_AM_EXPIRY_INTERVAL_MS
-comment|// The allocate calls to the RM count as heartbeats so, for now,
-comment|// this additional heartbeat emitter is not required.
 comment|// Setup ask for containers from RM
 comment|// Send request for containers to RM
 comment|// Until we get our fully allocated quota, we keep on polling RM for
 comment|// containers
 comment|// Keep looping until all the containers are launched and shell script
 comment|// executed on them ( regardless of success/failure).
-name|int
-name|loopCounter
+name|ContainerRequest
+name|containerAsk
 init|=
-operator|-
-literal|1
-decl_stmt|;
-while|while
-condition|(
-name|numCompletedContainers
-operator|.
-name|get
-argument_list|()
-operator|<
-name|numTotalContainers
-operator|&&
-operator|!
-name|appDone
-condition|)
-block|{
-name|loopCounter
-operator|++
-expr_stmt|;
-comment|// log current state
-name|LOG
-operator|.
-name|info
+name|setupContainerAskForRM
 argument_list|(
-literal|"Current application state: loop="
-operator|+
-name|loopCounter
-operator|+
-literal|", appDone="
-operator|+
-name|appDone
-operator|+
-literal|", total="
-operator|+
 name|numTotalContainers
-operator|+
-literal|", requested="
-operator|+
-name|numRequestedContainers
-operator|+
-literal|", completed="
-operator|+
-name|numCompletedContainers
-operator|+
-literal|", failed="
-operator|+
-name|numFailedContainers
-operator|+
-literal|", currentAllocated="
-operator|+
-name|numAllocatedContainers
+argument_list|)
+decl_stmt|;
+name|resourceManager
+operator|.
+name|addContainerRequest
+argument_list|(
+name|containerAsk
 argument_list|)
 expr_stmt|;
-comment|// Sleep before each loop when asking RM for containers
-comment|// to avoid flooding RM with spurious requests when it
-comment|// need not have any available containers
-comment|// Sleeping for 1000 ms.
+name|numRequestedContainers
+operator|.
+name|set
+argument_list|(
+name|numTotalContainers
+argument_list|)
+expr_stmt|;
+while|while
+condition|(
+operator|!
+name|done
+condition|)
+block|{
 try|try
 block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|1000
+literal|200
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ex
+parameter_list|)
+block|{}
+block|}
+name|finish
+argument_list|()
+expr_stmt|;
+return|return
+name|success
+return|;
+block|}
+DECL|method|finish ()
+specifier|private
+name|void
+name|finish
+parameter_list|()
+block|{
+comment|// Join all launched threads
+comment|// needed for when we time out
+comment|// and we need to release containers
+for|for
+control|(
+name|Thread
+name|launchThread
+range|:
+name|launchThreads
+control|)
+block|{
+try|try
+block|{
+name|launchThread
+operator|.
+name|join
+argument_list|(
+literal|10000
 argument_list|)
 expr_stmt|;
 block|}
@@ -2409,7 +2423,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Sleep interrupted "
+literal|"Exception thrown in thread join: "
 operator|+
 name|e
 operator|.
@@ -2417,11 +2431,305 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
 block|}
-comment|// No. of containers to request
-comment|// For the first loop, askCount will be equal to total containers needed
-comment|// From that point on, askCount will always be 0 as current
-comment|// implementation does not change its ask on container failures.
+block|}
+comment|// When the application completes, it should send a finish application
+comment|// signal to the RM
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Application completed. Signalling finish to RM"
+argument_list|)
+expr_stmt|;
+name|FinalApplicationStatus
+name|appStatus
+decl_stmt|;
+name|String
+name|appMessage
+init|=
+literal|null
+decl_stmt|;
+name|success
+operator|=
+literal|true
+expr_stmt|;
+if|if
+condition|(
+name|numFailedContainers
+operator|.
+name|get
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|appStatus
+operator|=
+name|FinalApplicationStatus
+operator|.
+name|SUCCEEDED
+expr_stmt|;
+block|}
+else|else
+block|{
+name|appStatus
+operator|=
+name|FinalApplicationStatus
+operator|.
+name|FAILED
+expr_stmt|;
+name|appMessage
+operator|=
+literal|"Diagnostics."
+operator|+
+literal|", total="
+operator|+
+name|numTotalContainers
+operator|+
+literal|", completed="
+operator|+
+name|numCompletedContainers
+operator|.
+name|get
+argument_list|()
+operator|+
+literal|", allocated="
+operator|+
+name|numAllocatedContainers
+operator|.
+name|get
+argument_list|()
+operator|+
+literal|", failed="
+operator|+
+name|numFailedContainers
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
+name|success
+operator|=
+literal|false
+expr_stmt|;
+block|}
+try|try
+block|{
+name|resourceManager
+operator|.
+name|unregisterApplicationMaster
+argument_list|(
+name|appStatus
+argument_list|,
+name|appMessage
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to unregister application"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+name|done
+operator|=
+literal|true
+expr_stmt|;
+name|resourceManager
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+DECL|class|RMCallbackHandler
+specifier|private
+class|class
+name|RMCallbackHandler
+implements|implements
+name|AMRMClientAsync
+operator|.
+name|CallbackHandler
+block|{
+annotation|@
+name|Override
+DECL|method|onContainersCompleted (List<ContainerStatus> completedContainers)
+specifier|public
+name|void
+name|onContainersCompleted
+parameter_list|(
+name|List
+argument_list|<
+name|ContainerStatus
+argument_list|>
+name|completedContainers
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got response from RM for container ask, completedCnt="
+operator|+
+name|completedContainers
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+for|for
+control|(
+name|ContainerStatus
+name|containerStatus
+range|:
+name|completedContainers
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got container status for containerID="
+operator|+
+name|containerStatus
+operator|.
+name|getContainerId
+argument_list|()
+operator|+
+literal|", state="
+operator|+
+name|containerStatus
+operator|.
+name|getState
+argument_list|()
+operator|+
+literal|", exitStatus="
+operator|+
+name|containerStatus
+operator|.
+name|getExitStatus
+argument_list|()
+operator|+
+literal|", diagnostics="
+operator|+
+name|containerStatus
+operator|.
+name|getDiagnostics
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// non complete containers should not be here
+assert|assert
+operator|(
+name|containerStatus
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|ContainerState
+operator|.
+name|COMPLETE
+operator|)
+assert|;
+comment|// increment counters for completed/failed containers
+name|int
+name|exitStatus
+init|=
+name|containerStatus
+operator|.
+name|getExitStatus
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+literal|0
+operator|!=
+name|exitStatus
+condition|)
+block|{
+comment|// container failed
+if|if
+condition|(
+name|YarnConfiguration
+operator|.
+name|ABORTED_CONTAINER_EXIT_STATUS
+operator|!=
+name|exitStatus
+condition|)
+block|{
+comment|// shell script failed
+comment|// counts as completed
+name|numCompletedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|numFailedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// container was killed by framework, possibly preempted
+comment|// we should re-try as the container was lost for some reason
+name|numAllocatedContainers
+operator|.
+name|decrementAndGet
+argument_list|()
+expr_stmt|;
+name|numRequestedContainers
+operator|.
+name|decrementAndGet
+argument_list|()
+expr_stmt|;
+comment|// we do not need to release the container as it would be done
+comment|// by the RM
+block|}
+block|}
+else|else
+block|{
+comment|// nothing to do
+comment|// container completed successfully
+name|numCompletedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container completed successfully."
+operator|+
+literal|", containerId="
+operator|+
+name|containerStatus
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// ask for more containers if any failed
 name|int
 name|askCount
 init|=
@@ -2462,36 +2770,57 @@ name|containerAsk
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Send the request to RM
-name|LOG
+comment|// set progress to deliver to RM on next heartbeat
+name|float
+name|progress
+init|=
+operator|(
+name|float
+operator|)
+name|numCompletedContainers
 operator|.
-name|info
+name|get
+argument_list|()
+operator|/
+name|numTotalContainers
+decl_stmt|;
+name|resourceManager
+operator|.
+name|setProgress
 argument_list|(
-literal|"Asking RM for containers"
-operator|+
-literal|", askCount="
-operator|+
-name|askCount
+name|progress
 argument_list|)
 expr_stmt|;
-name|AMResponse
-name|amResp
-init|=
-name|sendContainerAskToRM
+if|if
+condition|(
+name|numCompletedContainers
+operator|.
+name|get
 argument_list|()
-decl_stmt|;
-comment|// Retrieve list of allocated containers from the response
+operator|==
+name|numTotalContainers
+condition|)
+block|{
+name|done
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|onContainersAllocated (List<Container> allocatedContainers)
+specifier|public
+name|void
+name|onContainersAllocated
+parameter_list|(
 name|List
 argument_list|<
 name|Container
 argument_list|>
 name|allocatedContainers
-init|=
-name|amResp
-operator|.
-name|getAllocatedContainers
-argument_list|()
-decl_stmt|;
+parameter_list|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -2616,387 +2945,29 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|// Check what the current available resources in the cluster are
-comment|// TODO should we do anything if the available resources are not enough?
-name|Resource
-name|availableResources
-init|=
-name|amResp
-operator|.
-name|getAvailableResources
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Current available resources in the cluster "
-operator|+
-name|availableResources
-argument_list|)
-expr_stmt|;
-comment|// Check the completed containers
+block|}
+annotation|@
+name|Override
+DECL|method|onRebootRequest ()
+specifier|public
+name|void
+name|onRebootRequest
+parameter_list|()
+block|{}
+annotation|@
+name|Override
+DECL|method|onNodesUpdated (List<NodeReport> updatedNodes)
+specifier|public
+name|void
+name|onNodesUpdated
+parameter_list|(
 name|List
 argument_list|<
-name|ContainerStatus
+name|NodeReport
 argument_list|>
-name|completedContainers
-init|=
-name|amResp
-operator|.
-name|getCompletedContainersStatuses
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got response from RM for container ask, completedCnt="
-operator|+
-name|completedContainers
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-for|for
-control|(
-name|ContainerStatus
-name|containerStatus
-range|:
-name|completedContainers
-control|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Got container status for containerID="
-operator|+
-name|containerStatus
-operator|.
-name|getContainerId
-argument_list|()
-operator|+
-literal|", state="
-operator|+
-name|containerStatus
-operator|.
-name|getState
-argument_list|()
-operator|+
-literal|", exitStatus="
-operator|+
-name|containerStatus
-operator|.
-name|getExitStatus
-argument_list|()
-operator|+
-literal|", diagnostics="
-operator|+
-name|containerStatus
-operator|.
-name|getDiagnostics
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// non complete containers should not be here
-assert|assert
-operator|(
-name|containerStatus
-operator|.
-name|getState
-argument_list|()
-operator|==
-name|ContainerState
-operator|.
-name|COMPLETE
-operator|)
-assert|;
-comment|// increment counters for completed/failed containers
-name|int
-name|exitStatus
-init|=
-name|containerStatus
-operator|.
-name|getExitStatus
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-literal|0
-operator|!=
-name|exitStatus
-condition|)
-block|{
-comment|// container failed
-if|if
-condition|(
-operator|-
-literal|100
-operator|!=
-name|exitStatus
-condition|)
-block|{
-comment|// shell script failed
-comment|// counts as completed
-name|numCompletedContainers
-operator|.
-name|incrementAndGet
-argument_list|()
-expr_stmt|;
-name|numFailedContainers
-operator|.
-name|incrementAndGet
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// something else bad happened
-comment|// app job did not complete for some reason
-comment|// we should re-try as the container was lost for some reason
-name|numAllocatedContainers
-operator|.
-name|decrementAndGet
-argument_list|()
-expr_stmt|;
-name|numRequestedContainers
-operator|.
-name|decrementAndGet
-argument_list|()
-expr_stmt|;
-comment|// we do not need to release the container as it would be done
-comment|// by the RM/CM.
-block|}
-block|}
-else|else
-block|{
-comment|// nothing to do
-comment|// container completed successfully
-name|numCompletedContainers
-operator|.
-name|incrementAndGet
-argument_list|()
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Container completed successfully."
-operator|+
-literal|", containerId="
-operator|+
-name|containerStatus
-operator|.
-name|getContainerId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
-name|numCompletedContainers
-operator|.
-name|get
-argument_list|()
-operator|==
-name|numTotalContainers
-condition|)
-block|{
-name|appDone
-operator|=
-literal|true
-expr_stmt|;
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Current application state: loop="
-operator|+
-name|loopCounter
-operator|+
-literal|", appDone="
-operator|+
-name|appDone
-operator|+
-literal|", total="
-operator|+
-name|numTotalContainers
-operator|+
-literal|", requested="
-operator|+
-name|numRequestedContainers
-operator|+
-literal|", completed="
-operator|+
-name|numCompletedContainers
-operator|+
-literal|", failed="
-operator|+
-name|numFailedContainers
-operator|+
-literal|", currentAllocated="
-operator|+
-name|numAllocatedContainers
-argument_list|)
-expr_stmt|;
-comment|// TODO
-comment|// Add a timeout handling layer
-comment|// for misbehaving shell commands
-block|}
-comment|// Join all launched threads
-comment|// needed for when we time out
-comment|// and we need to release containers
-for|for
-control|(
-name|Thread
-name|launchThread
-range|:
-name|launchThreads
-control|)
-block|{
-try|try
-block|{
-name|launchThread
-operator|.
-name|join
-argument_list|(
-literal|10000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
+name|updatedNodes
 parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Exception thrown in thread join: "
-operator|+
-name|e
-operator|.
-name|getMessage
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|// When the application completes, it should send a finish application
-comment|// signal to the RM
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Application completed. Signalling finish to RM"
-argument_list|)
-expr_stmt|;
-name|FinalApplicationStatus
-name|appStatus
-decl_stmt|;
-name|String
-name|appMessage
-init|=
-literal|null
-decl_stmt|;
-name|boolean
-name|isSuccess
-init|=
-literal|true
-decl_stmt|;
-if|if
-condition|(
-name|numFailedContainers
-operator|.
-name|get
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-name|appStatus
-operator|=
-name|FinalApplicationStatus
-operator|.
-name|SUCCEEDED
-expr_stmt|;
-block|}
-else|else
-block|{
-name|appStatus
-operator|=
-name|FinalApplicationStatus
-operator|.
-name|FAILED
-expr_stmt|;
-name|appMessage
-operator|=
-literal|"Diagnostics."
-operator|+
-literal|", total="
-operator|+
-name|numTotalContainers
-operator|+
-literal|", completed="
-operator|+
-name|numCompletedContainers
-operator|.
-name|get
-argument_list|()
-operator|+
-literal|", allocated="
-operator|+
-name|numAllocatedContainers
-operator|.
-name|get
-argument_list|()
-operator|+
-literal|", failed="
-operator|+
-name|numFailedContainers
-operator|.
-name|get
-argument_list|()
-expr_stmt|;
-name|isSuccess
-operator|=
-literal|false
-expr_stmt|;
-block|}
-name|resourceManager
-operator|.
-name|unregisterApplicationMaster
-argument_list|(
-name|appStatus
-argument_list|,
-name|appMessage
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-name|isSuccess
-return|;
-block|}
-finally|finally
-block|{
-name|resourceManager
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
+block|{}
 block|}
 comment|/**    * Thread to connect to the {@link ContainerManager} and launch the container    * that will execute the shell command.    */
 DECL|class|LaunchContainerRunnable
@@ -3656,56 +3627,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|request
-return|;
-block|}
-comment|/**    * Ask RM to allocate given no. of containers to this Application Master    *    * @param requestedContainers Containers to ask for from RM    * @return Response from RM to AM with allocated containers    * @throws YarnRemoteException    */
-DECL|method|sendContainerAskToRM ()
-specifier|private
-name|AMResponse
-name|sendContainerAskToRM
-parameter_list|()
-throws|throws
-name|YarnRemoteException
-block|{
-name|float
-name|progressIndicator
-init|=
-operator|(
-name|float
-operator|)
-name|numCompletedContainers
-operator|.
-name|get
-argument_list|()
-operator|/
-name|numTotalContainers
-decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Sending request to RM for containers"
-operator|+
-literal|", progress="
-operator|+
-name|progressIndicator
-argument_list|)
-expr_stmt|;
-name|AllocateResponse
-name|resp
-init|=
-name|resourceManager
-operator|.
-name|allocate
-argument_list|(
-name|progressIndicator
-argument_list|)
-decl_stmt|;
-return|return
-name|resp
-operator|.
-name|getAMResponse
-argument_list|()
 return|;
 block|}
 block|}

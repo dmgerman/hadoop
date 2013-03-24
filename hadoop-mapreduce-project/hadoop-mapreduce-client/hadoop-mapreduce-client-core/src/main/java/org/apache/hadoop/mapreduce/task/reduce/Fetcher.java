@@ -1891,6 +1891,11 @@ return|return
 name|EMPTY_ATTEMPT_ID_ARRAY
 return|;
 block|}
+comment|// The codec for lz0,lz4,snappy,bz2,etc. throw java.lang.InternalError
+comment|// on decompression failures. Catching and re-throwing as IOException
+comment|// to allow fetch failure logic to be processed
+try|try
+block|{
 comment|// Go!
 name|LOG
 operator|.
@@ -1940,6 +1945,36 @@ argument_list|,
 name|reporter
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|java
+operator|.
+name|lang
+operator|.
+name|InternalError
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to shuffle for fetcher#"
+operator|+
+name|id
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 comment|// Inform the shuffle scheduler
 name|long
 name|endTime

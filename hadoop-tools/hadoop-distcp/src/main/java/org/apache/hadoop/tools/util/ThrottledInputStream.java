@@ -149,6 +149,22 @@ operator|=
 name|maxBytesPerSec
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|rawStream
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 comment|/** @inheritDoc */
 annotation|@
 name|Override

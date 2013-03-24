@@ -19,6 +19,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -991,39 +1003,76 @@ argument_list|(
 name|pid
 argument_list|)
 expr_stmt|;
+name|boolean
+name|isAlive
+init|=
+literal|true
+decl_stmt|;
+for|for
+control|(
+name|int
+name|tries
+init|=
+literal|100
+init|;
+name|tries
+operator|>
+literal|0
+condition|;
+name|tries
+operator|--
+control|)
+block|{
 if|if
 condition|(
 name|isSetsidAvailable
 argument_list|()
 condition|)
 block|{
-comment|// whole processtree should be gone
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-literal|"Proceesses in process group live"
-argument_list|,
+comment|// whole processtree
+name|isAlive
+operator|=
 name|isAnyProcessInTreeAlive
 argument_list|(
 name|p
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-comment|// process should be gone
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-literal|"ProcessTree must have been gone"
-argument_list|,
+comment|// process
+name|isAlive
+operator|=
 name|isAlive
 argument_list|(
 name|pid
 argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|isAlive
+condition|)
+block|{
+break|break;
+block|}
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|100
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|isAlive
+condition|)
+block|{
+name|fail
+argument_list|(
+literal|"ProcessTree shouldn't be alive"
 argument_list|)
 expr_stmt|;
 block|}

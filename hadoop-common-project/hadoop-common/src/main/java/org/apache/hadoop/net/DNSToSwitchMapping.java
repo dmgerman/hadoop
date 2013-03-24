@@ -88,6 +88,13 @@ argument_list|>
 name|names
 parameter_list|)
 function_decl|;
+comment|/**    * Reload all of the cached mappings.    *    * If there is a cache, this method will clear it, so that future accesses    * will get a chance to see the new data.    */
+DECL|method|reloadCachedMappings ()
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

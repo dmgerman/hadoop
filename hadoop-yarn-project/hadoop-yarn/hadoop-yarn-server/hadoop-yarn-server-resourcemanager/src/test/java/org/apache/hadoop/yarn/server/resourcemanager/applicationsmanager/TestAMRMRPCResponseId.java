@@ -62,9 +62,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|AMResponse
+name|AllocateResponse
 import|;
 end_import
 
@@ -488,7 +488,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|AMResponse
+name|AllocateResponse
 name|response
 init|=
 name|amService
@@ -497,9 +497,6 @@ name|allocate
 argument_list|(
 name|allocateRequest
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
@@ -554,9 +551,6 @@ name|allocate
 argument_list|(
 name|allocateRequest
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
@@ -579,9 +573,6 @@ name|allocate
 argument_list|(
 name|allocateRequest
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
@@ -624,9 +615,6 @@ name|allocate
 argument_list|(
 name|allocateRequest
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|Assert
 operator|.

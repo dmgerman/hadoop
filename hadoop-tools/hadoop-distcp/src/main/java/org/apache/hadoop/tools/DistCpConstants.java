@@ -263,6 +263,16 @@ name|CONF_LABEL_META_FOLDER
 init|=
 literal|"distcp.meta.folder"
 decl_stmt|;
+comment|/* DistCp CopyListing class override param */
+DECL|field|CONF_LABEL_COPY_LISTING_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CONF_LABEL_COPY_LISTING_CLASS
+init|=
+literal|"distcp.copy.listing.class"
+decl_stmt|;
 comment|/**    * Conf label for SSL Trust-store location.    */
 DECL|field|CONF_LABEL_SSL_TRUST_STORE_LOCATION
 specifier|public

@@ -15536,13 +15536,8 @@ block|{
 name|FSPermissionChecker
 name|pc
 init|=
-operator|new
-name|FSPermissionChecker
-argument_list|(
-name|fsOwnerShortUserName
-argument_list|,
-name|supergroup
-argument_list|)
+name|getPermissionChecker
+argument_list|()
 decl_stmt|;
 name|checkOperation
 argument_list|(

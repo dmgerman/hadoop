@@ -208,12 +208,12 @@ specifier|final
 name|int
 name|prime
 init|=
-literal|31
+literal|2153
 decl_stmt|;
 name|int
 name|result
 init|=
-literal|1
+literal|2459
 decl_stmt|;
 name|Resource
 name|capability

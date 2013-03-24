@@ -296,6 +296,11 @@ name|TestContainerLogsPage
 block|{
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testContainerLogDirs ()
 specifier|public
 name|void
@@ -304,7 +309,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|String
+name|File
 name|absLogDir
 init|=
 operator|new
@@ -322,15 +327,19 @@ operator|+
 literal|"LogDir"
 argument_list|)
 operator|.
-name|getAbsolutePath
+name|getAbsoluteFile
 argument_list|()
 decl_stmt|;
 name|String
 name|logdirwithFile
 init|=
-literal|"file://"
-operator|+
 name|absLogDir
+operator|.
+name|toURI
+argument_list|()
+operator|.
+name|toString
+argument_list|()
 decl_stmt|;
 name|Configuration
 name|conf

@@ -658,9 +658,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|AMResponse
+name|AllocateResponse
 import|;
 end_import
 
@@ -3159,7 +3159,7 @@ else|:
 literal|0
 decl_stmt|;
 comment|//first time it would be null
-name|AMResponse
+name|AllocateResponse
 name|response
 decl_stmt|;
 comment|/*      * If contact with RM is lost, the AM will wait MR_AM_TO_RM_WAIT_INTERVAL_MS      * milliseconds before aborting. During this interval, AM will still try      * to contact the RM.      */
@@ -3584,12 +3584,12 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|handleUpdatedNodes (AMResponse response)
+DECL|method|handleUpdatedNodes (AllocateResponse response)
 specifier|private
 name|void
 name|handleUpdatedNodes
 parameter_list|(
-name|AMResponse
+name|AllocateResponse
 name|response
 parameter_list|)
 block|{

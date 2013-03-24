@@ -62,9 +62,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|AMResponse
+name|AllocateResponse
 import|;
 end_import
 
@@ -676,7 +676,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|AMResponse
+name|AllocateResponse
 name|response1
 init|=
 name|amService
@@ -685,9 +685,6 @@ name|allocate
 argument_list|(
 name|allocateRequest1
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
@@ -751,9 +748,6 @@ name|allocate
 argument_list|(
 name|allocateRequest1
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|updatedNodes
 operator|=
@@ -823,9 +817,6 @@ name|allocate
 argument_list|(
 name|allocateRequest1
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|updatedNodes
 operator|=
@@ -922,9 +913,6 @@ name|allocate
 argument_list|(
 name|allocateRequest1
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|updatedNodes
 operator|=
@@ -1052,7 +1040,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|AMResponse
+name|AllocateResponse
 name|response2
 init|=
 name|amService
@@ -1061,9 +1049,6 @@ name|allocate
 argument_list|(
 name|allocateRequest2
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 decl_stmt|;
 name|updatedNodes
 operator|=
@@ -1123,9 +1108,6 @@ name|allocate
 argument_list|(
 name|allocateRequest1
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|updatedNodes
 operator|=
@@ -1216,9 +1198,6 @@ name|allocate
 argument_list|(
 name|allocateRequest2
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|updatedNodes
 operator|=
@@ -1310,9 +1289,6 @@ name|allocate
 argument_list|(
 name|allocateRequest2
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 expr_stmt|;
 name|updatedNodes
 operator|=

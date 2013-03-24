@@ -505,6 +505,11 @@ return|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testDSShell ()
 specifier|public
 name|void
@@ -568,7 +573,7 @@ literal|"/bin/java -Xmx512m "
 operator|+
 literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster "
 operator|+
-literal|"--container_memory 128 --num_containers 0 --priority 0 --shell_command ls"
+literal|"--container_memory 128 --num_containers 1 --priority 0 --shell_command ls"
 block|}
 decl_stmt|;
 name|LOG
