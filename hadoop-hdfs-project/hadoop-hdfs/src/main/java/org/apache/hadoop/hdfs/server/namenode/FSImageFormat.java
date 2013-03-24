@@ -2248,7 +2248,7 @@ decl_stmt|;
 if|if
 condition|(
 name|numBlocks
-operator|>
+operator|>=
 literal|0
 condition|)
 block|{
@@ -2823,7 +2823,7 @@ expr_stmt|;
 block|}
 name|fsDir
 operator|.
-name|unprotectedReplaceINodeFile
+name|replaceINodeFile
 argument_list|(
 name|path
 argument_list|,
