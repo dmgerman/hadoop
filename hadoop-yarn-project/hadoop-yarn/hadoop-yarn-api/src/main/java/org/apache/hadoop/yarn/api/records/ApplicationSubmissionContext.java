@@ -320,6 +320,31 @@ name|boolean
 name|cancel
 parameter_list|)
 function_decl|;
+comment|/**    * @return the number of max attempts of the application to be submitted    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getMaxAppAttempts ()
+specifier|public
+name|int
+name|getMaxAppAttempts
+parameter_list|()
+function_decl|;
+comment|/**    * Set the number of max attempts of the application to be submitted. WARNING:    * it should be no larger than the global number of max attempts in the Yarn    * configuration.    * @param maxAppAttempts the number of max attempts of the application    * to be submitted.    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setMaxAppAttempts (int maxAppAttempts)
+specifier|public
+name|void
+name|setMaxAppAttempts
+parameter_list|(
+name|int
+name|maxAppAttempts
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

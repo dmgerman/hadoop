@@ -241,7 +241,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Interface to an Application Attempt in the Resource Manager.  * A {@link RMApp} can have multiple app attempts based on  * {@link YarnConfiguration#RM_AM_MAX_RETRIES}. For specific  * implementation take a look at {@link RMAppAttemptImpl}.  */
+comment|/**  * Interface to an Application Attempt in the Resource Manager.  * A {@link RMApp} can have multiple app attempts based on  * {@link YarnConfiguration#RM_AM_MAX_ATTEMPTS}. For specific  * implementation take a look at {@link RMAppAttemptImpl}.  */
 end_comment
 
 begin_interface

@@ -348,6 +348,12 @@ name|FinalApplicationStatus
 name|getFinalApplicationStatus
 parameter_list|()
 function_decl|;
+comment|/**    * The number of max attempts of the application.    * @return the number of max attempts of the application.    */
+DECL|method|getMaxAppAttempts ()
+name|int
+name|getMaxAppAttempts
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

@@ -642,11 +642,11 @@ specifier|private
 name|RMContext
 name|rmContext
 decl_stmt|;
-DECL|field|maxRetries
+DECL|field|maxAppAttempts
 specifier|private
 specifier|static
 name|int
-name|maxRetries
+name|maxAppAttempts
 init|=
 literal|4
 decl_stmt|;
@@ -1160,16 +1160,16 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-comment|// ensure max retries set to known value
+comment|// ensure max application attempts set to known value
 name|conf
 operator|.
 name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_AM_MAX_RETRIES
+name|RM_AM_MAX_ATTEMPTS
 argument_list|,
-name|maxRetries
+name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 name|YarnScheduler
@@ -2632,7 +2632,7 @@ literal|1
 init|;
 name|i
 operator|<
-name|maxRetries
+name|maxAppAttempts
 condition|;
 name|i
 operator|++
@@ -2710,7 +2710,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// ACCEPTED => FAILED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED
-comment|// after max retries
+comment|// after max application attempts
 name|String
 name|message
 init|=
@@ -2965,7 +2965,7 @@ literal|1
 init|;
 name|i
 operator|<
-name|maxRetries
+name|maxAppAttempts
 condition|;
 name|i
 operator|++
@@ -3107,7 +3107,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// RUNNING => FAILED/RESTARTING event RMAppEventType.ATTEMPT_FAILED
-comment|// after max retries
+comment|// after max application attempts
 name|RMAppEvent
 name|event
 init|=

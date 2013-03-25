@@ -193,6 +193,16 @@ name|STDOUT
 init|=
 literal|"stdout"
 decl_stmt|;
+comment|/**    * The environment variable for MAX_APP_ATTEMPTS. Set in AppMaster environment    * only    */
+DECL|field|MAX_APP_ATTEMPTS_ENV
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAX_APP_ATTEMPTS_ENV
+init|=
+literal|"MAX_APP_ATTEMPTS"
+decl_stmt|;
 comment|/**    * Environment for Applications.    *     * Some of the environment variables for applications are<em>final</em>     * i.e. they cannot be modified by the applications.    */
 DECL|enum|Environment
 specifier|public
