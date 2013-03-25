@@ -610,6 +610,20 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 DECL|class|NodeManager
 specifier|public
@@ -855,6 +869,23 @@ name|dirsHandler
 argument_list|)
 return|;
 block|}
+DECL|method|createDeletionService (ContainerExecutor exec)
+specifier|protected
+name|DeletionService
+name|createDeletionService
+parameter_list|(
+name|ContainerExecutor
+name|exec
+parameter_list|)
+block|{
+return|return
+operator|new
+name|DeletionService
+argument_list|(
+name|exec
+argument_list|)
+return|;
+block|}
 DECL|method|doSecureLogin ()
 specifier|protected
 name|void
@@ -1008,8 +1039,7 @@ block|}
 name|DeletionService
 name|del
 init|=
-operator|new
-name|DeletionService
+name|createDeletionService
 argument_list|(
 name|exec
 argument_list|)
@@ -1869,6 +1899,19 @@ parameter_list|()
 block|{
 return|return
 name|containerManager
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getNMContext ()
+name|Context
+name|getNMContext
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|context
 return|;
 block|}
 DECL|method|main (String[] args)
