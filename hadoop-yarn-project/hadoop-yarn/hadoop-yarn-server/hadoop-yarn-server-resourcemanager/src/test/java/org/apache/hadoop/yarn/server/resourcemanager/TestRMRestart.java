@@ -220,9 +220,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -1497,7 +1497,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// NM should be rebooted on heartbeat, even first heartbeat for nm2
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|hbResponse
 init|=
 name|nm1

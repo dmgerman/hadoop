@@ -250,7 +250,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|RegisterNodeManagerRequest
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -268,9 +268,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|RegisterNodeManagerRequest
 import|;
 end_import
 
@@ -676,7 +676,7 @@ return|;
 block|}
 DECL|method|nodeHeartbeat (boolean isHealthy)
 specifier|public
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|nodeHeartbeat
 parameter_list|(
 name|boolean
@@ -709,7 +709,7 @@ return|;
 block|}
 DECL|method|nodeHeartbeat (ApplicationAttemptId attemptId, int containerId, ContainerState containerState)
 specifier|public
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|nodeHeartbeat
 parameter_list|(
 name|ApplicationAttemptId
@@ -819,7 +819,7 @@ return|;
 block|}
 DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy)
 specifier|public
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|nodeHeartbeat
 parameter_list|(
 name|Map
@@ -853,7 +853,7 @@ return|;
 block|}
 DECL|method|nodeHeartbeat (Map<ApplicationId, List<ContainerStatus>> conts, boolean isHealthy, int resId)
 specifier|public
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|nodeHeartbeat
 parameter_list|(
 name|Map
@@ -1002,7 +1002,7 @@ operator|.
 name|currentMasterKey
 argument_list|)
 expr_stmt|;
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|heartbeatResponse
 init|=
 name|resourceTracker
@@ -1011,9 +1011,6 @@ name|nodeHeartbeat
 argument_list|(
 name|req
 argument_list|)
-operator|.
-name|getHeartbeatResponse
-argument_list|()
 decl_stmt|;
 name|MasterKey
 name|masterKeyFromRM

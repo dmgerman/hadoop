@@ -128,9 +128,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -380,7 +380,7 @@ operator|.
 name|await
 argument_list|()
 expr_stmt|;
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|response
 init|=
 name|nm

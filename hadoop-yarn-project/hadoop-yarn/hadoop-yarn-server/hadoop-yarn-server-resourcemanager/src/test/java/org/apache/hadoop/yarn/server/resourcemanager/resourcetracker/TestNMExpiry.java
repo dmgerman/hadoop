@@ -857,9 +857,6 @@ argument_list|(
 name|request
 argument_list|)
 operator|.
-name|getHeartbeatResponse
-argument_list|()
-operator|.
 name|getResponseId
 argument_list|()
 expr_stmt|;

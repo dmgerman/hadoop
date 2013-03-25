@@ -488,7 +488,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|RegisterNodeManagerRequest
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -506,9 +506,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|RegisterNodeManagerRequest
 import|;
 end_import
 
@@ -2371,7 +2371,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|response
 init|=
 name|resourceTracker
@@ -2380,9 +2380,6 @@ name|nodeHeartbeat
 argument_list|(
 name|request
 argument_list|)
-operator|.
-name|getHeartbeatResponse
-argument_list|()
 decl_stmt|;
 comment|// See if the master-key has rolled over
 if|if
@@ -2512,7 +2509,7 @@ name|containersToCleanup
 init|=
 name|response
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 decl_stmt|;
 if|if
@@ -2554,7 +2551,7 @@ name|appsToCleanup
 init|=
 name|response
 operator|.
-name|getApplicationsToCleanupList
+name|getApplicationsToCleanup
 argument_list|()
 decl_stmt|;
 comment|//Only start tracking for keepAlive on FINISH_APP
