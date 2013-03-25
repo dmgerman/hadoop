@@ -1486,6 +1486,40 @@ throw|;
 block|}
 break|break;
 block|}
+if|if
+condition|(
+name|localrsrc
+operator|.
+name|isFile
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+name|files
+operator|.
+name|delete
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|localrsrc
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ignore
+parameter_list|)
+block|{       }
+block|}
 return|return
 literal|0
 return|;
@@ -1782,7 +1816,7 @@ parameter_list|(
 name|IOException
 name|ignore
 parameter_list|)
-block|{ }
+block|{       }
 throw|throw
 name|e
 throw|;
@@ -1806,7 +1840,7 @@ parameter_list|(
 name|FileNotFoundException
 name|ignore
 parameter_list|)
-block|{ }
+block|{       }
 comment|// clear ref to internal var
 name|rand
 operator|=
