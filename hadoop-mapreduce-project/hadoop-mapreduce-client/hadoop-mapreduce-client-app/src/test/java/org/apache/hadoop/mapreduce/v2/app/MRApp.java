@@ -1887,6 +1887,10 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
 argument_list|)
 expr_stmt|;
 name|this

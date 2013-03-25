@@ -2936,6 +2936,24 @@ name|amContainer
 argument_list|)
 expr_stmt|;
 comment|// AM Container
+name|appContext
+operator|.
+name|setMaxAppAttempts
+argument_list|(
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_MAX_ATTEMPTS
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
+argument_list|)
+argument_list|)
+expr_stmt|;
 return|return
 name|appContext
 return|;
