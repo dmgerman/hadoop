@@ -1300,30 +1300,6 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/**     * @return The full path name represented in a list of byte array    */
-DECL|method|getRelativePathNameBytes (INode ancestor)
-specifier|public
-specifier|final
-name|byte
-index|[]
-index|[]
-name|getRelativePathNameBytes
-parameter_list|(
-name|INode
-name|ancestor
-parameter_list|)
-block|{
-return|return
-name|FSDirectory
-operator|.
-name|getRelativePathNameBytes
-argument_list|(
-name|this
-argument_list|,
-name|ancestor
-argument_list|)
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|toString ()

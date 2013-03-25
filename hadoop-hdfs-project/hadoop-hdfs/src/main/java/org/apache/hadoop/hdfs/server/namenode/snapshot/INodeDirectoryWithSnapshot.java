@@ -984,8 +984,8 @@ return|return
 name|dirList
 return|;
 block|}
-comment|/**      * Interpret the diff and generate a list of {@link DiffReportEntry}.      * @root The snapshot root of the diff report.      * @param parent The directory that the diff belongs to.      * @param fromEarlier True indicates {@code diff=later-earlier},       *                            False indicates {@code diff=earlier-later}      * @return A list of {@link DiffReportEntry} as the diff report.      */
-DECL|method|generateReport ( INodeDirectorySnapshottable root, INodeDirectoryWithSnapshot parent, boolean fromEarlier)
+comment|/**      * Interpret the diff and generate a list of {@link DiffReportEntry}.      * @param parentPath The relative path of the parent.      * @param parent The directory that the diff belongs to.      * @param fromEarlier True indicates {@code diff=later-earlier},       *                    False indicates {@code diff=earlier-later}      * @return A list of {@link DiffReportEntry} as the diff report.      */
+DECL|method|generateReport (byte[][] parentPath, INodeDirectoryWithSnapshot parent, boolean fromEarlier)
 specifier|public
 name|List
 argument_list|<
@@ -993,8 +993,10 @@ name|DiffReportEntry
 argument_list|>
 name|generateReport
 parameter_list|(
-name|INodeDirectorySnapshottable
-name|root
+name|byte
+index|[]
+index|[]
+name|parentPath
 parameter_list|,
 name|INodeDirectoryWithSnapshot
 name|parent
@@ -1062,18 +1064,6 @@ argument_list|(
 name|ListType
 operator|.
 name|DELETED
-argument_list|)
-decl_stmt|;
-name|byte
-index|[]
-index|[]
-name|parentPath
-init|=
-name|parent
-operator|.
-name|getRelativePathNameBytes
-argument_list|(
-name|root
 argument_list|)
 decl_stmt|;
 name|byte
