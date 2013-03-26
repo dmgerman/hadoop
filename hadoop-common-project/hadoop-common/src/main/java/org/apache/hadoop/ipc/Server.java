@@ -2480,6 +2480,20 @@ name|handlers
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getConnections ()
+name|List
+argument_list|<
+name|Connection
+argument_list|>
+name|getConnections
+parameter_list|()
+block|{
+return|return
+name|connectionList
+return|;
+block|}
 comment|/**    * Refresh the service authorization ACL for the service handled by this server.    */
 DECL|method|refreshServiceAcl (Configuration conf, PolicyProvider provider)
 specifier|public
@@ -5600,6 +5614,11 @@ specifier|private
 name|ByteBuffer
 name|unwrappedDataLengthBuffer
 decl_stmt|;
+DECL|field|serviceClass
+specifier|private
+name|int
+name|serviceClass
+decl_stmt|;
 DECL|field|user
 name|UserGroupInformation
 name|user
@@ -6667,7 +6686,7 @@ name|ByteBuffer
 operator|.
 name|allocate
 argument_list|(
-literal|3
+literal|4
 argument_list|)
 expr_stmt|;
 block|}
@@ -6709,6 +6728,19 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+comment|// TODO we should add handler for service class later
+name|this
+operator|.
+name|setServiceClass
+argument_list|(
+name|connectionHeaderBuf
+operator|.
+name|get
+argument_list|(
+literal|1
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|byte
 index|[]
 name|method
@@ -6721,7 +6753,7 @@ name|connectionHeaderBuf
 operator|.
 name|get
 argument_list|(
-literal|1
+literal|2
 argument_list|)
 block|}
 decl_stmt|;
@@ -6826,7 +6858,7 @@ name|connectionHeaderBuf
 operator|.
 name|get
 argument_list|(
-literal|2
+literal|3
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -8810,6 +8842,34 @@ block|}
 return|return
 literal|true
 return|;
+block|}
+comment|/**      * Get service class for connection      * @return the serviceClass      */
+DECL|method|getServiceClass ()
+specifier|public
+name|int
+name|getServiceClass
+parameter_list|()
+block|{
+return|return
+name|serviceClass
+return|;
+block|}
+comment|/**      * Set service class for connection      * @param serviceClass the serviceClass to set      */
+DECL|method|setServiceClass (int serviceClass)
+specifier|public
+name|void
+name|setServiceClass
+parameter_list|(
+name|int
+name|serviceClass
+parameter_list|)
+block|{
+name|this
+operator|.
+name|serviceClass
+operator|=
+name|serviceClass
+expr_stmt|;
 block|}
 DECL|method|close ()
 specifier|private
