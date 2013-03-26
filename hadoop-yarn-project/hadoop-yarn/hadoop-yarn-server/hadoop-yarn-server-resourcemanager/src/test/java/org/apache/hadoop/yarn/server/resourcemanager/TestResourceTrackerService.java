@@ -1630,9 +1630,6 @@ name|SHUTDOWN
 argument_list|,
 name|response
 operator|.
-name|getRegistrationResponse
-argument_list|()
-operator|.
 name|getNodeAction
 argument_list|()
 argument_list|)

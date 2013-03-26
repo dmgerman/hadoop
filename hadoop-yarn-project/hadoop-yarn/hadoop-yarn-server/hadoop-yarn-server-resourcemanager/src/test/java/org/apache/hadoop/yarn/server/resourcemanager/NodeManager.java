@@ -913,9 +913,6 @@ name|registerNodeManager
 argument_list|(
 name|request
 argument_list|)
-operator|.
-name|getRegistrationResponse
-argument_list|()
 expr_stmt|;
 name|this
 operator|.

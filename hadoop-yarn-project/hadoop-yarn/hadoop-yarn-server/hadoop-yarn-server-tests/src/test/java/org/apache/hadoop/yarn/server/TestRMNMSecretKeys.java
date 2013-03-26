@@ -148,9 +148,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|MasterKey
+name|RegisterNodeManagerResponse
 import|;
 end_import
 
@@ -170,7 +170,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|RegistrationResponse
+name|MasterKey
 import|;
 end_import
 
@@ -350,7 +350,7 @@ name|getResourceTrackerService
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|RegistrationResponse
+name|RegisterNodeManagerResponse
 name|registrationResponse
 init|=
 name|nm
