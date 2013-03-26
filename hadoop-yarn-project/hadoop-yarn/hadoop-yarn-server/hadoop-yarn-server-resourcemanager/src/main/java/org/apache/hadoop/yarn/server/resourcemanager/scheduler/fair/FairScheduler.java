@@ -4251,10 +4251,12 @@ name|sort
 argument_list|(
 name|scheds
 argument_list|,
-operator|new
-name|SchedulingAlgorithms
+name|SchedulingMode
 operator|.
-name|FairShareComparator
+name|getDefault
+argument_list|()
+operator|.
+name|getComparator
 argument_list|()
 argument_list|)
 expr_stmt|;
