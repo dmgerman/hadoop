@@ -1376,6 +1376,7 @@ argument_list|(
 name|datanodeManager
 argument_list|)
 expr_stmt|;
+comment|// Compute the map capacity by allocating 2% of total memory
 name|blocksMap
 operator|=
 operator|new
