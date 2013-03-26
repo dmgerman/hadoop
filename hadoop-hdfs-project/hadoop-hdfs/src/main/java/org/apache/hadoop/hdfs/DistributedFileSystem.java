@@ -1775,7 +1775,9 @@ name|replication
 argument_list|)
 return|;
 block|}
-comment|/**    * Move blocks from srcs to trg    * and delete srcs afterwards    * RESTRICTION: all blocks should be the same size    * @param trg existing file to append to    * @param psrcs list of files (same block size, same replication)    * @throws IOException    */
+comment|/**    * Move blocks from srcs to trg and delete srcs afterwards.    * The file block sizes must be the same.    *     * @param trg existing file to append to    * @param psrcs list of files (same block size, same replication)    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|concat (Path trg, Path [] psrcs)
 specifier|public
 name|void
