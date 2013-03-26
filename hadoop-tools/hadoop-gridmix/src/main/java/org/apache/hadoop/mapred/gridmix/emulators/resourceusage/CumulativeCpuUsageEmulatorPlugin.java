@@ -80,11 +80,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|tools
 operator|.
-name|util
+name|rumen
 operator|.
-name|ResourceCalculatorPlugin
+name|ResourceUsageMetrics
 import|;
 end_import
 
@@ -96,11 +96,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|tools
+name|yarn
 operator|.
-name|rumen
+name|util
 operator|.
-name|ResourceUsageMetrics
+name|ResourceCalculatorPlugin
 import|;
 end_import
 
@@ -389,9 +389,6 @@ name|initTime
 init|=
 name|monitor
 operator|.
-name|getProcResourceValues
-argument_list|()
-operator|.
 name|getCumulativeCpuTime
 argument_list|()
 decl_stmt|;
@@ -426,9 +423,6 @@ comment|//perform unit computation
 name|finalTime
 operator|=
 name|monitor
-operator|.
-name|getProcResourceValues
-argument_list|()
 operator|.
 name|getCumulativeCpuTime
 argument_list|()
@@ -574,9 +568,6 @@ parameter_list|()
 block|{
 return|return
 name|monitor
-operator|.
-name|getProcResourceValues
-argument_list|()
 operator|.
 name|getCumulativeCpuTime
 argument_list|()
