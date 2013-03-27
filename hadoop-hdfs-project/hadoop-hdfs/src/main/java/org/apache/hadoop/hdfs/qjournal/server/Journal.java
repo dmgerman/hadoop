@@ -837,6 +837,16 @@ specifier|final
 name|JournalMetrics
 name|metrics
 decl_stmt|;
+comment|/**    * Time threshold for sync calls, beyond which a warning should be logged to the console.    */
+DECL|field|WARN_SYNC_MILLIS_THRESHOLD
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|WARN_SYNC_MILLIS_THRESHOLD
+init|=
+literal|1000
+decl_stmt|;
 DECL|method|Journal (File logDir, String journalId, StorageErrorReporter errorReporter)
 name|Journal
 parameter_list|(
@@ -1731,6 +1741,47 @@ name|MICROSECONDS
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|sw
+operator|.
+name|elapsedTime
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+operator|>
+name|WARN_SYNC_MILLIS_THRESHOLD
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Sync of transaction range "
+operator|+
+name|firstTxnId
+operator|+
+literal|"-"
+operator|+
+name|lastTxnId
+operator|+
+literal|" took "
+operator|+
+name|sw
+operator|.
+name|elapsedTime
+argument_list|(
+name|TimeUnit
+operator|.
+name|MILLISECONDS
+argument_list|)
+operator|+
+literal|"ms"
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|isLagging
