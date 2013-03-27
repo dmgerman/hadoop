@@ -3083,6 +3083,11 @@ operator|.
 name|acls
 argument_list|)
 expr_stmt|;
+comment|// queue metrics are updated, more resource may be available
+comment|// activate the pending applications if possible
+name|activateApplications
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
