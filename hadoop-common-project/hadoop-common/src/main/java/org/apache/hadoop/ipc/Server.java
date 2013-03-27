@@ -6229,6 +6229,15 @@ operator|+
 literal|":"
 operator|+
 name|attemptingUser
+operator|+
+literal|" ("
+operator|+
+name|e
+operator|.
+name|getLocalizedMessage
+argument_list|()
+operator|+
+literal|")"
 argument_list|)
 expr_stmt|;
 throw|throw
