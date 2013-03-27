@@ -145,6 +145,12 @@ operator|!=
 literal|null
 condition|)
 return|return;
+name|DFSInputStream
+operator|.
+name|tcpReadsDisabledForTesting
+operator|=
+literal|true
+expr_stmt|;
 name|sockDir
 operator|=
 operator|new
