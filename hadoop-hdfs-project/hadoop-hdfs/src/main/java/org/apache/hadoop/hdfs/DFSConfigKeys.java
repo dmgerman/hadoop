@@ -852,7 +852,7 @@ specifier|final
 name|long
 name|DFS_NAMENODE_CHECKPOINT_TXNS_DEFAULT
 init|=
-literal|40000
+literal|1000000
 decl_stmt|;
 DECL|field|DFS_NAMENODE_CHECKPOINT_MAX_RETRIES_KEY
 specifier|public
