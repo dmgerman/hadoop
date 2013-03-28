@@ -637,7 +637,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|assertBlockCollection (String path, int numBlocks)
+DECL|method|assertBlockCollection (String path, int numBlocks, final FSDirectory dir, final BlockManager blkManager)
+specifier|static
 name|INodeFile
 name|assertBlockCollection
 parameter_list|(
@@ -646,6 +647,14 @@ name|path
 parameter_list|,
 name|int
 name|numBlocks
+parameter_list|,
+specifier|final
+name|FSDirectory
+name|dir
+parameter_list|,
+specifier|final
+name|BlockManager
+name|blkManager
 parameter_list|)
 throws|throws
 name|Exception
@@ -658,7 +667,7 @@ name|INodeFile
 operator|.
 name|valueOf
 argument_list|(
-name|fsdir
+name|dir
 operator|.
 name|getINode
 argument_list|(
@@ -693,6 +702,8 @@ control|)
 block|{
 name|assertBlockCollection
 argument_list|(
+name|blkManager
+argument_list|,
 name|file
 argument_list|,
 name|b
@@ -703,10 +714,15 @@ return|return
 name|file
 return|;
 block|}
-DECL|method|assertBlockCollection (final INodeFile file, final BlockInfo b)
+DECL|method|assertBlockCollection (final BlockManager blkManager, final INodeFile file, final BlockInfo b)
+specifier|static
 name|void
 name|assertBlockCollection
 parameter_list|(
+specifier|final
+name|BlockManager
+name|blkManager
+parameter_list|,
 specifier|final
 name|INodeFile
 name|file
@@ -722,7 +738,7 @@ name|assertSame
 argument_list|(
 name|b
 argument_list|,
-name|blockmanager
+name|blkManager
 operator|.
 name|getStoredBlock
 argument_list|(
@@ -736,7 +752,7 @@ name|assertSame
 argument_list|(
 name|file
 argument_list|,
-name|blockmanager
+name|blkManager
 operator|.
 name|getBlockCollection
 argument_list|(
@@ -916,6 +932,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|3
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 decl_stmt|;
 name|BlockInfo
@@ -1077,6 +1097,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|2
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1115,6 +1139,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|2
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1145,6 +1173,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|4
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 decl_stmt|;
 name|BlockInfo
@@ -1182,6 +1214,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|4
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 expr_stmt|;
 comment|// Delete file0
@@ -1222,6 +1258,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|4
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 expr_stmt|;
 comment|// Compare the INode in the blocksMap with INodes for snapshots
@@ -1250,6 +1290,10 @@ argument_list|(
 name|s1f0
 argument_list|,
 literal|4
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 expr_stmt|;
 comment|// Delete snapshot s1
@@ -1290,6 +1334,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|4
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 expr_stmt|;
 try|try
@@ -1348,6 +1396,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|2
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1372,6 +1424,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|5
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1396,6 +1452,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|7
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1416,6 +1476,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|1
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -1448,6 +1512,10 @@ name|toString
 argument_list|()
 argument_list|,
 literal|15
+argument_list|,
+name|fsdir
+argument_list|,
+name|blockmanager
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1490,6 +1558,8 @@ control|)
 block|{
 name|assertBlockCollection
 argument_list|(
+name|blockmanager
+argument_list|,
 name|f4
 argument_list|,
 name|b

@@ -2797,7 +2797,7 @@ try|try
 block|{
 comment|// remove src
 specifier|final
-name|int
+name|long
 name|removedSrc
 init|=
 name|removeLastINode
@@ -3680,7 +3680,7 @@ init|=
 literal|true
 decl_stmt|;
 specifier|final
-name|int
+name|long
 name|removedSrc
 init|=
 name|removeLastINode
@@ -5764,8 +5764,7 @@ name|targetNode
 argument_list|)
 expr_stmt|;
 comment|// Remove the node from the namespace
-specifier|final
-name|int
+name|long
 name|removed
 init|=
 name|removeLastINode
@@ -5787,10 +5786,16 @@ literal|1
 return|;
 block|}
 comment|// set the parent's modification time
+specifier|final
+name|INodeDirectory
+name|parent
+init|=
 name|targetNode
 operator|.
 name|getParent
 argument_list|()
+decl_stmt|;
+name|parent
 operator|.
 name|updateModificationTime
 argument_list|(
@@ -5811,9 +5816,31 @@ literal|0
 return|;
 block|}
 comment|// collect block
-specifier|final
-name|long
-name|inodesRemoved
+if|if
+condition|(
+operator|!
+name|targetNode
+operator|.
+name|isInLatestSnapshot
+argument_list|(
+name|latestSnapshot
+argument_list|)
+condition|)
+block|{
+name|targetNode
+operator|.
+name|destroyAndCollectBlocks
+argument_list|(
+name|collectedBlocks
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|Quota
+operator|.
+name|Counts
+name|counts
 init|=
 name|targetNode
 operator|.
@@ -5825,6 +5852,13 @@ name|latestSnapshot
 argument_list|,
 name|collectedBlocks
 argument_list|)
+decl_stmt|;
+name|parent
+operator|.
+name|addSpaceConsumed
+argument_list|(
+operator|-
+name|counts
 operator|.
 name|get
 argument_list|(
@@ -5832,7 +5866,30 @@ name|Quota
 operator|.
 name|NAMESPACE
 argument_list|)
-decl_stmt|;
+argument_list|,
+operator|-
+name|counts
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|DISKSPACE
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|removed
+operator|=
+name|counts
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|NameNode
@@ -5861,7 +5918,7 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|inodesRemoved
+name|removed
 return|;
 block|}
 comment|/**    * Check if the given INode (or one of its descendants) is snapshottable and    * already has snapshots.    *     * @param target    *          The given INode    * @param snapshottableDirs    *          The list of directories that are snapshottable but do not have    *          snapshots yet    * @return The INode which is snapshottable and already has snapshots.    */
@@ -9396,7 +9453,7 @@ block|}
 comment|/**    * Remove the last inode in the path from the namespace.    * Count of each ancestor with quota is also updated.    * @return -1 for failing to remove;    *          0 for removing a reference;    *          1 for removing a non-reference inode.     * @throws NSQuotaExceededException     */
 DECL|method|removeLastINode (final INodesInPath iip)
 specifier|private
-name|int
+name|long
 name|removeLastINode
 parameter_list|(
 specifier|final
@@ -9484,9 +9541,13 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+operator|!
+name|last
+operator|.
+name|isInLatestSnapshot
+argument_list|(
 name|latestSnapshot
-operator|==
-literal|null
+argument_list|)
 condition|)
 block|{
 specifier|final
@@ -9548,6 +9609,19 @@ condition|)
 block|{
 return|return
 literal|0
+return|;
+block|}
+else|else
+block|{
+return|return
+name|counts
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
 return|;
 block|}
 block|}
