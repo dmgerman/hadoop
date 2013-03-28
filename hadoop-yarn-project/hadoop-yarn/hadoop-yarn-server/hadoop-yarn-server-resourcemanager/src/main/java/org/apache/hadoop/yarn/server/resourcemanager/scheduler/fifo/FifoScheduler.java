@@ -626,7 +626,7 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
-name|ResourceCalculator
+name|DefaultResourceCalculator
 import|;
 end_import
 
@@ -646,7 +646,7 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
-name|DefaultResourceCalculator
+name|ResourceCalculator
 import|;
 end_import
 
@@ -2626,7 +2626,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|FiCaSchedulerNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
@@ -3054,7 +3054,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|FiCaSchedulerNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
@@ -3152,7 +3152,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|FiCaSchedulerNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)

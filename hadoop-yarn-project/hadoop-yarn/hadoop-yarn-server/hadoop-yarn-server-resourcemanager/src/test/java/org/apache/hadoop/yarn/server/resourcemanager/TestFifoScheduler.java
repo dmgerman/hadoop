@@ -2132,7 +2132,9 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-literal|"*"
+name|ResourceRequest
+operator|.
+name|ANY
 argument_list|,
 name|BuilderUtils
 operator|.
@@ -2187,7 +2189,9 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-literal|"*"
+name|ResourceRequest
+operator|.
+name|ANY
 argument_list|,
 name|BuilderUtils
 operator|.

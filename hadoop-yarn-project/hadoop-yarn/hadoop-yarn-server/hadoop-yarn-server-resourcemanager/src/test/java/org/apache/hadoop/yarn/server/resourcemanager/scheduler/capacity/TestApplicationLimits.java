@@ -422,26 +422,6 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
-name|ResourceCalculator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
 name|DefaultResourceCalculator
 import|;
 end_import
@@ -462,7 +442,7 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
-name|Resources
+name|ResourceCalculator
 import|;
 end_import
 
@@ -480,9 +460,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmnode
+name|resource
 operator|.
-name|RMNodeImpl
+name|Resources
 import|;
 end_import
 
@@ -3746,7 +3726,7 @@ name|TestUtils
 operator|.
 name|createResourceRequest
 argument_list|(
-name|RMNodeImpl
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,
@@ -3877,7 +3857,7 @@ name|TestUtils
 operator|.
 name|createResourceRequest
 argument_list|(
-name|RMNodeImpl
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,
@@ -4012,7 +3992,7 @@ name|TestUtils
 operator|.
 name|createResourceRequest
 argument_list|(
-name|RMNodeImpl
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|,

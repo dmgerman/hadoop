@@ -166,15 +166,6 @@ specifier|public
 interface|interface
 name|RMNode
 block|{
-DECL|field|ANY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|ANY
-init|=
-literal|"*"
-decl_stmt|;
 comment|/**    * the node id of of this node.    * @return the node id of this node.    */
 DECL|method|getNodeID ()
 specifier|public

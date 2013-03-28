@@ -436,15 +436,6 @@ specifier|final
 name|RMNode
 name|rmNode
 decl_stmt|;
-DECL|field|ANY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|ANY
-init|=
-literal|"*"
-decl_stmt|;
 DECL|method|FSSchedulerNode (RMNode node)
 specifier|public
 name|FSSchedulerNode

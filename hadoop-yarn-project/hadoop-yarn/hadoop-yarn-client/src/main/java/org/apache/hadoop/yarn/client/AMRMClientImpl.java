@@ -1541,6 +1541,8 @@ name|req
 operator|.
 name|priority
 argument_list|,
+name|ResourceRequest
+operator|.
 name|ANY
 argument_list|,
 name|req
@@ -1648,6 +1650,8 @@ name|req
 operator|.
 name|priority
 argument_list|,
+name|ResourceRequest
+operator|.
 name|ANY
 argument_list|,
 name|req

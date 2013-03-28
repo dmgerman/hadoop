@@ -856,7 +856,9 @@ name|offRackReq
 init|=
 name|createResourceReq
 argument_list|(
-literal|"*"
+name|ResourceRequest
+operator|.
+name|ANY
 argument_list|,
 name|memory
 argument_list|,
