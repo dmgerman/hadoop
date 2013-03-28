@@ -644,6 +644,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -3987,6 +4001,51 @@ operator|.
 name|getCanonicalServiceName
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|canonicalizeUri (URI uri)
+specifier|protected
+name|URI
+name|canonicalizeUri
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isLogicalUri
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|uri
+argument_list|)
+condition|)
+block|{
+comment|// Don't try to DNS-resolve logical URIs, since the 'authority'
+comment|// portion isn't a proper hostname
+return|return
+name|uri
+return|;
+block|}
+else|else
+block|{
+return|return
+name|NetUtils
+operator|.
+name|getCanonicalUri
+argument_list|(
+name|uri
+argument_list|,
+name|getDefaultPort
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * Utility function that returns if the NameNode is in safemode or not. In HA    * mode, this API will return only ActiveNN's safemode status.    *     * @return true if NameNode is in safemode, false otherwise.    * @throws IOException    *           when there is an issue communicating with the NameNode    */
 DECL|method|isInSafeMode ()

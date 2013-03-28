@@ -1991,6 +1991,29 @@ operator|.
 name|uri
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|canonicalizeUri (URI uri)
+specifier|protected
+name|URI
+name|canonicalizeUri
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
+return|return
+name|NetUtils
+operator|.
+name|getCanonicalUri
+argument_list|(
+name|uri
+argument_list|,
+name|getDefaultPort
+argument_list|()
+argument_list|)
+return|;
+block|}
 comment|/** @return the home directory. */
 DECL|method|getHomeDirectoryString (final UserGroupInformation ugi)
 specifier|public
