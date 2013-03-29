@@ -36,6 +36,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -203,7 +215,7 @@ name|URLUtils
 operator|.
 name|SOCKET_TIMEOUT
 operator|=
-literal|1
+literal|5
 expr_stmt|;
 block|}
 annotation|@
@@ -634,6 +646,11 @@ operator|.
 name|getMessage
 argument_list|()
 decl_stmt|;
+name|assertNotNull
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
 comment|// https will get a read timeout due to SSL negotiation, but
 comment|// a normal http will not, so need to ignore SSL read timeouts
 comment|// until a connect timeout occurs

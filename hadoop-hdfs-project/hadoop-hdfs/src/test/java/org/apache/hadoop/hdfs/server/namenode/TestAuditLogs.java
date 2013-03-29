@@ -368,6 +368,18 @@ name|apache
 operator|.
 name|log4j
 operator|.
+name|LogManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
 name|Logger
 import|;
 end_import
@@ -1403,6 +1415,15 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// Shutdown the LogManager to release all logger open file handles.
+comment|// Unfortunately, Apache commons logging library does not provide
+comment|// means to release underlying loggers. For additional info look up
+comment|// commons library FAQ.
+name|LogManager
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 name|File
 name|file
 init|=
@@ -1420,10 +1441,13 @@ name|exists
 argument_list|()
 condition|)
 block|{
+name|assertTrue
+argument_list|(
 name|file
 operator|.
 name|delete
 argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 name|Logger

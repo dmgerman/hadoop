@@ -737,6 +737,14 @@ operator|+
 literal|"'"
 argument_list|)
 expr_stmt|;
+name|String
+name|nnHostName
+init|=
+name|nnHttpAddress
+operator|.
+name|getHostName
+argument_list|()
+decl_stmt|;
 name|URL
 name|nnjsp
 init|=
@@ -745,10 +753,7 @@ name|URL
 argument_list|(
 literal|"http://"
 operator|+
-name|nnHttpAddress
-operator|.
-name|getHostName
-argument_list|()
+name|nnHostName
 operator|+
 literal|":"
 operator|+
@@ -795,7 +800,11 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"dfshealth should contain localhost, got:"
+literal|"dfshealth should contain "
+operator|+
+name|nnHostName
+operator|+
+literal|", got:"
 operator|+
 name|dfshealthPage
 argument_list|,
@@ -803,7 +812,7 @@ name|dfshealthPage
 operator|.
 name|contains
 argument_list|(
-literal|"localhost"
+name|nnHostName
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -249,6 +249,11 @@ block|}
 comment|/**    * Verify that without system properties the cluster still comes up, provided    * the configuration is set    *    * @throws Throwable on a failure    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testClusterWithoutSystemProperties ()
 specifier|public
 name|void
@@ -321,14 +326,22 @@ try|try
 block|{
 name|assertEquals
 argument_list|(
+operator|new
+name|File
+argument_list|(
 name|c1Path
 operator|+
 literal|"/data"
+argument_list|)
 argument_list|,
+operator|new
+name|File
+argument_list|(
 name|cluster
 operator|.
 name|getDataDirectory
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -344,6 +357,11 @@ block|}
 comment|/**    * Bring up two clusters and assert that they are in different directories.    * @throws Throwable on a failure    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|100000
+argument_list|)
 DECL|method|testDualClusters ()
 specifier|public
 name|void
@@ -431,11 +449,19 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
+operator|new
+name|File
+argument_list|(
 name|c2Path
 operator|+
 literal|"/data"
+argument_list|)
 argument_list|,
+operator|new
+name|File
+argument_list|(
 name|dataDir2
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|//change the data dir

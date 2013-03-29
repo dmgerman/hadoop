@@ -2179,11 +2179,7 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-name|dn
-operator|.
-name|checkDiskError
-argument_list|()
-expr_stmt|;
+comment|// Exceptions caught here are not expected to be disk-related.
 throw|throw
 name|e
 throw|;

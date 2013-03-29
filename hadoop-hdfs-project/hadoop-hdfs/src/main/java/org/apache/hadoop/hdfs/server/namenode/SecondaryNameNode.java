@@ -1072,6 +1072,20 @@ return|;
 block|}
 annotation|@
 name|VisibleForTesting
+DECL|method|getMergeErrorCount ()
+name|int
+name|getMergeErrorCount
+parameter_list|()
+block|{
+return|return
+name|checkpointImage
+operator|.
+name|getMergeErrorCount
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getFSNamesystem ()
 name|FSNamesystem
 name|getFSNamesystem
@@ -1540,32 +1554,6 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|String
-name|httpKeytabKey
-init|=
-name|DFSConfigKeys
-operator|.
-name|DFS_WEB_AUTHENTICATION_KERBEROS_KEYTAB_KEY
-decl_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
-name|conf
-operator|.
-name|get
-argument_list|(
-name|httpKeytabKey
-argument_list|)
-condition|)
-block|{
-name|httpKeytabKey
-operator|=
-name|DFSConfigKeys
-operator|.
-name|DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY
-expr_stmt|;
-block|}
 name|initSpnego
 argument_list|(
 name|conf
@@ -1574,7 +1562,16 @@ name|DFSConfigKeys
 operator|.
 name|DFS_SECONDARY_NAMENODE_INTERNAL_SPNEGO_USER_NAME_KEY
 argument_list|,
-name|httpKeytabKey
+name|DFSUtil
+operator|.
+name|getSpnegoKeytabKey
+argument_list|(
+name|conf
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_SECONDARY_NAMENODE_KEYTAB_FILE_KEY
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1909,6 +1906,14 @@ operator|.
 name|getCheckPeriod
 argument_list|()
 decl_stmt|;
+name|int
+name|maxRetries
+init|=
+name|checkpointConf
+operator|.
+name|getMaxRetriesOnMergeError
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 name|shouldRun
@@ -2014,6 +2019,38 @@ operator|.
 name|printStackTrace
 argument_list|()
 expr_stmt|;
+comment|// Prevent a huge number of edits from being created due to
+comment|// unrecoverable conditions and endless retries.
+if|if
+condition|(
+name|checkpointImage
+operator|.
+name|getMergeErrorCount
+argument_list|()
+operator|>
+name|maxRetries
+condition|)
+block|{
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Merging failed "
+operator|+
+name|checkpointImage
+operator|.
+name|getMergeErrorCount
+argument_list|()
+operator|+
+literal|" times."
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2586,6 +2623,7 @@ operator|+
 literal|1
 argument_list|)
 decl_stmt|;
+comment|// Fetch fsimage and edits. Reload the image if previous merge failed.
 name|loadImage
 operator||=
 name|downloadCheckpointFiles
@@ -2598,8 +2636,14 @@ name|sig
 argument_list|,
 name|manifest
 argument_list|)
+operator||
+name|checkpointImage
+operator|.
+name|hasMergeError
+argument_list|()
 expr_stmt|;
-comment|// Fetch fsimage and edits
+try|try
+block|{
 name|doMerge
 argument_list|(
 name|sig
@@ -2612,6 +2656,30 @@ name|checkpointImage
 argument_list|,
 name|namesystem
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// A merge error occurred. The in-memory file system state may be
+comment|// inconsistent, so the image and edits need to be reloaded.
+name|checkpointImage
+operator|.
+name|setMergeError
+argument_list|()
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
+block|}
+comment|// Clear any error since merge was successful.
+name|checkpointImage
+operator|.
+name|clearMergeError
+argument_list|()
 expr_stmt|;
 comment|//
 comment|// Upload the new image into the NameNode. Then tell the Namenode
@@ -3713,6 +3781,11 @@ name|CheckpointStorage
 extends|extends
 name|FSImage
 block|{
+DECL|field|mergeErrorCount
+specifier|private
+name|int
+name|mergeErrorCount
+decl_stmt|;
 DECL|class|CheckpointLogPurger
 specifier|private
 specifier|static
@@ -3973,6 +4046,10 @@ name|editLog
 operator|=
 literal|null
 expr_stmt|;
+name|mergeErrorCount
+operator|=
+literal|0
+expr_stmt|;
 comment|// Replace the archival manager with one that can actually work on the
 comment|// 2NN's edits storage.
 name|this
@@ -4205,6 +4282,47 @@ throw|;
 block|}
 block|}
 block|}
+DECL|method|hasMergeError ()
+name|boolean
+name|hasMergeError
+parameter_list|()
+block|{
+return|return
+operator|(
+name|mergeErrorCount
+operator|>
+literal|0
+operator|)
+return|;
+block|}
+DECL|method|getMergeErrorCount ()
+name|int
+name|getMergeErrorCount
+parameter_list|()
+block|{
+return|return
+name|mergeErrorCount
+return|;
+block|}
+DECL|method|setMergeError ()
+name|void
+name|setMergeError
+parameter_list|()
+block|{
+name|mergeErrorCount
+operator|++
+expr_stmt|;
+block|}
+DECL|method|clearMergeError ()
+name|void
+name|clearMergeError
+parameter_list|()
+block|{
+name|mergeErrorCount
+operator|=
+literal|0
+expr_stmt|;
+block|}
 comment|/**      * Ensure that the current/ directory exists in all storage      * directories      */
 DECL|method|ensureCurrentDirExists ()
 name|void
@@ -4372,6 +4490,15 @@ name|imageLoadComplete
 argument_list|()
 expr_stmt|;
 block|}
+comment|// error simulation code for junit test
+name|CheckpointFaultInjector
+operator|.
+name|getInstance
+argument_list|()
+operator|.
+name|duringMerge
+argument_list|()
+expr_stmt|;
 name|Checkpointer
 operator|.
 name|rollForwardByApplyingLogs

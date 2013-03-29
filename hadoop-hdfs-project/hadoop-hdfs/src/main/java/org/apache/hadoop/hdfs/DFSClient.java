@@ -412,6 +412,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 import|;
 end_import
@@ -2256,6 +2288,11 @@ specifier|final
 name|long
 name|socketCacheExpiry
 decl_stmt|;
+DECL|field|excludedNodesCacheExpiry
+specifier|final
+name|long
+name|excludedNodesCacheExpiry
+decl_stmt|;
 comment|/** Wait time window (in msec) if BlockMissingException is caught */
 DECL|field|timeWindow
 specifier|final
@@ -2519,6 +2556,17 @@ argument_list|(
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_KEY
 argument_list|,
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_DEFAULT
+argument_list|)
+expr_stmt|;
+name|excludedNodesCacheExpiry
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL
+argument_list|,
+name|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL_DEFAULT
 argument_list|)
 expr_stmt|;
 name|prefetchSize
@@ -7606,7 +7654,7 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Get the checksum of a file.    * @param src The file path    * @param clientName the name of the client requesting the checksum.    * @param namenode the RPC proxy for the namenode    * @param socketFactory to create sockets to connect to DNs    * @param socketTimeout timeout to use when connecting and waiting for a response    * @param encryptionKey the key needed to communicate with DNs in this cluster    * @param connectToDnViaHostname {@see #connectToDnViaHostname()}    * @return The checksum     */
+comment|/**    * Get the checksum of a file.    * @param src The file path    * @param clientName the name of the client requesting the checksum.    * @param namenode the RPC proxy for the namenode    * @param socketFactory to create sockets to connect to DNs    * @param socketTimeout timeout to use when connecting and waiting for a response    * @param encryptionKey the key needed to communicate with DNs in this cluster    * @param connectToDnViaHostname {@link #connectToDnViaHostname()}    * @return The checksum     */
 DECL|method|getFileChecksum (String src, String clientName, ClientProtocol namenode, SocketFactory socketFactory, int socketTimeout, DataEncryptionKey encryptionKey, boolean connectToDnViaHostname)
 specifier|static
 name|MD5MD5CRC32FileChecksum

@@ -644,6 +644,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -695,6 +709,20 @@ operator|.
 name|util
 operator|.
 name|Progressable
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -1761,7 +1789,9 @@ name|replication
 argument_list|)
 return|;
 block|}
-comment|/**    * Move blocks from srcs to trg    * and delete srcs afterwards    * RESTRICTION: all blocks should be the same size    * @param trg existing file to append to    * @param psrcs list of files (same block size, same replication)    * @throws IOException    */
+comment|/**    * Move blocks from srcs to trg and delete srcs afterwards.    * The file block sizes must be the same.    *     * @param trg existing file to append to    * @param psrcs list of files (same block size, same replication)    * @throws IOException    */
+annotation|@
+name|Override
 DECL|method|concat (Path trg, Path [] psrcs)
 specifier|public
 name|void
@@ -2972,13 +3002,12 @@ operator|+
 literal|"]"
 return|;
 block|}
-comment|/** @deprecated DFSClient should not be accessed directly. */
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
 annotation|@
-name|Deprecated
+name|VisibleForTesting
 DECL|method|getClient ()
 specifier|public
 name|DFSClient
@@ -3972,6 +4001,51 @@ operator|.
 name|getCanonicalServiceName
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|canonicalizeUri (URI uri)
+specifier|protected
+name|URI
+name|canonicalizeUri
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isLogicalUri
+argument_list|(
+name|getConf
+argument_list|()
+argument_list|,
+name|uri
+argument_list|)
+condition|)
+block|{
+comment|// Don't try to DNS-resolve logical URIs, since the 'authority'
+comment|// portion isn't a proper hostname
+return|return
+name|uri
+return|;
+block|}
+else|else
+block|{
+return|return
+name|NetUtils
+operator|.
+name|getCanonicalUri
+argument_list|(
+name|uri
+argument_list|,
+name|getDefaultPort
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * Utility function that returns if the NameNode is in safemode or not. In HA    * mode, this API will return only ActiveNN's safemode status.    *     * @return true if NameNode is in safemode, false otherwise.    * @throws IOException    *           when there is an issue communicating with the NameNode    */
 DECL|method|isInSafeMode ()

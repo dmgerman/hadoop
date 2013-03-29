@@ -46,6 +46,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -173,7 +183,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Perform permission checking in {@link FSNamesystem}. */
+comment|/**   * Class that helps in checking file system permission.  * The state of this class need not be synchronized as it has data structures that  * are read-only.  *   * Some of the helper methods are gaurded by {@link FSNamesystem#readLock()}.  */
 end_comment
 
 begin_class
@@ -203,11 +213,12 @@ name|UserGroupInformation
 name|ugi
 decl_stmt|;
 DECL|field|user
-specifier|public
+specifier|private
 specifier|final
 name|String
 name|user
 decl_stmt|;
+comment|/** A set with group namess. Not synchronized since it is unmodifiable */
 DECL|field|groups
 specifier|private
 specifier|final
@@ -216,16 +227,9 @@ argument_list|<
 name|String
 argument_list|>
 name|groups
-init|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
 decl_stmt|;
 DECL|field|isSuper
-specifier|public
+specifier|private
 specifier|final
 name|boolean
 name|isSuper
@@ -266,9 +270,17 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|groups
-operator|.
-name|addAll
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+name|s
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
 argument_list|(
 name|Arrays
 operator|.
@@ -279,6 +291,15 @@ operator|.
 name|getGroupNames
 argument_list|()
 argument_list|)
+argument_list|)
+decl_stmt|;
+name|groups
+operator|=
+name|Collections
+operator|.
+name|unmodifiableSet
+argument_list|(
+name|s
 argument_list|)
 expr_stmt|;
 name|user
@@ -324,41 +345,38 @@ name|group
 argument_list|)
 return|;
 block|}
-comment|/**    * Verify if the caller has the required permission. This will result into     * an exception if the caller is not allowed to access the resource.    * @param owner owner of the system    * @param supergroup supergroup of the system    */
-DECL|method|checkSuperuserPrivilege (UserGroupInformation owner, String supergroup)
+DECL|method|getUser ()
 specifier|public
-specifier|static
+name|String
+name|getUser
+parameter_list|()
+block|{
+return|return
+name|user
+return|;
+block|}
+DECL|method|isSuperUser ()
+specifier|public
+name|boolean
+name|isSuperUser
+parameter_list|()
+block|{
+return|return
+name|isSuper
+return|;
+block|}
+comment|/**    * Verify if the caller has the required permission. This will result into     * an exception if the caller is not allowed to access the resource.    */
+DECL|method|checkSuperuserPrivilege ()
+specifier|public
 name|void
 name|checkSuperuserPrivilege
-parameter_list|(
-name|UserGroupInformation
-name|owner
-parameter_list|,
-name|String
-name|supergroup
-parameter_list|)
+parameter_list|()
 throws|throws
 name|AccessControlException
 block|{
-name|FSPermissionChecker
-name|checker
-init|=
-operator|new
-name|FSPermissionChecker
-argument_list|(
-name|owner
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|,
-name|supergroup
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 operator|!
-name|checker
-operator|.
 name|isSuper
 condition|)
 block|{
@@ -368,8 +386,6 @@ name|AccessControlException
 argument_list|(
 literal|"Access denied for user "
 operator|+
-name|checker
-operator|.
 name|user
 operator|+
 literal|". Superuser privilege is required"
@@ -377,7 +393,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Check whether current user have permissions to access the path.    * Traverse is always checked.    *    * Parent path means the parent directory for the path.    * Ancestor path means the last (the closest) existing ancestor directory    * of the path.    * Note that if the parent path exists,    * then the parent path and the ancestor path are the same.    *    * For example, suppose the path is "/foo/bar/baz".    * No matter baz is a file or a directory,    * the parent path is "/foo/bar".    * If bar exists, then the ancestor path is also "/foo/bar".    * If bar does not exist and foo exists,    * then the ancestor path is "/foo".    * Further, if both foo and bar do not exist,    * then the ancestor path is "/".    *    * @param doCheckOwner Require user to be the owner of the path?    * @param ancestorAccess The access required by the ancestor of the path.    * @param parentAccess The access required by the parent of the path.    * @param access The access required by the path.    * @param subAccess If path is a directory,    * it is the access required of the path and all the sub-directories.    * If path is not a directory, there is no effect.    * @return a PermissionChecker object which caches data for later use.    * @throws AccessControlException    * @throws UnresolvedLinkException    */
+comment|/**    * Check whether current user have permissions to access the path.    * Traverse is always checked.    *    * Parent path means the parent directory for the path.    * Ancestor path means the last (the closest) existing ancestor directory    * of the path.    * Note that if the parent path exists,    * then the parent path and the ancestor path are the same.    *    * For example, suppose the path is "/foo/bar/baz".    * No matter baz is a file or a directory,    * the parent path is "/foo/bar".    * If bar exists, then the ancestor path is also "/foo/bar".    * If bar does not exist and foo exists,    * then the ancestor path is "/foo".    * Further, if both foo and bar do not exist,    * then the ancestor path is "/".    *    * @param doCheckOwner Require user to be the owner of the path?    * @param ancestorAccess The access required by the ancestor of the path.    * @param parentAccess The access required by the parent of the path.    * @param access The access required by the path.    * @param subAccess If path is a directory,    * it is the access required of the path and all the sub-directories.    * If path is not a directory, there is no effect.    * @throws AccessControlException    * @throws UnresolvedLinkException    *     * Guarded by {@link FSNamesystem#readLock()}    * Caller of this method must hold that lock.    */
 DECL|method|checkPermission (String path, INodeDirectory root, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess)
 name|void
 name|checkPermission
@@ -667,6 +683,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/** Guarded by {@link FSNamesystem#readLock()} */
 DECL|method|checkOwner (INode inode)
 specifier|private
 name|void
@@ -705,6 +722,7 @@ literal|"Permission denied"
 argument_list|)
 throw|;
 block|}
+comment|/** Guarded by {@link FSNamesystem#readLock()} */
 DECL|method|checkTraverse (INode[] inodes, int last )
 specifier|private
 name|void
@@ -749,6 +767,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/** Guarded by {@link FSNamesystem#readLock()} */
 DECL|method|checkSubAccess (INode inode, FsAction access )
 specifier|private
 name|void
@@ -859,6 +878,7 @@ block|}
 block|}
 block|}
 block|}
+comment|/** Guarded by {@link FSNamesystem#readLock()} */
 DECL|method|check (INode[] inodes, int i, FsAction access )
 specifier|private
 name|void
@@ -894,6 +914,7 @@ name|access
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Guarded by {@link FSNamesystem#readLock()} */
 DECL|method|check (INode inode, FsAction access )
 specifier|private
 name|void
@@ -1023,6 +1044,7 @@ name|inode
 argument_list|)
 throw|;
 block|}
+comment|/** Guarded by {@link FSNamesystem#readLock()} */
 DECL|method|checkStickyBit (INode parent, INode inode)
 specifier|private
 name|void

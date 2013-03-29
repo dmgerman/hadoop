@@ -827,6 +827,15 @@ name|HEARTBEAT_INTERVAL_MILLIS
 init|=
 literal|1000
 decl_stmt|;
+DECL|field|WARN_JOURNAL_MILLIS_THRESHOLD
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|WARN_JOURNAL_MILLIS_THRESHOLD
+init|=
+literal|1000
+decl_stmt|;
 DECL|field|FACTORY
 specifier|static
 specifier|final
@@ -1861,6 +1870,49 @@ argument_list|(
 name|rpcTime
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rpcTime
+operator|/
+literal|1000
+operator|>
+name|WARN_JOURNAL_MILLIS_THRESHOLD
+condition|)
+block|{
+name|QuorumJournalManager
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Took "
+operator|+
+operator|(
+name|rpcTime
+operator|/
+literal|1000
+operator|)
+operator|+
+literal|"ms to send a batch of "
+operator|+
+name|numTxns
+operator|+
+literal|" edits ("
+operator|+
+name|data
+operator|.
+name|length
+operator|+
+literal|" bytes) to "
+operator|+
+literal|"remote journal "
+operator|+
+name|IPCLoggerChannel
+operator|.
+name|this
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 synchronized|synchronized
 init|(

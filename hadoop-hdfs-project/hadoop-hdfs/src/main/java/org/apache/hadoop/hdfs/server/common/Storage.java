@@ -196,6 +196,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -2422,16 +2436,32 @@ name|OverlappingFileLockException
 name|oe
 parameter_list|)
 block|{
-name|LOG
+comment|// Cannot read from the locked file on Windows.
+name|String
+name|lockingJvmName
+init|=
+name|Path
 operator|.
-name|error
-argument_list|(
-literal|"It appears that another namenode "
+name|WINDOWS
+condition|?
+literal|""
+else|:
+operator|(
+literal|" "
 operator|+
 name|file
 operator|.
 name|readLine
 argument_list|()
+operator|)
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"It appears that another namenode"
+operator|+
+name|lockingJvmName
 operator|+
 literal|" has already locked the storage directory"
 argument_list|)

@@ -526,6 +526,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -2376,6 +2390,30 @@ return|;
 block|}
 catch|catch
 parameter_list|(
+name|AccessControlException
+name|ex
+parameter_list|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Short circuit access failed "
+operator|+
+name|ex
+argument_list|)
+expr_stmt|;
+name|dfsClient
+operator|.
+name|disableLegacyBlockReaderLocal
+argument_list|()
+expr_stmt|;
+continue|continue;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|ex
 parameter_list|)
@@ -3989,6 +4027,30 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|AccessControlException
+name|ex
+parameter_list|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Short circuit access failed "
+operator|+
+name|ex
+argument_list|)
+expr_stmt|;
+name|dfsClient
+operator|.
+name|disableLegacyBlockReaderLocal
+argument_list|()
+expr_stmt|;
+continue|continue;
+block|}
+catch|catch
+parameter_list|(
 name|IOException
 name|e
 parameter_list|)
@@ -4413,6 +4475,10 @@ name|BlockReaderFactory
 operator|.
 name|getLegacyBlockReaderLocal
 argument_list|(
+name|dfsClient
+operator|.
+name|ugi
+argument_list|,
 name|dfsClient
 operator|.
 name|conf
@@ -5171,7 +5237,7 @@ return|return
 name|realLen
 return|;
 block|}
-comment|/**    * DFSInputStream reports checksum failure.    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.     * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    * @param corruptedBlockMap, map of corrupted blocks    * @param dataNodeCount, number of data nodes who contains the block replicas    */
+comment|/**    * DFSInputStream reports checksum failure.    * Case I : client has tried multiple data nodes and at least one of the    * attempts has succeeded. We report the other failures as corrupted block to    * namenode.     * Case II: client has tried out all data nodes, but all failed. We    * only report if the total number of replica is 1. We do not    * report otherwise since this maybe due to the client is a handicapped client    * (who can not read).    * @param corruptedBlockMap map of corrupted blocks    * @param dataNodeCount number of data nodes who contains the block replicas    */
 DECL|method|reportCheckSumFailure ( Map<ExtendedBlock, Set<DatanodeInfo>> corruptedBlockMap, int dataNodeCount)
 specifier|private
 name|void

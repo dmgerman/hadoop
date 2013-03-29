@@ -126,6 +126,8 @@ argument_list|,
 name|HttpURLConnection
 operator|.
 name|HTTP_OK
+argument_list|,
+literal|true
 argument_list|)
 block|,
 comment|/** GET_BLOCK_LOCATIONS is a private unstable op. */
@@ -159,6 +161,11 @@ specifier|final
 name|int
 name|expectedHttpResponseCode
 decl_stmt|;
+DECL|field|requireAuth
+specifier|final
+name|boolean
+name|requireAuth
+decl_stmt|;
 DECL|method|Op (final boolean redirect, final int expectedHttpResponseCode)
 name|Op
 parameter_list|(
@@ -172,6 +179,32 @@ name|expectedHttpResponseCode
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|redirect
+argument_list|,
+name|expectedHttpResponseCode
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|Op (final boolean redirect, final int expectedHttpResponseCode, final boolean requireAuth)
+name|Op
+parameter_list|(
+specifier|final
+name|boolean
+name|redirect
+parameter_list|,
+specifier|final
+name|int
+name|expectedHttpResponseCode
+parameter_list|,
+specifier|final
+name|boolean
+name|requireAuth
+parameter_list|)
+block|{
+name|this
 operator|.
 name|redirect
 operator|=
@@ -182,6 +215,12 @@ operator|.
 name|expectedHttpResponseCode
 operator|=
 name|expectedHttpResponseCode
+expr_stmt|;
+name|this
+operator|.
+name|requireAuth
+operator|=
+name|requireAuth
 expr_stmt|;
 block|}
 annotation|@
@@ -200,6 +239,18 @@ operator|.
 name|Type
 operator|.
 name|GET
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRequireAuth ()
+specifier|public
+name|boolean
+name|getRequireAuth
+parameter_list|()
+block|{
+return|return
+name|requireAuth
 return|;
 block|}
 annotation|@

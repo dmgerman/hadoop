@@ -80,6 +80,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|security
+operator|.
+name|PrivilegedExceptionAction
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collections
@@ -155,6 +165,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileSystem
 import|;
 end_import
 
@@ -332,6 +356,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|Token
@@ -494,21 +532,28 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getDatanodeProxy ( DatanodeInfo node, Configuration conf, int socketTimeout, boolean connectToDnViaHostname)
+DECL|method|getDatanodeProxy ( UserGroupInformation ugi, final DatanodeInfo node, final Configuration conf, final int socketTimeout, final boolean connectToDnViaHostname)
 specifier|private
 specifier|synchronized
 name|ClientDatanodeProtocol
 name|getDatanodeProxy
 parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|,
+specifier|final
 name|DatanodeInfo
 name|node
 parameter_list|,
+specifier|final
 name|Configuration
 name|conf
 parameter_list|,
+specifier|final
 name|int
 name|socketTimeout
 parameter_list|,
+specifier|final
 name|boolean
 name|connectToDnViaHostname
 parameter_list|)
@@ -522,8 +567,31 @@ operator|==
 literal|null
 condition|)
 block|{
+try|try
+block|{
 name|proxy
 operator|=
+name|ugi
+operator|.
+name|doAs
+argument_list|(
+operator|new
+name|PrivilegedExceptionAction
+argument_list|<
+name|ClientDatanodeProtocol
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|ClientDatanodeProtocol
+name|run
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
 name|DFSUtil
 operator|.
 name|createClientDatanodeProtocolProxy
@@ -536,7 +604,28 @@ name|socketTimeout
 argument_list|,
 name|connectToDnViaHostname
 argument_list|)
+return|;
+block|}
+block|}
+argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"encountered exception "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|proxy
@@ -738,11 +827,14 @@ name|String
 name|filename
 decl_stmt|;
 comment|/**    * The only way this object can be instantiated.    */
-DECL|method|newBlockReader (Configuration conf, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, int socketTimeout, long startOffset, long length, boolean connectToDnViaHostname)
+DECL|method|newBlockReader (UserGroupInformation ugi, Configuration conf, String file, ExtendedBlock blk, Token<BlockTokenIdentifier> token, DatanodeInfo node, int socketTimeout, long startOffset, long length, boolean connectToDnViaHostname)
 specifier|static
 name|BlockReaderLocalLegacy
 name|newBlockReader
 parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
@@ -809,6 +901,8 @@ name|pathinfo
 operator|=
 name|getBlockPathInfo
 argument_list|(
+name|ugi
+argument_list|,
 name|blk
 argument_list|,
 name|node
@@ -1194,12 +1288,15 @@ return|return
 name|ldInfo
 return|;
 block|}
-DECL|method|getBlockPathInfo (ExtendedBlock blk, DatanodeInfo node, Configuration conf, int timeout, Token<BlockTokenIdentifier> token, boolean connectToDnViaHostname)
+DECL|method|getBlockPathInfo (UserGroupInformation ugi, ExtendedBlock blk, DatanodeInfo node, Configuration conf, int timeout, Token<BlockTokenIdentifier> token, boolean connectToDnViaHostname)
 specifier|private
 specifier|static
 name|BlockLocalPathInfo
 name|getBlockPathInfo
 parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|,
 name|ExtendedBlock
 name|blk
 parameter_list|,
@@ -1247,6 +1344,8 @@ name|localDatanodeInfo
 operator|.
 name|getDatanodeProxy
 argument_list|(
+name|ugi
+argument_list|,
 name|node
 argument_list|,
 name|conf
@@ -1395,13 +1494,15 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Configured BlockReaderLocalLegacy buffer size ("
+literal|"Configured BlockReaderLocalLegacy "
+operator|+
+literal|"buffer size ("
 operator|+
 name|bufferSizeBytes
 operator|+
-literal|") "
+literal|") is not large enough to hold "
 operator|+
-literal|"is not large enough to hold a single chunk ("
+literal|"a single chunk ("
 operator|+
 name|bytesPerChecksum
 operator|+

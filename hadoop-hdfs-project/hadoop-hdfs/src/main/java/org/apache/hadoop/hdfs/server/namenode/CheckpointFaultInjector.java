@@ -84,6 +84,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+DECL|method|duringMerge ()
+specifier|public
+name|void
+name|duringMerge
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 DECL|method|afterSecondaryUploadsNewImage ()
 specifier|public
 name|void
@@ -129,6 +137,14 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|afterMD5Rename ()
+specifier|public
+name|void
+name|afterMD5Rename
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 block|}
 end_class
 

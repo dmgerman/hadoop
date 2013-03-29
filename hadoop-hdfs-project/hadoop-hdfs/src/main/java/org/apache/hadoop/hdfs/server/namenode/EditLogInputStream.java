@@ -318,6 +318,17 @@ name|boolean
 name|isInProgress
 parameter_list|()
 function_decl|;
+comment|/**    * Set the maximum opcode size in bytes.    */
+DECL|method|setMaxOpSize (int maxOpSize)
+specifier|public
+specifier|abstract
+name|void
+name|setMaxOpSize
+parameter_list|(
+name|int
+name|maxOpSize
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

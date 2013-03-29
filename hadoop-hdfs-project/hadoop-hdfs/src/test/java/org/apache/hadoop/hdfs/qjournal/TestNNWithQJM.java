@@ -31,6 +31,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -306,6 +318,8 @@ DECL|field|mjc
 specifier|private
 name|MiniJournalCluster
 name|mjc
+init|=
+literal|null
 decl_stmt|;
 DECL|field|TEST_PATH
 specifier|private
@@ -389,10 +403,19 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+name|mjc
+operator|=
+literal|null
+expr_stmt|;
 block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testLogAndRestart ()
 specifier|public
 name|void
@@ -546,6 +569,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testNewNamenodeTakesOverWriter ()
 specifier|public
 name|void
@@ -554,6 +582,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// Skip the test on Windows. See HDFS-4584.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|File
 name|nn1Dir
 init|=
@@ -838,6 +875,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testMismatchedNNIsRejected ()
 specifier|public
 name|void
@@ -995,6 +1037,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testWebPageHasQjmInfo ()
 specifier|public
 name|void

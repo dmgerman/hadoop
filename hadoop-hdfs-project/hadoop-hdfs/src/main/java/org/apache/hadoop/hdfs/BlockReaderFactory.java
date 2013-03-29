@@ -348,6 +348,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|SecretManager
@@ -1103,11 +1117,14 @@ name|blockId
 return|;
 block|}
 comment|/**    * Get {@link BlockReaderLocalLegacy} for short circuited local reads.    * This block reader implements the path-based style of local reads    * first introduced in HDFS-2246.    */
-DECL|method|getLegacyBlockReaderLocal (Configuration conf, String src, ExtendedBlock blk, Token<BlockTokenIdentifier> accessToken, DatanodeInfo chosenNode, int socketTimeout, long offsetIntoBlock, boolean connectToDnViaHostname)
+DECL|method|getLegacyBlockReaderLocal (UserGroupInformation ugi, Configuration conf, String src, ExtendedBlock blk, Token<BlockTokenIdentifier> accessToken, DatanodeInfo chosenNode, int socketTimeout, long offsetIntoBlock, boolean connectToDnViaHostname)
 specifier|static
 name|BlockReader
 name|getLegacyBlockReaderLocal
 parameter_list|(
+name|UserGroupInformation
+name|ugi
+parameter_list|,
 name|Configuration
 name|conf
 parameter_list|,
@@ -1147,6 +1164,8 @@ name|BlockReaderLocalLegacy
 operator|.
 name|newBlockReader
 argument_list|(
+name|ugi
+argument_list|,
 name|conf
 argument_list|,
 name|src

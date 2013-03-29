@@ -1291,6 +1291,11 @@ block|}
 comment|/**    * Test empty configuration    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testEmptyConf ()
 specifier|public
 name|void
@@ -1433,6 +1438,11 @@ block|}
 comment|/**    * Test invalid argument to the tool    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testInvalidArgument ()
 specifier|public
 name|void
@@ -1484,6 +1494,11 @@ block|}
 comment|/**    * Tests to make sure the returned addresses are correct in case of default    * configuration with no federation    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testNonFederation ()
 specifier|public
 name|void
@@ -1680,6 +1695,11 @@ block|}
 comment|/**    * Tests to make sure the returned addresses are correct in case of federation    * of setup.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testFederation ()
 specifier|public
 name|void
@@ -1934,6 +1954,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testGetSpecificKey ()
 specifier|public
 name|void
@@ -1968,8 +1993,9 @@ block|,
 literal|"mykey"
 block|}
 decl_stmt|;
-name|assertTrue
-argument_list|(
+name|String
+name|toolResult
+init|=
 name|runTool
 argument_list|(
 name|conf
@@ -1978,16 +2004,27 @@ name|args
 argument_list|,
 literal|true
 argument_list|)
-operator|.
-name|equals
+decl_stmt|;
+name|assertEquals
 argument_list|(
-literal|"myval\n"
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"myval%n"
 argument_list|)
+argument_list|,
+name|toolResult
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testExtraArgsThrowsError ()
 specifier|public
 name|void
@@ -2043,6 +2080,11 @@ block|}
 comment|/**    * Tests commands other than {@link Command#NAMENODE}, {@link Command#BACKUP},    * {@link Command#SECONDARY} and {@link Command#NNRPCADDRESSES}    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testTool ()
 specifier|public
 name|void

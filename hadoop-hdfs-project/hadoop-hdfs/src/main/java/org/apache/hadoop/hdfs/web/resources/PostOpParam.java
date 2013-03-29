@@ -139,6 +139,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getRequireAuth ()
+specifier|public
+name|boolean
+name|getRequireAuth
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getDoOutput ()
 specifier|public
 name|boolean
