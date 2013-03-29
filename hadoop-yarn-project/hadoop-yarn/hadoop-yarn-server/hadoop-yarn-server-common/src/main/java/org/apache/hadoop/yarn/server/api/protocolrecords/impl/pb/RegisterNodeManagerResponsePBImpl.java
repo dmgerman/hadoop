@@ -499,6 +499,10 @@ name|masterKey
 operator|=
 name|masterKey
 expr_stmt|;
+name|rebuild
+operator|=
+literal|true
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -566,8 +570,9 @@ operator|.
 name|clearNodeAction
 argument_list|()
 expr_stmt|;
-return|return;
 block|}
+else|else
+block|{
 name|builder
 operator|.
 name|setNodeAction
@@ -577,6 +582,11 @@ argument_list|(
 name|nodeAction
 argument_list|)
 argument_list|)
+expr_stmt|;
+block|}
+name|rebuild
+operator|=
+literal|true
 expr_stmt|;
 block|}
 DECL|method|convertFromProtoFormat (NodeActionProto p)
