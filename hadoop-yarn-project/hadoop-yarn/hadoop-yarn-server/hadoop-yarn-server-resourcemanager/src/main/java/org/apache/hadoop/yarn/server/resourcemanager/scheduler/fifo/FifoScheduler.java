@@ -2019,6 +2019,31 @@ init|(
 name|application
 init|)
 block|{
+comment|// make sure we aren't stopping/removing the application
+comment|// when the allocate comes in
+if|if
+condition|(
+name|application
+operator|.
+name|isStopped
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Calling allocate on a stopped "
+operator|+
+literal|"application "
+operator|+
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
+return|return
+name|EMPTY_ALLOCATION
+return|;
+block|}
 if|if
 condition|(
 operator|!
