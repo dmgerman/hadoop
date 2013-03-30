@@ -582,26 +582,6 @@ name|resourcemanager
 operator|.
 name|rmnode
 operator|.
-name|RMNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
 name|RMNodeCleanContainerEvent
 import|;
 end_import
@@ -888,6 +868,13 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|isStopped
+specifier|private
+name|boolean
+name|isStopped
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Count how many times the application has been given an opportunity    * to schedule a task at each priority. Each time the scheduler    * asks the application for a task at this priority, it is incremented,    * and each time the application successfully schedules a task, it    * is reset to 0.    */
 DECL|field|schedulingOpportunities
 name|Multiset
@@ -1041,6 +1028,12 @@ argument_list|>
 name|requests
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|isStopped
+condition|)
+block|{
 name|this
 operator|.
 name|appSchedulingInfo
@@ -1050,6 +1043,7 @@ argument_list|(
 name|requests
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|getResourceRequests (Priority priority)
 specifier|public
@@ -1149,7 +1143,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|RMNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
@@ -1194,6 +1188,19 @@ name|appSchedulingInfo
 operator|.
 name|isPending
 argument_list|()
+return|;
+block|}
+DECL|method|isStopped ()
+specifier|public
+specifier|synchronized
+name|boolean
+name|isStopped
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|isStopped
 return|;
 block|}
 DECL|method|getQueueName ()
@@ -1249,6 +1256,12 @@ name|rmAppAttemptFinalState
 parameter_list|)
 block|{
 comment|// Cleanup all scheduling information
+name|this
+operator|.
+name|isStopped
+operator|=
+literal|true
+expr_stmt|;
 name|this
 operator|.
 name|appSchedulingInfo
@@ -1488,6 +1501,15 @@ name|Container
 name|container
 parameter_list|)
 block|{
+if|if
+condition|(
+name|isStopped
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|// Required sanity check - AM can call 'allocate' to update resource
 comment|// request without locking the scheduler, hence we need to check
 if|if

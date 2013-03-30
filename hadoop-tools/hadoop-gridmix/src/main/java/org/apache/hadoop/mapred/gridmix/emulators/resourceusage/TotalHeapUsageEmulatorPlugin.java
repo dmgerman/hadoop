@@ -80,11 +80,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|tools
 operator|.
-name|util
+name|rumen
 operator|.
-name|ResourceCalculatorPlugin
+name|ResourceUsageMetrics
 import|;
 end_import
 
@@ -96,11 +96,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|tools
+name|yarn
 operator|.
-name|rumen
+name|util
 operator|.
-name|ResourceUsageMetrics
+name|ResourceCalculatorPlugin
 import|;
 end_import
 

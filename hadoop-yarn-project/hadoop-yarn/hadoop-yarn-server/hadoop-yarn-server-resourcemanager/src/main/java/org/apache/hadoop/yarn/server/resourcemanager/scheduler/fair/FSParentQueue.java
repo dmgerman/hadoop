@@ -271,9 +271,12 @@ name|void
 name|recomputeFairShares
 parameter_list|()
 block|{
-name|SchedulingAlgorithms
+name|SchedulingMode
 operator|.
-name|computeFairShares
+name|getDefault
+argument_list|()
+operator|.
+name|computeShares
 argument_list|(
 name|childQueues
 argument_list|,

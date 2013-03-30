@@ -1040,6 +1040,22 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getMaxAppAttempts ()
+specifier|public
+name|int
+name|getMaxAppAttempts
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|createAndGetApplicationReport (boolean allowAccess)
 specifier|public
 name|ApplicationReport
@@ -1248,6 +1264,14 @@ operator|.
 name|length
 index|]
 decl_stmt|;
+specifier|final
+name|int
+name|maxAppAttempts
+init|=
+name|i
+operator|%
+literal|1000
+decl_stmt|;
 return|return
 operator|new
 name|ApplicationBase
@@ -1396,6 +1420,17 @@ parameter_list|()
 block|{
 return|return
 literal|null
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|int
+name|getMaxAppAttempts
+parameter_list|()
+block|{
+return|return
+name|maxAppAttempts
 return|;
 block|}
 block|}

@@ -234,7 +234,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|RegisterNodeManagerRequest
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -252,9 +252,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|RegisterNodeManagerRequest
 import|;
 end_import
 
@@ -917,7 +917,7 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|response
 init|=
 name|resourceTrackerService
@@ -926,9 +926,6 @@ name|nodeHeartbeat
 argument_list|(
 name|nodeHeartBeatRequest
 argument_list|)
-operator|.
-name|getHeartbeatResponse
-argument_list|()
 decl_stmt|;
 name|Assert
 operator|.
@@ -960,9 +957,6 @@ name|nodeHeartbeat
 argument_list|(
 name|nodeHeartBeatRequest
 argument_list|)
-operator|.
-name|getHeartbeatResponse
-argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
@@ -985,9 +979,6 @@ name|nodeHeartbeat
 argument_list|(
 name|nodeHeartBeatRequest
 argument_list|)
-operator|.
-name|getHeartbeatResponse
-argument_list|()
 expr_stmt|;
 name|Assert
 operator|.
@@ -1016,9 +1007,6 @@ name|nodeHeartbeat
 argument_list|(
 name|nodeHeartBeatRequest
 argument_list|)
-operator|.
-name|getHeartbeatResponse
-argument_list|()
 expr_stmt|;
 name|Assert
 operator|.

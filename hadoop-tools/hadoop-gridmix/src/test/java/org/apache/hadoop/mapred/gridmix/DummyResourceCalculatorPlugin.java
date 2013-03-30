@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapred
+DECL|package|org.apache.hadoop.mapred.gridmix
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|mapred
+operator|.
+name|gridmix
 package|;
 end_package
 
@@ -38,7 +40,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|yarn
 operator|.
 name|util
 operator|.
@@ -47,7 +49,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Plugin class to test resource information reported by TT. Use  * configuration items {@link #MAXVMEM_TESTING_PROPERTY} and  * {@link #MAXPMEM_TESTING_PROPERTY} to tell TT the total vmem and the total  * pmem. Use configuration items {@link #NUM_PROCESSORS},  * {@link #CPU_FREQUENCY}, {@link #CUMULATIVE_CPU_TIME} and {@link #CPU_USAGE}  * to tell TT the CPU information.  */
+comment|/**  * Plugin class to test resource information reported by NM. Use configuration  * items {@link #MAXVMEM_TESTING_PROPERTY} and {@link #MAXPMEM_TESTING_PROPERTY}  * to tell NM the total vmem and the total pmem. Use configuration items  * {@link #NUM_PROCESSORS}, {@link #CPU_FREQUENCY}, {@link #CUMULATIVE_CPU_TIME}  * and {@link #CPU_USAGE} to tell TT the CPU information.  */
 end_comment
 
 begin_class
@@ -132,7 +134,7 @@ name|PROC_CUMULATIVE_CPU_TIME
 init|=
 literal|"mapred.tasktracker.proccumulativecputime.testing"
 decl_stmt|;
-comment|/** process pmem for testing*/
+comment|/** process pmem for testing */
 DECL|field|PROC_PMEM_TESTING_PROPERTY
 specifier|public
 specifier|static
@@ -142,7 +144,7 @@ name|PROC_PMEM_TESTING_PROPERTY
 init|=
 literal|"mapred.tasktracker.procpmem.testing"
 decl_stmt|;
-comment|/** process vmem for testing*/
+comment|/** process vmem for testing */
 DECL|field|PROC_VMEM_TESTING_PROPERTY
 specifier|public
 specifier|static
@@ -325,68 +327,6 @@ name|CPU_USAGE
 argument_list|,
 operator|-
 literal|1
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getProcResourceValues ()
-specifier|public
-name|ProcResourceValues
-name|getProcResourceValues
-parameter_list|()
-block|{
-name|long
-name|cpuTime
-init|=
-name|getConf
-argument_list|()
-operator|.
-name|getLong
-argument_list|(
-name|PROC_CUMULATIVE_CPU_TIME
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-decl_stmt|;
-name|long
-name|pMem
-init|=
-name|getConf
-argument_list|()
-operator|.
-name|getLong
-argument_list|(
-name|PROC_PMEM_TESTING_PROPERTY
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-decl_stmt|;
-name|long
-name|vMem
-init|=
-name|getConf
-argument_list|()
-operator|.
-name|getLong
-argument_list|(
-name|PROC_VMEM_TESTING_PROPERTY
-argument_list|,
-operator|-
-literal|1
-argument_list|)
-decl_stmt|;
-return|return
-operator|new
-name|ProcResourceValues
-argument_list|(
-name|cpuTime
-argument_list|,
-name|pMem
-argument_list|,
-name|vMem
 argument_list|)
 return|;
 block|}

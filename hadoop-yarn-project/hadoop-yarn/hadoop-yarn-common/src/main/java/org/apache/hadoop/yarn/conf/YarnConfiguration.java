@@ -737,24 +737,24 @@ name|DEFAULT_RM_ADMIN_CLIENT_THREAD_COUNT
 init|=
 literal|1
 decl_stmt|;
-comment|/** The maximum number of application master retries.*/
-DECL|field|RM_AM_MAX_RETRIES
+comment|/**    * The maximum number of application attempts.    * It's a global setting for all application masters.    */
+DECL|field|RM_AM_MAX_ATTEMPTS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RM_AM_MAX_RETRIES
+name|RM_AM_MAX_ATTEMPTS
 init|=
 name|RM_PREFIX
 operator|+
-literal|"am.max-retries"
+literal|"am.max-attempts"
 decl_stmt|;
-DECL|field|DEFAULT_RM_AM_MAX_RETRIES
+DECL|field|DEFAULT_RM_AM_MAX_ATTEMPTS
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_RM_AM_MAX_RETRIES
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
 init|=
 literal|1
 decl_stmt|;

@@ -160,6 +160,26 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -174,12 +194,63 @@ specifier|public
 class|class
 name|TestDFSClientExcludedNodes
 block|{
+DECL|field|cluster
+specifier|private
+name|MiniDFSCluster
+name|cluster
+decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
+annotation|@
+name|Before
+DECL|method|setUp ()
+specifier|public
+name|void
+name|setUp
+parameter_list|()
+block|{
+name|cluster
+operator|=
+literal|null
+expr_stmt|;
+name|conf
+operator|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|tearDown ()
+specifier|public
+name|void
+name|tearDown
+parameter_list|()
+block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testExcludedNodes ()
 specifier|public
@@ -189,16 +260,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|Configuration
-name|conf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -214,7 +277,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|FileSystem
 name|fs
 init|=
@@ -309,7 +372,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|60000
 argument_list|)
 DECL|method|testExcludedNodesForgiveness ()
 specifier|public
@@ -319,14 +382,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|Configuration
-name|conf
-init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
-decl_stmt|;
-comment|// Forgive nodes in under 1s for this test case.
+comment|// Forgive nodes in under 2.5s for this test case.
 name|conf
 operator|.
 name|setLong
@@ -335,7 +391,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL
 argument_list|,
-literal|1000
+literal|2500
 argument_list|)
 expr_stmt|;
 comment|// We'll be using a 512 bytes block size just for tests
@@ -349,9 +405,8 @@ argument_list|,
 literal|512
 argument_list|)
 expr_stmt|;
-name|MiniDFSCluster
 name|cluster
-init|=
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -367,7 +422,7 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|List
 argument_list|<
 name|DataNodeProperties
@@ -554,15 +609,15 @@ operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
-comment|// Sleep for 2s, to let the excluded nodes be expired
+comment|// Sleep for 5s, to let the excluded nodes be expired
 comment|// from the excludes list (i.e. forgiven after the configured wait period).
-comment|// [Sleeping just in case the restart of the DNs completed< 2s cause
+comment|// [Sleeping just in case the restart of the DNs completed< 5s cause
 comment|// otherwise, we'll end up quickly excluding those again.]
 name|ThreadUtil
 operator|.
 name|sleepAtLeastIgnoreInterrupts
 argument_list|(
-literal|2000
+literal|5000
 argument_list|)
 expr_stmt|;
 comment|// Terminate the last good DN, to assert that there's no

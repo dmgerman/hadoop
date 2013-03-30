@@ -60,6 +60,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|security
 operator|.
 name|PrivilegedExceptionAction
@@ -982,7 +992,7 @@ name|URI
 name|getUri
 parameter_list|()
 function_decl|;
-comment|/**    * Resolve the uri's hostname and add the default port if not in the uri    * @return URI    * @see NetUtils#getCanonicalUri(URI, int)    */
+comment|/**    * Return a canonicalized form of this FileSystem's URI.    *     * The default implementation simply calls {@link #canonicalizeUri(URI)}    * on the filesystem's own URI, so subclasses typically only need to    * implement that method.    *    * @see #canonicalizeUri(URI)    */
 DECL|method|getCanonicalUri ()
 specifier|protected
 name|URI
@@ -990,16 +1000,102 @@ name|getCanonicalUri
 parameter_list|()
 block|{
 return|return
-name|NetUtils
-operator|.
-name|getCanonicalUri
+name|canonicalizeUri
 argument_list|(
 name|getUri
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Canonicalize the given URI.    *     * This is filesystem-dependent, but may for example consist of    * canonicalizing the hostname using DNS and adding the default    * port if not specified.    *     * The default implementation simply fills in the default port if    * not specified and if the filesystem has a default port.    *    * @return URI    * @see NetUtils#getCanonicalUri(URI, int)    */
+DECL|method|canonicalizeUri (URI uri)
+specifier|protected
+name|URI
+name|canonicalizeUri
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
+if|if
+condition|(
+name|uri
+operator|.
+name|getPort
+argument_list|()
+operator|==
+operator|-
+literal|1
+operator|&&
+name|getDefaultPort
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// reconstruct the uri with the default port set
+try|try
+block|{
+name|uri
+operator|=
+operator|new
+name|URI
+argument_list|(
+name|uri
+operator|.
+name|getScheme
+argument_list|()
+argument_list|,
+name|uri
+operator|.
+name|getUserInfo
+argument_list|()
+argument_list|,
+name|uri
+operator|.
+name|getHost
 argument_list|()
 argument_list|,
 name|getDefaultPort
 argument_list|()
+argument_list|,
+name|uri
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|uri
+operator|.
+name|getQuery
+argument_list|()
+argument_list|,
+name|uri
+operator|.
+name|getFragment
+argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+comment|// Should never happen!
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Valid URI became unparseable: "
+operator|+
+name|uri
+argument_list|)
+throw|;
+block|}
+block|}
+return|return
+name|uri
 return|;
 block|}
 comment|/**    * Get the default port for this file system.    * @return the default port or 0 if there isn't one    */
@@ -2193,14 +2289,9 @@ block|{
 comment|// canonicalize uri before comparing with this fs
 name|uri
 operator|=
-name|NetUtils
-operator|.
-name|getCanonicalUri
+name|canonicalizeUri
 argument_list|(
 name|uri
-argument_list|,
-name|getDefaultPort
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|thatAuthority

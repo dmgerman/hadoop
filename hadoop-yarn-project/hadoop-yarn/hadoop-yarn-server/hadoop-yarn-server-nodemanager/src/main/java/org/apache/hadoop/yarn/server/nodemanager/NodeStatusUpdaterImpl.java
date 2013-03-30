@@ -488,6 +488,26 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|NodeHeartbeatResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|RegisterNodeManagerRequest
 import|;
 end_import
@@ -506,9 +526,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|RegisterNodeManagerResponse
 import|;
 end_import
 
@@ -569,26 +589,6 @@ operator|.
 name|records
 operator|.
 name|NodeStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|RegistrationResponse
 import|;
 end_import
 
@@ -1467,8 +1467,8 @@ operator|.
 name|nodeId
 argument_list|)
 expr_stmt|;
-name|RegistrationResponse
-name|regResponse
+name|RegisterNodeManagerResponse
+name|regNMResponse
 decl_stmt|;
 while|while
 condition|(
@@ -1502,7 +1502,7 @@ operator|=
 name|getRMClient
 argument_list|()
 expr_stmt|;
-name|regResponse
+name|regNMResponse
 operator|=
 name|this
 operator|.
@@ -1512,9 +1512,6 @@ name|registerNodeManager
 argument_list|(
 name|request
 argument_list|)
-operator|.
-name|getRegistrationResponse
-argument_list|()
 expr_stmt|;
 break|break;
 block|}
@@ -1622,7 +1619,7 @@ name|SHUTDOWN
 operator|.
 name|equals
 argument_list|(
-name|regResponse
+name|regNMResponse
 operator|.
 name|getNodeAction
 argument_list|()
@@ -1648,7 +1645,7 @@ block|{
 name|MasterKey
 name|masterKey
 init|=
-name|regResponse
+name|regNMResponse
 operator|.
 name|getMasterKey
 argument_list|()
@@ -2371,7 +2368,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|response
 init|=
 name|resourceTracker
@@ -2380,9 +2377,6 @@ name|nodeHeartbeat
 argument_list|(
 name|request
 argument_list|)
-operator|.
-name|getHeartbeatResponse
-argument_list|()
 decl_stmt|;
 comment|// See if the master-key has rolled over
 if|if
@@ -2512,7 +2506,7 @@ name|containersToCleanup
 init|=
 name|response
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 decl_stmt|;
 if|if
@@ -2554,7 +2548,7 @@ name|appsToCleanup
 init|=
 name|response
 operator|.
-name|getApplicationsToCleanupList
+name|getApplicationsToCleanup
 argument_list|()
 decl_stmt|;
 comment|//Only start tracking for keepAlive on FINISH_APP

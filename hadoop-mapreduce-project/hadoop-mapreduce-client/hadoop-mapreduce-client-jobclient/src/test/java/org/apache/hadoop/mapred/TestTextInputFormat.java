@@ -381,6 +381,11 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|field|workDir
 specifier|private
 specifier|static
@@ -413,6 +418,11 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|500000
+argument_list|)
 DECL|method|testFormat ()
 specifier|public
 name|void
@@ -923,6 +933,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|900000
+argument_list|)
 DECL|method|testSplitableCodecs ()
 specifier|public
 name|void
@@ -1565,6 +1580,11 @@ return|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testUTF8 ()
 specifier|public
 name|void
@@ -1637,6 +1657,11 @@ block|}
 comment|/**    * Test readLine for various kinds of line termination sequneces.    * Varies buffer size to stress test.  Also check that returned    * value matches the string length.    *    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testNewLines ()
 specifier|public
 name|void
@@ -1949,6 +1974,11 @@ block|}
 comment|/**    * Test readLine for correct interpretation of maxLineLength    * (returned string should be clipped at maxLineLength, and the    * remaining bytes on the same line should be thrown out).    * Also check that returned value matches the string length.    * Varies buffer size to stress test.    *    * @throws Exception    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testMaxLineLength ()
 specifier|public
 name|void
@@ -2194,6 +2224,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testMRMaxLine ()
 specifier|public
 name|void
@@ -2308,6 +2343,16 @@ operator|.
 name|length
 return|;
 block|}
+specifier|public
+name|void
+name|reset
+parameter_list|()
+block|{
+name|position
+operator|=
+literal|0
+expr_stmt|;
+block|}
 block|}
 decl_stmt|;
 specifier|final
@@ -2376,7 +2421,7 @@ name|BUF
 argument_list|)
 expr_stmt|;
 comment|// used by LRR
-specifier|final
+comment|// test another constructor
 name|LineRecordReader
 name|lrr
 init|=
@@ -2392,6 +2437,39 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|assertFalse
+argument_list|(
+literal|"Read a line from null"
+argument_list|,
+name|lrr
+operator|.
+name|next
+argument_list|(
+name|key
+argument_list|,
+name|val
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|infNull
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+name|lrr
+operator|=
+operator|new
+name|LineRecordReader
+argument_list|(
+name|infNull
+argument_list|,
+literal|0L
+argument_list|,
+name|MAXLINE
+argument_list|,
+name|MAXPOS
+argument_list|)
+expr_stmt|;
 name|assertFalse
 argument_list|(
 literal|"Read a line from null"
@@ -2600,6 +2678,11 @@ block|}
 comment|/**    * Test using the gzip codec for reading    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testGzip ()
 specifier|public
 name|void
@@ -2879,6 +2962,11 @@ block|}
 comment|/**    * Test using the gzip codec and an empty input file    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testGzipEmpty ()
 specifier|public
 name|void

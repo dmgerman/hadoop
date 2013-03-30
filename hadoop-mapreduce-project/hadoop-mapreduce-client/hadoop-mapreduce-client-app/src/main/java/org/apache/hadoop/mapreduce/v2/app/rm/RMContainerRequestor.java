@@ -449,14 +449,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|ANY
-specifier|static
-specifier|final
-name|String
-name|ANY
-init|=
-literal|"*"
-decl_stmt|;
 DECL|field|lastResponseID
 specifier|private
 name|int
@@ -1655,6 +1647,8 @@ name|req
 operator|.
 name|priority
 argument_list|,
+name|ResourceRequest
+operator|.
 name|ANY
 argument_list|,
 name|req
@@ -1727,6 +1721,8 @@ name|req
 operator|.
 name|priority
 argument_list|,
+name|ResourceRequest
+operator|.
 name|ANY
 argument_list|,
 name|req

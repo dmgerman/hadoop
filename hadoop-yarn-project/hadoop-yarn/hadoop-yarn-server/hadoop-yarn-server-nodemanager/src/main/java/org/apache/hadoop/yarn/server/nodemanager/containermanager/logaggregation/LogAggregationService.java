@@ -508,28 +508,6 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
-name|application
-operator|.
-name|ApplicationFinishEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
 name|loghandler
 operator|.
 name|LogHandler
@@ -944,12 +922,6 @@ operator|.
 name|getNodeId
 argument_list|()
 expr_stmt|;
-name|verifyAndCreateRemoteLogDir
-argument_list|(
-name|getConfig
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|start
@@ -1110,7 +1082,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|verifyAndCreateRemoteLogDir (Configuration conf)
-specifier|private
 name|void
 name|verifyAndCreateRemoteLogDir
 parameter_list|(
@@ -1188,6 +1159,8 @@ operator|.
 name|remoteRootLogDir
 operator|+
 literal|"]"
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
@@ -1261,13 +1234,15 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"Failed while attempting to check permissions for dir ["
+literal|"Failed to check permissions for dir ["
 operator|+
 name|this
 operator|.
 name|remoteRootLogDir
 operator|+
 literal|"]"
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
@@ -1807,6 +1782,12 @@ name|eventResponse
 decl_stmt|;
 try|try
 block|{
+name|verifyAndCreateRemoteLogDir
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|initAppAggregator
 argument_list|(
 name|appId

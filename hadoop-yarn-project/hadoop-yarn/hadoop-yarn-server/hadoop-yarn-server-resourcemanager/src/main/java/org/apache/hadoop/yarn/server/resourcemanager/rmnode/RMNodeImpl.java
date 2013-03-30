@@ -432,9 +432,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -902,16 +902,16 @@ name|ApplicationId
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|latestHeartBeatResponse
+DECL|field|latestNodeHeartBeatResponse
 specifier|private
-name|HeartbeatResponse
-name|latestHeartBeatResponse
+name|NodeHeartbeatResponse
+name|latestNodeHeartBeatResponse
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 operator|.
 name|class
 argument_list|)
@@ -1416,7 +1416,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|latestHeartBeatResponse
+name|latestNodeHeartBeatResponse
 operator|.
 name|setResponseId
 argument_list|(
@@ -1837,12 +1837,12 @@ block|}
 empty_stmt|;
 annotation|@
 name|Override
-DECL|method|updateHeartbeatResponseForCleanup (HeartbeatResponse response)
+DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
 specifier|public
 name|void
-name|updateHeartbeatResponseForCleanup
+name|updateNodeHeartbeatResponseForCleanup
 parameter_list|(
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|response
 parameter_list|)
 block|{
@@ -1909,10 +1909,10 @@ block|}
 empty_stmt|;
 annotation|@
 name|Override
-DECL|method|getLastHeartBeatResponse ()
+DECL|method|getLastNodeHeartBeatResponse ()
 specifier|public
-name|HeartbeatResponse
-name|getLastHeartBeatResponse
+name|NodeHeartbeatResponse
+name|getLastNodeHeartBeatResponse
 parameter_list|()
 block|{
 name|this
@@ -1927,7 +1927,7 @@ block|{
 return|return
 name|this
 operator|.
-name|latestHeartBeatResponse
+name|latestNodeHeartBeatResponse
 return|;
 block|}
 finally|finally
@@ -2417,7 +2417,7 @@ block|{
 comment|// Reset heartbeat ID since node just restarted.
 name|rmNode
 operator|.
-name|getLastHeartBeatResponse
+name|getLastNodeHeartBeatResponse
 argument_list|()
 operator|.
 name|setResponseId
@@ -2816,7 +2816,7 @@ decl_stmt|;
 comment|// Switch the last heartbeatresponse.
 name|rmNode
 operator|.
-name|latestHeartBeatResponse
+name|latestNodeHeartBeatResponse
 operator|=
 name|statusEvent
 operator|.
@@ -3237,7 +3237,7 @@ decl_stmt|;
 comment|// Switch the last heartbeatresponse.
 name|rmNode
 operator|.
-name|latestHeartBeatResponse
+name|latestNodeHeartBeatResponse
 operator|=
 name|statusEvent
 operator|.

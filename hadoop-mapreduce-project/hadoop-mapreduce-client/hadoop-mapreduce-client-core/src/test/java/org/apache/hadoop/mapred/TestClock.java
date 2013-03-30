@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.api.records
+DECL|package|org.apache.hadoop.mapred
 package|package
 name|org
 operator|.
@@ -12,50 +12,90 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
+name|mapred
 package|;
 end_package
 
-begin_interface
-DECL|interface|RegistrationResponse
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
+begin_comment
+comment|/**  *  test Clock class  *  */
+end_comment
+
+begin_class
+DECL|class|TestClock
 specifier|public
-interface|interface
-name|RegistrationResponse
+class|class
+name|TestClock
 block|{
-DECL|method|getMasterKey ()
-name|MasterKey
-name|getMasterKey
-parameter_list|()
-function_decl|;
-DECL|method|setMasterKey (MasterKey secretKey)
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|1000
+argument_list|)
+DECL|method|testClock ()
+specifier|public
 name|void
-name|setMasterKey
-parameter_list|(
-name|MasterKey
-name|secretKey
-parameter_list|)
-function_decl|;
-DECL|method|getNodeAction ()
-name|NodeAction
-name|getNodeAction
+name|testClock
 parameter_list|()
-function_decl|;
-DECL|method|setNodeAction (NodeAction nodeAction)
-name|void
-name|setNodeAction
-parameter_list|(
-name|NodeAction
-name|nodeAction
-parameter_list|)
-function_decl|;
+block|{
+name|Clock
+name|clock
+init|=
+operator|new
+name|Clock
+argument_list|()
+decl_stmt|;
+name|long
+name|templateTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
+name|long
+name|time
+init|=
+name|clock
+operator|.
+name|getTime
+argument_list|()
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|templateTime
+argument_list|,
+name|time
+argument_list|,
+literal|30
+argument_list|)
+expr_stmt|;
 block|}
-end_interface
+block|}
+end_class
 
 end_unit
 

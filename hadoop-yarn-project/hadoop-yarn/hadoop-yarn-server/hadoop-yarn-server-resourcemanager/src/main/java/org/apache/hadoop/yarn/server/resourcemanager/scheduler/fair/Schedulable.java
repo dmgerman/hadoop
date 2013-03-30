@@ -122,6 +122,7 @@ name|Private
 annotation|@
 name|Unstable
 DECL|class|Schedulable
+specifier|public
 specifier|abstract
 class|class
 name|Schedulable

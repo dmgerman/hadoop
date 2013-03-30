@@ -268,9 +268,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -690,7 +690,7 @@ operator|.
 name|unregisterAppAttempt
 argument_list|()
 expr_stmt|;
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|resp
 init|=
 name|nm1
@@ -737,7 +737,7 @@ name|contsToClean
 init|=
 name|resp
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 decl_stmt|;
 name|List
@@ -748,7 +748,7 @@ name|apps
 init|=
 name|resp
 operator|.
-name|getApplicationsToCleanupList
+name|getApplicationsToCleanup
 argument_list|()
 decl_stmt|;
 name|int
@@ -822,14 +822,14 @@ name|contsToClean
 operator|=
 name|resp
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 expr_stmt|;
 name|apps
 operator|=
 name|resp
 operator|.
-name|getApplicationsToCleanupList
+name|getApplicationsToCleanup
 argument_list|()
 expr_stmt|;
 name|cleanedConts
@@ -1339,7 +1339,7 @@ argument_list|,
 name|containerStatusList
 argument_list|)
 expr_stmt|;
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|resp
 init|=
 name|nm1
@@ -1364,7 +1364,7 @@ name|contsToClean
 init|=
 name|resp
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 decl_stmt|;
 name|int
@@ -1425,7 +1425,7 @@ name|contsToClean
 operator|=
 name|resp
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 expr_stmt|;
 name|cleanedConts
@@ -1540,7 +1540,7 @@ name|contsToClean
 operator|=
 name|resp
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 expr_stmt|;
 name|cleanedConts
@@ -1602,7 +1602,7 @@ name|contsToClean
 operator|=
 name|resp
 operator|.
-name|getContainersToCleanupList
+name|getContainersToCleanup
 argument_list|()
 expr_stmt|;
 name|cleanedConts

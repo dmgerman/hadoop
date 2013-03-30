@@ -56,7 +56,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|yarn
 operator|.
 name|util
 operator|.

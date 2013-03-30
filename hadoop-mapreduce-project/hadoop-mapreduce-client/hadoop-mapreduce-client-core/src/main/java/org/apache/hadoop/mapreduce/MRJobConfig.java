@@ -2475,6 +2475,25 @@ name|WORKFLOW_ADJACENCY_PREFIX_PATTERN
 init|=
 literal|"^mapreduce\\.workflow\\.adjacency\\..+"
 decl_stmt|;
+comment|/**    * The maximum number of application attempts.    * It is a application-specific setting.    */
+DECL|field|MR_AM_MAX_ATTEMPTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_MAX_ATTEMPTS
+init|=
+literal|"mapreduce.am.max-attempts"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_MAX_ATTEMPTS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
+init|=
+literal|1
+decl_stmt|;
 block|}
 end_interface
 

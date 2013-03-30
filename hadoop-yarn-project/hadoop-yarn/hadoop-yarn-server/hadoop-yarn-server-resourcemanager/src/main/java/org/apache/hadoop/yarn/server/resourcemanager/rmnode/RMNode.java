@@ -150,9 +150,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -166,15 +166,6 @@ specifier|public
 interface|interface
 name|RMNode
 block|{
-DECL|field|ANY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|ANY
-init|=
-literal|"*"
-decl_stmt|;
 comment|/**    * the node id of of this node.    * @return the node id of this node.    */
 DECL|method|getNodeID ()
 specifier|public
@@ -281,20 +272,20 @@ argument_list|>
 name|getAppsToCleanup
 parameter_list|()
 function_decl|;
-comment|/**    * Update a {@link HeartbeatResponse} with the list of containers and    * applications to clean up for this node.    * @param response the {@link HeartbeatResponse} to update    */
-DECL|method|updateHeartbeatResponseForCleanup (HeartbeatResponse response)
+comment|/**    * Update a {@link NodeHeartbeatResponse} with the list of containers and    * applications to clean up for this node.    * @param response the {@link NodeHeartbeatResponse} to update    */
+DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
 specifier|public
 name|void
-name|updateHeartbeatResponseForCleanup
+name|updateNodeHeartbeatResponseForCleanup
 parameter_list|(
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|response
 parameter_list|)
 function_decl|;
-DECL|method|getLastHeartBeatResponse ()
+DECL|method|getLastNodeHeartBeatResponse ()
 specifier|public
-name|HeartbeatResponse
-name|getLastHeartBeatResponse
+name|NodeHeartbeatResponse
+name|getLastNodeHeartBeatResponse
 parameter_list|()
 function_decl|;
 comment|/**    * Get and clear the list of containerUpdates accumulated across NM    * heartbeats.    *     * @return containerUpdates accumulated across NM heartbeats.    */

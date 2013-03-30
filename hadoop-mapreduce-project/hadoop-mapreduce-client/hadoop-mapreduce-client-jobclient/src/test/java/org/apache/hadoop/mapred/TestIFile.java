@@ -128,6 +128,18 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|*
+import|;
+end_import
+
 begin_class
 DECL|class|TestIFile
 specifier|public
@@ -136,7 +148,7 @@ name|TestIFile
 block|{
 annotation|@
 name|Test
-comment|/**    * Create an IFile.Writer using GzipCodec since this codec does not    * have a compressor when run via the tests (ie no native libraries).    */
+comment|/**    * Create an IFile.Writer using GzipCodec since this code does not    * have a compressor when run via the tests (ie no native libraries).    */
 DECL|method|testIFileWriterWithCodec ()
 specifier|public
 name|void
@@ -398,6 +410,49 @@ name|reader
 operator|.
 name|close
 argument_list|()
+expr_stmt|;
+comment|// test check sum
+name|byte
+index|[]
+name|ab
+init|=
+operator|new
+name|byte
+index|[
+literal|100
+index|]
+decl_stmt|;
+name|int
+name|readed
+init|=
+name|reader
+operator|.
+name|checksumIn
+operator|.
+name|readWithChecksum
+argument_list|(
+name|ab
+argument_list|,
+literal|0
+argument_list|,
+name|ab
+operator|.
+name|length
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+name|readed
+argument_list|,
+name|reader
+operator|.
+name|checksumIn
+operator|.
+name|getChecksum
+argument_list|()
+operator|.
+name|length
+argument_list|)
 expr_stmt|;
 block|}
 block|}

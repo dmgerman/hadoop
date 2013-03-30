@@ -306,6 +306,10 @@ literal|"mapreduce.task.files.preserve.failedtasks=true"
 block|,
 literal|"-jobconf"
 block|,
+literal|"mapreduce.job.maps=1"
+block|,
+literal|"-jobconf"
+block|,
 literal|"stream.tmpdir="
 operator|+
 name|System

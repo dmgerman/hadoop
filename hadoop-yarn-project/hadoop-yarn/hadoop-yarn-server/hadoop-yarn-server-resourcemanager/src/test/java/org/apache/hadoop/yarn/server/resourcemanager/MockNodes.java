@@ -222,9 +222,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -1008,21 +1008,21 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateHeartbeatResponseForCleanup (HeartbeatResponse response)
+DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
 specifier|public
 name|void
-name|updateHeartbeatResponseForCleanup
+name|updateNodeHeartbeatResponseForCleanup
 parameter_list|(
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|response
 parameter_list|)
 block|{     }
 annotation|@
 name|Override
-DECL|method|getLastHeartBeatResponse ()
+DECL|method|getLastNodeHeartBeatResponse ()
 specifier|public
-name|HeartbeatResponse
-name|getLastHeartBeatResponse
+name|NodeHeartbeatResponse
+name|getLastNodeHeartBeatResponse
 parameter_list|()
 block|{
 return|return

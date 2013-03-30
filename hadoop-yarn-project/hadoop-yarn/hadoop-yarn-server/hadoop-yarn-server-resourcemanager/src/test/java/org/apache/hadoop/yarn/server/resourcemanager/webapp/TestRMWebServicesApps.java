@@ -848,7 +848,7 @@ name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_AM_MAX_RETRIES
+name|RM_AM_MAX_ATTEMPTS
 argument_list|,
 literal|2
 argument_list|)
@@ -6988,7 +6988,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 name|int
-name|maxRetries
+name|maxAppAttempts
 init|=
 name|rm
 operator|.
@@ -6999,17 +6999,17 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_AM_MAX_RETRIES
+name|RM_AM_MAX_ATTEMPTS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_AM_MAX_RETRIES
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
 argument_list|)
 decl_stmt|;
 name|int
 name|retriesLeft
 init|=
-name|maxRetries
+name|maxAppAttempts
 decl_stmt|;
 while|while
 condition|(
@@ -7070,7 +7070,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of attempts"
 argument_list|,
-name|maxRetries
+name|maxAppAttempts
 argument_list|,
 name|app1
 operator|.

@@ -474,22 +474,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -816,6 +800,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDeletionofStagingOnKill ()
 specifier|public
 name|void
@@ -833,17 +822,6 @@ operator|.
 name|MAPREDUCE_JOB_DIR
 argument_list|,
 name|stagingJobDir
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_AM_MAX_RETRIES
-argument_list|,
-literal|4
 argument_list|)
 expr_stmt|;
 name|fs
@@ -1010,6 +988,8 @@ argument_list|(
 name|attemptId
 argument_list|,
 name|mockAlloc
+argument_list|,
+literal|4
 argument_list|)
 decl_stmt|;
 name|appMaster
@@ -1058,6 +1038,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDeletionofStagingOnKillLastTry ()
 specifier|public
 name|void
@@ -1075,17 +1060,6 @@ operator|.
 name|MAPREDUCE_JOB_DIR
 argument_list|,
 name|stagingJobDir
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_AM_MAX_RETRIES
-argument_list|,
-literal|1
 argument_list|)
 expr_stmt|;
 name|fs
@@ -1252,6 +1226,10 @@ argument_list|(
 name|attemptId
 argument_list|,
 name|mockAlloc
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
 argument_list|)
 decl_stmt|;
 name|appMaster
@@ -1304,7 +1282,7 @@ DECL|field|allocator
 name|ContainerAllocator
 name|allocator
 decl_stmt|;
-DECL|method|TestMRApp (ApplicationAttemptId applicationAttemptId, ContainerAllocator allocator)
+DECL|method|TestMRApp (ApplicationAttemptId applicationAttemptId, ContainerAllocator allocator, int maxAppAttempts)
 specifier|public
 name|TestMRApp
 parameter_list|(
@@ -1313,6 +1291,9 @@ name|applicationAttemptId
 parameter_list|,
 name|ContainerAllocator
 name|allocator
+parameter_list|,
+name|int
+name|maxAppAttempts
 parameter_list|)
 block|{
 name|super
@@ -1338,6 +1319,8 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+argument_list|,
+name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 name|this
@@ -1360,6 +1343,10 @@ argument_list|(
 name|applicationAttemptId
 argument_list|,
 literal|null
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
 argument_list|)
 expr_stmt|;
 block|}
