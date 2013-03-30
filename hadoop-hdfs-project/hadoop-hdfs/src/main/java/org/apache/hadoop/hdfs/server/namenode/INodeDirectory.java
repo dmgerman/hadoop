@@ -2813,7 +2813,7 @@ comment|// in case of deletion snapshot, since this call happens after we modify
 comment|// the diff list, the snapshot to be deleted has been combined or renamed
 comment|// to its latest previous snapshot. (besides, we also need to consider nodes
 comment|// created after prior but before snapshot. this will be done in
-comment|// INodeDirectoryWithSnapshot#cleanSubtree
+comment|// INodeDirectoryWithSnapshot#cleanSubtree)
 name|Snapshot
 name|s
 init|=
