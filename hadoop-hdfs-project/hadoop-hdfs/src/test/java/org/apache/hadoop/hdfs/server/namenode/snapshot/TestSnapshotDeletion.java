@@ -542,15 +542,6 @@ name|BLOCKSIZE
 init|=
 literal|1024
 decl_stmt|;
-DECL|field|SNAPSHOTNUMBER
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|SNAPSHOTNUMBER
-init|=
-literal|10
-decl_stmt|;
 DECL|field|dir
 specifier|private
 specifier|final

@@ -796,9 +796,13 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|this
+operator|.
+name|isInLatestSnapshot
+argument_list|(
 name|latest
-operator|==
-literal|null
+argument_list|)
 condition|)
 block|{
 specifier|final
