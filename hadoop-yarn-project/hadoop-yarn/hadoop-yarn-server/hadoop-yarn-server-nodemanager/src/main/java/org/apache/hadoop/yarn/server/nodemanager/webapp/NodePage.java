@@ -277,7 +277,7 @@ argument_list|,
 literal|"nav"
 argument_list|)
 argument_list|,
-literal|"{autoHeight:false, active:0}"
+literal|"{autoHeight:false, active:1}"
 argument_list|)
 expr_stmt|;
 block|}
@@ -396,6 +396,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Vmem enforcement enabled"
+argument_list|,
+name|info
+operator|.
+name|isVmemCheckEnabled
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"Total Pmem allocated for Container"
 argument_list|,
 name|StringUtils
@@ -409,6 +419,16 @@ argument_list|()
 operator|*
 name|BYTES_IN_MB
 argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
+literal|"Pmem enforcement enabled"
+argument_list|,
+name|info
+operator|.
+name|isVmemCheckEnabled
+argument_list|()
 argument_list|)
 operator|.
 name|_

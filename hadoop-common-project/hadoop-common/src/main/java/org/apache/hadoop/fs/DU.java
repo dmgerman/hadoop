@@ -440,6 +440,42 @@ return|return
 name|dirPath
 return|;
 block|}
+comment|/**    * Override to hook in DUHelper class. Maybe this can be used more    * generally as well on Unix/Linux based systems    */
+annotation|@
+name|Override
+DECL|method|run ()
+specifier|protected
+name|void
+name|run
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|WINDOWS
+condition|)
+block|{
+name|used
+operator|.
+name|set
+argument_list|(
+name|DUHelper
+operator|.
+name|getFolderUsage
+argument_list|(
+name|dirPath
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|super
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Start the disk usage checking thread.    */
 DECL|method|start ()
 specifier|public

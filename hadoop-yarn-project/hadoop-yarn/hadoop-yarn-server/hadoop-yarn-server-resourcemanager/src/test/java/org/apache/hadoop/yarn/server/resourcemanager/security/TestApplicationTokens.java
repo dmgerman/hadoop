@@ -1212,9 +1212,6 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 operator|.
-name|getAMResponse
-argument_list|()
-operator|.
 name|getReboot
 argument_list|()
 argument_list|)
@@ -1318,9 +1315,6 @@ name|allocate
 argument_list|(
 name|allocateRequest
 argument_list|)
-operator|.
-name|getAMResponse
-argument_list|()
 operator|.
 name|getReboot
 argument_list|()

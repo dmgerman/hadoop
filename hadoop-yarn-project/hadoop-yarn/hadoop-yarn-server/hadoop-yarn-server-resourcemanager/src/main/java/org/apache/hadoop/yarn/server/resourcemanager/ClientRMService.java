@@ -2950,14 +2950,6 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|ioe
-argument_list|)
-throw|;
 block|}
 return|return
 name|response

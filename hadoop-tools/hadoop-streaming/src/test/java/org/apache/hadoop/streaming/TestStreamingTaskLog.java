@@ -425,6 +425,11 @@ block|}
 comment|/**    * This test validates the setting of HADOOP_ROOT_LOGGER to 'INFO,TLA' and the    * dependent properties    *  (a) hadoop.tasklog.taskid and    *  (b) hadoop.tasklog.totalLogFileSize    * for the children of java tasks in streaming jobs.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testStreamingTaskLogWithHadoopCmd ()
 specifier|public
 name|void
@@ -676,19 +681,19 @@ name|Shell
 operator|.
 name|execCommand
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{
-literal|"chmod"
-block|,
+name|Shell
+operator|.
+name|getSetPermissionCommand
+argument_list|(
 literal|"+x"
-block|,
+argument_list|,
+literal|false
+argument_list|,
 name|scriptFile
 operator|.
 name|getAbsolutePath
 argument_list|()
-block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return

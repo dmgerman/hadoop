@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This testing is fairly lightweight.  Assumes HardLink routines will  * only be called when permissions etc are okay; no negative testing is  * provided.  *   * These tests all use   * "src" as the source directory,   * "tgt_one" as the target directory for single-file hardlinking, and  * "tgt_mult" as the target directory for multi-file hardlinking.  *   * Contents of them are/will be:  * dir:src:   *   files: x1, x2, x3  * dir:tgt_one:  *   files: x1 (linked to src/x1), y (linked to src/x2),   *          x3 (linked to src/x3), x11 (also linked to src/x1)  * dir:tgt_mult:  *   files: x1, x2, x3 (all linked to same name in src/)  *     * NOTICE: This test class only tests the functionality of the OS  * upon which the test is run! (although you're pretty safe with the  * unix-like OS's, unless a typo sneaks in.)  *   * Notes about Windows testing:    * (a) In order to create hardlinks, the process must be run with   * administrative privs, in both the account AND the invocation.  * For instance, to run within Eclipse, the Eclipse application must be   * launched by right-clicking on it, and selecting "Run as Administrator"   * (and that option will only be available if the current user id does   * in fact have admin privs).  * (b) The getLinkCount() test case will fail for Windows, unless Cygwin  * is set up properly.  In particular, ${cygwin}/bin must be in  * the PATH environment variable, so the cygwin utilities can be found.  */
+comment|/**  * This testing is fairly lightweight.  Assumes HardLink routines will  * only be called when permissions etc are okay; no negative testing is  * provided.  *   * These tests all use   * "src" as the source directory,   * "tgt_one" as the target directory for single-file hardlinking, and  * "tgt_mult" as the target directory for multi-file hardlinking.  *   * Contents of them are/will be:  * dir:src:   *   files: x1, x2, x3  * dir:tgt_one:  *   files: x1 (linked to src/x1), y (linked to src/x2),   *          x3 (linked to src/x3), x11 (also linked to src/x1)  * dir:tgt_mult:  *   files: x1, x2, x3 (all linked to same name in src/)  *     * NOTICE: This test class only tests the functionality of the OS  * upon which the test is run! (although you're pretty safe with the  * unix-like OS's, unless a typo sneaks in.)  */
 end_comment
 
 begin_class
@@ -1041,7 +1041,7 @@ name|result
 argument_list|)
 return|;
 block|}
-comment|/**    * Sanity check the simplest case of HardLink.getLinkCount()    * to make sure we get back "1" for ordinary single-linked files.    * Tests with multiply-linked files are in later test cases.    *     * If this fails on Windows but passes on Unix, the most likely cause is     * incorrect configuration of the Cygwin installation; see above.    */
+comment|/**    * Sanity check the simplest case of HardLink.getLinkCount()    * to make sure we get back "1" for ordinary single-linked files.    * Tests with multiply-linked files are in later test cases.    */
 annotation|@
 name|Test
 DECL|method|testGetLinkCount ()
@@ -1872,7 +1872,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|3
+literal|4
 argument_list|,
 name|win
 operator|.
@@ -1973,7 +1973,7 @@ index|]
 operator|.
 name|equals
 argument_list|(
-literal|"-c%h"
+literal|"hardlink"
 argument_list|)
 argument_list|)
 expr_stmt|;

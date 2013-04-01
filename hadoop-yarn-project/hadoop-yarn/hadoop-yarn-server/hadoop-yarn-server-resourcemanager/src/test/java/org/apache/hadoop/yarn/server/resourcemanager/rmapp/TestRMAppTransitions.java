@@ -142,6 +142,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationSubmissionContext
 import|;
 end_import
@@ -624,11 +642,11 @@ specifier|private
 name|RMContext
 name|rmContext
 decl_stmt|;
-DECL|field|maxRetries
+DECL|field|maxAppAttempts
 specifier|private
 specifier|static
 name|int
-name|maxRetries
+name|maxAppAttempts
 init|=
 literal|4
 decl_stmt|;
@@ -1142,16 +1160,16 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
-comment|// ensure max retries set to known value
+comment|// ensure max application attempts set to known value
 name|conf
 operator|.
 name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_AM_MAX_RETRIES
+name|RM_AM_MAX_ATTEMPTS
 argument_list|,
-name|maxRetries
+name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 name|YarnScheduler
@@ -2614,7 +2632,7 @@ literal|1
 init|;
 name|i
 operator|<
-name|maxRetries
+name|maxAppAttempts
 condition|;
 name|i
 operator|++
@@ -2692,7 +2710,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// ACCEPTED => FAILED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED
-comment|// after max retries
+comment|// after max application attempts
 name|String
 name|message
 init|=
@@ -2947,7 +2965,7 @@ literal|1
 init|;
 name|i
 operator|<
-name|maxRetries
+name|maxAppAttempts
 condition|;
 name|i
 operator|++
@@ -3089,7 +3107,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// RUNNING => FAILED/RESTARTING event RMAppEventType.ATTEMPT_FAILED
-comment|// after max retries
+comment|// after max application attempts
 name|RMAppEvent
 name|event
 init|=
@@ -3554,6 +3572,52 @@ operator|.
 name|KILLED
 argument_list|,
 name|application
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testGetAppReport ()
+specifier|public
+name|void
+name|testGetAppReport
+parameter_list|()
+block|{
+name|RMApp
+name|app
+init|=
+name|createNewTestApp
+argument_list|(
+literal|null
+argument_list|)
+decl_stmt|;
+name|assertAppState
+argument_list|(
+name|RMAppState
+operator|.
+name|NEW
+argument_list|,
+name|app
+argument_list|)
+expr_stmt|;
+name|ApplicationReport
+name|report
+init|=
+name|app
+operator|.
+name|createAndGetApplicationReport
+argument_list|(
+literal|true
+argument_list|)
+decl_stmt|;
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+name|report
+operator|.
+name|getApplicationResourceUsageReport
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

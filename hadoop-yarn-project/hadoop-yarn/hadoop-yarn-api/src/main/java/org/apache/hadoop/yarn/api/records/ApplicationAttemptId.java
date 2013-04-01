@@ -235,12 +235,12 @@ specifier|final
 name|int
 name|prime
 init|=
-literal|31
+literal|347671
 decl_stmt|;
 name|int
 name|result
 init|=
-literal|1
+literal|5501
 decl_stmt|;
 name|ApplicationId
 name|appId

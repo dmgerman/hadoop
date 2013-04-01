@@ -123,6 +123,20 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ClassUtil
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -355,7 +369,7 @@ expr_stmt|;
 name|String
 name|containingJar
 init|=
-name|JobConf
+name|ClassUtil
 operator|.
 name|findContainingJar
 argument_list|(

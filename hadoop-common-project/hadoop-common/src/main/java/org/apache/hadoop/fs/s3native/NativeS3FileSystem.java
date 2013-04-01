@@ -3277,21 +3277,6 @@ name|src
 argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|srcKey
-operator|.
-name|length
-argument_list|()
-operator|==
-literal|0
-condition|)
-block|{
-comment|// Cannot rename root of file system
-return|return
-literal|false
-return|;
-block|}
 specifier|final
 name|String
 name|debugPreamble
@@ -3306,9 +3291,96 @@ name|dst
 operator|+
 literal|"' - "
 decl_stmt|;
+if|if
+condition|(
+name|srcKey
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Cannot rename root of file system
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"returning false as cannot rename the root of a filesystem"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|//get status of source
+name|boolean
+name|srcIsFile
+decl_stmt|;
+try|try
+block|{
+name|srcIsFile
+operator|=
+name|getFileStatus
+argument_list|(
+name|src
+argument_list|)
+operator|.
+name|isFile
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+comment|//bail out fast if the source does not exist
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"returning false as src does not exist"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|// Figure out the final destination
 name|String
 name|dstKey
+init|=
+name|pathToKey
+argument_list|(
+name|makeAbsolute
+argument_list|(
+name|dst
+argument_list|)
+argument_list|)
 decl_stmt|;
 try|try
 block|{
@@ -3328,6 +3400,9 @@ condition|(
 name|dstIsFile
 condition|)
 block|{
+comment|//destination is a file.
+comment|//you can't copy a file or a directory onto an existing file
+comment|//except for the special case of dest==src, which is a no-op
 if|if
 condition|(
 name|LOG
@@ -3342,16 +3417,23 @@ name|debug
 argument_list|(
 name|debugPreamble
 operator|+
-literal|"returning false as dst is an already existing file"
+literal|"returning without rename as dst is an already existing file"
 argument_list|)
 expr_stmt|;
 block|}
+comment|//exit, returning true iff the rename is onto self
 return|return
-literal|false
+name|srcKey
+operator|.
+name|equals
+argument_list|(
+name|dstKey
+argument_list|)
 return|;
 block|}
 else|else
 block|{
+comment|//destination exists and is a directory
 if|if
 condition|(
 name|LOG
@@ -3370,6 +3452,8 @@ literal|"using dst as output directory"
 argument_list|)
 expr_stmt|;
 block|}
+comment|//destination goes under the dst path, with the name of the
+comment|//source entry
 name|dstKey
 operator|=
 name|pathToKey
@@ -3397,6 +3481,8 @@ name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
+comment|//destination does not exist => the source file or directory
+comment|//is copied over with the name of the destination
 if|if
 condition|(
 name|LOG
@@ -3415,16 +3501,6 @@ literal|"using dst as output destination"
 argument_list|)
 expr_stmt|;
 block|}
-name|dstKey
-operator|=
-name|pathToKey
-argument_list|(
-name|makeAbsolute
-argument_list|(
-name|dst
-argument_list|)
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 if|if
@@ -3493,28 +3569,19 @@ literal|false
 return|;
 block|}
 block|}
-name|boolean
-name|srcIsFile
-decl_stmt|;
-try|try
-block|{
-name|srcIsFile
-operator|=
-name|getFileStatus
-argument_list|(
-name|src
-argument_list|)
+comment|//rename to self behavior follows Posix rules and is different
+comment|//for directories and files -the return code is driven by src type
+if|if
+condition|(
+name|srcKey
 operator|.
-name|isFile
-argument_list|()
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|FileNotFoundException
-name|e
-parameter_list|)
+name|equals
+argument_list|(
+name|dstKey
+argument_list|)
+condition|)
 block|{
+comment|//fully resolved destination key matches source: fail
 if|if
 condition|(
 name|LOG
@@ -3529,12 +3596,12 @@ name|debug
 argument_list|(
 name|debugPreamble
 operator|+
-literal|"returning false as src does not exist"
+literal|"renamingToSelf; returning true"
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-literal|false
+literal|true
 return|;
 block|}
 if|if
@@ -3542,6 +3609,7 @@ condition|(
 name|srcIsFile
 condition|)
 block|{
+comment|//source is a file; COPY then DELETE
 if|if
 condition|(
 name|LOG
@@ -3579,6 +3647,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|//src is a directory
 if|if
 condition|(
 name|LOG
@@ -3597,6 +3666,42 @@ literal|"src is directory, so copying contents"
 argument_list|)
 expr_stmt|;
 block|}
+comment|//Verify dest is not a child of the parent
+if|if
+condition|(
+name|dstKey
+operator|.
+name|startsWith
+argument_list|(
+name|srcKey
+operator|+
+literal|"/"
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+name|debugPreamble
+operator|+
+literal|"cannot rename a directory to a subdirectory of self"
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+literal|false
+return|;
+block|}
+comment|//create the subdir under the destination
 name|store
 operator|.
 name|storeEmptyFile

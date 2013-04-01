@@ -104,9 +104,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|AMResponse
+name|AllocateResponse
 import|;
 end_import
 
@@ -913,8 +913,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|AMResponse
-name|am1Response
+name|AllocateResponse
+name|alloc1Response
 init|=
 name|am1
 operator|.
@@ -945,8 +945,8 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-name|AMResponse
-name|am2Response
+name|AllocateResponse
+name|alloc2Response
 init|=
 name|am2
 operator|.
@@ -964,7 +964,7 @@ argument_list|)
 expr_stmt|;
 while|while
 condition|(
-name|am1Response
+name|alloc1Response
 operator|.
 name|getAllocatedContainers
 argument_list|()
@@ -989,7 +989,7 @@ argument_list|(
 literal|1000
 argument_list|)
 expr_stmt|;
-name|am1Response
+name|alloc1Response
 operator|=
 name|am1
 operator|.
@@ -999,7 +999,7 @@ expr_stmt|;
 block|}
 while|while
 condition|(
-name|am2Response
+name|alloc2Response
 operator|.
 name|getAllocatedContainers
 argument_list|()
@@ -1024,7 +1024,7 @@ argument_list|(
 literal|1000
 argument_list|)
 expr_stmt|;
-name|am2Response
+name|alloc2Response
 operator|=
 name|am2
 operator|.
@@ -1046,7 +1046,7 @@ name|Container
 argument_list|>
 name|allocated1
 init|=
-name|am1Response
+name|alloc1Response
 operator|.
 name|getAllocatedContainers
 argument_list|()
@@ -1111,7 +1111,7 @@ name|Container
 argument_list|>
 name|allocated2
 init|=
-name|am2Response
+name|alloc2Response
 operator|.
 name|getAllocatedContainers
 argument_list|()
@@ -1641,6 +1641,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testReconnectedNode ()
 specifier|public
 name|void
@@ -1780,10 +1785,6 @@ operator|new
 name|NodeUpdateSchedulerEvent
 argument_list|(
 name|n1
-argument_list|,
-name|emptyList
-argument_list|,
-name|emptyList
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1855,10 +1856,6 @@ operator|new
 name|NodeUpdateSchedulerEvent
 argument_list|(
 name|n1
-argument_list|,
-name|emptyList
-argument_list|,
-name|emptyList
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1882,6 +1879,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testHeadroom ()
 specifier|public
 name|void
@@ -2130,7 +2132,9 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-literal|"*"
+name|ResourceRequest
+operator|.
+name|ANY
 argument_list|,
 name|BuilderUtils
 operator|.
@@ -2185,7 +2189,9 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-literal|"*"
+name|ResourceRequest
+operator|.
+name|ANY
 argument_list|,
 name|BuilderUtils
 operator|.
@@ -2222,10 +2228,6 @@ operator|new
 name|NodeUpdateSchedulerEvent
 argument_list|(
 name|n1
-argument_list|,
-name|emptyStatus
-argument_list|,
-name|emptyStatus
 argument_list|)
 argument_list|)
 expr_stmt|;

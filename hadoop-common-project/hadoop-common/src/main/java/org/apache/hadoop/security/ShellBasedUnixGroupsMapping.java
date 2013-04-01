@@ -306,6 +306,10 @@ operator|new
 name|StringTokenizer
 argument_list|(
 name|result
+argument_list|,
+name|Shell
+operator|.
+name|TOKEN_SEPARATOR_REGEX
 argument_list|)
 decl_stmt|;
 name|List

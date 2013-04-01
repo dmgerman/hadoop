@@ -80,6 +80,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -233,7 +245,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Encapsulates a Path (path), its FileStatus (stat), and its FileSystem (fs).  * The stat field will be null if the path does not exist.  */
+comment|/**  * Encapsulates a Path (path), its FileStatus (stat), and its FileSystem (fs).  * PathData ensures that the returned path string will be the same as the  * one passed in during initialization (unlike Path objects which can  * modify the path string).  * The stat field will be null if the path does not exist.  */
 end_comment
 
 begin_class
@@ -283,6 +295,57 @@ specifier|public
 name|boolean
 name|exists
 decl_stmt|;
+comment|/* True if the URI scheme was not present in the pathString but inferred.    */
+DECL|field|inferredSchemeFromPath
+specifier|private
+name|boolean
+name|inferredSchemeFromPath
+init|=
+literal|false
+decl_stmt|;
+comment|/**    *  Pre-compiled regular expressions to detect path formats.    */
+DECL|field|potentialUri
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|potentialUri
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^[a-zA-Z][a-zA-Z0-9+-.]+:"
+argument_list|)
+decl_stmt|;
+DECL|field|windowsNonUriAbsolutePath1
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|windowsNonUriAbsolutePath1
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^/?[a-zA-Z]:\\\\"
+argument_list|)
+decl_stmt|;
+DECL|field|windowsNonUriAbsolutePath2
+specifier|private
+specifier|static
+specifier|final
+name|Pattern
+name|windowsNonUriAbsolutePath2
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^/?[a-zA-Z]:/"
+argument_list|)
+decl_stmt|;
 comment|/**    * Creates an object to wrap the given parameters as fields.  The string    * used to create the path will be recorded since the Path object does not    * return exactly the same string used to initialize it    * @param pathString a string for a path    * @param conf the configuration file    * @throws IOException if anything goes wrong...    */
 DECL|method|PathData (String pathString, Configuration conf)
 specifier|public
@@ -315,12 +378,12 @@ name|pathString
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Creates an object to wrap the given parameters as fields.  The string    * used to create the path will be recorded since the Path object does not    * return exactly the same string used to initialize it    * @param localPath a local File    * @param conf the configuration file    * @throws IOException if anything goes wrong...    */
-DECL|method|PathData (File localPath, Configuration conf)
+comment|/**    * Creates an object to wrap the given parameters as fields.  The string    * used to create the path will be recorded since the Path object does not    * return exactly the same string used to initialize it    * @param localPath a local URI    * @param conf the configuration file    * @throws IOException if anything goes wrong...    */
+DECL|method|PathData (URI localPath, Configuration conf)
 specifier|public
 name|PathData
 parameter_list|(
-name|File
+name|URI
 name|localPath
 parameter_list|,
 name|Configuration
@@ -340,7 +403,7 @@ argument_list|)
 argument_list|,
 name|localPath
 operator|.
-name|toString
+name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -375,6 +438,100 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Validates the given Windows path.    * Throws IOException on failure.    * @param pathString a String of the path suppliued by the user.    */
+DECL|method|ValidateWindowsPath (String pathString)
+specifier|private
+name|void
+name|ValidateWindowsPath
+parameter_list|(
+name|String
+name|pathString
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|windowsNonUriAbsolutePath1
+operator|.
+name|matcher
+argument_list|(
+name|pathString
+argument_list|)
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+comment|// Forward slashes disallowed in a backslash-separated path.
+if|if
+condition|(
+name|pathString
+operator|.
+name|indexOf
+argument_list|(
+literal|'/'
+argument_list|)
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid path string "
+operator|+
+name|pathString
+argument_list|)
+throw|;
+block|}
+name|inferredSchemeFromPath
+operator|=
+literal|true
+expr_stmt|;
+return|return;
+block|}
+comment|// Is it a forward slash-separated absolute path?
+if|if
+condition|(
+name|windowsNonUriAbsolutePath2
+operator|.
+name|matcher
+argument_list|(
+name|pathString
+argument_list|)
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+name|inferredSchemeFromPath
+operator|=
+literal|true
+expr_stmt|;
+return|return;
+block|}
+comment|// Does it look like a URI? If so then just leave it alone.
+if|if
+condition|(
+name|potentialUri
+operator|.
+name|matcher
+argument_list|(
+name|pathString
+argument_list|)
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
+comment|// Looks like a relative path on Windows.
+return|return;
 block|}
 comment|/**    * Creates an object to wrap the given parameters as fields.  The string    * used to create the path will be recorded since the Path object does not    * return exactly the same string used to initialize it.    * @param fs the FileSystem    * @param pathString a String of the path    * @param stat the FileStatus (may be null if the path doesn't exist)    */
 DECL|method|PathData (FileSystem fs, String pathString, FileStatus stat)
@@ -428,6 +585,19 @@ argument_list|(
 name|stat
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|Path
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|ValidateWindowsPath
+argument_list|(
+name|pathString
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// need a static method for the ctor above
 comment|/**    * Get the FileStatus info    * @param ignoreFNF if true, stat will be null if the path doesn't exist    * @return FileStatus for the given path    * @throws IOException if anything goes wrong    */
@@ -901,7 +1071,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Given a child of this directory, use the directory's path and the child's    * basename to construct the string to the child.  This preserves relative    * paths since Path will fully qualify.    * @param child a path contained within this directory    * @return String of the path relative to this directory    */
+comment|/**    * Given a child of this directory, use the directory's path and the child's    * basename to construct the string to the child.  This preserves relative    * paths since Path will fully qualify.    * @param childPath a path contained within this directory    * @return String of the path relative to this directory    */
 DECL|method|getStringForChildPath (Path childPath)
 specifier|private
 name|String
@@ -1107,8 +1277,17 @@ block|}
 elseif|else
 if|if
 condition|(
+operator|!
+name|globUri
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
 operator|new
-name|File
+name|Path
 argument_list|(
 name|globUri
 operator|.
@@ -1675,13 +1854,45 @@ operator|.
 name|getSchemeSpecificPart
 argument_list|()
 decl_stmt|;
+comment|// Drop the scheme if it was inferred to ensure fidelity between
+comment|// the input and output path strings.
 if|if
 condition|(
+operator|(
 name|scheme
 operator|==
 literal|null
+operator|)
+operator|||
+operator|(
+name|inferredSchemeFromPath
+operator|)
 condition|)
 block|{
+if|if
+condition|(
+name|Path
+operator|.
+name|isWindowsAbsolutePath
+argument_list|(
+name|decodedRemainder
+argument_list|,
+literal|true
+argument_list|)
+condition|)
+block|{
+comment|// Strip the leading '/' added in stringToUri so users see a valid
+comment|// Windows path.
+name|decodedRemainder
+operator|=
+name|decodedRemainder
+operator|.
+name|substring
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|decodedRemainder
 return|;
@@ -1765,7 +1976,193 @@ name|path
 argument_list|)
 return|;
 block|}
-comment|/** Construct a URI from a String with unescaped special characters    *  that have non-standard sematics. e.g. /, ?, #. A custom parsing    *  is needed to prevent misbihaviors.    *  @param pathString The input path in string form    *  @return URI    */
+comment|/** Normalize the given Windows path string. This does the following:    *    1. Adds "file:" scheme for absolute paths.    *    2. Ensures the scheme-specific part starts with '/' per RFC2396.    *    3. Replaces backslash path separators with forward slashes.    *    @param pathString Path string supplied by the user.    *    @return normalized absolute path string. Returns the input string    *            if it is not a Windows absolute path.    */
+DECL|method|normalizeWindowsPath (String pathString)
+specifier|private
+specifier|static
+name|String
+name|normalizeWindowsPath
+parameter_list|(
+name|String
+name|pathString
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+condition|)
+block|{
+return|return
+name|pathString
+return|;
+block|}
+name|boolean
+name|slashed
+init|=
+operator|(
+operator|(
+name|pathString
+operator|.
+name|length
+argument_list|()
+operator|>=
+literal|1
+operator|)
+operator|&&
+operator|(
+name|pathString
+operator|.
+name|charAt
+argument_list|(
+literal|0
+argument_list|)
+operator|==
+literal|'/'
+operator|)
+operator|)
+decl_stmt|;
+comment|// Is it a backslash-separated absolute path?
+if|if
+condition|(
+name|windowsNonUriAbsolutePath1
+operator|.
+name|matcher
+argument_list|(
+name|pathString
+argument_list|)
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+comment|// Forward slashes disallowed in a backslash-separated path.
+if|if
+condition|(
+name|pathString
+operator|.
+name|indexOf
+argument_list|(
+literal|'/'
+argument_list|)
+operator|!=
+operator|-
+literal|1
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Invalid path string "
+operator|+
+name|pathString
+argument_list|)
+throw|;
+block|}
+name|pathString
+operator|=
+name|pathString
+operator|.
+name|replace
+argument_list|(
+literal|'\\'
+argument_list|,
+literal|'/'
+argument_list|)
+expr_stmt|;
+return|return
+literal|"file:"
+operator|+
+operator|(
+name|slashed
+condition|?
+literal|""
+else|:
+literal|"/"
+operator|)
+operator|+
+name|pathString
+return|;
+block|}
+comment|// Is it a forward slash-separated absolute path?
+if|if
+condition|(
+name|windowsNonUriAbsolutePath2
+operator|.
+name|matcher
+argument_list|(
+name|pathString
+argument_list|)
+operator|.
+name|find
+argument_list|()
+condition|)
+block|{
+return|return
+literal|"file:"
+operator|+
+operator|(
+name|slashed
+condition|?
+literal|""
+else|:
+literal|"/"
+operator|)
+operator|+
+name|pathString
+return|;
+block|}
+comment|// Is it a backslash-separated relative file path (no scheme and
+comment|// no drive-letter specifier)?
+if|if
+condition|(
+operator|(
+name|pathString
+operator|.
+name|indexOf
+argument_list|(
+literal|':'
+argument_list|)
+operator|==
+operator|-
+literal|1
+operator|)
+operator|&&
+operator|(
+name|pathString
+operator|.
+name|indexOf
+argument_list|(
+literal|'\\'
+argument_list|)
+operator|!=
+operator|-
+literal|1
+operator|)
+condition|)
+block|{
+name|pathString
+operator|=
+name|pathString
+operator|.
+name|replace
+argument_list|(
+literal|'\\'
+argument_list|,
+literal|'/'
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|pathString
+return|;
+block|}
+comment|/** Construct a URI from a String with unescaped special characters    *  that have non-standard semantics. e.g. /, ?, #. A custom parsing    *  is needed to prevent misbehavior.    *  @param pathString The input path in string form    *  @return URI    */
 DECL|method|stringToUri (String pathString)
 specifier|private
 specifier|static
@@ -1775,6 +2172,8 @@ parameter_list|(
 name|String
 name|pathString
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 comment|// We can't use 'new URI(String)' directly. Since it doesn't do quoting
 comment|// internally, the internal parser may fail or break the string at wrong
@@ -1796,6 +2195,13 @@ name|start
 init|=
 literal|0
 decl_stmt|;
+name|pathString
+operator|=
+name|normalizeWindowsPath
+argument_list|(
+name|pathString
+argument_list|)
+expr_stmt|;
 comment|// parse uri scheme, if any
 name|int
 name|colon
@@ -1921,7 +2327,7 @@ operator|=
 name|authEnd
 expr_stmt|;
 block|}
-comment|// uri path is the rest of the string. ? or # are not interpreated,
+comment|// uri path is the rest of the string. ? or # are not interpreted,
 comment|// but any occurrence of them will be quoted by the URI ctor.
 name|String
 name|path

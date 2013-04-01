@@ -520,6 +520,22 @@ name|mapreduce
 operator|.
 name|security
 operator|.
+name|TokenCache
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|security
+operator|.
 name|token
 operator|.
 name|JobTokenSecretManager
@@ -1799,6 +1815,12 @@ specifier|final
 name|MRAppMetrics
 name|metrics
 decl_stmt|;
+DECL|field|maxAppAttempts
+specifier|private
+specifier|final
+name|int
+name|maxAppAttempts
+decl_stmt|;
 DECL|field|completedTasksFromPreviousRun
 specifier|private
 name|Map
@@ -1960,7 +1982,7 @@ name|forcedState
 init|=
 literal|null
 decl_stmt|;
-DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, long appSubmitTime)
+DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, long appSubmitTime, int maxAppAttempts)
 specifier|public
 name|MRAppMaster
 parameter_list|(
@@ -1981,6 +2003,9 @@ name|nmHttpPort
 parameter_list|,
 name|long
 name|appSubmitTime
+parameter_list|,
+name|int
+name|maxAppAttempts
 parameter_list|)
 block|{
 name|this
@@ -2000,10 +2025,12 @@ name|SystemClock
 argument_list|()
 argument_list|,
 name|appSubmitTime
+argument_list|,
+name|maxAppAttempts
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, Clock clock, long appSubmitTime)
+DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, Clock clock, long appSubmitTime, int maxAppAttempts)
 specifier|public
 name|MRAppMaster
 parameter_list|(
@@ -2027,6 +2054,9 @@ name|clock
 parameter_list|,
 name|long
 name|appSubmitTime
+parameter_list|,
+name|int
+name|maxAppAttempts
 parameter_list|)
 block|{
 name|super
@@ -2099,6 +2129,12 @@ operator|.
 name|create
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|maxAppAttempts
+operator|=
+name|maxAppAttempts
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2137,25 +2173,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-comment|//TODO this is a hack, we really need the RM to inform us when we
-comment|// are the last one.  This would allow us to configure retries on
-comment|// a per application basis.
-name|int
-name|numAMRetries
-init|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_AM_MAX_RETRIES
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_AM_MAX_RETRIES
-argument_list|)
-decl_stmt|;
 name|isLastAMRetry
 operator|=
 name|appAttemptID
@@ -2163,17 +2180,27 @@ operator|.
 name|getAttemptId
 argument_list|()
 operator|>=
-name|numAMRetries
+name|maxAppAttempts
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"AM Retries: "
+literal|"The specific max attempts: "
 operator|+
-name|numAMRetries
+name|maxAppAttempts
 operator|+
-literal|" attempt num: "
+literal|" for application: "
+operator|+
+name|appAttemptID
+operator|.
+name|getApplicationId
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|". Attempt num: "
 operator|+
 name|appAttemptID
 operator|.
@@ -2435,6 +2462,24 @@ name|isLastAMRetry
 operator|=
 literal|true
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Attempt num: "
+operator|+
+name|appAttemptID
+operator|.
+name|getAttemptId
+argument_list|()
+operator|+
+literal|" is last retry: "
+operator|+
+name|isLastAMRetry
+operator|+
+literal|" because the staging dir doesn't exist."
+argument_list|)
+expr_stmt|;
 name|errorHappenedShutDown
 operator|=
 literal|true
@@ -2474,6 +2519,24 @@ expr_stmt|;
 name|isLastAMRetry
 operator|=
 literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Attempt num: "
+operator|+
+name|appAttemptID
+operator|.
+name|getAttemptId
+argument_list|()
+operator|+
+literal|" is last retry: "
+operator|+
+name|isLastAMRetry
+operator|+
+literal|" because a commit was started."
+argument_list|)
 expr_stmt|;
 name|copyHistory
 operator|=
@@ -2749,11 +2812,34 @@ operator|.
 name|isRecoverySupported
 argument_list|()
 decl_stmt|;
+comment|// If a shuffle secret was not provided by the job client then this app
+comment|// attempt will generate one.  However that disables recovery if there
+comment|// are reducers as the shuffle secret would be app attempt specific.
+name|boolean
+name|shuffleKeyValidForRecovery
+init|=
+operator|(
+name|numReduceTasks
+operator|>
+literal|0
+operator|&&
+name|TokenCache
+operator|.
+name|getShuffleSecretKey
+argument_list|(
+name|fsTokens
+argument_list|)
+operator|!=
+literal|null
+operator|)
+decl_stmt|;
 if|if
 condition|(
 name|recoveryEnabled
 operator|&&
 name|recoverySupportedByCommitter
+operator|&&
+name|shuffleKeyValidForRecovery
 operator|&&
 name|appAttemptID
 operator|.
@@ -2816,6 +2902,10 @@ operator|+
 literal|" recoverySupportedByCommitter: "
 operator|+
 name|recoverySupportedByCommitter
+operator|+
+literal|" shuffleKeyValidForRecovery: "
+operator|+
+name|shuffleKeyValidForRecovery
 operator|+
 literal|" ApplicationAttemptID: "
 operator|+
@@ -3372,6 +3462,16 @@ name|get
 argument_list|(
 name|conf
 argument_list|)
+return|;
+block|}
+DECL|method|getCredentials ()
+specifier|protected
+name|Credentials
+name|getCredentials
+parameter_list|()
+block|{
+return|return
+name|fsTokens
 return|;
 block|}
 comment|/**    * clean up staging directories for the job.    * @throws IOException    */
@@ -4522,6 +4622,16 @@ parameter_list|()
 block|{
 return|return
 name|taskAttemptListener
+return|;
+block|}
+DECL|method|isLastAMRetry ()
+specifier|public
+name|Boolean
+name|isLastAMRetry
+parameter_list|()
+block|{
+return|return
+name|isLastAMRetry
 return|;
 block|}
 comment|/**    * By the time life-cycle of this router starts, job-init would have already    * happened.    */
@@ -6365,6 +6475,18 @@ operator|.
 name|APP_SUBMIT_TIME_ENV
 argument_list|)
 decl_stmt|;
+name|String
+name|maxAppAttempts
+init|=
+name|System
+operator|.
+name|getenv
+argument_list|(
+name|ApplicationConstants
+operator|.
+name|MAX_APP_ATTEMPTS_ENV
+argument_list|)
+decl_stmt|;
 name|validateInputParam
 argument_list|(
 name|containerIdStr
@@ -6408,6 +6530,15 @@ argument_list|,
 name|ApplicationConstants
 operator|.
 name|APP_SUBMIT_TIME_ENV
+argument_list|)
+expr_stmt|;
+name|validateInputParam
+argument_list|(
+name|maxAppAttempts
+argument_list|,
+name|ApplicationConstants
+operator|.
+name|MAX_APP_ATTEMPTS_ENV
 argument_list|)
 expr_stmt|;
 name|ContainerId
@@ -6465,6 +6596,13 @@ name|nodeHttpPortString
 argument_list|)
 argument_list|,
 name|appSubmitTime
+argument_list|,
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|maxAppAttempts
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|ShutdownHookManager

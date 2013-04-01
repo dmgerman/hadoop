@@ -114,6 +114,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|Writer
 import|;
 end_import
@@ -1340,13 +1350,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|fsDataOStream
-operator|.
-name|hflush
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|writeApplicationOwner (String user)
 specifier|public
@@ -2456,7 +2459,7 @@ block|}
 block|}
 block|}
 comment|/**      * Keep calling this till you get a {@link EOFException} for getting logs of      * all types for a single container.      *       * @param valueStream      * @param out      * @throws IOException      */
-DECL|method|readAContainerLogsForALogType ( DataInputStream valueStream, DataOutputStream out)
+DECL|method|readAContainerLogsForALogType ( DataInputStream valueStream, PrintStream out)
 specifier|public
 specifier|static
 name|void
@@ -2465,7 +2468,7 @@ parameter_list|(
 name|DataInputStream
 name|valueStream
 parameter_list|,
-name|DataOutputStream
+name|PrintStream
 name|out
 parameter_list|)
 throws|throws
@@ -2509,37 +2512,37 @@ argument_list|)
 decl_stmt|;
 name|out
 operator|.
-name|writeUTF
+name|print
 argument_list|(
-literal|"\nLogType:"
+literal|"LogType: "
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|writeUTF
+name|println
 argument_list|(
 name|fileType
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|writeUTF
+name|print
 argument_list|(
-literal|"\nLogLength:"
+literal|"LogLength: "
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|writeUTF
+name|println
 argument_list|(
 name|fileLengthStr
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
-name|writeUTF
+name|println
 argument_list|(
-literal|"\nLog Contents:\n"
+literal|"Log Contents:"
 argument_list|)
 expr_stmt|;
 name|int
@@ -2650,6 +2653,13 @@ name|toRead
 argument_list|)
 expr_stmt|;
 block|}
+name|out
+operator|.
+name|println
+argument_list|(
+literal|""
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|close ()
 specifier|public

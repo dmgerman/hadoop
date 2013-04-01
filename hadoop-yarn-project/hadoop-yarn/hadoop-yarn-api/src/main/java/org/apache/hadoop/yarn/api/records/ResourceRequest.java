@@ -88,6 +88,36 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 block|{
+comment|/**    * The constant string representing no locality.    * It should be used by all references that want to pass an arbitrary host    * name in.    */
+DECL|field|ANY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ANY
+init|=
+literal|"*"
+decl_stmt|;
+comment|/**    * Check whether the given<em>host/rack</em> string represents an arbitrary    * host name.    *    * @param hostName<em>host/rack</em> on which the allocation is desired    * @return whether the given<em>host/rack</em> string represents an arbitrary    * host name    */
+DECL|method|isAnyLocation (String hostName)
+specifier|public
+specifier|static
+name|boolean
+name|isAnyLocation
+parameter_list|(
+name|String
+name|hostName
+parameter_list|)
+block|{
+return|return
+name|ANY
+operator|.
+name|equals
+argument_list|(
+name|hostName
+argument_list|)
+return|;
+block|}
 comment|/**    * Get the<code>Priority</code> of the request.    * @return<code>Priority</code> of the request    */
 annotation|@
 name|Public
@@ -208,12 +238,12 @@ specifier|final
 name|int
 name|prime
 init|=
-literal|31
+literal|2153
 decl_stmt|;
 name|int
 name|result
 init|=
-literal|1
+literal|2459
 decl_stmt|;
 name|Resource
 name|capability

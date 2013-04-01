@@ -657,6 +657,11 @@ block|}
 comment|/* Verify some expected values based on the history file */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testCompletedJob ()
 specifier|public
 name|void
@@ -870,6 +875,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testCompletedTask ()
 specifier|public
 name|void
@@ -1140,6 +1150,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testCompletedTaskAttempt ()
 specifier|public
 name|void

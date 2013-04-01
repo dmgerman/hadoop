@@ -26,7 +26,29 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentLinkedQueue
 import|;
 end_import
 
@@ -200,9 +222,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -223,6 +245,26 @@ operator|.
 name|rmnode
 operator|.
 name|RMNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmnode
+operator|.
+name|UpdatedContainerInfo
 import|;
 end_import
 
@@ -966,14 +1008,45 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getLastHeartBeatResponse ()
+DECL|method|updateNodeHeartbeatResponseForCleanup (NodeHeartbeatResponse response)
 specifier|public
-name|HeartbeatResponse
-name|getLastHeartBeatResponse
+name|void
+name|updateNodeHeartbeatResponseForCleanup
+parameter_list|(
+name|NodeHeartbeatResponse
+name|response
+parameter_list|)
+block|{     }
+annotation|@
+name|Override
+DECL|method|getLastNodeHeartBeatResponse ()
+specifier|public
+name|NodeHeartbeatResponse
+name|getLastNodeHeartBeatResponse
 parameter_list|()
 block|{
 return|return
 literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|pullContainerUpdates ()
+specifier|public
+name|List
+argument_list|<
+name|UpdatedContainerInfo
+argument_list|>
+name|pullContainerUpdates
+parameter_list|()
+block|{
+return|return
+operator|new
+name|ArrayList
+argument_list|<
+name|UpdatedContainerInfo
+argument_list|>
+argument_list|()
 return|;
 block|}
 block|}

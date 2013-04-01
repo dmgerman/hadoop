@@ -857,9 +857,6 @@ argument_list|(
 name|request
 argument_list|)
 operator|.
-name|getHeartbeatResponse
-argument_list|()
-operator|.
 name|getResponseId
 argument_list|()
 expr_stmt|;
@@ -1183,9 +1180,6 @@ name|registerNodeManager
 argument_list|(
 name|request3
 argument_list|)
-operator|.
-name|getRegistrationResponse
-argument_list|()
 expr_stmt|;
 comment|/* test to see if hostanme 3 does not expire */
 name|stopT

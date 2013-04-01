@@ -522,6 +522,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mortbay
 operator|.
 name|io
@@ -1782,6 +1796,25 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// result of setting the SO_REUSEADDR flag is different on Windows
+comment|// http://msdn.microsoft.com/en-us/library/ms740621(v=vs.85).aspx
+comment|// without this 2 NN's can start on the same machine and listen on
+comment|// the same port with indeterminate routing of incoming requests to them
+name|ret
+operator|.
+name|setReuseAddress
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 name|ret
 operator|.
 name|setHeaderBufferSize

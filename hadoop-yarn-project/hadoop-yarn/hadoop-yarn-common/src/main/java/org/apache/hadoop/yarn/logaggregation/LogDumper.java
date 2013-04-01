@@ -34,16 +34,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|EOFException
 import|;
 end_import
@@ -65,6 +55,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|PrintStream
 import|;
 end_import
 
@@ -149,6 +149,20 @@ operator|.
 name|cli
 operator|.
 name|ParseException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringUtils
 import|;
 end_import
 
@@ -459,7 +473,7 @@ name|APPLICATION_ID_OPTION
 argument_list|,
 literal|true
 argument_list|,
-literal|"ApplicationId"
+literal|"ApplicationId (required)"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -470,7 +484,7 @@ name|CONTAINER_ID_OPTION
 argument_list|,
 literal|true
 argument_list|,
-literal|"ContainerId"
+literal|"ContainerId (must be specified if node address is specified)"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -481,7 +495,9 @@ name|NODE_ADDRESS_OPTION
 argument_list|,
 literal|true
 argument_list|,
-literal|"NodeAddress"
+literal|"NodeAddress in the format "
+operator|+
+literal|"nodename:port (must be specified if container id is specified)"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -492,7 +508,7 @@ name|APP_OWNER_OPTION
 argument_list|,
 literal|true
 argument_list|,
-literal|"AppOwner"
+literal|"AppOwner (assumed to be current user if not specified)"
 argument_list|)
 expr_stmt|;
 if|if
@@ -706,17 +722,6 @@ argument_list|,
 name|appIdStr
 argument_list|)
 decl_stmt|;
-name|DataOutputStream
-name|out
-init|=
-operator|new
-name|DataOutputStream
-argument_list|(
-name|System
-operator|.
-name|out
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|appOwner
@@ -764,6 +769,8 @@ name|appId
 argument_list|,
 name|appOwner
 argument_list|,
+name|System
+operator|.
 name|out
 argument_list|)
 expr_stmt|;
@@ -894,6 +901,8 @@ name|containerIdStr
 argument_list|,
 name|reader
 argument_list|,
+name|System
+operator|.
 name|out
 argument_list|)
 expr_stmt|;
@@ -1037,17 +1046,6 @@ operator|-
 literal|1
 return|;
 block|}
-name|DataOutputStream
-name|out
-init|=
-operator|new
-name|DataOutputStream
-argument_list|(
-name|System
-operator|.
-name|out
-argument_list|)
-decl_stmt|;
 return|return
 name|dumpAContainerLogs
 argument_list|(
@@ -1055,11 +1053,13 @@ name|containerId
 argument_list|,
 name|reader
 argument_list|,
+name|System
+operator|.
 name|out
 argument_list|)
 return|;
 block|}
-DECL|method|dumpAContainerLogs (String containerIdStr, AggregatedLogFormat.LogReader reader, DataOutputStream out)
+DECL|method|dumpAContainerLogs (String containerIdStr, AggregatedLogFormat.LogReader reader, PrintStream out)
 specifier|private
 name|int
 name|dumpAContainerLogs
@@ -1072,7 +1072,7 @@ operator|.
 name|LogReader
 name|reader
 parameter_list|,
-name|DataOutputStream
+name|PrintStream
 name|out
 parameter_list|)
 throws|throws
@@ -1187,7 +1187,7 @@ return|return
 literal|0
 return|;
 block|}
-DECL|method|dumpAllContainersLogs (ApplicationId appId, String appOwner, DataOutputStream out)
+DECL|method|dumpAllContainersLogs (ApplicationId appId, String appOwner, PrintStream out)
 specifier|private
 name|int
 name|dumpAllContainersLogs
@@ -1198,7 +1198,7 @@ parameter_list|,
 name|String
 name|appOwner
 parameter_list|,
-name|DataOutputStream
+name|PrintStream
 name|out
 parameter_list|)
 throws|throws
@@ -1385,6 +1385,47 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|String
+name|containerString
+init|=
+literal|"\n\nContainer: "
+operator|+
+name|key
+operator|+
+literal|" on "
+operator|+
+name|thisNodeFile
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+decl_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|containerString
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|StringUtils
+operator|.
+name|repeat
+argument_list|(
+literal|"="
+argument_list|,
+name|containerString
+operator|.
+name|length
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 while|while
 condition|(
 literal|true

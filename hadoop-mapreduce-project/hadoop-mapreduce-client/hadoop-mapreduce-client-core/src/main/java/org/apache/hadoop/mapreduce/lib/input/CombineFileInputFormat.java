@@ -392,6 +392,20 @@ name|NetworkTopology
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstract {@link InputFormat} that returns {@link CombineFileSplit}'s in   * {@link InputFormat#getSplits(JobContext)} method.   *   * Splits are constructed from the files under the input paths.   * A split cannot have files from different pools.  * Each split returned may contain blocks from different files.  * If a maxSplitSize is specified, then blocks on the same node are  * combined to form a single split. Blocks that are left over are  * then combined with other blocks in the same rack.   * If maxSplitSize is not specified, then blocks from the same rack  * are combined in a single split; no attempt is made to create  * node-local splits.  * If the maxSplitSize is equal to the block size, then this class  * is similar to the default splitting behavior in Hadoop: each  * block is a locally processed split.  * Subclasses implement   * {@link InputFormat#createRecordReader(InputSplit, TaskAttemptContext)}  * to construct<code>RecordReader</code>'s for   *<code>CombineFileSplit</code>'s.  *   * @see CombineFileSplit  */
 end_comment
@@ -1349,6 +1363,82 @@ name|getLength
 argument_list|()
 expr_stmt|;
 block|}
+name|createSplits
+argument_list|(
+name|nodeToBlocks
+argument_list|,
+name|blockToNodes
+argument_list|,
+name|rackToBlocks
+argument_list|,
+name|totLength
+argument_list|,
+name|maxSize
+argument_list|,
+name|minSizeNode
+argument_list|,
+name|minSizeRack
+argument_list|,
+name|splits
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createSplits (HashMap<String, List<OneBlockInfo>> nodeToBlocks, HashMap<OneBlockInfo, String[]> blockToNodes, HashMap<String, List<OneBlockInfo>> rackToBlocks, long totLength, long maxSize, long minSizeNode, long minSizeRack, List<InputSplit> splits )
+name|void
+name|createSplits
+parameter_list|(
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|OneBlockInfo
+argument_list|>
+argument_list|>
+name|nodeToBlocks
+parameter_list|,
+name|HashMap
+argument_list|<
+name|OneBlockInfo
+argument_list|,
+name|String
+index|[]
+argument_list|>
+name|blockToNodes
+parameter_list|,
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|OneBlockInfo
+argument_list|>
+argument_list|>
+name|rackToBlocks
+parameter_list|,
+name|long
+name|totLength
+parameter_list|,
+name|long
+name|maxSize
+parameter_list|,
+name|long
+name|minSizeNode
+parameter_list|,
+name|long
+name|minSizeRack
+parameter_list|,
+name|List
+argument_list|<
+name|InputSplit
+argument_list|>
+name|splits
+parameter_list|)
+block|{
 name|ArrayList
 argument_list|<
 name|OneBlockInfo
@@ -1380,8 +1470,71 @@ name|curSplitSize
 init|=
 literal|0
 decl_stmt|;
-comment|// process all nodes and create splits that are local
-comment|// to a node.
+name|int
+name|numNodes
+init|=
+name|nodeToBlocks
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+name|long
+name|totalLength
+init|=
+name|totLength
+decl_stmt|;
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+comment|// it is allowed for maxSize to be 0. Disable smoothing load for such cases
+name|int
+name|avgSplitsPerNode
+init|=
+name|maxSize
+operator|>
+literal|0
+operator|&&
+name|numNodes
+operator|>
+literal|0
+condition|?
+operator|(
+call|(
+name|int
+call|)
+argument_list|(
+name|totalLength
+operator|/
+name|maxSize
+argument_list|)
+operator|)
+operator|/
+name|numNodes
+else|:
+name|Integer
+operator|.
+name|MAX_VALUE
+decl_stmt|;
+name|int
+name|maxSplitsByNodeOnly
+init|=
+operator|(
+name|avgSplitsPerNode
+operator|>
+literal|0
+operator|)
+condition|?
+name|avgSplitsPerNode
+else|:
+literal|1
+decl_stmt|;
+name|numNodes
+operator|=
+literal|0
+expr_stmt|;
+comment|// process all nodes and create splits that are local to a node.
 for|for
 control|(
 name|Iterator
@@ -1457,6 +1610,11 @@ decl_stmt|;
 comment|// for each block, copy it into validBlocks. Delete it from
 comment|// blockToNodes so that the same block does not appear in
 comment|// two different splits.
+name|int
+name|splitsInNode
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|OneBlockInfo
@@ -1518,6 +1676,10 @@ argument_list|,
 name|validBlocks
 argument_list|)
 expr_stmt|;
+name|totalLength
+operator|-=
+name|curSplitSize
+expr_stmt|;
 name|curSplitSize
 operator|=
 literal|0
@@ -1527,6 +1689,26 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+name|splitsInNode
+operator|++
+expr_stmt|;
+if|if
+condition|(
+name|splitsInNode
+operator|==
+name|maxSplitsByNodeOnly
+condition|)
+block|{
+comment|// stop grouping on a node so as not to create
+comment|// disproportionately more splits on a node because it happens
+comment|// to have many blocks
+comment|// consider only these nodes in next round of grouping because
+comment|// they have leftover blocks that may need to be grouped
+name|numNodes
+operator|++
+expr_stmt|;
+break|break;
+block|}
 block|}
 block|}
 block|}
@@ -1544,8 +1726,16 @@ operator|&&
 name|curSplitSize
 operator|>=
 name|minSizeNode
+operator|&&
+name|splitsInNode
+operator|==
+literal|0
 condition|)
 block|{
+comment|// haven't created any split on this machine. so its ok to add a
+comment|// smaller
+comment|// one for parallelism. Otherwise group it in the rack for balanced
+comment|// size
 comment|// create an input split and add it to the splits array
 name|addCreatedSplit
 argument_list|(
@@ -1555,6 +1745,10 @@ name|nodes
 argument_list|,
 name|validBlocks
 argument_list|)
+expr_stmt|;
+name|totalLength
+operator|-=
+name|curSplitSize
 expr_stmt|;
 block|}
 else|else
@@ -1594,6 +1788,23 @@ name|curSplitSize
 operator|=
 literal|0
 expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+operator|(
+name|numNodes
+operator|>
+literal|0
+operator|&&
+name|totalLength
+operator|>
+literal|0
+operator|)
+condition|)
+block|{
+break|break;
+block|}
 block|}
 comment|// if blocks in a rack are below the specified minimum size, then keep them
 comment|// in 'overflow'. After the processing of all racks is complete, these
@@ -2207,8 +2418,9 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * information about one file from the File System    */
+annotation|@
+name|VisibleForTesting
 DECL|class|OneFileInfo
-specifier|private
 specifier|static
 class|class
 name|OneFileInfo
@@ -2626,6 +2838,75 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
+name|populateBlockInfo
+argument_list|(
+name|blocks
+argument_list|,
+name|rackToBlocks
+argument_list|,
+name|blockToNodes
+argument_list|,
+name|nodeToBlocks
+argument_list|,
+name|rackToNodes
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|populateBlockInfo (OneBlockInfo[] blocks, HashMap<String, List<OneBlockInfo>> rackToBlocks, HashMap<OneBlockInfo, String[]> blockToNodes, HashMap<String, List<OneBlockInfo>> nodeToBlocks, HashMap<String, Set<String>> rackToNodes)
+specifier|static
+name|void
+name|populateBlockInfo
+parameter_list|(
+name|OneBlockInfo
+index|[]
+name|blocks
+parameter_list|,
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|OneBlockInfo
+argument_list|>
+argument_list|>
+name|rackToBlocks
+parameter_list|,
+name|HashMap
+argument_list|<
+name|OneBlockInfo
+argument_list|,
+name|String
+index|[]
+argument_list|>
+name|blockToNodes
+parameter_list|,
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|List
+argument_list|<
+name|OneBlockInfo
+argument_list|>
+argument_list|>
+name|nodeToBlocks
+parameter_list|,
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+argument_list|>
+name|rackToNodes
+parameter_list|)
+block|{
 for|for
 control|(
 name|OneBlockInfo
@@ -2873,7 +3154,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-block|}
 DECL|method|getLength ()
 name|long
 name|getLength
@@ -2895,8 +3175,9 @@ return|;
 block|}
 block|}
 comment|/**    * information about one block from the File System    */
+annotation|@
+name|VisibleForTesting
 DECL|class|OneBlockInfo
-specifier|private
 specifier|static
 class|class
 name|OneBlockInfo

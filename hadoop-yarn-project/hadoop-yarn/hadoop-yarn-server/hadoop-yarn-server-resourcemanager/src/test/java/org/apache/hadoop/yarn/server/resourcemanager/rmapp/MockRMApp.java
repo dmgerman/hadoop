@@ -345,6 +345,12 @@ DECL|field|attempt
 name|RMAppAttempt
 name|attempt
 decl_stmt|;
+DECL|field|maxAppAttempts
+name|int
+name|maxAppAttempts
+init|=
+literal|1
+decl_stmt|;
 DECL|method|MockRMApp (int newid, long time, RMAppState newState)
 specifier|public
 name|MockRMApp
@@ -849,6 +855,34 @@ name|StringBuilder
 argument_list|(
 name|diag
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getMaxAppAttempts ()
+specifier|public
+name|int
+name|getMaxAppAttempts
+parameter_list|()
+block|{
+return|return
+name|maxAppAttempts
+return|;
+block|}
+DECL|method|setNumMaxRetries (int maxAppAttempts)
+specifier|public
+name|void
+name|setNumMaxRetries
+parameter_list|(
+name|int
+name|maxAppAttempts
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxAppAttempts
+operator|=
+name|maxAppAttempts
 expr_stmt|;
 block|}
 annotation|@

@@ -1117,6 +1117,11 @@ specifier|protected
 name|SecretKey
 name|tokenSecret
 decl_stmt|;
+DECL|field|shuffleSecret
+specifier|protected
+name|SecretKey
+name|shuffleSecret
+decl_stmt|;
 DECL|field|gcUpdater
 specifier|protected
 name|GcTimeUpdater
@@ -1416,6 +1421,36 @@ return|return
 name|this
 operator|.
 name|tokenSecret
+return|;
+block|}
+comment|/**    * Set the secret key used to authenticate the shuffle    * @param shuffleSecret the secret    */
+DECL|method|setShuffleSecret (SecretKey shuffleSecret)
+specifier|public
+name|void
+name|setShuffleSecret
+parameter_list|(
+name|SecretKey
+name|shuffleSecret
+parameter_list|)
+block|{
+name|this
+operator|.
+name|shuffleSecret
+operator|=
+name|shuffleSecret
+expr_stmt|;
+block|}
+comment|/**    * Get the secret key used to authenticate the shuffle    * @return the shuffle secret    */
+DECL|method|getShuffleSecret ()
+specifier|public
+name|SecretKey
+name|getShuffleSecret
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|shuffleSecret
 return|;
 block|}
 comment|/**    * Get the index of this task within the job.    * @return the integer part of the task id    */

@@ -292,6 +292,11 @@ name|job
 decl_stmt|;
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSymLink ()
 specifier|public
 name|void

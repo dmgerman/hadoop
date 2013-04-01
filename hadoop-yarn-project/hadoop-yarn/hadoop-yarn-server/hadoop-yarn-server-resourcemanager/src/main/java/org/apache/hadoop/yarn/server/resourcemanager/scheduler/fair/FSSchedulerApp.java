@@ -362,7 +362,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
+name|RMAuditLogger
+operator|.
+name|AuditConstants
 import|;
 end_import
 
@@ -380,9 +382,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMAuditLogger
-operator|.
-name|AuditConstants
+name|RMContext
 import|;
 end_import
 
@@ -545,26 +545,6 @@ operator|.
 name|rmcontainer
 operator|.
 name|RMContainerReservedEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmnode
-operator|.
-name|RMNode
 import|;
 end_import
 
@@ -1135,7 +1115,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|RMNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)

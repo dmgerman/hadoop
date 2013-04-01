@@ -684,6 +684,8 @@ argument_list|,
 name|sourcePathRoot
 argument_list|,
 name|localFile
+argument_list|,
+name|options
 argument_list|)
 expr_stmt|;
 if|if
@@ -726,6 +728,8 @@ argument_list|,
 name|sourcePathRoot
 argument_list|,
 name|localFile
+argument_list|,
+name|options
 argument_list|)
 expr_stmt|;
 block|}
@@ -742,6 +746,8 @@ argument_list|,
 name|sourcePathRoot
 argument_list|,
 name|localFile
+argument_list|,
+name|options
 argument_list|)
 expr_stmt|;
 block|}
@@ -910,6 +916,23 @@ name|getParent
 argument_list|()
 return|;
 block|}
+block|}
+comment|/**    * Provide an option to skip copy of a path, Allows for exclusion    * of files such as {@link org.apache.hadoop.mapreduce.lib.output.FileOutputCommitter#SUCCEEDED_FILE_NAME}    * @param path - Path being considered for copy while building the file listing    * @param options - Input options passed during DistCp invocation    * @return - True if the path should be considered for copy, false otherwise    */
+DECL|method|shouldCopy (Path path, DistCpOptions options)
+specifier|protected
+name|boolean
+name|shouldCopy
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|DistCpOptions
+name|options
+parameter_list|)
+block|{
+return|return
+literal|true
+return|;
 block|}
 comment|/** {@inheritDoc} */
 annotation|@
@@ -1136,7 +1159,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|traverseNonEmptyDirectory (SequenceFile.Writer fileListWriter, FileStatus sourceStatus, Path sourcePathRoot, boolean localFile)
+DECL|method|traverseNonEmptyDirectory (SequenceFile.Writer fileListWriter, FileStatus sourceStatus, Path sourcePathRoot, boolean localFile, DistCpOptions options)
 specifier|private
 name|void
 name|traverseNonEmptyDirectory
@@ -1154,6 +1177,9 @@ name|sourcePathRoot
 parameter_list|,
 name|boolean
 name|localFile
+parameter_list|,
+name|DistCpOptions
+name|options
 parameter_list|)
 throws|throws
 name|IOException
@@ -1244,6 +1270,8 @@ argument_list|,
 name|sourcePathRoot
 argument_list|,
 name|localFile
+argument_list|,
+name|options
 argument_list|)
 expr_stmt|;
 if|if
@@ -1286,7 +1314,7 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|writeToFileListing (SequenceFile.Writer fileListWriter, FileStatus fileStatus, Path sourcePathRoot, boolean localFile)
+DECL|method|writeToFileListing (SequenceFile.Writer fileListWriter, FileStatus fileStatus, Path sourcePathRoot, boolean localFile, DistCpOptions options)
 specifier|private
 name|void
 name|writeToFileListing
@@ -1304,6 +1332,9 @@ name|sourcePathRoot
 parameter_list|,
 name|boolean
 name|localFile
+parameter_list|,
+name|DistCpOptions
+name|options
 parameter_list|)
 throws|throws
 name|IOException
@@ -1379,6 +1410,22 @@ argument_list|(
 name|fileStatus
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+operator|!
+name|shouldCopy
+argument_list|(
+name|fileStatus
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|options
+argument_list|)
+condition|)
+block|{
+return|return;
 block|}
 name|fileListWriter
 operator|.

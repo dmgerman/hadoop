@@ -427,6 +427,15 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+DECL|method|reloadCachedMappings ()
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|()
+block|{
+comment|// reloadCachedMappings does nothing for StaticMapping; there is
+comment|// nowhere to reload from since all data is in memory.
+block|}
 block|}
 end_class
 

@@ -1482,7 +1482,7 @@ expr_stmt|;
 block|}
 comment|/**    * Create input listing by invoking an appropriate copy listing    * implementation. Also add delegation tokens for each path    * to job's credential store    *    * @param job - Handle to job    * @return Returns the path where the copy listing is created    * @throws IOException - If any    */
 DECL|method|createInputFileListing (Job job)
-specifier|private
+specifier|protected
 name|Path
 name|createInputFileListing
 parameter_list|(
@@ -1533,7 +1533,7 @@ return|;
 block|}
 comment|/**    * Get default name of the copy listing file. Use the meta folder    * to create the copy listing file    *    * @return - Path where the copy listing file has to be saved    * @throws IOException - Exception if any    */
 DECL|method|getFileListingPath ()
-specifier|private
+specifier|protected
 name|Path
 name|getFileListingPath
 parameter_list|()

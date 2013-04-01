@@ -94,6 +94,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -117,6 +127,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
 import|;
 end_import
 
@@ -165,13 +189,28 @@ specifier|final
 name|String
 name|AVRO_FILENAME
 init|=
+operator|new
+name|Path
+argument_list|(
 name|TEST_ROOT_DIR
-operator|+
-literal|"/weather.avro"
+argument_list|,
+literal|"weather.avro"
+argument_list|)
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
 decl_stmt|;
 comment|/**    * Tests whether binary Avro data files are displayed correctly.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|30000
+argument_list|)
 DECL|method|testDisplayForAvroFiles ()
 specifier|public
 name|void
@@ -196,11 +235,11 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|File
+name|URI
 name|localPath
 init|=
 operator|new
-name|File
+name|URI
 argument_list|(
 name|AVRO_FILENAME
 argument_list|)

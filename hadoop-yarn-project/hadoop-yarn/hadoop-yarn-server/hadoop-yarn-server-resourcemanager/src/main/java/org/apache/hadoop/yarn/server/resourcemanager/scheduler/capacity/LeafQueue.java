@@ -640,26 +640,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmnode
-operator|.
-name|RMNode
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|scheduler
 operator|.
 name|ActiveUsersManager
@@ -3083,6 +3063,11 @@ operator|.
 name|acls
 argument_list|)
 expr_stmt|;
+comment|// queue metrics are updated, more resource may be available
+comment|// activate the pending applications if possible
+name|activateApplications
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -4026,7 +4011,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|RMNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
@@ -5422,7 +5407,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|RMNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
@@ -5532,7 +5517,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|RMNode
+name|ResourceRequest
 operator|.
 name|ANY
 argument_list|)
@@ -6889,6 +6874,11 @@ name|clusterResource
 argument_list|,
 name|minimumAllocation
 argument_list|)
+expr_stmt|;
+comment|// queue metrics are updated, more resource may be available
+comment|// activate the pending applications if possible
+name|activateApplications
+argument_list|()
 expr_stmt|;
 comment|// Update application properties
 for|for

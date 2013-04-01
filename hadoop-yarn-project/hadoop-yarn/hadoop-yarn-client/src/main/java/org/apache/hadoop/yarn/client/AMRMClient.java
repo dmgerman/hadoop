@@ -202,15 +202,6 @@ name|AMRMClient
 extends|extends
 name|Service
 block|{
-comment|/**    * Value used to define no locality    */
-DECL|field|ANY
-specifier|static
-specifier|final
-name|String
-name|ANY
-init|=
-literal|"*"
-decl_stmt|;
 comment|/**    * Object to represent container request for resources.    * Resources may be localized to nodes and racks.    * Resources may be assigned priorities.    * Can ask for multiple containers of a given type.    */
 DECL|class|ContainerRequest
 specifier|public

@@ -118,9 +118,9 @@ name|server
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 import|;
 end_import
 
@@ -150,7 +150,7 @@ decl_stmt|;
 DECL|field|latestResponse
 specifier|private
 specifier|final
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|latestResponse
 decl_stmt|;
 DECL|field|keepAliveAppIds
@@ -162,7 +162,7 @@ name|ApplicationId
 argument_list|>
 name|keepAliveAppIds
 decl_stmt|;
-DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, List<ContainerStatus> collection, List<ApplicationId> keepAliveAppIds, HeartbeatResponse latestResponse)
+DECL|method|RMNodeStatusEvent (NodeId nodeId, NodeHealthStatus nodeHealthStatus, List<ContainerStatus> collection, List<ApplicationId> keepAliveAppIds, NodeHeartbeatResponse latestResponse)
 specifier|public
 name|RMNodeStatusEvent
 parameter_list|(
@@ -184,7 +184,7 @@ name|ApplicationId
 argument_list|>
 name|keepAliveAppIds
 parameter_list|,
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|latestResponse
 parameter_list|)
 block|{
@@ -251,7 +251,7 @@ return|;
 block|}
 DECL|method|getLatestResponse ()
 specifier|public
-name|HeartbeatResponse
+name|NodeHeartbeatResponse
 name|getLatestResponse
 parameter_list|()
 block|{

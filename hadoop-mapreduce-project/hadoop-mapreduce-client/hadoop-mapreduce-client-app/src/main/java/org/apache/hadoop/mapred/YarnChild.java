@@ -1730,7 +1730,7 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-comment|// set the jobTokenFile into task
+comment|// set the jobToken and shuffle secrets into task
 name|task
 operator|.
 name|setJobTokenSecret
@@ -1743,6 +1743,53 @@ name|jt
 operator|.
 name|getPassword
 argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|byte
+index|[]
+name|shuffleSecret
+init|=
+name|TokenCache
+operator|.
+name|getShuffleSecretKey
+argument_list|(
+name|credentials
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|shuffleSecret
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Shuffle secret missing from task credentials."
+operator|+
+literal|" Using job token secret as shuffle secret."
+argument_list|)
+expr_stmt|;
+name|shuffleSecret
+operator|=
+name|jt
+operator|.
+name|getPassword
+argument_list|()
+expr_stmt|;
+block|}
+name|task
+operator|.
+name|setShuffleSecret
+argument_list|(
+name|JobTokenSecretManager
+operator|.
+name|createSecretKey
+argument_list|(
+name|shuffleSecret
 argument_list|)
 argument_list|)
 expr_stmt|;

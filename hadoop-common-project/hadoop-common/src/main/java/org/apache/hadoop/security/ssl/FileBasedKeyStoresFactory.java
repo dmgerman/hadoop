@@ -647,7 +647,9 @@ name|KeyManagerFactory
 operator|.
 name|getInstance
 argument_list|(
-literal|"SunX509"
+name|SSLFactory
+operator|.
+name|SSLCERTIFICATE
 argument_list|)
 decl_stmt|;
 name|keyMgrFactory

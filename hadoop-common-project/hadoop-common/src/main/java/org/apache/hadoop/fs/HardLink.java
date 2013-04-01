@@ -76,8 +76,22 @@ name|Arrays
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_comment
-comment|/**  * Class for creating hardlinks.  * Supports Unix/Linux, WinXP/2003/Vista via Cygwin, and Mac OS X.  *   * The HardLink class was formerly a static inner class of FSUtil,  * and the methods provided were blatantly non-thread-safe.  * To enable volume-parallel Update snapshots, we now provide static   * threadsafe methods that allocate new buffer string arrays  * upon each call.  We also provide an API to hardlink all files in a  * directory with a single command, which is up to 128 times more   * efficient - and minimizes the impact of the extra buffer creations.  */
+comment|/**  * Class for creating hardlinks.  * Supports Unix/Linux, Windows via winutils , and Mac OS X.  *   * The HardLink class was formerly a static inner class of FSUtil,  * and the methods provided were blatantly non-thread-safe.  * To enable volume-parallel Update snapshots, we now provide static   * threadsafe methods that allocate new buffer string arrays  * upon each call.  We also provide an API to hardlink all files in a  * directory with a single command, which is up to 128 times more   * efficient - and minimizes the impact of the extra buffer creations.  */
 end_comment
 
 begin_class
@@ -94,8 +108,8 @@ block|{
 DECL|enumConstant|OS_TYPE_UNIX
 name|OS_TYPE_UNIX
 block|,
-DECL|enumConstant|OS_TYPE_WINXP
-name|OS_TYPE_WINXP
+DECL|enumConstant|OS_TYPE_WIN
+name|OS_TYPE_WIN
 block|,
 DECL|enumConstant|OS_TYPE_SOLARIS
 name|OS_TYPE_SOLARIS
@@ -140,7 +154,7 @@ name|osType
 operator|==
 name|OSType
 operator|.
-name|OS_TYPE_WINXP
+name|OS_TYPE_WIN
 condition|)
 block|{
 comment|// Windows
@@ -260,62 +274,15 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|osName
+name|Shell
 operator|.
-name|contains
-argument_list|(
-literal|"Windows"
-argument_list|)
-operator|&&
-operator|(
-name|osName
-operator|.
-name|contains
-argument_list|(
-literal|"XP"
-argument_list|)
-operator|||
-name|osName
-operator|.
-name|contains
-argument_list|(
-literal|"2003"
-argument_list|)
-operator|||
-name|osName
-operator|.
-name|contains
-argument_list|(
-literal|"Vista"
-argument_list|)
-operator|||
-name|osName
-operator|.
-name|contains
-argument_list|(
-literal|"Windows_7"
-argument_list|)
-operator|||
-name|osName
-operator|.
-name|contains
-argument_list|(
-literal|"Windows 7"
-argument_list|)
-operator|||
-name|osName
-operator|.
-name|contains
-argument_list|(
-literal|"Windows7"
-argument_list|)
-operator|)
+name|WINDOWS
 condition|)
 block|{
 return|return
 name|OSType
 operator|.
-name|OS_TYPE_WINXP
+name|OS_TYPE_WIN
 return|;
 block|}
 elseif|else
@@ -916,7 +883,7 @@ name|maxAllowedCmdArgLength
 return|;
 block|}
 block|}
-comment|/**    * Implementation of HardLinkCommandGetter class for Windows    *     * Note that the linkCount shell command for Windows is actually    * a Cygwin shell command, and depends on ${cygwin}/bin    * being in the Windows PATH environment variable, so    * stat.exe can be found.    */
+comment|/**    * Implementation of HardLinkCommandGetter class for Windows    */
 DECL|class|HardLinkCGWin
 specifier|static
 class|class
@@ -934,7 +901,9 @@ index|[]
 name|hardLinkCommand
 init|=
 block|{
-literal|"fsutil"
+name|Shell
+operator|.
+name|WINUTILS
 block|,
 literal|"hardlink"
 block|,
@@ -985,7 +954,9 @@ literal|")"
 block|,
 literal|"do"
 block|,
-literal|"fsutil"
+name|Shell
+operator|.
+name|WINUTILS
 block|,
 literal|"hardlink"
 block|,
@@ -1005,9 +976,13 @@ index|[]
 name|getLinkCountCommand
 init|=
 block|{
-literal|"stat"
+name|Shell
+operator|.
+name|WINUTILS
 block|,
-literal|"-c%h"
+literal|"hardlink"
+block|,
+literal|"stat"
 block|,
 literal|null
 block|}
@@ -1275,12 +1250,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-comment|//The linkCount command is actually a Cygwin shell command,
-comment|//not a Windows shell command, so we should use "makeShellPath()"
-comment|//instead of "getCanonicalPath()".  However, that causes another
-comment|//shell exec to "cygpath.exe", and "stat.exe" actually can handle
-comment|//DOS-style paths (it just prints a couple hundred bytes of warning
-comment|//to stderr), so we use the more efficient "getCanonicalPath()".
 name|buf
 index|[
 name|getLinkCountCommand
@@ -1380,7 +1349,11 @@ operator|+=
 operator|(
 literal|"cmd.exe /q /c for %f in ( ) do "
 operator|+
-literal|"fsutil hardlink create \\%f %f 1>NUL "
+name|Shell
+operator|.
+name|WINUTILS
+operator|+
+literal|" hardlink create \\%f %f 1>NUL "
 operator|)
 operator|.
 name|length
@@ -2328,14 +2301,6 @@ parameter_list|)
 block|{
 specifier|final
 name|String
-name|winErrMsg
-init|=
-literal|"; Windows errors in getLinkCount are often due "
-operator|+
-literal|"to Cygwin misconfiguration"
-decl_stmt|;
-specifier|final
-name|String
 name|s
 init|=
 literal|"Failed to get link count on file "
@@ -2349,20 +2314,6 @@ operator|+
 literal|"; error="
 operator|+
 name|error
-operator|+
-operator|(
-operator|(
-name|osType
-operator|==
-name|OSType
-operator|.
-name|OS_TYPE_WINXP
-operator|)
-condition|?
-name|winErrMsg
-else|:
-literal|""
-operator|)
 operator|+
 literal|"; exit value="
 operator|+

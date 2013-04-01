@@ -762,7 +762,7 @@ argument_list|()
 expr_stmt|;
 comment|// for the inner class
 block|}
-comment|/*     * Remove relative part - return "absolute":    * If input is relative path ("foo/bar") add wd: ie "/<workingDir>/foo/bar"    * A fully qualified uri ("hdfs://nn:p/foo/bar") or a slash-relative path    * ("/foo/bar") are returned unchanged.    *     * Applications that use FileContext should use #makeQualified() since    * they really want a fully qualified URI.    * Hence this method is not called makeAbsolute() and     * has been deliberately declared private.    */
+comment|/*     * Resolve a relative path passed from the user.    *     * Relative paths are resolved against the current working directory    * (e.g. "foo/bar" becomes "/<workingDir>/foo/bar").    * Fully-qualified URIs (e.g. "hdfs://nn:p/foo/bar") and slash-relative paths    * ("/foo/bar") are returned unchanged.    *     * Additionally, we fix malformed URIs that specify a scheme but not an     * authority (e.g. "hdfs:///foo/bar"). Per RFC 2395, we remove the scheme    * if it matches the default FS, and let the default FS add in the default    * scheme and authority later (see {@link #AbstractFileSystem#checkPath}).    *     * Applications that use FileContext should use #makeQualified() since    * they really want a fully-qualified URI.    * Hence this method is not called makeAbsolute() and     * has been deliberately declared private.    */
 DECL|method|fixRelativePart (Path p)
 specifier|private
 name|Path
@@ -772,6 +772,60 @@ name|Path
 name|p
 parameter_list|)
 block|{
+comment|// Per RFC 2396 5.2, drop schema if there is a scheme but no authority.
+if|if
+condition|(
+name|p
+operator|.
+name|hasSchemeAndNoAuthority
+argument_list|()
+condition|)
+block|{
+name|String
+name|scheme
+init|=
+name|p
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getScheme
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|scheme
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|defaultFS
+operator|.
+name|getUri
+argument_list|()
+operator|.
+name|getScheme
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|p
+operator|=
+operator|new
+name|Path
+argument_list|(
+name|p
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getSchemeSpecificPart
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// Absolute paths are unchanged. Relative paths are resolved against the
+comment|// current working directory.
 if|if
 condition|(
 name|p
@@ -3273,7 +3327,7 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Creates a symbolic link to an existing file. An exception is thrown if     * the symlink exits, the user does not have permission to create symlink,    * or the underlying file system does not support symlinks.    *     * Symlink permissions are ignored, access to a symlink is determined by    * the permissions of the symlink target.    *     * Symlinks in paths leading up to the final path component are resolved     * transparently. If the final path component refers to a symlink some     * functions operate on the symlink itself, these are:    * - delete(f) and deleteOnExit(f) - Deletes the symlink.    * - rename(src, dst) - If src refers to a symlink, the symlink is     *   renamed. If dst refers to a symlink, the symlink is over-written.    * - getLinkTarget(f) - Returns the target of the symlink.     * - getFileLinkStatus(f) - Returns a FileStatus object describing    *   the symlink.    * Some functions, create() and mkdir(), expect the final path component    * does not exist. If they are given a path that refers to a symlink that     * does exist they behave as if the path referred to an existing file or     * directory. All other functions fully resolve, ie follow, the symlink.     * These are: open, setReplication, setOwner, setTimes, setWorkingDirectory,    * setPermission, getFileChecksum, setVerifyChecksum, getFileBlockLocations,    * getFsStatus, getFileStatus, exists, and listStatus.    *     * Symlink targets are stored as given to createSymlink, assuming the     * underlying file system is capable of storing a fully qualified URI.    * Dangling symlinks are permitted. FileContext supports four types of     * symlink targets, and resolves them as follows    *<pre>    * Given a path referring to a symlink of form:    *     *<---X--->     *   fs://host/A/B/link     *<-----Y----->    *     * In this path X is the scheme and authority that identify the file system,    * and Y is the path leading up to the final path component "link". If Y is    * a symlink  itself then let Y' be the target of Y and X' be the scheme and    * authority of Y'. Symlink targets may:    *     * 1. Fully qualified URIs    *     * fs://hostX/A/B/file  Resolved according to the target file system.    *     * 2. Partially qualified URIs (eg scheme but no host)    *     * fs:///A/B/file  Resolved according to the target file sytem. Eg resolving    *                 a symlink to hdfs:///A results in an exception because    *                 HDFS URIs must be fully qualified, while a symlink to     *                 file:///A will not since Hadoop's local file systems     *                 require partially qualified URIs.    *     * 3. Relative paths    *     * path  Resolves to [Y'][path]. Eg if Y resolves to hdfs://host/A and path     *       is "../B/file" then [Y'][path] is hdfs://host/B/file    *     * 4. Absolute paths    *     * path  Resolves to [X'][path]. Eg if Y resolves hdfs://host/A/B and path    *       is "/file" then [X][path] is hdfs://host/file    *</pre>    *     * @param target the target of the symbolic link    * @param link the path to be created that points to target    * @param createParent if true then missing parent dirs are created if     *                     false then parent must exist    *    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>linkcode> already exists    * @throws FileNotFoundException If<code>target</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnsupportedFileSystemException If file system for     *<code>target</code> or<code>link</code> is not supported    * @throws IOException If an I/O error occurred    */
+comment|/**    * Creates a symbolic link to an existing file. An exception is thrown if     * the symlink exits, the user does not have permission to create symlink,    * or the underlying file system does not support symlinks.    *     * Symlink permissions are ignored, access to a symlink is determined by    * the permissions of the symlink target.    *     * Symlinks in paths leading up to the final path component are resolved     * transparently. If the final path component refers to a symlink some     * functions operate on the symlink itself, these are:    * - delete(f) and deleteOnExit(f) - Deletes the symlink.    * - rename(src, dst) - If src refers to a symlink, the symlink is     *   renamed. If dst refers to a symlink, the symlink is over-written.    * - getLinkTarget(f) - Returns the target of the symlink.     * - getFileLinkStatus(f) - Returns a FileStatus object describing    *   the symlink.    * Some functions, create() and mkdir(), expect the final path component    * does not exist. If they are given a path that refers to a symlink that     * does exist they behave as if the path referred to an existing file or     * directory. All other functions fully resolve, ie follow, the symlink.     * These are: open, setReplication, setOwner, setTimes, setWorkingDirectory,    * setPermission, getFileChecksum, setVerifyChecksum, getFileBlockLocations,    * getFsStatus, getFileStatus, exists, and listStatus.    *     * Symlink targets are stored as given to createSymlink, assuming the     * underlying file system is capable of storing a fully qualified URI.    * Dangling symlinks are permitted. FileContext supports four types of     * symlink targets, and resolves them as follows    *<pre>    * Given a path referring to a symlink of form:    *     *<---X--->     *   fs://host/A/B/link     *<-----Y----->    *     * In this path X is the scheme and authority that identify the file system,    * and Y is the path leading up to the final path component "link". If Y is    * a symlink  itself then let Y' be the target of Y and X' be the scheme and    * authority of Y'. Symlink targets may:    *     * 1. Fully qualified URIs    *     * fs://hostX/A/B/file  Resolved according to the target file system.    *     * 2. Partially qualified URIs (eg scheme but no host)    *     * fs:///A/B/file  Resolved according to the target file system. Eg resolving    *                 a symlink to hdfs:///A results in an exception because    *                 HDFS URIs must be fully qualified, while a symlink to     *                 file:///A will not since Hadoop's local file systems     *                 require partially qualified URIs.    *     * 3. Relative paths    *     * path  Resolves to [Y'][path]. Eg if Y resolves to hdfs://host/A and path     *       is "../B/file" then [Y'][path] is hdfs://host/B/file    *     * 4. Absolute paths    *     * path  Resolves to [X'][path]. Eg if Y resolves hdfs://host/A/B and path    *       is "/file" then [X][path] is hdfs://host/file    *</pre>    *     * @param target the target of the symbolic link    * @param link the path to be created that points to target    * @param createParent if true then missing parent dirs are created if     *                     false then parent must exist    *    *    * @throws AccessControlException If access is denied    * @throws FileAlreadyExistsException If file<code>linkcode> already exists    * @throws FileNotFoundException If<code>target</code> does not exist    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnsupportedFileSystemException If file system for     *<code>target</code> or<code>link</code> is not supported    * @throws IOException If an I/O error occurred    */
 DECL|method|createSymlink (final Path target, final Path link, final boolean createParent)
 specifier|public
 name|void

@@ -38,7 +38,27 @@ name|api
 operator|.
 name|records
 operator|.
-name|RegistrationResponse
+name|MasterKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeAction
 import|;
 end_import
 
@@ -48,21 +68,30 @@ specifier|public
 interface|interface
 name|RegisterNodeManagerResponse
 block|{
-DECL|method|getRegistrationResponse ()
-specifier|public
-specifier|abstract
-name|RegistrationResponse
-name|getRegistrationResponse
+DECL|method|getMasterKey ()
+name|MasterKey
+name|getMasterKey
 parameter_list|()
 function_decl|;
-DECL|method|setRegistrationResponse (RegistrationResponse registrationResponse)
-specifier|public
-specifier|abstract
+DECL|method|setMasterKey (MasterKey secretKey)
 name|void
-name|setRegistrationResponse
+name|setMasterKey
 parameter_list|(
-name|RegistrationResponse
-name|registrationResponse
+name|MasterKey
+name|secretKey
+parameter_list|)
+function_decl|;
+DECL|method|getNodeAction ()
+name|NodeAction
+name|getNodeAction
+parameter_list|()
+function_decl|;
+DECL|method|setNodeAction (NodeAction nodeAction)
+name|void
+name|setNodeAction
+parameter_list|(
+name|NodeAction
+name|nodeAction
 parameter_list|)
 function_decl|;
 block|}

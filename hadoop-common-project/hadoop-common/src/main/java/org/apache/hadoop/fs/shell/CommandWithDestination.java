@@ -24,16 +24,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -45,6 +35,26 @@ operator|.
 name|io
 operator|.
 name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URISyntaxException
 import|;
 end_import
 
@@ -308,6 +318,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|String
 name|pathString
 init|=
@@ -335,7 +347,7 @@ operator|new
 name|PathData
 argument_list|(
 operator|new
-name|File
+name|URI
 argument_list|(
 name|pathString
 argument_list|)
@@ -344,6 +356,23 @@ name|getConf
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|URISyntaxException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"unexpected URISyntaxException"
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    *  The last arg is expected to be a remote path, if only one argument is    *  given then the destination will be the remote user's directory     *  @param args is the list of arguments    *  @throws PathIOException if path doesn't exist or matches too many times     */
 DECL|method|getRemoteDestination (LinkedList<String> args)
@@ -1083,8 +1112,15 @@ argument_list|(
 name|verifyChecksum
 argument_list|)
 expr_stmt|;
-name|copyStreamToTarget
-argument_list|(
+name|InputStream
+name|in
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|in
+operator|=
 name|src
 operator|.
 name|fs
@@ -1095,10 +1131,25 @@ name|src
 operator|.
 name|path
 argument_list|)
+expr_stmt|;
+name|copyStreamToTarget
+argument_list|(
+name|in
 argument_list|,
 name|target
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Copies the stream contents to a temporary file.  If the copy is    * successful, the temporary file will be renamed to the real path,    * else the temporary file will be deleted.    * @param in the input stream for the copy    * @param target where to store the contents of the stream    * @throws IOException if copy fails    */
 DECL|method|copyStreamToTarget (InputStream in, PathData target)

@@ -449,6 +449,14 @@ specifier|public
 class|class
 name|RPC
 block|{
+DECL|field|RPC_SERVICE_CLASS_DEFAULT
+specifier|final
+specifier|static
+name|int
+name|RPC_SERVICE_CLASS_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 DECL|enum|RpcKind
 specifier|public
 enum|enum
@@ -495,17 +503,6 @@ operator|.
 name|value
 decl_stmt|;
 comment|// used for array size
-DECL|field|FIRST_INDEX
-specifier|private
-specifier|static
-specifier|final
-name|short
-name|FIRST_INDEX
-init|=
-name|RPC_BUILTIN
-operator|.
-name|value
-decl_stmt|;
 DECL|field|value
 specifier|public
 specifier|final
