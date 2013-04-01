@@ -2314,6 +2314,25 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|toDetailString ()
+specifier|public
+name|String
+name|toDetailString
+parameter_list|()
+block|{
+return|return
+name|super
+operator|.
+name|toDetailString
+argument_list|()
+operator|+
+literal|", snapshotsByNames="
+operator|+
+name|snapshotsByNames
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, Snapshot snapshot)
 specifier|public
 name|void

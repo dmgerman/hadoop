@@ -26,7 +26,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataInputStream
+name|DataInput
 import|;
 end_import
 
@@ -302,6 +302,28 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|SnapshotFSImageFormat
+operator|.
+name|ReferenceMap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|LongWritable
@@ -513,7 +535,7 @@ name|p
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeBlocks (final Block[] blocks, final DataOutputStream out)
+DECL|method|writeBlocks (final Block[] blocks, final DataOutput out)
 specifier|private
 specifier|static
 name|void
@@ -525,7 +547,7 @@ index|[]
 name|blocks
 parameter_list|,
 specifier|final
-name|DataOutputStream
+name|DataOutput
 name|out
 parameter_list|)
 throws|throws
@@ -578,12 +600,12 @@ block|}
 comment|// Helper function that reads in an INodeUnderConstruction
 comment|// from the input stream
 comment|//
-DECL|method|readINodeUnderConstruction ( DataInputStream in)
+DECL|method|readINodeUnderConstruction ( DataInput in)
 specifier|static
 name|INodeFileUnderConstruction
 name|readINodeUnderConstruction
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -900,7 +922,7 @@ expr_stmt|;
 comment|//  do not store locations of last block
 block|}
 comment|/**    * Serialize a {@link INodeFile} node    * @param node The node to write    * @param out The {@link DataOutputStream} where the fields are written    * @param writeBlock Whether to write block information    */
-DECL|method|writeINodeFile (INodeFile file, DataOutputStream out, boolean writeUnderConstruction)
+DECL|method|writeINodeFile (INodeFile file, DataOutput out, boolean writeUnderConstruction)
 specifier|public
 specifier|static
 name|void
@@ -909,7 +931,7 @@ parameter_list|(
 name|INodeFile
 name|file
 parameter_list|,
-name|DataOutputStream
+name|DataOutput
 name|out
 parameter_list|,
 name|boolean
@@ -1265,8 +1287,117 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Serialize a {@link INodeReference} node */
+DECL|method|writeINodeReference (INodeReference ref, DataOutput out, boolean writeUnderConstruction, ReferenceMap referenceMap )
+specifier|private
+specifier|static
+name|void
+name|writeINodeReference
+parameter_list|(
+name|INodeReference
+name|ref
+parameter_list|,
+name|DataOutput
+name|out
+parameter_list|,
+name|boolean
+name|writeUnderConstruction
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|writeLocalName
+argument_list|(
+name|ref
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeShort
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// replication
+name|out
+operator|.
+name|writeLong
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// modification time
+name|out
+operator|.
+name|writeLong
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// access time
+name|out
+operator|.
+name|writeLong
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+comment|// preferred block size
+name|out
+operator|.
+name|writeInt
+argument_list|(
+operator|-
+literal|3
+argument_list|)
+expr_stmt|;
+comment|// # of blocks
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+name|ref
+operator|instanceof
+name|INodeReference
+operator|.
+name|WithName
+argument_list|)
+expr_stmt|;
+specifier|final
+name|INodeReference
+operator|.
+name|WithCount
+name|withCount
+init|=
+operator|(
+name|INodeReference
+operator|.
+name|WithCount
+operator|)
+name|ref
+operator|.
+name|getReferredINode
+argument_list|()
+decl_stmt|;
+name|referenceMap
+operator|.
+name|writeINodeReferenceWithCount
+argument_list|(
+name|withCount
+argument_list|,
+name|out
+argument_list|,
+name|writeUnderConstruction
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Save one inode's attributes to the image.    */
-DECL|method|saveINode2Image (INode node, DataOutputStream out, boolean writeUnderConstruction)
+DECL|method|saveINode2Image (INode node, DataOutput out, boolean writeUnderConstruction, ReferenceMap referenceMap)
 specifier|public
 specifier|static
 name|void
@@ -1275,15 +1406,42 @@ parameter_list|(
 name|INode
 name|node
 parameter_list|,
-name|DataOutputStream
+name|DataOutput
 name|out
 parameter_list|,
 name|boolean
 name|writeUnderConstruction
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|node
+operator|.
+name|isReference
+argument_list|()
+condition|)
+block|{
+name|writeINodeReference
+argument_list|(
+name|node
+operator|.
+name|asReference
+argument_list|()
+argument_list|,
+name|out
+argument_list|,
+name|writeUnderConstruction
+argument_list|,
+name|referenceMap
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
 if|if
 condition|(
 name|node
@@ -1323,7 +1481,14 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|node
+operator|.
+name|isFile
+argument_list|()
+condition|)
 block|{
 name|writeINodeFile
 argument_list|(
@@ -1347,13 +1512,13 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|readString (DataInputStream in)
+DECL|method|readString (DataInput in)
 specifier|public
 specifier|static
 name|String
 name|readString
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1383,12 +1548,12 @@ name|toStringChecked
 argument_list|()
 return|;
 block|}
-DECL|method|readString_EmptyAsNull (DataInputStream in)
+DECL|method|readString_EmptyAsNull (DataInput in)
 specifier|static
 name|String
 name|readString_EmptyAsNull
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1419,7 +1584,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|writeString (String str, DataOutputStream out)
+DECL|method|writeString (String str, DataOutput out)
 specifier|public
 specifier|static
 name|void
@@ -1428,7 +1593,7 @@ parameter_list|(
 name|String
 name|str
 parameter_list|,
-name|DataOutputStream
+name|DataOutput
 name|out
 parameter_list|)
 throws|throws
@@ -1460,12 +1625,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** read the long value */
-DECL|method|readLong (DataInputStream in)
+DECL|method|readLong (DataInput in)
 specifier|static
 name|long
 name|readLong
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1536,12 +1701,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** read short value */
-DECL|method|readShort (DataInputStream in)
+DECL|method|readShort (DataInput in)
 specifier|static
 name|short
 name|readShort
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1617,14 +1782,14 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|readBytes (DataInputStream in)
+DECL|method|readBytes (DataInput in)
 specifier|public
 specifier|static
 name|byte
 index|[]
 name|readBytes
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1693,7 +1858,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|readPathComponents (DataInputStream in)
+DECL|method|readPathComponents (DataInput in)
 specifier|public
 specifier|static
 name|byte
@@ -1701,7 +1866,7 @@ index|[]
 index|[]
 name|readPathComponents
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1746,6 +1911,43 @@ name|Path
 operator|.
 name|SEPARATOR_CHAR
 argument_list|)
+return|;
+block|}
+DECL|method|readLocalName (DataInput in)
+specifier|public
+specifier|static
+name|byte
+index|[]
+name|readLocalName
+parameter_list|(
+name|DataInput
+name|in
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|byte
+index|[]
+name|createdNodeName
+init|=
+operator|new
+name|byte
+index|[
+name|in
+operator|.
+name|readShort
+argument_list|()
+index|]
+decl_stmt|;
+name|in
+operator|.
+name|readFully
+argument_list|(
+name|createdNodeName
+argument_list|)
+expr_stmt|;
+return|return
+name|createdNodeName
 return|;
 block|}
 DECL|method|writeLocalName (INode inode, DataOutput out)
@@ -1908,14 +2110,14 @@ name|b
 expr_stmt|;
 block|}
 block|}
-DECL|method|readCompactBlockArray ( DataInputStream in, int logVersion)
+DECL|method|readCompactBlockArray ( DataInput in, int logVersion)
 specifier|public
 specifier|static
 name|Block
 index|[]
 name|readCompactBlockArray
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|,
 name|int

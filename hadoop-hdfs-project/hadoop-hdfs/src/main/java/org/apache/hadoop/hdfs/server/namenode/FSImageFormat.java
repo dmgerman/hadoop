@@ -42,6 +42,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|DataInput
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|DataInputStream
 import|;
 end_import
@@ -590,6 +600,28 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|SnapshotFSImageFormat
+operator|.
+name|ReferenceMap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|ReadOnlyList
@@ -698,6 +730,28 @@ DECL|field|imgDigest
 specifier|private
 name|MD5Hash
 name|imgDigest
+decl_stmt|;
+DECL|field|snapshotMap
+specifier|private
+name|Map
+argument_list|<
+name|Integer
+argument_list|,
+name|Snapshot
+argument_list|>
+name|snapshotMap
+init|=
+literal|null
+decl_stmt|;
+DECL|field|referenceMap
+specifier|private
+specifier|final
+name|ReferenceMap
+name|referenceMap
+init|=
+operator|new
+name|ReferenceMap
+argument_list|()
 decl_stmt|;
 DECL|method|Loader (Configuration conf, FSNamesystem namesystem)
 name|Loader
@@ -967,6 +1021,8 @@ condition|(
 name|supportSnapshot
 condition|)
 block|{
+name|snapshotMap
+operator|=
 name|namesystem
 operator|.
 name|getSnapshotManager
@@ -975,6 +1031,8 @@ operator|.
 name|read
 argument_list|(
 name|in
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -1267,12 +1325,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Load fsimage files when 1) only local names are stored,       * and 2) snapshot is supported.      *       * @param in Image input stream      */
-DECL|method|loadLocalNameINodesWithSnapshot (DataInputStream in)
+DECL|method|loadLocalNameINodesWithSnapshot (DataInput in)
 specifier|private
 name|void
 name|loadLocalNameINodesWithSnapshot
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1318,7 +1376,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * load fsimage files assuming only local names are stored    *       * @param numFiles number of files expected to be read    * @param in image input stream    * @throws IOException    */
-DECL|method|loadLocalNameINodes (long numFiles, DataInputStream in)
+DECL|method|loadLocalNameINodes (long numFiles, DataInput in)
 specifier|private
 name|void
 name|loadLocalNameINodes
@@ -1326,7 +1384,7 @@ parameter_list|(
 name|long
 name|numFiles
 parameter_list|,
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1395,13 +1453,13 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Load information about root, and use the information to update the root      * directory of NameSystem.      * @param in The {@link DataInputStream} instance to read.      */
-DECL|method|loadRoot (DataInputStream in)
+comment|/**      * Load information about root, and use the information to update the root      * directory of NameSystem.      * @param in The {@link DataInput} instance to read.      */
+DECL|method|loadRoot (DataInput in)
 specifier|private
 name|void
 name|loadRoot
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1427,7 +1485,7 @@ argument_list|)
 throw|;
 block|}
 specifier|final
-name|INodeWithAdditionalFields
+name|INodeDirectory
 name|root
 init|=
 name|loadINode
@@ -1438,6 +1496,9 @@ literal|false
 argument_list|,
 name|in
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 comment|// update the root's attributes
 name|updateRootAttr
@@ -1447,7 +1508,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Load children nodes for the parent directory. */
-DECL|method|loadChildren (INodeDirectory parent, DataInputStream in)
+DECL|method|loadChildren (INodeDirectory parent, DataInput in)
 specifier|private
 name|int
 name|loadChildren
@@ -1455,7 +1516,7 @@ parameter_list|(
 name|INodeDirectory
 name|parent
 parameter_list|,
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1507,13 +1568,13 @@ return|return
 name|numChildren
 return|;
 block|}
-comment|/**      * Load a directory when snapshot is supported.      * @param in The {@link DataInputStream} instance to read.      */
-DECL|method|loadDirectoryWithSnapshot (DataInputStream in)
+comment|/**      * Load a directory when snapshot is supported.      * @param in The {@link DataInput} instance to read.      */
+DECL|method|loadDirectoryWithSnapshot (DataInput in)
 specifier|private
 name|void
 name|loadDirectoryWithSnapshot
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1675,12 +1736,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/**     * Load all children of a directory     *      * @param in     * @return number of child inodes read     * @throws IOException     */
-DECL|method|loadDirectory (DataInputStream in)
+DECL|method|loadDirectory (DataInput in)
 specifier|private
 name|int
 name|loadDirectory
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1730,7 +1791,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * load fsimage files assuming full path names are stored    *     * @param numFiles total number of files to load    * @param in data input stream    * @throws IOException if any error occurs    */
-DECL|method|loadFullNameINodes (long numFiles, DataInputStream in)
+DECL|method|loadFullNameINodes (long numFiles, DataInput in)
 specifier|private
 name|void
 name|loadFullNameINodes
@@ -1738,7 +1799,7 @@ parameter_list|(
 name|long
 name|numFiles
 parameter_list|,
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1797,7 +1858,7 @@ name|in
 argument_list|)
 expr_stmt|;
 specifier|final
-name|INodeWithAdditionalFields
+name|INode
 name|newNode
 init|=
 name|loadINode
@@ -1829,6 +1890,9 @@ comment|// update the root's attributes
 name|updateRootAttr
 argument_list|(
 name|newNode
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -2065,7 +2129,7 @@ operator|.
 name|dir
 return|;
 block|}
-DECL|method|loadINodeWithLocalName (boolean isSnapshotINode, DataInputStream in)
+DECL|method|loadINodeWithLocalName (boolean isSnapshotINode, DataInput in)
 specifier|public
 name|INode
 name|loadINodeWithLocalName
@@ -2073,7 +2137,7 @@ parameter_list|(
 name|boolean
 name|isSnapshotINode
 parameter_list|,
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -2084,26 +2148,14 @@ name|byte
 index|[]
 name|localName
 init|=
-operator|new
-name|byte
-index|[
-name|in
+name|FSImageSerialization
 operator|.
-name|readShort
-argument_list|()
-index|]
-decl_stmt|;
-name|in
-operator|.
-name|readFully
+name|readLocalName
 argument_list|(
-name|localName
+name|in
 argument_list|)
-expr_stmt|;
-specifier|final
-name|INode
-name|inode
-init|=
+decl_stmt|;
+return|return
 name|loadINode
 argument_list|(
 name|localName
@@ -2112,21 +2164,11 @@ name|isSnapshotINode
 argument_list|,
 name|in
 argument_list|)
-decl_stmt|;
-name|inode
-operator|.
-name|setLocalName
-argument_list|(
-name|localName
-argument_list|)
-expr_stmt|;
-return|return
-name|inode
 return|;
 block|}
 comment|/**    * load an inode from fsimage except for its name    *     * @param in data input stream from which image is read    * @return an inode    */
-DECL|method|loadINode (final byte[] localName, boolean isSnapshotINode, DataInputStream in)
-name|INodeWithAdditionalFields
+DECL|method|loadINode (final byte[] localName, boolean isSnapshotINode, DataInput in)
+name|INode
 name|loadINode
 parameter_list|(
 specifier|final
@@ -2137,7 +2179,7 @@ parameter_list|,
 name|boolean
 name|isSnapshotINode
 parameter_list|,
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -2665,6 +2707,87 @@ name|symlink
 argument_list|)
 return|;
 block|}
+elseif|else
+if|if
+condition|(
+name|numBlocks
+operator|==
+operator|-
+literal|3
+condition|)
+block|{
+comment|//reference
+specifier|final
+name|boolean
+name|isWithName
+init|=
+name|in
+operator|.
+name|readBoolean
+argument_list|()
+decl_stmt|;
+specifier|final
+name|INodeReference
+operator|.
+name|WithCount
+name|withCount
+init|=
+name|referenceMap
+operator|.
+name|loadINodeReferenceWithCount
+argument_list|(
+name|isSnapshotINode
+argument_list|,
+name|in
+argument_list|,
+name|this
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|isWithName
+condition|)
+block|{
+return|return
+operator|new
+name|INodeReference
+operator|.
+name|WithName
+argument_list|(
+literal|null
+argument_list|,
+name|withCount
+argument_list|,
+name|localName
+argument_list|)
+return|;
+block|}
+else|else
+block|{
+specifier|final
+name|INodeReference
+name|ref
+init|=
+operator|new
+name|INodeReference
+argument_list|(
+literal|null
+argument_list|,
+name|withCount
+argument_list|)
+decl_stmt|;
+name|withCount
+operator|.
+name|setParentReference
+argument_list|(
+name|ref
+argument_list|)
+expr_stmt|;
+return|return
+name|ref
+return|;
+block|}
+block|}
 throw|throw
 operator|new
 name|IOException
@@ -2675,12 +2798,12 @@ name|numBlocks
 argument_list|)
 throw|;
 block|}
-DECL|method|loadFilesUnderConstruction (DataInputStream in, boolean supportSnapshot)
+DECL|method|loadFilesUnderConstruction (DataInput in, boolean supportSnapshot)
 specifier|private
 name|void
 name|loadFilesUnderConstruction
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|,
 name|boolean
@@ -2848,12 +2971,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|loadSecretManagerState (DataInputStream in)
+DECL|method|loadSecretManagerState (DataInput in)
 specifier|private
 name|void
 name|loadSecretManagerState
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -3152,6 +3275,29 @@ return|return
 name|result
 return|;
 block|}
+DECL|method|getSnapshot (DataInput in)
+specifier|public
+name|Snapshot
+name|getSnapshot
+parameter_list|(
+name|DataInput
+name|in
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|snapshotMap
+operator|.
+name|get
+argument_list|(
+name|in
+operator|.
+name|readInt
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 comment|/**    * A one-shot class responsible for writing an image file.    * The write() function should be called once, after which the getter    * functions may be used to retrieve information about the file that was written.    */
 DECL|class|Saver
@@ -3178,6 +3324,16 @@ DECL|field|savedDigest
 specifier|private
 name|MD5Hash
 name|savedDigest
+decl_stmt|;
+DECL|field|referenceMap
+specifier|private
+specifier|final
+name|ReferenceMap
+name|referenceMap
+init|=
+operator|new
+name|ReferenceMap
+argument_list|()
 decl_stmt|;
 DECL|field|PATH_SEPARATOR
 specifier|static
@@ -3474,6 +3630,8 @@ argument_list|,
 name|out
 argument_list|,
 literal|false
+argument_list|,
+name|referenceMap
 argument_list|)
 expr_stmt|;
 comment|// save the rest of the nodes
@@ -3542,6 +3700,11 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|referenceMap
+operator|.
+name|removeAllINodeReferenceWithId
+argument_list|()
+expr_stmt|;
 name|out
 operator|.
 name|close
@@ -3647,6 +3810,8 @@ argument_list|,
 name|out
 argument_list|,
 literal|false
+argument_list|,
+name|referenceMap
 argument_list|)
 expr_stmt|;
 if|if
@@ -4047,6 +4212,8 @@ argument_list|(
 name|current
 argument_list|,
 name|out
+argument_list|,
+name|referenceMap
 argument_list|)
 expr_stmt|;
 comment|// Write sub-tree of sub-directories, including possible snapshots of

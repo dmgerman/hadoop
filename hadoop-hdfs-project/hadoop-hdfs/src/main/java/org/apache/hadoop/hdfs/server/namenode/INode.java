@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|PrintStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|PrintWriter
 import|;
 end_import
@@ -357,10 +367,6 @@ operator|.
 name|SignedBytes
 import|;
 end_import
-
-begin_comment
-comment|//import org.apache.hadoop.hdfs.util.EnumCounters;
-end_comment
 
 begin_comment
 comment|/**  * We keep an in-memory representation of the file/block hierarchy.  * This is a base INode class containing common fields for file and   * directory inodes.  */
@@ -1317,6 +1323,7 @@ annotation|@
 name|VisibleForTesting
 DECL|method|getObjectString ()
 specifier|public
+specifier|final
 name|String
 name|getObjectString
 parameter_list|()
@@ -1341,12 +1348,82 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+comment|/** @return a string description of the parent. */
 annotation|@
 name|VisibleForTesting
-DECL|method|toStringWithObjectType ()
+DECL|method|getParentString ()
+specifier|public
+specifier|final
+name|String
+name|getParentString
+parameter_list|()
+block|{
+specifier|final
+name|INodeReference
+name|parentRef
+init|=
+name|getParentReference
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|parentRef
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|"parentRef="
+operator|+
+name|parentRef
+operator|.
+name|getLocalName
+argument_list|()
+operator|+
+literal|"->"
+return|;
+block|}
+else|else
+block|{
+specifier|final
+name|INodeDirectory
+name|parentDir
+init|=
+name|getParent
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|parentDir
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|"parentDir="
+operator|+
+name|parentDir
+operator|.
+name|getLocalName
+argument_list|()
+operator|+
+literal|"/"
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|"parent=null"
+return|;
+block|}
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|toDetailString ()
 specifier|public
 name|String
-name|toStringWithObjectType
+name|toDetailString
 parameter_list|()
 block|{
 return|return
@@ -1358,42 +1435,10 @@ operator|+
 name|getObjectString
 argument_list|()
 operator|+
-literal|")"
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|toDetailString ()
-specifier|public
-name|String
-name|toDetailString
-parameter_list|()
-block|{
-specifier|final
-name|INodeDirectory
-name|p
-init|=
-name|getParent
-argument_list|()
-decl_stmt|;
-return|return
-name|toStringWithObjectType
-argument_list|()
+literal|"), "
 operator|+
-literal|", parent="
-operator|+
-operator|(
-name|p
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-name|p
-operator|.
-name|toStringWithObjectType
+name|getParentString
 argument_list|()
-operator|)
 return|;
 block|}
 comment|/** @return the parent directory */
@@ -2086,6 +2131,36 @@ name|getBuffer
 argument_list|()
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|dumpTreeRecursively (PrintStream out)
+specifier|public
+specifier|final
+name|void
+name|dumpTreeRecursively
+parameter_list|(
+name|PrintStream
+name|out
+parameter_list|)
+block|{
+name|dumpTreeRecursively
+argument_list|(
+operator|new
+name|PrintWriter
+argument_list|(
+name|out
+argument_list|,
+literal|true
+argument_list|)
+argument_list|,
+operator|new
+name|StringBuilder
+argument_list|()
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Dump tree recursively.    * @param prefix The prefix string that each line should print.    */
 annotation|@
 name|VisibleForTesting
@@ -2145,32 +2220,15 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"), parent="
+literal|"), "
 argument_list|)
 expr_stmt|;
-specifier|final
-name|INodeDirectory
-name|p
-init|=
-name|getParent
-argument_list|()
-decl_stmt|;
 name|out
 operator|.
 name|print
 argument_list|(
-name|p
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-name|p
-operator|.
-name|getLocalName
+name|getParentString
 argument_list|()
-operator|+
-literal|"/"
 argument_list|)
 expr_stmt|;
 name|out

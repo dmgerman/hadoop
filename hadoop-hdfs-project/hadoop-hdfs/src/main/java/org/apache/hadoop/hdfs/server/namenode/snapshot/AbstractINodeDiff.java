@@ -28,7 +28,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataOutputStream
+name|DataOutput
 import|;
 end_import
 
@@ -56,7 +56,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageSerialization
+name|INode
 import|;
 end_import
 
@@ -75,6 +75,8 @@ operator|.
 name|namenode
 operator|.
 name|INode
+operator|.
+name|BlocksMapUpdateInfo
 import|;
 end_import
 
@@ -110,9 +112,11 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INode
+name|snapshot
 operator|.
-name|BlocksMapUpdateInfo
+name|SnapshotFSImageFormat
+operator|.
+name|ReferenceMap
 import|;
 end_import
 
@@ -527,41 +531,38 @@ operator|+
 literal|")"
 return|;
 block|}
-DECL|method|writeSnapshotPath (DataOutputStream out)
+DECL|method|writeSnapshot (DataOutput out)
 name|void
-name|writeSnapshotPath
+name|writeSnapshot
 parameter_list|(
-name|DataOutputStream
+name|DataOutput
 name|out
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Assume the snapshot is recorded before.
-comment|// The root path is sufficient for looking up the Snapshot object.
-name|FSImageSerialization
+comment|// Assume the snapshot is recorded before, write id only.
+name|out
 operator|.
-name|writeString
+name|writeInt
 argument_list|(
 name|snapshot
 operator|.
-name|getRoot
+name|getId
 argument_list|()
-operator|.
-name|getFullPathName
-argument_list|()
-argument_list|,
-name|out
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|write (DataOutputStream out)
+DECL|method|write (DataOutput out, ReferenceMap referenceMap )
 specifier|abstract
 name|void
 name|write
 parameter_list|(
-name|DataOutputStream
+name|DataOutput
 name|out
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
 parameter_list|)
 throws|throws
 name|IOException

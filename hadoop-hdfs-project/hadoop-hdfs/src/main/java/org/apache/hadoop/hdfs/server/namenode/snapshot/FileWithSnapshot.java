@@ -28,7 +28,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataOutputStream
+name|DataOutput
 import|;
 end_import
 
@@ -145,6 +145,28 @@ operator|.
 name|namenode
 operator|.
 name|Quota
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|SnapshotFSImageFormat
+operator|.
+name|ReferenceMap
 import|;
 end_import
 
@@ -425,18 +447,22 @@ argument_list|()
 operator|)
 return|;
 block|}
-comment|/** Serialize fields to out */
-DECL|method|write (DataOutputStream out)
+annotation|@
+name|Override
+DECL|method|write (DataOutput out, ReferenceMap referenceMap)
 name|void
 name|write
 parameter_list|(
-name|DataOutputStream
+name|DataOutput
 name|out
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|writeSnapshotPath
+name|writeSnapshot
 argument_list|(
 name|out
 argument_list|)

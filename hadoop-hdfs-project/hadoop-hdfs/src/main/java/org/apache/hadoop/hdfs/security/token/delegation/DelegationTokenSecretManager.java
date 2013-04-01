@@ -28,7 +28,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataInputStream
+name|DataInput
 import|;
 end_import
 
@@ -492,13 +492,13 @@ throw|;
 block|}
 block|}
 comment|/**    * Load SecretManager state from fsimage.    *     * @param in input stream to read fsimage    * @throws IOException    */
-DECL|method|loadSecretManagerState (DataInputStream in)
+DECL|method|loadSecretManagerState (DataInput in)
 specifier|public
 specifier|synchronized
 name|void
 name|loadSecretManagerState
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1045,13 +1045,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Private helper methods to load Delegation tokens from fsimage    */
-DECL|method|loadCurrentTokens (DataInputStream in)
+DECL|method|loadCurrentTokens (DataInput in)
 specifier|private
 specifier|synchronized
 name|void
 name|loadCurrentTokens
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
@@ -1112,13 +1112,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Private helper method to load delegation keys from fsimage.    * @param in    * @throws IOException    */
-DECL|method|loadAllKeys (DataInputStream in)
+DECL|method|loadAllKeys (DataInput in)
 specifier|private
 specifier|synchronized
 name|void
 name|loadAllKeys
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws

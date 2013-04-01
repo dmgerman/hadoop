@@ -28,7 +28,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|DataOutputStream
+name|DataOutput
 import|;
 end_import
 
@@ -309,6 +309,28 @@ operator|.
 name|namenode
 operator|.
 name|Quota
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|SnapshotFSImageFormat
+operator|.
+name|ReferenceMap
 import|;
 end_import
 
@@ -793,12 +815,12 @@ name|counts
 return|;
 block|}
 comment|/** Serialize {@link #created} */
-DECL|method|writeCreated (DataOutputStream out)
+DECL|method|writeCreated (DataOutput out)
 specifier|private
 name|void
 name|writeCreated
 parameter_list|(
-name|DataOutputStream
+name|DataOutput
 name|out
 parameter_list|)
 throws|throws
@@ -865,13 +887,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Serialize {@link #deleted} */
-DECL|method|writeDeleted (DataOutputStream out)
+DECL|method|writeDeleted (DataOutput out, ReferenceMap referenceMap)
 specifier|private
 name|void
 name|writeDeleted
 parameter_list|(
-name|DataOutputStream
+name|DataOutput
 name|out
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -917,18 +942,23 @@ argument_list|,
 name|out
 argument_list|,
 literal|true
+argument_list|,
+name|referenceMap
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/** Serialize to out */
-DECL|method|write (DataOutputStream out)
+DECL|method|write (DataOutput out, ReferenceMap referenceMap )
 specifier|private
 name|void
 name|write
 parameter_list|(
-name|DataOutputStream
+name|DataOutput
 name|out
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -941,6 +971,8 @@ expr_stmt|;
 name|writeDeleted
 argument_list|(
 name|out
+argument_list|,
+name|referenceMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -2032,17 +2064,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|write (DataOutputStream out)
+DECL|method|write (DataOutput out, ReferenceMap referenceMap)
 name|void
 name|write
 parameter_list|(
-name|DataOutputStream
+name|DataOutput
 name|out
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|writeSnapshotPath
+name|writeSnapshot
 argument_list|(
 name|out
 argument_list|)
@@ -2119,6 +2154,8 @@ operator|.
 name|write
 argument_list|(
 name|out
+argument_list|,
+name|referenceMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -3386,6 +3423,8 @@ name|INodeReference
 operator|.
 name|WithName
 argument_list|(
+name|this
+argument_list|,
 name|newChild
 argument_list|,
 name|childName

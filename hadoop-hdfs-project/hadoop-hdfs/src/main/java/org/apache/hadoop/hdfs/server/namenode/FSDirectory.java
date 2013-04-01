@@ -2836,18 +2836,15 @@ return|return
 literal|false
 return|;
 block|}
+comment|//TODO: setLocalName breaks created/deleted lists
 name|srcChild
 operator|.
 name|setLocalName
 argument_list|(
-name|dstComponents
-index|[
-name|dstComponents
+name|dstIIP
 operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|getLastLocalName
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// add src to the destination
@@ -3790,6 +3787,7 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+comment|//TODO: setLocalName breaks created/deleted lists
 name|srcChild
 operator|.
 name|setLocalName

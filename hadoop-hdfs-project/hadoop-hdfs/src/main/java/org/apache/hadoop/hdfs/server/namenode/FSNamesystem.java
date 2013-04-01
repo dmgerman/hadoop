@@ -288,7 +288,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_ACCESSTIME_PRECISION_KEY
+name|DFS_NAMENODE_ACCESSTIME_PRECISION_DEFAULT
 import|;
 end_import
 
@@ -304,7 +304,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_ACCESSTIME_PRECISION_DEFAULT
+name|DFS_NAMENODE_ACCESSTIME_PRECISION_KEY
 import|;
 end_import
 
@@ -917,6 +917,16 @@ operator|.
 name|io
 operator|.
 name|ByteArrayInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|DataInput
 import|;
 end_import
 
@@ -24239,11 +24249,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @param in load the state of secret manager from input stream    */
-DECL|method|loadSecretManagerState (DataInputStream in)
+DECL|method|loadSecretManagerState (DataInput in)
 name|void
 name|loadSecretManagerState
 parameter_list|(
-name|DataInputStream
+name|DataInput
 name|in
 parameter_list|)
 throws|throws
