@@ -875,6 +875,27 @@ name|DEFAULT_RM_SCHEDULER
 init|=
 literal|"org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler"
 decl_stmt|;
+comment|/** RM set next Heartbeat interval for NM */
+DECL|field|RM_NM_HEARTBEAT_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_NM_HEARTBEAT_INTERVAL_MS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"nodemanagers.heartbeat-interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_RM_NM_HEARTBEAT_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_RM_NM_HEARTBEAT_INTERVAL_MS
+init|=
+literal|1000
+decl_stmt|;
 comment|//Delegation token related keys
 DECL|field|DELEGATION_KEY_UPDATE_INTERVAL_KEY
 specifier|public
@@ -1330,28 +1351,6 @@ name|int
 name|DEFAULT_NM_DELETE_THREAD_COUNT
 init|=
 literal|4
-decl_stmt|;
-comment|// TODO: Should this instead be dictated by RM?
-comment|/** Heartbeat interval to RM*/
-DECL|field|NM_TO_RM_HEARTBEAT_INTERVAL_MS
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NM_TO_RM_HEARTBEAT_INTERVAL_MS
-init|=
-name|NM_PREFIX
-operator|+
-literal|"heartbeat.interval-ms"
-decl_stmt|;
-DECL|field|DEFAULT_NM_TO_RM_HEARTBEAT_INTERVAL_MS
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|DEFAULT_NM_TO_RM_HEARTBEAT_INTERVAL_MS
-init|=
-literal|1000
 decl_stmt|;
 comment|/** Keytab for NM.*/
 DECL|field|NM_KEYTAB
