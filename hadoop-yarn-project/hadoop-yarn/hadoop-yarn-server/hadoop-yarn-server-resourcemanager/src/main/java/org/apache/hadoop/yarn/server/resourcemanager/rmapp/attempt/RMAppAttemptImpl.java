@@ -4403,6 +4403,28 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// Updating CLC's resource is no longer necessary once YARN-486 is
+comment|// completed, because nothing from Container to CLC will be copied into
+comment|// CLC then.
+name|appAttempt
+operator|.
+name|getSubmissionContext
+argument_list|()
+operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
+name|setResource
+argument_list|(
+name|appAttempt
+operator|.
+name|getMasterContainer
+argument_list|()
+operator|.
+name|getResource
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|RMStateStore
 name|store
 init|=
