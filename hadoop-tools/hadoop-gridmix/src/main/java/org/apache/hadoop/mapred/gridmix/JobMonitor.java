@@ -382,11 +382,6 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 block|{
-synchronized|synchronized
-init|(
-name|runningJobs
-init|)
-block|{
 name|runningJobs
 operator|.
 name|put
@@ -394,7 +389,6 @@ argument_list|(
 name|job
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Add a submission failed job's status, such that it can be communicated    * back to serial.    * TODO: Cleaner solution for this problem    * @param job    */
 DECL|method|submissionFailed (JobStats job)
@@ -586,11 +580,6 @@ try|try
 block|{
 synchronized|synchronized
 init|(
-name|runningJobs
-init|)
-block|{
-synchronized|synchronized
-init|(
 name|mJobs
 init|)
 block|{
@@ -618,7 +607,6 @@ name|mJobs
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 comment|// shutdown conditions; either shutdown requested and all jobs
 comment|// have completed or abort requested and there are recently
 comment|// submitted jobs not in the monitored set
@@ -632,11 +620,6 @@ condition|(
 operator|!
 name|graceful
 condition|)
-block|{
-synchronized|synchronized
-init|(
-name|runningJobs
-init|)
 block|{
 while|while
 condition|(
@@ -659,7 +642,6 @@ argument_list|(
 name|mJobs
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 break|break;

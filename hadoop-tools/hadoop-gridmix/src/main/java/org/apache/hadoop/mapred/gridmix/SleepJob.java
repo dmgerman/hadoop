@@ -649,6 +649,9 @@ operator|.
 name|hosts
 operator|=
 name|hosts
+operator|.
+name|clone
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1796,6 +1799,9 @@ operator|.
 name|reduceDurations
 operator|=
 name|reduceDurations
+operator|.
+name|clone
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -1808,6 +1814,9 @@ operator|.
 name|locations
 operator|=
 name|locations
+operator|.
+name|clone
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -2141,6 +2150,9 @@ parameter_list|()
 block|{
 return|return
 name|locations
+operator|.
+name|clone
+argument_list|()
 return|;
 block|}
 block|}
