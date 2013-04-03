@@ -1260,23 +1260,6 @@ name|FILECACHE
 argument_list|)
 decl_stmt|;
 comment|// $x/usercache/$user/filecache
-comment|// FileContext drops the scheme if no authority is present before passing
-comment|// the path to an AbstractFileSystem
-name|Path
-name|privcacheAfsPath
-init|=
-operator|new
-name|Path
-argument_list|(
-name|privcache
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|verify
 argument_list|(
 name|spylfs
@@ -1286,7 +1269,7 @@ name|mkdir
 argument_list|(
 name|eq
 argument_list|(
-name|privcacheAfsPath
+name|privcache
 argument_list|)
 argument_list|,
 name|isA
@@ -1335,21 +1318,6 @@ operator|.
 name|FILECACHE
 argument_list|)
 decl_stmt|;
-name|Path
-name|appcacheAfsPath
-init|=
-operator|new
-name|Path
-argument_list|(
-name|appcache
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|verify
 argument_list|(
 name|spylfs
@@ -1359,7 +1327,7 @@ name|mkdir
 argument_list|(
 name|eq
 argument_list|(
-name|appcacheAfsPath
+name|appcache
 argument_list|)
 argument_list|,
 name|isA
