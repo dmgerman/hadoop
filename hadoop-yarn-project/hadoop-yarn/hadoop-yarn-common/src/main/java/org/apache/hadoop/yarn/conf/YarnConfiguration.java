@@ -1385,6 +1385,27 @@ name|DEFAULT_NM_LOCAL_DIRS
 init|=
 literal|"/tmp/nm-local-dir"
 decl_stmt|;
+comment|/**    * Number of files in each localized directories    * Avoid tuning this too low.     */
+DECL|field|NM_LOCAL_CACHE_MAX_FILES_PER_DIRECTORY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LOCAL_CACHE_MAX_FILES_PER_DIRECTORY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"local-cache.max-files-per-directory"
+decl_stmt|;
+DECL|field|DEFAULT_NM_LOCAL_CACHE_MAX_FILES_PER_DIRECTORY
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_LOCAL_CACHE_MAX_FILES_PER_DIRECTORY
+init|=
+literal|8192
+decl_stmt|;
 comment|/** Address where the localizer IPC is.*/
 DECL|field|NM_LOCALIZER_ADDRESS
 specifier|public
