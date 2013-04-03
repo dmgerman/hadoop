@@ -888,7 +888,7 @@ comment|/**    * A fake {@link JobFactory}.    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"unchecked"
+literal|"rawtypes"
 argument_list|)
 DECL|class|FakeJobFactory
 specifier|private
@@ -989,7 +989,11 @@ name|Test
 annotation|@
 name|SuppressWarnings
 argument_list|(
+block|{
 literal|"unchecked"
+block|,
+literal|"rawtypes"
+block|}
 argument_list|)
 DECL|method|testExecutionSummarizer ()
 specifier|public
@@ -2098,11 +2102,6 @@ block|}
 comment|/**    * Test {@link ClusterSummarizer}.    */
 annotation|@
 name|Test
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|testClusterSummarizer ()
 specifier|public
 name|void
@@ -2189,7 +2188,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|ClusterStats
-name|cstats
+name|cStats
 init|=
 name|ClusterStats
 operator|.
@@ -2227,7 +2226,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|cstats
+name|cStats
 operator|.
 name|setClusterMetric
 argument_list|(
@@ -2241,7 +2240,7 @@ name|cs
 operator|.
 name|update
 argument_list|(
-name|cstats
+name|cStats
 argument_list|)
 expr_stmt|;
 comment|// test
