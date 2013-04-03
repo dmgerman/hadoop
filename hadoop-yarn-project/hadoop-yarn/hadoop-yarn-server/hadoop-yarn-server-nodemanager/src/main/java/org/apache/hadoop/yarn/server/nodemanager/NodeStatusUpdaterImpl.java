@@ -796,6 +796,26 @@ specifier|final
 name|NodeManagerMetrics
 name|metrics
 decl_stmt|;
+DECL|field|previousHeartBeatSucceeded
+specifier|private
+name|boolean
+name|previousHeartBeatSucceeded
+decl_stmt|;
+DECL|field|previousContainersStatuses
+specifier|private
+name|List
+argument_list|<
+name|ContainerStatus
+argument_list|>
+name|previousContainersStatuses
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerStatus
+argument_list|>
+argument_list|()
+decl_stmt|;
 DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
 name|NodeStatusUpdaterImpl
@@ -846,6 +866,12 @@ operator|.
 name|metrics
 operator|=
 name|metrics
+expr_stmt|;
+name|this
+operator|.
+name|previousHeartBeatSucceeded
+operator|=
+literal|true
 expr_stmt|;
 block|}
 annotation|@
@@ -1857,11 +1883,6 @@ operator|.
 name|nodeId
 argument_list|)
 expr_stmt|;
-name|int
-name|numActiveContainers
-init|=
-literal|0
-decl_stmt|;
 name|List
 argument_list|<
 name|ContainerStatus
@@ -1874,6 +1895,32 @@ argument_list|<
 name|ContainerStatus
 argument_list|>
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|previousHeartBeatSucceeded
+condition|)
+block|{
+name|previousContainersStatuses
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|containersStatuses
+operator|.
+name|addAll
+argument_list|(
+name|previousContainersStatuses
+argument_list|)
+expr_stmt|;
+block|}
+name|int
+name|numActiveContainers
+init|=
+literal|0
 decl_stmt|;
 for|for
 control|(
@@ -1989,6 +2036,13 @@ operator|.
 name|COMPLETE
 condition|)
 block|{
+name|previousContainersStatuses
+operator|.
+name|add
+argument_list|(
+name|containerStatus
+argument_list|)
+expr_stmt|;
 comment|// Remove
 name|i
 operator|.
@@ -2348,6 +2402,10 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
+name|previousHeartBeatSucceeded
+operator|=
+literal|true
+expr_stmt|;
 comment|//get next heartbeat interval from response
 name|nextHeartBeatInterval
 operator|=
@@ -2567,6 +2625,10 @@ name|Throwable
 name|e
 parameter_list|)
 block|{
+name|previousHeartBeatSucceeded
+operator|=
+literal|false
+expr_stmt|;
 comment|// TODO Better error handling. Thread can die with the rest of the
 comment|// NM still running.
 name|LOG
