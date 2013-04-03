@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -581,6 +591,15 @@ argument_list|)
 decl_stmt|;
 return|return
 name|oldMetrics
+return|;
+block|}
+DECL|method|getConnectAddress ()
+name|InetSocketAddress
+name|getConnectAddress
+parameter_list|()
+block|{
+return|return
+name|rmAddress
 return|;
 block|}
 annotation|@
