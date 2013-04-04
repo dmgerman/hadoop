@@ -92,6 +92,9 @@ block|,
 comment|//Producer:RMContainerAllocator
 DECL|enumConstant|JOB_UPDATED_NODES
 name|JOB_UPDATED_NODES
+block|,
+DECL|enumConstant|JOB_AM_REBOOT
+name|JOB_AM_REBOOT
 block|}
 end_enum
 

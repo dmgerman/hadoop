@@ -63,6 +63,9 @@ name|KILLED
 block|,
 DECL|enumConstant|ERROR
 name|ERROR
+block|,
+DECL|enumConstant|REBOOT
+name|REBOOT
 block|}
 end_enum
 

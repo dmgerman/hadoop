@@ -3276,7 +3276,7 @@ argument_list|()
 argument_list|,
 name|JobEventType
 operator|.
-name|INTERNAL_ERROR
+name|JOB_AM_REBOOT
 argument_list|)
 argument_list|)
 expr_stmt|;
