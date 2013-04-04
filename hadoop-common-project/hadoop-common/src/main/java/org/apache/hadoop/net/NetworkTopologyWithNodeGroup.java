@@ -680,17 +680,30 @@ name|getNetworkLocation
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// rack should be an innerNode and with parent.
+comment|// note: rack's null parent case is: node's topology only has one layer,
+comment|//       so rack is recognized as "/" and no parent.
+comment|// This will be recognized as a node with fault topology.
 if|if
 condition|(
 name|rack
 operator|!=
 literal|null
 operator|&&
+operator|(
 operator|!
 operator|(
 name|rack
 operator|instanceof
 name|InnerNode
+operator|)
+operator|||
+name|rack
+operator|.
+name|getParent
+argument_list|()
+operator|==
+literal|null
 operator|)
 condition|)
 block|{
