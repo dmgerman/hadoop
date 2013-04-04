@@ -3435,19 +3435,30 @@ operator|.
 name|incrementReferenceCount
 argument_list|()
 expr_stmt|;
-name|diffs
-operator|.
-name|replaceChild
+name|replaceRemovedChild
 argument_list|(
-name|ListType
-operator|.
-name|CREATED
-argument_list|,
 name|oldChild
 argument_list|,
 name|ref
 argument_list|)
 expr_stmt|;
+return|return
+name|ref
+return|;
+block|}
+comment|/** The child just has been removed, replace it with a reference. */
+DECL|method|replaceRemovedChild (INode oldChild, INode newChild)
+specifier|public
+name|void
+name|replaceRemovedChild
+parameter_list|(
+name|INode
+name|oldChild
+parameter_list|,
+name|INode
+name|newChild
+parameter_list|)
+block|{
 comment|// the old child must be in the deleted list
 name|Preconditions
 operator|.
@@ -3463,13 +3474,10 @@ name|DELETED
 argument_list|,
 name|oldChild
 argument_list|,
-name|ref
+name|newChild
 argument_list|)
 argument_list|)
 expr_stmt|;
-return|return
-name|ref
-return|;
 block|}
 annotation|@
 name|Override
