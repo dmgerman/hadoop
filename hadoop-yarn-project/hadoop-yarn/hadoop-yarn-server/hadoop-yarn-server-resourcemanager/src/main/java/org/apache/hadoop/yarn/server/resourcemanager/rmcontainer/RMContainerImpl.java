@@ -1620,20 +1620,6 @@ name|RMContainerFinishedEvent
 operator|)
 name|event
 decl_stmt|;
-comment|// Update container-status for diagnostics. Today we completely
-comment|// replace it on finish. We may just need to update diagnostics.
-name|container
-operator|.
-name|container
-operator|.
-name|setContainerStatus
-argument_list|(
-name|finishedEvent
-operator|.
-name|getRemoteContainerStatus
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Inform AppAttempt
 name|container
 operator|.
@@ -1648,11 +1634,9 @@ name|container
 operator|.
 name|appAttemptId
 argument_list|,
-name|container
+name|finishedEvent
 operator|.
-name|container
-operator|.
-name|getContainerStatus
+name|getRemoteContainerStatus
 argument_list|()
 argument_list|)
 argument_list|)
