@@ -582,15 +582,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|// Skip the test on Windows. See HDFS-4584.
-name|assumeTrue
-argument_list|(
-operator|!
-name|Path
-operator|.
-name|WINDOWS
-argument_list|)
-expr_stmt|;
 name|File
 name|nn1Dir
 init|=
@@ -652,6 +643,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Start the cluster once to generate the dfs dirs
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -681,18 +673,16 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-try|try
-block|{
+comment|// Shutdown the cluster before making a copy of the namenode dir
+comment|// to release all file locks, otherwise, the copy will fail on
+comment|// some platforms.
 name|cluster
 operator|.
-name|getFileSystem
+name|shutdown
 argument_list|()
-operator|.
-name|mkdirs
-argument_list|(
-name|TEST_PATH
-argument_list|)
 expr_stmt|;
+try|try
+block|{
 comment|// Start a second NN pointed to the same quorum.
 comment|// We need to copy the image dir from the first NN -- or else
 comment|// the new NN will just be rejected because of Namespace mismatch.
@@ -731,6 +721,50 @@ argument_list|,
 literal|false
 argument_list|,
 name|conf
+argument_list|)
+expr_stmt|;
+comment|// Start the cluster again
+name|cluster
+operator|=
+operator|new
+name|MiniDFSCluster
+operator|.
+name|Builder
+argument_list|(
+name|conf
+argument_list|)
+operator|.
+name|numDataNodes
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|format
+argument_list|(
+literal|false
+argument_list|)
+operator|.
+name|manageNameDfsDirs
+argument_list|(
+literal|false
+argument_list|)
+operator|.
+name|checkExitOnShutdown
+argument_list|(
+literal|false
+argument_list|)
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|mkdirs
+argument_list|(
+name|TEST_PATH
 argument_list|)
 expr_stmt|;
 name|Configuration

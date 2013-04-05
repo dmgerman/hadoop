@@ -32,6 +32,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -139,10 +153,33 @@ name|DeletionService
 name|delService
 parameter_list|)
 function_decl|;
+DECL|method|getPathForLocalization (LocalResourceRequest req, Path localDirPath)
+name|Path
+name|getPathForLocalization
+parameter_list|(
+name|LocalResourceRequest
+name|req
+parameter_list|,
+name|Path
+name|localDirPath
+parameter_list|)
+function_decl|;
 DECL|method|getUser ()
 name|String
 name|getUser
 parameter_list|()
+function_decl|;
+comment|// TODO: Remove this in favour of EventHandler.handle
+DECL|method|localizationCompleted (LocalResourceRequest req, boolean success)
+name|void
+name|localizationCompleted
+parameter_list|(
+name|LocalResourceRequest
+name|req
+parameter_list|,
+name|boolean
+name|success
+parameter_list|)
 function_decl|;
 block|}
 end_interface

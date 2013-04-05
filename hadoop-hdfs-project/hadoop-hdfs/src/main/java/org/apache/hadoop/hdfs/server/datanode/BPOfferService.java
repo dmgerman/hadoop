@@ -2554,6 +2554,11 @@ case|:
 case|case
 name|DatanodeProtocol
 operator|.
+name|DNA_FINALIZE
+case|:
+case|case
+name|DatanodeProtocol
+operator|.
 name|DNA_RECOVERBLOCK
 case|:
 case|case

@@ -7580,9 +7580,9 @@ literal|"BLOCK* processReport: Received first block report from "
 operator|+
 name|node
 operator|+
-literal|" after becoming active. Its block contents are no longer"
+literal|" after starting up or becoming active. Its block "
 operator|+
-literal|" considered stale"
+literal|"contents are no longer considered stale"
 argument_list|)
 expr_stmt|;
 name|rescanPostponedMisreplicatedBlocks

@@ -191,6 +191,19 @@ argument_list|>
 name|applications
 parameter_list|)
 function_decl|;
+DECL|method|getNextHeartBeatInterval ()
+name|long
+name|getNextHeartBeatInterval
+parameter_list|()
+function_decl|;
+DECL|method|setNextHeartBeatInterval (long nextHeartBeatInterval)
+name|void
+name|setNextHeartBeatInterval
+parameter_list|(
+name|long
+name|nextHeartBeatInterval
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

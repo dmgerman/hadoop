@@ -2270,7 +2270,7 @@ condition|(
 name|startTime
 operator|-
 name|lastHeartbeat
-operator|>
+operator|>=
 name|dnConf
 operator|.
 name|heartBeatInterval

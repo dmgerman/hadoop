@@ -2961,13 +2961,6 @@ operator|.
 name|getNodeHttpAddress
 argument_list|()
 operator|+
-literal|", containerState"
-operator|+
-name|allocatedContainer
-operator|.
-name|getState
-argument_list|()
-operator|+
 literal|", containerResourceMemory"
 operator|+
 name|allocatedContainer

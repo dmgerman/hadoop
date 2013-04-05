@@ -97,13 +97,6 @@ argument_list|)
 expr_stmt|;
 name|expect
 argument_list|(
-literal|"mapred_output_format_class"
-argument_list|,
-literal|"org.apache.hadoop.mapred.TextOutputFormat"
-argument_list|)
-expr_stmt|;
-name|expect
-argument_list|(
 literal|"mapreduce_map_output_key_class"
 argument_list|,
 literal|"org.apache.hadoop.io.Text"

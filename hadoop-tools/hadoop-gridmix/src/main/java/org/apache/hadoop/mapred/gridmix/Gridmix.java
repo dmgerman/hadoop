@@ -260,9 +260,37 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|MRJobConfig
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
 import|;
 end_import
 
@@ -3015,9 +3043,9 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|System
+name|ExitUtil
 operator|.
-name|exit
+name|terminate
 argument_list|(
 name|res
 argument_list|)
@@ -3463,6 +3491,17 @@ name|void
 name|abort
 parameter_list|()
 function_decl|;
+block|}
+comment|// it is need for tests
+DECL|method|getSummarizer ()
+specifier|protected
+name|Summarizer
+name|getSummarizer
+parameter_list|()
+block|{
+return|return
+name|summarizer
+return|;
 block|}
 block|}
 end_class

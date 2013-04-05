@@ -120,24 +120,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerState
 import|;
 end_import
@@ -515,13 +497,13 @@ operator|=
 name|resourceTracker
 expr_stmt|;
 block|}
-DECL|method|containerStatus (Container container)
+DECL|method|containerStatus (ContainerStatus containerStatus)
 specifier|public
 name|void
 name|containerStatus
 parameter_list|(
-name|Container
-name|container
+name|ContainerStatus
+name|containerStatus
 parameter_list|)
 throws|throws
 name|Exception
@@ -553,9 +535,9 @@ name|conts
 operator|.
 name|put
 argument_list|(
-name|container
+name|containerStatus
 operator|.
-name|getId
+name|getContainerId
 argument_list|()
 operator|.
 name|getApplicationAttemptId
@@ -572,10 +554,7 @@ operator|new
 name|ContainerStatus
 index|[]
 block|{
-name|container
-operator|.
-name|getContainerStatus
-argument_list|()
+name|containerStatus
 block|}
 argument_list|)
 argument_list|)

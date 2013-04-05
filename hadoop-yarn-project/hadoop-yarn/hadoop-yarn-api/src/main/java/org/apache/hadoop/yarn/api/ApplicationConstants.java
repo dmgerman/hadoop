@@ -86,16 +86,6 @@ name|AM_CONTAINER_ID_ENV
 init|=
 literal|"AM_CONTAINER_ID"
 decl_stmt|;
-comment|/**    * The environment variable for APPLICATION_ATTEMPT_ID. Set in AppMaster    * environment only    */
-DECL|field|AM_APP_ATTEMPT_ID_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|AM_APP_ATTEMPT_ID_ENV
-init|=
-literal|"AM_APP_ATTEMPT_ID"
-decl_stmt|;
 comment|/**    * The environment variable for the NM_HOST. Set in the AppMaster environment    * only    */
 DECL|field|NM_HOST_ENV
 specifier|public

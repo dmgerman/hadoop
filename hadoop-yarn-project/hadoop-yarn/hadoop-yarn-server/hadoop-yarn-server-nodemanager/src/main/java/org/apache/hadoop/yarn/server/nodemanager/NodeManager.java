@@ -886,6 +886,23 @@ name|exec
 argument_list|)
 return|;
 block|}
+DECL|method|createNMContext (NMContainerTokenSecretManager containerTokenSecretManager)
+specifier|protected
+name|NMContext
+name|createNMContext
+parameter_list|(
+name|NMContainerTokenSecretManager
+name|containerTokenSecretManager
+parameter_list|)
+block|{
+return|return
+operator|new
+name|NMContext
+argument_list|(
+name|containerTokenSecretManager
+argument_list|)
+return|;
+block|}
 DECL|method|doSecureLogin ()
 specifier|protected
 name|void
@@ -969,8 +986,7 @@ name|this
 operator|.
 name|context
 operator|=
-operator|new
-name|NMContext
+name|createNMContext
 argument_list|(
 name|containerTokenSecretManager
 argument_list|)

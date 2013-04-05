@@ -1171,28 +1171,6 @@ literal|null
 operator|)
 return|;
 block|}
-DECL|method|hasSchemeAndNoAuthority ()
-specifier|public
-name|boolean
-name|hasSchemeAndNoAuthority
-parameter_list|()
-block|{
-return|return
-name|uri
-operator|.
-name|getScheme
-argument_list|()
-operator|!=
-literal|null
-operator|&&
-name|uri
-operator|.
-name|getAuthority
-argument_list|()
-operator|==
-literal|null
-return|;
-block|}
 comment|/**    *  True if the path component (i.e. directory) of this URI is absolute.    */
 DECL|method|isUriPathAbsolute ()
 specifier|public
