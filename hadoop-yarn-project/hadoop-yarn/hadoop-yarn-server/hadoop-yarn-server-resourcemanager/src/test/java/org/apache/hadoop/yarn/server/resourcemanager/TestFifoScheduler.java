@@ -1640,6 +1640,19 @@ argument_list|,
 name|allocMB
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+argument_list|,
+name|allocMB
+operator|*
+literal|10
+argument_list|)
+expr_stmt|;
 comment|// Test for something lesser than this.
 name|testMinimumAllocation
 argument_list|(

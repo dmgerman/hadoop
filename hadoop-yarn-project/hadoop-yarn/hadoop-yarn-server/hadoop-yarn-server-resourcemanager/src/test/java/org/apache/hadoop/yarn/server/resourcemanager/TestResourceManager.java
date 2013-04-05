@@ -40,6 +40,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|fail
 import|;
 end_import
@@ -1153,7 +1165,9 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"Exception is expected because the global max attempts is negative."
+literal|"Exception is expected because the global max attempts"
+operator|+
+literal|" is negative."
 argument_list|)
 expr_stmt|;
 block|}
@@ -1164,6 +1178,157 @@ name|e
 parameter_list|)
 block|{
 comment|// Exception is expected.
+name|assertTrue
+argument_list|(
+literal|"The thrown exception is not the expected one."
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"Invalid global max attempts configuration"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|conf
+operator|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+argument_list|,
+literal|2048
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+argument_list|,
+literal|1024
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|resourceManager
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception is expected because the min memory allocation is"
+operator|+
+literal|" larger than the max memory allocation."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+comment|// Exception is expected.
+name|assertTrue
+argument_list|(
+literal|"The thrown exception is not the expected one."
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"Invalid resource scheduler memory"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+name|conf
+operator|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+name|resourceManager
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception is expected because the min vcores allocation is"
+operator|+
+literal|" larger than the max vcores allocation."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+comment|// Exception is expected.
+name|assertTrue
+argument_list|(
+literal|"The thrown exception is not the expected one."
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|startsWith
+argument_list|(
+literal|"Invalid resource scheduler vcores"
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

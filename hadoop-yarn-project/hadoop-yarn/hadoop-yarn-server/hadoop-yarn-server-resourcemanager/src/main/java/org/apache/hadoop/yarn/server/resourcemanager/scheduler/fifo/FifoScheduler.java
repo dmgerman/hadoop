@@ -1939,6 +1939,8 @@ argument_list|,
 name|clusterResource
 argument_list|,
 name|minimumAllocation
+argument_list|,
+name|maximumAllocation
 argument_list|)
 expr_stmt|;
 comment|// Release containers
