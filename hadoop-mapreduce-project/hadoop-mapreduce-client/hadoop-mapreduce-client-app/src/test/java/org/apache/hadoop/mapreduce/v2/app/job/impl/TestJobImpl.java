@@ -1153,6 +1153,17 @@ argument_list|,
 literal|"value2"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|MRJobConfig
+operator|.
+name|WORKFLOW_TAGS
+argument_list|,
+literal|"tag1,tag2"
+argument_list|)
+expr_stmt|;
 name|AsyncDispatcher
 name|dispatcher
 init|=
@@ -1217,6 +1228,8 @@ argument_list|,
 literal|"testNodeName"
 argument_list|,
 literal|"\"key2\"=\"value2\" \"key1\"=\"value1\" "
+argument_list|,
+literal|"tag1,tag2"
 argument_list|)
 decl_stmt|;
 name|dispatcher
@@ -5146,12 +5159,17 @@ specifier|private
 name|String
 name|workflowAdjacencies
 decl_stmt|;
+DECL|field|workflowTags
+specifier|private
+name|String
+name|workflowTags
+decl_stmt|;
 DECL|field|assertBoolean
 specifier|private
 name|Boolean
 name|assertBoolean
 decl_stmt|;
-DECL|method|JobSubmittedEventHandler (String workflowId, String workflowName, String workflowNodeName, String workflowAdjacencies)
+DECL|method|JobSubmittedEventHandler (String workflowId, String workflowName, String workflowNodeName, String workflowAdjacencies, String workflowTags)
 specifier|public
 name|JobSubmittedEventHandler
 parameter_list|(
@@ -5166,6 +5184,9 @@ name|workflowNodeName
 parameter_list|,
 name|String
 name|workflowAdjacencies
+parameter_list|,
+name|String
+name|workflowTags
 parameter_list|)
 block|{
 name|this
@@ -5191,6 +5212,12 @@ operator|.
 name|workflowAdjacencies
 operator|=
 name|workflowAdjacencies
+expr_stmt|;
+name|this
+operator|.
+name|workflowTags
+operator|=
+name|workflowTags
 expr_stmt|;
 name|assertBoolean
 operator|=
@@ -5306,6 +5333,27 @@ argument_list|(
 name|jsEvent
 operator|.
 name|getWorkflowAdjacencies
+argument_list|()
+argument_list|)
+condition|)
+block|{
+name|setAssertValue
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
+operator|!
+name|workflowTags
+operator|.
+name|equals
+argument_list|(
+name|jsEvent
+operator|.
+name|getWorkflowTags
 argument_list|()
 argument_list|)
 condition|)
