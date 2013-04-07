@@ -4067,6 +4067,30 @@ literal|true
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the close status of a file    * @param src The path to the file    *    * @return return true if file is closed    * @throws FileNotFoundException if the file does not exist.    * @throws IOException If an I/O error occurred         */
+DECL|method|isFileClosed (Path src)
+specifier|public
+name|boolean
+name|isFileClosed
+parameter_list|(
+name|Path
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|isFileClosed
+argument_list|(
+name|getPathName
+argument_list|(
+name|src
+argument_list|)
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

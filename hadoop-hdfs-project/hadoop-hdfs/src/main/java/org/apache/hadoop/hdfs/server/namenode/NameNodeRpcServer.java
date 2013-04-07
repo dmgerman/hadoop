@@ -4438,6 +4438,29 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
+DECL|method|isFileClosed (String src)
+specifier|public
+name|boolean
+name|isFileClosed
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|namesystem
+operator|.
+name|isFileClosed
+argument_list|(
+name|src
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+comment|// ClientProtocol
 DECL|method|getFileLinkInfo (String src)
 specifier|public
 name|HdfsFileStatus
