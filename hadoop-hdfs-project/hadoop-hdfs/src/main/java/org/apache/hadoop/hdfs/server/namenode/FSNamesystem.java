@@ -7806,7 +7806,7 @@ block|{
 if|if
 condition|(
 name|now
-operator|<=
+operator|>
 name|inode
 operator|.
 name|getAccessTime
@@ -7825,7 +7825,6 @@ condition|)
 block|{
 continue|continue;
 block|}
-block|}
 name|dir
 operator|.
 name|setTimes
@@ -7842,6 +7841,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|blockManager
