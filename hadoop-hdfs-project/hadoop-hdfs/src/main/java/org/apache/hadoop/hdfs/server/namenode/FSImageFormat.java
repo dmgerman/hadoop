@@ -710,6 +710,76 @@ operator|=
 literal|0
 expr_stmt|;
 block|}
+comment|// read the last allocated inode id in the fsimage
+if|if
+condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|ADD_INODE_ID
+argument_list|,
+name|imgVersion
+argument_list|)
+condition|)
+block|{
+name|long
+name|lastInodeId
+init|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+decl_stmt|;
+name|namesystem
+operator|.
+name|resetLastInodeId
+argument_list|(
+name|lastInodeId
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"load last allocated InodeId from fsimage:"
+operator|+
+name|lastInodeId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Old layout version doesn't have inode id."
+operator|+
+literal|" Will assign new id for each inode."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|// read compression related info
 name|FSImageCompression
 name|compression
@@ -770,16 +840,6 @@ operator|+
 literal|" using "
 operator|+
 name|compression
-argument_list|)
-expr_stmt|;
-comment|// reset INodeId. TODO: remove this after inodeId is persisted in fsimage
-name|namesystem
-operator|.
-name|resetLastInodeIdWithoutChecking
-argument_list|(
-name|INodeId
-operator|.
-name|LAST_RESERVED_ID
 argument_list|)
 expr_stmt|;
 comment|// load all inodes
@@ -1510,6 +1570,22 @@ decl_stmt|;
 name|long
 name|inodeId
 init|=
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|ADD_INODE_ID
+argument_list|,
+name|imgVersion
+argument_list|)
+condition|?
+name|in
+operator|.
+name|readLong
+argument_list|()
+else|:
 name|namesystem
 operator|.
 name|allocateNewInodeId
@@ -1821,6 +1897,11 @@ operator|.
 name|readINodeUnderConstruction
 argument_list|(
 name|in
+argument_list|,
+name|namesystem
+argument_list|,
+name|getLayoutVersion
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// verify that file exists in namespace
@@ -2430,6 +2511,16 @@ argument_list|(
 name|context
 operator|.
 name|getTxId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|sourceNamesystem
+operator|.
+name|getLastInodeId
 argument_list|()
 argument_list|)
 expr_stmt|;
