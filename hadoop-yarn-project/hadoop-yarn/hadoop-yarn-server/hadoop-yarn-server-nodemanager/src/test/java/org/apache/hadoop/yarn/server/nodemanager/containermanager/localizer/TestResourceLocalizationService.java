@@ -4391,6 +4391,8 @@ operator|.
 name|getDestinationDirectory
 argument_list|()
 decl_stmt|;
+comment|// Appending to local path unique number(10) generated as a part of
+comment|// LocalResourcesTracker
 name|assertTrue
 argument_list|(
 name|localizedPath
@@ -4401,6 +4403,12 @@ operator|.
 name|endsWith
 argument_list|(
 name|localPath
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
+literal|"10"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4495,6 +4503,12 @@ operator|.
 name|SEPARATOR
 operator|+
 literal|"0"
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
+literal|"11"
 argument_list|)
 argument_list|)
 expr_stmt|;

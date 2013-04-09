@@ -1502,10 +1502,6 @@ argument_list|,
 name|path
 argument_list|,
 name|rsrc
-argument_list|,
-operator|new
-name|Random
-argument_list|()
 argument_list|)
 return|;
 block|}
