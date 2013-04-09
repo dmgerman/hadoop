@@ -14432,6 +14432,18 @@ comment|/** The block is properly replicated */
 DECL|enumConstant|OK
 name|OK
 block|}
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|blocksMap
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

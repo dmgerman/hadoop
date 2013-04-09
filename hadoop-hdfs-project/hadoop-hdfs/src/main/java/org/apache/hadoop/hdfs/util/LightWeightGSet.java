@@ -1442,19 +1442,9 @@ literal|1
 operator|<<
 name|exponent
 decl_stmt|;
-if|if
-condition|(
-name|LightWeightGSet
-operator|.
 name|LOG
 operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
+name|info
 argument_list|(
 literal|"Computing capacity for map "
 operator|+
@@ -1463,7 +1453,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"VM type       = "
 operator|+
@@ -1474,7 +1464,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 name|percentage
 operator|+
@@ -1496,7 +1486,7 @@ argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
-name|debug
+name|info
 argument_list|(
 literal|"capacity      = 2^"
 operator|+
@@ -1509,10 +1499,45 @@ operator|+
 literal|" entries"
 argument_list|)
 expr_stmt|;
-block|}
 return|return
 name|c
 return|;
+block|}
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|entries
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|entries
+index|[
+name|i
+index|]
+operator|=
+literal|null
+expr_stmt|;
+block|}
+name|size
+operator|=
+literal|0
+expr_stmt|;
 block|}
 block|}
 end_class

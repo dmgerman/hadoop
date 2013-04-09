@@ -2234,6 +2234,20 @@ literal|1000
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+name|gset
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/** Test data set */
 DECL|class|IntData
