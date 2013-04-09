@@ -2511,7 +2511,7 @@ name|ret
 init|=
 name|Maps
 operator|.
-name|newHashMap
+name|newLinkedHashMap
 argument_list|()
 decl_stmt|;
 for|for
