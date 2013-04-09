@@ -3218,7 +3218,7 @@ name|Environment
 operator|.
 name|USER
 operator|.
-name|name
+name|key
 argument_list|()
 argument_list|)
 decl_stmt|;
