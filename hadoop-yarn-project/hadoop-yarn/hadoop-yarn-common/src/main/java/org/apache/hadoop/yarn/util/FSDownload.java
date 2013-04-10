@@ -74,16 +74,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Random
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|concurrent
 operator|.
 name|Callable
@@ -238,20 +228,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|permission
@@ -273,6 +249,20 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
 import|;
 end_import
 
@@ -326,22 +316,6 @@ name|LocalResourceVisibility
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ConverterUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Download a single URL to the local disk.  *  */
 end_comment
@@ -372,11 +346,6 @@ name|FSDownload
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
-DECL|field|rand
-specifier|private
-name|Random
-name|rand
 decl_stmt|;
 DECL|field|files
 specifier|private
@@ -481,7 +450,7 @@ operator|)
 literal|0700
 argument_list|)
 decl_stmt|;
-DECL|method|FSDownload (FileContext files, UserGroupInformation ugi, Configuration conf, Path destDirPath, LocalResource resource, Random rand)
+DECL|method|FSDownload (FileContext files, UserGroupInformation ugi, Configuration conf, Path destDirPath, LocalResource resource)
 specifier|public
 name|FSDownload
 parameter_list|(
@@ -499,9 +468,6 @@ name|destDirPath
 parameter_list|,
 name|LocalResource
 name|resource
-parameter_list|,
-name|Random
-name|rand
 parameter_list|)
 block|{
 name|this
@@ -533,12 +499,6 @@ operator|.
 name|resource
 operator|=
 name|resource
-expr_stmt|;
-name|this
-operator|.
-name|rand
-operator|=
-name|rand
 expr_stmt|;
 block|}
 DECL|method|getResource ()
@@ -1571,47 +1531,6 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|Path
-name|tmp
-decl_stmt|;
-do|do
-block|{
-name|tmp
-operator|=
-operator|new
-name|Path
-argument_list|(
-name|destDirPath
-argument_list|,
-name|String
-operator|.
-name|valueOf
-argument_list|(
-name|rand
-operator|.
-name|nextLong
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-do|while
-condition|(
-name|files
-operator|.
-name|util
-argument_list|()
-operator|.
-name|exists
-argument_list|(
-name|tmp
-argument_list|)
-condition|)
-do|;
-name|destDirPath
-operator|=
-name|tmp
-expr_stmt|;
 name|createDir
 argument_list|(
 name|destDirPath
@@ -1841,11 +1760,6 @@ name|FileNotFoundException
 name|ignore
 parameter_list|)
 block|{       }
-comment|// clear ref to internal var
-name|rand
-operator|=
-literal|null
-expr_stmt|;
 name|conf
 operator|=
 literal|null

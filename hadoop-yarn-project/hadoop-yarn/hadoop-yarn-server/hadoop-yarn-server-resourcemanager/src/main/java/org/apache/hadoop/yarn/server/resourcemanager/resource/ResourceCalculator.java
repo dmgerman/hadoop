@@ -293,8 +293,8 @@ name|Resource
 name|stepFactor
 parameter_list|)
 function_decl|;
-comment|/**    * Normalize resource<code>r</code> given the base     *<code>minimumResource</code>.    *     * @param r resource    * @param minimumResource step-factor    * @return normalized resource    */
-DECL|method|normalize (Resource r, Resource minimumResource)
+comment|/**    * Normalize resource<code>r</code> given the base     *<code>minimumResource</code> and verify against max allowed    *<code>maximumResource</code>    *     * @param r resource    * @param minimumResource step-factor    * @param maximumResource the upper bound of the resource to be allocated    * @return normalized resource    */
+DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource)
 specifier|public
 specifier|abstract
 name|Resource
@@ -305,6 +305,9 @@ name|r
 parameter_list|,
 name|Resource
 name|minimumResource
+parameter_list|,
+name|Resource
+name|maximumResource
 parameter_list|)
 function_decl|;
 comment|/**    * Round-up resource<code>r</code> given factor<code>stepFactor</code>.    *     * @param r resource    * @param stepFactor step-factor    * @return rounded resource    */

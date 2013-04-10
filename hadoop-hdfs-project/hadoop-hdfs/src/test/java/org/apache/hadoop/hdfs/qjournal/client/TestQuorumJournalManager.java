@@ -661,6 +661,19 @@ name|AsyncLogger
 argument_list|>
 name|spies
 decl_stmt|;
+DECL|field|toClose
+specifier|private
+name|List
+argument_list|<
+name|QuorumJournalManager
+argument_list|>
+name|toClose
+init|=
+name|Lists
+operator|.
+name|newLinkedList
+argument_list|()
+decl_stmt|;
 static|static
 block|{
 operator|(
@@ -777,6 +790,33 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|toClose
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|Closeable
+index|[
+literal|0
+index|]
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Should not leak clients between tests -- this can cause flaky tests.
+comment|// (See HDFS-4643)
+name|GenericTestUtils
+operator|.
+name|assertNoThreadsMatching
+argument_list|(
+literal|".*IPC Client.*"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|cluster
@@ -790,6 +830,27 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Enqueue a QJM for closing during shutdown. This makes the code a little    * easier to follow, with fewer try..finally clauses necessary.    */
+DECL|method|closeLater (QuorumJournalManager qjm)
+specifier|private
+name|QuorumJournalManager
+name|closeLater
+parameter_list|(
+name|QuorumJournalManager
+name|qjm
+parameter_list|)
+block|{
+name|toClose
+operator|.
+name|add
+argument_list|(
+name|qjm
+argument_list|)
+expr_stmt|;
+return|return
+name|qjm
+return|;
 block|}
 annotation|@
 name|Test
@@ -862,6 +923,8 @@ block|{
 name|QuorumJournalManager
 name|qjm
 init|=
+name|closeLater
+argument_list|(
 operator|new
 name|QuorumJournalManager
 argument_list|(
@@ -875,6 +938,7 @@ literal|"testFormat-jid"
 argument_list|)
 argument_list|,
 name|FAKE_NSINFO
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|assertFalse
@@ -914,8 +978,11 @@ block|{
 name|QuorumJournalManager
 name|readerQjm
 init|=
+name|closeLater
+argument_list|(
 name|createSpyingQJM
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
@@ -1575,6 +1642,8 @@ block|}
 comment|// Make a new QJM
 name|qjm
 operator|=
+name|closeLater
+argument_list|(
 operator|new
 name|QuorumJournalManager
 argument_list|(
@@ -1588,6 +1657,7 @@ name|JID
 argument_list|)
 argument_list|,
 name|FAKE_NSINFO
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|qjm
@@ -2041,6 +2111,8 @@ expr_stmt|;
 comment|// Make a new QJM
 name|qjm
 operator|=
+name|closeLater
+argument_list|(
 operator|new
 name|QuorumJournalManager
 argument_list|(
@@ -2054,6 +2126,7 @@ name|JID
 argument_list|)
 argument_list|,
 name|FAKE_NSINFO
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|qjm
@@ -4056,6 +4129,8 @@ block|}
 block|}
 decl_stmt|;
 return|return
+name|closeLater
+argument_list|(
 operator|new
 name|QuorumJournalManager
 argument_list|(
@@ -4071,6 +4146,7 @@ argument_list|,
 name|FAKE_NSINFO
 argument_list|,
 name|spyFactory
+argument_list|)
 argument_list|)
 return|;
 block|}

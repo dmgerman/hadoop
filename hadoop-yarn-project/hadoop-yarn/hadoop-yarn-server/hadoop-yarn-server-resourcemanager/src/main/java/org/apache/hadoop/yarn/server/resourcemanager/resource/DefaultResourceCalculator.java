@@ -197,7 +197,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|normalize (Resource r, Resource minimumResource)
+DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource)
 specifier|public
 name|Resource
 name|normalize
@@ -207,12 +207,17 @@ name|r
 parameter_list|,
 name|Resource
 name|minimumResource
+parameter_list|,
+name|Resource
+name|maximumResource
 parameter_list|)
 block|{
-return|return
-name|Resources
+name|int
+name|normalizedMemory
+init|=
+name|Math
 operator|.
-name|createResource
+name|min
 argument_list|(
 name|roundUp
 argument_list|(
@@ -236,6 +241,19 @@ operator|.
 name|getMemory
 argument_list|()
 argument_list|)
+argument_list|,
+name|maximumResource
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+decl_stmt|;
+return|return
+name|Resources
+operator|.
+name|createResource
+argument_list|(
+name|normalizedMemory
 argument_list|)
 return|;
 block|}

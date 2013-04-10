@@ -1285,6 +1285,26 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    * Get the close status of a file    * @param src The string representation of the path to the file    *    * @return return true if file is closed    * @throws AccessControlException permission denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException if the path contains a symlink.    * @throws IOException If an I/O error occurred         */
+annotation|@
+name|Idempotent
+DECL|method|isFileClosed (String src)
+specifier|public
+name|boolean
+name|isFileClosed
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnresolvedLinkException
+throws|,
+name|IOException
+function_decl|;
 comment|/**    * Get the file info for a specific file or directory. If the path     * refers to a symlink then the FileStatus of the symlink is returned.    * @param src The string representation of the path to the file    *    * @return object containing information regarding the file    *         or null if file not found    *    * @throws AccessControlException permission denied    * @throws UnresolvedLinkException if<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred            */
 annotation|@
 name|Idempotent

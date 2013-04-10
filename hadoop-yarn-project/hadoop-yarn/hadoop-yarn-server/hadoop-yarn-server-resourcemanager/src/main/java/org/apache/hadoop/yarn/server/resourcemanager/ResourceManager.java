@@ -2200,6 +2200,7 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|// sanity check for configurations
 DECL|method|validateConfigs (Configuration conf)
 specifier|protected
 specifier|static
@@ -2210,6 +2211,7 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
+comment|// validate max-attempts
 name|int
 name|globalMaxAppAttempts
 init|=
@@ -2237,7 +2239,175 @@ throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"The global max attempts should be a positive integer."
+literal|"Invalid global max attempts configuration"
+operator|+
+literal|", "
+operator|+
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_ATTEMPTS
+operator|+
+literal|"="
+operator|+
+name|globalMaxAppAttempts
+operator|+
+literal|", it should be a positive integer."
+argument_list|)
+throw|;
+block|}
+comment|// validate scheduler memory allocation setting
+name|int
+name|minMem
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+argument_list|)
+decl_stmt|;
+name|int
+name|maxMem
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|minMem
+operator|<=
+literal|0
+operator|||
+name|minMem
+operator|>
+name|maxMem
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Invalid resource scheduler memory"
+operator|+
+literal|" allocation configuration"
+operator|+
+literal|", "
+operator|+
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_MB
+operator|+
+literal|"="
+operator|+
+name|minMem
+operator|+
+literal|", "
+operator|+
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_MB
+operator|+
+literal|"="
+operator|+
+name|maxMem
+operator|+
+literal|", min and max should be greater than 0"
+operator|+
+literal|", max should be no smaller than min."
+argument_list|)
+throw|;
+block|}
+comment|// validate scheduler vcores allocation setting
+name|int
+name|minVcores
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+argument_list|)
+decl_stmt|;
+name|int
+name|maxVcores
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|minVcores
+operator|<=
+literal|0
+operator|||
+name|minVcores
+operator|>
+name|maxVcores
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Invalid resource scheduler vcores"
+operator|+
+literal|" allocation configuration"
+operator|+
+literal|", "
+operator|+
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MINIMUM_ALLOCATION_VCORES
+operator|+
+literal|"="
+operator|+
+name|minVcores
+operator|+
+literal|", "
+operator|+
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES
+operator|+
+literal|"="
+operator|+
+name|maxVcores
+operator|+
+literal|", min and max should be greater than 0"
+operator|+
+literal|", max should be no smaller than min."
 argument_list|)
 throw|;
 block|}

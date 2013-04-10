@@ -878,6 +878,11 @@ specifier|private
 name|int
 name|maxActiveApplicationsPerUser
 decl_stmt|;
+DECL|field|nodeLocalityDelay
+specifier|private
+name|int
+name|nodeLocalityDelay
+decl_stmt|;
 DECL|field|usedResources
 specifier|private
 name|Resource
@@ -1037,12 +1042,6 @@ specifier|private
 specifier|final
 name|ActiveUsersManager
 name|activeUsersManager
-decl_stmt|;
-DECL|field|nodeLocalityDelay
-specifier|private
-specifier|final
-name|int
-name|nodeLocalityDelay
 decl_stmt|;
 DECL|field|resourceCalculator
 specifier|private
@@ -1484,18 +1483,6 @@ name|getQueuePath
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
-name|nodeLocalityDelay
-operator|=
-name|cs
-operator|.
-name|getConfiguration
-argument_list|()
-operator|.
-name|getNodeLocalityDelay
-argument_list|()
-expr_stmt|;
 name|setupQueueConfigs
 argument_list|(
 name|cs
@@ -1526,6 +1513,14 @@ argument_list|,
 name|state
 argument_list|,
 name|acls
+argument_list|,
+name|cs
+operator|.
+name|getConfiguration
+argument_list|()
+operator|.
+name|getNodeLocalityDelay
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -1591,7 +1586,7 @@ name|applicationComparator
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls)
+DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay)
 specifier|private
 specifier|synchronized
 name|void
@@ -1640,6 +1635,9 @@ argument_list|,
 name|AccessControlList
 argument_list|>
 name|acls
+parameter_list|,
+name|int
+name|nodeLocalityDelay
 parameter_list|)
 block|{
 comment|// Sanity check
@@ -1782,6 +1780,12 @@ name|this
 operator|.
 name|state
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|nodeLocalityDelay
+operator|=
+name|nodeLocalityDelay
 expr_stmt|;
 name|StringBuilder
 name|aclsString
@@ -2025,6 +2029,12 @@ operator|+
 name|aclsString
 operator|+
 literal|" [= configuredAcls ]"
+operator|+
+literal|"\n"
+operator|+
+literal|"nodeLocalityDelay = "
+operator|+
+name|nodeLocalityDelay
 operator|+
 literal|"\n"
 argument_list|)
@@ -3061,6 +3071,11 @@ argument_list|,
 name|newlyParsedLeafQueue
 operator|.
 name|acls
+argument_list|,
+name|newlyParsedLeafQueue
+operator|.
+name|getNodeLocalityDelay
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// queue metrics are updated, more resource may be available

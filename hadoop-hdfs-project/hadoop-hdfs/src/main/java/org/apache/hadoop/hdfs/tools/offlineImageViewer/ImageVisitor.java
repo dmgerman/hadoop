@@ -199,6 +199,12 @@ block|,
 DECL|enumConstant|TRANSACTION_ID
 name|TRANSACTION_ID
 block|,
+DECL|enumConstant|LAST_INODE_ID
+name|LAST_INODE_ID
+block|,
+DECL|enumConstant|INODE_ID
+name|INODE_ID
+block|,
 DECL|enumConstant|SNAPSHOT_COUNTER
 name|SNAPSHOT_COUNTER
 block|,

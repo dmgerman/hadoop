@@ -3533,8 +3533,8 @@ name|clusterCapacity
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Utility method to normalize a list of resource requests, by ensuring that    * the memory for each request is a multiple of minMemory and is not zero.    *    * @param asks a list of resource requests    * @param minMemory the configured minimum memory allocation    */
-DECL|method|normalizeRequests (List<ResourceRequest> asks, int minMemory)
+comment|/**    * Utility method to normalize a list of resource requests, by ensuring that    * the memory for each request is a multiple of minMemory and is not zero.    *    * @param asks a list of resource requests    * @param minMemory the configured minimum memory allocation    * @param maxMemory the configured maximum memory allocation    */
+DECL|method|normalizeRequests (List<ResourceRequest> asks, int minMemory, int maxMemory)
 specifier|static
 name|void
 name|normalizeRequests
@@ -3547,6 +3547,9 @@ name|asks
 parameter_list|,
 name|int
 name|minMemory
+parameter_list|,
+name|int
+name|maxMemory
 parameter_list|)
 block|{
 for|for
@@ -3562,12 +3565,14 @@ argument_list|(
 name|ask
 argument_list|,
 name|minMemory
+argument_list|,
+name|maxMemory
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Utility method to normalize a resource request, by ensuring that the    * requested memory is a multiple of minMemory and is not zero.    *    * @param ask the resource request    * @param minMemory the configured minimum memory allocation    */
-DECL|method|normalizeRequest (ResourceRequest ask, int minMemory)
+comment|/**    * Utility method to normalize a resource request, by ensuring that the    * requested memory is a multiple of minMemory and is not zero.    *    * @param ask the resource request    * @param minMemory the configured minimum memory allocation    * @param maxMemory the configured maximum memory allocation    */
+DECL|method|normalizeRequest (ResourceRequest ask, int minMemory, int maxMemory)
 specifier|static
 name|void
 name|normalizeRequest
@@ -3577,6 +3582,9 @@ name|ask
 parameter_list|,
 name|int
 name|minMemory
+parameter_list|,
+name|int
+name|maxMemory
 parameter_list|)
 block|{
 name|int
@@ -3597,13 +3605,9 @@ argument_list|,
 name|minMemory
 argument_list|)
 decl_stmt|;
-name|ask
-operator|.
-name|getCapability
-argument_list|()
-operator|.
-name|setMemory
-argument_list|(
+name|int
+name|normalizedMemory
+init|=
 name|minMemory
 operator|*
 operator|(
@@ -3625,6 +3629,22 @@ else|:
 literal|0
 operator|)
 operator|)
+decl_stmt|;
+name|ask
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|setMemory
+argument_list|(
+name|Math
+operator|.
+name|min
+argument_list|(
+name|normalizedMemory
+argument_list|,
+name|maxMemory
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -3690,6 +3710,11 @@ argument_list|(
 name|ask
 argument_list|,
 name|minimumAllocation
+operator|.
+name|getMemory
+argument_list|()
+argument_list|,
+name|maximumAllocation
 operator|.
 name|getMemory
 argument_list|()

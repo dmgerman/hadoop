@@ -1635,11 +1635,11 @@ name|getInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_SCHEDULER_MAXIMUM_ALLOCATION_CORES
+name|RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_CORES
+name|DEFAULT_RM_SCHEDULER_MAXIMUM_ALLOCATION_VCORES
 argument_list|)
 decl_stmt|;
 return|return

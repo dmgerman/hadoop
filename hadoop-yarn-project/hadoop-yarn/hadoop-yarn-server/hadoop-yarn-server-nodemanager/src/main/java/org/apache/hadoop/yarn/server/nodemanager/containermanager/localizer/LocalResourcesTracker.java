@@ -181,6 +181,11 @@ name|boolean
 name|success
 parameter_list|)
 function_decl|;
+DECL|method|nextUniqueNumber ()
+name|long
+name|nextUniqueNumber
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

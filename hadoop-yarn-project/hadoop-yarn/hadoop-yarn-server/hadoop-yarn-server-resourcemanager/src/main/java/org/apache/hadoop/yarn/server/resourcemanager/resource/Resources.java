@@ -679,7 +679,7 @@ return|return
 name|out
 return|;
 block|}
-DECL|method|normalize ( ResourceCalculator calculator, Resource lhs, Resource factor)
+DECL|method|normalize ( ResourceCalculator calculator, Resource lhs, Resource factor, Resource limit)
 specifier|public
 specifier|static
 name|Resource
@@ -693,6 +693,9 @@ name|lhs
 parameter_list|,
 name|Resource
 name|factor
+parameter_list|,
+name|Resource
+name|limit
 parameter_list|)
 block|{
 return|return
@@ -703,6 +706,8 @@ argument_list|(
 name|lhs
 argument_list|,
 name|factor
+argument_list|,
+name|limit
 argument_list|)
 return|;
 block|}

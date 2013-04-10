@@ -389,7 +389,7 @@ name|containerStatus
 return|;
 block|}
 comment|/**    * Utility method to normalize a list of resource requests, by insuring that    * the memory for each request is a multiple of minMemory and is not zero.    */
-DECL|method|normalizeRequests ( List<ResourceRequest> asks, ResourceCalculator resourceCalculator, Resource clusterResource, Resource minimumResource)
+DECL|method|normalizeRequests ( List<ResourceRequest> asks, ResourceCalculator resourceCalculator, Resource clusterResource, Resource minimumResource, Resource maximumResource)
 specifier|public
 specifier|static
 name|void
@@ -409,6 +409,9 @@ name|clusterResource
 parameter_list|,
 name|Resource
 name|minimumResource
+parameter_list|,
+name|Resource
+name|maximumResource
 parameter_list|)
 block|{
 for|for
@@ -428,12 +431,14 @@ argument_list|,
 name|clusterResource
 argument_list|,
 name|minimumResource
+argument_list|,
+name|maximumResource
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Utility method to normalize a resource request, by insuring that the    * requested memory is a multiple of minMemory and is not zero.    */
-DECL|method|normalizeRequest ( ResourceRequest ask, ResourceCalculator resourceCalculator, Resource clusterResource, Resource minimumResource)
+DECL|method|normalizeRequest ( ResourceRequest ask, ResourceCalculator resourceCalculator, Resource clusterResource, Resource minimumResource, Resource maximumResource)
 specifier|public
 specifier|static
 name|void
@@ -450,6 +455,9 @@ name|clusterResource
 parameter_list|,
 name|Resource
 name|minimumResource
+parameter_list|,
+name|Resource
+name|maximumResource
 parameter_list|)
 block|{
 name|Resource
@@ -467,6 +475,8 @@ name|getCapability
 argument_list|()
 argument_list|,
 name|minimumResource
+argument_list|,
+name|maximumResource
 argument_list|)
 decl_stmt|;
 name|ask
@@ -476,6 +486,169 @@ argument_list|(
 name|normalized
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    */
+DECL|method|validateResourceRequest (ResourceRequest resReq, Resource maximumResource)
+specifier|public
+specifier|static
+name|void
+name|validateResourceRequest
+parameter_list|(
+name|ResourceRequest
+name|resReq
+parameter_list|,
+name|Resource
+name|maximumResource
+parameter_list|)
+throws|throws
+name|InvalidResourceRequestException
+block|{
+if|if
+condition|(
+name|resReq
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+operator|<
+literal|0
+operator|||
+name|resReq
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+operator|>
+name|maximumResource
+operator|.
+name|getMemory
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidResourceRequestException
+argument_list|(
+literal|"Invalid resource request"
+operator|+
+literal|", requested memory< 0"
+operator|+
+literal|", or requested memory> max configured"
+operator|+
+literal|", requestedMemory="
+operator|+
+name|resReq
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|getMemory
+argument_list|()
+operator|+
+literal|", maxMemory="
+operator|+
+name|maximumResource
+operator|.
+name|getMemory
+argument_list|()
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|resReq
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|<
+literal|0
+operator|||
+name|resReq
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|>
+name|maximumResource
+operator|.
+name|getVirtualCores
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidResourceRequestException
+argument_list|(
+literal|"Invalid resource request"
+operator|+
+literal|", requested virtual cores< 0"
+operator|+
+literal|", or requested virtual cores> max configured"
+operator|+
+literal|", requestedVirtualCores="
+operator|+
+name|resReq
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|+
+literal|", maxVirtualCores="
+operator|+
+name|maximumResource
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * Utility method to validate a list resource requests, by insuring that the    * requested memory/vcore is non-negative and not greater than max    */
+DECL|method|validateResourceRequests (List<ResourceRequest> ask, Resource maximumResource)
+specifier|public
+specifier|static
+name|void
+name|validateResourceRequests
+parameter_list|(
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|ask
+parameter_list|,
+name|Resource
+name|maximumResource
+parameter_list|)
+throws|throws
+name|InvalidResourceRequestException
+block|{
+for|for
+control|(
+name|ResourceRequest
+name|resReq
+range|:
+name|ask
+control|)
+block|{
+name|validateResourceRequest
+argument_list|(
+name|resReq
+argument_list|,
+name|maximumResource
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

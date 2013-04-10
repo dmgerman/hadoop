@@ -821,7 +821,7 @@ name|toRefresh
 init|=
 name|Sets
 operator|.
-name|newHashSet
+name|newLinkedHashSet
 argument_list|()
 decl_stmt|;
 name|Set
@@ -832,7 +832,7 @@ name|toAdd
 init|=
 name|Sets
 operator|.
-name|newHashSet
+name|newLinkedHashSet
 argument_list|()
 decl_stmt|;
 name|Set

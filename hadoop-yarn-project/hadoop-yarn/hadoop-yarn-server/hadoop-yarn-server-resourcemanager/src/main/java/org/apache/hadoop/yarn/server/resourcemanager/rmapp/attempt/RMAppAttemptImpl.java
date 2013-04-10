@@ -4259,6 +4259,8 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
+comment|// SchedulerUtils.validateResourceRequests is not necessary because
+comment|// AM resource has been checked when submission
 name|Allocation
 name|amContainerAllocation
 init|=

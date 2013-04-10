@@ -74,6 +74,20 @@ name|java
 operator|.
 name|util
 operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicLong
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|regex
 operator|.
 name|Matcher
@@ -328,6 +342,18 @@ name|Path
 argument_list|>
 DECL|field|inProgressLocalResourcesMap
 name|inProgressLocalResourcesMap
+decl_stmt|;
+comment|/*    * starting with 10 to accommodate 0-9 directories created as a part of    * LocalCacheDirectoryManager. So there will be one unique number generator    * per APPLICATION, USER and PUBLIC cache.    */
+DECL|field|uniqueNumberGenerator
+specifier|private
+name|AtomicLong
+name|uniqueNumberGenerator
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|9
+argument_list|)
 decl_stmt|;
 DECL|method|LocalResourcesTrackerImpl (String user, Dispatcher dispatcher, boolean useLocalCacheDirectoryManager, Configuration conf)
 specifier|public
@@ -1307,6 +1333,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|nextUniqueNumber ()
+specifier|public
+name|long
+name|nextUniqueNumber
+parameter_list|()
+block|{
+return|return
+name|uniqueNumberGenerator
+operator|.
+name|incrementAndGet
+argument_list|()
+return|;
 block|}
 block|}
 end_class

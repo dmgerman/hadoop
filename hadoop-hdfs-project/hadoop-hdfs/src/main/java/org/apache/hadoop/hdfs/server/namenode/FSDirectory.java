@@ -11556,6 +11556,17 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|shutdown ()
+name|void
+name|shutdown
+parameter_list|()
+block|{
+name|nameCache
+operator|.
+name|reset
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 
