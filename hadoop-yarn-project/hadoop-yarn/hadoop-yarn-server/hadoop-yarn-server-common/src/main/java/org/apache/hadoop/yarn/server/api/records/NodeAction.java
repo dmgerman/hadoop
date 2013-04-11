@@ -33,11 +33,11 @@ enum|enum
 name|NodeAction
 block|{
 DECL|enumConstant|NORMAL
-DECL|enumConstant|REBOOT
+DECL|enumConstant|RESYNC
 DECL|enumConstant|SHUTDOWN
 name|NORMAL
 block|,
-name|REBOOT
+name|RESYNC
 block|,
 name|SHUTDOWN
 block|}

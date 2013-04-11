@@ -1873,7 +1873,7 @@ name|assertTrue
 argument_list|(
 name|NodeAction
 operator|.
-name|REBOOT
+name|RESYNC
 operator|.
 name|equals
 argument_list|(

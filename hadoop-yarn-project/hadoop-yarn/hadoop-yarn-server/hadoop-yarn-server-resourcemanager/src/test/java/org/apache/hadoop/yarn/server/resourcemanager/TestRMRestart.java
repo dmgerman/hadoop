@@ -1565,7 +1565,7 @@ name|assertEquals
 argument_list|(
 name|NodeAction
 operator|.
-name|REBOOT
+name|RESYNC
 argument_list|,
 name|hbResponse
 operator|.
@@ -1588,7 +1588,7 @@ name|assertEquals
 argument_list|(
 name|NodeAction
 operator|.
-name|REBOOT
+name|RESYNC
 argument_list|,
 name|hbResponse
 operator|.
@@ -1635,7 +1635,7 @@ name|assertTrue
 argument_list|(
 name|NodeAction
 operator|.
-name|REBOOT
+name|RESYNC
 operator|!=
 name|hbResponse
 operator|.
@@ -1658,7 +1658,7 @@ name|assertTrue
 argument_list|(
 name|NodeAction
 operator|.
-name|REBOOT
+name|RESYNC
 operator|!=
 name|hbResponse
 operator|.

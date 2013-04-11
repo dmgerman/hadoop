@@ -747,12 +747,12 @@ specifier|private
 name|InetSocketAddress
 name|resourceTrackerAddress
 decl_stmt|;
-DECL|field|reboot
+DECL|field|resync
 specifier|private
 specifier|static
 specifier|final
 name|NodeHeartbeatResponse
-name|reboot
+name|resync
 init|=
 name|recordFactory
 operator|.
@@ -781,13 +781,13 @@ argument_list|)
 decl_stmt|;
 static|static
 block|{
-name|reboot
+name|resync
 operator|.
 name|setNodeAction
 argument_list|(
 name|NodeAction
 operator|.
-name|REBOOT
+name|RESYNC
 argument_list|)
 expr_stmt|;
 name|shutDown
@@ -1446,7 +1446,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|reboot
+name|resync
 return|;
 block|}
 comment|// Send ping
@@ -1619,7 +1619,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|reboot
+name|resync
 return|;
 block|}
 comment|// Heartbeat response
