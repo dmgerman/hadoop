@@ -41,6 +41,9 @@ block|,
 DECL|enumConstant|TA_RESCHEDULE
 name|TA_RESCHEDULE
 block|,
+DECL|enumConstant|TA_RECOVER
+name|TA_RECOVER
+block|,
 comment|//Producer:Client, Task
 DECL|enumConstant|TA_KILL
 name|TA_KILL

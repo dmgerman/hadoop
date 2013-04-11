@@ -3400,6 +3400,9 @@ operator|.
 name|getClock
 argument_list|()
 argument_list|,
+name|getCommitter
+argument_list|()
+argument_list|,
 name|isNewApiCommitter
 argument_list|()
 argument_list|,
@@ -4411,7 +4414,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
-DECL|method|TestJob (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Clock clock, boolean newApiCommitter, String user, AppContext appContext, JobStateInternal forcedState, String diagnostic)
+DECL|method|TestJob (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, Clock clock, OutputCommitter committer, boolean newApiCommitter, String user, AppContext appContext, JobStateInternal forcedState, String diagnostic)
 specifier|public
 name|TestJob
 parameter_list|(
@@ -4432,6 +4435,9 @@ name|taskAttemptListener
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|OutputCommitter
+name|committer
 parameter_list|,
 name|boolean
 name|newApiCommitter
@@ -4481,6 +4487,8 @@ name|getCompletedTaskFromPreviousRun
 argument_list|()
 argument_list|,
 name|metrics
+argument_list|,
+name|committer
 argument_list|,
 name|newApiCommitter
 argument_list|,
