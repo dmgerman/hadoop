@@ -2369,7 +2369,7 @@ name|resultId
 return|;
 block|}
 comment|/**    * Authorize the request.    *     * @param containerIDStr    *          of the container    * @param launchContext    *          passed if verifying the startContainer, null otherwise.    * @param remoteUgi    *          ugi corresponding to the remote end making the api-call    * @throws YarnRemoteException    */
-DECL|method|authorizeRequest (String containerIDStr, ContainerLaunchContext launchContext, UserGroupInformation remoteUgi)
+DECL|method|authorizeRequest (String containerIDStr, ContainerLaunchContext launchContext, org.apache.hadoop.yarn.api.records.Container container, UserGroupInformation remoteUgi)
 specifier|private
 name|void
 name|authorizeRequest
@@ -2379,6 +2379,21 @@ name|containerIDStr
 parameter_list|,
 name|ContainerLaunchContext
 name|launchContext
+parameter_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+name|container
 parameter_list|,
 name|UserGroupInformation
 name|remoteUgi
@@ -2643,7 +2658,7 @@ name|resource
 operator|.
 name|equals
 argument_list|(
-name|launchContext
+name|container
 operator|.
 name|getResource
 argument_list|()
@@ -2664,7 +2679,7 @@ name|resource
 operator|+
 literal|" but found "
 operator|+
-name|launchContext
+name|container
 operator|.
 name|getResource
 argument_list|()
@@ -2730,12 +2745,32 @@ operator|.
 name|getContainerLaunchContext
 argument_list|()
 decl_stmt|;
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+name|lauchContainer
+init|=
+name|request
+operator|.
+name|getContainer
+argument_list|()
+decl_stmt|;
 name|ContainerId
 name|containerID
 init|=
-name|launchContext
+name|lauchContainer
 operator|.
-name|getContainerId
+name|getId
 argument_list|()
 decl_stmt|;
 name|String
@@ -2759,6 +2794,8 @@ argument_list|(
 name|containerIDStr
 argument_list|,
 name|launchContext
+argument_list|,
+name|lauchContainer
 argument_list|,
 name|remoteUgi
 argument_list|)
@@ -2905,6 +2942,8 @@ operator|.
 name|dispatcher
 argument_list|,
 name|launchContext
+argument_list|,
+name|lauchContainer
 argument_list|,
 name|credentials
 argument_list|,
@@ -3145,7 +3184,7 @@ name|metrics
 operator|.
 name|allocateContainer
 argument_list|(
-name|launchContext
+name|lauchContainer
 operator|.
 name|getResource
 argument_list|()
@@ -3202,6 +3241,8 @@ decl_stmt|;
 name|authorizeRequest
 argument_list|(
 name|containerIDStr
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
@@ -3375,6 +3416,8 @@ decl_stmt|;
 name|authorizeRequest
 argument_list|(
 name|containerIDStr
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,

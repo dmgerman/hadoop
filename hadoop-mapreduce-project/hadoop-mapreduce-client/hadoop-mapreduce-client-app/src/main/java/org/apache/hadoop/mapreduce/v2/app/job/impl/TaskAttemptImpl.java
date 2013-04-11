@@ -1590,6 +1590,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -5023,8 +5041,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-literal|null
-argument_list|,
 name|conf
 operator|.
 name|get
@@ -5033,8 +5049,6 @@ name|MRJobConfig
 operator|.
 name|USER_NAME
 argument_list|)
-argument_list|,
-literal|null
 argument_list|,
 name|localResources
 argument_list|,
@@ -5053,7 +5067,7 @@ return|return
 name|container
 return|;
 block|}
-DECL|method|createContainerLaunchContext ( Map<ApplicationAccessType, String> applicationACLs, ContainerId containerID, Configuration conf, Token<JobTokenIdentifier> jobToken, Task remoteTask, final org.apache.hadoop.mapred.JobID oldJobId, Resource assignedCapability, WrappedJvmID jvmID, TaskAttemptListener taskAttemptListener, Credentials credentials)
+DECL|method|createContainerLaunchContext ( Map<ApplicationAccessType, String> applicationACLs, Configuration conf, Token<JobTokenIdentifier> jobToken, Task remoteTask, final org.apache.hadoop.mapred.JobID oldJobId, WrappedJvmID jvmID, TaskAttemptListener taskAttemptListener, Credentials credentials)
 specifier|static
 name|ContainerLaunchContext
 name|createContainerLaunchContext
@@ -5065,9 +5079,6 @@ argument_list|,
 name|String
 argument_list|>
 name|applicationACLs
-parameter_list|,
-name|ContainerId
-name|containerID
 parameter_list|,
 name|Configuration
 name|conf
@@ -5092,9 +5103,6 @@ name|mapred
 operator|.
 name|JobID
 name|oldJobId
-parameter_list|,
-name|Resource
-name|assignedCapability
 parameter_list|,
 name|WrappedJvmID
 name|jvmID
@@ -5274,14 +5282,10 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-name|containerID
-argument_list|,
 name|commonContainerSpec
 operator|.
 name|getUser
 argument_list|()
-argument_list|,
-name|assignedCapability
 argument_list|,
 name|commonContainerSpec
 operator|.
@@ -8725,10 +8729,6 @@ argument_list|()
 argument_list|,
 name|taskAttempt
 operator|.
-name|containerID
-argument_list|,
-name|taskAttempt
-operator|.
 name|conf
 argument_list|,
 name|taskAttempt
@@ -8742,10 +8742,6 @@ argument_list|,
 name|taskAttempt
 operator|.
 name|oldJobId
-argument_list|,
-name|taskAttempt
-operator|.
-name|assignedCapability
 argument_list|,
 name|taskAttempt
 operator|.
@@ -8786,6 +8782,10 @@ operator|.
 name|containerToken
 argument_list|,
 name|launchContext
+argument_list|,
+name|taskAttempt
+operator|.
+name|assignedCapability
 argument_list|,
 name|taskAttempt
 operator|.

@@ -1517,6 +1517,9 @@ argument_list|()
 argument_list|,
 name|submissionContext
 operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
 name|getUser
 argument_list|()
 argument_list|,

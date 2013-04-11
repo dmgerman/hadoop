@@ -118,6 +118,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -193,6 +211,11 @@ function_decl|;
 DECL|method|toString ()
 name|String
 name|toString
+parameter_list|()
+function_decl|;
+DECL|method|getResource ()
+name|Resource
+name|getResource
 parameter_list|()
 function_decl|;
 block|}

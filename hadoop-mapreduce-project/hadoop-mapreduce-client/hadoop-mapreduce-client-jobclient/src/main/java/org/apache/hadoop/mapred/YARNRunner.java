@@ -2899,8 +2899,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-literal|null
-argument_list|,
 name|UserGroupInformation
 operator|.
 name|getCurrentUser
@@ -2908,8 +2906,6 @@ argument_list|()
 operator|.
 name|getShortUserName
 argument_list|()
-argument_list|,
-name|capability
 argument_list|,
 name|localResources
 argument_list|,
@@ -2945,20 +2941,6 @@ name|applicationId
 argument_list|)
 expr_stmt|;
 comment|// ApplicationId
-name|appContext
-operator|.
-name|setUser
-argument_list|(
-comment|// User name
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|appContext
 operator|.
 name|setQueue
@@ -3037,6 +3019,13 @@ name|MRJobConfig
 operator|.
 name|DEFAULT_MR_AM_MAX_ATTEMPTS
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|appContext
+operator|.
+name|setResource
+argument_list|(
+name|capability
 argument_list|)
 expr_stmt|;
 return|return

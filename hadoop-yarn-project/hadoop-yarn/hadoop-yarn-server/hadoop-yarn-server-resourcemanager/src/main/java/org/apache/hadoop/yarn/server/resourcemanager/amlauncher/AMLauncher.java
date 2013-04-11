@@ -738,6 +738,12 @@ specifier|final
 name|RMContext
 name|rmContext
 decl_stmt|;
+DECL|field|masterContainer
+specifier|private
+specifier|final
+name|Container
+name|masterContainer
+decl_stmt|;
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -802,6 +808,15 @@ operator|.
 name|getEventHandler
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|masterContainer
+operator|=
+name|application
+operator|.
+name|getMasterContainer
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|connect ()
 specifier|private
@@ -814,10 +829,7 @@ block|{
 name|ContainerId
 name|masterContainerID
 init|=
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|.
 name|getId
 argument_list|()
@@ -844,10 +856,7 @@ expr_stmt|;
 name|ContainerId
 name|masterContainerID
 init|=
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|.
 name|getId
 argument_list|()
@@ -866,10 +875,7 @@ name|info
 argument_list|(
 literal|"Setting up container "
 operator|+
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|+
 literal|" for AM "
 operator|+
@@ -908,6 +914,13 @@ argument_list|(
 name|launchContext
 argument_list|)
 expr_stmt|;
+name|request
+operator|.
+name|setContainer
+argument_list|(
+name|masterContainer
+argument_list|)
+expr_stmt|;
 name|containerMgrProxy
 operator|.
 name|startContainer
@@ -921,10 +934,7 @@ name|info
 argument_list|(
 literal|"Done launching container "
 operator|+
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|+
 literal|" for AM "
 operator|+
@@ -949,10 +959,7 @@ expr_stmt|;
 name|ContainerId
 name|containerId
 init|=
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|.
 name|getId
 argument_list|()
@@ -995,19 +1002,11 @@ name|ContainerId
 name|containerId
 parameter_list|)
 block|{
-name|Container
-name|container
-init|=
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
-decl_stmt|;
 specifier|final
 name|NodeId
 name|node
 init|=
-name|container
+name|masterContainer
 operator|.
 name|getNodeId
 argument_list|()
@@ -1074,7 +1073,7 @@ name|ProtoUtils
 operator|.
 name|convertFromProtoFormat
 argument_list|(
-name|container
+name|masterContainer
 operator|.
 name|getContainerToken
 argument_list|()
@@ -1187,16 +1186,12 @@ expr_stmt|;
 comment|// Finalize the container
 name|container
 operator|.
-name|setContainerId
-argument_list|(
-name|containerID
-argument_list|)
-expr_stmt|;
-name|container
-operator|.
 name|setUser
 argument_list|(
 name|applicationMasterContext
+operator|.
+name|getAMContainerSpec
+argument_list|()
 operator|.
 name|getUser
 argument_list|()
@@ -1205,19 +1200,24 @@ expr_stmt|;
 name|setupTokensAndEnv
 argument_list|(
 name|container
+argument_list|,
+name|containerID
 argument_list|)
 expr_stmt|;
 return|return
 name|container
 return|;
 block|}
-DECL|method|setupTokensAndEnv ( ContainerLaunchContext container)
+DECL|method|setupTokensAndEnv ( ContainerLaunchContext container, ContainerId containerID)
 specifier|private
 name|void
 name|setupTokensAndEnv
 parameter_list|(
 name|ContainerLaunchContext
 name|container
+parameter_list|,
+name|ContainerId
+name|containerID
 parameter_list|)
 throws|throws
 name|IOException
@@ -1259,10 +1259,7 @@ name|ApplicationConstants
 operator|.
 name|AM_CONTAINER_ID_ENV
 argument_list|,
-name|container
-operator|.
-name|getContainerId
-argument_list|()
+name|containerID
 operator|.
 name|toString
 argument_list|()
@@ -1276,10 +1273,7 @@ name|ApplicationConstants
 operator|.
 name|NM_HOST_ENV
 argument_list|,
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|.
 name|getNodeId
 argument_list|()
@@ -1300,10 +1294,7 @@ name|String
 operator|.
 name|valueOf
 argument_list|(
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|.
 name|getNodeId
 argument_list|()
@@ -1317,10 +1308,7 @@ name|String
 name|parts
 index|[]
 init|=
-name|application
-operator|.
-name|getMasterContainer
-argument_list|()
+name|masterContainer
 operator|.
 name|getNodeHttpAddress
 argument_list|()
