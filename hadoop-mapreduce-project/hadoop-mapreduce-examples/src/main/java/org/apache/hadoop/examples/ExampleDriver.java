@@ -179,6 +179,45 @@ name|pgd
 operator|.
 name|addClass
 argument_list|(
+literal|"wordmean"
+argument_list|,
+name|WordMean
+operator|.
+name|class
+argument_list|,
+literal|"A map/reduce program that counts the average length of the words in the input files."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"wordmedian"
+argument_list|,
+name|WordMedian
+operator|.
+name|class
+argument_list|,
+literal|"A map/reduce program that counts the median length of the words in the input files."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
+literal|"wordstandarddeviation"
+argument_list|,
+name|WordStandardDeviation
+operator|.
+name|class
+argument_list|,
+literal|"A map/reduce program that counts the standard deviation of the length of the words in the input files."
+argument_list|)
+expr_stmt|;
+name|pgd
+operator|.
+name|addClass
+argument_list|(
 literal|"aggregatewordcount"
 argument_list|,
 name|AggregateWordCount
