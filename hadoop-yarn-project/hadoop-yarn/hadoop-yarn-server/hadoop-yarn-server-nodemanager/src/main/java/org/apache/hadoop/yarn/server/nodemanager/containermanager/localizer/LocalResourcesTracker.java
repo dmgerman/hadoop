@@ -169,18 +169,6 @@ name|String
 name|getUser
 parameter_list|()
 function_decl|;
-comment|// TODO: Remove this in favour of EventHandler.handle
-DECL|method|localizationCompleted (LocalResourceRequest req, boolean success)
-name|void
-name|localizationCompleted
-parameter_list|(
-name|LocalResourceRequest
-name|req
-parameter_list|,
-name|boolean
-name|success
-parameter_list|)
-function_decl|;
 DECL|method|nextUniqueNumber ()
 name|long
 name|nextUniqueNumber
