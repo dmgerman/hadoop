@@ -788,7 +788,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|11
+literal|12
 argument_list|,
 name|completedJob
 operator|.
@@ -831,7 +831,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|2
 argument_list|,
 name|completedJob
 operator|.
@@ -1035,7 +1035,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|1
+literal|2
 argument_list|,
 name|reduceTasks
 operator|.
@@ -1657,10 +1657,10 @@ argument_list|,
 literal|0.001
 argument_list|)
 expr_stmt|;
-comment|// 11 rows in answer
+comment|// 12 rows in answer
 name|assertEquals
 argument_list|(
-literal|11
+literal|12
 argument_list|,
 name|completedJob
 operator|.
@@ -1694,7 +1694,7 @@ expr_stmt|;
 comment|// select 5-10 rows include 5th
 name|assertEquals
 argument_list|(
-literal|6
+literal|7
 argument_list|,
 name|completedJob
 operator|.
