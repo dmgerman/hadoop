@@ -374,6 +374,25 @@ literal|1024
 operator|*
 literal|1024
 decl_stmt|;
+comment|/**    * Whether users are explicitly trying to control resource monitoring    * configuration for the MiniMRCluster. Disabled by default.    */
+DECL|field|MAPREDUCE_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+init|=
+literal|"mapreduce.minicluster.control-resource-monitoring"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DEFAULT_MAPREDUCE_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+name|DEFAULT_MAPREDUCE_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+init|=
+literal|false
+decl_stmt|;
 block|}
 end_interface
 
