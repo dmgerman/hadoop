@@ -24089,6 +24089,37 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
+comment|/**    * Log the cancellation of expired tokens to edit logs    *     * @param id token identifier to cancel    */
+DECL|method|logExpireDelegationToken (DelegationTokenIdentifier id)
+specifier|public
+name|void
+name|logExpireDelegationToken
+parameter_list|(
+name|DelegationTokenIdentifier
+name|id
+parameter_list|)
+block|{
+assert|assert
+operator|!
+name|isInSafeMode
+argument_list|()
+operator|:
+literal|"this should never be called while in safemode, since we stop "
+operator|+
+literal|"the DT manager before entering safemode!"
+assert|;
+comment|// No need to hold FSN lock since we don't access any internal
+comment|// structures, and this is stopped before the FSN shuts itself
+comment|// down, etc.
+name|getEditLog
+argument_list|()
+operator|.
+name|logCancelDelegationToken
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|logReassignLease (String leaseHolder, String src, String newHolder)
 specifier|private
 name|void
