@@ -2925,10 +2925,7 @@ name|priority
 argument_list|,
 name|node
 operator|.
-name|getRMNode
-argument_list|()
-operator|.
-name|getNodeAddress
+name|getHostName
 argument_list|()
 argument_list|)
 decl_stmt|;
