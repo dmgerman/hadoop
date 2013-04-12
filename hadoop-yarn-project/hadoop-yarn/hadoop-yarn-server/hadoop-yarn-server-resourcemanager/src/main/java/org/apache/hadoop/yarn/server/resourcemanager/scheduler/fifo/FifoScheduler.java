@@ -1939,6 +1939,8 @@ argument_list|,
 name|clusterResource
 argument_list|,
 name|minimumAllocation
+argument_list|,
+name|maximumAllocation
 argument_list|)
 expr_stmt|;
 comment|// Release containers
@@ -2923,10 +2925,7 @@ name|priority
 argument_list|,
 name|node
 operator|.
-name|getRMNode
-argument_list|()
-operator|.
-name|getNodeAddress
+name|getHostName
 argument_list|()
 argument_list|)
 decl_stmt|;

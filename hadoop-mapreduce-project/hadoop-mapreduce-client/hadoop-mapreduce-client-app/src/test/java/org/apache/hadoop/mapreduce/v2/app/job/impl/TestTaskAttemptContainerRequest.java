@@ -980,8 +980,6 @@ name|createContainerLaunchContext
 argument_list|(
 name|acls
 argument_list|,
-name|containerId
-argument_list|,
 name|jobConf
 argument_list|,
 name|jobToken
@@ -996,13 +994,6 @@ operator|.
 name|fromYarn
 argument_list|(
 name|jobId
-argument_list|)
-argument_list|,
-name|mock
-argument_list|(
-name|Resource
-operator|.
-name|class
 argument_list|)
 argument_list|,
 name|mock

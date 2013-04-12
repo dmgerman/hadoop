@@ -266,13 +266,17 @@ DECL|field|map
 name|String
 name|map
 init|=
-literal|"xargs cat "
+name|TestStreaming
+operator|.
+name|XARGS_CAT
 decl_stmt|;
 DECL|field|reduce
 name|String
 name|reduce
 init|=
-literal|"cat"
+name|TestStreaming
+operator|.
+name|CAT
 decl_stmt|;
 DECL|field|mapString
 name|String
@@ -295,7 +299,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|120000
 argument_list|)
 DECL|method|testSymLink ()
 specifier|public

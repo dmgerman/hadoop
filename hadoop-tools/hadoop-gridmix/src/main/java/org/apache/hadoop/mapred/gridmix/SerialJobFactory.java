@@ -653,6 +653,23 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+comment|// it is need for test
+DECL|method|setDistCacheEmulator (DistributedCacheEmulator e)
+name|void
+name|setDistCacheEmulator
+parameter_list|(
+name|DistributedCacheEmulator
+name|e
+parameter_list|)
+block|{
+name|jobCreator
+operator|.
+name|setDistCacheEmulator
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

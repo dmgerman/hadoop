@@ -1133,6 +1133,16 @@ operator|+
 name|nid
 decl_stmt|;
 specifier|final
+name|String
+name|nodeAddr
+init|=
+name|hostName
+operator|+
+literal|":"
+operator|+
+name|nid
+decl_stmt|;
+specifier|final
 name|int
 name|port
 init|=
@@ -1198,7 +1208,7 @@ name|MockRMNodeImpl
 argument_list|(
 name|nodeID
 argument_list|,
-name|hostName
+name|nodeAddr
 argument_list|,
 name|httpAddress
 argument_list|,

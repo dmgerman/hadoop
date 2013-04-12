@@ -762,7 +762,7 @@ argument_list|()
 expr_stmt|;
 comment|// for the inner class
 block|}
-comment|/*     * Resolve a relative path passed from the user.    *     * Relative paths are resolved against the current working directory    * (e.g. "foo/bar" becomes "/<workingDir>/foo/bar").    * Fully-qualified URIs (e.g. "hdfs://nn:p/foo/bar") and slash-relative paths    * ("/foo/bar") are returned unchanged.    *     * Additionally, we fix malformed URIs that specify a scheme but not an     * authority (e.g. "hdfs:///foo/bar"). Per RFC 2395, we remove the scheme    * if it matches the default FS, and let the default FS add in the default    * scheme and authority later (see {@link #AbstractFileSystem#checkPath}).    *     * Applications that use FileContext should use #makeQualified() since    * they really want a fully-qualified URI.    * Hence this method is not called makeAbsolute() and     * has been deliberately declared private.    */
+comment|/*     * Remove relative part - return "absolute":    * If input is relative path ("foo/bar") add wd: ie "/<workingDir>/foo/bar"    * A fully qualified uri ("hdfs://nn:p/foo/bar") or a slash-relative path    * ("/foo/bar") are returned unchanged.    *     * Applications that use FileContext should use #makeQualified() since    * they really want a fully qualified URI.    * Hence this method is not called makeAbsolute() and     * has been deliberately declared private.    */
 DECL|method|fixRelativePart (Path p)
 specifier|private
 name|Path
@@ -772,60 +772,6 @@ name|Path
 name|p
 parameter_list|)
 block|{
-comment|// Per RFC 2396 5.2, drop schema if there is a scheme but no authority.
-if|if
-condition|(
-name|p
-operator|.
-name|hasSchemeAndNoAuthority
-argument_list|()
-condition|)
-block|{
-name|String
-name|scheme
-init|=
-name|p
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getScheme
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|scheme
-operator|.
-name|equalsIgnoreCase
-argument_list|(
-name|defaultFS
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|getScheme
-argument_list|()
-argument_list|)
-condition|)
-block|{
-name|p
-operator|=
-operator|new
-name|Path
-argument_list|(
-name|p
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getSchemeSpecificPart
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|// Absolute paths are unchanged. Relative paths are resolved against the
-comment|// current working directory.
 if|if
 condition|(
 name|p

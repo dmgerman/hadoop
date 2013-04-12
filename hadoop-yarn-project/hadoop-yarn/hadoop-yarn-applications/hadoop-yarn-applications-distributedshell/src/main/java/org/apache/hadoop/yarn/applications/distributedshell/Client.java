@@ -3148,7 +3148,7 @@ argument_list|(
 name|amMemory
 argument_list|)
 expr_stmt|;
-name|amContainer
+name|appContext
 operator|.
 name|setResource
 argument_list|(

@@ -4043,6 +4043,9 @@ name|appAttempt
 operator|.
 name|submissionContext
 operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
 name|getUser
 argument_list|()
 argument_list|)
@@ -4248,9 +4251,7 @@ name|ANY
 argument_list|,
 name|appAttempt
 operator|.
-name|submissionContext
-operator|.
-name|getAMContainerSpec
+name|getSubmissionContext
 argument_list|()
 operator|.
 name|getResource
@@ -4259,6 +4260,8 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
+comment|// SchedulerUtils.validateResourceRequests is not necessary because
+comment|// AM resource has been checked when submission
 name|Allocation
 name|amContainerAllocation
 init|=
@@ -4401,6 +4404,22 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|appAttempt
+operator|.
+name|getSubmissionContext
+argument_list|()
+operator|.
+name|setResource
+argument_list|(
+name|appAttempt
+operator|.
+name|getMasterContainer
+argument_list|()
+operator|.
+name|getResource
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|RMStateStore

@@ -714,6 +714,11 @@ specifier|private
 name|ContainerManagerImpl
 name|containerManager
 decl_stmt|;
+DECL|field|nodeStatusUpdater
+specifier|private
+name|NodeStatusUpdater
+name|nodeStatusUpdater
+decl_stmt|;
 DECL|field|nodeManagerShutdownHook
 specifier|private
 specifier|static
@@ -886,6 +891,23 @@ name|exec
 argument_list|)
 return|;
 block|}
+DECL|method|createNMContext (NMContainerTokenSecretManager containerTokenSecretManager)
+specifier|protected
+name|NMContext
+name|createNMContext
+parameter_list|(
+name|NMContainerTokenSecretManager
+name|containerTokenSecretManager
+parameter_list|)
+block|{
+return|return
+operator|new
+name|NMContext
+argument_list|(
+name|containerTokenSecretManager
+argument_list|)
+return|;
+block|}
 DECL|method|doSecureLogin ()
 specifier|protected
 name|void
@@ -969,8 +991,7 @@ name|this
 operator|.
 name|context
 operator|=
-operator|new
-name|NMContext
+name|createNMContext
 argument_list|(
 name|containerTokenSecretManager
 argument_list|)
@@ -1076,9 +1097,8 @@ operator|.
 name|getDiskHandler
 argument_list|()
 expr_stmt|;
-name|NodeStatusUpdater
 name|nodeStatusUpdater
-init|=
+operator|=
 name|createNodeStatusUpdater
 argument_list|(
 name|context
@@ -1087,7 +1107,7 @@ name|dispatcher
 argument_list|,
 name|nodeHealthChecker
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|NodeResourceMonitor
 name|nodeResourceMonitor
 init|=
@@ -1284,7 +1304,11 @@ block|{
 return|return;
 block|}
 name|cleanupContainers
-argument_list|()
+argument_list|(
+name|NodeManagerEventType
+operator|.
+name|SHUTDOWN
+argument_list|)
 expr_stmt|;
 name|super
 operator|.
@@ -1297,16 +1321,61 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|cleanupContainersOnResync ()
+specifier|protected
+name|void
+name|cleanupContainersOnResync
+parameter_list|()
+block|{
+comment|//we do not want to block dispatcher thread here
+operator|new
+name|Thread
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|cleanupContainers
+argument_list|(
+name|NodeManagerEventType
+operator|.
+name|RESYNC
+argument_list|)
+expr_stmt|;
+operator|(
+operator|(
+name|NodeStatusUpdaterImpl
+operator|)
+name|nodeStatusUpdater
+operator|)
+operator|.
+name|rebootNodeStatusUpdater
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|cleanupContainers ()
+DECL|method|cleanupContainers (NodeManagerEventType eventType)
 specifier|protected
 name|void
 name|cleanupContainers
-parameter_list|()
+parameter_list|(
+name|NodeManagerEventType
+name|eventType
+parameter_list|)
 block|{
 name|Map
 argument_list|<
@@ -1335,7 +1404,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Containers still running on shutdown: "
+literal|"Containers still running on "
+operator|+
+name|eventType
+operator|+
+literal|" : "
 operator|+
 name|containers
 operator|.
@@ -1388,6 +1461,14 @@ argument_list|(
 literal|"Waiting for containers to be killed"
 argument_list|)
 expr_stmt|;
+switch|switch
+condition|(
+name|eventType
+condition|)
+block|{
+case|case
+name|SHUTDOWN
+case|:
 name|long
 name|waitStartTime
 init|=
@@ -1434,12 +1515,70 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Interrupted while sleeping on container kill"
+literal|"Interrupted while sleeping on container kill on shutdown"
 argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+break|break;
+case|case
+name|RESYNC
+case|:
+while|while
+condition|(
+operator|!
+name|containers
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1000
+argument_list|)
+expr_stmt|;
+comment|//to remove done containers from the map
+name|nodeStatusUpdater
+operator|.
+name|getNodeStatusAndUpdateContainersInContext
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ex
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted while sleeping on container kill on resync"
+argument_list|,
+name|ex
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+break|break;
+default|default:
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Invalid eventType: "
+operator|+
+name|eventType
+argument_list|)
+expr_stmt|;
 block|}
 comment|// All containers killed
 if|if
@@ -1853,12 +1992,9 @@ argument_list|()
 expr_stmt|;
 break|break;
 case|case
-name|REBOOT
+name|RESYNC
 case|:
-name|stop
-argument_list|()
-expr_stmt|;
-name|reboot
+name|cleanupContainersOnResync
 argument_list|()
 expr_stmt|;
 break|break;
@@ -1899,6 +2035,16 @@ parameter_list|()
 block|{
 return|return
 name|containerManager
+return|;
+block|}
+comment|//For testing
+DECL|method|getNMDispatcher ()
+name|Dispatcher
+name|getNMDispatcher
+parameter_list|()
+block|{
+return|return
+name|dispatcher
 return|;
 block|}
 annotation|@

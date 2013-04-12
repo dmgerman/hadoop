@@ -112,29 +112,6 @@ specifier|public
 interface|interface
 name|ContainerLaunchContext
 block|{
-comment|/**    * Get<code>ContainerId</code> of container to be launched.    * @return<code>ContainerId</code> of container to be launched    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getContainerId ()
-name|ContainerId
-name|getContainerId
-parameter_list|()
-function_decl|;
-comment|/**    * Set<code>ContainerId</code> of container to be launched.    * @param containerId et<code>ContainerId</code> of container to be launched    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setContainerId (ContainerId containerId)
-name|void
-name|setContainerId
-parameter_list|(
-name|ContainerId
-name|containerId
-parameter_list|)
-function_decl|;
 comment|/**    * Get the<em>user</em> to whom the container has been allocated.    * @return the<em>user</em> to whom the container has been allocated    */
 annotation|@
 name|Public
@@ -156,29 +133,6 @@ name|setUser
 parameter_list|(
 name|String
 name|user
-parameter_list|)
-function_decl|;
-comment|/**    * Get the<code>Resource</code> allocated to the container by the    *<code>ResourceManager</code>.    * @return<code>Resource</code> allocated to the container by the    *<code>ResourceManager</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getResource ()
-name|Resource
-name|getResource
-parameter_list|()
-function_decl|;
-comment|/**    * Set the<code>Resource</code> allocated to the container by the    *<code>ResourceManager</code>.    * @param resource allocated resource    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setResource (Resource resource)
-name|void
-name|setResource
-parameter_list|(
-name|Resource
-name|resource
 parameter_list|)
 function_decl|;
 comment|/**    * Get security tokens (if security is enabled).    * @return security tokens (if security is enabled)    */

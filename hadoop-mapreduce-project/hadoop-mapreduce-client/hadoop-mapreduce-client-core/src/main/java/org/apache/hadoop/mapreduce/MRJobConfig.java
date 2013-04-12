@@ -1751,6 +1751,15 @@ name|MR_AM_PREFIX
 operator|+
 literal|"job.recovery.enable"
 decl_stmt|;
+DECL|field|MR_AM_JOB_RECOVERY_ENABLE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|MR_AM_JOB_RECOVERY_ENABLE_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|/**     * Limit on the number of reducers that can be preempted to ensure that at    *  least one map task can run if it needs to. Percentage between 0.0 and 1.0    */
 DECL|field|MR_AM_JOB_REDUCE_PREEMPTION_LIMIT
 specifier|public
@@ -2474,6 +2483,15 @@ name|String
 name|WORKFLOW_ADJACENCY_PREFIX_PATTERN
 init|=
 literal|"^mapreduce\\.workflow\\.adjacency\\..+"
+decl_stmt|;
+DECL|field|WORKFLOW_TAGS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|WORKFLOW_TAGS
+init|=
+literal|"mapreduce.workflow.tags"
 decl_stmt|;
 comment|/**    * The maximum number of application attempts.    * It is a application-specific setting.    */
 DECL|field|MR_AM_MAX_ATTEMPTS

@@ -198,6 +198,12 @@ name|DELEGATION_TOKEN_IDENTIFIER_MASTER_KEY_ID
 block|,
 DECL|enumConstant|TRANSACTION_ID
 name|TRANSACTION_ID
+block|,
+DECL|enumConstant|LAST_INODE_ID
+name|LAST_INODE_ID
+block|,
+DECL|enumConstant|INODE_ID
+name|INODE_ID
 block|}
 comment|/**    * Begin visiting the fsimage structure.  Opportunity to perform    * any initialization necessary for the implementing visitor.    */
 DECL|method|start ()

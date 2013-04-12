@@ -1251,16 +1251,13 @@ operator|.
 name|getApplicationId
 argument_list|()
 operator|.
-name|getId
-argument_list|()
-operator|-
+name|compareTo
+argument_list|(
 name|a2
 operator|.
 name|getApplicationId
 argument_list|()
-operator|.
-name|getId
-argument_list|()
+argument_list|)
 return|;
 block|}
 block|}
@@ -2952,6 +2949,8 @@ name|getClusterResources
 argument_list|()
 argument_list|,
 name|minimumAllocation
+argument_list|,
+name|maximumAllocation
 argument_list|)
 expr_stmt|;
 comment|// Release containers

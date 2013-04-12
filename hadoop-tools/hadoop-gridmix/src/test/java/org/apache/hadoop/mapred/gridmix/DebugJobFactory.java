@@ -100,6 +100,7 @@ end_comment
 
 begin_class
 DECL|class|DebugJobFactory
+specifier|public
 class|class
 name|DebugJobFactory
 block|{
@@ -120,6 +121,9 @@ DECL|method|getFactory ( JobSubmitter submitter, Path scratch, int numJobs, Conf
 specifier|public
 specifier|static
 name|JobFactory
+argument_list|<
+name|?
+argument_list|>
 name|getFactory
 parameter_list|(
 name|JobSubmitter

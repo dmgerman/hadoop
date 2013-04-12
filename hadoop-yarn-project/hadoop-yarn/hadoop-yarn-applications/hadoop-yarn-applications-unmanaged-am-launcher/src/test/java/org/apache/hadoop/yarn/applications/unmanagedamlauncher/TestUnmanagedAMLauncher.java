@@ -142,6 +142,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|conf
@@ -283,7 +297,7 @@ name|TestUnmanagedAMLauncher
 operator|.
 name|class
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 argument_list|,
 literal|1
@@ -520,7 +534,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|10000
+literal|30000
 argument_list|)
 DECL|method|testDSShell ()
 specifier|public
@@ -585,7 +599,19 @@ literal|"/bin/java -Xmx512m "
 operator|+
 literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster "
 operator|+
-literal|"--container_memory 128 --num_containers 1 --priority 0 --shell_command ls"
+literal|"--container_memory 128 --num_containers 1 --priority 0 "
+operator|+
+literal|"--shell_command "
+operator|+
+operator|(
+name|Shell
+operator|.
+name|WINDOWS
+operator|?
+literal|"dir"
+operator|:
+literal|"ls"
+operator|)
 block|}
 decl_stmt|;
 name|LOG

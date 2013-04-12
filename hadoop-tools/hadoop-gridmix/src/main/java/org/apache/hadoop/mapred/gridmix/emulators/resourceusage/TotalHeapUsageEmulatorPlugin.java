@@ -230,6 +230,7 @@ decl_stmt|;
 DECL|field|ONE_MB
 specifier|public
 specifier|static
+specifier|final
 name|int
 name|ONE_MB
 init|=
@@ -287,6 +288,7 @@ comment|// store the unit loads in a list
 DECL|field|heapSpace
 specifier|protected
 specifier|static
+specifier|final
 name|ArrayList
 argument_list|<
 name|Object

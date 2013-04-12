@@ -44,11 +44,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|api
 operator|.
-name|records
-operator|.
-name|LocalResource
+name|*
 import|;
 end_import
 
@@ -64,24 +66,6 @@ name|LocalizerAction
 name|getLocalizerAction
 parameter_list|()
 function_decl|;
-DECL|method|getAllResources ()
-specifier|public
-name|List
-argument_list|<
-name|LocalResource
-argument_list|>
-name|getAllResources
-parameter_list|()
-function_decl|;
-DECL|method|getLocalResource (int i)
-specifier|public
-name|LocalResource
-name|getLocalResource
-parameter_list|(
-name|int
-name|i
-parameter_list|)
-function_decl|;
 DECL|method|setLocalizerAction (LocalizerAction action)
 specifier|public
 name|void
@@ -91,41 +75,26 @@ name|LocalizerAction
 name|action
 parameter_list|)
 function_decl|;
-DECL|method|addAllResources (List<LocalResource> resources)
+DECL|method|getResourceSpecs ()
+specifier|public
+name|List
+argument_list|<
+name|ResourceLocalizationSpec
+argument_list|>
+name|getResourceSpecs
+parameter_list|()
+function_decl|;
+DECL|method|setResourceSpecs (List<ResourceLocalizationSpec> rsrcs)
 specifier|public
 name|void
-name|addAllResources
+name|setResourceSpecs
 parameter_list|(
 name|List
 argument_list|<
-name|LocalResource
+name|ResourceLocalizationSpec
 argument_list|>
-name|resources
+name|rsrcs
 parameter_list|)
-function_decl|;
-DECL|method|addResource (LocalResource resource)
-specifier|public
-name|void
-name|addResource
-parameter_list|(
-name|LocalResource
-name|resource
-parameter_list|)
-function_decl|;
-DECL|method|removeResource (int index)
-specifier|public
-name|void
-name|removeResource
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-DECL|method|clearResources ()
-specifier|public
-name|void
-name|clearResources
-parameter_list|()
 function_decl|;
 block|}
 end_interface

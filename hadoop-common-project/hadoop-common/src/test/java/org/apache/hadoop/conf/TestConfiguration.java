@@ -355,6 +355,36 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
+DECL|field|IBMJAVA
+specifier|final
+specifier|static
+name|boolean
+name|IBMJAVA
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.vendor"
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+literal|"IBM"
+argument_list|)
+decl_stmt|;
+DECL|field|XMLHEADER
+specifier|final
+specifier|static
+name|String
+name|XMLHEADER
+init|=
+name|IBMJAVA
+condition|?
+literal|"<?xml version=\"1.0\" encoding=\"UTF-8\"?><configuration>"
+else|:
+literal|"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><configuration>"
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|setUp ()
@@ -2163,7 +2193,7 @@ name|result
 operator|.
 name|startsWith
 argument_list|(
-literal|"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><configuration>"
+name|XMLHEADER
 argument_list|)
 argument_list|)
 expr_stmt|;

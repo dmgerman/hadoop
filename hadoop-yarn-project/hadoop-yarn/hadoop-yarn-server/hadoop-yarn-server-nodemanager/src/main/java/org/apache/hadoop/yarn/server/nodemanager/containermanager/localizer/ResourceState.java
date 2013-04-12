@@ -37,6 +37,9 @@ name|DOWNLOADING
 block|,
 DECL|enumConstant|LOCALIZED
 name|LOCALIZED
+block|,
+DECL|enumConstant|FAILED
+name|FAILED
 block|}
 end_enum
 

@@ -2961,13 +2961,6 @@ operator|.
 name|getNodeHttpAddress
 argument_list|()
 operator|+
-literal|", containerState"
-operator|+
-name|allocatedContainer
-operator|.
-name|getState
-argument_list|()
-operator|+
 literal|", containerResourceMemory"
 operator|+
 name|allocatedContainer
@@ -3192,26 +3185,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|ctx
-operator|.
-name|setContainerId
-argument_list|(
-name|container
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|ctx
-operator|.
-name|setResource
-argument_list|(
-name|container
-operator|.
-name|getResource
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|String
 name|jobUserName
 init|=
@@ -3225,7 +3198,7 @@ name|Environment
 operator|.
 name|USER
 operator|.
-name|name
+name|key
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3555,6 +3528,13 @@ operator|.
 name|setContainerLaunchContext
 argument_list|(
 name|ctx
+argument_list|)
+expr_stmt|;
+name|startReq
+operator|.
+name|setContainer
+argument_list|(
+name|container
 argument_list|)
 expr_stmt|;
 try|try

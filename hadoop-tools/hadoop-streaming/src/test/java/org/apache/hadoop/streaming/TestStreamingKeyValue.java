@@ -261,7 +261,9 @@ argument_list|()
 block|,
 literal|"-mapper"
 block|,
-literal|"cat"
+name|TestStreaming
+operator|.
+name|CAT
 block|,
 literal|"-jobconf"
 block|,

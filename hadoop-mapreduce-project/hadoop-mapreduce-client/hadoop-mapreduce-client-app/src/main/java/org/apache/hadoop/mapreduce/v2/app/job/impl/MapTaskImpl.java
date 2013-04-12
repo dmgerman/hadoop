@@ -26,16 +26,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -100,24 +90,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|jobhistory
-operator|.
-name|JobHistoryParser
-operator|.
-name|TaskInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|security
 operator|.
 name|token
@@ -161,26 +133,6 @@ operator|.
 name|records
 operator|.
 name|JobId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|TaskId
 import|;
 end_import
 
@@ -341,7 +293,7 @@ specifier|final
 name|TaskSplitMetaInfo
 name|taskSplitMetaInfo
 decl_stmt|;
-DECL|method|MapTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskSplitMetaInfo taskSplitMetaInfo, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext)
+DECL|method|MapTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskSplitMetaInfo taskSplitMetaInfo, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, int appAttemptId, MRAppMetrics metrics, AppContext appContext)
 specifier|public
 name|MapTaskImpl
 parameter_list|(
@@ -378,16 +330,8 @@ parameter_list|,
 name|Clock
 name|clock
 parameter_list|,
-name|Map
-argument_list|<
-name|TaskId
-argument_list|,
-name|TaskInfo
-argument_list|>
-name|completedTasksFromPreviousRun
-parameter_list|,
 name|int
-name|startCount
+name|appAttemptId
 parameter_list|,
 name|MRAppMetrics
 name|metrics
@@ -420,9 +364,7 @@ name|credentials
 argument_list|,
 name|clock
 argument_list|,
-name|completedTasksFromPreviousRun
-argument_list|,
-name|startCount
+name|appAttemptId
 argument_list|,
 name|metrics
 argument_list|,

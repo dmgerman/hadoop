@@ -241,28 +241,6 @@ name|Priority
 name|priority
 parameter_list|)
 function_decl|;
-comment|/**    * Get the current<code>ContainerState</code> of the container.    * @return current<code>ContainerState</code> of the container    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getState ()
-name|ContainerState
-name|getState
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setState (ContainerState state)
-name|void
-name|setState
-parameter_list|(
-name|ContainerState
-name|state
-parameter_list|)
-function_decl|;
 comment|/**    * Get the<code>ContainerToken</code> for the container.    * @return<code>ContainerToken</code> for the container    */
 annotation|@
 name|Public
@@ -283,28 +261,6 @@ name|setContainerToken
 parameter_list|(
 name|ContainerToken
 name|containerToken
-parameter_list|)
-function_decl|;
-comment|/**    * Get the<code>ContainerStatus</code> of the container.    * @return<code>ContainerStatus</code> of the container    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getContainerStatus ()
-name|ContainerStatus
-name|getContainerStatus
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setContainerStatus (ContainerStatus containerStatus)
-name|void
-name|setContainerStatus
-parameter_list|(
-name|ContainerStatus
-name|containerStatus
 parameter_list|)
 function_decl|;
 block|}

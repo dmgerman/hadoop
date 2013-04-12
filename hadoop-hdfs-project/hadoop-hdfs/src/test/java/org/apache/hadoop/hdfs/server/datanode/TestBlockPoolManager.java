@@ -620,7 +620,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMESERVICES
 argument_list|,
-literal|"ns1"
+literal|"ns2"
 argument_list|)
 expr_stmt|;
 name|bpm

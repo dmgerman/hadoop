@@ -4634,6 +4634,22 @@ comment|// Don't scan any more directories.
 block|}
 block|}
 block|}
+comment|// for test
+annotation|@
+name|VisibleForTesting
+DECL|method|setMaxHistoryAge (long newValue)
+name|void
+name|setMaxHistoryAge
+parameter_list|(
+name|long
+name|newValue
+parameter_list|)
+block|{
+name|maxHistoryAge
+operator|=
+name|newValue
+expr_stmt|;
+block|}
 block|}
 end_class
 

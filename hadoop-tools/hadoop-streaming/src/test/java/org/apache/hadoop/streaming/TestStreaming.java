@@ -164,6 +164,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests hadoopStreaming in MapReduce local mode.  */
 end_comment
@@ -189,6 +203,54 @@ name|StreamJob
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+comment|/**    * cat command used for copying stdin to stdout as mapper or reducer function.    * On Windows, use a cmd script that approximates the functionality of cat.    */
+DECL|field|CAT
+specifier|static
+specifier|final
+name|String
+name|CAT
+init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"cmd /c "
+operator|+
+operator|new
+name|File
+argument_list|(
+literal|"target/bin/cat.cmd"
+argument_list|)
+operator|.
+name|getAbsolutePath
+argument_list|()
+else|:
+literal|"cat"
+decl_stmt|;
+comment|/**    * Command used for iterating through file names on stdin and copying each    * file's contents to stdout, used as mapper or reducer function.  On Windows,    * use a cmd script that approximates the functionality of xargs cat.    */
+DECL|field|XARGS_CAT
+specifier|static
+specifier|final
+name|String
+name|XARGS_CAT
+init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"cmd /c "
+operator|+
+operator|new
+name|File
+argument_list|(
+literal|"target/bin/xargs_cat.cmd"
+argument_list|)
+operator|.
+name|getAbsolutePath
+argument_list|()
+else|:
+literal|"xargs cat"
 decl_stmt|;
 comment|// "map" command: grep -E (red|green|blue)
 comment|// reduce command: uniq
@@ -328,8 +390,8 @@ operator|.
 name|redirectIfAntJunit
 argument_list|()
 expr_stmt|;
-name|TEST_DIR
-operator|=
+name|setTestDir
+argument_list|(
 operator|new
 name|File
 argument_list|(
@@ -338,13 +400,29 @@ argument_list|)
 operator|.
 name|getAbsoluteFile
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Sets root of test working directory and resets any other paths that must be    * children of the test working directory.  Typical usage is for subclasses    * that use HDFS to override the test directory to the form "/tmp/<test name>"    * so that on Windows, tests won't attempt to use paths containing a ':' from    * the drive specifier.  The ':' character is considered invalid by HDFS.    *     * @param testDir File to set    */
+DECL|method|setTestDir (File testDir)
+specifier|protected
+name|void
+name|setTestDir
+parameter_list|(
+name|File
+name|testDir
+parameter_list|)
+block|{
+name|TEST_DIR
+operator|=
+name|testDir
 expr_stmt|;
 name|OUTPUT_DIR
 operator|=
 operator|new
 name|File
 argument_list|(
-name|TEST_DIR
+name|testDir
 argument_list|,
 literal|"out"
 argument_list|)
@@ -354,7 +432,7 @@ operator|=
 operator|new
 name|File
 argument_list|(
-name|TEST_DIR
+name|testDir
 argument_list|,
 literal|"input.txt"
 argument_list|)
@@ -442,7 +520,7 @@ name|Path
 argument_list|(
 name|INPUT_FILE
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 argument_list|)
 argument_list|)
@@ -476,14 +554,14 @@ name|inputFile
 operator|=
 name|INPUT_FILE
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 expr_stmt|;
 name|outDir
 operator|=
 name|OUTPUT_DIR
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 expr_stmt|;
 block|}
@@ -494,9 +572,6 @@ index|[]
 name|genArgs
 parameter_list|()
 block|{
-name|setInputOutput
-argument_list|()
-expr_stmt|;
 name|args
 operator|.
 name|add
@@ -670,7 +745,7 @@ name|Path
 argument_list|(
 name|OUTPUT_DIR
 operator|.
-name|getAbsolutePath
+name|getPath
 argument_list|()
 argument_list|,
 literal|"part-00000"
@@ -832,6 +907,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|setInputOutput
+argument_list|()
+expr_stmt|;
 name|createInput
 argument_list|()
 expr_stmt|;

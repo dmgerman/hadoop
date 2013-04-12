@@ -123,22 +123,6 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-literal|"getUrl returned Unknown"
-argument_list|,
-operator|!
-name|YarnVersionInfo
-operator|.
-name|getUrl
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"Unknown"
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
 literal|"getSrcChecksum returned Unknown"
 argument_list|,
 operator|!
@@ -155,6 +139,16 @@ argument_list|)
 expr_stmt|;
 comment|// these could be Unknown if the VersionInfo generated from code not in svn or git
 comment|// so just check that they return something
+name|assertNotNull
+argument_list|(
+literal|"getUrl returned null"
+argument_list|,
+name|YarnVersionInfo
+operator|.
+name|getUrl
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertNotNull
 argument_list|(
 literal|"getRevision returned null"

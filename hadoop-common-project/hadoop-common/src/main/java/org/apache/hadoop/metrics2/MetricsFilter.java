@@ -116,6 +116,14 @@ name|accepts
 argument_list|(
 name|record
 operator|.
+name|name
+argument_list|()
+argument_list|)
+operator|&&
+name|accepts
+argument_list|(
+name|record
+operator|.
 name|tags
 argument_list|()
 argument_list|)

@@ -1437,7 +1437,7 @@ argument_list|()
 operator|-
 name|attempt
 operator|.
-name|getLaunchTime
+name|getShuffleFinishTime
 argument_list|()
 expr_stmt|;
 name|avgReduceTime

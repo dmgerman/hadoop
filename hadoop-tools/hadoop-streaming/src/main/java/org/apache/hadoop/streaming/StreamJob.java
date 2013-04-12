@@ -1706,22 +1706,13 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|URI
-name|pathURI
-init|=
-operator|new
-name|URI
-argument_list|(
-name|file
-argument_list|)
-decl_stmt|;
 name|Path
 name|path
 init|=
 operator|new
 name|Path
 argument_list|(
-name|pathURI
+name|file
 argument_list|)
 decl_stmt|;
 name|FileSystem
@@ -5171,6 +5162,15 @@ expr_stmt|;
 if|if
 condition|(
 name|isMapperACommand
+operator|||
+name|jobConf_
+operator|.
+name|get
+argument_list|(
+literal|"stream.map.output"
+argument_list|)
+operator|!=
+literal|null
 condition|)
 block|{
 comment|// if mapper is a command, then map output key/value classes come from the
@@ -5262,6 +5262,15 @@ expr_stmt|;
 if|if
 condition|(
 name|isReducerACommand
+operator|||
+name|jobConf_
+operator|.
+name|get
+argument_list|(
+literal|"stream.reduce.output"
+argument_list|)
+operator|!=
+literal|null
 condition|)
 block|{
 comment|// if reducer is a command, then output key/value classes come from the

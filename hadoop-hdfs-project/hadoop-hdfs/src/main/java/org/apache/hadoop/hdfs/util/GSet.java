@@ -100,6 +100,11 @@ name|K
 name|key
 parameter_list|)
 function_decl|;
+DECL|method|clear ()
+name|void
+name|clear
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
