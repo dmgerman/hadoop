@@ -81,7 +81,7 @@ literal|"bunnies.are.pink\t\n</xmltag>\t\n"
 expr_stmt|;
 name|map
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|reduce
 operator|=

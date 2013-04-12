@@ -264,13 +264,17 @@ DECL|field|map
 name|String
 name|map
 init|=
-literal|"xargs cat "
+name|TestStreaming
+operator|.
+name|XARGS_CAT
 decl_stmt|;
 DECL|field|reduce
 name|String
 name|reduce
 init|=
-literal|"cat"
+name|TestStreaming
+operator|.
+name|CAT
 decl_stmt|;
 DECL|field|mapString
 name|String

@@ -404,11 +404,11 @@ argument_list|)
 expr_stmt|;
 name|map
 operator|=
-literal|"xargs cat"
+name|XARGS_CAT
 expr_stmt|;
 name|reduce
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 block|}
 annotation|@
@@ -466,7 +466,19 @@ decl_stmt|;
 name|String
 name|inputFileString
 init|=
-literal|"symlink1/cacheArchive1\nsymlink2/cacheArchive2"
+literal|"symlink1"
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+literal|"cacheArchive1\nsymlink2"
+operator|+
+name|File
+operator|.
+name|separator
+operator|+
+literal|"cacheArchive2"
 decl_stmt|;
 name|dos
 operator|.

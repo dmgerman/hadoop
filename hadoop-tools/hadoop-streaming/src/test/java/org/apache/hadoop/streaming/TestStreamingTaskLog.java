@@ -428,7 +428,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|120000
 argument_list|)
 DECL|method|testStreamingTaskLogWithHadoopCmd ()
 specifier|public
@@ -513,7 +513,15 @@ operator|.
 name|toString
 argument_list|()
 operator|+
+operator|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"/testTaskLog.cmd"
+else|:
 literal|"/testTaskLog.sh"
+operator|)
 argument_list|)
 decl_stmt|;
 name|conf
@@ -560,6 +568,17 @@ argument_list|)
 expr_stmt|;
 name|map
 operator|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"cmd /c "
+operator|+
+name|scriptFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+else|:
 name|scriptFile
 operator|.
 name|getAbsolutePath
@@ -658,6 +677,26 @@ argument_list|(
 name|scriptFile
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|in
+operator|.
+name|write
+argument_list|(
+literal|"@echo %HADOOP_ROOT_LOGGER% %HADOOP_CLIENT_OPTS%"
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|in
 operator|.
 name|write
@@ -672,6 +711,7 @@ name|getBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|in
 operator|.
 name|close
