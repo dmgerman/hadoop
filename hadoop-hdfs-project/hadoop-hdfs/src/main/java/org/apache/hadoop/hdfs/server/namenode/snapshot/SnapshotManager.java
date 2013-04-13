@@ -560,16 +560,15 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Create a snapshot of the given path.    * @param path    *          The directory path where the snapshot will be taken.    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
-DECL|method|createSnapshot (final String path, final String snapshotName )
+DECL|method|createSnapshot (final String path, String snapshotName )
 specifier|public
-name|void
+name|String
 name|createSnapshot
 parameter_list|(
 specifier|final
 name|String
 name|path
 parameter_list|,
-specifier|final
 name|String
 name|snapshotName
 parameter_list|)
@@ -604,17 +603,6 @@ argument_list|,
 name|path
 argument_list|)
 decl_stmt|;
-name|fsdir
-operator|.
-name|verifyMaxComponentLength
-argument_list|(
-name|snapshotName
-argument_list|,
-name|path
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
 name|srcRoot
 operator|.
 name|addSnapshot
@@ -633,6 +621,16 @@ operator|.
 name|getAndIncrement
 argument_list|()
 expr_stmt|;
+return|return
+name|Snapshot
+operator|.
+name|getSnapshotPath
+argument_list|(
+name|path
+argument_list|,
+name|snapshotName
+argument_list|)
+return|;
 block|}
 comment|/**    * Delete a snapshot for a snapshottable directory    * @param path Path to the directory where the snapshot was taken    * @param snapshotName Name of the snapshot to be deleted    * @param collectedBlocks Used to collect information to update blocksMap     * @throws IOException    */
 DECL|method|deleteSnapshot (final String path, final String snapshotName, BlocksMapUpdateInfo collectedBlocks)

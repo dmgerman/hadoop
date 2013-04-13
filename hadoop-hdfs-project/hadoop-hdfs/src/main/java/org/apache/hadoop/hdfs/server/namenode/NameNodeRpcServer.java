@@ -6426,7 +6426,7 @@ annotation|@
 name|Override
 DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
-name|void
+name|String
 name|createSnapshot
 parameter_list|(
 name|String
@@ -6468,6 +6468,7 @@ operator|.
 name|incrCreateSnapshotOps
 argument_list|()
 expr_stmt|;
+return|return
 name|namesystem
 operator|.
 name|createSnapshot
@@ -6476,7 +6477,7 @@ name|snapshotRoot
 argument_list|,
 name|snapshotName
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|Override
@@ -6582,6 +6583,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|snapshotNewName
+operator|==
+literal|null
+operator|||
+name|snapshotNewName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The new snapshot name is null or empty."
+argument_list|)
+throw|;
+block|}
 name|metrics
 operator|.
 name|incrRenameSnapshotOps

@@ -6841,10 +6841,32 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
-comment|/**    * Create a snapshot    * @param path The directory where snapshots will be taken.    * @param snapshotName The name of the snapshot    */
+comment|/**    * Create a snapshot with a default name.    * @param path The directory where snapshots will be taken.    * @return the snapshot path.    */
+DECL|method|createSnapshot (Path path)
+specifier|public
+specifier|final
+name|Path
+name|createSnapshot
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createSnapshot
+argument_list|(
+name|path
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a snapshot    * @param path The directory where snapshots will be taken.    * @param snapshotName The name of the snapshot    * @return the snapshot path.    */
 DECL|method|createSnapshot (Path path, String snapshotName)
 specifier|public
-name|void
+name|Path
 name|createSnapshot
 parameter_list|(
 name|Path

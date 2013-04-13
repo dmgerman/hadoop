@@ -1464,7 +1464,12 @@ literal|"Failed to add snapshot: there is already a "
 operator|+
 literal|"snapshot with the same name \""
 operator|+
-name|name
+name|Snapshot
+operator|.
+name|getSnapshotName
+argument_list|(
+name|s
+argument_list|)
 operator|+
 literal|"\"."
 argument_list|)

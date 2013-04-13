@@ -4159,7 +4159,7 @@ annotation|@
 name|Override
 DECL|method|createSnapshot (Path path, String snapshotName)
 specifier|public
-name|void
+name|Path
 name|createSnapshot
 parameter_list|(
 name|Path
@@ -4171,6 +4171,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+operator|new
+name|Path
+argument_list|(
 name|dfs
 operator|.
 name|createSnapshot
@@ -4182,7 +4186,8 @@ argument_list|)
 argument_list|,
 name|snapshotName
 argument_list|)
-expr_stmt|;
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override

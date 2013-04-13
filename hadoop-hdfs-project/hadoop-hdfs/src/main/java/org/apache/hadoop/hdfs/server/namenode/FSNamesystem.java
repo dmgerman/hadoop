@@ -25902,7 +25902,6 @@ argument_list|()
 return|;
 block|}
 DECL|method|getSnapshotManager ()
-specifier|public
 name|SnapshotManager
 name|getSnapshotManager
 parameter_list|()
@@ -25913,7 +25912,6 @@ return|;
 block|}
 comment|/** Allow snapshot on a directroy. */
 DECL|method|allowSnapshot (String path)
-specifier|public
 name|void
 name|allowSnapshot
 parameter_list|(
@@ -26026,7 +26024,6 @@ block|}
 block|}
 comment|/** Disallow snapshot on a directory. */
 DECL|method|disallowSnapshot (String path)
-specifier|public
 name|void
 name|disallowSnapshot
 parameter_list|(
@@ -26139,8 +26136,7 @@ block|}
 block|}
 comment|/**    * Create a snapshot    * @param snapshotRoot The directory path where the snapshot is taken    * @param snapshotName The name of the snapshot    */
 DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
-specifier|public
-name|void
+name|String
 name|createSnapshot
 parameter_list|(
 name|String
@@ -26164,6 +26160,10 @@ decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
+specifier|final
+name|String
+name|snapshotPath
+decl_stmt|;
 try|try
 block|{
 name|checkOperation
@@ -26198,6 +26198,37 @@ argument_list|,
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|snapshotName
+operator|==
+literal|null
+operator|||
+name|snapshotName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|snapshotName
+operator|=
+name|Snapshot
+operator|.
+name|generateDefaultSnapshotName
+argument_list|()
+expr_stmt|;
+block|}
+name|dir
+operator|.
+name|verifyMaxComponentLength
+argument_list|(
+name|snapshotName
+argument_list|,
+name|snapshotRoot
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|dir
 operator|.
 name|writeLock
@@ -26205,6 +26236,8 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|snapshotPath
+operator|=
 name|snapshotManager
 operator|.
 name|createSnapshot
@@ -26257,25 +26290,6 @@ name|isExternalInvocation
 argument_list|()
 condition|)
 block|{
-name|Path
-name|rootPath
-init|=
-operator|new
-name|Path
-argument_list|(
-name|snapshotRoot
-argument_list|,
-name|HdfsConstants
-operator|.
-name|DOT_SNAPSHOT_DIR
-operator|+
-name|Path
-operator|.
-name|SEPARATOR
-operator|+
-name|snapshotName
-argument_list|)
-decl_stmt|;
 name|logAuditEvent
 argument_list|(
 literal|true
@@ -26284,19 +26298,18 @@ literal|"createSnapshot"
 argument_list|,
 name|snapshotRoot
 argument_list|,
-name|rootPath
-operator|.
-name|toString
-argument_list|()
+name|snapshotPath
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|snapshotPath
+return|;
 block|}
 comment|/**    * Rename a snapshot    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old snapshot name    * @param snapshotNewName New snapshot name    * @throws SafeModeException    * @throws IOException     */
 DECL|method|renameSnapshot (String path, String snapshotOldName, String snapshotNewName)
-specifier|public
 name|void
 name|renameSnapshot
 parameter_list|(
@@ -26358,8 +26371,17 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
-comment|// TODO: check if the new name is valid. May also need this for
-comment|// creationSnapshot
+name|dir
+operator|.
+name|verifyMaxComponentLength
+argument_list|(
+name|snapshotNewName
+argument_list|,
+name|path
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 name|snapshotManager
 operator|.
 name|renameSnapshot
@@ -26567,7 +26589,6 @@ return|;
 block|}
 comment|/**    * Get the difference between two snapshots (or between a snapshot and the    * current status) of a snapshottable directory.    *     * @param path The full path of the snapshottable directory.    * @param fromSnapshot Name of the snapshot to calculate the diff from. Null    *          or empty string indicates the current tree.    * @param toSnapshot Name of the snapshot to calculated the diff to. Null or    *          empty string indicates the current tree.    * @return A report about the difference between {@code fromSnapshot} and     *         {@code toSnapshot}. Modified/deleted/created/renamed files and     *         directories belonging to the snapshottable directories are listed     *         and labeled as M/-/+/R respectively.     * @throws IOException    */
 DECL|method|getSnapshotDiffReport (String path, String fromSnapshot, String toSnapshot)
-specifier|public
 name|SnapshotDiffReport
 name|getSnapshotDiffReport
 parameter_list|(
@@ -26676,7 +26697,6 @@ return|;
 block|}
 comment|/**    * Delete a snapshot of a snapshottable directory    * @param snapshotRoot The snapshottable directory    * @param snapshotName The name of the to-be-deleted snapshot    * @throws SafeModeException    * @throws IOException    */
 DECL|method|deleteSnapshot (String snapshotRoot, String snapshotName)
-specifier|public
 name|void
 name|deleteSnapshot
 parameter_list|(

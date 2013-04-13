@@ -9411,10 +9411,10 @@ name|isChecked
 argument_list|)
 return|;
 block|}
-comment|/**    * Create one snapshot.    *     * @param snapshotRoot The directory where the snapshot is to be taken    * @param snapshotName Name of the snapshot    * @see ClientProtocol#createSnapshot(String, String)    */
+comment|/**    * Create one snapshot.    *     * @param snapshotRoot The directory where the snapshot is to be taken    * @param snapshotName Name of the snapshot    * @return the snapshot path.    * @see ClientProtocol#createSnapshot(String, String)    */
 DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
-name|void
+name|String
 name|createSnapshot
 parameter_list|(
 name|String
@@ -9429,6 +9429,7 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+return|return
 name|namenode
 operator|.
 name|createSnapshot
@@ -9437,7 +9438,7 @@ name|snapshotRoot
 argument_list|,
 name|snapshotName
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|/**    * Delete a snapshot of a snapshottable directory.    *     * @param snapshotRoot The snapshottable directory that the     *                    to-be-deleted snapshot belongs to    * @param snapshotName The name of the to-be-deleted snapshot    * @throws IOException    * @see ClientProtocol#deleteSnapshot(String, String)    */
 DECL|method|deleteSnapshot (String snapshotRoot, String snapshotName)

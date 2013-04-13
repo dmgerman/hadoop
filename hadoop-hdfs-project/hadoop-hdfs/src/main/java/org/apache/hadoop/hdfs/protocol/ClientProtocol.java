@@ -1575,10 +1575,10 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a snapshot    * @param snapshotRoot the path that is being snapshotted    * @param snapshotName name of the snapshot created    * @throws IOException    */
+comment|/**    * Create a snapshot    * @param snapshotRoot the path that is being snapshotted    * @param snapshotName name of the snapshot created    * @return the snapshot path.    * @throws IOException    */
 DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
-name|void
+name|String
 name|createSnapshot
 parameter_list|(
 name|String

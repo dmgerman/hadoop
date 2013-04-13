@@ -215,7 +215,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"<snapshotDir><snapshotName>"
+literal|"<snapshotDir> [<snapshotName>]"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -230,6 +230,8 @@ DECL|field|snapshotName
 specifier|private
 name|String
 name|snapshotName
+init|=
+literal|null
 decl_stmt|;
 annotation|@
 name|Override
@@ -289,23 +291,46 @@ name|args
 operator|.
 name|size
 argument_list|()
-operator|!=
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"<snapshotDir> is missing."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|args
+operator|.
+name|size
+argument_list|()
+operator|>
 literal|2
 condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|IllegalArgumentException
 argument_list|(
-literal|"args number not 2:"
-operator|+
+literal|"Too many arguements."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|args
 operator|.
 name|size
 argument_list|()
-argument_list|)
-throw|;
-block|}
+operator|==
+literal|2
+condition|)
+block|{
 name|snapshotName
 operator|=
 name|args
@@ -313,7 +338,7 @@ operator|.
 name|removeLast
 argument_list|()
 expr_stmt|;
-comment|// TODO: name length check
+block|}
 block|}
 annotation|@
 name|Override
@@ -504,7 +529,6 @@ operator|.
 name|removeLast
 argument_list|()
 expr_stmt|;
-comment|// TODO: name length check
 block|}
 annotation|@
 name|Override
@@ -707,7 +731,6 @@ operator|.
 name|removeLast
 argument_list|()
 expr_stmt|;
-comment|// TODO: new name length check
 block|}
 annotation|@
 name|Override
