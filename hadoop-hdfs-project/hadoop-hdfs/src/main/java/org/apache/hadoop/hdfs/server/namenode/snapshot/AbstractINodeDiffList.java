@@ -696,6 +696,7 @@ return|;
 block|}
 comment|/** @return the last snapshot. */
 DECL|method|getLastSnapshot ()
+specifier|public
 specifier|final
 name|Snapshot
 name|getLastSnapshot
@@ -728,6 +729,7 @@ return|;
 block|}
 comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchor The returned snapshot must be taken before this given     *               snapshot.    * @return The latest snapshot before the given snapshot.    */
 DECL|method|getPrior (Snapshot anchor)
+specifier|private
 specifier|final
 name|Snapshot
 name|getPrior
@@ -807,6 +809,61 @@ name|getSnapshot
 argument_list|()
 return|;
 block|}
+block|}
+comment|/**    * Update the prior snapshot.    */
+DECL|method|updatePrior (Snapshot snapshot, Snapshot prior)
+specifier|final
+name|Snapshot
+name|updatePrior
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|,
+name|Snapshot
+name|prior
+parameter_list|)
+block|{
+name|Snapshot
+name|s
+init|=
+name|getPrior
+argument_list|(
+name|snapshot
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|s
+operator|!=
+literal|null
+operator|&&
+operator|(
+name|prior
+operator|==
+literal|null
+operator|||
+name|Snapshot
+operator|.
+name|ID_COMPARATOR
+operator|.
+name|compare
+argument_list|(
+name|s
+argument_list|,
+name|prior
+argument_list|)
+operator|>
+literal|0
+operator|)
+condition|)
+block|{
+return|return
+name|s
+return|;
+block|}
+return|return
+name|prior
+return|;
 block|}
 comment|/**    * @return the diff corresponding to the given snapshot.    *         When the diff is null, it means that the current state and    *         the corresponding snapshot state are the same.     */
 DECL|method|getDiff (Snapshot snapshot)

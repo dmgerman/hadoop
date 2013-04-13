@@ -506,22 +506,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|NSQuotaExceededException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|QuotaExceededException
 import|;
 end_import
@@ -2210,6 +2194,8 @@ throws|,
 name|FileAlreadyExistsException
 throws|,
 name|SnapshotAccessControlException
+throws|,
+name|IOException
 block|{
 if|if
 condition|(
@@ -2429,6 +2415,8 @@ throws|,
 name|FileAlreadyExistsException
 throws|,
 name|SnapshotAccessControlException
+throws|,
+name|IOException
 block|{
 assert|assert
 name|hasWriteLock
@@ -2521,6 +2509,28 @@ return|return
 literal|false
 return|;
 block|}
+comment|// srcInode and its subtree cannot contain snapshottable directories with
+comment|// snapshots
+name|List
+argument_list|<
+name|INodeDirectorySnapshottable
+argument_list|>
+name|snapshottableDirs
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|INodeDirectorySnapshottable
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|checkSnapshot
+argument_list|(
+name|srcInode
+argument_list|,
+name|snapshottableDirs
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|isDir
@@ -2655,7 +2665,6 @@ argument_list|(
 name|dst
 argument_list|)
 decl_stmt|;
-specifier|final
 name|INodesInPath
 name|dstIIP
 init|=
@@ -2713,7 +2722,6 @@ return|return
 literal|false
 return|;
 block|}
-specifier|final
 name|INode
 name|dstParent
 init|=
@@ -2815,6 +2823,34 @@ operator|.
 name|isReference
 argument_list|()
 decl_stmt|;
+comment|// Record the snapshot on srcChild. After the rename, before any new
+comment|// snapshot is taken on the dst tree, changes will be recorded in the latest
+comment|// snapshot of the src tree.
+if|if
+condition|(
+name|isSrcInSnapshot
+condition|)
+block|{
+name|srcChild
+operator|=
+name|srcChild
+operator|.
+name|recordModification
+argument_list|(
+name|srcIIP
+operator|.
+name|getLatestSnapshot
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|srcIIP
+operator|.
+name|setLastINode
+argument_list|(
+name|srcChild
+argument_list|)
+expr_stmt|;
+block|}
 comment|// check srcChild for reference
 specifier|final
 name|INodeReference
@@ -2925,6 +2961,38 @@ return|return
 literal|false
 return|;
 block|}
+comment|// add src to the destination
+if|if
+condition|(
+name|dstParent
+operator|.
+name|getParent
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// src and dst file/dir are in the same directory, and the dstParent has
+comment|// been replaced when we removed the src. Refresh the dstIIP and
+comment|// dstParent.
+name|dstIIP
+operator|=
+name|getExistingPathINodes
+argument_list|(
+name|dstComponents
+argument_list|)
+expr_stmt|;
+name|dstParent
+operator|=
+name|dstIIP
+operator|.
+name|getINode
+argument_list|(
+operator|-
+literal|2
+argument_list|)
+expr_stmt|;
+block|}
 name|srcChild
 operator|=
 name|srcIIP
@@ -2977,22 +3045,44 @@ argument_list|(
 name|dstChildName
 argument_list|)
 expr_stmt|;
+name|Snapshot
+name|dstSnapshot
+init|=
+name|dstIIP
+operator|.
+name|getLatestSnapshot
+argument_list|()
+decl_stmt|;
 specifier|final
 name|INodeReference
+operator|.
+name|DstReference
 name|ref
 init|=
 operator|new
 name|INodeReference
-argument_list|(
-name|dstIIP
 operator|.
-name|getINode
+name|DstReference
 argument_list|(
-operator|-
-literal|2
-argument_list|)
+name|dstParent
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|,
 name|withCount
+argument_list|,
+name|dstSnapshot
+operator|==
+literal|null
+condition|?
+name|Snapshot
+operator|.
+name|INVALID_ID
+else|:
+name|dstSnapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|withCount
@@ -3012,7 +3102,6 @@ operator|=
 name|ref
 expr_stmt|;
 block|}
-comment|// add src to the destination
 name|added
 operator|=
 name|addLastINodeNoQuotaCheck
@@ -3379,6 +3468,15 @@ name|error
 argument_list|)
 throw|;
 block|}
+comment|// srcInode and its subtree cannot contain snapshottable directories with
+comment|// snapshots
+name|checkSnapshot
+argument_list|(
+name|srcInode
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 comment|// validate the destination
 if|if
 condition|(
@@ -3495,7 +3593,6 @@ name|error
 argument_list|)
 throw|;
 block|}
-specifier|final
 name|INodesInPath
 name|dstIIP
 init|=
@@ -3543,6 +3640,15 @@ name|error
 argument_list|)
 throw|;
 block|}
+specifier|final
+name|INode
+name|dstInode
+init|=
+name|dstIIP
+operator|.
+name|getLastINode
+argument_list|()
+decl_stmt|;
 name|List
 argument_list|<
 name|INodeDirectorySnapshottable
@@ -3554,15 +3660,6 @@ name|ArrayList
 argument_list|<
 name|INodeDirectorySnapshottable
 argument_list|>
-argument_list|()
-decl_stmt|;
-specifier|final
-name|INode
-name|dstInode
-init|=
-name|dstIIP
-operator|.
-name|getLastINode
 argument_list|()
 decl_stmt|;
 if|if
@@ -3712,60 +3809,13 @@ argument_list|)
 throw|;
 block|}
 block|}
-name|INode
-name|snapshotNode
-init|=
-name|hasSnapshot
+name|checkSnapshot
 argument_list|(
 name|dstInode
 argument_list|,
 name|snapshottableDirs
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|snapshotNode
-operator|!=
-literal|null
-condition|)
-block|{
-name|error
-operator|=
-literal|"The direcotry "
-operator|+
-name|dstInode
-operator|.
-name|getFullPathName
-argument_list|()
-operator|+
-literal|" cannot be deleted for renaming since "
-operator|+
-name|snapshotNode
-operator|.
-name|getFullPathName
-argument_list|()
-operator|+
-literal|" is snapshottable and already has snapshots"
 expr_stmt|;
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|warn
-argument_list|(
-literal|"DIR* FSDirectory.unprotectedRenameTo: "
-operator|+
-name|error
-argument_list|)
-expr_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|error
-argument_list|)
-throw|;
-block|}
 block|}
 name|INode
 name|dstParent
@@ -3903,6 +3953,34 @@ operator|.
 name|isReference
 argument_list|()
 decl_stmt|;
+comment|// Record the snapshot on srcChild. After the rename, before any new
+comment|// snapshot is taken on the dst tree, changes will be recorded in the latest
+comment|// snapshot of the src tree.
+if|if
+condition|(
+name|isSrcInSnapshot
+condition|)
+block|{
+name|srcChild
+operator|=
+name|srcChild
+operator|.
+name|recordModification
+argument_list|(
+name|srcIIP
+operator|.
+name|getLatestSnapshot
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|srcIIP
+operator|.
+name|setLastINode
+argument_list|(
+name|srcChild
+argument_list|)
+expr_stmt|;
+block|}
 comment|// check srcChild for reference
 specifier|final
 name|INodeReference
@@ -4023,6 +4101,31 @@ name|error
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|dstParent
+operator|.
+name|getParent
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// src and dst file/dir are in the same directory, and the dstParent has
+comment|// been replaced when we removed the src. Refresh the dstIIP and
+comment|// dstParent.
+name|dstIIP
+operator|=
+name|rootDir
+operator|.
+name|getINodesInPath4Write
+argument_list|(
+name|dst
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
 name|boolean
 name|undoRemoveDst
 init|=
@@ -4119,12 +4222,24 @@ argument_list|(
 name|dstChildName
 argument_list|)
 expr_stmt|;
+name|Snapshot
+name|dstSnapshot
+init|=
+name|dstIIP
+operator|.
+name|getLatestSnapshot
+argument_list|()
+decl_stmt|;
 specifier|final
 name|INodeReference
+operator|.
+name|DstReference
 name|ref
 init|=
 operator|new
 name|INodeReference
+operator|.
+name|DstReference
 argument_list|(
 name|dstIIP
 operator|.
@@ -4133,8 +4248,24 @@ argument_list|(
 operator|-
 literal|2
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|,
 name|withCount
+argument_list|,
+name|dstSnapshot
+operator|==
+literal|null
+condition|?
+name|Snapshot
+operator|.
+name|INVALID_ID
+else|:
+name|dstSnapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|withCount
@@ -5589,45 +5720,13 @@ name|INodeDirectorySnapshottable
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|INode
-name|snapshotNode
-init|=
-name|hasSnapshot
+name|checkSnapshot
 argument_list|(
 name|targetNode
 argument_list|,
 name|snapshottableDirs
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|snapshotNode
-operator|!=
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"The direcotry "
-operator|+
-name|targetNode
-operator|.
-name|getFullPathName
-argument_list|()
-operator|+
-literal|" cannot be deleted since "
-operator|+
-name|snapshotNode
-operator|.
-name|getFullPathName
-argument_list|()
-operator|+
-literal|" is snapshottable and already has snapshots"
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|filesRemoved
 operator|=
 name|unprotectedDelete
@@ -6226,12 +6325,12 @@ return|return
 name|removed
 return|;
 block|}
-comment|/**    * Check if the given INode (or one of its descendants) is snapshottable and    * already has snapshots.    *     * @param target    *          The given INode    * @param snapshottableDirs    *          The list of directories that are snapshottable but do not have    *          snapshots yet    * @return The INode which is snapshottable and already has snapshots.    */
-DECL|method|hasSnapshot (INode target, List<INodeDirectorySnapshottable> snapshottableDirs)
+comment|/**    * Check if the given INode (or one of its descendants) is snapshottable and    * already has snapshots.    *     * @param target The given INode    * @param snapshottableDirs The list of directories that are snapshottable     *                          but do not have snapshots yet    */
+DECL|method|checkSnapshot (INode target, List<INodeDirectorySnapshottable> snapshottableDirs)
 specifier|private
 specifier|static
-name|INode
-name|hasSnapshot
+name|void
+name|checkSnapshot
 parameter_list|(
 name|INode
 name|target
@@ -6242,6 +6341,8 @@ name|INodeDirectorySnapshottable
 argument_list|>
 name|snapshottableDirs
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -6285,11 +6386,36 @@ operator|>
 literal|0
 condition|)
 block|{
-return|return
-name|target
-return|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"The direcotry "
+operator|+
+name|ssTargetDir
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|" cannot be deleted since "
+operator|+
+name|ssTargetDir
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|" is snapshottable and already has snapshots"
+argument_list|)
+throw|;
 block|}
 else|else
+block|{
+if|if
+condition|(
+name|snapshottableDirs
+operator|!=
+literal|null
+condition|)
 block|{
 name|snapshottableDirs
 operator|.
@@ -6298,6 +6424,7 @@ argument_list|(
 name|ssTargetDir
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 for|for
@@ -6313,32 +6440,15 @@ literal|null
 argument_list|)
 control|)
 block|{
-name|INode
-name|snapshotDir
-init|=
-name|hasSnapshot
+name|checkSnapshot
 argument_list|(
 name|child
 argument_list|,
 name|snapshottableDirs
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|snapshotDir
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|snapshotDir
-return|;
+expr_stmt|;
 block|}
 block|}
-block|}
-return|return
-literal|null
-return|;
 block|}
 comment|/**    * Replaces the specified INodeFile with the specified one.    */
 DECL|method|replaceINodeFile (String path, INodeFile oldnode, INodeFile newnode)
@@ -9755,7 +9865,7 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * Remove the last inode in the path from the namespace.    * Count of each ancestor with quota is also updated.    * @return -1 for failing to remove;    *          0 for removing a reference;    *          1 for removing a non-reference inode.     * @throws NSQuotaExceededException     */
+comment|/**    * Remove the last inode in the path from the namespace.    * Count of each ancestor with quota is also updated.    * @return -1 for failing to remove;    *          0 for removing a reference whose referred inode has other     *            reference nodes;    *>0 otherwise.     */
 DECL|method|removeLastINode (final INodesInPath iip)
 specifier|private
 name|long

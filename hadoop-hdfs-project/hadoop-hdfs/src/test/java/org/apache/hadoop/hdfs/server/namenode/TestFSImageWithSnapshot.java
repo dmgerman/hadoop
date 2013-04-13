@@ -1367,6 +1367,8 @@ argument_list|(
 name|fsnBefore
 argument_list|,
 name|fsnBetween
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// restart the cluster, and format the cluster
@@ -1437,6 +1439,8 @@ argument_list|(
 name|fsnBefore
 argument_list|,
 name|fsnAfter
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|long
@@ -1863,6 +1867,8 @@ argument_list|(
 name|fsnBefore
 argument_list|,
 name|fsnAfter
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

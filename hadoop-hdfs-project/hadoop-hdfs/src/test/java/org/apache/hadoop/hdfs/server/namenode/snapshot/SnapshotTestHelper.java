@@ -1112,7 +1112,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Compare two dumped trees that are stored in two files. The following is an    * example of the dumped tree:    *     *<pre>    * information of root    * +- the first child of root (e.g., /foo)    *   +- the first child of /foo    *   ...    *   \- the last child of /foo (e.g., /foo/bar)    *     +- the first child of /foo/bar    *     ...    *   snapshots of /foo    *   +- snapshot s_1    *   ...    *   \- snapshot s_n    * +- second child of root    *   ...    * \- last child of root    *     * The following information is dumped for each inode:    * localName (className@hashCode) parent permission group user    *     * Specific information for different types of INode:     * {@link INodeDirectory}:childrenSize     * {@link INodeFile}: fileSize, block list. Check {@link BlockInfo#toString()}     * and {@link BlockInfoUnderConstruction#toString()} for detailed information.    * {@link FileWithSnapshot}: next link    *</pre>    * @see INode#dumpTreeRecursively()    */
-DECL|method|compareDumpedTreeInFile (File file1, File file2)
+DECL|method|compareDumpedTreeInFile (File file1, File file2, boolean compareQuota)
 specifier|public
 specifier|static
 name|void
@@ -1123,6 +1123,9 @@ name|file1
 parameter_list|,
 name|File
 name|file2
+parameter_list|,
+name|boolean
+name|compareQuota
 parameter_list|)
 throws|throws
 name|IOException
@@ -1134,6 +1137,8 @@ argument_list|(
 name|file1
 argument_list|,
 name|file2
+argument_list|,
+name|compareQuota
 argument_list|,
 literal|false
 argument_list|)
@@ -1168,12 +1173,14 @@ name|file1
 argument_list|,
 name|file2
 argument_list|,
+name|compareQuota
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|compareDumpedTreeInFile (File file1, File file2, boolean print)
+DECL|method|compareDumpedTreeInFile (File file1, File file2, boolean compareQuota, boolean print)
 specifier|private
 specifier|static
 name|void
@@ -1184,6 +1191,9 @@ name|file1
 parameter_list|,
 name|File
 name|file2
+parameter_list|,
+name|boolean
+name|compareQuota
 parameter_list|,
 name|boolean
 name|print
@@ -1375,6 +1385,35 @@ argument_list|,
 literal|"replicas=[]"
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|compareQuota
+condition|)
+block|{
+name|line1
+operator|=
+name|line1
+operator|.
+name|replaceAll
+argument_list|(
+literal|"Quota\\[.*\\]"
+argument_list|,
+literal|"Quota[]"
+argument_list|)
+expr_stmt|;
+name|line2
+operator|=
+name|line2
+operator|.
+name|replaceAll
+argument_list|(
+literal|"Quota\\[.*\\]"
+argument_list|,
+literal|"Quota[]"
+argument_list|)
+expr_stmt|;
+block|}
 comment|// skip the specific fields of BlockInfoUnderConstruction when the node
 comment|// is an INodeFileSnapshot or an INodeFileUnderConstructionSnapshot
 if|if

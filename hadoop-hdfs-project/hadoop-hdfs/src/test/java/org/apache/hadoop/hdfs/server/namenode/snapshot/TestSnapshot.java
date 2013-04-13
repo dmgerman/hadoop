@@ -1234,6 +1234,8 @@ argument_list|(
 name|fsnBefore
 argument_list|,
 name|fsnMiddle
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|SnapshotTestHelper
@@ -1243,6 +1245,8 @@ argument_list|(
 name|fsnBefore
 argument_list|,
 name|fsnAfter
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

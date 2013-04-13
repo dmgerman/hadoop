@@ -729,7 +729,7 @@ name|counts
 return|;
 block|}
 comment|/** clear the deleted list */
-DECL|method|destroyDeletedList ( final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyDeletedList ( final BlocksMapUpdateInfo collectedBlocks, final List<INodeReference> refNodes)
 specifier|private
 name|Quota
 operator|.
@@ -739,6 +739,13 @@ parameter_list|(
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INodeReference
+argument_list|>
+name|refNodes
 parameter_list|)
 block|{
 name|Quota
@@ -801,6 +808,19 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|refNodes
+operator|.
+name|add
+argument_list|(
+name|d
+operator|.
+name|asReference
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1753,6 +1773,60 @@ name|collectedBlocks
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+comment|// if the node is a reference node, we should continue the
+comment|// snapshot deletion process
+try|try
+block|{
+comment|// use null as prior here because we are handling a reference
+comment|// node stored in the created list of a snapshot diff. This
+comment|// snapshot diff must be associated with the latest snapshot of
+comment|// the dst tree before the rename operation. In this scenario,
+comment|// the prior snapshot should be the one created in the src tree,
+comment|// and it can be identified by the cleanSubtree since we call
+comment|// recordModification before the rename.
+name|counts
+operator|.
+name|add
+argument_list|(
+name|inode
+operator|.
+name|cleanSubtree
+argument_list|(
+name|posterior
+operator|.
+name|snapshot
+argument_list|,
+literal|null
+argument_list|,
+name|collectedBlocks
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|QuotaExceededException
+name|e
+parameter_list|)
+block|{
+name|String
+name|error
+init|=
+literal|"should not have QuotaExceededException while deleting snapshot"
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|error
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 block|}
@@ -2187,6 +2261,19 @@ operator|.
 name|newInstance
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|INodeReference
+argument_list|>
+name|refNodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|INodeReference
+argument_list|>
+argument_list|()
+decl_stmt|;
 name|counts
 operator|.
 name|add
@@ -2196,9 +2283,76 @@ operator|.
 name|destroyDeletedList
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|refNodes
 argument_list|)
 argument_list|)
 expr_stmt|;
+for|for
+control|(
+name|INodeReference
+name|ref
+range|:
+name|refNodes
+control|)
+block|{
+comment|// if the node is a reference node, we should continue the
+comment|// snapshot deletion process
+try|try
+block|{
+comment|// Use null as prior snapshot. We are handling a reference node stored
+comment|// in the delete list of this snapshot diff. We need to destroy this
+comment|// snapshot diff because it is the very first one in history.
+comment|// If the ref node is a WithName instance acting as the src node of
+comment|// the rename operation, there will not be any snapshot before the
+comment|// snapshot to be deleted. If the ref node presents the dst node of a
+comment|// rename operation, we can identify the corresponding prior snapshot
+comment|// when we come into the subtree of the ref node.
+name|counts
+operator|.
+name|add
+argument_list|(
+name|ref
+operator|.
+name|cleanSubtree
+argument_list|(
+name|this
+operator|.
+name|snapshot
+argument_list|,
+literal|null
+argument_list|,
+name|collectedBlocks
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|QuotaExceededException
+name|e
+parameter_list|)
+block|{
+name|String
+name|error
+init|=
+literal|"should not have QuotaExceededException while deleting snapshot "
+operator|+
+name|this
+operator|.
+name|snapshot
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|error
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 return|return
 name|counts
 return|;
@@ -2885,19 +3039,30 @@ parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
-return|return
+if|if
+condition|(
 name|isInLatestSnapshot
 argument_list|(
 name|latest
 argument_list|)
-condition|?
+operator|&&
+operator|!
+name|isInSrcSnapshot
+argument_list|(
+name|latest
+argument_list|)
+condition|)
+block|{
+return|return
 name|saveSelf2Snapshot
 argument_list|(
 name|latest
 argument_list|,
 literal|null
 argument_list|)
-else|:
+return|;
+block|}
+return|return
 name|this
 return|;
 block|}
@@ -3392,61 +3557,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** The child just has been removed, replace it with a reference. */
-DECL|method|replaceRemovedChild4Reference ( INode oldChild, INodeReference.WithCount newChild, byte[] childName)
-specifier|public
-name|INodeReference
-operator|.
-name|WithName
-name|replaceRemovedChild4Reference
-parameter_list|(
-name|INode
-name|oldChild
-parameter_list|,
-name|INodeReference
-operator|.
-name|WithCount
-name|newChild
-parameter_list|,
-name|byte
-index|[]
-name|childName
-parameter_list|)
-block|{
-specifier|final
-name|INodeReference
-operator|.
-name|WithName
-name|ref
-init|=
-operator|new
-name|INodeReference
-operator|.
-name|WithName
-argument_list|(
-name|this
-argument_list|,
-name|newChild
-argument_list|,
-name|childName
-argument_list|)
-decl_stmt|;
-name|newChild
-operator|.
-name|incrementReferenceCount
-argument_list|()
-expr_stmt|;
-name|replaceRemovedChild
-argument_list|(
-name|oldChild
-argument_list|,
-name|ref
-argument_list|)
-expr_stmt|;
-return|return
-name|ref
-return|;
-block|}
-comment|/** The child just has been removed, replace it with a reference. */
 DECL|method|replaceRemovedChild (INode oldChild, INode newChild)
 specifier|public
 name|void
@@ -3759,48 +3869,18 @@ block|}
 else|else
 block|{
 comment|// update prior
-name|Snapshot
-name|s
-init|=
+name|prior
+operator|=
 name|getDiffs
 argument_list|()
 operator|.
-name|getPrior
+name|updatePrior
 argument_list|(
 name|snapshot
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|s
-operator|!=
-literal|null
-operator|&&
-operator|(
-name|prior
-operator|==
-literal|null
-operator|||
-name|Snapshot
-operator|.
-name|ID_COMPARATOR
-operator|.
-name|compare
-argument_list|(
-name|s
 argument_list|,
 name|prior
 argument_list|)
-operator|>
-literal|0
-operator|)
-condition|)
-block|{
-name|prior
-operator|=
-name|s
 expr_stmt|;
-block|}
 name|counts
 operator|.
 name|add

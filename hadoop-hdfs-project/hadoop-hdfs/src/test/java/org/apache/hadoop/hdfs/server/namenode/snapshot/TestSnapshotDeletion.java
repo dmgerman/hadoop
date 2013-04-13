@@ -1008,15 +1008,6 @@ expr_stmt|;
 name|String
 name|error
 init|=
-literal|"The direcotry "
-operator|+
-name|dir
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" cannot be deleted since "
-operator|+
 name|subsub
 operator|.
 name|toString

@@ -478,7 +478,7 @@ name|BlocksMapUpdateInfo
 name|collectedBlocks
 parameter_list|)
 function_decl|;
-comment|/**    * Delete and clear self.    * @param collectedBlocks Used to collect blocks for deletion.    * @return quota usage delta    */
+comment|/**    * Delete and clear self.    * @param currentINode The inode where the deletion happens.    * @param collectedBlocks Used to collect blocks for deletion.    * @return quota usage delta    */
 DECL|method|destroyDiffAndCollectBlocks (final N currentINode, final BlocksMapUpdateInfo collectedBlocks)
 specifier|abstract
 name|Quota

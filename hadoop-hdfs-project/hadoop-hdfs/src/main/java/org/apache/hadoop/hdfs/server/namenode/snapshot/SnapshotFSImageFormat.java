@@ -1519,6 +1519,7 @@ specifier|static
 class|class
 name|ReferenceMap
 block|{
+comment|/**      * Used to indicate whether the reference node itself has been saved      */
 DECL|field|referenceMap
 specifier|private
 specifier|final
@@ -1543,7 +1544,28 @@ name|WithCount
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|writeINodeReferenceWithCount (INodeReference.WithCount withCount, DataOutput out, boolean writeUnderConstruction)
+comment|/**      * Used to record whether the subtree of the reference node has been saved       */
+DECL|field|dirMap
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+name|dirMap
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|Long
+argument_list|,
+name|Long
+argument_list|>
+argument_list|()
+decl_stmt|;
+DECL|method|writeINodeReferenceWithCount ( INodeReference.WithCount withCount, DataOutput out, boolean writeUnderConstruction)
 specifier|public
 name|void
 name|writeINodeReferenceWithCount
@@ -1636,6 +1658,45 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+DECL|method|toProcessSubtree (long id)
+specifier|public
+name|boolean
+name|toProcessSubtree
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+block|{
+if|if
+condition|(
+name|dirMap
+operator|.
+name|containsKey
+argument_list|(
+name|id
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+else|else
+block|{
+name|dirMap
+operator|.
+name|put
+argument_list|(
+name|id
+argument_list|,
+name|id
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 block|}
 DECL|method|loadINodeReferenceWithCount ( boolean isSnapshotINode, DataInput in, FSImageFormat.Loader loader )

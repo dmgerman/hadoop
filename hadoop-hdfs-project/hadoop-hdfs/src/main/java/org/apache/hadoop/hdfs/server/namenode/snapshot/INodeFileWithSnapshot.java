@@ -300,6 +300,12 @@ name|isInLatestSnapshot
 argument_list|(
 name|latest
 argument_list|)
+operator|&&
+operator|!
+name|isInSrcSnapshot
+argument_list|(
+name|latest
+argument_list|)
 condition|)
 block|{
 name|diffs
@@ -403,6 +409,18 @@ block|}
 else|else
 block|{
 comment|// delete a snapshot
+name|prior
+operator|=
+name|getDiffs
+argument_list|()
+operator|.
+name|updatePrior
+argument_list|(
+name|snapshot
+argument_list|,
+name|prior
+argument_list|)
+expr_stmt|;
 return|return
 name|diffs
 operator|.
