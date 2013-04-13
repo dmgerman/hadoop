@@ -28,6 +28,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -119,7 +133,15 @@ comment|/**  * This implements an input stream that can have a timeout while rea
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+literal|"HDFS"
+argument_list|)
 DECL|class|SocketInputStream
+specifier|public
 class|class
 name|SocketInputStream
 extends|extends

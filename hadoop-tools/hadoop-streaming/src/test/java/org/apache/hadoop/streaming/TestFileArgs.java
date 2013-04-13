@@ -32,6 +32,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -120,6 +130,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|After
@@ -199,6 +223,12 @@ specifier|final
 name|String
 name|LS_PATH
 init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"cmd /c dir /B"
+else|:
 literal|"/bin/ls"
 decl_stmt|;
 DECL|method|TestFileArgs ()
@@ -271,6 +301,15 @@ argument_list|,
 literal|"hdfs://"
 operator|+
 name|namenode
+argument_list|)
+expr_stmt|;
+name|setTestDir
+argument_list|(
+operator|new
+name|File
+argument_list|(
+literal|"/tmp/TestFileArgs"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

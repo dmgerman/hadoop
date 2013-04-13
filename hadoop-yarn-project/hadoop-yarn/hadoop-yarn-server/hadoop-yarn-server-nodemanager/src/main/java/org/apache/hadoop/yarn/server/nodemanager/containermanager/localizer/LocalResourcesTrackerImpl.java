@@ -238,6 +238,30 @@ name|ResourceEvent
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|localizer
+operator|.
+name|event
+operator|.
+name|ResourceReleaseEvent
+import|;
+end_import
+
 begin_comment
 comment|/**  * A collection of {@link LocalizedResource}s all of same  * {@link LocalResourceVisibility}.  *   */
 end_comment
@@ -478,10 +502,12 @@ operator|=
 name|conf
 expr_stmt|;
 block|}
+comment|/*    * Synchronizing this method for avoiding races due to multiple ResourceEvent's    * coming to LocalResourcesTracker from Public/Private localizer and    * Resource Localization Service.    */
 annotation|@
 name|Override
 DECL|method|handle (ResourceEvent event)
 specifier|public
+specifier|synchronized
 name|void
 name|handle
 parameter_list|(
@@ -516,10 +542,24 @@ argument_list|()
 condition|)
 block|{
 case|case
-name|REQUEST
-case|:
-case|case
 name|LOCALIZED
+case|:
+if|if
+condition|(
+name|useLocalCacheDirectoryManager
+condition|)
+block|{
+name|inProgressLocalResourcesMap
+operator|.
+name|remove
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
+block|}
+break|break;
+case|case
+name|REQUEST
 case|:
 if|if
 condition|(
@@ -607,15 +647,56 @@ operator|==
 name|rsrc
 condition|)
 block|{
+comment|// The container sent a release event on a resource which
+comment|// 1) Failed
+comment|// 2) Removed for some reason (ex. disk is no longer accessible)
+name|ResourceReleaseEvent
+name|relEvent
+init|=
+operator|(
+name|ResourceReleaseEvent
+operator|)
+name|event
+decl_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Release unknown rsrc null (discard)"
+literal|"Container "
+operator|+
+name|relEvent
+operator|.
+name|getContainer
+argument_list|()
+operator|+
+literal|" sent RELEASE event on a resource request "
+operator|+
+name|req
+operator|+
+literal|" not present in cache."
 argument_list|)
 expr_stmt|;
 return|return;
 block|}
+break|break;
+case|case
+name|LOCALIZATION_FAILED
+case|:
+name|decrementFileCountForLocalCacheDirectory
+argument_list|(
+name|req
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+comment|/*        * If resource localization fails then Localized resource will be        * removed from local cache.        */
+name|localrsrc
+operator|.
+name|remove
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 name|rsrc
@@ -1287,51 +1368,6 @@ block|{
 return|return
 name|localDirPath
 return|;
-block|}
-block|}
-annotation|@
-name|Override
-DECL|method|localizationCompleted (LocalResourceRequest req, boolean success)
-specifier|public
-name|void
-name|localizationCompleted
-parameter_list|(
-name|LocalResourceRequest
-name|req
-parameter_list|,
-name|boolean
-name|success
-parameter_list|)
-block|{
-if|if
-condition|(
-name|useLocalCacheDirectoryManager
-condition|)
-block|{
-if|if
-condition|(
-operator|!
-name|success
-condition|)
-block|{
-name|decrementFileCountForLocalCacheDirectory
-argument_list|(
-name|req
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|inProgressLocalResourcesMap
-operator|.
-name|remove
-argument_list|(
-name|req
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@

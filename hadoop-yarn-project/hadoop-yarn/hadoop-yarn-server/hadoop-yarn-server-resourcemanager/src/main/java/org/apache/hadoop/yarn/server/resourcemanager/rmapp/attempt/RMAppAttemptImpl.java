@@ -4043,6 +4043,9 @@ name|appAttempt
 operator|.
 name|submissionContext
 operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
 name|getUser
 argument_list|()
 argument_list|)
@@ -4248,9 +4251,7 @@ name|ANY
 argument_list|,
 name|appAttempt
 operator|.
-name|submissionContext
-operator|.
-name|getAMContainerSpec
+name|getSubmissionContext
 argument_list|()
 operator|.
 name|getResource
@@ -4405,15 +4406,9 @@ literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Updating CLC's resource is no longer necessary once YARN-486 is
-comment|// completed, because nothing from Container to CLC will be copied into
-comment|// CLC then.
 name|appAttempt
 operator|.
 name|getSubmissionContext
-argument_list|()
-operator|.
-name|getAMContainerSpec
 argument_list|()
 operator|.
 name|setResource

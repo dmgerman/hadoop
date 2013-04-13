@@ -577,9 +577,6 @@ name|IOException
 block|{
 name|fs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -681,9 +678,6 @@ argument_list|()
 expr_stmt|;
 name|dfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1754,7 +1748,25 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
-try|try
+name|runFsFun
+argument_list|(
+literal|"Set time while in SM"
+argument_list|,
+operator|new
+name|FSRun
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|(
+name|FileSystem
+name|fs
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|fs
 operator|.
@@ -1768,18 +1780,9 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|ioe
-parameter_list|)
-block|{
-name|fail
-argument_list|(
-literal|"Set times failed while in SM"
+block|}
 argument_list|)
 expr_stmt|;
-block|}
 try|try
 block|{
 name|DFSTestUtil
@@ -1874,9 +1877,6 @@ argument_list|()
 expr_stmt|;
 name|fs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1970,9 +1970,6 @@ name|IOException
 block|{
 name|dfs
 operator|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

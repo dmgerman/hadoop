@@ -598,6 +598,8 @@ literal|" -read [-random | -backward | -skip [-skipSize Size]] |"
 operator|+
 literal|" -write | -append | -clean"
 operator|+
+literal|" [-compression codecClassName]"
+operator|+
 literal|" [-nrFiles N]"
 operator|+
 literal|" [-size Size[B|KB|MB|GB|TB]]"

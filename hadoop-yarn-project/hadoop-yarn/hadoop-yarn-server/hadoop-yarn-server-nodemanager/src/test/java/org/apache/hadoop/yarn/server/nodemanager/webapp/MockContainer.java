@@ -194,6 +194,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|Dispatcher
@@ -447,13 +465,6 @@ argument_list|)
 expr_stmt|;
 name|launchContext
 operator|.
-name|setContainerId
-argument_list|(
-name|id
-argument_list|)
-expr_stmt|;
-name|launchContext
-operator|.
 name|setUser
 argument_list|(
 name|user
@@ -607,18 +618,6 @@ argument_list|)
 expr_stmt|;
 name|containerStatus
 operator|.
-name|setContainerId
-argument_list|(
-name|this
-operator|.
-name|launchContext
-operator|.
-name|getContainerId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|containerStatus
-operator|.
 name|setDiagnostics
 argument_list|(
 literal|"testing"
@@ -658,6 +657,18 @@ name|ContainerEvent
 name|event
 parameter_list|)
 block|{   }
+annotation|@
+name|Override
+DECL|method|getResource ()
+specifier|public
+name|Resource
+name|getResource
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 

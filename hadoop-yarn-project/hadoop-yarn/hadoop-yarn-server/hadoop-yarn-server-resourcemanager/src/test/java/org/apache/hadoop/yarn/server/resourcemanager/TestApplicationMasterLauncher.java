@@ -871,13 +871,10 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 operator|.
-name|getSubmissionContext
+name|getMasterContainer
 argument_list|()
 operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|getContainerId
+name|getId
 argument_list|()
 operator|.
 name|toString

@@ -110,6 +110,24 @@ name|ContainerToken
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
 begin_class
 DECL|class|ContainerRemoteLaunchEvent
 specifier|public
@@ -130,7 +148,13 @@ specifier|final
 name|Task
 name|task
 decl_stmt|;
-DECL|method|ContainerRemoteLaunchEvent (TaskAttemptId taskAttemptID, ContainerId containerID, String containerMgrAddress, ContainerToken containerToken, ContainerLaunchContext containerLaunchContext, Task remoteTask)
+DECL|field|resource
+specifier|private
+specifier|final
+name|Resource
+name|resource
+decl_stmt|;
+DECL|method|ContainerRemoteLaunchEvent (TaskAttemptId taskAttemptID, ContainerId containerID, String containerMgrAddress, ContainerToken containerToken, ContainerLaunchContext containerLaunchContext, Resource resource, Task remoteTask)
 specifier|public
 name|ContainerRemoteLaunchEvent
 parameter_list|(
@@ -148,6 +172,9 @@ name|containerToken
 parameter_list|,
 name|ContainerLaunchContext
 name|containerLaunchContext
+parameter_list|,
+name|Resource
+name|resource
 parameter_list|,
 name|Task
 name|remoteTask
@@ -182,6 +209,12 @@ name|task
 operator|=
 name|remoteTask
 expr_stmt|;
+name|this
+operator|.
+name|resource
+operator|=
+name|resource
+expr_stmt|;
 block|}
 DECL|method|getContainer ()
 specifier|public
@@ -193,6 +226,18 @@ return|return
 name|this
 operator|.
 name|container
+return|;
+block|}
+DECL|method|getResource ()
+specifier|public
+name|Resource
+name|getResource
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|resource
 return|;
 block|}
 DECL|method|getRemoteTask ()

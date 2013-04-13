@@ -496,7 +496,7 @@ literal|"org.apache.hadoop.mapred.lib.IdentityMapper"
 expr_stmt|;
 name|reduce
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|super
 operator|.
@@ -521,7 +521,7 @@ literal|"org.apache.hadoop.mapred.lib.IdentityMapper"
 expr_stmt|;
 name|reduce
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|args
 operator|.
@@ -556,7 +556,7 @@ name|Exception
 block|{
 name|map
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|reduce
 operator|=
@@ -586,7 +586,7 @@ name|Exception
 block|{
 name|map
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|reduce
 operator|=
@@ -630,7 +630,7 @@ name|Exception
 block|{
 name|map
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|reduce
 operator|=
@@ -655,11 +655,11 @@ name|Exception
 block|{
 name|map
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|reduce
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|super
 operator|.
@@ -680,11 +680,11 @@ name|Exception
 block|{
 name|map
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|reduce
 operator|=
-literal|"cat"
+name|CAT
 expr_stmt|;
 name|args
 operator|.

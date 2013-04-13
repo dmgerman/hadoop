@@ -30,6 +30,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|service
 operator|.
 name|Service
@@ -47,6 +67,11 @@ block|{
 DECL|method|sendOutofBandHeartBeat ()
 name|void
 name|sendOutofBandHeartBeat
+parameter_list|()
+function_decl|;
+DECL|method|getNodeStatusAndUpdateContainersInContext ()
+name|NodeStatus
+name|getNodeStatusAndUpdateContainersInContext
 parameter_list|()
 function_decl|;
 block|}

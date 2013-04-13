@@ -69,6 +69,10 @@ block|,
 comment|/** See {@link ResourceReleaseEvent} */
 DECL|enumConstant|RELEASE
 name|RELEASE
+block|,
+comment|/** See {@link ResourceFailedLocalizationEvent} */
+DECL|enumConstant|LOCALIZATION_FAILED
+name|LOCALIZATION_FAILED
 block|}
 end_enum
 

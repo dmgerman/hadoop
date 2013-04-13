@@ -214,31 +214,6 @@ name|Priority
 name|priority
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>user</em> submitting the application.    * @return<em>user</em> submitting the application    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getUser ()
-specifier|public
-name|String
-name|getUser
-parameter_list|()
-function_decl|;
-comment|/**    * Set the<em>user</em> submitting the application.    * @param user<em>user</em> submitting the application    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setUser (String user)
-specifier|public
-name|void
-name|setUser
-parameter_list|(
-name|String
-name|user
-parameter_list|)
-function_decl|;
 comment|/**    * Get the<code>ContainerLaunchContext</code> to describe the     *<code>Container</code> with which the<code>ApplicationMaster</code> is    * launched.    * @return<code>ContainerLaunchContext</code> for the     *<code>ApplicationMaster</code> container    */
 annotation|@
 name|Public
@@ -343,6 +318,29 @@ name|setMaxAppAttempts
 parameter_list|(
 name|int
 name|maxAppAttempts
+parameter_list|)
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getResource ()
+specifier|public
+name|Resource
+name|getResource
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setResource (Resource resource)
+specifier|public
+name|void
+name|setResource
+parameter_list|(
+name|Resource
+name|resource
 parameter_list|)
 function_decl|;
 block|}

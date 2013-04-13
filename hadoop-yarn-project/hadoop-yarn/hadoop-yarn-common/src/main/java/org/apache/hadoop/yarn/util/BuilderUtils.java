@@ -1989,20 +1989,14 @@ return|return
 name|containerToken
 return|;
 block|}
-DECL|method|newContainerLaunchContext ( ContainerId containerID, String user, Resource assignedCapability, Map<String, LocalResource> localResources, Map<String, String> environment, List<String> commands, Map<String, ByteBuffer> serviceData, ByteBuffer containerTokens, Map<ApplicationAccessType, String> acls)
+DECL|method|newContainerLaunchContext ( String user, Map<String, LocalResource> localResources, Map<String, String> environment, List<String> commands, Map<String, ByteBuffer> serviceData, ByteBuffer containerTokens, Map<ApplicationAccessType, String> acls)
 specifier|public
 specifier|static
 name|ContainerLaunchContext
 name|newContainerLaunchContext
 parameter_list|(
-name|ContainerId
-name|containerID
-parameter_list|,
 name|String
 name|user
-parameter_list|,
-name|Resource
-name|assignedCapability
 parameter_list|,
 name|Map
 argument_list|<
@@ -2060,23 +2054,9 @@ argument_list|)
 decl_stmt|;
 name|container
 operator|.
-name|setContainerId
-argument_list|(
-name|containerID
-argument_list|)
-expr_stmt|;
-name|container
-operator|.
 name|setUser
 argument_list|(
 name|user
-argument_list|)
-expr_stmt|;
-name|container
-operator|.
-name|setResource
-argument_list|(
-name|assignedCapability
 argument_list|)
 expr_stmt|;
 name|container

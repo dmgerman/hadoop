@@ -454,9 +454,6 @@ name|res
 init|=
 name|container
 operator|.
-name|getLaunchContext
-argument_list|()
-operator|.
 name|getResource
 argument_list|()
 decl_stmt|;

@@ -2065,6 +2065,9 @@ name|user
 init|=
 name|submissionContext
 operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
 name|getUser
 argument_list|()
 decl_stmt|;
@@ -2110,6 +2113,9 @@ block|}
 comment|// Safety
 name|submissionContext
 operator|.
+name|getAMContainerSpec
+argument_list|()
+operator|.
 name|setUser
 argument_list|(
 name|user
@@ -2141,9 +2147,6 @@ operator|.
 name|ANY
 argument_list|,
 name|submissionContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
 operator|.
 name|getResource
 argument_list|()

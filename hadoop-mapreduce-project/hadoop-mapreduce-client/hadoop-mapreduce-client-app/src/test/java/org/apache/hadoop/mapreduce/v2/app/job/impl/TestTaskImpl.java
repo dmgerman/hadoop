@@ -128,16 +128,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -259,24 +249,6 @@ operator|.
 name|mapreduce
 operator|.
 name|TaskCounter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|jobhistory
-operator|.
-name|JobHistoryParser
-operator|.
-name|TaskInfo
 import|;
 end_import
 
@@ -837,16 +809,6 @@ specifier|private
 name|Clock
 name|clock
 decl_stmt|;
-DECL|field|completedTasksFromPreviousRun
-specifier|private
-name|Map
-argument_list|<
-name|TaskId
-argument_list|,
-name|TaskInfo
-argument_list|>
-name|completedTasksFromPreviousRun
-decl_stmt|;
 DECL|field|metrics
 specifier|private
 name|MRAppMetrics
@@ -937,7 +899,7 @@ DECL|field|taskType
 name|TaskType
 name|taskType
 decl_stmt|;
-DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, int startCount, MRAppMetrics metrics, AppContext appContext, TaskType taskType)
+DECL|method|MockTaskImpl (JobId jobId, int partition, EventHandler eventHandler, Path remoteJobConfFile, JobConf conf, TaskAttemptListener taskAttemptListener, Token<JobTokenIdentifier> jobToken, Credentials credentials, Clock clock, int startCount, MRAppMetrics metrics, AppContext appContext, TaskType taskType)
 specifier|public
 name|MockTaskImpl
 parameter_list|(
@@ -970,14 +932,6 @@ name|credentials
 parameter_list|,
 name|Clock
 name|clock
-parameter_list|,
-name|Map
-argument_list|<
-name|TaskId
-argument_list|,
-name|TaskInfo
-argument_list|>
-name|completedTasksFromPreviousRun
 parameter_list|,
 name|int
 name|startCount
@@ -1013,8 +967,6 @@ argument_list|,
 name|credentials
 argument_list|,
 name|clock
-argument_list|,
-name|completedTasksFromPreviousRun
 argument_list|,
 name|startCount
 argument_list|,
@@ -1636,8 +1588,6 @@ argument_list|,
 name|credentials
 argument_list|,
 name|clock
-argument_list|,
-name|completedTasksFromPreviousRun
 argument_list|,
 name|startCount
 argument_list|,
@@ -3447,8 +3397,6 @@ name|credentials
 argument_list|,
 name|clock
 argument_list|,
-name|completedTasksFromPreviousRun
-argument_list|,
 name|startCount
 argument_list|,
 name|metrics
@@ -3945,8 +3893,6 @@ argument_list|,
 name|credentials
 argument_list|,
 name|clock
-argument_list|,
-name|completedTasksFromPreviousRun
 argument_list|,
 name|startCount
 argument_list|,

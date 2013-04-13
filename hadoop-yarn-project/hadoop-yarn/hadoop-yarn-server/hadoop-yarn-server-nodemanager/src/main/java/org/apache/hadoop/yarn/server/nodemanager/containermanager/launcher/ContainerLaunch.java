@@ -1722,10 +1722,7 @@ argument_list|(
 operator|new
 name|ContainerExitEvent
 argument_list|(
-name|launchContext
-operator|.
-name|getContainerId
-argument_list|()
+name|containerID
 argument_list|,
 name|ContainerEventType
 operator|.
@@ -1816,10 +1813,7 @@ argument_list|(
 operator|new
 name|ContainerExitEvent
 argument_list|(
-name|launchContext
-operator|.
-name|getContainerId
-argument_list|()
+name|containerID
 argument_list|,
 name|ContainerEventType
 operator|.
@@ -1865,10 +1859,7 @@ argument_list|(
 operator|new
 name|ContainerExitEvent
 argument_list|(
-name|launchContext
-operator|.
-name|getContainerId
-argument_list|()
+name|containerID
 argument_list|,
 name|ContainerEventType
 operator|.
@@ -1907,10 +1898,7 @@ argument_list|(
 operator|new
 name|ContainerEvent
 argument_list|(
-name|launchContext
-operator|.
-name|getContainerId
-argument_list|()
+name|containerID
 argument_list|,
 name|ContainerEventType
 operator|.

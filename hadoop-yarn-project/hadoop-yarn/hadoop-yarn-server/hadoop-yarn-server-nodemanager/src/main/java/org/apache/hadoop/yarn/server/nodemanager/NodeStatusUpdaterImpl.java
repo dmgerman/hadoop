@@ -650,6 +650,20 @@ name|AbstractService
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 DECL|class|NodeStatusUpdaterImpl
 specifier|public
@@ -810,6 +824,16 @@ DECL|field|waitForEver
 specifier|private
 name|boolean
 name|waitForEver
+decl_stmt|;
+DECL|field|statusUpdaterRunnable
+specifier|private
+name|Runnable
+name|statusUpdaterRunnable
+decl_stmt|;
+DECL|field|statusUpdater
+specifier|private
+name|Thread
+name|statusUpdater
 decl_stmt|;
 DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
@@ -1192,6 +1216,73 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|rebootNodeStatusUpdater ()
+specifier|protected
+name|void
+name|rebootNodeStatusUpdater
+parameter_list|()
+block|{
+comment|// Interrupt the updater.
+name|this
+operator|.
+name|isStopped
+operator|=
+literal|true
+expr_stmt|;
+try|try
+block|{
+name|statusUpdater
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+name|registerWithRM
+argument_list|()
+expr_stmt|;
+name|statusUpdater
+operator|=
+operator|new
+name|Thread
+argument_list|(
+name|statusUpdaterRunnable
+argument_list|,
+literal|"Node Status Updater"
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isStopped
+operator|=
+literal|false
+expr_stmt|;
+name|statusUpdater
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"NodeStatusUpdater thread is reRegistered and restarted"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|AvroRuntimeException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 DECL|method|isSecurityEnabled ()
 specifier|private
 name|boolean
@@ -1274,8 +1365,10 @@ name|conf
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|registerWithRM ()
-specifier|private
+specifier|protected
 name|void
 name|registerWithRM
 parameter_list|()
@@ -1842,10 +1935,10 @@ return|return
 name|appList
 return|;
 block|}
-DECL|method|getNodeStatus ()
-specifier|private
+DECL|method|getNodeStatusAndUpdateContainersInContext ()
+specifier|public
 name|NodeStatus
-name|getNodeStatus
+name|getNodeStatusAndUpdateContainersInContext
 parameter_list|()
 block|{
 name|NodeStatus
@@ -2262,11 +2355,11 @@ name|void
 name|startStatusUpdater
 parameter_list|()
 block|{
+name|statusUpdaterRunnable
+operator|=
 operator|new
-name|Thread
-argument_list|(
-literal|"Node Status Updater"
-argument_list|)
+name|Runnable
+argument_list|()
 block|{
 annotation|@
 name|Override
@@ -2315,7 +2408,7 @@ decl_stmt|;
 name|NodeStatus
 name|nodeStatus
 init|=
-name|getNodeStatus
+name|getNodeStatusAndUpdateContainersInContext
 argument_list|()
 decl_stmt|;
 name|nodeStatus
@@ -2576,7 +2669,7 @@ argument_list|()
 operator|==
 name|NodeAction
 operator|.
-name|REBOOT
+name|RESYNC
 condition|)
 block|{
 name|LOG
@@ -2600,7 +2693,7 @@ name|NodeManagerEvent
 argument_list|(
 name|NodeManagerEventType
 operator|.
-name|REBOOT
+name|RESYNC
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2785,6 +2878,18 @@ block|}
 block|}
 block|}
 block|}
+expr_stmt|;
+name|statusUpdater
+operator|=
+operator|new
+name|Thread
+argument_list|(
+name|statusUpdaterRunnable
+argument_list|,
+literal|"Node Status Updater"
+argument_list|)
+expr_stmt|;
+name|statusUpdater
 operator|.
 name|start
 argument_list|()

@@ -1391,13 +1391,6 @@ argument_list|)
 expr_stmt|;
 name|sub
 operator|.
-name|setUser
-argument_list|(
-name|user
-argument_list|)
-expr_stmt|;
-name|sub
-operator|.
 name|setMaxAppAttempts
 argument_list|(
 name|maxAppAttempts
@@ -1443,6 +1436,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+specifier|final
 name|Resource
 name|capability
 init|=
@@ -1462,7 +1456,7 @@ argument_list|(
 name|masterMemory
 argument_list|)
 expr_stmt|;
-name|clc
+name|sub
 operator|.
 name|setResource
 argument_list|(
@@ -1474,6 +1468,13 @@ operator|.
 name|setApplicationACLs
 argument_list|(
 name|acls
+argument_list|)
+expr_stmt|;
+name|clc
+operator|.
+name|setUser
+argument_list|(
+name|user
 argument_list|)
 expr_stmt|;
 name|sub

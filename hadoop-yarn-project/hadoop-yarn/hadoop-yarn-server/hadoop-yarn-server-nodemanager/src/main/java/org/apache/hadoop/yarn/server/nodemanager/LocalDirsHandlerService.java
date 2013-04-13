@@ -1344,9 +1344,16 @@ name|validPaths
 operator|.
 name|add
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|uriPath
 operator|.
 name|getPath
+argument_list|()
+argument_list|)
+operator|.
+name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;

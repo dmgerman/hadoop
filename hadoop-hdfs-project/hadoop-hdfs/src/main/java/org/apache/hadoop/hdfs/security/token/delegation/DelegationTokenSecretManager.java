@@ -1218,6 +1218,56 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+comment|//AbstractDelegationTokenManager
+DECL|method|logExpireToken (final DelegationTokenIdentifier dtId)
+specifier|protected
+name|void
+name|logExpireToken
+parameter_list|(
+specifier|final
+name|DelegationTokenIdentifier
+name|dtId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+synchronized|synchronized
+init|(
+name|noInterruptsLock
+init|)
+block|{
+comment|// The edit logging code will fail catastrophically if it
+comment|// is interrupted during a logSync, since the interrupt
+comment|// closes the edit log files. Doing this inside the
+comment|// above lock and then checking interruption status
+comment|// prevents this bug.
+if|if
+condition|(
+name|Thread
+operator|.
+name|interrupted
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InterruptedIOException
+argument_list|(
+literal|"Interrupted before expiring delegation token"
+argument_list|)
+throw|;
+block|}
+name|namesystem
+operator|.
+name|logExpireDelegationToken
+argument_list|(
+name|dtId
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/** A utility method for creating credentials. */
 DECL|method|createCredentials (final NameNode namenode, final UserGroupInformation ugi, final String renewer)
 specifier|public

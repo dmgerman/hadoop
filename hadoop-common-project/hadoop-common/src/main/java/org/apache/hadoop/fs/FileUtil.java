@@ -1220,7 +1220,7 @@ name|dst
 operator|+
 literal|"': specified destination directory "
 operator|+
-literal|"doest not exist"
+literal|"does not exist"
 argument_list|)
 throw|;
 block|}

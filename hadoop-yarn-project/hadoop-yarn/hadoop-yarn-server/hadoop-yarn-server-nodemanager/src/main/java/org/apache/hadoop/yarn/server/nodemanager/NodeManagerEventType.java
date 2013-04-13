@@ -27,10 +27,10 @@ enum|enum
 name|NodeManagerEventType
 block|{
 DECL|enumConstant|SHUTDOWN
-DECL|enumConstant|REBOOT
+DECL|enumConstant|RESYNC
 name|SHUTDOWN
 block|,
-name|REBOOT
+name|RESYNC
 block|}
 end_enum
 

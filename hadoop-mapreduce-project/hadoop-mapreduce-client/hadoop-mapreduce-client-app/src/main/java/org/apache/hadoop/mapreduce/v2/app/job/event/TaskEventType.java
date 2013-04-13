@@ -42,6 +42,9 @@ comment|//Producer:Job
 DECL|enumConstant|T_SCHEDULE
 name|T_SCHEDULE
 block|,
+DECL|enumConstant|T_RECOVER
+name|T_RECOVER
+block|,
 comment|//Producer:Speculator
 DECL|enumConstant|T_ADD_SPEC_ATTEMPT
 name|T_ADD_SPEC_ATTEMPT
