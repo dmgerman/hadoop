@@ -5702,7 +5702,7 @@ specifier|final
 name|int
 name|EXPECTED_TXNS_FIRST_SEG
 init|=
-literal|12
+literal|11
 decl_stmt|;
 comment|// the following steps should have happened:
 comment|//   edits_inprogress_1 -> edits_1-12  (finalized)

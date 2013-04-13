@@ -1262,7 +1262,7 @@ block|}
 block|}
 block|}
 comment|/**    * Add the given filename to the fs.    * @throws FileAlreadyExistsException    * @throws QuotaExceededException    * @throws UnresolvedLinkException    */
-DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, DatanodeDescriptor clientNode, long generationStamp)
+DECL|method|addFile (String path, PermissionStatus permissions, short replication, long preferredBlockSize, String clientName, String clientMachine, DatanodeDescriptor clientNode)
 name|INodeFileUnderConstruction
 name|addFile
 parameter_list|(
@@ -1286,9 +1286,6 @@ name|clientMachine
 parameter_list|,
 name|DatanodeDescriptor
 name|clientNode
-parameter_list|,
-name|long
-name|generationStamp
 parameter_list|)
 throws|throws
 name|FileAlreadyExistsException

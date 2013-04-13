@@ -10308,12 +10308,6 @@ name|checkFsObjectLimit
 argument_list|()
 expr_stmt|;
 comment|// increment global generation stamp
-name|long
-name|genstamp
-init|=
-name|nextGenerationStamp
-argument_list|()
-decl_stmt|;
 name|INodeFileUnderConstruction
 name|newNode
 init|=
@@ -10334,8 +10328,6 @@ argument_list|,
 name|clientMachine
 argument_list|,
 name|clientNode
-argument_list|,
-name|genstamp
 argument_list|)
 decl_stmt|;
 if|if
