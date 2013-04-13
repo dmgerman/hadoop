@@ -9330,7 +9330,7 @@ name|STORAGE_DIR_FINALIZED
 argument_list|)
 return|;
 block|}
-comment|/**    * Get file correpsonding to a block    * @param storageDir storage directory    * @param blk block to be corrupted    * @return file corresponding to the block    */
+comment|/**    * Get file correpsonding to a block    * @param storageDir storage directory    * @param blk the block    * @return data file corresponding to the block    */
 DECL|method|getBlockFile (File storageDir, ExtendedBlock blk)
 specifier|public
 specifier|static
@@ -9362,6 +9362,52 @@ name|blk
 operator|.
 name|getBlockName
 argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Get the latest metadata file correpsonding to a block    * @param storageDir storage directory    * @param blk the block    * @return metadata file corresponding to the block    */
+DECL|method|getBlockMetadataFile (File storageDir, ExtendedBlock blk)
+specifier|public
+specifier|static
+name|File
+name|getBlockMetadataFile
+parameter_list|(
+name|File
+name|storageDir
+parameter_list|,
+name|ExtendedBlock
+name|blk
+parameter_list|)
+block|{
+return|return
+operator|new
+name|File
+argument_list|(
+name|getFinalizedDir
+argument_list|(
+name|storageDir
+argument_list|,
+name|blk
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+argument_list|,
+name|blk
+operator|.
+name|getBlockName
+argument_list|()
+operator|+
+literal|"_"
+operator|+
+name|blk
+operator|.
+name|getGenerationStamp
+argument_list|()
+operator|+
+name|Block
+operator|.
+name|METADATA_EXTENSION
 argument_list|)
 return|;
 block|}
@@ -9490,7 +9536,7 @@ index|]
 argument_list|)
 return|;
 block|}
-comment|/**    * Get files related to a block for a given datanode    * @param dnIndex Index of the datanode to get block files for    * @param block block for which corresponding files are needed    */
+comment|/**    * Get the block data file for a block from a given datanode    * @param dnIndex Index of the datanode to get block files for    * @param block block for which corresponding files are needed    */
 DECL|method|getBlockFile (int dnIndex, ExtendedBlock block)
 specifier|public
 specifier|static
@@ -9552,6 +9598,75 @@ condition|)
 block|{
 return|return
 name|blockFile
+return|;
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * Get the block metadata file for a block from a given datanode    *     * @param dnIndex Index of the datanode to get block files for    * @param block block for which corresponding files are needed    */
+DECL|method|getBlockMetadataFile (int dnIndex, ExtendedBlock block)
+specifier|public
+specifier|static
+name|File
+name|getBlockMetadataFile
+parameter_list|(
+name|int
+name|dnIndex
+parameter_list|,
+name|ExtendedBlock
+name|block
+parameter_list|)
+block|{
+comment|// Check for block file in the two storage directories of the datanode
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<=
+literal|1
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|File
+name|storageDir
+init|=
+name|MiniDFSCluster
+operator|.
+name|getStorageDir
+argument_list|(
+name|dnIndex
+argument_list|,
+name|i
+argument_list|)
+decl_stmt|;
+name|File
+name|blockMetaFile
+init|=
+name|getBlockMetadataFile
+argument_list|(
+name|storageDir
+argument_list|,
+name|block
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|blockMetaFile
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+return|return
+name|blockMetaFile
 return|;
 block|}
 block|}

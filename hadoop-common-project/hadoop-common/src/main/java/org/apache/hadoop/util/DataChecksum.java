@@ -520,7 +520,7 @@ name|valueOf
 argument_list|(
 name|bytes
 index|[
-literal|0
+name|offset
 index|]
 argument_list|)
 argument_list|,

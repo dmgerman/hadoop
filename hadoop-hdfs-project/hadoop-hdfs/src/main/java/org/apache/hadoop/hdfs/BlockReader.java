@@ -28,16 +28,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|Socket
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -47,24 +37,6 @@ operator|.
 name|fs
 operator|.
 name|ByteBufferReadable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|datatransfer
-operator|.
-name|IOStreamPair
 import|;
 end_import
 
@@ -109,10 +81,25 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-DECL|method|close ()
+comment|/**    * Returns an estimate of the number of bytes that can be read    * (or skipped over) from this input stream without performing    * network I/O.    */
+DECL|method|available ()
+name|int
+name|available
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Close the block reader.    *    * @param peerCache      The PeerCache to put the Peer we're using back    *                       into, or null if we should simply close the Peer    *                       we're using (along with its Socket).    *                       Ignored by Readers that don't maintain Peers.    * @param fisCache       The FileInputStreamCache to put our FileInputStreams    *                       back into, or null if we should simply close them.    *                       Ignored by Readers that don't maintain    *                       FileInputStreams.    *    * @throws IOException    */
+DECL|method|close (PeerCache peerCache, FileInputStreamCache fisCache)
 name|void
 name|close
-parameter_list|()
+parameter_list|(
+name|PeerCache
+name|peerCache
+parameter_list|,
+name|FileInputStreamCache
+name|fisCache
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
@@ -151,24 +138,6 @@ name|len
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * Take the socket used to talk to the DN.    */
-DECL|method|takeSocket ()
-name|Socket
-name|takeSocket
-parameter_list|()
-function_decl|;
-comment|/**    * Whether the BlockReader has reached the end of its input stream    * and successfully sent a status code back to the datanode.    */
-DECL|method|hasSentStatusCode ()
-name|boolean
-name|hasSentStatusCode
-parameter_list|()
-function_decl|;
-comment|/**    * @return a reference to the streams this block reader is using.    */
-DECL|method|getStreams ()
-name|IOStreamPair
-name|getStreams
-parameter_list|()
 function_decl|;
 block|}
 end_interface
