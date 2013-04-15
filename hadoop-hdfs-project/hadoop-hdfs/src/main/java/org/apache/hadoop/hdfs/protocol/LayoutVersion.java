@@ -379,12 +379,7 @@ argument_list|(
 operator|-
 literal|43
 argument_list|,
-operator|-
-literal|42
-argument_list|,
 literal|"Support for snapshot feature"
-argument_list|,
-literal|false
 argument_list|)
 block|;
 DECL|field|lv
