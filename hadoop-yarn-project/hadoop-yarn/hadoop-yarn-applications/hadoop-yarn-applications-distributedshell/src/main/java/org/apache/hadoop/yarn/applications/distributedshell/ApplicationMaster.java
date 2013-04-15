@@ -342,6 +342,22 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ContainerExitStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|ContainerManager
 import|;
 end_import
@@ -2736,9 +2752,9 @@ block|{
 comment|// container failed
 if|if
 condition|(
-name|YarnConfiguration
+name|ContainerExitStatus
 operator|.
-name|ABORTED_CONTAINER_EXIT_STATUS
+name|ABORTED
 operator|!=
 name|exitStatus
 condition|)
