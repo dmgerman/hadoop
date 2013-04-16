@@ -769,19 +769,93 @@ argument_list|,
 name|target
 argument_list|)
 condition|)
+block|{
+name|StringBuilder
+name|errorMessage
+init|=
+operator|new
+name|StringBuilder
+argument_list|(
+literal|"Check-sum mismatch between "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|source
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" and "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|target
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"."
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|sourceFS
+operator|.
+name|getFileStatus
+argument_list|(
+name|source
+argument_list|)
+operator|.
+name|getBlockSize
+argument_list|()
+operator|!=
+name|targetFS
+operator|.
+name|getFileStatus
+argument_list|(
+name|target
+argument_list|)
+operator|.
+name|getBlockSize
+argument_list|()
+condition|)
+block|{
+name|errorMessage
+operator|.
+name|append
+argument_list|(
+literal|" Source and target differ in block-size."
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" Use -pb to preserve block-sizes during copy."
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" Alternatively, skip checksum-checks altogether, using -skipCrc."
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|" (NOTE: By skipping checksums, one runs the risk of masking data-corruption during file-transfer.)"
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Check-sum mismatch between "
-operator|+
-name|source
-operator|+
-literal|" and "
-operator|+
-name|target
+name|errorMessage
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 throw|;
+block|}
 block|}
 comment|//If target file exists and unable to delete target - fail
 comment|//If target doesn't exist and unable to create parent folder - fail
