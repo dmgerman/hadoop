@@ -3128,7 +3128,7 @@ name|latest
 argument_list|)
 operator|&&
 operator|!
-name|isInSrcSnapshot
+name|shouldRecordInSrcSnapshot
 argument_list|(
 name|latest
 argument_list|)

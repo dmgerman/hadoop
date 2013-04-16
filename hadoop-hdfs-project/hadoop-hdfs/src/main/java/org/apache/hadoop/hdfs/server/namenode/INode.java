@@ -362,6 +362,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|primitives
 operator|.
 name|SignedBytes
@@ -832,21 +846,30 @@ name|getReferredINode
 argument_list|()
 return|;
 block|}
-comment|/**    * Called by {@link INode#recordModification}. For a reference node and its    * subtree, the function tells which snapshot the modification should be    * associated with: the snapshot that belongs to the SRC tree of the rename    * operation, or the snapshot belonging to the DST tree.    *     * @param latest    *          the latest snapshot in the DST tree above the reference node    * @return True: the modification should be recorded in the snapshot that    *         belongs to the SRC tree. False: the modification should be    *         recorded in the snapshot that belongs to the DST tree.    */
-DECL|method|isInSrcSnapshot (final Snapshot latest)
+comment|/**    * When {@link #recordModification} is called on a referred node,    * this method tells which snapshot the modification should be    * associated with: the snapshot that belongs to the SRC tree of the rename    * operation, or the snapshot belonging to the DST tree.    *     * @param latestInDst    *          the latest snapshot in the DST tree above the reference node    * @return True: the modification should be recorded in the snapshot that    *         belongs to the SRC tree. False: the modification should be    *         recorded in the snapshot that belongs to the DST tree.    */
+DECL|method|shouldRecordInSrcSnapshot (final Snapshot latestInDst)
 specifier|public
 specifier|final
 name|boolean
-name|isInSrcSnapshot
+name|shouldRecordInSrcSnapshot
 parameter_list|(
 specifier|final
 name|Snapshot
-name|latest
+name|latestInDst
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|isReference
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
-name|latest
+name|latestInDst
 operator|==
 literal|null
 condition|)
@@ -883,7 +906,7 @@ if|if
 condition|(
 name|dstSnapshotId
 operator|>=
-name|latest
+name|latestInDst
 operator|.
 name|getId
 argument_list|()

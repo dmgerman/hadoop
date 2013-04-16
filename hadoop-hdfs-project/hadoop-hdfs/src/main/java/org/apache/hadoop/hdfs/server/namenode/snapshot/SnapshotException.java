@@ -54,6 +54,7 @@ init|=
 literal|1L
 decl_stmt|;
 DECL|method|SnapshotException (final String message)
+specifier|public
 name|SnapshotException
 parameter_list|(
 specifier|final
@@ -68,6 +69,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|SnapshotException (final Throwable cause)
+specifier|public
 name|SnapshotException
 parameter_list|(
 specifier|final
