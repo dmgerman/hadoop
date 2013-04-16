@@ -1186,7 +1186,7 @@ name|counts
 parameter_list|)
 function_decl|;
 comment|/**    * Check and add namespace/diskspace consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
-DECL|method|addSpaceConsumed (long nsDelta, long dsDelta)
+DECL|method|addSpaceConsumed (long nsDelta, long dsDelta, boolean verify)
 specifier|public
 name|void
 name|addSpaceConsumed
@@ -1196,6 +1196,9 @@ name|nsDelta
 parameter_list|,
 name|long
 name|dsDelta
+parameter_list|,
+name|boolean
+name|verify
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1221,6 +1224,8 @@ argument_list|(
 name|nsDelta
 argument_list|,
 name|dsDelta
+argument_list|,
+name|verify
 argument_list|)
 expr_stmt|;
 block|}
@@ -1269,6 +1274,7 @@ return|;
 block|}
 comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    */
 DECL|method|computeQuotaUsage ()
+specifier|public
 specifier|final
 name|Quota
 operator|.

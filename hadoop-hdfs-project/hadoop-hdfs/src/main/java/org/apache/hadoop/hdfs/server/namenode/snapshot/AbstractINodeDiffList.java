@@ -555,6 +555,8 @@ argument_list|(
 literal|1
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 return|return

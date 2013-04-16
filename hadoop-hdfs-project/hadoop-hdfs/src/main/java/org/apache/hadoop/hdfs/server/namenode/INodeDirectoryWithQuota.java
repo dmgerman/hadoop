@@ -596,7 +596,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta)
+DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta, boolean verify)
 specifier|public
 specifier|final
 name|void
@@ -609,6 +609,9 @@ parameter_list|,
 specifier|final
 name|long
 name|dsDelta
+parameter_list|,
+name|boolean
+name|verify
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -623,6 +626,11 @@ comment|// The following steps are important:
 comment|// check quotas in this inode and all ancestors before changing counts
 comment|// so that no change is made if there is any quota violation.
 comment|// (1) verify quota in this inode
+if|if
+condition|(
+name|verify
+condition|)
+block|{
 name|verifyQuota
 argument_list|(
 name|nsDelta
@@ -630,6 +638,7 @@ argument_list|,
 name|dsDelta
 argument_list|)
 expr_stmt|;
+block|}
 comment|// (2) verify quota and then add count in ancestors
 name|super
 operator|.
@@ -638,6 +647,8 @@ argument_list|(
 name|nsDelta
 argument_list|,
 name|dsDelta
+argument_list|,
+name|verify
 argument_list|)
 expr_stmt|;
 comment|// (3) add count in this inode
@@ -658,6 +669,8 @@ argument_list|(
 name|nsDelta
 argument_list|,
 name|dsDelta
+argument_list|,
+name|verify
 argument_list|)
 expr_stmt|;
 block|}

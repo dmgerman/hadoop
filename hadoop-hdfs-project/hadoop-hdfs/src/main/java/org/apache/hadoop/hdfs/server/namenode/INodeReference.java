@@ -907,7 +907,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addSpaceConsumed (long nsDelta, long dsDelta )
+DECL|method|addSpaceConsumed (long nsDelta, long dsDelta, boolean verify)
 specifier|public
 specifier|final
 name|void
@@ -918,6 +918,9 @@ name|nsDelta
 parameter_list|,
 name|long
 name|dsDelta
+parameter_list|,
+name|boolean
+name|verify
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -929,6 +932,8 @@ argument_list|(
 name|nsDelta
 argument_list|,
 name|dsDelta
+argument_list|,
+name|verify
 argument_list|)
 expr_stmt|;
 block|}
