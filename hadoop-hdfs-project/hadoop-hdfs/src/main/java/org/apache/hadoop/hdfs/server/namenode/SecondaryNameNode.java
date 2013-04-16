@@ -1728,7 +1728,17 @@ parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
-block|{     }
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Exception "
+argument_list|,
+name|ie
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Shut down this instance of the datanode.    * Returns only after shutdown is complete.    */
 DECL|method|shutdown ()
@@ -1795,11 +1805,17 @@ name|infoServer
 operator|!=
 literal|null
 condition|)
+block|{
 name|infoServer
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+name|infoServer
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1825,11 +1841,17 @@ name|checkpointImage
 operator|!=
 literal|null
 condition|)
+block|{
 name|checkpointImage
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+name|checkpointImage
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1845,6 +1867,23 @@ literal|"Exception while closing CheckpointStorage"
 argument_list|,
 name|e
 argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|namesystem
+operator|!=
+literal|null
+condition|)
+block|{
+name|namesystem
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}
