@@ -31,6 +31,9 @@ block|{
 DECL|enumConstant|STORE_APP_ATTEMPT
 name|STORE_APP_ATTEMPT
 block|,
+DECL|enumConstant|STORE_APP
+name|STORE_APP
+block|,
 DECL|enumConstant|REMOVE_APP
 name|REMOVE_APP
 block|}

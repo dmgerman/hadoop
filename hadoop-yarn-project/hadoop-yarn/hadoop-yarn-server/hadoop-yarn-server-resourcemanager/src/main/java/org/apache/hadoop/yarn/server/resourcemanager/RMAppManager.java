@@ -1428,7 +1428,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime)
+DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime, boolean isRecovered)
 specifier|protected
 name|void
 name|submitApplication
@@ -1438,6 +1438,9 @@ name|submissionContext
 parameter_list|,
 name|long
 name|submitTime
+parameter_list|,
+name|boolean
+name|isRecovered
 parameter_list|)
 block|{
 name|ApplicationId
@@ -1652,6 +1655,12 @@ name|RMAppEvent
 argument_list|(
 name|applicationId
 argument_list|,
+name|isRecovered
+condition|?
+name|RMAppEventType
+operator|.
+name|RECOVER
+else|:
 name|RMAppEventType
 operator|.
 name|START
@@ -2000,6 +2009,8 @@ name|appState
 operator|.
 name|getSubmitTime
 argument_list|()
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// re-populate attempt information in application
@@ -2149,6 +2160,8 @@ argument_list|(
 name|submissionContext
 argument_list|,
 name|submitTime
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

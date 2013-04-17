@@ -503,6 +503,14 @@ name|state
 operator|||
 name|RMAppState
 operator|.
+name|NEW_SAVING
+operator|==
+name|this
+operator|.
+name|state
+operator|||
+name|RMAppState
+operator|.
 name|SUBMITTED
 operator|==
 name|this
