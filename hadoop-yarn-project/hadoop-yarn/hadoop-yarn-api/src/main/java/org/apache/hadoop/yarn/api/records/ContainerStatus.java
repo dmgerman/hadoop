@@ -142,7 +142,7 @@ name|ContainerState
 name|state
 parameter_list|)
 function_decl|;
-comment|/**    *<p>Get the<em>exit status</em> for the container.</p>    *      *<p>Note: This is valid only for completed containers i.e. containers    * with state {@link ContainerState#COMPLETE}.     * Otherwise, it returns an invalid exit code equal to {@literal -1000};</p>    *     *<p>Container killed by the framework, either due to being released by    * the application or being 'lost' due to node failures etc. have a special    * exit code of {@literal -100}.</p>    *     *<p>When threshold number of the nodemanager-local-directories or    * threshold number of the nodemanager-log-directories become bad, then    * container is not launched and is exited with exit status of    * {@literal -101}.</p>    *      * @return<em>exit status</em> for the container    */
+comment|/**    *<p>Get the<em>exit status</em> for the container.</p>    *      *<p>Note: This is valid only for completed containers i.e. containers    * with state {@link ContainerState#COMPLETE}.     * Otherwise, it returns an ContainerExitStatus.INVALID.    *</p>    *     *<p>Containers killed by the framework, either due to being released by    * the application or being 'lost' due to node failures etc. have a special    * exit code of ContainerExitStatus.ABORTED.</p>    *     *<p>When threshold number of the nodemanager-local-directories or    * threshold number of the nodemanager-log-directories become bad, then    * container is not launched and is exited with ContainersExitStatus.DISKS_FAILED.    *</p>    *      * @return<em>exit status</em> for the container    */
 annotation|@
 name|Public
 annotation|@

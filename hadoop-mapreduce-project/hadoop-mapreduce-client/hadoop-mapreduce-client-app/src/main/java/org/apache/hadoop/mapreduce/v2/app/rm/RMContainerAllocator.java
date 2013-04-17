@@ -658,6 +658,22 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ContainerExitStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|protocolrecords
 operator|.
 name|AllocateResponse
@@ -787,22 +803,6 @@ operator|.
 name|records
 operator|.
 name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
 import|;
 end_import
 
@@ -3546,9 +3546,9 @@ operator|.
 name|getExitStatus
 argument_list|()
 operator|==
-name|YarnConfiguration
+name|ContainerExitStatus
 operator|.
-name|ABORTED_CONTAINER_EXIT_STATUS
+name|ABORTED
 condition|)
 block|{
 comment|// killed by framework
