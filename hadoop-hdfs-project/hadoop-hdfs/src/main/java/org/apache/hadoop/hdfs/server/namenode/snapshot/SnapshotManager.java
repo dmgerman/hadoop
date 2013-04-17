@@ -252,8 +252,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INodeDirectory
-operator|.
 name|INodesInPath
 import|;
 end_import
