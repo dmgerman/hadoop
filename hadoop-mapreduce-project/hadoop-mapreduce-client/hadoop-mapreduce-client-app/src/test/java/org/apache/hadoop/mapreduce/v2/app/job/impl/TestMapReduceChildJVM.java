@@ -493,7 +493,7 @@ name|launchContext
 init|=
 name|launchEvent
 operator|.
-name|getContainer
+name|getContainerLaunchContext
 argument_list|()
 decl_stmt|;
 name|String
