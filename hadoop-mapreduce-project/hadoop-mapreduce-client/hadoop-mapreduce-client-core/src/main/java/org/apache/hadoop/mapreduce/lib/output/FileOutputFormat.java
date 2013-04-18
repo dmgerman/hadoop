@@ -134,7 +134,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|mapred
 operator|.
 name|FileAlreadyExistsException
 import|;
@@ -733,8 +733,8 @@ parameter_list|,
 name|Path
 name|outputDir
 parameter_list|)
-throws|throws
-name|IOException
+block|{
+try|try
 block|{
 name|outputDir
 operator|=
@@ -753,6 +753,22 @@ argument_list|(
 name|outputDir
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+comment|// Throw the IOException as a RuntimeException to be compatible with MR1
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|job
 operator|.
 name|getConfiguration
