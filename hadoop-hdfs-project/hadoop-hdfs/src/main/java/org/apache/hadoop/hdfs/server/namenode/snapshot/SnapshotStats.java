@@ -35,14 +35,14 @@ block|{
 comment|/**    * @return The number of snapshottale directories in the system     */
 DECL|method|getNumSnapshottableDirs ()
 specifier|public
-name|long
+name|int
 name|getNumSnapshottableDirs
 parameter_list|()
 function_decl|;
 comment|/**    * @return The number of directories that have been snapshotted    */
 DECL|method|getNumSnapshots ()
 specifier|public
-name|long
+name|int
 name|getNumSnapshots
 parameter_list|()
 function_decl|;

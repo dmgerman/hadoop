@@ -429,7 +429,7 @@ name|assertGauge
 argument_list|(
 literal|"SnapshottableDirectories"
 argument_list|,
-literal|0L
+literal|0
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -476,7 +476,7 @@ name|assertGauge
 argument_list|(
 literal|"SnapshottableDirectories"
 argument_list|,
-literal|1L
+literal|1
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -547,7 +547,7 @@ name|assertGauge
 argument_list|(
 literal|"SnapshottableDirectories"
 argument_list|,
-literal|2L
+literal|2
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -618,7 +618,7 @@ name|assertGauge
 argument_list|(
 literal|"SnapshottableDirectories"
 argument_list|,
-literal|3L
+literal|3
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -654,7 +654,7 @@ name|assertGauge
 argument_list|(
 literal|"SnapshottableDirectories"
 argument_list|,
-literal|3L
+literal|3
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -691,7 +691,7 @@ name|assertGauge
 argument_list|(
 literal|"SnapshottableDirectories"
 argument_list|,
-literal|2L
+literal|2
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -725,7 +725,7 @@ name|assertGauge
 argument_list|(
 literal|"SnapshottableDirectories"
 argument_list|,
-literal|1L
+literal|1
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -780,7 +780,7 @@ name|assertGauge
 argument_list|(
 literal|"Snapshots"
 argument_list|,
-literal|0L
+literal|0
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -824,7 +824,7 @@ name|assertGauge
 argument_list|(
 literal|"Snapshots"
 argument_list|,
-literal|0L
+literal|0
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -868,7 +868,7 @@ name|assertGauge
 argument_list|(
 literal|"Snapshots"
 argument_list|,
-literal|1L
+literal|1
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -901,7 +901,7 @@ name|assertGauge
 argument_list|(
 literal|"Snapshots"
 argument_list|,
-literal|2L
+literal|2
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -1005,7 +1005,7 @@ name|assertGauge
 argument_list|(
 literal|"Snapshots"
 argument_list|,
-literal|3L
+literal|3
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -1039,7 +1039,7 @@ name|assertGauge
 argument_list|(
 literal|"Snapshots"
 argument_list|,
-literal|2L
+literal|2
 argument_list|,
 name|getMetrics
 argument_list|(
@@ -1075,7 +1075,7 @@ name|assertGauge
 argument_list|(
 literal|"Snapshots"
 argument_list|,
-literal|2L
+literal|2
 argument_list|,
 name|getMetrics
 argument_list|(

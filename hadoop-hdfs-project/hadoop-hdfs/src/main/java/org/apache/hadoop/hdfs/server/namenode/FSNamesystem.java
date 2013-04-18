@@ -18359,7 +18359,7 @@ block|}
 argument_list|)
 DECL|method|getNumSnapshottableDirs ()
 specifier|public
-name|long
+name|int
 name|getNumSnapshottableDirs
 parameter_list|()
 block|{
@@ -18383,7 +18383,7 @@ block|}
 argument_list|)
 DECL|method|getNumSnapshots ()
 specifier|public
-name|long
+name|int
 name|getNumSnapshots
 parameter_list|()
 block|{
@@ -26877,7 +26877,7 @@ condition|)
 block|{
 name|snapshotManager
 operator|.
-name|removeSnapshottableDirs
+name|removeSnapshottable
 argument_list|(
 name|toRemove
 argument_list|)

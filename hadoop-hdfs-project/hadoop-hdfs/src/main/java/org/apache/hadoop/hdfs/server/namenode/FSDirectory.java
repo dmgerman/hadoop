@@ -1264,6 +1264,17 @@ name|getBlockManager
 argument_list|()
 return|;
 block|}
+comment|/** @return the root directory inode. */
+DECL|method|getRoot ()
+specifier|public
+name|INodeDirectoryWithQuota
+name|getRoot
+parameter_list|()
+block|{
+return|return
+name|rootDir
+return|;
+block|}
 comment|/**    * Notify that loading of this FSDirectory is complete, and    * it is ready for use     */
 DECL|method|imageLoadComplete ()
 name|void
