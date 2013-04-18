@@ -1239,6 +1239,15 @@ name|ApplicationSubmissionContextPBImpl
 argument_list|()
 expr_stmt|;
 block|}
+comment|// applicationId will not be used because RMStateStore is mocked,
+comment|// but applicationId is still set for safety
+name|submissionContext
+operator|.
+name|setApplicationId
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
 name|RMApp
 name|application
 init|=
