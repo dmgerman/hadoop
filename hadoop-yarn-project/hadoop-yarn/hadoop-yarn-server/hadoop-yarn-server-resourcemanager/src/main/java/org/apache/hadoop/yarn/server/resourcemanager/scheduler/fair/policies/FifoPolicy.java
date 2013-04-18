@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.modes
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.policies
 package|package
 name|org
 operator|.
@@ -22,7 +22,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|modes
+name|policies
 package|;
 end_package
 
@@ -136,7 +136,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|SchedulingMode
+name|SchedulingPolicy
 import|;
 end_import
 
@@ -155,12 +155,12 @@ import|;
 end_import
 
 begin_class
-DECL|class|FifoSchedulingMode
+DECL|class|FifoPolicy
 specifier|public
 class|class
-name|FifoSchedulingMode
+name|FifoPolicy
 extends|extends
-name|SchedulingMode
+name|SchedulingPolicy
 block|{
 annotation|@
 name|VisibleForTesting
@@ -361,6 +361,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicableDepth ()
+specifier|public
+name|byte
+name|getApplicableDepth
+parameter_list|()
+block|{
+return|return
+name|SchedulingPolicy
+operator|.
+name|DEPTH_LEAF
+return|;
 block|}
 block|}
 end_class

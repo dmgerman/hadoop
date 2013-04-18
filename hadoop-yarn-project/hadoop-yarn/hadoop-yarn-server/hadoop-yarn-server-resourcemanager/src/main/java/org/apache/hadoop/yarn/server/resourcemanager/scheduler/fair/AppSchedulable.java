@@ -1370,10 +1370,8 @@ name|CONTAINER_RESERVED
 return|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
-specifier|public
+specifier|private
 name|Resource
 name|assignContainer
 parameter_list|(
@@ -1749,6 +1747,44 @@ name|Resources
 operator|.
 name|none
 argument_list|()
+return|;
+block|}
+DECL|method|assignReservedContainer (FSSchedulerNode node)
+specifier|public
+name|Resource
+name|assignReservedContainer
+parameter_list|(
+name|FSSchedulerNode
+name|node
+parameter_list|)
+block|{
+return|return
+name|assignContainer
+argument_list|(
+name|node
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|assignContainer (FSSchedulerNode node)
+specifier|public
+name|Resource
+name|assignContainer
+parameter_list|(
+name|FSSchedulerNode
+name|node
+parameter_list|)
+block|{
+return|return
+name|assignContainer
+argument_list|(
+name|node
+argument_list|,
+literal|false
+argument_list|)
 return|;
 block|}
 block|}

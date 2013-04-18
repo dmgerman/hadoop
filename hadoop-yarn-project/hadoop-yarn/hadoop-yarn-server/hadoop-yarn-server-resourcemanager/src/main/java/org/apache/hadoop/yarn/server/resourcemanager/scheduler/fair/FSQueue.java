@@ -312,6 +312,16 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
+DECL|field|policy
+specifier|protected
+name|SchedulingPolicy
+name|policy
+init|=
+name|SchedulingPolicy
+operator|.
+name|getDefault
+argument_list|()
+decl_stmt|;
 DECL|method|FSQueue (String name, QueueManager queueMgr, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSQueue
@@ -397,6 +407,54 @@ return|return
 name|name
 return|;
 block|}
+DECL|method|getPolicy ()
+specifier|public
+name|SchedulingPolicy
+name|getPolicy
+parameter_list|()
+block|{
+return|return
+name|policy
+return|;
+block|}
+DECL|method|throwPolicyDoesnotApplyException (SchedulingPolicy policy)
+specifier|protected
+name|void
+name|throwPolicyDoesnotApplyException
+parameter_list|(
+name|SchedulingPolicy
+name|policy
+parameter_list|)
+throws|throws
+name|AllocationConfigurationException
+block|{
+throw|throw
+operator|new
+name|AllocationConfigurationException
+argument_list|(
+literal|"SchedulingPolicy "
+operator|+
+name|policy
+operator|+
+literal|" does not apply to queue "
+operator|+
+name|getName
+argument_list|()
+argument_list|)
+throw|;
+block|}
+DECL|method|setPolicy (SchedulingPolicy policy)
+specifier|public
+specifier|abstract
+name|void
+name|setPolicy
+parameter_list|(
+name|SchedulingPolicy
+name|policy
+parameter_list|)
+throws|throws
+name|AllocationConfigurationException
+function_decl|;
 annotation|@
 name|Override
 DECL|method|getWeight ()
@@ -735,12 +793,12 @@ name|user
 argument_list|)
 return|;
 block|}
-comment|/**    * Recomputes the fair shares for all queues and applications    * under this queue.    */
-DECL|method|recomputeFairShares ()
+comment|/**    * Recomputes the shares for all child queues and applications based on this    * queue's current share    */
+DECL|method|recomputeShares ()
 specifier|public
 specifier|abstract
 name|void
-name|recomputeFairShares
+name|recomputeShares
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the children of this queue, if any.    */
@@ -754,6 +812,50 @@ argument_list|>
 name|getChildQueues
 parameter_list|()
 function_decl|;
+comment|/**    * Helper method to check if the queue should attempt assigning resources    *     * @return true if check passes (can assign) or false otherwise    */
+DECL|method|assignContainerPreCheck (FSSchedulerNode node)
+specifier|protected
+name|boolean
+name|assignContainerPreCheck
+parameter_list|(
+name|FSSchedulerNode
+name|node
+parameter_list|)
+block|{
+if|if
+condition|(
+name|Resources
+operator|.
+name|greaterThan
+argument_list|(
+name|getResourceUsage
+argument_list|()
+argument_list|,
+name|queueMgr
+operator|.
+name|getMaxResources
+argument_list|(
+name|getName
+argument_list|()
+argument_list|)
+argument_list|)
+operator|||
+name|node
+operator|.
+name|getReservedContainer
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 
