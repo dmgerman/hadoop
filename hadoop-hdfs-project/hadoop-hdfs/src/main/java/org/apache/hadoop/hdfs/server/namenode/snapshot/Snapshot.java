@@ -551,6 +551,7 @@ return|;
 block|}
 comment|/** The root directory of the snapshot. */
 DECL|class|Root
+specifier|static
 specifier|public
 class|class
 name|Root

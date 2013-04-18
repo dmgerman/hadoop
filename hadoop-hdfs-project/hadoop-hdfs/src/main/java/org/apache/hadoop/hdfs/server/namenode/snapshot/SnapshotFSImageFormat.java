@@ -1254,10 +1254,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|size
-operator|!=
-operator|-
-literal|1
+name|dir
+operator|instanceof
+name|INodeDirectoryWithSnapshot
 condition|)
 block|{
 name|INodeDirectoryWithSnapshot

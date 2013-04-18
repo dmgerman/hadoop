@@ -1109,9 +1109,8 @@ block|{
 if|if
 condition|(
 name|file
-operator|.
-name|isUnderConstruction
-argument_list|()
+operator|instanceof
+name|INodeFileUnderConstruction
 condition|)
 block|{
 name|out
