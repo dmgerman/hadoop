@@ -32,6 +32,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -114,6 +130,20 @@ name|ResourceEvent
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Component tracking resources all of the same {@link LocalResourceVisibility}  *   */
 end_comment
@@ -173,6 +203,18 @@ DECL|method|nextUniqueNumber ()
 name|long
 name|nextUniqueNumber
 parameter_list|()
+function_decl|;
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Private
+DECL|method|getLocalizedResource (LocalResourceRequest request)
+name|LocalizedResource
+name|getLocalizedResource
+parameter_list|(
+name|LocalResourceRequest
+name|request
+parameter_list|)
 function_decl|;
 block|}
 end_interface
