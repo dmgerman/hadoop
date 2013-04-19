@@ -2291,6 +2291,22 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+comment|// This test triggers rapid NN failovers.  The client retry policy uses an
+comment|// exponential backoff.  This can quickly lead to long sleep times and even
+comment|// timeout the whole test.  Cap the sleep time at 1s to prevent this.
+name|harness
+operator|.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_FAILOVER_SLEEPTIME_MAX_KEY
+argument_list|,
+literal|1000
+argument_list|)
+expr_stmt|;
 specifier|final
 name|MiniDFSCluster
 name|cluster
@@ -2758,7 +2774,7 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Try to cover the lease on the given file for up to 30    * seconds.    * @param fsOtherUser the filesystem to use for the recoverLease call    * @param testPath the path on which to run lease recovery    * @throws TimeoutException if lease recover does not succeed within 30    * seconds    * @throws InterruptedException if the thread is interrupted    */
+comment|/**    * Try to recover the lease on the given file for up to 60 seconds.    * @param fsOtherUser the filesystem to use for the recoverLease call    * @param testPath the path on which to run lease recovery    * @throws TimeoutException if lease recover does not succeed within 60    * seconds    * @throws InterruptedException if the thread is interrupted    */
 DECL|method|loopRecoverLease ( final FileSystem fsOtherUser, final Path testPath)
 specifier|private
 specifier|static
@@ -2854,7 +2870,7 @@ block|}
 argument_list|,
 literal|1000
 argument_list|,
-literal|30000
+literal|60000
 argument_list|)
 expr_stmt|;
 block|}
