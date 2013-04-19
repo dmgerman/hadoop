@@ -794,11 +794,10 @@ name|CONTAINER_SCRIPT
 init|=
 name|Shell
 operator|.
-name|WINDOWS
-condition|?
-literal|"launch_container.cmd"
-else|:
-literal|"launch_container.sh"
+name|appendScriptExtension
+argument_list|(
+literal|"launch_container"
+argument_list|)
 decl_stmt|;
 DECL|field|FINAL_CONTAINER_TOKENS_FILE
 specifier|public
