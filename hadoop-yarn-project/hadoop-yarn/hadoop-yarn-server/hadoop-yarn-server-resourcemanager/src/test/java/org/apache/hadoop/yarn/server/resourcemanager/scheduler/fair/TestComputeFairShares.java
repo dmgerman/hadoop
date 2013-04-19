@@ -92,9 +92,9 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|modes
+name|policies
 operator|.
-name|FairSchedulingMode
+name|FairSharePolicy
 import|;
 end_import
 
@@ -138,7 +138,7 @@ name|scheds
 decl_stmt|;
 DECL|field|schedulingMode
 specifier|private
-name|SchedulingMode
+name|SchedulingPolicy
 name|schedulingMode
 decl_stmt|;
 annotation|@
@@ -163,7 +163,7 @@ expr_stmt|;
 name|schedulingMode
 operator|=
 operator|new
-name|FairSchedulingMode
+name|FairSharePolicy
 argument_list|()
 expr_stmt|;
 block|}

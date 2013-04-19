@@ -354,6 +354,13 @@ argument_list|()
 argument_list|,
 name|RMAppState
 operator|.
+name|NEW_SAVING
+operator|.
+name|toString
+argument_list|()
+argument_list|,
+name|RMAppState
+operator|.
 name|SUBMITTED
 operator|.
 name|toString

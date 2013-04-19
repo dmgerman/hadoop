@@ -373,16 +373,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
+DECL|method|assignContainer (FSSchedulerNode node)
 specifier|public
 name|Resource
 name|assignContainer
 parameter_list|(
 name|FSSchedulerNode
 name|node
-parameter_list|,
-name|boolean
-name|reserved
 parameter_list|)
 block|{
 return|return

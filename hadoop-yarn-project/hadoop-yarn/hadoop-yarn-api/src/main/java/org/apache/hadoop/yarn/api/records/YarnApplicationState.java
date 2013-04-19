@@ -70,9 +70,17 @@ comment|/** Application which was just created. */
 DECL|enumConstant|NEW
 name|NEW
 block|,
+comment|/** Application which is being saved. */
+DECL|enumConstant|NEW_SAVING
+name|NEW_SAVING
+block|,
 comment|/** Application which has been submitted. */
 DECL|enumConstant|SUBMITTED
 name|SUBMITTED
+block|,
+comment|/** Application has been accepted by the scheduler */
+DECL|enumConstant|ACCEPTED
+name|ACCEPTED
 block|,
 comment|/** Application which is currently running. */
 DECL|enumConstant|RUNNING
@@ -89,10 +97,6 @@ block|,
 comment|/** Application which was terminated by a user or admin. */
 DECL|enumConstant|KILLED
 name|KILLED
-block|,
-comment|/** Application has been accepted by the scheduler */
-DECL|enumConstant|ACCEPTED
-name|ACCEPTED
 block|}
 end_enum
 

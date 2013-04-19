@@ -1887,6 +1887,15 @@ argument_list|()
 operator|==
 name|YarnApplicationState
 operator|.
+name|NEW_SAVING
+operator|||
+name|application
+operator|.
+name|getYarnApplicationState
+argument_list|()
+operator|==
+name|YarnApplicationState
+operator|.
 name|SUBMITTED
 operator|||
 name|application

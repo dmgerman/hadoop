@@ -2300,6 +2300,46 @@ block|}
 argument_list|)
 return|;
 block|}
+comment|/**    * Get events indicating completion (success/failure) of component tasks.    *      * @param startFrom index to start fetching events from    * @return an array of {@link TaskCompletionEvent}s    * @throws IOException    */
+DECL|method|getTaskCompletionEvents (final int startFrom)
+specifier|public
+name|TaskCompletionEvent
+index|[]
+name|getTaskCompletionEvents
+parameter_list|(
+specifier|final
+name|int
+name|startFrom
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+return|return
+name|getTaskCompletionEvents
+argument_list|(
+name|startFrom
+argument_list|,
+literal|10
+argument_list|)
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+name|ie
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Kill indicated task attempt.    *     * @param taskId the id of the task to be terminated.    * @throws IOException    */
 DECL|method|killTask (final TaskAttemptID taskId)
 specifier|public

@@ -1734,20 +1734,6 @@ name|f
 parameter_list|)
 block|{
 comment|// The process vanished in the interim!
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"The process "
-operator|+
-name|pinfo
-operator|.
-name|getPid
-argument_list|()
-operator|+
-literal|" may have finished in the interim."
-argument_list|)
-expr_stmt|;
 return|return
 name|ret
 return|;

@@ -138,9 +138,9 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|modes
+name|policies
 operator|.
-name|FairSchedulingMode
+name|FairSharePolicy
 import|;
 end_import
 
@@ -162,9 +162,9 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|modes
+name|policies
 operator|.
-name|FifoSchedulingMode
+name|FifoPolicy
 import|;
 end_import
 
@@ -173,11 +173,11 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|SchedulingMode
+DECL|class|SchedulingPolicy
 specifier|public
 specifier|abstract
 class|class
-name|SchedulingMode
+name|SchedulingPolicy
 block|{
 DECL|field|instances
 specifier|private
@@ -189,10 +189,10 @@ name|Class
 argument_list|<
 name|?
 extends|extends
-name|SchedulingMode
+name|SchedulingPolicy
 argument_list|>
 argument_list|,
-name|SchedulingMode
+name|SchedulingPolicy
 argument_list|>
 name|instances
 init|=
@@ -203,35 +203,96 @@ name|Class
 argument_list|<
 name|?
 extends|extends
-name|SchedulingMode
+name|SchedulingPolicy
 argument_list|>
 argument_list|,
-name|SchedulingMode
+name|SchedulingPolicy
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|DEFAULT_MODE
+DECL|field|DEFAULT_POLICY
 specifier|private
 specifier|static
-name|SchedulingMode
-name|DEFAULT_MODE
+name|SchedulingPolicy
+name|DEFAULT_POLICY
 init|=
 name|getInstance
 argument_list|(
-name|FairSchedulingMode
+name|FairSharePolicy
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|DEPTH_LEAF
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|DEPTH_LEAF
+init|=
+operator|(
+name|byte
+operator|)
+literal|1
+decl_stmt|;
+DECL|field|DEPTH_INTERMEDIATE
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|DEPTH_INTERMEDIATE
+init|=
+operator|(
+name|byte
+operator|)
+literal|2
+decl_stmt|;
+DECL|field|DEPTH_ROOT
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|DEPTH_ROOT
+init|=
+operator|(
+name|byte
+operator|)
+literal|4
+decl_stmt|;
+DECL|field|DEPTH_PARENT
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|DEPTH_PARENT
+init|=
+operator|(
+name|byte
+operator|)
+literal|6
+decl_stmt|;
+comment|// Root and Intermediate
+DECL|field|DEPTH_ANY
+specifier|public
+specifier|static
+specifier|final
+name|byte
+name|DEPTH_ANY
+init|=
+operator|(
+name|byte
+operator|)
+literal|7
+decl_stmt|;
 DECL|method|getDefault ()
 specifier|public
 specifier|static
-name|SchedulingMode
+name|SchedulingPolicy
 name|getDefault
 parameter_list|()
 block|{
 return|return
-name|DEFAULT_MODE
+name|DEFAULT_POLICY
 return|;
 block|}
 DECL|method|setDefault (String className)
@@ -246,7 +307,7 @@ parameter_list|)
 throws|throws
 name|AllocationConfigurationException
 block|{
-name|DEFAULT_MODE
+name|DEFAULT_POLICY
 operator|=
 name|parse
 argument_list|(
@@ -254,24 +315,24 @@ name|className
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns a {@link SchedulingMode} instance corresponding to the passed clazz    */
-DECL|method|getInstance (Class<? extends SchedulingMode> clazz)
+comment|/**    * Returns a {@link SchedulingPolicy} instance corresponding to the passed clazz    */
+DECL|method|getInstance (Class<? extends SchedulingPolicy> clazz)
 specifier|public
 specifier|static
-name|SchedulingMode
+name|SchedulingPolicy
 name|getInstance
 parameter_list|(
 name|Class
 argument_list|<
 name|?
 extends|extends
-name|SchedulingMode
+name|SchedulingPolicy
 argument_list|>
 name|clazz
 parameter_list|)
 block|{
-name|SchedulingMode
-name|mode
+name|SchedulingPolicy
+name|policy
 init|=
 name|instances
 operator|.
@@ -282,12 +343,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|mode
+name|policy
 operator|==
 literal|null
 condition|)
 block|{
-name|mode
+name|policy
 operator|=
 name|ReflectionUtils
 operator|.
@@ -304,28 +365,28 @@ name|put
 argument_list|(
 name|clazz
 argument_list|,
-name|mode
+name|policy
 argument_list|)
 expr_stmt|;
 block|}
 return|return
-name|mode
+name|policy
 return|;
 block|}
-comment|/**    * Returns {@link SchedulingMode} instance corresponding to the    * {@link SchedulingMode} passed as a string. The mode can be "fair" for    * FairSchedulingMode of "fifo" for FifoSchedulingMode. For custom    * {@link SchedulingMode}s in the RM classpath, the mode should be canonical    * class name of the {@link SchedulingMode}.    *     * @param mode canonical class name or "fair" or "fifo"    * @throws AllocationConfigurationException    */
+comment|/**    * Returns {@link SchedulingPolicy} instance corresponding to the    * {@link SchedulingPolicy} passed as a string. The policy can be "fair" for    * FairsharePolicy or "fifo" for FifoPolicy. For custom    * {@link SchedulingPolicy}s in the RM classpath, the policy should be    * canonical class name of the {@link SchedulingPolicy}.    *     * @param policy canonical class name or "fair" or "fifo"    * @throws AllocationConfigurationException    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|parse (String mode)
+DECL|method|parse (String policy)
 specifier|public
 specifier|static
-name|SchedulingMode
+name|SchedulingPolicy
 name|parse
 parameter_list|(
 name|String
-name|mode
+name|policy
 parameter_list|)
 throws|throws
 name|AllocationConfigurationException
@@ -341,7 +402,7 @@ decl_stmt|;
 name|String
 name|text
 init|=
-name|mode
+name|policy
 operator|.
 name|toLowerCase
 argument_list|()
@@ -358,7 +419,7 @@ condition|)
 block|{
 name|clazz
 operator|=
-name|FairSchedulingMode
+name|FairSharePolicy
 operator|.
 name|class
 expr_stmt|;
@@ -376,7 +437,7 @@ condition|)
 block|{
 name|clazz
 operator|=
-name|FifoSchedulingMode
+name|FifoPolicy
 operator|.
 name|class
 expr_stmt|;
@@ -391,7 +452,7 @@ name|Class
 operator|.
 name|forName
 argument_list|(
-name|mode
+name|policy
 argument_list|)
 expr_stmt|;
 block|}
@@ -405,9 +466,9 @@ throw|throw
 operator|new
 name|AllocationConfigurationException
 argument_list|(
-name|mode
+name|policy
 operator|+
-literal|" SchedulingMode class not found!"
+literal|" SchedulingPolicy class not found!"
 argument_list|)
 throw|;
 block|}
@@ -415,7 +476,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|SchedulingMode
+name|SchedulingPolicy
 operator|.
 name|class
 operator|.
@@ -429,9 +490,9 @@ throw|throw
 operator|new
 name|AllocationConfigurationException
 argument_list|(
-name|mode
+name|policy
 operator|+
-literal|" does not extend SchedulingMode"
+literal|" does not extend SchedulingPolicy"
 argument_list|)
 throw|;
 block|}
@@ -442,7 +503,7 @@ name|clazz
 argument_list|)
 return|;
 block|}
-comment|/**    * @return returns the name of SchedulingMode    */
+comment|/**    * @return returns the name of {@link SchedulingPolicy}    */
 DECL|method|getName ()
 specifier|public
 specifier|abstract
@@ -450,6 +511,47 @@ name|String
 name|getName
 parameter_list|()
 function_decl|;
+comment|/**    * Specifies the depths in the hierarchy, this {@link SchedulingPolicy}    * applies to    *     * @return depth equal to one of fields {@link SchedulingPolicy}#DEPTH_*    */
+DECL|method|getApplicableDepth ()
+specifier|public
+specifier|abstract
+name|byte
+name|getApplicableDepth
+parameter_list|()
+function_decl|;
+comment|/**    * Checks if the specified {@link SchedulingPolicy} can be used for a queue at    * the specified depth in the hierarchy    *     * @param policy {@link SchedulingPolicy} we are checking the    *          depth-applicability for    * @param depth queue's depth in the hierarchy    * @return true if policy is applicable to passed depth, false otherwise    */
+DECL|method|isApplicableTo (SchedulingPolicy policy, byte depth)
+specifier|public
+specifier|static
+name|boolean
+name|isApplicableTo
+parameter_list|(
+name|SchedulingPolicy
+name|policy
+parameter_list|,
+name|byte
+name|depth
+parameter_list|)
+block|{
+return|return
+operator|(
+operator|(
+name|policy
+operator|.
+name|getApplicableDepth
+argument_list|()
+operator|&
+name|depth
+operator|)
+operator|==
+name|depth
+operator|)
+condition|?
+literal|true
+else|:
+literal|false
+return|;
+block|}
 comment|/**    * The comparator returned by this method is to be used for sorting the    * {@link Schedulable}s in that queue.    *     * @return the comparator to sort by    */
 DECL|method|getComparator ()
 specifier|public
@@ -461,7 +563,7 @@ argument_list|>
 name|getComparator
 parameter_list|()
 function_decl|;
-comment|/**    * Computes and updates the shares of {@link Schedulable}s as per the    * SchedulingMode, to be used later at schedule time.    *     * @param schedulables {@link Schedulable}s whose shares are to be updated    * @param totalResources Total {@link Resource}s in the cluster    */
+comment|/**    * Computes and updates the shares of {@link Schedulable}s as per the    * {@link SchedulingPolicy}, to be used later at schedule time.    *     * @param schedulables {@link Schedulable}s whose shares are to be updated    * @param totalResources Total {@link Resource}s in the cluster    */
 DECL|method|computeShares ( Collection<? extends Schedulable> schedulables, Resource totalResources)
 specifier|public
 specifier|abstract

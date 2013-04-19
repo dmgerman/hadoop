@@ -204,8 +204,8 @@ name|void
 name|updateDemand
 parameter_list|()
 function_decl|;
-comment|/**    * Assign a container on this node if possible, and return the amount of    * resources assigned. If {@code reserved} is true, it means a reservation    * already exists on this node, and the schedulable should fulfill that    * reservation if possible.    */
-DECL|method|assignContainer (FSSchedulerNode node, boolean reserved)
+comment|/**    * Assign a container on this node if possible, and return the amount of    * resources assigned.    */
+DECL|method|assignContainer (FSSchedulerNode node)
 specifier|public
 specifier|abstract
 name|Resource
@@ -213,9 +213,6 @@ name|assignContainer
 parameter_list|(
 name|FSSchedulerNode
 name|node
-parameter_list|,
-name|boolean
-name|reserved
 parameter_list|)
 function_decl|;
 comment|/** Assign a fair share to this Schedulable. */

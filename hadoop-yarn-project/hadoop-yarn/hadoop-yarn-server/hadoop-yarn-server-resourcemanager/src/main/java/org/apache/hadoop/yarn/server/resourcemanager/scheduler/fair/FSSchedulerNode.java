@@ -409,6 +409,11 @@ specifier|private
 name|RMContainer
 name|reservedContainer
 decl_stmt|;
+DECL|field|reservedAppSchedulable
+specifier|private
+name|AppSchedulable
+name|reservedAppSchedulable
+decl_stmt|;
 comment|/* set of containers that are allocated containers */
 DECL|field|launchedContainers
 specifier|private
@@ -1167,6 +1172,15 @@ name|reservedContainer
 operator|=
 name|reservedContainer
 expr_stmt|;
+name|this
+operator|.
+name|reservedAppSchedulable
+operator|=
+name|application
+operator|.
+name|getAppSchedulable
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|unreserveResource ( FSSchedulerApp application)
 specifier|public
@@ -1235,7 +1249,15 @@ name|this
 argument_list|)
 throw|;
 block|}
+name|this
+operator|.
 name|reservedContainer
+operator|=
+literal|null
+expr_stmt|;
+name|this
+operator|.
+name|reservedAppSchedulable
 operator|=
 literal|null
 expr_stmt|;
@@ -1249,6 +1271,17 @@ parameter_list|()
 block|{
 return|return
 name|reservedContainer
+return|;
+block|}
+DECL|method|getReservedAppSchedulable ()
+specifier|public
+specifier|synchronized
+name|AppSchedulable
+name|getReservedAppSchedulable
+parameter_list|()
+block|{
+return|return
+name|reservedAppSchedulable
 return|;
 block|}
 block|}
