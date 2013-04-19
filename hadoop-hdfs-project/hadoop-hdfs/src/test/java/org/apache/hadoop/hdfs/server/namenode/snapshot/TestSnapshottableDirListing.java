@@ -469,9 +469,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|dirs
@@ -542,9 +539,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir2
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|dirs
@@ -709,9 +703,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir2
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Create a snapshot for dir2
@@ -848,9 +839,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -858,9 +846,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub2
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|dirs
@@ -937,9 +922,6 @@ operator|.
 name|disallowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|dirs
@@ -1078,9 +1060,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -1088,9 +1067,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir2
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -1177,9 +1153,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir1_user1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|fs1
@@ -1187,9 +1160,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir2_user1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// user2
@@ -1264,9 +1234,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir_user2
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|fs2
@@ -1274,9 +1241,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|subdir_user2
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// super user

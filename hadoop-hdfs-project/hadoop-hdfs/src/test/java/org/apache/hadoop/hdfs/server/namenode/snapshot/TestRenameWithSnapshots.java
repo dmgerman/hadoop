@@ -1003,7 +1003,7 @@ name|hdfs
 operator|.
 name|allowSnapshot
 argument_list|(
-name|abcStr
+name|abc
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -1404,9 +1404,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -1538,9 +1535,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -1702,9 +1696,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSTestUtil
@@ -7872,9 +7863,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|foo
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|SnapshotTestHelper

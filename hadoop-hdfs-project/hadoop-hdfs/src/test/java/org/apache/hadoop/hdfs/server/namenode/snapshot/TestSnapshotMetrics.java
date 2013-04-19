@@ -467,9 +467,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertGauge
@@ -538,9 +535,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub2
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertGauge
@@ -609,9 +603,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|subsub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertGauge
@@ -645,9 +636,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertGauge
@@ -682,9 +670,6 @@ operator|.
 name|disallowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertGauge
@@ -850,9 +835,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -987,9 +969,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|subsub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs

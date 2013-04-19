@@ -656,9 +656,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|snapshotDir
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs

@@ -795,9 +795,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -981,9 +978,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|subsub
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -2398,9 +2392,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 try|try

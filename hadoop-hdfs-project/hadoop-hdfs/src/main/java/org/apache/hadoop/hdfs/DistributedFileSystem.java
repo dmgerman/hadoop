@@ -4115,13 +4115,13 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/** @see HdfsAdmin#allowSnapshot(String) */
-DECL|method|allowSnapshot (String path)
+comment|/** @see HdfsAdmin#allowSnapshot(Path) */
+DECL|method|allowSnapshot (Path path)
 specifier|public
 name|void
 name|allowSnapshot
 parameter_list|(
-name|String
+name|Path
 name|path
 parameter_list|)
 throws|throws
@@ -4130,18 +4130,21 @@ block|{
 name|dfs
 operator|.
 name|allowSnapshot
+argument_list|(
+name|getPathName
 argument_list|(
 name|path
 argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
-comment|/** @see HdfsAdmin#disallowSnapshot(String) */
-DECL|method|disallowSnapshot (String path)
+comment|/** @see HdfsAdmin#disallowSnapshot(Path) */
+DECL|method|disallowSnapshot (Path path)
 specifier|public
 name|void
 name|disallowSnapshot
 parameter_list|(
-name|String
+name|Path
 name|path
 parameter_list|)
 throws|throws
@@ -4151,7 +4154,10 @@ name|dfs
 operator|.
 name|disallowSnapshot
 argument_list|(
+name|getPathName
+argument_list|(
 name|path
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

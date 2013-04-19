@@ -76,6 +76,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|PathIsNotDirectoryException
 import|;
 end_import
@@ -391,6 +405,9 @@ operator|.
 name|getFirst
 argument_list|()
 decl_stmt|;
+name|Path
+name|snapshotPath
+init|=
 name|sroot
 operator|.
 name|fs
@@ -402,6 +419,15 @@ operator|.
 name|path
 argument_list|,
 name|snapshotName
+argument_list|)
+decl_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Created snapshot "
+operator|+
+name|snapshotPath
 argument_list|)
 expr_stmt|;
 block|}

@@ -351,12 +351,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Allow snapshot on a directory.    * @param the path of the directory where snapshots will be taken    */
-DECL|method|allowSnapshot (String path)
+DECL|method|allowSnapshot (Path path)
 specifier|public
 name|void
 name|allowSnapshot
 parameter_list|(
-name|String
+name|Path
 name|path
 parameter_list|)
 throws|throws
@@ -371,12 +371,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Disallow snapshot on a directory.    * @param path of the snapshottable directory.    */
-DECL|method|disallowSnapshot (String path)
+DECL|method|disallowSnapshot (Path path)
 specifier|public
 name|void
 name|disallowSnapshot
 parameter_list|(
-name|String
+name|Path
 name|path
 parameter_list|)
 throws|throws

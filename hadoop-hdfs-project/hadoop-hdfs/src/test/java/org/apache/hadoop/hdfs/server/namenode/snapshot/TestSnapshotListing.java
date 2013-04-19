@@ -434,9 +434,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|dir
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|stats

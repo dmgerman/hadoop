@@ -841,9 +841,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|pathDirectoryMkdir
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// OP_DISALLOW_SNAPSHOT 30
@@ -852,9 +849,6 @@ operator|.
 name|disallowSnapshot
 argument_list|(
 name|pathDirectoryMkdir
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// OP_CREATE_SNAPSHOT 26
@@ -868,9 +862,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|pathDirectoryMkdir
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|dfs

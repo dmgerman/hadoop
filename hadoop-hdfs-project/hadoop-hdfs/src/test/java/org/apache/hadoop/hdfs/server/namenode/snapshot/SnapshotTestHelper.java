@@ -993,9 +993,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|snapshotRoot
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs

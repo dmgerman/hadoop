@@ -523,7 +523,7 @@ name|Exception
 block|{
 specifier|final
 name|String
-name|path
+name|pathStr
 init|=
 name|sub1
 operator|.
@@ -538,7 +538,7 @@ name|fsdir
 operator|.
 name|getINode
 argument_list|(
-name|path
+name|pathStr
 argument_list|)
 decl_stmt|;
 comment|// Before a directory is snapshottable
@@ -561,6 +561,16 @@ name|INodeDirectorySnapshottable
 argument_list|)
 expr_stmt|;
 comment|// After a directory is snapshottable
+specifier|final
+name|Path
+name|path
+init|=
+operator|new
+name|Path
+argument_list|(
+name|pathStr
+argument_list|)
+decl_stmt|;
 name|hdfs
 operator|.
 name|allowSnapshot
@@ -577,7 +587,7 @@ name|fsdir
 operator|.
 name|getINode
 argument_list|(
-name|path
+name|pathStr
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -606,7 +616,7 @@ name|fsdir
 operator|.
 name|getINode
 argument_list|(
-name|path
+name|pathStr
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1170,9 +1180,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -1557,9 +1564,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -1895,9 +1899,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs
@@ -2332,9 +2333,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|sub1
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|hdfs

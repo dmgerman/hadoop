@@ -551,9 +551,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|foo
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|print
@@ -603,9 +600,6 @@ operator|.
 name|allowSnapshot
 argument_list|(
 name|bar
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|print
@@ -715,7 +709,7 @@ name|hdfs
 operator|.
 name|allowSnapshot
 argument_list|(
-name|rootStr
+name|rootPath
 argument_list|)
 expr_stmt|;
 name|print
@@ -766,7 +760,7 @@ name|hdfs
 operator|.
 name|disallowSnapshot
 argument_list|(
-name|rootStr
+name|rootPath
 argument_list|)
 expr_stmt|;
 name|print
@@ -976,7 +970,7 @@ name|hdfs
 operator|.
 name|allowSnapshot
 argument_list|(
-name|dirStr
+name|dir
 argument_list|)
 expr_stmt|;
 name|int
@@ -1230,7 +1224,7 @@ name|hdfs
 operator|.
 name|allowSnapshot
 argument_list|(
-name|dirStr
+name|dir
 argument_list|)
 expr_stmt|;
 comment|// set namespace quota
