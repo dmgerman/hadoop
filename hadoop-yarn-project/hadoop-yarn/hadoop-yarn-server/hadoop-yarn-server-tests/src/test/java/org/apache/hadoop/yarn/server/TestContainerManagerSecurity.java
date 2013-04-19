@@ -3334,8 +3334,15 @@ decl_stmt|;
 comment|// Modify ask to request no more.
 name|allocateRequest
 operator|.
-name|clearAsks
+name|setAskList
+argument_list|(
+operator|new
+name|ArrayList
+argument_list|<
+name|ResourceRequest
+argument_list|>
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|int
 name|waitCounter
