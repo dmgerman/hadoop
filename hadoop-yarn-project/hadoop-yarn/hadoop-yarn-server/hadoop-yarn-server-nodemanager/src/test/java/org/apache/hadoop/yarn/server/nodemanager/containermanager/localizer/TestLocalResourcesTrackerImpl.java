@@ -1061,28 +1061,6 @@ argument_list|,
 literal|2
 argument_list|)
 expr_stmt|;
-comment|// Verify resources in state INIT with ref-count=0 is removed.
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|tracker
-operator|.
-name|remove
-argument_list|(
-name|lr2
-argument_list|,
-name|mockDelService
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|verifyTrackedResourceCount
-argument_list|(
-name|tracker
-argument_list|,
-literal|1
-argument_list|)
-expr_stmt|;
 comment|// Verify resource with non zero ref count is not removed.
 name|Assert
 operator|.
@@ -1114,7 +1092,7 @@ name|verifyTrackedResourceCount
 argument_list|(
 name|tracker
 argument_list|,
-literal|1
+literal|2
 argument_list|)
 expr_stmt|;
 comment|// Localize resource1
@@ -1205,7 +1183,7 @@ name|verifyTrackedResourceCount
 argument_list|(
 name|tracker
 argument_list|,
-literal|0
+literal|1
 argument_list|)
 expr_stmt|;
 block|}

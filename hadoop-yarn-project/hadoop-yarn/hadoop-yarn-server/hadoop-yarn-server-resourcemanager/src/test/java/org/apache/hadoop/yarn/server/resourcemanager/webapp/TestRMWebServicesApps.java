@@ -850,7 +850,9 @@ name|YarnConfiguration
 operator|.
 name|RM_AM_MAX_ATTEMPTS
 argument_list|,
-literal|2
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
 argument_list|)
 expr_stmt|;
 name|conf
@@ -7006,6 +7008,13 @@ operator|.
 name|DEFAULT_RM_AM_MAX_ATTEMPTS
 argument_list|)
 decl_stmt|;
+name|assertTrue
+argument_list|(
+name|maxAppAttempts
+operator|>
+literal|1
+argument_list|)
+expr_stmt|;
 name|int
 name|retriesLeft
 init|=

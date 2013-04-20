@@ -172,16 +172,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|LinkedList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -354,6 +344,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -377,6 +381,22 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -1539,6 +1559,20 @@ operator|.
 name|util
 operator|.
 name|FSDownload
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -3559,6 +3593,67 @@ return|return
 name|path
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Private
+DECL|method|getPublicLocalizer ()
+specifier|public
+name|PublicLocalizer
+name|getPublicLocalizer
+parameter_list|()
+block|{
+return|return
+name|localizerTracker
+operator|.
+name|publicLocalizer
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Private
+DECL|method|getLocalizerRunner (String locId)
+specifier|public
+name|LocalizerRunner
+name|getLocalizerRunner
+parameter_list|(
+name|String
+name|locId
+parameter_list|)
+block|{
+return|return
+name|localizerTracker
+operator|.
+name|privLocalizers
+operator|.
+name|get
+argument_list|(
+name|locId
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+annotation|@
+name|Private
+DECL|method|getPrivateLocalizers ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|LocalizerRunner
+argument_list|>
+name|getPrivateLocalizers
+parameter_list|()
+block|{
+return|return
+name|localizerTracker
+operator|.
+name|privLocalizers
+return|;
+block|}
 comment|/**    * Sub-component handling the spawning of {@link ContainerLocalizer}s    */
 DECL|class|LocalizerTracker
 class|class
@@ -4077,20 +4172,6 @@ name|LocalizerResourceRequestEvent
 argument_list|>
 name|pending
 decl_stmt|;
-comment|// TODO hack to work around broken signaling
-DECL|field|attempts
-specifier|final
-name|Map
-argument_list|<
-name|LocalResourceRequest
-argument_list|,
-name|List
-argument_list|<
-name|LocalizerResourceRequestEvent
-argument_list|>
-argument_list|>
-name|attempts
-decl_stmt|;
 DECL|method|PublicLocalizer (Configuration conf)
 name|PublicLocalizer
 parameter_list|(
@@ -4123,22 +4204,10 @@ argument_list|,
 name|LocalizerResourceRequestEvent
 argument_list|>
 argument_list|()
-argument_list|,
-operator|new
-name|HashMap
-argument_list|<
-name|LocalResourceRequest
-argument_list|,
-name|List
-argument_list|<
-name|LocalizerResourceRequestEvent
-argument_list|>
-argument_list|>
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PublicLocalizer (Configuration conf, FileContext lfs, ExecutorService threadPool, Map<Future<Path>,LocalizerResourceRequestEvent> pending, Map<LocalResourceRequest,List<LocalizerResourceRequestEvent>> attempts)
+DECL|method|PublicLocalizer (Configuration conf, FileContext lfs, ExecutorService threadPool, Map<Future<Path>,LocalizerResourceRequestEvent> pending)
 name|PublicLocalizer
 parameter_list|(
 name|Configuration
@@ -4160,17 +4229,6 @@ argument_list|,
 name|LocalizerResourceRequestEvent
 argument_list|>
 name|pending
-parameter_list|,
-name|Map
-argument_list|<
-name|LocalResourceRequest
-argument_list|,
-name|List
-argument_list|<
-name|LocalizerResourceRequestEvent
-argument_list|>
-argument_list|>
-name|attempts
 parameter_list|)
 block|{
 name|super
@@ -4196,27 +4254,6 @@ name|pending
 operator|=
 name|pending
 expr_stmt|;
-name|this
-operator|.
-name|attempts
-operator|=
-name|attempts
-expr_stmt|;
-comment|//      List<String> localDirs = dirsHandler.getLocalDirs();
-comment|//      String[] publicFilecache = new String[localDirs.size()];
-comment|//      for (int i = 0, n = localDirs.size(); i< n; ++i) {
-comment|//        publicFilecache[i] =
-comment|//          new Path(localDirs.get(i), ContainerLocalizer.FILECACHE).toString();
-comment|//      }
-comment|//      conf.setStrings(PUBCACHE_CTXT, publicFilecache);
-comment|//      this.publicDirDestPath = new LocalDirAllocator(PUBCACHE_CTXT).getLocalPathForWrite(pathStr, conf);
-comment|//      List<String> localDirs = dirsHandler.getLocalDirs();
-comment|//      String[] publicFilecache = new String[localDirs.size()];
-comment|//      int i = 0;
-comment|//      for (String localDir : localDirs) {
-comment|//        publicFilecache[i++] =
-comment|//            new Path(localDir, ContainerLocalizer.FILECACHE).toString();
-comment|//      }
 name|this
 operator|.
 name|threadPool
@@ -4247,13 +4284,18 @@ name|request
 parameter_list|)
 block|{
 comment|// TODO handle failures, cancellation, requests by other containers
-name|LocalResourceRequest
-name|key
+name|LocalizedResource
+name|rsrc
 init|=
 name|request
 operator|.
 name|getResource
 argument_list|()
+decl_stmt|;
+name|LocalResourceRequest
+name|key
+init|=
+name|rsrc
 operator|.
 name|getRequest
 argument_list|()
@@ -4267,29 +4309,28 @@ operator|+
 name|key
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|attempts
-init|)
-block|{
-name|List
-argument_list|<
-name|LocalizerResourceRequestEvent
-argument_list|>
-name|sigh
-init|=
-name|attempts
-operator|.
-name|get
-argument_list|(
-name|key
-argument_list|)
-decl_stmt|;
+comment|/*        * Here multiple containers may request the same resource. So we need        * to start downloading only when        * 1) ResourceState == DOWNLOADING        * 2) We are able to acquire non blocking semaphore lock.        * If not we will skip this resource as either it is getting downloaded        * or it FAILED / LOCALIZED.        */
 if|if
 condition|(
-literal|null
-operator|==
-name|sigh
+name|rsrc
+operator|.
+name|tryAcquire
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|rsrc
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|ResourceState
+operator|.
+name|DOWNLOADING
+argument_list|)
 condition|)
 block|{
 name|LocalResource
@@ -4421,20 +4462,6 @@ argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
-name|attempts
-operator|.
-name|put
-argument_list|(
-name|key
-argument_list|,
-operator|new
-name|LinkedList
-argument_list|<
-name|LocalizerResourceRequestEvent
-argument_list|>
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -4442,6 +4469,12 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|rsrc
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+comment|// TODO Need to Fix IO Exceptions - Notifying resource
 name|LOG
 operator|.
 name|error
@@ -4457,12 +4490,10 @@ block|}
 block|}
 else|else
 block|{
-name|sigh
+name|rsrc
 operator|.
-name|add
-argument_list|(
-name|request
-argument_list|)
+name|unlock
+argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -4580,19 +4611,14 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|attempts
-init|)
-block|{
-name|attempts
+name|assoc
 operator|.
-name|remove
-argument_list|(
-name|key
-argument_list|)
+name|getResource
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4644,52 +4670,14 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|attempts
-init|)
-block|{
-name|List
-argument_list|<
-name|LocalizerResourceRequestEvent
-argument_list|>
-name|reqs
-decl_stmt|;
-name|reqs
-operator|=
-name|attempts
+name|assoc
 operator|.
-name|get
-argument_list|(
-name|req
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-literal|null
-operator|==
-name|reqs
-condition|)
-block|{
-name|LOG
+name|getResource
+argument_list|()
 operator|.
-name|error
-argument_list|(
-literal|"Missing pending list for "
-operator|+
-name|req
-argument_list|)
+name|unlock
+argument_list|()
 expr_stmt|;
-return|return;
-block|}
-name|attempts
-operator|.
-name|remove
-argument_list|(
-name|req
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4909,11 +4897,14 @@ operator|.
 name|getResource
 argument_list|()
 decl_stmt|;
+comment|// Resource download should take place ONLY if resource is in
+comment|// Downloading state
 if|if
 condition|(
+operator|!
 name|ResourceState
 operator|.
-name|LOCALIZED
+name|DOWNLOADING
 operator|.
 name|equals
 argument_list|(
@@ -4931,12 +4922,28 @@ argument_list|()
 expr_stmt|;
 continue|continue;
 block|}
+comment|/*          * Multiple containers will try to download the same resource. So the          * resource download should start only if          * 1) We can acquire a non blocking semaphore lock on resource          * 2) Resource is still in DOWNLOADING state          */
 if|if
 condition|(
 name|nRsrc
 operator|.
 name|tryAcquire
 argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|nRsrc
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|ResourceState
+operator|.
+name|DOWNLOADING
+argument_list|)
 condition|)
 block|{
 name|LocalResourceRequest
@@ -5026,6 +5033,16 @@ expr_stmt|;
 return|return
 name|next
 return|;
+block|}
+else|else
+block|{
+comment|// Need to release acquired lock
+name|nRsrc
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 return|return
@@ -5357,6 +5374,23 @@ name|URISyntaxException
 name|e
 parameter_list|)
 block|{ }
+comment|// unlocking the resource and removing it from scheduled resource
+comment|// list
+name|assoc
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+name|scheduled
+operator|.
+name|remove
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|pending
@@ -5482,14 +5516,6 @@ name|getException
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assoc
-operator|.
-name|getResource
-argument_list|()
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
 name|response
 operator|.
 name|setLocalizerAction
@@ -5523,6 +5549,23 @@ operator|.
 name|getException
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// unlocking the resource and removing it from scheduled resource
+comment|// list
+name|assoc
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+name|scheduled
+operator|.
+name|remove
+argument_list|(
+name|req
 argument_list|)
 expr_stmt|;
 break|break;

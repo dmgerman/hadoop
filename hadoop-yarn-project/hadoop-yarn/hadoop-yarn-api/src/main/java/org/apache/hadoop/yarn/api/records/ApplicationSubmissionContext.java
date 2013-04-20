@@ -125,18 +125,18 @@ name|ApplicationId
 name|getApplicationId
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ApplicationId</code> of the submitted application.    * @param appplicationId<code>ApplicationId</code> of the submitted     *                       application    */
+comment|/**    * Set the<code>ApplicationId</code> of the submitted application.    * @param applicationId<code>ApplicationId</code> of the submitted    *                      application    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setApplicationId (ApplicationId appplicationId)
+DECL|method|setApplicationId (ApplicationId applicationId)
 specifier|public
 name|void
 name|setApplicationId
 parameter_list|(
 name|ApplicationId
-name|appplicationId
+name|applicationId
 parameter_list|)
 function_decl|;
 comment|/**    * Get the application<em>name</em>.    * @return application name    */
