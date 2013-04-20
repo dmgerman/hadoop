@@ -1952,6 +1952,8 @@ operator|=
 name|individualMaxAppAttempts
 expr_stmt|;
 block|}
+comment|// In work-preserve restart, if attemptCount == maxAttempts, the job still
+comment|// needs to be recovered because the last attempt may still be running.
 if|if
 condition|(
 name|appState
