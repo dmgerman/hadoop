@@ -668,7 +668,9 @@ specifier|static
 name|int
 name|maxAppAttempts
 init|=
-literal|4
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_AM_MAX_ATTEMPTS
 decl_stmt|;
 DECL|field|appId
 specifier|private
@@ -2957,6 +2959,15 @@ literal|null
 argument_list|)
 decl_stmt|;
 comment|// ACCEPTED => ACCEPTED event RMAppEventType.RMAppEventType.ATTEMPT_FAILED
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|maxAppAttempts
+operator|>
+literal|1
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -3290,6 +3301,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// RUNNING => FAILED/RESTARTING event RMAppEventType.ATTEMPT_FAILED
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|maxAppAttempts
+operator|>
+literal|1
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int

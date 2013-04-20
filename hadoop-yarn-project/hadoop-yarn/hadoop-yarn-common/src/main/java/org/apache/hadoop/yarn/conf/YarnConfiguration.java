@@ -756,7 +756,7 @@ specifier|final
 name|int
 name|DEFAULT_RM_AM_MAX_ATTEMPTS
 init|=
-literal|1
+literal|2
 decl_stmt|;
 comment|/** The keytab for the resource manager.*/
 DECL|field|RM_KEYTAB
