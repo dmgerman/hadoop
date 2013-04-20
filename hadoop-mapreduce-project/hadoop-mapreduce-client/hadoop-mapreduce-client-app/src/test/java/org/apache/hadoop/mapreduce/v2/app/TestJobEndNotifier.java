@@ -341,6 +341,45 @@ literal|5000
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|testTimeout (Configuration conf)
+specifier|private
+name|void
+name|testTimeout
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_JOB_END_NOTIFICATION_TIMEOUT
+argument_list|,
+literal|"1000"
+argument_list|)
+expr_stmt|;
+name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Expected timeout to be 1000, but was "
+operator|+
+name|timeout
+argument_list|,
+name|timeout
+operator|==
+literal|1000
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|testProxyConfiguration (Configuration conf)
 specifier|private
 name|void
@@ -573,6 +612,11 @@ name|conf
 argument_list|)
 expr_stmt|;
 name|testWaitInterval
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|testTimeout
 argument_list|(
 name|conf
 argument_list|)

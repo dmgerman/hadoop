@@ -230,7 +230,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// +1 to make logic for first notification identical to a retry
 name|int
 name|retryAttempts
 init|=
@@ -244,8 +243,6 @@ name|MR_JOB_END_RETRY_ATTEMPTS
 argument_list|,
 literal|0
 argument_list|)
-operator|+
-literal|1
 decl_stmt|;
 name|long
 name|retryInterval
@@ -259,6 +256,22 @@ operator|.
 name|MR_JOB_END_RETRY_INTERVAL
 argument_list|,
 literal|30000
+argument_list|)
+decl_stmt|;
+name|int
+name|timeout
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|JobContext
+operator|.
+name|MR_JOB_END_NOTIFICATION_TIMEOUT
+argument_list|,
+name|JobContext
+operator|.
+name|DEFAULT_MR_JOB_END_NOTIFICATION_TIMEOUT
 argument_list|)
 decl_stmt|;
 if|if
@@ -352,6 +365,8 @@ argument_list|,
 name|retryAttempts
 argument_list|,
 name|retryInterval
+argument_list|,
+name|timeout
 argument_list|)
 expr_stmt|;
 block|}
@@ -359,7 +374,7 @@ return|return
 name|notification
 return|;
 block|}
-DECL|method|httpNotification (String uri)
+DECL|method|httpNotification (String uri, int timeout)
 specifier|private
 specifier|static
 name|int
@@ -367,6 +382,9 @@ name|httpNotification
 parameter_list|(
 name|String
 name|uri
+parameter_list|,
+name|int
+name|timeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -383,12 +401,32 @@ literal|false
 argument_list|)
 decl_stmt|;
 name|HttpClient
-name|m_client
+name|httpClient
 init|=
 operator|new
 name|HttpClient
 argument_list|()
 decl_stmt|;
+name|httpClient
+operator|.
+name|getParams
+argument_list|()
+operator|.
+name|setSoTimeout
+argument_list|(
+name|timeout
+argument_list|)
+expr_stmt|;
+name|httpClient
+operator|.
+name|getParams
+argument_list|()
+operator|.
+name|setConnectionManagerTimeout
+argument_list|(
+name|timeout
+argument_list|)
+expr_stmt|;
 name|HttpMethod
 name|method
 init|=
@@ -411,7 +449,7 @@ literal|"*/*"
 argument_list|)
 expr_stmt|;
 return|return
-name|m_client
+name|httpClient
 operator|.
 name|executeMethod
 argument_list|(
@@ -451,13 +489,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-while|while
-condition|(
-name|notification
-operator|.
-name|configureForRetry
-argument_list|()
-condition|)
+do|do
 block|{
 try|try
 block|{
@@ -469,6 +501,11 @@ argument_list|(
 name|notification
 operator|.
 name|getUri
+argument_list|()
+argument_list|,
+name|notification
+operator|.
+name|getTimeout
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -574,6 +611,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+do|while
+condition|(
+name|notification
+operator|.
+name|configureForRetry
+argument_list|()
+condition|)
+do|;
 block|}
 block|}
 DECL|class|JobEndStatusInfo
@@ -604,7 +649,12 @@ specifier|private
 name|long
 name|delayTime
 decl_stmt|;
-DECL|method|JobEndStatusInfo (String uri, int retryAttempts, long retryInterval)
+DECL|field|timeout
+specifier|private
+name|int
+name|timeout
+decl_stmt|;
+DECL|method|JobEndStatusInfo (String uri, int retryAttempts, long retryInterval, int timeout)
 name|JobEndStatusInfo
 parameter_list|(
 name|String
@@ -615,6 +665,9 @@ name|retryAttempts
 parameter_list|,
 name|long
 name|retryInterval
+parameter_list|,
+name|int
+name|timeout
 parameter_list|)
 block|{
 name|this
@@ -643,6 +696,12 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|timeout
+operator|=
+name|timeout
 expr_stmt|;
 block|}
 DECL|method|getUri ()
@@ -673,6 +732,16 @@ parameter_list|()
 block|{
 return|return
 name|retryInterval
+return|;
+block|}
+DECL|method|getTimeout ()
+specifier|public
+name|int
+name|getTimeout
+parameter_list|()
+block|{
+return|return
+name|timeout
 return|;
 block|}
 DECL|method|configureForRetry ()

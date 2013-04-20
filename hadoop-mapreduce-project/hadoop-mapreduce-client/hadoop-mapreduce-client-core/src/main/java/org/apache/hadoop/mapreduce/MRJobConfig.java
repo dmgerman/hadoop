@@ -2359,6 +2359,15 @@ name|MR_JOB_END_NOTIFICATION_PROXY
 init|=
 literal|"mapreduce.job.end-notification.proxy"
 decl_stmt|;
+DECL|field|MR_JOB_END_NOTIFICATION_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_JOB_END_NOTIFICATION_TIMEOUT
+init|=
+literal|"mapreduce.job.end-notification.timeout"
+decl_stmt|;
 DECL|field|MR_JOB_END_RETRY_ATTEMPTS
 specifier|public
 specifier|static
@@ -2394,6 +2403,15 @@ name|String
 name|MR_JOB_END_NOTIFICATION_MAX_RETRY_INTERVAL
 init|=
 literal|"mapreduce.job.end-notification.max.retry.interval"
+decl_stmt|;
+DECL|field|DEFAULT_MR_JOB_END_NOTIFICATION_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_JOB_END_NOTIFICATION_TIMEOUT
+init|=
+literal|5000
 decl_stmt|;
 comment|/*    * MR AM Service Authorization    */
 specifier|public
