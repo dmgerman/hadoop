@@ -4741,8 +4741,8 @@ return|return
 name|fileNames
 return|;
 block|}
-comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *     * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *     * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *     * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *     * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @return String absolute path to new jar    * @throws IOException if there is an I/O error while writing the jar file    */
-DECL|method|createJarWithClassPath (String inputClassPath, Path pwd)
+comment|/**    * Create a jar file at the given path, containing a manifest with a classpath    * that references all specified entries.    *     * Some platforms may have an upper limit on command line length.  For example,    * the maximum command line length on Windows is 8191 characters, but the    * length of the classpath may exceed this.  To work around this limitation,    * use this method to create a small intermediate jar with a manifest that    * contains the full classpath.  It returns the absolute path to the new jar,    * which the caller may set as the classpath for a new process.    *     * Environment variable evaluation is not supported within a jar manifest, so    * this method expands environment variables before inserting classpath entries    * to the manifest.  The method parses environment variables according to    * platform-specific syntax (%VAR% on Windows, or $VAR otherwise).  On Windows,    * environment variables are case-insensitive.  For example, %VAR% and %var%    * evaluate to the same value.    *     * Specifying the classpath in a jar manifest does not support wildcards, so    * this method expands wildcards internally.  Any classpath entry that ends    * with * is translated to all files at that path with extension .jar or .JAR.    *     * @param inputClassPath String input classpath to bundle into the jar manifest    * @param pwd Path to working directory to save jar    * @param callerEnv Map<String, String> caller's environment variables to use    *   for expansion    * @return String absolute path to new jar    * @throws IOException if there is an I/O error while writing the jar file    */
+DECL|method|createJarWithClassPath (String inputClassPath, Path pwd, Map<String, String> callerEnv)
 specifier|public
 specifier|static
 name|String
@@ -4753,6 +4753,14 @@ name|inputClassPath
 parameter_list|,
 name|Path
 name|pwd
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|callerEnv
 parameter_list|)
 throws|throws
 name|IOException
@@ -4778,16 +4786,10 @@ condition|?
 operator|new
 name|CaseInsensitiveMap
 argument_list|(
-name|System
-operator|.
-name|getenv
-argument_list|()
+name|callerEnv
 argument_list|)
 else|:
-name|System
-operator|.
-name|getenv
-argument_list|()
+name|callerEnv
 decl_stmt|;
 name|String
 index|[]
@@ -4985,11 +4987,10 @@ block|}
 block|}
 else|else
 block|{
-comment|// Append just this jar
-name|classPathEntryList
-operator|.
-name|add
-argument_list|(
+comment|// Append just this entry
+name|String
+name|classPathEntryUrl
+init|=
 operator|new
 name|File
 argument_list|(
@@ -5004,6 +5005,50 @@ argument_list|()
 operator|.
 name|toExternalForm
 argument_list|()
+decl_stmt|;
+comment|// File.toURI only appends trailing '/' if it can determine that it is a
+comment|// directory that already exists.  (See JavaDocs.)  If this entry had a
+comment|// trailing '/' specified by the caller, then guarantee that the
+comment|// classpath entry in the manifest has a trailing '/', and thus refers to
+comment|// a directory instead of a file.  This can happen if the caller is
+comment|// creating a classpath jar referencing a directory that hasn't been
+comment|// created yet, but will definitely be created before running.
+if|if
+condition|(
+name|classPathEntry
+operator|.
+name|endsWith
+argument_list|(
+name|Path
+operator|.
+name|SEPARATOR
+argument_list|)
+operator|&&
+operator|!
+name|classPathEntryUrl
+operator|.
+name|endsWith
+argument_list|(
+name|Path
+operator|.
+name|SEPARATOR
+argument_list|)
+condition|)
+block|{
+name|classPathEntryUrl
+operator|=
+name|classPathEntryUrl
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
+expr_stmt|;
+block|}
+name|classPathEntryList
+operator|.
+name|add
+argument_list|(
+name|classPathEntryUrl
 argument_list|)
 expr_stmt|;
 block|}

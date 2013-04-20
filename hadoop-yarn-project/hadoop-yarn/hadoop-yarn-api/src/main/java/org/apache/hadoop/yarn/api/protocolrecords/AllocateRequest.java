@@ -42,22 +42,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -75,22 +59,6 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
 import|;
 end_import
 
@@ -278,75 +246,21 @@ argument_list|>
 name|getAskList
 parameter_list|()
 function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getAsk (int index)
-name|ResourceRequest
-name|getAsk
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getAskCount ()
-name|int
-name|getAskCount
-parameter_list|()
-function_decl|;
-comment|/**    * Add list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's resource requirements.    * @param resourceRequest list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's     *                        resource requirements    */
+comment|/**    * Set list of<code>ResourceRequest</code> to update the    *<code>ResourceManager</code> about the application's resource requirements.    * @param resourceRequests list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's     *                        resource requirements    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|addAllAsks (List<ResourceRequest> resourceRequest)
+DECL|method|setAskList (List<ResourceRequest> resourceRequests)
 name|void
-name|addAllAsks
+name|setAskList
 parameter_list|(
 name|List
 argument_list|<
 name|ResourceRequest
 argument_list|>
-name|resourceRequest
+name|resourceRequests
 parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|addAsk (ResourceRequest request)
-name|void
-name|addAsk
-parameter_list|(
-name|ResourceRequest
-name|request
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeAsk (int index)
-name|void
-name|removeAsk
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearAsks ()
-name|void
-name|clearAsks
-parameter_list|()
 function_decl|;
 comment|/**    * Get the list of<code>ContainerId</code> of containers being     * released by the<code>ApplicationMaster</code>.    * @return list of<code>ContainerId</code> of containers being     *         released by the<code>ApplicationMaster</code>     */
 annotation|@
@@ -361,35 +275,14 @@ argument_list|>
 name|getReleaseList
 parameter_list|()
 function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getRelease (int index)
-name|ContainerId
-name|getRelease
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getReleaseCount ()
-name|int
-name|getReleaseCount
-parameter_list|()
-function_decl|;
-comment|/**    * Add the list of<code>ContainerId</code> of containers being     * released by the<code>ApplicationMaster</code>    * @param releaseContainers list of<code>ContainerId</code> of     *                          containers being released by the<    *                          code>ApplicationMaster</code>    */
+comment|/**    * Set the list of<code>ContainerId</code> of containers being    * released by the<code>ApplicationMaster</code>    * @param releaseContainers list of<code>ContainerId</code> of     *                          containers being released by the<    *                          code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|addAllReleases (List<ContainerId> releaseContainers)
+DECL|method|setReleaseList (List<ContainerId> releaseContainers)
 name|void
-name|addAllReleases
+name|setReleaseList
 parameter_list|(
 name|List
 argument_list|<
@@ -397,39 +290,6 @@ name|ContainerId
 argument_list|>
 name|releaseContainers
 parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|addRelease (ContainerId container)
-name|void
-name|addRelease
-parameter_list|(
-name|ContainerId
-name|container
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|removeRelease (int index)
-name|void
-name|removeRelease
-parameter_list|(
-name|int
-name|index
-parameter_list|)
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|clearReleases ()
-name|void
-name|clearReleases
-parameter_list|()
 function_decl|;
 block|}
 end_interface

@@ -751,7 +751,7 @@ operator|.
 name|getClass
 argument_list|()
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 operator|+
 literal|"-localDir"
@@ -772,7 +772,7 @@ operator|.
 name|getClass
 argument_list|()
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 operator|+
 literal|"-localLogDir"
@@ -793,7 +793,7 @@ operator|.
 name|getClass
 argument_list|()
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 operator|+
 literal|"-remoteLogDir"
@@ -814,7 +814,7 @@ operator|.
 name|getClass
 argument_list|()
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 operator|+
 literal|"-tmpDir"

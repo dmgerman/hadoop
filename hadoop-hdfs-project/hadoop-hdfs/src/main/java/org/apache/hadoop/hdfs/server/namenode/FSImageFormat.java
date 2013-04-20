@@ -230,6 +230,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -2083,6 +2095,48 @@ name|INode
 name|child
 parameter_list|)
 block|{
+name|FSDirectory
+name|fsDir
+init|=
+name|namesystem
+operator|.
+name|dir
+decl_stmt|;
+if|if
+condition|(
+name|parent
+operator|==
+name|fsDir
+operator|.
+name|rootDir
+operator|&&
+name|FSDirectory
+operator|.
+name|isReservedName
+argument_list|(
+name|child
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"File name \""
+operator|+
+name|child
+operator|.
+name|getLocalName
+argument_list|()
+operator|+
+literal|"\" is reserved. Please "
+operator|+
+literal|" change the name of the existing file or directory to another "
+operator|+
+literal|"name before upgrading to this release."
+argument_list|)
+throw|;
+block|}
 comment|// NOTE: This does not update space counts for parents
 if|if
 condition|(
