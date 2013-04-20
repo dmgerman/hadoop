@@ -444,20 +444,6 @@ name|ConverterUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_class
 DECL|class|DefaultContainerExecutor
 specifier|public
@@ -1441,30 +1427,19 @@ name|PrintStream
 name|pout
 parameter_list|)
 function_decl|;
-DECL|method|LocalWrapperScriptBuilder (Path containerWorkDir)
+DECL|method|LocalWrapperScriptBuilder (Path wrapperScriptPath)
 specifier|protected
 name|LocalWrapperScriptBuilder
 parameter_list|(
 name|Path
-name|containerWorkDir
+name|wrapperScriptPath
 parameter_list|)
 block|{
 name|this
 operator|.
 name|wrapperScriptPath
 operator|=
-operator|new
-name|Path
-argument_list|(
-name|containerWorkDir
-argument_list|,
-name|Shell
-operator|.
-name|appendScriptExtension
-argument_list|(
-literal|"default_container_executor"
-argument_list|)
-argument_list|)
+name|wrapperScriptPath
 expr_stmt|;
 block|}
 block|}
@@ -1486,7 +1461,13 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|containerWorkDir
+argument_list|,
+literal|"default_container_executor.sh"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1555,7 +1536,7 @@ expr_stmt|;
 name|String
 name|exec
 init|=
-name|Shell
+name|ContainerExecutor
 operator|.
 name|isSetsidAvailable
 condition|?
@@ -1614,7 +1595,13 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|containerWorkDir
+argument_list|,
+literal|"default_container_executor.cmd"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|this
@@ -1720,6 +1707,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|String
+name|sigpid
+init|=
+name|ContainerExecutor
+operator|.
+name|isSetsidAvailable
+condition|?
+literal|"-"
+operator|+
+name|pid
+else|:
+name|pid
+decl_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -1733,7 +1734,7 @@ argument_list|()
 operator|+
 literal|" to pid "
 operator|+
-name|pid
+name|sigpid
 operator|+
 literal|" as user "
 operator|+
@@ -1745,7 +1746,7 @@ condition|(
 operator|!
 name|containerIsAlive
 argument_list|(
-name|pid
+name|sigpid
 argument_list|)
 condition|)
 block|{
@@ -1757,7 +1758,7 @@ try|try
 block|{
 name|killContainer
 argument_list|(
-name|pid
+name|sigpid
 argument_list|,
 name|signal
 argument_list|)
@@ -1774,7 +1775,7 @@ condition|(
 operator|!
 name|containerIsAlive
 argument_list|(
-name|pid
+name|sigpid
 argument_list|)
 condition|)
 block|{
@@ -1791,11 +1792,8 @@ literal|true
 return|;
 block|}
 comment|/**    * Returns true if the process with the specified pid is alive.    *     * @param pid String pid    * @return boolean true if the process is alive    */
-annotation|@
-name|VisibleForTesting
 DECL|method|containerIsAlive (String pid)
-specifier|public
-specifier|static
+specifier|private
 name|boolean
 name|containerIsAlive
 parameter_list|(
@@ -1810,8 +1808,6 @@ block|{
 operator|new
 name|ShellCommandExecutor
 argument_list|(
-name|Shell
-operator|.
 name|getCheckProcessIsAliveCommand
 argument_list|(
 name|pid
@@ -1856,8 +1852,6 @@ block|{
 operator|new
 name|ShellCommandExecutor
 argument_list|(
-name|Shell
-operator|.
 name|getSignalKillCommand
 argument_list|(
 name|signal

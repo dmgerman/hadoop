@@ -60,6 +60,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|BufferedWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|File
 import|;
 end_import
@@ -98,29 +108,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|PrintWriter
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
 import|;
 end_import
 
@@ -239,20 +229,6 @@ operator|.
 name|fs
 operator|.
 name|UnsupportedFileSystemException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Shell
 import|;
 end_import
 
@@ -604,24 +580,6 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|DefaultContainerExecutor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
 name|containermanager
 operator|.
 name|ContainerManagerImpl
@@ -834,11 +792,6 @@ specifier|private
 name|FileContext
 name|localFS
 decl_stmt|;
-DECL|field|cId
-specifier|private
-name|ContainerId
-name|cId
-decl_stmt|;
 DECL|field|syncBarrier
 specifier|private
 name|CyclicBarrier
@@ -885,12 +838,6 @@ expr_stmt|;
 name|nmLocalDir
 operator|.
 name|mkdirs
-argument_list|()
-expr_stmt|;
-comment|// Construct the Container-id
-name|cId
-operator|=
-name|createContainerId
 argument_list|()
 expr_stmt|;
 block|}
@@ -1012,38 +959,9 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-comment|// Now verify the contents of the file.  Script generates a message when it
-comment|// receives a sigterm so we look for that.  We cannot perform this check on
-comment|// Windows, because the process is not notified when killed by winutils.
-comment|// There is no way for the process to trap and respond.  Instead, we can
-comment|// verify that the job object with ID matching container ID no longer exists.
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-name|Assert
-operator|.
-name|assertFalse
-argument_list|(
-literal|"Process is still alive!"
-argument_list|,
-name|DefaultContainerExecutor
-operator|.
-name|containerIsAlive
-argument_list|(
-name|cId
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
+comment|// Now verify the contents of the file
+comment|// Script generates a message when it receives a sigterm
+comment|// so we look for that
 name|BufferedReader
 name|reader
 init|=
@@ -1115,7 +1033,6 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|SuppressWarnings
@@ -1271,6 +1188,13 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|// Construct the Container-id
+name|ContainerId
+name|cId
+init|=
+name|createContainerId
+argument_list|()
+decl_stmt|;
 name|when
 argument_list|(
 name|mockContainer
@@ -1422,18 +1346,30 @@ name|String
 argument_list|>
 name|commands
 init|=
-name|Arrays
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|commands
 operator|.
-name|asList
+name|add
 argument_list|(
-name|Shell
+literal|"/bin/bash"
+argument_list|)
+expr_stmt|;
+name|commands
 operator|.
-name|getRunScriptCommand
+name|add
 argument_list|(
 name|scriptFile
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|)
-argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|containerLaunchContext
 operator|.
 name|setCommands
@@ -1734,68 +1670,27 @@ block|{
 name|File
 name|scriptFile
 init|=
-name|Shell
-operator|.
-name|appendScriptExtension
+operator|new
+name|File
 argument_list|(
 name|tmpDir
 argument_list|,
-literal|"scriptFile"
+literal|"scriptFile.sh"
 argument_list|)
 decl_stmt|;
-name|PrintWriter
+name|BufferedWriter
 name|fileWriter
 init|=
 operator|new
-name|PrintWriter
+name|BufferedWriter
+argument_list|(
+operator|new
+name|FileWriter
 argument_list|(
 name|scriptFile
 argument_list|)
+argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|)
-block|{
-name|fileWriter
-operator|.
-name|println
-argument_list|(
-literal|"@echo \"Running testscript for delayed kill\""
-argument_list|)
-expr_stmt|;
-name|fileWriter
-operator|.
-name|println
-argument_list|(
-literal|"@echo \"Writing pid to start file\""
-argument_list|)
-expr_stmt|;
-name|fileWriter
-operator|.
-name|println
-argument_list|(
-literal|"@echo "
-operator|+
-name|cId
-operator|+
-literal|">> "
-operator|+
-name|processStartFile
-argument_list|)
-expr_stmt|;
-name|fileWriter
-operator|.
-name|println
-argument_list|(
-literal|"@pause"
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|fileWriter
 operator|.
 name|write
@@ -1860,7 +1755,6 @@ argument_list|(
 literal|"while true; do\ndate>> /dev/null;\n done\n"
 argument_list|)
 expr_stmt|;
-block|}
 name|fileWriter
 operator|.
 name|close

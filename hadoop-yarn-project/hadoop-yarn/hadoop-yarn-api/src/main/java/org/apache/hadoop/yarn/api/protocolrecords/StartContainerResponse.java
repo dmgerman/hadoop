@@ -113,10 +113,19 @@ argument_list|>
 name|getAllServiceResponse
 parameter_list|()
 function_decl|;
-comment|/**    * Set to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    * @param serviceResponses A map from auxiliary service names to the opaque    * blob<code>ByteBuffer</code>s for that auxiliary service    */
-DECL|method|setAllServiceResponse (Map<String, ByteBuffer> serviceResponses)
+comment|/**    * Get the response from a single auxiliary service running on the    *<code>NodeManager</code>    *     * @param key The auxiliary service name whose response is desired.    * @return The opaque blob<code>ByteBuffer</code> returned by the auxiliary    * service.    */
+DECL|method|getServiceResponse (String key)
+name|ByteBuffer
+name|getServiceResponse
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+function_decl|;
+comment|/**    * Add to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    * @param serviceResponse A map from auxiliary service names to the opaque    * blob<code>ByteBuffer</code>s for that auxiliary service    */
+DECL|method|addAllServiceResponse (Map<String, ByteBuffer> serviceResponse)
 name|void
-name|setAllServiceResponse
+name|addAllServiceResponse
 parameter_list|(
 name|Map
 argument_list|<
@@ -124,8 +133,35 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|serviceResponses
+name|serviceResponse
 parameter_list|)
+function_decl|;
+comment|/**    * Add to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    *     * @param key The auxiliary service name    * @param value The opaque blob<code>ByteBuffer</code> managed by the    * auxiliary service    */
+DECL|method|setServiceResponse (String key, ByteBuffer value)
+name|void
+name|setServiceResponse
+parameter_list|(
+name|String
+name|key
+parameter_list|,
+name|ByteBuffer
+name|value
+parameter_list|)
+function_decl|;
+comment|/**    * Remove a single auxiliary service from the StartContainerResponse object    * @param key The auxiliary service to remove    */
+DECL|method|removeServiceResponse (String key)
+name|void
+name|removeServiceResponse
+parameter_list|(
+name|String
+name|key
+parameter_list|)
+function_decl|;
+comment|/**    * Remove all the auxiliary services from the StartContainerResponse object    */
+DECL|method|clearServiceResponse ()
+name|void
+name|clearServiceResponse
+parameter_list|()
 function_decl|;
 block|}
 end_interface

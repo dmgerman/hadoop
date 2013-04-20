@@ -249,23 +249,11 @@ name|void
 name|close
 parameter_list|()
 block|{
-if|if
-condition|(
-name|blocks
-operator|!=
-literal|null
-condition|)
-block|{
 name|blocks
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|blocks
-operator|=
-literal|null
-expr_stmt|;
-block|}
 block|}
 DECL|method|getBlockCollection (Block b)
 name|BlockCollection

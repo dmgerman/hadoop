@@ -3839,10 +3839,6 @@ argument_list|(
 name|target
 operator|.
 name|dir
-argument_list|,
-name|target
-operator|.
-name|dir
 operator|.
 name|rootDir
 argument_list|)
@@ -3855,22 +3851,17 @@ name|prevLastAppliedTxId
 return|;
 block|}
 comment|/**    * Update the count of each directory with quota in the namespace.    * A directory's count is defined as the total number inodes in the tree    * rooted at the directory.    *     * This is an update of existing state of the filesystem and does not    * throw QuotaExceededException.    */
-DECL|method|updateCountForQuota (FSDirectory fsd, INodeDirectoryWithQuota root)
+DECL|method|updateCountForQuota (INodeDirectoryWithQuota root)
 specifier|static
 name|void
 name|updateCountForQuota
 parameter_list|(
-name|FSDirectory
-name|fsd
-parameter_list|,
 name|INodeDirectoryWithQuota
 name|root
 parameter_list|)
 block|{
 name|updateCountForQuotaRecursively
 argument_list|(
-name|fsd
-argument_list|,
 name|root
 argument_list|,
 operator|new
@@ -3881,15 +3872,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|updateCountForQuotaRecursively (FSDirectory fsd, INodeDirectory dir, Quota.Counts counts)
+DECL|method|updateCountForQuotaRecursively (INodeDirectory dir, Quota.Counts counts)
 specifier|private
 specifier|static
 name|void
 name|updateCountForQuotaRecursively
 parameter_list|(
-name|FSDirectory
-name|fsd
-parameter_list|,
 name|INodeDirectory
 name|dir
 parameter_list|,
@@ -3945,13 +3933,6 @@ literal|null
 argument_list|)
 control|)
 block|{
-name|fsd
-operator|.
-name|addToInodeMapUnprotected
-argument_list|(
-name|child
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|child
@@ -3962,8 +3943,6 @@ condition|)
 block|{
 name|updateCountForQuotaRecursively
 argument_list|(
-name|fsd
-argument_list|,
 name|child
 operator|.
 name|asDirectory

@@ -7188,37 +7188,7 @@ argument_list|()
 operator|.
 name|startsWith
 argument_list|(
-literal|"An established connection was aborted"
-argument_list|)
-operator|||
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|startsWith
-argument_list|(
 literal|"Broken pipe"
-argument_list|)
-operator|||
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|startsWith
-argument_list|(
-literal|"Connection reset"
-argument_list|)
-operator|||
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"java.nio.channels.SocketChannel"
 argument_list|)
 condition|)
 block|{

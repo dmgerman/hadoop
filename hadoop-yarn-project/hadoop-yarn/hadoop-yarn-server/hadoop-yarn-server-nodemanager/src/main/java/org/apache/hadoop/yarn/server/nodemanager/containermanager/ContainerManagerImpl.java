@@ -3165,7 +3165,7 @@ argument_list|)
 decl_stmt|;
 name|response
 operator|.
-name|setAllServiceResponse
+name|addAllServiceResponse
 argument_list|(
 name|auxiliaryServices
 operator|.

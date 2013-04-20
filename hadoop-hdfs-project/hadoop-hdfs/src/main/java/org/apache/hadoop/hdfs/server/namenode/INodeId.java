@@ -74,7 +74,7 @@ name|INodeId
 extends|extends
 name|SequentialNumber
 block|{
-comment|/**    * The last reserved inode id. InodeIDs are allocated from LAST_RESERVED_ID +    * 1.    */
+comment|/**    * The last reserved inode id.     */
 DECL|field|LAST_RESERVED_ID
 specifier|public
 specifier|static
@@ -82,22 +82,7 @@ specifier|final
 name|long
 name|LAST_RESERVED_ID
 init|=
-literal|2
-operator|<<
-literal|14
-operator|-
-literal|1
-decl_stmt|;
-DECL|field|ROOT_INODE_ID
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|ROOT_INODE_ID
-init|=
-name|LAST_RESERVED_ID
-operator|+
-literal|1
+literal|1000L
 decl_stmt|;
 comment|/**    * The inode id validation of lease check will be skipped when the request    * uses GRANDFATHER_INODE_ID for backward compatibility.    */
 DECL|field|GRANDFATHER_INODE_ID
@@ -163,7 +148,7 @@ parameter_list|()
 block|{
 name|super
 argument_list|(
-name|ROOT_INODE_ID
+name|LAST_RESERVED_ID
 argument_list|)
 expr_stmt|;
 block|}

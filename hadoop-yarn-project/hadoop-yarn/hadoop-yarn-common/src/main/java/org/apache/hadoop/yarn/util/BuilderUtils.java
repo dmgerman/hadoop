@@ -2692,14 +2692,14 @@ argument_list|)
 expr_stmt|;
 name|allocateRequest
 operator|.
-name|setAskList
+name|addAllAsks
 argument_list|(
 name|resourceAsk
 argument_list|)
 expr_stmt|;
 name|allocateRequest
 operator|.
-name|setReleaseList
+name|addAllReleases
 argument_list|(
 name|containersToBeReleased
 argument_list|)

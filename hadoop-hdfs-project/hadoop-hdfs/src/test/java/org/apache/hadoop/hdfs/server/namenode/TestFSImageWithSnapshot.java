@@ -891,11 +891,6 @@ name|FSImage
 operator|.
 name|updateCountForQuota
 argument_list|(
-name|fsn
-operator|.
-name|getFSDirectory
-argument_list|()
-argument_list|,
 operator|(
 name|INodeDirectoryWithQuota
 operator|)

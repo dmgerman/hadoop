@@ -1147,10 +1147,7 @@ name|portInfo
 init|=
 name|response
 operator|.
-name|getAllServiceResponse
-argument_list|()
-operator|.
-name|get
+name|getServiceResponse
 argument_list|(
 name|ShuffleHandler
 operator|.
