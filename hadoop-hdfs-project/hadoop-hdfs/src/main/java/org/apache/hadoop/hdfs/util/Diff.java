@@ -972,10 +972,15 @@ name|checkArgument
 argument_list|(
 name|oldElement
 operator|.
-name|equals
+name|compareTo
 argument_list|(
 name|newElement
+operator|.
+name|getKey
+argument_list|()
 argument_list|)
+operator|==
+literal|0
 argument_list|,
 literal|"The names do not match: oldElement=%s, newElement=%s"
 argument_list|,

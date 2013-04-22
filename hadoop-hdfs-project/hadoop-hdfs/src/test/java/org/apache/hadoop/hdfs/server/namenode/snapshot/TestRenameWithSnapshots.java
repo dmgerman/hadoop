@@ -1510,11 +1510,6 @@ block|}
 comment|/**    * Rename a file under a snapshottable directory, file exists    * in a snapshot.    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testRenameFileInSnapshot ()
 specifier|public
 name|void

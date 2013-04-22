@@ -1216,10 +1216,15 @@ if|if
 condition|(
 name|cnode
 operator|.
-name|equals
+name|compareTo
 argument_list|(
 name|dnode
+operator|.
+name|getLocalNameBytes
+argument_list|()
 argument_list|)
+operator|==
+literal|0
 condition|)
 block|{
 name|fullPath

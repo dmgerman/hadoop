@@ -2225,27 +2225,12 @@ name|void
 name|clearChildren
 parameter_list|()
 block|{
-if|if
-condition|(
-name|children
-operator|!=
-literal|null
-condition|)
-block|{
-name|this
-operator|.
-name|children
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
 name|this
 operator|.
 name|children
 operator|=
 literal|null
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Override
@@ -2388,6 +2373,7 @@ name|collectedBlocks
 argument_list|)
 expr_stmt|;
 block|}
+comment|// TODO: Need to update the cleanSubtree/destroy methods to clean inode map
 name|clear
 argument_list|()
 expr_stmt|;
