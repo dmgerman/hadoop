@@ -36,16 +36,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|ByteArrayOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -57,16 +47,6 @@ operator|.
 name|io
 operator|.
 name|OutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|PrintStream
 import|;
 end_import
 
@@ -1088,6 +1068,14 @@ argument_list|(
 name|credentials
 argument_list|)
 expr_stmt|;
+comment|// set job classloader if configured before invoking the task
+name|MRApps
+operator|.
+name|setJobClassLoader
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
 comment|// Create a final reference to the task for the doAs block
 specifier|final
 name|Task
@@ -1655,14 +1643,6 @@ operator|.
 name|setCredentials
 argument_list|(
 name|credentials
-argument_list|)
-expr_stmt|;
-comment|// set job classloader if configured
-name|MRApps
-operator|.
-name|setJobClassLoader
-argument_list|(
-name|job
 argument_list|)
 expr_stmt|;
 name|String
