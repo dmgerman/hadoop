@@ -646,7 +646,7 @@ literal|false
 return|;
 block|}
 comment|/** clear the created list */
-DECL|method|destroyCreatedList ( final INodeDirectoryWithSnapshot currentINode, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyCreatedList ( final INodeDirectoryWithSnapshot currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|private
 name|Quota
 operator|.
@@ -660,6 +660,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 name|Quota
@@ -710,6 +717,8 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 comment|// c should be contained in the children list, remove it
@@ -731,7 +740,7 @@ name|counts
 return|;
 block|}
 comment|/** clear the deleted list */
-DECL|method|destroyDeletedList ( final BlocksMapUpdateInfo collectedBlocks, final List<INodeReference> refNodes)
+DECL|method|destroyDeletedList ( final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final List<INodeReference> refNodes)
 specifier|private
 name|Quota
 operator|.
@@ -741,6 +750,13 @@ parameter_list|(
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|,
 specifier|final
 name|List
@@ -810,6 +826,8 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1684,7 +1702,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|combinePosteriorAndCollectBlocks ( final INodeDirectory currentDir, final DirectoryDiff posterior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|combinePosteriorAndCollectBlocks ( final INodeDirectory currentDir, final DirectoryDiff posterior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 name|Quota
 operator|.
 name|Counts
@@ -1701,6 +1719,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 specifier|final
@@ -1777,6 +1802,8 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1808,6 +1835,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2242,7 +2271,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyDiffAndCollectBlocks (INodeDirectory currentINode, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyDiffAndCollectBlocks (INodeDirectory currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 name|Quota
 operator|.
 name|Counts
@@ -2253,6 +2282,13 @@ name|currentINode
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 comment|// this diff has been deleted
@@ -2290,6 +2326,8 @@ operator|.
 name|destroyDeletedList
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|,
 name|refNodes
 argument_list|)
@@ -2330,6 +2368,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3955,7 +3995,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -3972,6 +4012,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -4030,6 +4077,8 @@ argument_list|(
 name|this
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4066,6 +4115,8 @@ argument_list|,
 name|this
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4132,6 +4183,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4173,6 +4226,8 @@ argument_list|,
 name|prior
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4191,6 +4246,8 @@ argument_list|,
 name|prior
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4231,7 +4288,7 @@ name|counts
 return|;
 block|}
 comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @return Quota usage update.    */
-DECL|method|cleanDeletedINode (INode inode, Snapshot post, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanDeletedINode (INode inode, Snapshot post, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|private
 name|Quota
 operator|.
@@ -4250,6 +4307,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 name|Quota
@@ -4337,6 +4401,8 @@ name|asFile
 argument_list|()
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4408,6 +4474,8 @@ argument_list|(
 name|sdir
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4442,7 +4510,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks ( final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyAndCollectBlocks ( final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
@@ -4450,6 +4518,13 @@ parameter_list|(
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 comment|// destroy its diff list
@@ -4468,6 +4543,8 @@ argument_list|(
 name|this
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -4481,6 +4558,8 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}

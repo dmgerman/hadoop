@@ -44,6 +44,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -109,6 +119,24 @@ operator|.
 name|INode
 operator|.
 name|BlocksMapUpdateInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INode
 import|;
 end_import
 
@@ -276,7 +304,7 @@ return|return
 name|fileSize
 return|;
 block|}
-DECL|method|updateQuotaAndCollectBlocks ( INodeFile currentINode, FileDiff removed, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|updateQuotaAndCollectBlocks ( INodeFile currentINode, FileDiff removed, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|private
 specifier|static
 name|Quota
@@ -292,6 +320,13 @@ name|removed
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 name|FileWithSnapshot
@@ -359,6 +394,8 @@ argument_list|(
 name|sFile
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 name|long
@@ -386,7 +423,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|combinePosteriorAndCollectBlocks (INodeFile currentINode, FileDiff posterior, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|combinePosteriorAndCollectBlocks (INodeFile currentINode, FileDiff posterior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 name|Quota
 operator|.
 name|Counts
@@ -400,6 +437,13 @@ name|posterior
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 return|return
@@ -410,6 +454,8 @@ argument_list|,
 name|posterior
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 return|;
 block|}
@@ -514,7 +560,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|destroyDiffAndCollectBlocks (INodeFile currentINode, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyDiffAndCollectBlocks (INodeFile currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 name|Quota
 operator|.
 name|Counts
@@ -525,6 +571,13 @@ name|currentINode
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 return|return
@@ -535,6 +588,8 @@ argument_list|,
 name|this
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 return|;
 block|}
@@ -740,7 +795,7 @@ name|max
 return|;
 block|}
 comment|/**      * If some blocks at the end of the block list no longer belongs to      * any inode, collect them and update the block list.      */
-DECL|method|collectBlocksAndClear (final FileWithSnapshot file, final BlocksMapUpdateInfo info)
+DECL|method|collectBlocksAndClear (final FileWithSnapshot file, final BlocksMapUpdateInfo info, final List<INode> removedINodes)
 specifier|static
 name|void
 name|collectBlocksAndClear
@@ -752,6 +807,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|info
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 comment|// check if everything is deleted.
@@ -782,6 +844,8 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|info
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 return|return;

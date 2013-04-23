@@ -2250,7 +2250,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Call {@link INode#cleanSubtree(SnapshotDeletionInfo, BlocksMapUpdateInfo)}    * recursively down the subtree.    */
-DECL|method|cleanSubtreeRecursively (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtreeRecursively (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -2267,6 +2267,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2328,6 +2335,8 @@ argument_list|,
 name|prior
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 decl_stmt|;
 name|counts
@@ -2344,7 +2353,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks ( final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyAndCollectBlocks (final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
@@ -2352,6 +2361,13 @@ parameter_list|(
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 for|for
@@ -2370,17 +2386,25 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
-comment|// TODO: Need to update the cleanSubtree/destroy methods to clean inode map
 name|clear
 argument_list|()
+expr_stmt|;
+name|removedINodes
+operator|.
+name|add
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -2397,6 +2421,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2437,6 +2468,8 @@ expr_stmt|;
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 return|return
@@ -2458,6 +2491,8 @@ argument_list|,
 name|prior
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 decl_stmt|;
 if|if

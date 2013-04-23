@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -67,6 +77,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|DatanodeDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|INode
 import|;
 end_import
 
@@ -483,7 +511,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -500,6 +528,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -528,6 +563,8 @@ argument_list|(
 name|this
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 return|return
@@ -566,6 +603,8 @@ argument_list|,
 name|this
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 return|;
 block|}

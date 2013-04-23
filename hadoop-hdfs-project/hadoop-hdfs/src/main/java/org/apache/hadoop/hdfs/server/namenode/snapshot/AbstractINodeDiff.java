@@ -44,6 +44,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -458,7 +468,7 @@ block|}
 block|}
 block|}
 comment|/** Combine the posterior diff and collect blocks for deletion. */
-DECL|method|combinePosteriorAndCollectBlocks (final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|combinePosteriorAndCollectBlocks (final N currentINode, final D posterior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|abstract
 name|Quota
 operator|.
@@ -476,10 +486,17 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 function_decl|;
 comment|/**    * Delete and clear self.    * @param currentINode The inode where the deletion happens.    * @param collectedBlocks Used to collect blocks for deletion.    * @return quota usage delta    */
-DECL|method|destroyDiffAndCollectBlocks (final N currentINode, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyDiffAndCollectBlocks (final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|abstract
 name|Quota
 operator|.
@@ -493,6 +510,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 function_decl|;
 annotation|@

@@ -1539,7 +1539,7 @@ name|s
 return|;
 block|}
 comment|/**    * Remove the snapshot with the given name from {@link #snapshotsByNames},    * and delete all the corresponding DirectoryDiff.    *     * @param snapshotName The name of the snapshot to be removed    * @param collectedBlocks Used to collect information to update blocksMap    * @return The removed snapshot. Null if no snapshot with the given name     *         exists.    */
-DECL|method|removeSnapshot (String snapshotName, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|removeSnapshot (String snapshotName, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 name|Snapshot
 name|removeSnapshot
 parameter_list|(
@@ -1548,6 +1548,13 @@ name|snapshotName
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|SnapshotException
@@ -1631,6 +1638,8 @@ argument_list|,
 name|prior
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 decl_stmt|;
 name|INodeDirectory

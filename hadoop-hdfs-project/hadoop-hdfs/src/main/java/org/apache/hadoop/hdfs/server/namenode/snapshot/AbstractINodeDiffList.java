@@ -264,7 +264,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The snapshot to be deleted    * @param prior The snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
-DECL|method|deleteSnapshotDiff (final Snapshot snapshot, Snapshot prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|deleteSnapshotDiff (final Snapshot snapshot, Snapshot prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|final
 name|Quota
 operator|.
@@ -285,6 +285,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 name|int
@@ -377,6 +384,8 @@ argument_list|(
 name|currentINode
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -507,6 +516,8 @@ argument_list|,
 name|removed
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 argument_list|)
 expr_stmt|;

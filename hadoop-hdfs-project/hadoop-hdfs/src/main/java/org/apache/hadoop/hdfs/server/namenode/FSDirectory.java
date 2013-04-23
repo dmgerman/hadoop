@@ -4816,6 +4816,19 @@ operator|new
 name|BlocksMapUpdateInfo
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|INode
+argument_list|>
+argument_list|()
+decl_stmt|;
 name|filesDeleted
 operator|=
 name|removedDst
@@ -4830,6 +4843,8 @@ name|getLatestSnapshot
 argument_list|()
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 operator|.
 name|get
@@ -4847,6 +4862,8 @@ argument_list|(
 name|src
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -6194,8 +6211,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete the target directory and collect the blocks under it    *     * @param src Path of a directory to delete    * @param collectedBlocks Blocks under the deleted directory    * @return true on successful deletion; else false    */
-DECL|method|delete (String src, BlocksMapUpdateInfo collectedBlocks)
+comment|/**    * Delete the target directory and collect the blocks under it    *     * @param src Path of a directory to delete    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from {@link #inodeMap}    * @return true on successful deletion; else false    */
+DECL|method|delete (String src, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
 name|boolean
 name|delete
 parameter_list|(
@@ -6204,6 +6221,12 @@ name|src
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -6323,6 +6346,8 @@ name|inodesInPath
 argument_list|,
 name|collectedBlocks
 argument_list|,
+name|removedINodes
+argument_list|,
 name|now
 argument_list|)
 expr_stmt|;
@@ -6382,13 +6407,15 @@ argument_list|(
 name|filesRemoved
 argument_list|)
 expr_stmt|;
-comment|// Blocks will be deleted later by the caller of this method
+comment|// Blocks/INodes will be handled later by the caller of this method
 name|getFSNamesystem
 argument_list|()
 operator|.
 name|removePathAndBlocks
 argument_list|(
 name|src
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -6629,6 +6656,19 @@ operator|new
 name|BlocksMapUpdateInfo
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|INode
+argument_list|>
+argument_list|()
+decl_stmt|;
 specifier|final
 name|INodesInPath
 name|inodesInPath
@@ -6662,6 +6702,8 @@ name|inodesInPath
 argument_list|,
 name|collectedBlocks
 argument_list|,
+name|removedINodes
+argument_list|,
 name|mtime
 argument_list|)
 else|:
@@ -6683,12 +6725,14 @@ argument_list|(
 name|src
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param iip the inodes resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
-DECL|method|unprotectedDelete (INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, long mtime)
+comment|/**    * Delete a path from the name space    * Update the count at each ancestor directory with quota    * @param iip the inodes resolved from the path    * @param collectedBlocks blocks collected from the deleted path    * @param removedINodes inodes that should be removed from {@link #inodeMap}    * @param mtime the time the inode is removed    * @return the number of inodes deleted; 0 if no inodes are deleted.    */
+DECL|method|unprotectedDelete (INodesInPath iip, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, long mtime)
 name|long
 name|unprotectedDelete
 parameter_list|(
@@ -6697,6 +6741,12 @@ name|iip
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|,
 name|long
 name|mtime
@@ -6824,11 +6874,8 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
-argument_list|)
-expr_stmt|;
-name|remvoedAllFromInodesFromMap
-argument_list|(
-name|targetNode
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -6848,6 +6895,8 @@ argument_list|,
 name|latestSnapshot
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 decl_stmt|;
 name|parent
@@ -10669,13 +10718,6 @@ operator|-
 literal|1
 return|;
 block|}
-name|inodeMap
-operator|.
-name|remove
-argument_list|(
-name|last
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|parent
@@ -10938,15 +10980,32 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/* This method is always called with writeLock held */
-DECL|method|removeFromInodeMap (INode inode)
-specifier|private
+DECL|method|removeFromInodeMap (List<INode> inodes)
 specifier|final
 name|void
 name|removeFromInodeMap
 parameter_list|(
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|inodes
+parameter_list|)
+block|{
+if|if
+condition|(
+name|inodes
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
 name|INode
 name|inode
-parameter_list|)
+range|:
+name|inodes
+control|)
 block|{
 name|inodeMap
 operator|.
@@ -10956,64 +11015,7 @@ name|inode
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Remove all the inodes under given inode from the map */
-DECL|method|remvoedAllFromInodesFromMap (INode inode)
-specifier|private
-name|void
-name|remvoedAllFromInodesFromMap
-parameter_list|(
-name|INode
-name|inode
-parameter_list|)
-block|{
-name|removeFromInodeMap
-argument_list|(
-name|inode
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|inode
-operator|.
-name|isDirectory
-argument_list|()
-condition|)
-block|{
-return|return;
 block|}
-name|INodeDirectory
-name|dir
-init|=
-operator|(
-name|INodeDirectory
-operator|)
-name|inode
-decl_stmt|;
-for|for
-control|(
-name|INode
-name|child
-range|:
-name|dir
-operator|.
-name|getChildrenList
-argument_list|(
-literal|null
-argument_list|)
-control|)
-block|{
-name|remvoedAllFromInodesFromMap
-argument_list|(
-name|child
-argument_list|)
-expr_stmt|;
-block|}
-name|dir
-operator|.
-name|clearChildren
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * See {@link ClientProtocol#setQuota(String, long, long)} for the contract.    * Sets quota for for a directory.    * @returns INodeDirectory if any of the quotas have changed. null other wise.    * @throws FileNotFoundException if the path does not exist.    * @throws PathIsNotDirectoryException if the path is not a directory.    * @throws QuotaExceededException if the directory tree size is     *                                greater than the given quota    * @throws UnresolvedLinkException if a symlink is encountered in src.    * @throws SnapshotAccessControlException if path is in RO snapshot    */
 DECL|method|unprotectedSetQuota (String src, long nsQuota, long dsQuota)
@@ -12597,6 +12599,12 @@ name|destroyAndCollectBlocks
 parameter_list|(
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 comment|// Nothing to do
@@ -12664,6 +12672,12 @@ name|prior
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|QuotaExceededException

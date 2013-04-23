@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1450,7 +1460,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
@@ -1467,6 +1477,13 @@ parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1505,6 +1522,8 @@ expr_stmt|;
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -1514,13 +1533,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks (BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyAndCollectBlocks (BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|void
 name|destroyAndCollectBlocks
 parameter_list|(
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 if|if
@@ -1565,6 +1591,13 @@ argument_list|)
 expr_stmt|;
 name|clear
 argument_list|()
+expr_stmt|;
+name|removedINodes
+operator|.
+name|add
+argument_list|(
+name|this
+argument_list|)
 expr_stmt|;
 if|if
 condition|(

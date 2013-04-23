@@ -15088,6 +15088,19 @@ operator|new
 name|BlocksMapUpdateInfo
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|INode
+argument_list|>
+argument_list|()
+decl_stmt|;
 name|FSPermissionChecker
 name|pc
 init|=
@@ -15219,6 +15232,8 @@ argument_list|(
 name|src
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 condition|)
 block|{
@@ -15246,6 +15261,18 @@ argument_list|)
 expr_stmt|;
 comment|// Incremental deletion of blocks
 name|collectedBlocks
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|dir
+operator|.
+name|removeFromInodeMap
+argument_list|(
+name|removedINodes
+argument_list|)
+expr_stmt|;
+name|removedINodes
 operator|.
 name|clear
 argument_list|()
@@ -15386,8 +15413,8 @@ name|end
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove leases and blocks related to a given path    * @param src The given path    * @param blocks Containing the list of blocks to be deleted from blocksMap    */
-DECL|method|removePathAndBlocks (String src, BlocksMapUpdateInfo blocks)
+comment|/**    * Remove leases, inodes and blocks related to a given path    * @param src The given path    * @param blocks Containing the list of blocks to be deleted from blocksMap    * @param removedINodes Containing the list of inodes to be removed from     *                      inodesMap    */
+DECL|method|removePathAndBlocks (String src, BlocksMapUpdateInfo blocks, List<INode> removedINodes)
 name|void
 name|removePathAndBlocks
 parameter_list|(
@@ -15396,6 +15423,12 @@ name|src
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|blocks
+parameter_list|,
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 assert|assert
@@ -15409,6 +15442,27 @@ argument_list|(
 name|src
 argument_list|)
 expr_stmt|;
+comment|// remove inodes from inodesMap
+if|if
+condition|(
+name|removedINodes
+operator|!=
+literal|null
+condition|)
+block|{
+name|dir
+operator|.
+name|removeFromInodeMap
+argument_list|(
+name|removedINodes
+argument_list|)
+expr_stmt|;
+name|removedINodes
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|blocks
@@ -27459,6 +27513,19 @@ operator|new
 name|BlocksMapUpdateInfo
 argument_list|()
 decl_stmt|;
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|INode
+argument_list|>
+argument_list|()
+decl_stmt|;
 name|dir
 operator|.
 name|writeLock
@@ -27475,6 +27542,15 @@ argument_list|,
 name|snapshotName
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
+argument_list|)
+expr_stmt|;
+name|dir
+operator|.
+name|removeFromInodeMap
+argument_list|(
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
@@ -27486,6 +27562,11 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
+name|removedINodes
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|removeBlocks

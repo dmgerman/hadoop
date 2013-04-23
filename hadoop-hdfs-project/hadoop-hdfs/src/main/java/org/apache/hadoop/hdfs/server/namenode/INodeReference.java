@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -740,7 +750,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks)
+DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 specifier|final
 name|Quota
@@ -756,6 +766,13 @@ name|prior
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -770,12 +787,14 @@ argument_list|,
 name|prior
 argument_list|,
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|destroyAndCollectBlocks (BlocksMapUpdateInfo collectedBlocks)
+DECL|method|destroyAndCollectBlocks ( BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 specifier|final
 name|void
@@ -783,6 +802,13 @@ name|destroyAndCollectBlocks
 parameter_list|(
 name|BlocksMapUpdateInfo
 name|collectedBlocks
+parameter_list|,
+specifier|final
+name|List
+argument_list|<
+name|INode
+argument_list|>
+name|removedINodes
 parameter_list|)
 block|{
 if|if
@@ -800,6 +826,8 @@ operator|.
 name|destroyAndCollectBlocks
 argument_list|(
 name|collectedBlocks
+argument_list|,
+name|removedINodes
 argument_list|)
 expr_stmt|;
 block|}
