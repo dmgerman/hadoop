@@ -3842,6 +3842,8 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|DistributedFileSystem
 name|fs
 init|=
@@ -4151,6 +4153,15 @@ expr_stmt|;
 block|}
 block|}
 block|}
+finally|finally
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Tests error paths for    * {@link DistributedFileSystem#getFileBlockStorageLocations(java.util.List)}    */
 annotation|@
 name|Test
@@ -4200,6 +4211,8 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|cluster
 operator|.
 name|getDataNodes
@@ -4345,6 +4358,15 @@ name|isValid
 argument_list|()
 operator|)
 argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -1778,6 +1778,8 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+try|try
+block|{
 if|if
 condition|(
 name|state
@@ -1801,6 +1803,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
 if|if
 condition|(
 name|journalSet
@@ -1845,6 +1850,7 @@ name|State
 operator|.
 name|CLOSED
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Format all configured journals which are not file-based.    *     * File-based journals are skipped, since they are formatted by the    * Storage format code.    */
 DECL|method|formatNonFileJournals (NamespaceInfo nsInfo)
@@ -2502,6 +2508,15 @@ name|Exception
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|journalSet
+argument_list|)
+expr_stmt|;
 name|terminate
 argument_list|(
 literal|1
@@ -2582,6 +2597,15 @@ argument_list|,
 operator|new
 name|Exception
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|journalSet
 argument_list|)
 expr_stmt|;
 name|terminate

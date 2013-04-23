@@ -3073,6 +3073,8 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+finally|finally
+block|{
 name|stopCommonServices
 argument_list|()
 expr_stmt|;
@@ -3101,6 +3103,7 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|isStopRequested ()
