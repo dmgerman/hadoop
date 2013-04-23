@@ -372,6 +372,20 @@ name|AbstractService
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Service to renew application delegation tokens.  */
 end_comment
@@ -712,8 +726,10 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * class that is used for keeping tracks of DT to renew    *    */
+annotation|@
+name|VisibleForTesting
 DECL|class|DelegationTokenToRenew
-specifier|private
+specifier|protected
 specifier|static
 class|class
 name|DelegationTokenToRenew
@@ -1282,6 +1298,61 @@ name|t
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getDelegationTokens ()
+specifier|public
+name|Set
+argument_list|<
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+name|getDelegationTokens
+parameter_list|()
+block|{
+name|Set
+argument_list|<
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+name|tokens
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|DelegationTokenToRenew
+name|delegationToken
+range|:
+name|delegationTokens
+control|)
+block|{
+name|tokens
+operator|.
+name|add
+argument_list|(
+name|delegationToken
+operator|.
+name|token
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|tokens
+return|;
+block|}
 comment|/**    * Add application tokens for renewal.    * @param applicationId added application    * @param ts tokens    * @param shouldCancelAtEnd true if tokens should be canceled when the app is    * done else false.     * @throws IOException    */
 DECL|method|addApplication ( ApplicationId applicationId, Credentials ts, boolean shouldCancelAtEnd)
 specifier|public
@@ -1615,8 +1686,10 @@ return|;
 block|}
 block|}
 comment|/**    * set task to renew the token    */
+annotation|@
+name|VisibleForTesting
 DECL|method|setTimerForTokenRenewal (DelegationTokenToRenew token)
-specifier|private
+specifier|protected
 name|void
 name|setTimerForTokenRenewal
 parameter_list|(
@@ -1686,8 +1759,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// renew a token
+annotation|@
+name|VisibleForTesting
 DECL|method|renewToken (final DelegationTokenToRenew dttr)
-specifier|private
+specifier|protected
 name|void
 name|renewToken
 parameter_list|(
