@@ -1429,8 +1429,15 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// Now try to start an NN from it
+name|MiniDFSCluster
+name|cluster
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
+name|cluster
+operator|=
 operator|new
 name|MiniDFSCluster
 operator|.
@@ -1498,6 +1505,23 @@ block|{
 throw|throw
 name|ioe
 throw|;
+block|}
+block|}
+finally|finally
+block|{
+comment|// We expect startup to fail, but just in case it didn't, shutdown now.
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
