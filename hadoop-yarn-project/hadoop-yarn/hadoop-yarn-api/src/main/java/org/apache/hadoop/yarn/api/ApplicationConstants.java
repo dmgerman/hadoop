@@ -76,46 +76,6 @@ name|APPLICATION_CLIENT_SECRET_ENV_NAME
 init|=
 literal|"AppClientSecretEnv"
 decl_stmt|;
-comment|/**    * The environment variable for CONTAINER_ID. Set in AppMaster environment    * only    */
-DECL|field|AM_CONTAINER_ID_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|AM_CONTAINER_ID_ENV
-init|=
-literal|"AM_CONTAINER_ID"
-decl_stmt|;
-comment|/**    * The environment variable for the NM_HOST. Set in the AppMaster environment    * only    */
-DECL|field|NM_HOST_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NM_HOST_ENV
-init|=
-literal|"NM_HOST"
-decl_stmt|;
-comment|/**    * The environment variable for the NM_PORT. Set in the AppMaster environment    * only    */
-DECL|field|NM_PORT_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NM_PORT_ENV
-init|=
-literal|"NM_PORT"
-decl_stmt|;
-comment|/**    * The environment variable for the NM_HTTP_PORT. Set in the AppMaster environment    * only    */
-DECL|field|NM_HTTP_PORT_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NM_HTTP_PORT_ENV
-init|=
-literal|"NM_HTTP_PORT"
-decl_stmt|;
 comment|/**    * The environment variable for APP_SUBMIT_TIME. Set in AppMaster environment    * only    */
 DECL|field|APP_SUBMIT_TIME_ENV
 specifier|public
@@ -136,15 +96,6 @@ init|=
 name|UserGroupInformation
 operator|.
 name|HADOOP_TOKEN_FILE_LOCATION
-decl_stmt|;
-DECL|field|LOCAL_DIR_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|LOCAL_DIR_ENV
-init|=
-literal|"YARN_LOCAL_DIRS"
 decl_stmt|;
 comment|/**    * The environmental variable for APPLICATION_WEB_PROXY_BASE. Set in     * ApplicationMaster's environment only. This states that for all non-relative    * web URLs in the app masters web UI what base should they have.    */
 DECL|field|APPLICATION_WEB_PROXY_BASE_ENV
@@ -308,6 +259,41 @@ DECL|enumConstant|HADOOP_YARN_HOME
 name|HADOOP_YARN_HOME
 argument_list|(
 literal|"HADOOP_YARN_HOME"
+argument_list|)
+block|,
+comment|/**      * $CONTAINER_ID      * Final, exported by NodeManager and non-modifiable by users.      */
+DECL|enumConstant|CONTAINER_ID
+name|CONTAINER_ID
+argument_list|(
+literal|"CONTAINER_ID"
+argument_list|)
+block|,
+comment|/**      * $NM_HOST      * Final, exported by NodeManager and non-modifiable by users.      */
+DECL|enumConstant|NM_HOST
+name|NM_HOST
+argument_list|(
+literal|"NM_HOST"
+argument_list|)
+block|,
+comment|/**      * $NM_HTTP_PORT      * Final, exported by NodeManager and non-modifiable by users.      */
+DECL|enumConstant|NM_HTTP_PORT
+name|NM_HTTP_PORT
+argument_list|(
+literal|"NM_HTTP_PORT"
+argument_list|)
+block|,
+comment|/**      * $NM_PORT      * Final, exported by NodeManager and non-modifiable by users.      */
+DECL|enumConstant|NM_PORT
+name|NM_PORT
+argument_list|(
+literal|"NM_PORT"
+argument_list|)
+block|,
+comment|/**      * $LOCAL_DIRS      * Final, exported by NodeManager and non-modifiable by users.      */
+DECL|enumConstant|LOCAL_DIRS
+name|LOCAL_DIRS
+argument_list|(
+literal|"LOCAL_DIRS"
 argument_list|)
 block|;
 DECL|field|variable

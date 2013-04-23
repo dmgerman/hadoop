@@ -673,7 +673,10 @@ name|containerId
 init|=
 name|container
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 decl_stmt|;
 switch|switch

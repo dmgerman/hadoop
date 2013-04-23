@@ -811,7 +811,10 @@ operator|.
 name|getContainer
 argument_list|()
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -830,7 +833,10 @@ operator|.
 name|getContainer
 argument_list|()
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 argument_list|,
 name|req
@@ -888,7 +894,10 @@ name|ContainerEvent
 argument_list|(
 name|container
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 argument_list|,
 name|ContainerEventType
@@ -1015,7 +1024,10 @@ name|containerId
 init|=
 name|container
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 decl_stmt|;
 switch|switch

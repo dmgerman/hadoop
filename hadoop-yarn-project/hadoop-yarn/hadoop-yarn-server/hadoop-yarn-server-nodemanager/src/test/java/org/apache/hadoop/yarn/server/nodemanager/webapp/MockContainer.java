@@ -334,6 +334,18 @@ name|BuilderUtils
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|*
+import|;
+end_import
+
 begin_class
 DECL|class|MockContainer
 specifier|public
@@ -392,6 +404,23 @@ DECL|field|recordFactory
 specifier|private
 name|RecordFactory
 name|recordFactory
+decl_stmt|;
+DECL|field|mockContainer
+specifier|private
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+name|mockContainer
 decl_stmt|;
 DECL|method|MockContainer (ApplicationAttemptId appAttemptId, Dispatcher dispatcher, Configuration conf, String user, ApplicationId appId, int uniqId)
 specifier|public
@@ -478,6 +507,40 @@ name|ContainerState
 operator|.
 name|NEW
 expr_stmt|;
+name|mockContainer
+operator|=
+name|mock
+argument_list|(
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|mockContainer
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|setState (ContainerState state)
 specifier|public
@@ -494,18 +557,6 @@ name|state
 operator|=
 name|state
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getContainerID ()
-specifier|public
-name|ContainerId
-name|getContainerID
-parameter_list|()
-block|{
-return|return
-name|id
-return|;
 block|}
 annotation|@
 name|Override
@@ -659,14 +710,28 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
-DECL|method|getResource ()
+DECL|method|getContainer ()
 specifier|public
-name|Resource
-name|getResource
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Container
+name|getContainer
 parameter_list|()
 block|{
 return|return
-literal|null
+name|this
+operator|.
+name|mockContainer
 return|;
 block|}
 block|}
