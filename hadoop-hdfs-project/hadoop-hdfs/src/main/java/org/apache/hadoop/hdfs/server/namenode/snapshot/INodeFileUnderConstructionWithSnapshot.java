@@ -153,7 +153,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represent an {@link INodeFileUnderConstruction} that is snapshotted.  * Note that snapshot files are represented by  * {@link INodeFileUnderConstructionSnapshot}.  */
+comment|/**  * Represent an {@link INodeFileUnderConstruction} that is snapshotted.  */
 end_comment
 
 begin_class
@@ -170,80 +170,6 @@ name|INodeFileUnderConstruction
 implements|implements
 name|FileWithSnapshot
 block|{
-comment|/**    * Factory for {@link INodeFileUnderConstruction} diff.    */
-DECL|class|FileUcDiffFactory
-specifier|static
-class|class
-name|FileUcDiffFactory
-extends|extends
-name|FileDiffFactory
-block|{
-DECL|field|INSTANCE
-specifier|static
-specifier|final
-name|FileUcDiffFactory
-name|INSTANCE
-init|=
-operator|new
-name|FileUcDiffFactory
-argument_list|()
-decl_stmt|;
-annotation|@
-name|Override
-DECL|method|createSnapshotCopy (INodeFile file)
-name|INodeFileUnderConstruction
-name|createSnapshotCopy
-parameter_list|(
-name|INodeFile
-name|file
-parameter_list|)
-block|{
-specifier|final
-name|INodeFileUnderConstruction
-name|uc
-init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
-name|file
-decl_stmt|;
-specifier|final
-name|INodeFileUnderConstruction
-name|copy
-init|=
-operator|new
-name|INodeFileUnderConstruction
-argument_list|(
-name|uc
-argument_list|,
-name|uc
-operator|.
-name|getClientName
-argument_list|()
-argument_list|,
-name|uc
-operator|.
-name|getClientMachine
-argument_list|()
-argument_list|,
-name|uc
-operator|.
-name|getClientNode
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|copy
-operator|.
-name|setBlocks
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-name|copy
-return|;
-block|}
-block|}
 DECL|field|diffs
 specifier|private
 specifier|final
@@ -305,17 +231,6 @@ else|:
 operator|new
 name|FileDiffList
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|diffs
-operator|.
-name|setFactory
-argument_list|(
-name|FileUcDiffFactory
-operator|.
-name|INSTANCE
-argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Construct an {@link INodeFileUnderConstructionWithSnapshot} based on an    * {@link INodeFileUnderConstruction}.    *     * @param f The given {@link INodeFileUnderConstruction} instance    */

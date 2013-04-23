@@ -145,7 +145,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The difference of an inode between in two snapshots.  * {@link AbstractINodeDiff2} maintains a list of snapshot diffs,  *<pre>  *   d_1 -> d_2 -> ... -> d_n -> null,  *</pre>  * where -> denotes the {@link AbstractINodeDiff#posteriorDiff} reference. The  * current directory state is stored in the field of {@link INode}.  * The snapshot state can be obtained by applying the diffs one-by-one in  * reversed chronological order.  Let s_1, s_2, ..., s_n be the corresponding  * snapshots.  Then,  *<pre>  *   s_n                     = (current state) - d_n;  *   s_{n-1} = s_n - d_{n-1} = (current state) - d_n - d_{n-1};  *   ...  *   s_k     = s_{k+1} - d_k = (current state) - d_n - d_{n-1} - ... - d_k.  *</pre>  */
+comment|/**  * The difference of an inode between in two snapshots.  * {@link AbstractINodeDiffList} maintains a list of snapshot diffs,  *<pre>  *   d_1 -> d_2 -> ... -> d_n -> null,  *</pre>  * where -> denotes the {@link AbstractINodeDiff#posteriorDiff} reference. The  * current directory state is stored in the field of {@link INode}.  * The snapshot state can be obtained by applying the diffs one-by-one in  * reversed chronological order.  Let s_1, s_2, ..., s_n be the corresponding  * snapshots.  Then,  *<pre>  *   s_n                     = (current state) - d_n;  *   s_{n-1} = s_n - d_{n-1} = (current state) - d_n - d_{n-1};  *   ...  *   s_k     = s_{k+1} - d_k = (current state) - d_n - d_{n-1} - ... - d_k.  *</pre>  */
 end_comment
 
 begin_class
@@ -173,51 +173,6 @@ argument_list|<
 name|Snapshot
 argument_list|>
 block|{
-comment|/** A factory for creating diff and snapshot copy of an inode. */
-DECL|class|Factory
-specifier|static
-specifier|abstract
-class|class
-name|Factory
-parameter_list|<
-name|N
-extends|extends
-name|INode
-parameter_list|,
-name|D
-extends|extends
-name|AbstractINodeDiff
-parameter_list|<
-name|N
-parameter_list|,
-name|D
-parameter_list|>
-parameter_list|>
-block|{
-comment|/** @return an {@link AbstractINodeDiff}. */
-DECL|method|createDiff (Snapshot snapshot, N currentINode)
-specifier|abstract
-name|D
-name|createDiff
-parameter_list|(
-name|Snapshot
-name|snapshot
-parameter_list|,
-name|N
-name|currentINode
-parameter_list|)
-function_decl|;
-comment|/** @return a snapshot copy of the current inode. */
-DECL|method|createSnapshotCopy (N currentINode)
-specifier|abstract
-name|N
-name|createSnapshotCopy
-parameter_list|(
-name|N
-name|currentINode
-parameter_list|)
-function_decl|;
-block|}
 comment|/** The snapshot will be obtained after this diff is applied. */
 DECL|field|snapshot
 name|Snapshot
@@ -359,54 +314,32 @@ name|posterior
 expr_stmt|;
 block|}
 comment|/** Save the INode state to the snapshot if it is not done already. */
-DECL|method|saveSnapshotCopy (N snapshotCopy, Factory<N, D> factory, N currentINode)
+DECL|method|saveSnapshotCopy (N snapshotCopy, N currentINode)
 name|void
 name|saveSnapshotCopy
 parameter_list|(
 name|N
 name|snapshotCopy
 parameter_list|,
-name|Factory
-argument_list|<
-name|N
-argument_list|,
-name|D
-argument_list|>
-name|factory
-parameter_list|,
 name|N
 name|currentINode
 parameter_list|)
 block|{
-if|if
-condition|(
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
 name|snapshotINode
 operator|==
 literal|null
-condition|)
-block|{
-if|if
-condition|(
-name|snapshotCopy
-operator|==
-literal|null
-condition|)
-block|{
-name|snapshotCopy
-operator|=
-name|factory
-operator|.
-name|createSnapshotCopy
-argument_list|(
-name|currentINode
+argument_list|,
+literal|"Expected snapshotINode to be null"
 argument_list|)
 expr_stmt|;
-block|}
 name|snapshotINode
 operator|=
 name|snapshotCopy
 expr_stmt|;
-block|}
 block|}
 comment|/** @return the inode corresponding to the snapshot. */
 DECL|method|getSnapshotINode ()

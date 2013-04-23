@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represent an {@link INodeFile} that is snapshotted.  * Note that snapshot files are represented by {@link INodeFileSnapshot}.  */
+comment|/**  * Represent an {@link INodeFile} that is snapshotted.  */
 end_comment
 
 begin_class
@@ -224,17 +224,6 @@ else|:
 operator|new
 name|FileDiffList
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|diffs
-operator|.
-name|setFactory
-argument_list|(
-name|FileDiffFactory
-operator|.
-name|INSTANCE
-argument_list|)
 expr_stmt|;
 block|}
 annotation|@

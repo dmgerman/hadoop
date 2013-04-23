@@ -179,18 +179,6 @@ argument_list|<
 name|D
 argument_list|>
 block|{
-DECL|field|factory
-specifier|private
-name|AbstractINodeDiff
-operator|.
-name|Factory
-argument_list|<
-name|N
-argument_list|,
-name|D
-argument_list|>
-name|factory
-decl_stmt|;
 comment|/** Diff list sorted by snapshot IDs, i.e. in chronological order. */
 DECL|field|diffs
 specifier|private
@@ -208,28 +196,6 @@ name|D
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|setFactory (AbstractINodeDiff.Factory<N, D> factory)
-name|void
-name|setFactory
-parameter_list|(
-name|AbstractINodeDiff
-operator|.
-name|Factory
-argument_list|<
-name|N
-argument_list|,
-name|D
-argument_list|>
-name|factory
-parameter_list|)
-block|{
-name|this
-operator|.
-name|factory
-operator|=
-name|factory
-expr_stmt|;
-block|}
 comment|/** @return this list as a unmodifiable {@link List}. */
 DECL|method|asList ()
 specifier|public
@@ -263,6 +229,29 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+comment|/** @return an {@link AbstractINodeDiff}. */
+DECL|method|createDiff (Snapshot snapshot, N currentINode)
+specifier|abstract
+name|D
+name|createDiff
+parameter_list|(
+name|Snapshot
+name|snapshot
+parameter_list|,
+name|N
+name|currentINode
+parameter_list|)
+function_decl|;
+comment|/** @return a snapshot copy of the current inode. */
+DECL|method|createSnapshotCopy (N currentINode)
+specifier|abstract
+name|N
+name|createSnapshotCopy
+parameter_list|(
+name|N
+name|currentINode
+parameter_list|)
+function_decl|;
 comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The snapshot to be deleted    * @param prior The snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
 DECL|method|deleteSnapshotDiff (final Snapshot snapshot, Snapshot prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|final
@@ -573,8 +562,6 @@ expr_stmt|;
 return|return
 name|addLast
 argument_list|(
-name|factory
-operator|.
 name|createDiff
 argument_list|(
 name|latest
@@ -1210,22 +1197,50 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|D
+name|diff
+init|=
 name|checkAndAddLatestSnapshotDiff
 argument_list|(
 name|latest
 argument_list|,
 name|currentINode
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|diff
+operator|.
+name|snapshotINode
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|snapshotCopy
+operator|==
+literal|null
+condition|)
+block|{
+name|snapshotCopy
+operator|=
+name|createSnapshotCopy
+argument_list|(
+name|currentINode
+argument_list|)
+expr_stmt|;
+block|}
+name|diff
 operator|.
 name|saveSnapshotCopy
 argument_list|(
 name|snapshotCopy
 argument_list|,
-name|factory
-argument_list|,
 name|currentINode
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@

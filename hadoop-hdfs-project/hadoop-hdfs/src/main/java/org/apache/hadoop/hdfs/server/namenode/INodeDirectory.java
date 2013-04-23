@@ -709,23 +709,6 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Remove the specified child and all its snapshot copies from this directory.    */
-DECL|method|removeChildAndAllSnapshotCopies (INode child)
-specifier|public
-name|boolean
-name|removeChildAndAllSnapshotCopies
-parameter_list|(
-name|INode
-name|child
-parameter_list|)
-block|{
-return|return
-name|removeChild
-argument_list|(
-name|child
-argument_list|)
-return|;
-block|}
 comment|/**    * Replace itself with {@link INodeDirectoryWithQuota} or    * {@link INodeDirectoryWithSnapshot} depending on the latest snapshot.    */
 DECL|method|replaceSelf4Quota (final Snapshot latest, final long nsQuota, final long dsQuota)
 name|INodeDirectoryWithQuota
