@@ -2507,11 +2507,6 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|rm1
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
 comment|// start new RM
 name|MockRM
 name|rm2
@@ -2617,7 +2612,43 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// verify that app2 is stored, app1 is removed
+name|Assert
+operator|.
+name|assertNotNull
+argument_list|(
+name|rmAppState
+operator|.
+name|get
+argument_list|(
+name|app2
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|rmAppState
+operator|.
+name|get
+argument_list|(
+name|app1
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// stop the RM
+name|rm1
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|rm2
 operator|.
 name|stop

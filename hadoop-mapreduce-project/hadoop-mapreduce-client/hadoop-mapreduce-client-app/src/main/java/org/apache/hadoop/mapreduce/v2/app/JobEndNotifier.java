@@ -116,6 +116,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|JobContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|MRJobConfig
@@ -211,6 +225,12 @@ name|int
 name|waitInterval
 decl_stmt|;
 comment|//Time (ms) to wait between retrying notification
+DECL|field|timeout
+specifier|protected
+name|int
+name|timeout
+decl_stmt|;
+comment|// Timeout (ms) on the connection and notification
 DECL|field|urlToNotify
 specifier|protected
 name|URL
@@ -314,6 +334,21 @@ condition|?
 literal|5000
 else|:
 name|waitInterval
+expr_stmt|;
+name|timeout
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|JobContext
+operator|.
+name|MR_JOB_END_NOTIFICATION_TIMEOUT
+argument_list|,
+name|JobContext
+operator|.
+name|DEFAULT_MR_JOB_END_NOTIFICATION_TIMEOUT
+argument_list|)
 expr_stmt|;
 name|userUrl
 operator|=
@@ -532,7 +567,7 @@ return|return
 name|conf
 return|;
 block|}
-comment|/**    * Notify the URL just once. Use best effort. Timeout hard coded to 5    * seconds.    */
+comment|/**    * Notify the URL just once. Use best effort.    */
 DECL|method|notifyURLOnce ()
 specifier|protected
 name|boolean
@@ -572,18 +607,14 @@ name|conn
 operator|.
 name|setConnectTimeout
 argument_list|(
-literal|5
-operator|*
-literal|1000
+name|timeout
 argument_list|)
 expr_stmt|;
 name|conn
 operator|.
 name|setReadTimeout
 argument_list|(
-literal|5
-operator|*
-literal|1000
+name|timeout
 argument_list|)
 expr_stmt|;
 name|conn
