@@ -2545,6 +2545,30 @@ name|DEFAULT_YARN_MINICLUSTER_FIXED_PORTS
 init|=
 literal|false
 decl_stmt|;
+comment|////////////////////////////////
+comment|// Other Configs
+comment|////////////////////////////////
+comment|/**    * The interval of the yarn client's querying application state after    * application submission. The unit is millisecond.    */
+DECL|field|YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"client.app-submission.poll-interval"
+decl_stmt|;
+DECL|field|DEFAULT_YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
+init|=
+literal|1000
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration

@@ -288,7 +288,7 @@ parameter_list|()
 throws|throws
 name|YarnRemoteException
 function_decl|;
-comment|/**    *<p>    * Submit a new application to<code>YARN.</code>    *</p>    *     * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnRemoteException    * @see #getNewApplication()    */
+comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call, such    * that it will not return {@link ApplicationId} until the submitted    * application has been submitted and accepted by the ResourceManager.    *</p>    *     * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnRemoteException    * @see #getNewApplication()    */
 DECL|method|submitApplication (ApplicationSubmissionContext appContext)
 name|ApplicationId
 name|submitApplication
