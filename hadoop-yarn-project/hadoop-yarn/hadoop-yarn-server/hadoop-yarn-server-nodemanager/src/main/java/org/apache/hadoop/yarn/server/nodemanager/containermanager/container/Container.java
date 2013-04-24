@@ -118,24 +118,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|event
 operator|.
 name|EventHandler
@@ -153,7 +135,7 @@ argument_list|<
 name|ContainerEvent
 argument_list|>
 block|{
-DECL|method|getContainerID ()
+DECL|method|getContainer ()
 name|org
 operator|.
 name|apache
@@ -166,8 +148,8 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerId
-name|getContainerID
+name|Container
+name|getContainer
 parameter_list|()
 function_decl|;
 DECL|method|getUser ()
@@ -211,11 +193,6 @@ function_decl|;
 DECL|method|toString ()
 name|String
 name|toString
-parameter_list|()
-function_decl|;
-DECL|method|getResource ()
-name|Resource
-name|getResource
 parameter_list|()
 function_decl|;
 block|}

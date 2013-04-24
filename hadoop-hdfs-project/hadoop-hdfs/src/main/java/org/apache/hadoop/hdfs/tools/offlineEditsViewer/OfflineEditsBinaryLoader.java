@@ -140,6 +140,20 @@ name|EditLogInputStream
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * OfflineEditsBinaryLoader loads edits from a binary edits file  */
 end_comment
@@ -270,6 +284,8 @@ name|loadEdits
 parameter_list|()
 throws|throws
 name|IOException
+block|{
+try|try
 block|{
 name|visitor
 operator|.
@@ -464,6 +480,19 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+name|LOG
+argument_list|,
+name|inputStream
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

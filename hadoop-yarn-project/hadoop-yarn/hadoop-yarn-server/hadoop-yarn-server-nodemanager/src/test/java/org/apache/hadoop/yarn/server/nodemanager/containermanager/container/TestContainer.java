@@ -2509,7 +2509,10 @@ operator|.
 name|getContainer
 argument_list|()
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 return|;
 block|}
@@ -4324,7 +4327,10 @@ name|ContainerResourceLocalizedEvent
 argument_list|(
 name|c
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 argument_list|,
 name|req
@@ -4433,7 +4439,10 @@ name|ContainerResourceFailedEvent
 argument_list|(
 name|c
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 argument_list|,
 name|req
@@ -4521,7 +4530,10 @@ name|ContainerResourceFailedEvent
 argument_list|(
 name|c
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 argument_list|,
 name|req

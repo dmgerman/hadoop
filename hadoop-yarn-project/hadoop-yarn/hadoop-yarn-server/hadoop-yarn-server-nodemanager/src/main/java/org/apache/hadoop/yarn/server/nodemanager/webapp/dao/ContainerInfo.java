@@ -354,7 +354,10 @@ name|id
 operator|=
 name|container
 operator|.
-name|getContainerID
+name|getContainer
+argument_list|()
+operator|.
+name|getId
 argument_list|()
 operator|.
 name|toString
@@ -469,6 +472,9 @@ name|Resource
 name|res
 init|=
 name|container
+operator|.
+name|getContainer
+argument_list|()
 operator|.
 name|getResource
 argument_list|()

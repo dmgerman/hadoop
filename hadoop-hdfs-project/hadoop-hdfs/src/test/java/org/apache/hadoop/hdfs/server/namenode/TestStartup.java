@@ -3223,11 +3223,22 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|cluster
 operator|.
 name|waitActive
 argument_list|()
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * This test tests hosts include list contains host names.  After namenode    * restarts, the still alive datanodes should not have any trouble in getting    * registrant again.    */
 annotation|@

@@ -250,6 +250,24 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ApplicationConstants
+operator|.
+name|Environment
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|protocolrecords
 operator|.
 name|GetNewApplicationResponse
@@ -483,7 +501,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The UnmanagedLauncher is a simple client that launches and unmanaged AM. An  * unmanagedAM is an AM that is not launched and managed by the RM. The client  * creates a new application on the RM and negotiates a new attempt id. Then it  * waits for the RM app state to reach be YarnApplicationState.ACCEPTED after  * which it spawns the AM in another process and passes it the container id via  * env variable ApplicationConstants.AM_CONTAINER_ID_ENV. The AM can be in any  * language. The AM can register with the RM using the attempt id obtained  * from the container id and proceed as normal.  * The client redirects app stdout and stderr to its own stdout and  * stderr and waits for the AM process to exit. Then it waits for the RM to  * report app completion.  */
+comment|/**  * The UnmanagedLauncher is a simple client that launches and unmanaged AM. An  * unmanagedAM is an AM that is not launched and managed by the RM. The client  * creates a new application on the RM and negotiates a new attempt id. Then it  * waits for the RM app state to reach be YarnApplicationState.ACCEPTED after  * which it spawns the AM in another process and passes it the container id via  * env variable Environment.CONTAINER_ID. The AM can be in any  * language. The AM can register with the RM using the attempt id obtained  * from the container id and proceed as normal.  * The client redirects app stdout and stderr to its own stdout and  * stderr and waits for the AM process to exit. Then it waits for the RM to  * report app completion.  */
 end_comment
 
 begin_class
@@ -1141,9 +1159,12 @@ name|envAMList
 operator|.
 name|add
 argument_list|(
-name|ApplicationConstants
+name|Environment
 operator|.
-name|AM_CONTAINER_ID_ENV
+name|CONTAINER_ID
+operator|.
+name|name
+argument_list|()
 operator|+
 literal|"="
 operator|+
@@ -1154,9 +1175,12 @@ name|envAMList
 operator|.
 name|add
 argument_list|(
-name|ApplicationConstants
+name|Environment
 operator|.
-name|NM_HOST_ENV
+name|NM_HOST
+operator|.
+name|name
+argument_list|()
 operator|+
 literal|"="
 operator|+
@@ -1167,9 +1191,12 @@ name|envAMList
 operator|.
 name|add
 argument_list|(
-name|ApplicationConstants
+name|Environment
 operator|.
-name|NM_HTTP_PORT_ENV
+name|NM_HTTP_PORT
+operator|.
+name|name
+argument_list|()
 operator|+
 literal|"=0"
 argument_list|)
@@ -1178,11 +1205,28 @@ name|envAMList
 operator|.
 name|add
 argument_list|(
-name|ApplicationConstants
+name|Environment
 operator|.
-name|NM_PORT_ENV
+name|NM_PORT
+operator|.
+name|name
+argument_list|()
 operator|+
 literal|"=0"
+argument_list|)
+expr_stmt|;
+name|envAMList
+operator|.
+name|add
+argument_list|(
+name|Environment
+operator|.
+name|LOCAL_DIRS
+operator|.
+name|name
+argument_list|()
+operator|+
+literal|"= /tmp"
 argument_list|)
 expr_stmt|;
 name|envAMList

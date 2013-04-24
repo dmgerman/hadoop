@@ -4836,6 +4836,8 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 specifier|final
 name|FileSystem
 name|fs
@@ -5105,6 +5107,15 @@ name|e
 parameter_list|)
 block|{
 comment|// Expected
+block|}
+block|}
+finally|finally
+block|{
+name|cluster
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Violate a space quota using files of size< 1 block. Test that block    * allocation conservatively assumes that for quota checking the entire    * space of the block is used.    */

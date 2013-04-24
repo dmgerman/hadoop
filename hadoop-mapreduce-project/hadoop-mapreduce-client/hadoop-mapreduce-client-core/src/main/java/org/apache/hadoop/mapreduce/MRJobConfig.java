@@ -2217,15 +2217,6 @@ name|STDERR_LOGFILE_ENV
 init|=
 literal|"STDERR_LOGFILE_ENV"
 decl_stmt|;
-DECL|field|APPLICATION_ATTEMPT_ID_ENV
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|APPLICATION_ATTEMPT_ID_ENV
-init|=
-literal|"APPLICATION_ATTEMPT_ID_ENV"
-decl_stmt|;
 comment|// This should be the directory where splits file gets localized on the node
 comment|// running ApplicationMaster.
 DECL|field|JOB_SUBMIT_DIR

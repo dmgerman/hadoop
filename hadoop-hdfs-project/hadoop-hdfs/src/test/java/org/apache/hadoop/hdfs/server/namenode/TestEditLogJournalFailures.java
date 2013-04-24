@@ -1244,17 +1244,6 @@ name|setReadyToFlush
 argument_list|()
 expr_stmt|;
 block|}
-name|doNothing
-argument_list|()
-operator|.
-name|when
-argument_list|(
-name|spyElos
-argument_list|)
-operator|.
-name|abort
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|spyOnStream (JournalAndStream jas)
 specifier|private

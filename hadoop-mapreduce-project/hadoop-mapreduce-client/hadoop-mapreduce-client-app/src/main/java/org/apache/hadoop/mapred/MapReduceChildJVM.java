@@ -592,27 +592,6 @@ name|STDERR
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|environment
-operator|.
-name|put
-argument_list|(
-name|MRJobConfig
-operator|.
-name|APPLICATION_ATTEMPT_ID_ENV
-argument_list|,
-name|conf
-operator|.
-name|get
-argument_list|(
-name|MRJobConfig
-operator|.
-name|APPLICATION_ATTEMPT_ID
-argument_list|)
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|getChildJavaOpts (JobConf jobConf, boolean isMapTask)
 specifier|private
