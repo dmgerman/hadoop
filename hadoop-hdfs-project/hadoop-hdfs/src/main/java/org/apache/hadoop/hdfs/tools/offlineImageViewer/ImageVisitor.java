@@ -211,9 +211,6 @@ block|,
 DECL|enumConstant|NUM_SNAPSHOTS_TOTAL
 name|NUM_SNAPSHOTS_TOTAL
 block|,
-DECL|enumConstant|NUM_SNAPSHOTTABLE_DIRS
-name|NUM_SNAPSHOTTABLE_DIRS
-block|,
 DECL|enumConstant|NUM_SNAPSHOTS
 name|NUM_SNAPSHOTS
 block|,
@@ -285,6 +282,15 @@ name|NUM_SNAPSHOT_FILE_DIFF
 block|,
 DECL|enumConstant|SNAPSHOT_FILE_SIZE
 name|SNAPSHOT_FILE_SIZE
+block|,
+DECL|enumConstant|SNAPSHOT_DST_SNAPSHOT_ID
+name|SNAPSHOT_DST_SNAPSHOT_ID
+block|,
+DECL|enumConstant|SNAPSHOT_REF_INODE_ID
+name|SNAPSHOT_REF_INODE_ID
+block|,
+DECL|enumConstant|SNAPSHOT_REF_INODE
+name|SNAPSHOT_REF_INODE
 block|}
 comment|/**    * Begin visiting the fsimage structure.  Opportunity to perform    * any initialization necessary for the implementing visitor.    */
 DECL|method|start ()
