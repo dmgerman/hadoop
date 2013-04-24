@@ -926,11 +926,6 @@ block|}
 comment|/**    * Testing steps:    *<pre>    * 1. Creating/modifying directories/files while snapshots are being taken.    * 2. Dump the FSDirectory tree of the namesystem.    * 3. Save the namesystem to a temp file (FSImage saving).    * 4. Restart the cluster and format the namesystem.    * 5. Load the namesystem from the temp file (FSImage loading).    * 6. Dump the FSDirectory again and compare the two dumped string.    *</pre>    */
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|60000
-argument_list|)
 DECL|method|testSaveLoadImage ()
 specifier|public
 name|void
@@ -1275,7 +1270,20 @@ argument_list|,
 name|sub2file1
 argument_list|)
 expr_stmt|;
-comment|// TODO: fix case hdfs.rename(sub1file1, sub1file2);
+name|checkImage
+argument_list|(
+name|s
+argument_list|)
+expr_stmt|;
+name|hdfs
+operator|.
+name|rename
+argument_list|(
+name|sub2file1
+argument_list|,
+name|sub2file2
+argument_list|)
+expr_stmt|;
 name|checkImage
 argument_list|(
 name|s

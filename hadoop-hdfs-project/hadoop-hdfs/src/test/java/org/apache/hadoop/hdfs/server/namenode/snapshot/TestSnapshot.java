@@ -2420,7 +2420,6 @@ index|[]
 name|genRandomOwner
 parameter_list|()
 block|{
-comment|// TODO
 name|String
 index|[]
 name|userGroup

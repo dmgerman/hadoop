@@ -1085,7 +1085,6 @@ argument_list|,
 name|REPLICATION
 argument_list|)
 expr_stmt|;
-comment|// TODO: check replication after deleting snapshot(s)
 comment|// Delete file1
 name|hdfs
 operator|.

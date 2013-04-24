@@ -26766,7 +26766,6 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
-comment|//TODO: need to update metrics in corresponding SnapshotManager method
 if|if
 condition|(
 name|auditLog
@@ -26878,7 +26877,6 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
-comment|//TODO: need to update metrics in corresponding SnapshotManager method
 if|if
 condition|(
 name|auditLog

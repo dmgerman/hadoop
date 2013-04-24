@@ -1032,7 +1032,7 @@ argument_list|,
 name|newElement
 argument_list|)
 expr_stmt|;
-comment|//TODO: fix a bug that previous != oldElement.Set it to oldElement for now
+comment|// For previous != oldElement, set it to oldElement
 name|previous
 operator|=
 name|oldElement

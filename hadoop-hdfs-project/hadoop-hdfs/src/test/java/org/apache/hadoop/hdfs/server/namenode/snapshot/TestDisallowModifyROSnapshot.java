@@ -903,8 +903,6 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-comment|// TODO: if link is objInSnapshot, ParentNotDirectoryException got thrown
-comment|// first by verifyParentDir()
 name|dfsclient
 operator|.
 name|createSymlink

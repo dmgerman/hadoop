@@ -878,22 +878,6 @@ name|INodeDirectoryWithSnapshot
 name|replaceSelf4INodeDirectoryWithSnapshot
 parameter_list|()
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-operator|!
-operator|(
-name|this
-operator|instanceof
-name|INodeDirectoryWithSnapshot
-operator|)
-argument_list|,
-literal|"this is already an INodeDirectoryWithSnapshot, this=%s"
-argument_list|,
-name|this
-argument_list|)
-expr_stmt|;
 return|return
 name|replaceSelf
 argument_list|(
