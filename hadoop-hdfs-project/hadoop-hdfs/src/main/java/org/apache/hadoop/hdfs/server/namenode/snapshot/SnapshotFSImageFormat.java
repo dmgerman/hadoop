@@ -1795,11 +1795,6 @@ argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
-name|withCount
-operator|.
-name|incrementReferenceCount
-argument_list|()
-expr_stmt|;
 block|}
 return|return
 name|withCount

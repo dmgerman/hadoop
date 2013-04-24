@@ -366,9 +366,8 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache)
+DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache, int lastSnapshotId)
 specifier|public
-specifier|final
 name|Quota
 operator|.
 name|Counts
@@ -381,6 +380,9 @@ name|counts
 parameter_list|,
 name|boolean
 name|useCache
+parameter_list|,
+name|int
+name|lastSnapshotId
 parameter_list|)
 block|{
 if|if
@@ -424,6 +426,8 @@ argument_list|(
 name|counts
 argument_list|,
 literal|false
+argument_list|,
+name|lastSnapshotId
 argument_list|)
 expr_stmt|;
 block|}
@@ -596,7 +600,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta, boolean verify)
+DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta, boolean verify, int snapshotId)
 specifier|public
 specifier|final
 name|void
@@ -612,6 +616,9 @@ name|dsDelta
 parameter_list|,
 name|boolean
 name|verify
+parameter_list|,
+name|int
+name|snapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -649,6 +656,8 @@ argument_list|,
 name|dsDelta
 argument_list|,
 name|verify
+argument_list|,
+name|snapshotId
 argument_list|)
 expr_stmt|;
 comment|// (3) add count in this inode
@@ -671,6 +680,8 @@ argument_list|,
 name|dsDelta
 argument_list|,
 name|verify
+argument_list|,
+name|snapshotId
 argument_list|)
 expr_stmt|;
 block|}

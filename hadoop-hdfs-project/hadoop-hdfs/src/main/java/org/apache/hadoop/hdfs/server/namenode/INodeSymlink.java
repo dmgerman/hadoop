@@ -413,7 +413,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (Quota.Counts counts, boolean updateCache)
+DECL|method|computeQuotaUsage (Quota.Counts counts, boolean updateCache, int lastSnapshotId)
 specifier|public
 name|Quota
 operator|.
@@ -427,6 +427,9 @@ name|counts
 parameter_list|,
 name|boolean
 name|updateCache
+parameter_list|,
+name|int
+name|lastSnapshotId
 parameter_list|)
 block|{
 name|counts

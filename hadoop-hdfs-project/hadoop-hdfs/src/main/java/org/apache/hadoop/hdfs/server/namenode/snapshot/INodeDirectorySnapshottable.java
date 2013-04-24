@@ -1655,6 +1655,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// there will not be any WithName node corresponding to the deleted
+comment|// snapshot, thus only update the quota usage in the current tree
 name|parent
 operator|.
 name|addSpaceConsumed
@@ -1680,6 +1682,10 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|true
+argument_list|,
+name|Snapshot
+operator|.
+name|INVALID_ID
 argument_list|)
 expr_stmt|;
 block|}

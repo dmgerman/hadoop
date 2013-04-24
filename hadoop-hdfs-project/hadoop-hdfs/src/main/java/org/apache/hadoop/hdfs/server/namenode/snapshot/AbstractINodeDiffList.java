@@ -282,6 +282,8 @@ name|INode
 argument_list|>
 name|removedINodes
 parameter_list|)
+throws|throws
+name|QuotaExceededException
 block|{
 name|int
 name|snapshotIndex
@@ -363,6 +365,28 @@ operator|.
 name|NAMESPACE
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+comment|// We add 1 to the namespace quota usage since we delete a diff.
+comment|// The quota change will be propagated to
+comment|// 1) ancestors in the current tree, and
+comment|// 2) src tree of any renamed ancestor.
+comment|// Because for 2) we do not calculate the number of diff for quota
+comment|// usage, we need to compensate this diff change for 2)
+name|currentINode
+operator|.
+name|addSpaceConsumedToRenameSrc
+argument_list|(
+literal|1
+argument_list|,
+literal|0
+argument_list|,
+literal|false
+argument_list|,
+name|snapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|counts
@@ -457,6 +481,22 @@ operator|.
 name|NAMESPACE
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+name|currentINode
+operator|.
+name|addSpaceConsumedToRenameSrc
+argument_list|(
+literal|1
+argument_list|,
+literal|0
+argument_list|,
+literal|false
+argument_list|,
+name|snapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -560,6 +600,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|true
+argument_list|,
+name|Snapshot
+operator|.
+name|INVALID_ID
 argument_list|)
 expr_stmt|;
 return|return
@@ -729,6 +773,72 @@ operator|.
 name|getSnapshot
 argument_list|()
 return|;
+block|}
+comment|/**    * Search for the snapshot whose id is 1) no larger than the given id, and 2)    * most close to the given id    */
+DECL|method|searchSnapshotById (final int snapshotId)
+specifier|public
+specifier|final
+name|Snapshot
+name|searchSnapshotById
+parameter_list|(
+specifier|final
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+specifier|final
+name|int
+name|i
+init|=
+name|Collections
+operator|.
+name|binarySearch
+argument_list|(
+name|diffs
+argument_list|,
+name|snapshotId
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|i
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+name|int
+name|index
+init|=
+name|i
+operator|<
+literal|0
+condition|?
+operator|-
+name|i
+operator|-
+literal|2
+else|:
+name|i
+decl_stmt|;
+return|return
+name|diffs
+operator|.
+name|get
+argument_list|(
+name|index
+argument_list|)
+operator|.
+name|getSnapshot
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchor The returned snapshot must be taken before this given     *               snapshot.    * @return The latest snapshot before the given snapshot.    */
 DECL|method|getPrior (Snapshot anchor)

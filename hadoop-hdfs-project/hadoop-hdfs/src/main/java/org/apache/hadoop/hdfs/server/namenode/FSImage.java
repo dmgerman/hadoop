@@ -3864,10 +3864,11 @@ name|updateCountForQuotaRecursively
 argument_list|(
 name|root
 argument_list|,
-operator|new
 name|Quota
 operator|.
 name|Counts
+operator|.
+name|newInstance
 argument_list|()
 argument_list|)
 expr_stmt|;

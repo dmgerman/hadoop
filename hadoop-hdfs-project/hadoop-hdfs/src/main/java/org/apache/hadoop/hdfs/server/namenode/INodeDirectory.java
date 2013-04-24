@@ -190,6 +190,26 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeReference
+operator|.
+name|WithCount
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|snapshot
 operator|.
 name|INodeDirectorySnapshottable
@@ -1060,7 +1080,6 @@ name|i
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// TODO: the first case may never be hit
 if|if
 condition|(
 name|oldChild
@@ -1075,6 +1094,9 @@ name|isReference
 argument_list|()
 condition|)
 block|{
+comment|// replace the referred inode, e.g.,
+comment|// INodeFileWithSnapshot -> INodeFileUnderConstructionWithSnapshot
+comment|// TODO: add a unit test for rename + append
 specifier|final
 name|INode
 name|withCount
@@ -1100,6 +1122,44 @@ expr_stmt|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|oldChild
+operator|.
+name|isReference
+argument_list|()
+condition|)
+block|{
+comment|// both are reference nodes, e.g., DstReference -> WithName
+specifier|final
+name|INodeReference
+operator|.
+name|WithCount
+name|withCount
+init|=
+operator|(
+name|WithCount
+operator|)
+name|oldChild
+operator|.
+name|asReference
+argument_list|()
+operator|.
+name|getReferredINode
+argument_list|()
+decl_stmt|;
+name|withCount
+operator|.
+name|removeReference
+argument_list|(
+name|oldChild
+operator|.
+name|asReference
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// do the replacement
 specifier|final
 name|INode
 name|removed
@@ -1124,7 +1184,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|replaceChild4ReferenceWithName (INode oldChild)
+DECL|method|replaceChild4ReferenceWithName (INode oldChild, Snapshot latest)
 name|INodeReference
 operator|.
 name|WithName
@@ -1132,8 +1192,20 @@ name|replaceChild4ReferenceWithName
 parameter_list|(
 name|INode
 name|oldChild
+parameter_list|,
+name|Snapshot
+name|latest
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|latest
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|oldChild
@@ -1215,6 +1287,11 @@ argument_list|,
 name|oldChild
 operator|.
 name|getLocalNameBytes
+argument_list|()
+argument_list|,
+name|latest
+operator|.
+name|getId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1961,7 +2038,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache)
+DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 name|Quota
 operator|.
@@ -1975,6 +2052,9 @@ name|counts
 parameter_list|,
 name|boolean
 name|useCache
+parameter_list|,
+name|int
+name|lastSnapshotId
 parameter_list|)
 block|{
 if|if
@@ -1999,6 +2079,8 @@ argument_list|(
 name|counts
 argument_list|,
 name|useCache
+argument_list|,
+name|lastSnapshotId
 argument_list|)
 expr_stmt|;
 block|}
