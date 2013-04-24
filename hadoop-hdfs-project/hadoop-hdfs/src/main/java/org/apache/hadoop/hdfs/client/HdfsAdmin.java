@@ -350,7 +350,7 @@ name|QUOTA_RESET
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Allow snapshot on a directory.    * @param the path of the directory where snapshots will be taken    */
+comment|/**    * Allow snapshot on a directory.    * @param path The path of the directory where snapshots will be taken.    */
 DECL|method|allowSnapshot (Path path)
 specifier|public
 name|void
@@ -370,7 +370,7 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Disallow snapshot on a directory.    * @param path of the snapshottable directory.    */
+comment|/**    * Disallow snapshot on a directory.    * @param path The path of the snapshottable directory.    */
 DECL|method|disallowSnapshot (Path path)
 specifier|public
 name|void

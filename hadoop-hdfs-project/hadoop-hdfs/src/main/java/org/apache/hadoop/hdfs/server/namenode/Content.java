@@ -37,7 +37,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The content types such as file, directory and symlink to be computed  * in {@link INode#computeContentSummary(CountsMap)}.  */
+comment|/**  * The content types such as file, directory and symlink to be computed.  */
 end_comment
 
 begin_enum

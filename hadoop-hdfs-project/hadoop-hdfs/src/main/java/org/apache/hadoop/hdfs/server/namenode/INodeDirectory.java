@@ -2216,7 +2216,7 @@ name|clearChildren
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Call {@link INode#cleanSubtree(SnapshotDeletionInfo, BlocksMapUpdateInfo)}    * recursively down the subtree.    */
+comment|/** Call cleanSubtree(..) recursively down the subtree. */
 DECL|method|cleanSubtreeRecursively (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota

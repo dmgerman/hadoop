@@ -908,7 +908,7 @@ name|get
 argument_list|()
 return|;
 block|}
-comment|/**    * Write {@link #snapshotCounter}, {@link #numSnapshots},    * {@link #numSnapshottableDirs} and all snapshots to the DataOutput.    */
+comment|/**    * Write {@link #snapshotCounter}, {@link #numSnapshots},    * and all snapshots to the DataOutput.    */
 DECL|method|write (DataOutput out)
 specifier|public
 name|void
@@ -970,7 +970,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Read values of {@link #snapshotCounter}, {@link #numSnapshots}, and    * {@link #numSnapshottableDirs} and all snapshots from the DataInput    */
+comment|/**    * Read values of {@link #snapshotCounter}, {@link #numSnapshots}, and    * all snapshots from the DataInput    */
 DECL|method|read (DataInput in, FSImageFormat.Loader loader )
 specifier|public
 name|Map
@@ -1230,6 +1230,10 @@ operator|.
 name|sort
 argument_list|(
 name|statusList
+argument_list|,
+name|SnapshottableDirectoryStatus
+operator|.
+name|COMPARATOR
 argument_list|)
 expr_stmt|;
 return|return

@@ -1220,7 +1220,7 @@ name|snapshotQuota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load the {@link SnapshotDiff} list for the INodeDirectoryWithSnapshot    * directory.    * @param dir The snapshottable directory for loading.    * @param numSnapshotDiffs The number of {@link SnapshotDiff} that the     *                         directory has.    * @param in The {@link DataInput} instance to read.    * @param loader The {@link Loader} instance that this loading procedure is     *               using.    */
+comment|/**    * Load the {@link SnapshotDiff} list for the INodeDirectoryWithSnapshot    * directory.    * @param dir The snapshottable directory for loading.    * @param in The {@link DataInput} instance to read.    * @param loader The {@link Loader} instance that this loading procedure is     *               using.    */
 DECL|method|loadDirectoryDiffList (INodeDirectory dir, DataInput in, FSImageFormat.Loader loader)
 specifier|public
 specifier|static

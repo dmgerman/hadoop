@@ -193,7 +193,7 @@ name|element
 return|;
 block|}
 block|}
-comment|/**     * Undo information for some operations such as {@link Diff#delete(E)}    * and {@link Diff#modify(Element, Element)}.    */
+comment|/**     * Undo information for some operations such as delete(E)    * and {@link Diff#modify(Element, Element)}.    */
 DECL|class|UndoInfo
 specifier|public
 specifier|static
@@ -752,7 +752,7 @@ return|return
 name|c
 return|;
 block|}
-comment|/**    * Undo the previous {@link #create(E)} operation. Note that the behavior is    * undefined if the previous operation is not {@link #create(E)}.    */
+comment|/**    * Undo the previous create(E) operation. Note that the behavior is    * undefined if the previous operation is not create(E).    */
 DECL|method|undoCreate (final E element, final int insertionPoint)
 specifier|public
 name|void
@@ -875,7 +875,7 @@ name|d
 argument_list|)
 return|;
 block|}
-comment|/**    * Undo the previous {@link #delete(E)} operation. Note that the behavior is    * undefined if the previous operation is not {@link #delete(E)}.    */
+comment|/**    * Undo the previous delete(E) operation. Note that the behavior is    * undefined if the previous operation is not delete(E).    */
 DECL|method|undoDelete (final E element, final UndoInfo<E> undoInfo)
 specifier|public
 name|void
@@ -1099,7 +1099,7 @@ name|d
 argument_list|)
 return|;
 block|}
-comment|/**    * Undo the previous {@link #modify(E, E)} operation. Note that the behavior    * is undefined if the previous operation is not {@link #modify(E, E)}.    */
+comment|/**    * Undo the previous modify(E, E) operation. Note that the behavior    * is undefined if the previous operation is not modify(E, E).    */
 DECL|method|undoModify (final E oldElement, final E newElement, final UndoInfo<E> undoInfo)
 specifier|public
 name|void
@@ -1532,7 +1532,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Combine this diff with a posterior diff.  We have the following cases:    *     *<pre>    * 1. For (c, 0) in the posterior diff, check the element in this diff:    * 1.1 (c', 0)  in this diff: impossible    * 1.2 (0, d')  in this diff: put in c-list --> (c, d')    * 1.3 (c', d') in this diff: impossible    * 1.4 (0, 0)   in this diff: put in c-list --> (c, 0)    * This is the same logic as {@link #create(E)}.    *     * 2. For (0, d) in the posterior diff,    * 2.1 (c', 0)  in this diff: remove from c-list --> (0, 0)    * 2.2 (0, d')  in this diff: impossible    * 2.3 (c', d') in this diff: remove from c-list --> (0, d')    * 2.4 (0, 0)   in this diff: put in d-list --> (0, d)    * This is the same logic as {@link #delete(E)}.    *     * 3. For (c, d) in the posterior diff,    * 3.1 (c', 0)  in this diff: replace the element in c-list --> (c, 0)    * 3.2 (0, d')  in this diff: impossible    * 3.3 (c', d') in this diff: replace the element in c-list --> (c, d')    * 3.4 (0, 0)   in this diff: put in c-list and d-list --> (c, d)    * This is the same logic as {@link #modify(E, E)}.    *</pre>    *     * @param the posterior diff to combine with.    * @param deletedProcesser    *     process the deleted/overwritten elements in case 2.1, 2.3, 3.1 and 3.3.    */
+comment|/**    * Combine this diff with a posterior diff.  We have the following cases:    *     *<pre>    * 1. For (c, 0) in the posterior diff, check the element in this diff:    * 1.1 (c', 0)  in this diff: impossible    * 1.2 (0, d')  in this diff: put in c-list --> (c, d')    * 1.3 (c', d') in this diff: impossible    * 1.4 (0, 0)   in this diff: put in c-list --> (c, 0)    * This is the same logic as create(E).    *     * 2. For (0, d) in the posterior diff,    * 2.1 (c', 0)  in this diff: remove from c-list --> (0, 0)    * 2.2 (0, d')  in this diff: impossible    * 2.3 (c', d') in this diff: remove from c-list --> (0, d')    * 2.4 (0, 0)   in this diff: put in d-list --> (0, d)    * This is the same logic as delete(E).    *     * 3. For (c, d) in the posterior diff,    * 3.1 (c', 0)  in this diff: replace the element in c-list --> (c, 0)    * 3.2 (0, d')  in this diff: impossible    * 3.3 (c', d') in this diff: replace the element in c-list --> (c, d')    * 3.4 (0, 0)   in this diff: put in c-list and d-list --> (c, d)    * This is the same logic as modify(E, E).    *</pre>    *     * @param posterior The posterior diff to combine with.    * @param deletedProcesser    *     process the deleted/overwritten elements in case 2.1, 2.3, 3.1 and 3.3.    */
 DECL|method|combinePosterior (final Diff<K, E> posterior, final Processor<E> deletedProcesser)
 specifier|public
 name|void

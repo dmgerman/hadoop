@@ -293,6 +293,9 @@ argument_list|(
 name|diffs
 argument_list|,
 name|snapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|Quota
@@ -761,6 +764,9 @@ argument_list|(
 name|diffs
 argument_list|,
 name|anchor
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -899,6 +905,9 @@ argument_list|(
 name|diffs
 argument_list|,
 name|snapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -951,17 +960,17 @@ literal|null
 return|;
 block|}
 block|}
-comment|/**    * Check if changes have happened between two snapshots.    * @param earlierSnapshot The snapshot taken earlier    * @param laterSnapshot The snapshot taken later    * @return Whether or not modifications (including diretory/file metadata    *         change, file creation/deletion under the directory) have happened    *         between snapshots.    */
-DECL|method|changedBetweenSnapshots (Snapshot earlierSnapshot, Snapshot laterSnapshot)
+comment|/**    * Check if changes have happened between two snapshots.    * @param earlier The snapshot taken earlier    * @param later The snapshot taken later    * @return Whether or not modifications (including diretory/file metadata    *         change, file creation/deletion under the directory) have happened    *         between snapshots.    */
+DECL|method|changedBetweenSnapshots (Snapshot earlier, Snapshot later)
 specifier|final
 name|boolean
 name|changedBetweenSnapshots
 parameter_list|(
 name|Snapshot
-name|earlierSnapshot
+name|earlier
 parameter_list|,
 name|Snapshot
-name|laterSnapshot
+name|later
 parameter_list|)
 block|{
 specifier|final
@@ -982,7 +991,10 @@ name|binarySearch
 argument_list|(
 name|diffs
 argument_list|,
-name|earlierSnapshot
+name|earlier
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -1003,7 +1015,7 @@ return|;
 block|}
 if|if
 condition|(
-name|laterSnapshot
+name|later
 operator|!=
 literal|null
 condition|)
@@ -1017,7 +1029,10 @@ name|binarySearch
 argument_list|(
 name|diffs
 argument_list|,
-name|laterSnapshot
+name|later
+operator|.
+name|getId
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if

@@ -170,7 +170,7 @@ parameter_list|>
 implements|implements
 name|Comparable
 argument_list|<
-name|Snapshot
+name|Integer
 argument_list|>
 block|{
 comment|/** The snapshot will be obtained after this diff is applied. */
@@ -233,27 +233,30 @@ block|}
 comment|/** Compare diffs with snapshot ID. */
 annotation|@
 name|Override
-DECL|method|compareTo (final Snapshot that)
+DECL|method|compareTo (final Integer that)
 specifier|public
 specifier|final
 name|int
 name|compareTo
 parameter_list|(
 specifier|final
-name|Snapshot
+name|Integer
 name|that
 parameter_list|)
 block|{
 return|return
 name|Snapshot
 operator|.
-name|ID_COMPARATOR
+name|ID_INTEGER_COMPARATOR
 operator|.
 name|compare
 argument_list|(
 name|this
 operator|.
 name|snapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|,
 name|that
 argument_list|)
