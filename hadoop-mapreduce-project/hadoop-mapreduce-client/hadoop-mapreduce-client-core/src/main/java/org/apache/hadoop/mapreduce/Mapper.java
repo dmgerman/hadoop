@@ -251,6 +251,8 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 while|while
 condition|(
 name|context
@@ -275,11 +277,15 @@ name|context
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+finally|finally
+block|{
 name|cleanup
 argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 end_class
