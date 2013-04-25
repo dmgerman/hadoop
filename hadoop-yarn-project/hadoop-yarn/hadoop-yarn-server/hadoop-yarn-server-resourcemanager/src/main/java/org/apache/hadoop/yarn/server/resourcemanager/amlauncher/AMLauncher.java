@@ -1383,7 +1383,7 @@ name|Token
 argument_list|<
 name|ApplicationTokenIdentifier
 argument_list|>
-name|token
+name|appMasterToken
 init|=
 operator|new
 name|Token
@@ -1422,55 +1422,27 @@ name|DEFAULT_RM_SCHEDULER_PORT
 argument_list|)
 decl_stmt|;
 comment|// normally the client should set the service after acquiring the token,
-comment|// but this token is directly provided to the tasks
+comment|// but this token is directly provided to the AMs
 name|SecurityUtil
 operator|.
 name|setTokenService
 argument_list|(
-name|token
+name|appMasterToken
 argument_list|,
 name|serviceAddr
 argument_list|)
 expr_stmt|;
-name|String
-name|appMasterTokenEncoded
-init|=
-name|token
-operator|.
-name|encodeToUrlString
-argument_list|()
-decl_stmt|;
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Putting appMaster token in env : "
-operator|+
-name|token
-argument_list|)
-expr_stmt|;
-name|environment
-operator|.
-name|put
-argument_list|(
-name|ApplicationConstants
-operator|.
-name|APPLICATION_MASTER_TOKEN_ENV_NAME
-argument_list|,
-name|appMasterTokenEncoded
-argument_list|)
-expr_stmt|;
-comment|// Add the RM token
+comment|// Add the ApplicationMaster token
 name|credentials
 operator|.
 name|addToken
 argument_list|(
-name|token
+name|appMasterToken
 operator|.
 name|getService
 argument_list|()
 argument_list|,
-name|token
+name|appMasterToken
 argument_list|)
 expr_stmt|;
 name|DataOutputBuffer
