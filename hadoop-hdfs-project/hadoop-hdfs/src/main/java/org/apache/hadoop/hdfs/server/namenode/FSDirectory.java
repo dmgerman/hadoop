@@ -12771,8 +12771,6 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|getInode (long id)
 name|INode
 name|getInode
