@@ -1024,12 +1024,11 @@ name|newDir
 return|;
 block|}
 comment|/** Replace the given child with a new child. */
-DECL|method|replaceChild (final INode oldChild, final INode newChild)
+DECL|method|replaceChild (INode oldChild, final INode newChild)
 specifier|public
 name|void
 name|replaceChild
 parameter_list|(
-specifier|final
 name|INode
 name|oldChild
 parameter_list|,
@@ -1078,6 +1077,36 @@ name|get
 argument_list|(
 name|i
 argument_list|)
+operator|||
+name|oldChild
+operator|==
+name|children
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|asReference
+argument_list|()
+operator|.
+name|getReferredINode
+argument_list|()
+operator|.
+name|asReference
+argument_list|()
+operator|.
+name|getReferredINode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|oldChild
+operator|=
+name|children
+operator|.
+name|get
+argument_list|(
+name|i
 argument_list|)
 expr_stmt|;
 if|if
@@ -1096,7 +1125,6 @@ condition|)
 block|{
 comment|// replace the referred inode, e.g.,
 comment|// INodeFileWithSnapshot -> INodeFileUnderConstructionWithSnapshot
-comment|// TODO: add a unit test for rename + append
 specifier|final
 name|INode
 name|withCount
@@ -1160,10 +1188,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// do the replacement
-specifier|final
-name|INode
-name|removed
-init|=
 name|children
 operator|.
 name|set
@@ -1171,15 +1195,6 @@ argument_list|(
 name|i
 argument_list|,
 name|newChild
-argument_list|)
-decl_stmt|;
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|removed
-operator|==
-name|oldChild
 argument_list|)
 expr_stmt|;
 block|}
