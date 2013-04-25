@@ -2971,6 +2971,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|"N/A"
+argument_list|,
+literal|0.0f
 argument_list|)
 return|;
 block|}
@@ -3050,6 +3052,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|"N/A"
+argument_list|,
+literal|0.0f
 argument_list|)
 return|;
 block|}
