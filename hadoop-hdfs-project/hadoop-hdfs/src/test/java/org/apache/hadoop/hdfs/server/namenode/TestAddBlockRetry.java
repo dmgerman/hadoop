@@ -90,6 +90,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -643,6 +653,8 @@ argument_list|,
 name|INodeId
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LocatedBlocks
@@ -749,6 +761,17 @@ name|Mockito
 operator|.
 name|anyLong
 argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+expr|<
+name|List
+argument_list|<
+name|String
+argument_list|>
+operator|>
+name|any
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// create file
@@ -816,6 +839,8 @@ argument_list|,
 name|INodeId
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// check locations

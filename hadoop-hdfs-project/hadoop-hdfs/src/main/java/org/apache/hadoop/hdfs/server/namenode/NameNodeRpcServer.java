@@ -172,6 +172,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -3367,7 +3377,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId)
+DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludedNodes, long fileId, String[] favoredNodes)
 specifier|public
 name|LocatedBlock
 name|addBlock
@@ -3387,6 +3397,10 @@ name|excludedNodes
 parameter_list|,
 name|long
 name|fileId
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -3468,6 +3482,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|favoredNodesList
+init|=
+operator|(
+name|favoredNodes
+operator|==
+literal|null
+operator|)
+condition|?
+literal|null
+else|:
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|favoredNodes
+argument_list|)
+decl_stmt|;
 name|LocatedBlock
 name|locatedBlock
 init|=
@@ -3484,6 +3519,8 @@ argument_list|,
 name|previous
 argument_list|,
 name|excludedNodesSet
+argument_list|,
+name|favoredNodesList
 argument_list|)
 decl_stmt|;
 if|if

@@ -1338,6 +1338,8 @@ literal|null
 argument_list|,
 literal|null
 comment|// DKDC - Doesn't matter
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|ContainerStatus

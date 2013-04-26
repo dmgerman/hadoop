@@ -6401,9 +6401,9 @@ name|getHttpPort
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Resource/Priority/Tokens are only needed while launching the
-comment|// container on an NM, these are already completed tasks, so setting them to
-comment|// null
+comment|// Resource/Priority/Tokens and RMIdentifier are only needed while
+comment|// launching the container on an NM, these are already completed tasks, so
+comment|// setting them to null and RMIdentifier as 0
 name|container
 operator|=
 name|BuilderUtils
@@ -6421,6 +6421,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|computeRackAndLocality

@@ -12015,6 +12015,16 @@ name|getFSNamesystem
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|inodeMap
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|addToInodeMapUnprotected
+argument_list|(
+name|rootDir
+argument_list|)
+expr_stmt|;
 name|nameCache
 operator|.
 name|reset

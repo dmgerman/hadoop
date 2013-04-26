@@ -1242,6 +1242,20 @@ argument_list|)
 argument_list|,
 name|dirsHandler
 argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|setBlockNewContainerRequests
+parameter_list|(
+name|boolean
+name|blockNewContainerRequests
+parameter_list|)
+block|{
+comment|// do nothing
+block|}
+block|}
 expr_stmt|;
 name|containerManager
 operator|.

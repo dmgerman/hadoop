@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.api.protocolrecords
+DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager
 package|package
 name|org
 operator|.
@@ -16,9 +16,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|api
+name|nodemanager
 operator|.
-name|protocolrecords
+name|containermanager
 package|;
 end_package
 
@@ -32,83 +32,47 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|MasterKey
+name|YarnException
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeAction
-import|;
-end_import
+begin_comment
+comment|/**  * This Exception happens when NM is rejecting container requests from RM  */
+end_comment
 
-begin_interface
-DECL|interface|RegisterNodeManagerResponse
+begin_class
+DECL|class|InvalidContainerException
 specifier|public
-interface|interface
-name|RegisterNodeManagerResponse
+class|class
+name|InvalidContainerException
+extends|extends
+name|YarnException
 block|{
-DECL|method|getMasterKey ()
-name|MasterKey
-name|getMasterKey
-parameter_list|()
-function_decl|;
-DECL|method|setMasterKey (MasterKey secretKey)
-name|void
-name|setMasterKey
-parameter_list|(
-name|MasterKey
-name|secretKey
-parameter_list|)
-function_decl|;
-DECL|method|getNodeAction ()
-name|NodeAction
-name|getNodeAction
-parameter_list|()
-function_decl|;
-DECL|method|setNodeAction (NodeAction nodeAction)
-name|void
-name|setNodeAction
-parameter_list|(
-name|NodeAction
-name|nodeAction
-parameter_list|)
-function_decl|;
-DECL|method|getRMIdentifier ()
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
 name|long
-name|getRMIdentifier
-parameter_list|()
-function_decl|;
-DECL|method|setRMIdentifier (long rmIdentifier)
-name|void
-name|setRMIdentifier
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|method|InvalidContainerException (String msg)
+specifier|public
+name|InvalidContainerException
 parameter_list|(
-name|long
-name|rmIdentifier
+name|String
+name|msg
 parameter_list|)
-function_decl|;
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
 block|}
-end_interface
+block|}
+end_class
 
 end_unit
 
