@@ -364,24 +364,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|util
-operator|.
-name|LightWeightGSet
-operator|.
-name|LinkedElement
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|util
 operator|.
 name|StringUtils
@@ -438,8 +420,6 @@ argument_list|<
 name|byte
 index|[]
 argument_list|>
-implements|,
-name|LinkedElement
 block|{
 DECL|field|LOG
 specifier|public
@@ -607,13 +587,6 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 function_decl|;
-DECL|field|next
-specifier|protected
-name|LinkedElement
-name|next
-init|=
-literal|null
-decl_stmt|;
 comment|/** The same as getGroupName(null). */
 DECL|method|getGroupName ()
 specifier|public
@@ -2493,36 +2466,6 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|Override
-DECL|method|setNext (LinkedElement next)
-specifier|public
-name|void
-name|setNext
-parameter_list|(
-name|LinkedElement
-name|next
-parameter_list|)
-block|{
-name|this
-operator|.
-name|next
-operator|=
-name|next
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getNext ()
-specifier|public
-name|LinkedElement
-name|getNext
-parameter_list|()
-block|{
-return|return
-name|next
-return|;
 block|}
 block|}
 end_class

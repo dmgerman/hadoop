@@ -104,6 +104,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|LightWeightGSet
+operator|.
+name|LinkedElement
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -132,6 +150,8 @@ class|class
 name|INodeWithAdditionalFields
 extends|extends
 name|INode
+implements|implements
+name|LinkedElement
 block|{
 DECL|enum|PermissionStatusFormat
 specifier|private
@@ -408,6 +428,14 @@ name|accessTime
 init|=
 literal|0L
 decl_stmt|;
+comment|/** For implementing {@link LinkedElement}. */
+DECL|field|next
+specifier|private
+name|LinkedElement
+name|next
+init|=
+literal|null
+decl_stmt|;
 DECL|method|INodeWithAdditionalFields (INode parent, long id, byte[] name, long permission, long modificationTime, long accessTime)
 specifier|private
 name|INodeWithAdditionalFields
@@ -559,6 +587,36 @@ operator|.
 name|accessTime
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|setNext (LinkedElement next)
+specifier|public
+name|void
+name|setNext
+parameter_list|(
+name|LinkedElement
+name|next
+parameter_list|)
+block|{
+name|this
+operator|.
+name|next
+operator|=
+name|next
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNext ()
+specifier|public
+name|LinkedElement
+name|getNext
+parameter_list|()
+block|{
+return|return
+name|next
+return|;
 block|}
 comment|/** Get inode id */
 DECL|method|getId ()

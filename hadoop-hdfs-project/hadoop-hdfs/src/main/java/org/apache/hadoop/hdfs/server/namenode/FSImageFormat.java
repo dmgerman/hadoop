@@ -2267,16 +2267,6 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-if|if
-condition|(
-operator|!
-name|inode
-operator|.
-name|isReference
-argument_list|()
-condition|)
-block|{
-comment|// reference node does not have its id
 name|namesystem
 operator|.
 name|dir
@@ -2286,7 +2276,6 @@ argument_list|(
 name|inode
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|inode

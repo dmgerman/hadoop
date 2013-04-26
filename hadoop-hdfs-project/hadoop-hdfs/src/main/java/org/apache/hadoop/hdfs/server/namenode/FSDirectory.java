@@ -1124,7 +1124,7 @@ name|GSet
 argument_list|<
 name|INode
 argument_list|,
-name|INode
+name|INodeWithAdditionalFields
 argument_list|>
 name|inodeMap
 decl_stmt|;
@@ -1411,15 +1411,14 @@ operator|=
 name|ns
 expr_stmt|;
 block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|initInodeMap (INodeDirectory rootDir)
+DECL|method|initInodeMap ( INodeDirectory rootDir)
+specifier|private
 specifier|static
-name|LightWeightGSet
+name|GSet
 argument_list|<
 name|INode
 argument_list|,
-name|INode
+name|INodeWithAdditionalFields
 argument_list|>
 name|initInodeMap
 parameter_list|(
@@ -1440,11 +1439,11 @@ argument_list|,
 literal|"INodeMap"
 argument_list|)
 decl_stmt|;
-name|LightWeightGSet
+name|GSet
 argument_list|<
 name|INode
 argument_list|,
-name|INode
+name|INodeWithAdditionalFields
 argument_list|>
 name|map
 init|=
@@ -1453,7 +1452,7 @@ name|LightWeightGSet
 argument_list|<
 name|INode
 argument_list|,
-name|INode
+name|INodeWithAdditionalFields
 argument_list|>
 argument_list|(
 name|capacity
@@ -7408,9 +7407,7 @@ argument_list|,
 name|newnode
 argument_list|)
 expr_stmt|;
-name|inodeMap
-operator|.
-name|put
+name|addToInodeMapUnprotected
 argument_list|(
 name|newnode
 argument_list|)
@@ -10832,9 +10829,7 @@ name|getParent
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|inodeMap
-operator|.
-name|put
+name|addToInodeMapUnprotected
 argument_list|(
 name|child
 argument_list|)
@@ -10966,9 +10961,7 @@ argument_list|()
 condition|)
 block|{
 comment|// parent is changed
-name|inodeMap
-operator|.
-name|put
+name|addToInodeMapUnprotected
 argument_list|(
 name|last
 operator|.
@@ -11208,13 +11201,24 @@ name|INode
 name|inode
 parameter_list|)
 block|{
+if|if
+condition|(
+name|inode
+operator|instanceof
+name|INodeWithAdditionalFields
+condition|)
+block|{
 name|inodeMap
 operator|.
 name|put
 argument_list|(
+operator|(
+name|INodeWithAdditionalFields
+operator|)
 name|inode
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/* This method is always called with writeLock held */
 DECL|method|removeFromInodeMap (List<INode> inodes)
