@@ -94,6 +94,19 @@ name|NodeAction
 name|nodeAction
 parameter_list|)
 function_decl|;
+DECL|method|getRMIdentifier ()
+name|long
+name|getRMIdentifier
+parameter_list|()
+function_decl|;
+DECL|method|setRMIdentifier (long rmIdentifier)
+name|void
+name|setRMIdentifier
+parameter_list|(
+name|long
+name|rmIdentifier
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

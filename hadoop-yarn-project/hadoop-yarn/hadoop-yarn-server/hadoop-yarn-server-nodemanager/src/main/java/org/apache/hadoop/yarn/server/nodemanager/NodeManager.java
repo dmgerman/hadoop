@@ -278,6 +278,22 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ContainerManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationId
@@ -1143,6 +1159,18 @@ argument_list|(
 name|containerManager
 argument_list|)
 expr_stmt|;
+operator|(
+operator|(
+name|NMContext
+operator|)
+name|context
+operator|)
+operator|.
+name|setContainerManager
+argument_list|(
+name|containerManager
+argument_list|)
+expr_stmt|;
 name|Service
 name|webServer
 init|=
@@ -1321,10 +1349,10 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|cleanupContainersOnResync ()
+DECL|method|resyncWithRM ()
 specifier|protected
 name|void
-name|cleanupContainersOnResync
+name|resyncWithRM
 parameter_list|()
 block|{
 comment|//we do not want to block dispatcher thread here
@@ -1339,6 +1367,20 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Notifying ContainerManager to block new container-requests"
+argument_list|)
+expr_stmt|;
+name|containerManager
+operator|.
+name|setBlockNewContainerRequests
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|cleanupContainers
 argument_list|(
 name|NodeManagerEventType
@@ -1682,6 +1724,11 @@ specifier|final
 name|NMContainerTokenSecretManager
 name|containerTokenSecretManager
 decl_stmt|;
+DECL|field|containerManager
+specifier|private
+name|ContainerManager
+name|containerManager
+decl_stmt|;
 DECL|field|nodeHealthStatus
 specifier|private
 specifier|final
@@ -1827,6 +1874,36 @@ name|this
 operator|.
 name|nodeHealthStatus
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getContainerManager ()
+specifier|public
+name|ContainerManager
+name|getContainerManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|containerManager
+return|;
+block|}
+DECL|method|setContainerManager (ContainerManager containerManager)
+specifier|public
+name|void
+name|setContainerManager
+parameter_list|(
+name|ContainerManager
+name|containerManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|containerManager
+operator|=
+name|containerManager
+expr_stmt|;
 block|}
 block|}
 comment|/**    * @return the node health checker    */
@@ -1994,7 +2071,7 @@ break|break;
 case|case
 name|RESYNC
 case|:
-name|cleanupContainersOnResync
+name|resyncWithRM
 argument_list|()
 expr_stmt|;
 break|break;

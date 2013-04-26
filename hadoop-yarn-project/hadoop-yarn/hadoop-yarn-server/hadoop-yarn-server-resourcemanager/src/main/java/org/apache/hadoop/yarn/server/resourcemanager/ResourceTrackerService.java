@@ -1370,6 +1370,15 @@ operator|.
 name|NORMAL
 argument_list|)
 expr_stmt|;
+name|response
+operator|.
+name|setRMIdentifier
+argument_list|(
+name|ResourceManager
+operator|.
+name|clusterTimeStamp
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;

@@ -44,6 +44,22 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ContainerManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationId
@@ -212,6 +228,11 @@ function_decl|;
 DECL|method|getNodeHealthStatus ()
 name|NodeHealthStatus
 name|getNodeHealthStatus
+parameter_list|()
+function_decl|;
+DECL|method|getContainerManager ()
+name|ContainerManager
+name|getContainerManager
 parameter_list|()
 function_decl|;
 block|}

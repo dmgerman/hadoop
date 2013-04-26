@@ -263,6 +263,28 @@ name|ContainerToken
 name|containerToken
 parameter_list|)
 function_decl|;
+comment|/**    * Get the RMIdentifier of RM in which containers are allocated    * @return RMIdentifier    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getRMIdentifer ()
+name|long
+name|getRMIdentifer
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setRMIdentifier (long rmIdentifier)
+name|void
+name|setRMIdentifier
+parameter_list|(
+name|long
+name|rmIdentifier
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

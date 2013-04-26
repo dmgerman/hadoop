@@ -448,6 +448,24 @@ name|server
 operator|.
 name|api
 operator|.
+name|ResourceManagerConstants
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
 name|ResourceTracker
 import|;
 end_import
@@ -589,6 +607,26 @@ operator|.
 name|records
 operator|.
 name|NodeStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|ContainerManagerImpl
 import|;
 end_import
 
@@ -834,6 +872,15 @@ DECL|field|statusUpdater
 specifier|private
 name|Thread
 name|statusUpdater
+decl_stmt|;
+DECL|field|rmIdentifier
+specifier|private
+name|long
+name|rmIdentifier
+init|=
+name|ResourceManagerConstants
+operator|.
+name|RM_INVALID_IDENTIFIER
 decl_stmt|;
 DECL|method|NodeStatusUpdaterImpl (Context context, Dispatcher dispatcher, NodeHealthCheckerService healthChecker, NodeManagerMetrics metrics)
 specifier|public
@@ -1601,6 +1648,15 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|rmIdentifier
+operator|=
+name|regNMResponse
+operator|.
+name|getRMIdentifier
+argument_list|()
+expr_stmt|;
 break|break;
 block|}
 catch|catch
@@ -1787,6 +1843,30 @@ operator|.
 name|totalResource
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Notifying ContainerManager to unblock new container-requests"
+argument_list|)
+expr_stmt|;
+operator|(
+operator|(
+name|ContainerManagerImpl
+operator|)
+name|this
+operator|.
+name|context
+operator|.
+name|getContainerManager
+argument_list|()
+operator|)
+operator|.
+name|setBlockNewContainerRequests
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createKeepAliveApplicationList ()
 specifier|private
@@ -1935,6 +2015,8 @@ return|return
 name|appList
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getNodeStatusAndUpdateContainersInContext ()
 specifier|public
 name|NodeStatus
@@ -2349,6 +2431,20 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|getRMIdentifier ()
+specifier|public
+name|long
+name|getRMIdentifier
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rmIdentifier
+return|;
+block|}
 DECL|method|startStatusUpdater ()
 specifier|protected
 name|void
@@ -2680,6 +2776,17 @@ literal|"Node is out of sync with ResourceManager,"
 operator|+
 literal|" hence rebooting."
 argument_list|)
+expr_stmt|;
+comment|// Invalidate the RMIdentifier while resync
+name|NodeStatusUpdaterImpl
+operator|.
+name|this
+operator|.
+name|rmIdentifier
+operator|=
+name|ResourceManagerConstants
+operator|.
+name|RM_INVALID_IDENTIFIER
 expr_stmt|;
 name|dispatcher
 operator|.

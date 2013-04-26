@@ -589,6 +589,48 @@ name|testLocalFilesCleanup
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|testContainerLaunchFromPreviousRM ()
+specifier|public
+name|void
+name|testContainerLaunchFromPreviousRM
+parameter_list|()
+throws|throws
+name|InterruptedException
+throws|,
+name|IOException
+block|{
+comment|// Don't run the test if the binary is not available.
+if|if
+condition|(
+operator|!
+name|shouldRunTest
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"LCE binary path is not passed. Not running the test"
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Running testContainerLaunchFromPreviousRM"
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|testContainerLaunchFromPreviousRM
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|shouldRunTest ()
 specifier|private
 name|boolean

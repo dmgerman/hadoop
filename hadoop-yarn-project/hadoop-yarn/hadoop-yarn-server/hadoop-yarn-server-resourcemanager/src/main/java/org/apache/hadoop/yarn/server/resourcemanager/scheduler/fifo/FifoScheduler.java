@@ -602,6 +602,24 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|ResourceManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|RMStateStore
@@ -3453,6 +3471,10 @@ argument_list|,
 name|priority
 argument_list|,
 name|containerToken
+argument_list|,
+name|ResourceManager
+operator|.
+name|clusterTimeStamp
 argument_list|)
 decl_stmt|;
 comment|// Allocate!

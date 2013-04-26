@@ -74,6 +74,11 @@ name|NodeStatus
 name|getNodeStatusAndUpdateContainersInContext
 parameter_list|()
 function_decl|;
+DECL|method|getRMIdentifier ()
+name|long
+name|getRMIdentifier
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
