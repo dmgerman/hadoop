@@ -417,43 +417,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkStringEqual (String print, String expected, String got)
-specifier|public
-specifier|static
-name|void
-name|checkStringEqual
-parameter_list|(
-name|String
-name|print
-parameter_list|,
-name|String
-name|expected
-parameter_list|,
-name|String
-name|got
-parameter_list|)
-block|{
-name|assertTrue
-argument_list|(
-name|print
-operator|+
-literal|" is not equal, got: "
-operator|+
-name|got
-operator|+
-literal|" expected: "
-operator|+
-name|expected
-argument_list|,
-name|got
-operator|.
-name|equals
-argument_list|(
-name|expected
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 end_class
 

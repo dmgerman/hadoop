@@ -600,8 +600,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|"N/A"
-argument_list|,
-literal|0.53789f
 argument_list|)
 decl_stmt|;
 name|when
@@ -724,13 +722,6 @@ operator|.
 name|println
 argument_list|(
 literal|"\tFinish-Time : 0"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
-literal|"\tProgress : 53.79%"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -900,8 +891,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|"N/A"
-argument_list|,
-literal|0.53789f
 argument_list|)
 decl_stmt|;
 name|List
@@ -1006,16 +995,9 @@ argument_list|)
 expr_stmt|;
 name|pw
 operator|.
-name|print
-argument_list|(
-literal|"Final-State\t       Progress"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
 name|println
 argument_list|(
-literal|"\t                       Tracking-URL"
+literal|"Final-State\t                       Tracking-URL"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1034,16 +1016,9 @@ argument_list|)
 expr_stmt|;
 name|pw
 operator|.
-name|print
-argument_list|(
-literal|"SUCCEEDED\t         53.79%"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
 name|println
 argument_list|(
-literal|"\t                                N/A"
+literal|"SUCCEEDED\t                                N/A"
 argument_list|)
 expr_stmt|;
 name|pw

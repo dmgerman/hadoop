@@ -2698,11 +2698,6 @@ name|diags
 init|=
 name|UNAVAILABLE
 decl_stmt|;
-name|float
-name|progress
-init|=
-literal|0.0f
-decl_stmt|;
 if|if
 condition|(
 name|allowAccess
@@ -2776,13 +2771,6 @@ operator|=
 name|currentAttempt
 operator|.
 name|getApplicationResourceUsageReport
-argument_list|()
-expr_stmt|;
-name|progress
-operator|=
-name|currentAttempt
-operator|.
-name|getProgress
 argument_list|()
 expr_stmt|;
 block|}
@@ -2873,8 +2861,6 @@ argument_list|,
 name|appUsageReport
 argument_list|,
 name|origTrackingUrl
-argument_list|,
-name|progress
 argument_list|)
 return|;
 block|}

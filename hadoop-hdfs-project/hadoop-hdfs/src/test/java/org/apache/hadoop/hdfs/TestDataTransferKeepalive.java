@@ -856,47 +856,15 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// Poll for 0 running xceivers.  Allow up to 5 seconds for some slack.
-name|long
-name|totalSleepTime
-init|=
-literal|0
-decl_stmt|;
-name|long
-name|sleepTime
-init|=
-name|WRITE_TIMEOUT
-operator|+
-literal|100
-decl_stmt|;
-while|while
-condition|(
-name|getXceiverCountWithoutServer
-argument_list|()
-operator|>
-literal|0
-operator|&&
-name|totalSleepTime
-operator|<
-literal|5000
-condition|)
-block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|sleepTime
+name|WRITE_TIMEOUT
+operator|+
+literal|1000
 argument_list|)
 expr_stmt|;
-name|totalSleepTime
-operator|+=
-name|sleepTime
-expr_stmt|;
-name|sleepTime
-operator|=
-literal|100
-expr_stmt|;
-block|}
 comment|// DN should time out in sendChunks, and this should force
 comment|// the xceiver to exit.
 name|assertXceiverCount
@@ -1100,11 +1068,17 @@ name|int
 name|expected
 parameter_list|)
 block|{
+comment|// Subtract 1, since the DataXceiverServer
+comment|// counts as one
 name|int
 name|count
 init|=
-name|getXceiverCountWithoutServer
+name|dn
+operator|.
+name|getXceiverCount
 argument_list|()
+operator|-
+literal|1
 decl_stmt|;
 if|if
 condition|(
@@ -1140,22 +1114,6 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Returns the datanode's xceiver count, but subtracts 1, since the    * DataXceiverServer counts as one.    *     * @return int xceiver count, not including DataXceiverServer    */
-DECL|method|getXceiverCountWithoutServer ()
-specifier|private
-name|int
-name|getXceiverCountWithoutServer
-parameter_list|()
-block|{
-return|return
-name|dn
-operator|.
-name|getXceiverCount
-argument_list|()
-operator|-
-literal|1
-return|;
 block|}
 block|}
 end_class

@@ -294,26 +294,6 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
-name|DefaultResourceCalculator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
 name|Resources
 import|;
 end_import
@@ -426,17 +406,6 @@ name|AppSchedulable
 extends|extends
 name|Schedulable
 block|{
-DECL|field|RESOURCE_CALCULATOR
-specifier|private
-specifier|static
-specifier|final
-name|DefaultResourceCalculator
-name|RESOURCE_CALCULATOR
-init|=
-operator|new
-name|DefaultResourceCalculator
-argument_list|()
-decl_stmt|;
 DECL|field|scheduler
 specifier|private
 name|FairScheduler
@@ -950,11 +919,14 @@ name|container
 return|;
 block|}
 comment|/**    * Reserve a spot for {@code container} on this {@code node}. If    * the container is {@code alreadyReserved} on the node, simply    * update relevant bookeeping. This dispatches ro relevant handlers    * in the {@link FSSchedulerNode} and {@link SchedulerApp} classes.    */
-DECL|method|reserve (Priority priority, FSSchedulerNode node, Container container, boolean alreadyReserved)
+DECL|method|reserve (FSSchedulerApp application, Priority priority, FSSchedulerNode node, Container container, boolean alreadyReserved)
 specifier|private
 name|void
 name|reserve
 parameter_list|(
+name|FSSchedulerApp
+name|application
+parameter_list|,
 name|Priority
 name|priority
 parameter_list|,
@@ -998,7 +970,7 @@ argument_list|()
 operator|.
 name|reserveResource
 argument_list|(
-name|app
+name|application
 operator|.
 name|getUser
 argument_list|()
@@ -1012,7 +984,7 @@ expr_stmt|;
 name|RMContainer
 name|rmContainer
 init|=
-name|app
+name|application
 operator|.
 name|reserve
 argument_list|(
@@ -1029,7 +1001,7 @@ name|node
 operator|.
 name|reserveResource
 argument_list|(
-name|app
+name|application
 argument_list|,
 name|priority
 argument_list|,
@@ -1081,7 +1053,7 @@ operator|.
 name|getReservedContainer
 argument_list|()
 decl_stmt|;
-name|app
+name|application
 operator|.
 name|reserve
 argument_list|(
@@ -1098,7 +1070,7 @@ name|node
 operator|.
 name|reserveResource
 argument_list|(
-name|app
+name|application
 argument_list|,
 name|priority
 argument_list|,
@@ -1107,12 +1079,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove the reservation on {@code node} at the given    * {@link Priority}. This dispatches to the SchedulerApp and SchedulerNode    * handlers for an unreservation.    */
-DECL|method|unreserve (Priority priority, FSSchedulerNode node)
-specifier|public
+comment|/**    * Remove the reservation on {@code node} for {@ application} at the given    * {@link Priority}. This dispatches to the SchedulerApp and SchedulerNode    * handlers for an unreservation.    */
+DECL|method|unreserve (FSSchedulerApp application, Priority priority, FSSchedulerNode node)
+specifier|private
 name|void
 name|unreserve
 parameter_list|(
+name|FSSchedulerApp
+name|application
+parameter_list|,
 name|Priority
 name|priority
 parameter_list|,
@@ -1128,7 +1103,7 @@ operator|.
 name|getReservedContainer
 argument_list|()
 decl_stmt|;
-name|app
+name|application
 operator|.
 name|unreserve
 argument_list|(
@@ -1141,7 +1116,7 @@ name|node
 operator|.
 name|unreserveResource
 argument_list|(
-name|app
+name|application
 argument_list|)
 expr_stmt|;
 name|getMetrics
@@ -1149,7 +1124,7 @@ argument_list|()
 operator|.
 name|unreserveResource
 argument_list|(
-name|app
+name|application
 operator|.
 name|getUser
 argument_list|()
@@ -1170,7 +1145,7 @@ argument_list|()
 operator|.
 name|unreserveResource
 argument_list|(
-name|app
+name|application
 operator|.
 name|getUser
 argument_list|()
@@ -1186,13 +1161,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assign a container to this node to facilitate {@code request}. If node does    * not have enough memory, create a reservation. This is called once we are    * sure the particular request should be facilitated by this node.    */
-DECL|method|assignContainer (FSSchedulerNode node, Priority priority, ResourceRequest request, NodeType type, boolean reserved)
+DECL|method|assignContainer (FSSchedulerNode node, FSSchedulerApp application, Priority priority, ResourceRequest request, NodeType type, boolean reserved)
 specifier|private
 name|Resource
 name|assignContainer
 parameter_list|(
 name|FSSchedulerNode
 name|node
+parameter_list|,
+name|FSSchedulerApp
+name|application
 parameter_list|,
 name|Priority
 name|priority
@@ -1252,7 +1230,7 @@ name|container
 operator|=
 name|createContainer
 argument_list|(
-name|app
+name|application
 argument_list|,
 name|node
 argument_list|,
@@ -1287,7 +1265,7 @@ comment|// Inform the application of the new container for this request
 name|RMContainer
 name|allocatedContainer
 init|=
-name|app
+name|application
 operator|.
 name|allocate
 argument_list|(
@@ -1310,19 +1288,6 @@ literal|null
 condition|)
 block|{
 comment|// Did the application need this resource?
-if|if
-condition|(
-name|reserved
-condition|)
-block|{
-name|unreserve
-argument_list|(
-name|priority
-argument_list|,
-name|node
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 name|Resources
 operator|.
@@ -1354,6 +1319,8 @@ condition|)
 block|{
 name|unreserve
 argument_list|(
+name|application
+argument_list|,
 name|priority
 argument_list|,
 name|node
@@ -1365,7 +1332,7 @@ name|node
 operator|.
 name|allocateContainer
 argument_list|(
-name|app
+name|application
 operator|.
 name|getApplicationId
 argument_list|()
@@ -1385,6 +1352,8 @@ block|{
 comment|// The desired container won't fit here, so reserve
 name|reserve
 argument_list|(
+name|application
+argument_list|,
 name|priority
 argument_list|,
 name|node
@@ -1463,6 +1432,8 @@ condition|)
 block|{
 name|unreserve
 argument_list|(
+name|app
+argument_list|,
 name|priority
 argument_list|,
 name|node
@@ -1550,14 +1521,6 @@ name|priority
 argument_list|)
 operator|<=
 literal|0
-operator|||
-operator|!
-name|hasContainerForNode
-argument_list|(
-name|priority
-argument_list|,
-name|node
-argument_list|)
 condition|)
 block|{
 continue|continue;
@@ -1654,6 +1617,8 @@ name|assignContainer
 argument_list|(
 name|node
 argument_list|,
+name|app
+argument_list|,
 name|priority
 argument_list|,
 name|localRequest
@@ -1704,6 +1669,8 @@ return|return
 name|assignContainer
 argument_list|(
 name|node
+argument_list|,
+name|app
 argument_list|,
 name|priority
 argument_list|,
@@ -1758,6 +1725,8 @@ return|return
 name|assignContainer
 argument_list|(
 name|node
+argument_list|,
+name|app
 argument_list|,
 name|priority
 argument_list|,
@@ -1815,65 +1784,6 @@ argument_list|(
 name|node
 argument_list|,
 literal|false
-argument_list|)
-return|;
-block|}
-comment|/**    * Whether this app has containers requests that could be satisfied on the    * given node, if the node had full space.    */
-DECL|method|hasContainerForNode (Priority prio, FSSchedulerNode node)
-specifier|public
-name|boolean
-name|hasContainerForNode
-parameter_list|(
-name|Priority
-name|prio
-parameter_list|,
-name|FSSchedulerNode
-name|node
-parameter_list|)
-block|{
-comment|// TODO: add checks stuff about node specific scheduling here
-name|ResourceRequest
-name|request
-init|=
-name|app
-operator|.
-name|getResourceRequest
-argument_list|(
-name|prio
-argument_list|,
-name|ResourceRequest
-operator|.
-name|ANY
-argument_list|)
-decl_stmt|;
-return|return
-name|request
-operator|.
-name|getNumContainers
-argument_list|()
-operator|>
-literal|0
-operator|&&
-name|Resources
-operator|.
-name|lessThanOrEqual
-argument_list|(
-name|RESOURCE_CALCULATOR
-argument_list|,
-literal|null
-argument_list|,
-name|request
-operator|.
-name|getCapability
-argument_list|()
-argument_list|,
-name|node
-operator|.
-name|getRMNode
-argument_list|()
-operator|.
-name|getTotalCapability
-argument_list|()
 argument_list|)
 return|;
 block|}

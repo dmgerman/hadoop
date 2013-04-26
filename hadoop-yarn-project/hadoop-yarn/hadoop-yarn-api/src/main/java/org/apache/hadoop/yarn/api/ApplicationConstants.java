@@ -57,6 +57,16 @@ interface|interface
 name|ApplicationConstants
 block|{
 comment|// TODO: They say tokens via env isn't good.
+DECL|field|APPLICATION_MASTER_TOKEN_ENV_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|APPLICATION_MASTER_TOKEN_ENV_NAME
+init|=
+literal|"AppMasterTokenEnv"
+decl_stmt|;
+comment|// TODO: They say tokens via env isn't good.
 DECL|field|APPLICATION_CLIENT_SECRET_ENV_NAME
 specifier|public
 specifier|static

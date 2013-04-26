@@ -467,28 +467,6 @@ name|ApplicationResourceUsageReport
 name|appResources
 parameter_list|)
 function_decl|;
-comment|/**    * Get the application's progress ( range 0.0 to 1.0 )    * @return application's progress    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getProgress ()
-name|float
-name|getProgress
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setProgress (float progress)
-name|void
-name|setProgress
-parameter_list|(
-name|float
-name|progress
-parameter_list|)
-function_decl|;
 block|}
 end_interface
 

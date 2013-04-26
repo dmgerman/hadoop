@@ -2581,7 +2581,7 @@ argument_list|)
 expr_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringEqual
+name|checkStringMatch
 argument_list|(
 literal|"hadoopBuildVersion"
 argument_list|,
@@ -2623,7 +2623,7 @@ argument_list|)
 expr_stmt|;
 name|WebServicesTestUtils
 operator|.
-name|checkStringEqual
+name|checkStringMatch
 argument_list|(
 literal|"resourceManagerBuildVersion"
 argument_list|,
