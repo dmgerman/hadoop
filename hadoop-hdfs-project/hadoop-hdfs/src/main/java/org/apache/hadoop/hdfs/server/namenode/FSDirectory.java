@@ -3504,6 +3504,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 name|dstParent
+operator|=
+name|dstIIP
+operator|.
+name|getINode
+argument_list|(
+operator|-
+literal|2
+argument_list|)
+expr_stmt|;
+comment|// refresh dstParent
+name|dstParent
 operator|.
 name|updateModificationTime
 argument_list|(
