@@ -11559,18 +11559,33 @@ literal|null
 condition|)
 block|{
 comment|// will not come here for root because root's nsQuota is always set
-return|return
+name|INodeDirectory
+name|newNode
+init|=
 name|quotaNode
 operator|.
 name|replaceSelf4INodeDirectory
 argument_list|()
+decl_stmt|;
+comment|// update the inodeMap
+name|inodeMap
+operator|.
+name|put
+argument_list|(
+name|newNode
+argument_list|)
+expr_stmt|;
+return|return
+name|newNode
 return|;
 block|}
 block|}
 else|else
 block|{
 comment|// a non-quota directory; so replace it with a directory with quota
-return|return
+name|INodeDirectory
+name|newNode
+init|=
 name|dirNode
 operator|.
 name|replaceSelf4Quota
@@ -11581,6 +11596,17 @@ name|nsQuota
 argument_list|,
 name|dsQuota
 argument_list|)
+decl_stmt|;
+comment|// update the inodeMap
+name|inodeMap
+operator|.
+name|put
+argument_list|(
+name|newNode
+argument_list|)
+expr_stmt|;
+return|return
+name|newNode
 return|;
 block|}
 return|return
