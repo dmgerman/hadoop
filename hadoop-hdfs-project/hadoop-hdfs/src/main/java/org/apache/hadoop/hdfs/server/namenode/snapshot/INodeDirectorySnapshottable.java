@@ -1861,6 +1861,21 @@ argument_list|(
 name|to
 argument_list|)
 decl_stmt|;
+comment|// if the start point is equal to the end point, return null
+if|if
+condition|(
+name|from
+operator|.
+name|equals
+argument_list|(
+name|to
+argument_list|)
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|SnapshotDiffInfo
 name|diffs
 init|=

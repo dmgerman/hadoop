@@ -1237,6 +1237,53 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+specifier|final
+name|String
+name|invalidName
+init|=
+literal|"invalid"
+decl_stmt|;
+try|try
+block|{
+name|hdfs
+operator|.
+name|getSnapshotDiffReport
+argument_list|(
+name|sub1
+argument_list|,
+name|invalidName
+argument_list|,
+name|invalidName
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Expect exception when providing invalid snapshot name for diff report"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Cannot find the snapshot of directory "
+operator|+
+name|sub1
+operator|+
+literal|" with name "
+operator|+
+name|invalidName
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 comment|// diff between the same snapshot
 name|SnapshotDiffReport
 name|report

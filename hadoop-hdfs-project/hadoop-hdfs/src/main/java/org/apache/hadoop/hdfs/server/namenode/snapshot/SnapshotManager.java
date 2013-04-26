@@ -1303,21 +1303,6 @@ return|return
 literal|null
 return|;
 block|}
-comment|// if the start point is equal to the end point, return null
-if|if
-condition|(
-name|from
-operator|.
-name|equals
-argument_list|(
-name|to
-argument_list|)
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
 comment|// Find the source root directory path where the snapshots were taken.
 comment|// All the check for path has been included in the valueOf method.
 name|INodesInPath
