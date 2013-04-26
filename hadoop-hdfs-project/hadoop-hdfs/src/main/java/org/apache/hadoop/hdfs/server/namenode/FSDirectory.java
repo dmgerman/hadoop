@@ -9134,6 +9134,14 @@ argument_list|(
 name|newNode
 argument_list|)
 expr_stmt|;
+comment|// update the inodeMap
+name|inodeMap
+operator|.
+name|put
+argument_list|(
+name|newNode
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 else|else
@@ -9175,6 +9183,14 @@ expr_stmt|;
 name|parent
 operator|.
 name|replaceChild
+argument_list|(
+name|newNode
+argument_list|)
+expr_stmt|;
+comment|// update the inodeMap
+name|inodeMap
+operator|.
+name|put
 argument_list|(
 name|newNode
 argument_list|)
