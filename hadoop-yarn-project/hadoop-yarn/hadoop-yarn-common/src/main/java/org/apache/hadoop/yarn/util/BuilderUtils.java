@@ -2267,7 +2267,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, ClientToken clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl)
+DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, ClientToken clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -2320,6 +2320,9 @@ name|appResources
 parameter_list|,
 name|String
 name|origTrackingUrl
+parameter_list|,
+name|float
+name|progress
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -2444,6 +2447,13 @@ operator|.
 name|setOriginalTrackingUrl
 argument_list|(
 name|origTrackingUrl
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setProgress
+argument_list|(
+name|progress
 argument_list|)
 expr_stmt|;
 return|return

@@ -3280,23 +3280,6 @@ throw|throw
 name|ioe
 throw|;
 block|}
-comment|// otherwise back off and retry
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|ignored
-parameter_list|)
-block|{}
 name|LOG
 operator|.
 name|info

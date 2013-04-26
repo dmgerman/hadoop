@@ -88,11 +88,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|scheduler
+name|resource
 operator|.
-name|fair
-operator|.
-name|Schedulable
+name|Resources
 import|;
 end_import
 
@@ -114,7 +112,7 @@ name|scheduler
 operator|.
 name|fair
 operator|.
-name|Resources
+name|Schedulable
 import|;
 end_import
 

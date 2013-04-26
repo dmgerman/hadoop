@@ -1675,8 +1675,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// Only retain 2 extra segments. The 301-400 segment is considered required,
-comment|// not extra.
+comment|// Only retain 2 extra segments. The 301-350 and 351-400 segments are
+comment|// considered required, not extra.
 name|tc
 operator|.
 name|addLog
@@ -1718,6 +1718,22 @@ operator|+
 name|getFinalizedEditsFileName
 argument_list|(
 literal|301
+argument_list|,
+literal|350
+argument_list|)
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|tc
+operator|.
+name|addLog
+argument_list|(
+literal|"/foo2/current/"
+operator|+
+name|getFinalizedEditsFileName
+argument_list|(
+literal|351
 argument_list|,
 literal|400
 argument_list|)
