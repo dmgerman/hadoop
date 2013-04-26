@@ -11815,7 +11815,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The client would like to obtain an additional block for the indicated    * filename (which is being written-to).  Return an array that consists    * of the block, plus a set of machines.  The first on this list should    * be where the client writes data.  Subsequent items in the list must    * be provided in the connection to the first datanode.    *    * Make sure the previous blocks have been reported by datanodes and    * are replicated.  Will return an empty 2-elt array if we want the    * client to "try again later".    */
-DECL|method|getAdditionalBlock (String src, long fileId, String clientName, ExtendedBlock previous, HashMap<Node, Node> excludedNodes)
+DECL|method|getAdditionalBlock (String src, long fileId, String clientName, ExtendedBlock previous, HashMap<Node, Node> excludedNodes, List<String> favoredNodes)
 name|LocatedBlock
 name|getAdditionalBlock
 parameter_list|(
@@ -11838,6 +11838,12 @@ argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|favoredNodes
 parameter_list|)
 throws|throws
 name|LeaseExpiredException
@@ -12047,6 +12053,8 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|blockSize
+argument_list|,
+name|favoredNodes
 argument_list|)
 decl_stmt|;
 comment|// Part II.

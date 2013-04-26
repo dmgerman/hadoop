@@ -1928,6 +1928,12 @@ block|}
 block|}
 argument_list|)
 decl_stmt|;
+DECL|field|favoredNodes
+specifier|private
+name|String
+index|[]
+name|favoredNodes
+decl_stmt|;
 DECL|field|hasError
 specifier|volatile
 name|boolean
@@ -2218,6 +2224,23 @@ name|src
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|setFavoredNodes (String[] favoredNodes)
+specifier|private
+name|void
+name|setFavoredNodes
+parameter_list|(
+name|String
+index|[]
+name|favoredNodes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|favoredNodes
+operator|=
+name|favoredNodes
+expr_stmt|;
 block|}
 comment|/**      * Initialize for data streaming      */
 DECL|method|initDataStreaming ()
@@ -5811,6 +5834,8 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|fileId
+argument_list|,
+name|favoredNodes
 argument_list|)
 return|;
 block|}
@@ -6485,7 +6510,7 @@ name|checksum
 expr_stmt|;
 block|}
 comment|/** Construct a new output stream for creating a file. */
-DECL|method|DFSOutputStream (DFSClient dfsClient, String src, HdfsFileStatus stat, EnumSet<CreateFlag> flag, Progressable progress, DataChecksum checksum)
+DECL|method|DFSOutputStream (DFSClient dfsClient, String src, HdfsFileStatus stat, EnumSet<CreateFlag> flag, Progressable progress, DataChecksum checksum, String[] favoredNodes)
 specifier|private
 name|DFSOutputStream
 parameter_list|(
@@ -6509,6 +6534,10 @@ name|progress
 parameter_list|,
 name|DataChecksum
 name|checksum
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -6560,8 +6589,29 @@ operator|new
 name|DataStreamer
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|favoredNodes
+operator|!=
+literal|null
+operator|&&
+name|favoredNodes
+operator|.
+name|length
+operator|!=
+literal|0
+condition|)
+block|{
+name|streamer
+operator|.
+name|setFavoredNodes
+argument_list|(
+name|favoredNodes
+argument_list|)
+expr_stmt|;
 block|}
-DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum)
+block|}
+DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum, String[] favoredNodes)
 specifier|static
 name|DFSOutputStream
 name|newStreamForCreate
@@ -6598,6 +6648,10 @@ name|buffersize
 parameter_list|,
 name|DataChecksum
 name|checksum
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 throws|throws
 name|IOException
@@ -6704,6 +6758,8 @@ argument_list|,
 name|progress
 argument_list|,
 name|checksum
+argument_list|,
+name|favoredNodes
 argument_list|)
 decl_stmt|;
 name|out
@@ -6713,6 +6769,74 @@ argument_list|()
 expr_stmt|;
 return|return
 name|out
+return|;
+block|}
+DECL|method|newStreamForCreate (DFSClient dfsClient, String src, FsPermission masked, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, Progressable progress, int buffersize, DataChecksum checksum)
+specifier|static
+name|DFSOutputStream
+name|newStreamForCreate
+parameter_list|(
+name|DFSClient
+name|dfsClient
+parameter_list|,
+name|String
+name|src
+parameter_list|,
+name|FsPermission
+name|masked
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CreateFlag
+argument_list|>
+name|flag
+parameter_list|,
+name|boolean
+name|createParent
+parameter_list|,
+name|short
+name|replication
+parameter_list|,
+name|long
+name|blockSize
+parameter_list|,
+name|Progressable
+name|progress
+parameter_list|,
+name|int
+name|buffersize
+parameter_list|,
+name|DataChecksum
+name|checksum
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|newStreamForCreate
+argument_list|(
+name|dfsClient
+argument_list|,
+name|src
+argument_list|,
+name|masked
+argument_list|,
+name|flag
+argument_list|,
+name|createParent
+argument_list|,
+name|replication
+argument_list|,
+name|blockSize
+argument_list|,
+name|progress
+argument_list|,
+name|buffersize
+argument_list|,
+name|checksum
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 comment|/** Construct a new output stream for append. */

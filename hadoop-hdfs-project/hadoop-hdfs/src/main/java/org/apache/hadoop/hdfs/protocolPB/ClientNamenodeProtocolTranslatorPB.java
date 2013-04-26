@@ -2717,7 +2717,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId)
+DECL|method|addBlock (String src, String clientName, ExtendedBlock previous, DatanodeInfo[] excludeNodes, long fileId, String[] favoredNodes)
 specifier|public
 name|LocatedBlock
 name|addBlock
@@ -2737,6 +2737,10 @@ name|excludeNodes
 parameter_list|,
 name|long
 name|fileId
+parameter_list|,
+name|String
+index|[]
+name|favoredNodes
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -2812,6 +2816,26 @@ name|excludeNodes
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|favoredNodes
+operator|!=
+literal|null
+condition|)
+block|{
+name|req
+operator|.
+name|addAllFavoredNodes
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|favoredNodes
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 return|return

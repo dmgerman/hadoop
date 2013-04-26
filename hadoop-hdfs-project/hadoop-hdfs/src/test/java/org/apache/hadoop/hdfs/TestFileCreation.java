@@ -3151,6 +3151,8 @@ argument_list|,
 name|INodeId
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|System
@@ -3438,6 +3440,8 @@ argument_list|,
 name|INodeId
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|fail

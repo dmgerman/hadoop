@@ -418,6 +418,68 @@ name|blocksize
 argument_list|)
 return|;
 block|}
+comment|/**    * Same as {@link #chooseTarget(String, int, DatanodeDescriptor, List, boolean,     * HashMap, long)} with added parameter {@code favoredDatanodes}    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
+DECL|method|chooseTarget (String src, int numOfReplicas, DatanodeDescriptor writer, HashMap<Node, Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes)
+name|DatanodeDescriptor
+index|[]
+name|chooseTarget
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|int
+name|numOfReplicas
+parameter_list|,
+name|DatanodeDescriptor
+name|writer
+parameter_list|,
+name|HashMap
+argument_list|<
+name|Node
+argument_list|,
+name|Node
+argument_list|>
+name|excludedNodes
+parameter_list|,
+name|long
+name|blocksize
+parameter_list|,
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|favoredNodes
+parameter_list|)
+block|{
+comment|// This class does not provide the functionality of placing
+comment|// a block in favored datanodes. The implementations of this class
+comment|// are expected to provide this functionality
+return|return
+name|chooseTarget
+argument_list|(
+name|src
+argument_list|,
+name|numOfReplicas
+argument_list|,
+name|writer
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|(
+name|numOfReplicas
+argument_list|)
+argument_list|,
+literal|false
+argument_list|,
+name|excludedNodes
+argument_list|,
+name|blocksize
+argument_list|)
+return|;
+block|}
 comment|/**    * Verify that the block is replicated on at least minRacks different racks    * if there is more than minRacks rack in the system.    *     * @param srcPath the full pathname of the file to be verified    * @param lBlk block with locations    * @param minRacks number of racks the block should be replicated to    * @return the difference between the required and the actual number of racks    * the block is replicated to.    */
 DECL|method|verifyBlockPlacement (String srcPath, LocatedBlock lBlk, int minRacks)
 specifier|abstract
