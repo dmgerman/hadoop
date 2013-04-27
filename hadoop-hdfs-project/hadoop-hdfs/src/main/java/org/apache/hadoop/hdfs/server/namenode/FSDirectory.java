@@ -11569,7 +11569,20 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// will not come here for root because root's nsQuota is always set
+comment|// do not replace the node if the node is a snapshottable directory
+comment|// without snapshots
+if|if
+condition|(
+operator|!
+operator|(
+name|quotaNode
+operator|instanceof
+name|INodeDirectoryWithSnapshot
+operator|)
+condition|)
+block|{
+comment|// will not come here for root because root is snapshottable and
+comment|// root's nsQuota is always set
 name|INodeDirectory
 name|newNode
 init|=
@@ -11589,6 +11602,7 @@ expr_stmt|;
 return|return
 name|newNode
 return|;
+block|}
 block|}
 block|}
 else|else
