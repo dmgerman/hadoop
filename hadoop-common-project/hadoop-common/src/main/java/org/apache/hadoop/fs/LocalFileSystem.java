@@ -605,6 +605,12 @@ name|p
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// close the stream before rename to release the file handle
+name|sums
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|b
 operator|=
 name|checkFile
