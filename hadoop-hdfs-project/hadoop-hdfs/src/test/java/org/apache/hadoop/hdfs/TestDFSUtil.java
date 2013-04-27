@@ -193,14 +193,16 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Assert
+name|hadoop
 operator|.
-name|assertEquals
+name|util
+operator|.
+name|Shell
 import|;
 end_import
 
@@ -212,7 +214,17 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
 import|;
 end_import
 
@@ -220,35 +232,11 @@ begin_import
 import|import static
 name|org
 operator|.
-name|junit
+name|hamcrest
 operator|.
-name|Assert
+name|CoreMatchers
 operator|.
-name|assertNull
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|fail
+name|*
 import|;
 end_import
 
@@ -3588,14 +3576,40 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
+DECL|method|testLocalhostReverseLookup ()
+specifier|public
+name|void
+name|testLocalhostReverseLookup
+parameter_list|()
+block|{
+comment|// 127.0.0.1 -> localhost reverse resolution does not happen on Windows.
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Shell
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 comment|// Make sure when config FS_DEFAULT_NAME_KEY using IP address,
 comment|// it will automatically convert it to hostname
+name|HdfsConfiguration
 name|conf
-operator|=
+init|=
 operator|new
 name|HdfsConfiguration
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|conf
 operator|.
 name|set
@@ -3607,15 +3621,19 @@ argument_list|,
 literal|"hdfs://127.0.0.1:8020"
 argument_list|)
 expr_stmt|;
+name|Collection
+argument_list|<
+name|URI
+argument_list|>
 name|uris
-operator|=
+init|=
 name|DFSUtil
 operator|.
 name|getNameServiceUris
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|assertEquals
 argument_list|(
 literal|1
@@ -3634,14 +3652,14 @@ range|:
 name|uris
 control|)
 block|{
-name|assertFalse
+name|assertThat
 argument_list|(
 name|uri
 operator|.
 name|getHost
 argument_list|()
-operator|.
-name|equals
+argument_list|,
+name|not
 argument_list|(
 literal|"127.0.0.1"
 argument_list|)
@@ -3651,6 +3669,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|15000
+argument_list|)
 DECL|method|testIsValidName ()
 specifier|public
 name|void

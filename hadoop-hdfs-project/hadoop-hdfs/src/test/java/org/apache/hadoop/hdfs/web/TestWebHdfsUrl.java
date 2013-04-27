@@ -402,7 +402,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|4000
+literal|60000
 argument_list|)
 DECL|method|testSimpleAuthParamsInUrl ()
 specifier|public
@@ -509,7 +509,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|4000
+literal|60000
 argument_list|)
 DECL|method|testSimpleProxyAuthParamsInUrl ()
 specifier|public
@@ -642,7 +642,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|4000
+literal|60000
 argument_list|)
 DECL|method|testSecureAuthParamsInUrl ()
 specifier|public
@@ -1072,7 +1072,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|4000
+literal|60000
 argument_list|)
 DECL|method|testSecureProxyAuthParamsInUrl ()
 specifier|public
@@ -1786,7 +1786,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|4000
+literal|60000
 argument_list|)
 DECL|method|testSelectHdfsDelegationToken ()
 specifier|public
