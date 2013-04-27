@@ -473,13 +473,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// doesn't matter what it is, but getGroups needs it set...
+comment|// use HADOOP_HOME environment variable to prevent interfering with logic
+comment|// that finds winutils.exe
 name|System
 operator|.
 name|setProperty
 argument_list|(
 literal|"hadoop.home.dir"
 argument_list|,
-literal|"/tmp"
+name|System
+operator|.
+name|getenv
+argument_list|(
+literal|"HADOOP_HOME"
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// fake the realm is kerberos is enabled
