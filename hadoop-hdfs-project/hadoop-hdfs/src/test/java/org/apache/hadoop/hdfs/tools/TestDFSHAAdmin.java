@@ -314,6 +314,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Before
@@ -503,6 +517,43 @@ name|HOST_B
 init|=
 literal|"1.2.3.2"
 decl_stmt|;
+comment|// Fencer shell commands that always return true and false respectively
+comment|// on Unix.
+DECL|field|FENCER_TRUE_COMMAND_UNIX
+specifier|private
+specifier|static
+name|String
+name|FENCER_TRUE_COMMAND_UNIX
+init|=
+literal|"shell(true)"
+decl_stmt|;
+DECL|field|FENCER_FALSE_COMMAND_UNIX
+specifier|private
+specifier|static
+name|String
+name|FENCER_FALSE_COMMAND_UNIX
+init|=
+literal|"shell(false)"
+decl_stmt|;
+comment|// Fencer shell commands that always return true and false respectively
+comment|// on Windows. Lacking POSIX 'true' and 'false' commands we use the DOS
+comment|// commands 'rem' and 'help.exe'.
+DECL|field|FENCER_TRUE_COMMAND_WINDOWS
+specifier|private
+specifier|static
+name|String
+name|FENCER_TRUE_COMMAND_WINDOWS
+init|=
+literal|"shell(rem)"
+decl_stmt|;
+DECL|field|FENCER_FALSE_COMMAND_WINDOWS
+specifier|private
+specifier|static
+name|String
+name|FENCER_FALSE_COMMAND_WINDOWS
+init|=
+literal|"shell(help.exe /?>NUL)"
+decl_stmt|;
 DECL|method|getHAConf ()
 specifier|private
 name|HdfsConfiguration
@@ -613,6 +664,40 @@ argument_list|)
 expr_stmt|;
 return|return
 name|conf
+return|;
+block|}
+DECL|method|getFencerTrueCommand ()
+specifier|public
+specifier|static
+name|String
+name|getFencerTrueCommand
+parameter_list|()
+block|{
+return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|FENCER_TRUE_COMMAND_WINDOWS
+else|:
+name|FENCER_TRUE_COMMAND_UNIX
+return|;
+block|}
+DECL|method|getFencerFalseCommand ()
+specifier|public
+specifier|static
+name|String
+name|getFencerFalseCommand
+parameter_list|()
+block|{
+return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|FENCER_FALSE_COMMAND_WINDOWS
+else|:
+name|FENCER_FALSE_COMMAND_UNIX
 return|;
 block|}
 annotation|@
@@ -1116,7 +1201,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -1551,7 +1637,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -1615,7 +1702,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -1683,7 +1771,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -1749,7 +1838,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -1815,7 +1905,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -2004,7 +2095,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -2078,7 +2170,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -2284,7 +2377,8 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -2317,7 +2411,8 @@ name|set
 argument_list|(
 name|nnSpecificKey
 argument_list|,
-literal|"shell(false)"
+name|getFencerFalseCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -2358,7 +2453,8 @@ name|set
 argument_list|(
 name|nsSpecificKey
 argument_list|,
-literal|"shell(false)"
+name|getFencerFalseCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -2392,7 +2488,8 @@ name|set
 argument_list|(
 name|nsSpecificKey
 argument_list|,
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
