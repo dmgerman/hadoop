@@ -1681,20 +1681,18 @@ name|int
 name|lastSnapshotId
 parameter_list|)
 block|{
+comment|// if this.lastSnapshotId< lastSnapshotId, the rename of the referred
+comment|// node happened before the rename of its ancestor. This should be
+comment|// impossible since for WithName node we only count its children at the
+comment|// time of the rename.
 name|Preconditions
 operator|.
 name|checkState
 argument_list|(
-name|lastSnapshotId
-operator|==
-name|Snapshot
-operator|.
-name|INVALID_ID
-operator|||
 name|this
 operator|.
 name|lastSnapshotId
-operator|<=
+operator|>=
 name|lastSnapshotId
 argument_list|)
 expr_stmt|;

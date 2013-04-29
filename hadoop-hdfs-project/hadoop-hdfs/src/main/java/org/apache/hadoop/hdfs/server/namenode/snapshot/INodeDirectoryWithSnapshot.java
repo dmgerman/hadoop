@@ -5019,55 +5019,16 @@ name|lastSnapshotId
 argument_list|)
 return|;
 block|}
-specifier|final
-name|int
-name|diffNum
-init|=
-literal|0
-decl_stmt|;
 name|Snapshot
 name|lastSnapshot
 init|=
-literal|null
-decl_stmt|;
-name|Snapshot
-name|lastInDiff
-init|=
 name|diffs
 operator|.
-name|getLastSnapshot
-argument_list|()
-decl_stmt|;
-comment|// if lastSnapshotId> lastInDiff.getId(), the snapshot diff associated with
-comment|// lastSnapshotId must have been deleted. We should call
-comment|// getChildrenList(null) to get the children list for the continuous
-comment|// computation. In the meanwhile, there must be some snapshot diff whose
-comment|// snapshot id is no less than lastSnapshotId. Otherwise the WithName node
-comment|// itself should have been deleted.
-if|if
-condition|(
-name|lastInDiff
-operator|!=
-literal|null
-operator|&&
-name|lastInDiff
-operator|.
-name|getId
-argument_list|()
-operator|>=
-name|lastSnapshotId
-condition|)
-block|{
-name|lastSnapshot
-operator|=
-name|diffs
-operator|.
-name|searchSnapshotById
+name|getSnapshotById
 argument_list|(
 name|lastSnapshotId
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|ReadOnlyList
 argument_list|<
 name|INode
@@ -5107,8 +5068,6 @@ name|Quota
 operator|.
 name|NAMESPACE
 argument_list|,
-name|diffNum
-operator|+
 literal|1
 argument_list|)
 expr_stmt|;

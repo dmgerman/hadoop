@@ -1760,7 +1760,7 @@ name|s
 init|=
 name|fileDiffList
 operator|.
-name|searchSnapshotById
+name|getSnapshotById
 argument_list|(
 name|lastSnapshotId
 argument_list|)
@@ -2179,7 +2179,7 @@ return|;
 block|}
 comment|/**    * Compute file size of the current file.    *     * @param includesLastUcBlock    *          If the last block is under construction, should it be included?    * @param usePreferredBlockSize4LastUcBlock    *          If the last block is under construction, should we use actual    *          block size or preferred block size?    *          Note that usePreferredBlockSize4LastUcBlock is ignored    *          if includesLastUcBlock == false.    * @return file size    */
 DECL|method|computeFileSize (boolean includesLastUcBlock, boolean usePreferredBlockSize4LastUcBlock)
-specifier|private
+specifier|public
 specifier|final
 name|long
 name|computeFileSize

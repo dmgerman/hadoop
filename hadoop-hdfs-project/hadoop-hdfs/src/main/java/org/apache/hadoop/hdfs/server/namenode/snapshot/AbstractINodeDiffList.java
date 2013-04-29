@@ -774,72 +774,6 @@ name|getSnapshot
 argument_list|()
 return|;
 block|}
-comment|/**    * Search for the snapshot whose id is 1) no larger than the given id, and 2)    * most close to the given id    */
-DECL|method|searchSnapshotById (final int snapshotId)
-specifier|public
-specifier|final
-name|Snapshot
-name|searchSnapshotById
-parameter_list|(
-specifier|final
-name|int
-name|snapshotId
-parameter_list|)
-block|{
-specifier|final
-name|int
-name|i
-init|=
-name|Collections
-operator|.
-name|binarySearch
-argument_list|(
-name|diffs
-argument_list|,
-name|snapshotId
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|i
-operator|==
-operator|-
-literal|1
-condition|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-else|else
-block|{
-name|int
-name|index
-init|=
-name|i
-operator|<
-literal|0
-condition|?
-operator|-
-name|i
-operator|-
-literal|2
-else|:
-name|i
-decl_stmt|;
-return|return
-name|diffs
-operator|.
-name|get
-argument_list|(
-name|index
-argument_list|)
-operator|.
-name|getSnapshot
-argument_list|()
-return|;
-block|}
-block|}
 comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchor The returned snapshot must be taken before this given     *               snapshot.    * @return The latest snapshot before the given snapshot.    */
 DECL|method|getPrior (Snapshot anchor)
 specifier|private
@@ -992,14 +926,44 @@ name|Snapshot
 name|snapshot
 parameter_list|)
 block|{
-if|if
-condition|(
+return|return
+name|getDiffById
+argument_list|(
 name|snapshot
 operator|==
 literal|null
+condition|?
+name|Snapshot
+operator|.
+name|INVALID_ID
+else|:
+name|snapshot
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+return|;
+block|}
+DECL|method|getDiffById (final int snapshotId)
+specifier|private
+specifier|final
+name|D
+name|getDiffById
+parameter_list|(
+specifier|final
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|snapshotId
+operator|==
+name|Snapshot
+operator|.
+name|INVALID_ID
 condition|)
 block|{
-comment|// snapshot == null means the current state, therefore, return null.
 return|return
 literal|null
 return|;
@@ -1014,10 +978,7 @@ name|binarySearch
 argument_list|(
 name|diffs
 argument_list|,
-name|snapshot
-operator|.
-name|getId
-argument_list|()
+name|snapshotId
 argument_list|)
 decl_stmt|;
 if|if
@@ -1041,7 +1002,7 @@ else|else
 block|{
 comment|// Exact match not found means that there were no changes between
 comment|// given snapshot and the next state so that the diff for the given
-comment|// snapshot was not recorded.  Thus, return the next state.
+comment|// snapshot was not recorded. Thus, return the next state.
 specifier|final
 name|int
 name|j
@@ -1069,6 +1030,39 @@ else|:
 literal|null
 return|;
 block|}
+block|}
+comment|/**    * Search for the snapshot whose id is 1) no less than the given id,     * and 2) most close to the given id.    */
+DECL|method|getSnapshotById (final int snapshotId)
+specifier|public
+specifier|final
+name|Snapshot
+name|getSnapshotById
+parameter_list|(
+specifier|final
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+name|D
+name|diff
+init|=
+name|getDiffById
+argument_list|(
+name|snapshotId
+argument_list|)
+decl_stmt|;
+return|return
+name|diff
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|diff
+operator|.
+name|getSnapshot
+argument_list|()
+return|;
 block|}
 comment|/**    * Check if changes have happened between two snapshots.    * @param earlier The snapshot taken earlier    * @param later The snapshot taken later    * @return Whether or not modifications (including diretory/file metadata    *         change, file creation/deletion under the directory) have happened    *         between snapshots.    */
 DECL|method|changedBetweenSnapshots (Snapshot earlier, Snapshot later)
