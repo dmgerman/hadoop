@@ -1361,12 +1361,10 @@ decl_stmt|;
 try|try
 block|{
 comment|// Simulate the mount going read-only
-name|FileUtil
+name|dir
 operator|.
 name|setWritable
 argument_list|(
-name|dir
-argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -1430,12 +1428,10 @@ name|cluster
 operator|=
 literal|null
 expr_stmt|;
-name|FileUtil
+name|dir
 operator|.
 name|setWritable
 argument_list|(
-name|dir
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -8950,12 +8946,10 @@ operator|.
 name|getCurrentDir
 argument_list|()
 expr_stmt|;
-name|FileUtil
+name|currentDir
 operator|.
 name|setExecutable
 argument_list|(
-name|currentDir
-argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -8988,12 +8982,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Restore the good dir
-name|FileUtil
+name|currentDir
 operator|.
 name|setExecutable
 argument_list|(
-name|currentDir
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -9049,12 +9041,10 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|FileUtil
+name|currentDir
 operator|.
 name|setExecutable
 argument_list|(
-name|currentDir
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -9291,12 +9281,10 @@ operator|.
 name|getCurrentDir
 argument_list|()
 expr_stmt|;
-name|FileUtil
+name|currentDir
 operator|.
 name|setExecutable
 argument_list|(
-name|currentDir
-argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -9332,12 +9320,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Restore the good dir
-name|FileUtil
+name|currentDir
 operator|.
 name|setExecutable
 argument_list|(
-name|currentDir
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -9393,12 +9379,10 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|FileUtil
+name|currentDir
 operator|.
 name|setExecutable
 argument_list|(
-name|currentDir
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;

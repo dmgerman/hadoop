@@ -4379,12 +4379,10 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|FileUtil
+name|logDir
 operator|.
 name|setWritable
 argument_list|(
-name|logDir
-argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -4417,12 +4415,10 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|FileUtil
+name|logDir
 operator|.
 name|setWritable
 argument_list|(
-name|logDir
-argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;

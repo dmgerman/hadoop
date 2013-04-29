@@ -1573,12 +1573,10 @@ block|}
 if|if
 condition|(
 operator|!
-name|FileUtil
+name|root
 operator|.
 name|canWrite
-argument_list|(
-name|root
-argument_list|)
+argument_list|()
 condition|)
 block|{
 name|LOG
