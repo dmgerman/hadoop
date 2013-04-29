@@ -824,14 +824,16 @@ decl_stmt|;
 if|if
 condition|(
 operator|!
+name|FileUtil
+operator|.
+name|canExecute
+argument_list|(
 operator|new
 name|File
 argument_list|(
 name|executable
 argument_list|)
-operator|.
-name|canExecute
-argument_list|()
+argument_list|)
 condition|)
 block|{
 comment|// LinuxTaskController sets +x permissions on all distcache files already.

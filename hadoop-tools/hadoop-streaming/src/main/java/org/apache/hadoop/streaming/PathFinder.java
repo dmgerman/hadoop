@@ -40,6 +40,20 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileUtil
+import|;
+end_import
+
 begin_comment
 comment|/**  * Maps a relative pathname to an absolute pathname using the PATH environment.  */
 end_comment
@@ -282,10 +296,12 @@ operator|.
 name|isFile
 argument_list|()
 operator|&&
-name|f
+name|FileUtil
 operator|.
 name|canRead
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 condition|)
 block|{
 return|return
