@@ -3528,6 +3528,20 @@ name|long
 name|maxFsObjects
 decl_stmt|;
 comment|// maximum number of fs objects
+DECL|field|minBlockSize
+specifier|private
+specifier|final
+name|long
+name|minBlockSize
+decl_stmt|;
+comment|// minimum block size
+DECL|field|maxBlocksPerFile
+specifier|private
+specifier|final
+name|long
+name|maxBlocksPerFile
+decl_stmt|;
+comment|// maximum # of blocks per file
 comment|/**    * The global generation stamp for this file system.     */
 DECL|field|generationStamp
 specifier|private
@@ -4494,6 +4508,40 @@ argument_list|(
 name|DFS_NAMENODE_MAX_OBJECTS_KEY
 argument_list|,
 name|DFS_NAMENODE_MAX_OBJECTS_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|minBlockSize
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MIN_BLOCK_SIZE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MIN_BLOCK_SIZE_DEFAULT
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxBlocksPerFile
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_BLOCKS_PER_FILE_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_BLOCKS_PER_FILE_DEFAULT
 argument_list|)
 expr_stmt|;
 name|this
@@ -10038,6 +10086,35 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|blockSize
+operator|<
+name|minBlockSize
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Specified block size is less than configured"
+operator|+
+literal|" minimum value ("
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MIN_BLOCK_SIZE_KEY
+operator|+
+literal|"): "
+operator|+
+name|blockSize
+operator|+
+literal|"< "
+operator|+
+name|minBlockSize
+argument_list|)
+throw|;
+block|}
 name|byte
 index|[]
 index|[]
@@ -12004,6 +12081,45 @@ index|[
 literal|0
 index|]
 return|;
+block|}
+if|if
+condition|(
+name|pendingFile
+operator|.
+name|getBlocks
+argument_list|()
+operator|.
+name|length
+operator|>=
+name|maxBlocksPerFile
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"File has reached the limit on maximum number of"
+operator|+
+literal|" blocks ("
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_MAX_BLOCKS_PER_FILE_KEY
+operator|+
+literal|"): "
+operator|+
+name|pendingFile
+operator|.
+name|getBlocks
+argument_list|()
+operator|.
+name|length
+operator|+
+literal|">= "
+operator|+
+name|maxBlocksPerFile
+argument_list|)
+throw|;
 block|}
 name|blockSize
 operator|=
