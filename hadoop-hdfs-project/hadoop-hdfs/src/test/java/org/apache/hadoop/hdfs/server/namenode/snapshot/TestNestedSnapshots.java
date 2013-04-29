@@ -959,6 +959,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Test the snapshot limit of a single snapshottable directory.    * @throws Exception    */
 annotation|@
 name|Test
 argument_list|(

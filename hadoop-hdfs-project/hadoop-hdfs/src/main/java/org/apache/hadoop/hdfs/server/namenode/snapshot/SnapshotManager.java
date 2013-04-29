@@ -328,6 +328,15 @@ specifier|final
 name|FSDirectory
 name|fsdir
 decl_stmt|;
+DECL|field|SNAPSHOT_ID_BIT_WIDTH
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|SNAPSHOT_ID_BIT_WIDTH
+init|=
+literal|24
+decl_stmt|;
 DECL|field|numSnapshots
 specifier|private
 specifier|final
@@ -671,7 +680,45 @@ name|s
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Create a snapshot of the given path.    * @param path    *          The directory path where the snapshot will be taken.    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
+comment|/**   * Find the source root directory where the snapshot will be taken   * for a given path.   *   * @param path The directory path where the snapshot will be taken.   * @return Snapshottable directory.   * @throws IOException   *           Throw IOException when the given path does not lead to an   *           existing snapshottable directory.   */
+DECL|method|getSnapshottableRoot (final String path )
+specifier|public
+name|INodeDirectorySnapshottable
+name|getSnapshottableRoot
+parameter_list|(
+specifier|final
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+specifier|final
+name|INodesInPath
+name|i
+init|=
+name|fsdir
+operator|.
+name|getINodesInPath4Write
+argument_list|(
+name|path
+argument_list|)
+decl_stmt|;
+return|return
+name|INodeDirectorySnapshottable
+operator|.
+name|valueOf
+argument_list|(
+name|i
+operator|.
+name|getLastINode
+argument_list|()
+argument_list|,
+name|path
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a snapshot of the given path.    * It is assumed that the caller will perform synchronization.    *    * @param path    *          The directory path where the snapshot will be taken.    * @param snapshotName    *          The name of the snapshot.    * @throws IOException    *           Throw IOException when 1) the given path does not lead to an    *           existing snapshottable directory, and/or 2) there exists a    *           snapshot with the given name for the directory, and/or 3)    *           snapshot number exceeds quota    */
 DECL|method|createSnapshot (final String path, String snapshotName )
 specifier|public
 name|String
@@ -687,34 +734,36 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Find the source root directory path where the snapshot is taken.
-specifier|final
-name|INodesInPath
-name|i
-init|=
-name|fsdir
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|path
-argument_list|)
-decl_stmt|;
-specifier|final
 name|INodeDirectorySnapshottable
 name|srcRoot
 init|=
-name|INodeDirectorySnapshottable
-operator|.
-name|valueOf
+name|getSnapshottableRoot
 argument_list|(
-name|i
-operator|.
-name|getLastINode
-argument_list|()
-argument_list|,
 name|path
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|snapshotCounter
+operator|==
+name|getMaxSnapshotID
+argument_list|()
+condition|)
+block|{
+comment|// We have reached the maximum allowable snapshot ID and since we don't
+comment|// handle rollover we will fail all subsequent snapshot creation
+comment|// requests.
+comment|//
+throw|throw
+operator|new
+name|SnapshotException
+argument_list|(
+literal|"Failed to create the snapshot. The FileSystem has run out of "
+operator|+
+literal|"snapshot IDs and ID rollover is not supported."
+argument_list|)
+throw|;
+block|}
 name|srcRoot
 operator|.
 name|addSnapshot
@@ -772,41 +821,17 @@ throws|throws
 name|IOException
 block|{
 comment|// parse the path, and check if the path is a snapshot path
-name|INodesInPath
-name|inodesInPath
-init|=
-name|fsdir
-operator|.
-name|getINodesInPath4Write
-argument_list|(
-name|path
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-decl_stmt|;
-comment|// transfer the inode for path to an INodeDirectorySnapshottable.
 comment|// the INodeDirectorySnapshottable#valueOf method will throw Exception
 comment|// if the path is not for a snapshottable directory
 name|INodeDirectorySnapshottable
-name|dir
+name|srcRoot
 init|=
-name|INodeDirectorySnapshottable
-operator|.
-name|valueOf
+name|getSnapshottableRoot
 argument_list|(
-name|inodesInPath
-operator|.
-name|getLastINode
-argument_list|()
-argument_list|,
 name|path
-operator|.
-name|toString
-argument_list|()
 argument_list|)
 decl_stmt|;
-name|dir
+name|srcRoot
 operator|.
 name|removeSnapshot
 argument_list|(
@@ -1343,6 +1368,25 @@ name|from
 argument_list|,
 name|to
 argument_list|)
+return|;
+block|}
+comment|/**    * Returns the maximum allowable snapshot ID based on the bit width of the    * snapshot ID.    *    * @return maximum allowable snapshot ID.    */
+DECL|method|getMaxSnapshotID ()
+specifier|public
+name|int
+name|getMaxSnapshotID
+parameter_list|()
+block|{
+return|return
+operator|(
+operator|(
+literal|1
+operator|<<
+name|SNAPSHOT_ID_BIT_WIDTH
+operator|)
+operator|-
+literal|1
+operator|)
 return|;
 block|}
 block|}
