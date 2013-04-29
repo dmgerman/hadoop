@@ -298,10 +298,12 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|base
+name|FileUtil
 operator|.
 name|setWritable
 argument_list|(
+name|base
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -1919,10 +1921,12 @@ operator|.
 name|exists
 argument_list|()
 operator|&&
-name|dir2
+name|FileUtil
 operator|.
 name|canWrite
-argument_list|()
+argument_list|(
+name|dir2
+argument_list|)
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -2062,10 +2066,12 @@ expr_stmt|;
 comment|// this is a hack to force the #reportChecksumFailure() method to stop
 comment|// climbing up at the 'base' directory and use 'dir1/bad_files' as the
 comment|// corrupted files storage:
-name|base
+name|FileUtil
 operator|.
 name|setWritable
 argument_list|(
+name|base
+argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;

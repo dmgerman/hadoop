@@ -112,6 +112,20 @@ name|ThreadMXBean
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileUtil
+import|;
+end_import
+
 begin_class
 DECL|class|TestShell
 specifier|public
@@ -423,10 +437,12 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-name|shellFile
+name|FileUtil
 operator|.
 name|setExecutable
 argument_list|(
+name|shellFile
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;

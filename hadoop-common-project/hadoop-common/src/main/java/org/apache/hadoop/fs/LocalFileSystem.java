@@ -429,10 +429,12 @@ name|parent
 operator|!=
 literal|null
 operator|&&
-name|parent
+name|FileUtil
 operator|.
 name|canWrite
-argument_list|()
+argument_list|(
+name|parent
+argument_list|)
 operator|&&
 name|parent
 operator|.

@@ -1800,6 +1800,107 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/** Supported list of Windows access right flags */
+DECL|enum|AccessRight
+specifier|public
+specifier|static
+enum|enum
+name|AccessRight
+block|{
+DECL|enumConstant|ACCESS_READ
+name|ACCESS_READ
+argument_list|(
+literal|0x0001
+argument_list|)
+block|,
+comment|// FILE_READ_DATA
+DECL|enumConstant|ACCESS_WRITE
+name|ACCESS_WRITE
+argument_list|(
+literal|0x0002
+argument_list|)
+block|,
+comment|// FILE_WRITE_DATA
+DECL|enumConstant|ACCESS_EXECUTE
+name|ACCESS_EXECUTE
+argument_list|(
+literal|0x0020
+argument_list|)
+block|;
+comment|// FILE_EXECUTE
+DECL|field|accessRight
+specifier|private
+specifier|final
+name|int
+name|accessRight
+decl_stmt|;
+DECL|method|AccessRight (int access)
+name|AccessRight
+parameter_list|(
+name|int
+name|access
+parameter_list|)
+block|{
+name|accessRight
+operator|=
+name|access
+expr_stmt|;
+block|}
+DECL|method|accessRight ()
+specifier|public
+name|int
+name|accessRight
+parameter_list|()
+block|{
+return|return
+name|accessRight
+return|;
+block|}
+block|}
+empty_stmt|;
+comment|/** Windows only method used to check if the current process has requested      *  access rights on the given path. */
+DECL|method|access0 (String path, int requestedAccess)
+specifier|private
+specifier|static
+specifier|native
+name|boolean
+name|access0
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|int
+name|requestedAccess
+parameter_list|)
+function_decl|;
+comment|/**      * Checks whether the current process has desired access rights on      * the given path.      *       * Longer term this native function can be substituted with JDK7      * function Files#isReadable, isWritable, isExecutable.      *      * @param path input path      * @param desiredAccess ACCESS_READ, ACCESS_WRITE or ACCESS_EXECUTE      * @return true if access is allowed      * @throws IOException I/O exception on error      */
+DECL|method|access (String path, AccessRight desiredAccess)
+specifier|public
+specifier|static
+name|boolean
+name|access
+parameter_list|(
+name|String
+name|path
+parameter_list|,
+name|AccessRight
+name|desiredAccess
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|access0
+argument_list|(
+name|path
+argument_list|,
+name|desiredAccess
+operator|.
+name|accessRight
+argument_list|()
+argument_list|)
+return|;
+block|}
 static|static
 block|{
 if|if
