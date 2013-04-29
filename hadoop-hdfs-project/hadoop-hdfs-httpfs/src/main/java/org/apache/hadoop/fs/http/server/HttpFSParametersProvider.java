@@ -980,7 +980,8 @@ literal|null
 argument_list|,
 name|UserProvider
 operator|.
-name|USER_PATTERN
+name|getUserPattern
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1106,7 +1107,8 @@ literal|null
 argument_list|,
 name|UserProvider
 operator|.
-name|USER_PATTERN
+name|getUserPattern
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1308,7 +1310,8 @@ literal|null
 argument_list|,
 name|UserProvider
 operator|.
-name|USER_PATTERN
+name|getUserPattern
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
