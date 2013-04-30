@@ -677,7 +677,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"<src> ...<dst>"
+literal|"[-f] [-p]<src> ...<dst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -690,7 +690,9 @@ literal|"Copy files that match the file pattern<src> to a\n"
 operator|+
 literal|"destination.  When copying multiple files, the destination\n"
 operator|+
-literal|"must be a directory."
+literal|"must be a directory. Passing -p preserves access and\n"
+operator|+
+literal|"modification times, ownership and the mode.\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -721,6 +723,8 @@ operator|.
 name|MAX_VALUE
 argument_list|,
 literal|"f"
+argument_list|,
+literal|"p"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -737,6 +741,16 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"f"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|setPreserve
+argument_list|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"p"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -778,7 +792,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-ignoreCrc] [-crc]<src> ...<localdst>"
+literal|"[-p] [-ignoreCrc] [-crc]<src> ...<localdst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -791,7 +805,11 @@ literal|"Copy files that match the file pattern<src>\n"
 operator|+
 literal|"to the local name.<src> is kept.  When copying multiple,\n"
 operator|+
-literal|"files, the destination must be a directory."
+literal|"files, the destination must be a directory. Passing\n"
+operator|+
+literal|"-p preserves access and modification times,\n"
+operator|+
+literal|"ownership and the mode.\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -824,6 +842,8 @@ argument_list|,
 literal|"crc"
 argument_list|,
 literal|"ignoreCrc"
+argument_list|,
+literal|"p"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -851,6 +871,16 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"ignoreCrc"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|setPreserve
+argument_list|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"p"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -891,7 +921,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"<localsrc> ...<dst>"
+literal|"[-f] [-p]<localsrc> ...<dst>"
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -902,7 +932,13 @@ name|DESCRIPTION
 init|=
 literal|"Copy files from the local file system\n"
 operator|+
-literal|"into fs."
+literal|"into fs. Copying fails if the file already\n"
+operator|+
+literal|"exists, unless the -f flag is given. Passing\n"
+operator|+
+literal|"-p preserves access and modification times,\n"
+operator|+
+literal|"ownership and the mode.\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -933,6 +969,8 @@ operator|.
 name|MAX_VALUE
 argument_list|,
 literal|"f"
+argument_list|,
+literal|"p"
 argument_list|)
 decl_stmt|;
 name|cf
@@ -949,6 +987,16 @@ operator|.
 name|getOpt
 argument_list|(
 literal|"f"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|setPreserve
+argument_list|(
+name|cf
+operator|.
+name|getOpt
+argument_list|(
+literal|"p"
 argument_list|)
 argument_list|)
 expr_stmt|;
