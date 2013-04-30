@@ -1870,7 +1870,7 @@ name|xferPort
 argument_list|)
 return|;
 block|}
-comment|/**    * Given datanode address or host name, returns the DatanodeDescriptor for the    * same, or if it doesn't find the datanode, it looks for a machine local and    * then rack local datanode, if a rack local datanode is not possible either,    * it returns the DatanodeDescriptor of any random node in the cluster.    *    * @param address hostaddress:transfer address    * @return the best match for the given datanode    * @throws IOException when no datanode is found for given address    */
+comment|/**    * Given datanode address or host name, returns the DatanodeDescriptor for the    * same, or if it doesn't find the datanode, it looks for a machine local and    * then rack local datanode, if a rack local datanode is not possible either,    * it returns the DatanodeDescriptor of any random node in the cluster.    *    * @param address hostaddress:transfer address    * @return the best match for the given datanode    */
 DECL|method|getDatanodeDescriptor (String address)
 name|DatanodeDescriptor
 name|getDatanodeDescriptor
