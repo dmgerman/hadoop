@@ -104,8 +104,22 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_comment
-comment|/**  * Fencing method that runs a shell command. It should be specified  * in the fencing configuration like:<br>  *<code>  *   shell(/path/to/my/script.sh arg1 arg2 ...)  *</code><br>  * The string between '(' and ')' is passed directly to a bash shell and  * may not include any closing parentheses.<p>  *   * The shell command will be run with an environment set up to contain  * all of the current Hadoop configuration variables, with the '_' character   * replacing any '.' characters in the configuration keys.<p>  *   * If the shell command returns an exit code of 0, the fencing is  * determined to be successful. If it returns any other exit code, the  * fencing was not successful and the next fencing method in the list  * will be attempted.<p>  *   *<em>Note:</em> this fencing method does not implement any timeout.  * If timeouts are necessary, they should be implemented in the shell  * script itself (eg by forking a subshell to kill its parent in  * some number of seconds).  */
+comment|/**  * Fencing method that runs a shell command. It should be specified  * in the fencing configuration like:<br>  *<code>  *   shell(/path/to/my/script.sh arg1 arg2 ...)  *</code><br>  * The string between '(' and ')' is passed directly to a bash shell  * (cmd.exe on Windows) and may not include any closing parentheses.<p>  *   * The shell command will be run with an environment set up to contain  * all of the current Hadoop configuration variables, with the '_' character   * replacing any '.' characters in the configuration keys.<p>  *   * If the shell command returns an exit code of 0, the fencing is  * determined to be successful. If it returns any other exit code, the  * fencing was not successful and the next fencing method in the list  * will be attempted.<p>  *   *<em>Note:</em> this fencing method does not implement any timeout.  * If timeouts are necessary, they should be implemented in the shell  * script itself (eg by forking a subshell to kill its parent in  * some number of seconds).  */
 end_comment
 
 begin_class
@@ -205,7 +219,17 @@ parameter_list|)
 block|{
 name|ProcessBuilder
 name|builder
-init|=
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|builder
+operator|=
 operator|new
 name|ProcessBuilder
 argument_list|(
@@ -217,7 +241,23 @@ literal|"-c"
 argument_list|,
 name|cmd
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+else|else
+block|{
+name|builder
+operator|=
+operator|new
+name|ProcessBuilder
+argument_list|(
+literal|"cmd.exe"
+argument_list|,
+literal|"/c"
+argument_list|,
+name|cmd
+argument_list|)
+expr_stmt|;
+block|}
 name|setConfAsEnvVars
 argument_list|(
 name|builder

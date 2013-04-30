@@ -432,6 +432,10 @@ name|i
 operator|++
 control|)
 block|{
+name|FileUtil
+operator|.
+name|setExecutable
+argument_list|(
 operator|new
 name|File
 argument_list|(
@@ -447,12 +451,14 @@ operator|+
 literal|1
 operator|)
 argument_list|)
-operator|.
-name|setExecutable
-argument_list|(
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+name|FileUtil
+operator|.
+name|setExecutable
+argument_list|(
 operator|new
 name|File
 argument_list|(
@@ -468,9 +474,7 @@ operator|+
 literal|2
 operator|)
 argument_list|)
-operator|.
-name|setExecutable
-argument_list|(
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -850,10 +854,12 @@ name|assertTrue
 argument_list|(
 literal|"Couldn't chmod local vol"
 argument_list|,
-name|dn2Vol1
+name|FileUtil
 operator|.
 name|setExecutable
 argument_list|(
+name|dn2Vol1
+argument_list|,
 literal|false
 argument_list|)
 argument_list|)
@@ -930,10 +936,12 @@ name|assertTrue
 argument_list|(
 literal|"Couldn't chmod local vol"
 argument_list|,
-name|dn2Vol1
+name|FileUtil
 operator|.
 name|setExecutable
 argument_list|(
+name|dn2Vol1
+argument_list|,
 literal|true
 argument_list|)
 argument_list|)

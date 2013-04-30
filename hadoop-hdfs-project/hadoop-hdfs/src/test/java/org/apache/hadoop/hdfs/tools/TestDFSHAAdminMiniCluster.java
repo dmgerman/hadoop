@@ -250,6 +250,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -737,7 +751,10 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|TestDFSHAAdmin
+operator|.
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool
@@ -839,6 +856,36 @@ operator|.
 name|deleteOnExit
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_HA_FENCE_METHODS_KEY
+argument_list|,
+literal|"shell(echo %target_nameserviceid%.%target_namenodeid% "
+operator|+
+literal|"%target_port% %dfs_ha_namenode_id%> "
+operator|+
+name|tmpFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|conf
 operator|.
 name|set
@@ -859,6 +906,7 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Test failover with fencer
 name|tool
 operator|.
@@ -947,15 +995,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// The fence script should run with the configuration from the target
-comment|// node, rather than the configuration from the fencing node
-name|assertEquals
-argument_list|(
-literal|"minidfs-ns.nn1 "
-operator|+
-name|nn1Port
-operator|+
-literal|" nn1"
-argument_list|,
+comment|// node, rather than the configuration from the fencing node. Strip
+comment|// out any trailing spaces and CR/LFs which may be present on Windows.
+name|String
+name|fenceCommandOutput
+init|=
 name|Files
 operator|.
 name|toString
@@ -966,6 +1010,23 @@ name|Charsets
 operator|.
 name|UTF_8
 argument_list|)
+operator|.
+name|replaceAll
+argument_list|(
+literal|" *[\r\n]+"
+argument_list|,
+literal|""
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"minidfs-ns.nn1 "
+operator|+
+name|nn1Port
+operator|+
+literal|" nn1"
+argument_list|,
+name|fenceCommandOutput
 argument_list|)
 expr_stmt|;
 name|tmpFile
@@ -1094,7 +1155,10 @@ name|DFSConfigKeys
 operator|.
 name|DFS_HA_FENCE_METHODS_KEY
 argument_list|,
-literal|"shell(true)"
+name|TestDFSHAAdmin
+operator|.
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|tool

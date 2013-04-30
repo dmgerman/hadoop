@@ -80,6 +80,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Before
@@ -130,6 +144,25 @@ DECL|field|MOCK_TARGET
 specifier|private
 name|HAServiceTarget
 name|MOCK_TARGET
+decl_stmt|;
+comment|// Fencer shell commands that always return true on Unix and Windows
+comment|// respectively. Lacking the POSIX 'true' command on Windows, we use
+comment|// the batch command 'rem'.
+DECL|field|FENCER_TRUE_COMMAND_UNIX
+specifier|private
+specifier|static
+name|String
+name|FENCER_TRUE_COMMAND_UNIX
+init|=
+literal|"shell(true)"
+decl_stmt|;
+DECL|field|FENCER_TRUE_COMMAND_WINDOWS
+specifier|private
+specifier|static
+name|String
+name|FENCER_TRUE_COMMAND_WINDOWS
+init|=
+literal|"shell(rem)"
 decl_stmt|;
 annotation|@
 name|Before
@@ -212,6 +245,23 @@ operator|.
 name|getAddress
 argument_list|()
 expr_stmt|;
+block|}
+DECL|method|getFencerTrueCommand ()
+specifier|private
+specifier|static
+name|String
+name|getFencerTrueCommand
+parameter_list|()
+block|{
+return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|FENCER_TRUE_COMMAND_WINDOWS
+else|:
+name|FENCER_TRUE_COMMAND_UNIX
+return|;
 block|}
 annotation|@
 name|Test
@@ -548,7 +598,8 @@ name|fencer
 init|=
 name|setupFencer
 argument_list|(
-literal|"shell(true)"
+name|getFencerTrueCommand
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|assertTrue

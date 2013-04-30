@@ -26,9 +26,6 @@ specifier|public
 enum|enum
 name|RMAppManagerEventType
 block|{
-DECL|enumConstant|APP_SUBMIT
-name|APP_SUBMIT
-block|,
 DECL|enumConstant|APP_COMPLETED
 name|APP_COMPLETED
 block|}

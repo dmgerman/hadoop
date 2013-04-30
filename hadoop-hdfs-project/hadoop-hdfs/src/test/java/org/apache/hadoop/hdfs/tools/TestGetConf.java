@@ -573,6 +573,44 @@ return|return
 name|values
 return|;
 block|}
+comment|/**    * Add namenodes to the static resolution list to avoid going    * through DNS which can be really slow in some configurations.    */
+DECL|method|setupStaticHostResolution (int nameServiceIdCount)
+specifier|private
+name|void
+name|setupStaticHostResolution
+parameter_list|(
+name|int
+name|nameServiceIdCount
+parameter_list|)
+block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|nameServiceIdCount
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|NetUtils
+operator|.
+name|addStaticResolution
+argument_list|(
+literal|"nn"
+operator|+
+name|i
+argument_list|,
+literal|"localhost"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/*    * Convert the map returned from DFSUtil functions to an array of    * addresses represented as "host:port"    */
 DECL|method|toStringArray (List<ConfiguredNNAddress> list)
 specifier|private
@@ -1757,6 +1795,11 @@ argument_list|,
 name|nsCount
 argument_list|,
 literal|1500
+argument_list|)
+expr_stmt|;
+name|setupStaticHostResolution
+argument_list|(
+name|nsCount
 argument_list|)
 expr_stmt|;
 name|String

@@ -166,6 +166,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
@@ -598,10 +612,12 @@ argument_list|(
 literal|"Failing first storage dir by chmodding it"
 argument_list|)
 expr_stmt|;
-name|sd0
+name|FileUtil
 operator|.
 name|setExecutable
 argument_list|(
+name|sd0
+argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
@@ -617,10 +633,12 @@ argument_list|(
 literal|"Restoring accessibility of first storage dir"
 argument_list|)
 expr_stmt|;
-name|sd0
+name|FileUtil
 operator|.
 name|setExecutable
 argument_list|(
+name|sd0
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
@@ -792,10 +810,12 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|sd0
+name|FileUtil
 operator|.
 name|setExecutable
 argument_list|(
+name|sd0
+argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;

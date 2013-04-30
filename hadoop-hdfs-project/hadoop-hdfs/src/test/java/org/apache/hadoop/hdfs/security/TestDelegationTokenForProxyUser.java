@@ -554,7 +554,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
+name|AfterClass
 import|;
 end_import
 
@@ -574,7 +574,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Before
+name|BeforeClass
 import|;
 end_import
 
@@ -596,10 +596,13 @@ name|TestDelegationTokenForProxyUser
 block|{
 DECL|field|cluster
 specifier|private
+specifier|static
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|config
+specifier|private
+specifier|static
 name|Configuration
 name|config
 decl_stmt|;
@@ -656,6 +659,18 @@ name|PROXY_USER
 init|=
 literal|"ProxyUser"
 decl_stmt|;
+DECL|field|ugi
+specifier|private
+specifier|static
+name|UserGroupInformation
+name|ugi
+decl_stmt|;
+DECL|field|proxyUgi
+specifier|private
+specifier|static
+name|UserGroupInformation
+name|proxyUgi
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -674,6 +689,7 @@ argument_list|)
 decl_stmt|;
 DECL|method|configureSuperUserIPAddresses (Configuration conf, String superUserShortName)
 specifier|private
+specifier|static
 name|void
 name|configureSuperUserIPAddresses
 parameter_list|(
@@ -846,9 +862,10 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
-name|Before
+name|BeforeClass
 DECL|method|setUp ()
 specifier|public
+specifier|static
 name|void
 name|setUp
 parameter_list|()
@@ -962,11 +979,34 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|ugi
+operator|=
+name|UserGroupInformation
+operator|.
+name|createRemoteUser
+argument_list|(
+name|REAL_USER
+argument_list|)
+expr_stmt|;
+name|proxyUgi
+operator|=
+name|UserGroupInformation
+operator|.
+name|createProxyUserForTesting
+argument_list|(
+name|PROXY_USER
+argument_list|,
+name|ugi
+argument_list|,
+name|GROUP_NAMES
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
-name|After
+name|AfterClass
 DECL|method|tearDown ()
 specifier|public
+specifier|static
 name|void
 name|tearDown
 parameter_list|()
@@ -989,6 +1029,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testDelegationTokenWithRealUser ()
 specifier|public
 name|void
@@ -997,31 +1042,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|UserGroupInformation
-name|ugi
-init|=
-name|UserGroupInformation
-operator|.
-name|createRemoteUser
-argument_list|(
-name|REAL_USER
-argument_list|)
-decl_stmt|;
-specifier|final
-name|UserGroupInformation
-name|proxyUgi
-init|=
-name|UserGroupInformation
-operator|.
-name|createProxyUserForTesting
-argument_list|(
-name|PROXY_USER
-argument_list|,
-name|ugi
-argument_list|,
-name|GROUP_NAMES
-argument_list|)
-decl_stmt|;
 try|try
 block|{
 name|Token
@@ -1158,6 +1178,11 @@ end_class
 begin_function
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|20000
+argument_list|)
 DECL|method|testWebHdfsDoAs ()
 specifier|public
 name|void
@@ -1213,17 +1238,6 @@ operator|.
 name|ALL
 argument_list|)
 expr_stmt|;
-specifier|final
-name|UserGroupInformation
-name|ugi
-init|=
-name|UserGroupInformation
-operator|.
-name|createRemoteUser
-argument_list|(
-name|REAL_USER
-argument_list|)
-decl_stmt|;
 name|WebHdfsTestUtil
 operator|.
 name|LOG

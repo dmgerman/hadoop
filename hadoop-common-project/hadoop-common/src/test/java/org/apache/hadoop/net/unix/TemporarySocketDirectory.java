@@ -72,6 +72,20 @@ name|FileUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|FileUtil
+import|;
+end_import
+
 begin_comment
 comment|/**  * Create a temporary directory in which sockets can be created.  * When creating a UNIX domain socket, the name  * must be fairly short (around 110 bytes on most platforms).  */
 end_comment
@@ -139,11 +153,11 @@ operator|.
 name|mkdirs
 argument_list|()
 expr_stmt|;
-name|dir
+name|FileUtil
 operator|.
 name|setWritable
 argument_list|(
-literal|true
+name|dir
 argument_list|,
 literal|true
 argument_list|)

@@ -429,10 +429,12 @@ name|parent
 operator|!=
 literal|null
 operator|&&
-name|parent
+name|FileUtil
 operator|.
 name|canWrite
-argument_list|()
+argument_list|(
+name|parent
+argument_list|)
 operator|&&
 name|parent
 operator|.
@@ -605,6 +607,12 @@ name|p
 argument_list|)
 argument_list|)
 decl_stmt|;
+comment|// close the stream before rename to release the file handle
+name|sums
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 name|b
 operator|=
 name|checkFile

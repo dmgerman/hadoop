@@ -913,6 +913,10 @@ expr_stmt|;
 block|}
 block|}
 return|return
+name|getPipeline
+argument_list|(
+name|writer
+argument_list|,
 name|results
 operator|.
 name|toArray
@@ -925,6 +929,7 @@ operator|.
 name|size
 argument_list|()
 index|]
+argument_list|)
 argument_list|)
 return|;
 block|}

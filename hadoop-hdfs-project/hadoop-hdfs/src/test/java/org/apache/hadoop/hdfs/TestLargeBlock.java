@@ -740,13 +740,13 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Test for block size of 2GB + 512B    * @throws IOException in case of errors    */
+comment|/**    * Test for block size of 2GB + 512B. This test can take a rather long time to    * complete on Windows (reading the file back can be slow) so we use a larger    * timeout here.    * @throws IOException in case of errors    */
 annotation|@
 name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|120000
+literal|900000
 argument_list|)
 DECL|method|testLargeBlockSize ()
 specifier|public

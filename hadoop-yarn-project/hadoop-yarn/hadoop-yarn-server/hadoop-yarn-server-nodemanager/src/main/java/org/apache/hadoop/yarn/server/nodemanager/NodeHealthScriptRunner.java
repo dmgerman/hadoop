@@ -130,6 +130,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|FileUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Shell
@@ -1055,10 +1069,12 @@ operator|.
 name|exists
 argument_list|()
 operator|&&
-name|f
+name|FileUtil
 operator|.
 name|canExecute
-argument_list|()
+argument_list|(
+name|f
+argument_list|)
 return|;
 block|}
 DECL|method|setHealthStatus (boolean isHealthy, String output)
