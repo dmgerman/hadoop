@@ -2176,6 +2176,11 @@ operator|.
 name|atime
 argument_list|,
 literal|null
+argument_list|,
+name|fsDir
+operator|.
+name|getINodeMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|newFile
@@ -2187,6 +2192,11 @@ operator|.
 name|mtime
 argument_list|,
 literal|null
+argument_list|,
+name|fsDir
+operator|.
+name|getINodeMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|updateBlocks
@@ -2303,6 +2313,11 @@ operator|.
 name|atime
 argument_list|,
 literal|null
+argument_list|,
+name|fsDir
+operator|.
+name|getINodeMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|oldFile
@@ -2314,6 +2329,11 @@ operator|.
 name|mtime
 argument_list|,
 literal|null
+argument_list|,
+name|fsDir
+operator|.
+name|getINodeMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|updateBlocks

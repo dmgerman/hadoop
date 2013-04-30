@@ -280,6 +280,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeMap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INodeReference
 import|;
 end_import
@@ -3679,7 +3697,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (final Snapshot latest)
+DECL|method|recordModification (final Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|INodeDirectoryWithSnapshot
 name|recordModification
@@ -3687,6 +3705,10 @@ parameter_list|(
 specifier|final
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -3752,7 +3774,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|saveChild2Snapshot (final INode child, final Snapshot latest, final INode snapshotCopy)
+DECL|method|saveChild2Snapshot (final INode child, final Snapshot latest, final INode snapshotCopy, final INodeMap inodeMap)
 specifier|public
 name|INode
 name|saveChild2Snapshot
@@ -3768,6 +3790,10 @@ parameter_list|,
 specifier|final
 name|INode
 name|snapshotCopy
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -3852,7 +3878,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addChild (INode inode, boolean setModTime, Snapshot latest)
+DECL|method|addChild (INode inode, boolean setModTime, Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|boolean
 name|addChild
@@ -3865,6 +3891,10 @@ name|setModTime
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -3922,6 +3952,8 @@ argument_list|,
 name|setModTime
 argument_list|,
 literal|null
+argument_list|,
+name|inodeMap
 argument_list|)
 decl_stmt|;
 if|if
@@ -3950,7 +3982,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeChild (INode child, Snapshot latest)
+DECL|method|removeChild (INode child, Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|boolean
 name|removeChild
@@ -3960,6 +3992,10 @@ name|child
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -4047,7 +4083,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|replaceChild (final INode oldChild, final INode newChild)
+DECL|method|replaceChild (final INode oldChild, final INode newChild, final INodeMap inodeMap)
 specifier|public
 name|void
 name|replaceChild
@@ -4059,6 +4095,10 @@ parameter_list|,
 specifier|final
 name|INode
 name|newChild
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 block|{
 name|super
@@ -4068,6 +4108,8 @@ argument_list|(
 name|oldChild
 argument_list|,
 name|newChild
+argument_list|,
+name|inodeMap
 argument_list|)
 expr_stmt|;
 name|diffs
@@ -4128,11 +4170,15 @@ argument_list|,
 name|newChild
 argument_list|)
 expr_stmt|;
+comment|// pass null for inodeMap since the parent node will not get replaced when
+comment|// undoing rename
 name|addChild
 argument_list|(
 name|newChild
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -4168,6 +4214,8 @@ argument_list|,
 name|deletedChild
 argument_list|)
 decl_stmt|;
+comment|// pass null for inodeMap since the parent node will not get replaced when
+comment|// undoing rename
 specifier|final
 name|boolean
 name|added
@@ -4183,6 +4231,8 @@ condition|?
 literal|null
 else|:
 name|latestSnapshot
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// update quota usage if adding is successfully and the old child has not
@@ -4437,6 +4487,8 @@ comment|// delete the current directory
 name|recordModification
 argument_list|(
 name|prior
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// delete everything in created list

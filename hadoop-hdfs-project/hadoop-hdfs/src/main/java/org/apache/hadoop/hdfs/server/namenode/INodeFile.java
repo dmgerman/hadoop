@@ -332,6 +332,26 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|INodeFileWithSnapshot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
 name|Snapshot
 import|;
 end_import
@@ -899,7 +919,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (final Snapshot latest)
+DECL|method|recordModification (final Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|INodeFile
 name|recordModification
@@ -907,31 +927,52 @@ parameter_list|(
 specifier|final
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
-return|return
+if|if
+condition|(
 name|isInLatestSnapshot
 argument_list|(
 name|latest
 argument_list|)
-condition|?
+condition|)
+block|{
+name|INodeFileWithSnapshot
+name|newFile
+init|=
 name|getParent
 argument_list|()
 operator|.
 name|replaceChild4INodeFileWithSnapshot
 argument_list|(
 name|this
+argument_list|,
+name|inodeMap
 argument_list|)
 operator|.
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
-else|:
+decl_stmt|;
+return|return
+name|newFile
+return|;
+block|}
+else|else
+block|{
+return|return
 name|this
 return|;
+block|}
 block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
 annotation|@
@@ -961,7 +1002,7 @@ block|}
 comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
 annotation|@
 name|Override
-DECL|method|setPermission (FsPermission permission, Snapshot latest)
+DECL|method|setPermission (FsPermission permission, Snapshot latest, final INodeMap inodeMap)
 specifier|final
 name|INode
 name|setPermission
@@ -971,6 +1012,10 @@ name|permission
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -988,6 +1033,8 @@ name|UMASK
 argument_list|)
 argument_list|,
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 return|;
 block|}
@@ -1097,7 +1144,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Set the replication factor of this file. */
-DECL|method|setFileReplication (short replication, Snapshot latest)
+DECL|method|setFileReplication (short replication, Snapshot latest, final INodeMap inodeMap)
 specifier|public
 specifier|final
 name|INodeFile
@@ -1108,6 +1155,10 @@ name|replication
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1119,6 +1170,8 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate

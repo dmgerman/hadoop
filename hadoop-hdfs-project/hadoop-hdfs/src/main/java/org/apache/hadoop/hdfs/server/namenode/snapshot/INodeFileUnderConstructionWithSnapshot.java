@@ -148,6 +148,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeMap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|Quota
 import|;
 end_import
@@ -358,7 +376,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification ( final Snapshot latest)
+DECL|method|recordModification ( final Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|INodeFileUnderConstructionWithSnapshot
 name|recordModification
@@ -366,6 +384,10 @@ parameter_list|(
 specifier|final
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -465,6 +487,8 @@ comment|// delete the current file
 name|recordModification
 argument_list|(
 name|prior
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|isCurrentFileDeleted

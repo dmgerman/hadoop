@@ -1050,7 +1050,7 @@ name|modificationTime
 return|;
 block|}
 comment|/** Update modification time if it is larger than the current value. */
-DECL|method|updateModificationTime (long mtime, Snapshot latest)
+DECL|method|updateModificationTime (long mtime, Snapshot latest, final INodeMap inodeMap)
 specifier|public
 specifier|final
 name|INode
@@ -1061,6 +1061,10 @@ name|mtime
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1090,6 +1094,8 @@ argument_list|(
 name|mtime
 argument_list|,
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 return|;
 block|}

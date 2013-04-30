@@ -629,7 +629,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Remove the specified child from this directory.    *     * @param child the child inode to be removed    * @param latest See {@link INode#recordModification(Snapshot)}.    */
-DECL|method|removeChild (INode child, Snapshot latest)
+DECL|method|removeChild (INode child, Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|boolean
 name|removeChild
@@ -639,6 +639,10 @@ name|child
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -653,13 +657,17 @@ condition|)
 block|{
 return|return
 name|replaceSelf4INodeDirectoryWithSnapshot
-argument_list|()
+argument_list|(
+name|inodeMap
+argument_list|)
 operator|.
 name|removeChild
 argument_list|(
 name|child
 argument_list|,
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 return|;
 block|}
@@ -730,7 +738,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Replace itself with {@link INodeDirectoryWithQuota} or    * {@link INodeDirectoryWithSnapshot} depending on the latest snapshot.    */
-DECL|method|replaceSelf4Quota (final Snapshot latest, final long nsQuota, final long dsQuota)
+DECL|method|replaceSelf4Quota (final Snapshot latest, final long nsQuota, final long dsQuota, final INodeMap inodeMap)
 name|INodeDirectoryWithQuota
 name|replaceSelf4Quota
 parameter_list|(
@@ -745,6 +753,10 @@ parameter_list|,
 specifier|final
 name|long
 name|dsQuota
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -795,6 +807,8 @@ decl_stmt|;
 name|replaceSelf
 argument_list|(
 name|q
+argument_list|,
+name|inodeMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -826,6 +840,8 @@ return|return
 name|replaceSelf
 argument_list|(
 name|s
+argument_list|,
+name|inodeMap
 argument_list|)
 operator|.
 name|saveSelf2Snapshot
@@ -838,13 +854,17 @@ return|;
 block|}
 block|}
 comment|/** Replace itself with an {@link INodeDirectorySnapshottable}. */
-DECL|method|replaceSelf4INodeDirectorySnapshottable ( Snapshot latest)
+DECL|method|replaceSelf4INodeDirectorySnapshottable ( Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|INodeDirectorySnapshottable
 name|replaceSelf4INodeDirectorySnapshottable
 parameter_list|(
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -878,6 +898,8 @@ decl_stmt|;
 name|replaceSelf
 argument_list|(
 name|s
+argument_list|,
+name|inodeMap
 argument_list|)
 operator|.
 name|saveSelf2Snapshot
@@ -892,11 +914,15 @@ name|s
 return|;
 block|}
 comment|/** Replace itself with an {@link INodeDirectoryWithSnapshot}. */
-DECL|method|replaceSelf4INodeDirectoryWithSnapshot ()
+DECL|method|replaceSelf4INodeDirectoryWithSnapshot ( final INodeMap inodeMap)
 specifier|public
 name|INodeDirectoryWithSnapshot
 name|replaceSelf4INodeDirectoryWithSnapshot
-parameter_list|()
+parameter_list|(
+specifier|final
+name|INodeMap
+name|inodeMap
+parameter_list|)
 block|{
 return|return
 name|replaceSelf
@@ -906,15 +932,21 @@ name|INodeDirectoryWithSnapshot
 argument_list|(
 name|this
 argument_list|)
+argument_list|,
+name|inodeMap
 argument_list|)
 return|;
 block|}
 comment|/** Replace itself with {@link INodeDirectory}. */
-DECL|method|replaceSelf4INodeDirectory ()
+DECL|method|replaceSelf4INodeDirectory (final INodeMap inodeMap)
 specifier|public
 name|INodeDirectory
 name|replaceSelf4INodeDirectory
-parameter_list|()
+parameter_list|(
+specifier|final
+name|INodeMap
+name|inodeMap
+parameter_list|)
 block|{
 name|Preconditions
 operator|.
@@ -942,11 +974,13 @@ name|this
 argument_list|,
 literal|true
 argument_list|)
+argument_list|,
+name|inodeMap
 argument_list|)
 return|;
 block|}
 comment|/** Replace itself with the given directory. */
-DECL|method|replaceSelf (final N newDir)
+DECL|method|replaceSelf (final N newDir, final INodeMap inodeMap)
 specifier|private
 specifier|final
 parameter_list|<
@@ -960,6 +994,10 @@ parameter_list|(
 specifier|final
 name|N
 name|newDir
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 block|{
 specifier|final
@@ -983,6 +1021,21 @@ argument_list|(
 name|newDir
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|inodeMap
+operator|!=
+literal|null
+condition|)
+block|{
+name|inodeMap
+operator|.
+name|put
+argument_list|(
+name|newDir
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -1013,6 +1066,8 @@ argument_list|(
 name|this
 argument_list|,
 name|newDir
+argument_list|,
+name|inodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -1024,7 +1079,7 @@ name|newDir
 return|;
 block|}
 comment|/** Replace the given child with a new child. */
-DECL|method|replaceChild (INode oldChild, final INode newChild)
+DECL|method|replaceChild (INode oldChild, final INode newChild, final INodeMap inodeMap)
 specifier|public
 name|void
 name|replaceChild
@@ -1035,6 +1090,10 @@ parameter_list|,
 specifier|final
 name|INode
 name|newChild
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 block|{
 name|Preconditions
@@ -1187,13 +1246,28 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// do the replacement
 name|children
 operator|.
 name|set
 argument_list|(
 name|i
 argument_list|,
+name|newChild
+argument_list|)
+expr_stmt|;
+block|}
+comment|// update the inodeMap
+if|if
+condition|(
+name|inodeMap
+operator|!=
+literal|null
+condition|)
+block|{
+name|inodeMap
+operator|.
+name|put
+argument_list|(
 name|newChild
 argument_list|)
 expr_stmt|;
@@ -1315,13 +1389,15 @@ argument_list|(
 name|oldChild
 argument_list|,
 name|ref
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 return|return
 name|ref
 return|;
 block|}
-DECL|method|replaceChildFile (final INodeFile oldChild, final INodeFile newChild)
+DECL|method|replaceChildFile (final INodeFile oldChild, final INodeFile newChild, final INodeMap inodeMap)
 specifier|private
 name|void
 name|replaceChildFile
@@ -1333,6 +1409,10 @@ parameter_list|,
 specifier|final
 name|INodeFile
 name|newChild
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 block|{
 name|replaceChild
@@ -1340,6 +1420,8 @@ argument_list|(
 name|oldChild
 argument_list|,
 name|newChild
+argument_list|,
+name|inodeMap
 argument_list|)
 expr_stmt|;
 name|oldChild
@@ -1354,13 +1436,17 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Replace a child {@link INodeFile} with an {@link INodeFileWithSnapshot}. */
-DECL|method|replaceChild4INodeFileWithSnapshot ( final INodeFile child)
+DECL|method|replaceChild4INodeFileWithSnapshot ( final INodeFile child, final INodeMap inodeMap)
 name|INodeFileWithSnapshot
 name|replaceChild4INodeFileWithSnapshot
 parameter_list|(
 specifier|final
 name|INodeFile
 name|child
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 block|{
 name|Preconditions
@@ -1394,6 +1480,8 @@ argument_list|(
 name|child
 argument_list|,
 name|newChild
+argument_list|,
+name|inodeMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -1401,13 +1489,17 @@ name|newChild
 return|;
 block|}
 comment|/** Replace a child {@link INodeFile} with an {@link INodeFileUnderConstructionWithSnapshot}. */
-DECL|method|replaceChild4INodeFileUcWithSnapshot ( final INodeFileUnderConstruction child)
+DECL|method|replaceChild4INodeFileUcWithSnapshot ( final INodeFileUnderConstruction child, final INodeMap inodeMap)
 name|INodeFileUnderConstructionWithSnapshot
 name|replaceChild4INodeFileUcWithSnapshot
 parameter_list|(
 specifier|final
 name|INodeFileUnderConstruction
 name|child
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 block|{
 name|Preconditions
@@ -1443,6 +1535,8 @@ argument_list|(
 name|child
 argument_list|,
 name|newChild
+argument_list|,
+name|inodeMap
 argument_list|)
 expr_stmt|;
 return|return
@@ -1451,36 +1545,52 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (Snapshot latest)
+DECL|method|recordModification (Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|INodeDirectory
 name|recordModification
 parameter_list|(
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
 block|{
-return|return
+if|if
+condition|(
 name|isInLatestSnapshot
 argument_list|(
 name|latest
 argument_list|)
-condition|?
+condition|)
+block|{
+return|return
 name|replaceSelf4INodeDirectoryWithSnapshot
-argument_list|()
+argument_list|(
+name|inodeMap
+argument_list|)
 operator|.
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
-else|:
+return|;
+block|}
+else|else
+block|{
+return|return
 name|this
 return|;
 block|}
+block|}
 comment|/**    * Save the child to the latest snapshot.    *     * @return the child inode, which may be replaced.    */
-DECL|method|saveChild2Snapshot (final INode child, final Snapshot latest, final INode snapshotCopy)
+DECL|method|saveChild2Snapshot (final INode child, final Snapshot latest, final INode snapshotCopy, final INodeMap inodeMap)
 specifier|public
 name|INode
 name|saveChild2Snapshot
@@ -1496,6 +1606,10 @@ parameter_list|,
 specifier|final
 name|INode
 name|snapshotCopy
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1513,7 +1627,9 @@ return|;
 block|}
 return|return
 name|replaceSelf4INodeDirectoryWithSnapshot
-argument_list|()
+argument_list|(
+name|inodeMap
+argument_list|)
 operator|.
 name|saveChild2Snapshot
 argument_list|(
@@ -1522,6 +1638,8 @@ argument_list|,
 name|latest
 argument_list|,
 name|snapshotCopy
+argument_list|,
+name|inodeMap
 argument_list|)
 return|;
 block|}
@@ -1841,8 +1959,8 @@ operator|-
 name|nextPos
 return|;
 block|}
-comment|/**    * Add a child inode to the directory.    *     * @param node INode to insert    * @param setModTime set modification time for the parent node    *                   not needed when replaying the addition and     *                   the parent already has the proper mod time    * @return false if the child with this name already exists;     *         otherwise, return true;    */
-DECL|method|addChild (INode node, final boolean setModTime, final Snapshot latest)
+comment|/**    * Add a child inode to the directory.    *     * @param node INode to insert    * @param setModTime set modification time for the parent node    *                   not needed when replaying the addition and     *                   the parent already has the proper mod time    * @param inodeMap update the inodeMap if the directory node gets replaced    * @return false if the child with this name already exists;     *         otherwise, return true;    */
+DECL|method|addChild (INode node, final boolean setModTime, final Snapshot latest, final INodeMap inodeMap)
 specifier|public
 name|boolean
 name|addChild
@@ -1857,6 +1975,10 @@ parameter_list|,
 specifier|final
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1892,9 +2014,18 @@ name|latest
 argument_list|)
 condition|)
 block|{
-return|return
+name|INodeDirectoryWithSnapshot
+name|sdir
+init|=
 name|replaceSelf4INodeDirectoryWithSnapshot
-argument_list|()
+argument_list|(
+name|inodeMap
+argument_list|)
+decl_stmt|;
+name|boolean
+name|added
+init|=
+name|sdir
 operator|.
 name|addChild
 argument_list|(
@@ -1903,7 +2034,12 @@ argument_list|,
 name|setModTime
 argument_list|,
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
+decl_stmt|;
+return|return
+name|added
 return|;
 block|}
 name|addChild
@@ -1927,6 +2063,8 @@ name|getModificationTime
 argument_list|()
 argument_list|,
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 expr_stmt|;
 block|}

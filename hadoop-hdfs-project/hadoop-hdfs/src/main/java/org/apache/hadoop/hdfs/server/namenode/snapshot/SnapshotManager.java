@@ -475,6 +475,11 @@ name|iip
 operator|.
 name|getLatestSnapshot
 argument_list|()
+argument_list|,
+name|fsdir
+operator|.
+name|getINodeMap
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -670,6 +675,11 @@ argument_list|(
 name|iip
 operator|.
 name|getLatestSnapshot
+argument_list|()
+argument_list|,
+name|fsdir
+operator|.
+name|getINodeMap
 argument_list|()
 argument_list|)
 expr_stmt|;

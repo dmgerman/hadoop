@@ -2271,7 +2271,7 @@ name|namesystem
 operator|.
 name|dir
 operator|.
-name|addToInodeMapUnprotected
+name|addToInodeMap
 argument_list|(
 name|inode
 argument_list|)

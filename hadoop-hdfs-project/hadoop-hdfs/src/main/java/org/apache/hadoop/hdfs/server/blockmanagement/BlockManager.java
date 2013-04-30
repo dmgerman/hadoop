@@ -14007,35 +14007,6 @@ name|bc
 argument_list|)
 return|;
 block|}
-DECL|method|addBlockCollection (BlockCollection bc)
-specifier|public
-name|void
-name|addBlockCollection
-parameter_list|(
-name|BlockCollection
-name|bc
-parameter_list|)
-block|{
-for|for
-control|(
-name|BlockInfo
-name|block
-range|:
-name|bc
-operator|.
-name|getBlocks
-argument_list|()
-control|)
-block|{
-name|addBlockCollection
-argument_list|(
-name|block
-argument_list|,
-name|bc
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 DECL|method|getBlockCollection (Block b)
 specifier|public
 name|BlockCollection

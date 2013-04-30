@@ -543,7 +543,7 @@ name|user
 parameter_list|)
 function_decl|;
 comment|/** Set user */
-DECL|method|setUser (String user, Snapshot latest)
+DECL|method|setUser (String user, Snapshot latest, INodeMap inodeMap)
 specifier|final
 name|INode
 name|setUser
@@ -553,6 +553,9 @@ name|user
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -564,6 +567,8 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -613,7 +618,7 @@ name|group
 parameter_list|)
 function_decl|;
 comment|/** Set group */
-DECL|method|setGroup (String group, Snapshot latest)
+DECL|method|setGroup (String group, Snapshot latest, INodeMap inodeMap)
 specifier|final
 name|INode
 name|setGroup
@@ -623,6 +628,9 @@ name|group
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -634,6 +642,8 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -683,7 +693,7 @@ name|permission
 parameter_list|)
 function_decl|;
 comment|/** Set the {@link FsPermission} of this {@link INode} */
-DECL|method|setPermission (FsPermission permission, Snapshot latest)
+DECL|method|setPermission (FsPermission permission, Snapshot latest, INodeMap inodeMap)
 name|INode
 name|setPermission
 parameter_list|(
@@ -692,6 +702,9 @@ name|permission
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -703,6 +716,8 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -937,8 +952,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @return The current inode, which usually is the same object of this inode.    *         However, in some cases, this inode may be replaced with a new inode    *         for maintaining snapshots. The current inode is then the new inode.    */
-DECL|method|recordModification (final Snapshot latest)
+comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @param inodeMap while recording modification, the inode or its parent may     *                 get replaced, and the inodeMap needs to be updated.    * @return The current inode, which usually is the same object of this inode.    *         However, in some cases, this inode may be replaced with a new inode    *         for maintaining snapshots. The current inode is then the new inode.    */
+DECL|method|recordModification (final Snapshot latest, final INodeMap inodeMap)
 specifier|abstract
 name|INode
 name|recordModification
@@ -946,6 +961,10 @@ parameter_list|(
 specifier|final
 name|Snapshot
 name|latest
+parameter_list|,
+specifier|final
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1788,7 +1807,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Update modification time if it is larger than the current value. */
-DECL|method|updateModificationTime (long mtime, Snapshot latest)
+DECL|method|updateModificationTime (long mtime, Snapshot latest, INodeMap inodeMap)
 specifier|public
 specifier|abstract
 name|INode
@@ -1799,6 +1818,9 @@ name|mtime
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1815,7 +1837,7 @@ name|modificationTime
 parameter_list|)
 function_decl|;
 comment|/** Set the last modification time of inode. */
-DECL|method|setModificationTime (long modificationTime, Snapshot latest)
+DECL|method|setModificationTime (long modificationTime, Snapshot latest, INodeMap inodeMap)
 specifier|public
 specifier|final
 name|INode
@@ -1826,6 +1848,9 @@ name|modificationTime
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1837,6 +1862,8 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -1887,7 +1914,7 @@ name|accessTime
 parameter_list|)
 function_decl|;
 comment|/**    * Set last access time of inode.    */
-DECL|method|setAccessTime (long accessTime, Snapshot latest)
+DECL|method|setAccessTime (long accessTime, Snapshot latest, INodeMap inodeMap)
 specifier|public
 specifier|final
 name|INode
@@ -1898,6 +1925,9 @@ name|accessTime
 parameter_list|,
 name|Snapshot
 name|latest
+parameter_list|,
+name|INodeMap
+name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1909,6 +1939,8 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
+argument_list|,
+name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
