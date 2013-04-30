@@ -3340,6 +3340,8 @@ argument_list|(
 name|allowSnapshotOp
 operator|.
 name|snapshotRoot
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 break|break;

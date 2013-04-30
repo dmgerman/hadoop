@@ -26691,6 +26691,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|getSnapshotManager ()
+specifier|public
 name|SnapshotManager
 name|getSnapshotManager
 parameter_list|()
@@ -26757,6 +26758,8 @@ operator|.
 name|setSnapshottable
 argument_list|(
 name|path
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

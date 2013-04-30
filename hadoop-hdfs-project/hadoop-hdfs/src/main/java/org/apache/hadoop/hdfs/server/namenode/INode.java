@@ -877,6 +877,54 @@ name|getReferredINode
 argument_list|()
 return|;
 block|}
+comment|/** @return true if the given inode is an ancestor directory of this inode. */
+DECL|method|isAncestorDirectory (final INodeDirectory dir)
+specifier|public
+specifier|final
+name|boolean
+name|isAncestorDirectory
+parameter_list|(
+specifier|final
+name|INodeDirectory
+name|dir
+parameter_list|)
+block|{
+for|for
+control|(
+name|INodeDirectory
+name|p
+init|=
+name|getParent
+argument_list|()
+init|;
+name|p
+operator|!=
+literal|null
+condition|;
+name|p
+operator|=
+name|p
+operator|.
+name|getParent
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|p
+operator|==
+name|dir
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * When {@link #recordModification} is called on a referred node,    * this method tells which snapshot the modification should be    * associated with: the snapshot that belongs to the SRC tree of the rename    * operation, or the snapshot belonging to the DST tree.    *     * @param latestInDst    *          the latest snapshot in the DST tree above the reference node    * @return True: the modification should be recorded in the snapshot that    *         belongs to the SRC tree. False: the modification should be    *         recorded in the snapshot that belongs to the DST tree.    */
 DECL|method|shouldRecordInSrcSnapshot (final Snapshot latestInDst)
 specifier|public

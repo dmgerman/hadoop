@@ -448,6 +448,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|setAllowNestedSnapshots
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 comment|// Initially there is no snapshottable directories in the system
 name|SnapshottableDirectoryStatus
 index|[]
@@ -1054,6 +1067,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|setAllowNestedSnapshots
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 comment|// first make dir1 and dir2 snapshottable
 name|hdfs
 operator|.

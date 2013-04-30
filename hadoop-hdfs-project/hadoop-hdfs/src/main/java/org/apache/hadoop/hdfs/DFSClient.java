@@ -412,6 +412,54 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_USE_DN_HOSTNAME
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_USE_DN_HOSTNAME_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL
 import|;
 end_import
@@ -429,54 +477,6 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_USE_LEGACY_BLOCKREADER_DEFAULT
 import|;
 end_import
 
@@ -557,38 +557,6 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_REPLICATION_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_USE_DN_HOSTNAME
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_USE_DN_HOSTNAME_DEFAULT
 import|;
 end_import
 
@@ -1338,22 +1306,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|SnapshotDiffReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|HdfsConstants
 operator|.
 name|DatanodeReportType
@@ -1439,6 +1391,22 @@ operator|.
 name|protocol
 operator|.
 name|NSQuotaExceededException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|SnapshotDiffReport
 import|;
 end_import
 
@@ -9563,6 +9531,8 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|namenode
 operator|.
@@ -9573,6 +9543,20 @@ argument_list|,
 name|snapshotName
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|()
+throw|;
+block|}
 block|}
 comment|/**    * Delete a snapshot of a snapshottable directory.    *     * @param snapshotRoot The snapshottable directory that the     *                    to-be-deleted snapshot belongs to    * @param snapshotName The name of the to-be-deleted snapshot    * @throws IOException    * @see ClientProtocol#deleteSnapshot(String, String)    */
 DECL|method|deleteSnapshot (String snapshotRoot, String snapshotName)
@@ -9589,6 +9573,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+try|try
+block|{
 name|namenode
 operator|.
 name|deleteSnapshot
@@ -9598,6 +9584,20 @@ argument_list|,
 name|snapshotName
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|()
+throw|;
+block|}
 block|}
 comment|/**    * Rename a snapshot.    * @param snapshotDir The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    * @see ClientProtocol#renameSnapshot(String, String, String)    */
 DECL|method|renameSnapshot (String snapshotDir, String snapshotOldName, String snapshotNewName)
@@ -9620,6 +9620,8 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|namenode
 operator|.
 name|renameSnapshot
@@ -9631,6 +9633,20 @@ argument_list|,
 name|snapshotNewName
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|()
+throw|;
+block|}
 block|}
 comment|/**    * Get all the current snapshottable directories.    * @return All the current snapshottable directories    * @throws IOException    * @see ClientProtocol#getSnapshottableDirListing()    */
 DECL|method|getSnapshottableDirListing ()
@@ -9645,12 +9661,28 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|namenode
 operator|.
 name|getSnapshottableDirListing
 argument_list|()
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|()
+throw|;
+block|}
 block|}
 comment|/**    * Allow snapshot on a directory.    *     * @see ClientProtocol#allowSnapshot(String snapshotRoot)    */
 DECL|method|allowSnapshot (String snapshotRoot)
@@ -9667,6 +9699,8 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|namenode
 operator|.
 name|allowSnapshot
@@ -9674,6 +9708,20 @@ argument_list|(
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|()
+throw|;
+block|}
 block|}
 comment|/**    * Disallow snapshot on a directory.    *     * @see ClientProtocol#disallowSnapshot(String snapshotRoot)    */
 DECL|method|disallowSnapshot (String snapshotRoot)
@@ -9690,6 +9738,8 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 name|namenode
 operator|.
 name|disallowSnapshot
@@ -9697,6 +9747,20 @@ argument_list|(
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|()
+throw|;
+block|}
 block|}
 comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    * @see ClientProtocol#getSnapshotDiffReport(String, String, String)    */
 DECL|method|getSnapshotDiffReport (Path snapshotDir, String fromSnapshot, String toSnapshot)
@@ -9719,6 +9783,8 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
+try|try
+block|{
 return|return
 name|namenode
 operator|.
@@ -9734,6 +9800,20 @@ argument_list|,
 name|toSnapshot
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|RemoteException
+name|re
+parameter_list|)
+block|{
+throw|throw
+name|re
+operator|.
+name|unwrapRemoteException
+argument_list|()
+throw|;
+block|}
 block|}
 comment|/**    * Save namespace image.    *     * @see ClientProtocol#saveNamespace()    */
 DECL|method|saveNamespace ()

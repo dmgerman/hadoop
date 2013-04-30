@@ -1346,6 +1346,19 @@ operator|++
 control|)
 block|{
 comment|// create snapshot and check the creation
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|setAllowNestedSnapshots
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|TestDirectoryTree
 operator|.
 name|Node
