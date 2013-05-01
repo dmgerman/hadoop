@@ -542,6 +542,15 @@ operator|.
 name|getAbsoluteFile
 argument_list|()
 decl_stmt|;
+DECL|field|SIMULATED_RM_IDENTIFIER
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|SIMULATED_RM_IDENTIFIER
+init|=
+literal|1234
+decl_stmt|;
 annotation|@
 name|Test
 DECL|method|testSuccessfulContainerLaunch ()
@@ -786,6 +795,17 @@ block|{
 return|return;
 comment|// Don't start any updating thread.
 block|}
+annotation|@
+name|Override
+specifier|public
+name|long
+name|getRMIdentifier
+parameter_list|()
+block|{
+return|return
+name|SIMULATED_RM_IDENTIFIER
+return|;
+block|}
 block|}
 decl_stmt|;
 name|DummyContainerManager
@@ -949,6 +969,19 @@ name|Resource
 operator|.
 name|class
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|when
+argument_list|(
+name|mockContainer
+operator|.
+name|getRMIdentifer
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|SIMULATED_RM_IDENTIFIER
 argument_list|)
 expr_stmt|;
 name|launchContext
