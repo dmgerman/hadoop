@@ -818,6 +818,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
+operator|>
+literal|1
+argument_list|)
+expr_stmt|;
 name|MRAppMaster
 name|appMaster
 init|=
@@ -1046,6 +1057,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
+operator|>
+literal|1
+argument_list|)
+expr_stmt|;
 name|MRAppMaster
 name|appMaster
 init|=
@@ -1060,7 +1082,9 @@ name|JobStateInternal
 operator|.
 name|REBOOT
 argument_list|,
-literal|4
+name|MRJobConfig
+operator|.
+name|DEFAULT_MR_AM_MAX_ATTEMPTS
 argument_list|)
 decl_stmt|;
 name|appMaster
@@ -1292,11 +1316,10 @@ name|JobStateInternal
 operator|.
 name|REBOOT
 argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_MAX_ATTEMPTS
+literal|1
 argument_list|)
 decl_stmt|;
+comment|//no retry
 name|appMaster
 operator|.
 name|init
@@ -1775,11 +1798,10 @@ name|attemptId
 argument_list|,
 name|mockAlloc
 argument_list|,
-name|MRJobConfig
-operator|.
-name|DEFAULT_MR_AM_MAX_ATTEMPTS
+literal|1
 argument_list|)
 decl_stmt|;
+comment|//no retry
 name|appMaster
 operator|.
 name|init

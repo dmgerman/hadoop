@@ -2519,7 +2519,7 @@ specifier|final
 name|int
 name|DEFAULT_MR_AM_MAX_ATTEMPTS
 init|=
-literal|1
+literal|2
 decl_stmt|;
 block|}
 end_interface
