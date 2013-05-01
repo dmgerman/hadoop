@@ -8053,6 +8053,10 @@ decl_stmt|;
 if|if
 condition|(
 name|node
+operator|!=
+literal|null
+operator|&&
+name|node
 operator|.
 name|isDirectory
 argument_list|()
