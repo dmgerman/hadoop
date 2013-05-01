@@ -250,22 +250,6 @@ operator|)
 name|inode
 return|;
 block|}
-DECL|field|UMASK
-specifier|static
-specifier|final
-name|FsPermission
-name|UMASK
-init|=
-name|FsPermission
-operator|.
-name|createImmutable
-argument_list|(
-operator|(
-name|short
-operator|)
-literal|0111
-argument_list|)
-decl_stmt|;
 comment|/** Format: [16 bits for replication][48 bits for PreferredBlockSize] */
 DECL|class|HeaderFormat
 specifier|private
@@ -545,30 +529,6 @@ block|{
 return|return
 literal|true
 return|;
-block|}
-comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
-annotation|@
-name|Override
-DECL|method|setPermission (FsPermission permission)
-name|void
-name|setPermission
-parameter_list|(
-name|FsPermission
-name|permission
-parameter_list|)
-block|{
-name|super
-operator|.
-name|setPermission
-argument_list|(
-name|permission
-operator|.
-name|applyUMask
-argument_list|(
-name|UMASK
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 comment|/** @return the replication factor of the file. */
 annotation|@

@@ -312,11 +312,6 @@ argument_list|(
 name|id
 argument_list|,
 name|permissions
-operator|.
-name|applyUMask
-argument_list|(
-name|UMASK
-argument_list|)
 argument_list|,
 name|BlockInfo
 operator|.
