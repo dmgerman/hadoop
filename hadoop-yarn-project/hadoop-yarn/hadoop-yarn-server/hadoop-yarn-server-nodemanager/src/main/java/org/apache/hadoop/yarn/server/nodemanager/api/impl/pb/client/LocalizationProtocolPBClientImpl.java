@@ -126,13 +126,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|ipc
 operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|YarnRemoteExceptionPBImpl
+name|RPCUtil
 import|;
 end_import
 
@@ -447,7 +443,7 @@ name|e
 parameter_list|)
 block|{
 throw|throw
-name|YarnRemoteExceptionPBImpl
+name|RPCUtil
 operator|.
 name|unwrapAndThrowException
 argument_list|(
