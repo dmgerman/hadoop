@@ -4890,6 +4890,13 @@ argument_list|(
 name|nodeToRemove
 argument_list|)
 expr_stmt|;
+name|inodeMap
+operator|.
+name|remove
+argument_list|(
+name|nodeToRemove
+argument_list|)
+expr_stmt|;
 name|count
 operator|++
 expr_stmt|;
