@@ -34,6 +34,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|FileNotFoundException
 import|;
 end_import
@@ -435,11 +445,17 @@ name|getPathWithoutSchemeAndAuthority
 argument_list|(
 name|target
 argument_list|)
+operator|.
+name|getPath
+argument_list|()
 argument_list|,
 name|getPathWithoutSchemeAndAuthority
 argument_list|(
 name|link
 argument_list|)
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -717,15 +733,13 @@ block|}
 DECL|method|getPathWithoutSchemeAndAuthority (Path path)
 specifier|private
 specifier|static
-name|String
+name|File
 name|getPathWithoutSchemeAndAuthority
 parameter_list|(
 name|Path
 name|path
 parameter_list|)
 block|{
-comment|// This code depends on Path.toString() to remove the leading slash before
-comment|// the drive specification on Windows.
 name|Path
 name|newPath
 init|=
@@ -752,11 +766,16 @@ argument_list|)
 else|:
 name|path
 decl_stmt|;
+comment|// Path.toString() removes leading slash before drive spec on Windows.
 return|return
+operator|new
+name|File
+argument_list|(
 name|newPath
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 return|;
 block|}
 block|}
