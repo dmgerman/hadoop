@@ -303,6 +303,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PlatformName
+operator|.
+name|IBM_JAVA
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -369,31 +385,13 @@ operator|new
 name|Random
 argument_list|()
 decl_stmt|;
-DECL|field|IBMJAVA
-specifier|final
-specifier|static
-name|boolean
-name|IBMJAVA
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"java.vendor"
-argument_list|)
-operator|.
-name|contains
-argument_list|(
-literal|"IBM"
-argument_list|)
-decl_stmt|;
 DECL|field|XMLHEADER
 specifier|final
 specifier|static
 name|String
 name|XMLHEADER
 init|=
-name|IBMJAVA
+name|IBM_JAVA
 condition|?
 literal|"<?xml version=\"1.0\" encoding=\"UTF-8\"?><configuration>"
 else|:

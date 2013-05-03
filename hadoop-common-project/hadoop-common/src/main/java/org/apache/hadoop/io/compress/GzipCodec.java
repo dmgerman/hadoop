@@ -116,6 +116,22 @@ name|*
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PlatformName
+operator|.
+name|IBM_JAVA
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class creates gzip compressors/decompressors.   */
 end_comment
@@ -166,20 +182,6 @@ name|TRAILER_SIZE
 init|=
 literal|8
 decl_stmt|;
-DECL|field|JVMVendor
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|JVMVendor
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"java.vendor"
-argument_list|)
-decl_stmt|;
 DECL|field|JVMVersion
 specifier|public
 specifier|static
@@ -202,12 +204,7 @@ name|boolean
 name|HAS_BROKEN_FINISH
 init|=
 operator|(
-name|JVMVendor
-operator|.
-name|contains
-argument_list|(
-literal|"IBM"
-argument_list|)
+name|IBM_JAVA
 operator|&&
 name|JVMVersion
 operator|.

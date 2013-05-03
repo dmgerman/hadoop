@@ -593,6 +593,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|PlatformName
+operator|.
+name|IBM_JAVA
+import|;
+end_import
+
+begin_import
 import|import
 name|com
 operator|.
@@ -1579,25 +1595,6 @@ argument_list|(
 literal|"64"
 argument_list|)
 decl_stmt|;
-DECL|field|ibmJava
-specifier|private
-specifier|static
-specifier|final
-name|boolean
-name|ibmJava
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"java.vendor"
-argument_list|)
-operator|.
-name|contains
-argument_list|(
-literal|"IBM"
-argument_list|)
-decl_stmt|;
 DECL|field|aix
 specifier|private
 specifier|static
@@ -1627,7 +1624,7 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|ibmJava
+name|IBM_JAVA
 condition|)
 block|{
 if|if
@@ -1710,7 +1707,7 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|ibmJava
+name|IBM_JAVA
 condition|)
 block|{
 if|if
@@ -2134,7 +2131,7 @@ static|static
 block|{
 if|if
 condition|(
-name|ibmJava
+name|IBM_JAVA
 condition|)
 block|{
 name|USER_KERBEROS_OPTIONS
@@ -2196,7 +2193,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|ibmJava
+name|IBM_JAVA
 condition|)
 block|{
 comment|// The first value searched when "useDefaultCcache" is used.
@@ -2278,7 +2275,7 @@ static|static
 block|{
 if|if
 condition|(
-name|ibmJava
+name|IBM_JAVA
 condition|)
 block|{
 name|KEYTAB_KERBEROS_OPTIONS
@@ -2467,7 +2464,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|ibmJava
+name|IBM_JAVA
 condition|)
 block|{
 name|KEYTAB_KERBEROS_OPTIONS

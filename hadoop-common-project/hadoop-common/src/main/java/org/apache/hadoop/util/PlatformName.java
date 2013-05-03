@@ -63,12 +63,12 @@ class|class
 name|PlatformName
 block|{
 comment|/**    * The complete platform 'name' to identify the platform as     * per the java-vm.    */
-DECL|field|platformName
-specifier|private
+DECL|field|PLATFORM_NAME
+specifier|public
 specifier|static
 specifier|final
 name|String
-name|platformName
+name|PLATFORM_NAME
 init|=
 operator|(
 name|Shell
@@ -108,18 +108,36 @@ argument_list|(
 literal|"sun.arch.data.model"
 argument_list|)
 decl_stmt|;
-comment|/**    * Get the complete platform as per the java-vm.    * @return returns the complete platform as per the java-vm.    */
-DECL|method|getPlatformName ()
+comment|/**    * The java vendor name used in this platform.     */
+DECL|field|JAVA_VENDOR_NAME
 specifier|public
 specifier|static
+specifier|final
 name|String
-name|getPlatformName
-parameter_list|()
-block|{
-return|return
-name|platformName
-return|;
-block|}
+name|JAVA_VENDOR_NAME
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"java.vendor"
+argument_list|)
+decl_stmt|;
+comment|/**    * A public static variable to indicate the current java vendor is     * IBM java or not.     */
+DECL|field|IBM_JAVA
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|IBM_JAVA
+init|=
+name|JAVA_VENDOR_NAME
+operator|.
+name|contains
+argument_list|(
+literal|"IBM"
+argument_list|)
+decl_stmt|;
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -137,7 +155,20 @@ name|out
 operator|.
 name|println
 argument_list|(
-name|platformName
+literal|"platform name: "
+operator|+
+name|PLATFORM_NAME
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"java vendor name: "
+operator|+
+name|JAVA_VENDOR_NAME
 argument_list|)
 expr_stmt|;
 block|}
