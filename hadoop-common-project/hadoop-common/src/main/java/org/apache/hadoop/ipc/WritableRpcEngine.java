@@ -1980,8 +1980,10 @@ name|receivedTime
 parameter_list|)
 throws|throws
 name|IOException
-block|{
-try|try
+throws|,
+name|RPC
+operator|.
+name|VersionMismatch
 block|{
 name|Invocation
 name|call
@@ -2004,7 +2006,7 @@ operator|+
 name|call
 argument_list|)
 expr_stmt|;
-comment|// Verify rpc version
+comment|// Verify writable rpc version
 if|if
 condition|(
 name|call
@@ -2018,7 +2020,7 @@ block|{
 comment|// Client is using a different version of WritableRpc
 throw|throw
 operator|new
-name|IOException
+name|RpcServerException
 argument_list|(
 literal|"WritableRpc version mismatch, client side version="
 operator|+
@@ -2098,7 +2100,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|RpcServerException
 argument_list|(
 literal|"Unknown protocol: "
 operator|+
@@ -2186,7 +2188,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|RpcServerException
 argument_list|(
 literal|"Unknown protocol: "
 operator|+
@@ -2216,6 +2218,8 @@ block|}
 block|}
 block|}
 comment|// Invoke the protocol method
+try|try
+block|{
 name|long
 name|startTime
 init|=
