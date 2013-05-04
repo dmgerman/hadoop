@@ -354,6 +354,19 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|deleteCurrentFile ()
+specifier|public
+name|void
+name|deleteCurrentFile
+parameter_list|()
+block|{
+name|isCurrentFileDeleted
+operator|=
+literal|true
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getSnapshotINode (Snapshot snapshot)
 specifier|public
 name|INodeFile

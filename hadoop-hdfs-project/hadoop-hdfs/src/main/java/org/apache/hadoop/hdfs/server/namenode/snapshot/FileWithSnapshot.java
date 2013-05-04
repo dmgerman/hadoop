@@ -642,6 +642,13 @@ name|boolean
 name|isCurrentFileDeleted
 parameter_list|()
 function_decl|;
+comment|/** Delete the file from the current tree */
+DECL|method|deleteCurrentFile ()
+specifier|public
+name|void
+name|deleteCurrentFile
+parameter_list|()
+function_decl|;
 comment|/** Utility methods for the classes which implement the interface. */
 DECL|class|Util
 specifier|public

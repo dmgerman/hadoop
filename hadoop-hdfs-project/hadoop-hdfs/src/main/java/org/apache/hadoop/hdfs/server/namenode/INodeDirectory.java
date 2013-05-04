@@ -1327,6 +1327,17 @@ name|isReference
 argument_list|()
 condition|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|oldChild
+operator|instanceof
+name|INodeReference
+operator|.
+name|DstReference
+argument_list|)
+expr_stmt|;
 name|withCount
 operator|=
 operator|(

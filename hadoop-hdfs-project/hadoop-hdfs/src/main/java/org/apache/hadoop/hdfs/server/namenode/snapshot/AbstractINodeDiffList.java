@@ -254,6 +254,7 @@ parameter_list|)
 function_decl|;
 comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The snapshot to be deleted    * @param prior The snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
 DECL|method|deleteSnapshotDiff (final Snapshot snapshot, Snapshot prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+specifier|public
 specifier|final
 name|Quota
 operator|.
@@ -774,22 +775,27 @@ name|getSnapshot
 argument_list|()
 return|;
 block|}
-comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchor The returned snapshot must be taken before this given     *               snapshot.    * @return The latest snapshot before the given snapshot.    */
-DECL|method|getPrior (Snapshot anchor)
+comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchorId The returned snapshot's id must be<= or< this given     *                 snapshot id.    * @param exclusive True means the returned snapshot's id must be< the given    *                  id, otherwise<=.    * @return The latest snapshot before the given snapshot.    */
+DECL|method|getPrior (int anchorId, boolean exclusive)
 specifier|private
 specifier|final
 name|Snapshot
 name|getPrior
 parameter_list|(
-name|Snapshot
-name|anchor
+name|int
+name|anchorId
+parameter_list|,
+name|boolean
+name|exclusive
 parameter_list|)
 block|{
 if|if
 condition|(
-name|anchor
+name|anchorId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|INVALID_ID
 condition|)
 block|{
 return|return
@@ -807,12 +813,15 @@ name|binarySearch
 argument_list|(
 name|diffs
 argument_list|,
-name|anchor
-operator|.
-name|getId
-argument_list|()
+name|anchorId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|exclusive
+condition|)
+block|{
+comment|// must be the one before
 if|if
 condition|(
 name|i
@@ -860,6 +869,80 @@ argument_list|()
 return|;
 block|}
 block|}
+else|else
+block|{
+comment|// the one, or the one before if not existing
+if|if
+condition|(
+name|i
+operator|>=
+literal|0
+condition|)
+block|{
+return|return
+name|diffs
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getSnapshot
+argument_list|()
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|i
+operator|<
+operator|-
+literal|1
+condition|)
+block|{
+return|return
+name|diffs
+operator|.
+name|get
+argument_list|(
+operator|-
+name|i
+operator|-
+literal|2
+argument_list|)
+operator|.
+name|getSnapshot
+argument_list|()
+return|;
+block|}
+else|else
+block|{
+comment|// i == -1
+return|return
+literal|null
+return|;
+block|}
+block|}
+block|}
+DECL|method|getPrior (int snapshotId)
+specifier|public
+specifier|final
+name|Snapshot
+name|getPrior
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+return|return
+name|getPrior
+argument_list|(
+name|snapshotId
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
 comment|/**    * Update the prior snapshot.    */
 DECL|method|updatePrior (Snapshot snapshot, Snapshot prior)
 specifier|final
@@ -873,12 +956,30 @@ name|Snapshot
 name|prior
 parameter_list|)
 block|{
+name|int
+name|id
+init|=
+name|snapshot
+operator|==
+literal|null
+condition|?
+name|Snapshot
+operator|.
+name|INVALID_ID
+else|:
+name|snapshot
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
 name|Snapshot
 name|s
 init|=
 name|getPrior
 argument_list|(
-name|snapshot
+name|id
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 if|if
