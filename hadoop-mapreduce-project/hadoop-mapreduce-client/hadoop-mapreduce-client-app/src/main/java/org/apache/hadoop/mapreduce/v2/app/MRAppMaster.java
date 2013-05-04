@@ -7441,6 +7441,19 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|// Security framework already loaded the tokens into current UGI, just use
+comment|// them
+name|Credentials
+name|credentials
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getCredentials
+argument_list|()
+decl_stmt|;
 name|UserGroupInformation
 name|appMasterUgi
 init|=
@@ -7451,6 +7464,13 @@ argument_list|(
 name|jobUserName
 argument_list|)
 decl_stmt|;
+name|appMasterUgi
+operator|.
+name|addCredentials
+argument_list|(
+name|credentials
+argument_list|)
+expr_stmt|;
 name|appMasterUgi
 operator|.
 name|doAs
