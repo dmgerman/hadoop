@@ -569,6 +569,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|Logger
 name|rootLogger

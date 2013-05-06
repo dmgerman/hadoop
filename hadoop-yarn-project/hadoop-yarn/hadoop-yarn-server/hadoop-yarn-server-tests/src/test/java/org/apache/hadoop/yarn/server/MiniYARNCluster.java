@@ -2103,7 +2103,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|YarnRemoteException
 name|ioe
 parameter_list|)
 block|{
@@ -2175,7 +2175,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|YarnRemoteException
 name|ioe
 parameter_list|)
 block|{

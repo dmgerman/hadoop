@@ -1255,6 +1255,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|LOG
 operator|.
@@ -1546,6 +1548,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|LOG
 operator|.
@@ -2005,6 +2009,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|LOG
 operator|.

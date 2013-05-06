@@ -24,16 +24,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|PrintStream
 import|;
 end_import
@@ -55,7 +45,7 @@ specifier|abstract
 class|class
 name|YarnRemoteException
 extends|extends
-name|IOException
+name|Exception
 block|{
 DECL|field|serialVersionUID
 specifier|private

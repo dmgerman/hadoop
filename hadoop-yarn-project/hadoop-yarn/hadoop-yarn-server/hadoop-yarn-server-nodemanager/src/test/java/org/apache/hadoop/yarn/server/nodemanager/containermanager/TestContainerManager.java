@@ -920,6 +920,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|containerManager
 operator|.
@@ -1560,6 +1562,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|containerManager
 operator|.
@@ -2244,6 +2248,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|File
 name|scriptFile
@@ -2754,6 +2760,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|containerManager
 operator|.
@@ -2784,6 +2792,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|containerManager
 operator|.
@@ -2814,6 +2824,8 @@ throws|throws
 name|InterruptedException
 throws|,
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Real del service
 name|delSrvc

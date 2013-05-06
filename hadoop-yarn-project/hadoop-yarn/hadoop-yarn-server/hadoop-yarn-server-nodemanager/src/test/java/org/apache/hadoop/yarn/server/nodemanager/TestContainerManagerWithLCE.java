@@ -138,6 +138,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|nodemanager
@@ -350,6 +366,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -432,6 +450,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -474,6 +494,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -516,6 +538,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -558,6 +582,8 @@ throws|throws
 name|InterruptedException
 throws|,
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if

@@ -658,6 +658,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|NodeManager
 name|nm
@@ -808,6 +810,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 name|NodeManager
 name|nm

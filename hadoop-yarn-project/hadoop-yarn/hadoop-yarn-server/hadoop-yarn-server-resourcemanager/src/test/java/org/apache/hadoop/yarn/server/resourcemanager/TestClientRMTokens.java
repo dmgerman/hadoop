@@ -657,6 +657,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 specifier|final
 name|YarnConfiguration

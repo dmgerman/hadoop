@@ -418,6 +418,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -991,6 +1007,8 @@ name|submit
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|ApplicationSubmissionContext
 name|context
@@ -1437,6 +1455,8 @@ name|task
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|Set
 argument_list|<
@@ -1949,6 +1969,8 @@ name|containers
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|int
 name|numContainers
@@ -2050,6 +2072,8 @@ name|schedule
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|assign
 argument_list|(
@@ -2078,6 +2102,8 @@ name|containers
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 for|for
 control|(

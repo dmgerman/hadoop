@@ -955,20 +955,23 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
-literal|"Job ID doesnot Exist"
-argument_list|,
 name|e
 operator|.
 name|getMessage
 argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Job ID doesnot Exist"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1534,6 +1537,8 @@ name|testReconnectOnAMRestart
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|//test not applicable when AM not reachable
 comment|//as instantiateAMProxy is not called at all
@@ -1964,6 +1969,8 @@ name|testAMAccessDisabled
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|//test only applicable when AM not reachable
 if|if
@@ -2314,6 +2321,8 @@ name|testRMDownForJobStatusBeforeGetAMReport
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|Configuration
 name|conf
@@ -2341,6 +2350,8 @@ name|testRMDownForJobStatusBeforeGetAMReportWithRetryTimes
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|Configuration
 name|conf
@@ -2388,6 +2399,8 @@ name|testRMDownRestoreForJobStatusBeforeGetAMReport
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|Configuration
 name|conf

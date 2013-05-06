@@ -286,22 +286,6 @@ name|ToolRunner
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
 begin_comment
 comment|/**  test CLI class. CLI class implemented  the Tool interface.   Here test that CLI sends correct command with options and parameters.   */
 end_comment
@@ -887,7 +871,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1025,7 +1009,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
