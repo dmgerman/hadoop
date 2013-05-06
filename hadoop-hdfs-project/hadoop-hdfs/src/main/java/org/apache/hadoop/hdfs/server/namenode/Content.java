@@ -86,6 +86,19 @@ argument_list|<
 name|Content
 argument_list|>
 block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|Counts
+name|newInstance
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Counts
+argument_list|()
+return|;
+block|}
 DECL|method|Counts ()
 specifier|private
 name|Counts
@@ -102,6 +115,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|field|FACTORY
+specifier|private
 specifier|static
 specifier|final
 name|EnumCounters
@@ -133,8 +147,9 @@ name|newInstance
 parameter_list|()
 block|{
 return|return
-operator|new
 name|Counts
+operator|.
+name|newInstance
 argument_list|()
 return|;
 block|}

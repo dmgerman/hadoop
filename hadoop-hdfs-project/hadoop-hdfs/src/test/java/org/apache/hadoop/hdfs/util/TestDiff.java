@@ -304,7 +304,7 @@ literal|0
 init|;
 name|startSize
 operator|<=
-literal|1000
+literal|10000
 condition|;
 name|startSize
 operator|=
