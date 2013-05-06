@@ -2071,13 +2071,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 name|Quota
 operator|.
 name|Counts
 name|cleanSubtree
 parameter_list|(
+specifier|final
 name|Snapshot
 name|snapshot
 parameter_list|,
@@ -2109,17 +2110,23 @@ operator|!=
 literal|null
 argument_list|)
 expr_stmt|;
-comment|// if prior is null, or if prior's id is<= dstSnapshotId, we will call
-comment|// destroyAndCollectBlocks method
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
+comment|// if prior is null, we need to check snapshot belonging to the previous
+comment|// WithName instance
+if|if
+condition|(
 name|prior
-operator|!=
+operator|==
 literal|null
+condition|)
+block|{
+name|prior
+operator|=
+name|getPriorSnapshot
+argument_list|(
+name|this
 argument_list|)
 expr_stmt|;
+block|}
 name|Quota
 operator|.
 name|Counts
@@ -2209,6 +2216,12 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 block|{
+name|Snapshot
+name|snapshot
+init|=
+name|getSelfSnapshot
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|removeReference
@@ -2252,12 +2265,6 @@ operator|.
 name|getReferredINode
 argument_list|()
 decl_stmt|;
-name|Snapshot
-name|snapshot
-init|=
-name|getSelfSnapshot
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|snapshot
@@ -2265,25 +2272,33 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
+if|if
+condition|(
 name|prior
-operator|==
+operator|!=
 literal|null
-operator|||
+operator|&&
 name|snapshot
 operator|.
 name|getId
 argument_list|()
-operator|>
+operator|<=
 name|prior
 operator|.
 name|getId
 argument_list|()
-argument_list|)
-expr_stmt|;
+condition|)
+block|{
+comment|// the snapshot to be deleted has been deleted while traversing
+comment|// the src tree of the previous rename operation. This usually
+comment|// happens when rename's src and dst are under the same
+comment|// snapshottable directory. E.g., the following operation sequence:
+comment|// 1. create snapshot s1 on /test
+comment|// 2. rename /test/foo/bar to /test/foo2/bar
+comment|// 3. create snapshot s2 on /test
+comment|// 4. delete snapshot s2
+return|return;
+block|}
 try|try
 block|{
 name|Quota
@@ -2587,6 +2602,46 @@ return|;
 block|}
 else|else
 block|{
+comment|// if prior is null, we need to check snapshot belonging to the previous
+comment|// WithName instance
+if|if
+condition|(
+name|prior
+operator|==
+literal|null
+condition|)
+block|{
+name|prior
+operator|=
+name|getPriorSnapshot
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|snapshot
+operator|!=
+literal|null
+operator|&&
+name|snapshot
+operator|.
+name|equals
+argument_list|(
+name|prior
+argument_list|)
+condition|)
+block|{
+return|return
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
+return|;
+block|}
 return|return
 name|getReferredINode
 argument_list|()
