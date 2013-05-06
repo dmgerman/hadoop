@@ -377,6 +377,33 @@ argument_list|(
 name|parentFullPath
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|parentFullPathStr
+operator|==
+literal|null
+operator|&&
+name|dirStatus
+operator|.
+name|getLocalNameInBytes
+argument_list|()
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+comment|// root
+return|return
+operator|new
+name|Path
+argument_list|(
+literal|"/"
+argument_list|)
+return|;
+block|}
+else|else
+block|{
 return|return
 name|parentFullPathStr
 operator|==
@@ -402,6 +429,7 @@ name|getLocalName
 argument_list|()
 argument_list|)
 return|;
+block|}
 block|}
 comment|/**    * Print a list of {@link SnapshottableDirectoryStatus} out to a given stream.    * @param stats The list of {@link SnapshottableDirectoryStatus}    * @param out The given stream for printing.    */
 DECL|method|print (SnapshottableDirectoryStatus[] stats, PrintStream out)
