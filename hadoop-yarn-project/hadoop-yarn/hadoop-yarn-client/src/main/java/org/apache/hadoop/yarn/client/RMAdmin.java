@@ -292,6 +292,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -1129,6 +1145,8 @@ name|refreshQueues
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Refresh the queue properties
 name|RMAdminProtocol
@@ -1167,6 +1185,8 @@ name|refreshNodes
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Refresh the nodes
 name|RMAdminProtocol
@@ -1205,6 +1225,8 @@ name|refreshUserToGroupsMappings
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Refresh the user-to-groups mappings
 name|RMAdminProtocol
@@ -1243,6 +1265,8 @@ name|refreshSuperUserGroupsConfiguration
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Refresh the super-user groups
 name|RMAdminProtocol
@@ -1281,6 +1305,8 @@ name|refreshAdminAcls
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Refresh the admin acls
 name|RMAdminProtocol
@@ -1319,6 +1345,8 @@ name|refreshServiceAcls
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 comment|// Refresh the service acls
 name|RMAdminProtocol

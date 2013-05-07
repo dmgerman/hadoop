@@ -847,6 +847,8 @@ specifier|public
 name|void
 name|ping
 parameter_list|()
+throws|throws
+name|YarnRemoteException
 function_decl|;
 block|}
 DECL|class|CustomSecurityInfo
@@ -1014,6 +1016,8 @@ specifier|public
 name|void
 name|ping
 parameter_list|()
+throws|throws
+name|YarnRemoteException
 block|{
 name|this
 operator|.
@@ -1713,6 +1717,8 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+try|try
+block|{
 name|CustomProtocol
 name|client
 init|=
@@ -1752,14 +1758,10 @@ return|return
 literal|null
 return|;
 block|}
-block|}
-argument_list|)
-expr_stmt|;
-block|}
 catch|catch
 parameter_list|(
 name|YarnRemoteException
-name|e
+name|ex
 parameter_list|)
 block|{
 name|fail
@@ -1767,6 +1769,14 @@ argument_list|(
 literal|"Cannot get a YARN remote exception as "
 operator|+
 literal|"it will indicate RPC success"
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ex
+throw|;
+block|}
+block|}
+block|}
 argument_list|)
 expr_stmt|;
 block|}

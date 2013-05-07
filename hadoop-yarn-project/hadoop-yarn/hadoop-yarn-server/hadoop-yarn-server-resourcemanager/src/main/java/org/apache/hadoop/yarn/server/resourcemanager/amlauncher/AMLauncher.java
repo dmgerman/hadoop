@@ -472,6 +472,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -849,6 +865,8 @@ name|launch
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|connect
 argument_list|()
@@ -952,6 +970,8 @@ name|cleanup
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|connect
 argument_list|()
@@ -1664,6 +1684,22 @@ argument_list|(
 literal|"Error cleaning master "
 argument_list|,
 name|ie
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Error cleaning master "
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

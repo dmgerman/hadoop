@@ -57,16 +57,16 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Indicates an exception on the RPC server   */
+comment|/**  * No such Method for an Rpc Call  *  */
 end_comment
 
 begin_class
-DECL|class|RpcServerException
+DECL|class|RpcNoSuchMethodException
 specifier|public
 class|class
-name|RpcServerException
+name|RpcNoSuchMethodException
 extends|extends
-name|RpcException
+name|RpcServerException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -77,10 +77,9 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * Constructs exception with the specified detail message.    * @param message detailed message.    */
-DECL|method|RpcServerException (final String message)
+DECL|method|RpcNoSuchMethodException (final String message)
 specifier|public
-name|RpcServerException
+name|RpcNoSuchMethodException
 parameter_list|(
 specifier|final
 name|String
@@ -90,28 +89,6 @@ block|{
 name|super
 argument_list|(
 name|message
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Constructs exception with the specified detail message and cause.    *     * @param message message.    * @param cause the cause (can be retried by the {@link #getCause()} method).    *          (A<tt>null</tt> value is permitted, and indicates that the cause    *          is nonexistent or unknown.)    */
-DECL|method|RpcServerException (final String message, final Throwable cause)
-specifier|public
-name|RpcServerException
-parameter_list|(
-specifier|final
-name|String
-name|message
-parameter_list|,
-specifier|final
-name|Throwable
-name|cause
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|message
-argument_list|,
-name|cause
 argument_list|)
 expr_stmt|;
 block|}
@@ -138,7 +115,7 @@ block|{
 return|return
 name|RpcErrorCodeProto
 operator|.
-name|ERROR_RPC_SERVER
+name|ERROR_NO_SUCH_METHOD
 return|;
 block|}
 block|}

@@ -2278,7 +2278,7 @@ name|ProtoBufRpcInvoker
 implements|implements
 name|RpcInvoker
 block|{
-DECL|method|getProtocolImpl (RPC.Server server, String protoName, long version)
+DECL|method|getProtocolImpl (RPC.Server server, String protoName, long clientVersion)
 specifier|private
 specifier|static
 name|ProtoClassProtoImpl
@@ -2293,10 +2293,10 @@ name|String
 name|protoName
 parameter_list|,
 name|long
-name|version
+name|clientVersion
 parameter_list|)
 throws|throws
-name|IOException
+name|RpcServerException
 block|{
 name|ProtoNameVer
 name|pv
@@ -2306,7 +2306,7 @@ name|ProtoNameVer
 argument_list|(
 name|protoName
 argument_list|,
-name|version
+name|clientVersion
 argument_list|)
 decl_stmt|;
 name|ProtoClassProtoImpl
@@ -2361,7 +2361,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|RpcNoSuchProtocolException
 argument_list|(
 literal|"Unknown protocol: "
 operator|+
@@ -2378,7 +2378,7 @@ name|VersionMismatch
 argument_list|(
 name|protoName
 argument_list|,
-name|version
+name|clientVersion
 argument_list|,
 name|highest
 operator|.
@@ -2538,7 +2538,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|RpcServerException
+name|RpcNoSuchMethodException
 argument_list|(
 name|msg
 argument_list|)

@@ -332,34 +332,6 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
-comment|/*    * HDFS ignore the "x" bit if the permission.    *     */
-DECL|field|FILE_MASK_IGNORE_X_BIT
-specifier|static
-specifier|final
-name|FsPermission
-name|FILE_MASK_IGNORE_X_BIT
-init|=
-operator|new
-name|FsPermission
-argument_list|(
-operator|(
-name|short
-operator|)
-operator|~
-literal|0666
-argument_list|)
-decl_stmt|;
-annotation|@
-name|Override
-DECL|method|getFileMask ()
-name|FsPermission
-name|getFileMask
-parameter_list|()
-block|{
-return|return
-name|FILE_MASK_IGNORE_X_BIT
-return|;
-block|}
 block|}
 end_class
 

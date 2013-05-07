@@ -785,6 +785,8 @@ name|rmContext
 parameter_list|)
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|this
 operator|.
@@ -1119,6 +1121,8 @@ name|heartbeat
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|NodeStatus
 name|nodeStatus

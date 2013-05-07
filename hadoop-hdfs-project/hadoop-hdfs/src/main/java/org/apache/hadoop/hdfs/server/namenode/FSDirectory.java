@@ -6304,6 +6304,13 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+name|inodeMap
+operator|.
+name|remove
+argument_list|(
+name|nodeToRemove
+argument_list|)
+expr_stmt|;
 name|count
 operator|++
 expr_stmt|;
@@ -12992,7 +12999,7 @@ throw|throw
 operator|new
 name|FileNotFoundException
 argument_list|(
-literal|"File for given inode path does not exist: "
+literal|"Invalid inode path: "
 operator|+
 name|src
 argument_list|)
@@ -13019,6 +13026,33 @@ operator|.
 name|SEPARATOR
 return|;
 block|}
+name|INode
+name|inode
+init|=
+name|fsd
+operator|.
+name|getInode
+argument_list|(
+name|id
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|inode
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|FileNotFoundException
+argument_list|(
+literal|"File for given inode path does not exist: "
+operator|+
+name|src
+argument_list|)
+throw|;
+block|}
 name|StringBuilder
 name|path
 init|=
@@ -13035,12 +13069,7 @@ else|:
 operator|new
 name|StringBuilder
 argument_list|(
-name|fsd
-operator|.
-name|getInode
-argument_list|(
-name|id
-argument_list|)
+name|inode
 operator|.
 name|getFullPathName
 argument_list|()

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.security
 package|package
 name|org
 operator|.
@@ -15,6 +15,10 @@ operator|.
 name|yarn
 operator|.
 name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
 package|;
 end_package
 

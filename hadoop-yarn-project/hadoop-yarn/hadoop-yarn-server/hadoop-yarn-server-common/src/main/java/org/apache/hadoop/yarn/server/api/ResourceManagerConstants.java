@@ -26,6 +26,7 @@ specifier|public
 interface|interface
 name|ResourceManagerConstants
 block|{
+comment|/**    * This states the invalid identifier of Resource Manager. This is used as a    * default value for initializing RM identifier. Currently, RM is using time    * stamp as RM identifier.    */
 DECL|field|RM_INVALID_IDENTIFIER
 specifier|public
 specifier|static
@@ -33,7 +34,8 @@ specifier|final
 name|long
 name|RM_INVALID_IDENTIFIER
 init|=
-literal|0
+operator|-
+literal|1
 decl_stmt|;
 block|}
 end_interface

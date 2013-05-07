@@ -395,11 +395,6 @@ operator|.
 name|EMPTY_ARRAY
 argument_list|,
 name|permissions
-operator|.
-name|applyUMask
-argument_list|(
-name|UMASK
-argument_list|)
 argument_list|,
 name|clientName
 argument_list|,

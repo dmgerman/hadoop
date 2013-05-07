@@ -794,15 +794,7 @@ name|getStickyBit
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// However, while you can set the sticky bit on files, it has no effect,
-comment|// following the linux/unix model:
-comment|//
-comment|// [user@host test]$ ls -alh
-comment|// -rw-r--r-- 1 user users 0 Dec 31 01:46 aFile
-comment|// [user@host test]$ chmod +t aFile
-comment|// [user@host test]$ ls -alh
-comment|// -rw-r--r-- 1 user users 0 Dec 31 01:46 aFile
-comment|// Write a file to the fs, try to set its sticky bit, expect to be ignored
+comment|// Write a file to the fs, try to set its sticky bit
 name|Path
 name|f
 init|=
@@ -872,7 +864,7 @@ name|withSB
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertFalse
+name|assertTrue
 argument_list|(
 name|hdfs
 operator|.

@@ -1798,7 +1798,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Main run function for the client    * @return true if application completed successfully    * @throws IOException    */
+comment|/**    * Main run function for the client    * @return true if application completed successfully    * @throws IOException    * @throws YarnRemoteException    */
 DECL|method|run ()
 specifier|public
 name|boolean
@@ -1806,6 +1806,8 @@ name|run
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|LOG
 operator|.

@@ -490,7 +490,11 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|RMDelegationTokenSecretManager
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|ResourceScheduler
 import|;
 end_import
 
@@ -508,9 +512,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|scheduler
+name|security
 operator|.
-name|ResourceScheduler
+name|RMDelegationTokenSecretManager
 import|;
 end_import
 
@@ -653,6 +657,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 specifier|final
 name|YarnConfiguration

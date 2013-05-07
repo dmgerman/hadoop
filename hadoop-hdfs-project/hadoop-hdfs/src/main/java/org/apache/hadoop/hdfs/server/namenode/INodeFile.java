@@ -481,22 +481,6 @@ name|asFile
 argument_list|()
 return|;
 block|}
-DECL|field|UMASK
-specifier|static
-specifier|final
-name|FsPermission
-name|UMASK
-init|=
-name|FsPermission
-operator|.
-name|createImmutable
-argument_list|(
-operator|(
-name|short
-operator|)
-literal|0111
-argument_list|)
-decl_stmt|;
 comment|/** Format: [16 bits for replication][48 bits for PreferredBlockSize] */
 DECL|class|HeaderFormat
 specifier|private
@@ -951,70 +935,6 @@ return|return
 name|this
 return|;
 block|}
-block|}
-comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
-annotation|@
-name|Override
-DECL|method|setPermission (FsPermission permission)
-specifier|final
-name|void
-name|setPermission
-parameter_list|(
-name|FsPermission
-name|permission
-parameter_list|)
-block|{
-name|super
-operator|.
-name|setPermission
-argument_list|(
-name|permission
-operator|.
-name|applyUMask
-argument_list|(
-name|UMASK
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Set the {@link FsPermission} of this {@link INodeFile}.    * Since this is a file,    * the {@link FsAction#EXECUTE} action, if any, is ignored.    */
-annotation|@
-name|Override
-DECL|method|setPermission (FsPermission permission, Snapshot latest, final INodeMap inodeMap)
-specifier|final
-name|INode
-name|setPermission
-parameter_list|(
-name|FsPermission
-name|permission
-parameter_list|,
-name|Snapshot
-name|latest
-parameter_list|,
-specifier|final
-name|INodeMap
-name|inodeMap
-parameter_list|)
-throws|throws
-name|QuotaExceededException
-block|{
-return|return
-name|super
-operator|.
-name|setPermission
-argument_list|(
-name|permission
-operator|.
-name|applyUMask
-argument_list|(
-name|UMASK
-argument_list|)
-argument_list|,
-name|latest
-argument_list|,
-name|inodeMap
-argument_list|)
-return|;
 block|}
 comment|/** @return the replication factor of the file. */
 DECL|method|getFileReplication (Snapshot snapshot)

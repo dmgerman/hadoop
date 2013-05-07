@@ -308,6 +308,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -350,7 +366,7 @@ specifier|public
 class|class
 name|TestResourceMgrDelegate
 block|{
-comment|/**    * Tests that getRootQueues makes a request for the (recursive) child queues    */
+comment|/**    * Tests that getRootQueues makes a request for the (recursive) child queues    * @throws YarnRemoteException    * @throws IOException    */
 annotation|@
 name|Test
 DECL|method|testGetRootQueues ()
@@ -362,6 +378,8 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
+throws|,
+name|YarnRemoteException
 block|{
 specifier|final
 name|ClientRMProtocol

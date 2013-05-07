@@ -1592,6 +1592,8 @@ name|run
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|YarnRemoteException
 block|{
 name|LOG
 operator|.

@@ -887,6 +887,14 @@ specifier|protected
 name|LocalDirsHandlerService
 name|dirsHandler
 decl_stmt|;
+DECL|field|DUMMY_RM_IDENTIFIER
+specifier|protected
+specifier|final
+name|long
+name|DUMMY_RM_IDENTIFIER
+init|=
+literal|1234
+decl_stmt|;
 DECL|field|nodeStatusUpdater
 specifier|protected
 name|NodeStatusUpdater
@@ -929,6 +937,18 @@ parameter_list|()
 block|{
 return|return;
 comment|// Don't start any updating thread.
+block|}
+annotation|@
+name|Override
+specifier|public
+name|long
+name|getRMIdentifier
+parameter_list|()
+block|{
+comment|// There is no real RM registration, simulate and set RMIdentifier
+return|return
+name|DUMMY_RM_IDENTIFIER
+return|;
 block|}
 block|}
 decl_stmt|;
