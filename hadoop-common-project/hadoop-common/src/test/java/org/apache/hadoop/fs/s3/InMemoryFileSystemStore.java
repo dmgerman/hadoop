@@ -210,6 +210,7 @@ end_comment
 
 begin_class
 DECL|class|InMemoryFileSystemStore
+specifier|public
 class|class
 name|InMemoryFileSystemStore
 implements|implements
