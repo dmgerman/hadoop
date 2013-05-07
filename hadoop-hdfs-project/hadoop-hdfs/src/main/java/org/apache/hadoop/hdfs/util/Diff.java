@@ -1439,7 +1439,17 @@ name|ArrayList
 argument_list|<
 name|E
 argument_list|>
+argument_list|(
+name|previous
+operator|.
+name|size
 argument_list|()
+operator|-
+name|dlist
+operator|.
+name|size
+argument_list|()
+argument_list|)
 decl_stmt|;
 block|{
 comment|// tmp = previous - dlist
@@ -1557,7 +1567,17 @@ name|ArrayList
 argument_list|<
 name|E
 argument_list|>
+argument_list|(
+name|tmp
+operator|.
+name|size
 argument_list|()
+operator|+
+name|clist
+operator|.
+name|size
+argument_list|()
+argument_list|)
 decl_stmt|;
 block|{
 comment|// current = tmp + clist

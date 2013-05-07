@@ -57,6 +57,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -315,6 +327,20 @@ operator|.
 name|ipc
 operator|.
 name|RemoteException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
 import|;
 end_import
 
@@ -830,6 +856,37 @@ operator|+
 name|rootStr
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|hdfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|rootPath
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Expect snapshot exception when disallowing snapshot on root again"
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|SnapshotException
+name|e
+parameter_list|)
+block|{
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Root is not a snapshottable directory"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
 comment|//change foo to non-snapshottable
 name|hdfs
 operator|.
@@ -886,7 +943,7 @@ name|assertNestedSnapshotException
 argument_list|(
 name|se
 argument_list|,
-literal|"ancestor"
+literal|"subdirectory"
 argument_list|)
 expr_stmt|;
 block|}
@@ -915,7 +972,7 @@ name|assertNestedSnapshotException
 argument_list|(
 name|se
 argument_list|,
-literal|"ancestor"
+literal|"subdirectory"
 argument_list|)
 expr_stmt|;
 block|}
@@ -975,7 +1032,7 @@ name|assertNestedSnapshotException
 argument_list|(
 name|se
 argument_list|,
-literal|"subdirectory"
+literal|"ancestor"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1004,7 +1061,7 @@ name|assertNestedSnapshotException
 argument_list|(
 name|se
 argument_list|,
-literal|"subdirectory"
+literal|"ancestor"
 argument_list|)
 expr_stmt|;
 block|}

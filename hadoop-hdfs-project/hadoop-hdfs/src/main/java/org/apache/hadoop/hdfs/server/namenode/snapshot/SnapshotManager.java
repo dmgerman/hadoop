@@ -464,7 +464,7 @@ literal|"Nested snapshottable directories not allowed: path="
 operator|+
 name|path
 operator|+
-literal|", the ancestor "
+literal|", the subdirectory "
 operator|+
 name|s
 operator|.
@@ -493,7 +493,7 @@ literal|"Nested snapshottable directories not allowed: path="
 operator|+
 name|path
 operator|+
-literal|", the subdirectory "
+literal|", the ancestor "
 operator|+
 name|s
 operator|.
@@ -785,6 +785,24 @@ name|getRoot
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|s
+operator|.
+name|getSnapshotQuota
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|SnapshotException
+argument_list|(
+literal|"Root is not a snapshottable directory"
+argument_list|)
+throw|;
+block|}
 name|s
 operator|.
 name|setSnapshotQuota
