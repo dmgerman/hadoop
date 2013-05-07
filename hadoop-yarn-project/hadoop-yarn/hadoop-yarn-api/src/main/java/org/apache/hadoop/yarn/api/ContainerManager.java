@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -260,7 +270,7 @@ specifier|public
 interface|interface
 name|ContainerManager
 block|{
-comment|/**    *<p>The<code>ApplicationMaster</code> requests a<code>NodeManager</code>    * to<em>start</em> a {@link Container} allocated to it using this interface.    *</p>    *     *<p>The<code>ApplicationMaster</code> has to provide details such as    * allocated resource capability, security tokens (if enabled), command    * to be executed to start the container, environment for the process,     * necessary binaries/jar/shared-objects etc. via the     * {@link ContainerLaunchContext} in the {@link StartContainerRequest}.</p>    *     *<p>Currently the<code>NodeManager</code> sends an immediate, empty     * response via {@link StartContainerResponse} to signify acceptance of the    * request and throws an exception in case of errors. The     *<code>ApplicationMaster</code> can use     * {@link #getContainerStatus(GetContainerStatusRequest)} to get updated     * status of the to-be-launched or launched container.</p>    *     * @param request request to start a container    * @return empty response to indicate acceptance of the request     *         or an exception    * @throws YarnRemoteException    */
+comment|/**    *<p>The<code>ApplicationMaster</code> requests a<code>NodeManager</code>    * to<em>start</em> a {@link Container} allocated to it using this interface.    *</p>    *     *<p>The<code>ApplicationMaster</code> has to provide details such as    * allocated resource capability, security tokens (if enabled), command    * to be executed to start the container, environment for the process,     * necessary binaries/jar/shared-objects etc. via the     * {@link ContainerLaunchContext} in the {@link StartContainerRequest}.</p>    *     *<p>Currently the<code>NodeManager</code> sends an immediate, empty     * response via {@link StartContainerResponse} to signify acceptance of the    * request and throws an exception in case of errors. The     *<code>ApplicationMaster</code> can use     * {@link #getContainerStatus(GetContainerStatusRequest)} to get updated     * status of the to-be-launched or launched container.</p>    *     * @param request request to start a container    * @return empty response to indicate acceptance of the request     *         or an exception    * @throws YarnRemoteException    * @throws IOException    */
 annotation|@
 name|Public
 annotation|@
@@ -274,8 +284,10 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    *<p>The<code>ApplicationMaster</code> requests a<code>NodeManager</code>    * to<em>stop</em> a {@link Container} allocated to it using this interface.    *</p>    *     *<p>The<code>ApplicationMaster</code> sends a    * {@link StopContainerRequest} which includes the {@link ContainerId} of the    * container to be stopped.</p>    *     *<p>Currently the<code>NodeManager</code> sends an immediate, empty     * response via {@link StopContainerResponse} to signify acceptance of the    * request and throws an exception in case of errors. The     *<code>ApplicationMaster</code> can use     * {@link #getContainerStatus(GetContainerStatusRequest)} to get updated     * status of the container.</p>    *     * @param request request to stop a container    * @return empty response to indicate acceptance of the request     *         or an exception    * @throws YarnRemoteException    */
+comment|/**    *<p>The<code>ApplicationMaster</code> requests a<code>NodeManager</code>    * to<em>stop</em> a {@link Container} allocated to it using this interface.    *</p>    *     *<p>The<code>ApplicationMaster</code> sends a    * {@link StopContainerRequest} which includes the {@link ContainerId} of the    * container to be stopped.</p>    *     *<p>Currently the<code>NodeManager</code> sends an immediate, empty     * response via {@link StopContainerResponse} to signify acceptance of the    * request and throws an exception in case of errors. The     *<code>ApplicationMaster</code> can use     * {@link #getContainerStatus(GetContainerStatusRequest)} to get updated     * status of the container.</p>    *     * @param request request to stop a container    * @return empty response to indicate acceptance of the request     *         or an exception    * @throws YarnRemoteException    * @throws IOException    */
 annotation|@
 name|Public
 annotation|@
@@ -289,8 +301,10 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    *<p>The api used by the<code>ApplicationMaster</code> to request for     * current status of a<code>Container</code> from the     *<code>NodeManager</code>.</p>    *     *<p>The<code>ApplicationMaster</code> sends a    * {@link GetContainerStatusRequest} which includes the {@link ContainerId} of    * the container whose status is needed.</p>    *    *<p>The<code>NodeManager</code> responds with     *{@link GetContainerStatusResponse} which includes the     *{@link ContainerStatus} of the container.</p>    *    * @param request request to get<code>ContainerStatus</code> of a container    *                with the specified<code>ContainerId</code>    * @return response containing the<code>ContainerStatus</code> of the    * container    * @throws YarnRemoteException    */
+comment|/**    *<p>The api used by the<code>ApplicationMaster</code> to request for     * current status of a<code>Container</code> from the     *<code>NodeManager</code>.</p>    *     *<p>The<code>ApplicationMaster</code> sends a    * {@link GetContainerStatusRequest} which includes the {@link ContainerId} of    * the container whose status is needed.</p>    *    *<p>The<code>NodeManager</code> responds with     *{@link GetContainerStatusResponse} which includes the     *{@link ContainerStatus} of the container.</p>    *    * @param request request to get<code>ContainerStatus</code> of a container    *                with the specified<code>ContainerId</code>    * @return response containing the<code>ContainerStatus</code> of the    * container    * @throws YarnRemoteException    * @throws IOException    */
 annotation|@
 name|Public
 annotation|@
@@ -304,6 +318,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 block|}
 end_interface

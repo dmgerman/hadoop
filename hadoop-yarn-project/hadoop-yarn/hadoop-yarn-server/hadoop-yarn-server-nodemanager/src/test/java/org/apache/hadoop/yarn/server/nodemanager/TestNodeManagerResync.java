@@ -1712,6 +1712,20 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|assertionFailedInThread
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// no. of containers to be launched should equal to no. of
 comment|// containers rejected

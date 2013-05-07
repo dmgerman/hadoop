@@ -3629,6 +3629,32 @@ argument_list|()
 expr_stmt|;
 comment|// TODO do we need to release this container?
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Start container failed for :"
+operator|+
+literal|", containerId="
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
 comment|// Get container status?
 comment|// Left commented out as the shell scripts are short lived
 comment|// and we are relying on the status for completed containers
