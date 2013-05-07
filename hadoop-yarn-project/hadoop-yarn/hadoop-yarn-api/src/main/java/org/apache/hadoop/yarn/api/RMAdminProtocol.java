@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -282,6 +292,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 DECL|method|refreshNodes (RefreshNodesRequest request)
 specifier|public
@@ -293,6 +305,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 specifier|public
 name|RefreshSuperUserGroupsConfigurationResponse
@@ -304,6 +318,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 DECL|method|refreshUserToGroupsMappings ( RefreshUserToGroupsMappingsRequest request)
 specifier|public
@@ -315,6 +331,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 DECL|method|refreshAdminAcls ( RefreshAdminAclsRequest request)
 specifier|public
@@ -326,6 +344,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 DECL|method|refreshServiceAcls ( RefreshServiceAclsRequest request)
 specifier|public
@@ -337,6 +357,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 block|}
 end_interface
