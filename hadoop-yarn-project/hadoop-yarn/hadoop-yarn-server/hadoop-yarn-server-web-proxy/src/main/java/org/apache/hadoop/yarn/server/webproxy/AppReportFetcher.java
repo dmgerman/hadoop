@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -404,7 +414,7 @@ operator|=
 name|applicationsManager
 expr_stmt|;
 block|}
-comment|/**    * Get a report for the specified app.    * @param appId the id of the application to get.     * @return the ApplicationReport for that app.    * @throws YarnRemoteException on any error.    */
+comment|/**    * Get a report for the specified app.    * @param appId the id of the application to get.     * @return the ApplicationReport for that app.    * @throws YarnRemoteException on any error.    * @throws IOException    */
 DECL|method|getApplicationReport (ApplicationId appId)
 specifier|public
 name|ApplicationReport
@@ -415,6 +425,8 @@ name|appId
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetApplicationReportRequest
 name|request

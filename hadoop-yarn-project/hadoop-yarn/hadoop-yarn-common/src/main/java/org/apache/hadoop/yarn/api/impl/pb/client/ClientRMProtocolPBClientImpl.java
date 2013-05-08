@@ -1452,6 +1452,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|KillApplicationRequestProto
 name|requestProto
@@ -1511,6 +1513,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetApplicationReportRequestProto
 name|requestProto
@@ -1570,6 +1574,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetClusterMetricsRequestProto
 name|requestProto
@@ -1629,6 +1635,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetNewApplicationRequestProto
 name|requestProto
@@ -1688,6 +1696,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|SubmitApplicationRequestProto
 name|requestProto
@@ -1747,6 +1757,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetAllApplicationsRequestProto
 name|requestProto
@@ -1806,6 +1818,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetClusterNodesRequestProto
 name|requestProto
@@ -1865,6 +1879,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetQueueInfoRequestProto
 name|requestProto
@@ -1924,6 +1940,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetQueueUserAclsInfoRequestProto
 name|requestProto
@@ -1983,6 +2001,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetDelegationTokenRequestProto
 name|requestProto
@@ -2042,6 +2062,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RenewDelegationTokenRequestProto
 name|requestProto
@@ -2101,6 +2123,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|CancelDelegationTokenRequestProto
 name|requestProto

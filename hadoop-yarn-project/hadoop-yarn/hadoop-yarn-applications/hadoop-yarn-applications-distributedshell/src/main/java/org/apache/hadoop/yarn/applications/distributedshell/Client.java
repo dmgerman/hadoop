@@ -3234,7 +3234,7 @@ name|appId
 argument_list|)
 return|;
 block|}
-comment|/**    * Monitor the submitted application for completion.     * Kill application if time expires.     * @param appId Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnRemoteException    */
+comment|/**    * Monitor the submitted application for completion.     * Kill application if time expires.     * @param appId Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|monitorApplication (ApplicationId appId)
 specifier|private
 name|boolean
@@ -3245,6 +3245,8 @@ name|appId
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 while|while
 condition|(
@@ -3527,7 +3529,7 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Kill a submitted application by sending a call to the ASM    * @param appId Application Id to be killed.     * @throws YarnRemoteException    */
+comment|/**    * Kill a submitted application by sending a call to the ASM    * @param appId Application Id to be killed.     * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|forceKillApplication (ApplicationId appId)
 specifier|private
 name|void
@@ -3538,6 +3540,8 @@ name|appId
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// TODO clarify whether multiple jobs with the same app id can be submitted and be running at
 comment|// the same time.

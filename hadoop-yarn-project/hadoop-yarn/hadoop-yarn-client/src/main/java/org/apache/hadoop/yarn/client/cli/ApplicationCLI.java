@@ -504,7 +504,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Lists all the applications present in the Resource Manager    *     * @throws YarnRemoteException    */
+comment|/**    * Lists all the applications present in the Resource Manager    *     * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|listAllApplications ()
 specifier|private
 name|void
@@ -512,6 +512,8 @@ name|listAllApplications
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|PrintWriter
 name|writer
@@ -649,7 +651,7 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Kills the application with the application id as appId    *     * @param applicationId    * @throws YarnRemoteException    */
+comment|/**    * Kills the application with the application id as appId    *     * @param applicationId    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|killApplication (String applicationId)
 specifier|private
 name|void
@@ -660,6 +662,8 @@ name|applicationId
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|ApplicationId
 name|appId

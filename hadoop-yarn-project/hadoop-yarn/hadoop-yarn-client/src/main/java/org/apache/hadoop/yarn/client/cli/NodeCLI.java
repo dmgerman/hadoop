@@ -469,7 +469,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Lists all the nodes present in the cluster    *     * @throws YarnRemoteException    */
+comment|/**    * Lists all the nodes present in the cluster    *     * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|listClusterNodes ()
 specifier|private
 name|void
@@ -477,6 +477,8 @@ name|listClusterNodes
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|PrintWriter
 name|writer

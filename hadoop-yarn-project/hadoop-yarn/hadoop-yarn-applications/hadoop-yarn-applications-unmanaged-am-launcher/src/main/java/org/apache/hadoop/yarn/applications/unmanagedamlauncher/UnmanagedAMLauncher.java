@@ -1917,7 +1917,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Monitor the submitted application for completion. Kill application if time    * expires.    *     * @param appId    *          Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnRemoteException    */
+comment|/**    * Monitor the submitted application for completion. Kill application if time    * expires.    *     * @param appId    *          Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|monitorApplication (ApplicationId appId, Set<YarnApplicationState> finalState)
 specifier|private
 name|ApplicationReport
@@ -1934,6 +1934,8 @@ name|finalState
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|long
 name|foundAMCompletedTime

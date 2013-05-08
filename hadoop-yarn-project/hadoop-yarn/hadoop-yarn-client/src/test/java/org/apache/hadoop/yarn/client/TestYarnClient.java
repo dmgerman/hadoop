@@ -80,6 +80,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -570,6 +580,20 @@ literal|"Exception is not expected."
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Exception is not expected."
+argument_list|)
+expr_stmt|;
+block|}
 name|verify
 argument_list|(
 operator|(
@@ -685,6 +709,20 @@ block|}
 catch|catch
 parameter_list|(
 name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"Exception is not expected."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
 name|e
 parameter_list|)
 block|{

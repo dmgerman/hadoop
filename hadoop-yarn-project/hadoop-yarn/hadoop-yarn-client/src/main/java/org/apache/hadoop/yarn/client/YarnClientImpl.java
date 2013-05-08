@@ -22,6 +22,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -993,6 +1003,8 @@ name|getNewApplication
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetNewApplicationRequest
 name|request
@@ -1027,6 +1039,8 @@ name|appContext
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|ApplicationId
 name|applicationId
@@ -1191,6 +1205,8 @@ name|applicationId
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|LOG
 operator|.
@@ -1240,6 +1256,8 @@ name|appId
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetApplicationReportRequest
 name|request
@@ -1289,6 +1307,8 @@ name|getApplicationList
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetAllApplicationsRequest
 name|request
@@ -1328,6 +1348,8 @@ name|getYarnClusterMetrics
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetClusterMetricsRequest
 name|request
@@ -1370,6 +1392,8 @@ name|getNodeReports
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetClusterNodesRequest
 name|request
@@ -1412,6 +1436,8 @@ name|renewer
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|/* get the token from RM */
 name|GetDelegationTokenRequest
@@ -1527,6 +1553,8 @@ name|queueName
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetQueueInfoRequest
 name|request
@@ -1575,6 +1603,8 @@ name|getQueueAclsInfo
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetQueueUserAclsInfoRequest
 name|request
@@ -1612,6 +1642,8 @@ name|getAllQueues
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|List
 argument_list|<
@@ -1673,6 +1705,8 @@ name|getRootQueueInfos
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|List
 argument_list|<
@@ -1737,6 +1771,8 @@ name|parent
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|List
 argument_list|<
