@@ -3129,9 +3129,10 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
+name|isInLatestSnapshot
+argument_list|(
 name|latest
-operator|!=
-literal|null
+argument_list|)
 condition|)
 block|{
 name|diff
@@ -3231,11 +3232,23 @@ name|undoInfo
 init|=
 literal|null
 decl_stmt|;
+comment|// For a directory that is not a renamed node, if isInLatestSnapshot returns
+comment|// false, the directory is not in the latest snapshot, thus we do not need
+comment|// to record the removed child in any snapshot.
+comment|// For a directory that was moved/renamed, note that if the directory is in
+comment|// any of the previous snapshots, we will create a reference node for the
+comment|// directory while rename, and isInLatestSnapshot will return true in that
+comment|// scenario (if all previous snapshots have been deleted, isInLatestSnapshot
+comment|// still returns false). Thus if isInLatestSnapshot returns false, the
+comment|// directory node cannot be in any snapshot (not in current tree, nor in
+comment|// previous src tree). Thus we do not need to record the removed child in
+comment|// any snapshot.
 if|if
 condition|(
+name|isInLatestSnapshot
+argument_list|(
 name|latest
-operator|!=
-literal|null
+argument_list|)
 condition|)
 block|{
 name|diff
