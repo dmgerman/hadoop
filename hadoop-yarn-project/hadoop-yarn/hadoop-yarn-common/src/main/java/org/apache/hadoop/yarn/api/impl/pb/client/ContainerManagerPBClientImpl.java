@@ -670,6 +670,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetContainerStatusRequestProto
 name|requestProto
@@ -729,6 +731,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|StartContainerRequestProto
 name|requestProto
@@ -788,6 +792,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|StopContainerRequestProto
 name|requestProto
