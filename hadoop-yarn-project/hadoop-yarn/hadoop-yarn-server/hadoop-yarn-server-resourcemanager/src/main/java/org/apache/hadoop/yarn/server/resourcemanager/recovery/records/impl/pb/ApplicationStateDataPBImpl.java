@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.recovery.records
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.recovery.records.impl.pb
 package|package
 name|org
 operator|.
@@ -21,6 +21,10 @@ operator|.
 name|recovery
 operator|.
 name|records
+operator|.
+name|impl
+operator|.
+name|pb
 package|;
 end_package
 
@@ -115,6 +119,28 @@ operator|.
 name|YarnServerResourceManagerServiceProtos
 operator|.
 name|ApplicationStateDataProtoOrBuilder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
+name|ApplicationStateData
 import|;
 end_import
 

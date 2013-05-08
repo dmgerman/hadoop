@@ -26,6 +26,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -144,6 +154,26 @@ name|setMasterContainer
 parameter_list|(
 name|Container
 name|container
+parameter_list|)
+function_decl|;
+comment|/**    * The application attempt tokens that belong to this attempt    * @return The application attempt tokens that belong to this attempt    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getAppAttemptTokens ()
+specifier|public
+name|ByteBuffer
+name|getAppAttemptTokens
+parameter_list|()
+function_decl|;
+DECL|method|setAppAttemptTokens (ByteBuffer attemptTokens)
+specifier|public
+name|void
+name|setAppAttemptTokens
+parameter_list|(
+name|ByteBuffer
+name|attemptTokens
 parameter_list|)
 function_decl|;
 block|}

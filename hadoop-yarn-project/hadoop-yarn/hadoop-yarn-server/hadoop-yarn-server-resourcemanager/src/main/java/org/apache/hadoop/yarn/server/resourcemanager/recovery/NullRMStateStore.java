@@ -70,6 +70,10 @@ name|recovery
 operator|.
 name|records
 operator|.
+name|impl
+operator|.
+name|pb
+operator|.
 name|ApplicationAttemptStateDataPBImpl
 import|;
 end_import
@@ -91,6 +95,10 @@ operator|.
 name|recovery
 operator|.
 name|records
+operator|.
+name|impl
+operator|.
+name|pb
 operator|.
 name|ApplicationStateDataPBImpl
 import|;
