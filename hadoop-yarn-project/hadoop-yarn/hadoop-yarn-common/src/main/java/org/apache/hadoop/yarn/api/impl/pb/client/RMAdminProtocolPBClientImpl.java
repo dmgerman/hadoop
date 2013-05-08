@@ -917,6 +917,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RefreshQueuesRequestProto
 name|requestProto
@@ -976,6 +978,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RefreshNodesRequestProto
 name|requestProto
@@ -1035,6 +1039,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RefreshSuperUserGroupsConfigurationRequestProto
 name|requestProto
@@ -1094,6 +1100,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RefreshUserToGroupsMappingsRequestProto
 name|requestProto
@@ -1153,6 +1161,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RefreshAdminAclsRequestProto
 name|requestProto
@@ -1212,6 +1222,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RefreshServiceAclsRequestProto
 name|requestProto

@@ -154,6 +154,24 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|protocolrecords
+operator|.
+name|PreemptionMessage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationAccessType
@@ -2728,7 +2746,7 @@ return|return
 name|allocateRequest
 return|;
 block|}
-DECL|method|newAllocateResponse (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, boolean reboot, int numClusterNodes)
+DECL|method|newAllocateResponse (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, boolean reboot, int numClusterNodes, PreemptionMessage preempt)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -2763,6 +2781,9 @@ name|reboot
 parameter_list|,
 name|int
 name|numClusterNodes
+parameter_list|,
+name|PreemptionMessage
+name|preempt
 parameter_list|)
 block|{
 name|AllocateResponse
@@ -2824,6 +2845,13 @@ operator|.
 name|setReboot
 argument_list|(
 name|reboot
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setPreemptionMessage
+argument_list|(
+name|preempt
 argument_list|)
 expr_stmt|;
 return|return

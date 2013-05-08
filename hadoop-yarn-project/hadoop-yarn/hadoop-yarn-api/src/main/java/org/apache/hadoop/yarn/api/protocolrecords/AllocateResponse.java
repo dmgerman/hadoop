@@ -74,6 +74,22 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
 name|Stable
 import|;
 end_import
@@ -183,7 +199,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> know that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> know that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_interface
@@ -382,6 +398,30 @@ name|setNumClusterNodes
 parameter_list|(
 name|int
 name|numNodes
+parameter_list|)
+function_decl|;
+comment|/**    * Get the description of containers owned by the AM, but requested back by    * the cluster. Note that the RM may have an inconsistent view of the    * resources owned by the AM. These messages are advisory, and the AM may    * elect to ignore them.    *    * The message is a snapshot of the resources the RM wants back from the AM.    * While demand persists, the RM will repeat its request; applications should    * not interpret each message as a request for<emph>additional<emph>    * resources on top of previous messages. Resources requested consistently    * over some duration may be forcibly killed by the RM.    *    * @return A specification of the resources to reclaim from this AM.    */
+annotation|@
+name|Public
+annotation|@
+name|Evolving
+DECL|method|getPreemptionMessage ()
+specifier|public
+name|PreemptionMessage
+name|getPreemptionMessage
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setPreemptionMessage (PreemptionMessage request)
+specifier|public
+name|void
+name|setPreemptionMessage
+parameter_list|(
+name|PreemptionMessage
+name|request
 parameter_list|)
 function_decl|;
 block|}

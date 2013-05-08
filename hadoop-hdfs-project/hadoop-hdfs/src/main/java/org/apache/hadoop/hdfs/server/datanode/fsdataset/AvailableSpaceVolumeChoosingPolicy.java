@@ -316,6 +316,44 @@ operator|+
 name|balancedPreferencePercent
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|balancedPreferencePercent
+operator|>
+literal|1.0
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The value of "
+operator|+
+name|DFS_DATANODE_FSDATASET_VOLUME_CHOOSING_BALANCED_SPACE_PREFERENCE_PERCENT_KEY
+operator|+
+literal|" is greater than 1.0 but should be in the range 0.0 - 1.0"
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|balancedPreferencePercent
+operator|<
+literal|0.5
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"The value of "
+operator|+
+name|DFS_DATANODE_FSDATASET_VOLUME_CHOOSING_BALANCED_SPACE_PREFERENCE_PERCENT_KEY
+operator|+
+literal|" is less than 0.5 so volumes with less available disk space will receive more block allocations"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

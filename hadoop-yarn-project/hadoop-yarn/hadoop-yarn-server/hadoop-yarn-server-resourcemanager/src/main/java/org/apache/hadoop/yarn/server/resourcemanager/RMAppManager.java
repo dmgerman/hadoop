@@ -2009,10 +2009,6 @@ name|shouldRecover
 init|=
 literal|true
 decl_stmt|;
-comment|// re-submit the application
-comment|// this is going to send an app start event but since the async dispatcher
-comment|// has not started that event will be queued until we have completed re
-comment|// populating the state
 if|if
 condition|(
 name|appState
@@ -2135,6 +2131,10 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+comment|// re-submit the application
+comment|// this is going to send an app start event but since the async dispatcher
+comment|// has not started that event will be queued until we have completed re
+comment|// populating the state
 if|if
 condition|(
 name|shouldRecover

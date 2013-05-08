@@ -1361,6 +1361,8 @@ throws|throws
 name|InterruptedException
 throws|,
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|waitForContainerState
 argument_list|(
@@ -1396,6 +1398,8 @@ throws|throws
 name|InterruptedException
 throws|,
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetContainerStatusRequest
 name|request

@@ -52,6 +52,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -95,24 +111,6 @@ operator|.
 name|records
 operator|.
 name|ApplicationSubmissionContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ClientToken
 import|;
 end_import
 
@@ -230,6 +228,40 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|ApplicationTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
+name|client
+operator|.
+name|ClientTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -299,7 +331,10 @@ parameter_list|()
 function_decl|;
 comment|/**    * The token required by the clients to talk to the application attempt    * @return the token required by the clients to talk to the application attempt    */
 DECL|method|getClientToken ()
-name|ClientToken
+name|Token
+argument_list|<
+name|ClientTokenIdentifier
+argument_list|>
 name|getClientToken
 parameter_list|()
 function_decl|;
@@ -358,6 +393,15 @@ comment|/**    * The application submission context for this {@link RMAppAttempt
 DECL|method|getSubmissionContext ()
 name|ApplicationSubmissionContext
 name|getSubmissionContext
+parameter_list|()
+function_decl|;
+comment|/**    * The application token belonging to this app attempt    * @return The application token belonging to this app attempt    */
+DECL|method|getApplicationToken ()
+name|Token
+argument_list|<
+name|ApplicationTokenIdentifier
+argument_list|>
+name|getApplicationToken
 parameter_list|()
 function_decl|;
 comment|/**    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */

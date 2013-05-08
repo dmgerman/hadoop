@@ -395,8 +395,13 @@ literal|null
 argument_list|)
 return|;
 block|}
-comment|/**    * Create an Aggregate based map/reduce job.    *     * @param args the arguments used for job creation. Generic hadoop    * arguments are accepted.    * @return a JobConf object ready for submission.    *     * @throws IOException    * @see GenericOptionsParser    */
-DECL|method|createValueAggregatorJob (String args[])
+comment|/**    * Create an Aggregate based map/reduce job.    *    * @param args the arguments used for job creation. Generic hadoop    * arguments are accepted.    * @param caller the the caller class.    * @return a JobConf object ready for submission.    *    * @throws IOException    * @see GenericOptionsParser    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
+DECL|method|createValueAggregatorJob (String args[], Class<?> caller)
 specifier|public
 specifier|static
 name|JobConf
@@ -405,6 +410,12 @@ parameter_list|(
 name|String
 name|args
 index|[]
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|caller
 parameter_list|)
 throws|throws
 name|IOException
@@ -656,7 +667,13 @@ name|theJob
 operator|.
 name|setJarByClass
 argument_list|(
-name|ValueAggregator
+name|caller
+operator|!=
+literal|null
+condition|?
+name|caller
+else|:
+name|ValueAggregatorJob
 operator|.
 name|class
 argument_list|)
@@ -800,6 +817,31 @@ return|return
 name|theJob
 return|;
 block|}
+comment|/**    * Create an Aggregate based map/reduce job.    *     * @param args the arguments used for job creation. Generic hadoop    * arguments are accepted.    * @return a JobConf object ready for submission.    *     * @throws IOException    * @see GenericOptionsParser    */
+DECL|method|createValueAggregatorJob (String args[])
+specifier|public
+specifier|static
+name|JobConf
+name|createValueAggregatorJob
+parameter_list|(
+name|String
+name|args
+index|[]
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createValueAggregatorJob
+argument_list|(
+name|args
+argument_list|,
+name|ValueAggregator
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
 DECL|method|createValueAggregatorJob (String args[] , Class<? extends ValueAggregatorDescriptor>[] descriptors)
 specifier|public
 specifier|static
@@ -909,6 +951,55 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|createValueAggregatorJob (String args[], Class<? extends ValueAggregatorDescriptor>[] descriptors, Class<?> caller)
+specifier|public
+specifier|static
+name|JobConf
+name|createValueAggregatorJob
+parameter_list|(
+name|String
+name|args
+index|[]
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|ValueAggregatorDescriptor
+argument_list|>
+index|[]
+name|descriptors
+parameter_list|,
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|caller
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|JobConf
+name|job
+init|=
+name|createValueAggregatorJob
+argument_list|(
+name|args
+argument_list|,
+name|caller
+argument_list|)
+decl_stmt|;
+name|setAggregatorDescriptors
+argument_list|(
+name|job
+argument_list|,
+name|descriptors
+argument_list|)
+expr_stmt|;
+return|return
+name|job
+return|;
 block|}
 comment|/**    * create and run an Aggregate based map/reduce job.    *     * @param args the arguments used for job creation    * @throws IOException    */
 DECL|method|main (String args[])

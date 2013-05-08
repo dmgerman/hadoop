@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.recovery.records
+DECL|package|org.apache.hadoop.yarn.api.protocolrecords
 package|package
 name|org
 operator|.
@@ -14,23 +14,25 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|records
+name|protocolrecords
 package|;
 end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|nio
+name|apache
 operator|.
-name|ByteBuffer
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
 import|;
 end_import
 
@@ -46,7 +48,23 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
 import|;
 end_import
 
@@ -80,100 +98,42 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Container
+name|ContainerId
 import|;
 end_import
 
 begin_comment
-comment|/*  * Contains the state data that needs to be persisted for an ApplicationAttempt  */
+comment|/**  * Specific container requested back by the<code>ResourceManager</code>.  * @see PreemptionContract  * @see StrictPreemptionContract  */
 end_comment
 
 begin_interface
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|interface|ApplicationAttemptStateData
+DECL|interface|PreemptionContainer
 specifier|public
 interface|interface
-name|ApplicationAttemptStateData
+name|PreemptionContainer
 block|{
-comment|/**    * The ApplicationAttemptId for the application attempt    * @return ApplicationAttemptId for the application attempt    */
+comment|/**    * @return Container referenced by this handle.    */
 annotation|@
 name|Public
 annotation|@
-name|Unstable
-DECL|method|getAttemptId ()
+name|Evolving
+DECL|method|getId ()
 specifier|public
-name|ApplicationAttemptId
-name|getAttemptId
+name|ContainerId
+name|getId
 parameter_list|()
 function_decl|;
-DECL|method|setAttemptId (ApplicationAttemptId attemptId)
-specifier|public
-name|void
-name|setAttemptId
-parameter_list|(
-name|ApplicationAttemptId
-name|attemptId
-parameter_list|)
-function_decl|;
-comment|/*    * The master container running the application attempt    * @return Container that hosts the attempt    */
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|method|getMasterContainer ()
-specifier|public
-name|Container
-name|getMasterContainer
-parameter_list|()
-function_decl|;
-DECL|method|setMasterContainer (Container container)
+DECL|method|setId (ContainerId id)
 specifier|public
 name|void
-name|setMasterContainer
+name|setId
 parameter_list|(
-name|Container
-name|container
-parameter_list|)
-function_decl|;
-comment|/**    * The application attempt tokens that belong to this attempt    * @return The application attempt tokens that belong to this attempt    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getAppAttemptTokens ()
-specifier|public
-name|ByteBuffer
-name|getAppAttemptTokens
-parameter_list|()
-function_decl|;
-DECL|method|setAppAttemptTokens (ByteBuffer attemptTokens)
-specifier|public
-name|void
-name|setAppAttemptTokens
-parameter_list|(
-name|ByteBuffer
-name|attemptTokens
+name|ContainerId
+name|id
 parameter_list|)
 function_decl|;
 block|}

@@ -3571,6 +3571,27 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got IOException: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"IOException is not expected."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|callWithIllegalResource (ContainerManager client, ContainerTokenIdentifier tokenId)
 name|void
@@ -3728,6 +3749,27 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got IOException: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"IOException is not expected."
 argument_list|)
 expr_stmt|;
 block|}
@@ -3902,6 +3944,27 @@ operator|.
 name|getUser
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got IOException: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"IOException is not expected."
 argument_list|)
 expr_stmt|;
 block|}

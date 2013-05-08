@@ -242,6 +242,7 @@ end_comment
 
 begin_class
 DECL|class|InMemoryNativeFileSystemStore
+specifier|public
 class|class
 name|InMemoryNativeFileSystemStore
 implements|implements

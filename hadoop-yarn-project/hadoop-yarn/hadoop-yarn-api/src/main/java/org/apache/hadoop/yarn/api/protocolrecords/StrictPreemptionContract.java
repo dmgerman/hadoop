@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.recovery.records
+DECL|package|org.apache.hadoop.yarn.api.protocolrecords
 package|package
 name|org
 operator|.
@@ -14,13 +14,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
-operator|.
-name|recovery
-operator|.
-name|records
+name|protocolrecords
 package|;
 end_package
 
@@ -28,9 +24,25 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
+name|util
 operator|.
-name|ByteBuffer
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -47,6 +59,22 @@ operator|.
 name|InterfaceAudience
 operator|.
 name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
 import|;
 end_import
 
@@ -80,100 +108,52 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Container
+name|ContainerId
 import|;
 end_import
 
 begin_comment
-comment|/*  * Contains the state data that needs to be persisted for an ApplicationAttempt  */
+comment|/**  * Enumeration of particular allocations to be reclaimed. The platform will  * reclaim exactly these resources, so the<code>ApplicationMaster</code> (AM)  * may attempt to checkpoint work or adjust its execution plan to accommodate  * it. In contrast to {@link PreemptionContract}, the AM has no flexibility in  * selecting which resources to return to the cluster.  * @see PreemptionMessage  */
 end_comment
 
 begin_interface
 annotation|@
 name|Public
 annotation|@
-name|Unstable
-DECL|interface|ApplicationAttemptStateData
+name|Evolving
+DECL|interface|StrictPreemptionContract
 specifier|public
 interface|interface
-name|ApplicationAttemptStateData
+name|StrictPreemptionContract
 block|{
-comment|/**    * The ApplicationAttemptId for the application attempt    * @return ApplicationAttemptId for the application attempt    */
+comment|/**    * Get the set of {@link PreemptionContainer} specifying containers owned by    * the<code>ApplicationMaster</code> that may be reclaimed by the    *<code>ResourceManager</code>.    * @return the set of {@link ContainerId} to be preempted.    */
 annotation|@
 name|Public
 annotation|@
-name|Unstable
-DECL|method|getAttemptId ()
+name|Evolving
+DECL|method|getContainers ()
 specifier|public
-name|ApplicationAttemptId
-name|getAttemptId
+name|Set
+argument_list|<
+name|PreemptionContainer
+argument_list|>
+name|getContainers
 parameter_list|()
 function_decl|;
-DECL|method|setAttemptId (ApplicationAttemptId attemptId)
-specifier|public
-name|void
-name|setAttemptId
-parameter_list|(
-name|ApplicationAttemptId
-name|attemptId
-parameter_list|)
-function_decl|;
-comment|/*    * The master container running the application attempt    * @return Container that hosts the attempt    */
 annotation|@
-name|Public
+name|Private
 annotation|@
 name|Unstable
-DECL|method|getMasterContainer ()
-specifier|public
-name|Container
-name|getMasterContainer
-parameter_list|()
-function_decl|;
-DECL|method|setMasterContainer (Container container)
+DECL|method|setContainers (Set<PreemptionContainer> containers)
 specifier|public
 name|void
-name|setMasterContainer
+name|setContainers
 parameter_list|(
-name|Container
-name|container
-parameter_list|)
-function_decl|;
-comment|/**    * The application attempt tokens that belong to this attempt    * @return The application attempt tokens that belong to this attempt    */
-annotation|@
-name|Public
-annotation|@
-name|Unstable
-DECL|method|getAppAttemptTokens ()
-specifier|public
-name|ByteBuffer
-name|getAppAttemptTokens
-parameter_list|()
-function_decl|;
-DECL|method|setAppAttemptTokens (ByteBuffer attemptTokens)
-specifier|public
-name|void
-name|setAppAttemptTokens
-parameter_list|(
-name|ByteBuffer
-name|attemptTokens
+name|Set
+argument_list|<
+name|PreemptionContainer
+argument_list|>
+name|containers
 parameter_list|)
 function_decl|;
 block|}
