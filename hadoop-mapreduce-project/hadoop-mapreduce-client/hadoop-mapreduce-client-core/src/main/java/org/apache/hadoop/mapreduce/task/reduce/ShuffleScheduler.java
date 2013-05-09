@@ -2175,7 +2175,7 @@ name|get
 argument_list|()
 operator|)
 operator|+
-literal|"s"
+literal|"ms"
 argument_list|)
 expr_stmt|;
 block|}

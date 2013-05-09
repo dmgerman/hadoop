@@ -380,6 +380,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|BuilderUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|slf4j
 operator|.
 name|Logger
@@ -492,6 +508,15 @@ argument_list|)
 name|MutableGaugeInt
 name|allocatedMB
 decl_stmt|;
+DECL|field|allocatedVCores
+annotation|@
+name|Metric
+argument_list|(
+literal|"Allocated CPU in virtual cores"
+argument_list|)
+name|MutableGaugeInt
+name|allocatedVCores
+decl_stmt|;
 DECL|field|allocatedContainers
 annotation|@
 name|Metric
@@ -528,6 +553,15 @@ argument_list|)
 name|MutableGaugeInt
 name|availableMB
 decl_stmt|;
+DECL|field|availableVCores
+annotation|@
+name|Metric
+argument_list|(
+literal|"Available CPU in virtual cores"
+argument_list|)
+name|MutableGaugeInt
+name|availableVCores
+decl_stmt|;
 DECL|field|pendingMB
 annotation|@
 name|Metric
@@ -536,6 +570,15 @@ literal|"Pending memory allocation in MB"
 argument_list|)
 name|MutableGaugeInt
 name|pendingMB
+decl_stmt|;
+DECL|field|pendingVCores
+annotation|@
+name|Metric
+argument_list|(
+literal|"Pending CPU allocation in virtual cores"
+argument_list|)
+name|MutableGaugeInt
+name|pendingVCores
 decl_stmt|;
 DECL|field|pendingContainers
 annotation|@
@@ -554,6 +597,15 @@ literal|"# of reserved memory in MB"
 argument_list|)
 name|MutableGaugeInt
 name|reservedMB
+decl_stmt|;
+DECL|field|reservedVCores
+annotation|@
+name|Metric
+argument_list|(
+literal|"Reserved CPU in virtual cores"
+argument_list|)
+name|MutableGaugeInt
+name|reservedVCores
 decl_stmt|;
 DECL|field|reservedContainers
 annotation|@
@@ -1780,6 +1832,16 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|availableVCores
+operator|.
+name|set
+argument_list|(
+name|limit
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Set available resources. To be called by scheduler periodically as    * resources become available.    * @param user    * @param limit resource limit    */
 DECL|method|setAvailableResourcesToUser (String user, Resource limit)
@@ -1917,6 +1979,16 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|pendingVCores
+operator|.
+name|incr
+argument_list|(
+name|res
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|decrPendingResources (String user, int containers, Resource res)
 specifier|public
@@ -2016,6 +2088,16 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|pendingVCores
+operator|.
+name|decr
+argument_list|(
+name|res
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|allocateResources (String user, int containers, Resource res)
 specifier|public
@@ -2053,6 +2135,18 @@ argument_list|(
 name|res
 operator|.
 name|getMemory
+argument_list|()
+operator|*
+name|containers
+argument_list|)
+expr_stmt|;
+name|allocatedVCores
+operator|.
+name|incr
+argument_list|(
+name|res
+operator|.
+name|getVirtualCores
 argument_list|()
 operator|*
 name|containers
@@ -2160,6 +2254,18 @@ operator|*
 name|containers
 argument_list|)
 expr_stmt|;
+name|allocatedVCores
+operator|.
+name|decr
+argument_list|(
+name|res
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|*
+name|containers
+argument_list|)
+expr_stmt|;
 name|QueueMetrics
 name|userMetrics
 init|=
@@ -2234,6 +2340,16 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|reservedVCores
+operator|.
+name|incr
+argument_list|(
+name|res
+operator|.
+name|getVirtualCores
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|QueueMetrics
 name|userMetrics
 init|=
@@ -2301,6 +2417,16 @@ argument_list|(
 name|res
 operator|.
 name|getMemory
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|reservedVCores
+operator|.
+name|decr
+argument_list|(
+name|res
+operator|.
+name|getVirtualCores
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2555,6 +2681,26 @@ name|value
 argument_list|()
 return|;
 block|}
+DECL|method|getAllocatedResources ()
+specifier|public
+name|Resource
+name|getAllocatedResources
+parameter_list|()
+block|{
+return|return
+name|BuilderUtils
+operator|.
+name|newResource
+argument_list|(
+name|allocatedMB
+operator|.
+name|value
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
 DECL|method|getAllocatedMB ()
 specifier|public
 name|int
@@ -2563,6 +2709,19 @@ parameter_list|()
 block|{
 return|return
 name|allocatedMB
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getAllocatedVirtualCores ()
+specifier|public
+name|int
+name|getAllocatedVirtualCores
+parameter_list|()
+block|{
+return|return
+name|allocatedVCores
 operator|.
 name|value
 argument_list|()
@@ -2594,6 +2753,19 @@ name|value
 argument_list|()
 return|;
 block|}
+DECL|method|getAvailableVirtualCores ()
+specifier|public
+name|int
+name|getAvailableVirtualCores
+parameter_list|()
+block|{
+return|return
+name|availableVCores
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
 DECL|method|getPendingMB ()
 specifier|public
 name|int
@@ -2602,6 +2774,19 @@ parameter_list|()
 block|{
 return|return
 name|pendingMB
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getPendingVirtualCores ()
+specifier|public
+name|int
+name|getPendingVirtualCores
+parameter_list|()
+block|{
+return|return
+name|pendingVCores
 operator|.
 name|value
 argument_list|()
@@ -2628,6 +2813,19 @@ parameter_list|()
 block|{
 return|return
 name|reservedMB
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
+DECL|method|getReservedVirtualCores ()
+specifier|public
+name|int
+name|getReservedVirtualCores
+parameter_list|()
+block|{
+return|return
+name|reservedVCores
 operator|.
 name|value
 argument_list|()

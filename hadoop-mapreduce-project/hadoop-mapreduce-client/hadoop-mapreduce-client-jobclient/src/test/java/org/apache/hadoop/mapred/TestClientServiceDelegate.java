@@ -2609,6 +2609,8 @@ name|noOfRetries
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|conf
 operator|.
@@ -3077,6 +3079,8 @@ name|getRMDelegate
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|ResourceMgrDelegate
 name|rm

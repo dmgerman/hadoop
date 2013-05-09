@@ -1963,6 +1963,8 @@ name|run
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|GetDelegationTokenRequest
 name|request
@@ -2046,6 +2048,8 @@ name|run
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RenewDelegationTokenRequest
 name|request
@@ -2126,6 +2130,8 @@ name|run
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|CancelDelegationTokenRequest
 name|request

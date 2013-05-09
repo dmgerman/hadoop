@@ -70,6 +70,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -676,6 +686,8 @@ name|setup
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// start minicluster
 name|conf
@@ -984,6 +996,8 @@ name|testAMRMClient
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|AMRMClientImpl
 name|amClient
@@ -1080,6 +1094,8 @@ name|amClient
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// setup container request
 specifier|final

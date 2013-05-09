@@ -932,6 +932,8 @@ name|appTrackingUrl
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// do this only once ???
 name|RegisterApplicationMasterRequest
@@ -1014,6 +1016,8 @@ name|progressIndicator
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|AllocateResponse
 name|allocateResponse
@@ -1222,6 +1226,8 @@ name|appTrackingUrl
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|FinishApplicationMasterRequest
 name|request

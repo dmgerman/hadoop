@@ -1357,6 +1357,8 @@ name|getProxy
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 if|if
 condition|(

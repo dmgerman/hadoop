@@ -76,6 +76,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -130,7 +140,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Stable
+name|Unstable
 import|;
 end_import
 
@@ -676,6 +686,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|HashMultiset
@@ -697,6 +721,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|FSSchedulerApp
 specifier|public
 class|class
@@ -839,6 +867,25 @@ name|NodeId
 argument_list|,
 name|RMContainer
 argument_list|>
+argument_list|>
+argument_list|()
+decl_stmt|;
+DECL|field|preemptionMap
+specifier|final
+name|Map
+argument_list|<
+name|RMContainer
+argument_list|,
+name|Long
+argument_list|>
+name|preemptionMap
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|RMContainer
+argument_list|,
+name|Long
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -1426,6 +1473,14 @@ argument_list|,
 name|containerResource
 argument_list|)
 expr_stmt|;
+comment|// remove from preemption map if it is completed
+name|preemptionMap
+operator|.
+name|remove
+argument_list|(
+name|rmContainer
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|pullNewlyAllocatedContainers ()
 specifier|synchronized
@@ -1778,9 +1833,7 @@ return|;
 block|}
 comment|/**    * Get total current reservations.    * Used only by unit tests    * @return total current reservations    */
 annotation|@
-name|Stable
-annotation|@
-name|Private
+name|VisibleForTesting
 DECL|method|getCurrentReservation ()
 specifier|public
 specifier|synchronized
@@ -3001,6 +3054,73 @@ argument_list|,
 name|level
 argument_list|)
 expr_stmt|;
+block|}
+comment|// related methods
+DECL|method|addPreemption (RMContainer container, long time)
+specifier|public
+name|void
+name|addPreemption
+parameter_list|(
+name|RMContainer
+name|container
+parameter_list|,
+name|long
+name|time
+parameter_list|)
+block|{
+assert|assert
+name|preemptionMap
+operator|.
+name|get
+argument_list|(
+name|container
+argument_list|)
+operator|==
+literal|null
+assert|;
+name|preemptionMap
+operator|.
+name|put
+argument_list|(
+name|container
+argument_list|,
+name|time
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getContainerPreemptionTime (RMContainer container)
+specifier|public
+name|Long
+name|getContainerPreemptionTime
+parameter_list|(
+name|RMContainer
+name|container
+parameter_list|)
+block|{
+return|return
+name|preemptionMap
+operator|.
+name|get
+argument_list|(
+name|container
+argument_list|)
+return|;
+block|}
+DECL|method|getPreemptionContainers ()
+specifier|public
+name|Set
+argument_list|<
+name|RMContainer
+argument_list|>
+name|getPreemptionContainers
+parameter_list|()
+block|{
+return|return
+name|preemptionMap
+operator|.
+name|keySet
+argument_list|()
+return|;
 block|}
 block|}
 end_class

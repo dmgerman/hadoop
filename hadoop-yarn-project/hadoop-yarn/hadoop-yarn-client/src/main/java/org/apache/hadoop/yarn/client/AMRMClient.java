@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -378,7 +388,7 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Register the application master. This must be called before any     * other interaction    * @param appHostName Name of the host on which master is running    * @param appHostPort Port master is listening on    * @param appTrackingUrl URL at which the master info can be seen    * @return<code>RegisterApplicationMasterResponse</code>    * @throws YarnRemoteException    */
+comment|/**    * Register the application master. This must be called before any     * other interaction    * @param appHostName Name of the host on which master is running    * @param appHostPort Port master is listening on    * @param appTrackingUrl URL at which the master info can be seen    * @return<code>RegisterApplicationMasterResponse</code>    * @throws YarnRemoteException    * @throws IOException    */
 specifier|public
 name|RegisterApplicationMasterResponse
 DECL|method|registerApplicationMaster (String appHostName, int appHostPort, String appTrackingUrl)
@@ -395,8 +405,10 @@ name|appTrackingUrl
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * Request additional containers and receive new container allocations.    * Requests made via<code>addContainerRequest</code> are sent to the     *<code>ResourceManager</code>. New containers assigned to the master are     * retrieved. Status of completed containers and node health updates are     * also retrieved.    * This also doubles up as a heartbeat to the ResourceManager and must be     * made periodically.    * The call may not always return any new allocations of containers.    * App should not make concurrent allocate requests. May cause request loss.    * @param progressIndicator Indicates progress made by the master    * @return the response of the allocate request    * @throws YarnRemoteException    */
+comment|/**    * Request additional containers and receive new container allocations.    * Requests made via<code>addContainerRequest</code> are sent to the     *<code>ResourceManager</code>. New containers assigned to the master are     * retrieved. Status of completed containers and node health updates are     * also retrieved.    * This also doubles up as a heartbeat to the ResourceManager and must be     * made periodically.    * The call may not always return any new allocations of containers.    * App should not make concurrent allocate requests. May cause request loss.    * @param progressIndicator Indicates progress made by the master    * @return the response of the allocate request    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|allocate (float progressIndicator)
 specifier|public
 name|AllocateResponse
@@ -407,8 +419,10 @@ name|progressIndicator
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
-comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnRemoteException    */
+comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|unregisterApplicationMaster (FinalApplicationStatus appStatus, String appMessage, String appTrackingUrl)
 specifier|public
 name|void
@@ -425,6 +439,8 @@ name|appTrackingUrl
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 comment|/**    * Request containers for resources before calling<code>allocate</code>    * @param req Resource request    */
 DECL|method|addContainerRequest (ContainerRequest req)
