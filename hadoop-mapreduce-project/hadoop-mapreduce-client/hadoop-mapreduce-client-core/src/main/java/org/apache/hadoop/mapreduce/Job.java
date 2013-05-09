@@ -905,8 +905,6 @@ name|ensureFreshStatus
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 if|if
 condition|(
@@ -933,8 +931,8 @@ name|updateStatus
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
+block|{
+try|try
 block|{
 name|this
 operator|.
@@ -980,6 +978,21 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ie
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|this
@@ -1922,8 +1935,6 @@ name|mapProgress
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -1950,8 +1961,6 @@ name|reduceProgress
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2006,8 +2015,6 @@ name|setupProgress
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2034,8 +2041,6 @@ name|isComplete
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2062,8 +2067,6 @@ name|isSuccessful
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2096,8 +2099,6 @@ name|killJob
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2106,6 +2107,8 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|cluster
 operator|.
 name|getClient
@@ -2117,6 +2120,21 @@ name|getJobID
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ie
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Set the priority of a running job.    * @param priority the new priority for the job.    * @throws IOException    */
 DECL|method|setPriority (JobPriority priority)
@@ -2333,7 +2351,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|RuntimeException
+name|IOException
 argument_list|(
 name|ie
 argument_list|)
@@ -2352,8 +2370,6 @@ name|taskId
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2362,6 +2378,8 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 return|return
 name|ugi
 operator|.
@@ -2401,6 +2419,21 @@ block|}
 argument_list|)
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ie
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Fail indicated task attempt.    *     * @param taskId the id of the task to be terminated.    * @throws IOException    */
 DECL|method|failTask (final TaskAttemptID taskId)
 specifier|public
@@ -2413,8 +2446,6 @@ name|taskId
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2423,6 +2454,8 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 return|return
 name|ugi
 operator|.
@@ -2464,6 +2497,21 @@ block|}
 argument_list|)
 return|;
 block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ie
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * Gets the counters for this job. May return null if the job has been    * retired and the job is no longer in the completed job store.    *     * @return the counters for this job.    * @throws IOException    */
 DECL|method|getCounters ()
 specifier|public
@@ -2472,8 +2520,6 @@ name|getCounters
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|ensureState
 argument_list|(
@@ -2482,6 +2528,8 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 return|return
 name|ugi
 operator|.
@@ -2521,6 +2569,21 @@ block|}
 block|}
 argument_list|)
 return|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|ie
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**    * Gets the diagnostic messages for a given task attempt.    * @param taskid    * @return the list of diagnostic messages for the task    * @throws IOException    */
 DECL|method|getTaskDiagnostics (final TaskAttemptID taskid)

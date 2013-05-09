@@ -2064,8 +2064,6 @@ name|isSuccessful
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 if|if
 condition|(
