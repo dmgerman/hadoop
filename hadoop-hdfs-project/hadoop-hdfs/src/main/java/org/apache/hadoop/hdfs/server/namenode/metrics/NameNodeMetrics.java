@@ -387,6 +387,69 @@ name|Metric
 name|MutableCounterLong
 name|filesInGetListingOps
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of allowSnapshot operations"
+argument_list|)
+DECL|field|allowSnapshotOps
+name|MutableCounterLong
+name|allowSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of disallowSnapshot operations"
+argument_list|)
+DECL|field|disallowSnapshotOps
+name|MutableCounterLong
+name|disallowSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of createSnapshot operations"
+argument_list|)
+DECL|field|createSnapshotOps
+name|MutableCounterLong
+name|createSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of deleteSnapshot operations"
+argument_list|)
+DECL|field|deleteSnapshotOps
+name|MutableCounterLong
+name|deleteSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of renameSnapshot operations"
+argument_list|)
+DECL|field|renameSnapshotOps
+name|MutableCounterLong
+name|renameSnapshotOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of listSnapshottableDirectory operations"
+argument_list|)
+DECL|field|listSnapshottableDirOps
+name|MutableCounterLong
+name|listSnapshottableDirOps
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of snapshotDiffReport operations"
+argument_list|)
+DECL|field|snapshotDiffReportOps
+name|MutableCounterLong
+name|snapshotDiffReportOps
+decl_stmt|;
 DECL|field|transactions
 annotation|@
 name|Metric
@@ -757,12 +820,12 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incrFilesDeleted (int delta)
+DECL|method|incrFilesDeleted (long delta)
 specifier|public
 name|void
 name|incrFilesDeleted
 parameter_list|(
-name|int
+name|long
 name|delta
 parameter_list|)
 block|{
@@ -846,6 +909,90 @@ name|incrGetLinkTargetOps
 parameter_list|()
 block|{
 name|getLinkTargetOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrAllowSnapshotOps ()
+specifier|public
+name|void
+name|incrAllowSnapshotOps
+parameter_list|()
+block|{
+name|allowSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrDisAllowSnapshotOps ()
+specifier|public
+name|void
+name|incrDisAllowSnapshotOps
+parameter_list|()
+block|{
+name|disallowSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrCreateSnapshotOps ()
+specifier|public
+name|void
+name|incrCreateSnapshotOps
+parameter_list|()
+block|{
+name|createSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrDeleteSnapshotOps ()
+specifier|public
+name|void
+name|incrDeleteSnapshotOps
+parameter_list|()
+block|{
+name|deleteSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrRenameSnapshotOps ()
+specifier|public
+name|void
+name|incrRenameSnapshotOps
+parameter_list|()
+block|{
+name|renameSnapshotOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrListSnapshottableDirOps ()
+specifier|public
+name|void
+name|incrListSnapshottableDirOps
+parameter_list|()
+block|{
+name|listSnapshottableDirOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrSnapshotDiffReportOps ()
+specifier|public
+name|void
+name|incrSnapshotDiffReportOps
+parameter_list|()
+block|{
+name|snapshotDiffReportOps
 operator|.
 name|incr
 argument_list|()

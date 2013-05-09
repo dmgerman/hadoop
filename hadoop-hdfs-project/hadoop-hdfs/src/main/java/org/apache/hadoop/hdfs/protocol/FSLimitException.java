@@ -46,20 +46,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -144,6 +130,11 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|field|childName
+specifier|private
+name|String
+name|childName
+decl_stmt|;
 DECL|method|PathComponentTooLongException ()
 specifier|protected
 name|PathComponentTooLongException
@@ -163,7 +154,7 @@ name|msg
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|PathComponentTooLongException (long quota, long count)
+DECL|method|PathComponentTooLongException (long quota, long count, String parentPath, String childName)
 specifier|public
 name|PathComponentTooLongException
 parameter_list|(
@@ -172,6 +163,12 @@ name|quota
 parameter_list|,
 name|long
 name|count
+parameter_list|,
+name|String
+name|parentPath
+parameter_list|,
+name|String
+name|childName
 parameter_list|)
 block|{
 name|super
@@ -181,6 +178,26 @@ argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
+name|setPathName
+argument_list|(
+name|parentPath
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|childName
+operator|=
+name|childName
+expr_stmt|;
+block|}
+DECL|method|getParentPath ()
+name|String
+name|getParentPath
+parameter_list|()
+block|{
+return|return
+name|pathName
+return|;
 block|}
 annotation|@
 name|Override
@@ -190,28 +207,14 @@ name|String
 name|getMessage
 parameter_list|()
 block|{
-name|Path
-name|violator
-init|=
-operator|new
-name|Path
-argument_list|(
-name|pathName
-argument_list|)
-decl_stmt|;
 return|return
 literal|"The maximum path component name limit of "
 operator|+
-name|violator
-operator|.
-name|getName
-argument_list|()
+name|childName
 operator|+
 literal|" in directory "
 operator|+
-name|violator
-operator|.
-name|getParent
+name|getParentPath
 argument_list|()
 operator|+
 literal|" is exceeded: limit="
@@ -302,6 +305,45 @@ literal|" items="
 operator|+
 name|count
 return|;
+block|}
+block|}
+comment|/** The given name is illegal. */
+DECL|class|IllegalNameException
+specifier|public
+specifier|static
+specifier|final
+class|class
+name|IllegalNameException
+extends|extends
+name|FSLimitException
+block|{
+DECL|field|serialVersionUID
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|method|IllegalNameException ()
+specifier|public
+name|IllegalNameException
+parameter_list|()
+block|{}
+DECL|method|IllegalNameException (String msg)
+specifier|public
+name|IllegalNameException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 block|}

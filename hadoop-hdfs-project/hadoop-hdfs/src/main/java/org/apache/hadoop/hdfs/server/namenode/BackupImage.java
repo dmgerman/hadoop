@@ -738,12 +738,16 @@ operator|.
 name|getLastAppliedTxId
 argument_list|()
 expr_stmt|;
+name|FSImage
+operator|.
+name|updateCountForQuota
+argument_list|(
 name|namesystem
 operator|.
 name|dir
 operator|.
-name|updateCountForINodeWithQuota
-argument_list|()
+name|rootDir
+argument_list|)
 expr_stmt|;
 comment|// inefficient!
 block|}

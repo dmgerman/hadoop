@@ -6841,6 +6841,118 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{   }
+comment|/**    * Create a snapshot with a default name.    * @param path The directory where snapshots will be taken.    * @return the snapshot path.    */
+DECL|method|createSnapshot (Path path)
+specifier|public
+specifier|final
+name|Path
+name|createSnapshot
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|createSnapshot
+argument_list|(
+name|path
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a snapshot    * @param path The directory where snapshots will be taken.    * @param snapshotName The name of the snapshot    * @return the snapshot path.    */
+DECL|method|createSnapshot (Path path, String snapshotName)
+specifier|public
+name|Path
+name|createSnapshot
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support createSnapshot"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Rename a snapshot    * @param path The directory path where the snapshot was taken    * @param snapshotOldName Old name of the snapshot    * @param snapshotNewName New name of the snapshot    * @throws IOException    */
+DECL|method|renameSnapshot (Path path, String snapshotOldName, String snapshotNewName)
+specifier|public
+name|void
+name|renameSnapshot
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|String
+name|snapshotOldName
+parameter_list|,
+name|String
+name|snapshotNewName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support renameSnapshot"
+argument_list|)
+throw|;
+block|}
+comment|/**    * Delete a snapshot of a directory    * @param path  The directory that the to-be-deleted snapshot belongs to    * @param snapshotName The name of the snapshot    */
+DECL|method|deleteSnapshot (Path path, String snapshotName)
+specifier|public
+name|void
+name|deleteSnapshot
+parameter_list|(
+name|Path
+name|path
+parameter_list|,
+name|String
+name|snapshotName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
+operator|+
+literal|" doesn't support deleteSnapshot"
+argument_list|)
+throw|;
+block|}
 comment|// making it volatile to be able to do a double checked locking
 DECL|field|FILE_SYSTEMS_LOADED
 specifier|private

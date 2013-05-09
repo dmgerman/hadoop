@@ -372,6 +372,15 @@ literal|"Assign a unique inode id for each inode"
 argument_list|,
 literal|false
 argument_list|)
+block|,
+DECL|enumConstant|SNAPSHOT
+name|SNAPSHOT
+argument_list|(
+operator|-
+literal|43
+argument_list|,
+literal|"Support for snapshot feature"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

@@ -162,6 +162,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -206,6 +226,58 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/** @return a string for throwing {@link AccessControlException} */
+DECL|method|toAccessControlString (INode inode)
+specifier|private
+specifier|static
+name|String
+name|toAccessControlString
+parameter_list|(
+name|INode
+name|inode
+parameter_list|)
+block|{
+return|return
+literal|"\""
+operator|+
+name|inode
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|"\":"
+operator|+
+name|inode
+operator|.
+name|getUserName
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|inode
+operator|.
+name|getGroupName
+argument_list|()
+operator|+
+literal|":"
+operator|+
+operator|(
+name|inode
+operator|.
+name|isDirectory
+argument_list|()
+condition|?
+literal|"d"
+else|:
+literal|"-"
+operator|)
+operator|+
+name|inode
+operator|.
+name|getFsPermission
+argument_list|()
+return|;
+block|}
 DECL|field|ugi
 specifier|private
 specifier|final
@@ -465,18 +537,33 @@ block|}
 comment|// check if (parentAccess != null)&& file exists, then check sb
 comment|// Resolve symlinks, the check is performed on the link target.
 specifier|final
-name|INode
-index|[]
-name|inodes
+name|INodesInPath
+name|inodesInPath
 init|=
 name|root
 operator|.
-name|getExistingPathINodes
+name|getINodesInPath
 argument_list|(
 name|path
 argument_list|,
 literal|true
 argument_list|)
+decl_stmt|;
+specifier|final
+name|Snapshot
+name|snapshot
+init|=
+name|inodesInPath
+operator|.
+name|getPathSnapshot
+argument_list|()
+decl_stmt|;
+specifier|final
+name|INode
+index|[]
+name|inodes
+init|=
+name|inodesInPath
 operator|.
 name|getINodes
 argument_list|()
@@ -513,8 +600,23 @@ argument_list|(
 name|inodes
 argument_list|,
 name|ancestorIndex
+argument_list|,
+name|snapshot
 argument_list|)
 expr_stmt|;
+specifier|final
+name|INode
+name|last
+init|=
+name|inodes
+index|[
+name|inodes
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+decl_stmt|;
 if|if
 condition|(
 name|parentAccess
@@ -536,14 +638,7 @@ name|length
 operator|>
 literal|1
 operator|&&
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
 operator|!=
 literal|null
 condition|)
@@ -559,14 +654,9 @@ operator|-
 literal|2
 index|]
 argument_list|,
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
+argument_list|,
+name|snapshot
 argument_list|)
 expr_stmt|;
 block|}
@@ -589,6 +679,8 @@ name|inodes
 argument_list|,
 name|ancestorIndex
 argument_list|,
+name|snapshot
+argument_list|,
 name|ancestorAccess
 argument_list|)
 expr_stmt|;
@@ -616,6 +708,8 @@ name|length
 operator|-
 literal|2
 argument_list|,
+name|snapshot
+argument_list|,
 name|parentAccess
 argument_list|)
 expr_stmt|;
@@ -629,14 +723,9 @@ condition|)
 block|{
 name|check
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
+argument_list|,
+name|snapshot
 argument_list|,
 name|access
 argument_list|)
@@ -651,14 +740,9 @@ condition|)
 block|{
 name|checkSubAccess
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
+argument_list|,
+name|snapshot
 argument_list|,
 name|subAccess
 argument_list|)
@@ -671,26 +755,24 @@ condition|)
 block|{
 name|checkOwner
 argument_list|(
-name|inodes
-index|[
-name|inodes
-operator|.
-name|length
-operator|-
-literal|1
-index|]
+name|last
+argument_list|,
+name|snapshot
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkOwner (INode inode)
+DECL|method|checkOwner (INode inode, Snapshot snapshot )
 specifier|private
 name|void
 name|checkOwner
 parameter_list|(
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -708,7 +790,9 @@ argument_list|(
 name|inode
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -723,7 +807,7 @@ argument_list|)
 throw|;
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkTraverse (INode[] inodes, int last )
+DECL|method|checkTraverse (INode[] inodes, int last, Snapshot snapshot )
 specifier|private
 name|void
 name|checkTraverse
@@ -734,6 +818,9 @@ name|inodes
 parameter_list|,
 name|int
 name|last
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -760,6 +847,8 @@ index|[
 name|j
 index|]
 argument_list|,
+name|snapshot
+argument_list|,
 name|FsAction
 operator|.
 name|EXECUTE
@@ -768,13 +857,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkSubAccess (INode inode, FsAction access )
+DECL|method|checkSubAccess (INode inode, Snapshot snapshot, FsAction access )
 specifier|private
 name|void
 name|checkSubAccess
 parameter_list|(
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|,
 name|FsAction
 name|access
@@ -816,10 +908,10 @@ name|directories
 operator|.
 name|push
 argument_list|(
-operator|(
-name|INodeDirectory
-operator|)
 name|inode
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|)
 init|;
 operator|!
@@ -842,6 +934,8 @@ name|check
 argument_list|(
 name|d
 argument_list|,
+name|snapshot
+argument_list|,
 name|access
 argument_list|)
 expr_stmt|;
@@ -853,7 +947,9 @@ range|:
 name|d
 operator|.
 name|getChildrenList
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 control|)
 block|{
 if|if
@@ -868,10 +964,10 @@ name|directories
 operator|.
 name|push
 argument_list|(
-operator|(
-name|INodeDirectory
-operator|)
 name|child
+operator|.
+name|asDirectory
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -879,7 +975,7 @@ block|}
 block|}
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|check (INode[] inodes, int i, FsAction access )
+DECL|method|check (INode[] inodes, int i, Snapshot snapshot, FsAction access )
 specifier|private
 name|void
 name|check
@@ -890,6 +986,9 @@ name|inodes
 parameter_list|,
 name|int
 name|i
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|,
 name|FsAction
 name|access
@@ -910,18 +1009,23 @@ index|]
 else|:
 literal|null
 argument_list|,
+name|snapshot
+argument_list|,
 name|access
 argument_list|)
 expr_stmt|;
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|check (INode inode, FsAction access )
+DECL|method|check (INode inode, Snapshot snapshot, FsAction access )
 specifier|private
 name|void
 name|check
 parameter_list|(
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|,
 name|FsAction
 name|access
@@ -944,7 +1048,9 @@ init|=
 name|inode
 operator|.
 name|getFsPermission
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -955,7 +1061,9 @@ argument_list|(
 name|inode
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -986,7 +1094,9 @@ argument_list|(
 name|inode
 operator|.
 name|getGroupName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -1040,12 +1150,15 @@ name|access
 operator|+
 literal|", inode="
 operator|+
+name|toAccessControlString
+argument_list|(
 name|inode
+argument_list|)
 argument_list|)
 throw|;
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkStickyBit (INode parent, INode inode)
+DECL|method|checkStickyBit (INode parent, INode inode, Snapshot snapshot )
 specifier|private
 name|void
 name|checkStickyBit
@@ -1055,6 +1168,9 @@ name|parent
 parameter_list|,
 name|INode
 name|inode
+parameter_list|,
+name|Snapshot
+name|snapshot
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -1065,7 +1181,9 @@ operator|!
 name|parent
 operator|.
 name|getFsPermission
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 operator|.
 name|getStickyBit
 argument_list|()
@@ -1079,7 +1197,9 @@ condition|(
 name|parent
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 operator|.
 name|equals
 argument_list|(
@@ -1095,7 +1215,9 @@ condition|(
 name|inode
 operator|.
 name|getUserName
-argument_list|()
+argument_list|(
+name|snapshot
+argument_list|)
 operator|.
 name|equals
 argument_list|(

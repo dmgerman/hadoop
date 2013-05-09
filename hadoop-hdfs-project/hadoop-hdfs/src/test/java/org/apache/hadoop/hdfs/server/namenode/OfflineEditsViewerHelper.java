@@ -835,6 +835,71 @@ argument_list|(
 name|pathDirectoryMkdir
 argument_list|)
 expr_stmt|;
+comment|// OP_ALLOW_SNAPSHOT 29
+name|dfs
+operator|.
+name|allowSnapshot
+argument_list|(
+name|pathDirectoryMkdir
+argument_list|)
+expr_stmt|;
+comment|// OP_DISALLOW_SNAPSHOT 30
+name|dfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|pathDirectoryMkdir
+argument_list|)
+expr_stmt|;
+comment|// OP_CREATE_SNAPSHOT 26
+name|String
+name|ssName
+init|=
+literal|"snapshot1"
+decl_stmt|;
+name|dfs
+operator|.
+name|allowSnapshot
+argument_list|(
+name|pathDirectoryMkdir
+argument_list|)
+expr_stmt|;
+name|dfs
+operator|.
+name|createSnapshot
+argument_list|(
+name|pathDirectoryMkdir
+argument_list|,
+name|ssName
+argument_list|)
+expr_stmt|;
+comment|// OP_RENAME_SNAPSHOT 28
+name|String
+name|ssNewName
+init|=
+literal|"snapshot2"
+decl_stmt|;
+name|dfs
+operator|.
+name|renameSnapshot
+argument_list|(
+name|pathDirectoryMkdir
+argument_list|,
+name|ssName
+argument_list|,
+name|ssNewName
+argument_list|)
+expr_stmt|;
+comment|// OP_DELETE_SNAPSHOT 27
+name|dfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|pathDirectoryMkdir
+argument_list|,
+name|ssNewName
+argument_list|)
+expr_stmt|;
 comment|// OP_SET_REPLICATION 4
 name|s
 operator|=
