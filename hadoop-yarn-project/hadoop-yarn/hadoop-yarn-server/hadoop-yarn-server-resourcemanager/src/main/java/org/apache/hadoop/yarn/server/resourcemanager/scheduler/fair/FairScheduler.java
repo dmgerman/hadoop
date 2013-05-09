@@ -4857,6 +4857,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+name|assignedContainers
+operator|++
+expr_stmt|;
 name|assignedContainer
 operator|=
 literal|true
