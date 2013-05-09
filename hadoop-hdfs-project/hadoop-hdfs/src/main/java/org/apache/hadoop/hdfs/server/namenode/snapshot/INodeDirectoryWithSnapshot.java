@@ -4613,7 +4613,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Destroy a subtree under a DstReference node.    * @see INodeReference.DstReference#destroyAndCollectBlocks(BlocksMapUpdateInfo, List)    */
+comment|/**    * Destroy a subtree under a DstReference node.    */
 DECL|method|destroyDstSubtree (INode inode, final Snapshot snapshot, final Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 specifier|static
