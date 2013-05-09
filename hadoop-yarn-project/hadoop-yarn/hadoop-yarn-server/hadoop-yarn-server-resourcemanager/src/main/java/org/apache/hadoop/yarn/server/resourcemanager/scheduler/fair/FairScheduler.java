@@ -1631,15 +1631,6 @@ operator|.
 name|recomputeShares
 argument_list|()
 expr_stmt|;
-comment|// Update recorded capacity of root queue (child queues are updated
-comment|// when fair share is calculated).
-name|rootMetrics
-operator|.
-name|setAvailableResourcesToQueue
-argument_list|(
-name|clusterCapacity
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Update the preemption fields for all QueueScheduables, i.e. the times since    * each queue last was at its guaranteed share and at> 1/2 of its fair share    * for each type of task.    */
 DECL|method|updatePreemptionVariables ()
@@ -3780,6 +3771,9 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+name|updateRootQueueMetrics
+argument_list|()
+expr_stmt|;
 block|}
 name|LOG
 operator|.
@@ -3844,6 +3838,9 @@ name|getTotalCapability
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|updateRootQueueMetrics
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3895,6 +3892,9 @@ operator|.
 name|getTotalCapability
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|updateRootQueueMetrics
+argument_list|()
 expr_stmt|;
 comment|// Remove running containers
 name|List
@@ -4900,6 +4900,9 @@ break|break;
 block|}
 block|}
 block|}
+name|updateRootQueueMetrics
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -5001,6 +5004,31 @@ name|appAttemptId
 argument_list|)
 argument_list|)
 return|;
+block|}
+comment|/**    * Subqueue metrics might be a little out of date because fair shares are    * recalculated at the update interval, but the root queue metrics needs to    * be updated synchronously with allocations and completions so that cluster    * metrics will be consistent.    */
+DECL|method|updateRootQueueMetrics ()
+specifier|private
+name|void
+name|updateRootQueueMetrics
+parameter_list|()
+block|{
+name|rootMetrics
+operator|.
+name|setAvailableResourcesToQueue
+argument_list|(
+name|Resources
+operator|.
+name|subtract
+argument_list|(
+name|clusterCapacity
+argument_list|,
+name|rootMetrics
+operator|.
+name|getAllocatedResources
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
