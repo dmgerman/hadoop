@@ -22,6 +22,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -706,7 +716,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Registers this application master with the resource manager. On successful    * registration, starts the heartbeating thread.    */
+comment|/**    * Registers this application master with the resource manager. On successful    * registration, starts the heartbeating thread.    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|registerApplicationMaster ( String appHostName, int appHostPort, String appTrackingUrl)
 specifier|public
 name|RegisterApplicationMasterResponse
@@ -723,6 +733,8 @@ name|appTrackingUrl
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterApplicationMasterResponse
 name|response
@@ -747,7 +759,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnRemoteException    */
+comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|unregisterApplicationMaster (FinalApplicationStatus appStatus, String appMessage, String appTrackingUrl)
 specifier|public
 name|void
@@ -764,6 +776,8 @@ name|appTrackingUrl
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 synchronized|synchronized
 init|(
@@ -946,6 +960,22 @@ argument_list|(
 literal|"Failed to heartbeat"
 argument_list|,
 name|ex
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to heartbeat"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

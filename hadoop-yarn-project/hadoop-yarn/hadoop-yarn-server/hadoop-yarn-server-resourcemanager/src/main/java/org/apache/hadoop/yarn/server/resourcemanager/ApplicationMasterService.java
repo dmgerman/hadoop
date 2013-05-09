@@ -1328,6 +1328,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -1588,6 +1590,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -1718,6 +1722,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|ApplicationAttemptId
 name|appAttemptId

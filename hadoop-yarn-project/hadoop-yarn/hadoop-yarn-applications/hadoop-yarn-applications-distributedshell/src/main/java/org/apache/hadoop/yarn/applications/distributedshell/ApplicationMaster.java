@@ -2277,7 +2277,7 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Main run function for the application master    *    * @throws YarnRemoteException    */
+comment|/**    * Main run function for the application master    *    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|run ()
 specifier|public
 name|boolean
@@ -2285,6 +2285,8 @@ name|run
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|LOG
 operator|.
@@ -2670,6 +2672,22 @@ argument_list|(
 literal|"Failed to unregister application"
 argument_list|,
 name|ex
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to unregister application"
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 block|}

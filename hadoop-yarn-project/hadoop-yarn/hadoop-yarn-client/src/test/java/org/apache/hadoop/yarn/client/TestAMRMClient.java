@@ -996,6 +996,8 @@ name|testAMRMClient
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|AMRMClientImpl
 name|amClient
@@ -1092,6 +1094,8 @@ name|amClient
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// setup container request
 specifier|final

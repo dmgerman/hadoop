@@ -3246,6 +3246,8 @@ throws|throws
 name|YarnRemoteException
 throws|,
 name|InterruptedException
+throws|,
+name|IOException
 block|{
 comment|// Request a container allocation.
 name|List

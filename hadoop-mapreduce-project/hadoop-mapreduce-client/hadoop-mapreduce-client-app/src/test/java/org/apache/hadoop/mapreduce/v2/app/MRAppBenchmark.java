@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -1322,6 +1332,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterApplicationMasterResponse
 name|response
@@ -1378,6 +1390,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|FinishApplicationMasterResponse
 name|response
@@ -1406,6 +1420,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|AllocateResponse
 name|response

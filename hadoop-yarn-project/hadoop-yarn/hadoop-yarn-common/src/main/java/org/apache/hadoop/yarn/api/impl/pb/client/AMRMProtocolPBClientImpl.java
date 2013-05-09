@@ -573,6 +573,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|AllocateRequestProto
 name|requestProto
@@ -632,6 +634,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|FinishApplicationMasterRequestProto
 name|requestProto
@@ -691,6 +695,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterApplicationMasterRequestProto
 name|requestProto

@@ -607,6 +607,12 @@ name|YarnRemoteException
 name|e
 parameter_list|)
 block|{       }
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{       }
 return|return
 name|scheduler
 return|;

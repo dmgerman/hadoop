@@ -20,6 +20,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -610,6 +620,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// TODO Auto-generated method stub
 return|return
@@ -628,6 +640,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// TODO Auto-generated method stub
 return|return
@@ -646,6 +660,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 comment|// TODO Auto-generated method stub
 return|return
