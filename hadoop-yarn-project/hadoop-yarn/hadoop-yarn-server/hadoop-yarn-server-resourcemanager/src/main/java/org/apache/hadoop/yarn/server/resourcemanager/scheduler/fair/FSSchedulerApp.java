@@ -140,7 +140,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Stable
+name|Unstable
 import|;
 end_import
 
@@ -686,6 +686,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|HashMultiset
@@ -707,6 +721,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|FSSchedulerApp
 specifier|public
 class|class
@@ -1815,9 +1833,7 @@ return|;
 block|}
 comment|/**    * Get total current reservations.    * Used only by unit tests    * @return total current reservations    */
 annotation|@
-name|Stable
-annotation|@
-name|Private
+name|VisibleForTesting
 DECL|method|getCurrentReservation ()
 specifier|public
 specifier|synchronized
