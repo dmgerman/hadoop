@@ -353,11 +353,7 @@ expr_stmt|;
 name|reader
 operator|.
 name|close
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Test that if we do an incomplete read, we don't call CHECKSUM_OK    */
@@ -428,11 +424,7 @@ expr_stmt|;
 name|reader
 operator|.
 name|close
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Test that if we ask for a half block, and read it all, we *do*    * send CHECKSUM_OK. The DN takes care of knowing whether it was    * the whole block or not.    */
@@ -502,11 +494,7 @@ expr_stmt|;
 name|reader
 operator|.
 name|close
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Test various unaligned reads to make sure that we properly    * account even when we don't start or end on a checksum boundary    */
@@ -633,11 +621,7 @@ expr_stmt|;
 name|reader
 operator|.
 name|close
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -406,7 +406,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|method|newBlockReader ( Configuration conf, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, DomainSocketFactory domSockFactory, boolean allowShortCircuitLocalReads)
+DECL|method|newBlockReader ( Configuration conf, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, DomainSocketFactory domSockFactory, PeerCache peerCache, FileInputStreamCache fisCache, boolean allowShortCircuitLocalReads)
 specifier|public
 specifier|static
 name|BlockReader
@@ -447,6 +447,12 @@ name|datanodeID
 parameter_list|,
 name|DomainSocketFactory
 name|domSockFactory
+parameter_list|,
+name|PeerCache
+name|peerCache
+parameter_list|,
+name|FileInputStreamCache
+name|fisCache
 parameter_list|,
 name|boolean
 name|allowShortCircuitLocalReads
@@ -538,6 +544,8 @@ argument_list|,
 name|domSockFactory
 argument_list|,
 name|verifyChecksum
+argument_list|,
+name|fisCache
 argument_list|)
 decl_stmt|;
 if|if
@@ -549,40 +557,13 @@ condition|)
 block|{
 comment|// One we've constructed the short-circuit block reader, we don't
 comment|// need the socket any more.  So let's return it to the cache.
-name|PeerCache
+if|if
+condition|(
 name|peerCache
-init|=
-name|PeerCache
-operator|.
-name|getInstance
-argument_list|(
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_SOCKET_CACHE_CAPACITY_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_SOCKET_CACHE_CAPACITY_DEFAULT
-argument_list|)
-argument_list|,
-name|conf
-operator|.
-name|getLong
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_DEFAULT
-argument_list|)
-argument_list|)
-decl_stmt|;
+operator|!=
+literal|null
+condition|)
+block|{
 name|peerCache
 operator|.
 name|put
@@ -592,6 +573,19 @@ argument_list|,
 name|peer
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+literal|null
+argument_list|,
+name|peer
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|reader
 return|;
@@ -683,6 +677,8 @@ argument_list|,
 name|peer
 argument_list|,
 name|datanodeID
+argument_list|,
+name|peerCache
 argument_list|)
 return|;
 block|}
@@ -710,12 +706,14 @@ argument_list|,
 name|peer
 argument_list|,
 name|datanodeID
+argument_list|,
+name|peerCache
 argument_list|)
 return|;
 block|}
 block|}
 comment|/**    * Create a new short-circuit BlockReader.    *     * Here, we ask the DataNode to pass us file descriptors over our    * DomainSocket.  If the DataNode declines to do so, we'll return null here;    * otherwise, we'll return the BlockReaderLocal.  If the DataNode declines,    * this function will inform the DomainSocketFactory that short-circuit local    * reads are disabled for this DataNode, so that we don't ask again.    *     * @param conf               the configuration.    * @param file               the file name. Used in log messages.    * @param block              The block object.    * @param blockToken         The block token for security.    * @param startOffset        The read offset, relative to block head.    * @param len                The number of bytes to read, or -1 to read     *                           as many as possible.    * @param peer               The peer to use.    * @param datanodeID         The datanode that the Peer is connected to.    * @param domSockFactory     The DomainSocketFactory to notify if the Peer    *                           is a DomainPeer which turns out to be faulty.    *                           If null, no factory will be notified in this    *                           case.    * @param verifyChecksum     True if we should verify the checksums.    *                           Note: even if this is true, when    *                           DFS_CLIENT_READ_CHECKSUM_SKIP_CHECKSUM_KEY is    *                           set, we will skip checksums.    *    * @return                   The BlockReaderLocal, or null if the    *                           DataNode declined to provide short-circuit    *                           access.    * @throws IOException       If there was a communication error.    */
-DECL|method|newShortCircuitBlockReader ( Configuration conf, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, Peer peer, DatanodeID datanodeID, DomainSocketFactory domSockFactory, boolean verifyChecksum)
+DECL|method|newShortCircuitBlockReader ( Configuration conf, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, Peer peer, DatanodeID datanodeID, DomainSocketFactory domSockFactory, boolean verifyChecksum, FileInputStreamCache fisCache)
 specifier|private
 specifier|static
 name|BlockReaderLocal
@@ -753,6 +751,9 @@ name|domSockFactory
 parameter_list|,
 name|boolean
 name|verifyChecksum
+parameter_list|,
+name|FileInputStreamCache
+name|fisCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -905,6 +906,8 @@ argument_list|,
 name|datanodeID
 argument_list|,
 name|verifyChecksum
+argument_list|,
+name|fisCache
 argument_list|)
 expr_stmt|;
 block|}

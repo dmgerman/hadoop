@@ -3070,18 +3070,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|close (PeerCache peerCache, FileInputStreamCache fisCache)
+DECL|method|close ()
 specifier|public
 specifier|synchronized
 name|void
 name|close
-parameter_list|(
-name|PeerCache
-name|peerCache
-parameter_list|,
-name|FileInputStreamCache
-name|fisCache
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{

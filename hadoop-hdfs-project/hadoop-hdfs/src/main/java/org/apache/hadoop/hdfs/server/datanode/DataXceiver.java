@@ -1978,29 +1978,15 @@ name|String
 operator|.
 name|format
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"src: %s, dest: %s, op: %s, blockid: %s, srvID: %s, "
+literal|"src: 127.0.0.1, dest: 127.0.0.1, op: REQUEST_SHORT_CIRCUIT_FDS,"
 operator|+
-literal|"success: %b"
+literal|" blockid: %s, srvID: %s, success: %b"
 argument_list|,
-literal|"127.0.0.1"
-argument_list|,
-comment|// src IP
-literal|"127.0.0.1"
-argument_list|,
-comment|// dst IP
-literal|"REQUEST_SHORT_CIRCUIT_FDS"
-argument_list|,
-comment|// operation
 name|blk
 operator|.
 name|getBlockId
 argument_list|()
 argument_list|,
-comment|// block id
 name|dnR
 operator|.
 name|getStorageID
@@ -2011,7 +1997,6 @@ name|fis
 operator|!=
 literal|null
 operator|)
-argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

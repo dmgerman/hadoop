@@ -503,6 +503,12 @@ specifier|private
 name|DatanodeID
 name|datanodeID
 decl_stmt|;
+DECL|field|peerCache
+specifier|final
+specifier|private
+name|PeerCache
+name|peerCache
+decl_stmt|;
 DECL|field|in
 specifier|private
 specifier|final
@@ -1238,7 +1244,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID)
+DECL|method|RemoteBlockReader2 (String file, String bpid, long blockId, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache)
 specifier|protected
 name|RemoteBlockReader2
 parameter_list|(
@@ -1271,6 +1277,9 @@ name|peer
 parameter_list|,
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|PeerCache
+name|peerCache
 parameter_list|)
 block|{
 comment|// Path is used only for printing block and file information in debug
@@ -1326,6 +1335,12 @@ name|filename
 operator|=
 name|file
 expr_stmt|;
+name|this
+operator|.
+name|peerCache
+operator|=
+name|peerCache
+expr_stmt|;
 comment|// The total number of bytes that we need to transfer from the DN is
 comment|// the amount that the user wants (bytesToRead), plus the padding at
 comment|// the beginning in order to chunk-align. Note that the DN may elect
@@ -1363,18 +1378,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|close (PeerCache peerCache, FileInputStreamCache fisCache)
+DECL|method|close ()
 specifier|public
 specifier|synchronized
 name|void
 name|close
-parameter_list|(
-name|PeerCache
-name|peerCache
-parameter_list|,
-name|FileInputStreamCache
-name|fisCache
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
@@ -1631,7 +1640,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param sock  An established Socket to the DN. The BlockReader will not close it normally.    *             This socket must have an associated Channel.    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @param peer  The Peer to use    * @param datanodeID  The DatanodeID this peer is connected to    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID)
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache)
 specifier|public
 specifier|static
 name|BlockReader
@@ -1666,6 +1675,9 @@ name|peer
 parameter_list|,
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|PeerCache
+name|peerCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1850,6 +1862,8 @@ argument_list|,
 name|peer
 argument_list|,
 name|datanodeID
+argument_list|,
+name|peerCache
 argument_list|)
 return|;
 block|}

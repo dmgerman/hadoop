@@ -4741,26 +4741,6 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|getShortCircuitFdsForRead (ExtendedBlock block)
-specifier|public
-name|FileInputStream
-index|[]
-name|getShortCircuitFdsForRead
-parameter_list|(
-name|ExtendedBlock
-name|block
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
-block|}
-annotation|@
-name|Override
 DECL|method|getHdfsBlocksMetadata (List<ExtendedBlock> blocks)
 specifier|public
 name|HdfsBlocksMetadata

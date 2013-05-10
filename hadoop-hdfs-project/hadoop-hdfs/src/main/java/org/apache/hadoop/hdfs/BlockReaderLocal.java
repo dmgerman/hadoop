@@ -328,6 +328,12 @@ specifier|final
 name|ExtendedBlock
 name|block
 decl_stmt|;
+DECL|field|fisCache
+specifier|private
+specifier|final
+name|FileInputStreamCache
+name|fisCache
+decl_stmt|;
 DECL|method|getSlowReadBufferNumChunks (Configuration conf, int bytesPerChecksum)
 specifier|private
 specifier|static
@@ -393,7 +399,7 @@ operator|/
 name|bytesPerChecksum
 return|;
 block|}
-DECL|method|BlockReaderLocal (Configuration conf, String filename, ExtendedBlock block, long startOffset, long length, FileInputStream dataIn, FileInputStream checksumIn, DatanodeID datanodeID, boolean verifyChecksum)
+DECL|method|BlockReaderLocal (Configuration conf, String filename, ExtendedBlock block, long startOffset, long length, FileInputStream dataIn, FileInputStream checksumIn, DatanodeID datanodeID, boolean verifyChecksum, FileInputStreamCache fisCache)
 specifier|public
 name|BlockReaderLocal
 parameter_list|(
@@ -423,6 +429,9 @@ name|datanodeID
 parameter_list|,
 name|boolean
 name|verifyChecksum
+parameter_list|,
+name|FileInputStreamCache
+name|fisCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -469,6 +478,12 @@ operator|.
 name|block
 operator|=
 name|block
+expr_stmt|;
+name|this
+operator|.
+name|fisCache
+operator|=
+name|fisCache
 expr_stmt|;
 comment|// read and handle the common header here. For now just a version
 name|checksumIn
@@ -2034,18 +2049,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|close (PeerCache peerCache, FileInputStreamCache fisCache)
+DECL|method|close ()
 specifier|public
 specifier|synchronized
 name|void
 name|close
-parameter_list|(
-name|PeerCache
-name|peerCache
-parameter_list|,
-name|FileInputStreamCache
-name|fisCache
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{

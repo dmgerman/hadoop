@@ -95,6 +95,16 @@ return|return
 name|length
 return|;
 block|}
+DECL|method|getWrappedStream ()
+specifier|public
+name|InputStream
+name|getWrappedStream
+parameter_list|()
+block|{
+return|return
+name|in
+return|;
+block|}
 block|}
 end_class
 

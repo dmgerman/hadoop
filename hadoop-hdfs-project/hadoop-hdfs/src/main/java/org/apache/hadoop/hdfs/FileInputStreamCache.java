@@ -511,7 +511,7 @@ name|otherKey
 operator|.
 name|block
 argument_list|)
-operator|&
+operator|&&
 operator|(
 name|block
 operator|.
@@ -525,7 +525,7 @@ operator|.
 name|getGenerationStamp
 argument_list|()
 operator|)
-operator|&
+operator|&&
 name|datanodeID
 operator|.
 name|equals
@@ -968,15 +968,6 @@ operator|.
 name|hasNext
 argument_list|()
 condition|;
-name|iter
-operator|=
-name|map
-operator|.
-name|entries
-argument_list|()
-operator|.
-name|iterator
-argument_list|()
 control|)
 block|{
 name|Entry

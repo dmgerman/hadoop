@@ -1611,6 +1611,10 @@ argument_list|)
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -1699,11 +1703,7 @@ block|}
 name|blockReader
 operator|.
 name|close
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|out
 operator|.

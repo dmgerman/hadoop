@@ -80,16 +80,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|Socket
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|nio
 operator|.
 name|ByteBuffer
@@ -201,24 +191,6 @@ operator|.
 name|datatransfer
 operator|.
 name|DataTransferProtoUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|datatransfer
-operator|.
-name|IOStreamPair
 import|;
 end_import
 
@@ -362,41 +334,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|io
 operator|.
 name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|net
-operator|.
-name|NetUtils
 import|;
 end_import
 
@@ -563,6 +503,12 @@ name|int
 name|dataLeft
 init|=
 literal|0
+decl_stmt|;
+DECL|field|peerCache
+specifier|private
+specifier|final
+name|PeerCache
+name|peerCache
 decl_stmt|;
 comment|/* FSInputChecker interface */
 comment|/* same interface as inputStream java.io.InputStream#read()    * used by DFSInputStream#read()    * This violates one rule when there is a checksum error:    * "Read should not modify user buffer before successful read"    * because it first reads the data to user buffer and then checks    * the checksum.    */
@@ -1455,7 +1401,7 @@ return|return
 name|bytesToRead
 return|;
 block|}
-DECL|method|RemoteBlockReader (String file, String bpid, long blockId, DataInputStream in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID)
+DECL|method|RemoteBlockReader (String file, String bpid, long blockId, DataInputStream in, DataChecksum checksum, boolean verifyChecksum, long startOffset, long firstChunkOffset, long bytesToRead, Peer peer, DatanodeID datanodeID, PeerCache peerCache)
 specifier|private
 name|RemoteBlockReader
 parameter_list|(
@@ -1491,6 +1437,9 @@ name|peer
 parameter_list|,
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|PeerCache
+name|peerCache
 parameter_list|)
 block|{
 comment|// Path is used only for printing block and file information in debug
@@ -1625,9 +1574,15 @@ operator|.
 name|getChecksumSize
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|peerCache
+operator|=
+name|peerCache
+expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param sock  An established Socket to the DN. The BlockReader will not close it normally    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID)
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache)
 specifier|public
 specifier|static
 name|RemoteBlockReader
@@ -1665,6 +1620,9 @@ name|peer
 parameter_list|,
 name|DatanodeID
 name|datanodeID
+parameter_list|,
+name|PeerCache
+name|peerCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -1859,23 +1817,19 @@ argument_list|,
 name|peer
 argument_list|,
 name|datanodeID
+argument_list|,
+name|peerCache
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|close (PeerCache peerCache, FileInputStreamCache fisCache)
+DECL|method|close ()
 specifier|public
 specifier|synchronized
 name|void
 name|close
-parameter_list|(
-name|PeerCache
-name|peerCache
-parameter_list|,
-name|FileInputStreamCache
-name|fisCache
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{

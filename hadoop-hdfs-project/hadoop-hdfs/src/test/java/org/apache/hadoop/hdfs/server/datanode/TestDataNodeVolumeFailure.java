@@ -1609,17 +1609,17 @@ name|datanode
 argument_list|,
 literal|null
 argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
 name|blockReader
 operator|.
 name|close
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Count datanodes that have copies of the blocks for a file    * put it into the map    * @param map    * @param path    * @param size    * @return    * @throws IOException    */

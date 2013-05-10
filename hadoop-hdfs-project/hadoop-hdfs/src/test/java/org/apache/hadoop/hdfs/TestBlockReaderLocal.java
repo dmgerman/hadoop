@@ -795,6 +795,8 @@ argument_list|,
 name|datanodeID
 argument_list|,
 name|checksum
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|dataIn
@@ -870,11 +872,7 @@ condition|)
 name|blockReaderLocal
 operator|.
 name|close
-argument_list|(
-literal|null
-argument_list|,
-literal|null
-argument_list|)
+argument_list|()
 expr_stmt|;
 block|}
 block|}
