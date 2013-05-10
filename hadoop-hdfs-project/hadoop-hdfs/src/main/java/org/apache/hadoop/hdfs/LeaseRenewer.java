@@ -218,6 +218,20 @@ name|Time
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * Used by {@link DFSClient} for renewing file-being-written leases  * on the namenode.  * When a file is opened for write (create or append),  * namenode stores a file lease for recording the identity of the writer.  * The writer (i.e. the DFSClient) is required to renew the lease periodically.  * When the lease is not renewed before it expires,  * the namenode considers the writer as failed and then it may either let  * another writer to obtain the lease or close the file.  *</p>  *<p>  * This class also provides the following functionality:  *<ul>  *<li>  * It maintains a map from (namenode, user) pairs to lease renewers.   * The same {@link LeaseRenewer} instance is used for renewing lease  * for all the {@link DFSClient} to the same namenode and the same user.  *</li>  *<li>  * Each renewer maintains a list of {@link DFSClient}.  * Periodically the leases for all the clients are renewed.  * A client is removed from the list when the client is closed.  *</li>  *<li>  * A thread per namenode per user is used by the {@link LeaseRenewer}  * to renew the leases.  *</li>  *</ul>  *</p>  */
 end_comment
@@ -1305,6 +1319,22 @@ operator|.
 name|MAX_VALUE
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setEmptyTime (long time)
+specifier|synchronized
+name|void
+name|setEmptyTime
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|emptyTime
+operator|=
+name|time
+expr_stmt|;
 block|}
 comment|/** Close a file. */
 DECL|method|closeFile (final String src, final DFSClient dfsc)

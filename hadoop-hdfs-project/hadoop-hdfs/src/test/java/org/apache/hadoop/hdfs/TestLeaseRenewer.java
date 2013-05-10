@@ -912,21 +912,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Pretend to open a file
-name|Mockito
-operator|.
-name|doReturn
-argument_list|(
-literal|false
-argument_list|)
-operator|.
-name|when
-argument_list|(
-name|MOCK_DFSCLIENT
-argument_list|)
-operator|.
-name|isFilesBeingWrittenEmpty
-argument_list|()
-expr_stmt|;
 name|renewer
 operator|.
 name|put
@@ -969,21 +954,6 @@ name|threadName
 argument_list|)
 expr_stmt|;
 comment|// Pretend to close the file
-name|Mockito
-operator|.
-name|doReturn
-argument_list|(
-literal|true
-argument_list|)
-operator|.
-name|when
-argument_list|(
-name|MOCK_DFSCLIENT
-argument_list|)
-operator|.
-name|isFilesBeingWrittenEmpty
-argument_list|()
-expr_stmt|;
 name|renewer
 operator|.
 name|closeFile
@@ -991,6 +961,16 @@ argument_list|(
 name|filePath
 argument_list|,
 name|MOCK_DFSCLIENT
+argument_list|)
+expr_stmt|;
+name|renewer
+operator|.
+name|setEmptyTime
+argument_list|(
+name|Time
+operator|.
+name|now
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Should stop the renewer running within a few seconds
