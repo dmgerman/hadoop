@@ -1059,6 +1059,18 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Too far behind rm response id:2 nm response id:0"
+argument_list|,
+name|response
+operator|.
+name|getDiagnosticsMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

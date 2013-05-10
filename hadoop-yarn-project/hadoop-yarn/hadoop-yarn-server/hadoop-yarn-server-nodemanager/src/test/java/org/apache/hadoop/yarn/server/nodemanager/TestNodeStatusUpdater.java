@@ -2649,6 +2649,13 @@ name|NodeAction
 operator|.
 name|NORMAL
 decl_stmt|;
+DECL|field|shutDownMessage
+specifier|public
+name|String
+name|shutDownMessage
+init|=
+literal|""
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|registerNodeManager ( RegisterNodeManagerRequest request)
@@ -2681,6 +2688,13 @@ operator|.
 name|setNodeAction
 argument_list|(
 name|registerNodeAction
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|shutDownMessage
 argument_list|)
 expr_stmt|;
 return|return
@@ -2738,6 +2752,13 @@ argument_list|,
 literal|1000L
 argument_list|)
 decl_stmt|;
+name|nhResponse
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|shutDownMessage
+argument_list|)
+expr_stmt|;
 return|return
 name|nhResponse
 return|;
@@ -4734,6 +4755,12 @@ name|NodeAction
 operator|.
 name|SHUTDOWN
 expr_stmt|;
+name|myResourceTracker2
+operator|.
+name|shutDownMessage
+operator|=
+literal|"RM Shutting Down Node"
+expr_stmt|;
 name|nodeStatusUpdater
 operator|.
 name|resourceTracker
@@ -4750,7 +4777,11 @@ name|verifyNodeStartFailure
 argument_list|(
 literal|"org.apache.hadoop.yarn.YarnException: "
 operator|+
-literal|"Recieved SHUTDOWN signal from Resourcemanager ,Registration of NodeManager failed"
+literal|"Recieved SHUTDOWN signal from Resourcemanager ,"
+operator|+
+literal|"Registration of NodeManager failed, "
+operator|+
+literal|"Message from ResourceManager: RM Shutting Down Node"
 argument_list|)
 expr_stmt|;
 block|}

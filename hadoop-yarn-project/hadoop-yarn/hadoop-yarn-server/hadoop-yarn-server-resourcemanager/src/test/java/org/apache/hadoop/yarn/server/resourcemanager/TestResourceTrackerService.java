@@ -1800,6 +1800,18 @@ name|getNodeAction
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Disallowed NodeManager from  host2, Sending SHUTDOWN signal to the NodeManager."
+argument_list|,
+name|response
+operator|.
+name|getDiagnosticsMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -2272,6 +2284,18 @@ operator|.
 name|getNodeAction
 argument_list|()
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Too far behind rm response id:0 nm response id:-100"
+argument_list|,
+name|nodeHeartbeat
+operator|.
+name|getDiagnosticsMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|checkRebootedNMCount

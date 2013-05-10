@@ -107,6 +107,19 @@ name|long
 name|rmIdentifier
 parameter_list|)
 function_decl|;
+DECL|method|getDiagnosticsMessage ()
+name|String
+name|getDiagnosticsMessage
+parameter_list|()
+function_decl|;
+DECL|method|setDiagnosticsMessage (String diagnosticsMessage)
+name|void
+name|setDiagnosticsMessage
+parameter_list|(
+name|String
+name|diagnosticsMessage
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

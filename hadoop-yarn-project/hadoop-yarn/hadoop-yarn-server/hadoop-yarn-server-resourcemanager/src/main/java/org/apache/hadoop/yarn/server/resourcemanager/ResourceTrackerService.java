@@ -1215,15 +1215,27 @@ name|host
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|message
+init|=
 literal|"Disallowed NodeManager from  "
 operator|+
 name|host
 operator|+
 literal|", Sending SHUTDOWN signal to the NodeManager."
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 name|response
@@ -1257,10 +1269,9 @@ operator|<
 name|minAllocVcores
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|message
+init|=
 literal|"NodeManager from  "
 operator|+
 name|host
@@ -1268,6 +1279,19 @@ operator|+
 literal|" doesn't satisfy minimum allocations, Sending SHUTDOWN"
 operator|+
 literal|" signal to the NodeManager."
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 name|response
@@ -1430,10 +1454,9 @@ argument_list|(
 name|nodeId
 argument_list|)
 expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|message
+init|=
 literal|"NodeManager from node "
 operator|+
 name|host
@@ -1455,6 +1478,12 @@ operator|+
 literal|", assigned nodeId "
 operator|+
 name|nodeId
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 name|response
@@ -1540,16 +1569,28 @@ literal|null
 condition|)
 block|{
 comment|/* node does not exist */
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|message
+init|=
 literal|"Node not found rebooting "
 operator|+
 name|remoteNodeStatus
 operator|.
 name|getNodeId
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|resync
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 return|return
@@ -1583,10 +1624,9 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|message
+init|=
 literal|"Disallowed NodeManager nodeId: "
 operator|+
 name|nodeId
@@ -1597,6 +1637,19 @@ name|rmNode
 operator|.
 name|getNodeAddress
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|shutDown
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 name|this
@@ -1682,10 +1735,9 @@ name|getResponseId
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
+name|String
+name|message
+init|=
 literal|"Too far behind rm response id:"
 operator|+
 name|lastNodeHeartbeatResponse
@@ -1699,6 +1751,19 @@ name|remoteNodeStatus
 operator|.
 name|getResponseId
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+name|resync
+operator|.
+name|setDiagnosticsMessage
+argument_list|(
+name|message
 argument_list|)
 expr_stmt|;
 comment|// TODO: Just sending reboot is not enough. Think more.

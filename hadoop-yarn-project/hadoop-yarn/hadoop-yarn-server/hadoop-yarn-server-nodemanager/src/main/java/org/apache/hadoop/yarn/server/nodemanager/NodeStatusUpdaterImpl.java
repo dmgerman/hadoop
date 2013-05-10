@@ -1782,11 +1782,23 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
+name|String
+name|message
+init|=
+literal|"Message from ResourceManager: "
+operator|+
+name|regNMResponse
+operator|.
+name|getDiagnosticsMessage
+argument_list|()
+decl_stmt|;
 throw|throw
 operator|new
 name|YarnException
 argument_list|(
-literal|"Recieved SHUTDOWN signal from Resourcemanager ,Registration of NodeManager failed"
+literal|"Recieved SHUTDOWN signal from Resourcemanager ,Registration of NodeManager failed, "
+operator|+
+name|message
 argument_list|)
 throw|;
 block|}
@@ -2743,11 +2755,23 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Recieved SHUTDOWN signal from Resourcemanager as part of heartbeat,"
 operator|+
 literal|" hence shutting down."
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Message from ResourceManager: "
+operator|+
+name|response
+operator|.
+name|getDiagnosticsMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|dispatcher
@@ -2782,11 +2806,23 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"Node is out of sync with ResourceManager,"
 operator|+
 literal|" hence rebooting."
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Message from ResourceManager: "
+operator|+
+name|response
+operator|.
+name|getDiagnosticsMessage
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Invalidate the RMIdentifier while resync
