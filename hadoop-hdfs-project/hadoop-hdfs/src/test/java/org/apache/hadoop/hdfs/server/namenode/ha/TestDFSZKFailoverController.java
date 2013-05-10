@@ -777,7 +777,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|60000
 argument_list|)
 DECL|method|testFailoverAndBackOnNNShutdown ()
 specifier|public
@@ -1235,7 +1235,7 @@ block|}
 argument_list|,
 literal|50
 argument_list|,
-literal|5000
+literal|15000
 argument_list|)
 expr_stmt|;
 block|}

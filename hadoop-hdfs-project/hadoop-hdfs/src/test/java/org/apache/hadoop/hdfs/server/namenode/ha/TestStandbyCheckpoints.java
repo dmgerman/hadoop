@@ -1491,7 +1491,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|120000
+literal|300000
 argument_list|)
 DECL|method|testStandbyExceptionThrownDuringCheckpoint ()
 specifier|public
@@ -1559,7 +1559,7 @@ name|doEdits
 argument_list|(
 literal|0
 argument_list|,
-literal|2000
+literal|1000
 argument_list|)
 expr_stmt|;
 name|nn0
