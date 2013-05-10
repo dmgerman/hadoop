@@ -262,6 +262,28 @@ name|getFileLength
 argument_list|()
 return|;
 block|}
+comment|/**    * Get statistics about the reads which this DFSInputStream has done.    * Note that because HdfsDataInputStream is buffered, these stats may    * be higher than you would expect just by adding up the number of    * bytes read through HdfsDataInputStream.    */
+DECL|method|getReadStatistics ()
+specifier|public
+specifier|synchronized
+name|DFSInputStream
+operator|.
+name|ReadStatistics
+name|getReadStatistics
+parameter_list|()
+block|{
+return|return
+operator|(
+operator|(
+name|DFSInputStream
+operator|)
+name|in
+operator|)
+operator|.
+name|getReadStatistics
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

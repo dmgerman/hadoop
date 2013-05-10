@@ -2261,6 +2261,30 @@ operator|.
 name|MAX_VALUE
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isLocal ()
+specifier|public
+name|boolean
+name|isLocal
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isShortCircuit ()
+specifier|public
+name|boolean
+name|isShortCircuit
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

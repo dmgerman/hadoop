@@ -1589,7 +1589,7 @@ operator|.
 name|getAddress
 argument_list|()
 operator|.
-name|toString
+name|getHostAddress
 argument_list|()
 argument_list|,
 name|addr
