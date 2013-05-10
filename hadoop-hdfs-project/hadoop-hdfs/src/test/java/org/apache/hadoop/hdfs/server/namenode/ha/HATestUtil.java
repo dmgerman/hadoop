@@ -522,6 +522,7 @@ throw|;
 block|}
 comment|/**    * Wait for the datanodes in the cluster to process any block    * deletions that have already been asynchronously queued.    */
 DECL|method|waitForDNDeletions (final MiniDFSCluster cluster)
+specifier|public
 specifier|static
 name|void
 name|waitForDNDeletions

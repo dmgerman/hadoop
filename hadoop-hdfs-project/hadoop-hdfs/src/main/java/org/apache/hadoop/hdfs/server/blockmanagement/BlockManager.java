@@ -5306,10 +5306,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Invalidates the given block on the given datanode.    */
+comment|/**    * Invalidates the given block on the given datanode.    * @return true if the block was successfully invalidated and no longer    * present in the BlocksMap    */
 DECL|method|invalidateBlock (BlockToMarkCorrupt b, DatanodeInfo dn )
 specifier|private
-name|void
+name|boolean
 name|invalidateBlock
 parameter_list|(
 name|BlockToMarkCorrupt
@@ -5422,6 +5422,9 @@ operator|.
 name|corrupted
 argument_list|)
 expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
 elseif|else
 if|if
@@ -5477,6 +5480,9 @@ literal|" listed for deletion."
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+literal|true
+return|;
 block|}
 else|else
 block|{
@@ -5495,6 +5501,9 @@ operator|+
 literal|" is the only copy and was not deleted"
 argument_list|)
 expr_stmt|;
+return|return
+literal|false
+return|;
 block|}
 block|}
 DECL|method|setPostponeBlocksFromFuture (boolean postpone)
@@ -10285,9 +10294,9 @@ name|blk
 argument_list|)
 decl_stmt|;
 name|boolean
-name|gotException
+name|removedFromBlocksMap
 init|=
-literal|false
+literal|true
 decl_stmt|;
 if|if
 condition|(
@@ -10323,6 +10332,9 @@ control|)
 block|{
 try|try
 block|{
+if|if
+condition|(
+operator|!
 name|invalidateBlock
 argument_list|(
 operator|new
@@ -10335,7 +10347,13 @@ argument_list|)
 argument_list|,
 name|node
 argument_list|)
+condition|)
+block|{
+name|removedFromBlocksMap
+operator|=
+literal|false
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -10360,18 +10378,18 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-name|gotException
+name|removedFromBlocksMap
 operator|=
-literal|true
+literal|false
 expr_stmt|;
 block|}
 block|}
 comment|// Remove the block from corruptReplicasMap
 if|if
 condition|(
-operator|!
-name|gotException
+name|removedFromBlocksMap
 condition|)
+block|{
 name|corruptReplicas
 operator|.
 name|removeFromCorruptReplicasMap
@@ -10379,6 +10397,7 @@ argument_list|(
 name|blk
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * For each block in the name-node verify whether it belongs to any file,    * over or under replicated. Place it into the respective queue.    */
 DECL|method|processMisReplicatedBlocks ()
