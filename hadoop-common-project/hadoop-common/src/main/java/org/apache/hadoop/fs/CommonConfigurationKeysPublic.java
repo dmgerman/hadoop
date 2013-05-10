@@ -734,6 +734,15 @@ name|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_KEY
 init|=
 literal|"hadoop.rpc.socket.factory.class.default"
 decl_stmt|;
+DECL|field|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_RPC_SOCKET_FACTORY_CLASS_DEFAULT_DEFAULT
+init|=
+literal|"org.apache.hadoop.net.StandardSocketFactory"
+decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SOCKS_SERVER_KEY
 specifier|public
