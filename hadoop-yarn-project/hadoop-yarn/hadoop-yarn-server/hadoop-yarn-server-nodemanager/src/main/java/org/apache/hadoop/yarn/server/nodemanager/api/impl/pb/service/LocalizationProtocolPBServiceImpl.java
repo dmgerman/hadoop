@@ -30,6 +30,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -298,6 +308,20 @@ block|}
 catch|catch
 parameter_list|(
 name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|ServiceException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
 name|e
 parameter_list|)
 block|{

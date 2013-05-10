@@ -1104,6 +1104,8 @@ name|registerWithRM
 parameter_list|()
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|super
 operator|.

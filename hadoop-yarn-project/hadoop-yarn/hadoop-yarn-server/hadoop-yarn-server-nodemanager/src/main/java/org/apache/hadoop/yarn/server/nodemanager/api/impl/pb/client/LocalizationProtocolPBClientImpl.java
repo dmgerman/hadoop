@@ -405,6 +405,8 @@ name|status
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|LocalizerStatusProto
 name|statusProto

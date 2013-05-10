@@ -2076,6 +2076,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|NodeHeartbeatResponse
 name|response
@@ -2148,6 +2150,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterNodeManagerResponse
 name|response

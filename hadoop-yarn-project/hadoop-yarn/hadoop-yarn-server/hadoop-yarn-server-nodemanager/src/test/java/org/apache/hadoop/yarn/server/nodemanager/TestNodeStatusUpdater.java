@@ -1189,6 +1189,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|NodeId
 name|nodeId
@@ -1475,6 +1477,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|NodeStatus
 name|nodeStatus
@@ -2657,6 +2661,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterNodeManagerResponse
 name|response
@@ -2693,6 +2699,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|NodeStatus
 name|nodeStatus
@@ -2831,6 +2839,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterNodeManagerResponse
 name|response
@@ -2867,6 +2877,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|LOG
 operator|.
@@ -3109,6 +3121,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterNodeManagerResponse
 name|response
@@ -3145,6 +3159,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 try|try
 block|{
@@ -3895,6 +3911,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterNodeManagerResponse
 name|response
@@ -3931,6 +3949,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|heartBeatID
 operator|++

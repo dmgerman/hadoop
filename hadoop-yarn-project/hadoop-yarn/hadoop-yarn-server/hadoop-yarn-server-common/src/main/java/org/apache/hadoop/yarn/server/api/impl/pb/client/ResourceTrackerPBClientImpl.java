@@ -457,6 +457,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterNodeManagerRequestProto
 name|requestProto
@@ -516,6 +518,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|NodeHeartbeatRequestProto
 name|requestProto

@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -192,7 +202,7 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|registerNodeManager (RegisterNodeManagerRequest request)
+DECL|method|registerNodeManager ( RegisterNodeManagerRequest request)
 specifier|public
 name|RegisterNodeManagerResponse
 name|registerNodeManager
@@ -202,6 +212,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|RegisterNodeManagerResponse
 name|response
@@ -231,6 +243,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|NodeHeartbeatResponse
 name|response

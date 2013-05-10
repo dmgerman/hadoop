@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -122,7 +132,7 @@ specifier|public
 interface|interface
 name|ResourceTracker
 block|{
-DECL|method|registerNodeManager (RegisterNodeManagerRequest request)
+DECL|method|registerNodeManager ( RegisterNodeManagerRequest request)
 specifier|public
 name|RegisterNodeManagerResponse
 name|registerNodeManager
@@ -132,6 +142,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 DECL|method|nodeHeartbeat (NodeHeartbeatRequest request)
 specifier|public
@@ -143,6 +155,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 function_decl|;
 block|}
 end_interface
