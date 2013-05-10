@@ -60,20 +60,21 @@ name|ResourceFailedLocalizationEvent
 extends|extends
 name|ResourceEvent
 block|{
-DECL|field|cause
+DECL|field|diagnosticMesage
 specifier|private
-name|Throwable
-name|cause
+specifier|final
+name|String
+name|diagnosticMesage
 decl_stmt|;
-DECL|method|ResourceFailedLocalizationEvent (LocalResourceRequest rsrc, Throwable cause)
+DECL|method|ResourceFailedLocalizationEvent (LocalResourceRequest rsrc, String diagnosticMesage)
 specifier|public
 name|ResourceFailedLocalizationEvent
 parameter_list|(
 name|LocalResourceRequest
 name|rsrc
 parameter_list|,
-name|Throwable
-name|cause
+name|String
+name|diagnosticMesage
 parameter_list|)
 block|{
 name|super
@@ -87,19 +88,19 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|cause
+name|diagnosticMesage
 operator|=
-name|cause
+name|diagnosticMesage
 expr_stmt|;
 block|}
-DECL|method|getCause ()
+DECL|method|getDiagnosticMessage ()
 specifier|public
-name|Throwable
-name|getCause
+name|String
+name|getDiagnosticMessage
 parameter_list|()
 block|{
 return|return
-name|cause
+name|diagnosticMesage
 return|;
 block|}
 block|}

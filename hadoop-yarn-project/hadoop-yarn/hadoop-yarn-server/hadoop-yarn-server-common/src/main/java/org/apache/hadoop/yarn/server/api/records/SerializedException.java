@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager.container
+DECL|package|org.apache.hadoop.yarn.server.api.records
 package|package
 name|org
 operator|.
@@ -16,11 +16,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|nodemanager
+name|api
 operator|.
-name|containermanager
-operator|.
-name|container
+name|records
 package|;
 end_package
 
@@ -32,13 +30,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|api
+name|InterfaceAudience
 operator|.
-name|records
-operator|.
-name|ContainerId
+name|Private
 import|;
 end_import
 
@@ -50,76 +46,79 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|server
+name|InterfaceStability
 operator|.
-name|nodemanager
-operator|.
-name|containermanager
-operator|.
-name|localizer
-operator|.
-name|LocalResourceRequest
+name|Unstable
 import|;
 end_import
 
 begin_class
-DECL|class|ContainerResourceFailedEvent
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|class|SerializedException
 specifier|public
+specifier|abstract
 class|class
-name|ContainerResourceFailedEvent
-extends|extends
-name|ContainerResourceEvent
+name|SerializedException
 block|{
-DECL|field|diagnosticMesage
-specifier|private
-specifier|final
-name|String
-name|diagnosticMesage
-decl_stmt|;
-DECL|method|ContainerResourceFailedEvent (ContainerId container, LocalResourceRequest rsrc, String diagnosticMesage)
+DECL|method|init (String message, Throwable cause)
 specifier|public
-name|ContainerResourceFailedEvent
+specifier|abstract
+name|void
+name|init
 parameter_list|(
-name|ContainerId
-name|container
-parameter_list|,
-name|LocalResourceRequest
-name|rsrc
-parameter_list|,
 name|String
-name|diagnosticMesage
+name|message
+parameter_list|,
+name|Throwable
+name|cause
 parameter_list|)
-block|{
-name|super
-argument_list|(
-name|container
-argument_list|,
-name|ContainerEventType
-operator|.
-name|RESOURCE_FAILED
-argument_list|,
-name|rsrc
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|diagnosticMesage
-operator|=
-name|diagnosticMesage
-expr_stmt|;
-block|}
-DECL|method|getDiagnosticMessage ()
+function_decl|;
+DECL|method|init (String message)
 specifier|public
+specifier|abstract
+name|void
+name|init
+parameter_list|(
 name|String
-name|getDiagnosticMessage
+name|message
+parameter_list|)
+function_decl|;
+DECL|method|init (Throwable cause)
+specifier|public
+specifier|abstract
+name|void
+name|init
+parameter_list|(
+name|Throwable
+name|cause
+parameter_list|)
+function_decl|;
+DECL|method|getMessage ()
+specifier|public
+specifier|abstract
+name|String
+name|getMessage
 parameter_list|()
-block|{
-return|return
-name|diagnosticMesage
-return|;
-block|}
+function_decl|;
+DECL|method|getRemoteTrace ()
+specifier|public
+specifier|abstract
+name|String
+name|getRemoteTrace
+parameter_list|()
+function_decl|;
+DECL|method|getCause ()
+specifier|public
+specifier|abstract
+name|SerializedException
+name|getCause
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

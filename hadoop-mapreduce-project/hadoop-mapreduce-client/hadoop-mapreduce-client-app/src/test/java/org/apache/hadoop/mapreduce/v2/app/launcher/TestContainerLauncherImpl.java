@@ -2995,18 +2995,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getRemoteTrace ()
-specifier|public
-name|String
-name|getRemoteTrace
-parameter_list|()
-block|{
-return|return
-literal|null
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getCause ()
 specifier|public
 name|YarnRemoteException

@@ -1631,13 +1631,15 @@ parameter_list|)
 block|{
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 argument_list|(
 name|ex
 operator|.
 name|getMessage
 argument_list|()
-argument_list|,
+operator|.
+name|contains
+argument_list|(
 literal|"Client "
 operator|+
 name|owner
@@ -1651,6 +1653,7 @@ name|other
 operator|.
 name|getUserName
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 throw|throw

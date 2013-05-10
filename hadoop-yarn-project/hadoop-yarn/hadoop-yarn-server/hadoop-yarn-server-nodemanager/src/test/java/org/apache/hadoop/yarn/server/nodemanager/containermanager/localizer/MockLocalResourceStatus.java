@@ -70,9 +70,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|server
 operator|.
-name|YarnRemoteException
+name|api
+operator|.
+name|records
+operator|.
+name|SerializedException
 import|;
 end_import
 
@@ -159,7 +163,7 @@ literal|1L
 decl_stmt|;
 DECL|field|ex
 specifier|private
-name|YarnRemoteException
+name|SerializedException
 name|ex
 init|=
 literal|null
@@ -168,7 +172,7 @@ DECL|method|MockLocalResourceStatus ()
 name|MockLocalResourceStatus
 parameter_list|()
 block|{ }
-DECL|method|MockLocalResourceStatus (LocalResource rsrc, ResourceStatusType tag, URL localPath, YarnRemoteException ex)
+DECL|method|MockLocalResourceStatus (LocalResource rsrc, ResourceStatusType tag, URL localPath, SerializedException ex)
 name|MockLocalResourceStatus
 parameter_list|(
 name|LocalResource
@@ -180,7 +184,7 @@ parameter_list|,
 name|URL
 name|localPath
 parameter_list|,
-name|YarnRemoteException
+name|SerializedException
 name|ex
 parameter_list|)
 block|{
@@ -261,7 +265,7 @@ annotation|@
 name|Override
 DECL|method|getException ()
 specifier|public
-name|YarnRemoteException
+name|SerializedException
 name|getException
 parameter_list|()
 block|{
@@ -343,12 +347,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setException (YarnRemoteException ex)
+DECL|method|setException (SerializedException ex)
 specifier|public
 name|void
 name|setException
 parameter_list|(
-name|YarnRemoteException
+name|SerializedException
 name|ex
 parameter_list|)
 block|{

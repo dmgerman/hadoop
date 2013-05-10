@@ -70,9 +70,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|server
 operator|.
-name|YarnRemoteException
+name|api
+operator|.
+name|records
+operator|.
+name|SerializedException
 import|;
 end_import
 
@@ -108,7 +112,7 @@ parameter_list|()
 function_decl|;
 DECL|method|getException ()
 specifier|public
-name|YarnRemoteException
+name|SerializedException
 name|getException
 parameter_list|()
 function_decl|;
@@ -148,12 +152,12 @@ name|long
 name|size
 parameter_list|)
 function_decl|;
-DECL|method|setException (YarnRemoteException exception)
+DECL|method|setException (SerializedException exception)
 specifier|public
 name|void
 name|setException
 parameter_list|(
-name|YarnRemoteException
+name|SerializedException
 name|exception
 parameter_list|)
 function_decl|;

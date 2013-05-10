@@ -4690,7 +4690,7 @@ name|req
 argument_list|,
 name|e
 operator|.
-name|getCause
+name|getMessage
 argument_list|()
 argument_list|)
 argument_list|)
@@ -5534,10 +5534,15 @@ argument_list|(
 literal|"DEBUG: FAILED "
 operator|+
 name|req
-argument_list|,
+operator|+
+literal|", "
+operator|+
 name|stat
 operator|.
 name|getException
+argument_list|()
+operator|.
+name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5572,6 +5577,9 @@ argument_list|,
 name|stat
 operator|.
 name|getException
+argument_list|()
+operator|.
+name|getMessage
 argument_list|()
 argument_list|)
 argument_list|)
@@ -5638,6 +5646,9 @@ argument_list|,
 name|stat
 operator|.
 name|getException
+argument_list|()
+operator|.
+name|getMessage
 argument_list|()
 argument_list|)
 argument_list|)
@@ -5980,6 +5991,9 @@ argument_list|,
 literal|null
 argument_list|,
 name|e
+operator|.
+name|getMessage
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

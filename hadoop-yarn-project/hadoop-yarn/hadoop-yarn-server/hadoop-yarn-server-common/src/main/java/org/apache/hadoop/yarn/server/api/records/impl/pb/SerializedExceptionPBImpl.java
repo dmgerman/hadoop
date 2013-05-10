@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.exceptions.impl.pb
+DECL|package|org.apache.hadoop.yarn.server.api.records.impl.pb
 package|package
 name|org
 operator|.
@@ -14,23 +14,17 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|server
+operator|.
+name|api
+operator|.
+name|records
 operator|.
 name|impl
 operator|.
 name|pb
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
 
 begin_import
 import|import
@@ -54,32 +48,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|UndeclaredThrowableException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|RemoteException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -88,9 +56,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|proto
 operator|.
-name|YarnRemoteException
+name|YarnProtos
+operator|.
+name|SerializedExceptionProto
 import|;
 end_import
 
@@ -108,7 +78,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProtoOrBuilder
 import|;
 end_import
 
@@ -122,54 +92,35 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|proto
+name|server
 operator|.
-name|YarnProtos
+name|api
 operator|.
-name|YarnRemoteExceptionProtoOrBuilder
-import|;
-end_import
-
-begin_import
-import|import
-name|com
+name|records
 operator|.
-name|google
-operator|.
-name|protobuf
-operator|.
-name|ServiceException
+name|SerializedException
 import|;
 end_import
 
 begin_class
-DECL|class|YarnRemoteExceptionPBImpl
+DECL|class|SerializedExceptionPBImpl
 specifier|public
 class|class
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 extends|extends
-name|YarnRemoteException
+name|SerializedException
 block|{
-DECL|field|serialVersionUID
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|serialVersionUID
-init|=
-literal|1L
-decl_stmt|;
 DECL|field|proto
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 name|proto
 init|=
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 operator|.
 name|Builder
 name|builder
@@ -182,16 +133,16 @@ name|viaProto
 init|=
 literal|false
 decl_stmt|;
-DECL|method|YarnRemoteExceptionPBImpl ()
+DECL|method|SerializedExceptionPBImpl ()
 specifier|public
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 parameter_list|()
 block|{   }
-DECL|method|YarnRemoteExceptionPBImpl (YarnRemoteExceptionProto proto)
+DECL|method|SerializedExceptionPBImpl (SerializedExceptionProto proto)
 specifier|public
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 parameter_list|(
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 name|proto
 parameter_list|)
 block|{
@@ -206,19 +157,29 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|YarnRemoteExceptionPBImpl (String message)
+DECL|method|SerializedExceptionPBImpl (Throwable t)
+specifier|private
+name|SerializedExceptionPBImpl
+parameter_list|(
+name|Throwable
+name|t
+parameter_list|)
+block|{
+name|init
+argument_list|(
+name|t
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|init (String message)
 specifier|public
-name|YarnRemoteExceptionPBImpl
+name|void
+name|init
 parameter_list|(
 name|String
 name|message
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
 name|maybeInitBuilder
 argument_list|()
 expr_stmt|;
@@ -226,29 +187,31 @@ name|builder
 operator|.
 name|setMessage
 argument_list|(
-name|super
-operator|.
-name|getMessage
-argument_list|()
+name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|YarnRemoteExceptionPBImpl (Throwable t)
+DECL|method|init (Throwable t)
 specifier|public
-name|YarnRemoteExceptionPBImpl
+name|void
+name|init
 parameter_list|(
 name|Throwable
 name|t
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|t
-argument_list|)
-expr_stmt|;
 name|maybeInitBuilder
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|t
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 if|if
 condition|(
 name|t
@@ -258,7 +221,7 @@ argument_list|()
 operator|==
 literal|null
 condition|)
-block|{      }
+block|{     }
 else|else
 block|{
 name|builder
@@ -266,7 +229,7 @@ operator|.
 name|setCause
 argument_list|(
 operator|new
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 argument_list|(
 name|t
 operator|.
@@ -287,7 +250,7 @@ operator|.
 name|getClass
 argument_list|()
 operator|.
-name|getName
+name|getCanonicalName
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -359,9 +322,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|YarnRemoteExceptionPBImpl (String message, Throwable t)
+DECL|method|init (String message, Throwable t)
 specifier|public
-name|YarnRemoteExceptionPBImpl
+name|void
+name|init
 parameter_list|(
 name|String
 name|message
@@ -370,7 +334,7 @@ name|Throwable
 name|t
 parameter_list|)
 block|{
-name|this
+name|init
 argument_list|(
 name|t
 argument_list|)
@@ -397,7 +361,7 @@ name|String
 name|getMessage
 parameter_list|()
 block|{
-name|YarnRemoteExceptionProtoOrBuilder
+name|SerializedExceptionProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -421,7 +385,7 @@ name|String
 name|getRemoteTrace
 parameter_list|()
 block|{
-name|YarnRemoteExceptionProtoOrBuilder
+name|SerializedExceptionProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -441,11 +405,11 @@ annotation|@
 name|Override
 DECL|method|getCause ()
 specifier|public
-name|YarnRemoteException
+name|SerializedException
 name|getCause
 parameter_list|()
 block|{
-name|YarnRemoteExceptionProtoOrBuilder
+name|SerializedExceptionProtoOrBuilder
 name|p
 init|=
 name|viaProto
@@ -464,7 +428,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 argument_list|(
 name|p
 operator|.
@@ -482,7 +446,7 @@ block|}
 block|}
 DECL|method|getProto ()
 specifier|public
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 name|getProto
 parameter_list|()
 block|{
@@ -522,7 +486,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 operator|.
 name|newBuilder
 argument_list|(

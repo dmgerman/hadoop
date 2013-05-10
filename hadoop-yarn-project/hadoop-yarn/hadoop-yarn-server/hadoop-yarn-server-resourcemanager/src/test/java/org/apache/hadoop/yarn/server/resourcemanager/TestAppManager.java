@@ -3038,6 +3038,8 @@ name|e
 parameter_list|)
 block|{
 comment|// Exception is expected
+comment|// TODO Change this to assert the expected exception type - post YARN-142
+comment|// sub-task related to specialized exceptions.
 name|Assert
 operator|.
 name|assertTrue
@@ -3051,7 +3053,7 @@ operator|.
 name|getMessage
 argument_list|()
 operator|.
-name|startsWith
+name|contains
 argument_list|(
 literal|"Invalid resource request"
 argument_list|)

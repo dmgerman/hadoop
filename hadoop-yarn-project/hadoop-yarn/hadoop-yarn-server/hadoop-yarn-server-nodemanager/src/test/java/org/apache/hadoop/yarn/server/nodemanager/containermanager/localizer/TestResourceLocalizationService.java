@@ -872,11 +872,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|YarnRemoteExceptionPBImpl
+name|YarnRemoteException
 import|;
 end_import
 
@@ -1575,6 +1571,24 @@ operator|.
 name|event
 operator|.
 name|ResourceFailedLocalizationEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|utils
+operator|.
+name|YarnServerBuilderUtils
 import|;
 end_import
 
@@ -7569,10 +7583,15 @@ name|resourceStatus
 operator|.
 name|setException
 argument_list|(
+name|YarnServerBuilderUtils
+operator|.
+name|newSerializedException
+argument_list|(
 operator|new
-name|YarnRemoteExceptionPBImpl
+name|YarnRemoteException
 argument_list|(
 literal|"test"
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -8361,6 +8380,9 @@ name|Exception
 argument_list|(
 literal|"test"
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|spyService

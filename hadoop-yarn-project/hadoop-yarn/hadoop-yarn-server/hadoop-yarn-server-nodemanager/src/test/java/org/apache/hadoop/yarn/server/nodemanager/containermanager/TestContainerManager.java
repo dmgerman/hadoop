@@ -3852,7 +3852,7 @@ name|assertTrue
 argument_list|(
 name|e
 operator|.
-name|getRemoteTrace
+name|getMessage
 argument_list|()
 operator|.
 name|contains

@@ -2046,11 +2046,16 @@ name|ResourceFailedLocalizationEvent
 argument_list|(
 name|lr
 argument_list|,
+operator|(
 operator|new
 name|Exception
 argument_list|(
 literal|"test"
 argument_list|)
+operator|.
+name|getMessage
+argument_list|()
+operator|)
 argument_list|)
 decl_stmt|;
 comment|// Backing up the resource to track its state change as it will be
@@ -2821,6 +2826,9 @@ name|Exception
 argument_list|(
 literal|"Test"
 argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|tracker

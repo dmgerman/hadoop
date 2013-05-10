@@ -136,42 +136,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|YarnRemoteExceptionPBImpl
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|proto
 operator|.
 name|YarnProtos
@@ -194,7 +158,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|URLProto
+name|SerializedExceptionProto
 import|;
 end_import
 
@@ -212,7 +176,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|YarnRemoteExceptionProto
+name|URLProto
 import|;
 end_import
 
@@ -267,6 +231,50 @@ operator|.
 name|YarnServerNodemanagerServiceProtos
 operator|.
 name|ResourceStatusTypeProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SerializedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|impl
+operator|.
+name|pb
+operator|.
+name|SerializedExceptionPBImpl
 import|;
 end_import
 
@@ -362,7 +370,7 @@ name|localPath
 decl_stmt|;
 DECL|field|exception
 specifier|private
-name|YarnRemoteException
+name|SerializedException
 name|exception
 decl_stmt|;
 DECL|method|LocalResourceStatusPBImpl ()
@@ -528,7 +536,7 @@ operator|&&
 operator|!
 operator|(
 operator|(
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 operator|)
 name|this
 operator|.
@@ -815,7 +823,7 @@ annotation|@
 name|Override
 DECL|method|getException ()
 specifier|public
-name|YarnRemoteException
+name|SerializedException
 name|getException
 parameter_list|()
 block|{
@@ -1001,12 +1009,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setException (YarnRemoteException exception)
+DECL|method|setException (SerializedException exception)
 specifier|public
 name|void
 name|setException
 parameter_list|(
-name|YarnRemoteException
+name|SerializedException
 name|exception
 parameter_list|)
 block|{
@@ -1149,36 +1157,36 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|convertFromProtoFormat (YarnRemoteExceptionProto p)
+DECL|method|convertFromProtoFormat (SerializedExceptionProto p)
 specifier|private
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 name|convertFromProtoFormat
 parameter_list|(
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 name|p
 parameter_list|)
 block|{
 return|return
 operator|new
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 argument_list|(
 name|p
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat (YarnRemoteException t)
+DECL|method|convertToProtoFormat (SerializedException t)
 specifier|private
-name|YarnRemoteExceptionProto
+name|SerializedExceptionProto
 name|convertToProtoFormat
 parameter_list|(
-name|YarnRemoteException
+name|SerializedException
 name|t
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|YarnRemoteExceptionPBImpl
+name|SerializedExceptionPBImpl
 operator|)
 name|t
 operator|)
