@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -37,6 +49,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
 import|;
 end_import
 
@@ -168,6 +194,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+comment|// skip tests on Windows until after resolution of ZooKeeper client bug
+name|assumeTrue
+argument_list|(
+operator|!
+name|Shell
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -211,11 +246,19 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|cluster
+operator|!=
+literal|null
+condition|)
+block|{
 name|cluster
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Simply fail back and forth between two services for the    * configured amount of time, via expiring their ZK sessions.    */
 annotation|@
