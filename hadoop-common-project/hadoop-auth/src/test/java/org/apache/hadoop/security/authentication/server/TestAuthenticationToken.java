@@ -442,9 +442,10 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|51
+literal|70
 argument_list|)
 expr_stmt|;
+comment|// +20 msec fuzz for timer granularity.
 name|assertTrue
 argument_list|(
 name|token
@@ -551,9 +552,10 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|51
+literal|70
 argument_list|)
 expr_stmt|;
+comment|// +20 msec fuzz for timer granularity.
 name|assertTrue
 argument_list|(
 name|token
