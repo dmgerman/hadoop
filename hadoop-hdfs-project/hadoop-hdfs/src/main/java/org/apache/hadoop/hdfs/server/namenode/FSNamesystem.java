@@ -15044,7 +15044,7 @@ name|options
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove the indicated file from namespace.    *     * @see ClientProtocol#delete(String, boolean) for detailed descriptoin and     * description of exceptions    */
+comment|/**    * Remove the indicated file from namespace.    *     * @see ClientProtocol#delete(String, boolean) for detailed description and     * description of exceptions    */
 DECL|method|delete (String src, boolean recursive)
 name|boolean
 name|delete
@@ -15347,6 +15347,8 @@ argument_list|,
 name|FsAction
 operator|.
 name|ALL
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -22652,6 +22654,61 @@ name|AccessControlException
 throws|,
 name|UnresolvedLinkException
 block|{
+name|checkPermission
+argument_list|(
+name|pc
+argument_list|,
+name|path
+argument_list|,
+name|doCheckOwner
+argument_list|,
+name|ancestorAccess
+argument_list|,
+name|parentAccess
+argument_list|,
+name|access
+argument_list|,
+name|subAccess
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Check whether current user have permissions to access the path. For more    * details of the parameters, see    * {@link FSPermissionChecker#checkPermission()}.    */
+DECL|method|checkPermission (FSPermissionChecker pc, String path, boolean doCheckOwner, FsAction ancestorAccess, FsAction parentAccess, FsAction access, FsAction subAccess, boolean resolveLink)
+specifier|private
+name|void
+name|checkPermission
+parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
+name|String
+name|path
+parameter_list|,
+name|boolean
+name|doCheckOwner
+parameter_list|,
+name|FsAction
+name|ancestorAccess
+parameter_list|,
+name|FsAction
+name|parentAccess
+parameter_list|,
+name|FsAction
+name|access
+parameter_list|,
+name|FsAction
+name|subAccess
+parameter_list|,
+name|boolean
+name|resolveLink
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|UnresolvedLinkException
+block|{
 if|if
 condition|(
 operator|!
@@ -22690,6 +22747,8 @@ argument_list|,
 name|access
 argument_list|,
 name|subAccess
+argument_list|,
+name|resolveLink
 argument_list|)
 expr_stmt|;
 block|}
