@@ -245,7 +245,7 @@ function_decl|;
 block|}
 comment|/**    * An action that will renew and replace the file system's delegation     * tokens automatically.    */
 DECL|class|RenewAction
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|RenewAction
@@ -283,6 +283,12 @@ name|?
 argument_list|>
 name|token
 decl_stmt|;
+DECL|field|isValid
+name|boolean
+name|isValid
+init|=
+literal|true
+decl_stmt|;
 DECL|method|RenewAction (final T fs)
 specifier|private
 name|RenewAction
@@ -319,6 +325,16 @@ argument_list|(
 name|renewCycle
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|isValid ()
+specifier|public
+name|boolean
+name|isValid
+parameter_list|()
+block|{
+return|return
+name|isValid
+return|;
 block|}
 comment|/** Get the delay until this event should happen. */
 annotation|@
@@ -640,6 +656,10 @@ name|IOException
 name|ie2
 parameter_list|)
 block|{
+name|isValid
+operator|=
+literal|false
+expr_stmt|;
 throw|throw
 operator|new
 name|IOException
@@ -753,8 +773,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|VisibleForTesting
 DECL|field|renewCycle
-specifier|protected
+specifier|public
 specifier|static
 name|long
 name|renewCycle
@@ -950,7 +972,10 @@ name|FileSystem
 operator|&
 name|Renewable
 parameter_list|>
-name|void
+name|RenewAction
+argument_list|<
+name|T
+argument_list|>
 name|addRenewAction
 parameter_list|(
 specifier|final
@@ -1019,6 +1044,9 @@ literal|"does not have a token for renewal"
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|action
+return|;
 block|}
 comment|/**    * Remove the associated renew action from the queue    *     * @throws IOException    */
 DECL|method|removeRenewAction ( final T fs)

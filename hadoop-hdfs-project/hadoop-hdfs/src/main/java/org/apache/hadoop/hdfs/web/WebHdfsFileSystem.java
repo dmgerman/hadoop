@@ -1381,6 +1381,17 @@ literal|null
 decl_stmt|;
 annotation|@
 name|VisibleForTesting
+DECL|field|action
+name|DelegationTokenRenewer
+operator|.
+name|RenewAction
+argument_list|<
+name|?
+argument_list|>
+name|action
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|method|addRenewAction (final WebHdfsFileSystem webhdfs)
 specifier|protected
 specifier|synchronized
@@ -1407,6 +1418,8 @@ name|getInstance
 argument_list|()
 expr_stmt|;
 block|}
+name|action
+operator|=
 name|dtRenewer
 operator|.
 name|addRenewAction
@@ -1727,10 +1740,23 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// we haven't inited yet, or we used to have a token but it expired
 if|if
 condition|(
 operator|!
 name|hasInitedToken
+operator|||
+operator|(
+name|action
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|action
+operator|.
+name|isValid
+argument_list|()
+operator|)
 condition|)
 block|{
 comment|//since we don't already have a token, go get one
