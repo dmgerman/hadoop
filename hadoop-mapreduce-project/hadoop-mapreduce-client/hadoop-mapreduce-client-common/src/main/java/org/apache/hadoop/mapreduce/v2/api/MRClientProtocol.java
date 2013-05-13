@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -590,22 +600,6 @@ name|RenewDelegationTokenResponse
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
 begin_interface
 DECL|interface|MRClientProtocol
 specifier|public
@@ -628,7 +622,7 @@ name|GetJobReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|getTaskReport (GetTaskReportRequest request)
 specifier|public
@@ -639,7 +633,7 @@ name|GetTaskReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|getTaskAttemptReport (GetTaskAttemptReportRequest request)
 specifier|public
@@ -650,7 +644,7 @@ name|GetTaskAttemptReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|getCounters (GetCountersRequest request)
 specifier|public
@@ -661,7 +655,7 @@ name|GetCountersRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|getTaskAttemptCompletionEvents (GetTaskAttemptCompletionEventsRequest request)
 specifier|public
@@ -672,7 +666,7 @@ name|GetTaskAttemptCompletionEventsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|getTaskReports (GetTaskReportsRequest request)
 specifier|public
@@ -683,7 +677,7 @@ name|GetTaskReportsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|getDiagnostics (GetDiagnosticsRequest request)
 specifier|public
@@ -694,7 +688,7 @@ name|GetDiagnosticsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|killJob (KillJobRequest request)
 specifier|public
@@ -705,7 +699,7 @@ name|KillJobRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|killTask (KillTaskRequest request)
 specifier|public
@@ -716,7 +710,7 @@ name|KillTaskRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|killTaskAttempt (KillTaskAttemptRequest request)
 specifier|public
@@ -727,7 +721,7 @@ name|KillTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|failTaskAttempt (FailTaskAttemptRequest request)
 specifier|public
@@ -738,7 +732,7 @@ name|FailTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 DECL|method|getDelegationToken (GetDelegationTokenRequest request)
 specifier|public
@@ -749,9 +743,9 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
-comment|/**    * Renew an existing delegation token.    *     * @param request the delegation token to be renewed.    * @return the new expiry time for the delegation token.    * @throws YarnRemoteException    */
+comment|/**    * Renew an existing delegation token.    *     * @param request the delegation token to be renewed.    * @return the new expiry time for the delegation token.    * @throws IOException    */
 DECL|method|renewDelegationToken ( RenewDelegationTokenRequest request)
 specifier|public
 name|RenewDelegationTokenResponse
@@ -761,9 +755,9 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
-comment|/**    * Cancel an existing delegation token.    *     * @param request the delegation token to be cancelled.    * @return an empty response.    * @throws YarnRemoteException    */
+comment|/**    * Cancel an existing delegation token.    *     * @param request the delegation token to be cancelled.    * @return an empty response.    * @throws IOException    */
 DECL|method|cancelDelegationToken ( CancelDelegationTokenRequest request)
 specifier|public
 name|CancelDelegationTokenResponse
@@ -773,7 +767,7 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 function_decl|;
 block|}
 end_interface

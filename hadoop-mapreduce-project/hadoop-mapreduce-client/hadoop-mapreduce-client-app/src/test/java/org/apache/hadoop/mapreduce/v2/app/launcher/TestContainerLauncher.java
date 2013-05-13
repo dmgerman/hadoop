@@ -730,22 +730,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -2496,7 +2480,7 @@ name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|GetContainerStatusResponse
 name|response
@@ -2532,7 +2516,7 @@ name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 comment|// Validate that the container is what RM is giving.
 name|Assert
@@ -2697,7 +2681,7 @@ name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|Exception
 name|e
@@ -2716,7 +2700,7 @@ argument_list|)
 decl_stmt|;
 throw|throw
 operator|new
-name|YarnRemoteException
+name|IOException
 argument_list|(
 name|e
 argument_list|)

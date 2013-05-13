@@ -20,6 +20,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -898,22 +908,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -1106,7 +1100,7 @@ name|FailTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|FailTaskAttemptResponse
 name|resp
@@ -1135,7 +1129,7 @@ name|GetCountersRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|GetCountersResponse
 name|resp
@@ -1197,7 +1191,7 @@ name|GetDiagnosticsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|GetDiagnosticsResponse
 name|resp
@@ -1233,7 +1227,7 @@ name|GetJobReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobReport
 name|jobReport
@@ -1358,7 +1352,7 @@ name|GetTaskAttemptCompletionEventsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|GetTaskAttemptCompletionEventsResponse
 name|resp
@@ -1399,7 +1393,7 @@ name|GetTaskAttemptReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 comment|//not invoked by anybody
 throw|throw
@@ -1419,7 +1413,7 @@ name|GetTaskReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|GetTaskReportResponse
 name|resp
@@ -1524,7 +1518,7 @@ name|GetTaskReportsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|GetTaskReportsResponse
 name|resp
@@ -1565,7 +1559,7 @@ name|KillJobRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|KillJobResponse
 name|resp
@@ -1594,7 +1588,7 @@ name|KillTaskRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|KillTaskResponse
 name|resp
@@ -1623,7 +1617,7 @@ name|KillTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|KillTaskAttemptResponse
 name|resp
@@ -1652,7 +1646,7 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 comment|/* Should not be invoked by anyone. */
 throw|throw
@@ -1672,7 +1666,7 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 comment|/* Should not be invoked by anyone. */
 throw|throw
@@ -1692,7 +1686,7 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 comment|/* Should not be invoked by anyone. */
 throw|throw

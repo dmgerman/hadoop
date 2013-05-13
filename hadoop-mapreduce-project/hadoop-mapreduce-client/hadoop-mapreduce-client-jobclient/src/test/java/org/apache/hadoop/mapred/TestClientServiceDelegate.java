@@ -582,22 +582,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|ipc
-operator|.
-name|RPCUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|BuilderUtils
@@ -885,9 +869,8 @@ argument_list|)
 operator|.
 name|thenThrow
 argument_list|(
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"Job ID doesnot Exist"
 argument_list|)
@@ -1537,8 +1520,6 @@ name|testReconnectOnAMRestart
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|YarnRemoteException
 block|{
 comment|//test not applicable when AM not reachable
 comment|//as instantiateAMProxy is not called at all
@@ -1572,6 +1553,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|when
 argument_list|(
 name|rmDelegate
@@ -1625,6 +1608,21 @@ literal|90
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|GetJobReportResponse
 name|jobReportResponse1
 init|=
@@ -1969,8 +1967,6 @@ name|testAMAccessDisabled
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|YarnRemoteException
 block|{
 comment|//test only applicable when AM not reachable
 if|if
@@ -2017,6 +2013,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|when
 argument_list|(
 name|rmDelegate
@@ -2066,6 +2064,21 @@ name|getFinishedApplicationReport
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|ClientServiceDelegate
 name|clientServiceDelegate
 init|=
@@ -2321,8 +2334,6 @@ name|testRMDownForJobStatusBeforeGetAMReport
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|YarnRemoteException
 block|{
 name|Configuration
 name|conf
@@ -2350,8 +2361,6 @@ name|testRMDownForJobStatusBeforeGetAMReportWithRetryTimes
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|YarnRemoteException
 block|{
 name|Configuration
 name|conf
@@ -2399,8 +2408,6 @@ name|testRMDownRestoreForJobStatusBeforeGetAMReport
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|YarnRemoteException
 block|{
 name|Configuration
 name|conf
@@ -2486,6 +2493,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|when
 argument_list|(
 name|rmDelegate
@@ -2596,6 +2605,21 @@ name|jobStatus
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
+block|}
 DECL|method|testRMDownForJobStatusBeforeGetAMReport (Configuration conf, int noOfRetries)
 specifier|private
 name|void
@@ -2608,8 +2632,6 @@ name|int
 name|noOfRetries
 parameter_list|)
 throws|throws
-name|YarnRemoteException
-throws|,
 name|IOException
 block|{
 name|conf
@@ -2657,6 +2679,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|when
 argument_list|(
 name|rmDelegate
@@ -2800,6 +2824,21 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|getJobReportRequest ()
 specifier|private
@@ -3078,8 +3117,6 @@ name|ResourceMgrDelegate
 name|getRMDelegate
 parameter_list|()
 throws|throws
-name|YarnRemoteException
-throws|,
 name|IOException
 block|{
 name|ResourceMgrDelegate
@@ -3092,6 +3129,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|when
 argument_list|(
 name|rm
@@ -3110,6 +3149,21 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 return|return
 name|rm
 return|;

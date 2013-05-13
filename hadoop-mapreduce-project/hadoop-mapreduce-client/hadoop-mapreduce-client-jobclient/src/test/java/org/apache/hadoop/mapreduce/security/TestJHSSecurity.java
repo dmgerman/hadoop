@@ -56,18 +56,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|UndeclaredThrowableException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -436,22 +424,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|ipc
 operator|.
 name|YarnRPC
@@ -569,8 +541,6 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
-throws|,
-name|YarnRemoteException
 block|{
 name|Logger
 name|rootLogger
@@ -856,7 +826,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -977,7 +947,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1054,7 +1024,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1152,7 +1122,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1236,7 +1206,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|UndeclaredThrowableException
+name|IOException
 name|e
 parameter_list|)
 block|{       }
@@ -1295,7 +1265,7 @@ name|DelegationToken
 name|run
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|GetDelegationTokenRequest
 name|request
@@ -1378,7 +1348,7 @@ name|Long
 name|run
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|RenewDelegationTokenRequest
 name|request
@@ -1458,7 +1428,7 @@ name|Void
 name|run
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|CancelDelegationTokenRequest
 name|request

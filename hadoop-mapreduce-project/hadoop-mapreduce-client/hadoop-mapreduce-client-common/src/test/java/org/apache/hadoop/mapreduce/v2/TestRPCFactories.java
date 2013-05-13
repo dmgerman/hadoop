@@ -22,6 +22,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -682,22 +692,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|impl
@@ -1075,7 +1069,7 @@ name|GetJobReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1092,7 +1086,7 @@ name|GetTaskReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1109,7 +1103,7 @@ name|GetTaskAttemptReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1126,7 +1120,7 @@ name|GetCountersRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1143,7 +1137,7 @@ name|GetTaskAttemptCompletionEventsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1160,7 +1154,7 @@ name|GetTaskReportsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1177,7 +1171,7 @@ name|GetDiagnosticsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1194,7 +1188,7 @@ name|KillJobRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1211,7 +1205,7 @@ name|KillTaskRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1228,7 +1222,7 @@ name|KillTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1245,7 +1239,7 @@ name|FailTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1262,7 +1256,7 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1279,7 +1273,7 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -1296,7 +1290,7 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null

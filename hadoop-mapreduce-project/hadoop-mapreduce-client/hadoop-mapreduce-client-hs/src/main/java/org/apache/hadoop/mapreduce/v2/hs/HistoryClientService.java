@@ -1100,22 +1100,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -1137,22 +1121,6 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|ipc
-operator|.
-name|RPCUtil
 import|;
 end_import
 
@@ -1689,7 +1657,7 @@ name|JobId
 name|jobID
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|UserGroupInformation
 name|loginUgi
@@ -1752,29 +1720,13 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 name|e
 argument_list|)
@@ -1817,7 +1769,7 @@ name|GetCountersRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -1877,7 +1829,7 @@ name|GetJobReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -1941,7 +1893,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getTaskAttemptReport (GetTaskAttemptReportRequest request)
+DECL|method|getTaskAttemptReport ( GetTaskAttemptReportRequest request)
 specifier|public
 name|GetTaskAttemptReportResponse
 name|getTaskAttemptReport
@@ -1950,7 +1902,7 @@ name|GetTaskAttemptReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskAttemptId
 name|taskAttemptId
@@ -2024,7 +1976,7 @@ name|GetTaskReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskId
 name|taskId
@@ -2078,16 +2030,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getTaskAttemptCompletionEvents (GetTaskAttemptCompletionEventsRequest request)
 specifier|public
 name|GetTaskAttemptCompletionEventsResponse
+DECL|method|getTaskAttemptCompletionEvents ( GetTaskAttemptCompletionEventsRequest request)
 name|getTaskAttemptCompletionEvents
 parameter_list|(
 name|GetTaskAttemptCompletionEventsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -2167,12 +2119,11 @@ name|KillJobRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"Invalid operation on completed job"
 argument_list|)
@@ -2189,12 +2140,11 @@ name|KillTaskRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"Invalid operation on completed job"
 argument_list|)
@@ -2202,7 +2152,7 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|killTaskAttempt (KillTaskAttemptRequest request)
+DECL|method|killTaskAttempt ( KillTaskAttemptRequest request)
 specifier|public
 name|KillTaskAttemptResponse
 name|killTaskAttempt
@@ -2211,12 +2161,11 @@ name|KillTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"Invalid operation on completed job"
 argument_list|)
@@ -2233,7 +2182,7 @@ name|GetDiagnosticsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskAttemptId
 name|taskAttemptId
@@ -2298,7 +2247,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|failTaskAttempt (FailTaskAttemptRequest request)
+DECL|method|failTaskAttempt ( FailTaskAttemptRequest request)
 specifier|public
 name|FailTaskAttemptResponse
 name|failTaskAttempt
@@ -2307,12 +2256,11 @@ name|FailTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"Invalid operation on completed job"
 argument_list|)
@@ -2329,7 +2277,7 @@ name|GetTaskReportsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -2417,9 +2365,7 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
-block|{
-try|try
+name|IOException
 block|{
 name|UserGroupInformation
 name|ugi
@@ -2586,22 +2532,6 @@ return|return
 name|response
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|i
-parameter_list|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|i
-argument_list|)
-throw|;
-block|}
-block|}
 annotation|@
 name|Override
 DECL|method|renewDelegationToken ( RenewDelegationTokenRequest request)
@@ -2613,9 +2543,7 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
-block|{
-try|try
+name|IOException
 block|{
 if|if
 condition|(
@@ -2733,22 +2661,6 @@ return|return
 name|renewResponse
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
 annotation|@
 name|Override
 DECL|method|cancelDelegationToken ( CancelDelegationTokenRequest request)
@@ -2760,9 +2672,7 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
-block|{
-try|try
+name|IOException
 block|{
 if|if
 condition|(
@@ -2865,22 +2775,6 @@ name|class
 argument_list|)
 return|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
-block|}
 DECL|method|checkAccess (Job job, JobACL jobOperation)
 specifier|private
 name|void
@@ -2893,13 +2787,11 @@ name|JobACL
 name|jobOperation
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|UserGroupInformation
 name|callerUGI
 decl_stmt|;
-try|try
-block|{
 name|callerUGI
 operator|=
 name|UserGroupInformation
@@ -2907,22 +2799,6 @@ operator|.
 name|getCurrentUser
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
 if|if
 condition|(
 operator|!
@@ -2937,9 +2813,8 @@ argument_list|)
 condition|)
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 operator|new
 name|AccessControlException

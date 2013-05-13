@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetSocketAddress
@@ -1190,22 +1200,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -1227,22 +1221,6 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|ipc
-operator|.
-name|RPCUtil
 import|;
 end_import
 
@@ -1758,7 +1736,7 @@ name|boolean
 name|modifyAccess
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|Job
 name|job
@@ -1786,7 +1764,7 @@ name|boolean
 name|modifyAccess
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|Task
 name|task
@@ -1814,9 +1792,8 @@ literal|null
 condition|)
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"Unknown Task "
 operator|+
@@ -1840,7 +1817,7 @@ name|boolean
 name|modifyAccess
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskAttempt
 name|attempt
@@ -1868,9 +1845,8 @@ literal|null
 condition|)
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"Unknown TaskAttempt "
 operator|+
@@ -1893,7 +1869,7 @@ name|GetCountersRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -1955,7 +1931,7 @@ name|GetJobReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -2030,7 +2006,7 @@ name|GetTaskAttemptReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskAttemptId
 name|taskAttemptId
@@ -2082,7 +2058,7 @@ name|GetTaskReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskId
 name|taskId
@@ -2134,7 +2110,7 @@ name|GetTaskAttemptCompletionEventsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -2221,7 +2197,7 @@ name|KillJobRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -2318,7 +2294,7 @@ name|KillTaskRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskId
 name|taskId
@@ -2399,7 +2375,7 @@ name|KillTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskAttemptId
 name|taskAttemptId
@@ -2491,7 +2467,7 @@ name|GetDiagnosticsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskAttemptId
 name|taskAttemptId
@@ -2548,7 +2524,7 @@ name|FailTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|TaskAttemptId
 name|taskAttemptId
@@ -2650,7 +2626,7 @@ name|GetTaskReportsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobId
@@ -2768,12 +2744,11 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"MR AM not authorized to issue delegation"
 operator|+
@@ -2792,12 +2767,11 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"MR AM not authorized to renew delegation"
 operator|+
@@ -2816,12 +2790,11 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|IOException
 argument_list|(
 literal|"MR AM not authorized to cancel delegation"
 operator|+

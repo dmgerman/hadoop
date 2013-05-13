@@ -2876,7 +2876,7 @@ name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 try|try
 block|{
@@ -2925,9 +2925,13 @@ expr_stmt|;
 block|}
 throw|throw
 operator|new
+name|IOException
+argument_list|(
+operator|new
 name|ContainerException
 argument_list|(
 literal|"Force fail CM"
+argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -2942,7 +2946,7 @@ name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2959,7 +2963,7 @@ name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null

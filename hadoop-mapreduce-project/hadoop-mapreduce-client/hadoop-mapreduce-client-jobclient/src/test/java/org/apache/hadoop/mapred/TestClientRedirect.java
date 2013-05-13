@@ -20,6 +20,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|InetAddress
@@ -1396,22 +1406,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -2315,7 +2309,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNewApplication (GetNewApplicationRequest request)
+DECL|method|getNewApplication ( GetNewApplicationRequest request)
 specifier|public
 name|GetNewApplicationResponse
 name|getNewApplication
@@ -2324,7 +2318,7 @@ name|GetNewApplicationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2341,7 +2335,7 @@ name|GetApplicationReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|ApplicationId
 name|applicationId
@@ -2550,11 +2544,11 @@ name|SubmitApplicationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 throw|throw
 operator|new
-name|YarnRemoteException
+name|IOException
 argument_list|(
 literal|"Test"
 argument_list|)
@@ -2571,7 +2565,7 @@ name|KillApplicationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 name|recordFactory
@@ -2595,7 +2589,7 @@ name|GetClusterMetricsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2612,7 +2606,7 @@ name|GetAllApplicationsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2629,7 +2623,7 @@ name|GetClusterNodesRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2646,7 +2640,7 @@ name|GetQueueInfoRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2663,7 +2657,7 @@ name|GetQueueUserAclsInfoRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2680,7 +2674,7 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2697,7 +2691,7 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2714,7 +2708,7 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -2759,7 +2753,7 @@ name|GetCountersRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|hsContact
 operator|=
@@ -3019,7 +3013,7 @@ name|GetCountersRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|JobId
 name|jobID
@@ -3073,7 +3067,7 @@ name|GetJobReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 name|amContact
 operator|=
@@ -3172,7 +3166,7 @@ name|GetTaskReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3189,7 +3183,7 @@ name|GetTaskAttemptReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3206,7 +3200,7 @@ name|GetTaskAttemptCompletionEventsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3223,7 +3217,7 @@ name|GetTaskReportsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3240,7 +3234,7 @@ name|GetDiagnosticsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3257,7 +3251,7 @@ name|KillJobRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 name|recordFactory
@@ -3281,7 +3275,7 @@ name|KillTaskRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3298,7 +3292,7 @@ name|KillTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3315,7 +3309,7 @@ name|FailTaskAttemptRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3360,7 +3354,7 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3405,7 +3399,7 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null
@@ -3450,7 +3444,7 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|IOException
 block|{
 return|return
 literal|null

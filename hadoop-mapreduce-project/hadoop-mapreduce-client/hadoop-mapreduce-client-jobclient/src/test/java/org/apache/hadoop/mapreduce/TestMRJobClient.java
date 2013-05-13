@@ -1013,6 +1013,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
 comment|// task completed
 name|assertTrue
 argument_list|(

@@ -28,6 +28,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1779,22 +1789,6 @@ operator|.
 name|SecurityProtos
 operator|.
 name|RenewDelegationTokenResponseProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnRemoteException
 import|;
 end_import
 
@@ -1901,7 +1895,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -1965,7 +1959,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2029,7 +2023,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2093,7 +2087,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2157,7 +2151,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2221,7 +2215,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2285,7 +2279,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2349,7 +2343,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2413,7 +2407,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2477,7 +2471,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2541,7 +2535,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2605,7 +2599,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2669,7 +2663,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{
@@ -2733,7 +2727,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|IOException
 name|e
 parameter_list|)
 block|{

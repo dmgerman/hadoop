@@ -366,7 +366,7 @@ specifier|public
 class|class
 name|TestResourceMgrDelegate
 block|{
-comment|/**    * Tests that getRootQueues makes a request for the (recursive) child queues    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Tests that getRootQueues makes a request for the (recursive) child queues    * @throws IOException    */
 annotation|@
 name|Test
 DECL|method|testGetRootQueues ()
@@ -378,8 +378,6 @@ throws|throws
 name|IOException
 throws|,
 name|InterruptedException
-throws|,
-name|YarnRemoteException
 block|{
 specifier|final
 name|ClientRMProtocol
@@ -457,6 +455,8 @@ argument_list|(
 name|queueInfo
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|Mockito
 operator|.
 name|when
@@ -481,6 +481,21 @@ argument_list|(
 name|response
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|ResourceMgrDelegate
 name|delegate
 init|=
@@ -529,6 +544,8 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|Mockito
 operator|.
 name|verify
@@ -544,6 +561,21 @@ name|capture
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnRemoteException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|Assert
 operator|.
 name|assertTrue
