@@ -40,6 +40,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -352,8 +368,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set task status.     * @param status    */
+annotation|@
+name|Private
 DECL|method|setTaskStatus (Status status)
-specifier|protected
+specifier|public
 name|void
 name|setTaskStatus
 parameter_list|(
@@ -388,8 +406,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set the task completion time    * @param taskCompletionTime time (in millisec) the task took to complete    */
+annotation|@
+name|Private
 DECL|method|setTaskRunTime (int taskCompletionTime)
-specifier|protected
+specifier|public
 name|void
 name|setTaskRunTime
 parameter_list|(
@@ -406,8 +426,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * set event Id. should be assigned incrementally starting from 0.     * @param eventId    */
+annotation|@
+name|Private
 DECL|method|setEventId (int eventId)
-specifier|protected
+specifier|public
 name|void
 name|setEventId
 parameter_list|(
@@ -424,8 +446,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Set task tracker http location.     * @param taskTrackerHttp    */
+annotation|@
+name|Private
 DECL|method|setTaskTrackerHttp (String taskTrackerHttp)
-specifier|protected
+specifier|public
 name|void
 name|setTaskTrackerHttp
 parameter_list|(
