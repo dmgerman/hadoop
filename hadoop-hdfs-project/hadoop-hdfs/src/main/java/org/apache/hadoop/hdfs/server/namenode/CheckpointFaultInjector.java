@@ -145,6 +145,14 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{}
+DECL|method|beforeEditsRename ()
+specifier|public
+name|void
+name|beforeEditsRename
+parameter_list|()
+throws|throws
+name|IOException
+block|{}
 block|}
 end_class
 
