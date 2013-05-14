@@ -1075,6 +1075,32 @@ argument_list|,
 name|jt
 argument_list|)
 decl_stmt|;
+comment|// log the system properties
+name|String
+name|systemPropsToLog
+init|=
+name|MRApps
+operator|.
+name|getSystemPropertiesToLog
+argument_list|(
+name|job
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|systemPropsToLog
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|systemPropsToLog
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Initiate Java VM metrics
 name|JvmMetrics
 operator|.
