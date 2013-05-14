@@ -206,7 +206,21 @@ condition|)
 block|{
 return|return;
 block|}
+if|if
+condition|(
+name|this
+operator|.
+name|pos
+operator|!=
+name|this
+operator|.
+name|count
+condition|)
+block|{
 comment|// optimize: check if the pos is in the buffer
+comment|// This optimization only works if pos != count -- if they are
+comment|// equal, it's possible that the previous reads were just
+comment|// longer than the total buffer size, and hence skipped the buffer.
 name|long
 name|end
 init|=
@@ -252,6 +266,7 @@ name|start
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
 block|}
 comment|// invalidate buffer
 name|this
