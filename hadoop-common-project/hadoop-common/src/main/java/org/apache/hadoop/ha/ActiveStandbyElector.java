@@ -2128,6 +2128,17 @@ name|void
 name|joinElectionInternal
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|appData
+operator|!=
+literal|null
+argument_list|,
+literal|"trying to join election without any app data"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|zkClient
@@ -2200,9 +2211,31 @@ argument_list|(
 name|sleepTime
 argument_list|)
 expr_stmt|;
+comment|// Should not join election even before the SERVICE is reported
+comment|// as HEALTHY from ZKFC monitoring.
+if|if
+condition|(
+name|appData
+operator|!=
+literal|null
+condition|)
+block|{
 name|joinElectionInternal
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Not joining election since service has not yet been "
+operator|+
+literal|"reported as healthy."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
@@ -2651,6 +2684,17 @@ name|KeeperException
 throws|,
 name|InterruptedException
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|appData
+operator|!=
+literal|null
+argument_list|,
+literal|"no appdata"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
