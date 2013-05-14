@@ -1446,9 +1446,13 @@ name|setRetired
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**     * Change the current run state of the job.     */
+comment|/**     * Change the current run state of the job.     *     * The setter is public to be compatible with M/R 1.x, however, it should be     * used internally.     *     * @param state the state of the job     */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setRunState (int state)
-specifier|protected
+specifier|public
 specifier|synchronized
 name|void
 name|setRunState
@@ -1524,9 +1528,13 @@ name|userName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Used to set the scheduling information associated to a particular Job.     *      * @param schedulingInfo Scheduling information of the job     */
+comment|/**     * Used to set the scheduling information associated to a particular Job.     *     * The setter is public to be compatible with M/R 1.x, however, it should be     * used internally.     *     * @param schedulingInfo Scheduling information of the job     */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|setSchedulingInfo (String schedulingInfo)
-specifier|protected
+specifier|public
 specifier|synchronized
 name|void
 name|setSchedulingInfo
