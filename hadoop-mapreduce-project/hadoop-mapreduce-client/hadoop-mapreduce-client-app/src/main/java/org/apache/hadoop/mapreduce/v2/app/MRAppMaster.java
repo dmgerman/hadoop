@@ -7159,14 +7159,14 @@ argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
-name|YarnConfiguration
+name|JobConf
 name|conf
 init|=
 operator|new
-name|YarnConfiguration
+name|JobConf
 argument_list|(
 operator|new
-name|JobConf
+name|YarnConfiguration
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -7412,7 +7412,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|initAndStartAppMaster (final MRAppMaster appMaster, final YarnConfiguration conf, String jobUserName)
+DECL|method|initAndStartAppMaster (final MRAppMaster appMaster, final JobConf conf, String jobUserName)
 specifier|protected
 specifier|static
 name|void
@@ -7423,7 +7423,7 @@ name|MRAppMaster
 name|appMaster
 parameter_list|,
 specifier|final
-name|YarnConfiguration
+name|JobConf
 name|conf
 parameter_list|,
 name|String
@@ -7467,6 +7467,16 @@ decl_stmt|;
 name|appMasterUgi
 operator|.
 name|addCredentials
+argument_list|(
+name|credentials
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|getCredentials
+argument_list|()
+operator|.
+name|addAll
 argument_list|(
 name|credentials
 argument_list|)
