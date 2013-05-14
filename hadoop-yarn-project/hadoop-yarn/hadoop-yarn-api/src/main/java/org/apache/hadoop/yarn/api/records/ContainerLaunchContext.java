@@ -135,27 +135,27 @@ name|String
 name|user
 parameter_list|)
 function_decl|;
-comment|/**    * Get security tokens (if security is enabled).    * @return security tokens (if security is enabled)    */
+comment|/**    * Get all the tokens needed by this container. It may include file-system    * tokens, ApplicationMaster related tokens if this container is an    * ApplicationMaster or framework level tokens needed by this container to    * communicate to various services in a secure manner.    *     * @return tokens needed by this container.    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getContainerTokens ()
+DECL|method|getTokens ()
 name|ByteBuffer
-name|getContainerTokens
+name|getTokens
 parameter_list|()
 function_decl|;
-comment|/**    * Set security tokens (if security is enabled).    * @param containerToken security tokens     */
+comment|/**    * Set security tokens needed by this container.    * @param tokens security tokens     */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setContainerTokens (ByteBuffer containerToken)
+DECL|method|setTokens (ByteBuffer tokens)
 name|void
-name|setContainerTokens
+name|setTokens
 parameter_list|(
 name|ByteBuffer
-name|containerToken
+name|tokens
 parameter_list|)
 function_decl|;
 comment|/**    * Get<code>LocalResource</code> required by the container.    * @return all<code>LocalResource</code> required by the container    */

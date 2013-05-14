@@ -647,7 +647,7 @@ operator|.
 name|getContainerLaunchContext
 argument_list|()
 operator|.
-name|getContainerTokens
+name|getTokens
 argument_list|()
 expr_stmt|;
 return|return

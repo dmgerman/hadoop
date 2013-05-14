@@ -1332,7 +1332,7 @@ if|if
 condition|(
 name|container
 operator|.
-name|getContainerTokens
+name|getTokens
 argument_list|()
 operator|!=
 literal|null
@@ -1345,7 +1345,7 @@ name|reset
 argument_list|(
 name|container
 operator|.
-name|getContainerTokens
+name|getTokens
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1405,7 +1405,7 @@ argument_list|)
 expr_stmt|;
 name|container
 operator|.
-name|setContainerTokens
+name|setTokens
 argument_list|(
 name|ByteBuffer
 operator|.

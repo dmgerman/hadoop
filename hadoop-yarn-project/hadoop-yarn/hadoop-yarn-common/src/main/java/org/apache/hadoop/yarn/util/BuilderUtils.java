@@ -2017,7 +2017,7 @@ return|return
 name|containerToken
 return|;
 block|}
-DECL|method|newContainerLaunchContext ( String user, Map<String, LocalResource> localResources, Map<String, String> environment, List<String> commands, Map<String, ByteBuffer> serviceData, ByteBuffer containerTokens, Map<ApplicationAccessType, String> acls)
+DECL|method|newContainerLaunchContext ( String user, Map<String, LocalResource> localResources, Map<String, String> environment, List<String> commands, Map<String, ByteBuffer> serviceData, ByteBuffer tokens, Map<ApplicationAccessType, String> acls)
 specifier|public
 specifier|static
 name|ContainerLaunchContext
@@ -2057,7 +2057,7 @@ argument_list|>
 name|serviceData
 parameter_list|,
 name|ByteBuffer
-name|containerTokens
+name|tokens
 parameter_list|,
 name|Map
 argument_list|<
@@ -2117,9 +2117,9 @@ argument_list|)
 expr_stmt|;
 name|container
 operator|.
-name|setContainerTokens
+name|setTokens
 argument_list|(
-name|containerTokens
+name|tokens
 argument_list|)
 expr_stmt|;
 name|container

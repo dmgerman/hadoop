@@ -5259,7 +5259,7 @@ name|myServiceData
 argument_list|,
 name|commonContainerSpec
 operator|.
-name|getContainerTokens
+name|getTokens
 argument_list|()
 operator|.
 name|duplicate

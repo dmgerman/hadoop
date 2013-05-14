@@ -1905,7 +1905,7 @@ operator|.
 name|getAMContainerSpec
 argument_list|()
 operator|.
-name|getContainerTokens
+name|getTokens
 argument_list|()
 decl_stmt|;
 if|if

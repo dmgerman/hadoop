@@ -1602,7 +1602,7 @@ argument_list|)
 decl_stmt|;
 name|clc
 operator|.
-name|setContainerTokens
+name|setTokens
 argument_list|(
 name|securityTokens
 argument_list|)
