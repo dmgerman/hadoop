@@ -108,6 +108,12 @@ argument_list|(
 literal|"Heap memory committed in MB"
 argument_list|)
 block|,
+DECL|enumConstant|MemMaxM
+name|MemMaxM
+argument_list|(
+literal|"Max memory size in MB"
+argument_list|)
+block|,
 DECL|enumConstant|GcCount
 name|GcCount
 argument_list|(
