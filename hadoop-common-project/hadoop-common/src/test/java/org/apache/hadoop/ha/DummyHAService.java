@@ -244,6 +244,13 @@ name|fenceCount
 init|=
 literal|0
 decl_stmt|;
+DECL|field|activeTransitionCount
+specifier|public
+name|int
+name|activeTransitionCount
+init|=
+literal|0
+decl_stmt|;
 DECL|field|instances
 specifier|static
 name|ArrayList
@@ -598,6 +605,9 @@ name|AccessControlException
 throws|,
 name|IOException
 block|{
+name|activeTransitionCount
+operator|++
+expr_stmt|;
 name|checkUnreachable
 argument_list|()
 expr_stmt|;

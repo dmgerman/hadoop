@@ -565,6 +565,11 @@ specifier|private
 name|ZooKeeper
 name|zkClient
 decl_stmt|;
+DECL|field|watcher
+specifier|private
+name|WatcherWithClientRef
+name|watcher
+decl_stmt|;
 DECL|field|zkConnectionState
 specifier|private
 name|ConnectionState
@@ -788,6 +793,20 @@ argument_list|(
 literal|"data cannot be null"
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|wantToBeInElection
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Already in election. Not re-connecting."
+argument_list|)
+expr_stmt|;
+return|return;
 block|}
 name|appData
 operator|=
@@ -2005,13 +2024,12 @@ comment|// may trigger the Connected event immediately. So, if we register the
 comment|// watcher after constructing ZooKeeper, we may miss that event. Instead,
 comment|// we construct the watcher first, and have it block any events it receives
 comment|// before we can set its ZooKeeper reference.
-name|WatcherWithClientRef
 name|watcher
-init|=
+operator|=
 operator|new
 name|WatcherWithClientRef
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|ZooKeeper
 name|zk
 init|=
@@ -2496,6 +2514,10 @@ name|zkClient
 operator|=
 literal|null
 expr_stmt|;
+name|watcher
+operator|=
+literal|null
+expr_stmt|;
 block|}
 name|zkClient
 operator|=
@@ -2544,6 +2566,10 @@ name|zkClient
 operator|=
 literal|null
 expr_stmt|;
+name|watcher
+operator|=
+literal|null
+expr_stmt|;
 try|try
 block|{
 name|tempZk
@@ -2571,6 +2597,10 @@ operator|=
 name|ConnectionState
 operator|.
 name|TERMINATED
+expr_stmt|;
+name|wantToBeInElection
+operator|=
+literal|false
 expr_stmt|;
 block|}
 DECL|method|reset ()
@@ -3140,11 +3170,7 @@ name|exists
 argument_list|(
 name|zkLockFilePath
 argument_list|,
-operator|new
-name|WatcherWithClientRef
-argument_list|(
-name|zkClient
-argument_list|)
+name|watcher
 argument_list|,
 name|this
 argument_list|,
@@ -3586,25 +3612,6 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-DECL|method|WatcherWithClientRef ()
-specifier|private
-name|WatcherWithClientRef
-parameter_list|()
-block|{     }
-DECL|method|WatcherWithClientRef (ZooKeeper zk)
-specifier|private
-name|WatcherWithClientRef
-parameter_list|(
-name|ZooKeeper
-name|zk
-parameter_list|)
-block|{
-name|setZooKeeperRef
-argument_list|(
-name|zk
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**      * Waits for the next event from ZooKeeper to arrive.      *       * @param connectionTimeoutMs zookeeper connection timeout in milliseconds      * @throws KeeperException if the connection attempt times out. This will      * be a ZooKeeper ConnectionLoss exception code.      * @throws IOException if interrupted while connecting to ZooKeeper      */
 DECL|method|waitForZKConnectionEvent (int connectionTimeoutMs)
 specifier|private
