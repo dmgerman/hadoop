@@ -52,7 +52,12 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"HBase"
+block|}
+argument_list|)
 annotation|@
 name|InterfaceStability
 operator|.
@@ -155,20 +160,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"platform name: "
-operator|+
 name|PLATFORM_NAME
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"java vendor name: "
-operator|+
-name|JAVA_VENDOR_NAME
 argument_list|)
 expr_stmt|;
 block|}
