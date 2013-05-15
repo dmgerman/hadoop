@@ -600,24 +600,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|DatanodeDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|namenode
 operator|.
 name|FSClusterStats
@@ -656,7 +638,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|Namesystem
+name|NameNode
+operator|.
+name|OperationCategory
 import|;
 end_import
 
@@ -674,9 +658,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|NameNode
-operator|.
-name|OperationCategory
+name|Namesystem
 import|;
 end_import
 
@@ -837,20 +819,6 @@ operator|.
 name|net
 operator|.
 name|Node
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|net
-operator|.
-name|NodeBase
 import|;
 end_import
 

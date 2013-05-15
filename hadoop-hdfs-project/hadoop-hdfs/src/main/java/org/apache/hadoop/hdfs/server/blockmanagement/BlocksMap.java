@@ -198,6 +198,7 @@ name|capacity
 decl_stmt|;
 DECL|field|blocks
 specifier|private
+specifier|volatile
 name|GSet
 argument_list|<
 name|Block
