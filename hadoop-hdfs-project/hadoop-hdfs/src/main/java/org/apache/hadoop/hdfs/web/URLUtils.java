@@ -134,6 +134,25 @@ operator|.
 name|openConnection
 argument_list|()
 decl_stmt|;
+name|setTimeouts
+argument_list|(
+name|connection
+argument_list|)
+expr_stmt|;
+return|return
+name|connection
+return|;
+block|}
+comment|/**    * Sets timeout parameters on the given URLConnection.    *     * @param connection URLConnection to set    */
+DECL|method|setTimeouts (URLConnection connection)
+specifier|static
+name|void
+name|setTimeouts
+parameter_list|(
+name|URLConnection
+name|connection
+parameter_list|)
+block|{
 name|connection
 operator|.
 name|setConnectTimeout
@@ -148,9 +167,6 @@ argument_list|(
 name|SOCKET_TIMEOUT
 argument_list|)
 expr_stmt|;
-return|return
-name|connection
-return|;
 block|}
 block|}
 end_class
