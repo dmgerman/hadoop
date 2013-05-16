@@ -1240,6 +1240,33 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
+name|RuntimeException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to cancel token "
+operator|+
+name|tokenWithConf
+operator|.
+name|token
+operator|+
+literal|" "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|e
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
