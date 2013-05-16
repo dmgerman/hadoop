@@ -276,6 +276,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|EditLogFileOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSDirectory
 import|;
 end_import
@@ -394,6 +412,18 @@ specifier|public
 class|class
 name|TestNestedSnapshots
 block|{
+static|static
+block|{
+comment|// These tests generate a large number of edits, and repeated edit log
+comment|// flushes can be a bottleneck.
+name|EditLogFileOutputStream
+operator|.
+name|setShouldSkipFsyncForTesting
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 block|{
 name|SnapshotTestHelper
 operator|.
