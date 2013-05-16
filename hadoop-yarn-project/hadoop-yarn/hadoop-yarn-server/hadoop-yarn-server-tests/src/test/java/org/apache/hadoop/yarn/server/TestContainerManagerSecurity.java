@@ -1918,13 +1918,13 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|java
+name|javax
 operator|.
-name|lang
+name|security
 operator|.
-name|reflect
+name|sasl
 operator|.
-name|UndeclaredThrowableException
+name|SaslException
 operator|.
 name|class
 operator|.
@@ -1945,9 +1945,6 @@ operator|.
 name|assertTrue
 argument_list|(
 name|e
-operator|.
-name|getCause
-argument_list|()
 operator|.
 name|getMessage
 argument_list|()

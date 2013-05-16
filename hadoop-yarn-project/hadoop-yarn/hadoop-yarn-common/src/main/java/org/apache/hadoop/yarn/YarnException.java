@@ -17,7 +17,7 @@ package|;
 end_package
 
 begin_comment
-comment|/** Base Yarn Exception.  */
+comment|/** Base Yarn Exception.  *   * NOTE: All derivatives of this exception, which may be thrown by a remote  * service, must include a String only constructor for the exception to be   * unwrapped on the client.  */
 end_comment
 
 begin_class

@@ -20,11 +20,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
+name|io
 operator|.
-name|reflect
-operator|.
-name|UndeclaredThrowableException
+name|IOException
 import|;
 end_import
 
@@ -35,6 +33,16 @@ operator|.
 name|net
 operator|.
 name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|SocketTimeoutException
 import|;
 end_import
 
@@ -549,15 +557,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|EXCEPTION_CAUSE
-specifier|private
-specifier|static
-specifier|final
-name|String
-name|EXCEPTION_CAUSE
-init|=
-literal|"java.net.SocketTimeoutException"
-decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|static
@@ -892,24 +891,31 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 argument_list|(
-literal|"Error, exception does not contain: "
+literal|"Error, exception is not: "
 operator|+
-name|EXCEPTION_CAUSE
+name|SocketTimeoutException
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|SocketTimeoutException
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|e
 operator|.
-name|getCause
+name|getClass
 argument_list|()
 operator|.
-name|getMessage
+name|getName
 argument_list|()
-operator|.
-name|contains
-argument_list|(
-name|EXCEPTION_CAUSE
-argument_list|)
 argument_list|)
 expr_stmt|;
 return|return;
@@ -993,6 +999,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnRemoteException
+throws|,
+name|IOException
 block|{
 name|StartContainerResponse
 name|response
@@ -1043,7 +1051,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|UndeclaredThrowableException
+name|YarnRemoteException
 argument_list|(
 name|e
 argument_list|)
