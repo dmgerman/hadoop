@@ -972,6 +972,16 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -1089,15 +1099,12 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 DECL|field|conf
-specifier|final
 specifier|static
 specifier|private
 name|Configuration
 name|conf
 init|=
-operator|new
-name|HdfsConfiguration
-argument_list|()
+literal|null
 decl_stmt|;
 DECL|class|TestServer
 specifier|private
@@ -1358,6 +1365,21 @@ operator|-=
 name|toWrite
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Before
+DECL|method|setupConf ()
+specifier|public
+name|void
+name|setupConf
+parameter_list|()
+block|{
+name|conf
+operator|=
+operator|new
+name|HdfsConfiguration
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * This makes sure that when DN closes clients socket after client had    * successfully connected earlier, the data can still be fetched.    */
 annotation|@
