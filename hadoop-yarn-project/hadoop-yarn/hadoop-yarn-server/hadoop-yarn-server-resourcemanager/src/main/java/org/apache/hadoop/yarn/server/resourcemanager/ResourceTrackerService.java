@@ -458,28 +458,6 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
-operator|.
-name|RMStateStore
-operator|.
-name|RMState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
 name|rmnode
 operator|.
 name|RMNode
@@ -1307,12 +1285,6 @@ return|return
 name|response
 return|;
 block|}
-if|if
-condition|(
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|MasterKey
 name|nextMasterKeyForNode
 init|=
@@ -1330,7 +1302,6 @@ argument_list|(
 name|nextMasterKeyForNode
 argument_list|)
 expr_stmt|;
-block|}
 name|RMNode
 name|rmNode
 init|=
@@ -1831,12 +1802,6 @@ argument_list|)
 expr_stmt|;
 comment|// Check if node's masterKey needs to be updated and if the currentKey has
 comment|// roller over, send it across
-if|if
-condition|(
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|boolean
 name|shouldSendMasterKey
 init|=
@@ -1900,7 +1865,6 @@ argument_list|(
 name|nextMasterKeyForNode
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// 4. Send status to RMNode, saving the latest response.
 name|this
@@ -1985,19 +1949,6 @@ argument_list|,
 name|policyProvider
 argument_list|)
 expr_stmt|;
-block|}
-DECL|method|isSecurityEnabled ()
-specifier|protected
-name|boolean
-name|isSecurityEnabled
-parameter_list|()
-block|{
-return|return
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-return|;
 block|}
 block|}
 end_class

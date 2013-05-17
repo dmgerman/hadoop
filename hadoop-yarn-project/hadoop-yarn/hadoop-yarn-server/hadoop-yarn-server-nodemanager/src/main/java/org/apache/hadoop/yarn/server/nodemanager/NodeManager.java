@@ -971,38 +971,15 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// Create the secretManager if need be.
 name|NMContainerTokenSecretManager
 name|containerTokenSecretManager
 init|=
-literal|null
-decl_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Security is enabled on NodeManager. "
-operator|+
-literal|"Creating ContainerTokenSecretManager"
-argument_list|)
-expr_stmt|;
-name|containerTokenSecretManager
-operator|=
 operator|new
 name|NMContainerTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|this
 operator|.
 name|context

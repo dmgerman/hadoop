@@ -737,7 +737,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|5120
 argument_list|)

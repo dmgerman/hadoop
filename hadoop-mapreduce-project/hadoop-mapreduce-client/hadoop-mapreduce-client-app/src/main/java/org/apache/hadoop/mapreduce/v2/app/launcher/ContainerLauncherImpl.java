@@ -2044,22 +2044,20 @@ argument_list|(
 name|containerManagerBindAddr
 argument_list|)
 decl_stmt|;
+comment|// the user in createRemoteUser in this context has to be ContainerID
 name|UserGroupInformation
 name|user
 init|=
 name|UserGroupInformation
 operator|.
-name|getCurrentUser
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
+name|createRemoteUser
+argument_list|(
+name|containerID
 operator|.
-name|isSecurityEnabled
+name|toString
 argument_list|()
-condition|)
-block|{
+argument_list|)
+decl_stmt|;
 name|Token
 argument_list|<
 name|ContainerTokenIdentifier
@@ -2075,19 +2073,6 @@ argument_list|,
 name|cmAddr
 argument_list|)
 decl_stmt|;
-comment|// the user in createRemoteUser in this context has to be ContainerID
-name|user
-operator|=
-name|UserGroupInformation
-operator|.
-name|createRemoteUser
-argument_list|(
-name|containerID
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|user
 operator|.
 name|addToken
@@ -2095,7 +2080,6 @@ argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
-block|}
 name|ContainerManager
 name|proxy
 init|=

@@ -568,7 +568,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|10000
 argument_list|)
@@ -580,7 +580,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h2:1234"
+literal|"127.0.0.2:1234"
 argument_list|,
 literal|10000
 argument_list|)
@@ -592,7 +592,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h3:1234"
+literal|"127.0.0.3:1234"
 argument_list|,
 literal|10000
 argument_list|)
@@ -604,7 +604,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h4:1234"
+literal|"127.0.0.4:1234"
 argument_list|,
 literal|10000
 argument_list|)

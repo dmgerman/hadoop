@@ -1052,7 +1052,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -1115,7 +1115,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -1178,7 +1178,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -1239,7 +1239,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -1459,7 +1459,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -1835,7 +1835,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -2036,7 +2036,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -2194,7 +2194,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -2439,7 +2439,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -2652,7 +2652,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -2810,7 +2810,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -3055,7 +3055,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -3249,7 +3249,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -3434,7 +3434,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -3634,7 +3634,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -3824,7 +3824,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -4029,7 +4029,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -4206,7 +4206,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -4441,7 +4441,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -4705,7 +4705,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -4962,7 +4962,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -5246,7 +5246,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -5319,7 +5319,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -5390,7 +5390,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -5459,7 +5459,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -5702,7 +5702,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -6065,7 +6065,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -6890,7 +6890,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -6963,7 +6963,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -7140,7 +7140,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -7211,7 +7211,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -7280,7 +7280,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -7523,7 +7523,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)
@@ -7970,7 +7970,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"amNM:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|2048
 argument_list|)

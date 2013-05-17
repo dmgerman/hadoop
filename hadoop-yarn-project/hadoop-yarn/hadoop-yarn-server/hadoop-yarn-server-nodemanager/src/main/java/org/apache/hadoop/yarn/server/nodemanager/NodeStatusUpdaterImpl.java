@@ -1340,19 +1340,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|isSecurityEnabled ()
-specifier|private
-name|boolean
-name|isSecurityEnabled
-parameter_list|()
-block|{
-return|return
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-return|;
-block|}
 annotation|@
 name|Private
 DECL|method|isTokenKeepAliveEnabled (Configuration conf)
@@ -1378,6 +1365,8 @@ operator|.
 name|DEFAULT_LOG_AGGREGATION_ENABLED
 argument_list|)
 operator|&&
+name|UserGroupInformation
+operator|.
 name|isSecurityEnabled
 argument_list|()
 return|;
@@ -1802,14 +1791,6 @@ name|message
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|MasterKey
 name|masterKey
 init|=
@@ -1819,13 +1800,6 @@ name|getMasterKey
 argument_list|()
 decl_stmt|;
 comment|// do this now so that its set before we start heartbeating to RM
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Security enabled - updating secret keys now"
-argument_list|)
-expr_stmt|;
 comment|// It is expected that status updater is started by this point and
 comment|// RM gives the shared secret in registration during
 comment|// StatusUpdater#start().
@@ -1848,7 +1822,6 @@ argument_list|(
 name|masterKey
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 name|LOG
 operator|.
@@ -2557,12 +2530,6 @@ argument_list|(
 name|nodeStatus
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|request
 operator|.
 name|setLastKnownMasterKey
@@ -2580,7 +2547,6 @@ name|getCurrentKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 while|while
 condition|(
 operator|!
@@ -2707,12 +2673,6 @@ name|getNextHeartBeatInterval
 argument_list|()
 expr_stmt|;
 comment|// See if the master-key has rolled over
-if|if
-condition|(
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|MasterKey
 name|updatedMasterKey
 init|=
@@ -2739,7 +2699,6 @@ argument_list|(
 name|updatedMasterKey
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(

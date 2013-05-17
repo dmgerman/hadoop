@@ -248,6 +248,11 @@ name|TestRMNMSecretKeys
 block|{
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|1000000
+argument_list|)
 DECL|method|testNMUpdation ()
 specifier|public
 name|void
@@ -263,6 +268,13 @@ operator|new
 name|YarnConfiguration
 argument_list|()
 decl_stmt|;
+comment|// validating RM NM keys for Unsecured environment
+name|validateRMNMKeyExchange
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// validating RM NM keys for secured environment
 name|conf
 operator|.
 name|set
@@ -281,6 +293,23 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|validateRMNMKeyExchange
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|validateRMNMKeyExchange (YarnConfiguration conf)
+specifier|private
+name|void
+name|validateRMNMKeyExchange
+parameter_list|(
+name|YarnConfiguration
+name|conf
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 comment|// Default rolling and activation intervals are large enough, no need to
 comment|// intervene
 specifier|final

@@ -898,7 +898,7 @@ init|=
 operator|new
 name|MockNM
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|15120
 argument_list|,
@@ -914,7 +914,7 @@ init|=
 operator|new
 name|MockNM
 argument_list|(
-literal|"h2:5678"
+literal|"127.0.0.2:5678"
 argument_list|,
 literal|15120
 argument_list|,
@@ -1225,7 +1225,7 @@ name|am1
 operator|.
 name|allocate
 argument_list|(
-literal|"h1"
+literal|"127.0.0.1"
 argument_list|,
 literal|1000
 argument_list|,
@@ -1838,7 +1838,7 @@ name|rm2
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|15120
 argument_list|)
@@ -1849,7 +1849,7 @@ name|rm2
 operator|.
 name|registerNode
 argument_list|(
-literal|"h2:5678"
+literal|"127.0.0.2:5678"
 argument_list|,
 literal|15120
 argument_list|)
@@ -1998,7 +1998,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"h2"
+literal|"127.0.0.2"
 argument_list|)
 condition|)
 block|{
@@ -2105,7 +2105,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"h2"
+literal|"127.0.0.2"
 argument_list|)
 condition|)
 block|{
@@ -2155,7 +2155,7 @@ name|am1
 operator|.
 name|allocate
 argument_list|(
-literal|"h1"
+literal|"127.0.0.1"
 argument_list|,
 literal|1000
 argument_list|,
@@ -2173,7 +2173,7 @@ name|am2
 operator|.
 name|allocate
 argument_list|(
-literal|"h2"
+literal|"127.0.0.2"
 argument_list|,
 literal|1000
 argument_list|,
@@ -2518,7 +2518,7 @@ init|=
 operator|new
 name|MockNM
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|15120
 argument_list|,

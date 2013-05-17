@@ -134,20 +134,6 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
 name|token
 operator|.
 name|SecretManager
@@ -241,6 +227,20 @@ operator|.
 name|security
 operator|.
 name|BaseContainerTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -620,17 +620,6 @@ name|ContainerTokenIdentifier
 name|tokenId
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 name|int
 name|keyId
 init|=
@@ -694,24 +683,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Ensure the startContainer call is not using an older cached key. Will    * return false once startContainerSuccessful is called. Does not check    * the actual key being current since that is verified by the security layer    * via retrievePassword.    */
-DECL|method|isValidStartContainerRequest ( ContainerTokenIdentifier tokenId)
+DECL|method|isValidStartContainerRequest ( ContainerId containerID)
 specifier|public
 specifier|synchronized
 name|boolean
 name|isValidStartContainerRequest
 parameter_list|(
-name|ContainerTokenIdentifier
-name|tokenId
-parameter_list|)
-block|{
 name|ContainerId
 name|containerID
-init|=
-name|tokenId
-operator|.
-name|getContainerID
-argument_list|()
-decl_stmt|;
+parameter_list|)
+block|{
 name|ApplicationId
 name|applicationId
 init|=

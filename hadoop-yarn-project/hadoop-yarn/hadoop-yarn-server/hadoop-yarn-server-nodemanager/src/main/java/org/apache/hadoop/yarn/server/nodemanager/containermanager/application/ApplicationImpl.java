@@ -150,20 +150,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -2074,14 +2060,6 @@ name|event
 parameter_list|)
 block|{
 comment|// Inform the ContainerTokenSecretManager
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|app
 operator|.
 name|context
@@ -2096,7 +2074,6 @@ operator|.
 name|appId
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Inform the logService
 name|app
 operator|.

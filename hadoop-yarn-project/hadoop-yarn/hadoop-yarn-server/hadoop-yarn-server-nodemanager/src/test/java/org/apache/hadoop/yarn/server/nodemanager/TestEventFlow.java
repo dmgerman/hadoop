@@ -21,6 +21,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -454,18 +478,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|*
-import|;
-end_import
-
 begin_class
 DECL|class|TestEventFlow
 specifier|public
@@ -851,6 +863,30 @@ argument_list|,
 name|dirsHandler
 argument_list|)
 decl_stmt|;
+name|nodeStatusUpdater
+operator|.
+name|init
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+operator|(
+operator|(
+name|NMContext
+operator|)
+name|context
+operator|)
+operator|.
+name|setContainerManager
+argument_list|(
+name|containerManager
+argument_list|)
+expr_stmt|;
+name|nodeStatusUpdater
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 name|containerManager
 operator|.
 name|init

@@ -717,7 +717,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|6
 operator|*
@@ -731,7 +731,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h2:5678"
+literal|"127.0.0.2:5678"
 argument_list|,
 literal|4
 operator|*
@@ -901,9 +901,9 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"h1"
+literal|"127.0.0.1"
 block|,
-literal|"h2"
+literal|"127.0.0.2"
 block|}
 argument_list|,
 name|GB
@@ -931,9 +931,9 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"h1"
+literal|"127.0.0.1"
 block|,
-literal|"h2"
+literal|"127.0.0.2"
 block|}
 argument_list|,
 literal|3
@@ -1468,7 +1468,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|6
 operator|*
@@ -1744,6 +1744,8 @@ name|GB
 argument_list|)
 argument_list|,
 literal|1
+argument_list|,
+literal|"127.0.0.2"
 argument_list|)
 decl_stmt|;
 name|RMNode
@@ -1765,6 +1767,8 @@ name|GB
 argument_list|)
 argument_list|,
 literal|2
+argument_list|,
+literal|"127.0.0.3"
 argument_list|)
 decl_stmt|;
 name|fs
@@ -1849,6 +1853,8 @@ name|GB
 argument_list|)
 argument_list|,
 literal|1
+argument_list|,
+literal|"127.0.0.2"
 argument_list|)
 expr_stmt|;
 name|fs
@@ -1986,6 +1992,8 @@ name|GB
 argument_list|)
 argument_list|,
 literal|1
+argument_list|,
+literal|"127.0.0.2"
 argument_list|)
 decl_stmt|;
 name|fs

@@ -6072,15 +6072,6 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Create container tokens in secure-mode
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|ContainerToken
 name|containerToken
 init|=
@@ -6113,7 +6104,6 @@ argument_list|(
 name|containerToken
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Inform the application
 name|RMContainer
 name|allocatedContainer

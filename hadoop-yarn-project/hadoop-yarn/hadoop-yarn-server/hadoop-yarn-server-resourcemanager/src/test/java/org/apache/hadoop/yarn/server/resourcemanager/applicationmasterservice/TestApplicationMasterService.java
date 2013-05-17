@@ -344,7 +344,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|3000000
 argument_list|)
 DECL|method|testRMIdentifierOnContainerAllocation ()
 specifier|public
@@ -376,7 +376,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|6
 operator|*
@@ -436,7 +436,7 @@ operator|new
 name|String
 index|[]
 block|{
-literal|"h1"
+literal|"127.0.0.1"
 block|}
 argument_list|,
 name|GB

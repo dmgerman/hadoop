@@ -3401,15 +3401,6 @@ name|containerToken
 init|=
 literal|null
 decl_stmt|;
-comment|// If security is enabled, send the container-tokens too.
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 name|containerToken
 operator|=
 name|this
@@ -3444,7 +3435,6 @@ return|return
 name|i
 return|;
 comment|// Try again later.
-block|}
 block|}
 comment|// Create the container
 name|Container

@@ -112,20 +112,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -292,9 +278,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
-operator|.
-name|DefaultResourceCalculator
+name|ResourceManager
 import|;
 end_import
 
@@ -312,7 +296,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|ResourceManager
+name|resource
+operator|.
+name|DefaultResourceCalculator
 import|;
 end_import
 
@@ -894,19 +880,6 @@ decl_stmt|;
 name|ContainerToken
 name|containerToken
 init|=
-literal|null
-decl_stmt|;
-comment|// If security is enabled, send the container-tokens too.
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-name|containerToken
-operator|=
 name|containerTokenSecretManager
 operator|.
 name|createContainerToken
@@ -922,7 +895,7 @@ argument_list|()
 argument_list|,
 name|capability
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|containerToken
@@ -934,7 +907,6 @@ return|return
 literal|null
 return|;
 comment|// Try again later.
-block|}
 block|}
 comment|// Create the container
 name|Container

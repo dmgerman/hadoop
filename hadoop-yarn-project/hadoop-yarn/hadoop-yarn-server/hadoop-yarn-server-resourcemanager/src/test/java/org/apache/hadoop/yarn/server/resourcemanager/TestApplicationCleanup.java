@@ -490,7 +490,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|5000
 argument_list|)
@@ -549,7 +549,7 @@ name|am
 operator|.
 name|allocate
 argument_list|(
-literal|"h1"
+literal|"127.0.0.1"
 argument_list|,
 literal|1000
 argument_list|,
@@ -1007,7 +1007,7 @@ name|rm
 operator|.
 name|registerNode
 argument_list|(
-literal|"h1:1234"
+literal|"127.0.0.1:1234"
 argument_list|,
 literal|5000
 argument_list|)
@@ -1066,7 +1066,7 @@ name|am
 operator|.
 name|allocate
 argument_list|(
-literal|"h1"
+literal|"127.0.0.1"
 argument_list|,
 literal|1000
 argument_list|,
