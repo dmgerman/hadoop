@@ -249,7 +249,7 @@ name|downgrade
 argument_list|(
 name|report
 operator|.
-name|getTaskId
+name|getTaskID
 argument_list|()
 argument_list|)
 argument_list|,
@@ -367,6 +367,28 @@ index|]
 argument_list|)
 return|;
 block|}
+comment|/** The string of the task id. */
+DECL|method|getTaskId ()
+specifier|public
+name|String
+name|getTaskId
+parameter_list|()
+block|{
+return|return
+name|TaskID
+operator|.
+name|downgrade
+argument_list|(
+name|super
+operator|.
+name|getTaskID
+argument_list|()
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 comment|/** The id of the task. */
 DECL|method|getTaskID ()
 specifier|public
@@ -381,7 +403,7 @@ name|downgrade
 argument_list|(
 name|super
 operator|.
-name|getTaskId
+name|getTaskID
 argument_list|()
 argument_list|)
 return|;

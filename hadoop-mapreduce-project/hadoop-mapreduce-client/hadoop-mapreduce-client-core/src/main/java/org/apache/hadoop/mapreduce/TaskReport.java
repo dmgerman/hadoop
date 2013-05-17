@@ -168,6 +168,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|TaskID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringInterner
@@ -351,11 +365,25 @@ operator|=
 name|counters
 expr_stmt|;
 block|}
-comment|/** The id of the task. */
+comment|/** The string of the task ID. */
 DECL|method|getTaskId ()
 specifier|public
-name|TaskID
+name|String
 name|getTaskId
+parameter_list|()
+block|{
+return|return
+name|taskid
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+comment|/** The ID of the task. */
+DECL|method|getTaskID ()
+specifier|public
+name|TaskID
+name|getTaskID
 parameter_list|()
 block|{
 return|return
@@ -658,7 +686,7 @@ name|equals
 argument_list|(
 name|report
 operator|.
-name|getTaskId
+name|getTaskID
 argument_list|()
 argument_list|)
 return|;
