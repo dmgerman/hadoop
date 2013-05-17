@@ -1160,8 +1160,8 @@ name|value
 init|=
 literal|0
 decl_stmt|;
-name|CounterGroup
-name|group
+name|Counters
+name|counters
 init|=
 name|entry
 operator|.
@@ -1170,6 +1170,17 @@ argument_list|()
 operator|.
 name|getCounters
 argument_list|()
+decl_stmt|;
+name|CounterGroup
+name|group
+init|=
+operator|(
+name|counters
+operator|!=
+literal|null
+operator|)
+condition|?
+name|counters
 operator|.
 name|getGroup
 argument_list|(
@@ -1178,6 +1189,8 @@ argument_list|(
 name|COUNTER_GROUP
 argument_list|)
 argument_list|)
+else|:
+literal|null
 decl_stmt|;
 if|if
 condition|(
