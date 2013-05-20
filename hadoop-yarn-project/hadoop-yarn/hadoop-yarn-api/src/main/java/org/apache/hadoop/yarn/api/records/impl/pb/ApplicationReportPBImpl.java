@@ -1140,7 +1140,7 @@ literal|null
 condition|)
 name|builder
 operator|.
-name|clearStatus
+name|clearApplicationId
 argument_list|()
 expr_stmt|;
 name|this
@@ -1166,13 +1166,13 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|applicationId
+name|applicationAttemptId
 operator|==
 literal|null
 condition|)
 name|builder
 operator|.
-name|clearStatus
+name|clearCurrentApplicationAttemptId
 argument_list|()
 expr_stmt|;
 name|this
