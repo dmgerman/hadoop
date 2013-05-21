@@ -32,6 +32,22 @@ name|InterfaceAudience
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|Counters
+operator|.
+name|CountersExceededException
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -42,7 +58,7 @@ specifier|public
 class|class
 name|LimitExceededException
 extends|extends
-name|RuntimeException
+name|CountersExceededException
 block|{
 DECL|field|serialVersionUID
 specifier|private
