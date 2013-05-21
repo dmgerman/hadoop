@@ -2111,11 +2111,14 @@ argument_list|,
 name|ce
 argument_list|)
 expr_stmt|;
+comment|// No need to report to namenode when client is writing.
 if|if
 condition|(
 name|srcDataNode
 operator|!=
 literal|null
+operator|&&
+name|isDatanode
 condition|)
 block|{
 try|try
@@ -2205,6 +2208,25 @@ argument_list|,
 name|checksumBuf
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**     * Check whether checksum needs to be verified.    * Skip verifying checksum iff this is not the last one in the     * pipeline and clientName is non-null. i.e. Checksum is verified    * on all the datanodes when the data is being written by a     * datanode rather than a client. Whe client is writing the data,     * protocol includes acks and only the last datanode needs to verify     * checksum.    * @return true if checksum verification is needed, otherwise false.    */
+DECL|method|shouldVerifyChecksum ()
+specifier|private
+name|boolean
+name|shouldVerifyChecksum
+parameter_list|()
+block|{
+return|return
+operator|(
+name|mirrorOut
+operator|==
+literal|null
+operator|||
+name|isDatanode
+operator|||
+name|needsChecksumTranslation
+operator|)
+return|;
 block|}
 comment|/**     * Receives and processes a packet. It can contain many chunks.    * returns the number of data bytes that the packet has.    */
 DECL|method|receivePacket ()
@@ -2425,6 +2447,10 @@ literal|null
 operator|&&
 operator|!
 name|syncBlock
+operator|&&
+operator|!
+name|shouldVerifyChecksum
+argument_list|()
 condition|)
 block|{
 operator|(
@@ -2444,6 +2470,10 @@ argument_list|,
 name|lastPacketInBlock
 argument_list|,
 name|offsetInBlock
+argument_list|,
+name|Status
+operator|.
+name|SUCCESS
 argument_list|)
 expr_stmt|;
 block|}
@@ -2590,17 +2620,13 @@ name|checksumLen
 argument_list|)
 throw|;
 block|}
-comment|/* skip verifying checksum iff this is not the last one in the         * pipeline and clientName is non-null. i.e. Checksum is verified        * on all the datanodes when the data is being written by a         * datanode rather than a client. Whe client is writing the data,         * protocol includes acks and only the last datanode needs to verify         * checksum.        */
 if|if
 condition|(
-name|mirrorOut
-operator|==
-literal|null
-operator|||
-name|isDatanode
-operator|||
-name|needsChecksumTranslation
+name|shouldVerifyChecksum
+argument_list|()
 condition|)
+block|{
+try|try
 block|{
 name|verifyChunks
 argument_list|(
@@ -2609,6 +2635,73 @@ argument_list|,
 name|checksumBuf
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// checksum error detected locally. there is no reason to continue.
+if|if
+condition|(
+name|responder
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
+operator|(
+operator|(
+name|PacketResponder
+operator|)
+name|responder
+operator|.
+name|getRunnable
+argument_list|()
+operator|)
+operator|.
+name|enqueue
+argument_list|(
+name|seqno
+argument_list|,
+name|lastPacketInBlock
+argument_list|,
+name|offsetInBlock
+argument_list|,
+name|Status
+operator|.
+name|ERROR_CHECKSUM
+argument_list|)
+expr_stmt|;
+comment|// Wait until the responder sends back the response
+comment|// and interrupt this thread.
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{ }
+block|}
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Terminating due to a checksum error."
+operator|+
+name|ioe
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|needsChecksumTranslation
@@ -3000,7 +3093,12 @@ name|responder
 operator|!=
 literal|null
 operator|&&
+operator|(
 name|syncBlock
+operator|||
+name|shouldVerifyChecksum
+argument_list|()
+operator|)
 condition|)
 block|{
 operator|(
@@ -3020,6 +3118,10 @@ argument_list|,
 name|lastPacketInBlock
 argument_list|,
 name|offsetInBlock
+argument_list|,
+name|Status
+operator|.
+name|SUCCESS
 argument_list|)
 expr_stmt|;
 block|}
@@ -3860,7 +3962,7 @@ operator|.
 name|ERROR
 block|}
 decl_stmt|;
-comment|/**    * Processed responses from downstream datanodes in the pipeline    * and sends back replies to the originator.    */
+comment|/**    * Processes responses from downstream datanodes in the pipeline    * and sends back replies to the originator.    */
 DECL|class|PacketResponder
 class|class
 name|PacketResponder
@@ -4100,7 +4202,7 @@ name|shouldRun
 return|;
 block|}
 comment|/**      * enqueue the seqno that is still be to acked by the downstream datanode.      * @param seqno      * @param lastPacketInBlock      * @param offsetInBlock      */
-DECL|method|enqueue (final long seqno, final boolean lastPacketInBlock, final long offsetInBlock)
+DECL|method|enqueue (final long seqno, final boolean lastPacketInBlock, final long offsetInBlock, final Status ackStatus)
 name|void
 name|enqueue
 parameter_list|(
@@ -4115,6 +4217,10 @@ parameter_list|,
 specifier|final
 name|long
 name|offsetInBlock
+parameter_list|,
+specifier|final
+name|Status
+name|ackStatus
 parameter_list|)
 block|{
 specifier|final
@@ -4134,6 +4240,8 @@ name|System
 operator|.
 name|nanoTime
 argument_list|()
+argument_list|,
+name|ackStatus
 argument_list|)
 decl_stmt|;
 if|if
@@ -4710,6 +4818,20 @@ name|offsetInBlock
 else|:
 literal|0
 operator|)
+argument_list|,
+operator|(
+name|pkt
+operator|!=
+literal|null
+condition|?
+name|pkt
+operator|.
+name|ackStatus
+else|:
+name|Status
+operator|.
+name|SUCCESS
+operator|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -5002,7 +5124,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**      * @param ack Ack received from downstream      * @param seqno sequence number of ack to be sent upstream      * @param totalAckTimeNanos total ack time including all the downstream      *          nodes      * @param offsetInBlock offset in block for the data in packet      */
-DECL|method|sendAckUpstream (PipelineAck ack, long seqno, long totalAckTimeNanos, long offsetInBlock)
+DECL|method|sendAckUpstream (PipelineAck ack, long seqno, long totalAckTimeNanos, long offsetInBlock, Status myStatus)
 specifier|private
 name|void
 name|sendAckUpstream
@@ -5018,6 +5140,9 @@ name|totalAckTimeNanos
 parameter_list|,
 name|long
 name|offsetInBlock
+parameter_list|,
+name|Status
+name|myStatus
 parameter_list|)
 throws|throws
 name|IOException
@@ -5072,9 +5197,7 @@ index|[
 literal|0
 index|]
 operator|=
-name|Status
-operator|.
-name|SUCCESS
+name|myStatus
 expr_stmt|;
 for|for
 control|(
@@ -5105,6 +5228,38 @@ argument_list|(
 name|i
 argument_list|)
 expr_stmt|;
+block|}
+comment|// If the mirror has reported that it received a corrupt packet,
+comment|// do self-destruct to mark myself bad, instead of making the
+comment|// mirror node bad. The mirror is guaranteed to be good without
+comment|// corrupt data on disk.
+if|if
+condition|(
+name|ackLen
+operator|>
+literal|0
+operator|&&
+name|replies
+index|[
+literal|1
+index|]
+operator|==
+name|Status
+operator|.
+name|ERROR_CHECKSUM
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Shutting down writer and responder "
+operator|+
+literal|"since the down streams reported the data sent by this "
+operator|+
+literal|"thread is corrupt"
+argument_list|)
+throw|;
 block|}
 block|}
 name|PipelineAck
@@ -5176,6 +5331,29 @@ name|replyAck
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If a corruption was detected in the received data, terminate after
+comment|// sending ERROR_CHECKSUM back.
+if|if
+condition|(
+name|myStatus
+operator|==
+name|Status
+operator|.
+name|ERROR_CHECKSUM
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Shutting down writer and responder "
+operator|+
+literal|"due to a checksum error in received data. The error "
+operator|+
+literal|"response has been sent upstream."
+argument_list|)
+throw|;
+block|}
 block|}
 comment|/**      * Remove a packet from the head of the ack queue      *       * This should be called only when the ack queue is not empty      */
 DECL|method|removeAckHead ()
@@ -5222,7 +5400,12 @@ specifier|final
 name|long
 name|ackEnqueueNanoTime
 decl_stmt|;
-DECL|method|Packet (long seqno, boolean lastPacketInBlock, long offsetInBlock, long ackEnqueueNanoTime)
+DECL|field|ackStatus
+specifier|final
+name|Status
+name|ackStatus
+decl_stmt|;
+DECL|method|Packet (long seqno, boolean lastPacketInBlock, long offsetInBlock, long ackEnqueueNanoTime, Status ackStatus)
 name|Packet
 parameter_list|(
 name|long
@@ -5236,6 +5419,9 @@ name|offsetInBlock
 parameter_list|,
 name|long
 name|ackEnqueueNanoTime
+parameter_list|,
+name|Status
+name|ackStatus
 parameter_list|)
 block|{
 name|this
@@ -5261,6 +5447,12 @@ operator|.
 name|ackEnqueueNanoTime
 operator|=
 name|ackEnqueueNanoTime
+expr_stmt|;
+name|this
+operator|.
+name|ackStatus
+operator|=
+name|ackStatus
 expr_stmt|;
 block|}
 annotation|@
@@ -5293,6 +5485,10 @@ operator|+
 literal|", ackEnqueueNanoTime="
 operator|+
 name|ackEnqueueNanoTime
+operator|+
+literal|", ackStatus="
+operator|+
+name|ackStatus
 operator|+
 literal|")"
 return|;

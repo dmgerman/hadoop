@@ -4227,20 +4227,30 @@ argument_list|)
 throw|;
 block|}
 comment|// check replica length
-if|if
-condition|(
+name|long
+name|bytesAcked
+init|=
 name|rbw
 operator|.
 name|getBytesAcked
 argument_list|()
-operator|<
-name|minBytesRcvd
-operator|||
+decl_stmt|;
+name|long
+name|numBytes
+init|=
 name|rbw
 operator|.
 name|getNumBytes
 argument_list|()
-operator|>
+decl_stmt|;
+if|if
+condition|(
+name|bytesAcked
+argument_list|<
+name|minBytesRcvd
+operator|||
+name|numBytes
+argument_list|>
 name|maxBytesRcvd
 condition|)
 block|{
@@ -4254,17 +4264,11 @@ name|replicaInfo
 operator|+
 literal|": BytesAcked = "
 operator|+
-name|rbw
-operator|.
-name|getBytesAcked
-argument_list|()
+name|bytesAcked
 operator|+
 literal|" BytesRcvd = "
 operator|+
-name|rbw
-operator|.
-name|getNumBytes
-argument_list|()
+name|numBytes
 operator|+
 literal|" are not in the range of ["
 operator|+
@@ -4277,6 +4281,56 @@ operator|+
 literal|"]."
 argument_list|)
 throw|;
+block|}
+comment|// Truncate the potentially corrupt portion.
+comment|// If the source was client and the last node in the pipeline was lost,
+comment|// any corrupt data written after the acked length can go unnoticed.
+if|if
+condition|(
+name|numBytes
+operator|>
+name|bytesAcked
+condition|)
+block|{
+specifier|final
+name|File
+name|replicafile
+init|=
+name|rbw
+operator|.
+name|getBlockFile
+argument_list|()
+decl_stmt|;
+name|truncateBlock
+argument_list|(
+name|replicafile
+argument_list|,
+name|rbw
+operator|.
+name|getMetaFile
+argument_list|()
+argument_list|,
+name|numBytes
+argument_list|,
+name|bytesAcked
+argument_list|)
+expr_stmt|;
+name|rbw
+operator|.
+name|setNumBytes
+argument_list|(
+name|bytesAcked
+argument_list|)
+expr_stmt|;
+name|rbw
+operator|.
+name|setLastChecksumAndDataLen
+argument_list|(
+name|bytesAcked
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 comment|// bump the replica's generation stamp to newGS
 name|bumpReplicaGS

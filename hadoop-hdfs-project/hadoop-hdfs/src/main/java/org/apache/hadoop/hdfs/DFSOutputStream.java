@@ -1697,6 +1697,37 @@ name|getSerializedSize
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// corrupt the data for testing.
+if|if
+condition|(
+name|DFSClientFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|corruptPacket
+argument_list|()
+condition|)
+block|{
+name|buf
+index|[
+name|headerStart
+operator|+
+name|header
+operator|.
+name|getSerializedSize
+argument_list|()
+operator|+
+name|checksumLen
+operator|+
+name|dataLen
+operator|-
+literal|1
+index|]
+operator|^=
+literal|0xff
+expr_stmt|;
+block|}
 comment|// Write the now contiguous full packet to the output stream.
 name|stm
 operator|.
@@ -1716,6 +1747,37 @@ operator|+
 name|dataLen
 argument_list|)
 expr_stmt|;
+comment|// undo corruption.
+if|if
+condition|(
+name|DFSClientFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|uncorruptPacket
+argument_list|()
+condition|)
+block|{
+name|buf
+index|[
+name|headerStart
+operator|+
+name|header
+operator|.
+name|getSerializedSize
+argument_list|()
+operator|+
+name|checksumLen
+operator|+
+name|dataLen
+operator|-
+literal|1
+index|]
+operator|^=
+literal|0xff
+expr_stmt|;
+block|}
 block|}
 comment|// get the packet's last byte's offset in the block
 DECL|method|getLastByteOffsetBlock ()
@@ -1999,6 +2061,22 @@ argument_list|<
 name|DatanodeInfo
 argument_list|>
 argument_list|()
+decl_stmt|;
+comment|/** The last ack sequence number before pipeline failure. */
+DECL|field|lastAckedSeqnoBeforeFailure
+specifier|private
+name|long
+name|lastAckedSeqnoBeforeFailure
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|pipelineRecoveryCount
+specifier|private
+name|int
+name|pipelineRecoveryCount
+init|=
+literal|0
 decl_stmt|;
 comment|/** Has the current block been hflushed? */
 DECL|field|isHflushed
@@ -3845,6 +3923,68 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
+comment|// Record the new pipeline failure recovery.
+if|if
+condition|(
+name|lastAckedSeqnoBeforeFailure
+operator|!=
+name|lastAckedSeqno
+condition|)
+block|{
+name|lastAckedSeqnoBeforeFailure
+operator|=
+name|lastAckedSeqno
+expr_stmt|;
+name|pipelineRecoveryCount
+operator|=
+literal|1
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// If we had to recover the pipeline five times in a row for the
+comment|// same packet, this client likely has corrupt data or corrupting
+comment|// during transmission.
+if|if
+condition|(
+operator|++
+name|pipelineRecoveryCount
+operator|>
+literal|5
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Error recovering pipeline for writing "
+operator|+
+name|block
+operator|+
+literal|". Already retried 5 times for the same packet."
+argument_list|)
+expr_stmt|;
+name|lastException
+operator|=
+operator|new
+name|IOException
+argument_list|(
+literal|"Failing write. Tried pipeline "
+operator|+
+literal|"recovery 5 times without success."
+argument_list|)
+expr_stmt|;
+name|streamerClosed
+operator|=
+literal|true
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
 block|}
 name|boolean
 name|doSleep
