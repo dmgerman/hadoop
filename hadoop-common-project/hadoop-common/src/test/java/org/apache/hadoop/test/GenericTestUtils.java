@@ -555,7 +555,7 @@ argument_list|)
 operator|.
 name|join
 argument_list|(
-name|found
+name|expectedSet
 argument_list|)
 argument_list|,
 name|Joiner
@@ -567,7 +567,7 @@ argument_list|)
 operator|.
 name|join
 argument_list|(
-name|expectedSet
+name|found
 argument_list|)
 argument_list|)
 expr_stmt|;

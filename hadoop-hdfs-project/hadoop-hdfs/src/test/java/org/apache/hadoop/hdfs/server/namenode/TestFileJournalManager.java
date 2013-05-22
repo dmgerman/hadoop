@@ -486,6 +486,8 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|EditLogInputStream
@@ -2431,6 +2433,8 @@ argument_list|,
 name|txId
 argument_list|,
 name|inProgressOk
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|EditLogInputStream
@@ -2811,6 +2815,8 @@ operator|.
 name|getRemoteEditLogs
 argument_list|(
 name|firstTxId
+argument_list|,
+literal|true
 argument_list|)
 argument_list|)
 return|;

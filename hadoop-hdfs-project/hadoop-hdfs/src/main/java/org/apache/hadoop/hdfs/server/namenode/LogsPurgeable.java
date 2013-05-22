@@ -61,8 +61,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Get a list of edit log input streams.  The list will start with the    * stream that contains fromTxnId, and continue until the end of the journal    * being managed.    *     * @param fromTxId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    *    * @return a list of streams    * @throws IOException if the underlying storage has an error or is otherwise    * inaccessible    */
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+comment|/**    * Get a list of edit log input streams.  The list will start with the    * stream that contains fromTxnId, and continue until the end of the journal    * being managed.    *     * @param fromTxId the first transaction id we want to read    * @param inProgressOk whether or not in-progress streams should be returned    * @param forReading whether or not the caller intends to read from the edit logs    *    * @return a list of streams    * @throws IOException if the underlying storage has an error or is otherwise    * inaccessible    */
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean forReading)
 name|void
 name|selectInputStreams
 parameter_list|(
@@ -77,6 +77,9 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 throws|throws
 name|IOException

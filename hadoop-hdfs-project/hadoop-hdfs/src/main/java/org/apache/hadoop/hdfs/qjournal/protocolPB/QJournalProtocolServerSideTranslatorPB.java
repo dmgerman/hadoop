@@ -1327,6 +1327,11 @@ name|request
 operator|.
 name|getSinceTxId
 argument_list|()
+argument_list|,
+name|request
+operator|.
+name|getForReading
+argument_list|()
 argument_list|)
 return|;
 block|}

@@ -1726,6 +1726,8 @@ argument_list|,
 name|segmentTxId
 argument_list|,
 literal|true
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 if|if
@@ -4207,6 +4209,8 @@ operator|.
 name|getEditLogManifest
 argument_list|(
 name|fromTxId
+argument_list|,
+literal|true
 argument_list|)
 return|;
 block|}
@@ -5183,7 +5187,7 @@ comment|// All journals have failed, it is handled in logSync.
 comment|// TODO: are we sure this is OK?
 block|}
 block|}
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean forReading)
 specifier|public
 name|void
 name|selectInputStreams
@@ -5199,6 +5203,9 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 block|{
 name|journalSet
@@ -5210,6 +5217,8 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
+argument_list|,
+name|forReading
 argument_list|)
 expr_stmt|;
 block|}
@@ -5288,6 +5297,8 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 try|try

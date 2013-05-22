@@ -2440,7 +2440,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEditLogManifest ( final long fromTxnId)
+DECL|method|getEditLogManifest ( final long fromTxnId, final boolean forReading)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -2451,6 +2451,10 @@ parameter_list|(
 specifier|final
 name|long
 name|fromTxnId
+parameter_list|,
+specifier|final
+name|boolean
+name|forReading
 parameter_list|)
 block|{
 return|return
@@ -2485,6 +2489,8 @@ argument_list|(
 name|journalId
 argument_list|,
 name|fromTxnId
+argument_list|,
+name|forReading
 argument_list|)
 decl_stmt|;
 comment|// Update the http port, since we need this to build URLs to any of the

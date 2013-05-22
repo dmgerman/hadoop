@@ -2718,13 +2718,16 @@ block|}
 block|}
 block|}
 comment|/**    * @see QJournalProtocol#getEditLogManifest(String, long)    */
-DECL|method|getEditLogManifest (long sinceTxId)
+DECL|method|getEditLogManifest (long sinceTxId, boolean forReading)
 specifier|public
 name|RemoteEditLogManifest
 name|getEditLogManifest
 parameter_list|(
 name|long
 name|sinceTxId
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 throws|throws
 name|IOException
@@ -2745,6 +2748,8 @@ operator|.
 name|getRemoteEditLogs
 argument_list|(
 name|sinceTxId
+argument_list|,
+name|forReading
 argument_list|)
 argument_list|)
 decl_stmt|;

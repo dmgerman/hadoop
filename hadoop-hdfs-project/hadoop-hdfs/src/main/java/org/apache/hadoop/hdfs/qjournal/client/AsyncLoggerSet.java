@@ -1255,11 +1255,14 @@ name|AsyncLogger
 argument_list|,
 name|RemoteEditLogManifest
 argument_list|>
-DECL|method|getEditLogManifest (long fromTxnId)
+DECL|method|getEditLogManifest (long fromTxnId, boolean forReading)
 name|getEditLogManifest
 parameter_list|(
 name|long
 name|fromTxnId
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 block|{
 name|Map
@@ -1297,6 +1300,8 @@ operator|.
 name|getEditLogManifest
 argument_list|(
 name|fromTxnId
+argument_list|,
+name|forReading
 argument_list|)
 decl_stmt|;
 name|calls

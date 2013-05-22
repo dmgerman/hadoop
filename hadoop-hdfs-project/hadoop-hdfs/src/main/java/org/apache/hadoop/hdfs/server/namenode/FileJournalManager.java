@@ -886,8 +886,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
-DECL|method|getRemoteEditLogs (long firstTxId)
+comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @param forReading whether or not the caller intends to read from the edit    *        logs    * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
+DECL|method|getRemoteEditLogs (long firstTxId, boolean forReading)
 specifier|public
 name|List
 argument_list|<
@@ -897,6 +897,9 @@ name|getRemoteEditLogs
 parameter_list|(
 name|long
 name|firstTxId
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 throws|throws
 name|IOException
@@ -988,23 +991,25 @@ block|}
 elseif|else
 if|if
 condition|(
-operator|(
-name|firstTxId
-operator|>
 name|elf
 operator|.
 name|getFirstTxId
 argument_list|()
-operator|)
+operator|<
+name|firstTxId
 operator|&&
-operator|(
 name|firstTxId
 operator|<=
 name|elf
 operator|.
 name|getLastTxId
 argument_list|()
-operator|)
+condition|)
+block|{
+comment|// If the firstTxId is in the middle of an edit log segment
+if|if
+condition|(
+name|forReading
 condition|)
 block|{
 comment|// Note that this behavior is different from getLogFiles below.
@@ -1023,6 +1028,27 @@ operator|.
 name|file
 argument_list|)
 throw|;
+block|}
+else|else
+block|{
+name|ret
+operator|.
+name|add
+argument_list|(
+operator|new
+name|RemoteEditLog
+argument_list|(
+name|elf
+operator|.
+name|firstTxId
+argument_list|,
+name|elf
+operator|.
+name|lastTxId
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 name|Collections
@@ -1278,7 +1304,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|selectInputStreams ( Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
+DECL|method|selectInputStreams ( Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean forReading)
 specifier|synchronized
 specifier|public
 name|void
@@ -1295,6 +1321,9 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 throws|throws
 name|IOException

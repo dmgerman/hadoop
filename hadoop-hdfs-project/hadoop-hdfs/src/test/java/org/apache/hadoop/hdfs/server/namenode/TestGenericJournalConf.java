@@ -772,7 +772,7 @@ comment|// noop
 block|}
 annotation|@
 name|Override
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxnId, boolean inProgressOk, boolean forReading)
 specifier|public
 name|void
 name|selectInputStreams
@@ -788,6 +788,9 @@ name|fromTxnId
 parameter_list|,
 name|boolean
 name|inProgressOk
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 block|{     }
 annotation|@

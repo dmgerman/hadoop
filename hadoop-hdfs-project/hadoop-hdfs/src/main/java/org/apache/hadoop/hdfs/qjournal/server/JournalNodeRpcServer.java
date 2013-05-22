@@ -1045,7 +1045,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEditLogManifest (String jid, long sinceTxId)
+DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean forReading)
 specifier|public
 name|GetEditLogManifestResponseProto
 name|getEditLogManifest
@@ -1055,6 +1055,9 @@ name|jid
 parameter_list|,
 name|long
 name|sinceTxId
+parameter_list|,
+name|boolean
+name|forReading
 parameter_list|)
 throws|throws
 name|IOException
@@ -1072,6 +1075,8 @@ operator|.
 name|getEditLogManifest
 argument_list|(
 name|sinceTxId
+argument_list|,
+name|forReading
 argument_list|)
 decl_stmt|;
 return|return
