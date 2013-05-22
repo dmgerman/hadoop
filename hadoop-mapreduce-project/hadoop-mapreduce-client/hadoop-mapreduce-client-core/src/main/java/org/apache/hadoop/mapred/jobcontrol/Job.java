@@ -313,7 +313,7 @@ name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @return the mapred ID of this job as assigned by the     * mapred framework.    */
+comment|/**    * @return the mapred ID of this job as assigned by the mapred framework.    */
 DECL|method|getAssignedJobID ()
 specifier|public
 name|JobID
@@ -333,7 +333,7 @@ name|temp
 init|=
 name|super
 operator|.
-name|getMapredJobID
+name|getMapredJobId
 argument_list|()
 decl_stmt|;
 if|if
@@ -541,6 +541,41 @@ operator|-
 literal|1
 return|;
 block|}
+comment|/**    * This is a no-op function, Its a behavior change from 1.x We no more can    * change the state from job    *     * @param state    *          the new state for this job.    */
+annotation|@
+name|Deprecated
+DECL|method|setState (int state)
+specifier|protected
+specifier|synchronized
+name|void
+name|setState
+parameter_list|(
+name|int
+name|state
+parameter_list|)
+block|{
+comment|// No-Op, we dont want to change the sate
+block|}
+comment|/**    * Add a job to this jobs' dependency list.     * Dependent jobs can only be added while a Job     * is waiting to run, not during or afterwards.    *     * @param dependingJob Job that this Job depends on.    * @return<tt>true</tt> if the Job was added.    */
+DECL|method|addDependingJob (Job dependingJob)
+specifier|public
+specifier|synchronized
+name|boolean
+name|addDependingJob
+parameter_list|(
+name|Job
+name|dependingJob
+parameter_list|)
+block|{
+return|return
+name|super
+operator|.
+name|addDependingJob
+argument_list|(
+name|dependingJob
+argument_list|)
+return|;
+block|}
 comment|/**    * @return the job client of this job    */
 DECL|method|getJobClient ()
 specifier|public
@@ -596,6 +631,62 @@ name|getDependentJobs
 argument_list|()
 argument_list|)
 return|;
+block|}
+comment|/**    * @return the mapred ID of this job as assigned by the mapred framework.    */
+DECL|method|getMapredJobID ()
+specifier|public
+specifier|synchronized
+name|String
+name|getMapredJobID
+parameter_list|()
+block|{
+if|if
+condition|(
+name|super
+operator|.
+name|getMapredJobId
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|super
+operator|.
+name|getMapredJobId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+comment|/**    * This is no-op method for backward compatibility. It's a behavior change    * from 1.x, we can not change job ids from job.    *     * @param mapredJobID    *          the mapred job ID for this job.    */
+annotation|@
+name|Deprecated
+DECL|method|setMapredJobID (String mapredJobID)
+specifier|public
+specifier|synchronized
+name|void
+name|setMapredJobID
+parameter_list|(
+name|String
+name|mapredJobID
+parameter_list|)
+block|{
+name|setAssignedJobID
+argument_list|(
+name|JobID
+operator|.
+name|forName
+argument_list|(
+name|mapredJobID
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

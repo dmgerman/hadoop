@@ -685,11 +685,12 @@ operator|=
 name|id
 expr_stmt|;
 block|}
-comment|/**    * @return the mapred ID of this job as assigned by the     * mapred framework.    */
-DECL|method|getMapredJobID ()
+comment|/**    * @return the mapred ID of this job as assigned by the mapred framework.    */
+DECL|method|getMapredJobId ()
 specifier|public
+specifier|synchronized
 name|JobID
-name|getMapredJobID
+name|getMapredJobId
 parameter_list|()
 block|{
 return|return
