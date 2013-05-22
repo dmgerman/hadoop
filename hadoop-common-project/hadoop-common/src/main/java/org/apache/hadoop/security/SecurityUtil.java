@@ -640,6 +640,7 @@ name|InterfaceAudience
 operator|.
 name|Private
 DECL|method|setTokenServiceUseIp (boolean flag)
+specifier|public
 specifier|static
 name|void
 name|setTokenServiceUseIp
