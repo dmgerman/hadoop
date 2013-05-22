@@ -42,20 +42,6 @@ name|Configuration
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|YarnException
-import|;
-end_import
-
 begin_interface
 DECL|interface|RpcClientFactory
 specifier|public
@@ -82,8 +68,6 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|YarnException
 function_decl|;
 DECL|method|stopClient (Object proxy)
 specifier|public

@@ -18,20 +18,6 @@ name|factories
 package|;
 end_package
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|YarnException
-import|;
-end_import
-
 begin_interface
 DECL|interface|RecordFactory
 specifier|public
@@ -52,8 +38,6 @@ name|T
 argument_list|>
 name|clazz
 parameter_list|)
-throws|throws
-name|YarnException
 function_decl|;
 block|}
 end_interface

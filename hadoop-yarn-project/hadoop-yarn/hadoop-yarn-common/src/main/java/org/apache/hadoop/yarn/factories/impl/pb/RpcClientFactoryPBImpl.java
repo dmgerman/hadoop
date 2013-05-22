@@ -295,8 +295,6 @@ parameter_list|,
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|YarnException
 block|{
 name|Constructor
 argument_list|<

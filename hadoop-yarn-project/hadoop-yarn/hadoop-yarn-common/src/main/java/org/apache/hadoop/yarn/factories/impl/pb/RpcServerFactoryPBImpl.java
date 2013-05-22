@@ -445,8 +445,6 @@ parameter_list|,
 name|int
 name|numHandlers
 parameter_list|)
-throws|throws
-name|YarnException
 block|{
 return|return
 name|getServer
@@ -503,8 +501,6 @@ parameter_list|,
 name|String
 name|portRangeConfig
 parameter_list|)
-throws|throws
-name|YarnException
 block|{
 name|Constructor
 argument_list|<

@@ -228,8 +228,6 @@ name|T
 argument_list|>
 name|clazz
 parameter_list|)
-throws|throws
-name|YarnException
 block|{
 name|Constructor
 argument_list|<

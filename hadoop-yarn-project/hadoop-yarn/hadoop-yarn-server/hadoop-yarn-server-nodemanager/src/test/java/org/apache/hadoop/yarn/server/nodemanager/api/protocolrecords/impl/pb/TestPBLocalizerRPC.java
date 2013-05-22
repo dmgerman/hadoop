@@ -29,26 +29,36 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|net
 operator|.
 name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|Server
 import|;
 end_import
 
@@ -74,11 +84,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|ipc
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
+name|Server
 import|;
 end_import
 
@@ -228,18 +236,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
 begin_class
 DECL|class|TestPBLocalizerRPC
 specifier|public
@@ -268,17 +264,6 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|IPC_SERIALIZER_TYPE
-argument_list|,
-literal|"protocolbuffers"
-argument_list|)
-expr_stmt|;
 return|return
 name|RecordFactoryProvider
 operator|.
