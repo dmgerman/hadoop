@@ -376,10 +376,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * This is a driver for the example programs.    * It looks at the first command line argument and tries to find an    * example program with that name.    * If it is found, it calls the main method in that class with the rest     * of the command line arguments.    * @param args The argument from the user. args[0] is the command to run.    * @return -1 on error, 0 on success    * @throws NoSuchMethodException     * @throws SecurityException     * @throws IllegalAccessException     * @throws IllegalArgumentException     * @throws Throwable Anything thrown by the example program's main    */
-DECL|method|driver (String[] args)
+DECL|method|run (String[] args)
 specifier|public
 name|int
-name|driver
+name|run
 parameter_list|(
 name|String
 index|[]
@@ -521,6 +521,40 @@ expr_stmt|;
 return|return
 literal|0
 return|;
+block|}
+comment|/**    * API compatible with Hadoop 1.x    */
+DECL|method|driver (String[] argv)
+specifier|public
+name|void
+name|driver
+parameter_list|(
+name|String
+index|[]
+name|argv
+parameter_list|)
+throws|throws
+name|Throwable
+block|{
+if|if
+condition|(
+name|run
+argument_list|(
+name|argv
+argument_list|)
+operator|==
+operator|-
+literal|1
+condition|)
+block|{
+name|System
+operator|.
+name|exit
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

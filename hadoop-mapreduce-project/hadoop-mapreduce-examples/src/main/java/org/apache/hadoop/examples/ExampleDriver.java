@@ -458,7 +458,7 @@ name|exitCode
 operator|=
 name|pgd
 operator|.
-name|driver
+name|run
 argument_list|(
 name|argv
 argument_list|)
