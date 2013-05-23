@@ -6341,7 +6341,12 @@ operator|.
 name|getRandomLocalInterfaceAddr
 argument_list|()
 argument_list|,
-name|timeout
+name|client
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|socketTimeout
 argument_list|)
 expr_stmt|;
 name|sock
