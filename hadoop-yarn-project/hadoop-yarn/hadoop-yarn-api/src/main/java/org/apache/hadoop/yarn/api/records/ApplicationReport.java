@@ -489,6 +489,28 @@ name|float
 name|progress
 parameter_list|)
 function_decl|;
+comment|/**    * Get the application's Type     * @return application's Type    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationType ()
+name|String
+name|getApplicationType
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setApplicationType (String applicationType)
+name|void
+name|setApplicationType
+parameter_list|(
+name|String
+name|applicationType
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

@@ -2541,6 +2541,15 @@ name|DEFAULT_MR_AM_MAX_ATTEMPTS
 init|=
 literal|2
 decl_stmt|;
+DECL|field|MR_APPLICATION_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_APPLICATION_TYPE
+init|=
+literal|"MAPREDUCE"
+decl_stmt|;
 block|}
 end_interface
 

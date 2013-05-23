@@ -770,6 +770,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Application Type:"
+argument_list|,
+name|app
+operator|.
+name|getApplicationType
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"State:"
 argument_list|,
 name|app

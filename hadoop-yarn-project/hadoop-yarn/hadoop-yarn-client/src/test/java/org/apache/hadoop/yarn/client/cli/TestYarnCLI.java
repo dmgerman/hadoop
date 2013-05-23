@@ -602,6 +602,8 @@ argument_list|,
 literal|"N/A"
 argument_list|,
 literal|0.53789f
+argument_list|,
+literal|"YARN"
 argument_list|)
 decl_stmt|;
 name|when
@@ -696,6 +698,13 @@ operator|.
 name|println
 argument_list|(
 literal|"\tApplication-Name : appname"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tApplication-Type : YARN"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -902,6 +911,8 @@ argument_list|,
 literal|"N/A"
 argument_list|,
 literal|0.53789f
+argument_list|,
+literal|"YARN"
 argument_list|)
 decl_stmt|;
 name|List
@@ -1001,6 +1012,13 @@ name|pw
 operator|.
 name|print
 argument_list|(
+literal|"\t    Application-Type"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
 literal|"\t      User\t     Queue\t             State\t       "
 argument_list|)
 expr_stmt|;
@@ -1029,7 +1047,14 @@ name|pw
 operator|.
 name|print
 argument_list|(
-literal|"appname\t      user\t     queue\t          FINISHED\t         "
+literal|"appname\t                YARN\t      user\t     "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"queue\t          FINISHED\t         "
 argument_list|)
 expr_stmt|;
 name|pw

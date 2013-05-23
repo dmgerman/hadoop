@@ -3027,6 +3027,10 @@ argument_list|,
 literal|"N/A"
 argument_list|,
 literal|0.0f
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_APPLICATION_TYPE
 argument_list|)
 return|;
 block|}
@@ -3108,6 +3112,10 @@ argument_list|,
 literal|"N/A"
 argument_list|,
 literal|0.0f
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_APPLICATION_TYPE
 argument_list|)
 return|;
 block|}

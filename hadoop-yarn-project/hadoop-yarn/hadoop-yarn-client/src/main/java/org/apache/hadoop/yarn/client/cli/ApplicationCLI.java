@@ -223,7 +223,7 @@ specifier|final
 name|String
 name|APPLICATIONS_PATTERN
 init|=
-literal|"%30s\t%20s\t%10s\t%10s\t%18s\t%18s\t%15s\t%35s"
+literal|"%30s\t%20s\t%20s\t%10s\t%10s\t%18s\t%18s\t%15s\t%35s"
 operator|+
 name|System
 operator|.
@@ -557,6 +557,8 @@ literal|"Application-Id"
 argument_list|,
 literal|"Application-Name"
 argument_list|,
+literal|"Application-Type"
+argument_list|,
 literal|"User"
 argument_list|,
 literal|"Queue"
@@ -614,6 +616,11 @@ argument_list|,
 name|appReport
 operator|.
 name|getName
+argument_list|()
+argument_list|,
+name|appReport
+operator|.
+name|getApplicationType
 argument_list|()
 argument_list|,
 name|appReport
@@ -783,6 +790,23 @@ argument_list|(
 name|appReport
 operator|.
 name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tApplication-Type : "
+argument_list|)
+expr_stmt|;
+name|appReportStr
+operator|.
+name|println
+argument_list|(
+name|appReport
+operator|.
+name|getApplicationType
 argument_list|()
 argument_list|)
 expr_stmt|;

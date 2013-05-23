@@ -354,6 +354,12 @@ name|int
 name|getMaxAppAttempts
 parameter_list|()
 function_decl|;
+comment|/**    * Returns the application type    * @return the application type.    */
+DECL|method|getApplicationType ()
+name|String
+name|getApplicationType
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

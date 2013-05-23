@@ -1049,6 +1049,26 @@ name|DEFAULT_APPLICATION_NAME
 init|=
 literal|"N/A"
 decl_stmt|;
+comment|/** Default application type */
+DECL|field|DEFAULT_APPLICATION_TYPE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_APPLICATION_TYPE
+init|=
+literal|"YARN"
+decl_stmt|;
+comment|/** Default application type length */
+DECL|field|APPLICATION_TYPE_LENGTH
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|APPLICATION_TYPE_LENGTH
+init|=
+literal|20
+decl_stmt|;
 comment|/** Default queue name */
 DECL|field|DEFAULT_QUEUE_NAME
 specifier|public

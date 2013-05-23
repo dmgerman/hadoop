@@ -391,6 +391,11 @@ specifier|protected
 name|long
 name|clusterId
 decl_stmt|;
+DECL|field|applicationType
+specifier|protected
+name|String
+name|applicationType
+decl_stmt|;
 comment|// these are only allowed if acls allow
 DECL|field|startedTime
 specifier|protected
@@ -594,6 +599,15 @@ operator|=
 name|app
 operator|.
 name|getApplicationId
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|applicationType
+operator|=
+name|app
+operator|.
+name|getApplicationType
 argument_list|()
 expr_stmt|;
 name|this
@@ -1112,6 +1126,18 @@ return|return
 name|this
 operator|.
 name|clusterId
+return|;
+block|}
+DECL|method|getApplicationType ()
+specifier|public
+name|String
+name|getApplicationType
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationType
 return|;
 block|}
 block|}

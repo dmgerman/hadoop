@@ -1690,6 +1690,11 @@ operator|.
 name|masterService
 argument_list|,
 name|submitTime
+argument_list|,
+name|submissionContext
+operator|.
+name|getApplicationType
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Concurrent app submissions with same applicationId will fail here

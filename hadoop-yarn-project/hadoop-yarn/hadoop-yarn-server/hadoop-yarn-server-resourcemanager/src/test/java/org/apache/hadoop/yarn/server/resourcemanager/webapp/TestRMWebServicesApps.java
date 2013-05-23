@@ -6334,6 +6334,15 @@ name|getXmlString
 argument_list|(
 name|element
 argument_list|,
+literal|"applicationType"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
 literal|"queue"
 argument_list|)
 argument_list|,
@@ -6460,7 +6469,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|15
+literal|16
 argument_list|,
 name|info
 operator|.
@@ -6491,6 +6500,13 @@ operator|.
 name|getString
 argument_list|(
 literal|"name"
+argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getString
+argument_list|(
+literal|"applicationType"
 argument_list|)
 argument_list|,
 name|info
@@ -6582,7 +6598,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String queue, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs)
+DECL|method|verifyAppInfoGeneric (RMApp app, String id, String user, String name, String applicationType, String queue, String state, String finalStatus, float progress, String trackingUI, String diagnostics, long clusterId, long startedTime, long finishedTime, long elapsedTime, String amHostHttpAddress, String amContainerLogs)
 specifier|public
 name|void
 name|verifyAppInfoGeneric
@@ -6598,6 +6614,9 @@ name|user
 parameter_list|,
 name|String
 name|name
+parameter_list|,
+name|String
+name|applicationType
 parameter_list|,
 name|String
 name|queue
@@ -6683,6 +6702,20 @@ name|getName
 argument_list|()
 argument_list|,
 name|name
+argument_list|)
+expr_stmt|;
+name|WebServicesTestUtils
+operator|.
+name|checkStringMatch
+argument_list|(
+literal|"applicationType"
+argument_list|,
+name|app
+operator|.
+name|getApplicationType
+argument_list|()
+argument_list|,
+name|applicationType
 argument_list|)
 expr_stmt|;
 name|WebServicesTestUtils

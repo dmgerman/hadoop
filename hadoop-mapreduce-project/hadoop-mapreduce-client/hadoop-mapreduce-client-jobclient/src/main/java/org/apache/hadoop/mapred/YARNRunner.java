@@ -3063,6 +3063,15 @@ argument_list|(
 name|capability
 argument_list|)
 expr_stmt|;
+name|appContext
+operator|.
+name|setApplicationType
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_APPLICATION_TYPE
+argument_list|)
+expr_stmt|;
 return|return
 name|appContext
 return|;

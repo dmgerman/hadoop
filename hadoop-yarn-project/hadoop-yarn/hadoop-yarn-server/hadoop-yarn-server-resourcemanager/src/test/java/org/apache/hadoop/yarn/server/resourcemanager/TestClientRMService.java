@@ -3127,6 +3127,8 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+argument_list|,
+literal|"YARN"
 argument_list|)
 return|;
 block|}

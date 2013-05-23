@@ -343,6 +343,31 @@ name|Resource
 name|resource
 parameter_list|)
 function_decl|;
+comment|/**    * Get the<em>applicationType</em> is the application type    *     * @return<em>applicationType</em> is the application type    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationType ()
+specifier|public
+name|String
+name|getApplicationType
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<em>applicationType</em> is the application type    *     * @param applicationType    *<em>applicationType</em> is the application type    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setApplicationType (String applicationType)
+specifier|public
+name|void
+name|setApplicationType
+parameter_list|(
+name|String
+name|applicationType
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

@@ -1074,6 +1074,12 @@ name|RMNode
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|applicationType
+specifier|private
+specifier|final
+name|String
+name|applicationType
+decl_stmt|;
 comment|// Mutable fields
 DECL|field|startTime
 specifier|private
@@ -1871,7 +1877,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -1904,6 +1910,9 @@ name|masterService
 parameter_list|,
 name|long
 name|submitTime
+parameter_list|,
+name|String
+name|applicationType
 parameter_list|)
 block|{
 name|this
@@ -1992,6 +2001,12 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|applicationType
+operator|=
+name|applicationType
 expr_stmt|;
 name|int
 name|globalMaxAppAttempts
@@ -2954,6 +2969,10 @@ argument_list|,
 name|origTrackingUrl
 argument_list|,
 name|progress
+argument_list|,
+name|this
+operator|.
+name|applicationType
 argument_list|)
 return|;
 block|}
@@ -4336,6 +4355,20 @@ name|FAILED
 return|;
 block|}
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationType ()
+specifier|public
+name|String
+name|getApplicationType
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationType
+return|;
 block|}
 block|}
 end_class
