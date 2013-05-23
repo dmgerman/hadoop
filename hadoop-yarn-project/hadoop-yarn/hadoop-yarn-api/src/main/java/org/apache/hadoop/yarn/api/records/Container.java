@@ -116,31 +116,145 @@ name|ContainerManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>Container</code> represents an allocated resource in the cluster.  *</p>  *   *<p>The<code>ResourceManager</code> is the sole authority to allocate any  *<code>Container</code> to applications. The allocated<code>Container</code>  * is always on a single node and has a unique {@link ContainerId}. It has  * a specific amount of {@link Resource} allocated.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} for the container, which is globally unique.</li>  *<li>  *       {@link NodeId} of the node on which it is allocated.  *</li>  *<li>HTTP uri of the node.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>{@link Priority} at which the container was allocated.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>  *       {@link ContainerToken} of the container, used to securely verify   *       authenticity of the allocation.   *</li>  *<li>{@link ContainerStatus} of the container.</li>  *</ul>  *</p>  *   *<p>Typically, an<code>ApplicationMaster</code> receives the   *<code>Container</code> from the<code>ResourceManager</code> during  * resource-negotiation and then talks to the<code>NodManager</code> to   * start/stop containers.</p>  *   * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  * @see ContainerManager#stopContainer(org.apache.hadoop.yarn.api.protocolrecords.StopContainerRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|Container
+DECL|class|Container
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|Container
-extends|extends
+implements|implements
 name|Comparable
 argument_list|<
 name|Container
 argument_list|>
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (ContainerId containerId, NodeId nodeId, String nodeHttpAddress, Resource resource, Priority priority, ContainerToken containerToken, long rmIdentifier)
+specifier|public
+specifier|static
+name|Container
+name|newInstance
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|NodeId
+name|nodeId
+parameter_list|,
+name|String
+name|nodeHttpAddress
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|ContainerToken
+name|containerToken
+parameter_list|,
+name|long
+name|rmIdentifier
+parameter_list|)
+block|{
+name|Container
+name|container
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|Container
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|container
+operator|.
+name|setId
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setNodeId
+argument_list|(
+name|nodeId
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setNodeHttpAddress
+argument_list|(
+name|nodeHttpAddress
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setResource
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setPriority
+argument_list|(
+name|priority
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setContainerToken
+argument_list|(
+name|containerToken
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setRMIdentifier
+argument_list|(
+name|rmIdentifier
+argument_list|)
+expr_stmt|;
+return|return
+name|container
+return|;
+block|}
 comment|/**    * Get the globally unique identifier for the container.    * @return globally unique identifier for the container    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getId ()
+specifier|public
+specifier|abstract
 name|ContainerId
 name|getId
 parameter_list|()
@@ -150,6 +264,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setId (ContainerId id)
+specifier|public
+specifier|abstract
 name|void
 name|setId
 parameter_list|(
@@ -163,6 +279,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getNodeId ()
+specifier|public
+specifier|abstract
 name|NodeId
 name|getNodeId
 parameter_list|()
@@ -172,6 +290,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNodeId (NodeId nodeId)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeId
 parameter_list|(
@@ -185,6 +305,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getNodeHttpAddress ()
+specifier|public
+specifier|abstract
 name|String
 name|getNodeHttpAddress
 parameter_list|()
@@ -194,6 +316,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNodeHttpAddress (String nodeHttpAddress)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeHttpAddress
 parameter_list|(
@@ -207,6 +331,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getResource ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getResource
 parameter_list|()
@@ -216,6 +342,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setResource (Resource resource)
+specifier|public
+specifier|abstract
 name|void
 name|setResource
 parameter_list|(
@@ -225,6 +353,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>Priority</code> at which the<code>Container</code> was    * allocated.    * @return<code>Priority</code> at which the<code>Container</code> was    *         allocated    */
 DECL|method|getPriority ()
+specifier|public
+specifier|abstract
 name|Priority
 name|getPriority
 parameter_list|()
@@ -234,6 +364,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setPriority (Priority priority)
+specifier|public
+specifier|abstract
 name|void
 name|setPriority
 parameter_list|(
@@ -247,6 +379,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getContainerToken ()
+specifier|public
+specifier|abstract
 name|ContainerToken
 name|getContainerToken
 parameter_list|()
@@ -256,6 +390,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setContainerToken (ContainerToken containerToken)
+specifier|public
+specifier|abstract
 name|void
 name|setContainerToken
 parameter_list|(
@@ -269,6 +405,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|getRMIdentifer ()
+specifier|public
+specifier|abstract
 name|long
 name|getRMIdentifer
 parameter_list|()
@@ -278,6 +416,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setRMIdentifier (long rmIdentifier)
+specifier|public
+specifier|abstract
 name|void
 name|setRMIdentifier
 parameter_list|(
@@ -286,7 +426,7 @@ name|rmIdentifier
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

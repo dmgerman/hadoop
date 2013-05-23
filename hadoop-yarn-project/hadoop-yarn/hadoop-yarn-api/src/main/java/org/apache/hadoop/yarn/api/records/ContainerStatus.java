@@ -84,26 +84,110 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>ContainerStatus</code> represents the current status of a   *<code>Container</code>.</p>  *   *<p>It provides details such as:  *<ul>  *<li><code>ContainerId</code> of the container.</li>  *<li><code>ContainerState</code> of the container.</li>  *<li><em>Exit status</em> of a completed container.</li>  *<li><em>Diagnostic</em> message for a failed container.</li>  *</ul>  *</p>  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|ContainerStatus
+DECL|class|ContainerStatus
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|ContainerStatus
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (ContainerId containerId, ContainerState containerState, String diagnostics, int exitStatus)
+specifier|public
+specifier|static
+name|ContainerStatus
+name|newInstance
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|ContainerState
+name|containerState
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|,
+name|int
+name|exitStatus
+parameter_list|)
+block|{
+name|ContainerStatus
+name|containerStatus
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ContainerStatus
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|containerStatus
+operator|.
+name|setState
+argument_list|(
+name|containerState
+argument_list|)
+expr_stmt|;
+name|containerStatus
+operator|.
+name|setContainerId
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+name|containerStatus
+operator|.
+name|setDiagnostics
+argument_list|(
+name|diagnostics
+argument_list|)
+expr_stmt|;
+name|containerStatus
+operator|.
+name|setExitStatus
+argument_list|(
+name|exitStatus
+argument_list|)
+expr_stmt|;
+return|return
+name|containerStatus
+return|;
+block|}
 comment|/**    * Get the<code>ContainerId</code> of the container.    * @return<code>ContainerId</code> of the container    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getContainerId ()
+specifier|public
+specifier|abstract
 name|ContainerId
 name|getContainerId
 parameter_list|()
@@ -113,6 +197,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setContainerId (ContainerId containerId)
+specifier|public
+specifier|abstract
 name|void
 name|setContainerId
 parameter_list|(
@@ -126,6 +212,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getState ()
+specifier|public
+specifier|abstract
 name|ContainerState
 name|getState
 parameter_list|()
@@ -135,6 +223,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setState (ContainerState state)
+specifier|public
+specifier|abstract
 name|void
 name|setState
 parameter_list|(
@@ -148,6 +238,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getExitStatus ()
+specifier|public
+specifier|abstract
 name|int
 name|getExitStatus
 parameter_list|()
@@ -157,6 +249,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setExitStatus (int exitStatus)
+specifier|public
+specifier|abstract
 name|void
 name|setExitStatus
 parameter_list|(
@@ -170,6 +264,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getDiagnostics ()
+specifier|public
+specifier|abstract
 name|String
 name|getDiagnostics
 parameter_list|()
@@ -179,6 +275,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setDiagnostics (String diagnostics)
+specifier|public
+specifier|abstract
 name|void
 name|setDiagnostics
 parameter_list|(
@@ -187,7 +285,7 @@ name|diagnostics
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

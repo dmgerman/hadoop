@@ -110,26 +110,146 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>QueueInfo is a report of the runtime information of the queue.</p>  *   *<p>It includes information such as:  *<ul>  *<li>Queue name.</li>  *<li>Capacity of the queue.</li>  *<li>Maximum capacity of the queue.</li>  *<li>Current capacity of the queue.</li>  *<li>Child queues.</li>  *<li>Running applications.</li>  *<li>{@link QueueState} of the queue.</li>  *</ul>  *</p>  *  * @see QueueState  * @see ClientRMProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|QueueInfo
+DECL|class|QueueInfo
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|QueueInfo
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState)
+specifier|public
+specifier|static
+name|QueueInfo
+name|newInstance
+parameter_list|(
+name|String
+name|queueName
+parameter_list|,
+name|float
+name|capacity
+parameter_list|,
+name|float
+name|maximumCapacity
+parameter_list|,
+name|float
+name|currentCapacity
+parameter_list|,
+name|List
+argument_list|<
+name|QueueInfo
+argument_list|>
+name|childQueues
+parameter_list|,
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|applications
+parameter_list|,
+name|QueueState
+name|queueState
+parameter_list|)
+block|{
+name|QueueInfo
+name|queueInfo
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|QueueInfo
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|queueInfo
+operator|.
+name|setQueueName
+argument_list|(
+name|queueName
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setCapacity
+argument_list|(
+name|capacity
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setMaximumCapacity
+argument_list|(
+name|maximumCapacity
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setCurrentCapacity
+argument_list|(
+name|currentCapacity
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setChildQueues
+argument_list|(
+name|childQueues
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setApplications
+argument_list|(
+name|applications
+argument_list|)
+expr_stmt|;
+name|queueInfo
+operator|.
+name|setQueueState
+argument_list|(
+name|queueState
+argument_list|)
+expr_stmt|;
+return|return
+name|queueInfo
+return|;
+block|}
 comment|/**    * Get the<em>name</em> of the queue.    * @return<em>name</em> of the queue    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getQueueName ()
+specifier|public
+specifier|abstract
 name|String
 name|getQueueName
 parameter_list|()
@@ -139,6 +259,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setQueueName (String queueName)
+specifier|public
+specifier|abstract
 name|void
 name|setQueueName
 parameter_list|(
@@ -152,6 +274,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getCapacity ()
+specifier|public
+specifier|abstract
 name|float
 name|getCapacity
 parameter_list|()
@@ -161,6 +285,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setCapacity (float capacity)
+specifier|public
+specifier|abstract
 name|void
 name|setCapacity
 parameter_list|(
@@ -174,6 +300,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getMaximumCapacity ()
+specifier|public
+specifier|abstract
 name|float
 name|getMaximumCapacity
 parameter_list|()
@@ -183,6 +311,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setMaximumCapacity (float maximumCapacity)
+specifier|public
+specifier|abstract
 name|void
 name|setMaximumCapacity
 parameter_list|(
@@ -196,6 +326,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getCurrentCapacity ()
+specifier|public
+specifier|abstract
 name|float
 name|getCurrentCapacity
 parameter_list|()
@@ -205,6 +337,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setCurrentCapacity (float currentCapacity)
+specifier|public
+specifier|abstract
 name|void
 name|setCurrentCapacity
 parameter_list|(
@@ -218,6 +352,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getChildQueues ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|QueueInfo
@@ -230,6 +366,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setChildQueues (List<QueueInfo> childQueues)
+specifier|public
+specifier|abstract
 name|void
 name|setChildQueues
 parameter_list|(
@@ -246,6 +384,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getApplications ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ApplicationReport
@@ -258,6 +398,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setApplications (List<ApplicationReport> applications)
+specifier|public
+specifier|abstract
 name|void
 name|setApplications
 parameter_list|(
@@ -274,6 +416,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getQueueState ()
+specifier|public
+specifier|abstract
 name|QueueState
 name|getQueueState
 parameter_list|()
@@ -283,6 +427,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setQueueState (QueueState queueState)
+specifier|public
+specifier|abstract
 name|void
 name|setQueueState
 parameter_list|(
@@ -291,7 +437,7 @@ name|queueState
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

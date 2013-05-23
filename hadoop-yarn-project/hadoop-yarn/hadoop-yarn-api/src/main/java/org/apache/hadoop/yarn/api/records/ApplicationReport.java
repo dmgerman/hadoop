@@ -100,26 +100,250 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code> is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link YarnApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client token of the application (if security is enabled).</li>  *</ul>  *</p>  *  * @see ClientRMProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|ApplicationReport
+DECL|class|ApplicationReport
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|ApplicationReport
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, ClientToken clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType)
+specifier|public
+specifier|static
+name|ApplicationReport
+name|newInstance
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|String
+name|queue
+parameter_list|,
+name|String
+name|name
+parameter_list|,
+name|String
+name|host
+parameter_list|,
+name|int
+name|rpcPort
+parameter_list|,
+name|ClientToken
+name|clientToken
+parameter_list|,
+name|YarnApplicationState
+name|state
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|,
+name|String
+name|url
+parameter_list|,
+name|long
+name|startTime
+parameter_list|,
+name|long
+name|finishTime
+parameter_list|,
+name|FinalApplicationStatus
+name|finalStatus
+parameter_list|,
+name|ApplicationResourceUsageReport
+name|appResources
+parameter_list|,
+name|String
+name|origTrackingUrl
+parameter_list|,
+name|float
+name|progress
+parameter_list|,
+name|String
+name|applicationType
+parameter_list|)
+block|{
+name|ApplicationReport
+name|report
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ApplicationReport
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|report
+operator|.
+name|setApplicationId
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setCurrentApplicationAttemptId
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setQueue
+argument_list|(
+name|queue
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setName
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setHost
+argument_list|(
+name|host
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setRpcPort
+argument_list|(
+name|rpcPort
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setClientToken
+argument_list|(
+name|clientToken
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setYarnApplicationState
+argument_list|(
+name|state
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setDiagnostics
+argument_list|(
+name|diagnostics
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setTrackingUrl
+argument_list|(
+name|url
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setStartTime
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setFinishTime
+argument_list|(
+name|finishTime
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setFinalApplicationStatus
+argument_list|(
+name|finalStatus
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setApplicationResourceUsageReport
+argument_list|(
+name|appResources
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setOriginalTrackingUrl
+argument_list|(
+name|origTrackingUrl
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setProgress
+argument_list|(
+name|progress
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setApplicationType
+argument_list|(
+name|applicationType
+argument_list|)
+expr_stmt|;
+return|return
+name|report
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationId</code> of the application.    * @return<code>ApplicationId</code> of the application    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getApplicationId ()
+specifier|public
+specifier|abstract
 name|ApplicationId
 name|getApplicationId
 parameter_list|()
@@ -129,6 +353,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setApplicationId (ApplicationId applicationId)
+specifier|public
+specifier|abstract
 name|void
 name|setApplicationId
 parameter_list|(
@@ -142,6 +368,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|getCurrentApplicationAttemptId ()
+specifier|public
+specifier|abstract
 name|ApplicationAttemptId
 name|getCurrentApplicationAttemptId
 parameter_list|()
@@ -151,6 +379,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setCurrentApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
+specifier|public
+specifier|abstract
 name|void
 name|setCurrentApplicationAttemptId
 parameter_list|(
@@ -164,6 +394,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getUser ()
+specifier|public
+specifier|abstract
 name|String
 name|getUser
 parameter_list|()
@@ -173,6 +405,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setUser (String user)
+specifier|public
+specifier|abstract
 name|void
 name|setUser
 parameter_list|(
@@ -186,6 +420,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getQueue ()
+specifier|public
+specifier|abstract
 name|String
 name|getQueue
 parameter_list|()
@@ -195,6 +431,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setQueue (String queue)
+specifier|public
+specifier|abstract
 name|void
 name|setQueue
 parameter_list|(
@@ -208,6 +446,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getName ()
+specifier|public
+specifier|abstract
 name|String
 name|getName
 parameter_list|()
@@ -217,6 +457,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setName (String name)
+specifier|public
+specifier|abstract
 name|void
 name|setName
 parameter_list|(
@@ -230,6 +472,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getHost ()
+specifier|public
+specifier|abstract
 name|String
 name|getHost
 parameter_list|()
@@ -239,6 +483,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setHost (String host)
+specifier|public
+specifier|abstract
 name|void
 name|setHost
 parameter_list|(
@@ -252,6 +498,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getRpcPort ()
+specifier|public
+specifier|abstract
 name|int
 name|getRpcPort
 parameter_list|()
@@ -261,6 +509,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setRpcPort (int rpcPort)
+specifier|public
+specifier|abstract
 name|void
 name|setRpcPort
 parameter_list|(
@@ -274,6 +524,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getClientToken ()
+specifier|public
+specifier|abstract
 name|ClientToken
 name|getClientToken
 parameter_list|()
@@ -283,6 +535,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setClientToken (ClientToken clientToken)
+specifier|public
+specifier|abstract
 name|void
 name|setClientToken
 parameter_list|(
@@ -296,6 +550,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getYarnApplicationState ()
+specifier|public
+specifier|abstract
 name|YarnApplicationState
 name|getYarnApplicationState
 parameter_list|()
@@ -305,6 +561,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setYarnApplicationState (YarnApplicationState state)
+specifier|public
+specifier|abstract
 name|void
 name|setYarnApplicationState
 parameter_list|(
@@ -318,6 +576,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getDiagnostics ()
+specifier|public
+specifier|abstract
 name|String
 name|getDiagnostics
 parameter_list|()
@@ -327,6 +587,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setDiagnostics (String diagnostics)
+specifier|public
+specifier|abstract
 name|void
 name|setDiagnostics
 parameter_list|(
@@ -340,6 +602,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getTrackingUrl ()
+specifier|public
+specifier|abstract
 name|String
 name|getTrackingUrl
 parameter_list|()
@@ -349,6 +613,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setTrackingUrl (String url)
+specifier|public
+specifier|abstract
 name|void
 name|setTrackingUrl
 parameter_list|(
@@ -362,6 +628,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|getOriginalTrackingUrl ()
+specifier|public
+specifier|abstract
 name|String
 name|getOriginalTrackingUrl
 parameter_list|()
@@ -371,6 +639,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setOriginalTrackingUrl (String url)
+specifier|public
+specifier|abstract
 name|void
 name|setOriginalTrackingUrl
 parameter_list|(
@@ -384,6 +654,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getStartTime ()
+specifier|public
+specifier|abstract
 name|long
 name|getStartTime
 parameter_list|()
@@ -393,6 +665,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setStartTime (long startTime)
+specifier|public
+specifier|abstract
 name|void
 name|setStartTime
 parameter_list|(
@@ -406,6 +680,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getFinishTime ()
+specifier|public
+specifier|abstract
 name|long
 name|getFinishTime
 parameter_list|()
@@ -415,6 +691,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setFinishTime (long finishTime)
+specifier|public
+specifier|abstract
 name|void
 name|setFinishTime
 parameter_list|(
@@ -428,6 +706,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getFinalApplicationStatus ()
+specifier|public
+specifier|abstract
 name|FinalApplicationStatus
 name|getFinalApplicationStatus
 parameter_list|()
@@ -437,6 +717,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setFinalApplicationStatus (FinalApplicationStatus finishState)
+specifier|public
+specifier|abstract
 name|void
 name|setFinalApplicationStatus
 parameter_list|(
@@ -450,6 +732,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getApplicationResourceUsageReport ()
+specifier|public
+specifier|abstract
 name|ApplicationResourceUsageReport
 name|getApplicationResourceUsageReport
 parameter_list|()
@@ -460,6 +744,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setApplicationResourceUsageReport (ApplicationResourceUsageReport appResources)
+specifier|public
+specifier|abstract
 name|void
 name|setApplicationResourceUsageReport
 parameter_list|(
@@ -473,6 +759,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getProgress ()
+specifier|public
+specifier|abstract
 name|float
 name|getProgress
 parameter_list|()
@@ -482,6 +770,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setProgress (float progress)
+specifier|public
+specifier|abstract
 name|void
 name|setProgress
 parameter_list|(
@@ -495,6 +785,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getApplicationType ()
+specifier|public
+specifier|abstract
 name|String
 name|getApplicationType
 parameter_list|()
@@ -504,6 +796,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setApplicationType (String applicationType)
+specifier|public
+specifier|abstract
 name|void
 name|setApplicationType
 parameter_list|(
@@ -512,7 +806,7 @@ name|applicationType
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

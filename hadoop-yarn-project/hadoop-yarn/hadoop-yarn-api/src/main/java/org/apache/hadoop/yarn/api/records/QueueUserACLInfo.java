@@ -110,26 +110,93 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>QueueUserACLInfo</code> provides information {@link QueueACL} for  * the given user.</p>  *   * @see QueueACL  * @see ClientRMProtocol#getQueueUserAcls(org.apache.hadoop.yarn.api.protocolrecords.GetQueueUserAclsInfoRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|QueueUserACLInfo
+DECL|class|QueueUserACLInfo
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|QueueUserACLInfo
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (String queueName, List<QueueACL> acls)
+specifier|public
+specifier|static
+name|QueueUserACLInfo
+name|newInstance
+parameter_list|(
+name|String
+name|queueName
+parameter_list|,
+name|List
+argument_list|<
+name|QueueACL
+argument_list|>
+name|acls
+parameter_list|)
+block|{
+name|QueueUserACLInfo
+name|info
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|QueueUserACLInfo
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|info
+operator|.
+name|setQueueName
+argument_list|(
+name|queueName
+argument_list|)
+expr_stmt|;
+name|info
+operator|.
+name|setUserAcls
+argument_list|(
+name|acls
+argument_list|)
+expr_stmt|;
+return|return
+name|info
+return|;
+block|}
 comment|/**    * Get the<em>queue name</em> of the queue.    * @return<em>queue name</em> of the queue    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getQueueName ()
+specifier|public
+specifier|abstract
 name|String
 name|getQueueName
 parameter_list|()
@@ -139,6 +206,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setQueueName (String queueName)
+specifier|public
+specifier|abstract
 name|void
 name|setQueueName
 parameter_list|(
@@ -152,6 +221,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getUserAcls ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|QueueACL
@@ -164,6 +235,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setUserAcls (List<QueueACL> acls)
+specifier|public
+specifier|abstract
 name|void
 name|setUserAcls
 parameter_list|(
@@ -175,7 +248,7 @@ name|acls
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

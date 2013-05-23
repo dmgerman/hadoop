@@ -22,36 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataInput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|DataOutput
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -114,26 +84,120 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * Contains various scheduling metrics to be reported by UI and CLI.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|ApplicationResourceUsageReport
+DECL|class|ApplicationResourceUsageReport
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|ApplicationResourceUsageReport
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources)
+specifier|public
+specifier|static
+name|ApplicationResourceUsageReport
+name|newInstance
+parameter_list|(
+name|int
+name|numUsedContainers
+parameter_list|,
+name|int
+name|numReservedContainers
+parameter_list|,
+name|Resource
+name|usedResources
+parameter_list|,
+name|Resource
+name|reservedResources
+parameter_list|,
+name|Resource
+name|neededResources
+parameter_list|)
+block|{
+name|ApplicationResourceUsageReport
+name|report
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ApplicationResourceUsageReport
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|report
+operator|.
+name|setNumUsedContainers
+argument_list|(
+name|numUsedContainers
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setNumReservedContainers
+argument_list|(
+name|numReservedContainers
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setUsedResources
+argument_list|(
+name|usedResources
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setReservedResources
+argument_list|(
+name|reservedResources
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setNeededResources
+argument_list|(
+name|neededResources
+argument_list|)
+expr_stmt|;
+return|return
+name|report
+return|;
+block|}
 comment|/**    * Get the number of used containers    * @return the number of used containers    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getNumUsedContainers ()
+specifier|public
+specifier|abstract
 name|int
 name|getNumUsedContainers
 parameter_list|()
@@ -144,6 +208,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNumUsedContainers (int num_containers)
+specifier|public
+specifier|abstract
 name|void
 name|setNumUsedContainers
 parameter_list|(
@@ -157,6 +223,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getNumReservedContainers ()
+specifier|public
+specifier|abstract
 name|int
 name|getNumReservedContainers
 parameter_list|()
@@ -167,6 +235,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNumReservedContainers (int num_reserved_containers)
+specifier|public
+specifier|abstract
 name|void
 name|setNumReservedContainers
 parameter_list|(
@@ -180,6 +250,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getUsedResources ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getUsedResources
 parameter_list|()
@@ -189,6 +261,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setUsedResources (Resource resources)
+specifier|public
+specifier|abstract
 name|void
 name|setUsedResources
 parameter_list|(
@@ -202,6 +276,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getReservedResources ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getReservedResources
 parameter_list|()
@@ -211,6 +287,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setReservedResources (Resource reserved_resources)
+specifier|public
+specifier|abstract
 name|void
 name|setReservedResources
 parameter_list|(
@@ -224,6 +302,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getNeededResources ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getNeededResources
 parameter_list|()
@@ -233,6 +313,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNeededResources (Resource needed_resources)
+specifier|public
+specifier|abstract
 name|void
 name|setNeededResources
 parameter_list|(
@@ -241,7 +323,7 @@ name|needed_resources
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

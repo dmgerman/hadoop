@@ -84,20 +84,72 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>YarnClusterMetrics</code> represents cluster metrics.</p>  *   *<p>Currently only number of<code>NodeManager</code>s is provided.</p>  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|YarnClusterMetrics
+DECL|class|YarnClusterMetrics
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|YarnClusterMetrics
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (int numNodeManagers)
+specifier|public
+specifier|static
+name|YarnClusterMetrics
+name|newInstance
+parameter_list|(
+name|int
+name|numNodeManagers
+parameter_list|)
+block|{
+name|YarnClusterMetrics
+name|metrics
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|YarnClusterMetrics
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|metrics
+operator|.
+name|setNumNodeManagers
+argument_list|(
+name|numNodeManagers
+argument_list|)
+expr_stmt|;
+return|return
+name|metrics
+return|;
+block|}
 comment|/**    * Get the number of<code>NodeManager</code>s in the cluster.    * @return number of<code>NodeManager</code>s in the cluster    */
 annotation|@
 name|Public
@@ -125,7 +177,7 @@ name|numNodeManagers
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

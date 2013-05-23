@@ -98,26 +98,165 @@ name|ContainerManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>ContainerLaunchContext</code> represents all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to launch the container.</li>  *</ul>  *</p>  *   * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|ContainerLaunchContext
+DECL|class|ContainerLaunchContext
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|ContainerLaunchContext
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance ( String user, Map<String, LocalResource> localResources, Map<String, String> environment, List<String> commands, Map<String, ByteBuffer> serviceData, ByteBuffer tokens, Map<ApplicationAccessType, String> acls)
+specifier|public
+specifier|static
+name|ContainerLaunchContext
+name|newInstance
+parameter_list|(
+name|String
+name|user
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|LocalResource
+argument_list|>
+name|localResources
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|environment
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|commands
+parameter_list|,
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|serviceData
+parameter_list|,
+name|ByteBuffer
+name|tokens
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|acls
+parameter_list|)
+block|{
+name|ContainerLaunchContext
+name|container
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ContainerLaunchContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|container
+operator|.
+name|setUser
+argument_list|(
+name|user
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setLocalResources
+argument_list|(
+name|localResources
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setEnvironment
+argument_list|(
+name|environment
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setCommands
+argument_list|(
+name|commands
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setServiceData
+argument_list|(
+name|serviceData
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setTokens
+argument_list|(
+name|tokens
+argument_list|)
+expr_stmt|;
+name|container
+operator|.
+name|setApplicationACLs
+argument_list|(
+name|acls
+argument_list|)
+expr_stmt|;
+return|return
+name|container
+return|;
+block|}
 comment|/**    * Get the<em>user</em> to whom the container has been allocated.    * @return the<em>user</em> to whom the container has been allocated    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getUser ()
+specifier|public
+specifier|abstract
 name|String
 name|getUser
 parameter_list|()
@@ -128,6 +267,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setUser (String user)
+specifier|public
+specifier|abstract
 name|void
 name|setUser
 parameter_list|(
@@ -141,6 +282,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getTokens ()
+specifier|public
+specifier|abstract
 name|ByteBuffer
 name|getTokens
 parameter_list|()
@@ -151,6 +294,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setTokens (ByteBuffer tokens)
+specifier|public
+specifier|abstract
 name|void
 name|setTokens
 parameter_list|(
@@ -164,6 +309,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getLocalResources ()
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|String
@@ -179,6 +326,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setLocalResources (Map<String, LocalResource> localResources)
+specifier|public
+specifier|abstract
 name|void
 name|setLocalResources
 parameter_list|(
@@ -197,6 +346,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getServiceData ()
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|String
@@ -212,6 +363,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setServiceData (Map<String, ByteBuffer> serviceData)
+specifier|public
+specifier|abstract
 name|void
 name|setServiceData
 parameter_list|(
@@ -230,6 +383,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getEnvironment ()
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|String
@@ -245,6 +400,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setEnvironment (Map<String, String> environment)
+specifier|public
+specifier|abstract
 name|void
 name|setEnvironment
 parameter_list|(
@@ -263,6 +420,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getCommands ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|String
@@ -276,6 +435,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setCommands (List<String> commands)
+specifier|public
+specifier|abstract
 name|void
 name|setCommands
 parameter_list|(
@@ -293,6 +454,7 @@ annotation|@
 name|Stable
 DECL|method|getApplicationACLs ()
 specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|ApplicationAccessType
@@ -309,6 +471,7 @@ annotation|@
 name|Stable
 DECL|method|setApplicationACLs (Map<ApplicationAccessType, String> acls)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationACLs
 parameter_list|(
@@ -322,7 +485,7 @@ name|acls
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

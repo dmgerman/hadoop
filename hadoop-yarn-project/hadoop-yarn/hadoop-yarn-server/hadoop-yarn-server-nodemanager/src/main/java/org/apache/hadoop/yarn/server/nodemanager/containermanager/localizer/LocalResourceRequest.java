@@ -141,9 +141,9 @@ DECL|class|LocalResourceRequest
 specifier|public
 class|class
 name|LocalResourceRequest
-implements|implements
+extends|extends
 name|LocalResource
-implements|,
+implements|implements
 name|Comparable
 argument_list|<
 name|LocalResourceRequest

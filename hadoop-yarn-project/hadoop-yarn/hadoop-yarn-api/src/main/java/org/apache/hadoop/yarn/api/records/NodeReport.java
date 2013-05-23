@@ -100,22 +100,146 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>NodeReport</code> is a summary of runtime information of a   * node in the cluster.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link NodeId} of the node.</li>  *<li>HTTP Tracking URL of the node.</li>  *<li>Rack name for the node.</li>  *<li>Used {@link Resource} on the node.</li>  *<li>Total available {@link Resource} of the node.</li>  *<li>Number of running containers on the node.</li>  *<li>{@link NodeHealthStatus} of the node.</li>  *</ul>  *</p>  *  * @see NodeHealthStatus  * @see ClientRMProtocol#getClusterNodes(org.apache.hadoop.yarn.api.protocolrecords.GetClusterNodesRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|NodeReport
+DECL|class|NodeReport
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|NodeReport
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, NodeHealthStatus nodeHealthStatus)
+specifier|public
+specifier|static
+name|NodeReport
+name|newInstance
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|,
+name|NodeState
+name|nodeState
+parameter_list|,
+name|String
+name|httpAddress
+parameter_list|,
+name|String
+name|rackName
+parameter_list|,
+name|Resource
+name|used
+parameter_list|,
+name|Resource
+name|capability
+parameter_list|,
+name|int
+name|numContainers
+parameter_list|,
+name|NodeHealthStatus
+name|nodeHealthStatus
+parameter_list|)
+block|{
+name|NodeReport
+name|nodeReport
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|NodeReport
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|nodeReport
+operator|.
+name|setNodeId
+argument_list|(
+name|nodeId
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setNodeState
+argument_list|(
+name|nodeState
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setHttpAddress
+argument_list|(
+name|httpAddress
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setRackName
+argument_list|(
+name|rackName
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setUsed
+argument_list|(
+name|used
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setCapability
+argument_list|(
+name|capability
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setNumContainers
+argument_list|(
+name|numContainers
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setNodeHealthStatus
+argument_list|(
+name|nodeHealthStatus
+argument_list|)
+expr_stmt|;
+return|return
+name|nodeReport
+return|;
+block|}
 comment|/**    * Get the<code>NodeId</code> of the node.    * @return<code>NodeId</code> of the node    */
 DECL|method|getNodeId ()
+specifier|public
+specifier|abstract
 name|NodeId
 name|getNodeId
 parameter_list|()
@@ -125,6 +249,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNodeId (NodeId nodeId)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeId
 parameter_list|(
@@ -134,6 +260,8 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>NodeState</code> of the node.    * @return<code>NodeState</code> of the node    */
 DECL|method|getNodeState ()
+specifier|public
+specifier|abstract
 name|NodeState
 name|getNodeState
 parameter_list|()
@@ -143,6 +271,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNodeState (NodeState nodeState)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeState
 parameter_list|(
@@ -156,6 +286,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getHttpAddress ()
+specifier|public
+specifier|abstract
 name|String
 name|getHttpAddress
 parameter_list|()
@@ -165,6 +297,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setHttpAddress (String httpAddress)
+specifier|public
+specifier|abstract
 name|void
 name|setHttpAddress
 parameter_list|(
@@ -178,6 +312,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getRackName ()
+specifier|public
+specifier|abstract
 name|String
 name|getRackName
 parameter_list|()
@@ -187,6 +323,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setRackName (String rackName)
+specifier|public
+specifier|abstract
 name|void
 name|setRackName
 parameter_list|(
@@ -200,6 +338,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getUsed ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getUsed
 parameter_list|()
@@ -209,6 +349,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setUsed (Resource used)
+specifier|public
+specifier|abstract
 name|void
 name|setUsed
 parameter_list|(
@@ -222,6 +364,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getCapability ()
+specifier|public
+specifier|abstract
 name|Resource
 name|getCapability
 parameter_list|()
@@ -231,6 +375,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setCapability (Resource capability)
+specifier|public
+specifier|abstract
 name|void
 name|setCapability
 parameter_list|(
@@ -244,6 +390,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getNumContainers ()
+specifier|public
+specifier|abstract
 name|int
 name|getNumContainers
 parameter_list|()
@@ -253,6 +401,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNumContainers (int numContainers)
+specifier|public
+specifier|abstract
 name|void
 name|setNumContainers
 parameter_list|(
@@ -266,6 +416,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getNodeHealthStatus ()
+specifier|public
+specifier|abstract
 name|NodeHealthStatus
 name|getNodeHealthStatus
 parameter_list|()
@@ -275,6 +427,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNodeHealthStatus (NodeHealthStatus nodeHealthStatus)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeHealthStatus
 parameter_list|(
@@ -283,7 +437,7 @@ name|nodeHealthStatus
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

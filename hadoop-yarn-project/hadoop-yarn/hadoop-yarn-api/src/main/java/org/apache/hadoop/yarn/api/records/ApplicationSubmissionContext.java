@@ -100,20 +100,227 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>ApplicationSubmissionContext</code> represents all of the  * information needed by the<code>ResourceManager</code> to launch   * the<code>ApplicationMaster</code> for an application.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Application user.</li>  *<li>Application name.</li>  *<li>{@link Priority} of the application.</li>  *<li>  *       {@link ContainerLaunchContext} of the container in which the   *<code>ApplicationMaster</code> is executed.  *</li>  *</ul>  *</p>  *   * @see ContainerLaunchContext  * @see ClientRMProtocol#submitApplication(org.apache.hadoop.yarn.api.protocolrecords.SubmitApplicationRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|ApplicationSubmissionContext
+DECL|class|ApplicationSubmissionContext
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|ApplicationSubmissionContext
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance ( ApplicationId applicationId, String applicationName, String queue, Priority priority, ContainerLaunchContext amContainer, boolean isUnmanagedAM, boolean cancelTokensWhenComplete, int maxAppAttempts, Resource resource, String applicationType)
+specifier|public
+specifier|static
+name|ApplicationSubmissionContext
+name|newInstance
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|applicationName
+parameter_list|,
+name|String
+name|queue
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|ContainerLaunchContext
+name|amContainer
+parameter_list|,
+name|boolean
+name|isUnmanagedAM
+parameter_list|,
+name|boolean
+name|cancelTokensWhenComplete
+parameter_list|,
+name|int
+name|maxAppAttempts
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|,
+name|String
+name|applicationType
+parameter_list|)
+block|{
+name|ApplicationSubmissionContext
+name|context
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ApplicationSubmissionContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|context
+operator|.
+name|setApplicationId
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setApplicationName
+argument_list|(
+name|applicationName
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setQueue
+argument_list|(
+name|queue
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setPriority
+argument_list|(
+name|priority
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setAMContainerSpec
+argument_list|(
+name|amContainer
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setUnmanagedAM
+argument_list|(
+name|isUnmanagedAM
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setCancelTokensWhenComplete
+argument_list|(
+name|cancelTokensWhenComplete
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setMaxAppAttempts
+argument_list|(
+name|maxAppAttempts
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setResource
+argument_list|(
+name|resource
+argument_list|)
+expr_stmt|;
+name|context
+operator|.
+name|setApplicationType
+argument_list|(
+name|applicationType
+argument_list|)
+expr_stmt|;
+return|return
+name|context
+return|;
+block|}
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance ( ApplicationId applicationId, String applicationName, String queue, Priority priority, ContainerLaunchContext amContainer, boolean isUnmanagedAM, boolean cancelTokensWhenComplete, int maxAppAttempts, Resource resource)
+specifier|public
+specifier|static
+name|ApplicationSubmissionContext
+name|newInstance
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|applicationName
+parameter_list|,
+name|String
+name|queue
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|ContainerLaunchContext
+name|amContainer
+parameter_list|,
+name|boolean
+name|isUnmanagedAM
+parameter_list|,
+name|boolean
+name|cancelTokensWhenComplete
+parameter_list|,
+name|int
+name|maxAppAttempts
+parameter_list|,
+name|Resource
+name|resource
+parameter_list|)
+block|{
+return|return
+name|newInstance
+argument_list|(
+name|applicationId
+argument_list|,
+name|applicationName
+argument_list|,
+name|queue
+argument_list|,
+name|priority
+argument_list|,
+name|amContainer
+argument_list|,
+name|isUnmanagedAM
+argument_list|,
+name|cancelTokensWhenComplete
+argument_list|,
+name|maxAppAttempts
+argument_list|,
+name|resource
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationId</code> of the submitted application.    * @return<code>ApplicationId</code> of the submitted application    */
 annotation|@
 name|Public
@@ -121,6 +328,7 @@ annotation|@
 name|Stable
 DECL|method|getApplicationId ()
 specifier|public
+specifier|abstract
 name|ApplicationId
 name|getApplicationId
 parameter_list|()
@@ -132,6 +340,7 @@ annotation|@
 name|Stable
 DECL|method|setApplicationId (ApplicationId applicationId)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationId
 parameter_list|(
@@ -146,6 +355,7 @@ annotation|@
 name|Stable
 DECL|method|getApplicationName ()
 specifier|public
+specifier|abstract
 name|String
 name|getApplicationName
 parameter_list|()
@@ -157,6 +367,7 @@ annotation|@
 name|Stable
 DECL|method|setApplicationName (String applicationName)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationName
 parameter_list|(
@@ -171,6 +382,7 @@ annotation|@
 name|Stable
 DECL|method|getQueue ()
 specifier|public
+specifier|abstract
 name|String
 name|getQueue
 parameter_list|()
@@ -182,6 +394,7 @@ annotation|@
 name|Stable
 DECL|method|setQueue (String queue)
 specifier|public
+specifier|abstract
 name|void
 name|setQueue
 parameter_list|(
@@ -196,6 +409,7 @@ annotation|@
 name|Stable
 DECL|method|getPriority ()
 specifier|public
+specifier|abstract
 name|Priority
 name|getPriority
 parameter_list|()
@@ -207,6 +421,7 @@ annotation|@
 name|Stable
 DECL|method|setPriority (Priority priority)
 specifier|public
+specifier|abstract
 name|void
 name|setPriority
 parameter_list|(
@@ -221,6 +436,7 @@ annotation|@
 name|Stable
 DECL|method|getAMContainerSpec ()
 specifier|public
+specifier|abstract
 name|ContainerLaunchContext
 name|getAMContainerSpec
 parameter_list|()
@@ -232,6 +448,7 @@ annotation|@
 name|Stable
 DECL|method|setAMContainerSpec (ContainerLaunchContext amContainer)
 specifier|public
+specifier|abstract
 name|void
 name|setAMContainerSpec
 parameter_list|(
@@ -246,6 +463,7 @@ annotation|@
 name|Unstable
 DECL|method|getUnmanagedAM ()
 specifier|public
+specifier|abstract
 name|boolean
 name|getUnmanagedAM
 parameter_list|()
@@ -257,6 +475,7 @@ annotation|@
 name|Unstable
 DECL|method|setUnmanagedAM (boolean value)
 specifier|public
+specifier|abstract
 name|void
 name|setUnmanagedAM
 parameter_list|(
@@ -274,6 +493,7 @@ annotation|@
 name|Unstable
 DECL|method|getCancelTokensWhenComplete ()
 specifier|public
+specifier|abstract
 name|boolean
 name|getCancelTokensWhenComplete
 parameter_list|()
@@ -288,6 +508,7 @@ annotation|@
 name|Unstable
 DECL|method|setCancelTokensWhenComplete (boolean cancel)
 specifier|public
+specifier|abstract
 name|void
 name|setCancelTokensWhenComplete
 parameter_list|(
@@ -302,6 +523,7 @@ annotation|@
 name|Unstable
 DECL|method|getMaxAppAttempts ()
 specifier|public
+specifier|abstract
 name|int
 name|getMaxAppAttempts
 parameter_list|()
@@ -313,6 +535,7 @@ annotation|@
 name|Unstable
 DECL|method|setMaxAppAttempts (int maxAppAttempts)
 specifier|public
+specifier|abstract
 name|void
 name|setMaxAppAttempts
 parameter_list|(
@@ -326,6 +549,7 @@ annotation|@
 name|Stable
 DECL|method|getResource ()
 specifier|public
+specifier|abstract
 name|Resource
 name|getResource
 parameter_list|()
@@ -336,6 +560,7 @@ annotation|@
 name|Stable
 DECL|method|setResource (Resource resource)
 specifier|public
+specifier|abstract
 name|void
 name|setResource
 parameter_list|(
@@ -350,6 +575,7 @@ annotation|@
 name|Stable
 DECL|method|getApplicationType ()
 specifier|public
+specifier|abstract
 name|String
 name|getApplicationType
 parameter_list|()
@@ -361,6 +587,7 @@ annotation|@
 name|Stable
 DECL|method|setApplicationType (String applicationType)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationType
 parameter_list|(
@@ -369,7 +596,7 @@ name|applicationType
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 
