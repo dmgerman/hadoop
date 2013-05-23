@@ -1072,15 +1072,24 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|error
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Failed to detect a valid hadoop home directory"
 argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 name|home
 operator|=
 literal|null
@@ -1375,7 +1384,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|debug
 argument_list|(
 literal|"setsid is not available on this machine. So not using it."
 argument_list|)
@@ -1388,18 +1397,35 @@ block|}
 finally|finally
 block|{
 comment|// handle the exit code
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"setsid exited with exit code "
 operator|+
+operator|(
+name|shexec
+operator|!=
+literal|null
+condition|?
 name|shexec
 operator|.
 name|getExitCode
 argument_list|()
+else|:
+literal|"(null executor)"
+operator|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|setsidSupported
