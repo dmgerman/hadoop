@@ -66,6 +66,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|ExitUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|ShutdownHookManager
 import|;
 end_import
@@ -200,10 +214,7 @@ parameter_list|)
 block|{
 comment|//Again we done want to exit because of logging issues.
 block|}
-name|Runtime
-operator|.
-name|getRuntime
-argument_list|()
+name|ExitUtil
 operator|.
 name|halt
 argument_list|(
@@ -214,9 +225,9 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|System
+name|ExitUtil
 operator|.
-name|exit
+name|terminate
 argument_list|(
 operator|-
 literal|1

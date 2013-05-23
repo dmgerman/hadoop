@@ -126,12 +126,28 @@ name|systemExitDisabled
 init|=
 literal|false
 decl_stmt|;
+DECL|field|systemHaltDisabled
+specifier|private
+specifier|static
+specifier|volatile
+name|boolean
+name|systemHaltDisabled
+init|=
+literal|false
+decl_stmt|;
 DECL|field|firstExitException
 specifier|private
 specifier|static
 specifier|volatile
 name|ExitException
 name|firstExitException
+decl_stmt|;
+DECL|field|firstHaltException
+specifier|private
+specifier|static
+specifier|volatile
+name|HaltException
+name|firstHaltException
 decl_stmt|;
 DECL|class|ExitException
 specifier|public
@@ -180,6 +196,53 @@ name|status
 expr_stmt|;
 block|}
 block|}
+DECL|class|HaltException
+specifier|public
+specifier|static
+class|class
+name|HaltException
+extends|extends
+name|RuntimeException
+block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|field|status
+specifier|public
+specifier|final
+name|int
+name|status
+decl_stmt|;
+DECL|method|HaltException (int status, String msg)
+specifier|public
+name|HaltException
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|status
+operator|=
+name|status
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Disable the use of System.exit for testing.    */
 DECL|method|disableSystemExit ()
 specifier|public
@@ -189,6 +252,19 @@ name|disableSystemExit
 parameter_list|()
 block|{
 name|systemExitDisabled
+operator|=
+literal|true
+expr_stmt|;
+block|}
+comment|/**    * Disable the use of {@code Runtime.getRuntime().halt() } for testing.    */
+DECL|method|disableSystemHalt ()
+specifier|public
+specifier|static
+name|void
+name|disableSystemHalt
+parameter_list|()
+block|{
+name|systemHaltDisabled
 operator|=
 literal|true
 expr_stmt|;
@@ -208,6 +284,20 @@ operator|!=
 literal|null
 return|;
 block|}
+comment|/**    * @return true if halt has been called    */
+DECL|method|haltCalled ()
+specifier|public
+specifier|static
+name|boolean
+name|haltCalled
+parameter_list|()
+block|{
+return|return
+name|firstHaltException
+operator|!=
+literal|null
+return|;
+block|}
 comment|/**    * @return the first ExitException thrown, null if none thrown yet    */
 DECL|method|getFirstExitException ()
 specifier|public
@@ -220,7 +310,19 @@ return|return
 name|firstExitException
 return|;
 block|}
-comment|/**    * Reset the tracking of process termination. This is for use    * in unit tests where one test in the suite expects an exit    * but others do not.    */
+comment|/**    * @return the first {@code HaltException} thrown, null if none thrown yet    */
+DECL|method|getFirstHaltException ()
+specifier|public
+specifier|static
+name|HaltException
+name|getFirstHaltException
+parameter_list|()
+block|{
+return|return
+name|firstHaltException
+return|;
+block|}
+comment|/**    * Reset the tracking of process termination. This is for use in unit tests    * where one test in the suite expects an exit but others do not.    */
 DECL|method|resetFirstExitException ()
 specifier|public
 specifier|static
@@ -233,7 +335,19 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-comment|/**    * Terminate the current process. Note that terminate is the *only* method    * that should be used to terminate the daemon processes.    * @param status exit code    * @param msg message used to create the ExitException    * @throws ExitException if System.exit is disabled for test purposes    */
+DECL|method|resetFirstHaltException ()
+specifier|public
+specifier|static
+name|void
+name|resetFirstHaltException
+parameter_list|()
+block|{
+name|firstHaltException
+operator|=
+literal|null
+expr_stmt|;
+block|}
+comment|/**    * Terminate the current process. Note that terminate is the *only* method    * that should be used to terminate the daemon processes.    *    * @param status    *          exit code    * @param msg    *          message used to create the {@code ExitException}    * @throws ExitException    *           if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status, String msg)
 specifier|public
 specifier|static
@@ -307,7 +421,88 @@ name|status
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link terminate(int, String)} but uses the given throwable to    * initialize the ExitException.    * @param status    * @param t throwable used to create the ExitException    * @throws ExitException if System.exit is disabled for test purposes    */
+comment|/**    * Forcibly terminates the currently running Java virtual machine.    *    * @param status    *          exit code    * @param msg    *          message used to create the {@code HaltException}    * @throws HaltException    *           if Runtime.getRuntime().halt() is disabled for test purposes    */
+DECL|method|halt (int status, String msg)
+specifier|public
+specifier|static
+name|void
+name|halt
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|String
+name|msg
+parameter_list|)
+throws|throws
+name|HaltException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Halt with status "
+operator|+
+name|status
+operator|+
+literal|" Message: "
+operator|+
+name|msg
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|systemHaltDisabled
+condition|)
+block|{
+name|HaltException
+name|ee
+init|=
+operator|new
+name|HaltException
+argument_list|(
+name|status
+argument_list|,
+name|msg
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|fatal
+argument_list|(
+literal|"Halt called"
+argument_list|,
+name|ee
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|firstHaltException
+condition|)
+block|{
+name|firstHaltException
+operator|=
+name|ee
+expr_stmt|;
+block|}
+throw|throw
+name|ee
+throw|;
+block|}
+name|Runtime
+operator|.
+name|getRuntime
+argument_list|()
+operator|.
+name|halt
+argument_list|(
+name|status
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Like {@link terminate(int, String)} but uses the given throwable to    * initialize the ExitException.    *    * @param status    * @param t    *          throwable used to create the ExitException    * @throws ExitException    *           if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status, Throwable t)
 specifier|public
 specifier|static
@@ -336,7 +531,36 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Like {@link terminate(int, String)} without a message.    * @param status    * @throws ExitException if System.exit is disabled for test purposes    */
+comment|/**    * Forcibly terminates the currently running Java virtual machine.    *    * @param status    * @param t    * @throws ExitException    */
+DECL|method|halt (int status, Throwable t)
+specifier|public
+specifier|static
+name|void
+name|halt
+parameter_list|(
+name|int
+name|status
+parameter_list|,
+name|Throwable
+name|t
+parameter_list|)
+throws|throws
+name|HaltException
+block|{
+name|halt
+argument_list|(
+name|status
+argument_list|,
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|t
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Like {@link terminate(int, String)} without a message.    *    * @param status    * @throws ExitException    *           if System.exit is disabled for test purposes    */
 DECL|method|terminate (int status)
 specifier|public
 specifier|static
@@ -354,6 +578,27 @@ argument_list|(
 name|status
 argument_list|,
 literal|"ExitException"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Forcibly terminates the currently running Java virtual machine.    * @param status    * @throws ExitException    */
+DECL|method|halt (int status)
+specifier|public
+specifier|static
+name|void
+name|halt
+parameter_list|(
+name|int
+name|status
+parameter_list|)
+throws|throws
+name|HaltException
+block|{
+name|halt
+argument_list|(
+name|status
+argument_list|,
+literal|"HaltException"
 argument_list|)
 expr_stmt|;
 block|}
