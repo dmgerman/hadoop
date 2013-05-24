@@ -722,9 +722,6 @@ operator|.
 name|user
 operator|=
 name|user
-operator|.
-name|toString
-argument_list|()
 expr_stmt|;
 name|this
 operator|.

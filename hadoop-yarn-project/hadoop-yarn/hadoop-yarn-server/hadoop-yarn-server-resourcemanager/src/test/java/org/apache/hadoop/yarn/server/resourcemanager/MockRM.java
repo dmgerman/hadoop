@@ -1637,13 +1637,6 @@ argument_list|(
 name|acls
 argument_list|)
 expr_stmt|;
-name|clc
-operator|.
-name|setUser
-argument_list|(
-name|user
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|ts

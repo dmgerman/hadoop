@@ -1682,6 +1682,11 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|user
+specifier|private
+name|String
+name|user
+decl_stmt|;
 DECL|field|EXPIRED_TRANSITION
 specifier|private
 specifier|static
@@ -2676,7 +2681,7 @@ operator|.
 name|installTopology
 argument_list|()
 decl_stmt|;
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, String user)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -2697,6 +2702,9 @@ name|submissionContext
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|this
@@ -2789,6 +2797,12 @@ name|make
 argument_list|(
 name|this
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|user
+operator|=
+name|user
 expr_stmt|;
 block|}
 annotation|@
@@ -4312,13 +4326,7 @@ argument_list|()
 argument_list|,
 name|appAttempt
 operator|.
-name|submissionContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -1003,13 +1003,6 @@ argument_list|(
 name|cId
 argument_list|)
 expr_stmt|;
-name|containerLaunchContext
-operator|.
-name|setUser
-argument_list|(
-name|user
-argument_list|)
-expr_stmt|;
 name|URL
 name|localResourceUri
 init|=

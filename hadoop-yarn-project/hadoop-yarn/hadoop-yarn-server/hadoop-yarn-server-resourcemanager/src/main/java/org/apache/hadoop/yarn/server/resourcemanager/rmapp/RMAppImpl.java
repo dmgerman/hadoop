@@ -3436,6 +3436,8 @@ argument_list|,
 name|submissionContext
 argument_list|,
 name|conf
+argument_list|,
+name|user
 argument_list|)
 decl_stmt|;
 name|attempts

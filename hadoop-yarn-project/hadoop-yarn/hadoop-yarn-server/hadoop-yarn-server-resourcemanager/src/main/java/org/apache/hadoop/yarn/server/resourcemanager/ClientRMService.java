@@ -1972,16 +1972,6 @@ operator|.
 name|getShortUserName
 argument_list|()
 expr_stmt|;
-name|submissionContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|setUser
-argument_list|(
-name|user
-argument_list|)
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
@@ -2203,6 +2193,8 @@ name|currentTimeMillis
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 name|LOG

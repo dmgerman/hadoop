@@ -1174,19 +1174,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Finalize the container
-name|container
-operator|.
-name|setUser
-argument_list|(
-name|applicationMasterContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|getUser
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|setupTokensAndEnv
 argument_list|(
 name|container

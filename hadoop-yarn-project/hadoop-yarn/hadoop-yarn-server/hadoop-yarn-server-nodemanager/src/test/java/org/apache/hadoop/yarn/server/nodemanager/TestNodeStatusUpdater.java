@@ -1815,6 +1815,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|mockMetrics
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|this
@@ -2001,6 +2003,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|mockMetrics
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|this
@@ -4413,14 +4417,14 @@ operator|&&
 name|waitCount
 operator|++
 operator|!=
-literal|20
+literal|200
 condition|)
 block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|500
+literal|1000
 argument_list|)
 expr_stmt|;
 block|}

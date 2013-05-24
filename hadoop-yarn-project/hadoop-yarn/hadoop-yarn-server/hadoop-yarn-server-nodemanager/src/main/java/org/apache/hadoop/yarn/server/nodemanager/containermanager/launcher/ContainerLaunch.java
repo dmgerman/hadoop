@@ -476,6 +476,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|ContainerTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|nodemanager
@@ -749,6 +765,22 @@ operator|.
 name|util
 operator|.
 name|Apps
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|BuilderUtils
 import|;
 end_import
 
@@ -1064,15 +1096,6 @@ name|containerID
 argument_list|)
 decl_stmt|;
 specifier|final
-name|String
-name|user
-init|=
-name|launchContext
-operator|.
-name|getUser
-argument_list|()
-decl_stmt|;
-specifier|final
 name|List
 argument_list|<
 name|String
@@ -1092,6 +1115,15 @@ literal|1
 decl_stmt|;
 try|try
 block|{
+specifier|final
+name|String
+name|user
+init|=
+name|container
+operator|.
+name|getUser
+argument_list|()
+decl_stmt|;
 comment|// /////////////////////////// Variable expansion
 comment|// Before the container script gets written out.
 name|List
@@ -2106,9 +2138,6 @@ name|String
 name|user
 init|=
 name|container
-operator|.
-name|getLaunchContext
-argument_list|()
 operator|.
 name|getUser
 argument_list|()

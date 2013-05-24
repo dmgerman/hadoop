@@ -133,15 +133,12 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance ( String user, Map<String, LocalResource> localResources, Map<String, String> environment, List<String> commands, Map<String, ByteBuffer> serviceData, ByteBuffer tokens, Map<ApplicationAccessType, String> acls)
+DECL|method|newInstance ( Map<String, LocalResource> localResources, Map<String, String> environment, List<String> commands, Map<String, ByteBuffer> serviceData, ByteBuffer tokens, Map<ApplicationAccessType, String> acls)
 specifier|public
 specifier|static
 name|ContainerLaunchContext
 name|newInstance
 parameter_list|(
-name|String
-name|user
-parameter_list|,
 name|Map
 argument_list|<
 name|String
@@ -198,13 +195,6 @@ argument_list|)
 decl_stmt|;
 name|container
 operator|.
-name|setUser
-argument_list|(
-name|user
-argument_list|)
-expr_stmt|;
-name|container
-operator|.
 name|setLocalResources
 argument_list|(
 name|localResources
@@ -249,33 +239,6 @@ return|return
 name|container
 return|;
 block|}
-comment|/**    * Get the<em>user</em> to whom the container has been allocated.    * @return the<em>user</em> to whom the container has been allocated    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getUser ()
-specifier|public
-specifier|abstract
-name|String
-name|getUser
-parameter_list|()
-function_decl|;
-comment|/**    * Set the<em>user</em> to whom the container has been allocated    * @param user<em>user</em> to whom the container has been allocated    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setUser (String user)
-specifier|public
-specifier|abstract
-name|void
-name|setUser
-parameter_list|(
-name|String
-name|user
-parameter_list|)
-function_decl|;
 comment|/**    * Get all the tokens needed by this container. It may include file-system    * tokens, ApplicationMaster related tokens if this container is an    * ApplicationMaster or framework level tokens needed by this container to    * communicate to various services in a secure manner.    *     * @return tokens needed by this container.    */
 annotation|@
 name|Public

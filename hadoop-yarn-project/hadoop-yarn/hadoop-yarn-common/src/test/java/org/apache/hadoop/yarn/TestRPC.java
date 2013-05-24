@@ -930,13 +930,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|containerLaunchContext
-operator|.
-name|setUser
-argument_list|(
-literal|"dummy-user"
-argument_list|)
-expr_stmt|;
 name|ContainerId
 name|containerId
 init|=

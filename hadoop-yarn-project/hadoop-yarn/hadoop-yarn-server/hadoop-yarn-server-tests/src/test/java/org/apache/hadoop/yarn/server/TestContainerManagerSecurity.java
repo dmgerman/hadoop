@@ -2195,15 +2195,8 @@ argument_list|,
 name|allocatedContainer
 argument_list|)
 expr_stmt|;
-name|callWithIllegalUserName
-argument_list|(
-name|client
-argument_list|,
-name|tokenId
-argument_list|,
-name|allocatedContainer
-argument_list|)
-expr_stmt|;
+comment|// UserName is no longer sent using containerLaunchContext.
+comment|//        callWithIllegalUserName(client, tokenId, allocatedContainer);
 return|return
 name|client
 return|;
@@ -2644,8 +2637,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-literal|"testUser"
-argument_list|,
 name|Collections
 operator|.
 expr|<
@@ -2712,16 +2703,6 @@ operator|.
 name|setAMContainerSpec
 argument_list|(
 name|amContainer
-argument_list|)
-expr_stmt|;
-name|appSubmissionContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|setUser
-argument_list|(
-literal|"testUser"
 argument_list|)
 expr_stmt|;
 name|appSubmissionContext
@@ -3753,14 +3734,11 @@ argument_list|(
 name|tokenId
 argument_list|)
 decl_stmt|;
-name|context
-operator|.
-name|setUser
-argument_list|(
-literal|"Saruman"
-argument_list|)
-expr_stmt|;
-comment|// Set a different user-name.
+name|String
+name|user
+init|=
+literal|"invalidUser"
+decl_stmt|;
 name|request
 operator|.
 name|setContainerLaunchContext
@@ -3842,10 +3820,7 @@ argument_list|()
 operator|+
 literal|" but found "
 operator|+
-name|context
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3888,11 +3863,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-name|tokenId
-operator|.
-name|getApplicationSubmitter
-argument_list|()
-argument_list|,
 operator|new
 name|HashMap
 argument_list|<

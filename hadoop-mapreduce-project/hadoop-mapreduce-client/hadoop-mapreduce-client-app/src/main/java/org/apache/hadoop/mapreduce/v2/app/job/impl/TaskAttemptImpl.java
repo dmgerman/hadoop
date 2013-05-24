@@ -5000,15 +5000,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|MRJobConfig
-operator|.
-name|USER_NAME
-argument_list|)
-argument_list|,
 name|localResources
 argument_list|,
 name|environment
@@ -5241,11 +5232,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-name|commonContainerSpec
-operator|.
-name|getUser
-argument_list|()
-argument_list|,
 name|commonContainerSpec
 operator|.
 name|getLocalResources

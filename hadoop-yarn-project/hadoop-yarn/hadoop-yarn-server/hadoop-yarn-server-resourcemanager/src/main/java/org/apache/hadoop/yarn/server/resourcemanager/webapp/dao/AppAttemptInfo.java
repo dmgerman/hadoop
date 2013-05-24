@@ -209,12 +209,15 @@ specifier|public
 name|AppAttemptInfo
 parameter_list|()
 block|{   }
-DECL|method|AppAttemptInfo (RMAppAttempt attempt)
+DECL|method|AppAttemptInfo (RMAppAttempt attempt, String user)
 specifier|public
 name|AppAttemptInfo
 parameter_list|(
 name|RMAppAttempt
 name|attempt
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|this
@@ -355,16 +358,7 @@ argument_list|)
 argument_list|,
 literal|"/"
 argument_list|,
-name|attempt
-operator|.
-name|getSubmissionContext
-argument_list|()
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|)
 expr_stmt|;
 block|}

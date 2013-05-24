@@ -7972,6 +7972,11 @@ name|i
 argument_list|)
 argument_list|,
 name|attempt
+argument_list|,
+name|app
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 expr_stmt|;
 operator|++
@@ -7996,6 +8001,11 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|String
+name|user
+init|=
+literal|"user1"
+decl_stmt|;
 name|MockNM
 name|amNodeManager
 init|=
@@ -8019,7 +8029,7 @@ literal|1024
 argument_list|,
 literal|"testwordcount"
 argument_list|,
-literal|"user1"
+name|user
 argument_list|)
 decl_stmt|;
 name|amNodeManager
@@ -8210,6 +8220,8 @@ name|app1
 operator|.
 name|getCurrentAppAttempt
 argument_list|()
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 name|rm
@@ -8218,7 +8230,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|verifyAppAttemptsXML (NodeList nodes, RMAppAttempt appAttempt)
+DECL|method|verifyAppAttemptsXML (NodeList nodes, RMAppAttempt appAttempt, String user)
 specifier|public
 name|void
 name|verifyAppAttemptsXML
@@ -8228,6 +8240,9 @@ name|nodes
 parameter_list|,
 name|RMAppAttempt
 name|appAttempt
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|JSONException
@@ -8322,11 +8337,13 @@ name|element
 argument_list|,
 literal|"logsLink"
 argument_list|)
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyAppAttemptsInfo (JSONObject info, RMAppAttempt appAttempt)
+DECL|method|verifyAppAttemptsInfo (JSONObject info, RMAppAttempt appAttempt, String user)
 specifier|public
 name|void
 name|verifyAppAttemptsInfo
@@ -8336,6 +8353,9 @@ name|info
 parameter_list|,
 name|RMAppAttempt
 name|appAttempt
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|JSONException
@@ -8399,10 +8419,12 @@ name|getString
 argument_list|(
 literal|"logsLink"
 argument_list|)
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyAppAttemptInfoGeneric (RMAppAttempt appAttempt, int id, long startTime, String containerId, String nodeHttpAddress, String nodeId, String logsLink)
+DECL|method|verifyAppAttemptInfoGeneric (RMAppAttempt appAttempt, int id, long startTime, String containerId, String nodeHttpAddress, String nodeId, String logsLink, String user)
 specifier|public
 name|void
 name|verifyAppAttemptInfoGeneric
@@ -8427,6 +8449,9 @@ name|nodeId
 parameter_list|,
 name|String
 name|logsLink
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|JSONException
@@ -8539,16 +8564,7 @@ name|endsWith
 argument_list|(
 literal|"/"
 operator|+
-name|appAttempt
-operator|.
-name|getSubmissionContext
-argument_list|()
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|)
 argument_list|)
 expr_stmt|;

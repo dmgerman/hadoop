@@ -2934,14 +2934,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
-operator|.
-name|getShortUserName
-argument_list|()
-argument_list|,
 name|localResources
 argument_list|,
 name|environment

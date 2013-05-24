@@ -11117,8 +11117,6 @@ name|BuilderUtils
 operator|.
 name|newContainerLaunchContext
 argument_list|(
-name|user
-argument_list|,
 literal|null
 argument_list|,
 literal|null

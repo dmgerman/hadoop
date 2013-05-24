@@ -130,6 +130,30 @@ name|long
 name|submitTime
 parameter_list|)
 function_decl|;
+comment|/**    * The application submitter    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|setUser (String user)
+specifier|public
+name|void
+name|setUser
+parameter_list|(
+name|String
+name|user
+parameter_list|)
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getUser ()
+specifier|public
+name|String
+name|getUser
+parameter_list|()
+function_decl|;
 comment|/**    * The {@link ApplicationSubmissionContext} for the application    * {@link ApplicationId} can be obtained from the this    * @return ApplicationSubmissionContext    */
 annotation|@
 name|Public

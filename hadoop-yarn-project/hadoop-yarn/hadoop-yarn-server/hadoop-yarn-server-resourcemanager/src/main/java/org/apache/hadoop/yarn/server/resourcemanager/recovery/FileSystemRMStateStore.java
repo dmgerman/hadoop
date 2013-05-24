@@ -662,6 +662,11 @@ name|appStateData
 operator|.
 name|getApplicationSubmissionContext
 argument_list|()
+argument_list|,
+name|appStateData
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// assert child node name is same as actual applicationId

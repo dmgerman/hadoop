@@ -1111,13 +1111,16 @@ name|max
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext)
+DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, String user)
 specifier|public
 name|void
 name|submitApplication
 parameter_list|(
 name|ApplicationSubmissionContext
 name|submissionContext
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|YarnRemoteException
@@ -1134,6 +1137,8 @@ name|currentTimeMillis
 argument_list|()
 argument_list|,
 literal|false
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 block|}
@@ -2394,6 +2399,8 @@ operator|.
 name|submitApplication
 argument_list|(
 name|asContext
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|RMApp
@@ -2749,6 +2756,8 @@ operator|.
 name|submitApplication
 argument_list|(
 name|asContext
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|RMApp
@@ -2892,6 +2901,8 @@ operator|.
 name|submitApplication
 argument_list|(
 name|asContext
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3019,6 +3030,8 @@ operator|.
 name|submitApplication
 argument_list|(
 name|asContext
+argument_list|,
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|Assert

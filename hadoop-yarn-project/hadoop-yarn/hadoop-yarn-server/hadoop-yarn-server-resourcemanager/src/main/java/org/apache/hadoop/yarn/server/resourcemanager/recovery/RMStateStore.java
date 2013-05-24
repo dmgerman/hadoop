@@ -615,6 +615,11 @@ specifier|final
 name|long
 name|submitTime
 decl_stmt|;
+DECL|field|user
+specifier|final
+name|String
+name|user
+decl_stmt|;
 DECL|field|attempts
 name|Map
 argument_list|<
@@ -633,7 +638,7 @@ name|ApplicationAttemptState
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ApplicationState (long submitTime, ApplicationSubmissionContext context)
+DECL|method|ApplicationState (long submitTime, ApplicationSubmissionContext context, String user)
 name|ApplicationState
 parameter_list|(
 name|long
@@ -641,6 +646,9 @@ name|submitTime
 parameter_list|,
 name|ApplicationSubmissionContext
 name|context
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|this
@@ -654,6 +662,12 @@ operator|.
 name|context
 operator|=
 name|context
+expr_stmt|;
+name|this
+operator|.
+name|user
+operator|=
+name|user
 expr_stmt|;
 block|}
 DECL|method|getAppId ()
@@ -718,6 +732,16 @@ name|get
 argument_list|(
 name|attemptId
 argument_list|)
+return|;
+block|}
+DECL|method|getUser ()
+specifier|public
+name|String
+name|getUser
+parameter_list|()
+block|{
+return|return
+name|user
 return|;
 block|}
 block|}
@@ -930,6 +954,11 @@ name|getSubmitTime
 argument_list|()
 argument_list|,
 name|context
+argument_list|,
+name|app
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|dispatcher
@@ -1062,6 +1091,11 @@ argument_list|,
 name|app
 operator|.
 name|getApplicationSubmissionContext
+argument_list|()
+argument_list|,
+name|app
+operator|.
+name|getUser
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1318,6 +1352,16 @@ argument_list|(
 name|apptState
 operator|.
 name|getApplicationSubmissionContext
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|appStateData
+operator|.
+name|setUser
+argument_list|(
+name|apptState
+operator|.
+name|getUser
 argument_list|()
 argument_list|)
 expr_stmt|;

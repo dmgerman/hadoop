@@ -1540,7 +1540,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime, boolean isRecovered)
+DECL|method|submitApplication ( ApplicationSubmissionContext submissionContext, long submitTime, boolean isRecovered, String user)
 specifier|protected
 name|void
 name|submitApplication
@@ -1553,6 +1553,9 @@ name|submitTime
 parameter_list|,
 name|boolean
 name|isRecovered
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 throws|throws
 name|YarnRemoteException
@@ -1666,13 +1669,7 @@ operator|.
 name|getApplicationName
 argument_list|()
 argument_list|,
-name|submissionContext
-operator|.
-name|getAMContainerSpec
-argument_list|()
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|,
 name|submissionContext
 operator|.
@@ -2170,6 +2167,11 @@ name|getSubmitTime
 argument_list|()
 argument_list|,
 literal|true
+argument_list|,
+name|appState
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// re-populate attempt information in application
