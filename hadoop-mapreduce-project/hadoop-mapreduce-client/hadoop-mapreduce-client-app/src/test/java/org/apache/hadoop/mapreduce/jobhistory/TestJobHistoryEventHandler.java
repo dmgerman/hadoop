@@ -1988,9 +1988,9 @@ DECL|field|appAttemptId
 name|ApplicationAttemptId
 name|appAttemptId
 init|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
 name|appId
 argument_list|,
@@ -2001,9 +2001,9 @@ DECL|field|containerId
 name|ContainerId
 name|containerId
 init|=
-name|BuilderUtils
+name|ContainerId
 operator|.
-name|newContainerId
+name|newInstance
 argument_list|(
 name|appAttemptId
 argument_list|,

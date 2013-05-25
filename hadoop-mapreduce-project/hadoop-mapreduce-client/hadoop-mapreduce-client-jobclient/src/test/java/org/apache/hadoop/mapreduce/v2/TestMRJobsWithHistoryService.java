@@ -452,22 +452,6 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|BuilderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
 name|Records
 import|;
 end_import
@@ -478,7 +462,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|Before
+name|After
 import|;
 end_import
 
@@ -488,7 +472,7 @@ name|org
 operator|.
 name|junit
 operator|.
-name|After
+name|Before
 import|;
 end_import
 
@@ -1176,9 +1160,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|appAttemptId
 init|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
 name|jobId
 operator|.
@@ -1191,9 +1175,9 @@ decl_stmt|;
 name|ContainerId
 name|amContainerId
 init|=
-name|BuilderUtils
+name|ContainerId
 operator|.
-name|newContainerId
+name|newInstance
 argument_list|(
 name|appAttemptId
 argument_list|,

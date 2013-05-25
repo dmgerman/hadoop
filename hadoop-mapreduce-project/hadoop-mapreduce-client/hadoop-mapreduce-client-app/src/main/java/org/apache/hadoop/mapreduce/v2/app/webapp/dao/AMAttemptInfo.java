@@ -172,22 +172,6 @@ name|NodeId
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
 begin_class
 annotation|@
 name|XmlRootElement
@@ -313,9 +297,9 @@ expr_stmt|;
 name|NodeId
 name|nodeId
 init|=
-name|BuilderUtils
+name|NodeId
 operator|.
-name|newNodeId
+name|newInstance
 argument_list|(
 name|nmHost
 argument_list|,

@@ -1029,9 +1029,9 @@ decl_stmt|;
 comment|// Setting AppState to NEW and finalStatus to UNDEFINED as they are never
 comment|// used for a non running job
 return|return
-name|BuilderUtils
+name|ApplicationReport
 operator|.
-name|newApplicationReport
+name|newInstance
 argument_list|(
 name|unknownAppId
 argument_list|,

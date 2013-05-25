@@ -2976,9 +2976,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptId
 init|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
 name|appId
 argument_list|,
@@ -2986,9 +2986,9 @@ literal|0
 argument_list|)
 decl_stmt|;
 return|return
-name|BuilderUtils
+name|ApplicationReport
 operator|.
-name|newApplicationReport
+name|newInstance
 argument_list|(
 name|appId
 argument_list|,
@@ -3061,9 +3061,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|attemptId
 init|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
 name|appId
 argument_list|,
@@ -3071,9 +3071,9 @@ literal|0
 argument_list|)
 decl_stmt|;
 return|return
-name|BuilderUtils
+name|ApplicationReport
 operator|.
-name|newApplicationReport
+name|newInstance
 argument_list|(
 name|appId
 argument_list|,

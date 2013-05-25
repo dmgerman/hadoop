@@ -408,9 +408,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|api
 operator|.
-name|EventHandler
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -424,9 +426,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|event
 operator|.
-name|BuilderUtils
+name|EventHandler
 import|;
 end_import
 
@@ -668,6 +670,24 @@ name|api
 operator|.
 name|client
 operator|.
+name|ClientResponse
+operator|.
+name|Status
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|sun
+operator|.
+name|jersey
+operator|.
+name|api
+operator|.
+name|client
+operator|.
 name|UniformInterfaceException
 import|;
 end_import
@@ -685,24 +705,6 @@ operator|.
 name|client
 operator|.
 name|WebResource
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|sun
-operator|.
-name|jersey
-operator|.
-name|api
-operator|.
-name|client
-operator|.
-name|ClientResponse
-operator|.
-name|Status
 import|;
 end_import
 
@@ -7254,9 +7256,9 @@ name|checkStringMatch
 argument_list|(
 literal|"nodeId"
 argument_list|,
-name|BuilderUtils
+name|NodeId
 operator|.
-name|newNodeId
+name|newInstance
 argument_list|(
 name|nmHost
 argument_list|,

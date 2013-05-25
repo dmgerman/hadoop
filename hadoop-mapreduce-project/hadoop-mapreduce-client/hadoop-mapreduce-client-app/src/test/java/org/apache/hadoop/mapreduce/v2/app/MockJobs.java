@@ -3704,9 +3704,9 @@ block|{
 name|ApplicationAttemptId
 name|appAttemptId
 init|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
 name|BuilderUtils
 operator|.
@@ -3723,9 +3723,9 @@ decl_stmt|;
 name|ContainerId
 name|containerId
 init|=
-name|BuilderUtils
+name|ContainerId
 operator|.
-name|newContainerId
+name|newInstance
 argument_list|(
 name|appAttemptId
 argument_list|,
