@@ -1056,7 +1056,7 @@ operator|.
 name|getCurrentUser
 argument_list|()
 operator|.
-name|reloginFromKeytab
+name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
 block|}

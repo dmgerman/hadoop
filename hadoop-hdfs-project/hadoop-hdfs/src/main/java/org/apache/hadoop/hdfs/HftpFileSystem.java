@@ -1446,7 +1446,7 @@ block|{
 comment|//Renew TGT if needed
 name|ugi
 operator|.
-name|reloginFromKeytab
+name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
 return|return
@@ -4063,7 +4063,7 @@ operator|.
 name|getLoginUser
 argument_list|()
 operator|.
-name|reloginFromKeytab
+name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
 comment|// use http to renew the token
