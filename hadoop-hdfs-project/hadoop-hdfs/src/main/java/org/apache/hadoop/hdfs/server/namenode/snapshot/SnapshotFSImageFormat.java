@@ -818,6 +818,8 @@ argument_list|(
 literal|true
 argument_list|,
 name|in
+argument_list|,
+literal|false
 argument_list|)
 operator|.
 name|asFile
@@ -1111,6 +1113,8 @@ argument_list|(
 literal|true
 argument_list|,
 name|in
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|deletedList
@@ -1305,7 +1309,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Load the snapshotINode field of {@link SnapshotDiff}.    * @param snapshot The Snapshot associated with the {@link SnapshotDiff}.    * @param in The {@link DataInput} to read.    * @param loader The {@link Loader} instance that this loading procedure is     *               using.    * @return The snapshotINode.    */
+comment|/**    * Load the snapshotINode field of {@link AbstractINodeDiff}.    * @param snapshot The Snapshot associated with the {@link AbstractINodeDiff}.    * @param in The {@link DataInput} to read.    * @param loader The {@link Loader} instance that this loading procedure is     *               using.    * @return The snapshotINode.    */
 DECL|method|loadSnapshotINodeInDirectoryDiff ( Snapshot snapshot, DataInput in, FSImageFormat.Loader loader)
 specifier|private
 specifier|static
@@ -1363,6 +1367,8 @@ argument_list|(
 literal|true
 argument_list|,
 name|in
+argument_list|,
+literal|false
 argument_list|)
 operator|.
 name|asDirectory
@@ -1748,6 +1754,8 @@ argument_list|(
 name|isSnapshotINode
 argument_list|,
 name|in
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|withCount

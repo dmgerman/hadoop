@@ -1580,6 +1580,8 @@ argument_list|(
 literal|false
 argument_list|,
 name|in
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|addToParent
@@ -2214,7 +2216,7 @@ operator|.
 name|dir
 return|;
 block|}
-DECL|method|loadINodeWithLocalName (boolean isSnapshotINode, DataInput in)
+DECL|method|loadINodeWithLocalName (boolean isSnapshotINode, DataInput in, boolean updateINodeMap)
 specifier|public
 name|INode
 name|loadINodeWithLocalName
@@ -2224,6 +2226,9 @@ name|isSnapshotINode
 parameter_list|,
 name|DataInput
 name|in
+parameter_list|,
+name|boolean
+name|updateINodeMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -2254,6 +2259,8 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|updateINodeMap
+operator|&&
 name|LayoutVersion
 operator|.
 name|supports
