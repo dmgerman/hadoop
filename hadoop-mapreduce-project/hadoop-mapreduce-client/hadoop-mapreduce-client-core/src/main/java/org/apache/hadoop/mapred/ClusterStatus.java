@@ -68,6 +68,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -133,34 +143,6 @@ operator|.
 name|io
 operator|.
 name|WritableUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|ClusterMetrics
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|TaskTrackerInfo
 import|;
 end_import
 
@@ -490,7 +472,7 @@ DECL|field|UNINITIALIZED_MEMORY_VALUE
 specifier|public
 specifier|static
 specifier|final
-name|int
+name|long
 name|UNINITIALIZED_MEMORY_VALUE
 init|=
 operator|-
@@ -907,6 +889,38 @@ return|return
 name|blacklistedTrackers
 return|;
 block|}
+comment|/**    * Get the names of graylisted task trackers in the cluster.    *    * The gray list of trackers is no longer available on M/R 2.x. The function    * is kept to be compatible with M/R 1.x applications.    *    * @return an empty graylisted task trackers in the cluster.    */
+annotation|@
+name|Deprecated
+DECL|method|getGraylistedTrackerNames ()
+specifier|public
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|getGraylistedTrackerNames
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|emptySet
+argument_list|()
+return|;
+block|}
+comment|/**    * Get the number of graylisted task trackers in the cluster.    *    * The gray list of trackers is no longer available on M/R 2.x. The function    * is kept to be compatible with M/R 1.x applications.    *    * @return 0 graylisted task trackers in the cluster.    */
+annotation|@
+name|Deprecated
+DECL|method|getGraylistedTrackers ()
+specifier|public
+name|int
+name|getGraylistedTrackers
+parameter_list|()
+block|{
+return|return
+literal|0
+return|;
+block|}
 comment|/**    * Get the number of blacklisted task trackers in the cluster.    *     * @return the number of blacklisted task trackers in the cluster.    */
 DECL|method|getBlacklistedTrackers ()
 specifier|public
@@ -1033,6 +1047,25 @@ parameter_list|()
 block|{
 return|return
 name|blacklistedTrackersInfo
+return|;
+block|}
+comment|/**    * Get the current state of the<code>JobTracker</code>,    * as {@link JobTracker.State}    *    * {@link JobTracker.State} should no longer be used on M/R 2.x. The function    * is kept to be compatible with M/R 1.x applications.    *    * @return the invalid state of the<code>JobTracker</code>.    */
+annotation|@
+name|Deprecated
+DECL|method|getJobTrackerState ()
+specifier|public
+name|JobTracker
+operator|.
+name|State
+name|getJobTrackerState
+parameter_list|()
+block|{
+return|return
+name|JobTracker
+operator|.
+name|State
+operator|.
+name|RUNNING
 return|;
 block|}
 DECL|method|write (DataOutput out)
