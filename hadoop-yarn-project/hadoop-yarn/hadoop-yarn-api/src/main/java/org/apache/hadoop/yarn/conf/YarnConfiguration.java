@@ -2583,6 +2583,27 @@ name|DEFAULT_YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
 init|=
 literal|1000
 decl_stmt|;
+comment|/**    * Max number of threads in NMClientAsync to process container management    * events    */
+DECL|field|NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"client.nodemanager-client-async.thread-pool-max-size"
+decl_stmt|;
+DECL|field|DEFAULT_NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE
+init|=
+literal|500
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration
