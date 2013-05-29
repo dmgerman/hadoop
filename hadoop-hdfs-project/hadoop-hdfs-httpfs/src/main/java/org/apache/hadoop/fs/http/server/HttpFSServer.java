@@ -1253,11 +1253,6 @@ comment|/**    * Special binding for '/' as it is not handled by the wildcard bi
 annotation|@
 name|GET
 annotation|@
-name|Path
-argument_list|(
-literal|"/"
-argument_list|)
-annotation|@
 name|Produces
 argument_list|(
 name|MediaType
