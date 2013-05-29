@@ -278,9 +278,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
+name|io
 operator|.
-name|UserGroupInformation
+name|SecureIOUtils
 import|;
 end_import
 
@@ -292,9 +292,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|util
+name|security
 operator|.
-name|StringUtils
+name|UserGroupInformation
 import|;
 end_import
 
@@ -522,7 +522,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|YarnWebParams
+name|SubView
 import|;
 end_import
 
@@ -538,7 +538,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|SubView
+name|YarnWebParams
 import|;
 end_import
 
@@ -1553,6 +1553,104 @@ literal|null
 decl_stmt|;
 try|try
 block|{
+name|logByteStream
+operator|=
+name|SecureIOUtils
+operator|.
+name|openForRead
+argument_list|(
+name|logFile
+argument_list|,
+name|application
+operator|.
+name|getUser
+argument_list|()
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception reading log file "
+operator|+
+name|logFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"did not match expected owner '"
+operator|+
+name|application
+operator|.
+name|getUser
+argument_list|()
+operator|+
+literal|"'"
+argument_list|)
+condition|)
+block|{
+name|html
+operator|.
+name|h1
+argument_list|(
+literal|"Exception reading log file. Application submitted by '"
+operator|+
+name|application
+operator|.
+name|getUser
+argument_list|()
+operator|+
+literal|"' doesn't own requested log file : "
+operator|+
+name|logFile
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|html
+operator|.
+name|h1
+argument_list|(
+literal|"Exception reading log file. It might be because log "
+operator|+
+literal|"file was aggregated : "
+operator|+
+name|logFile
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return;
+block|}
+try|try
+block|{
 name|long
 name|toRead
 init|=
@@ -1620,16 +1718,7 @@ name|_
 argument_list|()
 expr_stmt|;
 block|}
-comment|// TODO: Use secure IO Utils to avoid symlink attacks.
 comment|// TODO Fix findBugs close warning along with IOUtils change
-name|logByteStream
-operator|=
-operator|new
-name|FileInputStream
-argument_list|(
-name|logFile
-argument_list|)
-expr_stmt|;
 name|IOUtils
 operator|.
 name|skipFully
@@ -1769,18 +1858,32 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Exception reading log file "
+operator|+
+name|logFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|html
 operator|.
 name|h1
 argument_list|(
-literal|"Exception reading log-file. Log file was likely aggregated. "
+literal|"Exception reading log file. It might be because log "
 operator|+
-name|StringUtils
+literal|"file was aggregated : "
+operator|+
+name|logFile
 operator|.
-name|stringifyException
-argument_list|(
-name|e
-argument_list|)
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

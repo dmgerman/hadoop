@@ -879,6 +879,11 @@ name|getLogDirs
 argument_list|()
 argument_list|,
 name|containerId
+argument_list|,
+name|userUgi
+operator|.
+name|getShortUserName
+argument_list|()
 argument_list|)
 decl_stmt|;
 try|try

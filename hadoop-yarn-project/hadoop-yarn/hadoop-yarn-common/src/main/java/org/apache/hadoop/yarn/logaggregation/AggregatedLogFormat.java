@@ -94,7 +94,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|InputStreamReader
+name|IOException
 import|;
 end_import
 
@@ -104,7 +104,7 @@ name|java
 operator|.
 name|io
 operator|.
-name|IOException
+name|InputStreamReader
 import|;
 end_import
 
@@ -375,6 +375,20 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|SecureIOUtils
 import|;
 end_import
 
@@ -877,9 +891,15 @@ specifier|final
 name|ContainerId
 name|containerId
 decl_stmt|;
+DECL|field|user
+specifier|private
+specifier|final
+name|String
+name|user
+decl_stmt|;
 comment|// TODO Maybe add a version string here. Instead of changing the version of
 comment|// the entire k-v format
-DECL|method|LogValue (List<String> rootLogDirs, ContainerId containerId)
+DECL|method|LogValue (List<String> rootLogDirs, ContainerId containerId, String user)
 specifier|public
 name|LogValue
 parameter_list|(
@@ -891,6 +911,9 @@ name|rootLogDirs
 parameter_list|,
 name|ContainerId
 name|containerId
+parameter_list|,
+name|String
+name|user
 parameter_list|)
 block|{
 name|this
@@ -911,6 +934,12 @@ operator|.
 name|containerId
 operator|=
 name|containerId
+expr_stmt|;
+name|this
+operator|.
+name|user
+operator|=
+name|user
 expr_stmt|;
 comment|// Ensure logs are processed in lexical order
 name|Collections
@@ -1060,10 +1089,16 @@ try|try
 block|{
 name|in
 operator|=
-operator|new
-name|FileInputStream
+name|SecureIOUtils
+operator|.
+name|openForRead
 argument_list|(
 name|logFile
+argument_list|,
+name|getUser
+argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|byte
@@ -1111,7 +1146,55 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|String
+name|message
+init|=
+literal|"Error aggregating log file. Log file : "
+operator|+
+name|logFile
+operator|.
+name|getAbsolutePath
+argument_list|()
+operator|+
+name|e
+operator|.
+name|getMessage
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|message
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|write
+argument_list|(
+name|message
+operator|.
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 finally|finally
+block|{
+if|if
+condition|(
+name|in
+operator|!=
+literal|null
+condition|)
 block|{
 name|in
 operator|.
@@ -1121,6 +1204,18 @@ expr_stmt|;
 block|}
 block|}
 block|}
+block|}
+block|}
+comment|// Added for testing purpose.
+DECL|method|getUser ()
+specifier|public
+name|String
+name|getUser
+parameter_list|()
+block|{
+return|return
+name|user
+return|;
 block|}
 block|}
 DECL|class|LogWriter
