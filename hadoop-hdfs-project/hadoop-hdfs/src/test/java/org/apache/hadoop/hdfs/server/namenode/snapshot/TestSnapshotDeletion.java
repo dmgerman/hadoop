@@ -819,7 +819,7 @@ expr_stmt|;
 name|String
 name|error
 init|=
-literal|"The direcotry "
+literal|"The directory "
 operator|+
 name|sub
 operator|.

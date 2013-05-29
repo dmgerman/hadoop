@@ -9696,8 +9696,6 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|namenode
 operator|.
 name|allowSnapshot
@@ -9705,20 +9703,6 @@ argument_list|(
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|RemoteException
-name|re
-parameter_list|)
-block|{
-throw|throw
-name|re
-operator|.
-name|unwrapRemoteException
-argument_list|()
-throw|;
-block|}
 block|}
 comment|/**    * Disallow snapshot on a directory.    *     * @see ClientProtocol#disallowSnapshot(String snapshotRoot)    */
 DECL|method|disallowSnapshot (String snapshotRoot)
@@ -9735,8 +9719,6 @@ block|{
 name|checkOpen
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|namenode
 operator|.
 name|disallowSnapshot
@@ -9744,20 +9726,6 @@ argument_list|(
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|RemoteException
-name|re
-parameter_list|)
-block|{
-throw|throw
-name|re
-operator|.
-name|unwrapRemoteException
-argument_list|()
-throw|;
-block|}
 block|}
 comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    * @see ClientProtocol#getSnapshotDiffReport(String, String, String)    */
 DECL|method|getSnapshotDiffReport (Path snapshotDir, String fromSnapshot, String toSnapshot)

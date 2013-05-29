@@ -7197,7 +7197,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"The direcotry "
+literal|"The directory "
 operator|+
 name|ssTargetDir
 operator|.
