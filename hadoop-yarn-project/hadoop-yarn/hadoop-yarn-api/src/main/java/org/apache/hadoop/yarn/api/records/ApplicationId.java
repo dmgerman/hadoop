@@ -86,11 +86,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|yarn
 operator|.
-name|InterfaceStability
+name|util
 operator|.
-name|Unstable
+name|Records
 import|;
 end_import
 
@@ -123,6 +123,54 @@ name|appIdStrPrefix
 init|=
 literal|"application_"
 decl_stmt|;
+DECL|method|newInstance (long clusterTimestamp, int id)
+specifier|public
+specifier|static
+name|ApplicationId
+name|newInstance
+parameter_list|(
+name|long
+name|clusterTimestamp
+parameter_list|,
+name|int
+name|id
+parameter_list|)
+block|{
+name|ApplicationId
+name|appId
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|ApplicationId
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|appId
+operator|.
+name|setClusterTimestamp
+argument_list|(
+name|clusterTimestamp
+argument_list|)
+expr_stmt|;
+name|appId
+operator|.
+name|setId
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+name|appId
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
+return|return
+name|appId
+return|;
+block|}
 comment|/**    * Get the short integer identifier of the<code>ApplicationId</code>    * which is unique for all applications started by a particular instance    * of the<code>ResourceManager</code>.    * @return short integer identifier of the<code>ApplicationId</code>    */
 annotation|@
 name|Public
@@ -137,10 +185,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
-annotation|@
-name|Unstable
 DECL|method|setId (int id)
-specifier|public
+specifier|protected
 specifier|abstract
 name|void
 name|setId
@@ -159,10 +205,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
-annotation|@
-name|Unstable
 DECL|method|setClusterTimestamp (long clusterTimestamp)
-specifier|public
+specifier|protected
 specifier|abstract
 name|void
 name|setClusterTimestamp
@@ -170,6 +214,13 @@ parameter_list|(
 name|long
 name|clusterTimestamp
 parameter_list|)
+function_decl|;
+DECL|method|build ()
+specifier|protected
+specifier|abstract
+name|void
+name|build
+parameter_list|()
 function_decl|;
 DECL|field|appIdFormat
 specifier|static
