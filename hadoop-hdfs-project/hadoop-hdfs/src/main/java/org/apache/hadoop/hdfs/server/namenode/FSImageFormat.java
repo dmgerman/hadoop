@@ -1689,30 +1689,6 @@ name|getLocalName
 argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|snapshottableParent
-operator|.
-name|getParent
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// not root
-name|this
-operator|.
-name|namesystem
-operator|.
-name|getSnapshotManager
-argument_list|()
-operator|.
-name|addSnapshottable
-argument_list|(
-name|snapshottableParent
-argument_list|)
-expr_stmt|;
-block|}
 comment|// load snapshots and snapshotQuota
 name|SnapshotFSImageFormat
 operator|.
@@ -1727,6 +1703,32 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|snapshottableParent
+operator|.
+name|getSnapshotQuota
+argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+comment|// add the directory to the snapshottable directory list in
+comment|// SnapshotManager. Note that we only add root when its snapshot quota
+comment|// is positive.
+name|this
+operator|.
+name|namesystem
+operator|.
+name|getSnapshotManager
+argument_list|()
+operator|.
+name|addSnapshottable
+argument_list|(
+name|snapshottableParent
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|// Step 3. Load children nodes under parent
 name|loadChildren
