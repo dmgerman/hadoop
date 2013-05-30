@@ -153,6 +153,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -589,6 +601,26 @@ operator|.
 name|client
 operator|.
 name|RMDelegationTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|NullRMStateStore
 import|;
 end_import
 
@@ -2613,10 +2645,10 @@ return|return
 name|mockSched
 return|;
 block|}
-DECL|method|createRMDelegationTokenSecretManager ( long secretKeyInterval, long tokenMaxLifetime, long tokenRenewInterval)
 specifier|private
 specifier|static
 name|RMDelegationTokenSecretManager
+DECL|method|createRMDelegationTokenSecretManager (long secretKeyInterval, long tokenMaxLifetime, long tokenRenewInterval)
 name|createRMDelegationTokenSecretManager
 parameter_list|(
 name|long
@@ -2629,6 +2661,31 @@ name|long
 name|tokenRenewInterval
 parameter_list|)
 block|{
+name|RMContext
+name|rmContext
+init|=
+name|mock
+argument_list|(
+name|RMContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|rmContext
+operator|.
+name|getStateStore
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+operator|new
+name|NullRMStateStore
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|RMDelegationTokenSecretManager
 name|rmDtSecretManager
 init|=
@@ -2642,6 +2699,8 @@ argument_list|,
 name|tokenRenewInterval
 argument_list|,
 literal|3600000
+argument_list|,
+name|rmContext
 argument_list|)
 decl_stmt|;
 return|return

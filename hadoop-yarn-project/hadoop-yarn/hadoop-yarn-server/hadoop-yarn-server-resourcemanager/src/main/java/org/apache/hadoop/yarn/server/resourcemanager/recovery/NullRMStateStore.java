@@ -104,6 +104,42 @@ name|ApplicationStateDataPBImpl
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|delegation
+operator|.
+name|DelegationKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
+name|client
+operator|.
+name|RMDelegationTokenIdentifier
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Unstable
@@ -204,6 +240,72 @@ name|removeApplicationState
 parameter_list|(
 name|ApplicationState
 name|appState
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|storeRMDelegationTokenAndSequenceNumberState ( RMDelegationTokenIdentifier rmDTIdentifier, Long renewDate, int latestSequenceNumber)
+specifier|public
+name|void
+name|storeRMDelegationTokenAndSequenceNumberState
+parameter_list|(
+name|RMDelegationTokenIdentifier
+name|rmDTIdentifier
+parameter_list|,
+name|Long
+name|renewDate
+parameter_list|,
+name|int
+name|latestSequenceNumber
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|removeRMDelegationTokenState (RMDelegationTokenIdentifier rmDTIdentifier)
+specifier|public
+name|void
+name|removeRMDelegationTokenState
+parameter_list|(
+name|RMDelegationTokenIdentifier
+name|rmDTIdentifier
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|storeRMDTMasterKeyState (DelegationKey delegationKey)
+specifier|public
+name|void
+name|storeRMDTMasterKeyState
+parameter_list|(
+name|DelegationKey
+name|delegationKey
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|removeRMDTMasterKeyState (DelegationKey delegationKey)
+specifier|public
+name|void
+name|removeRMDTMasterKeyState
+parameter_list|(
+name|DelegationKey
+name|delegationKey
 parameter_list|)
 throws|throws
 name|Exception

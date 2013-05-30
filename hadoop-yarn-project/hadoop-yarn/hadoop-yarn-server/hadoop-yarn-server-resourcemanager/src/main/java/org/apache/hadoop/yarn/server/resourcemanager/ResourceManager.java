@@ -1797,7 +1797,11 @@ operator|.
 name|rmDTSecretManager
 operator|=
 name|createRMDelegationTokenSecretManager
-argument_list|()
+argument_list|(
+name|this
+operator|.
+name|rmContext
+argument_list|)
 expr_stmt|;
 name|clientRM
 operator|=
@@ -3778,9 +3782,12 @@ return|;
 block|}
 specifier|protected
 name|RMDelegationTokenSecretManager
-DECL|method|createRMDelegationTokenSecretManager ()
+DECL|method|createRMDelegationTokenSecretManager (RMContext rmContext)
 name|createRMDelegationTokenSecretManager
-parameter_list|()
+parameter_list|(
+name|RMContext
+name|rmContext
+parameter_list|)
 block|{
 name|long
 name|secretKeyInterval
@@ -3841,6 +3848,8 @@ argument_list|,
 name|tokenRenewInterval
 argument_list|,
 literal|3600000
+argument_list|,
+name|rmContext
 argument_list|)
 return|;
 block|}
@@ -4044,6 +4053,14 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+comment|// recover RMdelegationTokenSecretManager
+name|rmDTSecretManager
+operator|.
+name|recover
+argument_list|(
+name|state
+argument_list|)
+expr_stmt|;
 comment|// recover applications
 name|rmAppManager
 operator|.

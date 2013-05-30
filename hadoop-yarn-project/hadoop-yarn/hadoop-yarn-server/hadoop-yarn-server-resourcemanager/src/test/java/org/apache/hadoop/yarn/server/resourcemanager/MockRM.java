@@ -2290,7 +2290,7 @@ name|rmAppManager
 argument_list|,
 name|applicationACLsManager
 argument_list|,
-literal|null
+name|rmDTSecretManager
 argument_list|)
 block|{
 annotation|@
