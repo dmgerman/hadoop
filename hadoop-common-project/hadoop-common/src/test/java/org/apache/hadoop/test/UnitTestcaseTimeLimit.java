@@ -34,7 +34,7 @@ name|junit
 operator|.
 name|rules
 operator|.
-name|MethodRule
+name|TestRule
 import|;
 end_import
 
@@ -72,7 +72,7 @@ DECL|field|globalTimeout
 annotation|@
 name|Rule
 specifier|public
-name|MethodRule
+name|TestRule
 name|globalTimeout
 init|=
 operator|new
