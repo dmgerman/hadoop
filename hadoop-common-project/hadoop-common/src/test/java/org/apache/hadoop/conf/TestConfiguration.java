@@ -354,7 +354,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-literal|"./test-config.xml"
+literal|"./test-config-TestConfiguration.xml"
 argument_list|)
 operator|.
 name|getAbsolutePath
@@ -369,7 +369,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-literal|"./test-config2.xml"
+literal|"./test-config2-TestConfiguration.xml"
 argument_list|)
 operator|.
 name|getAbsolutePath

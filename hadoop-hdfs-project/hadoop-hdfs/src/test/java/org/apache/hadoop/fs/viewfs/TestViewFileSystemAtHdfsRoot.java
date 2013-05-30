@@ -215,6 +215,22 @@ name|FileSystem
 name|fHdfs
 decl_stmt|;
 annotation|@
+name|Override
+DECL|method|createFileSystemHelper ()
+specifier|protected
+name|FileSystemTestHelper
+name|createFileSystemHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileSystemTestHelper
+argument_list|(
+literal|"/tmp/TestViewFileSystemAtHdfsRoot"
+argument_list|)
+return|;
+block|}
+annotation|@
 name|BeforeClass
 DECL|method|clusterSetupAtBegining ()
 specifier|public
@@ -229,12 +245,6 @@ name|LoginException
 throws|,
 name|URISyntaxException
 block|{
-name|FileSystemTestHelper
-operator|.
-name|TEST_ROOT_DIR
-operator|=
-literal|"/tmp/TestViewFileSystemAtHdfsRoot"
-expr_stmt|;
 name|SupportsBlocks
 operator|=
 literal|true

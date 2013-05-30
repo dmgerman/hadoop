@@ -411,10 +411,15 @@ literal|"memcmp"
 decl_stmt|;
 DECL|field|outputFile
 specifier|private
+specifier|final
 name|String
 name|outputFile
 init|=
-literal|"TFileTestByteArrays"
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
 decl_stmt|;
 comment|/*    * pre-sampled numbers of records in one block, based on the given the    * generated key and value strings. This is slightly different based on    * whether or not the native libs are present.    */
 DECL|field|usingNative
@@ -451,7 +456,7 @@ literal|5574
 else|:
 literal|4263
 decl_stmt|;
-DECL|method|init (String compression, String comparator, String outputFile, int numRecords1stBlock, int numRecords2ndBlock)
+DECL|method|init (String compression, String comparator, int numRecords1stBlock, int numRecords2ndBlock)
 specifier|public
 name|void
 name|init
@@ -461,9 +466,6 @@ name|compression
 parameter_list|,
 name|String
 name|comparator
-parameter_list|,
-name|String
-name|outputFile
 parameter_list|,
 name|int
 name|numRecords1stBlock
@@ -477,8 +479,6 @@ argument_list|(
 name|compression
 argument_list|,
 name|comparator
-argument_list|,
-name|outputFile
 argument_list|)
 expr_stmt|;
 name|this
@@ -494,7 +494,7 @@ operator|=
 name|numRecords2ndBlock
 expr_stmt|;
 block|}
-DECL|method|init (String compression, String comparator, String outputFile)
+DECL|method|init (String compression, String comparator)
 specifier|public
 name|void
 name|init
@@ -504,9 +504,6 @@ name|compression
 parameter_list|,
 name|String
 name|comparator
-parameter_list|,
-name|String
-name|outputFile
 parameter_list|)
 block|{
 name|this
@@ -520,12 +517,6 @@ operator|.
 name|comparator
 operator|=
 name|comparator
-expr_stmt|;
-name|this
-operator|.
-name|outputFile
-operator|=
-name|outputFile
 expr_stmt|;
 block|}
 annotation|@

@@ -173,7 +173,7 @@ init|=
 literal|"/testDir"
 decl_stmt|;
 comment|/**    *     * @param fsTarget - the target fs of the view fs.    * @return return the ViewFS File context to be used for tests    * @throws Exception    */
-DECL|method|setupForViewFileSystem (Configuration conf, FileSystem fsTarget)
+DECL|method|setupForViewFileSystem (Configuration conf, FileSystemTestHelper fileSystemTestHelper, FileSystem fsTarget)
 specifier|static
 specifier|public
 name|FileSystem
@@ -181,6 +181,9 @@ name|setupForViewFileSystem
 parameter_list|(
 name|Configuration
 name|conf
+parameter_list|,
+name|FileSystemTestHelper
+name|fileSystemTestHelper
 parameter_list|,
 name|FileSystem
 name|fsTarget
@@ -192,7 +195,7 @@ comment|/**      * create the test root on local_fs - the  mount table will poin
 name|Path
 name|targetOfTests
 init|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -220,7 +223,7 @@ comment|// Set up viewfs link for test dir as described above
 name|String
 name|testDir
 init|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -322,12 +325,15 @@ name|fsView
 return|;
 block|}
 comment|/**    *     * delete the test directory in the target  fs    */
-DECL|method|tearDown (FileSystem fsTarget)
+DECL|method|tearDown (FileSystemTestHelper fileSystemTestHelper, FileSystem fsTarget)
 specifier|static
 specifier|public
 name|void
 name|tearDown
 parameter_list|(
+name|FileSystemTestHelper
+name|fileSystemTestHelper
+parameter_list|,
 name|FileSystem
 name|fsTarget
 parameter_list|)
@@ -337,7 +343,7 @@ block|{
 name|Path
 name|targetOfTests
 init|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -361,6 +367,23 @@ name|Configuration
 name|createConfig
 parameter_list|()
 block|{
+return|return
+name|createConfig
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|createConfig (boolean disableCache)
+specifier|public
+specifier|static
+name|Configuration
+name|createConfig
+parameter_list|(
+name|boolean
+name|disableCache
+parameter_list|)
+block|{
 name|Configuration
 name|conf
 init|=
@@ -382,6 +405,21 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|disableCache
+condition|)
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+literal|"fs.viewfs.impl.disable.cache"
+argument_list|,
+literal|"true"
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|conf
 return|;

@@ -66,8 +66,6 @@ argument_list|()
 argument_list|,
 literal|"jclass: org.apache.hadoop.io.file.tfile.MyComparator"
 argument_list|,
-literal|"TestTFileNoneCodecsJClassComparatorByteArrays"
-argument_list|,
 literal|24
 argument_list|,
 literal|24

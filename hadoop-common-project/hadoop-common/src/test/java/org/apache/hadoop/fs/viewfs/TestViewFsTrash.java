@@ -175,8 +175,15 @@ DECL|field|conf
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|fileSystemTestHelper
+name|FileSystemTestHelper
+name|fileSystemTestHelper
+init|=
+operator|new
+name|FileSystemTestHelper
+argument_list|()
+decl_stmt|;
 DECL|class|TestLFS
-specifier|static
 class|class
 name|TestLFS
 extends|extends
@@ -197,9 +204,10 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
-name|TEST_ROOT_DIR
+name|getTestRootDir
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -264,7 +272,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -289,6 +297,8 @@ operator|.
 name|setupForViewFileSystem
 argument_list|(
 name|conf
+argument_list|,
+name|fileSystemTestHelper
 argument_list|,
 name|fsTarget
 argument_list|)
@@ -322,6 +332,8 @@ name|ViewFileSystemTestSetup
 operator|.
 name|tearDown
 argument_list|(
+name|fileSystemTestHelper
+argument_list|,
 name|fsTarget
 argument_list|)
 expr_stmt|;
@@ -360,7 +372,7 @@ name|trashShell
 argument_list|(
 name|conf
 argument_list|,
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(

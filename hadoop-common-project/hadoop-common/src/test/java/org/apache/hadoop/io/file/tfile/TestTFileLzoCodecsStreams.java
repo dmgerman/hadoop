@@ -108,8 +108,6 @@ name|getName
 argument_list|()
 argument_list|,
 literal|"memcmp"
-argument_list|,
-literal|"TFileTestCodecsLzo"
 argument_list|)
 expr_stmt|;
 if|if

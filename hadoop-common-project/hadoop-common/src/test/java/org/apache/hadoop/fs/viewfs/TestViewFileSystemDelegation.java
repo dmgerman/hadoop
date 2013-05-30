@@ -303,7 +303,9 @@ expr_stmt|;
 name|Path
 name|targetPath
 init|=
+operator|new
 name|FileSystemTestHelper
+argument_list|()
 operator|.
 name|getAbsoluteTestRootPath
 argument_list|(

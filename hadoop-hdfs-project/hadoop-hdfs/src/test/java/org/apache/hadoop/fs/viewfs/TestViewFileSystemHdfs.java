@@ -262,6 +262,22 @@ name|Path
 name|targetTestRoot2
 decl_stmt|;
 annotation|@
+name|Override
+DECL|method|createFileSystemHelper ()
+specifier|protected
+name|FileSystemTestHelper
+name|createFileSystemHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileSystemTestHelper
+argument_list|(
+literal|"/tmp/TestViewFileSystemHdfs"
+argument_list|)
+return|;
+block|}
+annotation|@
 name|BeforeClass
 DECL|method|clusterSetupAtBegining ()
 specifier|public
@@ -276,12 +292,6 @@ name|LoginException
 throws|,
 name|URISyntaxException
 block|{
-name|FileSystemTestHelper
-operator|.
-name|TEST_ROOT_DIR
-operator|=
-literal|"/tmp/TestViewFileSystemHdfs"
-expr_stmt|;
 name|SupportsBlocks
 operator|=
 literal|true
@@ -445,7 +455,9 @@ name|fHdfs2
 expr_stmt|;
 name|targetTestRoot2
 operator|=
+operator|new
 name|FileSystemTestHelper
+argument_list|()
 operator|.
 name|getAbsoluteTestRootPath
 argument_list|(

@@ -394,7 +394,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testWorkingDirectory ()
 specifier|public
@@ -945,7 +945,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCopy ()
 specifier|public
@@ -1836,7 +1836,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testReportChecksumFailure ()
 specifier|public

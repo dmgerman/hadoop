@@ -19,38 +19,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystemTestHelper
-operator|.
-name|exists
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystemTestHelper
-operator|.
-name|getTestRootPath
-import|;
-end_import
-
-begin_import
 import|import
 name|java
 operator|.
@@ -149,20 +117,6 @@ operator|.
 name|fs
 operator|.
 name|FileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystemTestHelper
 import|;
 end_import
 
@@ -420,6 +374,26 @@ specifier|static
 name|Path
 name|defaultWorkingDirectory
 decl_stmt|;
+DECL|field|fileSystem
+specifier|private
+specifier|static
+name|FileSystem
+name|fileSystem
+decl_stmt|;
+annotation|@
+name|Override
+DECL|method|createFileSystem ()
+specifier|protected
+name|FileSystem
+name|createFileSystem
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
+name|fileSystem
+return|;
+block|}
 annotation|@
 name|BeforeClass
 DECL|method|setupCluster ()
@@ -429,14 +403,6 @@ name|void
 name|setupCluster
 parameter_list|()
 block|{
-comment|// Initialize the test root directory to a DFS like path
-comment|// since we are testing based on the MiniDFSCluster.
-name|FileSystemTestHelper
-operator|.
-name|TEST_ROOT_DIR
-operator|=
-literal|"/tmp/TestFSMainOperationsWebHdfs"
-expr_stmt|;
 specifier|final
 name|Configuration
 name|conf
@@ -568,7 +534,7 @@ literal|"user"
 block|}
 argument_list|)
 decl_stmt|;
-name|fSys
+name|fileSystem
 operator|=
 name|ugi
 operator|.
@@ -610,7 +576,7 @@ argument_list|)
 expr_stmt|;
 name|defaultWorkingDirectory
 operator|=
-name|fSys
+name|fileSystem
 operator|.
 name|getWorkingDirectory
 argument_list|()

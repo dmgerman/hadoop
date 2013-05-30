@@ -296,6 +296,17 @@ name|someFile
 init|=
 literal|"/hdfstmp/someFileForTestGetFileChecksum"
 decl_stmt|;
+DECL|field|fileSystemTestHelper
+specifier|private
+specifier|static
+specifier|final
+name|FileSystemTestHelper
+name|fileSystemTestHelper
+init|=
+operator|new
+name|FileSystemTestHelper
+argument_list|()
+decl_stmt|;
 DECL|field|cluster
 specifier|private
 specifier|static
@@ -493,7 +504,7 @@ block|{
 name|long
 name|len
 init|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -603,7 +614,7 @@ throws|,
 name|URISyntaxException
 block|{
 comment|// Create two different files in HDFS
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -612,13 +623,13 @@ argument_list|,
 name|someFile
 argument_list|)
 expr_stmt|;
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
 name|fHdfs
 argument_list|,
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(

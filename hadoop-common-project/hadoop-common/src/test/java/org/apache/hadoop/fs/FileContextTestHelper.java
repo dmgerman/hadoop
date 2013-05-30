@@ -62,6 +62,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|RandomStringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|fs
@@ -125,24 +139,6 @@ specifier|final
 class|class
 name|FileContextTestHelper
 block|{
-comment|// The test root is relative to the<wd>/build/test/data by default
-DECL|field|TEST_ROOT_DIR
-specifier|public
-specifier|static
-name|String
-name|TEST_ROOT_DIR
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"build/test/data"
-argument_list|)
-operator|+
-literal|"/test"
-decl_stmt|;
 DECL|field|DEFAULT_BLOCK_SIZE
 specifier|private
 specifier|static
@@ -161,20 +157,46 @@ name|DEFAULT_NUM_BLOCKS
 init|=
 literal|2
 decl_stmt|;
+DECL|field|testRootDir
+specifier|private
+specifier|final
+name|String
+name|testRootDir
+decl_stmt|;
 DECL|field|absTestRootDir
 specifier|private
-specifier|static
 name|String
 name|absTestRootDir
 init|=
 literal|null
 decl_stmt|;
-comment|/** Hidden constructor */
+comment|/**    * Create a context with test root relative to the<wd>/build/test/data    */
 DECL|method|FileContextTestHelper ()
-specifier|private
+specifier|public
 name|FileContextTestHelper
 parameter_list|()
-block|{}
+block|{
+name|testRootDir
+operator|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.build.data"
+argument_list|,
+literal|"target/test/data"
+argument_list|)
+operator|+
+literal|"/"
+operator|+
+name|RandomStringUtils
+operator|.
+name|randomAlphanumeric
+argument_list|(
+literal|10
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getDefaultBlockSize ()
 specifier|public
 specifier|static
@@ -255,7 +277,6 @@ return|;
 block|}
 DECL|method|getTestRootPath (FileContext fc)
 specifier|public
-specifier|static
 name|Path
 name|getTestRootPath
 parameter_list|(
@@ -271,14 +292,13 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|testRootDir
 argument_list|)
 argument_list|)
 return|;
 block|}
 DECL|method|getTestRootPath (FileContext fc, String pathString)
 specifier|public
-specifier|static
 name|Path
 name|getTestRootPath
 parameter_list|(
@@ -297,7 +317,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|testRootDir
 argument_list|,
 name|pathString
 argument_list|)
@@ -308,7 +328,6 @@ comment|// the getAbsolutexxx method is needed because the root test dir
 comment|// can be messed up by changing the working dir.
 DECL|method|getAbsoluteTestRootDir (FileContext fc)
 specifier|public
-specifier|static
 name|String
 name|getAbsoluteTestRootDir
 parameter_list|(
@@ -330,7 +349,7 @@ condition|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|testRootDir
 argument_list|)
 operator|.
 name|isAbsolute
@@ -339,7 +358,7 @@ condition|)
 block|{
 name|absTestRootDir
 operator|=
-name|TEST_ROOT_DIR
+name|testRootDir
 expr_stmt|;
 block|}
 else|else
@@ -356,7 +375,7 @@ argument_list|()
 operator|+
 literal|"/"
 operator|+
-name|TEST_ROOT_DIR
+name|testRootDir
 expr_stmt|;
 block|}
 block|}
@@ -366,7 +385,6 @@ return|;
 block|}
 DECL|method|getAbsoluteTestRootPath (FileContext fc)
 specifier|public
-specifier|static
 name|Path
 name|getAbsoluteTestRootPath
 parameter_list|(
@@ -394,7 +412,6 @@ return|;
 block|}
 DECL|method|getDefaultWorkingDirectory (FileContext fc)
 specifier|public
-specifier|static
 name|Path
 name|getDefaultWorkingDirectory
 parameter_list|(
@@ -625,7 +642,6 @@ return|;
 block|}
 DECL|method|createFile (FileContext fc, String name)
 specifier|public
-specifier|static
 name|long
 name|createFile
 parameter_list|(
@@ -659,7 +675,6 @@ return|;
 block|}
 DECL|method|createFileNonRecursive (FileContext fc, String name)
 specifier|public
-specifier|static
 name|long
 name|createFileNonRecursive
 parameter_list|(
@@ -1094,7 +1109,6 @@ return|;
 block|}
 DECL|method|containsPath (FileContext fc, Path path, FileStatus[] dirList)
 specifier|public
-specifier|static
 name|FileStatus
 name|containsPath
 parameter_list|(
@@ -1189,7 +1203,6 @@ return|;
 block|}
 DECL|method|containsPath (FileContext fc, String path, FileStatus[] dirList)
 specifier|public
-specifier|static
 name|FileStatus
 name|containsPath
 parameter_list|(

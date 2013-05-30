@@ -260,6 +260,16 @@ specifier|public
 class|class
 name|TestFcHdfsSetUMask
 block|{
+DECL|field|fileContextTestHelper
+specifier|private
+specifier|static
+name|FileContextTestHelper
+name|fileContextTestHelper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
 DECL|field|cluster
 specifier|private
 specifier|static
@@ -464,12 +474,6 @@ name|LoginException
 throws|,
 name|URISyntaxException
 block|{
-name|FileContextTestHelper
-operator|.
-name|TEST_ROOT_DIR
-operator|=
-literal|"/tmp/TestFcHdfsSetUMask"
-expr_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -643,6 +647,8 @@ name|fc
 operator|.
 name|mkdir
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -670,6 +676,8 @@ name|fc
 operator|.
 name|delete
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -931,6 +939,8 @@ block|{
 name|Path
 name|f
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -1010,6 +1020,8 @@ block|{
 name|Path
 name|f
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -1071,6 +1083,8 @@ expr_stmt|;
 name|Path
 name|fParent
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -1115,6 +1129,8 @@ block|{
 name|Path
 name|f
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -1188,6 +1204,8 @@ block|{
 name|Path
 name|f
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -1198,6 +1216,8 @@ decl_stmt|;
 name|Path
 name|fParent
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc

@@ -62,6 +62,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|RandomStringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|conf
@@ -127,28 +141,9 @@ end_comment
 begin_class
 DECL|class|FileSystemTestHelper
 specifier|public
-specifier|final
 class|class
 name|FileSystemTestHelper
 block|{
-comment|// The test root is relative to the<wd>/build/test/data by default
-DECL|field|TEST_ROOT_DIR
-specifier|public
-specifier|static
-name|String
-name|TEST_ROOT_DIR
-init|=
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"target/test/data"
-argument_list|)
-operator|+
-literal|"/test"
-decl_stmt|;
 DECL|field|DEFAULT_BLOCK_SIZE
 specifier|private
 specifier|static
@@ -176,20 +171,63 @@ name|DEFAULT_NUM_REPL
 init|=
 literal|1
 decl_stmt|;
+DECL|field|testRootDir
+specifier|protected
+specifier|final
+name|String
+name|testRootDir
+decl_stmt|;
 DECL|field|absTestRootDir
 specifier|private
-specifier|static
 name|String
 name|absTestRootDir
 init|=
 literal|null
 decl_stmt|;
-comment|/** Hidden constructor */
+comment|/**    * Create helper with test root located at<wd>/build/test/data    */
 DECL|method|FileSystemTestHelper ()
-specifier|private
+specifier|public
 name|FileSystemTestHelper
 parameter_list|()
-block|{}
+block|{
+name|this
+argument_list|(
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"test.build.data"
+argument_list|,
+literal|"target/test/data"
+argument_list|)
+operator|+
+literal|"/"
+operator|+
+name|RandomStringUtils
+operator|.
+name|randomAlphanumeric
+argument_list|(
+literal|10
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create helper with the specified test root dir    */
+DECL|method|FileSystemTestHelper (String testRootDir)
+specifier|public
+name|FileSystemTestHelper
+parameter_list|(
+name|String
+name|testRootDir
+parameter_list|)
+block|{
+name|this
+operator|.
+name|testRootDir
+operator|=
+name|testRootDir
+expr_stmt|;
+block|}
 DECL|method|addFileSystemForTesting (URI uri, Configuration conf, FileSystem fs)
 specifier|public
 specifier|static
@@ -298,10 +336,19 @@ return|return
 name|data
 return|;
 block|}
+DECL|method|getTestRootDir ()
+specifier|public
+name|String
+name|getTestRootDir
+parameter_list|()
+block|{
+return|return
+name|testRootDir
+return|;
+block|}
 comment|/*    * get testRootPath qualified for fSys    */
 DECL|method|getTestRootPath (FileSystem fSys)
 specifier|public
-specifier|static
 name|Path
 name|getTestRootPath
 parameter_list|(
@@ -317,7 +364,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|testRootDir
 argument_list|)
 argument_list|)
 return|;
@@ -325,7 +372,6 @@ block|}
 comment|/*    * get testRootPath + pathString qualified for fSys    */
 DECL|method|getTestRootPath (FileSystem fSys, String pathString)
 specifier|public
-specifier|static
 name|Path
 name|getTestRootPath
 parameter_list|(
@@ -344,7 +390,7 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|testRootDir
 argument_list|,
 name|pathString
 argument_list|)
@@ -356,7 +402,6 @@ comment|// can be messed up by changing the working dir since the TEST_ROOT_PATH
 comment|// is often relative to the working directory of process
 comment|// running the unit tests.
 DECL|method|getAbsoluteTestRootDir (FileSystem fSys)
-specifier|static
 name|String
 name|getAbsoluteTestRootDir
 parameter_list|(
@@ -373,7 +418,7 @@ condition|(
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|testRootDir
 argument_list|)
 operator|.
 name|isAbsolute
@@ -382,7 +427,7 @@ condition|)
 block|{
 name|absTestRootDir
 operator|=
-name|TEST_ROOT_DIR
+name|testRootDir
 expr_stmt|;
 block|}
 else|else
@@ -399,7 +444,7 @@ argument_list|()
 operator|+
 literal|"/"
 operator|+
-name|TEST_ROOT_DIR
+name|testRootDir
 expr_stmt|;
 block|}
 comment|//}
@@ -409,7 +454,6 @@ return|;
 block|}
 DECL|method|getAbsoluteTestRootPath (FileSystem fSys)
 specifier|public
-specifier|static
 name|Path
 name|getAbsoluteTestRootPath
 parameter_list|(
@@ -437,7 +481,6 @@ return|;
 block|}
 DECL|method|getDefaultWorkingDirectory (FileSystem fSys)
 specifier|public
-specifier|static
 name|Path
 name|getDefaultWorkingDirectory
 parameter_list|(
@@ -673,7 +716,6 @@ return|;
 block|}
 DECL|method|createFile (FileSystem fSys, String name)
 specifier|public
-specifier|static
 name|long
 name|createFile
 parameter_list|(
@@ -1016,7 +1058,6 @@ return|;
 block|}
 DECL|method|containsPath (FileSystem fSys, Path path, FileStatus[] dirList)
 specifier|public
-specifier|static
 name|FileStatus
 name|containsPath
 parameter_list|(
@@ -1145,7 +1186,6 @@ return|;
 block|}
 DECL|method|containsPath (FileSystem fSys, String path, FileStatus[] dirList)
 specifier|public
-specifier|static
 name|FileStatus
 name|containsPath
 parameter_list|(

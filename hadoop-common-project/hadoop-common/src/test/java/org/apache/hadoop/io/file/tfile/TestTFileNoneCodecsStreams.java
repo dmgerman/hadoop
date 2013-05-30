@@ -61,8 +61,6 @@ name|getName
 argument_list|()
 argument_list|,
 literal|"memcmp"
-argument_list|,
-literal|"TFileTestCodecsNone"
 argument_list|)
 expr_stmt|;
 name|super

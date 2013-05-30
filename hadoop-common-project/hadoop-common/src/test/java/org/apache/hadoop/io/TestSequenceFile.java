@@ -224,7 +224,6 @@ argument_list|)
 decl_stmt|;
 DECL|field|conf
 specifier|private
-specifier|static
 name|Configuration
 name|conf
 init|=
@@ -232,6 +231,11 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+DECL|method|TestSequenceFile ()
+specifier|public
+name|TestSequenceFile
+parameter_list|()
+block|{ }
 DECL|method|TestSequenceFile (String name)
 specifier|public
 name|TestSequenceFile
@@ -837,7 +841,6 @@ block|}
 block|}
 DECL|method|writeTest (FileSystem fs, int count, int seed, Path file, CompressionType compressionType, CompressionCodec codec)
 specifier|private
-specifier|static
 name|void
 name|writeTest
 parameter_list|(
@@ -981,7 +984,6 @@ expr_stmt|;
 block|}
 DECL|method|readTest (FileSystem fs, int count, int seed, Path file)
 specifier|private
-specifier|static
 name|void
 name|readTest
 parameter_list|(
@@ -1359,7 +1361,6 @@ expr_stmt|;
 block|}
 DECL|method|sortTest (FileSystem fs, int count, int megabytes, int factor, boolean fast, Path file)
 specifier|private
-specifier|static
 name|void
 name|sortTest
 parameter_list|(
@@ -1454,7 +1455,6 @@ expr_stmt|;
 block|}
 DECL|method|checkSort (FileSystem fs, int count, int seed, Path file)
 specifier|private
-specifier|static
 name|void
 name|checkSort
 parameter_list|(
@@ -1741,7 +1741,6 @@ expr_stmt|;
 block|}
 DECL|method|mergeTest (FileSystem fs, int count, int seed, Path file, CompressionType compressionType, boolean fast, int factor, int megabytes)
 specifier|private
-specifier|static
 name|void
 name|mergeTest
 parameter_list|(
@@ -2122,7 +2121,6 @@ expr_stmt|;
 block|}
 DECL|method|newSorter (FileSystem fs, boolean fast, int megabytes, int factor)
 specifier|private
-specifier|static
 name|SequenceFile
 operator|.
 name|Sorter
@@ -2725,7 +2723,6 @@ expr_stmt|;
 block|}
 DECL|method|readMetadata (FileSystem fs, Path file)
 specifier|private
-specifier|static
 name|SequenceFile
 operator|.
 name|Metadata
@@ -2790,7 +2787,6 @@ return|;
 block|}
 DECL|method|writeMetadataTest (FileSystem fs, int count, int seed, Path file, CompressionType compressionType, CompressionCodec codec, SequenceFile.Metadata metadata)
 specifier|private
-specifier|static
 name|void
 name|writeMetadataTest
 parameter_list|(
@@ -2943,7 +2939,6 @@ expr_stmt|;
 block|}
 DECL|method|sortMetadataTest (FileSystem fs, Path unsortedFile, Path sortedFile, SequenceFile.Metadata metadata)
 specifier|private
-specifier|static
 name|void
 name|sortMetadataTest
 parameter_list|(
@@ -3838,13 +3833,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|()
-decl_stmt|;
 name|FileSystem
 name|fs
 init|=
@@ -4699,12 +4687,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|TestSequenceFile
+name|test
+init|=
+operator|new
+name|TestSequenceFile
+argument_list|()
+decl_stmt|;
 name|fs
 operator|=
 name|file
 operator|.
 name|getFileSystem
 argument_list|(
+name|test
+operator|.
 name|conf
 argument_list|)
 expr_stmt|;
@@ -4868,6 +4865,8 @@ name|ReflectionUtils
 operator|.
 name|newInstance
 argument_list|(
+name|test
+operator|.
 name|conf
 operator|.
 name|getClassByName
@@ -4875,6 +4874,8 @@ argument_list|(
 name|compressionCodec
 argument_list|)
 argument_list|,
+name|test
+operator|.
 name|conf
 argument_list|)
 decl_stmt|;
@@ -4890,6 +4891,8 @@ name|merge
 operator|)
 condition|)
 block|{
+name|test
+operator|.
 name|writeTest
 argument_list|(
 name|fs
@@ -4905,6 +4908,8 @@ argument_list|,
 name|codec
 argument_list|)
 expr_stmt|;
+name|test
+operator|.
 name|readTest
 argument_list|(
 name|fs
@@ -4928,6 +4933,8 @@ condition|(
 name|merge
 condition|)
 block|{
+name|test
+operator|.
 name|mergeTest
 argument_list|(
 name|fs
@@ -4950,6 +4957,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|test
+operator|.
 name|sortTest
 argument_list|(
 name|fs
@@ -4972,6 +4981,8 @@ condition|(
 name|check
 condition|)
 block|{
+name|test
+operator|.
 name|checkSort
 argument_list|(
 name|fs

@@ -28,22 +28,6 @@ name|fs
 operator|.
 name|FileContextTestHelper
 operator|.
-name|getTestRootPath
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileContextTestHelper
-operator|.
 name|readFile
 import|;
 end_import
@@ -141,6 +125,16 @@ specifier|abstract
 class|class
 name|FileContextUtilBase
 block|{
+DECL|field|fileContextTestHelper
+specifier|protected
+specifier|final
+name|FileContextTestHelper
+name|fileContextTestHelper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
 DECL|field|fc
 specifier|protected
 name|FileContext
@@ -223,6 +217,8 @@ name|fc
 operator|.
 name|mkdir
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -250,6 +246,8 @@ name|fc
 operator|.
 name|delete
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -278,6 +276,8 @@ decl_stmt|;
 name|Path
 name|file1
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -288,6 +288,8 @@ decl_stmt|;
 name|Path
 name|file2
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -398,6 +400,8 @@ decl_stmt|;
 name|Path
 name|dir1
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -408,6 +412,8 @@ decl_stmt|;
 name|Path
 name|dir2
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc

@@ -60,13 +60,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|fc
-operator|=
-name|FileContext
-operator|.
-name|getLocalFSFileContext
-argument_list|()
-expr_stmt|;
 name|super
 operator|.
 name|setUp
@@ -90,6 +83,23 @@ operator|.
 name|tearDown
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFileContext ()
+specifier|protected
+name|FileContext
+name|getFileContext
+parameter_list|()
+throws|throws
+name|UnsupportedFileSystemException
+block|{
+return|return
+name|FileContext
+operator|.
+name|getLocalFSFileContext
+argument_list|()
+return|;
 block|}
 block|}
 end_class

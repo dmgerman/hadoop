@@ -159,12 +159,15 @@ init|=
 literal|"/testDir"
 decl_stmt|;
 comment|/*     * return the ViewFS File context to be used for tests    */
-DECL|method|setupForViewFsLocalFs ()
+DECL|method|setupForViewFsLocalFs (FileContextTestHelper helper)
 specifier|static
 specifier|public
 name|FileContext
 name|setupForViewFsLocalFs
-parameter_list|()
+parameter_list|(
+name|FileContextTestHelper
+name|helper
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -180,7 +183,7 @@ decl_stmt|;
 name|Path
 name|targetOfTests
 init|=
-name|FileContextTestHelper
+name|helper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -221,7 +224,7 @@ comment|// Set up viewfs link for test dir as described above
 name|String
 name|testDir
 init|=
-name|FileContextTestHelper
+name|helper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -325,12 +328,15 @@ name|fc
 return|;
 block|}
 comment|/**    *     * delete the test directory in the target local fs    */
-DECL|method|tearDownForViewFsLocalFs ()
+DECL|method|tearDownForViewFsLocalFs (FileContextTestHelper helper)
 specifier|static
 specifier|public
 name|void
 name|tearDownForViewFsLocalFs
-parameter_list|()
+parameter_list|(
+name|FileContextTestHelper
+name|helper
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -345,7 +351,7 @@ decl_stmt|;
 name|Path
 name|targetOfTests
 init|=
-name|FileContextTestHelper
+name|helper
 operator|.
 name|getTestRootPath
 argument_list|(

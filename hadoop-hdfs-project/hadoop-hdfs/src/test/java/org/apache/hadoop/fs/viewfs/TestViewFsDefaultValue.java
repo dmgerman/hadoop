@@ -436,6 +436,17 @@ specifier|static
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
+DECL|field|fileSystemTestHelper
+specifier|private
+specifier|static
+specifier|final
+name|FileSystemTestHelper
+name|fileSystemTestHelper
+init|=
+operator|new
+name|FileSystemTestHelper
+argument_list|()
+decl_stmt|;
 DECL|field|CONF
 specifier|private
 specifier|static
@@ -564,7 +575,7 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(

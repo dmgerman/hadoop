@@ -232,7 +232,7 @@ name|fsTarget
 operator|.
 name|delete
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(

@@ -154,22 +154,6 @@ name|Log
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystemTestHelper
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
 comment|/**  *<p>  * A collection of tests for the {@link FileSystem}.  * This test should be used for testing an instance of FileSystem  *  that has been initialized to a specific default FileSystem such a  *  LocalFileSystem, HDFS,S3, etc.  *</p>  *<p>  * To test a given {@link FileSystem} implementation create a subclass of this  * test and override {@link #setUp()} to initialize the<code>fSys</code>   * {@link FileSystem} instance variable.  *   * Since this a junit 4 you can also do a single setup before   * the start of any tests.  * E.g.  *     @BeforeClass   public static void clusterSetupAtBegining()  *     @AfterClass    public static void ClusterShutdownAtEnd()  *</p>  */
 end_comment
@@ -180,6 +164,8 @@ specifier|public
 specifier|abstract
 class|class
 name|FSMainOperationsBaseTest
+extends|extends
+name|FileSystemTestHelper
 block|{
 DECL|field|TEST_DIR_AAA2
 specifier|private
@@ -223,7 +209,6 @@ literal|2
 decl_stmt|;
 DECL|field|fSys
 specifier|protected
-specifier|static
 name|FileSystem
 name|fSys
 decl_stmt|;
@@ -325,6 +310,34 @@ name|getDefaultBlockSize
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|method|createFileSystem ()
+specifier|abstract
+specifier|protected
+name|FileSystem
+name|createFileSystem
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
+DECL|method|FSMainOperationsBaseTest ()
+specifier|public
+name|FSMainOperationsBaseTest
+parameter_list|()
+block|{   }
+DECL|method|FSMainOperationsBaseTest (String testRootDir)
+specifier|public
+name|FSMainOperationsBaseTest
+parameter_list|(
+name|String
+name|testRootDir
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|testRootDir
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -335,6 +348,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|fSys
+operator|=
+name|createFileSystem
+argument_list|()
+expr_stmt|;
 name|fSys
 operator|.
 name|mkdirs
@@ -735,8 +753,6 @@ argument_list|,
 literal|"foo"
 argument_list|)
 decl_stmt|;
-name|FileSystemTestHelper
-operator|.
 name|createFile
 argument_list|(
 name|fSys
@@ -1511,7 +1527,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -1528,7 +1544,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -1545,7 +1561,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -1801,7 +1817,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -1818,7 +1834,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2129,7 +2145,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2146,7 +2162,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2269,7 +2285,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2286,7 +2302,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2303,7 +2319,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2320,7 +2336,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2442,7 +2458,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2459,7 +2475,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2690,7 +2706,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2707,7 +2723,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2724,7 +2740,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2848,7 +2864,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2865,7 +2881,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -2882,7 +2898,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -3006,7 +3022,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -3023,7 +3039,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -3254,7 +3270,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -3271,7 +3287,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|containsPath
+name|containsTestRootPath
 argument_list|(
 name|getTestRootPath
 argument_list|(
@@ -6064,7 +6080,8 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|getTestRootDir
+argument_list|()
 argument_list|,
 literal|"fs.txt"
 argument_list|)
@@ -6075,7 +6092,8 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|getTestRootDir
+argument_list|()
 argument_list|,
 literal|"test.txt"
 argument_list|)
@@ -6086,7 +6104,8 @@ init|=
 operator|new
 name|Path
 argument_list|(
-name|TEST_ROOT_DIR
+name|getTestRootDir
+argument_list|()
 argument_list|,
 literal|".test.txt.crc"
 argument_list|)
@@ -6218,8 +6237,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
-operator|.
 name|createFile
 argument_list|(
 name|fSys
@@ -6316,10 +6333,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|containsPath (Path path, FileStatus[] filteredPaths)
+DECL|method|containsTestRootPath (Path path, FileStatus[] filteredPaths)
 specifier|private
 name|boolean
-name|containsPath
+name|containsTestRootPath
 parameter_list|(
 name|Path
 name|path
@@ -6331,6 +6348,19 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|Path
+name|testRootPath
+init|=
+name|getTestRootPath
+argument_list|(
+name|fSys
+argument_list|,
+name|path
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -6350,15 +6380,7 @@ control|)
 block|{
 if|if
 condition|(
-name|getTestRootPath
-argument_list|(
-name|fSys
-argument_list|,
-name|path
-operator|.
-name|toString
-argument_list|()
-argument_list|)
+name|testRootPath
 operator|.
 name|equals
 argument_list|(

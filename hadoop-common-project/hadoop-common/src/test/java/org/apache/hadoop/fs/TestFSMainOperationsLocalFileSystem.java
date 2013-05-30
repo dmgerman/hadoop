@@ -90,6 +90,27 @@ name|FSMainOperationsBaseTest
 block|{
 annotation|@
 name|Override
+DECL|method|createFileSystem ()
+specifier|protected
+name|FileSystem
+name|createFileSystem
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|FileSystem
+operator|.
+name|getLocal
+argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -100,17 +121,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|fSys
-operator|=
-name|FileSystem
-operator|.
-name|getLocal
-argument_list|(
-operator|new
-name|Configuration
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|setUp
@@ -191,8 +201,6 @@ block|{
 name|Path
 name|absoluteDir
 init|=
-name|FileSystemTestHelper
-operator|.
 name|getTestRootPath
 argument_list|(
 name|fSys

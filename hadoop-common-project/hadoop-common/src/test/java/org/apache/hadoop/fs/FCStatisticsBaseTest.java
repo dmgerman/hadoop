@@ -135,6 +135,16 @@ name|numBlocks
 init|=
 literal|1
 decl_stmt|;
+DECL|field|fileContextTestHelper
+specifier|protected
+specifier|final
+name|FileContextTestHelper
+name|fileContextTestHelper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
 comment|//fc should be set appropriately by the deriving test.
 DECL|field|fc
 specifier|protected
@@ -187,6 +197,8 @@ expr_stmt|;
 name|Path
 name|filePath
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc

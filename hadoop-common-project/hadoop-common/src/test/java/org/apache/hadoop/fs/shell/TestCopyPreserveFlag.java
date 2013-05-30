@@ -660,7 +660,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testPutWithP ()
 specifier|public
@@ -698,7 +698,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testPutWithoutP ()
 specifier|public
@@ -734,7 +734,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testGetWithP ()
 specifier|public
@@ -772,7 +772,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testGetWithoutP ()
 specifier|public
@@ -808,7 +808,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCpWithP ()
 specifier|public
@@ -846,7 +846,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|1000
+literal|10000
 argument_list|)
 DECL|method|testCpWithoutP ()
 specifier|public

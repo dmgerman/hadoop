@@ -334,6 +334,36 @@ DECL|field|conf
 name|Configuration
 name|conf
 decl_stmt|;
+DECL|field|fileSystemTestHelper
+specifier|final
+name|FileSystemTestHelper
+name|fileSystemTestHelper
+decl_stmt|;
+DECL|method|ViewFileSystemBaseTest ()
+specifier|public
+name|ViewFileSystemBaseTest
+parameter_list|()
+block|{
+name|this
+operator|.
+name|fileSystemTestHelper
+operator|=
+name|createFileSystemHelper
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|createFileSystemHelper ()
+specifier|protected
+name|FileSystemTestHelper
+name|createFileSystemHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileSystemTestHelper
+argument_list|()
+return|;
+block|}
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -457,7 +487,7 @@ name|fsTarget
 operator|.
 name|delete
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -477,7 +507,7 @@ name|IOException
 block|{
 name|targetTestRoot
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getAbsoluteTestRootPath
 argument_list|(
@@ -1041,7 +1071,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Create file
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1148,7 +1178,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with a 2 component dirs
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1255,7 +1285,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with a 3 component dirs
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1303,7 +1333,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Recursive Create file with missing dirs
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1414,7 +1444,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1466,7 +1496,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1630,7 +1660,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Rename a file
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1704,7 +1734,7 @@ name|fsView
 operator|.
 name|isFile
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1811,7 +1841,7 @@ name|fsView
 operator|.
 name|isDirectory
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1940,7 +1970,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1987,7 +2017,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -2337,7 +2367,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2369,7 +2399,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2401,7 +2431,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2433,7 +2463,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2465,7 +2495,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2522,7 +2552,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2554,7 +2584,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2637,7 +2667,7 @@ comment|// add a file
 name|long
 name|len
 init|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -2672,7 +2702,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2719,7 +2749,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -2755,7 +2785,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2787,7 +2817,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -3157,7 +3187,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3194,7 +3224,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3232,7 +3262,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3346,7 +3376,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3391,7 +3421,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3420,7 +3450,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3450,7 +3480,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3484,7 +3514,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3516,7 +3546,7 @@ name|fsView
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3545,7 +3575,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3574,7 +3604,7 @@ throws|throws
 name|IOException
 block|{
 comment|// 2 component
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3601,7 +3631,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3628,7 +3658,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3655,7 +3685,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -4071,7 +4101,7 @@ block|{
 name|Path
 name|path
 init|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(

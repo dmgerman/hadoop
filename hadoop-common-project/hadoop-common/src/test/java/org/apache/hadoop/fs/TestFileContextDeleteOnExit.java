@@ -132,6 +132,16 @@ name|numBlocks
 init|=
 literal|2
 decl_stmt|;
+DECL|field|helper
+specifier|private
+specifier|final
+name|FileContextTestHelper
+name|helper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
 DECL|field|fc
 specifier|private
 name|FileContext
@@ -169,6 +179,8 @@ name|fc
 operator|.
 name|delete
 argument_list|(
+name|helper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -281,6 +293,8 @@ comment|// Create deleteOnExit entries
 name|Path
 name|file1
 init|=
+name|helper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -336,6 +350,8 @@ expr_stmt|;
 name|Path
 name|file2
 init|=
+name|helper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -375,6 +391,8 @@ expr_stmt|;
 name|Path
 name|dir
 init|=
+name|helper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc

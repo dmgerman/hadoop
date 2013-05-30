@@ -215,7 +215,7 @@ block|{
 name|Path
 name|file
 init|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(

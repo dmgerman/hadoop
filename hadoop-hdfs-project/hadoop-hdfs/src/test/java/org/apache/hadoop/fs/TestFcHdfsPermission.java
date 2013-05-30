@@ -170,6 +170,23 @@ name|TestFcHdfsPermission
 extends|extends
 name|FileContextPermissionBase
 block|{
+DECL|field|fileContextTestHelper
+specifier|private
+specifier|static
+specifier|final
+name|FileContextTestHelper
+name|fileContextTestHelper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
+DECL|field|fc
+specifier|private
+specifier|static
+name|FileContext
+name|fc
+decl_stmt|;
 DECL|field|cluster
 specifier|private
 specifier|static
@@ -182,6 +199,30 @@ specifier|static
 name|Path
 name|defaultWorkingDirectory
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|getFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|getFileContextHelper
+parameter_list|()
+block|{
+return|return
+name|fileContextTestHelper
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getFileContext ()
+specifier|protected
+name|FileContext
+name|getFileContext
+parameter_list|()
+block|{
+return|return
+name|fc
+return|;
+block|}
 annotation|@
 name|BeforeClass
 DECL|method|clusterSetupAtBegining ()
@@ -197,12 +238,6 @@ name|LoginException
 throws|,
 name|URISyntaxException
 block|{
-name|FileContextTestHelper
-operator|.
-name|TEST_ROOT_DIR
-operator|=
-literal|"/tmp/TestFcHdfsPermission"
-expr_stmt|;
 name|Configuration
 name|conf
 init|=

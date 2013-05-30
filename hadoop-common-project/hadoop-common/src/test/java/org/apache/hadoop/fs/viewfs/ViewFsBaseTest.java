@@ -429,6 +429,15 @@ DECL|field|schemeWithAuthority
 name|URI
 name|schemeWithAuthority
 decl_stmt|;
+DECL|field|fileContextTestHelper
+specifier|final
+name|FileContextTestHelper
+name|fileContextTestHelper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -721,7 +730,7 @@ name|IOException
 block|{
 name|targetTestRoot
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getAbsoluteTestRootPath
 argument_list|(
@@ -766,7 +775,7 @@ name|fcTarget
 operator|.
 name|delete
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -998,7 +1007,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Create file
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -1105,7 +1114,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with a 2 component dirs
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -1212,7 +1221,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with a 3 component dirs
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -1260,7 +1269,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Recursive Create file with missing dirs
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1371,7 +1380,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1429,7 +1438,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1601,7 +1610,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Rename a file
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1671,7 +1680,7 @@ name|isFile
 argument_list|(
 name|fcView
 argument_list|,
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1782,7 +1791,7 @@ name|isDir
 argument_list|(
 name|fcView
 argument_list|,
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1933,7 +1942,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1980,7 +1989,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -2312,7 +2321,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2344,7 +2353,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2376,7 +2385,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2408,7 +2417,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2440,7 +2449,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2500,7 +2509,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -2532,7 +2541,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -3385,7 +3394,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3422,7 +3431,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3466,7 +3475,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3586,7 +3595,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3637,7 +3646,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3675,7 +3684,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3713,7 +3722,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3751,7 +3760,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3789,7 +3798,7 @@ name|fcView
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -3824,7 +3833,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -3853,7 +3862,7 @@ throws|throws
 name|IOException
 block|{
 comment|// 2 component
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -3880,7 +3889,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3907,7 +3916,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -3934,7 +3943,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(

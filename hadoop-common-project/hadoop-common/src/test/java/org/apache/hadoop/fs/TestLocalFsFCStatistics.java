@@ -72,22 +72,6 @@ name|Before
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileContextTestHelper
-operator|.
-name|*
-import|;
-end_import
-
 begin_comment
 comment|/**  *<p>  *    Tests the File Context Statistics for {@link LocalFileSystem}  *</p>  */
 end_comment
@@ -129,6 +113,8 @@ name|fc
 operator|.
 name|mkdir
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -158,6 +144,8 @@ name|fc
 operator|.
 name|delete
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc

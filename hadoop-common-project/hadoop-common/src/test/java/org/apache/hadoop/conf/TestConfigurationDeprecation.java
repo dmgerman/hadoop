@@ -166,7 +166,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-literal|"./test-config.xml"
+literal|"./test-config-TestConfigurationDeprecation.xml"
 argument_list|)
 operator|.
 name|getAbsolutePath
@@ -181,7 +181,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-literal|"./test-config2.xml"
+literal|"./test-config2-TestConfigurationDeprecation.xml"
 argument_list|)
 operator|.
 name|getAbsolutePath
@@ -196,7 +196,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-literal|"./test-config3.xml"
+literal|"./test-config3-TestConfigurationDeprecation.xml"
 argument_list|)
 operator|.
 name|getAbsolutePath

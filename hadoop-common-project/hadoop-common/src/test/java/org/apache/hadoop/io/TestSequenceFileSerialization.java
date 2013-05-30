@@ -192,7 +192,7 @@ argument_list|,
 literal|"."
 argument_list|)
 operator|+
-literal|"/test.seq"
+literal|"/testseqser.seq"
 argument_list|)
 decl_stmt|;
 name|fs

@@ -171,7 +171,9 @@ operator|=
 name|ViewFsTestSetup
 operator|.
 name|setupForViewFsLocalFs
-argument_list|()
+argument_list|(
+name|fileContextTestHelper
+argument_list|)
 expr_stmt|;
 name|super
 operator|.
@@ -199,7 +201,9 @@ expr_stmt|;
 name|ViewFsTestSetup
 operator|.
 name|tearDownForViewFsLocalFs
-argument_list|()
+argument_list|(
+name|fileContextTestHelper
+argument_list|)
 expr_stmt|;
 block|}
 block|}

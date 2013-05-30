@@ -248,6 +248,10 @@ DECL|field|chrootedTo
 name|Path
 name|chrootedTo
 decl_stmt|;
+DECL|field|fileSystemTestHelper
+name|FileSystemTestHelper
+name|fileSystemTestHelper
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -275,9 +279,15 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|fileSystemTestHelper
+operator|=
+operator|new
+name|FileSystemTestHelper
+argument_list|()
+expr_stmt|;
 name|chrootedTo
 operator|=
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getAbsoluteTestRootPath
 argument_list|(
@@ -490,7 +500,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Create file
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -534,7 +544,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with recursive dir
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -631,7 +641,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with a 2 component dirs recursively
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -742,7 +752,7 @@ name|fSys
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -790,7 +800,7 @@ name|fSys
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -951,7 +961,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Rename a file
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1019,7 +1029,7 @@ name|fSys
 operator|.
 name|isFile
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1119,7 +1129,7 @@ name|fSys
 operator|.
 name|isDirectory
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1339,7 +1349,7 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1348,7 +1358,7 @@ argument_list|,
 literal|"/foo"
 argument_list|)
 expr_stmt|;
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1372,7 +1382,7 @@ name|fSys
 operator|.
 name|mkdirs
 argument_list|(
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1905,7 +1915,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|FileSystemTestHelper
+name|fileSystemTestHelper
 operator|.
 name|createFile
 argument_list|(

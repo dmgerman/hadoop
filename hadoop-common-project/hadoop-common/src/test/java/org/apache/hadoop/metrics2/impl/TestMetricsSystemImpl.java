@@ -487,6 +487,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+static|static
+block|{
+name|DefaultMetricsSystem
+operator|.
+name|setMiniClusterMode
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
 DECL|field|r1
 annotation|@
 name|Captor

@@ -110,8 +110,6 @@ argument_list|()
 argument_list|,
 literal|"memcmp"
 argument_list|,
-literal|"TFileTestCodecsLzo"
-argument_list|,
 literal|2605
 argument_list|,
 literal|2558

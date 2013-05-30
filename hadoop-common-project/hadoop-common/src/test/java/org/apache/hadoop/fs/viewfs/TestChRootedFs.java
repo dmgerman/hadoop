@@ -258,6 +258,14 @@ specifier|public
 class|class
 name|TestChRootedFs
 block|{
+DECL|field|fileContextTestHelper
+name|FileContextTestHelper
+name|fileContextTestHelper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
 DECL|field|fc
 name|FileContext
 name|fc
@@ -292,7 +300,7 @@ argument_list|()
 expr_stmt|;
 name|chrootedTo
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getAbsoluteTestRootPath
 argument_list|(
@@ -499,7 +507,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Create file
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -543,7 +551,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with recursive dir
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -640,7 +648,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Create file with a 2 component dirs recursively
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -751,7 +759,7 @@ name|fc
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -805,7 +813,7 @@ name|fc
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -972,7 +980,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Rename a file
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(
@@ -1040,7 +1048,7 @@ name|isFile
 argument_list|(
 name|fc
 argument_list|,
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1146,7 +1154,7 @@ name|isDir
 argument_list|(
 name|fc
 argument_list|,
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1313,7 +1321,7 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -1322,7 +1330,7 @@ argument_list|,
 literal|"/foo"
 argument_list|)
 expr_stmt|;
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFileNonRecursive
 argument_list|(
@@ -1352,7 +1360,7 @@ name|fc
 operator|.
 name|mkdir
 argument_list|(
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|getTestRootPath
 argument_list|(
@@ -1415,7 +1423,7 @@ expr_stmt|;
 comment|// Note the the file status paths are the full paths on target
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -1445,7 +1453,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -1475,7 +1483,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -1505,7 +1513,7 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|containsPath
 argument_list|(
@@ -1882,6 +1890,8 @@ argument_list|)
 expr_stmt|;
 name|absoluteDir
 operator|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -1996,7 +2006,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|FileContextTestHelper
+name|fileContextTestHelper
 operator|.
 name|createFile
 argument_list|(

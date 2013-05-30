@@ -108,22 +108,6 @@ begin_import
 import|import static
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileContextTestHelper
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
 name|junit
 operator|.
 name|Assert
@@ -199,6 +183,8 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|fileContextTestHelper
+operator|.
 name|getAbsoluteTestRootDir
 argument_list|(
 name|fc
@@ -218,6 +204,8 @@ throws|throws
 name|IOException
 block|{
 return|return
+name|fileContextTestHelper
+operator|.
 name|getAbsoluteTestRootDir
 argument_list|(
 name|fc

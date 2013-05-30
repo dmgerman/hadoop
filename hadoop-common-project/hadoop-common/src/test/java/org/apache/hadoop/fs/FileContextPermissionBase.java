@@ -266,12 +266,37 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|field|fileContextTestHelper
+specifier|protected
+name|FileContextTestHelper
+name|fileContextTestHelper
+decl_stmt|;
 DECL|field|fc
 specifier|protected
-specifier|static
 name|FileContext
 name|fc
 decl_stmt|;
+DECL|method|getFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|getFileContextHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileContextTestHelper
+argument_list|()
+return|;
+block|}
+DECL|method|getFileContext ()
+specifier|protected
+specifier|abstract
+name|FileContext
+name|getFileContext
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -282,10 +307,22 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|fileContextTestHelper
+operator|=
+name|getFileContextHelper
+argument_list|()
+expr_stmt|;
+name|fc
+operator|=
+name|getFileContext
+argument_list|()
+expr_stmt|;
 name|fc
 operator|.
 name|mkdir
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -313,6 +350,8 @@ name|fc
 operator|.
 name|delete
 argument_list|(
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -407,6 +446,8 @@ decl_stmt|;
 name|Path
 name|f
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -414,6 +455,8 @@ argument_list|,
 name|filename
 argument_list|)
 decl_stmt|;
+name|fileContextTestHelper
+operator|.
 name|createFile
 argument_list|(
 name|fc
@@ -483,6 +526,8 @@ decl_stmt|;
 name|Path
 name|f
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc
@@ -620,6 +665,8 @@ decl_stmt|;
 name|Path
 name|f
 init|=
+name|fileContextTestHelper
+operator|.
 name|getTestRootPath
 argument_list|(
 name|fc

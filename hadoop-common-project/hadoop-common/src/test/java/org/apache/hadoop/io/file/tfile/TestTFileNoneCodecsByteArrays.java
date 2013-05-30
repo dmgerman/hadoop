@@ -62,8 +62,6 @@ argument_list|()
 argument_list|,
 literal|"memcmp"
 argument_list|,
-literal|"TFileTestCodecsNone"
-argument_list|,
 literal|24
 argument_list|,
 literal|24

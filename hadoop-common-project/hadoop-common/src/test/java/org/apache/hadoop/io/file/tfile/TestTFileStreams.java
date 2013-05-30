@@ -322,12 +322,17 @@ literal|"memcmp"
 decl_stmt|;
 DECL|field|outputFile
 specifier|private
+specifier|final
 name|String
 name|outputFile
 init|=
-literal|"TFileTestStreams"
+name|getClass
+argument_list|()
+operator|.
+name|getSimpleName
+argument_list|()
 decl_stmt|;
-DECL|method|init (String compression, String comparator, String outputFile)
+DECL|method|init (String compression, String comparator)
 specifier|public
 name|void
 name|init
@@ -337,9 +342,6 @@ name|compression
 parameter_list|,
 name|String
 name|comparator
-parameter_list|,
-name|String
-name|outputFile
 parameter_list|)
 block|{
 name|this
@@ -353,12 +355,6 @@ operator|.
 name|comparator
 operator|=
 name|comparator
-expr_stmt|;
-name|this
-operator|.
-name|outputFile
-operator|=
-name|outputFile
 expr_stmt|;
 block|}
 annotation|@

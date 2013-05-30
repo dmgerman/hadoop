@@ -255,6 +255,16 @@ name|fileSize
 init|=
 literal|16384
 decl_stmt|;
+DECL|field|fileContextTestHelper
+specifier|protected
+specifier|final
+name|FileContextTestHelper
+name|fileContextTestHelper
+init|=
+operator|new
+name|FileContextTestHelper
+argument_list|()
+decl_stmt|;
 DECL|field|fc
 specifier|protected
 specifier|static
