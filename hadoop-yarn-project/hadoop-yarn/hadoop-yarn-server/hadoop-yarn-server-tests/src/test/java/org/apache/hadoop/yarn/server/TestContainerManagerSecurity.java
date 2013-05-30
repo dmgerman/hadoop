@@ -1653,6 +1653,10 @@ name|dummyIdentifier
 operator|.
 name|getMasterKeyId
 argument_list|()
+argument_list|,
+name|ResourceManager
+operator|.
+name|clusterTimeStamp
 argument_list|)
 decl_stmt|;
 name|Token
@@ -2275,6 +2279,10 @@ argument_list|()
 operator|.
 name|getKeyId
 argument_list|()
+argument_list|,
+name|ResourceManager
+operator|.
+name|clusterTimeStamp
 argument_list|)
 decl_stmt|;
 specifier|final

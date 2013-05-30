@@ -3394,6 +3394,14 @@ argument_list|(
 name|container
 argument_list|)
 expr_stmt|;
+name|long
+name|currentTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 name|context
 operator|.
 name|getContainerTokenSecretManager
@@ -3418,10 +3426,7 @@ literal|""
 argument_list|,
 literal|null
 argument_list|,
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|currentTime
 operator|+
 literal|1000
 argument_list|,
@@ -3429,6 +3434,8 @@ name|masterKey
 operator|.
 name|getKeyId
 argument_list|()
+argument_list|,
+name|currentTime
 argument_list|)
 argument_list|)
 expr_stmt|;

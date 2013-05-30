@@ -200,20 +200,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
-operator|.
-name|Text
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|Server
@@ -517,24 +503,6 @@ operator|.
 name|records
 operator|.
 name|ContainerStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerToken
 import|;
 end_import
 
@@ -2970,7 +2938,7 @@ expr_stmt|;
 comment|// Is the container coming from unknown RM
 if|if
 condition|(
-name|lauchContainer
+name|tokenId
 operator|.
 name|getRMIdentifer
 argument_list|()

@@ -1427,7 +1427,7 @@ return|return
 name|cId
 return|;
 block|}
-DECL|method|newContainerToken (ContainerId cId, String host, int port, String user, Resource r, long expiryTime, int masterKeyId, byte[] password)
+DECL|method|newContainerToken (ContainerId cId, String host, int port, String user, Resource r, long expiryTime, int masterKeyId, byte[] password, long rmIdentifier)
 specifier|public
 specifier|static
 name|ContainerToken
@@ -1457,6 +1457,9 @@ parameter_list|,
 name|byte
 index|[]
 name|password
+parameter_list|,
+name|long
+name|rmIdentifier
 parameter_list|)
 throws|throws
 name|IOException
@@ -1478,6 +1481,8 @@ argument_list|,
 name|expiryTime
 argument_list|,
 name|masterKeyId
+argument_list|,
+name|rmIdentifier
 argument_list|)
 decl_stmt|;
 return|return
@@ -1802,7 +1807,7 @@ return|return
 name|containerStatus
 return|;
 block|}
-DECL|method|newContainer (ContainerId containerId, NodeId nodeId, String nodeHttpAddress, Resource resource, Priority priority, ContainerToken containerToken, long rmIdentifier)
+DECL|method|newContainer (ContainerId containerId, NodeId nodeId, String nodeHttpAddress, Resource resource, Priority priority, ContainerToken containerToken)
 specifier|public
 specifier|static
 name|Container
@@ -1825,9 +1830,6 @@ name|priority
 parameter_list|,
 name|ContainerToken
 name|containerToken
-parameter_list|,
-name|long
-name|rmIdentifier
 parameter_list|)
 block|{
 name|Container
@@ -1882,13 +1884,6 @@ operator|.
 name|setContainerToken
 argument_list|(
 name|containerToken
-argument_list|)
-expr_stmt|;
-name|container
-operator|.
-name|setRMIdentifier
-argument_list|(
-name|rmIdentifier
 argument_list|)
 expr_stmt|;
 return|return

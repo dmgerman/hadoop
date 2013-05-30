@@ -3675,11 +3675,6 @@ name|ByteBuffer
 argument_list|>
 name|serviceData
 decl_stmt|;
-DECL|field|user
-specifier|final
-name|String
-name|user
-decl_stmt|;
 DECL|method|WrappedContainer (int appId, long timestamp, int id, String user)
 name|WrappedContainer
 parameter_list|(
@@ -3873,12 +3868,6 @@ argument_list|,
 name|LogBus
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|user
-operator|=
-name|user
-expr_stmt|;
 name|ctxt
 operator|=
 name|mock
@@ -3985,6 +3974,14 @@ name|port
 init|=
 literal|1234
 decl_stmt|;
+name|long
+name|currentTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 name|ContainerTokenIdentifier
 name|identifier
 init|=
@@ -3999,14 +3996,13 @@ name|user
 argument_list|,
 name|resource
 argument_list|,
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|currentTime
 operator|+
 literal|10000L
 argument_list|,
 literal|123
+argument_list|,
+name|currentTime
 argument_list|)
 decl_stmt|;
 name|ContainerToken

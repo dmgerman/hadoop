@@ -154,7 +154,7 @@ argument_list|>
 block|{
 annotation|@
 name|Private
-DECL|method|newInstance (ContainerId containerId, NodeId nodeId, String nodeHttpAddress, Resource resource, Priority priority, ContainerToken containerToken, long rmIdentifier)
+DECL|method|newInstance (ContainerId containerId, NodeId nodeId, String nodeHttpAddress, Resource resource, Priority priority, ContainerToken containerToken)
 specifier|public
 specifier|static
 name|Container
@@ -177,9 +177,6 @@ name|priority
 parameter_list|,
 name|ContainerToken
 name|containerToken
-parameter_list|,
-name|long
-name|rmIdentifier
 parameter_list|)
 block|{
 name|Container
@@ -234,13 +231,6 @@ operator|.
 name|setContainerToken
 argument_list|(
 name|containerToken
-argument_list|)
-expr_stmt|;
-name|container
-operator|.
-name|setRMIdentifier
-argument_list|(
-name|rmIdentifier
 argument_list|)
 expr_stmt|;
 return|return
@@ -397,32 +387,6 @@ name|setContainerToken
 parameter_list|(
 name|ContainerToken
 name|containerToken
-parameter_list|)
-function_decl|;
-comment|/**    * Get the RMIdentifier of RM in which containers are allocated    * @return RMIdentifier    */
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|getRMIdentifer ()
-specifier|public
-specifier|abstract
-name|long
-name|getRMIdentifer
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setRMIdentifier (long rmIdentifier)
-specifier|public
-specifier|abstract
-name|void
-name|setRMIdentifier
-parameter_list|(
-name|long
-name|rmIdentifier
 parameter_list|)
 function_decl|;
 block|}

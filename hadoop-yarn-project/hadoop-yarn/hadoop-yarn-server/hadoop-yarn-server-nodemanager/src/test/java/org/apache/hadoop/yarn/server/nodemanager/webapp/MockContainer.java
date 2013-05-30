@@ -516,6 +516,14 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|long
+name|currentTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 name|ContainerToken
 name|containerToken
 init|=
@@ -540,10 +548,7 @@ argument_list|,
 literal|1
 argument_list|)
 argument_list|,
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
+name|currentTime
 operator|+
 literal|10000
 argument_list|,
@@ -553,6 +558,8 @@ literal|"password"
 operator|.
 name|getBytes
 argument_list|()
+argument_list|,
+name|currentTime
 argument_list|)
 decl_stmt|;
 name|this

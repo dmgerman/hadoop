@@ -24,7 +24,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|Matchers
 operator|.
 name|anyFloat
 import|;
@@ -36,7 +36,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|Matchers
 operator|.
 name|anyInt
 import|;
@@ -48,7 +48,7 @@ name|org
 operator|.
 name|mockito
 operator|.
-name|Mockito
+name|Matchers
 operator|.
 name|anyString
 import|;
@@ -420,8 +420,6 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
-argument_list|,
-literal|0
 argument_list|)
 argument_list|)
 decl_stmt|;

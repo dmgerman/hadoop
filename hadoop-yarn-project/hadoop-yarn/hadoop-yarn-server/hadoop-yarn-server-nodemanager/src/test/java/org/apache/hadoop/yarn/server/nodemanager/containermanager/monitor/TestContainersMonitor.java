@@ -68,7 +68,19 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -1573,21 +1585,6 @@ operator|+
 name|port
 argument_list|)
 expr_stmt|;
-name|when
-argument_list|(
-name|mockContainer
-operator|.
-name|getRMIdentifer
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|super
-operator|.
-name|DUMMY_RM_IDENTIFIER
-argument_list|)
-expr_stmt|;
 name|URL
 name|resource_alpha
 init|=
@@ -1824,6 +1821,10 @@ literal|"password"
 operator|.
 name|getBytes
 argument_list|()
+argument_list|,
+name|super
+operator|.
+name|DUMMY_RM_IDENTIFIER
 argument_list|)
 decl_stmt|;
 name|when

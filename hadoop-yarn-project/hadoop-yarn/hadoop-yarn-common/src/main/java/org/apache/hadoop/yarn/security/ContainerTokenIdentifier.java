@@ -308,7 +308,12 @@ specifier|private
 name|int
 name|masterKeyId
 decl_stmt|;
-DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, String appSubmitter, Resource r, long expiryTimeStamp, int masterKeyId)
+DECL|field|rmIdentifier
+specifier|private
+name|long
+name|rmIdentifier
+decl_stmt|;
+DECL|method|ContainerTokenIdentifier (ContainerId containerID, String hostName, String appSubmitter, Resource r, long expiryTimeStamp, int masterKeyId, long rmIdentifier)
 specifier|public
 name|ContainerTokenIdentifier
 parameter_list|(
@@ -329,6 +334,9 @@ name|expiryTimeStamp
 parameter_list|,
 name|int
 name|masterKeyId
+parameter_list|,
+name|long
+name|rmIdentifier
 parameter_list|)
 block|{
 name|this
@@ -366,6 +374,12 @@ operator|.
 name|masterKeyId
 operator|=
 name|masterKeyId
+expr_stmt|;
+name|this
+operator|.
+name|rmIdentifier
+operator|=
+name|rmIdentifier
 expr_stmt|;
 block|}
 comment|/**    * Default constructor needed by RPC layer/SecretManager.    */
@@ -444,6 +458,19 @@ return|return
 name|this
 operator|.
 name|masterKeyId
+return|;
+block|}
+comment|/**    * Get the RMIdentifier of RM in which containers are allocated    * @return RMIdentifier    */
+DECL|method|getRMIdentifer ()
+specifier|public
+name|long
+name|getRMIdentifer
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rmIdentifier
 return|;
 block|}
 annotation|@
@@ -588,6 +615,15 @@ operator|.
 name|masterKeyId
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|this
+operator|.
+name|rmIdentifier
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -714,6 +750,15 @@ operator|=
 name|in
 operator|.
 name|readInt
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|rmIdentifier
+operator|=
+name|in
+operator|.
+name|readLong
 argument_list|()
 expr_stmt|;
 block|}
