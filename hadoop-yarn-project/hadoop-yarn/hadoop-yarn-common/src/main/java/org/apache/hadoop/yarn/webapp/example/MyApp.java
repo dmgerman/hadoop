@@ -100,7 +100,7 @@ name|anyAPI
 parameter_list|()
 block|{
 return|return
-literal|"anything â, really!"
+literal|"anything, really!"
 return|;
 block|}
 comment|// Note this is static so it can be in any files.
@@ -154,7 +154,7 @@ name|set
 argument_list|(
 literal|"anything"
 argument_list|,
-literal|"something â¯"
+literal|"something"
 argument_list|)
 expr_stmt|;
 block|}

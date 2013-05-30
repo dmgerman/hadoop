@@ -82,7 +82,7 @@ argument_list|(
 literal|"JVM related metrics etc."
 argument_list|)
 block|,
-comment|// record infoÃ
+comment|// record info
 comment|// metrics
 DECL|enumConstant|MemNonHeapUsedM
 name|MemNonHeapUsedM
