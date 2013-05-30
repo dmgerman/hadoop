@@ -199,6 +199,17 @@ argument_list|,
 name|V
 argument_list|>
 block|{
+annotation|@
+name|Deprecated
+DECL|enum|Counter
+specifier|public
+specifier|static
+enum|enum
+name|Counter
+block|{
+DECL|enumConstant|BYTES_WRITTEN
+name|BYTES_WRITTEN
+block|}
 comment|/**    * Set whether the output of the job is compressed.    * @param conf the {@link JobConf} to modify    * @param compress should the output of the job be compressed?    */
 DECL|method|setCompressOutput (JobConf conf, boolean compress)
 specifier|public

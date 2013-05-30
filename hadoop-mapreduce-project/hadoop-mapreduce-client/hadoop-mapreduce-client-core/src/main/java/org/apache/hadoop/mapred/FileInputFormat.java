@@ -375,6 +375,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|Deprecated
+DECL|enum|Counter
+specifier|public
+specifier|static
+enum|enum
+name|Counter
+block|{
+DECL|enumConstant|BYTES_READ
+name|BYTES_READ
+block|}
 DECL|field|NUM_INPUT_FILES
 specifier|public
 specifier|static

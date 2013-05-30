@@ -406,6 +406,17 @@ init|=
 literal|1.1
 decl_stmt|;
 comment|// 10% slop
+annotation|@
+name|Deprecated
+DECL|enum|Counter
+specifier|public
+specifier|static
+enum|enum
+name|Counter
+block|{
+DECL|enumConstant|BYTES_READ
+name|BYTES_READ
+block|}
 DECL|field|hiddenFileFilter
 specifier|private
 specifier|static
