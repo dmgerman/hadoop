@@ -198,6 +198,24 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> know that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
@@ -423,6 +441,36 @@ parameter_list|(
 name|PreemptionMessage
 name|request
 parameter_list|)
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setNMTokens (List<Token> nmTokens)
+specifier|public
+name|void
+name|setNMTokens
+parameter_list|(
+name|List
+argument_list|<
+name|Token
+argument_list|>
+name|nmTokens
+parameter_list|)
+function_decl|;
+comment|/**    * Get the list of NMTokens required for communicating with NM. New NMTokens    * issued only if    * 1) AM is receiving first container on underlying NodeManager.    * OR    * 2) NMToken master key rolled over in ResourceManager and AM is getting new    * container on the same underlying NodeManager.    * AM will receive one NMToken per NM irrespective of the number of containers    * issued on same NM. AM is expected to store these tokens until issued a    * new token for the same NM.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNMTokens ()
+specifier|public
+name|List
+argument_list|<
+name|Token
+argument_list|>
+name|getNMTokens
+parameter_list|()
 function_decl|;
 block|}
 end_interface
