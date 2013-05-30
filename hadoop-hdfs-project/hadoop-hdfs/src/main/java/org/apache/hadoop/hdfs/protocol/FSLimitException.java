@@ -307,45 +307,6 @@ name|count
 return|;
 block|}
 block|}
-comment|/** The given name is illegal. */
-DECL|class|IllegalNameException
-specifier|public
-specifier|static
-specifier|final
-class|class
-name|IllegalNameException
-extends|extends
-name|FSLimitException
-block|{
-DECL|field|serialVersionUID
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|serialVersionUID
-init|=
-literal|1L
-decl_stmt|;
-DECL|method|IllegalNameException ()
-specifier|public
-name|IllegalNameException
-parameter_list|()
-block|{}
-DECL|method|IllegalNameException (String msg)
-specifier|public
-name|IllegalNameException
-parameter_list|(
-name|String
-name|msg
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 block|}
 end_class
 
