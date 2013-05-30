@@ -1930,6 +1930,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 DECL|method|testRollMasterKey ()
 specifier|public
 name|void
@@ -2093,23 +2098,23 @@ argument_list|,
 name|newPasswd
 argument_list|)
 expr_stmt|;
-comment|// wait for keys to exipire
+comment|// wait for keys to expire
+while|while
+condition|(
+operator|!
+name|dtSecretManager
+operator|.
+name|isRemoveStoredMasterKeyCalled
+condition|)
+block|{
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|2200
+literal|200
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|dtSecretManager
-operator|.
-name|isRemoveStoredMasterKeyCalled
-argument_list|)
-expr_stmt|;
+block|}
 block|}
 finally|finally
 block|{
