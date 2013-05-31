@@ -223,6 +223,11 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Stable
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
 DECL|class|DBInputFormat
 specifier|public
 class|class
@@ -289,6 +294,46 @@ argument_list|,
 name|T
 argument_list|>
 block|{
+comment|/**      * The constructor is kept to be compatible with M/R 1.x      *      * @param split The InputSplit to read data for      * @throws SQLException      */
+DECL|method|DBRecordReader (DBInputSplit split, Class<T> inputClass, JobConf job)
+specifier|protected
+name|DBRecordReader
+parameter_list|(
+name|DBInputSplit
+name|split
+parameter_list|,
+name|Class
+argument_list|<
+name|T
+argument_list|>
+name|inputClass
+parameter_list|,
+name|JobConf
+name|job
+parameter_list|)
+throws|throws
+name|SQLException
+block|{
+name|super
+argument_list|(
+name|split
+argument_list|,
+name|inputClass
+argument_list|,
+name|job
+argument_list|,
+name|connection
+argument_list|,
+name|dbConf
+argument_list|,
+name|conditions
+argument_list|,
+name|fieldNames
+argument_list|,
+name|tableName
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**      * @param split The InputSplit to read data for      * @throws SQLException       */
 DECL|method|DBRecordReader (DBInputSplit split, Class<T> inputClass, JobConf job, Connection conn, DBConfiguration dbConfig, String cond, String [] fields, String table)
 specifier|protected
@@ -676,11 +721,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** {@inheritDoc} */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|getRecordReader (InputSplit split, JobConf job, Reporter reporter)
 specifier|public
 name|RecordReader
