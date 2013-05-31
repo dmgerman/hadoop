@@ -76,23 +76,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|io
+name|mapreduce
 operator|.
-name|RawComparator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|task
 operator|.
-name|apache
+name|annotation
 operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|RawKeyValueIterator
+name|Checkpointable
 import|;
 end_import
 
@@ -111,6 +101,8 @@ comment|/**   * Reduces a set of intermediate values which share a key to a smal
 end_comment
 
 begin_class
+annotation|@
+name|Checkpointable
 annotation|@
 name|InterfaceAudience
 operator|.

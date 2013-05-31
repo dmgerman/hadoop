@@ -550,7 +550,7 @@ return|;
 block|}
 comment|/**    * Compute the path where the output of a given job attempt will be placed.     * @param appAttemptId the ID of the application attempt for this job.    * @return the path to store job attempt data.    */
 DECL|method|getJobAttemptPath (int appAttemptId)
-specifier|private
+specifier|protected
 name|Path
 name|getJobAttemptPath
 parameter_list|(
@@ -768,7 +768,7 @@ return|;
 block|}
 comment|/**    * Compute the path where the output of a committed task is stored until the    * entire job is committed for a specific application attempt.    * @param appAttemptId the id of the application attempt to use    * @param context the context of any task.    * @return the path where the output of a committed task is stored.    */
 DECL|method|getCommittedTaskPath (int appAttemptId, TaskAttemptContext context)
-specifier|private
+specifier|protected
 name|Path
 name|getCommittedTaskPath
 parameter_list|(
