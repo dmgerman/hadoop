@@ -3709,9 +3709,12 @@ argument_list|)
 expr_stmt|;
 name|startReq
 operator|.
-name|setContainer
+name|setContainerToken
 argument_list|(
 name|container
+operator|.
+name|getContainerToken
+argument_list|()
 argument_list|)
 expr_stmt|;
 try|try

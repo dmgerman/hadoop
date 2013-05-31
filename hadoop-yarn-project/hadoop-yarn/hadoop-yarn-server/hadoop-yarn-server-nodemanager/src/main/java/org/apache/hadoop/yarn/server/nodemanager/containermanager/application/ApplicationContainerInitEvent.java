@@ -117,10 +117,7 @@ name|super
 argument_list|(
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 operator|.
 name|getApplicationAttemptId

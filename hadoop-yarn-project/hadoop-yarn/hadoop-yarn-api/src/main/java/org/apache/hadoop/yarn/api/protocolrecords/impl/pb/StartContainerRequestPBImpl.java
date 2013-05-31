@@ -32,6 +32,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|proto
+operator|.
+name|SecurityProtos
+operator|.
+name|TokenProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -56,7 +74,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
+name|ContainerLaunchContext
 import|;
 end_import
 
@@ -74,7 +92,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerLaunchContext
+name|ContainerToken
 import|;
 end_import
 
@@ -136,7 +154,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ContainerPBImpl
+name|ContainerTokenPBImpl
 import|;
 end_import
 
@@ -155,24 +173,6 @@ operator|.
 name|YarnProtos
 operator|.
 name|ContainerLaunchContextProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|proto
-operator|.
-name|YarnProtos
-operator|.
-name|ContainerProto
 import|;
 end_import
 
@@ -255,10 +255,10 @@ name|containerLaunchContext
 init|=
 literal|null
 decl_stmt|;
-DECL|field|container
+DECL|field|containerToken
 specifier|private
-name|Container
-name|container
+name|ContainerToken
+name|containerToken
 init|=
 literal|null
 decl_stmt|;
@@ -354,20 +354,20 @@ if|if
 condition|(
 name|this
 operator|.
-name|container
+name|containerToken
 operator|!=
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|setContainer
+name|setContainerToken
 argument_list|(
 name|convertToProtoFormat
 argument_list|(
 name|this
 operator|.
-name|container
+name|containerToken
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -528,10 +528,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainer ()
+DECL|method|getContainerToken ()
 specifier|public
-name|Container
-name|getContainer
+name|ContainerToken
+name|getContainerToken
 parameter_list|()
 block|{
 name|StartContainerRequestProtoOrBuilder
@@ -547,7 +547,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|container
+name|containerToken
 operator|!=
 literal|null
 condition|)
@@ -555,7 +555,7 @@ block|{
 return|return
 name|this
 operator|.
-name|container
+name|containerToken
 return|;
 block|}
 if|if
@@ -563,7 +563,7 @@ condition|(
 operator|!
 name|p
 operator|.
-name|hasContainer
+name|hasContainerToken
 argument_list|()
 condition|)
 block|{
@@ -573,31 +573,31 @@ return|;
 block|}
 name|this
 operator|.
-name|container
+name|containerToken
 operator|=
 name|convertFromProtoFormat
 argument_list|(
 name|p
 operator|.
-name|getContainer
+name|getContainerToken
 argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
 name|this
 operator|.
-name|container
+name|containerToken
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setContainer (Container container)
+DECL|method|setContainerToken (ContainerToken containerToken)
 specifier|public
 name|void
-name|setContainer
+name|setContainerToken
 parameter_list|(
-name|Container
-name|container
+name|ContainerToken
+name|containerToken
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -605,22 +605,22 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|container
+name|containerToken
 operator|==
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|clearContainer
+name|clearContainerToken
 argument_list|()
 expr_stmt|;
 block|}
 name|this
 operator|.
-name|container
+name|containerToken
 operator|=
-name|container
+name|containerToken
 expr_stmt|;
 block|}
 DECL|method|convertFromProtoFormat (ContainerLaunchContextProto p)
@@ -661,36 +661,36 @@ name|getProto
 argument_list|()
 return|;
 block|}
-DECL|method|convertFromProtoFormat (ContainerProto containerProto)
+DECL|method|convertFromProtoFormat (TokenProto containerProto)
 specifier|private
-name|ContainerPBImpl
+name|ContainerTokenPBImpl
 name|convertFromProtoFormat
 parameter_list|(
-name|ContainerProto
+name|TokenProto
 name|containerProto
 parameter_list|)
 block|{
 return|return
 operator|new
-name|ContainerPBImpl
+name|ContainerTokenPBImpl
 argument_list|(
 name|containerProto
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat (Container container)
+DECL|method|convertToProtoFormat (ContainerToken container)
 specifier|private
-name|ContainerProto
+name|TokenProto
 name|convertToProtoFormat
 parameter_list|(
-name|Container
+name|ContainerToken
 name|container
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|ContainerPBImpl
+name|ContainerTokenPBImpl
 operator|)
 name|container
 operator|)

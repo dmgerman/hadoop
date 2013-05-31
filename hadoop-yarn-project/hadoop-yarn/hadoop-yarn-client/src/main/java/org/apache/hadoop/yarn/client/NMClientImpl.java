@@ -1155,9 +1155,12 @@ argument_list|)
 decl_stmt|;
 name|startRequest
 operator|.
-name|setContainer
+name|setContainerToken
 argument_list|(
 name|container
+operator|.
+name|getContainerToken
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|startRequest

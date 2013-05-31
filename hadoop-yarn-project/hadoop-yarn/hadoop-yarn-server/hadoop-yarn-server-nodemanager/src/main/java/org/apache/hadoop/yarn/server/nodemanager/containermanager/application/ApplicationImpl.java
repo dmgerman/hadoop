@@ -1526,10 +1526,7 @@ name|put
 argument_list|(
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|,
 name|container
@@ -1543,10 +1540,7 @@ literal|"Adding "
 operator|+
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 operator|+
 literal|" to application "
@@ -1582,10 +1576,7 @@ name|ContainerInitEvent
 argument_list|(
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1672,10 +1663,7 @@ name|ContainerInitEvent
 argument_list|(
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 argument_list|)
 argument_list|)

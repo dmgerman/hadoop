@@ -200,6 +200,12 @@ name|NodeId
 name|getNodeId
 parameter_list|()
 function_decl|;
+comment|/**    * Return the node http-address. Usable only after the Webserver is started.    *     * @return the http-port    */
+DECL|method|getHttpPort ()
+name|int
+name|getHttpPort
+parameter_list|()
+function_decl|;
 DECL|method|getApplications ()
 name|ConcurrentMap
 argument_list|<

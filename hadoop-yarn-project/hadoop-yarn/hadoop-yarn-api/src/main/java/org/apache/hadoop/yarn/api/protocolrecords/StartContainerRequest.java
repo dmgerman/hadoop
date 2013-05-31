@@ -82,7 +82,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Container
+name|ContainerLaunchContext
 import|;
 end_import
 
@@ -100,7 +100,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerLaunchContext
+name|ContainerToken
 import|;
 end_import
 
@@ -149,22 +149,22 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getContainer ()
+DECL|method|getContainerToken ()
 specifier|public
-name|Container
-name|getContainer
+name|ContainerToken
+name|getContainerToken
 parameter_list|()
 function_decl|;
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setContainer (Container container)
+DECL|method|setContainerToken (ContainerToken container)
 specifier|public
 name|void
-name|setContainer
+name|setContainerToken
 parameter_list|(
-name|Container
+name|ContainerToken
 name|container
 parameter_list|)
 function_decl|;

@@ -1354,10 +1354,7 @@ name|containerId
 init|=
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 decl_stmt|;
 name|String
@@ -1377,9 +1374,6 @@ argument_list|(
 name|containerId
 argument_list|,
 name|container
-operator|.
-name|getContainer
-argument_list|()
 operator|.
 name|getResource
 argument_list|()

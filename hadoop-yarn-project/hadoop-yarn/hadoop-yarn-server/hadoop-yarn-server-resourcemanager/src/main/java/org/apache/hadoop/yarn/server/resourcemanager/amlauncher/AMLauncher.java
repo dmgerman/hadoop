@@ -904,9 +904,12 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setContainer
+name|setContainerToken
 argument_list|(
 name|masterContainer
+operator|.
+name|getContainerToken
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|containerMgrProxy

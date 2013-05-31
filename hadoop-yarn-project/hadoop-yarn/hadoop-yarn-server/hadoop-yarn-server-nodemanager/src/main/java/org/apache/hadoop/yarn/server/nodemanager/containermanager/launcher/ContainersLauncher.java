@@ -266,7 +266,7 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|LocalDirsHandlerService
+name|Context
 import|;
 end_import
 
@@ -284,7 +284,7 @@ name|server
 operator|.
 name|nodemanager
 operator|.
-name|Context
+name|LocalDirsHandlerService
 import|;
 end_import
 
@@ -673,10 +673,7 @@ name|containerId
 init|=
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 decl_stmt|;
 switch|switch
@@ -715,6 +712,8 @@ init|=
 operator|new
 name|ContainerLaunch
 argument_list|(
+name|context
+argument_list|,
 name|getConfig
 argument_list|()
 argument_list|,

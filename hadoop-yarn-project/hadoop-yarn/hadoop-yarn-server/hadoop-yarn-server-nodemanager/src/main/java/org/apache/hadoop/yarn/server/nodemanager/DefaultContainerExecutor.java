@@ -802,10 +802,7 @@ name|containerId
 init|=
 name|container
 operator|.
-name|getContainer
-argument_list|()
-operator|.
-name|getId
+name|getContainerId
 argument_list|()
 decl_stmt|;
 comment|// create container dirs on all disks
