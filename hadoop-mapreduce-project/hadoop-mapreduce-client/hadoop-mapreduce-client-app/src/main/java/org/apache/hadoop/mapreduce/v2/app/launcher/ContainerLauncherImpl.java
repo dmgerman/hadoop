@@ -1124,11 +1124,11 @@ argument_list|)
 expr_stmt|;
 name|startRequest
 operator|.
-name|setContainer
+name|setContainerToken
 argument_list|(
 name|event
 operator|.
-name|getAllocatedContainer
+name|getContainerToken
 argument_list|()
 argument_list|)
 expr_stmt|;
