@@ -681,6 +681,52 @@ operator|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|getRelaxLocality ()
+specifier|public
+name|boolean
+name|getRelaxLocality
+parameter_list|()
+block|{
+name|ResourceRequestProtoOrBuilder
+name|p
+init|=
+name|viaProto
+condition|?
+name|proto
+else|:
+name|builder
+decl_stmt|;
+return|return
+name|p
+operator|.
+name|getRelaxLocality
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setRelaxLocality (boolean relaxLocality)
+specifier|public
+name|void
+name|setRelaxLocality
+parameter_list|(
+name|boolean
+name|relaxLocality
+parameter_list|)
+block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
+name|builder
+operator|.
+name|setRelaxLocality
+argument_list|(
+name|relaxLocality
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|convertFromProtoFormat (PriorityProto p)
 specifier|private
 name|PriorityPBImpl
@@ -784,6 +830,11 @@ operator|+
 literal|", Location: "
 operator|+
 name|getHostName
+argument_list|()
+operator|+
+literal|", Relax Locality: "
+operator|+
+name|getRelaxLocality
 argument_list|()
 operator|+
 literal|"}"
