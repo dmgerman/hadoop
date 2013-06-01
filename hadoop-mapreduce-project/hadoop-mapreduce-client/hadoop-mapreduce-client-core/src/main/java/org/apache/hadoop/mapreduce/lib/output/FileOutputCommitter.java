@@ -288,6 +288,18 @@ name|PENDING_DIR_NAME
 init|=
 literal|"_temporary"
 decl_stmt|;
+comment|/**    * Temporary directory name     *    * The static variable to be compatible with M/R 1.x    */
+annotation|@
+name|Deprecated
+DECL|field|TEMP_DIR_NAME
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|TEMP_DIR_NAME
+init|=
+name|PENDING_DIR_NAME
+decl_stmt|;
 DECL|field|SUCCEEDED_FILE_NAME
 specifier|public
 specifier|static
