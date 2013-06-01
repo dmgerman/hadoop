@@ -553,6 +553,11 @@ name|BlackListInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|grayListedTrackers
+specifier|private
+name|int
+name|grayListedTrackers
+decl_stmt|;
 DECL|method|ClusterStatus ()
 name|ClusterStatus
 parameter_list|()
@@ -640,6 +645,65 @@ name|int
 name|numDecommissionedNodes
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|trackers
+argument_list|,
+name|blacklists
+argument_list|,
+name|ttExpiryInterval
+argument_list|,
+name|maps
+argument_list|,
+name|reduces
+argument_list|,
+name|maxMaps
+argument_list|,
+name|maxReduces
+argument_list|,
+name|status
+argument_list|,
+name|numDecommissionedNodes
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Construct a new cluster status.    *     * @param trackers no. of tasktrackers in the cluster    * @param blacklists no of blacklisted task trackers in the cluster    * @param ttExpiryInterval the tasktracker expiry interval    * @param maps no. of currently running map-tasks in the cluster    * @param reduces no. of currently running reduce-tasks in the cluster    * @param maxMaps the maximum no. of map tasks in the cluster    * @param maxReduces the maximum no. of reduce tasks in the cluster    * @param status the {@link JobTrackerStatus} of the<code>JobTracker</code>    * @param numDecommissionedNodes number of decommission trackers    * @param numGrayListedTrackers number of graylisted trackers    */
+DECL|method|ClusterStatus (int trackers, int blacklists, long ttExpiryInterval, int maps, int reduces, int maxMaps, int maxReduces, JobTrackerStatus status, int numDecommissionedNodes, int numGrayListedTrackers)
+name|ClusterStatus
+parameter_list|(
+name|int
+name|trackers
+parameter_list|,
+name|int
+name|blacklists
+parameter_list|,
+name|long
+name|ttExpiryInterval
+parameter_list|,
+name|int
+name|maps
+parameter_list|,
+name|int
+name|reduces
+parameter_list|,
+name|int
+name|maxMaps
+parameter_list|,
+name|int
+name|maxReduces
+parameter_list|,
+name|JobTrackerStatus
+name|status
+parameter_list|,
+name|int
+name|numDecommissionedNodes
+parameter_list|,
+name|int
+name|numGrayListedTrackers
+parameter_list|)
+block|{
 name|numActiveTrackers
 operator|=
 name|trackers
@@ -681,6 +745,12 @@ operator|.
 name|status
 operator|=
 name|status
+expr_stmt|;
+name|this
+operator|.
+name|grayListedTrackers
+operator|=
+name|numGrayListedTrackers
 expr_stmt|;
 block|}
 comment|/**    * Construct a new cluster status.    *     * @param activeTrackers active tasktrackers in the cluster    * @param blacklistedTrackers blacklisted tasktrackers in the cluster    * @param ttExpiryInterval the tasktracker expiry interval    * @param maps no. of currently running map-tasks in the cluster    * @param reduces no. of currently running reduce-tasks in the cluster    * @param maxMaps the maximum no. of map tasks in the cluster    * @param maxReduces the maximum no. of reduce tasks in the cluster    * @param status the {@link JobTrackerStatus} of the<code>JobTracker</code>    */
@@ -918,7 +988,7 @@ name|getGraylistedTrackers
 parameter_list|()
 block|{
 return|return
-literal|0
+name|grayListedTrackers
 return|;
 block|}
 comment|/**    * Get the number of blacklisted task trackers in the cluster.    *     * @return the number of blacklisted task trackers in the cluster.    */
@@ -1263,6 +1333,13 @@ argument_list|,
 name|status
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeInt
+argument_list|(
+name|grayListedTrackers
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|readFields (DataInput in)
 specifier|public
@@ -1450,6 +1527,13 @@ name|JobTrackerStatus
 operator|.
 name|class
 argument_list|)
+expr_stmt|;
+name|grayListedTrackers
+operator|=
+name|in
+operator|.
+name|readInt
+argument_list|()
 expr_stmt|;
 block|}
 block|}

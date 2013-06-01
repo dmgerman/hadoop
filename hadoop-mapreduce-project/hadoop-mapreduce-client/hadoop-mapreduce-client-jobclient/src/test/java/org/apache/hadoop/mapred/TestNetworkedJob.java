@@ -1471,6 +1471,16 @@ operator|.
 name|RUNNING
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|status
+operator|.
+name|getGraylistedTrackers
+argument_list|()
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 comment|// test read and write
 name|ByteArrayOutputStream
 name|dataOut

@@ -2303,6 +2303,11 @@ name|metrics
 operator|.
 name|getDecommissionedTaskTrackerCount
 argument_list|()
+argument_list|,
+name|metrics
+operator|.
+name|getGrayListedTaskTrackerCount
+argument_list|()
 argument_list|)
 return|;
 block|}
