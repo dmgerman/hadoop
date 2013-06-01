@@ -1655,9 +1655,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|applicationAttemptId
 init|=
-name|MockApps
+name|ApplicationAttemptId
 operator|.
-name|newAppAttemptID
+name|newInstance
 argument_list|(
 name|applicationId
 argument_list|,

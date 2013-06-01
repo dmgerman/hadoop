@@ -862,9 +862,9 @@ argument_list|)
 expr_stmt|;
 name|appAttemptID
 operator|=
-name|MockJobs
+name|ApplicationAttemptId
 operator|.
-name|newAppAttemptID
+name|newInstance
 argument_list|(
 name|appID
 argument_list|,

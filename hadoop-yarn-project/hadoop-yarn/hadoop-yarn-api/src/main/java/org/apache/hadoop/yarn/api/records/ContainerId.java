@@ -86,22 +86,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|util
@@ -171,6 +155,11 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
+name|id
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
 return|return
 name|id
 return|;
@@ -189,10 +178,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
-annotation|@
-name|Unstable
 DECL|method|setApplicationAttemptId (ApplicationAttemptId atId)
-specifier|public
+specifier|protected
 specifier|abstract
 name|void
 name|setApplicationAttemptId
@@ -215,10 +202,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
-annotation|@
-name|Unstable
 DECL|method|setId (int id)
-specifier|public
+specifier|protected
 specifier|abstract
 name|void
 name|setId
@@ -644,6 +629,13 @@ name|toString
 argument_list|()
 return|;
 block|}
+DECL|method|build ()
+specifier|protected
+specifier|abstract
+name|void
+name|build
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

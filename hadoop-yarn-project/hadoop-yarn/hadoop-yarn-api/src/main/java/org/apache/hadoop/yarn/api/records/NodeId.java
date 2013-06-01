@@ -76,22 +76,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|util
@@ -161,6 +145,11 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|nodeId
+operator|.
+name|build
+argument_list|()
+expr_stmt|;
 return|return
 name|nodeId
 return|;
@@ -179,10 +168,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
-annotation|@
-name|Unstable
 DECL|method|setHost (String host)
-specifier|public
+specifier|protected
 specifier|abstract
 name|void
 name|setHost
@@ -205,10 +192,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
-annotation|@
-name|Unstable
 DECL|method|setPort (int port)
-specifier|public
+specifier|protected
 specifier|abstract
 name|void
 name|setPort
@@ -453,6 +438,13 @@ return|return
 name|hostCompare
 return|;
 block|}
+DECL|method|build ()
+specifier|protected
+specifier|abstract
+name|void
+name|build
+parameter_list|()
+function_decl|;
 block|}
 end_class
 
