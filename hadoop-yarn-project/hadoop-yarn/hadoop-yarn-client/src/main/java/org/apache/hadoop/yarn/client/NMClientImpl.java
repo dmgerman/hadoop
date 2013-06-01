@@ -503,7 +503,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  * This class implements {@link NMClient}. All the APIs are blocking.  *</p>  *  *<p>  * By default, this client stops all the running containers that are started by  * it when it stops. It can be disabled via  * {@link #cleanupRunningContainersOnStop}, in which case containers will  * continue to run even after this client is stopped and till the application  * runs at which point ResourceManager will forcefully kill them.  *</p>  */
+comment|/**  *<p>  * This class implements {@link NMClient}. All the APIs are blocking.  *</p>  *  *<p>  * By default, this client stops all the running containers that are started by  * it when it stops. It can be disabled via  * {@link #cleanupRunningContainersOnStop}, in which case containers will  * continue to run even after this client is stopped and till the application  * runs at which point ResourceManager will forcefully kill them.  *</p>  *  *<p>  * Note that the blocking APIs ensure the RPC calls to<code>NodeManager</code>  * are executed immediately, and the responses are received before these APIs  * return. However, when {@link #startContainer} or {@link #stopContainer}  * returns,<code>NodeManager</code> may still need some time to either start  * or stop the container because of its asynchronous implementation. Therefore,  * {@link #getContainerStatus} is likely to return a transit container status  * if it is executed immediately after {@link #startContainer} or  * {@link #stopContainer}.  *</p>  */
 end_comment
 
 begin_class
