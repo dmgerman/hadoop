@@ -958,6 +958,9 @@ comment|// Handle to communicate with the Resource Manager
 DECL|field|resourceManager
 specifier|private
 name|AMRMClientAsync
+argument_list|<
+name|ContainerRequest
+argument_list|>
 name|resourceManager
 decl_stmt|;
 comment|// Application Attempt Id ( combination of attemptId and fail count )
@@ -2380,6 +2383,9 @@ name|resourceManager
 operator|=
 operator|new
 name|AMRMClientAsync
+argument_list|<
+name|ContainerRequest
+argument_list|>
 argument_list|(
 name|appAttemptID
 argument_list|,
@@ -2666,6 +2672,13 @@ name|get
 argument_list|()
 operator|==
 literal|0
+operator|&&
+name|numCompletedContainers
+operator|.
+name|get
+argument_list|()
+operator|==
+name|numTotalContainers
 condition|)
 block|{
 name|appStatus
@@ -2985,27 +2998,6 @@ name|containerAsk
 argument_list|)
 expr_stmt|;
 block|}
-comment|// set progress to deliver to RM on next heartbeat
-name|float
-name|progress
-init|=
-operator|(
-name|float
-operator|)
-name|numCompletedContainers
-operator|.
-name|get
-argument_list|()
-operator|/
-name|numTotalContainers
-decl_stmt|;
-name|resourceManager
-operator|.
-name|setProgress
-argument_list|(
-name|progress
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|numCompletedContainers
@@ -3176,6 +3168,48 @@ argument_list|>
 name|updatedNodes
 parameter_list|)
 block|{}
+annotation|@
+name|Override
+DECL|method|getProgress ()
+specifier|public
+name|float
+name|getProgress
+parameter_list|()
+block|{
+comment|// set progress to deliver to RM on next heartbeat
+name|float
+name|progress
+init|=
+operator|(
+name|float
+operator|)
+name|numCompletedContainers
+operator|.
+name|get
+argument_list|()
+operator|/
+name|numTotalContainers
+decl_stmt|;
+return|return
+name|progress
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|onError (Exception e)
+specifier|public
+name|void
+name|onError
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|done
+operator|=
+literal|true
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Thread to connect to the {@link ContainerManager} and launch the container    * that will execute the shell command.    */
 DECL|class|LaunchContainerRunnable

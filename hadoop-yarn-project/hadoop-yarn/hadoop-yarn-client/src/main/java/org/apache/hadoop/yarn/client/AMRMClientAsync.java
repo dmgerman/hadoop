@@ -34,6 +34,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -59,6 +69,20 @@ operator|.
 name|concurrent
 operator|.
 name|LinkedBlockingQueue
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicInteger
 import|;
 end_import
 
@@ -324,7 +348,43 @@ name|api
 operator|.
 name|records
 operator|.
+name|Priority
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|AMRMClient
+operator|.
+name|ContainerRequest
 import|;
 end_import
 
@@ -387,6 +447,11 @@ DECL|class|AMRMClientAsync
 specifier|public
 class|class
 name|AMRMClientAsync
+parameter_list|<
+name|T
+extends|extends
+name|ContainerRequest
+parameter_list|>
 extends|extends
 name|AbstractService
 block|{
@@ -410,13 +475,20 @@ DECL|field|client
 specifier|private
 specifier|final
 name|AMRMClient
+argument_list|<
+name|T
+argument_list|>
 name|client
 decl_stmt|;
-DECL|field|intervalMs
+DECL|field|heartbeatIntervalMs
 specifier|private
 specifier|final
-name|int
-name|intervalMs
+name|AtomicInteger
+name|heartbeatIntervalMs
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
 decl_stmt|;
 DECL|field|heartbeatThread
 specifier|private
@@ -445,6 +517,16 @@ name|AllocateResponse
 argument_list|>
 name|responseQueue
 decl_stmt|;
+DECL|field|unregisterHeartbeatLock
+specifier|private
+specifier|final
+name|Object
+name|unregisterHeartbeatLock
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 DECL|field|keepRunning
 specifier|private
 specifier|volatile
@@ -456,6 +538,12 @@ specifier|private
 specifier|volatile
 name|float
 name|progress
+decl_stmt|;
+DECL|field|savedException
+specifier|private
+specifier|volatile
+name|Exception
+name|savedException
 decl_stmt|;
 DECL|method|AMRMClientAsync (ApplicationAttemptId id, int intervalMs, CallbackHandler callbackHandler)
 specifier|public
@@ -475,6 +563,9 @@ name|this
 argument_list|(
 operator|new
 name|AMRMClientImpl
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|id
 argument_list|)
@@ -489,10 +580,14 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|AMRMClientAsync (AMRMClient client, int intervalMs, CallbackHandler callbackHandler)
+DECL|method|AMRMClientAsync (AMRMClient<T> client, int intervalMs, CallbackHandler callbackHandler)
+specifier|public
 name|AMRMClientAsync
 parameter_list|(
 name|AMRMClient
+argument_list|<
+name|T
+argument_list|>
 name|client
 parameter_list|,
 name|int
@@ -520,9 +615,12 @@ name|client
 expr_stmt|;
 name|this
 operator|.
+name|heartbeatIntervalMs
+operator|.
+name|set
+argument_list|(
 name|intervalMs
-operator|=
-name|intervalMs
+argument_list|)
 expr_stmt|;
 name|handler
 operator|=
@@ -553,22 +651,9 @@ name|keepRunning
 operator|=
 literal|true
 expr_stmt|;
-block|}
-comment|/**    * Sets the application's current progress. It will be transmitted to the    * resource manager on the next heartbeat.    * @param progress    *    the application's progress so far    */
-DECL|method|setProgress (float progress)
-specifier|public
-name|void
-name|setProgress
-parameter_list|(
-name|float
-name|progress
-parameter_list|)
-block|{
-name|this
-operator|.
-name|progress
+name|savedException
 operator|=
-name|progress
+literal|null
 expr_stmt|;
 block|}
 annotation|@
@@ -716,6 +801,59 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|setHeartbeatInterval (int interval)
+specifier|public
+name|void
+name|setHeartbeatInterval
+parameter_list|(
+name|int
+name|interval
+parameter_list|)
+block|{
+name|heartbeatIntervalMs
+operator|.
+name|set
+argument_list|(
+name|interval
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getMatchingRequests ( Priority priority, String resourceName, Resource capability)
+specifier|public
+name|List
+argument_list|<
+name|?
+extends|extends
+name|Collection
+argument_list|<
+name|T
+argument_list|>
+argument_list|>
+name|getMatchingRequests
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|,
+name|String
+name|resourceName
+parameter_list|,
+name|Resource
+name|capability
+parameter_list|)
+block|{
+return|return
+name|client
+operator|.
+name|getMatchingRequests
+argument_list|(
+name|priority
+argument_list|,
+name|resourceName
+argument_list|,
+name|capability
+argument_list|)
+return|;
+block|}
 comment|/**    * Registers this application master with the resource manager. On successful    * registration, starts the heartbeating thread.    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|registerApplicationMaster ( String appHostName, int appHostPort, String appTrackingUrl)
 specifier|public
@@ -781,7 +919,7 @@ name|IOException
 block|{
 synchronized|synchronized
 init|(
-name|client
+name|unregisterHeartbeatLock
 init|)
 block|{
 name|keepRunning
@@ -802,14 +940,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Request containers for resources before calling<code>allocate</code>    * @param req Resource request    */
-DECL|method|addContainerRequest (AMRMClient.ContainerRequest req)
+DECL|method|addContainerRequest (T req)
 specifier|public
 name|void
 name|addContainerRequest
 parameter_list|(
-name|AMRMClient
-operator|.
-name|ContainerRequest
+name|T
 name|req
 parameter_list|)
 block|{
@@ -822,14 +958,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Remove previous container request. The previous container request may have     * already been sent to the ResourceManager. So even after the remove request     * the app must be prepared to receive an allocation for the previous request     * even after the remove request    * @param req Resource request    */
-DECL|method|removeContainerRequest (AMRMClient.ContainerRequest req)
+DECL|method|removeContainerRequest (T req)
 specifier|public
 name|void
 name|removeContainerRequest
 parameter_list|(
-name|AMRMClient
-operator|.
-name|ContainerRequest
+name|T
 name|req
 parameter_list|)
 block|{
@@ -924,7 +1058,7 @@ decl_stmt|;
 comment|// synchronization ensures we don't send heartbeats after unregistering
 synchronized|synchronized
 init|(
-name|client
+name|unregisterHeartbeatLock
 init|)
 block|{
 if|if
@@ -957,11 +1091,22 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to heartbeat"
+literal|"Yarn exception on heartbeat"
 argument_list|,
 name|ex
 argument_list|)
 expr_stmt|;
+name|savedException
+operator|=
+name|ex
+expr_stmt|;
+comment|// interrupt handler thread in case it waiting on the queue
+name|handlerThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+break|break;
 block|}
 catch|catch
 parameter_list|(
@@ -973,11 +1118,22 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Failed to heartbeat"
+literal|"IO exception on heartbeat"
 argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
+name|savedException
+operator|=
+name|e
+expr_stmt|;
+comment|// interrupt handler thread in case it waiting on the queue
+name|handlerThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+break|break;
 block|}
 block|}
 if|if
@@ -1011,7 +1167,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 literal|"Interrupted while waiting to put on response queue"
 argument_list|,
@@ -1027,7 +1183,10 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-name|intervalMs
+name|heartbeatIntervalMs
+operator|.
+name|get
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1039,7 +1198,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|warn
+name|info
 argument_list|(
 literal|"Heartbeater interrupted"
 argument_list|,
@@ -1084,6 +1243,31 @@ name|response
 decl_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|savedException
+operator|!=
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Stopping callback due to: "
+argument_list|,
+name|savedException
+argument_list|)
+expr_stmt|;
+name|handler
+operator|.
+name|onError
+argument_list|(
+name|savedException
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
 name|response
 operator|=
 name|responseQueue
@@ -1103,6 +1287,8 @@ operator|.
 name|info
 argument_list|(
 literal|"Interrupted while waiting for queue"
+argument_list|,
+name|ex
 argument_list|)
 expr_stmt|;
 continue|continue;
@@ -1120,6 +1306,14 @@ operator|.
 name|onRebootRequest
 argument_list|()
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Reboot requested. Stopping callback."
+argument_list|)
+expr_stmt|;
+break|break;
 block|}
 name|List
 argument_list|<
@@ -1205,6 +1399,13 @@ name|allocated
 argument_list|)
 expr_stmt|;
 block|}
+name|progress
+operator|=
+name|handler
+operator|.
+name|getProgress
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -1239,14 +1440,14 @@ argument_list|>
 name|containers
 parameter_list|)
 function_decl|;
-comment|/**      * Called when the ResourceManager wants the ApplicationMaster to reboot      * for being out of sync.      */
+comment|/**      * Called when the ResourceManager wants the ApplicationMaster to reboot      * for being out of sync. The ApplicationMaster should not unregister with       * the RM unless the ApplicationMaster wants to be the last attempt.      */
 DECL|method|onRebootRequest ()
 specifier|public
 name|void
 name|onRebootRequest
 parameter_list|()
 function_decl|;
-comment|/**      * Called when nodes tracked by the ResourceManager have changed in in health,      * availability etc.      */
+comment|/**      * Called when nodes tracked by the ResourceManager have changed in health,      * availability etc.      */
 DECL|method|onNodesUpdated (List<NodeReport> updatedNodes)
 specifier|public
 name|void
@@ -1257,6 +1458,21 @@ argument_list|<
 name|NodeReport
 argument_list|>
 name|updatedNodes
+parameter_list|)
+function_decl|;
+DECL|method|getProgress ()
+specifier|public
+name|float
+name|getProgress
+parameter_list|()
+function_decl|;
+DECL|method|onError (Exception e)
+specifier|public
+name|void
+name|onError
+parameter_list|(
+name|Exception
+name|e
 parameter_list|)
 function_decl|;
 block|}

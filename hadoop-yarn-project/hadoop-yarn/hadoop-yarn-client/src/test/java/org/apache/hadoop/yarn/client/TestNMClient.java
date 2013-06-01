@@ -632,6 +632,9 @@ literal|null
 decl_stmt|;
 DECL|field|rmClient
 name|AMRMClientImpl
+argument_list|<
+name|ContainerRequest
+argument_list|>
 name|rmClient
 init|=
 literal|null
@@ -972,6 +975,9 @@ name|rmClient
 operator|=
 operator|new
 name|AMRMClientImpl
+argument_list|<
+name|ContainerRequest
+argument_list|>
 argument_list|(
 name|attemptId
 argument_list|)
@@ -1214,7 +1220,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|allocateContainers (AMRMClientImpl rmClient, int num)
+DECL|method|allocateContainers ( AMRMClientImpl<ContainerRequest> rmClient, int num)
 specifier|private
 name|Set
 argument_list|<
@@ -1223,6 +1229,9 @@ argument_list|>
 name|allocateContainers
 parameter_list|(
 name|AMRMClientImpl
+argument_list|<
+name|ContainerRequest
+argument_list|>
 name|rmClient
 parameter_list|,
 name|int
@@ -1365,6 +1374,8 @@ name|get
 argument_list|(
 name|capability
 argument_list|)
+operator|.
+name|remoteRequest
 operator|.
 name|getNumContainers
 argument_list|()
