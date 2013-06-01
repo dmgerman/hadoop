@@ -162,7 +162,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|NodeId
 import|;
 end_import
 
@@ -180,7 +180,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
+name|Token
 import|;
 end_import
 
@@ -254,7 +254,7 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @throws YarnRemoteException    * @throws IOException    */
-DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, Token containerToken)
 name|void
 name|stopContainer
 parameter_list|(
@@ -264,7 +264,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 throws|throws
@@ -273,7 +273,7 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @return the status of a container    * @throws YarnRemoteException    * @throws IOException    */
-DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, Token containerToken)
 name|ContainerStatus
 name|getContainerStatus
 parameter_list|(
@@ -283,7 +283,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 throws|throws

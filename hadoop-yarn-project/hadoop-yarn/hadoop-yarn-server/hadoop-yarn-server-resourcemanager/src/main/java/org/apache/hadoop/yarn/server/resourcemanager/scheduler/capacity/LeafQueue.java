@@ -344,24 +344,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeId
 import|;
 end_import
@@ -489,6 +471,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
 import|;
 end_import
 
@@ -5827,7 +5827,7 @@ return|;
 block|}
 comment|/**    * Create<code>ContainerToken</code>, only in secure-mode    */
 DECL|method|createContainerToken ( FiCaSchedulerApp application, Container container)
-name|ContainerToken
+name|Token
 name|createContainerToken
 parameter_list|(
 name|FiCaSchedulerApp
@@ -6050,7 +6050,7 @@ name|rmContainer
 argument_list|)
 expr_stmt|;
 block|}
-name|ContainerToken
+name|Token
 name|containerToken
 init|=
 name|createContainerToken

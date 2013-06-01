@@ -1240,7 +1240,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -3842,7 +3842,7 @@ argument_list|,
 literal|42
 argument_list|)
 decl_stmt|;
-name|ContainerToken
+name|Token
 name|containerToken
 init|=
 name|BuilderUtils

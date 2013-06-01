@@ -78,26 +78,122 @@ name|Stable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>Token</code> is the security entity used by the framework  * to verify authenticity of any resource.</p>  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|Token
+DECL|class|Token
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|Token
 block|{
+annotation|@
+name|Private
+DECL|method|newInstance (byte[] identifier, String kind, byte[] password, String service)
+specifier|public
+specifier|static
+name|Token
+name|newInstance
+parameter_list|(
+name|byte
+index|[]
+name|identifier
+parameter_list|,
+name|String
+name|kind
+parameter_list|,
+name|byte
+index|[]
+name|password
+parameter_list|,
+name|String
+name|service
+parameter_list|)
+block|{
+name|Token
+name|token
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|Token
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|token
+operator|.
+name|setIdentifier
+argument_list|(
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|identifier
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|token
+operator|.
+name|setKind
+argument_list|(
+name|kind
+argument_list|)
+expr_stmt|;
+name|token
+operator|.
+name|setPassword
+argument_list|(
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|password
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|token
+operator|.
+name|setService
+argument_list|(
+name|service
+argument_list|)
+expr_stmt|;
+return|return
+name|token
+return|;
+block|}
 comment|/**    * Get the token identifier.    * @return token identifier    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getIdentifier ()
+specifier|public
+specifier|abstract
 name|ByteBuffer
 name|getIdentifier
 parameter_list|()
@@ -107,6 +203,8 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setIdentifier (ByteBuffer identifier)
+specifier|public
+specifier|abstract
 name|void
 name|setIdentifier
 parameter_list|(
@@ -120,6 +218,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getPassword ()
+specifier|public
+specifier|abstract
 name|ByteBuffer
 name|getPassword
 parameter_list|()
@@ -129,6 +229,8 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setPassword (ByteBuffer password)
+specifier|public
+specifier|abstract
 name|void
 name|setPassword
 parameter_list|(
@@ -142,6 +244,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getKind ()
+specifier|public
+specifier|abstract
 name|String
 name|getKind
 parameter_list|()
@@ -151,6 +255,8 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setKind (String kind)
+specifier|public
+specifier|abstract
 name|void
 name|setKind
 parameter_list|(
@@ -164,6 +270,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getService ()
+specifier|public
+specifier|abstract
 name|String
 name|getService
 parameter_list|()
@@ -173,6 +281,8 @@ name|Private
 annotation|@
 name|Stable
 DECL|method|setService (String service)
+specifier|public
+specifier|abstract
 name|void
 name|setService
 parameter_list|(
@@ -181,7 +291,7 @@ name|service
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

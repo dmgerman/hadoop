@@ -92,7 +92,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|ProtoBase
 import|;
 end_import
 
@@ -110,7 +110,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ProtoBase
+name|Token
 import|;
 end_import
 
@@ -154,7 +154,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 import|;
 end_import
 
@@ -257,7 +257,7 @@ literal|null
 decl_stmt|;
 DECL|field|containerToken
 specifier|private
-name|ContainerToken
+name|Token
 name|containerToken
 init|=
 literal|null
@@ -530,7 +530,7 @@ annotation|@
 name|Override
 DECL|method|getContainerToken ()
 specifier|public
-name|ContainerToken
+name|Token
 name|getContainerToken
 parameter_list|()
 block|{
@@ -591,12 +591,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setContainerToken (ContainerToken containerToken)
+DECL|method|setContainerToken (Token containerToken)
 specifier|public
 name|void
 name|setContainerToken
 parameter_list|(
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 block|{
@@ -663,7 +663,7 @@ return|;
 block|}
 DECL|method|convertFromProtoFormat (TokenProto containerProto)
 specifier|private
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 name|convertFromProtoFormat
 parameter_list|(
 name|TokenProto
@@ -672,25 +672,25 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 argument_list|(
 name|containerProto
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat (ContainerToken container)
+DECL|method|convertToProtoFormat (Token container)
 specifier|private
 name|TokenProto
 name|convertToProtoFormat
 parameter_list|(
-name|ContainerToken
+name|Token
 name|container
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 operator|)
 name|container
 operator|)

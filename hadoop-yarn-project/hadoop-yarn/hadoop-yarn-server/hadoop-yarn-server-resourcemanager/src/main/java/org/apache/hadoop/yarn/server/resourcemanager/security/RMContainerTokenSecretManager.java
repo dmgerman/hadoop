@@ -132,24 +132,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeId
 import|;
 end_import
@@ -169,6 +151,24 @@ operator|.
 name|records
 operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
 import|;
 end_import
 
@@ -746,7 +746,7 @@ block|}
 block|}
 comment|/**    * Helper function for creating ContainerTokens    *     * @param containerId    * @param nodeId    * @param appSubmitter    * @param capability    * @return the container-token    */
 specifier|public
-name|ContainerToken
+name|Token
 DECL|method|createContainerToken (ContainerId containerId, NodeId nodeId, String appSubmitter, Resource capability)
 name|createContainerToken
 parameter_list|(

@@ -30,6 +30,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|TaskAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -54,7 +74,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -71,26 +91,6 @@ operator|.
 name|event
 operator|.
 name|AbstractEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|TaskAttemptId
 import|;
 end_import
 
@@ -124,10 +124,10 @@ name|containerMgrAddress
 decl_stmt|;
 DECL|field|containerToken
 specifier|private
-name|ContainerToken
+name|Token
 name|containerToken
 decl_stmt|;
-DECL|method|ContainerLauncherEvent (TaskAttemptId taskAttemptID, ContainerId containerID, String containerMgrAddress, ContainerToken containerToken, ContainerLauncher.EventType type)
+DECL|method|ContainerLauncherEvent (TaskAttemptId taskAttemptID, ContainerId containerID, String containerMgrAddress, Token containerToken, ContainerLauncher.EventType type)
 specifier|public
 name|ContainerLauncherEvent
 parameter_list|(
@@ -140,7 +140,7 @@ parameter_list|,
 name|String
 name|containerMgrAddress
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|,
 name|ContainerLauncher
@@ -213,7 +213,7 @@ return|;
 block|}
 DECL|method|getContainerToken ()
 specifier|public
-name|ContainerToken
+name|Token
 name|getContainerToken
 parameter_list|()
 block|{

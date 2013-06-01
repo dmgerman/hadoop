@@ -184,22 +184,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -384,7 +368,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -759,7 +743,7 @@ name|nodeId
 decl_stmt|;
 DECL|field|containerToken
 specifier|private
-name|ContainerToken
+name|Token
 name|containerToken
 decl_stmt|;
 DECL|field|stopped
@@ -767,7 +751,7 @@ specifier|private
 name|boolean
 name|stopped
 decl_stmt|;
-DECL|method|StartedContainer (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|StartedContainer (ContainerId containerId, NodeId nodeId, Token containerToken)
 specifier|public
 name|StartedContainer
 parameter_list|(
@@ -777,7 +761,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 block|{
@@ -826,7 +810,7 @@ return|;
 block|}
 DECL|method|getContainerToken ()
 specifier|public
-name|ContainerToken
+name|Token
 name|getContainerToken
 parameter_list|()
 block|{
@@ -856,7 +840,7 @@ name|nodeId
 decl_stmt|;
 DECL|field|containerToken
 specifier|private
-name|ContainerToken
+name|Token
 name|containerToken
 decl_stmt|;
 DECL|field|containerManager
@@ -864,7 +848,7 @@ specifier|private
 name|ContainerManager
 name|containerManager
 decl_stmt|;
-DECL|method|NMCommunicator (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|NMCommunicator (ContainerId containerId, NodeId nodeId, Token containerToken)
 specifier|public
 name|NMCommunicator
 parameter_list|(
@@ -874,7 +858,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 block|{
@@ -956,6 +940,16 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
 name|Token
 argument_list|<
 name|ContainerTokenIdentifier
@@ -1655,7 +1649,7 @@ comment|// Adopt 1 currently
 block|}
 annotation|@
 name|Override
-DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, Token containerToken)
 specifier|public
 name|void
 name|stopContainer
@@ -1666,7 +1660,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 throws|throws
@@ -1788,7 +1782,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, Token containerToken)
 specifier|public
 name|ContainerStatus
 name|getContainerStatus
@@ -1799,7 +1793,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 throws|throws

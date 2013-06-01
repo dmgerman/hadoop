@@ -306,24 +306,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ClientToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Container
 import|;
 end_import
@@ -397,42 +379,6 @@ operator|.
 name|records
 operator|.
 name|ContainerStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|DelegationToken
 import|;
 end_import
 
@@ -1316,7 +1262,7 @@ block|}
 DECL|method|newContainerToken (ContainerId cId, String host, int port, String user, Resource r, long expiryTime, int masterKeyId, byte[] password, long rmIdentifier)
 specifier|public
 specifier|static
-name|ContainerToken
+name|Token
 name|newContainerToken
 parameter_list|(
 name|ContainerId
@@ -1609,7 +1555,7 @@ return|return
 name|containerStatus
 return|;
 block|}
-DECL|method|newContainer (ContainerId containerId, NodeId nodeId, String nodeHttpAddress, Resource resource, Priority priority, ContainerToken containerToken)
+DECL|method|newContainer (ContainerId containerId, NodeId nodeId, String nodeHttpAddress, Resource resource, Priority priority, Token containerToken)
 specifier|public
 specifier|static
 name|Container
@@ -1630,7 +1576,7 @@ parameter_list|,
 name|Priority
 name|priority
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 block|{
@@ -1779,7 +1725,7 @@ block|}
 DECL|method|newDelegationToken (byte[] identifier, String kind, byte[] password, String service)
 specifier|public
 specifier|static
-name|DelegationToken
+name|Token
 name|newDelegationToken
 parameter_list|(
 name|byte
@@ -1800,7 +1746,7 @@ block|{
 return|return
 name|newToken
 argument_list|(
-name|DelegationToken
+name|Token
 operator|.
 name|class
 argument_list|,
@@ -1817,7 +1763,7 @@ block|}
 DECL|method|newClientToken (byte[] identifier, String kind, byte[] password, String service)
 specifier|public
 specifier|static
-name|ClientToken
+name|Token
 name|newClientToken
 parameter_list|(
 name|byte
@@ -1838,7 +1784,7 @@ block|{
 return|return
 name|newToken
 argument_list|(
-name|ClientToken
+name|Token
 operator|.
 name|class
 argument_list|,
@@ -1855,7 +1801,7 @@ block|}
 DECL|method|newContainerToken (NodeId nodeId, byte[] password, ContainerTokenIdentifier tokenIdentifier)
 specifier|public
 specifier|static
-name|ContainerToken
+name|Token
 name|newContainerToken
 parameter_list|(
 name|NodeId
@@ -1889,12 +1835,12 @@ argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// NOTE: use SecurityUtil.setTokenService if this becomes a "real" token
-name|ContainerToken
+name|Token
 name|containerToken
 init|=
 name|newToken
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|,
@@ -1927,13 +1873,13 @@ return|return
 name|containerToken
 return|;
 block|}
-DECL|method|newContainerTokenIdentifier ( ContainerToken containerToken)
+DECL|method|newContainerTokenIdentifier ( Token containerToken)
 specifier|public
 specifier|static
 name|ContainerTokenIdentifier
 name|newContainerTokenIdentifier
 parameter_list|(
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 throws|throws
@@ -2281,7 +2227,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, ClientToken clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType)
+DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -2308,7 +2254,7 @@ parameter_list|,
 name|int
 name|rpcPort
 parameter_list|,
-name|ClientToken
+name|Token
 name|clientToken
 parameter_list|,
 name|YarnApplicationState

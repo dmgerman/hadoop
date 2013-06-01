@@ -100,7 +100,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -151,7 +151,7 @@ annotation|@
 name|Stable
 DECL|method|getContainerToken ()
 specifier|public
-name|ContainerToken
+name|Token
 name|getContainerToken
 parameter_list|()
 function_decl|;
@@ -159,12 +159,12 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setContainerToken (ContainerToken container)
+DECL|method|setContainerToken (Token container)
 specifier|public
 name|void
 name|setContainerToken
 parameter_list|(
-name|ContainerToken
+name|Token
 name|container
 parameter_list|)
 function_decl|;

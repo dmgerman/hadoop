@@ -166,24 +166,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|DelegationToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeReport
 import|;
 end_import
@@ -221,6 +203,24 @@ operator|.
 name|records
 operator|.
 name|QueueUserACLInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
 import|;
 end_import
 
@@ -375,9 +375,9 @@ name|YarnRemoteException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a delegation token so as to be able to talk to YARN using those tokens.    *     * @param renewer    *          Address of the renewer who can renew these tokens when needed by    *          securely talking to YARN.    * @return a delegation token ({@link DelegationToken}) that can be used to    *         talk to YARN    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    *<p>    * Get a delegation token so as to be able to talk to YARN using those tokens.    *     * @param renewer    *          Address of the renewer who can renew these tokens when needed by    *          securely talking to YARN.    * @return a delegation token ({@link Token}) that can be used to    *         talk to YARN    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|getRMDelegationToken (Text renewer)
-name|DelegationToken
+name|Token
 name|getRMDelegationToken
 parameter_list|(
 name|Text

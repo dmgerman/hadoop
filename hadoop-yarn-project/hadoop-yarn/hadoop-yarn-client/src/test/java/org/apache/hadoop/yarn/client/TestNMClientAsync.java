@@ -350,7 +350,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -511,7 +511,7 @@ name|nodeId
 decl_stmt|;
 DECL|field|containerToken
 specifier|private
-name|ContainerToken
+name|Token
 name|containerToken
 decl_stmt|;
 annotation|@
@@ -2073,7 +2073,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|)
@@ -2118,7 +2118,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|)
@@ -2193,7 +2193,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|)
@@ -2232,7 +2232,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|)
@@ -2299,7 +2299,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|)
@@ -2351,7 +2351,7 @@ argument_list|)
 argument_list|,
 name|any
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|)
@@ -2984,7 +2984,7 @@ name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|ContainerToken
+name|Token
 operator|.
 name|class
 argument_list|)

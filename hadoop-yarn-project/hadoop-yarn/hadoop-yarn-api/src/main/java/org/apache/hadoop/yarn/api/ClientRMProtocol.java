@@ -576,24 +576,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|DelegationToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeReport
 import|;
 end_import
@@ -613,6 +595,24 @@ operator|.
 name|records
 operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
 import|;
 end_import
 
@@ -790,7 +790,7 @@ name|YarnRemoteException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>The interface used by clients to get delegation token, enabling the     * containers to be able to talk to the service using those tokens.    *     *<p> The<code>ResourceManager</code> responds with the delegation token    *  {@link DelegationToken} that can be used by the client to speak to this    *  service.    * @param request request to get a delegation token for the client.    * @return delegation token that can be used to talk to this service    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    *<p>The interface used by clients to get delegation token, enabling the     * containers to be able to talk to the service using those tokens.    *     *<p> The<code>ResourceManager</code> responds with the delegation token    *  {@link Token} that can be used by the client to speak to this    *  service.    * @param request request to get a delegation token for the client.    * @return delegation token that can be used to talk to this service    * @throws YarnRemoteException    * @throws IOException    */
 DECL|method|getDelegationToken ( GetDelegationTokenRequest request)
 specifier|public
 name|GetDelegationTokenResponse

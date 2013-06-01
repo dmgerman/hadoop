@@ -36,7 +36,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|DelegationToken
+name|Token
 import|;
 end_import
 
@@ -46,16 +46,16 @@ specifier|public
 interface|interface
 name|GetDelegationTokenResponse
 block|{
-DECL|method|setDelegationToken (DelegationToken clientDToken)
+DECL|method|setDelegationToken (Token clientDToken)
 name|void
 name|setDelegationToken
 parameter_list|(
-name|DelegationToken
+name|Token
 name|clientDToken
 parameter_list|)
 function_decl|;
 DECL|method|getDelegationToken ()
-name|DelegationToken
+name|Token
 name|getDelegationToken
 parameter_list|()
 function_decl|;

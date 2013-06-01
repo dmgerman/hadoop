@@ -60,13 +60,31 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|delegation
+operator|.
+name|AbstractDelegationTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
 operator|.
 name|records
 operator|.
-name|DelegationToken
+name|Token
 import|;
 end_import
 
@@ -84,16 +102,17 @@ specifier|public
 interface|interface
 name|GetDelegationTokenResponse
 block|{
+comment|/**    * The Delegation tokens have a identifier which maps to    * {@link AbstractDelegationTokenIdentifier}.    *    */
 DECL|method|getRMDelegationToken ()
-name|DelegationToken
+name|Token
 name|getRMDelegationToken
 parameter_list|()
 function_decl|;
-DECL|method|setRMDelegationToken (DelegationToken rmDTToken)
+DECL|method|setRMDelegationToken (Token rmDTToken)
 name|void
 name|setRMDelegationToken
 parameter_list|(
-name|DelegationToken
+name|Token
 name|rmDTToken
 parameter_list|)
 function_decl|;

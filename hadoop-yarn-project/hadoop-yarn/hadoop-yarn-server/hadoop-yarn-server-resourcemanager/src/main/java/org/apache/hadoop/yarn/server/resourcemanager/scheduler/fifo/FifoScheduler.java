@@ -334,7 +334,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -3378,7 +3378,7 @@ name|getNewContainerId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ContainerToken
+name|Token
 name|containerToken
 init|=
 literal|null

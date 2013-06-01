@@ -394,7 +394,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|DelegationToken
+name|Token
 import|;
 end_import
 
@@ -735,7 +735,7 @@ operator|.
 name|KERBEROS
 argument_list|)
 expr_stmt|;
-name|DelegationToken
+name|Token
 name|token
 init|=
 name|getDelegationToken
@@ -1222,7 +1222,7 @@ block|}
 block|}
 DECL|method|getDelegationToken ( final UserGroupInformation loggedInUser, final MRClientProtocol hsService, final String renewerString)
 specifier|private
-name|DelegationToken
+name|Token
 name|getDelegationToken
 parameter_list|(
 specifier|final
@@ -1244,7 +1244,7 @@ name|InterruptedException
 block|{
 comment|// Get the delegation token directly as it is a little difficult to setup
 comment|// the kerberos based rpc.
-name|DelegationToken
+name|Token
 name|token
 init|=
 name|loggedInUser
@@ -1254,14 +1254,14 @@ argument_list|(
 operator|new
 name|PrivilegedExceptionAction
 argument_list|<
-name|DelegationToken
+name|Token
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|DelegationToken
+name|Token
 name|run
 parameter_list|()
 throws|throws
@@ -1305,7 +1305,7 @@ return|return
 name|token
 return|;
 block|}
-DECL|method|renewDelegationToken (final UserGroupInformation loggedInUser, final MRClientProtocol hsService, final DelegationToken dToken)
+DECL|method|renewDelegationToken (final UserGroupInformation loggedInUser, final MRClientProtocol hsService, final Token dToken)
 specifier|private
 name|long
 name|renewDelegationToken
@@ -1319,7 +1319,7 @@ name|MRClientProtocol
 name|hsService
 parameter_list|,
 specifier|final
-name|DelegationToken
+name|Token
 name|dToken
 parameter_list|)
 throws|throws
@@ -1388,7 +1388,7 @@ return|return
 name|nextExpTime
 return|;
 block|}
-DECL|method|cancelDelegationToken (final UserGroupInformation loggedInUser, final MRClientProtocol hsService, final DelegationToken dToken)
+DECL|method|cancelDelegationToken (final UserGroupInformation loggedInUser, final MRClientProtocol hsService, final Token dToken)
 specifier|private
 name|void
 name|cancelDelegationToken
@@ -1402,7 +1402,7 @@ name|MRClientProtocol
 name|hsService
 parameter_list|,
 specifier|final
-name|DelegationToken
+name|Token
 name|dToken
 parameter_list|)
 throws|throws
@@ -1464,12 +1464,12 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getMRClientProtocol (DelegationToken token, final InetSocketAddress hsAddress, String user, final Configuration conf)
+DECL|method|getMRClientProtocol (Token token, final InetSocketAddress hsAddress, String user, final Configuration conf)
 specifier|private
 name|MRClientProtocol
 name|getMRClientProtocol
 parameter_list|(
-name|DelegationToken
+name|Token
 name|token
 parameter_list|,
 specifier|final

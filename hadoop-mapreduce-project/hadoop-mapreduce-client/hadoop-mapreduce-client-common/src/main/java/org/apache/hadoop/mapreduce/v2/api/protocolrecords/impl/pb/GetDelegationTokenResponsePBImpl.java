@@ -114,7 +114,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|DelegationToken
+name|ProtoBase
 import|;
 end_import
 
@@ -132,7 +132,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ProtoBase
+name|Token
 import|;
 end_import
 
@@ -154,7 +154,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|DelegationTokenPBImpl
+name|TokenPBImpl
 import|;
 end_import
 
@@ -172,7 +172,7 @@ implements|implements
 name|GetDelegationTokenResponse
 block|{
 DECL|field|mrToken
-name|DelegationToken
+name|Token
 name|mrToken
 decl_stmt|;
 DECL|field|proto
@@ -234,7 +234,7 @@ annotation|@
 name|Override
 DECL|method|getDelegationToken ()
 specifier|public
-name|DelegationToken
+name|Token
 name|getDelegationToken
 parameter_list|()
 block|{
@@ -295,12 +295,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setDelegationToken (DelegationToken mrToken)
+DECL|method|setDelegationToken (Token mrToken)
 specifier|public
 name|void
 name|setDelegationToken
 parameter_list|(
-name|DelegationToken
+name|Token
 name|mrToken
 parameter_list|)
 block|{
@@ -442,7 +442,7 @@ expr_stmt|;
 block|}
 DECL|method|convertFromProtoFormat (TokenProto p)
 specifier|private
-name|DelegationTokenPBImpl
+name|TokenPBImpl
 name|convertFromProtoFormat
 parameter_list|(
 name|TokenProto
@@ -451,25 +451,25 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|DelegationTokenPBImpl
+name|TokenPBImpl
 argument_list|(
 name|p
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat (DelegationToken t)
+DECL|method|convertToProtoFormat (Token t)
 specifier|private
 name|TokenProto
 name|convertToProtoFormat
 parameter_list|(
-name|DelegationToken
+name|Token
 name|t
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|DelegationTokenPBImpl
+name|TokenPBImpl
 operator|)
 name|t
 operator|)

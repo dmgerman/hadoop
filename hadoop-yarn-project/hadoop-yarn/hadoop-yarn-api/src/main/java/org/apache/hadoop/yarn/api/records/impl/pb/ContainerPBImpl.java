@@ -92,24 +92,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeId
 import|;
 end_import
@@ -147,6 +129,24 @@ operator|.
 name|records
 operator|.
 name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
 import|;
 end_import
 
@@ -319,7 +319,7 @@ literal|null
 decl_stmt|;
 DECL|field|containerToken
 specifier|private
-name|ContainerToken
+name|Token
 name|containerToken
 init|=
 literal|null
@@ -648,7 +648,7 @@ operator|&&
 operator|!
 operator|(
 operator|(
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 operator|)
 name|this
 operator|.
@@ -1200,7 +1200,7 @@ annotation|@
 name|Override
 DECL|method|getContainerToken ()
 specifier|public
-name|ContainerToken
+name|Token
 name|getContainerToken
 parameter_list|()
 block|{
@@ -1261,12 +1261,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setContainerToken (ContainerToken containerToken)
+DECL|method|setContainerToken (Token containerToken)
 specifier|public
 name|void
 name|setContainerToken
 parameter_list|(
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 block|{
@@ -1445,7 +1445,7 @@ return|;
 block|}
 DECL|method|convertFromProtoFormat (TokenProto p)
 specifier|private
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 name|convertFromProtoFormat
 parameter_list|(
 name|TokenProto
@@ -1454,25 +1454,25 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 argument_list|(
 name|p
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat (ContainerToken t)
+DECL|method|convertToProtoFormat (Token t)
 specifier|private
 name|TokenProto
 name|convertToProtoFormat
 parameter_list|(
-name|ContainerToken
+name|Token
 name|t
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|ContainerTokenPBImpl
+name|TokenPBImpl
 operator|)
 name|t
 operator|)

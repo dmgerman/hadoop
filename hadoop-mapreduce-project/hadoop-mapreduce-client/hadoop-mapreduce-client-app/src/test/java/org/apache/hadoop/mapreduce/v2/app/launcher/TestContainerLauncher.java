@@ -700,7 +700,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -2431,7 +2431,7 @@ parameter_list|,
 name|String
 name|containerManagerBindAddr
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 throws|throws

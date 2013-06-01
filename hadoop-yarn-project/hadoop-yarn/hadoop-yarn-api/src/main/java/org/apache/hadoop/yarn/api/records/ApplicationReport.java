@@ -133,7 +133,9 @@ name|ApplicationReport
 block|{
 annotation|@
 name|Private
-DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, ClientToken clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType)
+annotation|@
+name|Stable
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -160,7 +162,7 @@ parameter_list|,
 name|int
 name|rpcPort
 parameter_list|,
-name|ClientToken
+name|Token
 name|clientToken
 parameter_list|,
 name|YarnApplicationState
@@ -518,7 +520,7 @@ name|int
 name|rpcPort
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>.    * @return<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>    */
+comment|/**    * Get the<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>.    *<p>    *<code>ClientToken</code> is the security token used by the AMs to verify    * authenticity of any<code>client</code>.    *</p>    *    *<p>    * The<code>ResourceManager</code>, provides a secure token (via    * {@link ApplicationReport#getClientToken()}) which is verified by the    * ApplicationMaster when the client directly talks to an AM.    *</p>    * @return<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -526,7 +528,7 @@ name|Stable
 DECL|method|getClientToken ()
 specifier|public
 specifier|abstract
-name|ClientToken
+name|Token
 name|getClientToken
 parameter_list|()
 function_decl|;
@@ -534,13 +536,13 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setClientToken (ClientToken clientToken)
+DECL|method|setClientToken (Token clientToken)
 specifier|public
 specifier|abstract
 name|void
 name|setClientToken
 parameter_list|(
-name|ClientToken
+name|Token
 name|clientToken
 parameter_list|)
 function_decl|;

@@ -276,7 +276,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -591,7 +591,7 @@ operator|.
 name|getEnvironment
 argument_list|()
 decl_stmt|;
-name|ContainerToken
+name|Token
 name|containerToken
 init|=
 name|request

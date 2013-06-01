@@ -128,7 +128,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ClientToken
+name|FinalApplicationStatus
 import|;
 end_import
 
@@ -146,7 +146,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|FinalApplicationStatus
+name|Token
 import|;
 end_import
 
@@ -353,7 +353,7 @@ name|currentApplicationAttemptId
 decl_stmt|;
 DECL|field|clientToken
 specifier|private
-name|ClientToken
+name|Token
 name|clientToken
 init|=
 literal|null
@@ -850,7 +850,7 @@ annotation|@
 name|Override
 DECL|method|getClientToken ()
 specifier|public
-name|ClientToken
+name|Token
 name|getClientToken
 parameter_list|()
 block|{
@@ -1443,12 +1443,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setClientToken (ClientToken clientToken)
+DECL|method|setClientToken (Token clientToken)
 specifier|public
 name|void
 name|setClientToken
 parameter_list|(
-name|ClientToken
+name|Token
 name|clientToken
 parameter_list|)
 block|{
@@ -1930,7 +1930,7 @@ operator|&&
 operator|!
 operator|(
 operator|(
-name|ClientTokenPBImpl
+name|TokenPBImpl
 operator|)
 name|this
 operator|.
@@ -2207,7 +2207,7 @@ return|;
 block|}
 DECL|method|convertFromProtoFormat (TokenProto p)
 specifier|private
-name|ClientTokenPBImpl
+name|TokenPBImpl
 name|convertFromProtoFormat
 parameter_list|(
 name|TokenProto
@@ -2216,25 +2216,25 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|ClientTokenPBImpl
+name|TokenPBImpl
 argument_list|(
 name|p
 argument_list|)
 return|;
 block|}
-DECL|method|convertToProtoFormat (ClientToken t)
+DECL|method|convertToProtoFormat (Token t)
 specifier|private
 name|TokenProto
 name|convertToProtoFormat
 parameter_list|(
-name|ClientToken
+name|Token
 name|t
 parameter_list|)
 block|{
 return|return
 operator|(
 operator|(
-name|ClientTokenPBImpl
+name|TokenPBImpl
 operator|)
 name|t
 operator|)

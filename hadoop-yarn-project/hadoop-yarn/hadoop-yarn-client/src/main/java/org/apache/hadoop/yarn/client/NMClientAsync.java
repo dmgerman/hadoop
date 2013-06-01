@@ -398,7 +398,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerToken
+name|Token
 import|;
 end_import
 
@@ -1391,7 +1391,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, Token containerToken)
 specifier|public
 name|void
 name|stopContainer
@@ -1402,7 +1402,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 block|{
@@ -1485,7 +1485,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, ContainerToken containerToken)
+DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, Token containerToken)
 specifier|public
 name|void
 name|getContainerStatus
@@ -1496,7 +1496,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|)
 block|{
@@ -1653,10 +1653,10 @@ name|nodeId
 decl_stmt|;
 DECL|field|containerToken
 specifier|private
-name|ContainerToken
+name|Token
 name|containerToken
 decl_stmt|;
-DECL|method|ContainerEvent (ContainerId containerId, NodeId nodeId, ContainerToken containerToken, ContainerEventType type)
+DECL|method|ContainerEvent (ContainerId containerId, NodeId nodeId, Token containerToken, ContainerEventType type)
 specifier|public
 name|ContainerEvent
 parameter_list|(
@@ -1666,7 +1666,7 @@ parameter_list|,
 name|NodeId
 name|nodeId
 parameter_list|,
-name|ContainerToken
+name|Token
 name|containerToken
 parameter_list|,
 name|ContainerEventType
@@ -1719,7 +1719,7 @@ return|;
 block|}
 DECL|method|getContainerToken ()
 specifier|public
-name|ContainerToken
+name|Token
 name|getContainerToken
 parameter_list|()
 block|{
