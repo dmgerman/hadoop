@@ -1540,7 +1540,7 @@ argument_list|()
 argument_list|,
 name|req
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 argument_list|,
 name|req
@@ -1948,7 +1948,7 @@ argument_list|)
 expr_stmt|;
 name|remoteRequest
 operator|.
-name|setHostName
+name|setResourceName
 argument_list|(
 name|resourceName
 argument_list|)

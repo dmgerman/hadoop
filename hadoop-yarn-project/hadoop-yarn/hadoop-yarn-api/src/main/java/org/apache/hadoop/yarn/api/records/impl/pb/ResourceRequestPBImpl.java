@@ -461,10 +461,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getHostName ()
+DECL|method|getResourceName ()
 specifier|public
 name|String
-name|getHostName
+name|getResourceName
 parameter_list|()
 block|{
 name|ResourceRequestProtoOrBuilder
@@ -481,7 +481,7 @@ condition|(
 operator|!
 name|p
 operator|.
-name|hasHostName
+name|hasResourceName
 argument_list|()
 condition|)
 block|{
@@ -493,20 +493,20 @@ return|return
 operator|(
 name|p
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 operator|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setHostName (String hostName)
+DECL|method|setResourceName (String resourceName)
 specifier|public
 name|void
-name|setHostName
+name|setResourceName
 parameter_list|(
 name|String
-name|hostName
+name|resourceName
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -514,24 +514,24 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|hostName
+name|resourceName
 operator|==
 literal|null
 condition|)
 block|{
 name|builder
 operator|.
-name|clearHostName
+name|clearResourceName
 argument_list|()
 expr_stmt|;
 return|return;
 block|}
 name|builder
 operator|.
-name|setHostName
+name|setResourceName
 argument_list|(
 operator|(
-name|hostName
+name|resourceName
 operator|)
 argument_list|)
 expr_stmt|;
@@ -829,7 +829,7 @@ argument_list|()
 operator|+
 literal|", Location: "
 operator|+
-name|getHostName
+name|getResourceName
 argument_list|()
 operator|+
 literal|", Relax Locality: "

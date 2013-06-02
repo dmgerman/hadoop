@@ -876,7 +876,7 @@ name|h1
 init|=
 name|r1
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 decl_stmt|;
 name|String
@@ -884,7 +884,7 @@ name|h2
 init|=
 name|r2
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 decl_stmt|;
 name|ret
@@ -2138,7 +2138,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setHostName
+name|setResourceName
 argument_list|(
 name|hostName
 argument_list|)
@@ -2195,11 +2195,11 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setHostName
+name|setResourceName
 argument_list|(
 name|r
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 argument_list|)
 expr_stmt|;

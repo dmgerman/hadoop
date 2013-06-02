@@ -1103,7 +1103,7 @@ name|getPriorities
 argument_list|()
 return|;
 block|}
-DECL|method|getResourceRequest (Priority priority, String nodeAddress)
+DECL|method|getResourceRequest (Priority priority, String resourceName)
 specifier|public
 name|ResourceRequest
 name|getResourceRequest
@@ -1112,7 +1112,7 @@ name|Priority
 name|priority
 parameter_list|,
 name|String
-name|nodeAddress
+name|resourceName
 parameter_list|)
 block|{
 return|return
@@ -1124,7 +1124,7 @@ name|getResourceRequest
 argument_list|(
 name|priority
 argument_list|,
-name|nodeAddress
+name|resourceName
 argument_list|)
 return|;
 block|}

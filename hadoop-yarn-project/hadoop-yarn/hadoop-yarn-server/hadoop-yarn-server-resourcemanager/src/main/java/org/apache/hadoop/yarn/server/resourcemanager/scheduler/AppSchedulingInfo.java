@@ -649,11 +649,11 @@ name|getPriority
 argument_list|()
 decl_stmt|;
 name|String
-name|hostName
+name|resourceName
 init|=
 name|request
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 decl_stmt|;
 name|boolean
@@ -668,7 +668,7 @@ literal|null
 decl_stmt|;
 if|if
 condition|(
-name|hostName
+name|resourceName
 operator|.
 name|equals
 argument_list|(
@@ -801,7 +801,7 @@ name|asks
 operator|.
 name|get
 argument_list|(
-name|hostName
+name|resourceName
 argument_list|)
 expr_stmt|;
 block|}
@@ -809,7 +809,7 @@ name|asks
 operator|.
 name|put
 argument_list|(
-name|hostName
+name|resourceName
 argument_list|,
 name|request
 argument_list|)
@@ -957,7 +957,7 @@ name|priority
 argument_list|)
 return|;
 block|}
-DECL|method|getResourceRequest (Priority priority, String nodeAddress)
+DECL|method|getResourceRequest (Priority priority, String resourceName)
 specifier|synchronized
 specifier|public
 name|ResourceRequest
@@ -967,7 +967,7 @@ name|Priority
 name|priority
 parameter_list|,
 name|String
-name|nodeAddress
+name|resourceName
 parameter_list|)
 block|{
 name|Map
@@ -998,7 +998,7 @@ name|nodeRequests
 operator|.
 name|get
 argument_list|(
-name|nodeAddress
+name|resourceName
 argument_list|)
 return|;
 block|}

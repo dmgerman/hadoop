@@ -8073,7 +8073,7 @@ argument_list|()
 argument_list|,
 name|req
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 argument_list|,
 name|req

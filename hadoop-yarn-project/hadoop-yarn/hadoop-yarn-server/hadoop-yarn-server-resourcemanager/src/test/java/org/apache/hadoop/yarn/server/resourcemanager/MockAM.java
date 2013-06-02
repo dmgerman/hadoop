@@ -912,7 +912,7 @@ argument_list|)
 decl_stmt|;
 name|req
 operator|.
-name|setHostName
+name|setResourceName
 argument_list|(
 name|resource
 argument_list|)

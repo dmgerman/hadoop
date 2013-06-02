@@ -148,7 +148,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setHostName
+name|setResourceName
 argument_list|(
 name|hostName
 argument_list|)
@@ -228,31 +228,31 @@ name|Priority
 name|priority
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>host/rack</em> on which the allocation is desired.    *     * A special value of<em>*</em> signifies that<em>any</em> host/rack is     * acceptable.    *     * @return<em>host/rack</em> on which the allocation is desired    */
+comment|/**    * Get the resource (e.g.<em>host/rack</em>) on which the allocation     * is desired.    *     * A special value of<em>*</em> signifies that<em>any</em> resource     * (host/rack) is acceptable.    *     * @return resource (e.g.<em>host/rack</em>) on which the allocation     *                  is desired    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getHostName ()
+DECL|method|getResourceName ()
 specifier|public
 specifier|abstract
 name|String
-name|getHostName
+name|getResourceName
 parameter_list|()
 function_decl|;
-comment|/**    * Set<em>host/rack</em> on which the allocation is desired.    *     * A special value of<em>*</em> signifies that<em>any</em> host/rack is     * acceptable.    *     * @param hostName<em>host/rack</em> on which the allocation is desired    */
+comment|/**    * Set the resource (e.g.<em>host/rack</em>) on which the allocation     * is desired.    *     * A special value of<em>*</em> signifies that<em>any</em> resource     * (e.g. host/rack) is acceptable.     *     * @param resourceName (e.g.<em>host/rack</em>) on which the     *                     allocation is desired    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setHostName (String hostName)
+DECL|method|setResourceName (String resourceName)
 specifier|public
 specifier|abstract
 name|void
-name|setHostName
+name|setResourceName
 parameter_list|(
 name|String
-name|hostName
+name|resourceName
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>Resource</code> capability of the request.    * @return<code>Resource</code> capability of the request    */
@@ -364,7 +364,7 @@ decl_stmt|;
 name|String
 name|hostName
 init|=
-name|getHostName
+name|getResourceName
 argument_list|()
 decl_stmt|;
 name|Priority
@@ -545,7 +545,7 @@ return|;
 name|String
 name|hostName
 init|=
-name|getHostName
+name|getResourceName
 argument_list|()
 decl_stmt|;
 if|if
@@ -559,7 +559,7 @@ if|if
 condition|(
 name|other
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 operator|!=
 literal|null
@@ -578,7 +578,7 @@ name|equals
 argument_list|(
 name|other
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 argument_list|)
 condition|)
@@ -684,14 +684,14 @@ name|hostNameComparison
 init|=
 name|this
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 operator|.
 name|compareTo
 argument_list|(
 name|other
 operator|.
-name|getHostName
+name|getResourceName
 argument_list|()
 argument_list|)
 decl_stmt|;

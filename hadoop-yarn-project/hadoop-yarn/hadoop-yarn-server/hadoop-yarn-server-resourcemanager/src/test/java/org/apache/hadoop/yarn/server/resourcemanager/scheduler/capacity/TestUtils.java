@@ -852,7 +852,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setHostName
+name|setResourceName
 argument_list|(
 name|hostName
 argument_list|)
