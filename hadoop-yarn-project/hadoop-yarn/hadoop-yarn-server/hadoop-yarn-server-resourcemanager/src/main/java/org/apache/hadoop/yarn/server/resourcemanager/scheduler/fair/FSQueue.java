@@ -284,6 +284,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|resource
+operator|.
+name|ResourceWeights
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|scheduler
 operator|.
 name|Queue
@@ -513,10 +533,10 @@ name|AllocationConfigurationException
 function_decl|;
 annotation|@
 name|Override
-DECL|method|getWeight ()
+DECL|method|getWeights ()
 specifier|public
-name|double
-name|getWeight
+name|ResourceWeights
+name|getWeights
 parameter_list|()
 block|{
 return|return

@@ -949,16 +949,10 @@ literal|" available="
 operator|+
 name|getAvailableResource
 argument_list|()
-operator|.
-name|getMemory
-argument_list|()
 operator|+
 literal|" used="
 operator|+
 name|getUsedResource
-argument_list|()
-operator|.
-name|getMemory
 argument_list|()
 return|;
 block|}

@@ -282,6 +282,26 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
+name|ResourceWeights
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
 name|Resources
 import|;
 end_import
@@ -718,10 +738,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWeight ()
+DECL|method|getWeights ()
 specifier|public
-name|double
-name|getWeight
+name|ResourceWeights
+name|getWeights
 parameter_list|()
 block|{
 return|return
@@ -1229,24 +1249,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Can we allocate a container on this node?
-name|int
-name|availableContainers
-init|=
-name|available
-operator|.
-name|getMemory
-argument_list|()
-operator|/
-name|capability
-operator|.
-name|getMemory
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
-name|availableContainers
-operator|>
-literal|0
+name|Resources
+operator|.
+name|fitsIn
+argument_list|(
+name|capability
+argument_list|,
+name|available
+argument_list|)
 condition|)
 block|{
 comment|// Inform the application of the new container for this request

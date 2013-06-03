@@ -108,6 +108,26 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
+name|ResourceWeights
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
 name|Resources
 import|;
 end_import
@@ -173,11 +193,11 @@ name|getMinShare
 parameter_list|()
 function_decl|;
 comment|/** Job/queue weight in fair sharing. */
-DECL|method|getWeight ()
+DECL|method|getWeights ()
 specifier|public
 specifier|abstract
-name|double
-name|getWeight
+name|ResourceWeights
+name|getWeights
 parameter_list|()
 function_decl|;
 comment|/** Start time for jobs in FIFO queues; meaningless for QueueSchedulables.*/
@@ -257,7 +277,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"[%s, demand=%s, running=%s, share=%s,], w=%.1f]"
+literal|"[%s, demand=%s, running=%s, share=%s, w=%s]"
 argument_list|,
 name|getName
 argument_list|()
@@ -270,7 +290,7 @@ argument_list|()
 argument_list|,
 name|fairShare
 argument_list|,
-name|getWeight
+name|getWeights
 argument_list|()
 argument_list|)
 return|;

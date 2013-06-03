@@ -328,6 +328,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
+name|ResourceWeights
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|w3c
 operator|.
 name|dom
@@ -1457,7 +1477,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Double
+name|ResourceWeights
 argument_list|>
 name|queueWeights
 init|=
@@ -1466,7 +1486,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Double
+name|ResourceWeights
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2334,7 +2354,7 @@ block|}
 block|}
 block|}
 comment|/**    * Loads a queue from a queue element in the configuration file    */
-DECL|method|loadQueue (String parentName, Element element, Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, Double> queueWeights, Map<String, SchedulingPolicy> queuePolicies, Map<String, Long> minSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, List<String> queueNamesInAllocFile)
+DECL|method|loadQueue (String parentName, Element element, Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, Map<String, SchedulingPolicy> queuePolicies, Map<String, Long> minSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, List<String> queueNamesInAllocFile)
 specifier|private
 name|void
 name|loadQueue
@@ -2381,7 +2401,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Double
+name|ResourceWeights
 argument_list|>
 name|queueWeights
 parameter_list|,
@@ -2545,12 +2565,12 @@ operator|.
 name|trim
 argument_list|()
 decl_stmt|;
-name|int
+name|Resource
 name|val
 init|=
-name|Integer
+name|FairSchedulerConfiguration
 operator|.
-name|parseInt
+name|parseResourceConfigValue
 argument_list|(
 name|text
 argument_list|)
@@ -2561,12 +2581,7 @@ name|put
 argument_list|(
 name|queueName
 argument_list|,
-name|Resources
-operator|.
-name|createResource
-argument_list|(
 name|val
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2603,12 +2618,12 @@ operator|.
 name|trim
 argument_list|()
 decl_stmt|;
-name|int
+name|Resource
 name|val
 init|=
-name|Integer
+name|FairSchedulerConfiguration
 operator|.
-name|parseInt
+name|parseResourceConfigValue
 argument_list|(
 name|text
 argument_list|)
@@ -2619,12 +2634,7 @@ name|put
 argument_list|(
 name|queueName
 argument_list|,
-name|Resources
-operator|.
-name|createResource
-argument_list|(
 name|val
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2730,7 +2740,14 @@ name|put
 argument_list|(
 name|queueName
 argument_list|,
+operator|new
+name|ResourceWeights
+argument_list|(
+operator|(
+name|float
+operator|)
 name|val
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2832,18 +2849,33 @@ operator|.
 name|trim
 argument_list|()
 decl_stmt|;
-name|queuePolicies
-operator|.
-name|put
-argument_list|(
-name|queueName
-argument_list|,
+name|SchedulingPolicy
+name|policy
+init|=
 name|SchedulingPolicy
 operator|.
 name|parse
 argument_list|(
 name|text
 argument_list|)
+decl_stmt|;
+name|policy
+operator|.
+name|initialize
+argument_list|(
+name|scheduler
+operator|.
+name|getClusterCapacity
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|queuePolicies
+operator|.
+name|put
+argument_list|(
+name|queueName
+argument_list|,
+name|policy
 argument_list|)
 expr_stmt|;
 block|}
@@ -3185,7 +3217,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Get a collection of all queues    */
+comment|/**    * Get a collection of all leaf queues    */
 DECL|method|getLeafQueues ()
 specifier|public
 name|Collection
@@ -3204,6 +3236,23 @@ return|return
 name|leafQueues
 return|;
 block|}
+block|}
+comment|/**    * Get a collection of all queues    */
+DECL|method|getQueues ()
+specifier|public
+name|Collection
+argument_list|<
+name|FSQueue
+argument_list|>
+name|getQueues
+parameter_list|()
+block|{
+return|return
+name|queues
+operator|.
+name|values
+argument_list|()
+return|;
 block|}
 DECL|method|getUserMaxApps (String user)
 specifier|public
@@ -3305,14 +3354,14 @@ block|}
 block|}
 DECL|method|getQueueWeight (String queue)
 specifier|public
-name|double
+name|ResourceWeights
 name|getQueueWeight
 parameter_list|(
 name|String
 name|queue
 parameter_list|)
 block|{
-name|Double
+name|ResourceWeights
 name|weight
 init|=
 name|info
@@ -3338,7 +3387,9 @@ block|}
 else|else
 block|{
 return|return
-literal|1.0
+name|ResourceWeights
+operator|.
+name|NEUTRAL
 return|;
 block|}
 block|}
@@ -3565,7 +3616,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Double
+name|ResourceWeights
 argument_list|>
 name|queueWeights
 decl_stmt|;
@@ -3658,7 +3709,7 @@ specifier|final
 name|SchedulingPolicy
 name|defaultSchedulingPolicy
 decl_stmt|;
-DECL|method|QueueManagerInfo (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, Double> queueWeights, int userMaxAppsDefault, int queueMaxAppsDefault, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, long fairSharePreemptionTimeout, long defaultMinSharePreemptionTimeout)
+DECL|method|QueueManagerInfo (Map<String, Resource> minQueueResources, Map<String, Resource> maxQueueResources, Map<String, Integer> queueMaxApps, Map<String, Integer> userMaxApps, Map<String, ResourceWeights> queueWeights, int userMaxAppsDefault, int queueMaxAppsDefault, SchedulingPolicy defaultSchedulingPolicy, Map<String, Long> minSharePreemptionTimeouts, Map<String, Map<QueueACL, AccessControlList>> queueAcls, long fairSharePreemptionTimeout, long defaultMinSharePreemptionTimeout)
 specifier|public
 name|QueueManagerInfo
 parameter_list|(
@@ -3698,7 +3749,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|Double
+name|ResourceWeights
 argument_list|>
 name|queueWeights
 parameter_list|,
@@ -3846,7 +3897,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|Double
+name|ResourceWeights
 argument_list|>
 argument_list|()
 expr_stmt|;

@@ -76,6 +76,26 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
+name|ResourceWeights
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|resource
+operator|.
 name|Resources
 import|;
 end_import
@@ -123,10 +143,10 @@ specifier|private
 name|Resource
 name|minShare
 decl_stmt|;
-DECL|field|weight
+DECL|field|weights
 specifier|private
-name|double
-name|weight
+name|ResourceWeights
+name|weights
 decl_stmt|;
 DECL|field|priority
 specifier|private
@@ -210,7 +230,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FakeSchedulable (int demand, int minShare, double weight)
+DECL|method|FakeSchedulable (int demand, int minShare, double memoryWeight)
 specifier|public
 name|FakeSchedulable
 parameter_list|(
@@ -221,7 +241,7 @@ name|int
 name|minShare
 parameter_list|,
 name|double
-name|weight
+name|memoryWeight
 parameter_list|)
 block|{
 name|this
@@ -230,7 +250,7 @@ name|demand
 argument_list|,
 name|minShare
 argument_list|,
-name|weight
+name|memoryWeight
 argument_list|,
 literal|0
 argument_list|,
@@ -279,7 +299,14 @@ argument_list|(
 name|minShare
 argument_list|)
 argument_list|,
+operator|new
+name|ResourceWeights
+argument_list|(
+operator|(
+name|float
+operator|)
 name|weight
+argument_list|)
 argument_list|,
 name|Resources
 operator|.
@@ -299,7 +326,7 @@ name|startTime
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|FakeSchedulable (Resource demand, Resource minShare, double weight, Resource fairShare, Resource usage, long startTime)
+DECL|method|FakeSchedulable (Resource demand, Resource minShare, ResourceWeights weight, Resource fairShare, Resource usage, long startTime)
 specifier|public
 name|FakeSchedulable
 parameter_list|(
@@ -309,7 +336,7 @@ parameter_list|,
 name|Resource
 name|minShare
 parameter_list|,
-name|double
+name|ResourceWeights
 name|weight
 parameter_list|,
 name|Resource
@@ -336,7 +363,7 @@ name|minShare
 expr_stmt|;
 name|this
 operator|.
-name|weight
+name|weights
 operator|=
 name|weight
 expr_stmt|;
@@ -453,14 +480,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getWeight ()
+DECL|method|getWeights ()
 specifier|public
-name|double
-name|getWeight
+name|ResourceWeights
+name|getWeights
 parameter_list|()
 block|{
 return|return
-name|weight
+name|weights
 return|;
 block|}
 annotation|@
