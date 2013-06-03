@@ -382,13 +382,86 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get the timestamps of the archives.  Used by internal    * DistributedCache and MapReduce code.    * @param conf The configuration which stored the timestamps    * @return a string array of timestamps     * @throws IOException    * @deprecated Use {@link JobContext#getArchiveTimestamps()} instead    */
+comment|/**    * Parse a list of strings into longs.    * @param strs the list of strings to parse    * @return a list of longs that were parsed. same length as strs.    */
+DECL|method|parseTimestamps (String[] strs)
+specifier|private
+specifier|static
+name|long
+index|[]
+name|parseTimestamps
+parameter_list|(
+name|String
+index|[]
+name|strs
+parameter_list|)
+block|{
+if|if
+condition|(
+name|strs
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+name|long
+index|[]
+name|result
+init|=
+operator|new
+name|long
+index|[
+name|strs
+operator|.
+name|length
+index|]
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|strs
+operator|.
+name|length
+condition|;
+operator|++
+name|i
+control|)
+block|{
+name|result
+index|[
+name|i
+index|]
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|strs
+index|[
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|result
+return|;
+block|}
+comment|/**    * Get the timestamps of the archives.  Used by internal    * DistributedCache and MapReduce code.    * @param conf The configuration which stored the timestamps    * @return a long array of timestamps    * @throws IOException    * @deprecated Use {@link JobContext#getArchiveTimestamps()} instead    */
 annotation|@
 name|Deprecated
 DECL|method|getArchiveTimestamps (Configuration conf)
 specifier|public
 specifier|static
-name|String
+name|long
 index|[]
 name|getArchiveTimestamps
 parameter_list|(
@@ -397,6 +470,8 @@ name|conf
 parameter_list|)
 block|{
 return|return
+name|parseTimestamps
+argument_list|(
 name|conf
 operator|.
 name|getStrings
@@ -405,15 +480,16 @@ name|MRJobConfig
 operator|.
 name|CACHE_ARCHIVES_TIMESTAMPS
 argument_list|)
+argument_list|)
 return|;
 block|}
-comment|/**    * Get the timestamps of the files.  Used by internal    * DistributedCache and MapReduce code.    * @param conf The configuration which stored the timestamps    * @return a string array of timestamps     * @throws IOException    * @deprecated Use {@link JobContext#getFileTimestamps()} instead    */
+comment|/**    * Get the timestamps of the files.  Used by internal    * DistributedCache and MapReduce code.    * @param conf The configuration which stored the timestamps    * @return a long array of timestamps    * @throws IOException    * @deprecated Use {@link JobContext#getFileTimestamps()} instead    */
 annotation|@
 name|Deprecated
 DECL|method|getFileTimestamps (Configuration conf)
 specifier|public
 specifier|static
-name|String
+name|long
 index|[]
 name|getFileTimestamps
 parameter_list|(
@@ -422,6 +498,8 @@ name|conf
 parameter_list|)
 block|{
 return|return
+name|parseTimestamps
+argument_list|(
 name|conf
 operator|.
 name|getStrings
@@ -429,6 +507,7 @@ argument_list|(
 name|MRJobConfig
 operator|.
 name|CACHE_FILE_TIMESTAMPS
+argument_list|)
 argument_list|)
 return|;
 block|}

@@ -1619,10 +1619,6 @@ name|assertEquals
 argument_list|(
 literal|1234567890
 argument_list|,
-name|Long
-operator|.
-name|parseLong
-argument_list|(
 name|DistributedCache
 operator|.
 name|getArchiveTimestamps
@@ -1632,7 +1628,6 @@ argument_list|)
 index|[
 literal|0
 index|]
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|DistributedCache
@@ -1684,10 +1679,6 @@ name|assertEquals
 argument_list|(
 literal|1234567890
 argument_list|,
-name|Long
-operator|.
-name|parseLong
-argument_list|(
 name|DistributedCache
 operator|.
 name|getFileTimestamps
@@ -1697,7 +1688,6 @@ argument_list|)
 index|[
 literal|0
 index|]
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|DistributedCache
