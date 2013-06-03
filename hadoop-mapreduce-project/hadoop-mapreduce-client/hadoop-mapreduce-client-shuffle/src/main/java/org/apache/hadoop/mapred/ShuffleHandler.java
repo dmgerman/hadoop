@@ -1571,7 +1571,7 @@ specifier|final
 name|int
 name|DEFAULT_SHUFFLE_PORT
 init|=
-literal|11000
+literal|13562
 decl_stmt|;
 DECL|field|SUFFLE_SSL_FILE_BUFFER_SIZE_KEY
 specifier|public
