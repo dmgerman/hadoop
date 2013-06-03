@@ -349,6 +349,26 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Sets task id.    * @param taskId    * @deprecated use {@link #setTaskAttemptId(TaskAttemptID)} instead.    */
+annotation|@
+name|Deprecated
+DECL|method|setTaskID (TaskAttemptID taskId)
+specifier|public
+name|void
+name|setTaskID
+parameter_list|(
+name|TaskAttemptID
+name|taskId
+parameter_list|)
+block|{
+name|this
+operator|.
+name|setTaskAttemptId
+argument_list|(
+name|taskId
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Sets task id.     * @param taskId    */
 DECL|method|setTaskAttemptId (TaskAttemptID taskId)
 specifier|protected
