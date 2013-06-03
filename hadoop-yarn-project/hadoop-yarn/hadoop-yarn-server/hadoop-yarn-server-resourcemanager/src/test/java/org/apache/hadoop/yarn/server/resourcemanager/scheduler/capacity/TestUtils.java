@@ -797,20 +797,23 @@ return|return
 name|p
 return|;
 block|}
-DECL|method|createResourceRequest ( String hostName, int memory, int numContainers, Priority priority, RecordFactory recordFactory)
+DECL|method|createResourceRequest ( String resourceName, int memory, int numContainers, boolean relaxLocality, Priority priority, RecordFactory recordFactory)
 specifier|public
 specifier|static
 name|ResourceRequest
 name|createResourceRequest
 parameter_list|(
 name|String
-name|hostName
+name|resourceName
 parameter_list|,
 name|int
 name|memory
 parameter_list|,
 name|int
 name|numContainers
+parameter_list|,
+name|boolean
+name|relaxLocality
 parameter_list|,
 name|Priority
 name|priority
@@ -854,7 +857,7 @@ name|request
 operator|.
 name|setResourceName
 argument_list|(
-name|hostName
+name|resourceName
 argument_list|)
 expr_stmt|;
 name|request
@@ -862,6 +865,13 @@ operator|.
 name|setCapability
 argument_list|(
 name|capability
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setRelaxLocality
+argument_list|(
+name|relaxLocality
 argument_list|)
 expr_stmt|;
 name|request

@@ -1957,6 +1957,47 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|subtractSchedulingOpportunity (Priority priority)
+specifier|synchronized
+specifier|public
+name|void
+name|subtractSchedulingOpportunity
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|)
+block|{
+name|int
+name|count
+init|=
+name|schedulingOpportunities
+operator|.
+name|count
+argument_list|(
+name|priority
+argument_list|)
+operator|-
+literal|1
+decl_stmt|;
+name|this
+operator|.
+name|schedulingOpportunities
+operator|.
+name|setCount
+argument_list|(
+name|priority
+argument_list|,
+name|Math
+operator|.
+name|max
+argument_list|(
+name|count
+argument_list|,
+literal|0
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Return the number of times the application has been given an opportunity    * to schedule a task at the given priority since the last time it    * successfully did so.    */
 DECL|method|getSchedulingOpportunities (Priority priority)
 specifier|synchronized
