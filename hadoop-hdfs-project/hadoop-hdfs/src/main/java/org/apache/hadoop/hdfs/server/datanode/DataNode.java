@@ -5634,7 +5634,10 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getXferPort ()
+specifier|public
 name|int
 name|getXferPort
 parameter_list|()

@@ -216,11 +216,15 @@ name|refresh
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|readFileToSet (String filename, Set<String> set)
-specifier|private
+DECL|method|readFileToSet (String type, String filename, Set<String> set)
+specifier|public
+specifier|static
 name|void
 name|readFileToSet
 parameter_list|(
+name|String
+name|type
+parameter_list|,
 name|String
 name|filename
 parameter_list|,
@@ -364,7 +368,11 @@ index|[
 name|i
 index|]
 operator|+
-literal|" to the list of hosts from "
+literal|" to the list of "
+operator|+
+name|type
+operator|+
+literal|" hosts from "
 operator|+
 name|filename
 argument_list|)
@@ -379,7 +387,6 @@ name|i
 index|]
 argument_list|)
 expr_stmt|;
-comment|// might need to add canonical name
 block|}
 block|}
 block|}
@@ -447,6 +454,8 @@ argument_list|()
 decl_stmt|;
 name|readFileToSet
 argument_list|(
+literal|"included"
+argument_list|,
 name|includesFile
 argument_list|,
 name|newIncludes
@@ -482,6 +491,8 @@ argument_list|()
 decl_stmt|;
 name|readFileToSet
 argument_list|(
+literal|"excluded"
+argument_list|,
 name|excludesFile
 argument_list|,
 name|newExcludes
