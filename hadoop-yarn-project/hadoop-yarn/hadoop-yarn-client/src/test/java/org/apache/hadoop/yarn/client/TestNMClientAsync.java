@@ -896,6 +896,22 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Completed container is not removed"
+argument_list|,
+literal|0
+argument_list|,
+name|asyncClient
+operator|.
+name|containers
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|asyncClient
 operator|.
 name|stop
