@@ -370,9 +370,9 @@ literal|"/tmp"
 operator|+
 literal|" -Dlog4j.configuration=container-log4j.properties"
 operator|+
-literal|" -Dyarn.app.mapreduce.container.log.dir=<LOG_DIR>"
+literal|" -Dyarn.app.container.log.dir=<LOG_DIR>"
 operator|+
-literal|" -Dyarn.app.mapreduce.container.log.filesize=0"
+literal|" -Dyarn.app.container.log.filesize=0"
 operator|+
 literal|" -Dhadoop.root.logger=INFO,CLA"
 operator|+

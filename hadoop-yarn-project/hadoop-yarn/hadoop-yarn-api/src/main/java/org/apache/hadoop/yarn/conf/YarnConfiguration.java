@@ -2559,6 +2559,29 @@ name|DEFAULT_YARN_MINICLUSTER_FIXED_PORTS
 init|=
 literal|false
 decl_stmt|;
+comment|/** The log directory for the containers */
+DECL|field|YARN_APP_CONTAINER_LOG_DIR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_APP_CONTAINER_LOG_DIR
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"app.container.log.dir"
+decl_stmt|;
+DECL|field|YARN_APP_CONTAINER_LOG_SIZE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_APP_CONTAINER_LOG_SIZE
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"app.container.log.filesize"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////

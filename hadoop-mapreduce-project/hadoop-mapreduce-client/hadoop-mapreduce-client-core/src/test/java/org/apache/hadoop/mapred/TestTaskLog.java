@@ -17,6 +17,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|junit
+operator|.
+name|framework
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|junit
+operator|.
+name|framework
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -94,33 +142,25 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import static
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|*
 import|;
 end_import
 
@@ -155,9 +195,9 @@ name|System
 operator|.
 name|setProperty
 argument_list|(
-name|MRJobConfig
+name|YarnConfiguration
 operator|.
-name|TASK_LOG_DIR
+name|YARN_APP_CONTAINER_LOG_DIR
 argument_list|,
 literal|"testString"
 argument_list|)
@@ -554,9 +594,9 @@ name|System
 operator|.
 name|clearProperty
 argument_list|(
-name|MRJobConfig
+name|YarnConfiguration
 operator|.
-name|TASK_LOG_DIR
+name|YARN_APP_CONTAINER_LOG_DIR
 argument_list|)
 expr_stmt|;
 comment|// test TaskLog

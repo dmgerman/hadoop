@@ -2842,9 +2842,9 @@ name|add
 argument_list|(
 literal|"-D"
 operator|+
-name|MRJobConfig
+name|YarnConfiguration
 operator|.
-name|TASK_LOG_DIR
+name|YARN_APP_CONTAINER_LOG_DIR
 operator|+
 literal|"="
 operator|+
@@ -2859,9 +2859,9 @@ name|add
 argument_list|(
 literal|"-D"
 operator|+
-name|MRJobConfig
+name|YarnConfiguration
 operator|.
-name|TASK_LOG_SIZE
+name|YARN_APP_CONTAINER_LOG_SIZE
 operator|+
 literal|"="
 operator|+

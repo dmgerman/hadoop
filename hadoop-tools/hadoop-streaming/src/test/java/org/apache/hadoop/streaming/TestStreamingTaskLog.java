@@ -869,14 +869,14 @@ name|env
 operator|.
 name|contains
 argument_list|(
-literal|"-Dyarn.app.mapreduce.container.log.dir="
+literal|"-Dyarn.app.container.log.dir="
 argument_list|)
 operator|&&
 name|env
 operator|.
 name|contains
 argument_list|(
-literal|"-Dyarn.app.mapreduce.container.log.filesize="
+literal|"-Dyarn.app.container.log.filesize="
 operator|+
 name|logSize
 argument_list|)
