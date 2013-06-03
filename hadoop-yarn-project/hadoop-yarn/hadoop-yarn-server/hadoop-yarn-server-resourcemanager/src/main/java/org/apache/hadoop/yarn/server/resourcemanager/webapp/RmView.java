@@ -387,7 +387,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [4, 5]"
+literal|"\n, {'sType':'numeric', 'aTargets': [5, 6]"
 argument_list|)
 operator|.
 name|append
@@ -397,7 +397,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [8]"
+literal|"\n, {'sType':'numeric', bSearchable:false, 'aTargets': [9]"
 argument_list|)
 operator|.
 name|append
