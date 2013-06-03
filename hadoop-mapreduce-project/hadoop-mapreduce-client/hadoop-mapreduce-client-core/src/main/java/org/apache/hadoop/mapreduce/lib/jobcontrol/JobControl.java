@@ -164,6 +164,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapred
+operator|.
+name|jobcontrol
+operator|.
+name|Job
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|mapreduce
 operator|.
 name|lib
@@ -567,7 +583,7 @@ operator|.
 name|nextJobID
 return|;
 block|}
-comment|/**    * Add a new job.    * @param aJob the new job    */
+comment|/**    * Add a new controlled job.    * @param aJob the new controlled job    */
 DECL|method|addJob (ControlledJob aJob)
 specifier|synchronized
 specifier|public
@@ -611,6 +627,27 @@ argument_list|)
 expr_stmt|;
 return|return
 name|id
+return|;
+block|}
+comment|/**    * Add a new job.    * @param aJob the new job    */
+DECL|method|addJob (Job aJob)
+specifier|synchronized
+specifier|public
+name|String
+name|addJob
+parameter_list|(
+name|Job
+name|aJob
+parameter_list|)
+block|{
+return|return
+name|addJob
+argument_list|(
+operator|(
+name|ControlledJob
+operator|)
+name|aJob
+argument_list|)
 return|;
 block|}
 comment|/**    * Add a collection of jobs    *     * @param jobs    */

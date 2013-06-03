@@ -26,7 +26,31 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -117,6 +141,24 @@ operator|.
 name|mapred
 operator|.
 name|JobID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|lib
+operator|.
+name|jobcontrol
+operator|.
+name|ControlledJob
 import|;
 end_import
 
@@ -539,6 +581,9 @@ name|theControl
 operator|.
 name|addJob
 argument_list|(
+operator|(
+name|ControlledJob
+operator|)
 name|job_1
 argument_list|)
 expr_stmt|;
@@ -546,6 +591,9 @@ name|theControl
 operator|.
 name|addJob
 argument_list|(
+operator|(
+name|ControlledJob
+operator|)
 name|job_2
 argument_list|)
 expr_stmt|;
