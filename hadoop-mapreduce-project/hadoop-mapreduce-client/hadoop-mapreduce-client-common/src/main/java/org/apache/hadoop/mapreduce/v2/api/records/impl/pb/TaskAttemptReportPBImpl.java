@@ -296,7 +296,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|ProtoBase
+name|impl
+operator|.
+name|pb
+operator|.
+name|ContainerIdPBImpl
 import|;
 end_import
 
@@ -318,7 +322,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ContainerIdPBImpl
+name|ProtoBase
 import|;
 end_import
 

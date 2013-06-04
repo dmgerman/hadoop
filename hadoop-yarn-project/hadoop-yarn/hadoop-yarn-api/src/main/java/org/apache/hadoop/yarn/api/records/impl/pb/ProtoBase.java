@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.api.records.impl.pb
 package|package
 name|org
 operator|.
@@ -17,6 +17,10 @@ operator|.
 name|api
 operator|.
 name|records
+operator|.
+name|impl
+operator|.
+name|pb
 package|;
 end_package
 

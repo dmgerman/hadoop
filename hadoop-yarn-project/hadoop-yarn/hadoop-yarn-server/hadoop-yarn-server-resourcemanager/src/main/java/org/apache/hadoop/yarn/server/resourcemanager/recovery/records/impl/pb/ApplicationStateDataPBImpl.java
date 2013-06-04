@@ -60,7 +60,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|ProtoBase
+name|impl
+operator|.
+name|pb
+operator|.
+name|ApplicationSubmissionContextPBImpl
 import|;
 end_import
 
@@ -82,7 +86,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ApplicationSubmissionContextPBImpl
+name|ProtoBase
 import|;
 end_import
 

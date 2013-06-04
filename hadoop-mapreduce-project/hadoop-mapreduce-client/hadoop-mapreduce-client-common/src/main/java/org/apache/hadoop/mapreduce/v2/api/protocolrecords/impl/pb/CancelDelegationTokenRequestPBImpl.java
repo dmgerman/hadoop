@@ -114,7 +114,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ProtoBase
+name|Token
 import|;
 end_import
 
@@ -132,7 +132,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|Token
+name|impl
+operator|.
+name|pb
+operator|.
+name|ProtoBase
 import|;
 end_import
 
