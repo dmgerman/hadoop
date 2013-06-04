@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.protocolrecords
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 package|;
 end_package
 
@@ -104,16 +104,118 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|PreemptionResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * Description of resources requested back by the<code>ResourceManager</code>.  * The<code>ApplicationMaster</code> (AM) can satisfy this request according  * to its own priorities to prevent containers from being forcibly killed by  * the platform.  * @see PreemptionMessage  */
 end_comment
 
-begin_interface
-DECL|interface|PreemptionContract
+begin_class
+DECL|class|PreemptionContract
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|PreemptionContract
 block|{
+DECL|method|newInstance ( List<PreemptionResourceRequest> req, Set<PreemptionContainer> containers)
+specifier|public
+specifier|static
+name|PreemptionContract
+name|newInstance
+parameter_list|(
+name|List
+argument_list|<
+name|PreemptionResourceRequest
+argument_list|>
+name|req
+parameter_list|,
+name|Set
+argument_list|<
+name|PreemptionContainer
+argument_list|>
+name|containers
+parameter_list|)
+block|{
+name|PreemptionContract
+name|contract
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|PreemptionContract
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|contract
+operator|.
+name|setResourceRequest
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
+name|contract
+operator|.
+name|setContainers
+argument_list|(
+name|containers
+argument_list|)
+expr_stmt|;
+return|return
+name|contract
+return|;
+block|}
 comment|/**    * If the AM releases resources matching these requests, then the {@link    * PreemptionContainer}s enumerated in {@link #getContainers()} should not be    * evicted from the cluster. Due to delays in propagating cluster state and    * sending these messages, there are conditions where satisfied contracts may    * not prevent the platform from killing containers.    * @return List of {@link PreemptionResourceRequest} to update the    *<code>ApplicationMaster</code> about resources requested back by the    *<code>ResourceManager</code>.    * @see AllocateRequest#setAskList(List)    */
 annotation|@
 name|Public
@@ -121,6 +223,7 @@ annotation|@
 name|Evolving
 DECL|method|getResourceRequest ()
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|PreemptionResourceRequest
@@ -134,6 +237,7 @@ annotation|@
 name|Unstable
 DECL|method|setResourceRequest (List<PreemptionResourceRequest> req)
 specifier|public
+specifier|abstract
 name|void
 name|setResourceRequest
 parameter_list|(
@@ -151,6 +255,7 @@ annotation|@
 name|Evolving
 DECL|method|getContainers ()
 specifier|public
+specifier|abstract
 name|Set
 argument_list|<
 name|PreemptionContainer
@@ -164,6 +269,7 @@ annotation|@
 name|Unstable
 DECL|method|setContainers (Set<PreemptionContainer> containers)
 specifier|public
+specifier|abstract
 name|void
 name|setContainers
 parameter_list|(
@@ -175,7 +281,7 @@ name|containers
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

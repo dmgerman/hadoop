@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.protocolrecords
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 package|;
 end_package
 
@@ -94,11 +94,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|util
 operator|.
-name|records
-operator|.
-name|ContainerId
+name|Records
 import|;
 end_import
 
@@ -106,12 +104,46 @@ begin_comment
 comment|/**  * Specific container requested back by the<code>ResourceManager</code>.  * @see PreemptionContract  * @see StrictPreemptionContract  */
 end_comment
 
-begin_interface
-DECL|interface|PreemptionContainer
+begin_class
+DECL|class|PreemptionContainer
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|PreemptionContainer
 block|{
+DECL|method|newInstance (ContainerId id)
+specifier|public
+specifier|static
+name|PreemptionContainer
+name|newInstance
+parameter_list|(
+name|ContainerId
+name|id
+parameter_list|)
+block|{
+name|PreemptionContainer
+name|container
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|PreemptionContainer
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|container
+operator|.
+name|setId
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+return|return
+name|container
+return|;
+block|}
 comment|/**    * @return Container referenced by this handle.    */
 annotation|@
 name|Public
@@ -119,6 +151,7 @@ annotation|@
 name|Evolving
 DECL|method|getId ()
 specifier|public
+specifier|abstract
 name|ContainerId
 name|getId
 parameter_list|()
@@ -129,6 +162,7 @@ annotation|@
 name|Unstable
 DECL|method|setId (ContainerId id)
 specifier|public
+specifier|abstract
 name|void
 name|setId
 parameter_list|(
@@ -137,7 +171,7 @@ name|id
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

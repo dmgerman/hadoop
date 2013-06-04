@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.protocolrecords.impl.pb
+DECL|package|org.apache.hadoop.yarn.api.records.impl
 package|package
 name|org
 operator|.
@@ -16,11 +16,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 operator|.
 name|impl
-operator|.
-name|pb
 package|;
 end_package
 
@@ -36,9 +34,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 operator|.
-name|PreemptionContainer
+name|ContainerId
 import|;
 end_import
 
@@ -56,7 +54,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerId
+name|PreemptionContainer
 import|;
 end_import
 
@@ -141,7 +139,7 @@ DECL|class|PreemptionContainerPBImpl
 specifier|public
 class|class
 name|PreemptionContainerPBImpl
-implements|implements
+extends|extends
 name|PreemptionContainer
 block|{
 DECL|field|proto

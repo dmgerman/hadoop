@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.protocolrecords
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 package|;
 end_package
 
@@ -104,11 +104,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|util
 operator|.
-name|records
-operator|.
-name|ContainerId
+name|Records
 import|;
 end_import
 
@@ -116,16 +114,53 @@ begin_comment
 comment|/**  * Enumeration of particular allocations to be reclaimed. The platform will  * reclaim exactly these resources, so the<code>ApplicationMaster</code> (AM)  * may attempt to checkpoint work or adjust its execution plan to accommodate  * it. In contrast to {@link PreemptionContract}, the AM has no flexibility in  * selecting which resources to return to the cluster.  * @see PreemptionMessage  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|interface|StrictPreemptionContract
+DECL|class|StrictPreemptionContract
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|StrictPreemptionContract
 block|{
+DECL|method|newInstance (Set<PreemptionContainer> containers)
+specifier|public
+specifier|static
+name|StrictPreemptionContract
+name|newInstance
+parameter_list|(
+name|Set
+argument_list|<
+name|PreemptionContainer
+argument_list|>
+name|containers
+parameter_list|)
+block|{
+name|StrictPreemptionContract
+name|contract
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|StrictPreemptionContract
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|contract
+operator|.
+name|setContainers
+argument_list|(
+name|containers
+argument_list|)
+expr_stmt|;
+return|return
+name|contract
+return|;
+block|}
 comment|/**    * Get the set of {@link PreemptionContainer} specifying containers owned by    * the<code>ApplicationMaster</code> that may be reclaimed by the    *<code>ResourceManager</code>.    * @return the set of {@link ContainerId} to be preempted.    */
 annotation|@
 name|Public
@@ -133,6 +168,7 @@ annotation|@
 name|Evolving
 DECL|method|getContainers ()
 specifier|public
+specifier|abstract
 name|Set
 argument_list|<
 name|PreemptionContainer
@@ -146,6 +182,7 @@ annotation|@
 name|Unstable
 DECL|method|setContainers (Set<PreemptionContainer> containers)
 specifier|public
+specifier|abstract
 name|void
 name|setContainers
 parameter_list|(
@@ -157,7 +194,7 @@ name|containers
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.protocolrecords
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 package|;
 end_package
 
@@ -84,20 +84,80 @@ name|Unstable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * A {@link PreemptionMessage} is part of the RM-AM protocol, and it is used by  * the RM to specify resources that the RM wants to reclaim from this  *<code>ApplicationMaster</code> (AM). The AM receives a {@link  * StrictPreemptionContract} message encoding which containers the platform may  * forcibly kill, granting it an opportunity to checkpoint state or adjust its  * execution plan. The message may also include a {@link PreemptionContract}  * granting the AM more latitude in selecting which resources to return to the  * cluster.  *  * The AM should decode both parts of the message. The {@link  * StrictPreemptionContract} specifies particular allocations that the RM  * requires back. The AM can checkpoint containers' state, adjust its execution  * plan to move the computation, or take no action and hope that conditions that  * caused the RM to ask for the container will change.  *  * In contrast, the {@link PreemptionContract} also includes a description of  * resources with a set of containers. If the AM releases containers matching  * that profile, then the containers enumerated in {@link  * PreemptionContract#getContainers()} may not be killed.  *  * Each preemption message reflects the RM's current understanding of the  * cluster state, so a request to return<emph>N</emph> containers may not  * reflect containers the AM is releasing, recently exited containers the RM has  * yet to learn about, or new containers allocated before the message was  * generated. Conversely, an RM may request a different profile of containers in  * subsequent requests.  *  * The policy enforced by the RM is part of the scheduler. Generally, only  * containers that have been requested consistently should be killed, but the  * details are not specified.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|interface|PreemptionMessage
+DECL|class|PreemptionMessage
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|PreemptionMessage
 block|{
+DECL|method|newInstance (StrictPreemptionContract set, PreemptionContract contract)
+specifier|public
+specifier|static
+name|PreemptionMessage
+name|newInstance
+parameter_list|(
+name|StrictPreemptionContract
+name|set
+parameter_list|,
+name|PreemptionContract
+name|contract
+parameter_list|)
+block|{
+name|PreemptionMessage
+name|message
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|PreemptionMessage
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|message
+operator|.
+name|setStrictContract
+argument_list|(
+name|set
+argument_list|)
+expr_stmt|;
+name|message
+operator|.
+name|setContract
+argument_list|(
+name|contract
+argument_list|)
+expr_stmt|;
+return|return
+name|message
+return|;
+block|}
 comment|/**    * @return Specific resources that may be killed by the    *<code>ResourceManager</code>    */
 annotation|@
 name|Public
@@ -105,6 +165,7 @@ annotation|@
 name|Evolving
 DECL|method|getStrictContract ()
 specifier|public
+specifier|abstract
 name|StrictPreemptionContract
 name|getStrictContract
 parameter_list|()
@@ -115,6 +176,7 @@ annotation|@
 name|Unstable
 DECL|method|setStrictContract (StrictPreemptionContract set)
 specifier|public
+specifier|abstract
 name|void
 name|setStrictContract
 parameter_list|(
@@ -129,6 +191,7 @@ annotation|@
 name|Evolving
 DECL|method|getContract ()
 specifier|public
+specifier|abstract
 name|PreemptionContract
 name|getContract
 parameter_list|()
@@ -139,6 +202,7 @@ annotation|@
 name|Unstable
 DECL|method|setContract (PreemptionContract contract)
 specifier|public
+specifier|abstract
 name|void
 name|setContract
 parameter_list|(
@@ -147,7 +211,7 @@ name|contract
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 
