@@ -30,7 +30,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
 import|;
 end_import
 
@@ -110,22 +110,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|Test
@@ -189,9 +173,9 @@ expr_stmt|;
 name|ApplicationId
 name|id
 init|=
-name|BuilderUtils
+name|ApplicationId
 operator|.
-name|newApplicationId
+name|newInstance
 argument_list|(
 literal|6384623l
 argument_list|,

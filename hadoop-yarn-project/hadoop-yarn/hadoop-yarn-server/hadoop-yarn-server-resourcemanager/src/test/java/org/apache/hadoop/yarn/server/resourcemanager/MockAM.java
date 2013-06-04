@@ -170,7 +170,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|FinalApplicationStatus
+name|ContainerId
 import|;
 end_import
 
@@ -188,7 +188,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerId
+name|FinalApplicationStatus
 import|;
 end_import
 
@@ -307,22 +307,6 @@ operator|.
 name|attempt
 operator|.
 name|RMAppAttemptState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
 import|;
 end_import
 
@@ -1003,9 +987,9 @@ block|{
 name|AllocateRequest
 name|req
 init|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attemptId
 argument_list|,

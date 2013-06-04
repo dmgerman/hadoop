@@ -152,9 +152,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|api
 operator|.
-name|BuilderUtils
+name|records
+operator|.
+name|ApplicationId
 import|;
 end_import
 
@@ -294,13 +296,13 @@ name|this
 operator|.
 name|applicationAttemptId
 operator|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
-name|BuilderUtils
+name|ApplicationId
 operator|.
-name|newApplicationId
+name|newInstance
 argument_list|(
 name|in
 operator|.

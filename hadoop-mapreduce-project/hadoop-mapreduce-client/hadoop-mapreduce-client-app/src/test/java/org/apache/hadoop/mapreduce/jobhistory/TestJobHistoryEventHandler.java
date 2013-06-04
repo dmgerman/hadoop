@@ -26,7 +26,7 @@ name|framework
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertTrue
 import|;
 end_import
 
@@ -38,7 +38,7 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|*
+name|any
 import|;
 end_import
 
@@ -50,7 +50,55 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|*
+name|mock
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|spy
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|times
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|verify
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|when
 import|;
 end_import
 
@@ -369,22 +417,6 @@ operator|.
 name|records
 operator|.
 name|ContainerId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
 import|;
 end_import
 
@@ -1975,9 +2007,9 @@ DECL|field|appId
 name|ApplicationId
 name|appId
 init|=
-name|BuilderUtils
+name|ApplicationId
 operator|.
-name|newApplicationId
+name|newInstance
 argument_list|(
 literal|200
 argument_list|,

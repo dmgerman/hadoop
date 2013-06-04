@@ -546,11 +546,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|server
 operator|.
-name|Service
+name|utils
 operator|.
-name|STATE
+name|BuilderUtils
 import|;
 end_import
 
@@ -564,9 +564,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|service
 operator|.
-name|BuilderUtils
+name|Service
+operator|.
+name|STATE
 import|;
 end_import
 

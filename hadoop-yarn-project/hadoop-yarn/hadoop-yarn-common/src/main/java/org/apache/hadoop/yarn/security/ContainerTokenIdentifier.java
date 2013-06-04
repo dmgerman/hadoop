@@ -222,22 +222,6 @@ name|Resource
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * TokenIdentifier for a container. Encodes {@link ContainerId},  * {@link Resource} needed by the container and the target NMs host-address.  *   */
 end_comment
@@ -641,9 +625,9 @@ block|{
 name|ApplicationId
 name|applicationId
 init|=
-name|BuilderUtils
+name|ApplicationId
 operator|.
-name|newApplicationId
+name|newInstance
 argument_list|(
 name|in
 operator|.
@@ -659,9 +643,9 @@ decl_stmt|;
 name|ApplicationAttemptId
 name|applicationAttemptId
 init|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
 name|applicationId
 argument_list|,
@@ -675,9 +659,9 @@ name|this
 operator|.
 name|containerId
 operator|=
-name|BuilderUtils
+name|ContainerId
 operator|.
-name|newContainerId
+name|newInstance
 argument_list|(
 name|applicationAttemptId
 argument_list|,
@@ -725,9 +709,9 @@ name|this
 operator|.
 name|resource
 operator|=
-name|BuilderUtils
+name|Resource
 operator|.
-name|newResource
+name|newInstance
 argument_list|(
 name|memory
 argument_list|,

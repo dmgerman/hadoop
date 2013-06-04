@@ -26,7 +26,19 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|*
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
@@ -51,6 +63,22 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|TestContainerId
 import|;
 end_import
 
@@ -166,7 +194,7 @@ block|{
 name|ContainerId
 name|id
 init|=
-name|BuilderUtils
+name|TestContainerId
 operator|.
 name|newContainerId
 argument_list|(

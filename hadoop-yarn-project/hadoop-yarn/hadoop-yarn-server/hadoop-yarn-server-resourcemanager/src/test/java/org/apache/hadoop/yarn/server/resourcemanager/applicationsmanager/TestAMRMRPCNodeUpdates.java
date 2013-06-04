@@ -24,6 +24,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|junit
 operator|.
 name|framework
@@ -292,22 +302,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|After
@@ -331,16 +325,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -658,9 +642,9 @@ comment|// allocate request returns no updated node
 name|AllocateRequest
 name|allocateRequest1
 init|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attempt1
 operator|.
@@ -719,9 +703,9 @@ expr_stmt|;
 comment|// allocate request returns updated node
 name|allocateRequest1
 operator|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attempt1
 operator|.
@@ -884,9 +868,9 @@ expr_stmt|;
 comment|// subsequent allocate request returns delta
 name|allocateRequest1
 operator|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attempt1
 operator|.
@@ -1022,9 +1006,9 @@ comment|// allocate request returns no updated node
 name|AllocateRequest
 name|allocateRequest2
 init|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attempt2
 operator|.
@@ -1079,9 +1063,9 @@ expr_stmt|;
 comment|// both AM's should get delta updated nodes
 name|allocateRequest1
 operator|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attempt1
 operator|.
@@ -1169,9 +1153,9 @@ argument_list|)
 expr_stmt|;
 name|allocateRequest2
 operator|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attempt2
 operator|.
@@ -1260,9 +1244,9 @@ expr_stmt|;
 comment|// subsequent allocate calls should return no updated nodes
 name|allocateRequest2
 operator|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|attempt2
 operator|.

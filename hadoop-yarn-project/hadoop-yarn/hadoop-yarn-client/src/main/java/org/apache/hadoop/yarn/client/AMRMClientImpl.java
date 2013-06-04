@@ -598,22 +598,6 @@ name|AbstractService
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
 begin_comment
 comment|// TODO check inputs for null etc. YARN-654
 end_comment
@@ -725,9 +709,9 @@ parameter_list|)
 block|{
 name|remoteRequest
 operator|=
-name|BuilderUtils
+name|ResourceRequest
 operator|.
-name|newResourceRequest
+name|newInstance
 argument_list|(
 name|priority
 argument_list|,
@@ -989,9 +973,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|api
 operator|.
-name|BuilderUtils
+name|records
+operator|.
+name|ResourceRequest
 operator|.
 name|ResourceRequestComparator
 argument_list|()
@@ -1401,9 +1387,9 @@ argument_list|()
 expr_stmt|;
 name|allocateRequest
 operator|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|appAttemptId
 argument_list|,

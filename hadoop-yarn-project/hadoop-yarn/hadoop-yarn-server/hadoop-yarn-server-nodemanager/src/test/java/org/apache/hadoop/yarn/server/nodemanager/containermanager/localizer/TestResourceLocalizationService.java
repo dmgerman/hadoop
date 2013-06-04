@@ -1588,7 +1588,7 @@ name|server
 operator|.
 name|utils
 operator|.
-name|YarnServerBuilderUtils
+name|BuilderUtils
 import|;
 end_import
 
@@ -1602,9 +1602,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|server
 operator|.
-name|BuilderUtils
+name|utils
+operator|.
+name|YarnServerBuilderUtils
 import|;
 end_import
 

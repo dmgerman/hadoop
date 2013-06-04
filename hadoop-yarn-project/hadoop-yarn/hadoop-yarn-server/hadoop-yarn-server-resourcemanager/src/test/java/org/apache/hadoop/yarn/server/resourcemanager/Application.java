@@ -767,9 +767,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|api
 operator|.
-name|BuilderUtils
+name|records
+operator|.
+name|ResourceRequest
 operator|.
 name|ResourceRequestComparator
 argument_list|()
@@ -1603,7 +1605,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|server
+operator|.
+name|utils
 operator|.
 name|BuilderUtils
 operator|.
@@ -1663,7 +1667,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|server
+operator|.
+name|utils
 operator|.
 name|BuilderUtils
 operator|.
@@ -2572,7 +2578,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|server
+operator|.
+name|utils
 operator|.
 name|BuilderUtils
 operator|.

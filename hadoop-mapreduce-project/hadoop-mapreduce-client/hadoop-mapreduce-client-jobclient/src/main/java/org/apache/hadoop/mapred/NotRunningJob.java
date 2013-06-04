@@ -948,22 +948,6 @@ name|RecordFactoryProvider
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
 begin_class
 DECL|class|NotRunningJob
 specifier|public

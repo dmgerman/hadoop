@@ -174,22 +174,6 @@ name|ApplicationId
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * ApplicationTokenIdentifier is the TokenIdentifier to be used by  * ApplicationMasters to authenticate to the ResourceManager.  */
 end_comment
@@ -353,9 +337,9 @@ decl_stmt|;
 name|ApplicationId
 name|applicationId
 init|=
-name|BuilderUtils
+name|ApplicationId
 operator|.
-name|newApplicationId
+name|newInstance
 argument_list|(
 name|clusterTimeStamp
 argument_list|,
@@ -366,9 +350,9 @@ name|this
 operator|.
 name|applicationAttemptId
 operator|=
-name|BuilderUtils
+name|ApplicationAttemptId
 operator|.
-name|newApplicationAttemptId
+name|newInstance
 argument_list|(
 name|applicationId
 argument_list|,

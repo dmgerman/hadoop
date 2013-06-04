@@ -480,22 +480,6 @@ name|RecordFactoryProvider
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Allocates containers locally. Doesn't allocate a real container;  * instead sends an allocated event for all requests.  */
 end_comment
@@ -707,9 +691,9 @@ block|{
 name|AllocateRequest
 name|allocateRequest
 init|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|this
 operator|.

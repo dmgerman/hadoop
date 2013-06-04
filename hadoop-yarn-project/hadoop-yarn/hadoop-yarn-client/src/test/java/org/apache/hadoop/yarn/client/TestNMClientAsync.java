@@ -350,7 +350,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Token
+name|NodeId
 import|;
 end_import
 
@@ -368,7 +368,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
+name|Token
 import|;
 end_import
 
@@ -451,22 +451,6 @@ operator|.
 name|ipc
 operator|.
 name|RPCUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
 import|;
 end_import
 
@@ -2946,9 +2930,9 @@ block|{
 name|ApplicationId
 name|appId
 init|=
-name|BuilderUtils
+name|ApplicationId
 operator|.
-name|newApplicationId
+name|newInstance
 argument_list|(
 name|System
 operator|.
@@ -3006,9 +2990,9 @@ name|class
 argument_list|)
 expr_stmt|;
 return|return
-name|BuilderUtils
+name|Container
 operator|.
-name|newContainer
+name|newInstance
 argument_list|(
 name|containerId
 argument_list|,

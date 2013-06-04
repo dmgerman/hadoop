@@ -150,26 +150,124 @@ name|ResourceRequest
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|AllocateRequest
+DECL|class|AllocateRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|AllocateRequest
 block|{
+DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased)
+specifier|public
+specifier|static
+name|AllocateRequest
+name|newInstance
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|,
+name|int
+name|responseID
+parameter_list|,
+name|float
+name|appProgress
+parameter_list|,
+name|List
+argument_list|<
+name|ResourceRequest
+argument_list|>
+name|resourceAsk
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|containersToBeReleased
+parameter_list|)
+block|{
+name|AllocateRequest
+name|allocateRequest
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|AllocateRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|allocateRequest
+operator|.
+name|setApplicationAttemptId
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
+name|allocateRequest
+operator|.
+name|setResponseId
+argument_list|(
+name|responseID
+argument_list|)
+expr_stmt|;
+name|allocateRequest
+operator|.
+name|setProgress
+argument_list|(
+name|appProgress
+argument_list|)
+expr_stmt|;
+name|allocateRequest
+operator|.
+name|setAskList
+argument_list|(
+name|resourceAsk
+argument_list|)
+expr_stmt|;
+name|allocateRequest
+operator|.
+name|setReleaseList
+argument_list|(
+name|containersToBeReleased
+argument_list|)
+expr_stmt|;
+return|return
+name|allocateRequest
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getApplicationAttemptId ()
+specifier|public
+specifier|abstract
 name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
@@ -180,6 +278,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
+specifier|public
+specifier|abstract
 name|void
 name|setApplicationAttemptId
 parameter_list|(
@@ -193,6 +293,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getResponseId ()
+specifier|public
+specifier|abstract
 name|int
 name|getResponseId
 parameter_list|()
@@ -203,6 +305,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setResponseId (int id)
+specifier|public
+specifier|abstract
 name|void
 name|setResponseId
 parameter_list|(
@@ -216,6 +320,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getProgress ()
+specifier|public
+specifier|abstract
 name|float
 name|getProgress
 parameter_list|()
@@ -226,6 +332,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setProgress (float progress)
+specifier|public
+specifier|abstract
 name|void
 name|setProgress
 parameter_list|(
@@ -239,6 +347,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getAskList ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ResourceRequest
@@ -252,6 +362,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setAskList (List<ResourceRequest> resourceRequests)
+specifier|public
+specifier|abstract
 name|void
 name|setAskList
 parameter_list|(
@@ -268,6 +380,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getReleaseList ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ContainerId
@@ -281,6 +395,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setReleaseList (List<ContainerId> releaseContainers)
+specifier|public
+specifier|abstract
 name|void
 name|setReleaseList
 parameter_list|(
@@ -292,7 +408,7 @@ name|releaseContainers
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

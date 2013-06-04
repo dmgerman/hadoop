@@ -216,20 +216,149 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> know that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|AllocateResponse
+DECL|class|AllocateResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|AllocateResponse
 block|{
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, boolean reboot, int numClusterNodes, PreemptionMessage preempt)
+specifier|public
+specifier|static
+name|AllocateResponse
+name|newInstance
+parameter_list|(
+name|int
+name|responseId
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerStatus
+argument_list|>
+name|completedContainers
+parameter_list|,
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|allocatedContainers
+parameter_list|,
+name|List
+argument_list|<
+name|NodeReport
+argument_list|>
+name|updatedNodes
+parameter_list|,
+name|Resource
+name|availResources
+parameter_list|,
+name|boolean
+name|reboot
+parameter_list|,
+name|int
+name|numClusterNodes
+parameter_list|,
+name|PreemptionMessage
+name|preempt
+parameter_list|)
+block|{
+name|AllocateResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|AllocateResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setNumClusterNodes
+argument_list|(
+name|numClusterNodes
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setResponseId
+argument_list|(
+name|responseId
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setCompletedContainersStatuses
+argument_list|(
+name|completedContainers
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setAllocatedContainers
+argument_list|(
+name|allocatedContainers
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setUpdatedNodes
+argument_list|(
+name|updatedNodes
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setAvailableResources
+argument_list|(
+name|availResources
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setReboot
+argument_list|(
+name|reboot
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setPreemptionMessage
+argument_list|(
+name|preempt
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Should the<code>ApplicationMaster</code> reboot for being horribly    * out-of-sync with the<code>ResourceManager</code> as deigned by    * {@link #getResponseId()}?    *    * @return<code>true</code> if the<code>ApplicationMaster</code> should    *         reboot,<code>false</code> otherwise    */
 annotation|@
 name|Public
@@ -237,6 +366,7 @@ annotation|@
 name|Stable
 DECL|method|getReboot ()
 specifier|public
+specifier|abstract
 name|boolean
 name|getReboot
 parameter_list|()
@@ -247,6 +377,7 @@ annotation|@
 name|Unstable
 DECL|method|setReboot (boolean reboot)
 specifier|public
+specifier|abstract
 name|void
 name|setReboot
 parameter_list|(
@@ -261,6 +392,7 @@ annotation|@
 name|Stable
 DECL|method|getResponseId ()
 specifier|public
+specifier|abstract
 name|int
 name|getResponseId
 parameter_list|()
@@ -271,6 +403,7 @@ annotation|@
 name|Unstable
 DECL|method|setResponseId (int responseId)
 specifier|public
+specifier|abstract
 name|void
 name|setResponseId
 parameter_list|(
@@ -285,6 +418,7 @@ annotation|@
 name|Stable
 DECL|method|getAllocatedContainers ()
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|Container
@@ -299,6 +433,7 @@ annotation|@
 name|Stable
 DECL|method|setAllocatedContainers (List<Container> containers)
 specifier|public
+specifier|abstract
 name|void
 name|setAllocatedContainers
 parameter_list|(
@@ -316,6 +451,7 @@ annotation|@
 name|Stable
 DECL|method|getAvailableResources ()
 specifier|public
+specifier|abstract
 name|Resource
 name|getAvailableResources
 parameter_list|()
@@ -326,6 +462,7 @@ annotation|@
 name|Unstable
 DECL|method|setAvailableResources (Resource limit)
 specifier|public
+specifier|abstract
 name|void
 name|setAvailableResources
 parameter_list|(
@@ -340,6 +477,7 @@ annotation|@
 name|Stable
 DECL|method|getCompletedContainersStatuses ()
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ContainerStatus
@@ -353,6 +491,7 @@ annotation|@
 name|Unstable
 DECL|method|setCompletedContainersStatuses (List<ContainerStatus> containers)
 specifier|public
+specifier|abstract
 name|void
 name|setCompletedContainersStatuses
 parameter_list|(
@@ -370,6 +509,7 @@ annotation|@
 name|Unstable
 DECL|method|getUpdatedNodes ()
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|NodeReport
@@ -383,6 +523,7 @@ annotation|@
 name|Unstable
 DECL|method|setUpdatedNodes (final List<NodeReport> updatedNodes)
 specifier|public
+specifier|abstract
 name|void
 name|setUpdatedNodes
 parameter_list|(
@@ -401,6 +542,7 @@ annotation|@
 name|Stable
 DECL|method|getNumClusterNodes ()
 specifier|public
+specifier|abstract
 name|int
 name|getNumClusterNodes
 parameter_list|()
@@ -411,6 +553,7 @@ annotation|@
 name|Unstable
 DECL|method|setNumClusterNodes (int numNodes)
 specifier|public
+specifier|abstract
 name|void
 name|setNumClusterNodes
 parameter_list|(
@@ -425,6 +568,7 @@ annotation|@
 name|Evolving
 DECL|method|getPreemptionMessage ()
 specifier|public
+specifier|abstract
 name|PreemptionMessage
 name|getPreemptionMessage
 parameter_list|()
@@ -435,6 +579,7 @@ annotation|@
 name|Unstable
 DECL|method|setPreemptionMessage (PreemptionMessage request)
 specifier|public
+specifier|abstract
 name|void
 name|setPreemptionMessage
 parameter_list|(
@@ -448,6 +593,7 @@ annotation|@
 name|Stable
 DECL|method|setNMTokens (List<Token> nmTokens)
 specifier|public
+specifier|abstract
 name|void
 name|setNMTokens
 parameter_list|(
@@ -465,6 +611,7 @@ annotation|@
 name|Stable
 DECL|method|getNMTokens ()
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|Token
@@ -473,7 +620,7 @@ name|getNMTokens
 parameter_list|()
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

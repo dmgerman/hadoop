@@ -847,9 +847,9 @@ block|{
 name|NodeId
 name|nodeId
 init|=
-name|BuilderUtils
+name|NodeId
 operator|.
-name|newNodeId
+name|newInstance
 argument_list|(
 name|parts
 index|[

@@ -414,22 +414,6 @@ name|RecordFactoryProvider
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|BuilderUtils
-import|;
-end_import
-
 begin_comment
 comment|/**  * Keeps the data structures to send container requests to RM.  */
 end_comment
@@ -554,9 +538,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|api
 operator|.
-name|BuilderUtils
+name|records
+operator|.
+name|ResourceRequest
 operator|.
 name|ResourceRequestComparator
 argument_list|()
@@ -1004,9 +990,9 @@ block|{
 name|AllocateRequest
 name|allocateRequest
 init|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|applicationAttemptId
 argument_list|,

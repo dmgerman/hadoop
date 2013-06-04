@@ -44,7 +44,7 @@ name|fair
 operator|.
 name|FairSchedulerConfiguration
 operator|.
-name|*
+name|parseResourceConfigValue
 import|;
 end_import
 
@@ -70,7 +70,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|server
+operator|.
+name|utils
 operator|.
 name|BuilderUtils
 import|;

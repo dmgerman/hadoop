@@ -86,9 +86,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|api
 operator|.
-name|BuilderUtils
+name|records
+operator|.
+name|ApplicationId
 import|;
 end_import
 
@@ -935,9 +937,9 @@ name|MRBuilderUtils
 operator|.
 name|newJobId
 argument_list|(
-name|BuilderUtils
+name|ApplicationId
 operator|.
-name|newApplicationId
+name|newInstance
 argument_list|(
 name|clusterTimestamp
 argument_list|,

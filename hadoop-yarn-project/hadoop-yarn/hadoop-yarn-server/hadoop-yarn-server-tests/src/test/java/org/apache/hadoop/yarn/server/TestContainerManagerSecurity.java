@@ -862,7 +862,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|server
+operator|.
+name|utils
 operator|.
 name|BuilderUtils
 import|;
@@ -3121,9 +3123,9 @@ expr_stmt|;
 name|AllocateRequest
 name|allocateRequest
 init|=
-name|BuilderUtils
+name|AllocateRequest
 operator|.
-name|newAllocateRequest
+name|newInstance
 argument_list|(
 name|BuilderUtils
 operator|.
