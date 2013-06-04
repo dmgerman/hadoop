@@ -500,7 +500,7 @@ name|assertFalse
 argument_list|(
 name|response
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -606,7 +606,7 @@ name|assertTrue
 argument_list|(
 name|response
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -3253,7 +3253,7 @@ if|if
 condition|(
 name|response
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 condition|)
 block|{

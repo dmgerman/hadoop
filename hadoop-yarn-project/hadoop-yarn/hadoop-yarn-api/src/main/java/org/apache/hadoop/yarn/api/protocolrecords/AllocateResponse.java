@@ -265,7 +265,7 @@ specifier|abstract
 class|class
 name|AllocateResponse
 block|{
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, boolean reboot, int numClusterNodes, PreemptionMessage preempt)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, boolean resync, int numClusterNodes, PreemptionMessage preempt)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -296,7 +296,7 @@ name|Resource
 name|availResources
 parameter_list|,
 name|boolean
-name|reboot
+name|resync
 parameter_list|,
 name|int
 name|numClusterNodes
@@ -361,9 +361,9 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setReboot
+name|setResync
 argument_list|(
-name|reboot
+name|resync
 argument_list|)
 expr_stmt|;
 name|response
@@ -377,30 +377,30 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Should the<code>ApplicationMaster</code> reboot for being horribly    * out-of-sync with the<code>ResourceManager</code> as deigned by    * {@link #getResponseId()}?    *    * @return<code>true</code> if the<code>ApplicationMaster</code> should    *         reboot,<code>false</code> otherwise    */
+comment|/**    * Should the<code>ApplicationMaster</code> take action because of being     * out-of-sync with the<code>ResourceManager</code> as deigned by    * {@link #getResponseId()}    * This can be due to application errors or because the ResourceManager     * has restarted. The action to be taken by the<code>ApplicationMaster</code>     * is to shutdown without unregistering with the<code>ResourceManager</code>.     * The ResourceManager will start a new attempt. If the application is already     * done when it gets the resync command, then it may choose to shutdown after     * unregistering in which case the ResourceManager will not start a new attempt.     *    * @return<code>true</code> if the<code>ApplicationMaster</code> should    *         take action,<code>false</code> otherwise    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getReboot ()
+DECL|method|getResync ()
 specifier|public
 specifier|abstract
 name|boolean
-name|getReboot
+name|getResync
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setReboot (boolean reboot)
+DECL|method|setResync (boolean value)
 specifier|public
 specifier|abstract
 name|void
-name|setReboot
+name|setResync
 parameter_list|(
 name|boolean
-name|reboot
+name|value
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<em>last response id</em>.    * @return<em>last response id</em>    */

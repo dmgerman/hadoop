@@ -954,11 +954,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getReboot ()
+DECL|method|getResync ()
 specifier|public
 specifier|synchronized
 name|boolean
-name|getReboot
+name|getResync
 parameter_list|()
 block|{
 name|AllocateResponseProtoOrBuilder
@@ -974,21 +974,21 @@ return|return
 operator|(
 name|p
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 operator|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setReboot (boolean reboot)
+DECL|method|setResync (boolean resync)
 specifier|public
 specifier|synchronized
 name|void
-name|setReboot
+name|setResync
 parameter_list|(
 name|boolean
-name|reboot
+name|resync
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -996,10 +996,10 @@ argument_list|()
 expr_stmt|;
 name|builder
 operator|.
-name|setReboot
+name|setResync
 argument_list|(
 operator|(
-name|reboot
+name|resync
 operator|)
 argument_list|)
 expr_stmt|;

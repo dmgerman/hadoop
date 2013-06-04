@@ -1073,11 +1073,11 @@ name|AllocateResponse
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|reboot
+DECL|field|resync
 specifier|private
 specifier|final
 name|AllocateResponse
-name|reboot
+name|resync
 init|=
 name|recordFactory
 operator|.
@@ -1132,9 +1132,9 @@ name|scheduler
 expr_stmt|;
 name|this
 operator|.
-name|reboot
+name|resync
 operator|.
-name|setReboot
+name|setResync
 argument_list|(
 literal|true
 argument_list|)
@@ -1887,7 +1887,7 @@ name|appAttemptId
 argument_list|)
 expr_stmt|;
 return|return
-name|reboot
+name|resync
 return|;
 block|}
 if|if
@@ -1941,7 +1941,7 @@ comment|// Oh damn! Sending reboot isn't enough. RM state is corrupted. TODO:
 comment|// Reboot is not useful since after AM reboots, it will send register and
 comment|// get an exception. Might as well throw an exception here.
 return|return
-name|reboot
+name|resync
 return|;
 block|}
 comment|// Allow only one thread in AM to do heartbeat at a time.
@@ -2337,7 +2337,7 @@ name|message
 argument_list|)
 expr_stmt|;
 return|return
-name|reboot
+name|resync
 return|;
 block|}
 name|allocateResponse

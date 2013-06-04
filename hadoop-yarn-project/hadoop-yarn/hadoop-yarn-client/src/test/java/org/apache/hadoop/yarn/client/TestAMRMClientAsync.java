@@ -1255,7 +1255,7 @@ argument_list|)
 decl_stmt|;
 name|rebootResponse
 operator|.
-name|setReboot
+name|setResync
 argument_list|(
 literal|true
 argument_list|)

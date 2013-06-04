@@ -1215,7 +1215,7 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1319,7 +1319,7 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 argument_list|)
 expr_stmt|;

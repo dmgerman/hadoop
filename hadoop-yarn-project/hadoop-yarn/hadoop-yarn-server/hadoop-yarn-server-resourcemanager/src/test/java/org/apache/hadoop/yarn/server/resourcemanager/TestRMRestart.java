@@ -1877,7 +1877,7 @@ name|assertTrue
 argument_list|(
 name|allocResponse
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 argument_list|)
 expr_stmt|;

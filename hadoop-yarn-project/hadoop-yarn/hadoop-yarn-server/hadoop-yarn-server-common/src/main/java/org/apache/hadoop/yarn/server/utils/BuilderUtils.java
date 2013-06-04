@@ -2855,7 +2855,7 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setReboot
+name|setResync
 argument_list|(
 name|reboot
 argument_list|)

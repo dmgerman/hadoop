@@ -820,7 +820,7 @@ if|if
 condition|(
 name|allocateResponse
 operator|.
-name|getReboot
+name|getResync
 argument_list|()
 condition|)
 block|{
