@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.protocolrecords
+DECL|package|org.apache.hadoop.yarn.api.records
 package|package
 name|org
 operator|.
@@ -16,7 +16,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 package|;
 end_package
 
@@ -96,27 +96,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|PreemptionContract
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ResourceRequest
+name|AllocateRequest
 import|;
 end_import
 
