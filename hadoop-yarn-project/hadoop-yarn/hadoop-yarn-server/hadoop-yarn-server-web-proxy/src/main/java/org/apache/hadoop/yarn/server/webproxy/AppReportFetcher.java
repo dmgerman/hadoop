@@ -198,7 +198,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -414,7 +414,7 @@ operator|=
 name|applicationsManager
 expr_stmt|;
 block|}
-comment|/**    * Get a report for the specified app.    * @param appId the id of the application to get.     * @return the ApplicationReport for that app.    * @throws YarnRemoteException on any error.    * @throws IOException    */
+comment|/**    * Get a report for the specified app.    * @param appId the id of the application to get.     * @return the ApplicationReport for that app.    * @throws YarnException on any error.    * @throws IOException    */
 DECL|method|getApplicationReport (ApplicationId appId)
 specifier|public
 name|ApplicationReport
@@ -424,7 +424,7 @@ name|ApplicationId
 name|appId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

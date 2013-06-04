@@ -690,7 +690,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -3211,7 +3211,7 @@ specifier|static
 class|class
 name|ContainerException
 extends|extends
-name|YarnRemoteException
+name|YarnException
 block|{
 DECL|method|ContainerException (String message)
 specifier|public
@@ -3231,7 +3231,7 @@ annotation|@
 name|Override
 DECL|method|getCause ()
 specifier|public
-name|YarnRemoteException
+name|YarnException
 name|getCause
 parameter_list|()
 block|{

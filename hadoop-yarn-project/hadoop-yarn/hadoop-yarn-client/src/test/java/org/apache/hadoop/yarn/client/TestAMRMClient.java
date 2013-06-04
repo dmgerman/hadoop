@@ -552,7 +552,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1170,7 +1170,7 @@ name|void
 name|testAMRMClientMatchingFit
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1850,7 +1850,7 @@ name|void
 name|testAMRMClientMatchStorage
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -2666,7 +2666,7 @@ name|void
 name|testAMRMClient
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -2773,7 +2773,7 @@ argument_list|>
 name|amClient
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

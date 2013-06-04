@@ -280,7 +280,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1123,7 +1123,7 @@ name|String
 name|user
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|super
 operator|.
@@ -2915,7 +2915,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -3046,7 +3046,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{

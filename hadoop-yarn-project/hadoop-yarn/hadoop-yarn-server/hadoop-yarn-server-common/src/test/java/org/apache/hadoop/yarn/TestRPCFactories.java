@@ -98,7 +98,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -114,7 +114,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -355,7 +355,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
@@ -527,7 +527,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
@@ -547,7 +547,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
@@ -591,7 +591,7 @@ name|RegisterNodeManagerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -611,7 +611,7 @@ name|NodeHeartbeatRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

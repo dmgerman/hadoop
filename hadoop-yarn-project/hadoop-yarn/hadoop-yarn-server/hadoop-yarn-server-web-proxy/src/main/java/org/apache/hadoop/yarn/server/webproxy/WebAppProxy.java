@@ -126,7 +126,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -429,7 +429,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -619,7 +619,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Could not start proxy web server"
 argument_list|,
@@ -673,7 +673,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Error stopping proxy web server"
 argument_list|,

@@ -584,7 +584,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -2340,7 +2340,7 @@ name|UserGroupInformation
 name|getRemoteUgi
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|remoteUgi
@@ -2466,7 +2466,7 @@ name|ContainerTokenIdentifier
 name|containerTokenIdentifier
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 if|if
 condition|(
@@ -2515,7 +2515,7 @@ name|containerTokenIdentifier
 return|;
 block|}
 block|}
-comment|/**    * Authorize the request.    *     * @param containerIDStr    *          of the container    * @param launchContext    *          passed if verifying the startContainer, null otherwise.    * @param remoteUgi    *          ugi corresponding to the remote end making the api-call    * @throws YarnRemoteException    */
+comment|/**    * Authorize the request.    *     * @param containerIDStr    *          of the container    * @param launchContext    *          passed if verifying the startContainer, null otherwise.    * @param remoteUgi    *          ugi corresponding to the remote end making the api-call    * @throws YarnException    */
 annotation|@
 name|Private
 annotation|@
@@ -2538,7 +2538,7 @@ name|ContainerTokenIdentifier
 name|tokenId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|boolean
 name|unauthorized
@@ -2748,7 +2748,7 @@ name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -3314,7 +3314,7 @@ name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -3497,7 +3497,7 @@ name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

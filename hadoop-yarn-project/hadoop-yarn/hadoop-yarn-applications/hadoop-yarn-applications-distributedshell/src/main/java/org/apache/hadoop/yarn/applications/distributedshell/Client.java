@@ -690,7 +690,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1798,7 +1798,7 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Main run function for the client    * @return true if application completed successfully    * @throws IOException    * @throws YarnRemoteException    */
+comment|/**    * Main run function for the client    * @return true if application completed successfully    * @throws IOException    * @throws YarnException    */
 DECL|method|run ()
 specifier|public
 name|boolean
@@ -1807,7 +1807,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|LOG
 operator|.
@@ -3234,7 +3234,7 @@ name|appId
 argument_list|)
 return|;
 block|}
-comment|/**    * Monitor the submitted application for completion.     * Kill application if time expires.     * @param appId Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Monitor the submitted application for completion.     * Kill application if time expires.     * @param appId Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnException    * @throws IOException    */
 DECL|method|monitorApplication (ApplicationId appId)
 specifier|private
 name|boolean
@@ -3244,7 +3244,7 @@ name|ApplicationId
 name|appId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -3529,7 +3529,7 @@ return|;
 block|}
 block|}
 block|}
-comment|/**    * Kill a submitted application by sending a call to the ASM    * @param appId Application Id to be killed.     * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Kill a submitted application by sending a call to the ASM    * @param appId Application Id to be killed.     * @throws YarnException    * @throws IOException    */
 DECL|method|forceKillApplication (ApplicationId appId)
 specifier|private
 name|void
@@ -3539,7 +3539,7 @@ name|ApplicationId
 name|appId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

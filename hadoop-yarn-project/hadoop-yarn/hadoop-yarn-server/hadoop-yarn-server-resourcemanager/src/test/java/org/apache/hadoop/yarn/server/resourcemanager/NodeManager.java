@@ -432,7 +432,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -822,7 +822,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|this
 operator|.
@@ -1140,7 +1140,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|NodeStatus
 name|nodeStatus
@@ -1225,7 +1225,7 @@ name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|Token
 name|containerToken
@@ -1569,7 +1569,7 @@ name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|ContainerId
 name|containerID
@@ -1861,7 +1861,7 @@ name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|ContainerId
 name|containerId

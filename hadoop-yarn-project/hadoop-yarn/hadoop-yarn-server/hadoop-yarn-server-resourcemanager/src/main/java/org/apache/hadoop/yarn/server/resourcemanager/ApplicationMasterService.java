@@ -584,7 +584,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1309,7 +1309,7 @@ name|ApplicationAttemptId
 name|appAttemptID
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 if|if
 condition|(
@@ -1439,7 +1439,7 @@ name|RegisterApplicationMasterRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1701,7 +1701,7 @@ name|FinishApplicationMasterRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1833,7 +1833,7 @@ name|AllocateRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

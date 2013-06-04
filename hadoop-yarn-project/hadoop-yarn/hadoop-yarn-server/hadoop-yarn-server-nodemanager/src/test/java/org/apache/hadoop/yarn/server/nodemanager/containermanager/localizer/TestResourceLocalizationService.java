@@ -872,7 +872,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -7566,7 +7566,7 @@ operator|.
 name|newSerializedException
 argument_list|(
 operator|new
-name|YarnRemoteException
+name|YarnException
 argument_list|(
 literal|"test"
 argument_list|)

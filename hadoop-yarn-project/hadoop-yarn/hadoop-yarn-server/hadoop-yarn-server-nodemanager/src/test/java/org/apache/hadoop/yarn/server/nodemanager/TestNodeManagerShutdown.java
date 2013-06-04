@@ -568,7 +568,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -918,7 +918,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|NodeManager
 name|nm
@@ -1137,7 +1137,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|File
 name|scriptFile

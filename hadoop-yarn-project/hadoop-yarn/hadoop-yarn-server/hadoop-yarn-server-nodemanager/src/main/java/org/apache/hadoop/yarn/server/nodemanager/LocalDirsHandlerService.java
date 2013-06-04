@@ -204,7 +204,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -353,7 +353,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|YarnException
+name|YarnRuntimeException
 block|{
 name|localDirs
 operator|=
@@ -551,7 +551,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unable to get the local filesystem"
 argument_list|,
@@ -1378,7 +1378,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|paths
 index|[
@@ -1412,7 +1412,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|paths
 index|[

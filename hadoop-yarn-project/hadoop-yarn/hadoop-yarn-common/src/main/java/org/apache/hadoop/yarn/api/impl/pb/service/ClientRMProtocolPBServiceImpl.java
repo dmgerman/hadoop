@@ -930,7 +930,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1361,7 +1361,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1439,7 +1439,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1517,7 +1517,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1595,7 +1595,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1673,7 +1673,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1751,7 +1751,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1829,7 +1829,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1907,7 +1907,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1985,7 +1985,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2063,7 +2063,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2141,7 +2141,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2219,7 +2219,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{

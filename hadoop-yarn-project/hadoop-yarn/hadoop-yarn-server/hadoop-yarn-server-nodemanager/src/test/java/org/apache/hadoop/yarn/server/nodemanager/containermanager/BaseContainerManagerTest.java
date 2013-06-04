@@ -336,7 +336,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1386,7 +1386,7 @@ name|ContainerTokenIdentifier
 name|tokenId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// do nothing
 block|}
@@ -1521,7 +1521,7 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1558,7 +1558,7 @@ parameter_list|)
 throws|throws
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

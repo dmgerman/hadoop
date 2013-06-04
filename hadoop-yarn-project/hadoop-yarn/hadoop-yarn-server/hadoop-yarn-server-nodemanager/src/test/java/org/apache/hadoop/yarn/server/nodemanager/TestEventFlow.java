@@ -290,7 +290,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -585,7 +585,7 @@ name|InterruptedException
 throws|,
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|FileContext
 name|localFS

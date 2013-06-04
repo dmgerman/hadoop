@@ -32,7 +32,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -46,7 +46,7 @@ specifier|public
 class|class
 name|NMNotYetReadyException
 extends|extends
-name|YarnException
+name|YarnRuntimeException
 block|{
 DECL|field|serialVersionUID
 specifier|private

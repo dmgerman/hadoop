@@ -93,7 +93,7 @@ operator|new
 name|YarnUncaughtExceptionHandler
 argument_list|()
 decl_stmt|;
-comment|/**    * Throw {@code YarnException} inside thread and    * check {@code YarnUncaughtExceptionHandler} instance    *    * @throws InterruptedException    */
+comment|/**    * Throw {@code YarnRuntimeException} inside thread and    * check {@code YarnUncaughtExceptionHandler} instance    *    * @throws InterruptedException    */
 annotation|@
 name|Test
 DECL|method|testUncaughtExceptionHandlerWithRuntimeException ()
@@ -114,11 +114,11 @@ name|exHandler
 argument_list|)
 decl_stmt|;
 specifier|final
-name|YarnException
+name|YarnRuntimeException
 name|yarnException
 init|=
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"test-yarn-runtime-exception"
 argument_list|)

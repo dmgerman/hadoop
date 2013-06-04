@@ -644,7 +644,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1108,7 +1108,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|LOG
 operator|.
@@ -1401,7 +1401,7 @@ name|request
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This tests a malice user getting a proper token but then messing with it by    * tampering with containerID/Resource etc.. His/her containers should be    * rejected.    *     * @throws IOException    * @throws InterruptedException    * @throws YarnRemoteException    */
+comment|/**    * This tests a malice user getting a proper token but then messing with it by    * tampering with containerID/Resource etc.. His/her containers should be    * rejected.    *     * @throws IOException    * @throws InterruptedException    * @throws YarnException    */
 DECL|method|testMaliceUser ()
 specifier|private
 name|void
@@ -1412,7 +1412,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|LOG
 operator|.
@@ -1937,7 +1937,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2026,7 +2026,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|LOG
 operator|.
@@ -2534,7 +2534,7 @@ name|IOException
 throws|,
 name|UnsupportedFileSystemException
 throws|,
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|InterruptedException
 block|{
@@ -3068,7 +3068,7 @@ name|ApplicationId
 name|appID
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|InterruptedException
 throws|,

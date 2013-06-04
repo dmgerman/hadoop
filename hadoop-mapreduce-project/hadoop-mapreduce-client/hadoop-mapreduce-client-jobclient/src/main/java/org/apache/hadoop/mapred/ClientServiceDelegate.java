@@ -774,7 +774,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -862,7 +862,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1330,7 +1330,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e2
 parameter_list|)
 block|{
@@ -1748,7 +1748,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e1
 argument_list|)
@@ -1768,7 +1768,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e1
 parameter_list|)
 block|{
@@ -1827,7 +1827,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -1835,7 +1835,7 @@ throw|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2175,7 +2175,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -2189,7 +2189,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Method name mismatch"
 argument_list|,
@@ -2247,7 +2247,7 @@ name|InvocationTargetException
 name|e
 parameter_list|)
 block|{
-comment|// Will not throw out YarnRemoteException anymore
+comment|// Will not throw out YarnException anymore
 name|LOG
 operator|.
 name|debug

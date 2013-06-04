@@ -508,7 +508,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -869,12 +869,12 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
 throw|;
-comment|// FIXME? YarnException is "for runtime exceptions only"
+comment|// FIXME? YarnRuntimeException is "for runtime exceptions only"
 block|}
 block|}
 comment|/*    * Uber-AM lifecycle/ordering ("normal" case):    *    * - [somebody] sends TA_ASSIGNED    *   - handled by ContainerAssignedTransition (TaskAttemptImpl.java)    *     - creates "remoteTask" for us == real Task    *     - sends CONTAINER_REMOTE_LAUNCH    *     - TA: UNASSIGNED -> ASSIGNED    * - CONTAINER_REMOTE_LAUNCH handled by LocalContainerLauncher (us)    *   - sucks "remoteTask" out of TaskAttemptImpl via getRemoteTask()    *   - sends TA_CONTAINER_LAUNCHED    *     [[ elsewhere...    *       - TA_CONTAINER_LAUNCHED handled by LaunchedContainerTransition    *         - registers "remoteTask" with TaskAttemptListener (== umbilical)    *         - NUKES "remoteTask"    *         - sends T_ATTEMPT_LAUNCHED (Task: SCHEDULED -> RUNNING)    *         - TA: ASSIGNED -> RUNNING    *     ]]    *   - runs Task (runSubMap() or runSubReduce())    *     - TA can safely send TA_UPDATE since in RUNNING state    */

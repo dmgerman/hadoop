@@ -642,7 +642,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -1739,7 +1739,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -3233,7 +3233,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Could not contact RM after "
 operator|+
@@ -3282,7 +3282,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Resource Manager doesn't recognize AttemptId: "
 operator|+

@@ -522,7 +522,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -674,7 +674,7 @@ name|void
 name|setup
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1179,7 +1179,7 @@ name|void
 name|testNMClient
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1238,7 +1238,7 @@ name|int
 name|num
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1491,7 +1491,7 @@ argument_list|>
 name|containers
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1548,7 +1548,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1600,7 +1600,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1694,7 +1694,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1755,7 +1755,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1837,7 +1837,7 @@ name|int
 name|exitStatus
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

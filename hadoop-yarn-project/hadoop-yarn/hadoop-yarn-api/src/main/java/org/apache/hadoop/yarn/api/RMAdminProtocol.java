@@ -54,7 +54,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -291,7 +291,7 @@ name|RefreshQueuesRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
@@ -304,7 +304,7 @@ name|RefreshNodesRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
@@ -317,7 +317,7 @@ name|RefreshSuperUserGroupsConfigurationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
@@ -330,7 +330,7 @@ name|RefreshUserToGroupsMappingsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
@@ -343,7 +343,7 @@ name|RefreshAdminAclsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
@@ -356,7 +356,7 @@ name|RefreshServiceAclsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;

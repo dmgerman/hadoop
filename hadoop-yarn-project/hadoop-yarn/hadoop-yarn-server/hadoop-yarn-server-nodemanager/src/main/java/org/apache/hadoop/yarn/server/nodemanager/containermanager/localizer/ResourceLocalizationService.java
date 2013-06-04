@@ -622,7 +622,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -1865,7 +1865,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Failed to access local fs"
 argument_list|)
@@ -1917,7 +1917,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|YarnConfiguration
 operator|.
@@ -2155,7 +2155,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Failed to initialize LocalizationService"
 argument_list|,
@@ -2580,7 +2580,7 @@ break|break;
 default|default:
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unknown localization event: "
 operator|+

@@ -420,7 +420,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -976,7 +976,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|ApplicationSubmissionContext
 name|context
@@ -1412,7 +1412,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|Set
 argument_list|<
@@ -1930,7 +1930,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|int
 name|numContainers
@@ -2033,7 +2033,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|assign
 argument_list|(
@@ -2063,7 +2063,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 for|for
 control|(

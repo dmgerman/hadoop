@@ -186,7 +186,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -400,7 +400,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -727,7 +727,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Cannot call stop from callback handler thread!"
 argument_list|)
@@ -854,7 +854,7 @@ name|capability
 argument_list|)
 return|;
 block|}
-comment|/**    * Registers this application master with the resource manager. On successful    * registration, starts the heartbeating thread.    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Registers this application master with the resource manager. On successful    * registration, starts the heartbeating thread.    * @throws YarnException    * @throws IOException    */
 DECL|method|registerApplicationMaster ( String appHostName, int appHostPort, String appTrackingUrl)
 specifier|public
 name|RegisterApplicationMasterResponse
@@ -870,7 +870,7 @@ name|String
 name|appTrackingUrl
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -897,7 +897,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnException    * @throws IOException    */
 DECL|method|unregisterApplicationMaster (FinalApplicationStatus appStatus, String appMessage, String appTrackingUrl)
 specifier|public
 name|void
@@ -913,7 +913,7 @@ name|String
 name|appTrackingUrl
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1083,7 +1083,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|ex
 parameter_list|)
 block|{

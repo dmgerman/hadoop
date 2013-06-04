@@ -19,10 +19,10 @@ package|;
 end_package
 
 begin_class
-DECL|class|YarnRemoteException
+DECL|class|YarnException
 specifier|public
 class|class
-name|YarnRemoteException
+name|YarnException
 extends|extends
 name|Exception
 block|{
@@ -35,18 +35,18 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|YarnRemoteException ()
+DECL|method|YarnException ()
 specifier|public
-name|YarnRemoteException
+name|YarnException
 parameter_list|()
 block|{
 name|super
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|YarnRemoteException (String message)
+DECL|method|YarnException (String message)
 specifier|public
-name|YarnRemoteException
+name|YarnException
 parameter_list|(
 name|String
 name|message
@@ -58,9 +58,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|YarnRemoteException (Throwable cause)
+DECL|method|YarnException (Throwable cause)
 specifier|public
-name|YarnRemoteException
+name|YarnException
 parameter_list|(
 name|Throwable
 name|cause
@@ -72,9 +72,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|YarnRemoteException (String message, Throwable cause)
+DECL|method|YarnException (String message, Throwable cause)
 specifier|public
-name|YarnRemoteException
+name|YarnException
 parameter_list|(
 name|String
 name|message

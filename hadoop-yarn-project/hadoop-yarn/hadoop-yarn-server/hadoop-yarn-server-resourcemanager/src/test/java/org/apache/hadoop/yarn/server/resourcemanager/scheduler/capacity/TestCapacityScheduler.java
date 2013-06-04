@@ -294,7 +294,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -899,7 +899,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 return|return
 operator|new

@@ -224,7 +224,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -2076,7 +2076,7 @@ else|else
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Class: "
 operator|+
@@ -2102,7 +2102,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Could not instantiate Scheduler: "
 operator|+
@@ -2245,7 +2245,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Invalid global max attempts configuration"
 operator|+
@@ -2309,7 +2309,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Invalid resource scheduler memory"
 operator|+
@@ -2387,7 +2387,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Invalid resource scheduler vcores"
 operator|+
@@ -2770,7 +2770,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -2869,7 +2869,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -3425,7 +3425,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Failed to login"
 argument_list|,
@@ -3539,7 +3539,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Failed to start secret manager threads"
 argument_list|,

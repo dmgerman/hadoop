@@ -446,7 +446,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -787,7 +787,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unknown task type: "
 operator|+
@@ -969,7 +969,7 @@ name|REDUCE
 return|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unknown task symbol: "
 operator|+

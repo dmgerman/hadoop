@@ -518,7 +518,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -1803,7 +1803,7 @@ expr_stmt|;
 name|doThrow
 argument_list|(
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Forced Failure"
 argument_list|)

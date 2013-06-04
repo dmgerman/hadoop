@@ -412,7 +412,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -891,7 +891,7 @@ return|;
 default|default:
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized task type: "
 operator|+
@@ -942,7 +942,7 @@ return|;
 default|default:
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized task type: "
 operator|+
@@ -1156,7 +1156,7 @@ return|;
 default|default:
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized State: "
 operator|+
@@ -1241,7 +1241,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized Phase: "
 operator|+
@@ -1440,7 +1440,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized status: "
 operator|+
@@ -2425,7 +2425,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized job state: "
 operator|+
@@ -2542,7 +2542,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized task state: "
 operator|+
@@ -2973,7 +2973,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unrecognized application state: "
 operator|+

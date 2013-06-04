@@ -198,7 +198,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -318,7 +318,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -419,11 +419,11 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
-comment|// YarnRemoteException is expected
+comment|// YarnException is expected
 block|}
 finally|finally
 block|{
@@ -433,7 +433,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 block|}
-comment|// verify YarnException is thrown when the retry interval has expired
+comment|// verify YarnRuntimeException is thrown when the retry interval has expired
 name|conf
 operator|.
 name|setLong
@@ -480,11 +480,11 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
-comment|// YarnException is expected
+comment|// YarnRuntimeException is expected
 block|}
 finally|finally
 block|{
@@ -605,7 +605,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{       }

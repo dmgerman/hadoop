@@ -66,7 +66,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -609,7 +609,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
@@ -795,7 +795,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
@@ -933,7 +933,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Fake service start exception"
 argument_list|)
@@ -975,7 +975,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Fake service stop exception"
 argument_list|)

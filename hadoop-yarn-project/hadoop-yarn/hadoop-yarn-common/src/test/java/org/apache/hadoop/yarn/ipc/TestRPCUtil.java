@@ -74,7 +74,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -122,7 +122,7 @@ name|Throwable
 argument_list|>
 name|exception
 init|=
-name|YarnRemoteException
+name|YarnException
 operator|.
 name|class
 decl_stmt|;
@@ -218,7 +218,7 @@ name|Throwable
 argument_list|>
 name|exception
 init|=
-name|YarnRemoteException
+name|YarnException
 operator|.
 name|class
 decl_stmt|;
@@ -306,7 +306,7 @@ name|void
 name|testRemoteYarnExceptionWithoutStringConstructor
 parameter_list|()
 block|{
-comment|// Derivatives of YarnException should always defined a string constructor.
+comment|// Derivatives of YarnException should always define a string constructor.
 name|Class
 argument_list|<
 name|?
@@ -620,7 +620,7 @@ specifier|static
 class|class
 name|YarnTestException
 extends|extends
-name|YarnRemoteException
+name|YarnException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -657,7 +657,7 @@ specifier|static
 class|class
 name|YarnTestExceptionNoConstructor
 extends|extends
-name|YarnRemoteException
+name|YarnException
 block|{
 DECL|field|serialVersionUID
 specifier|private

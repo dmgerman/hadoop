@@ -308,7 +308,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -562,7 +562,7 @@ name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|LOG
 operator|.
@@ -712,7 +712,7 @@ name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|LOG
 operator|.
@@ -740,7 +740,7 @@ name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 return|return
 literal|null

@@ -196,7 +196,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -232,7 +232,7 @@ name|NMClient
 extends|extends
 name|Service
 block|{
-comment|/**    *<p>Start an allocated container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the allocated container, including the    * Id, the assigned node's Id and the token via {@link Container}. In    * addition, the AM needs to provide the {@link ContainerLaunchContext} as    * well.</p>    *    * @param container the allocated container    * @param containerLaunchContext the context information needed by the    *<code>NodeManager</code> to launch the    *                               container    * @return a map between the auxiliary service names and their outputs    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    *<p>Start an allocated container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the allocated container, including the    * Id, the assigned node's Id and the token via {@link Container}. In    * addition, the AM needs to provide the {@link ContainerLaunchContext} as    * well.</p>    *    * @param container the allocated container    * @param containerLaunchContext the context information needed by the    *<code>NodeManager</code> to launch the    *                               container    * @return a map between the auxiliary service names and their outputs    * @throws YarnException    * @throws IOException    */
 DECL|method|startContainer (Container container, ContainerLaunchContext containerLaunchContext)
 name|Map
 argument_list|<
@@ -249,11 +249,11 @@ name|ContainerLaunchContext
 name|containerLaunchContext
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @throws YarnException    * @throws IOException    */
 DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, Token containerToken)
 name|void
 name|stopContainer
@@ -268,11 +268,11 @@ name|Token
 name|containerToken
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @return the status of a container    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @return the status of a container    * @throws YarnException    * @throws IOException    */
 DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, Token containerToken)
 name|ContainerStatus
 name|getContainerStatus
@@ -287,7 +287,7 @@ name|Token
 name|containerToken
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;

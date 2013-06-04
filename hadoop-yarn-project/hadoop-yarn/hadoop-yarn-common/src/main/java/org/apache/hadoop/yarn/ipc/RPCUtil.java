@@ -78,7 +78,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -100,11 +100,11 @@ specifier|public
 class|class
 name|RPCUtil
 block|{
-comment|/**    * Returns an instance of YarnRemoteException     */
+comment|/**    * Returns an instance of {@link YarnException}    */
 DECL|method|getRemoteException (Throwable t)
 specifier|public
 specifier|static
-name|YarnRemoteException
+name|YarnException
 name|getRemoteException
 parameter_list|(
 name|Throwable
@@ -113,17 +113,17 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|YarnRemoteException
+name|YarnException
 argument_list|(
 name|t
 argument_list|)
 return|;
 block|}
-comment|/**    * Returns an instance of YarnRemoteException    */
+comment|/**    * Returns an instance of {@link YarnException}    */
 DECL|method|getRemoteException (String message)
 specifier|public
 specifier|static
-name|YarnRemoteException
+name|YarnException
 name|getRemoteException
 parameter_list|(
 name|String
@@ -132,7 +132,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|YarnRemoteException
+name|YarnException
 argument_list|(
 name|message
 argument_list|)
@@ -276,7 +276,7 @@ name|re
 throw|;
 block|}
 block|}
-comment|/**    * Utility method that unwraps and returns appropriate exceptions.    *     * @param se    *          ServiceException    * @return An instance of the actual exception, which will be a subclass of    *         {@link YarnRemoteException} or {@link IOException}    */
+comment|/**    * Utility method that unwraps and returns appropriate exceptions.    *     * @param se    *          ServiceException    * @return An instance of the actual exception, which will be a subclass of    *         {@link YarnException} or {@link IOException}    */
 DECL|method|unwrapAndThrowException (ServiceException se)
 specifier|public
 specifier|static
@@ -289,7 +289,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|Throwable
 name|cause
@@ -367,7 +367,7 @@ comment|// well.
 throw|throw
 name|instantiateException
 argument_list|(
-name|YarnRemoteException
+name|YarnException
 operator|.
 name|class
 argument_list|,
@@ -377,7 +377,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|YarnRemoteException
+name|YarnException
 operator|.
 name|class
 operator|.
@@ -394,7 +394,7 @@ name|realClass
 operator|.
 name|asSubclass
 argument_list|(
-name|YarnRemoteException
+name|YarnException
 operator|.
 name|class
 argument_list|)

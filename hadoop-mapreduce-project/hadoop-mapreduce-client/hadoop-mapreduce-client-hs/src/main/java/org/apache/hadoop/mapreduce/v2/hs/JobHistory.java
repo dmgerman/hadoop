@@ -342,7 +342,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -566,7 +566,7 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|YarnException
+name|YarnRuntimeException
 block|{
 name|LOG
 operator|.
@@ -656,7 +656,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Failed to intialize existing directories"
 argument_list|,

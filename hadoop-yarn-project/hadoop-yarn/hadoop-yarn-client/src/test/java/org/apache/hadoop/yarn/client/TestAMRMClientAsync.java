@@ -380,7 +380,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1029,12 +1029,12 @@ name|exStr
 init|=
 literal|"TestException"
 decl_stmt|;
-name|YarnRemoteException
+name|YarnException
 name|mockException
 init|=
 name|mock
 argument_list|(
-name|YarnRemoteException
+name|YarnException
 operator|.
 name|class
 argument_list|)

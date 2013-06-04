@@ -240,7 +240,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -625,7 +625,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|NodeManager
 name|nm
@@ -777,7 +777,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|NodeManager
 name|nm
@@ -1069,7 +1069,7 @@ name|void
 name|registerWithRM
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1611,7 +1611,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{

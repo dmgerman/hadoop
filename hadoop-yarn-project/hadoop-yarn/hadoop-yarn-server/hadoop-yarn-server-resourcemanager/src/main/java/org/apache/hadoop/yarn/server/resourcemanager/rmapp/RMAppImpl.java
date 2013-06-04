@@ -220,7 +220,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -2512,7 +2512,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unknown state passed!"
 argument_list|)
@@ -2578,7 +2578,7 @@ return|;
 block|}
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unknown state passed!"
 argument_list|)

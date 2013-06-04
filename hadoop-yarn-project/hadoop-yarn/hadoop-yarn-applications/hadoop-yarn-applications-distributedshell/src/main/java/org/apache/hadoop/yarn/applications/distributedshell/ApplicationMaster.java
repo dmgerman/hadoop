@@ -824,7 +824,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -2352,14 +2352,14 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Main run function for the application master    *    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Main run function for the application master    *    * @throws YarnException    * @throws IOException    */
 DECL|method|run ()
 specifier|public
 name|boolean
 name|run
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -2746,7 +2746,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|ex
 parameter_list|)
 block|{
@@ -3763,7 +3763,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -3827,7 +3827,7 @@ comment|// statusResp = cm.getContainerStatus(statusReq);
 comment|// LOG.info("Container Status"
 comment|// + ", id=" + container.getId()
 comment|// + ", status=" +statusResp.getStatus());
-comment|// } catch (YarnRemoteException e) {
+comment|// } catch (YarnException e) {
 comment|// e.printStackTrace();
 comment|// }
 block|}

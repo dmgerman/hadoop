@@ -58,7 +58,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -434,7 +434,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-name|YarnException
+name|YarnRuntimeException
 operator|.
 name|class
 argument_list|,

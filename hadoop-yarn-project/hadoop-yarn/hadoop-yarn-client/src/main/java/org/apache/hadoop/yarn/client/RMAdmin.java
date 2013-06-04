@@ -294,7 +294,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1146,7 +1146,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Refresh the queue properties
 name|RMAdminProtocol
@@ -1186,7 +1186,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Refresh the nodes
 name|RMAdminProtocol
@@ -1226,7 +1226,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Refresh the user-to-groups mappings
 name|RMAdminProtocol
@@ -1266,7 +1266,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Refresh the super-user groups
 name|RMAdminProtocol
@@ -1306,7 +1306,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Refresh the admin acls
 name|RMAdminProtocol
@@ -1346,7 +1346,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Refresh the service acls
 name|RMAdminProtocol

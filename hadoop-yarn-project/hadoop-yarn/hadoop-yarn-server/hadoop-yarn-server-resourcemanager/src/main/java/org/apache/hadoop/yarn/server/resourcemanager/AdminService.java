@@ -460,7 +460,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -988,7 +988,7 @@ name|String
 name|method
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|user
@@ -1156,7 +1156,7 @@ name|RefreshQueuesRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|user
@@ -1261,7 +1261,7 @@ name|RefreshNodesRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|user
@@ -1366,7 +1366,7 @@ name|RefreshSuperUserGroupsConfigurationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|user
@@ -1421,7 +1421,7 @@ name|RefreshUserToGroupsMappingsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|user
@@ -1475,7 +1475,7 @@ name|RefreshAdminAclsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|user
@@ -1547,7 +1547,7 @@ name|RefreshServiceAclsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|Configuration
 name|conf

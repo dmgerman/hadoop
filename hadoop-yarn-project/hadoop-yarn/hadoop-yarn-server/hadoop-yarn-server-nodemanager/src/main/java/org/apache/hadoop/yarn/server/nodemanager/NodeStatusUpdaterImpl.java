@@ -216,7 +216,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -390,7 +390,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1400,7 +1400,7 @@ name|void
 name|registerWithRM
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1453,7 +1453,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Invalid Configuration. "
 operator|+
@@ -1489,7 +1489,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Invalid Configuration. "
 operator|+
@@ -1726,7 +1726,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|errorMessage
 argument_list|,
@@ -1764,7 +1764,7 @@ argument_list|()
 decl_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Recieved SHUTDOWN signal from Resourcemanager ,Registration of NodeManager failed, "
 operator|+
@@ -2635,7 +2635,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|errorMessage
 argument_list|,
@@ -2888,7 +2888,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{

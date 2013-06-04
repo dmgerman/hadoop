@@ -436,7 +436,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -951,7 +951,7 @@ name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|GetContainerStatusResponse
 name|response
@@ -987,7 +987,7 @@ name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1017,7 +1017,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnRemoteException
+name|YarnException
 argument_list|(
 name|e
 argument_list|)
@@ -1025,7 +1025,7 @@ throw|;
 block|}
 throw|throw
 operator|new
-name|YarnRemoteException
+name|YarnException
 argument_list|(
 literal|"Shouldn't happen!!"
 argument_list|)
@@ -1042,7 +1042,7 @@ name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|Exception
 name|e
@@ -1061,7 +1061,7 @@ argument_list|)
 decl_stmt|;
 throw|throw
 operator|new
-name|YarnRemoteException
+name|YarnException
 argument_list|(
 name|e
 argument_list|)

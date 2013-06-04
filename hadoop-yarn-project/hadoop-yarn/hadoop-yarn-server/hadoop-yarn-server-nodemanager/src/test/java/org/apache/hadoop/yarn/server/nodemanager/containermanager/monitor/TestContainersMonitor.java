@@ -536,7 +536,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1308,7 +1308,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 if|if
 condition|(

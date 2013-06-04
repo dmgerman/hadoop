@@ -598,7 +598,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1287,7 +1287,7 @@ name|void
 name|testGetApplicationReport
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|RMContext
 name|rmContext
@@ -1656,7 +1656,7 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|ex
 parameter_list|)
 block|{
@@ -1781,7 +1781,7 @@ parameter_list|)
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|RMDelegationTokenIdentifier
 name|tokenIdentifier
@@ -2098,7 +2098,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2213,7 +2213,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2295,7 +2295,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2337,7 +2337,7 @@ name|InterruptedException
 throws|,
 name|BrokenBarrierException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|YarnScheduler
 name|yarnScheduler
@@ -2634,7 +2634,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{}

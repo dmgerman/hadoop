@@ -714,7 +714,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -939,11 +939,11 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
-comment|// TODO: after MAPREDUCE-2793 YarnException is probably not expected here
+comment|// TODO: after MAPREDUCE-2793 YarnRuntimeException is probably not expected here
 comment|// anymore but keeping it for now just in case other stuff starts failing.
 comment|// Also, the webservice should ideally return BadRequest (HTTP:400) when
 comment|// the id is malformed instead of NotFound (HTTP:404). The webserver on
@@ -1064,11 +1064,11 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
-comment|// TODO: after MAPREDUCE-2793 YarnException is probably not expected here
+comment|// TODO: after MAPREDUCE-2793 YarnRuntimeException is probably not expected here
 comment|// anymore but keeping it for now just in case other stuff starts failing.
 comment|// Also, the webservice should ideally return BadRequest (HTTP:400) when
 comment|// the id is malformed instead of NotFound (HTTP:404). The webserver on
@@ -1204,11 +1204,11 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
-comment|// TODO: after MAPREDUCE-2793 YarnException is probably not expected here
+comment|// TODO: after MAPREDUCE-2793 YarnRuntimeException is probably not expected here
 comment|// anymore but keeping it for now just in case other stuff starts failing.
 comment|// Also, the webservice should ideally return BadRequest (HTTP:400) when
 comment|// the id is malformed instead of NotFound (HTTP:404). The webserver on
@@ -1966,7 +1966,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{

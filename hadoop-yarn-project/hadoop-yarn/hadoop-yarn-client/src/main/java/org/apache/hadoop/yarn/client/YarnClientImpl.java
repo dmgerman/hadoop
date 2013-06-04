@@ -650,7 +650,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -986,7 +986,7 @@ name|GetNewApplicationResponse
 name|getNewApplication
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1022,7 +1022,7 @@ name|ApplicationSubmissionContext
 name|appContext
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1188,7 +1188,7 @@ name|ApplicationId
 name|applicationId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1239,7 +1239,7 @@ name|ApplicationId
 name|appId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1290,7 +1290,7 @@ argument_list|>
 name|getApplicationList
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1331,7 +1331,7 @@ name|YarnClusterMetrics
 name|getYarnClusterMetrics
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1375,7 +1375,7 @@ argument_list|>
 name|getNodeReports
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1419,7 +1419,7 @@ name|Text
 name|renewer
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1536,7 +1536,7 @@ name|String
 name|queueName
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1586,7 +1586,7 @@ argument_list|>
 name|getQueueAclsInfo
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1625,7 +1625,7 @@ argument_list|>
 name|getAllQueues
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1688,7 +1688,7 @@ argument_list|>
 name|getRootQueueInfos
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1754,7 +1754,7 @@ name|String
 name|parent
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

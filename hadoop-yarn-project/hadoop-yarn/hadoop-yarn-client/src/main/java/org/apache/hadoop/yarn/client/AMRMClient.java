@@ -196,7 +196,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -541,7 +541,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Register the application master. This must be called before any     * other interaction    * @param appHostName Name of the host on which master is running    * @param appHostPort Port master is listening on    * @param appTrackingUrl URL at which the master info can be seen    * @return<code>RegisterApplicationMasterResponse</code>    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Register the application master. This must be called before any     * other interaction    * @param appHostName Name of the host on which master is running    * @param appHostPort Port master is listening on    * @param appTrackingUrl URL at which the master info can be seen    * @return<code>RegisterApplicationMasterResponse</code>    * @throws YarnException    * @throws IOException    */
 specifier|public
 name|RegisterApplicationMasterResponse
 DECL|method|registerApplicationMaster (String appHostName, int appHostPort, String appTrackingUrl)
@@ -557,11 +557,11 @@ name|String
 name|appTrackingUrl
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Request additional containers and receive new container allocations.    * Requests made via<code>addContainerRequest</code> are sent to the     *<code>ResourceManager</code>. New containers assigned to the master are     * retrieved. Status of completed containers and node health updates are     * also retrieved.    * This also doubles up as a heartbeat to the ResourceManager and must be     * made periodically.    * The call may not always return any new allocations of containers.    * App should not make concurrent allocate requests. May cause request loss.    * @param progressIndicator Indicates progress made by the master    * @return the response of the allocate request    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Request additional containers and receive new container allocations.    * Requests made via<code>addContainerRequest</code> are sent to the     *<code>ResourceManager</code>. New containers assigned to the master are     * retrieved. Status of completed containers and node health updates are     * also retrieved.    * This also doubles up as a heartbeat to the ResourceManager and must be     * made periodically.    * The call may not always return any new allocations of containers.    * App should not make concurrent allocate requests. May cause request loss.    * @param progressIndicator Indicates progress made by the master    * @return the response of the allocate request    * @throws YarnException    * @throws IOException    */
 DECL|method|allocate (float progressIndicator)
 specifier|public
 name|AllocateResponse
@@ -571,11 +571,11 @@ name|float
 name|progressIndicator
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnException    * @throws IOException    */
 DECL|method|unregisterApplicationMaster (FinalApplicationStatus appStatus, String appMessage, String appTrackingUrl)
 specifier|public
 name|void
@@ -591,7 +591,7 @@ name|String
 name|appTrackingUrl
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 function_decl|;

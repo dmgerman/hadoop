@@ -886,7 +886,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1714,7 +1714,7 @@ name|GetNewApplicationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|GetNewApplicationResponse
 name|response
@@ -1773,7 +1773,7 @@ name|GetApplicationReportRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|ApplicationId
 name|applicationId
@@ -1918,7 +1918,7 @@ name|SubmitApplicationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|ApplicationSubmissionContext
 name|submissionContext
@@ -2217,7 +2217,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -2293,7 +2293,7 @@ name|KillApplicationRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|ApplicationId
 name|applicationId
@@ -2564,7 +2564,7 @@ name|GetClusterMetricsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|GetClusterMetricsResponse
 name|response
@@ -2627,7 +2627,7 @@ name|GetAllApplicationsRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|UserGroupInformation
 name|callerUGI
@@ -2764,7 +2764,7 @@ name|GetClusterNodesRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|GetClusterNodesResponse
 name|response
@@ -2853,7 +2853,7 @@ name|GetQueueInfoRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|GetQueueInfoResponse
 name|response
@@ -3135,7 +3135,7 @@ name|GetQueueUserAclsInfoRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|GetQueueUserAclsInfoResponse
 name|response
@@ -3174,7 +3174,7 @@ name|GetDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 try|try
 block|{
@@ -3362,7 +3362,7 @@ name|RenewDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 try|try
 block|{
@@ -3518,7 +3518,7 @@ name|CancelDelegationTokenRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 try|try
 block|{

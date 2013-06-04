@@ -294,7 +294,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -502,7 +502,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1294,7 +1294,7 @@ name|RegisterNodeManagerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -1538,7 +1538,7 @@ name|NodeHeartbeatRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -2466,7 +2466,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Faking RM start failure as start "
 operator|+
@@ -2757,7 +2757,7 @@ name|RegisterNodeManagerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -2810,7 +2810,7 @@ name|NodeHeartbeatRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -2957,7 +2957,7 @@ name|RegisterNodeManagerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -3003,7 +3003,7 @@ name|NodeHeartbeatRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -3247,7 +3247,7 @@ name|RegisterNodeManagerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -3293,7 +3293,7 @@ name|NodeHeartbeatRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -3598,7 +3598,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Lost the heartbeat response"
 argument_list|)
@@ -4045,7 +4045,7 @@ name|RegisterNodeManagerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -4091,7 +4091,7 @@ name|NodeHeartbeatRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -4280,7 +4280,7 @@ name|e
 expr_stmt|;
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -4897,7 +4897,7 @@ block|}
 expr_stmt|;
 name|verifyNodeStartFailure
 argument_list|(
-literal|"org.apache.hadoop.yarn.YarnException: "
+literal|"org.apache.hadoop.yarn.YarnRuntimeException: "
 operator|+
 literal|"Recieved SHUTDOWN signal from Resourcemanager ,"
 operator|+
@@ -5341,7 +5341,7 @@ block|{
 comment|// Simulating failure of starting RPC server
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Starting of RPC Server failed"
 argument_list|)

@@ -140,7 +140,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -367,7 +367,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -451,7 +451,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -495,7 +495,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -539,7 +539,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if
@@ -583,7 +583,7 @@ name|InterruptedException
 throws|,
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Don't run the test if the binary is not available.
 if|if

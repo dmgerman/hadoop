@@ -474,7 +474,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -817,7 +817,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -846,7 +846,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|containerManager
 operator|.
@@ -1407,7 +1407,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|containerManager
 operator|.
@@ -2039,7 +2039,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|File
 name|scriptFile
@@ -2497,7 +2497,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|containerManager
 operator|.
@@ -2529,7 +2529,7 @@ name|IOException
 throws|,
 name|InterruptedException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|containerManager
 operator|.
@@ -2561,7 +2561,7 @@ name|InterruptedException
 throws|,
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 comment|// Real del service
 name|delSrvc
@@ -3449,7 +3449,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -3587,7 +3587,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -3596,7 +3596,7 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
-comment|// Verify that startContainer get no YarnRemoteException
+comment|// Verify that startContainer get no YarnException
 name|Assert
 operator|.
 name|assertTrue

@@ -480,7 +480,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -1579,7 +1579,7 @@ parameter_list|()
 throws|throws
 name|IOException
 throws|,
-name|YarnRemoteException
+name|YarnException
 block|{
 name|LOG
 operator|.
@@ -1903,7 +1903,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Monitor the submitted application for completion. Kill application if time    * expires.    *     * @param appId    *          Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Monitor the submitted application for completion. Kill application if time    * expires.    *     * @param appId    *          Application Id of application to be monitored    * @return true if application completed successfully    * @throws YarnException    * @throws IOException    */
 DECL|method|monitorApplication (ApplicationId appId, Set<YarnApplicationState> finalState)
 specifier|private
 name|ApplicationReport
@@ -1919,7 +1919,7 @@ argument_list|>
 name|finalState
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

@@ -508,7 +508,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -810,7 +810,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1210,7 +1210,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnRemoteException
+name|YarnException
 name|e
 parameter_list|)
 block|{
@@ -1334,7 +1334,7 @@ name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|GetContainerStatusResponse
 name|response
@@ -1370,7 +1370,7 @@ name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|Token
 name|containerToken
@@ -1480,7 +1480,7 @@ name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 block|{
 name|Exception
 name|e
@@ -1499,7 +1499,7 @@ argument_list|)
 decl_stmt|;
 throw|throw
 operator|new
-name|YarnRemoteException
+name|YarnException
 argument_list|(
 name|e
 argument_list|)

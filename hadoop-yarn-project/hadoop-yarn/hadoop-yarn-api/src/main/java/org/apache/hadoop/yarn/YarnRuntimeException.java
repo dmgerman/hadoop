@@ -21,16 +21,27 @@ comment|/** Base Yarn Exception.  *   * NOTE: All derivatives of this exception,
 end_comment
 
 begin_class
-DECL|class|YarnException
+DECL|class|YarnRuntimeException
 specifier|public
 class|class
-name|YarnException
+name|YarnRuntimeException
 extends|extends
 name|RuntimeException
 block|{
-DECL|method|YarnException (Throwable cause)
+comment|/**    *     */
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+operator|-
+literal|7153142425412203936L
+decl_stmt|;
+DECL|method|YarnRuntimeException (Throwable cause)
 specifier|public
-name|YarnException
+name|YarnRuntimeException
 parameter_list|(
 name|Throwable
 name|cause
@@ -42,9 +53,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|YarnException (String message)
+DECL|method|YarnRuntimeException (String message)
 specifier|public
-name|YarnException
+name|YarnRuntimeException
 parameter_list|(
 name|String
 name|message
@@ -56,9 +67,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|YarnException (String message, Throwable cause)
+DECL|method|YarnRuntimeException (String message, Throwable cause)
 specifier|public
-name|YarnException
+name|YarnRuntimeException
 parameter_list|(
 name|String
 name|message

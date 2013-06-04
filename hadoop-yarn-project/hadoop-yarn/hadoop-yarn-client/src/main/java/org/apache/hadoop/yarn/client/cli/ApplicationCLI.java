@@ -188,7 +188,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnRemoteException
+name|YarnException
 import|;
 end_import
 
@@ -504,14 +504,14 @@ name|opts
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Lists all the applications present in the Resource Manager    *     * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Lists all the applications present in the Resource Manager    *     * @throws YarnException    * @throws IOException    */
 DECL|method|listAllApplications ()
 specifier|private
 name|void
 name|listAllApplications
 parameter_list|()
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -658,7 +658,7 @@ name|flush
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Kills the application with the application id as appId    *     * @param applicationId    * @throws YarnRemoteException    * @throws IOException    */
+comment|/**    * Kills the application with the application id as appId    *     * @param applicationId    * @throws YarnException    * @throws IOException    */
 DECL|method|killApplication (String applicationId)
 specifier|private
 name|void
@@ -668,7 +668,7 @@ name|String
 name|applicationId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{
@@ -699,7 +699,7 @@ name|appId
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Prints the application report for an application id.    *     * @param applicationId    * @throws YarnRemoteException    */
+comment|/**    * Prints the application report for an application id.    *     * @param applicationId    * @throws YarnException    */
 DECL|method|printApplicationReport (String applicationId)
 specifier|private
 name|void
@@ -709,7 +709,7 @@ name|String
 name|applicationId
 parameter_list|)
 throws|throws
-name|YarnRemoteException
+name|YarnException
 throws|,
 name|IOException
 block|{

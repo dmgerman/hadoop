@@ -264,7 +264,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -1125,7 +1125,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Unable to get Remote FileSystem instance"
 argument_list|,
@@ -1212,7 +1212,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Failed to check permissions for dir ["
 operator|+
@@ -1302,7 +1302,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Failed to create remoteLogDir ["
 operator|+
@@ -1721,7 +1721,7 @@ parameter_list|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -1799,7 +1799,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|YarnRuntimeException
 name|e
 parameter_list|)
 block|{
@@ -1950,7 +1950,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 literal|"Duplicate initApp for "
 operator|+
@@ -1996,14 +1996,14 @@ operator|!
 operator|(
 name|e
 operator|instanceof
-name|YarnException
+name|YarnRuntimeException
 operator|)
 condition|)
 block|{
 name|e
 operator|=
 operator|new
-name|YarnException
+name|YarnRuntimeException
 argument_list|(
 name|e
 argument_list|)
@@ -2011,7 +2011,7 @@ expr_stmt|;
 block|}
 throw|throw
 operator|(
-name|YarnException
+name|YarnRuntimeException
 operator|)
 name|e
 throw|;
