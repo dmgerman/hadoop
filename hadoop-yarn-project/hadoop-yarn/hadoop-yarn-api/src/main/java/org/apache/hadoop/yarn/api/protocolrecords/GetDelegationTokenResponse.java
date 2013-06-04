@@ -88,27 +88,81 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * Response to a {@link GetDelegationTokenRequest} request   * from the client. The response contains the token that   * can be used by the containers to talk to  ClientRMService.  *  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|interface|GetDelegationTokenResponse
+DECL|class|GetDelegationTokenResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetDelegationTokenResponse
 block|{
+DECL|method|newInstance (Token rmDTToken)
+specifier|public
+specifier|static
+name|GetDelegationTokenResponse
+name|newInstance
+parameter_list|(
+name|Token
+name|rmDTToken
+parameter_list|)
+block|{
+name|GetDelegationTokenResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetDelegationTokenResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setRMDelegationToken
+argument_list|(
+name|rmDTToken
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * The Delegation tokens have a identifier which maps to    * {@link AbstractDelegationTokenIdentifier}.    *    */
 DECL|method|getRMDelegationToken ()
+specifier|public
+specifier|abstract
 name|Token
 name|getRMDelegationToken
 parameter_list|()
 function_decl|;
 DECL|method|setRMDelegationToken (Token rmDTToken)
+specifier|public
+specifier|abstract
 name|void
 name|setRMDelegationToken
 parameter_list|(
@@ -117,7 +171,7 @@ name|rmDTToken
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

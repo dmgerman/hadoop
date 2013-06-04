@@ -68,21 +68,62 @@ name|ContainerManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to<em>stop</em> an  * allocated container.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ContainerManager#stopContainer(StopContainerRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|StopContainerResponse
+DECL|class|StopContainerResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|StopContainerResponse
-block|{  }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|StopContainerResponse
+name|newInstance
+parameter_list|()
+block|{
+name|StopContainerResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|StopContainerResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|response
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

@@ -68,21 +68,62 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request from clients to get a report of all nodes  * in the cluster from the<code>ResourceManager</code>.</p>  *  *<p>Currently, this is empty.</p>  *  * @see ClientRMProtocol#getClusterNodes(GetClusterNodesRequest)   */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetClusterNodesRequest
+DECL|class|GetClusterNodesRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetClusterNodesRequest
-block|{  }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|GetClusterNodesRequest
+name|newInstance
+parameter_list|()
+block|{
+name|GetClusterNodesRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetClusterNodesRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|request
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

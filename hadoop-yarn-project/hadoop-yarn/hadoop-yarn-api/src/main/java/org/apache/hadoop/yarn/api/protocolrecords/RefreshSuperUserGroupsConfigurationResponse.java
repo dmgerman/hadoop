@@ -20,13 +20,54 @@ name|protocolrecords
 package|;
 end_package
 
-begin_interface
-DECL|interface|RefreshSuperUserGroupsConfigurationResponse
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
+begin_class
+DECL|class|RefreshSuperUserGroupsConfigurationResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|RefreshSuperUserGroupsConfigurationResponse
-block|{  }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|RefreshSuperUserGroupsConfigurationResponse
+name|newInstance
+parameter_list|()
+block|{
+name|RefreshSuperUserGroupsConfigurationResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RefreshSuperUserGroupsConfigurationResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|response
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

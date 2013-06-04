@@ -118,20 +118,70 @@ name|ContainerStatus
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to obtain the<em>status</em>   * of a container.</p>  *   * @see ContainerManager#getContainerStatus(GetContainerStatusRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetContainerStatusResponse
+DECL|class|GetContainerStatusResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetContainerStatusResponse
 block|{
+DECL|method|newInstance ( ContainerStatus containerStatus)
+specifier|public
+specifier|static
+name|GetContainerStatusResponse
+name|newInstance
+parameter_list|(
+name|ContainerStatus
+name|containerStatus
+parameter_list|)
+block|{
+name|GetContainerStatusResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetContainerStatusResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setStatus
+argument_list|(
+name|containerStatus
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get the<code>ContainerStatus</code> of the container.    * @return<code>ContainerStatus</code> of the container    */
 annotation|@
 name|Public
@@ -159,7 +209,7 @@ name|containerStatus
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

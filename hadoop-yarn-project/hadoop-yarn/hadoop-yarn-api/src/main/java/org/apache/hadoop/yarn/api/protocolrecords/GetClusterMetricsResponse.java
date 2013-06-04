@@ -118,20 +118,70 @@ name|YarnClusterMetrics
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting cluster metrics.<p>  *   * @see YarnClusterMetrics  * @see ClientRMProtocol#getClusterMetrics(GetClusterMetricsRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetClusterMetricsResponse
+DECL|class|GetClusterMetricsResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetClusterMetricsResponse
 block|{
+specifier|public
+specifier|static
+name|GetClusterMetricsResponse
+DECL|method|newInstance (YarnClusterMetrics metrics)
+name|newInstance
+parameter_list|(
+name|YarnClusterMetrics
+name|metrics
+parameter_list|)
+block|{
+name|GetClusterMetricsResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetClusterMetricsResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setClusterMetrics
+argument_list|(
+name|metrics
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get the<code>YarnClusterMetrics</code> for the cluster.    * @return<code>YarnClusterMetrics</code> for the cluster    */
 annotation|@
 name|Public
@@ -139,6 +189,7 @@ annotation|@
 name|Stable
 DECL|method|getClusterMetrics ()
 specifier|public
+specifier|abstract
 name|YarnClusterMetrics
 name|getClusterMetrics
 parameter_list|()
@@ -149,6 +200,7 @@ annotation|@
 name|Unstable
 DECL|method|setClusterMetrics (YarnClusterMetrics metrics)
 specifier|public
+specifier|abstract
 name|void
 name|setClusterMetrics
 parameter_list|(
@@ -157,7 +209,7 @@ name|metrics
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

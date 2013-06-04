@@ -118,20 +118,70 @@ name|ApplicationReport
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting an application report.</p>  *   *<p>The response includes an {@link ApplicationReport} which has details such   * as user, queue, name, host on which the<code>ApplicationMaster</code> is   * running, RPC port, tracking URL, diagnostics, start time etc.</p>  *   * @see ClientRMProtocol#getApplicationReport(GetApplicationReportRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetApplicationReportResponse
+DECL|class|GetApplicationReportResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetApplicationReportResponse
 block|{
+DECL|method|newInstance ( ApplicationReport ApplicationReport)
+specifier|public
+specifier|static
+name|GetApplicationReportResponse
+name|newInstance
+parameter_list|(
+name|ApplicationReport
+name|ApplicationReport
+parameter_list|)
+block|{
+name|GetApplicationReportResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetApplicationReportResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setApplicationReport
+argument_list|(
+name|ApplicationReport
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationReport</code> for the application.    * @return<code>ApplicationReport</code> for the application    */
 annotation|@
 name|Public
@@ -139,6 +189,7 @@ annotation|@
 name|Stable
 DECL|method|getApplicationReport ()
 specifier|public
+specifier|abstract
 name|ApplicationReport
 name|getApplicationReport
 parameter_list|()
@@ -149,6 +200,7 @@ annotation|@
 name|Unstable
 DECL|method|setApplicationReport (ApplicationReport ApplicationReport)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationReport
 parameter_list|(
@@ -157,7 +209,7 @@ name|ApplicationReport
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

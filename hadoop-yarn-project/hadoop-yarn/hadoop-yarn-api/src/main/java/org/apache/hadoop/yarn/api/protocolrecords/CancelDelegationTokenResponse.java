@@ -52,21 +52,62 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * The response from the {@code ResourceManager} to a cancelDelegationToken  * request.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|interface|CancelDelegationTokenResponse
+DECL|class|CancelDelegationTokenResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|CancelDelegationTokenResponse
-block|{ }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|CancelDelegationTokenResponse
+name|newInstance
+parameter_list|()
+block|{
+name|CancelDelegationTokenResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|CancelDelegationTokenResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|response
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

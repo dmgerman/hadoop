@@ -102,16 +102,66 @@ name|AllocateRequest
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * Description of resources requested back by the cluster.  * @see PreemptionContract  * @see AllocateRequest#setAskList(java.util.List)  */
 end_comment
 
-begin_interface
-DECL|interface|PreemptionResourceRequest
+begin_class
+DECL|class|PreemptionResourceRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|PreemptionResourceRequest
 block|{
+DECL|method|newInstance (ResourceRequest req)
+specifier|public
+specifier|static
+name|PreemptionResourceRequest
+name|newInstance
+parameter_list|(
+name|ResourceRequest
+name|req
+parameter_list|)
+block|{
+name|PreemptionResourceRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|PreemptionResourceRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setResourceRequest
+argument_list|(
+name|req
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * @return Resource described in this request, to be matched against running    * containers.    */
 annotation|@
 name|Public
@@ -119,6 +169,7 @@ annotation|@
 name|Evolving
 DECL|method|getResourceRequest ()
 specifier|public
+specifier|abstract
 name|ResourceRequest
 name|getResourceRequest
 parameter_list|()
@@ -129,6 +180,7 @@ annotation|@
 name|Unstable
 DECL|method|setResourceRequest (ResourceRequest req)
 specifier|public
+specifier|abstract
 name|void
 name|setResourceRequest
 parameter_list|(
@@ -137,7 +189,7 @@ name|req
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

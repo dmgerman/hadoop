@@ -118,20 +118,70 @@ name|ApplicationId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request sent by the client to the<code>ResourceManager</code>  * to abort a submitted application.</p>  *   *<p>The request includes the {@link ApplicationId} of the application to be  * aborted.</p>  *   * @see ClientRMProtocol#forceKillApplication(KillApplicationRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|KillApplicationRequest
+DECL|class|KillApplicationRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|KillApplicationRequest
 block|{
+DECL|method|newInstance (ApplicationId applicationId)
+specifier|public
+specifier|static
+name|KillApplicationRequest
+name|newInstance
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|)
+block|{
+name|KillApplicationRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|KillApplicationRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setApplicationId
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationId</code> of the application to be aborted.    * @return<code>ApplicationId</code> of the application to be aborted    */
 annotation|@
 name|Public
@@ -159,7 +209,7 @@ name|applicationId
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

@@ -146,20 +146,73 @@ name|QueueUserACLInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to clients  * seeking queue acls for the user.</p>  *  *<p>The response contains a list of {@link QueueUserACLInfo} which  * provides information about {@link QueueACL} per queue.</p>  *   * @see QueueACL  * @see QueueUserACLInfo  * @see ClientRMProtocol#getQueueUserAcls(GetQueueUserAclsInfoRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetQueueUserAclsInfoResponse
+DECL|class|GetQueueUserAclsInfoResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetQueueUserAclsInfoResponse
 block|{
+DECL|method|newInstance ( List<QueueUserACLInfo> queueUserAclsList)
+specifier|public
+specifier|static
+name|GetQueueUserAclsInfoResponse
+name|newInstance
+parameter_list|(
+name|List
+argument_list|<
+name|QueueUserACLInfo
+argument_list|>
+name|queueUserAclsList
+parameter_list|)
+block|{
+name|GetQueueUserAclsInfoResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetQueueUserAclsInfoResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setUserAclsInfoList
+argument_list|(
+name|queueUserAclsList
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get the<code>QueueUserACLInfo</code> per queue for the user.    * @return<code>QueueUserACLInfo</code> per queue for the user    */
 annotation|@
 name|Public
@@ -167,6 +220,7 @@ annotation|@
 name|Stable
 DECL|method|getUserAclsInfoList ()
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|QueueUserACLInfo
@@ -178,8 +232,9 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setUserAclsInfoList (List<QueueUserACLInfo> queueUserAclsList)
+DECL|method|setUserAclsInfoList ( List<QueueUserACLInfo> queueUserAclsList)
 specifier|public
+specifier|abstract
 name|void
 name|setUserAclsInfoList
 parameter_list|(
@@ -191,7 +246,7 @@ name|queueUserAclsList
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

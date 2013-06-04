@@ -86,26 +86,78 @@ name|ContainerId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>stop</em> a container.</p>  *   * @see ContainerManager#stopContainer(StopContainerRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|StopContainerRequest
+DECL|class|StopContainerRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|StopContainerRequest
 block|{
+DECL|method|newInstance (ContainerId containerId)
+specifier|public
+specifier|static
+name|StopContainerRequest
+name|newInstance
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+name|StopContainerRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|StopContainerRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setContainerId
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<code>ContainerId</code> of the container to be stopped.    * @return<code>ContainerId</code> of container to be stopped    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getContainerId ()
+specifier|public
+specifier|abstract
 name|ContainerId
 name|getContainerId
 parameter_list|()
@@ -116,6 +168,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setContainerId (ContainerId containerId)
+specifier|public
+specifier|abstract
 name|void
 name|setContainerId
 parameter_list|(
@@ -124,7 +178,7 @@ name|containerId
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

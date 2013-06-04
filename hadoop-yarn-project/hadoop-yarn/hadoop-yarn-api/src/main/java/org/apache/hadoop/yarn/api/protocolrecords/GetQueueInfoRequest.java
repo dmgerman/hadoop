@@ -68,28 +68,112 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request sent by clients to get<em>queue information</em>  * from the<code>ResourceManager</code>.</p>  *  * @see ClientRMProtocol#getQueueInfo(GetQueueInfoRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetQueueInfoRequest
+DECL|class|GetQueueInfoRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetQueueInfoRequest
 block|{
+specifier|public
+specifier|static
+name|GetQueueInfoRequest
+DECL|method|newInstance (String queueName, boolean includeApplications, boolean includeChildQueues, boolean recursive)
+name|newInstance
+parameter_list|(
+name|String
+name|queueName
+parameter_list|,
+name|boolean
+name|includeApplications
+parameter_list|,
+name|boolean
+name|includeChildQueues
+parameter_list|,
+name|boolean
+name|recursive
+parameter_list|)
+block|{
+name|GetQueueInfoRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetQueueInfoRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setQueueName
+argument_list|(
+name|queueName
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setIncludeApplications
+argument_list|(
+name|includeApplications
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setIncludeChildQueues
+argument_list|(
+name|includeChildQueues
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setRecursive
+argument_list|(
+name|recursive
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<em>queue name</em> for which to get queue information.    * @return<em>queue name</em> for which to get queue information    */
 DECL|method|getQueueName ()
+specifier|public
+specifier|abstract
 name|String
 name|getQueueName
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<em>queue name</em> for which to get queue information    * @param queueName<em>queue name</em> for which to get queue information    */
 DECL|method|setQueueName (String queueName)
+specifier|public
+specifier|abstract
 name|void
 name|setQueueName
 parameter_list|(
@@ -99,12 +183,16 @@ parameter_list|)
 function_decl|;
 comment|/**    * Is information about<em>active applications<e/m> required?    * @return<code>true</code> if applications' information is to be included,    *         else<code>false</code>    */
 DECL|method|getIncludeApplications ()
+specifier|public
+specifier|abstract
 name|boolean
 name|getIncludeApplications
 parameter_list|()
 function_decl|;
 comment|/**    * Should we get fetch information about<em>active applications</em>?    * @param includeApplications fetch information about<em>active     *                            applications</em>?    */
 DECL|method|setIncludeApplications (boolean includeApplications)
+specifier|public
+specifier|abstract
 name|void
 name|setIncludeApplications
 parameter_list|(
@@ -114,12 +202,16 @@ parameter_list|)
 function_decl|;
 comment|/**    * Is information about<em>child queues</em> required?    * @return<code>true</code> if information about child queues is required,    *         else<code>false</code>    */
 DECL|method|getIncludeChildQueues ()
+specifier|public
+specifier|abstract
 name|boolean
 name|getIncludeChildQueues
 parameter_list|()
 function_decl|;
 comment|/**    * Should we fetch information about<em>child queues</em>?    * @param includeChildQueues fetch information about<em>child queues</em>?    */
 DECL|method|setIncludeChildQueues (boolean includeChildQueues)
+specifier|public
+specifier|abstract
 name|void
 name|setIncludeChildQueues
 parameter_list|(
@@ -129,12 +221,16 @@ parameter_list|)
 function_decl|;
 comment|/**    * Is information on the entire<em>child queue hierarchy</em> required?    * @return<code>true</code> if information about entire hierarchy is     *         required,<code>false</code> otherwise    */
 DECL|method|getRecursive ()
+specifier|public
+specifier|abstract
 name|boolean
 name|getRecursive
 parameter_list|()
 function_decl|;
 comment|/**    * Should we fetch information on the entire<em>child queue hierarchy</em>?    * @param recursive fetch information on the entire<em>child queue     *                  hierarchy</em>?    */
 DECL|method|setRecursive (boolean recursive)
+specifier|public
+specifier|abstract
 name|void
 name|setRecursive
 parameter_list|(
@@ -143,7 +239,7 @@ name|recursive
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

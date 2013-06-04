@@ -68,21 +68,62 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client on  * application submission.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ClientRMProtocol#submitApplication(SubmitApplicationRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|SubmitApplicationResponse
+DECL|class|SubmitApplicationResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|SubmitApplicationResponse
-block|{  }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|SubmitApplicationResponse
+name|newInstance
+parameter_list|()
+block|{
+name|SubmitApplicationResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|SubmitApplicationResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|response
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

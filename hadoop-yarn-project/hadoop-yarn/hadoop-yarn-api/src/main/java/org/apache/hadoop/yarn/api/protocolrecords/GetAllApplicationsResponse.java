@@ -128,26 +128,81 @@ name|ApplicationReport
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting an {@link ApplicationReport} for all applications.</p>  *   *<p>The<code>ApplicationReport</code> for each application includes details   * such as user, queue, name, host on which the<code>ApplicationMaster</code>   * is running, RPC port, tracking URL, diagnostics, start time etc.</p>  *   * @see ApplicationReport  * @see ClientRMProtocol#getAllApplications(GetAllApplicationsRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetAllApplicationsResponse
+DECL|class|GetAllApplicationsResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetAllApplicationsResponse
 block|{
+DECL|method|newInstance ( List<ApplicationReport> applications)
+specifier|public
+specifier|static
+name|GetAllApplicationsResponse
+name|newInstance
+parameter_list|(
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|applications
+parameter_list|)
+block|{
+name|GetAllApplicationsResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetAllApplicationsResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setApplicationList
+argument_list|(
+name|applications
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get<code>ApplicationReport</code> for all applications.    * @return<code>ApplicationReport</code> for all applications    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getApplicationList ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ApplicationReport
@@ -160,6 +215,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setApplicationList (List<ApplicationReport> applications)
+specifier|public
+specifier|abstract
 name|void
 name|setApplicationList
 parameter_list|(
@@ -171,7 +228,7 @@ name|applications
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

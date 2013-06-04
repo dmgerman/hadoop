@@ -68,21 +68,62 @@ name|ClientRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client  * aborting a submitted application.</p>  *  *<p>Currently it's empty.</p>  *   * @see ClientRMProtocol#forceKillApplication(KillApplicationRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|KillApplicationResponse
+DECL|class|KillApplicationResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|KillApplicationResponse
-block|{  }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|KillApplicationResponse
+name|newInstance
+parameter_list|()
+block|{
+name|KillApplicationResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|KillApplicationResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|response
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

@@ -52,26 +52,79 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * The request issued by the client to get a delegation token from  * the {@code ResourceManager}.  * for more information.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|interface|GetDelegationTokenRequest
+DECL|class|GetDelegationTokenRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetDelegationTokenRequest
 block|{
+DECL|method|newInstance (String renewer)
+specifier|public
+name|GetDelegationTokenRequest
+name|newInstance
+parameter_list|(
+name|String
+name|renewer
+parameter_list|)
+block|{
+name|GetDelegationTokenRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetDelegationTokenRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setRenewer
+argument_list|(
+name|renewer
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 DECL|method|getRenewer ()
+specifier|public
+specifier|abstract
 name|String
 name|getRenewer
 parameter_list|()
 function_decl|;
 DECL|method|setRenewer (String renewer)
+specifier|public
+specifier|abstract
 name|void
 name|setRenewer
 parameter_list|(
@@ -80,7 +133,7 @@ name|renewer
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

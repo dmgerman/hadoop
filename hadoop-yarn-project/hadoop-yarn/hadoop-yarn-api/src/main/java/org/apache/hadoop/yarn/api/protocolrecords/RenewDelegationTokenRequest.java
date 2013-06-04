@@ -70,26 +70,80 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * The request issued by the client to renew a delegation token from  * the {@code ResourceManager}.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|interface|RenewDelegationTokenRequest
+DECL|class|RenewDelegationTokenRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|RenewDelegationTokenRequest
 block|{
+DECL|method|newInstance (Token dToken)
+specifier|public
+specifier|static
+name|RenewDelegationTokenRequest
+name|newInstance
+parameter_list|(
+name|Token
+name|dToken
+parameter_list|)
+block|{
+name|RenewDelegationTokenRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RenewDelegationTokenRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setDelegationToken
+argument_list|(
+name|dToken
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 DECL|method|getDelegationToken ()
+specifier|public
+specifier|abstract
 name|Token
 name|getDelegationToken
 parameter_list|()
 function_decl|;
 DECL|method|setDelegationToken (Token dToken)
+specifier|public
+specifier|abstract
 name|void
 name|setDelegationToken
 parameter_list|(
@@ -98,7 +152,7 @@ name|dToken
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

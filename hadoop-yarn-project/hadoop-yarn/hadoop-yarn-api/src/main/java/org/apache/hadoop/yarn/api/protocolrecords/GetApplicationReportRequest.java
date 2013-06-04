@@ -104,23 +104,74 @@ name|ApplicationReport
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request sent by a client to the<code>ResourceManager</code> to   * get an {@link ApplicationReport} for an application.</p>  *   *<p>The request should include the {@link ApplicationId} of the   * application.</p>  *   * @see ClientRMProtocol#getApplicationReport(GetApplicationReportRequest)  * @see ApplicationReport  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetApplicationReportRequest
+DECL|class|GetApplicationReportRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetApplicationReportRequest
 block|{
+DECL|method|newInstance ( ApplicationId applicationId)
+specifier|public
+specifier|static
+name|GetApplicationReportRequest
+name|newInstance
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|)
+block|{
+name|GetApplicationReportRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetApplicationReportRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setApplicationId
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationId</code> of the application.    * @return<code>ApplicationId</code> of the application    */
 DECL|method|getApplicationId ()
 specifier|public
+specifier|abstract
 name|ApplicationId
 name|getApplicationId
 parameter_list|()
@@ -128,6 +179,7 @@ function_decl|;
 comment|/**    * Set the<code>ApplicationId</code> of the application    * @param applicationId<code>ApplicationId</code> of the application    */
 DECL|method|setApplicationId (ApplicationId applicationId)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationId
 parameter_list|(
@@ -136,7 +188,7 @@ name|applicationId
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

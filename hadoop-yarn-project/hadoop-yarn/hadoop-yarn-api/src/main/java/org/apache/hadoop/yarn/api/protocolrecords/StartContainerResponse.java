@@ -88,22 +88,79 @@ name|ContainerManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to<em>start</em> an  * allocated container.</p>  *   * @see ContainerManager#startContainer(StartContainerRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|StartContainerResponse
+DECL|class|StartContainerResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|StartContainerResponse
 block|{
+DECL|method|newInstance ( Map<String, ByteBuffer> serviceResponses)
+specifier|public
+specifier|static
+name|StartContainerResponse
+name|newInstance
+parameter_list|(
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|serviceResponses
+parameter_list|)
+block|{
+name|StartContainerResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|StartContainerResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setAllServiceResponse
+argument_list|(
+name|serviceResponses
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    *<p>Get the responses from all auxiliary services running on the     *<code>NodeManager</code>.</p>    *<p>The responses are returned as a Map between the auxiliary service names    * and their corresponding opaque blob<code>ByteBuffer</code>s</p>     * @return a Map between the auxiliary service names and their outputs    */
 DECL|method|getAllServiceResponse ()
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|String
@@ -115,6 +172,8 @@ parameter_list|()
 function_decl|;
 comment|/**    * Set to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    * @param serviceResponses A map from auxiliary service names to the opaque    * blob<code>ByteBuffer</code>s for that auxiliary service    */
 DECL|method|setAllServiceResponse (Map<String, ByteBuffer> serviceResponses)
+specifier|public
+specifier|abstract
 name|void
 name|setAllServiceResponse
 parameter_list|(
@@ -128,7 +187,7 @@ name|serviceResponses
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

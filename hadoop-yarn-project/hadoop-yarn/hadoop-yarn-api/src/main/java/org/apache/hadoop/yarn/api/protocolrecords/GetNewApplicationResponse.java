@@ -136,20 +136,90 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client for   * a request to get a new {@link ApplicationId} for submitting applications.</p>  *   * @see ClientRMProtocol#getNewApplication(GetNewApplicationRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetNewApplicationResponse
+DECL|class|GetNewApplicationResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetNewApplicationResponse
 block|{
+DECL|method|newInstance ( ApplicationId applicationId, Resource minCapability, Resource maxCapability)
+specifier|public
+specifier|static
+name|GetNewApplicationResponse
+name|newInstance
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|Resource
+name|minCapability
+parameter_list|,
+name|Resource
+name|maxCapability
+parameter_list|)
+block|{
+name|GetNewApplicationResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetNewApplicationResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setApplicationId
+argument_list|(
+name|applicationId
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setMinimumResourceCapability
+argument_list|(
+name|minCapability
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setMaximumResourceCapability
+argument_list|(
+name|maxCapability
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get the<em>new</em><code>ApplicationId</code> allocated by the     *<code>ResourceManager</code>.    * @return<em>new</em><code>ApplicationId</code> allocated by the     *<code>ResourceManager</code>    */
 annotation|@
 name|Public
@@ -183,6 +253,7 @@ annotation|@
 name|Stable
 DECL|method|getMinimumResourceCapability ()
 specifier|public
+specifier|abstract
 name|Resource
 name|getMinimumResourceCapability
 parameter_list|()
@@ -193,6 +264,7 @@ annotation|@
 name|Unstable
 DECL|method|setMinimumResourceCapability (Resource capability)
 specifier|public
+specifier|abstract
 name|void
 name|setMinimumResourceCapability
 parameter_list|(
@@ -207,6 +279,7 @@ annotation|@
 name|Stable
 DECL|method|getMaximumResourceCapability ()
 specifier|public
+specifier|abstract
 name|Resource
 name|getMaximumResourceCapability
 parameter_list|()
@@ -217,6 +290,7 @@ annotation|@
 name|Unstable
 DECL|method|setMaximumResourceCapability (Resource capability)
 specifier|public
+specifier|abstract
 name|void
 name|setMaximumResourceCapability
 parameter_list|(
@@ -225,7 +299,7 @@ name|capability
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

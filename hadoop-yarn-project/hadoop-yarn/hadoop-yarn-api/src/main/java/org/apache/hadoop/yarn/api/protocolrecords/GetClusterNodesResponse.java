@@ -128,26 +128,81 @@ name|NodeReport
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting a {@link NodeReport} for all nodes.</p>  *   *<p>The<code>NodeReport</code> contains per-node information such as   * available resources, number of containers, tracking url, rack name, health  * status etc.  *   * @see NodeReport  * @see ClientRMProtocol#getClusterNodes(GetClusterNodesRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetClusterNodesResponse
+DECL|class|GetClusterNodesResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetClusterNodesResponse
 block|{
+specifier|public
+specifier|static
+name|GetClusterNodesResponse
+DECL|method|newInstance (List<NodeReport> nodeReports)
+name|newInstance
+parameter_list|(
+name|List
+argument_list|<
+name|NodeReport
+argument_list|>
+name|nodeReports
+parameter_list|)
+block|{
+name|GetClusterNodesResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetClusterNodesResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setNodeReports
+argument_list|(
+name|nodeReports
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get<code>NodeReport</code> for all nodes in the cluster.    * @return<code>NodeReport</code> for all nodes in the cluster    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getNodeReports ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|NodeReport
@@ -160,6 +215,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setNodeReports (List<NodeReport> nodeReports)
+specifier|public
+specifier|abstract
 name|void
 name|setNodeReports
 parameter_list|(
@@ -171,7 +228,7 @@ name|nodeReports
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

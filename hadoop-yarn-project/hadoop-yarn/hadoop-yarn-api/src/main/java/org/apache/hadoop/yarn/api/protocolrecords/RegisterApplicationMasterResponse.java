@@ -146,20 +146,95 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a new   *<code>ApplicationMaster</code> on registration.</p>  *   *<p>The response contains critical details such as:  *<ul>  *<li>Minimum capability for allocated resources in the cluster.</li>  *<li>Maximum capability for allocated resources in the cluster.</li>  *</ul>  *</p>  *   * @see AMRMProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|RegisterApplicationMasterResponse
+DECL|class|RegisterApplicationMasterResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|RegisterApplicationMasterResponse
 block|{
+DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls)
+specifier|public
+specifier|static
+name|RegisterApplicationMasterResponse
+name|newInstance
+parameter_list|(
+name|Resource
+name|minCapability
+parameter_list|,
+name|Resource
+name|maxCapability
+parameter_list|,
+name|Map
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+name|acls
+parameter_list|)
+block|{
+name|RegisterApplicationMasterResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RegisterApplicationMasterResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setMinimumResourceCapability
+argument_list|(
+name|minCapability
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setMaximumResourceCapability
+argument_list|(
+name|maxCapability
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setApplicationACLs
+argument_list|(
+name|acls
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get the minimum capability for any {@link Resource} allocated by the     *<code>ResourceManager</code> in the cluster.    * @return minimum capability of allocated resources in the cluster    */
 annotation|@
 name|Public
@@ -167,6 +242,7 @@ annotation|@
 name|Stable
 DECL|method|getMinimumResourceCapability ()
 specifier|public
+specifier|abstract
 name|Resource
 name|getMinimumResourceCapability
 parameter_list|()
@@ -177,6 +253,7 @@ annotation|@
 name|Unstable
 DECL|method|setMinimumResourceCapability (Resource capability)
 specifier|public
+specifier|abstract
 name|void
 name|setMinimumResourceCapability
 parameter_list|(
@@ -191,6 +268,7 @@ annotation|@
 name|Stable
 DECL|method|getMaximumResourceCapability ()
 specifier|public
+specifier|abstract
 name|Resource
 name|getMaximumResourceCapability
 parameter_list|()
@@ -201,6 +279,7 @@ annotation|@
 name|Unstable
 DECL|method|setMaximumResourceCapability (Resource capability)
 specifier|public
+specifier|abstract
 name|void
 name|setMaximumResourceCapability
 parameter_list|(
@@ -215,6 +294,7 @@ annotation|@
 name|Stable
 DECL|method|getApplicationACLs ()
 specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|ApplicationAccessType
@@ -231,6 +311,7 @@ annotation|@
 name|Unstable
 DECL|method|setApplicationACLs (Map<ApplicationAccessType, String> acls)
 specifier|public
+specifier|abstract
 name|void
 name|setApplicationACLs
 parameter_list|(
@@ -244,7 +325,7 @@ name|acls
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

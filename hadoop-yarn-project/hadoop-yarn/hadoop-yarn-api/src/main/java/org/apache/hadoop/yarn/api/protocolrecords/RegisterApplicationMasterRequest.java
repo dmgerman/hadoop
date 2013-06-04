@@ -118,26 +118,108 @@ name|ApplicationAttemptId
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see AMRMProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|RegisterApplicationMasterRequest
+DECL|class|RegisterApplicationMasterRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|RegisterApplicationMasterRequest
 block|{
+DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, String host, int port, String trackingUrl)
+specifier|public
+specifier|static
+name|RegisterApplicationMasterRequest
+name|newInstance
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptId
+parameter_list|,
+name|String
+name|host
+parameter_list|,
+name|int
+name|port
+parameter_list|,
+name|String
+name|trackingUrl
+parameter_list|)
+block|{
+name|RegisterApplicationMasterRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RegisterApplicationMasterRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setApplicationAttemptId
+argument_list|(
+name|applicationAttemptId
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setHost
+argument_list|(
+name|host
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setRpcPort
+argument_list|(
+name|port
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setTrackingUrl
+argument_list|(
+name|trackingUrl
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getApplicationAttemptId ()
+specifier|public
+specifier|abstract
 name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
@@ -148,6 +230,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
+specifier|public
+specifier|abstract
 name|void
 name|setApplicationAttemptId
 parameter_list|(
@@ -161,6 +245,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getHost ()
+specifier|public
+specifier|abstract
 name|String
 name|getHost
 parameter_list|()
@@ -171,6 +257,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setHost (String host)
+specifier|public
+specifier|abstract
 name|void
 name|setHost
 parameter_list|(
@@ -184,6 +272,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getRpcPort ()
+specifier|public
+specifier|abstract
 name|int
 name|getRpcPort
 parameter_list|()
@@ -194,6 +284,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setRpcPort (int port)
+specifier|public
+specifier|abstract
 name|void
 name|setRpcPort
 parameter_list|(
@@ -207,6 +299,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getTrackingUrl ()
+specifier|public
+specifier|abstract
 name|String
 name|getTrackingUrl
 parameter_list|()
@@ -217,6 +311,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setTrackingUrl (String trackingUrl)
+specifier|public
+specifier|abstract
 name|void
 name|setTrackingUrl
 parameter_list|(
@@ -225,7 +321,7 @@ name|trackingUrl
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

@@ -104,20 +104,80 @@ name|Token
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>start</em> a container.</p>  *   *<p>The<code>ApplicationMaster</code> has to provide details such as  * allocated resource capability, security tokens (if enabled), command  * to be executed to start the container, environment for the process,   * necessary binaries/jar/shared-objects etc. via the   * {@link ContainerLaunchContext}.</p>  *  * @see ContainerManager#startContainer(StartContainerRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|StartContainerRequest
+DECL|class|StartContainerRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|StartContainerRequest
 block|{
+DECL|method|newInstance ( ContainerLaunchContext context, Token container)
+specifier|public
+specifier|static
+name|StartContainerRequest
+name|newInstance
+parameter_list|(
+name|ContainerLaunchContext
+name|context
+parameter_list|,
+name|Token
+name|container
+parameter_list|)
+block|{
+name|StartContainerRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|StartContainerRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setContainerLaunchContext
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setContainerToken
+argument_list|(
+name|container
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<code>ContainerLaunchContext</code> for the container to be started    * by the<code>NodeManager</code>.    *     * @return<code>ContainerLaunchContext</code> for the container to be started    *         by the<code>NodeManager</code>    */
 annotation|@
 name|Public
@@ -151,6 +211,7 @@ annotation|@
 name|Stable
 DECL|method|getContainerToken ()
 specifier|public
+specifier|abstract
 name|Token
 name|getContainerToken
 parameter_list|()
@@ -161,6 +222,7 @@ annotation|@
 name|Stable
 DECL|method|setContainerToken (Token container)
 specifier|public
+specifier|abstract
 name|void
 name|setContainerToken
 parameter_list|(
@@ -169,7 +231,7 @@ name|container
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

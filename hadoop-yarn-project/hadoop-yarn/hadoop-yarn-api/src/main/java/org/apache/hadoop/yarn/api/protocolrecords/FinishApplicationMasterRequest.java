@@ -104,22 +104,104 @@ name|FinalApplicationStatus
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to  * inform the<code>ResourceManager</code> about its completion.</p>  *  *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the  *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
-begin_interface
-DECL|interface|FinishApplicationMasterRequest
+begin_class
+DECL|class|FinishApplicationMasterRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|FinishApplicationMasterRequest
 block|{
+DECL|method|newInstance ( ApplicationAttemptId appAttemptId, FinalApplicationStatus finalAppStatus, String diagnostics, String url)
+specifier|public
+specifier|static
+name|FinishApplicationMasterRequest
+name|newInstance
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|,
+name|FinalApplicationStatus
+name|finalAppStatus
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|,
+name|String
+name|url
+parameter_list|)
+block|{
+name|FinishApplicationMasterRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|FinishApplicationMasterRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setAppAttemptId
+argument_list|(
+name|appAttemptId
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setFinishApplicationStatus
+argument_list|(
+name|finalAppStatus
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setDiagnostics
+argument_list|(
+name|diagnostics
+argument_list|)
+expr_stmt|;
+name|request
+operator|.
+name|setTrackingUrl
+argument_list|(
+name|url
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 DECL|method|getApplicationAttemptId ()
+specifier|public
+specifier|abstract
 name|ApplicationAttemptId
 name|getApplicationAttemptId
 parameter_list|()
@@ -130,6 +212,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setAppAttemptId (ApplicationAttemptId applicationAttemptId)
+specifier|public
+specifier|abstract
 name|void
 name|setAppAttemptId
 parameter_list|(
@@ -143,6 +227,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getFinalApplicationStatus ()
+specifier|public
+specifier|abstract
 name|FinalApplicationStatus
 name|getFinalApplicationStatus
 parameter_list|()
@@ -153,6 +239,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setFinishApplicationStatus (FinalApplicationStatus finishState)
+specifier|public
+specifier|abstract
 name|void
 name|setFinishApplicationStatus
 parameter_list|(
@@ -166,6 +254,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getDiagnostics ()
+specifier|public
+specifier|abstract
 name|String
 name|getDiagnostics
 parameter_list|()
@@ -176,6 +266,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setDiagnostics (String diagnostics)
+specifier|public
+specifier|abstract
 name|void
 name|setDiagnostics
 parameter_list|(
@@ -189,6 +281,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|getTrackingUrl ()
+specifier|public
+specifier|abstract
 name|String
 name|getTrackingUrl
 parameter_list|()
@@ -199,6 +293,8 @@ name|Public
 annotation|@
 name|Stable
 DECL|method|setTrackingUrl (String url)
+specifier|public
+specifier|abstract
 name|void
 name|setTrackingUrl
 parameter_list|(
@@ -207,7 +303,7 @@ name|url
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

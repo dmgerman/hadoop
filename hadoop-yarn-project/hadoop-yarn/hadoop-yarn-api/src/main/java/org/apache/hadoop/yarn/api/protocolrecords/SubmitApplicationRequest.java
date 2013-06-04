@@ -122,20 +122,70 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The request sent by a client to<em>submit an application</em> to the   *<code>ResourceManager</code>.</p>  *   *<p>The request, via {@link ApplicationSubmissionContext}, contains  * details such as queue, {@link Resource} required to run the   *<code>ApplicationMaster</code>, the equivalent of   * {@link ContainerLaunchContext} for launching the   *<code>ApplicationMaster</code> etc.  *   * @see ClientRMProtocol#submitApplication(SubmitApplicationRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|SubmitApplicationRequest
+DECL|class|SubmitApplicationRequest
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|SubmitApplicationRequest
 block|{
+DECL|method|newInstance ( ApplicationSubmissionContext context)
+specifier|public
+specifier|static
+name|SubmitApplicationRequest
+name|newInstance
+parameter_list|(
+name|ApplicationSubmissionContext
+name|context
+parameter_list|)
+block|{
+name|SubmitApplicationRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|SubmitApplicationRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setApplicationSubmissionContext
+argument_list|(
+name|context
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 comment|/**    * Get the<code>ApplicationSubmissionContext</code> for the application.    * @return<code>ApplicationSubmissionContext</code> for the application    */
 annotation|@
 name|Public
@@ -164,7 +214,7 @@ name|context
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

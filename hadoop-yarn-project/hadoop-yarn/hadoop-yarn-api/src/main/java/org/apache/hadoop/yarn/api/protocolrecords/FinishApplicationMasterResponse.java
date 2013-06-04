@@ -68,21 +68,62 @@ name|AMRMProtocol
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a   *<code>ApplicationMaster</code> on it's completion.</p>  *   *<p>Currently, this is empty.</p>  *   * @see AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|FinishApplicationMasterResponse
+DECL|class|FinishApplicationMasterResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|FinishApplicationMasterResponse
-block|{  }
-end_interface
+block|{
+DECL|method|newInstance ()
+specifier|public
+specifier|static
+name|FinishApplicationMasterResponse
+name|newInstance
+parameter_list|()
+block|{
+name|FinishApplicationMasterResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|FinishApplicationMasterResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+return|return
+name|response
+return|;
+block|}
+block|}
+end_class
 
 end_unit
 

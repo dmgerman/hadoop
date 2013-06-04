@@ -52,26 +52,80 @@ name|Evolving
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  * The response to a renewDelegationToken call to the {@code ResourceManager}.  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|interface|RenewDelegationTokenResponse
+DECL|class|RenewDelegationTokenResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|RenewDelegationTokenResponse
 block|{
+DECL|method|newInstance (long expTime)
+specifier|public
+specifier|static
+name|RenewDelegationTokenResponse
+name|newInstance
+parameter_list|(
+name|long
+name|expTime
+parameter_list|)
+block|{
+name|RenewDelegationTokenResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|RenewDelegationTokenResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setNextExpirationTime
+argument_list|(
+name|expTime
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 DECL|method|getNextExpirationTime ()
+specifier|public
+specifier|abstract
 name|long
 name|getNextExpirationTime
 parameter_list|()
 function_decl|;
 DECL|method|setNextExpirationTime (long expTime)
+specifier|public
+specifier|abstract
 name|void
 name|setNextExpirationTime
 parameter_list|(
@@ -80,7 +134,7 @@ name|expTime
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

@@ -118,22 +118,74 @@ name|QueueInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|Records
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting information about queues in the system.</p>  *  *<p>The response includes a {@link QueueInfo} which has details such as  * queue name, used/total capacities, running applications, child queues etc  * .</p>  *   * @see QueueInfo  * @see ClientRMProtocol#getQueueInfo(GetQueueInfoRequest)  */
 end_comment
 
-begin_interface
+begin_class
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|GetQueueInfoResponse
+DECL|class|GetQueueInfoResponse
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|GetQueueInfoResponse
 block|{
+DECL|method|newInstance (QueueInfo queueInfo)
+specifier|public
+specifier|static
+name|GetQueueInfoResponse
+name|newInstance
+parameter_list|(
+name|QueueInfo
+name|queueInfo
+parameter_list|)
+block|{
+name|GetQueueInfoResponse
+name|response
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetQueueInfoResponse
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|response
+operator|.
+name|setQueueInfo
+argument_list|(
+name|queueInfo
+argument_list|)
+expr_stmt|;
+return|return
+name|response
+return|;
+block|}
 comment|/**    * Get the<code>QueueInfo</code> for the specified queue.    * @return<code>QueueInfo</code> for the specified queue    */
 DECL|method|getQueueInfo ()
+specifier|public
+specifier|abstract
 name|QueueInfo
 name|getQueueInfo
 parameter_list|()
@@ -143,6 +195,8 @@ name|Private
 annotation|@
 name|Unstable
 DECL|method|setQueueInfo (QueueInfo queueInfo)
+specifier|public
+specifier|abstract
 name|void
 name|setQueueInfo
 parameter_list|(
@@ -151,7 +205,7 @@ name|queueInfo
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 
