@@ -46,6 +46,7 @@ end_comment
 
 begin_class
 DECL|class|XmlImageVisitor
+specifier|public
 class|class
 name|XmlImageVisitor
 extends|extends

@@ -867,7 +867,7 @@ name|isDir
 operator|&&
 name|dir
 operator|instanceof
-name|INodeDirectoryWithSnapshot
+name|INodeDirectorySnapshottable
 condition|)
 block|{
 comment|// skip the ".snapshot" in components
