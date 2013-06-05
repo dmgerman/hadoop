@@ -233,6 +233,7 @@ block|}
 comment|/** Synchronized by external lock. */
 DECL|field|map
 specifier|private
+specifier|final
 name|GSet
 argument_list|<
 name|INode

@@ -272,6 +272,8 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
+name|FileWithSnapshot
+operator|.
 name|FileDiffList
 import|;
 end_import
