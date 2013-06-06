@@ -2885,7 +2885,7 @@ name|NoLock
 operator|.
 name|class
 argument_list|)
-DECL|method|allocate (ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release)
+DECL|method|allocate (ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public
 name|Allocation
 name|allocate
@@ -2904,6 +2904,18 @@ argument_list|<
 name|ContainerId
 argument_list|>
 name|release
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
 parameter_list|)
 block|{
 name|FiCaSchedulerApp
@@ -3100,6 +3112,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|ask
+argument_list|,
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
 argument_list|)
 expr_stmt|;
 name|LOG

@@ -48,6 +48,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -438,6 +448,21 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|blacklist
+specifier|final
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|blacklist
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
 comment|//private final ApplicationStore store;
 DECL|field|activeUsersManager
 specifier|private
@@ -609,8 +634,8 @@ name|incrementAndGet
 argument_list|()
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *     * @param requests    *          resources to be acquired    */
-DECL|method|updateResourceRequests ( List<ResourceRequest> requests)
+comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *     * @param requests resources to be acquired    * @param blacklistAdditions resources to be added to the blacklist    * @param blacklistRemovals resources to be removed from the blacklist    */
+DECL|method|updateResourceRequests ( List<ResourceRequest> requests, List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|synchronized
 specifier|public
 name|void
@@ -621,6 +646,18 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|requests
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
 parameter_list|)
 block|{
 name|QueueMetrics
@@ -918,6 +955,41 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|//
+comment|// Update blacklist
+comment|//
+comment|// Add to blacklist
+if|if
+condition|(
+name|blacklistAdditions
+operator|!=
+literal|null
+condition|)
+block|{
+name|blacklist
+operator|.
+name|addAll
+argument_list|(
+name|blacklistAdditions
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Remove from blacklist
+if|if
+condition|(
+name|blacklistRemovals
+operator|!=
+literal|null
+condition|)
+block|{
+name|blacklist
+operator|.
+name|removeAll
+argument_list|(
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|getPriorities ()
 specifier|synchronized
@@ -1029,6 +1101,25 @@ name|request
 operator|.
 name|getCapability
 argument_list|()
+return|;
+block|}
+DECL|method|isBlacklisted (String resourceName)
+specifier|public
+specifier|synchronized
+name|boolean
+name|isBlacklisted
+parameter_list|(
+name|String
+name|resourceName
+parameter_list|)
+block|{
+return|return
+name|blacklist
+operator|.
+name|contains
+argument_list|(
+name|resourceName
+argument_list|)
 return|;
 block|}
 comment|/**    * Resources have been allocated to this application by the resource    * scheduler. Track them.    *     * @param type    *          the type of the node    * @param node    *          the nodeinfo of the node    * @param priority    *          the priority of the request.    * @param request    *          the request    * @param container    *          the containers allocated.    */

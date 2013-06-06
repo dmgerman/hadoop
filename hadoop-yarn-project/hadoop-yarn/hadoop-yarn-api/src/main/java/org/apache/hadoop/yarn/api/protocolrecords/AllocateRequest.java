@@ -110,6 +110,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceBlacklistRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -181,7 +199,7 @@ specifier|abstract
 class|class
 name|AllocateRequest
 block|{
-DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased)
+DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest)
 specifier|public
 specifier|static
 name|AllocateRequest
@@ -207,6 +225,9 @@ argument_list|<
 name|ContainerId
 argument_list|>
 name|containersToBeReleased
+parameter_list|,
+name|ResourceBlacklistRequest
+name|resourceBlacklistRequest
 parameter_list|)
 block|{
 name|AllocateRequest
@@ -254,6 +275,13 @@ operator|.
 name|setReleaseList
 argument_list|(
 name|containersToBeReleased
+argument_list|)
+expr_stmt|;
+name|allocateRequest
+operator|.
+name|setResourceBlacklistRequest
+argument_list|(
+name|resourceBlacklistRequest
 argument_list|)
 expr_stmt|;
 return|return
@@ -341,7 +369,7 @@ name|float
 name|progress
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's resource requirements.    * @return the list of<code>ResourceRequest</code>    */
+comment|/**    * Get the list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's resource requirements.    * @return the list of<code>ResourceRequest</code>    * @see ResourceRequest    */
 annotation|@
 name|Public
 annotation|@
@@ -356,7 +384,7 @@ argument_list|>
 name|getAskList
 parameter_list|()
 function_decl|;
-comment|/**    * Set list of<code>ResourceRequest</code> to update the    *<code>ResourceManager</code> about the application's resource requirements.    * @param resourceRequests list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's     *                        resource requirements    */
+comment|/**    * Set list of<code>ResourceRequest</code> to update the    *<code>ResourceManager</code> about the application's resource requirements.    * @param resourceRequests list of<code>ResourceRequest</code> to update the     *<code>ResourceManager</code> about the application's     *                        resource requirements    * @see ResourceRequest    */
 annotation|@
 name|Public
 annotation|@
@@ -389,7 +417,7 @@ argument_list|>
 name|getReleaseList
 parameter_list|()
 function_decl|;
-comment|/**    * Set the list of<code>ContainerId</code> of containers being    * released by the<code>ApplicationMaster</code>    * @param releaseContainers list of<code>ContainerId</code> of     *                          containers being released by the<    *                          code>ApplicationMaster</code>    */
+comment|/**    * Set the list of<code>ContainerId</code> of containers being    * released by the<code>ApplicationMaster</code>    * @param releaseContainers list of<code>ContainerId</code> of     *                          containers being released by the     *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -405,6 +433,33 @@ argument_list|<
 name|ContainerId
 argument_list|>
 name|releaseContainers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<code>ResourceBlacklistRequest</code> being sent by the     *<code>ApplicationMaster</code>.    * @return the<code>ResourceBlacklistRequest</code> being sent by the     *<code>ApplicationMaster</code>    * @see ResourceBlacklistRequest    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getResourceBlacklistRequest ()
+specifier|public
+specifier|abstract
+name|ResourceBlacklistRequest
+name|getResourceBlacklistRequest
+parameter_list|()
+function_decl|;
+comment|/**    * Set the<code>ResourceBlacklistRequest</code> to inform the     *<code>ResourceManager</code> about the blacklist additions and removals    * per the<code>ApplicationMaster</code>.    *     * @param resourceBlacklistRequest the<code>ResourceBlacklistRequest</code>      *                         to inform the<code>ResourceManager</code> about      *                         the blacklist additions and removals    *                         per the<code>ApplicationMaster</code>    * @see ResourceBlacklistRequest    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setResourceBlacklistRequest ( ResourceBlacklistRequest resourceBlacklistRequest)
+specifier|public
+specifier|abstract
+name|void
+name|setResourceBlacklistRequest
+parameter_list|(
+name|ResourceBlacklistRequest
+name|resourceBlacklistRequest
 parameter_list|)
 function_decl|;
 block|}

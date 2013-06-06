@@ -4564,6 +4564,10 @@ name|request
 argument_list|)
 argument_list|,
 name|EMPTY_CONTAINER_RELEASE_LIST
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
@@ -4669,6 +4673,10 @@ argument_list|,
 name|EMPTY_CONTAINER_REQUEST_LIST
 argument_list|,
 name|EMPTY_CONTAINER_RELEASE_LIST
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// Set the masterContainer

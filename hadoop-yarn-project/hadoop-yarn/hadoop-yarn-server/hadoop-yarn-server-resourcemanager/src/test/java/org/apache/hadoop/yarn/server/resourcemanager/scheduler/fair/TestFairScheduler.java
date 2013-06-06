@@ -1744,6 +1744,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 return|return
@@ -1837,6 +1841,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -3870,6 +3878,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Second ask, queue2 requests 1 large + (2 * minReqSize)
@@ -3948,6 +3960,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Third ask, queue2 requests 1 large
@@ -4005,6 +4021,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|scheduler
@@ -9617,6 +9637,10 @@ name|asList
 argument_list|(
 name|containerId
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -10179,6 +10203,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// node 1 checks in
@@ -12473,6 +12501,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// then node2 should get the container
@@ -12772,6 +12804,10 @@ argument_list|<
 name|ContainerId
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|scheduler

@@ -8000,7 +8000,7 @@ comment|// override this to copy the objects otherwise FifoScheduler updates the
 comment|// numContainers in same objects as kept by RMContainerAllocator
 annotation|@
 name|Override
-DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release)
+DECL|method|allocate ( ApplicationAttemptId applicationAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals)
 specifier|public
 specifier|synchronized
 name|Allocation
@@ -8020,6 +8020,18 @@ argument_list|<
 name|ContainerId
 argument_list|>
 name|release
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
 parameter_list|)
 block|{
 name|List
@@ -8093,6 +8105,10 @@ argument_list|,
 name|askCopy
 argument_list|,
 name|release
+argument_list|,
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
 argument_list|)
 return|;
 block|}

@@ -3796,6 +3796,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_0_requests
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute
@@ -3929,6 +3933,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_1_requests
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute
@@ -4066,6 +4074,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_1_0_requests
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Schedule to compute

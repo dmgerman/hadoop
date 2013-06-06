@@ -314,6 +314,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceBlacklistRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -2299,6 +2317,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -3003,6 +3025,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -3034,6 +3060,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -4116,6 +4146,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -4147,6 +4181,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|/**      * Start testing...      */
@@ -4661,6 +4699,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -4692,6 +4734,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|/**      * Start testing...      */
@@ -4938,6 +4984,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5092,6 +5142,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5468,6 +5522,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -5499,6 +5557,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|/**       * Start testing...       */
@@ -5705,6 +5767,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_3
@@ -5736,6 +5802,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Now allocations should goto app_2 since
@@ -6761,6 +6831,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -6792,6 +6866,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -7650,6 +7728,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Setup app_1 to request a 4GB container on host_0 and
@@ -7748,6 +7830,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|appRequests_1
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -8556,6 +8642,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -8587,6 +8677,10 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -9604,6 +9698,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -10248,6 +10346,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -10882,6 +10984,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -11940,6 +12046,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -11981,6 +12091,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// NODE_LOCAL - node_0_1
@@ -12178,6 +12292,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// No allocation on node_0_1 even though it's node/rack local since
@@ -13423,24 +13541,6 @@ name|rack_0
 init|=
 literal|"rack_0"
 decl_stmt|;
-name|FiCaSchedulerNode
-name|node_0_0
-init|=
-name|TestUtils
-operator|.
-name|getMockNode
-argument_list|(
-name|host_0_0
-argument_list|,
-name|rack_0
-argument_list|,
-literal|0
-argument_list|,
-literal|8
-operator|*
-name|GB
-argument_list|)
-decl_stmt|;
 name|String
 name|host_0_1
 init|=
@@ -13568,6 +13668,7 @@ comment|// host_0_0: 8G
 comment|// host_0_1: 8G
 comment|// host_1_0: 8G
 comment|// host_1_1: 8G
+comment|// Blacklist:<host_0_0>
 name|Priority
 name|priority
 init|=
@@ -13695,6 +13796,15 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|host_0_0
+argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_0_requests_0
@@ -13786,6 +13896,7 @@ comment|// host_0_0: 8G
 comment|// host_0_1: 8G
 comment|// host_1_0: 8G
 comment|// host_1_1: 8G
+comment|// Blacklist:<host_0_0>
 comment|// node_1_1
 comment|// Shouldn't allocate since RR(rack_1) = relax: false
 name|a
@@ -13854,7 +13965,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// should be 0
-comment|// Allow rack-locality for rack_1
+comment|// Allow rack-locality for rack_1, but blacklist node_1_1
 name|app_0_requests_0
 operator|.
 name|add
@@ -13884,6 +13995,15 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|host_1_1
+argument_list|)
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_0_requests_0
@@ -13897,14 +14017,227 @@ comment|// host_0_1:< null>
 comment|// rack_0:< null>
 comment|// host_1_0:< 1, 1GB, 1, true>
 comment|// host_1_1:< null>
-comment|// rack_1:< 1, 1GB, 1, true><----
+comment|// rack_1:< 1, 1GB, 1, true>
 comment|// ANY:< 1, 1GB, 1, false>
 comment|// Availability:
 comment|// host_0_0: 8G
 comment|// host_0_1: 8G
 comment|// host_1_0: 8G
 comment|// host_1_1: 8G
+comment|// Blacklist:< host_0_0 , host_1_1><----
 comment|// node_1_1
+comment|// Shouldn't allocate since node_1_1 is blacklisted
+name|a
+operator|.
+name|assignContainers
+argument_list|(
+name|clusterResource
+argument_list|,
+name|node_1_1
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|app_0
+argument_list|,
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|allocate
+argument_list|(
+name|any
+argument_list|(
+name|NodeType
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|eq
+argument_list|(
+name|node_1_1
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|Priority
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|ResourceRequest
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|Container
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|app_0
+operator|.
+name|getSchedulingOpportunities
+argument_list|(
+name|priority
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// should be 0
+comment|// Now, remove node_1_1 from blacklist, but add rack_1 to blacklist
+name|app_0
+operator|.
+name|updateResourceRequests
+argument_list|(
+name|app_0_requests_0
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|rack_1
+argument_list|)
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|host_1_1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|app_0_requests_0
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+comment|// resourceName:<priority, memory, #containers, relaxLocality>
+comment|// host_0_0:< 1, 1GB, 1, true>
+comment|// host_0_1:< null>
+comment|// rack_0:< null>
+comment|// host_1_0:< 1, 1GB, 1, true>
+comment|// host_1_1:< null>
+comment|// rack_1:< 1, 1GB, 1, true>
+comment|// ANY:< 1, 1GB, 1, false>
+comment|// Availability:
+comment|// host_0_0: 8G
+comment|// host_0_1: 8G
+comment|// host_1_0: 8G
+comment|// host_1_1: 8G
+comment|// Blacklist:< host_0_0 , rack_1><----
+comment|// node_1_1
+comment|// Shouldn't allocate since rack_1 is blacklisted
+name|a
+operator|.
+name|assignContainers
+argument_list|(
+name|clusterResource
+argument_list|,
+name|node_1_1
+argument_list|)
+expr_stmt|;
+name|verify
+argument_list|(
+name|app_0
+argument_list|,
+name|never
+argument_list|()
+argument_list|)
+operator|.
+name|allocate
+argument_list|(
+name|any
+argument_list|(
+name|NodeType
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|eq
+argument_list|(
+name|node_1_1
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|Priority
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|ResourceRequest
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|Container
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|app_0
+operator|.
+name|getSchedulingOpportunities
+argument_list|(
+name|priority
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// should be 0
+comment|// Now remove rack_1 from blacklist
+name|app_0
+operator|.
+name|updateResourceRequests
+argument_list|(
+name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|rack_1
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|app_0_requests_0
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+comment|// resourceName:<priority, memory, #containers, relaxLocality>
+comment|// host_0_0:< 1, 1GB, 1, true>
+comment|// host_0_1:< null>
+comment|// rack_0:< null>
+comment|// host_1_0:< 1, 1GB, 1, true>
+comment|// host_1_1:< null>
+comment|// rack_1:< 1, 1GB, 1, true>
+comment|// ANY:< 1, 1GB, 1, false>
+comment|// Availability:
+comment|// host_0_0: 8G
+comment|// host_0_1: 8G
+comment|// host_1_0: 8G
+comment|// host_1_1: 8G
+comment|// Blacklist:< host_0_0><----
 comment|// Now, should allocate since RR(rack_1) = relax: true
 name|a
 operator|.
@@ -14037,6 +14370,10 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|app_0_requests_0

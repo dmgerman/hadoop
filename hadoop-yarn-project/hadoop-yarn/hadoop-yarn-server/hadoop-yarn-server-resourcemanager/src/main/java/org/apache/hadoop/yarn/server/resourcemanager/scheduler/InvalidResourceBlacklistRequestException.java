@@ -57,14 +57,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The exception is thrown when a {@link ResourceRequest} is out of the range  * of the configured lower and upper resource boundaries.  *  */
+comment|/**  * The exception is thrown when an application provides an invalid  * specification for the blacklist.  *   * As an e.g., currently this exceptions is thrown when an application   * tries to blacklist {@link ResourceRequest#ANY}.   */
 end_comment
 
 begin_class
-DECL|class|InvalidResourceRequestException
+DECL|class|InvalidResourceBlacklistRequestException
 specifier|public
 class|class
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 extends|extends
 name|YarnException
 block|{
@@ -75,11 +75,11 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|13498237L
+literal|384957911L
 decl_stmt|;
-DECL|method|InvalidResourceRequestException (Throwable cause)
+DECL|method|InvalidResourceBlacklistRequestException (Throwable cause)
 specifier|public
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 parameter_list|(
 name|Throwable
 name|cause
@@ -91,9 +91,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidResourceRequestException (String message)
+DECL|method|InvalidResourceBlacklistRequestException (String message)
 specifier|public
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 parameter_list|(
 name|String
 name|message
@@ -105,9 +105,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidResourceRequestException (String message, Throwable cause)
+DECL|method|InvalidResourceBlacklistRequestException (String message, Throwable cause)
 specifier|public
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 parameter_list|(
 name|String
 name|message

@@ -2438,6 +2438,20 @@ name|List
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|List
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|List
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2515,6 +2529,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * {@link RMAppAttemptState#ALLOCATED}    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|testAppAttemptAllocatedState (Container amContainer)
 specifier|private
 name|void
@@ -2577,6 +2596,20 @@ argument_list|(
 name|any
 argument_list|(
 name|ApplicationAttemptId
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|List
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|List
 operator|.
 name|class
 argument_list|)
@@ -3109,6 +3142,11 @@ name|testAppAttemptScheduledState
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|allocateApplicationAttempt ()
 specifier|private
 name|Container
@@ -3214,6 +3252,20 @@ argument_list|(
 name|any
 argument_list|(
 name|ApplicationAttemptId
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|List
+operator|.
+name|class
+argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|List
 operator|.
 name|class
 argument_list|)

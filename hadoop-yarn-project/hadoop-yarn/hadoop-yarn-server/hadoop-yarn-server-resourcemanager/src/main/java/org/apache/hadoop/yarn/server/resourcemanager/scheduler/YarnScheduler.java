@@ -354,13 +354,13 @@ name|int
 name|getNumClusterNodes
 parameter_list|()
 function_decl|;
-comment|/**    * The main api between the ApplicationMaster and the Scheduler.    * The ApplicationMaster is updating his future resource requirements    * and may release containers he doens't need.    *     * @param appAttemptId    * @param ask    * @param release    * @return the {@link Allocation} for the application    */
+comment|/**    * The main api between the ApplicationMaster and the Scheduler.    * The ApplicationMaster is updating his future resource requirements    * and may release containers he doens't need.    *     * @param appAttemptId    * @param ask    * @param release    * @param blacklistAdditions     * @param blacklistRemovals     * @return the {@link Allocation} for the application    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
 name|Allocation
-DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release)
+DECL|method|allocate (ApplicationAttemptId appAttemptId, List<ResourceRequest> ask, List<ContainerId> release, List<String> blacklistAdditions, List<String> blacklistRemovals)
 name|allocate
 parameter_list|(
 name|ApplicationAttemptId
@@ -377,6 +377,18 @@ argument_list|<
 name|ContainerId
 argument_list|>
 name|release
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
 parameter_list|)
 function_decl|;
 comment|/**    * Get node resource usage report.    * @param nodeId    * @return the {@link SchedulerNodeReport} for the node or null    * if nodeId does not point to a defined node.    */
