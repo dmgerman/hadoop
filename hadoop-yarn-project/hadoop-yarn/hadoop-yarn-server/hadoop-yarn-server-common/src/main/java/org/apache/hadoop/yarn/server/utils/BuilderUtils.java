@@ -192,6 +192,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|AMCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAccessType
 import|;
 end_import
@@ -2759,7 +2777,7 @@ return|return
 name|allocateRequest
 return|;
 block|}
-DECL|method|newAllocateResponse (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, boolean reboot, int numClusterNodes, PreemptionMessage preempt)
+DECL|method|newAllocateResponse (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -2789,8 +2807,8 @@ parameter_list|,
 name|Resource
 name|availResources
 parameter_list|,
-name|boolean
-name|reboot
+name|AMCommand
+name|command
 parameter_list|,
 name|int
 name|numClusterNodes
@@ -2855,9 +2873,9 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setResync
+name|setAMCommand
 argument_list|(
-name|reboot
+name|command
 argument_list|)
 expr_stmt|;
 name|response

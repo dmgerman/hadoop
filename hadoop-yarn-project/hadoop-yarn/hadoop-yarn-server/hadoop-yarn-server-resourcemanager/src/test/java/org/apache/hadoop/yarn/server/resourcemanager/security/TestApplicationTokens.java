@@ -1206,7 +1206,7 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertFalse
+name|assertTrue
 argument_list|(
 name|rmClient
 operator|.
@@ -1215,8 +1215,10 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 operator|.
-name|getResync
+name|getAMCommand
 argument_list|()
+operator|==
+literal|null
 argument_list|)
 expr_stmt|;
 comment|// Simulate a master-key-roll-over
@@ -1310,7 +1312,7 @@ argument_list|)
 expr_stmt|;
 name|Assert
 operator|.
-name|assertFalse
+name|assertTrue
 argument_list|(
 name|rmClient
 operator|.
@@ -1319,8 +1321,10 @@ argument_list|(
 name|allocateRequest
 argument_list|)
 operator|.
-name|getResync
+name|getAMCommand
 argument_list|()
+operator|==
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

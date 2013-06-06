@@ -1297,23 +1297,82 @@ if|if
 condition|(
 name|response
 operator|.
-name|getResync
+name|getAMCommand
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|boolean
+name|stop
+init|=
+literal|false
+decl_stmt|;
+switch|switch
+condition|(
+name|response
+operator|.
+name|getAMCommand
 argument_list|()
 condition|)
 block|{
+case|case
+name|AM_RESYNC
+case|:
+case|case
+name|AM_SHUTDOWN
+case|:
 name|handler
 operator|.
-name|onRebootRequest
+name|onShutdownRequest
 argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Reboot requested. Stopping callback."
+literal|"Shutdown requested. Stopping callback."
 argument_list|)
 expr_stmt|;
+name|stop
+operator|=
+literal|true
+expr_stmt|;
 break|break;
+default|default:
+name|String
+name|msg
+init|=
+literal|"Unhandled value of AMCommand: "
+operator|+
+name|response
+operator|.
+name|getAMCommand
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|stop
+condition|)
+block|{
+comment|// should probably stop heartbeating also YARN-763
+break|break;
+block|}
 block|}
 name|List
 argument_list|<
@@ -1440,11 +1499,11 @@ argument_list|>
 name|containers
 parameter_list|)
 function_decl|;
-comment|/**      * Called when the ResourceManager wants the ApplicationMaster to reboot      * for being out of sync. The ApplicationMaster should not unregister with       * the RM unless the ApplicationMaster wants to be the last attempt.      */
-DECL|method|onRebootRequest ()
+comment|/**      * Called when the ResourceManager wants the ApplicationMaster to shutdown      * for being out of sync etc. The ApplicationMaster should not unregister      * with the RM unless the ApplicationMaster wants to be the last attempt.      */
+DECL|method|onShutdownRequest ()
 specifier|public
 name|void
-name|onRebootRequest
+name|onShutdownRequest
 parameter_list|()
 function_decl|;
 comment|/**      * Called when nodes tracked by the ResourceManager have changed in health,      * availability etc.      */

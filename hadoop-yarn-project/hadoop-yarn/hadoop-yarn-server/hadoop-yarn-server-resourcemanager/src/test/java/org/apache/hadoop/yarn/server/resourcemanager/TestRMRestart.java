@@ -324,6 +324,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|AMCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAccessType
 import|;
 end_import
@@ -904,6 +922,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRMRestart ()
 specifier|public
 name|void
@@ -1877,8 +1900,12 @@ name|assertTrue
 argument_list|(
 name|allocResponse
 operator|.
-name|getResync
+name|getAMCommand
 argument_list|()
+operator|==
+name|AMCommand
+operator|.
+name|AM_RESYNC
 argument_list|)
 expr_stmt|;
 comment|// NM should be rebooted on heartbeat, even first heartbeat for nm2

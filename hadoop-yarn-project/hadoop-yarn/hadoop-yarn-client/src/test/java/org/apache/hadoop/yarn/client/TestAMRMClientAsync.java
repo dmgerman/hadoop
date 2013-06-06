@@ -220,6 +220,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|AMCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ApplicationAttemptId
 import|;
 end_import
@@ -1187,11 +1205,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
+comment|//(timeout=10000)
 DECL|method|testAMRMClientAsyncReboot ()
 specifier|public
 name|void
@@ -1255,9 +1269,11 @@ argument_list|)
 decl_stmt|;
 name|rebootResponse
 operator|.
-name|setResync
+name|setAMCommand
 argument_list|(
-literal|true
+name|AMCommand
+operator|.
+name|AM_RESYNC
 argument_list|)
 expr_stmt|;
 name|when
@@ -1416,7 +1432,7 @@ argument_list|()
 argument_list|,
 literal|null
 argument_list|,
-literal|false
+literal|null
 argument_list|,
 literal|1
 argument_list|,
@@ -1746,10 +1762,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|onRebootRequest ()
+DECL|method|onShutdownRequest ()
 specifier|public
 name|void
-name|onRebootRequest
+name|onShutdownRequest
 parameter_list|()
 block|{
 name|reboot

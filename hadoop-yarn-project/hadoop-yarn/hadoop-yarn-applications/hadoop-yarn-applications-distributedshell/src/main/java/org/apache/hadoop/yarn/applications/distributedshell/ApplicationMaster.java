@@ -3148,12 +3148,17 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|onRebootRequest ()
+DECL|method|onShutdownRequest ()
 specifier|public
 name|void
-name|onRebootRequest
+name|onShutdownRequest
 parameter_list|()
-block|{}
+block|{
+name|done
+operator|=
+literal|true
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|onNodesUpdated (List<NodeReport> updatedNodes)

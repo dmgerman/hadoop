@@ -253,7 +253,7 @@ parameter_list|>
 extends|extends
 name|Service
 block|{
-comment|/**    * Object to represent container request for resources.    * Resources may be localized to nodes and racks.    * Resources may be assigned priorities.    * Can ask for multiple containers of a given type.    */
+comment|/**    * Object to represent container request for resources.    * Resources may be localized to nodes and racks.    * Resources may be assigned priorities.    * All getters return unmodifiable collections.    * Can ask for multiple containers of a given type.    */
 DECL|class|ContainerRequest
 specifier|public
 specifier|static
@@ -382,7 +382,7 @@ return|;
 block|}
 DECL|method|getHosts ()
 specifier|public
-name|ImmutableList
+name|List
 argument_list|<
 name|String
 argument_list|>
@@ -395,7 +395,7 @@ return|;
 block|}
 DECL|method|getRacks ()
 specifier|public
-name|ImmutableList
+name|List
 argument_list|<
 name|String
 argument_list|>

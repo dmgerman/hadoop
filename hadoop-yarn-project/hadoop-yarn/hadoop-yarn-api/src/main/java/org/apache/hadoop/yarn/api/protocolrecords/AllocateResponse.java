@@ -140,6 +140,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|AMCommand
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -265,7 +283,7 @@ specifier|abstract
 class|class
 name|AllocateResponse
 block|{
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, boolean resync, int numClusterNodes, PreemptionMessage preempt)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -295,8 +313,8 @@ parameter_list|,
 name|Resource
 name|availResources
 parameter_list|,
-name|boolean
-name|resync
+name|AMCommand
+name|command
 parameter_list|,
 name|int
 name|numClusterNodes
@@ -361,9 +379,9 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setResync
+name|setAMCommand
 argument_list|(
-name|resync
+name|command
 argument_list|)
 expr_stmt|;
 name|response
@@ -377,30 +395,30 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Should the<code>ApplicationMaster</code> take action because of being     * out-of-sync with the<code>ResourceManager</code> as deigned by    * {@link #getResponseId()}    * This can be due to application errors or because the ResourceManager     * has restarted. The action to be taken by the<code>ApplicationMaster</code>     * is to shutdown without unregistering with the<code>ResourceManager</code>.     * The ResourceManager will start a new attempt. If the application is already     * done when it gets the resync command, then it may choose to shutdown after     * unregistering in which case the ResourceManager will not start a new attempt.     *    * @return<code>true</code> if the<code>ApplicationMaster</code> should    *         take action,<code>false</code> otherwise    */
+comment|/**    * If the<code>ResourceManager</code> needs the    *<code>ApplicationMaster</code> to take some action then it will send an    * AMCommand to the<code>ApplicationMaster</code>. See<code>AMCommand</code>     * for details on commands and actions for them.    * @return<code>AMCommand</code> if the<code>ApplicationMaster</code> should    *         take action,<code>null</code> otherwise    * @see AMCommand    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getResync ()
+DECL|method|getAMCommand ()
 specifier|public
 specifier|abstract
-name|boolean
-name|getResync
+name|AMCommand
+name|getAMCommand
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setResync (boolean value)
+DECL|method|setAMCommand (AMCommand command)
 specifier|public
 specifier|abstract
 name|void
-name|setResync
+name|setAMCommand
 parameter_list|(
-name|boolean
-name|value
+name|AMCommand
+name|command
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<em>last response id</em>.    * @return<em>last response id</em>    */
