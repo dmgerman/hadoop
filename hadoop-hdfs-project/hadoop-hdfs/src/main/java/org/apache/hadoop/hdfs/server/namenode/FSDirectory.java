@@ -3453,10 +3453,6 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|false
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -4853,6 +4849,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|true
 argument_list|)
 operator|.
 name|get
@@ -4955,10 +4953,6 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|false
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -7072,6 +7066,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|parent
@@ -7099,10 +7095,6 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|true
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 name|removed
@@ -8867,6 +8859,9 @@ name|inodes
 index|[
 name|i
 index|]
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|node
 operator|.
@@ -9963,6 +9958,9 @@ name|inodes
 index|[
 name|i
 index|]
+operator|.
+name|asDirectory
+argument_list|()
 operator|)
 operator|.
 name|verifyQuota

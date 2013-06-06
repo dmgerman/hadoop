@@ -546,7 +546,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta, boolean verify, int snapshotId)
+DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta, boolean verify)
 specifier|public
 specifier|final
 name|void
@@ -562,9 +562,6 @@ name|dsDelta
 parameter_list|,
 name|boolean
 name|verify
-parameter_list|,
-name|int
-name|snapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -602,8 +599,6 @@ argument_list|,
 name|dsDelta
 argument_list|,
 name|verify
-argument_list|,
-name|snapshotId
 argument_list|)
 expr_stmt|;
 comment|// (3) add count in this inode
@@ -626,8 +621,6 @@ argument_list|,
 name|dsDelta
 argument_list|,
 name|verify
-argument_list|,
-name|snapshotId
 argument_list|)
 expr_stmt|;
 block|}

@@ -1607,7 +1607,7 @@ name|snapshot
 init|=
 name|snapshotsByNames
 operator|.
-name|remove
+name|get
 argument_list|(
 name|i
 argument_list|)
@@ -1640,6 +1640,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|INodeDirectory
@@ -1682,10 +1684,6 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|true
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -1706,6 +1704,14 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+comment|// remove from snapshotsByNames after successfully cleaning the subtree
+name|snapshotsByNames
+operator|.
+name|remove
+argument_list|(
+name|i
+argument_list|)
+expr_stmt|;
 return|return
 name|snapshot
 return|;

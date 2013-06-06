@@ -253,7 +253,7 @@ name|currentINode
 parameter_list|)
 function_decl|;
 comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The snapshot to be deleted    * @param prior The snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
-DECL|method|deleteSnapshotDiff (final Snapshot snapshot, Snapshot prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|deleteSnapshotDiff (final Snapshot snapshot, Snapshot prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, boolean countDiffChange)
 specifier|public
 specifier|final
 name|Quota
@@ -282,6 +282,9 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|boolean
+name|countDiffChange
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -357,6 +360,11 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|countDiffChange
+condition|)
+block|{
 name|counts
 operator|.
 name|add
@@ -368,28 +376,25 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// We add 1 to the namespace quota usage since we delete a diff.
-comment|// The quota change will be propagated to
-comment|// 1) ancestors in the current tree, and
-comment|// 2) src tree of any renamed ancestor.
-comment|// Because for 2) we do not calculate the number of diff for quota
-comment|// usage, we need to compensate this diff change for 2)
+block|}
+else|else
+block|{
+comment|// the currentINode must be a descendant of a WithName node, which set
+comment|// countDiffChange to false. In that case we should count in the diff
+comment|// change when updating the quota usage in the current tree
 name|currentINode
 operator|.
-name|addSpaceConsumedToRenameSrc
+name|addSpaceConsumed
 argument_list|(
+operator|-
 literal|1
 argument_list|,
 literal|0
 argument_list|,
 literal|false
-argument_list|,
-name|snapshot
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|counts
 operator|.
 name|add
@@ -473,6 +478,11 @@ argument_list|(
 name|snapshotIndex
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|countDiffChange
+condition|)
+block|{
 name|counts
 operator|.
 name|add
@@ -484,22 +494,22 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
 name|currentINode
 operator|.
-name|addSpaceConsumedToRenameSrc
+name|addSpaceConsumed
 argument_list|(
+operator|-
 literal|1
 argument_list|,
 literal|0
 argument_list|,
 literal|false
-argument_list|,
-name|snapshot
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|previous
@@ -601,10 +611,6 @@ argument_list|,
 literal|0
 argument_list|,
 literal|true
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 return|return

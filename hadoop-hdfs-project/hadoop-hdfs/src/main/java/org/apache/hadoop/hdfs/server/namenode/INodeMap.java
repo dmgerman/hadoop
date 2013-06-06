@@ -470,6 +470,9 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|boolean
+name|countDiffChange
 parameter_list|)
 throws|throws
 name|QuotaExceededException

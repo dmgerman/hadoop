@@ -951,7 +951,7 @@ block|}
 annotation|@
 name|Override
 comment|// used by WithCount
-DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -973,6 +973,10 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+specifier|final
+name|boolean
+name|countDiffChange
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -989,6 +993,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|countDiffChange
 argument_list|)
 return|;
 block|}
@@ -1688,138 +1694,6 @@ argument_list|)
 return|;
 block|}
 block|}
-annotation|@
-name|Override
-DECL|method|addSpaceConsumed (long nsDelta, long dsDelta, boolean verify, int snapshotId)
-specifier|public
-specifier|final
-name|void
-name|addSpaceConsumed
-parameter_list|(
-name|long
-name|nsDelta
-parameter_list|,
-name|long
-name|dsDelta
-parameter_list|,
-name|boolean
-name|verify
-parameter_list|,
-name|int
-name|snapshotId
-parameter_list|)
-throws|throws
-name|QuotaExceededException
-block|{
-name|INodeReference
-name|parentRef
-init|=
-name|getParentReference
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|parentRef
-operator|!=
-literal|null
-condition|)
-block|{
-name|parentRef
-operator|.
-name|addSpaceConsumed
-argument_list|(
-name|nsDelta
-argument_list|,
-name|dsDelta
-argument_list|,
-name|verify
-argument_list|,
-name|snapshotId
-argument_list|)
-expr_stmt|;
-block|}
-name|addSpaceConsumedToRenameSrc
-argument_list|(
-name|nsDelta
-argument_list|,
-name|dsDelta
-argument_list|,
-name|verify
-argument_list|,
-name|snapshotId
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|addSpaceConsumedToRenameSrc (long nsDelta, long dsDelta, boolean verify, int snapshotId)
-specifier|public
-specifier|final
-name|void
-name|addSpaceConsumedToRenameSrc
-parameter_list|(
-name|long
-name|nsDelta
-parameter_list|,
-name|long
-name|dsDelta
-parameter_list|,
-name|boolean
-name|verify
-parameter_list|,
-name|int
-name|snapshotId
-parameter_list|)
-throws|throws
-name|QuotaExceededException
-block|{
-if|if
-condition|(
-name|snapshotId
-operator|!=
-name|Snapshot
-operator|.
-name|INVALID_ID
-condition|)
-block|{
-for|for
-control|(
-name|INodeReference
-operator|.
-name|WithName
-name|withName
-range|:
-name|withNameList
-control|)
-block|{
-if|if
-condition|(
-name|withName
-operator|.
-name|getLastSnapshotId
-argument_list|()
-operator|>=
-name|snapshotId
-condition|)
-block|{
-name|withName
-operator|.
-name|addSpaceConsumed
-argument_list|(
-name|nsDelta
-argument_list|,
-name|dsDelta
-argument_list|,
-name|verify
-argument_list|,
-name|snapshotId
-argument_list|)
-expr_stmt|;
-break|break;
-block|}
-block|}
-block|}
-block|}
 block|}
 comment|/** A reference with a fixed name. */
 DECL|class|WithName
@@ -2052,8 +1926,25 @@ operator|.
 name|getReferredINode
 argument_list|()
 decl_stmt|;
-comment|// we cannot use cache for the referred node since its cached quota may
-comment|// have already been updated by changes in the current tree
+comment|// We will continue the quota usage computation using the same snapshot id
+comment|// as time line (if the given snapshot id is valid). Also, we cannot use
+comment|// cache for the referred node since its cached quota may have already
+comment|// been updated by changes in the current tree.
+name|int
+name|id
+init|=
+name|lastSnapshotId
+operator|>
+name|Snapshot
+operator|.
+name|INVALID_ID
+condition|?
+name|lastSnapshotId
+else|:
+name|this
+operator|.
+name|lastSnapshotId
+decl_stmt|;
 return|return
 name|referred
 operator|.
@@ -2063,15 +1954,13 @@ name|counts
 argument_list|,
 literal|false
 argument_list|,
-name|this
-operator|.
-name|lastSnapshotId
+name|id
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -2095,6 +1984,10 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+specifier|final
+name|boolean
+name|countDiffChange
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2173,6 +2066,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|INodeReference
@@ -2216,11 +2111,31 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|true
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|snapshot
+operator|.
+name|getId
+argument_list|()
+operator|<
+name|lastSnapshotId
+condition|)
+block|{
+comment|// for a WithName node, when we compute its quota usage, we only count
+comment|// in all the nodes existing at the time of the corresponding rename op.
+comment|// Thus if we are deleting a snapshot before/at the snapshot associated
+comment|// with lastSnapshotId, we do not need to update the quota upwards.
+name|counts
+operator|=
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|()
 expr_stmt|;
 block|}
 return|return
@@ -2325,7 +2240,8 @@ comment|// snapshottable directory. E.g., the following operation sequence:
 comment|// 1. create snapshot s1 on /test
 comment|// 2. rename /test/foo/bar to /test/foo2/bar
 comment|// 3. create snapshot s2 on /test
-comment|// 4. delete snapshot s2
+comment|// 4. rename foo2 again
+comment|// 5. delete snapshot s2
 return|return;
 block|}
 try|try
@@ -2346,6 +2262,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|INodeReference
@@ -2389,10 +2307,6 @@ name|DISKSPACE
 argument_list|)
 argument_list|,
 literal|true
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -2561,7 +2475,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
+DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -2582,6 +2496,10 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+specifier|final
+name|boolean
+name|countDiffChange
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2697,6 +2615,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|countDiffChange
 argument_list|)
 return|;
 block|}
@@ -2817,6 +2737,9 @@ condition|)
 block|{
 try|try
 block|{
+comment|// when calling cleanSubtree of the referred node, since we
+comment|// compute quota usage updates before calling this destroy
+comment|// function, we use true for countDiffChange
 name|referred
 operator|.
 name|cleanSubtree
@@ -2828,6 +2751,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}

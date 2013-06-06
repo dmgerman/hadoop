@@ -1379,7 +1379,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -1403,6 +1403,10 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+specifier|final
+name|boolean
+name|countDiffChange
 parameter_list|)
 throws|throws
 name|QuotaExceededException
