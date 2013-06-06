@@ -172,7 +172,30 @@ index|[]
 name|getExecString
 parameter_list|()
 block|{
+comment|// There is no /bin/echo equivalent on Windows so just launch it as a
+comment|// shell built-in.
+comment|//
 return|return
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+operator|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"cmd.exe"
+block|,
+literal|"/c"
+block|,
+literal|"echo"
+block|,
+literal|"hello"
+block|}
+operator|)
+else|:
+operator|(
 operator|new
 name|String
 index|[]
@@ -181,6 +204,7 @@ literal|"echo"
 block|,
 literal|"hello"
 block|}
+operator|)
 return|;
 block|}
 annotation|@
