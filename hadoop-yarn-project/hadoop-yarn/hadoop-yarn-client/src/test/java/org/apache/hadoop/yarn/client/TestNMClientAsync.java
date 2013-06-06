@@ -880,22 +880,28 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|"Completed container is not removed"
-argument_list|,
-literal|0
-argument_list|,
+comment|// When the callback functions are all executed, the event processor threads
+comment|// may still not terminate and the containers may still not removed.
+while|while
+condition|(
 name|asyncClient
 operator|.
 name|containers
 operator|.
 name|size
 argument_list|()
+operator|>
+literal|0
+condition|)
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|10
 argument_list|)
 expr_stmt|;
+block|}
 name|asyncClient
 operator|.
 name|stop
