@@ -194,6 +194,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -688,6 +702,20 @@ expr_stmt|;
 comment|// Nevertheless, the output stream is closed, because
 comment|// a partial write may have succeeded (see comment in
 comment|// SocketOutputStream#write(byte[]), int, int)
+comment|// This portion of the test cannot pass on Windows due to differences in
+comment|// behavior of partial writes.  Windows appears to buffer large amounts of
+comment|// written data and send it all atomically, thus making it impossible to
+comment|// simulate a partial write scenario.  Attempts were made to switch the
+comment|// test from using a pipe to a network socket and also to use larger and
+comment|// larger buffers in doIO.  Nothing helped the situation though.
+if|if
+condition|(
+operator|!
+name|Shell
+operator|.
+name|WINDOWS
+condition|)
+block|{
 try|try
 block|{
 name|out
@@ -718,6 +746,7 @@ argument_list|,
 name|ioe
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 name|out
 operator|.
