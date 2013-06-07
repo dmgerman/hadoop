@@ -10020,7 +10020,7 @@ return|return
 name|storedBlock
 return|;
 block|}
-comment|// do not try to handle over/under-replicated blocks during safe mode
+comment|// do not try to handle over/under-replicated blocks during first safe mode
 if|if
 condition|(
 operator|!

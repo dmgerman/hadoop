@@ -5223,6 +5223,24 @@ argument_list|,
 name|failedVolumes
 argument_list|)
 expr_stmt|;
+comment|// If we are in safemode, do not send back any recovery / replication
+comment|// requests. Don't even drain the existing queue of work.
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInSafeMode
+argument_list|()
+condition|)
+block|{
+return|return
+operator|new
+name|DatanodeCommand
+index|[
+literal|0
+index|]
+return|;
+block|}
 comment|//check lease recovery
 name|BlockInfoUnderConstruction
 index|[]

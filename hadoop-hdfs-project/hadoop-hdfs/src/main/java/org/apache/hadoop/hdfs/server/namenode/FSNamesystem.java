@@ -19974,12 +19974,15 @@ name|shouldIncrementallyTrackBlocks
 return|;
 block|}
 comment|/**      * Creates SafeModeInfo when safe mode is entered manually, or because      * available resources are low.      *      * The {@link #threshold} is set to 1.5 so that it could never be reached.      * {@link #blockTotal} is set to -1 to indicate that safe mode is manual.      *       * @see SafeModeInfo      */
-DECL|method|SafeModeInfo (boolean resourcesLow)
+DECL|method|SafeModeInfo (boolean resourcesLow, boolean isReplQueuesInited)
 specifier|private
 name|SafeModeInfo
 parameter_list|(
 name|boolean
 name|resourcesLow
+parameter_list|,
+name|boolean
+name|isReplQueuesInited
 parameter_list|)
 block|{
 name|this
@@ -20042,6 +20045,12 @@ operator|.
 name|resourcesLow
 operator|=
 name|resourcesLow
+expr_stmt|;
+name|this
+operator|.
+name|initializedReplQueues
+operator|=
+name|isReplQueuesInited
 expr_stmt|;
 name|enter
 argument_list|()
@@ -21553,6 +21562,7 @@ name|isOn
 argument_list|()
 return|;
 block|}
+comment|/**    * Check if replication queues are to be populated    * @return true when node is HAState.Active and not in the very first safemode    */
 annotation|@
 name|Override
 DECL|method|isPopulatingReplQueues ()
@@ -22035,6 +22045,9 @@ operator|new
 name|SafeModeInfo
 argument_list|(
 name|resourcesLow
+argument_list|,
+name|isPopulatingReplQueues
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;

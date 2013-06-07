@@ -945,7 +945,7 @@ if|if
 condition|(
 name|namesystem
 operator|.
-name|isInSafeMode
+name|isInStartupSafeMode
 argument_list|()
 condition|)
 block|{
@@ -1062,7 +1062,7 @@ if|if
 condition|(
 name|namesystem
 operator|.
-name|isInSafeMode
+name|isInStartupSafeMode
 argument_list|()
 condition|)
 block|{
