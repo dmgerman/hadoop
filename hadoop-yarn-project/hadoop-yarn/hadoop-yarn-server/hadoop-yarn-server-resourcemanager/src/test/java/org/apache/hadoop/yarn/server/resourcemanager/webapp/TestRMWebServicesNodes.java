@@ -1114,25 +1114,20 @@ decl_stmt|;
 name|NodeHealthStatus
 name|nodeHealth
 init|=
-name|node
+name|NodeHealthStatus
 operator|.
-name|getNodeHealthStatus
-argument_list|()
-decl_stmt|;
-name|nodeHealth
-operator|.
-name|setHealthReport
-argument_list|(
-literal|"test health report"
-argument_list|)
-expr_stmt|;
-name|nodeHealth
-operator|.
-name|setIsNodeHealthy
+name|newInstance
 argument_list|(
 literal|false
+argument_list|,
+literal|"test health report"
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|node
 operator|.
 name|handle
@@ -2978,25 +2973,20 @@ decl_stmt|;
 name|NodeHealthStatus
 name|nodeHealth
 init|=
-name|node
+name|NodeHealthStatus
 operator|.
-name|getNodeHealthStatus
-argument_list|()
-decl_stmt|;
-name|nodeHealth
-operator|.
-name|setHealthReport
-argument_list|(
-literal|"test health report"
-argument_list|)
-expr_stmt|;
-name|nodeHealth
-operator|.
-name|setIsNodeHealthy
+name|newInstance
 argument_list|(
 literal|false
+argument_list|,
+literal|"test health report"
+argument_list|,
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|node
 operator|.
 name|handle
@@ -5661,15 +5651,6 @@ name|getXmlString
 argument_list|(
 name|element
 argument_list|,
-literal|"healthStatus"
-argument_list|)
-argument_list|,
-name|WebServicesTestUtils
-operator|.
-name|getXmlString
-argument_list|(
-name|element
-argument_list|,
 literal|"id"
 argument_list|)
 argument_list|,
@@ -5759,7 +5740,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|11
+literal|10
 argument_list|,
 name|nodeInfo
 operator|.
@@ -5783,13 +5764,6 @@ operator|.
 name|getString
 argument_list|(
 literal|"rack"
-argument_list|)
-argument_list|,
-name|nodeInfo
-operator|.
-name|getString
-argument_list|(
-literal|"healthStatus"
 argument_list|)
 argument_list|,
 name|nodeInfo
@@ -5850,7 +5824,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyNodeInfoGeneric (MockNM nm, String state, String rack, String healthStatus, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB)
+DECL|method|verifyNodeInfoGeneric (MockNM nm, String state, String rack, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB)
 specifier|public
 name|void
 name|verifyNodeInfoGeneric
@@ -5863,9 +5837,6 @@ name|state
 parameter_list|,
 name|String
 name|rack
-parameter_list|,
-name|String
-name|healthStatus
 parameter_list|,
 name|String
 name|id
@@ -5914,14 +5885,6 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|)
-decl_stmt|;
-name|NodeHealthStatus
-name|health
-init|=
-name|node
-operator|.
-name|getNodeHealthStatus
-argument_list|()
 decl_stmt|;
 name|ResourceScheduler
 name|sched
@@ -5979,17 +5942,6 @@ name|WebServicesTestUtils
 operator|.
 name|checkStringMatch
 argument_list|(
-literal|"healthStatus"
-argument_list|,
-literal|"Healthy"
-argument_list|,
-name|healthStatus
-argument_list|)
-expr_stmt|;
-name|WebServicesTestUtils
-operator|.
-name|checkStringMatch
-argument_list|(
 literal|"id"
 argument_list|,
 name|nm
@@ -6030,7 +5982,7 @@ name|String
 operator|.
 name|valueOf
 argument_list|(
-name|health
+name|node
 operator|.
 name|getHealthReport
 argument_list|()
@@ -6071,7 +6023,7 @@ expr_stmt|;
 name|long
 name|expectedHealthUpdate
 init|=
-name|health
+name|node
 operator|.
 name|getLastHealthReportTime
 argument_list|()

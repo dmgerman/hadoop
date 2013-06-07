@@ -133,7 +133,7 @@ name|NodeReport
 block|{
 annotation|@
 name|Private
-DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, NodeHealthStatus nodeHealthStatus)
+DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime)
 specifier|public
 specifier|static
 name|NodeReport
@@ -160,8 +160,11 @@ parameter_list|,
 name|int
 name|numContainers
 parameter_list|,
-name|NodeHealthStatus
-name|nodeHealthStatus
+name|String
+name|healthReport
+parameter_list|,
+name|long
+name|lastHealthReportTime
 parameter_list|)
 block|{
 name|NodeReport
@@ -227,9 +230,16 @@ argument_list|)
 expr_stmt|;
 name|nodeReport
 operator|.
-name|setNodeHealthStatus
+name|setHealthReport
 argument_list|(
-name|nodeHealthStatus
+name|healthReport
+argument_list|)
+expr_stmt|;
+name|nodeReport
+operator|.
+name|setLastHealthReportTime
+argument_list|(
+name|lastHealthReportTime
 argument_list|)
 expr_stmt|;
 return|return
@@ -410,30 +420,56 @@ name|int
 name|numContainers
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<code>NodeHealthStatus</code> of the node.     * @return<code>NodeHealthStatus</code> of the node    */
+comment|/**     * Get the<em>diagnostic health report</em> of the node.    * @return<em>diagnostic health report</em> of the node    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getNodeHealthStatus ()
+DECL|method|getHealthReport ()
 specifier|public
 specifier|abstract
-name|NodeHealthStatus
-name|getNodeHealthStatus
+name|String
+name|getHealthReport
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setNodeHealthStatus (NodeHealthStatus nodeHealthStatus)
+DECL|method|setHealthReport (String healthReport)
 specifier|public
 specifier|abstract
 name|void
-name|setNodeHealthStatus
+name|setHealthReport
 parameter_list|(
-name|NodeHealthStatus
-name|nodeHealthStatus
+name|String
+name|healthReport
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>last timestamp</em> at which the health report was received.    * @return<em>last timestamp</em> at which the health report was received    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getLastHealthReportTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getLastHealthReportTime
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setLastHealthReportTime (long lastHealthReport)
+specifier|public
+specifier|abstract
+name|void
+name|setLastHealthReportTime
+parameter_list|(
+name|long
+name|lastHealthReport
 parameter_list|)
 function_decl|;
 block|}

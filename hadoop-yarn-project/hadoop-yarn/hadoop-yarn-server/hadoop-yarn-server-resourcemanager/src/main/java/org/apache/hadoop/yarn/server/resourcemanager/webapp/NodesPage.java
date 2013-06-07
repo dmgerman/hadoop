@@ -574,13 +574,6 @@ argument_list|)
 operator|.
 name|th
 argument_list|(
-literal|".healthStatus"
-argument_list|,
-literal|"Health-status"
-argument_list|)
-operator|.
-name|th
-argument_list|(
 literal|".lastHealthUpdate"
 argument_list|,
 literal|"Last health-update"
@@ -896,14 +889,6 @@ argument_list|()
 expr_stmt|;
 block|}
 name|row
-operator|.
-name|td
-argument_list|(
-name|info
-operator|.
-name|getHealthStatus
-argument_list|()
-argument_list|)
 operator|.
 name|td
 argument_list|()

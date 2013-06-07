@@ -239,7 +239,7 @@ specifier|final
 name|String
 name|NODES_PATTERN
 init|=
-literal|"%16s\t%10s\t%17s\t%26s\t%18s"
+literal|"%16s\t%10s\t%17s\t%18s"
 operator|+
 name|System
 operator|.
@@ -524,8 +524,6 @@ literal|"Node-State"
 argument_list|,
 literal|"Node-Http-Address"
 argument_list|,
-literal|"Health-Status(isNodeHealthy)"
-argument_list|,
 literal|"Running-Containers"
 argument_list|)
 expr_stmt|;
@@ -556,14 +554,6 @@ argument_list|,
 name|nodeReport
 operator|.
 name|getHttpAddress
-argument_list|()
-argument_list|,
-name|nodeReport
-operator|.
-name|getNodeHealthStatus
-argument_list|()
-operator|.
-name|getIsNodeHealthy
 argument_list|()
 argument_list|,
 name|nodeReport
@@ -743,26 +733,6 @@ name|nodeReportStr
 operator|.
 name|print
 argument_list|(
-literal|"\tHealth-Status(isNodeHealthy) : "
-argument_list|)
-expr_stmt|;
-name|nodeReportStr
-operator|.
-name|println
-argument_list|(
-name|nodeReport
-operator|.
-name|getNodeHealthStatus
-argument_list|()
-operator|.
-name|getIsNodeHealthy
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|nodeReportStr
-operator|.
-name|print
-argument_list|(
 literal|"\tLast-Health-Update : "
 argument_list|)
 expr_stmt|;
@@ -778,9 +748,6 @@ operator|new
 name|Date
 argument_list|(
 name|nodeReport
-operator|.
-name|getNodeHealthStatus
-argument_list|()
 operator|.
 name|getLastHealthReportTime
 argument_list|()
@@ -802,9 +769,6 @@ operator|.
 name|println
 argument_list|(
 name|nodeReport
-operator|.
-name|getNodeHealthStatus
-argument_list|()
 operator|.
 name|getHealthReport
 argument_list|()

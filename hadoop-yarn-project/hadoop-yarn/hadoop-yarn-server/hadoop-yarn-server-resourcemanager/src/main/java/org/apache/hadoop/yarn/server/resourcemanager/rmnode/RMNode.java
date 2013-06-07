@@ -208,11 +208,18 @@ name|String
 name|getHttpAddress
 parameter_list|()
 function_decl|;
-comment|/**    * the health-status for this node    * @return the health-status for this node.    */
-DECL|method|getNodeHealthStatus ()
+comment|/**    * the latest health report received from this node.    * @return the latest health report received from this node.    */
+DECL|method|getHealthReport ()
 specifier|public
-name|NodeHealthStatus
-name|getNodeHealthStatus
+name|String
+name|getHealthReport
+parameter_list|()
+function_decl|;
+comment|/**    * the time of the latest health report received from this node.    * @return the time of the latest health report received from this node.    */
+DECL|method|getLastHealthReportTime ()
+specifier|public
+name|long
+name|getLastHealthReportTime
 parameter_list|()
 function_decl|;
 comment|/**    * the total available resource.    * @return the total available resource.    */

@@ -300,24 +300,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeHealthStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeId
 import|;
 end_import
@@ -1320,7 +1302,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Health-Status(isNodeHealthy)\tRunning-Containers"
+literal|"Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1334,7 +1316,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                     false\t                 0"
+literal|"\t                 0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1348,7 +1330,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                     false\t                 0"
+literal|"\t                 0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1362,7 +1344,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                     false\t                 0"
+literal|"\t                 0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1576,13 +1558,6 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\tHealth-Status(isNodeHealthy) : false"
-argument_list|)
-expr_stmt|;
-name|pw
-operator|.
-name|println
-argument_list|(
 literal|"\tLast-Health-Update : "
 operator|+
 name|DateFormatUtils
@@ -1603,7 +1578,7 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\tHealth-Report : null"
+literal|"\tHealth-Report : "
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1976,14 +1951,9 @@ argument_list|)
 argument_list|,
 literal|0
 argument_list|,
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|NodeHealthStatus
-operator|.
-name|class
-argument_list|)
+literal|""
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 name|nodeReports

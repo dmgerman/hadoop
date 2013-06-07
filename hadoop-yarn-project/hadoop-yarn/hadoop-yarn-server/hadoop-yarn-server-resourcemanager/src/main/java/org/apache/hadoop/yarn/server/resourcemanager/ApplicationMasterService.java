@@ -2367,7 +2367,12 @@ name|numContainers
 argument_list|,
 name|rmNode
 operator|.
-name|getNodeHealthStatus
+name|getHealthReport
+argument_list|()
+argument_list|,
+name|rmNode
+operator|.
+name|getLastHealthReportTime
 argument_list|()
 argument_list|)
 decl_stmt|;

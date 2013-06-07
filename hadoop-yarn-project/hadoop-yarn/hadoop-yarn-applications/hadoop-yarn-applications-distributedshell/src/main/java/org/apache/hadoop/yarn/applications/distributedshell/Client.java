@@ -1900,13 +1900,6 @@ name|node
 operator|.
 name|getNumContainers
 argument_list|()
-operator|+
-literal|", nodeHealthStatus"
-operator|+
-name|node
-operator|.
-name|getNodeHealthStatus
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
