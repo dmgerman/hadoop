@@ -1253,14 +1253,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Image file of size "
+literal|"Image file "
+operator|+
+name|curFile
+operator|+
+literal|" of size "
 operator|+
 name|curFile
 operator|.
 name|length
 argument_list|()
 operator|+
-literal|" loaded in "
+literal|" bytes loaded in "
 operator|+
 operator|(
 name|now
@@ -3868,14 +3872,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Image file of size "
+literal|"Image file "
+operator|+
+name|newFile
+operator|+
+literal|" of size "
 operator|+
 name|newFile
 operator|.
 name|length
 argument_list|()
 operator|+
-literal|" saved in "
+literal|" bytes saved in "
 operator|+
 operator|(
 name|now

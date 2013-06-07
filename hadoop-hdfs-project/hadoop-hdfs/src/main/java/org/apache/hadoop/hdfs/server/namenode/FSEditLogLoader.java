@@ -997,6 +997,20 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
+name|FSImage
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Start loading edits file "
+operator|+
+name|edits
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|long
 name|numEdits
 init|=
