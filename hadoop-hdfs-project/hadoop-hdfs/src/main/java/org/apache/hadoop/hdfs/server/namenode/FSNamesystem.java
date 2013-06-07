@@ -20039,13 +20039,6 @@ literal|1
 expr_stmt|;
 name|this
 operator|.
-name|reached
-operator|=
-operator|-
-literal|1
-expr_stmt|;
-name|this
-operator|.
 name|resourcesLow
 operator|=
 name|resourcesLow
@@ -20660,6 +20653,7 @@ operator|.
 name|blockSafe
 operator|--
 expr_stmt|;
+comment|//blockSafe is set to -1 in manual / low resources safemode
 assert|assert
 name|blockSafe
 operator|>=
@@ -20667,13 +20661,16 @@ literal|0
 operator|||
 name|isManual
 argument_list|()
+operator|||
+name|areResourcesLow
+argument_list|()
 assert|;
 name|checkMode
 argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Check if safe mode was entered manually or automatically (at startup, or      * when disk space is low).      */
+comment|/**      * Check if safe mode was entered manually      */
 DECL|method|isManual ()
 specifier|private
 name|boolean
@@ -20686,9 +20683,6 @@ operator|==
 name|Integer
 operator|.
 name|MAX_VALUE
-operator|&&
-operator|!
-name|resourcesLow
 return|;
 block|}
 comment|/**      * Set manual safe mode.      */
@@ -20776,6 +20770,10 @@ block|}
 if|if
 condition|(
 name|isManual
+argument_list|()
+operator|&&
+operator|!
+name|areResourcesLow
 argument_list|()
 condition|)
 block|{
@@ -20947,17 +20945,23 @@ operator|+
 name|leaveMsg
 expr_stmt|;
 block|}
+comment|// threshold is not reached or manual or resources low
 if|if
 condition|(
 name|reached
 operator|==
 literal|0
 operator|||
+operator|(
 name|isManual
 argument_list|()
+operator|&&
+operator|!
+name|areResourcesLow
+argument_list|()
+operator|)
 condition|)
 block|{
-comment|// threshold is not reached or manual
 return|return
 name|msg
 operator|+
@@ -21526,11 +21530,21 @@ condition|)
 return|return
 literal|false
 return|;
+comment|// If the NN is in safemode, and not due to manual / low resources, we
+comment|// assume it must be because of startup. If the NN had low resources during
+comment|// startup, we assume it came out of startup safemode and it is now in low
+comment|// resources safemode
 return|return
 operator|!
 name|safeMode
 operator|.
 name|isManual
+argument_list|()
+operator|&&
+operator|!
+name|safeMode
+operator|.
+name|areResourcesLow
 argument_list|()
 operator|&&
 name|safeMode
@@ -21961,7 +21975,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Enter safe mode manually.    * @throws IOException    */
+comment|/**    * Enter safe mode. If resourcesLow is false, then we assume it is manual    * @throws IOException    */
 DECL|method|enterSafeMode (boolean resourcesLow)
 name|void
 name|enterSafeMode
@@ -22036,11 +22050,14 @@ name|setResourcesLow
 argument_list|()
 expr_stmt|;
 block|}
+else|else
+block|{
 name|safeMode
 operator|.
 name|setManual
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|isEditlogOpenForWrite
