@@ -142,6 +142,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -254,6 +282,13 @@ argument_list|(
 name|MIN_PREALLOCATION_LENGTH
 argument_list|)
 decl_stmt|;
+DECL|field|shouldSyncWritesAndSkipFsync
+specifier|private
+name|boolean
+name|shouldSyncWritesAndSkipFsync
+init|=
+literal|false
+decl_stmt|;
 DECL|field|shouldSkipFsyncForTests
 specifier|private
 specifier|static
@@ -303,11 +338,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Creates output buffers and file object.    *     * @param name    *          File name to store edit log    * @param size    *          Size of flush buffer    * @throws IOException    */
-DECL|method|EditLogFileOutputStream (File name, int size)
+comment|/**    * Creates output buffers and file object.    *     * @param conf    *          Configuration object    * @param name    *          File name to store edit log    * @param size    *          Size of flush buffer    * @throws IOException    */
+DECL|method|EditLogFileOutputStream (Configuration conf, File name, int size)
 specifier|public
 name|EditLogFileOutputStream
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|File
 name|name
 parameter_list|,
@@ -319,6 +357,21 @@ name|IOException
 block|{
 name|super
 argument_list|()
+expr_stmt|;
+name|shouldSyncWritesAndSkipFsync
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_NOEDITLOGCHANNELFLUSH
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_EDITS_NOEDITLOGCHANNELFLUSH_DEFAULT
+argument_list|)
 expr_stmt|;
 name|file
 operator|=
@@ -334,7 +387,27 @@ argument_list|)
 expr_stmt|;
 name|RandomAccessFile
 name|rp
-init|=
+decl_stmt|;
+if|if
+condition|(
+name|shouldSyncWritesAndSkipFsync
+condition|)
+block|{
+name|rp
+operator|=
+operator|new
+name|RandomAccessFile
+argument_list|(
+name|name
+argument_list|,
+literal|"rws"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|rp
+operator|=
 operator|new
 name|RandomAccessFile
 argument_list|(
@@ -342,7 +415,8 @@ name|name
 argument_list|,
 literal|"rw"
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|fp
 operator|=
 operator|new
@@ -714,7 +788,7 @@ block|}
 name|preallocate
 argument_list|()
 expr_stmt|;
-comment|// preallocate file if necessay
+comment|// preallocate file if necessary
 name|doubleBuf
 operator|.
 name|flushTo
@@ -728,6 +802,9 @@ name|durable
 operator|&&
 operator|!
 name|shouldSkipFsyncForTests
+operator|&&
+operator|!
+name|shouldSyncWritesAndSkipFsync
 condition|)
 block|{
 name|fc

@@ -480,6 +480,8 @@ operator|=
 operator|new
 name|Journal
 argument_list|(
+name|conf
+argument_list|,
 name|logDir
 argument_list|,
 name|jid

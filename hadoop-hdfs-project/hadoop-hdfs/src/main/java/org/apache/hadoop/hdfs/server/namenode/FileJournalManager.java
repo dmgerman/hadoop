@@ -154,6 +154,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileUtil
@@ -412,6 +426,12 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|sd
 specifier|private
 specifier|final
@@ -494,10 +514,13 @@ operator|.
 name|DeletionStoragePurger
 argument_list|()
 decl_stmt|;
-DECL|method|FileJournalManager (StorageDirectory sd, StorageErrorReporter errorReporter)
+DECL|method|FileJournalManager (Configuration conf, StorageDirectory sd, StorageErrorReporter errorReporter)
 specifier|public
 name|FileJournalManager
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|StorageDirectory
 name|sd
 parameter_list|,
@@ -505,6 +528,12 @@ name|StorageErrorReporter
 name|errorReporter
 parameter_list|)
 block|{
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
+expr_stmt|;
 name|this
 operator|.
 name|sd
@@ -600,6 +629,8 @@ init|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+name|conf
+argument_list|,
 name|currentInProgress
 argument_list|,
 name|outputBufferCapacity

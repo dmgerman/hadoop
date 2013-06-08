@@ -72,6 +72,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -163,6 +177,11 @@ name|EditLogFileOutputStream
 operator|.
 name|MIN_PREALLOCATION_LENGTH
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
 static|static
 block|{
 comment|// No need to fsync for the purposes of tests. This makes
@@ -195,6 +214,21 @@ condition|)
 name|TEST_EDITS
 operator|.
 name|delete
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Before
+DECL|method|setUp ()
+specifier|public
+name|void
+name|setUp
+parameter_list|()
+block|{
+name|conf
+operator|=
+operator|new
+name|Configuration
 argument_list|()
 expr_stmt|;
 block|}
@@ -255,6 +289,8 @@ init|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+name|conf
+argument_list|,
 name|TEST_EDITS
 argument_list|,
 literal|0
@@ -467,6 +503,8 @@ init|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+name|conf
+argument_list|,
 name|TEST_EDITS
 argument_list|,
 literal|0
@@ -501,6 +539,8 @@ init|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+name|conf
+argument_list|,
 name|TEST_EDITS
 argument_list|,
 literal|0
@@ -567,6 +607,8 @@ init|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+name|conf
+argument_list|,
 name|TEST_EDITS
 argument_list|,
 literal|0

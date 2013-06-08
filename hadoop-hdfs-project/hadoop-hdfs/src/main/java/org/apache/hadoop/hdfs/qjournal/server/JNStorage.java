@@ -82,6 +82,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileUtil
@@ -311,11 +325,14 @@ literal|"(\\d+)"
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|/**    * @param logDir the path to the directory in which data will be stored    * @param errorReporter a callback to report errors    * @throws IOException     */
-DECL|method|JNStorage (File logDir, StorageErrorReporter errorReporter)
+comment|/**    * @param conf Configuration object    * @param logDir the path to the directory in which data will be stored    * @param errorReporter a callback to report errors    * @throws IOException     */
+DECL|method|JNStorage (Configuration conf, File logDir, StorageErrorReporter errorReporter)
 specifier|protected
 name|JNStorage
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|File
 name|logDir
 parameter_list|,
@@ -354,6 +371,8 @@ operator|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|errorReporter

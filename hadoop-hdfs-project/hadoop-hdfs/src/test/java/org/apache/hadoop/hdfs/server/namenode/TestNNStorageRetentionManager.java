@@ -2034,7 +2034,6 @@ expr_stmt|;
 block|}
 DECL|class|TestCaseDescription
 specifier|private
-specifier|static
 class|class
 name|TestCaseDescription
 block|{
@@ -2081,7 +2080,6 @@ argument_list|()
 decl_stmt|;
 DECL|class|FakeRoot
 specifier|private
-specifier|static
 class|class
 name|FakeRoot
 block|{
@@ -2441,6 +2439,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|root
 operator|.
 name|mockStorageDir

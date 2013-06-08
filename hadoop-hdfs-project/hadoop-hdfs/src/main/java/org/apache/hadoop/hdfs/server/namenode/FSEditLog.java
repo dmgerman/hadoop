@@ -1614,6 +1614,8 @@ argument_list|(
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage

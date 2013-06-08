@@ -182,6 +182,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileUtil
@@ -847,9 +861,12 @@ name|WARN_SYNC_MILLIS_THRESHOLD
 init|=
 literal|1000
 decl_stmt|;
-DECL|method|Journal (File logDir, String journalId, StorageErrorReporter errorReporter)
+DECL|method|Journal (Configuration conf, File logDir, String journalId, StorageErrorReporter errorReporter)
 name|Journal
 parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
 name|File
 name|logDir
 parameter_list|,
@@ -867,6 +884,8 @@ operator|=
 operator|new
 name|JNStorage
 argument_list|(
+name|conf
+argument_list|,
 name|logDir
 argument_list|,
 name|errorReporter

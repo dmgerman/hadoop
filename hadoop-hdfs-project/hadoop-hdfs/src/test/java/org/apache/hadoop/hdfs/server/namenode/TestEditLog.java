@@ -3905,6 +3905,8 @@ init|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+name|conf
+argument_list|,
 name|log
 argument_list|,
 literal|1024
@@ -6055,6 +6057,10 @@ operator|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|,
 name|TEST_LOG_NAME
 argument_list|,
 literal|0

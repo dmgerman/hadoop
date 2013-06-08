@@ -242,6 +242,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|FileUtil
@@ -362,6 +376,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -415,6 +439,11 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
 static|static
 block|{
 comment|// No need to fsync for the purposes of tests. This makes
@@ -425,6 +454,21 @@ name|setShouldSkipFsyncForTesting
 argument_list|(
 literal|true
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Before
+DECL|method|setUp ()
+specifier|public
+name|void
+name|setUp
+parameter_list|()
+block|{
+name|conf
+operator|=
+operator|new
+name|Configuration
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Find out how many transactions we can read from a    * FileJournalManager, starting at a given transaction ID.    *     * @param jm              The journal manager    * @param fromTxId        Transaction ID to start at    * @param inProgressOk    Should we consider edit logs that are not finalized?    * @return                The number of transactions    * @throws IOException    */
@@ -728,6 +772,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -838,6 +884,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -988,6 +1036,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1023,6 +1073,8 @@ operator|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1060,6 +1112,8 @@ operator|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1224,6 +1278,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1261,6 +1317,8 @@ operator|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1298,6 +1356,8 @@ operator|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1467,6 +1527,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1609,6 +1671,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1746,6 +1810,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -1962,6 +2028,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -2168,6 +2236,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -2259,6 +2329,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 literal|null
@@ -2611,6 +2683,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage
@@ -2720,6 +2794,8 @@ init|=
 operator|new
 name|FileJournalManager
 argument_list|(
+name|conf
+argument_list|,
 name|sd
 argument_list|,
 name|storage

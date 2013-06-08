@@ -555,6 +555,10 @@ operator|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
+operator|new
+name|Configuration
+argument_list|()
+argument_list|,
 name|TEST_LOG_NAME
 argument_list|,
 literal|0
