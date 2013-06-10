@@ -546,6 +546,28 @@ name|getMapId
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|/**        * We've gotten the amount of data we were expecting. Verify the        * decompressor has nothing more to offer. This action also forces the        * decompressor to read any trailing bytes that weren't critical        * for decompression, which is necessary to keep the stream        * in sync.        */
+if|if
+condition|(
+name|input
+operator|.
+name|read
+argument_list|()
+operator|>=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unexpected extra bytes from input stream for "
+operator|+
+name|getMapId
+argument_list|()
+argument_list|)
+throw|;
+block|}
 block|}
 catch|catch
 parameter_list|(
