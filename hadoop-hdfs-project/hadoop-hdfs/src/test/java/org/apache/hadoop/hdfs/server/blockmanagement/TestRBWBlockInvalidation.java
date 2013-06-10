@@ -45,6 +45,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -478,6 +490,16 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+comment|// This test cannot pass on Windows due to file locking enforcement.  It will
+comment|// reject the attempt to delete the block file from the RBW folder.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
