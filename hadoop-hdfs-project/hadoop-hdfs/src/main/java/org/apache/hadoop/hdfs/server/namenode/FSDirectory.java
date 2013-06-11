@@ -12245,8 +12245,8 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**     * Create FileStatus with location info by file INode      */
-DECL|method|createLocatedFileStatus ( byte[] path, INode node, Snapshot snapshot)
+comment|/**    * Create FileStatus with location info by file INode    */
+DECL|method|createLocatedFileStatus (byte[] path, INode node, Snapshot snapshot)
 specifier|private
 name|HdfsLocatedFileStatus
 name|createLocatedFileStatus
@@ -12333,8 +12333,20 @@ argument_list|()
 expr_stmt|;
 specifier|final
 name|boolean
+name|inSnapshot
+init|=
+name|snapshot
+operator|!=
+literal|null
+decl_stmt|;
+specifier|final
+name|boolean
 name|isUc
 init|=
+name|inSnapshot
+condition|?
+literal|false
+else|:
 name|fileNode
 operator|.
 name|isUnderConstruction
@@ -12344,9 +12356,8 @@ specifier|final
 name|long
 name|fileSize
 init|=
-name|snapshot
-operator|==
-literal|null
+operator|!
+name|inSnapshot
 operator|&&
 name|isUc
 condition|?
@@ -12381,6 +12392,8 @@ argument_list|,
 name|size
 argument_list|,
 literal|false
+argument_list|,
+name|inSnapshot
 argument_list|)
 expr_stmt|;
 if|if
