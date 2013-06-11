@@ -32,7 +32,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnRuntimeException
+name|exceptions
+operator|.
+name|YarnException
 import|;
 end_import
 
@@ -46,7 +48,7 @@ specifier|public
 class|class
 name|InvalidContainerException
 extends|extends
-name|YarnRuntimeException
+name|YarnException
 block|{
 DECL|field|serialVersionUID
 specifier|private

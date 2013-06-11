@@ -1394,12 +1394,6 @@ argument_list|(
 name|containerToken
 argument_list|)
 expr_stmt|;
-name|tokenId
-operator|=
-operator|new
-name|ContainerTokenIdentifier
-argument_list|()
-expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

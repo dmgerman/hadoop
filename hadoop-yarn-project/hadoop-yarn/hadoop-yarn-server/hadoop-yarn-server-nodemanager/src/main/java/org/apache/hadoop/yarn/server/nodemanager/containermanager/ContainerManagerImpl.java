@@ -2761,17 +2761,12 @@ argument_list|()
 condition|)
 block|{
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
 operator|new
 name|NMNotYetReadyException
 argument_list|(
 literal|"Rejecting new containers as NodeManager has not"
 operator|+
 literal|" yet connected with ResourceManager"
-argument_list|)
 argument_list|)
 throw|;
 block|}
@@ -2909,15 +2904,10 @@ name|msg
 argument_list|)
 expr_stmt|;
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
 operator|new
 name|InvalidContainerException
 argument_list|(
 name|msg
-argument_list|)
 argument_list|)
 throw|;
 block|}

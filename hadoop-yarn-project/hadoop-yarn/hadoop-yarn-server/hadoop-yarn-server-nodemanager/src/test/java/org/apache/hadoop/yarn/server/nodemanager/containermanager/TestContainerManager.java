@@ -3476,18 +3476,9 @@ literal|" rejected as it is allocated by a previous RM"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// TO DO: This should be replaced to explicitly check exception
-comment|// class name after YARN-142
 name|Assert
 operator|.
-name|assertTrue
-argument_list|(
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|contains
+name|assertEquals
 argument_list|(
 name|InvalidContainerException
 operator|.
@@ -3495,7 +3486,14 @@ name|class
 operator|.
 name|getName
 argument_list|()
-argument_list|)
+argument_list|,
+name|e
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

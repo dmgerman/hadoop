@@ -1642,12 +1642,7 @@ name|e
 argument_list|)
 expr_stmt|;
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
 name|e
-argument_list|)
 throw|;
 block|}
 block|}
