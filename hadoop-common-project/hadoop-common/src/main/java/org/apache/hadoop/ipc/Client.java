@@ -3482,7 +3482,7 @@ name|connectionRetryPolicy
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Write the connection header - this is sent when connection is established      * +----------------------------------+      * |  "hrpc" 4 bytes                  |            * +----------------------------------+      * |  Version (1 byte)                |      * +----------------------------------+      * |  Service Class (1 byte)          |      * +----------------------------------+      * |  Authmethod (1 byte)             |            * +----------------------------------+      * |  IpcSerializationType (1 byte)   |            * +----------------------------------+      */
+comment|/**      * Write the connection header - this is sent when connection is established      * +----------------------------------+      * |  "hrpc" 4 bytes                  |            * +----------------------------------+      * |  Version (1 byte)                |      * +----------------------------------+      * |  Service Class (1 byte)          |      * +----------------------------------+      * |  Authmethod (1 byte)             |            * +----------------------------------+      */
 DECL|method|writeConnectionHeader (OutputStream outStream)
 specifier|private
 name|void
@@ -3537,17 +3537,6 @@ name|serviceClass
 argument_list|)
 expr_stmt|;
 name|authMethod
-operator|.
-name|write
-argument_list|(
-name|out
-argument_list|)
-expr_stmt|;
-name|Server
-operator|.
-name|IpcSerializationType
-operator|.
-name|PROTOBUF
 operator|.
 name|write
 argument_list|(
