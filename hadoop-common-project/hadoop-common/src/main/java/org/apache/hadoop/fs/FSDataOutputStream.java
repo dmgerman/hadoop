@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Utility that wraps a {@link OutputStream} in a {@link DataOutputStream},  * buffers output through a {@link BufferedOutputStream} and creates a checksum  * file. */
+comment|/** Utility that wraps a {@link OutputStream} in a {@link DataOutputStream}.  */
 end_comment
 
 begin_class
