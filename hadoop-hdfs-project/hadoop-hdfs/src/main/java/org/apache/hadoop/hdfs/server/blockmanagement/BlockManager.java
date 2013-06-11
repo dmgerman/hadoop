@@ -13294,12 +13294,23 @@ argument_list|(
 name|block
 argument_list|)
 expr_stmt|;
-comment|// Remove the block from pendingReplications
+comment|// Remove the block from pendingReplications and neededReplications
 name|pendingReplications
 operator|.
 name|remove
 argument_list|(
 name|block
+argument_list|)
+expr_stmt|;
+name|neededReplications
+operator|.
+name|remove
+argument_list|(
+name|block
+argument_list|,
+name|UnderReplicatedBlocks
+operator|.
+name|LEVEL
 argument_list|)
 expr_stmt|;
 if|if
