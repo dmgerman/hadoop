@@ -2144,6 +2144,8 @@ operator|.
 name|killTask
 argument_list|(
 name|taskID
+argument_list|,
+literal|false
 argument_list|)
 condition|)
 block|{
@@ -2236,9 +2238,11 @@ if|if
 condition|(
 name|job
 operator|.
-name|failTask
+name|killTask
 argument_list|(
 name|taskID
+argument_list|,
+literal|true
 argument_list|)
 condition|)
 block|{

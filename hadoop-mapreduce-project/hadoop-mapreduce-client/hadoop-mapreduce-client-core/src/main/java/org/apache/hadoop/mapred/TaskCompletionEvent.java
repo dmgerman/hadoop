@@ -200,7 +200,10 @@ name|taskTrackerHttp
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Private
 DECL|method|downgrade ( org.apache.hadoop.mapreduce.TaskCompletionEvent event)
+specifier|public
 specifier|static
 name|TaskCompletionEvent
 name|downgrade
