@@ -176,8 +176,8 @@ specifier|public
 name|FileContextTestHelper
 parameter_list|()
 block|{
-name|testRootDir
-operator|=
+name|this
+argument_list|(
 name|System
 operator|.
 name|getProperty
@@ -195,6 +195,23 @@ name|randomAlphanumeric
 argument_list|(
 literal|10
 argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a context with the given test root    */
+DECL|method|FileContextTestHelper (String testRootDir)
+specifier|public
+name|FileContextTestHelper
+parameter_list|(
+name|String
+name|testRootDir
+parameter_list|)
+block|{
+name|this
+operator|.
+name|testRootDir
+operator|=
+name|testRootDir
 expr_stmt|;
 block|}
 DECL|method|getDefaultBlockSize ()

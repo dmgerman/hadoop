@@ -236,16 +236,6 @@ name|TestHDFSFileContextMainOperations
 extends|extends
 name|FileContextMainOperationsBaseTest
 block|{
-DECL|field|fileContextTestHelper
-specifier|private
-specifier|static
-name|FileContextTestHelper
-name|fileContextTestHelper
-init|=
-operator|new
-name|FileContextTestHelper
-argument_list|()
-decl_stmt|;
 DECL|field|cluster
 specifier|private
 specifier|static
@@ -268,6 +258,22 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|createFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|createFileContextHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileContextTestHelper
+argument_list|(
+literal|"/tmp/TestHDFSFileContextMainOperations"
+argument_list|)
+return|;
+block|}
 annotation|@
 name|BeforeClass
 DECL|method|clusterSetupAtBegining ()

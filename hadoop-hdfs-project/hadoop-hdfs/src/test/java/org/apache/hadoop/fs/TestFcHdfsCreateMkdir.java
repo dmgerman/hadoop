@@ -167,6 +167,22 @@ name|Path
 name|defaultWorkingDirectory
 decl_stmt|;
 annotation|@
+name|Override
+DECL|method|createFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|createFileContextHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileContextTestHelper
+argument_list|(
+literal|"/tmp/TestFcHdfsCreateMkdir"
+argument_list|)
+return|;
+block|}
+annotation|@
 name|BeforeClass
 DECL|method|clusterSetupAtBegining ()
 specifier|public

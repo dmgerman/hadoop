@@ -264,10 +264,21 @@ specifier|final
 name|FileContextTestHelper
 name|fileContextTestHelper
 init|=
+name|createFileContextHelper
+argument_list|()
+decl_stmt|;
+DECL|method|createFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|createFileContextHelper
+parameter_list|()
+block|{
+return|return
 operator|new
 name|FileContextTestHelper
 argument_list|()
-decl_stmt|;
+return|;
+block|}
 DECL|field|fc
 specifier|protected
 specifier|static

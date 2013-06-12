@@ -76,6 +76,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|FileContextTestHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Path
 import|;
 end_import
@@ -196,6 +210,22 @@ specifier|static
 name|FileContext
 name|fc
 decl_stmt|;
+annotation|@
+name|Override
+DECL|method|createFileContextHelper ()
+specifier|protected
+name|FileContextTestHelper
+name|createFileContextHelper
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileContextTestHelper
+argument_list|(
+literal|"/tmp/TestViewFsHdfs"
+argument_list|)
+return|;
+block|}
 annotation|@
 name|BeforeClass
 DECL|method|clusterSetupAtBegining ()

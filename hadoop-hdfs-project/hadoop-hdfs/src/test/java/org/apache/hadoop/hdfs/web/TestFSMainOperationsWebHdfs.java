@@ -380,6 +380,17 @@ specifier|static
 name|FileSystem
 name|fileSystem
 decl_stmt|;
+DECL|method|TestFSMainOperationsWebHdfs ()
+specifier|public
+name|TestFSMainOperationsWebHdfs
+parameter_list|()
+block|{
+name|super
+argument_list|(
+literal|"/tmp/TestFSMainOperationsWebHdfs"
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|createFileSystem ()
