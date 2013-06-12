@@ -2762,7 +2762,10 @@ operator|.
 name|value
 argument_list|()
 argument_list|,
-literal|0
+name|allocatedVCores
+operator|.
+name|value
+argument_list|()
 argument_list|)
 return|;
 block|}
