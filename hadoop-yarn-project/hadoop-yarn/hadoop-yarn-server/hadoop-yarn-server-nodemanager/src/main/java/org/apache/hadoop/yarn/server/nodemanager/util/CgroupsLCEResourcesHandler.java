@@ -921,7 +921,6 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * Next three functions operate on all the resources we are enforcing.    */
-comment|/*    * TODO: After YARN-2 is committed, we should call containerResource.getCpus()    * (or equivalent) to multiply the weight by the number of requested cpus.    */
 DECL|method|setupLimits (ContainerId containerId, Resource containerResource)
 specifier|private
 name|void
@@ -957,6 +956,16 @@ argument_list|,
 name|containerName
 argument_list|)
 expr_stmt|;
+name|int
+name|cpuShares
+init|=
+name|CPU_DEFAULT_WEIGHT
+operator|*
+name|containerResource
+operator|.
+name|getVirtualCores
+argument_list|()
+decl_stmt|;
 name|updateCgroup
 argument_list|(
 name|CONTROLLER_CPU
@@ -969,7 +978,7 @@ name|String
 operator|.
 name|valueOf
 argument_list|(
-name|CPU_DEFAULT_WEIGHT
+name|cpuShares
 argument_list|)
 argument_list|)
 expr_stmt|;
