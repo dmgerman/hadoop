@@ -277,20 +277,30 @@ decl_stmt|;
 name|String
 name|expectedSinglelineData
 init|=
-literal|"<tr class=\"odd\">\n"
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"<tr class=\"odd\">%n"
 operator|+
-literal|"<th>\n Single_line_value\n<td>\n This is one line.\n"
+literal|"<th>%n Single_line_value%n<td>%n This is one line.%n"
+argument_list|)
 decl_stmt|;
 name|String
 name|expectedMultilineData
 init|=
-literal|"<tr class=\"even\">\n"
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"<tr class=\"even\">%n"
 operator|+
-literal|"<th>\n Multiple_line_value\n<td>\n<div>\n"
+literal|"<th>%n Multiple_line_value%n<td>%n<div>%n"
 operator|+
-literal|" This is first line.\n</div>\n<div>\n"
+literal|" This is first line.%n</div>%n<div>%n"
 operator|+
-literal|" This is second line.\n</div>\n"
+literal|" This is second line.%n</div>%n"
+argument_list|)
 decl_stmt|;
 name|assertTrue
 argument_list|(
