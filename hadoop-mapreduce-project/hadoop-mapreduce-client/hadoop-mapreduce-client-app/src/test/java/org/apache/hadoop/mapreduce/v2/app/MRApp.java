@@ -1574,10 +1574,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|downloadTokensAndSetupUGI (Configuration conf)
+DECL|method|initJobCredentialsAndUGI (Configuration conf)
 specifier|protected
 name|void
-name|downloadTokensAndSetupUGI
+name|initJobCredentialsAndUGI
 parameter_list|(
 name|Configuration
 name|conf

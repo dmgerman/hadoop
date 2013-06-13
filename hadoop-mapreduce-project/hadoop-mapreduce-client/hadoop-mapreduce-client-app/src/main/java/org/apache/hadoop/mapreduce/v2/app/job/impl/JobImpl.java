@@ -4228,10 +4228,10 @@ name|isUber
 init|=
 literal|false
 decl_stmt|;
-DECL|field|fsTokens
+DECL|field|jobCredentials
 specifier|private
 name|Credentials
-name|fsTokens
+name|jobCredentials
 decl_stmt|;
 DECL|field|jobToken
 specifier|private
@@ -4253,7 +4253,7 @@ name|forcedState
 init|=
 literal|null
 decl_stmt|;
-DECL|method|JobImpl (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials fsTokenCredentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, MRAppMetrics metrics, OutputCommitter committer, boolean newApiCommitter, String userName, long appSubmitTime, List<AMInfo> amInfos, AppContext appContext, JobStateInternal forcedState, String forcedDiagnostic)
+DECL|method|JobImpl (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, TaskAttemptListener taskAttemptListener, JobTokenSecretManager jobTokenSecretManager, Credentials jobCredentials, Clock clock, Map<TaskId, TaskInfo> completedTasksFromPreviousRun, MRAppMetrics metrics, OutputCommitter committer, boolean newApiCommitter, String userName, long appSubmitTime, List<AMInfo> amInfos, AppContext appContext, JobStateInternal forcedState, String forcedDiagnostic)
 specifier|public
 name|JobImpl
 parameter_list|(
@@ -4276,7 +4276,7 @@ name|JobTokenSecretManager
 name|jobTokenSecretManager
 parameter_list|,
 name|Credentials
-name|fsTokenCredentials
+name|jobCredentials
 parameter_list|,
 name|Clock
 name|clock
@@ -4476,9 +4476,9 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|fsTokens
+name|jobCredentials
 operator|=
-name|fsTokenCredentials
+name|jobCredentials
 expr_stmt|;
 name|this
 operator|.
@@ -8239,7 +8239,7 @@ name|getShuffleSecretKey
 argument_list|(
 name|job
 operator|.
-name|fsTokens
+name|jobCredentials
 argument_list|)
 operator|==
 literal|null
@@ -8267,7 +8267,7 @@ argument_list|()
 argument_list|,
 name|job
 operator|.
-name|fsTokens
+name|jobCredentials
 argument_list|)
 expr_stmt|;
 block|}
@@ -8344,7 +8344,7 @@ name|jobToken
 argument_list|,
 name|job
 operator|.
-name|fsTokens
+name|jobCredentials
 argument_list|,
 name|job
 operator|.
@@ -8460,7 +8460,7 @@ name|jobToken
 argument_list|,
 name|job
 operator|.
-name|fsTokens
+name|jobCredentials
 argument_list|,
 name|job
 operator|.
