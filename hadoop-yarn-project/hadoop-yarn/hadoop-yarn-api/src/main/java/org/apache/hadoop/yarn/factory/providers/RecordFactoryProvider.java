@@ -68,7 +68,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnRuntimeException
+name|conf
+operator|.
+name|YarnConfiguration
 import|;
 end_import
 
@@ -82,9 +84,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|exceptions
 operator|.
-name|YarnConfiguration
+name|YarnRuntimeException
 import|;
 end_import
 

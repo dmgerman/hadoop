@@ -484,7 +484,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnRuntimeException
+name|event
+operator|.
+name|EventHandler
 import|;
 end_import
 
@@ -498,9 +500,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|exceptions
 operator|.
-name|EventHandler
+name|YarnRuntimeException
 import|;
 end_import
 

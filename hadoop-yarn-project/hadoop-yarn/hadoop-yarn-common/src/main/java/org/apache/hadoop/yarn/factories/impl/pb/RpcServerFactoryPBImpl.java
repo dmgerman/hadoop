@@ -228,6 +228,8 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
 name|YarnRuntimeException
 import|;
 end_import

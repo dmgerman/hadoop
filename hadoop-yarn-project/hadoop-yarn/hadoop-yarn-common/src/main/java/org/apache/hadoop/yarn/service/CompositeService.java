@@ -90,6 +90,22 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
+import|;
+end_import
+
 begin_comment
 comment|/**  * Composition of services.  */
 end_comment

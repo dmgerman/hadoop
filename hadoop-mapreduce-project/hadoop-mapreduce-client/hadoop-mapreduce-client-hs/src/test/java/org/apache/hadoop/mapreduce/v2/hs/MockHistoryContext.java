@@ -184,7 +184,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnRuntimeException
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
 import|;
 end_import
 
@@ -198,11 +202,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|exceptions
 operator|.
-name|records
-operator|.
-name|ApplicationId
+name|YarnRuntimeException
 import|;
 end_import
 

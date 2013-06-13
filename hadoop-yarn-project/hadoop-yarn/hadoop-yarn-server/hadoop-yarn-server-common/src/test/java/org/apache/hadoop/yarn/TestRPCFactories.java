@@ -98,7 +98,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnRuntimeException
+name|exceptions
+operator|.
+name|YarnException
 import|;
 end_import
 
@@ -114,7 +116,7 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
-name|YarnException
+name|YarnRuntimeException
 import|;
 end_import
 

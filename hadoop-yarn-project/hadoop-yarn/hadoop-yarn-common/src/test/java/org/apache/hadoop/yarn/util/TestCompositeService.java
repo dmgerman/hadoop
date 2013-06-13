@@ -94,7 +94,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|YarnRuntimeException
+name|service
+operator|.
+name|BreakableService
 import|;
 end_import
 
@@ -108,9 +110,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|exceptions
 operator|.
-name|BreakableService
+name|YarnRuntimeException
 import|;
 end_import
 

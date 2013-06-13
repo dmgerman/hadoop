@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn
+DECL|package|org.apache.hadoop.yarn.exceptions
 package|package
 name|org
 operator|.
@@ -13,11 +13,13 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
+operator|.
+name|exceptions
 package|;
 end_package
 
 begin_comment
-comment|/** Base Yarn Exception.  *   * NOTE: All derivatives of this exception, which may be thrown by a remote  * service, must include a String only constructor for the exception to be   * unwrapped on the client.  */
+comment|/** Base Yarn Exception.  *  * NOTE: All derivatives of this exception, which may be thrown by a remote  * service, must include a String only constructor for the exception to be  * unwrapped on the client.  */
 end_comment
 
 begin_class
@@ -28,7 +30,6 @@ name|YarnRuntimeException
 extends|extends
 name|RuntimeException
 block|{
-comment|/**    *     */
 DECL|field|serialVersionUID
 specifier|private
 specifier|static
