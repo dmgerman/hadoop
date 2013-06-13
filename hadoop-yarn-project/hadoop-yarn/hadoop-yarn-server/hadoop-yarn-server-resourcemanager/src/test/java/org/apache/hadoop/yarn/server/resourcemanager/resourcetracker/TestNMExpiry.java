@@ -541,14 +541,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|conf
 operator|.
@@ -563,7 +565,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)

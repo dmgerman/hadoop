@@ -2635,11 +2635,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -2656,7 +2658,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

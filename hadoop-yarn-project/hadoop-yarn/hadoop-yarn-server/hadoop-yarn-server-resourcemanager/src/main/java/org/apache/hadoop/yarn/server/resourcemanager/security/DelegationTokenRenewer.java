@@ -518,23 +518,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 specifier|synchronized
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
-name|super
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|tokenKeepAliveEnabled
@@ -569,21 +564,24 @@ operator|.
 name|DEFAULT_RM_NM_EXPIRY_INTERVAL_MS
 argument_list|)
 expr_stmt|;
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
-name|super
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|dtCancelThread
 operator|.
 name|start
@@ -623,14 +621,18 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+name|super
+operator|.
+name|serviceStart
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 if|if
@@ -719,11 +721,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|super
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
 block|}
 comment|/**    * class that is used for keeping tracks of DT to renew    *    */
 annotation|@

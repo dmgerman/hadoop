@@ -1147,11 +1147,13 @@ comment|//  processing events from the event queue and one for periodically
 comment|//  looking for speculation opportunities
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|Runnable
 name|speculationBackgroundCore
@@ -1309,17 +1311,19 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|stopped
 operator|=
@@ -1341,7 +1345,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

@@ -434,6 +434,9 @@ block|{
 return|return
 operator|(
 name|ArrayList
+argument_list|<
+name|Integer
+argument_list|>
 operator|)
 name|this
 operator|.
@@ -445,14 +448,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|remaining_init
 operator|=
@@ -482,7 +487,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -490,11 +495,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|assertEquals
 argument_list|(
@@ -512,7 +519,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

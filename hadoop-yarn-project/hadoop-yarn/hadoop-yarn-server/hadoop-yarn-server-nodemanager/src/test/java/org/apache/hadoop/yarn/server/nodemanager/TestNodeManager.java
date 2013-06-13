@@ -194,6 +194,14 @@ argument_list|)
 operator|)
 assert|;
 block|}
+finally|finally
+block|{
+name|nm
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

@@ -467,14 +467,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|conf
 operator|.
@@ -828,7 +830,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -859,12 +861,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
+DECL|method|serviceStart ()
 specifier|public
 specifier|synchronized
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 try|try
 block|{
@@ -1007,7 +1011,7 @@ throw|;
 block|}
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -1141,12 +1145,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
+DECL|method|serviceStop ()
 specifier|public
 specifier|synchronized
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -1163,7 +1169,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

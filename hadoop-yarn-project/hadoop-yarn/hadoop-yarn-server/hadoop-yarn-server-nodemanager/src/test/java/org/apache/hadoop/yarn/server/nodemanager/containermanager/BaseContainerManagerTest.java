@@ -1463,15 +1463,6 @@ condition|(
 name|containerManager
 operator|!=
 literal|null
-operator|&&
-name|containerManager
-operator|.
-name|getServiceState
-argument_list|()
-operator|==
-name|STATE
-operator|.
-name|STARTED
 condition|)
 block|{
 name|containerManager

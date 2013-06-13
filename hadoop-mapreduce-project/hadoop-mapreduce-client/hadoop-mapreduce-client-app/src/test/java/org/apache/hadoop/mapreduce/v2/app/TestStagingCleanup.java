@@ -580,6 +580,22 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|service
+operator|.
+name|Service
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -1671,6 +1687,16 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"appMaster.isLastAMRetry() is false"
+argument_list|,
+name|appMaster
+operator|.
+name|isLastAMRetry
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|//simulate the process being killed
 name|MRAppMaster
 operator|.
@@ -1689,6 +1715,22 @@ name|hook
 operator|.
 name|run
 argument_list|()
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"MRAppMaster isn't stopped"
+argument_list|,
+name|appMaster
+operator|.
+name|isInState
+argument_list|(
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STOPPED
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|verify
 argument_list|(
@@ -1960,15 +2002,17 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
+DECL|method|serviceStart ()
 specifier|public
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 name|DefaultMetricsSystem
@@ -2326,12 +2370,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|stoppedContainerAllocator
 operator|=
@@ -2339,7 +2384,7 @@ literal|true
 expr_stmt|;
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

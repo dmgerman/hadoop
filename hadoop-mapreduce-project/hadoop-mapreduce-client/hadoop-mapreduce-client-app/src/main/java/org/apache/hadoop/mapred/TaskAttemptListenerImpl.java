@@ -767,14 +767,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|registerHeartbeatHandler
 argument_list|(
@@ -798,7 +800,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -806,18 +808,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|startRpcServer
 argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -997,18 +1001,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|stopRpcServer
 argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
@@ -1018,11 +1024,19 @@ name|void
 name|stopRpcServer
 parameter_list|()
 block|{
+if|if
+condition|(
+name|server
+operator|!=
+literal|null
+condition|)
+block|{
 name|server
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

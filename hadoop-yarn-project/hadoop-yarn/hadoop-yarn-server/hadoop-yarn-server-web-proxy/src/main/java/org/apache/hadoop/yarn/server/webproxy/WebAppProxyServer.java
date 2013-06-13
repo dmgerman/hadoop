@@ -237,15 +237,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
-specifier|synchronized
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|Configuration
 name|config
@@ -293,7 +294,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|config
 argument_list|)

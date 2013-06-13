@@ -835,6 +835,11 @@ specifier|private
 name|ContainerId
 name|cId
 decl_stmt|;
+DECL|field|nm
+specifier|private
+name|NodeManager
+name|nm
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -891,6 +896,19 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+if|if
+condition|(
+name|nm
+operator|!=
+literal|null
+condition|)
+block|{
+name|nm
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 name|localFS
 operator|.
 name|delete
@@ -920,13 +938,12 @@ name|IOException
 throws|,
 name|YarnException
 block|{
-name|NodeManager
 name|nm
-init|=
+operator|=
 operator|new
 name|TestNodeManager
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 name|nm
 operator|.
 name|init

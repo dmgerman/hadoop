@@ -716,7 +716,9 @@ throw|throw
 operator|new
 name|YarnRuntimeException
 argument_list|(
-literal|"could not cleanup test dir"
+literal|"could not cleanup test dir: "
+operator|+
+name|e
 argument_list|,
 name|e
 argument_list|)
@@ -943,18 +945,20 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 operator|instanceof
@@ -1069,12 +1073,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
+DECL|method|serviceStart ()
 specifier|public
 specifier|synchronized
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 try|try
 block|{
@@ -1109,6 +1115,14 @@ argument_list|)
 condition|)
 block|{
 comment|// pick free random ports.
+name|String
+name|hostname
+init|=
+name|MiniYARNCluster
+operator|.
+name|getHostname
+argument_list|()
+decl_stmt|;
 name|getConfig
 argument_list|()
 operator|.
@@ -1118,10 +1132,7 @@ name|YarnConfiguration
 operator|.
 name|RM_ADDRESS
 argument_list|,
-name|MiniYARNCluster
-operator|.
-name|getHostname
-argument_list|()
+name|hostname
 operator|+
 literal|":0"
 argument_list|)
@@ -1135,10 +1146,7 @@ name|YarnConfiguration
 operator|.
 name|RM_ADMIN_ADDRESS
 argument_list|,
-name|MiniYARNCluster
-operator|.
-name|getHostname
-argument_list|()
+name|hostname
 operator|+
 literal|":0"
 argument_list|)
@@ -1152,10 +1160,7 @@ name|YarnConfiguration
 operator|.
 name|RM_SCHEDULER_ADDRESS
 argument_list|,
-name|MiniYARNCluster
-operator|.
-name|getHostname
-argument_list|()
+name|hostname
 operator|+
 literal|":0"
 argument_list|)
@@ -1169,10 +1174,7 @@ name|YarnConfiguration
 operator|.
 name|RM_RESOURCE_TRACKER_ADDRESS
 argument_list|,
-name|MiniYARNCluster
-operator|.
-name|getHostname
-argument_list|()
+name|hostname
 operator|+
 literal|":0"
 argument_list|)
@@ -1186,10 +1188,7 @@ name|YarnConfiguration
 operator|.
 name|RM_WEBAPP_ADDRESS
 argument_list|,
-name|MiniYARNCluster
-operator|.
-name|getHostname
-argument_list|()
+name|hostname
 operator|+
 literal|":0"
 argument_list|)
@@ -1309,7 +1308,7 @@ throw|;
 block|}
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -1364,12 +1363,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
+DECL|method|serviceStop ()
 specifier|public
 specifier|synchronized
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -1386,7 +1387,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 if|if
@@ -1487,15 +1488,17 @@ operator|=
 name|i
 expr_stmt|;
 block|}
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 specifier|synchronized
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|Configuration
 name|config
@@ -1508,7 +1511,7 @@ argument_list|)
 decl_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|config
 argument_list|)
@@ -1649,12 +1652,14 @@ return|return
 name|dirsString
 return|;
 block|}
-DECL|method|start ()
+DECL|method|serviceStart ()
 specifier|public
 specifier|synchronized
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 try|try
 block|{
@@ -1928,7 +1933,7 @@ throw|;
 block|}
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -1949,12 +1954,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
+DECL|method|serviceStop ()
 specifier|public
 specifier|synchronized
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -1977,7 +1984,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

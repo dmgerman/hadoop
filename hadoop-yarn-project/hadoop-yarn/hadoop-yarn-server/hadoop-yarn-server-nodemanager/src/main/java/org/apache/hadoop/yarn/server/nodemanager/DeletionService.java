@@ -178,24 +178,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|ContainerExecutor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|service
 operator|.
 name|AbstractService
@@ -407,14 +389,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|ThreadFactory
 name|tf
@@ -506,7 +490,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -514,11 +498,20 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|sched
+operator|!=
+literal|null
+condition|)
 block|{
 name|sched
 operator|.
@@ -549,7 +542,7 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{     }
+block|{       }
 if|if
 condition|(
 name|terminated
@@ -563,9 +556,10 @@ name|shutdownNow
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

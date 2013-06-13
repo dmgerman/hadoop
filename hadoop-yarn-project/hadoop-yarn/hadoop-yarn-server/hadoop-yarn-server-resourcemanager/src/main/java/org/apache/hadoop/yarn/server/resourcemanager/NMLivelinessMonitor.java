@@ -213,22 +213,17 @@ name|getEventHandler
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
-name|super
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|int
 name|expireIntvl
 init|=
@@ -255,6 +250,13 @@ argument_list|(
 name|expireIntvl
 operator|/
 literal|3
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 block|}

@@ -1567,15 +1567,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration config)
-specifier|public
-specifier|synchronized
+DECL|method|serviceInit (Configuration config)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|config
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -1636,7 +1637,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -1660,11 +1661,13 @@ name|conf
 argument_list|)
 return|;
 block|}
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|ThreadFactory
 name|tf
@@ -1927,7 +1930,7 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -1965,11 +1968,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -1988,19 +1993,35 @@ comment|// shutdown any containers that might be left running
 name|shutdownAllContainers
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|eventHandlingThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|eventHandlingThread
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|launcherPool
+operator|!=
+literal|null
+condition|)
+block|{
 name|launcherPool
 operator|.
 name|shutdownNow
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

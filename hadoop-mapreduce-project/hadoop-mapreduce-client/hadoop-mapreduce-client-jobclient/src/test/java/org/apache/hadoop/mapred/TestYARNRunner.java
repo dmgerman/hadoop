@@ -1882,10 +1882,9 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
-specifier|synchronized
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 name|this

@@ -2295,18 +2295,18 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 comment|// don't do anything
@@ -2356,18 +2356,18 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 comment|// don't do anything
@@ -2395,18 +2395,18 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 comment|// don't do anything
@@ -2432,9 +2432,9 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 comment|// override to not start rpc handler
@@ -2453,9 +2453,9 @@ comment|// don't do anything
 block|}
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 comment|// don't do anything
@@ -2505,18 +2505,18 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 comment|// override to not start rpc handler
 block|}
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 comment|// don't do anything

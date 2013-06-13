@@ -819,14 +819,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|this
 operator|.
@@ -863,7 +865,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -871,11 +873,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|client
 operator|.
@@ -1173,17 +1177,19 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -1198,6 +1204,13 @@ block|{
 comment|// return if already stopped
 return|return;
 block|}
+if|if
+condition|(
+name|eventDispatcherThread
+operator|!=
+literal|null
+condition|)
+block|{
 name|eventDispatcherThread
 operator|.
 name|interrupt
@@ -1234,11 +1247,27 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|threadPool
+operator|!=
+literal|null
+condition|)
+block|{
 name|threadPool
 operator|.
 name|shutdownNow
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|client
+operator|!=
+literal|null
+condition|)
+block|{
 comment|// If NMClientImpl doesn't stop running containers, the states doesn't
 comment|// need to be cleared.
 if|if
@@ -1263,20 +1292,29 @@ name|get
 argument_list|()
 condition|)
 block|{
+if|if
+condition|(
+name|containers
+operator|!=
+literal|null
+condition|)
+block|{
 name|containers
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
 block|}
+block|}
 name|client
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

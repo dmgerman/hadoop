@@ -2209,14 +2209,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|clientServiceBindAddress
 operator|=
@@ -2234,7 +2236,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -2242,11 +2244,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 comment|// All the clients to appsManager are supposed to be authenticated via
 comment|// Kerberos if security is enabled, so no secretManager.
@@ -2303,7 +2307,7 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -2981,20 +2985,32 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|stop ()
-specifier|public
+annotation|@
+name|Override
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|server
+operator|!=
+literal|null
+condition|)
 block|{
 name|server
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 name|amRunning

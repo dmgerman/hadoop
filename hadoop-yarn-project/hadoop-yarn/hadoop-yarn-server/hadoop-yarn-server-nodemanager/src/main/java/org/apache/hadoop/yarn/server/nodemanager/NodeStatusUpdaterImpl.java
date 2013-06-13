@@ -780,6 +780,7 @@ name|httpPort
 decl_stmt|;
 DECL|field|isStopped
 specifier|private
+specifier|volatile
 name|boolean
 name|isStopped
 decl_stmt|;
@@ -934,15 +935,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
-specifier|synchronized
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|this
 operator|.
@@ -1152,7 +1154,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -1160,11 +1162,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 comment|// NodeManager is the last service to start, so NodeId is available.
 name|this
@@ -1198,7 +1202,7 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 name|startStatusUpdater
@@ -1236,12 +1240,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 comment|// Interrupt the updater.
 name|this
@@ -1252,7 +1257,7 @@ literal|true
 expr_stmt|;
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

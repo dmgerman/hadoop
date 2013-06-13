@@ -1468,9 +1468,9 @@ argument_list|)
 block|{
 annotation|@
 name|Override
-specifier|public
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 comment|// Don't start any event draining thread.

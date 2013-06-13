@@ -360,32 +360,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
-specifier|synchronized
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|init
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|super
-operator|.
-name|init
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|start ()
-specifier|public
-specifier|synchronized
-name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|String
 name|bindAddress
@@ -494,12 +475,14 @@ operator|new
 name|YarnRuntimeException
 argument_list|(
 name|msg
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -517,12 +500,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -533,6 +517,13 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Stopping webapp"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|webApp
@@ -543,7 +534,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

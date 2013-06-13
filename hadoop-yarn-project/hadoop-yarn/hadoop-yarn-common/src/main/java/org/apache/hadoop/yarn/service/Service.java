@@ -32,6 +32,46 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|Closeable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
 begin_comment
 comment|/**  * Service LifeCycle.  */
 end_comment
@@ -41,6 +81,8 @@ DECL|interface|Service
 specifier|public
 interface|interface
 name|Service
+extends|extends
+name|Closeable
 block|{
 comment|/**    * Service states    */
 DECL|enum|STATE
@@ -51,20 +93,103 @@ block|{
 comment|/** Constructed but not initialized */
 DECL|enumConstant|NOTINITED
 name|NOTINITED
+argument_list|(
+literal|0
+argument_list|,
+literal|"NOTINITED"
+argument_list|)
 block|,
 comment|/** Initialized but not started or stopped */
 DECL|enumConstant|INITED
 name|INITED
+argument_list|(
+literal|1
+argument_list|,
+literal|"INITED"
+argument_list|)
 block|,
 comment|/** started and not stopped */
 DECL|enumConstant|STARTED
 name|STARTED
+argument_list|(
+literal|2
+argument_list|,
+literal|"STARTED"
+argument_list|)
 block|,
 comment|/** stopped. No further state transitions are permitted */
 DECL|enumConstant|STOPPED
 name|STOPPED
+argument_list|(
+literal|3
+argument_list|,
+literal|"STOPPED"
+argument_list|)
+block|;
+comment|/**      * An integer value for use in array lookup and JMX interfaces.      * Although {@link Enum#ordinal()} could do this, explicitly      * identify the numbers gives more stability guarantees over time.      */
+DECL|field|value
+specifier|private
+specifier|final
+name|int
+name|value
+decl_stmt|;
+comment|/**      * A name of the state that can be used in messages      */
+DECL|field|statename
+specifier|private
+specifier|final
+name|String
+name|statename
+decl_stmt|;
+DECL|method|STATE (int value, String name)
+specifier|private
+name|STATE
+parameter_list|(
+name|int
+name|value
+parameter_list|,
+name|String
+name|name
+parameter_list|)
+block|{
+name|this
+operator|.
+name|value
+operator|=
+name|value
+expr_stmt|;
+name|this
+operator|.
+name|statename
+operator|=
+name|name
+expr_stmt|;
 block|}
-comment|/**    * Initialize the service.    *    * The transition must be from {@link STATE#NOTINITED} to {@link STATE#INITED}    * unless the operation failed and an exception was raised.    * @param config the configuration of the service    */
+comment|/**      * Get the integer value of a state      * @return the numeric value of the state      */
+DECL|method|getValue ()
+specifier|public
+name|int
+name|getValue
+parameter_list|()
+block|{
+return|return
+name|value
+return|;
+block|}
+comment|/**      * Get the name of a state      * @return the state's name      */
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|statename
+return|;
+block|}
+block|}
+comment|/**    * Initialize the service.    *    * The transition MUST be from {@link STATE#NOTINITED} to {@link STATE#INITED}    * unless the operation failed and an exception was raised, in which case    * {@link #stop()} MUST be invoked and the service enter the state    * {@link STATE#STOPPED}.    * @param config the configuration of the service    * @throws RuntimeException on any failure during the operation     */
 DECL|method|init (Configuration config)
 name|void
 name|init
@@ -73,17 +198,25 @@ name|Configuration
 name|config
 parameter_list|)
 function_decl|;
-comment|/**    * Start the service.    *    * The transition should be from {@link STATE#INITED} to {@link STATE#STARTED}    * unless the operation failed and an exception was raised.    */
+comment|/**    * Start the service.    *    * The transition MUST be from {@link STATE#INITED} to {@link STATE#STARTED}    * unless the operation failed and an exception was raised, in which case    * {@link #stop()} MUST be invoked and the service enter the state    * {@link STATE#STOPPED}.    * @throws RuntimeException on any failure during the operation    */
 DECL|method|start ()
 name|void
 name|start
 parameter_list|()
 function_decl|;
-comment|/**    * Stop the service.    *    * This operation must be designed to complete regardless of the initial state    * of the service, including the state of all its internal fields.    */
+comment|/**    * Stop the service. This MUST be a no-op if the service is already    * in the {@link STATE#STOPPED} state. It SHOULD be a best-effort attempt    * to stop all parts of the service.    *    * The implementation must be designed to complete regardless of the service    * state, including the initialized/uninitialized state of all its internal    * fields.    * @throws RuntimeException on any failure during the stop operation    */
 DECL|method|stop ()
 name|void
 name|stop
 parameter_list|()
+function_decl|;
+comment|/**    * A version of stop() that is designed to be usable in Java7 closure    * clauses.    * Implementation classes MUST relay this directly to {@link #stop()}    * @throws IOException never    * @throws RuntimeException on any failure during the stop operation    */
+DECL|method|close ()
+name|void
+name|close
+parameter_list|()
+throws|throws
+name|IOException
 function_decl|;
 comment|/**    * Register an instance of the service state change events.    * @param listener a new listener    */
 DECL|method|register (ServiceStateChangeListener listener)
@@ -125,6 +258,58 @@ comment|/**    * Get the service start time    * @return the start time of the s
 DECL|method|getStartTime ()
 name|long
 name|getStartTime
+parameter_list|()
+function_decl|;
+comment|/**    * Query to see if the service is in a specific state.    * In a multi-threaded system, the state may not hold for very long.    * @param state the expected state    * @return true if, at the time of invocation, the service was in that state.    */
+DECL|method|isInState (STATE state)
+name|boolean
+name|isInState
+parameter_list|(
+name|STATE
+name|state
+parameter_list|)
+function_decl|;
+comment|/**    * Get the first exception raised during the service failure. If null,    * no exception was logged    * @return the failure logged during a transition to the stopped state    */
+DECL|method|getFailureCause ()
+name|Throwable
+name|getFailureCause
+parameter_list|()
+function_decl|;
+comment|/**    * Get the state in which the failure in {@link #getFailureCause()} occurred.    * @return the state or null if there was no failure    */
+DECL|method|getFailureState ()
+name|STATE
+name|getFailureState
+parameter_list|()
+function_decl|;
+comment|/**    * Block waiting for the service to stop; uses the termination notification    * object to do so.    *    * This method will only return after all the service stop actions    * have been executed (to success or failure), or the timeout elapsed    * This method can be called before the service is inited or started; this is    * to eliminate any race condition with the service stopping before    * this event occurs.    * @param timeout timeout in milliseconds. A value of zero means "forever"    * @return true iff the service stopped in the time period    */
+DECL|method|waitForServiceToStop (long timeout)
+name|boolean
+name|waitForServiceToStop
+parameter_list|(
+name|long
+name|timeout
+parameter_list|)
+function_decl|;
+comment|/**    * Get a snapshot of the lifecycle history; it is a static list    * @return a possibly empty but never null list of lifecycle events.    */
+DECL|method|getLifecycleHistory ()
+specifier|public
+name|List
+argument_list|<
+name|LifecycleEvent
+argument_list|>
+name|getLifecycleHistory
+parameter_list|()
+function_decl|;
+comment|/**    * Get the blockers on a service -remote dependencies    * that are stopping the service from being<i>live</i>.    * @return a (snapshotted) map of blocker name-&gt;description values    */
+DECL|method|getBlockers ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|String
+argument_list|>
+name|getBlockers
 parameter_list|()
 function_decl|;
 block|}

@@ -1469,6 +1469,24 @@ name|HistoryFileInfo
 name|fileInfo
 parameter_list|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Removing from cache "
+operator|+
+name|fileInfo
+argument_list|)
+expr_stmt|;
+block|}
 name|cache
 operator|.
 name|remove
@@ -1596,6 +1614,30 @@ operator|+
 name|p
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Scan not needed of "
+operator|+
+name|fs
+operator|.
+name|getPath
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1743,6 +1785,25 @@ operator|.
 name|DELETED
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"HistoryFileInfo jobID "
+operator|+
+name|getJobId
+argument_list|()
+operator|+
+literal|" historyFile = "
+operator|+
+name|historyFile
+return|;
+block|}
 DECL|method|moveToDone ()
 specifier|private
 specifier|synchronized
@@ -1754,12 +1815,46 @@ name|IOException
 block|{
 if|if
 condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"moveToDone: "
+operator|+
+name|historyFile
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 operator|!
 name|isMovePending
 argument_list|()
 condition|)
 block|{
 comment|// It was either deleted or is already in done. Either way do nothing
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Move no longer pending"
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
 block|}
 try|try
@@ -2137,6 +2232,28 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"deleting "
+operator|+
+name|historyFile
+operator|+
+literal|" and "
+operator|+
+name|confFile
+argument_list|)
+expr_stmt|;
+block|}
 name|state
 operator|=
 name|HistoryInfoState
@@ -2393,14 +2510,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|this
 operator|.
@@ -2741,7 +2860,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -3509,6 +3628,13 @@ argument_list|,
 literal|""
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Scanning intermediate dirs"
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|FileStatus
@@ -3598,6 +3724,24 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Scanning intermediate dir "
+operator|+
+name|absPath
+argument_list|)
+expr_stmt|;
+block|}
 name|List
 argument_list|<
 name|FileStatus
@@ -3611,6 +3755,29 @@ argument_list|,
 name|intermediateDoneDirFc
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Found "
+operator|+
+name|fileStatusList
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" files"
+argument_list|)
+expr_stmt|;
+block|}
 for|for
 control|(
 name|FileStatus
@@ -3619,6 +3786,27 @@ range|:
 name|fileStatusList
 control|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"scanning file: "
+operator|+
+name|fs
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|JobIndexInfo
 name|jobIndexInfo
 init|=
@@ -3792,6 +3980,24 @@ block|}
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Scheduling move to done of "
+operator|+
+name|found
+argument_list|)
+expr_stmt|;
+block|}
 name|moveToDoneExecutor
 operator|.
 name|execute
@@ -3857,6 +4063,22 @@ argument_list|()
 condition|)
 block|{
 comment|//This is a duplicate so just delete it
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Duplicate: deleting"
+argument_list|)
+expr_stmt|;
+block|}
 name|fileInfo
 operator|.
 name|delete

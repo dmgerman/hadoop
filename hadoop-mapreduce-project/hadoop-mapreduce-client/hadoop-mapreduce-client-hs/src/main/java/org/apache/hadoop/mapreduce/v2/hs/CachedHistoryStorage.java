@@ -402,17 +402,24 @@ literal|"serial"
 argument_list|)
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|YarnRuntimeException
+name|Exception
 block|{
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -486,13 +493,6 @@ name|loadedJobCacheSize
 return|;
 block|}
 block|}
-argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|init
-argument_list|(
-name|conf
 argument_list|)
 expr_stmt|;
 block|}

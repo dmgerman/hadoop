@@ -556,6 +556,7 @@ decl_stmt|;
 comment|//enabled by default
 DECL|field|cleanupRunningContainers
 specifier|protected
+specifier|final
 name|AtomicBoolean
 name|cleanupRunningContainers
 init|=
@@ -597,11 +598,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 comment|// Usually, started-containers are stopped when this client stops. Unless
 comment|// the flag cleanupRunningContainers is set to false.
@@ -619,7 +622,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
@@ -893,12 +896,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 specifier|final
 name|YarnRPC
@@ -1023,15 +1027,21 @@ operator|+
 name|containerAddress
 argument_list|)
 expr_stmt|;
+name|super
+operator|.
+name|serviceStart
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 if|if
 condition|(
@@ -1083,6 +1093,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|super
+operator|.
+name|serviceStop
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|startContainer ( Container container, ContainerLaunchContext containerLaunchContext)
 specifier|public

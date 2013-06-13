@@ -22,16 +22,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|ByteArrayOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|File
 import|;
 end_import
@@ -43,16 +33,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|PrintStream
 import|;
 end_import
 
@@ -794,11 +774,13 @@ comment|// resources (and, if maps and reduces ever differ, then union of all th
 comment|// types), OR will need localizer service/API that uber-AM can request
 comment|// after running (e.g., "localizeForTask()" or "localizeForMapTask()").
 block|}
-DECL|method|start ()
+DECL|method|serviceStart ()
 specifier|public
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|eventHandlingThread
 operator|=
@@ -819,24 +801,34 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|stop ()
+DECL|method|serviceStop ()
 specifier|public
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|eventHandlingThread
+operator|!=
+literal|null
+condition|)
 block|{
 name|eventHandlingThread
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

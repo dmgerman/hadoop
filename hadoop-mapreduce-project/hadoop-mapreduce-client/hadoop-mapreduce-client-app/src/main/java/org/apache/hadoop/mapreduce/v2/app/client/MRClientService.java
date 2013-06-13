@@ -1388,11 +1388,13 @@ name|MRClientProtocolHandler
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -1609,7 +1611,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -1636,17 +1638,29 @@ name|policyProvider
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|stop ()
-specifier|public
+annotation|@
+name|Override
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|server
+operator|!=
+literal|null
+condition|)
 block|{
 name|server
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|webApp
@@ -1662,7 +1676,7 @@ expr_stmt|;
 block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}

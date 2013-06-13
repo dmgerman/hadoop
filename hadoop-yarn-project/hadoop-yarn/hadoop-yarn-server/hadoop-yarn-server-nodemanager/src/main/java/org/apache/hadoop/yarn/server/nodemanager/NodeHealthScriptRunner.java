@@ -729,14 +729,16 @@ block|}
 comment|/*    * Method which initializes the values for the script path and interval time.    */
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|this
 operator|.
@@ -817,15 +819,24 @@ argument_list|(
 name|args
 argument_list|)
 expr_stmt|;
+name|super
+operator|.
+name|serviceInit
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Method used to start the Node health monitoring.    *     */
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 comment|// if health script path is not configured don't start the thread.
 if|if
@@ -869,14 +880,19 @@ argument_list|,
 name|intervalTime
 argument_list|)
 expr_stmt|;
+name|super
+operator|.
+name|serviceStart
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Method used to terminate the node health monitoring service.    *     */
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 if|if
@@ -890,11 +906,19 @@ condition|)
 block|{
 return|return;
 block|}
+if|if
+condition|(
+name|nodeHealthScriptScheduler
+operator|!=
+literal|null
+condition|)
+block|{
 name|nodeHealthScriptScheduler
 operator|.
 name|cancel
 argument_list|()
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|shexec

@@ -739,14 +739,16 @@ block|}
 comment|/* (non-Javadoc)    * @see org.apache.hadoop.yarn.service.AbstractService#init(org.    * apache.hadoop.conf.Configuration)    * Initializes the FileSystem and Path objects for the log and done directories.    * Creates these directories if they do not already exist.    */
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|String
 name|jobId
@@ -1208,7 +1210,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -1350,11 +1352,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|eventHandlingThread
 operator|=
@@ -1483,6 +1487,13 @@ condition|(
 name|isInterrupted
 condition|)
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Event handling interrupted"
+argument_list|)
+expr_stmt|;
 name|Thread
 operator|.
 name|currentThread
@@ -1496,6 +1507,8 @@ block|}
 block|}
 block|}
 block|}
+argument_list|,
+literal|"eventHandlingThread"
 argument_list|)
 expr_stmt|;
 name|eventHandlingThread
@@ -1505,17 +1518,19 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|LOG
 operator|.
@@ -1547,11 +1562,30 @@ name|eventHandlingThread
 operator|!=
 literal|null
 condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Interrupting Event Handling thread"
+argument_list|)
+expr_stmt|;
 name|eventHandlingThread
 operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Null event handling thread"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 try|try
 block|{
@@ -1561,11 +1595,20 @@ name|eventHandlingThread
 operator|!=
 literal|null
 condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Waiting for Event Handling thread to complete"
+argument_list|)
+expr_stmt|;
 name|eventHandlingThread
 operator|.
 name|join
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -1577,7 +1620,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Interruped Exception while stopping"
+literal|"Interrupted Exception while stopping"
 argument_list|,
 name|ie
 argument_list|)
@@ -1598,6 +1641,24 @@ control|)
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Shutting down timer for "
+operator|+
+name|mi
+argument_list|)
+expr_stmt|;
+block|}
 name|mi
 operator|.
 name|shutDownTimer
@@ -1858,7 +1919,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
@@ -3775,6 +3836,13 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"In flush timer task"
+argument_list|)
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|lock
@@ -4026,6 +4094,27 @@ return|return
 name|isTimerShutDown
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Job MetaInfo for "
+operator|+
+name|jobSummary
+operator|.
+name|getJobId
+argument_list|()
+operator|+
+literal|" history file "
+operator|+
+name|historyFile
+return|;
+block|}
 DECL|method|closeWriter ()
 name|void
 name|closeWriter
@@ -4033,6 +4122,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Closing Writer"
+argument_list|)
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|lock
@@ -4067,6 +4163,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Writing event"
+argument_list|)
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|lock
@@ -4305,6 +4408,25 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Flushing "
+operator|+
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|lock
@@ -4340,6 +4462,25 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Shutting down timer "
+operator|+
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 synchronized|synchronized
 init|(
 name|lock

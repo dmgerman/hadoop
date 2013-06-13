@@ -140,40 +140,12 @@ name|STATE
 name|state
 parameter_list|)
 block|{
-switch|switch
-condition|(
+return|return
 name|state
-condition|)
-block|{
-case|case
-name|NOTINITED
-case|:
-return|return
-literal|0
+operator|.
+name|getValue
+argument_list|()
 return|;
-case|case
-name|INITED
-case|:
-return|return
-literal|1
-return|;
-case|case
-name|STARTED
-case|:
-return|return
-literal|2
-return|;
-case|case
-name|STOPPED
-case|:
-return|return
-literal|3
-return|;
-default|default:
-return|return
-literal|0
-return|;
-block|}
 block|}
 DECL|method|inc (STATE state)
 specifier|private
@@ -239,6 +211,8 @@ throw|throw
 operator|new
 name|BrokenLifecycleEvent
 argument_list|(
+name|this
+argument_list|,
 name|action
 argument_list|)
 throw|;
@@ -246,14 +220,16 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|inc
 argument_list|(
@@ -271,7 +247,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
@@ -279,10 +255,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
 block|{
 name|inc
@@ -299,18 +275,13 @@ argument_list|,
 literal|"start"
 argument_list|)
 expr_stmt|;
-name|super
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
 block|{
 name|inc
@@ -326,11 +297,6 @@ name|failOnStop
 argument_list|,
 literal|"stop"
 argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|stop
-argument_list|()
 expr_stmt|;
 block|}
 DECL|method|setFailOnInit (boolean failOnInit)
@@ -390,9 +356,18 @@ name|BrokenLifecycleEvent
 extends|extends
 name|RuntimeException
 block|{
-DECL|method|BrokenLifecycleEvent (String action)
+DECL|field|state
+specifier|final
+name|STATE
+name|state
+decl_stmt|;
+DECL|method|BrokenLifecycleEvent (Service service, String action)
+specifier|public
 name|BrokenLifecycleEvent
 parameter_list|(
+name|Service
+name|service
+parameter_list|,
 name|String
 name|action
 parameter_list|)
@@ -402,7 +377,21 @@ argument_list|(
 literal|"Lifecycle Failure during "
 operator|+
 name|action
+operator|+
+literal|" state is "
+operator|+
+name|service
+operator|.
+name|getServiceState
+argument_list|()
 argument_list|)
+expr_stmt|;
+name|state
+operator|=
+name|service
+operator|.
+name|getServiceState
+argument_list|()
 expr_stmt|;
 block|}
 block|}

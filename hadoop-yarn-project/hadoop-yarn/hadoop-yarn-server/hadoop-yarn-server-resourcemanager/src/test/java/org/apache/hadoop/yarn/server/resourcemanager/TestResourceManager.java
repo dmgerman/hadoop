@@ -1169,6 +1169,12 @@ operator|-
 literal|1
 argument_list|)
 expr_stmt|;
+name|resourceManager
+operator|=
+operator|new
+name|ResourceManager
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|resourceManager
@@ -1193,10 +1199,9 @@ name|e
 parameter_list|)
 block|{
 comment|// Exception is expected.
-name|assertTrue
-argument_list|(
-literal|"The thrown exception is not the expected one."
-argument_list|,
+if|if
+condition|(
+operator|!
 name|e
 operator|.
 name|getMessage
@@ -1206,8 +1211,10 @@ name|startsWith
 argument_list|(
 literal|"Invalid global max attempts configuration"
 argument_list|)
-argument_list|)
-expr_stmt|;
+condition|)
+throw|throw
+name|e
+throw|;
 block|}
 name|conf
 operator|=
@@ -1237,6 +1244,12 @@ argument_list|,
 literal|1024
 argument_list|)
 expr_stmt|;
+name|resourceManager
+operator|=
+operator|new
+name|ResourceManager
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|resourceManager
@@ -1261,10 +1274,9 @@ name|e
 parameter_list|)
 block|{
 comment|// Exception is expected.
-name|assertTrue
-argument_list|(
-literal|"The thrown exception is not the expected one."
-argument_list|,
+if|if
+condition|(
+operator|!
 name|e
 operator|.
 name|getMessage
@@ -1274,8 +1286,10 @@ name|startsWith
 argument_list|(
 literal|"Invalid resource scheduler memory"
 argument_list|)
-argument_list|)
-expr_stmt|;
+condition|)
+throw|throw
+name|e
+throw|;
 block|}
 name|conf
 operator|=
@@ -1305,6 +1319,12 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+name|resourceManager
+operator|=
+operator|new
+name|ResourceManager
+argument_list|()
+expr_stmt|;
 try|try
 block|{
 name|resourceManager
@@ -1329,10 +1349,9 @@ name|e
 parameter_list|)
 block|{
 comment|// Exception is expected.
-name|assertTrue
-argument_list|(
-literal|"The thrown exception is not the expected one."
-argument_list|,
+if|if
+condition|(
+operator|!
 name|e
 operator|.
 name|getMessage
@@ -1342,8 +1361,10 @@ name|startsWith
 argument_list|(
 literal|"Invalid resource scheduler vcores"
 argument_list|)
-argument_list|)
-expr_stmt|;
+condition|)
+throw|throw
+name|e
+throw|;
 block|}
 block|}
 block|}

@@ -290,11 +290,15 @@ name|LauncherThread
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|start ()
-specifier|public
+annotation|@
+name|Override
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|launcherHandlingThread
 operator|.
@@ -303,7 +307,7 @@ argument_list|()
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
@@ -368,11 +372,15 @@ name|launcher
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|stop ()
-specifier|public
+annotation|@
+name|Override
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|launcherHandlingThread
 operator|.
@@ -411,11 +419,6 @@ block|}
 name|launcherPool
 operator|.
 name|shutdown
-argument_list|()
-expr_stmt|;
-name|super
-operator|.
-name|stop
 argument_list|()
 expr_stmt|;
 block|}

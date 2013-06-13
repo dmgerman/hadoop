@@ -878,6 +878,8 @@ name|FakeDefaultContainerExecutor
 argument_list|()
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|del
 operator|.
 name|init
@@ -892,8 +894,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 for|for
 control|(
 name|Path
@@ -1164,6 +1164,8 @@ argument_list|(
 name|exec
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|del
 operator|.
 name|init
@@ -1176,8 +1178,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 for|for
 control|(
 name|Path
@@ -1328,6 +1328,8 @@ argument_list|,
 literal|60
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|del
 operator|.
 name|init
@@ -1340,8 +1342,6 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-try|try
-block|{
 name|del
 operator|.
 name|delete

@@ -825,6 +825,8 @@ argument_list|,
 name|dirsHandler
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|server
 operator|.
 name|init
@@ -844,6 +846,20 @@ name|getPort
 argument_list|()
 return|;
 block|}
+finally|finally
+block|{
+name|server
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|healthChecker
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 annotation|@
 name|Test
 DECL|method|testNMWebAppWithOutPort ()
@@ -862,15 +878,47 @@ argument_list|(
 literal|"0.0.0.0"
 argument_list|)
 decl_stmt|;
+name|validatePortVal
+argument_list|(
+name|port
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|validatePortVal (int portVal)
+specifier|private
+name|void
+name|validatePortVal
+parameter_list|(
+name|int
+name|portVal
+parameter_list|)
+block|{
 name|Assert
 operator|.
 name|assertTrue
 argument_list|(
 literal|"Port is not updated"
 argument_list|,
-name|port
+name|portVal
 operator|>
 literal|0
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Port is default "
+operator|+
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_PORT
+argument_list|,
+name|portVal
+operator|!=
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_PORT
 argument_list|)
 expr_stmt|;
 block|}
@@ -892,15 +940,9 @@ argument_list|(
 literal|"0.0.0.0:0"
 argument_list|)
 decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+name|validatePortVal
 argument_list|(
-literal|"Port is not updated"
-argument_list|,
 name|port
-operator|>
-literal|0
 argument_list|)
 expr_stmt|;
 block|}

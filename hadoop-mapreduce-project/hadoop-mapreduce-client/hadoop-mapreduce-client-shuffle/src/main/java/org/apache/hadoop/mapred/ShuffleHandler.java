@@ -2105,15 +2105,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|init (Configuration conf)
-specifier|public
-specifier|synchronized
+DECL|method|serviceInit (Configuration conf)
+specifier|protected
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|manageOsCache
 operator|=
@@ -2200,7 +2201,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|init
+name|serviceInit
 argument_list|(
 operator|new
 name|Configuration
@@ -2213,12 +2214,13 @@ block|}
 comment|// TODO change AbstractService to throw InterruptedException
 annotation|@
 name|Override
-DECL|method|start ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStart ()
+specifier|protected
 name|void
-name|start
+name|serviceStart
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|Configuration
 name|conf
@@ -2351,7 +2353,7 @@ argument_list|)
 expr_stmt|;
 name|super
 operator|.
-name|start
+name|serviceStart
 argument_list|()
 expr_stmt|;
 name|sslFileBufferSize
@@ -2368,12 +2370,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|stop ()
-specifier|public
-specifier|synchronized
+DECL|method|serviceStop ()
+specifier|protected
 name|void
-name|stop
+name|serviceStop
 parameter_list|()
+throws|throws
+name|Exception
 block|{
 name|accepted
 operator|.
@@ -2389,6 +2392,13 @@ operator|.
 name|SECONDS
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|selector
+operator|!=
+literal|null
+condition|)
+block|{
 name|ServerBootstrap
 name|bootstrap
 init|=
@@ -2403,14 +2413,23 @@ operator|.
 name|releaseExternalResources
 argument_list|()
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|pipelineFact
+operator|!=
+literal|null
+condition|)
+block|{
 name|pipelineFact
 operator|.
 name|destroy
 argument_list|()
 expr_stmt|;
+block|}
 name|super
 operator|.
-name|stop
+name|serviceStop
 argument_list|()
 expr_stmt|;
 block|}
