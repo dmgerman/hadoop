@@ -4403,7 +4403,10 @@ name|dfs
 operator|.
 name|getSnapshotDiffReport
 argument_list|(
+name|getPathName
+argument_list|(
 name|snapshotDir
+argument_list|)
 argument_list|,
 name|fromSnapshot
 argument_list|,

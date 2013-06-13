@@ -1086,20 +1086,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|UnresolvedLinkException
 import|;
 end_import
@@ -9728,12 +9714,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    * @see ClientProtocol#getSnapshotDiffReport(String, String, String)    */
-DECL|method|getSnapshotDiffReport (Path snapshotDir, String fromSnapshot, String toSnapshot)
+DECL|method|getSnapshotDiffReport (String snapshotDir, String fromSnapshot, String toSnapshot)
 specifier|public
 name|SnapshotDiffReport
 name|getSnapshotDiffReport
 parameter_list|(
-name|Path
+name|String
 name|snapshotDir
 parameter_list|,
 name|String
@@ -9756,9 +9742,6 @@ operator|.
 name|getSnapshotDiffReport
 argument_list|(
 name|snapshotDir
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|fromSnapshot
 argument_list|,
