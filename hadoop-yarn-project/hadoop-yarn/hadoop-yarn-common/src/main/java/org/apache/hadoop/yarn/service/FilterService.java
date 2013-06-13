@@ -167,10 +167,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|register (ServiceStateChangeListener listener)
+DECL|method|registerServiceListener (ServiceStateChangeListener listener)
 specifier|public
 name|void
-name|register
+name|registerServiceListener
 parameter_list|(
 name|ServiceStateChangeListener
 name|listener
@@ -178,7 +178,7 @@ parameter_list|)
 block|{
 name|service
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -186,10 +186,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|unregister (ServiceStateChangeListener listener)
+DECL|method|unregisterServiceListener (ServiceStateChangeListener listener)
 specifier|public
 name|void
-name|unregister
+name|unregisterServiceListener
 parameter_list|(
 name|ServiceStateChangeListener
 name|listener
@@ -197,7 +197,7 @@ parameter_list|)
 block|{
 name|service
 operator|.
-name|unregister
+name|unregisterServiceListener
 argument_list|(
 name|listener
 argument_list|)

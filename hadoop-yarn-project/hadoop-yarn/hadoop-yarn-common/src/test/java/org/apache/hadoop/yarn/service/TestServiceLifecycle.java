@@ -771,7 +771,7 @@ argument_list|)
 decl_stmt|;
 name|svc
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 operator|new
 name|LoggingStateChangeListener
@@ -978,7 +978,7 @@ argument_list|()
 decl_stmt|;
 name|svc
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1069,7 +1069,7 @@ argument_list|()
 decl_stmt|;
 name|svc
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1092,7 +1092,7 @@ argument_list|)
 expr_stmt|;
 name|svc
 operator|.
-name|unregister
+name|unregisterServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1167,14 +1167,14 @@ argument_list|()
 decl_stmt|;
 name|svc
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
 expr_stmt|;
 name|svc
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|l2
 argument_list|)
@@ -1204,7 +1204,7 @@ argument_list|)
 expr_stmt|;
 name|svc
 operator|.
-name|unregister
+name|unregisterServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1275,7 +1275,7 @@ argument_list|)
 expr_stmt|;
 name|service
 operator|.
-name|unregister
+name|unregisterServiceListener
 argument_list|(
 name|this
 argument_list|)
@@ -1353,7 +1353,7 @@ argument_list|)
 expr_stmt|;
 name|svc
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1457,7 +1457,7 @@ argument_list|()
 decl_stmt|;
 name|service
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1582,7 +1582,7 @@ argument_list|()
 decl_stmt|;
 name|service
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1644,7 +1644,7 @@ argument_list|()
 decl_stmt|;
 name|service
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)
@@ -1703,7 +1703,7 @@ argument_list|()
 decl_stmt|;
 name|service
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|listener
 argument_list|)

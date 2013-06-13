@@ -725,7 +725,7 @@ argument_list|()
 expr_stmt|;
 name|service
 operator|.
-name|register
+name|registerServiceListener
 argument_list|(
 name|this
 argument_list|)
@@ -806,7 +806,7 @@ condition|)
 block|{
 name|service
 operator|.
-name|unregister
+name|unregisterServiceListener
 argument_list|(
 name|this
 argument_list|)

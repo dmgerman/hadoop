@@ -978,10 +978,10 @@ name|Exception
 block|{    }
 annotation|@
 name|Override
-DECL|method|register (ServiceStateChangeListener l)
+DECL|method|registerServiceListener (ServiceStateChangeListener l)
 specifier|public
 name|void
-name|register
+name|registerServiceListener
 parameter_list|(
 name|ServiceStateChangeListener
 name|l
@@ -997,10 +997,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|unregister (ServiceStateChangeListener l)
+DECL|method|unregisterServiceListener (ServiceStateChangeListener l)
 specifier|public
 name|void
-name|unregister
+name|unregisterServiceListener
 parameter_list|(
 name|ServiceStateChangeListener
 name|l
