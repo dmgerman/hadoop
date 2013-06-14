@@ -238,7 +238,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerExitStatus
+name|records
+operator|.
+name|ApplicationId
 import|;
 end_import
 
@@ -256,7 +258,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
+name|ContainerExitStatus
 import|;
 end_import
 
