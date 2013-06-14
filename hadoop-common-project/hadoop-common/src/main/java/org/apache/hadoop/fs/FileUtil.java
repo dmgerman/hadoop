@@ -3762,8 +3762,6 @@ name|perm
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 return|return
 name|chmod
