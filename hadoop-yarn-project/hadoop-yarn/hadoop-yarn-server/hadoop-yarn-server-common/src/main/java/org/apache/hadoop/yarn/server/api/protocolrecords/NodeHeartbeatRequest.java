@@ -81,14 +81,27 @@ name|NodeStatus
 name|status
 parameter_list|)
 function_decl|;
-DECL|method|getLastKnownMasterKey ()
+DECL|method|getLastKnownContainerTokenMasterKey ()
 name|MasterKey
-name|getLastKnownMasterKey
+name|getLastKnownContainerTokenMasterKey
 parameter_list|()
 function_decl|;
-DECL|method|setLastKnownMasterKey (MasterKey secretKey)
+DECL|method|setLastKnownContainerTokenMasterKey (MasterKey secretKey)
 name|void
-name|setLastKnownMasterKey
+name|setLastKnownContainerTokenMasterKey
+parameter_list|(
+name|MasterKey
+name|secretKey
+parameter_list|)
+function_decl|;
+DECL|method|getLastKnownNMTokenMasterKey ()
+name|MasterKey
+name|getLastKnownNMTokenMasterKey
+parameter_list|()
+function_decl|;
+DECL|method|setLastKnownNMTokenMasterKey (MasterKey secretKey)
+name|void
+name|setLastKnownNMTokenMasterKey
 parameter_list|(
 name|MasterKey
 name|secretKey

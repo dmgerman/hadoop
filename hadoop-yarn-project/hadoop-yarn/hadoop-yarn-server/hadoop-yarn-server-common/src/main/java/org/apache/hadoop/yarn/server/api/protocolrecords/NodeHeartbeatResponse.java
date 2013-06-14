@@ -156,14 +156,27 @@ name|NodeAction
 name|action
 parameter_list|)
 function_decl|;
-DECL|method|getMasterKey ()
+DECL|method|getContainerTokenMasterKey ()
 name|MasterKey
-name|getMasterKey
+name|getContainerTokenMasterKey
 parameter_list|()
 function_decl|;
-DECL|method|setMasterKey (MasterKey secretKey)
+DECL|method|setContainerTokenMasterKey (MasterKey secretKey)
 name|void
-name|setMasterKey
+name|setContainerTokenMasterKey
+parameter_list|(
+name|MasterKey
+name|secretKey
+parameter_list|)
+function_decl|;
+DECL|method|getNMTokenMasterKey ()
+name|MasterKey
+name|getNMTokenMasterKey
+parameter_list|()
+function_decl|;
+DECL|method|setNMTokenMasterKey (MasterKey secretKey)
+name|void
+name|setNMTokenMasterKey
 parameter_list|(
 name|MasterKey
 name|secretKey

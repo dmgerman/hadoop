@@ -220,7 +220,7 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|newNodeHeartbeatResponse (int responseId, NodeAction action, List<ContainerId> containersToCleanUp, List<ApplicationId> applicationsToCleanUp, MasterKey masterKey, long nextHeartbeatInterval)
+DECL|method|newNodeHeartbeatResponse (int responseId, NodeAction action, List<ContainerId> containersToCleanUp, List<ApplicationId> applicationsToCleanUp, MasterKey containerTokenMasterKey, MasterKey nmTokenMasterKey, long nextHeartbeatInterval)
 specifier|public
 specifier|static
 name|NodeHeartbeatResponse
@@ -245,7 +245,10 @@ argument_list|>
 name|applicationsToCleanUp
 parameter_list|,
 name|MasterKey
-name|masterKey
+name|containerTokenMasterKey
+parameter_list|,
+name|MasterKey
+name|nmTokenMasterKey
 parameter_list|,
 name|long
 name|nextHeartbeatInterval
@@ -279,9 +282,16 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setMasterKey
+name|setContainerTokenMasterKey
 argument_list|(
-name|masterKey
+name|containerTokenMasterKey
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setNMTokenMasterKey
+argument_list|(
+name|nmTokenMasterKey
 argument_list|)
 expr_stmt|;
 name|response

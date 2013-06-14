@@ -542,6 +542,26 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|security
+operator|.
+name|NMTokenSecretManagerInNM
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|webapp
 operator|.
 name|WebServer
@@ -863,13 +883,16 @@ name|exec
 argument_list|)
 return|;
 block|}
-DECL|method|createNMContext (NMContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|createNMContext ( NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager)
 specifier|protected
 name|NMContext
 name|createNMContext
 parameter_list|(
 name|NMContainerTokenSecretManager
 name|containerTokenSecretManager
+parameter_list|,
+name|NMTokenSecretManagerInNM
+name|nmTokenSecretManager
 parameter_list|)
 block|{
 return|return
@@ -877,6 +900,8 @@ operator|new
 name|NMContext
 argument_list|(
 name|containerTokenSecretManager
+argument_list|,
+name|nmTokenSecretManager
 argument_list|)
 return|;
 block|}
@@ -938,6 +963,13 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|NMTokenSecretManagerInNM
+name|nmTokenSecretManager
+init|=
+operator|new
+name|NMTokenSecretManagerInNM
+argument_list|()
+decl_stmt|;
 name|this
 operator|.
 name|context
@@ -945,6 +977,8 @@ operator|=
 name|createNMContext
 argument_list|(
 name|containerTokenSecretManager
+argument_list|,
+name|nmTokenSecretManager
 argument_list|)
 expr_stmt|;
 name|this
@@ -1685,6 +1719,12 @@ specifier|final
 name|NMContainerTokenSecretManager
 name|containerTokenSecretManager
 decl_stmt|;
+DECL|field|nmTokenSecretManager
+specifier|private
+specifier|final
+name|NMTokenSecretManagerInNM
+name|nmTokenSecretManager
+decl_stmt|;
 DECL|field|containerManager
 specifier|private
 name|ContainerManager
@@ -1715,12 +1755,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager)
+DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager)
 specifier|public
 name|NMContext
 parameter_list|(
 name|NMContainerTokenSecretManager
 name|containerTokenSecretManager
+parameter_list|,
+name|NMTokenSecretManagerInNM
+name|nmTokenSecretManager
 parameter_list|)
 block|{
 name|this
@@ -1728,6 +1771,12 @@ operator|.
 name|containerTokenSecretManager
 operator|=
 name|containerTokenSecretManager
+expr_stmt|;
+name|this
+operator|.
+name|nmTokenSecretManager
+operator|=
+name|nmTokenSecretManager
 expr_stmt|;
 name|this
 operator|.
@@ -1842,6 +1891,20 @@ return|return
 name|this
 operator|.
 name|containerTokenSecretManager
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNMTokenSecretManager ()
+specifier|public
+name|NMTokenSecretManagerInNM
+name|getNMTokenSecretManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nmTokenSecretManager
 return|;
 block|}
 annotation|@

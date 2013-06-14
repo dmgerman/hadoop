@@ -683,6 +683,8 @@ operator|.
 name|NMContext
 argument_list|(
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|ResourceView
@@ -964,6 +966,8 @@ name|NodeManager
 operator|.
 name|NMContext
 argument_list|(
+literal|null
+argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;

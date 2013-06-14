@@ -184,6 +184,26 @@ name|NMContainerTokenSecretManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|security
+operator|.
+name|NMTokenSecretManagerInNM
+import|;
+end_import
+
 begin_comment
 comment|/**  * Context interface for sharing information across components in the  * NodeManager.  */
 end_comment
@@ -229,6 +249,11 @@ function_decl|;
 DECL|method|getContainerTokenSecretManager ()
 name|NMContainerTokenSecretManager
 name|getContainerTokenSecretManager
+parameter_list|()
+function_decl|;
+DECL|method|getNMTokenSecretManager ()
+name|NMTokenSecretManagerInNM
+name|getNMTokenSecretManager
 parameter_list|()
 function_decl|;
 DECL|method|getNodeHealthStatus ()

@@ -316,6 +316,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|NMTokenSecretManagerInRM
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -442,13 +462,19 @@ specifier|final
 name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 decl_stmt|;
+DECL|field|nmTokenSecretManager
+specifier|private
+specifier|final
+name|NMTokenSecretManagerInRM
+name|nmTokenSecretManager
+decl_stmt|;
 DECL|field|clientToAMTokenSecretManager
 specifier|private
 specifier|final
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
 decl_stmt|;
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -475,6 +501,9 @@ name|appTokenSecretManager
 parameter_list|,
 name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
+parameter_list|,
+name|NMTokenSecretManagerInRM
+name|nmTokenSecretManager
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
 name|clientTokenSecretManager
@@ -530,6 +559,12 @@ name|containerTokenSecretManager
 expr_stmt|;
 name|this
 operator|.
+name|nmTokenSecretManager
+operator|=
+name|nmTokenSecretManager
+expr_stmt|;
+name|this
+operator|.
 name|clientToAMTokenSecretManager
 operator|=
 name|clientTokenSecretManager
@@ -538,7 +573,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -563,6 +598,9 @@ parameter_list|,
 name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
 parameter_list|,
+name|NMTokenSecretManagerInRM
+name|nmTokenSecretManager
+parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
 name|clientTokenSecretManager
 parameter_list|)
@@ -584,6 +622,8 @@ argument_list|,
 name|appTokenSecretManager
 argument_list|,
 name|containerTokenSecretManager
+argument_list|,
+name|nmTokenSecretManager
 argument_list|,
 name|clientTokenSecretManager
 argument_list|)
@@ -793,6 +833,20 @@ return|return
 name|this
 operator|.
 name|containerTokenSecretManager
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNMTokenSecretManager ()
+specifier|public
+name|NMTokenSecretManagerInRM
+name|getNMTokenSecretManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|nmTokenSecretManager
 return|;
 block|}
 annotation|@

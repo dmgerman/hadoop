@@ -266,6 +266,26 @@ name|RMContainerTokenSecretManager
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|NMTokenSecretManagerInRM
+import|;
+end_import
+
 begin_comment
 comment|/**  * Context of the ResourceManager.  */
 end_comment
@@ -344,6 +364,11 @@ function_decl|;
 DECL|method|getContainerTokenSecretManager ()
 name|RMContainerTokenSecretManager
 name|getContainerTokenSecretManager
+parameter_list|()
+function_decl|;
+DECL|method|getNMTokenSecretManager ()
+name|NMTokenSecretManagerInRM
+name|getNMTokenSecretManager
 parameter_list|()
 function_decl|;
 DECL|method|getClientToAMTokenSecretManager ()

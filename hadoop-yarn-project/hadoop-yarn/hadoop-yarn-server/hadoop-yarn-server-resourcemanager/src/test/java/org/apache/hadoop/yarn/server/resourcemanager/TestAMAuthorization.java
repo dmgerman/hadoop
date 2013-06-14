@@ -1177,7 +1177,7 @@ operator|&&
 name|waitCount
 operator|++
 operator|<
-literal|20
+literal|40
 condition|)
 block|{
 name|LOG
@@ -1599,7 +1599,7 @@ operator|&&
 name|waitCount
 operator|++
 operator|<
-literal|20
+literal|40
 condition|)
 block|{
 name|LOG

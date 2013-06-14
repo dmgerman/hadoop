@@ -1671,7 +1671,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|5000
+literal|50000
 argument_list|)
 DECL|method|testReconnectedNode ()
 specifier|public
@@ -1915,7 +1915,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|5000
+literal|50000
 argument_list|)
 DECL|method|testHeadroom ()
 specifier|public

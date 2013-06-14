@@ -507,7 +507,14 @@ argument_list|)
 expr_stmt|;
 name|response
 operator|.
-name|setMasterKey
+name|setContainerTokenMasterKey
+argument_list|(
+name|masterKey
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setNMTokenMasterKey
 argument_list|(
 name|masterKey
 argument_list|)
@@ -564,6 +571,8 @@ operator|.
 name|newNodeHeartbeatResponse
 argument_list|(
 name|heartBeatID
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|,
