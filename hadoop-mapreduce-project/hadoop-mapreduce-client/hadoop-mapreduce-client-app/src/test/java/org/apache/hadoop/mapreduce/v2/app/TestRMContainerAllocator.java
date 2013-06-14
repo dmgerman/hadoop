@@ -9131,25 +9131,6 @@ parameter_list|()
 block|{     }
 annotation|@
 name|Override
-DECL|method|getMinContainerCapability ()
-specifier|protected
-name|Resource
-name|getMinContainerCapability
-parameter_list|()
-block|{
-return|return
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
-literal|1024
-argument_list|,
-literal|1
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|getMaxContainerCapability ()
 specifier|protected
 name|Resource
