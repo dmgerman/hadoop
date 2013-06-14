@@ -40,18 +40,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|fail
 import|;
 end_import
@@ -129,24 +117,6 @@ operator|.
 name|net
 operator|.
 name|NetworkTopology
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeHealthStatus
 import|;
 end_import
 

@@ -98,7 +98,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeHealthStatus
+name|NodeId
 import|;
 end_import
 
@@ -112,11 +112,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
 name|api
 operator|.
 name|records
 operator|.
-name|NodeId
+name|NodeHealthStatus
 import|;
 end_import
 

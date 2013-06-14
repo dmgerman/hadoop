@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records
+DECL|package|org.apache.hadoop.yarn.server.api.records
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
+operator|.
+name|server
 operator|.
 name|api
 operator|.
@@ -97,6 +99,24 @@ operator|.
 name|api
 operator|.
 name|ClientRMProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeReport
 import|;
 end_import
 
