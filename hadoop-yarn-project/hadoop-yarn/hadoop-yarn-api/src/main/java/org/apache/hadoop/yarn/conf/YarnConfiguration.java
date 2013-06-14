@@ -1856,7 +1856,7 @@ name|DEFAULT_NM_VMEM_PMEM_RATIO
 init|=
 literal|2.1f
 decl_stmt|;
-comment|/** Number of Physical CPU Cores which can be allocated for containers.*/
+comment|/** Number of Virtual CPU Cores which can be allocated for containers.*/
 DECL|field|NM_VCORES
 specifier|public
 specifier|static
@@ -1866,7 +1866,7 @@ name|NM_VCORES
 init|=
 name|NM_PREFIX
 operator|+
-literal|"resource.cpu-cores"
+literal|"resource.cpu-vcores"
 decl_stmt|;
 DECL|field|DEFAULT_NM_VCORES
 specifier|public
@@ -1876,27 +1876,6 @@ name|int
 name|DEFAULT_NM_VCORES
 init|=
 literal|8
-decl_stmt|;
-comment|/** Conversion ratio for physical cores to virtual cores. */
-DECL|field|NM_VCORES_PCORES_RATIO
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|NM_VCORES_PCORES_RATIO
-init|=
-name|NM_PREFIX
-operator|+
-literal|"vcores-pcores-ratio"
-decl_stmt|;
-DECL|field|DEFAULT_NM_VCORES_PCORES_RATIO
-specifier|public
-specifier|static
-specifier|final
-name|float
-name|DEFAULT_NM_VCORES_PCORES_RATIO
-init|=
-literal|2.0f
 decl_stmt|;
 comment|/** NM Webapp address.**/
 DECL|field|NM_WEBAPP_ADDRESS

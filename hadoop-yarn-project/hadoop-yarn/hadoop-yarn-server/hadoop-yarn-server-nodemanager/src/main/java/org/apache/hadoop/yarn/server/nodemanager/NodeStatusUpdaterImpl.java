@@ -1019,7 +1019,7 @@ name|vMemToPMem
 argument_list|)
 decl_stmt|;
 name|int
-name|cpuCores
+name|virtualCores
 init|=
 name|conf
 operator|.
@@ -1032,37 +1032,6 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_NM_VCORES
-argument_list|)
-decl_stmt|;
-name|float
-name|vCoresToPCores
-init|=
-name|conf
-operator|.
-name|getFloat
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_VCORES_PCORES_RATIO
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_NM_VCORES_PCORES_RATIO
-argument_list|)
-decl_stmt|;
-name|int
-name|virtualCores
-init|=
-operator|(
-name|int
-operator|)
-name|Math
-operator|.
-name|ceil
-argument_list|(
-name|cpuCores
-operator|*
-name|vCoresToPCores
 argument_list|)
 decl_stmt|;
 name|this
@@ -1146,10 +1115,6 @@ operator|+
 literal|" virtual-memory="
 operator|+
 name|virtualMemoryMb
-operator|+
-literal|" physical-cores="
-operator|+
-name|cpuCores
 operator|+
 literal|" virtual-cores="
 operator|+
