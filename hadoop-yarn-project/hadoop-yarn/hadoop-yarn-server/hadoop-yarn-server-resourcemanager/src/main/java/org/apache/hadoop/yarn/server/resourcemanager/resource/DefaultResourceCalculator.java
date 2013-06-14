@@ -197,7 +197,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource)
+DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource, Resource stepFactor)
 specifier|public
 name|Resource
 name|normalize
@@ -210,6 +210,9 @@ name|minimumResource
 parameter_list|,
 name|Resource
 name|maximumResource
+parameter_list|,
+name|Resource
+name|stepFactor
 parameter_list|)
 block|{
 name|int
@@ -236,7 +239,7 @@ name|getMemory
 argument_list|()
 argument_list|)
 argument_list|,
-name|minimumResource
+name|stepFactor
 operator|.
 name|getMemory
 argument_list|()
@@ -259,7 +262,37 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|roundUp (Resource r, Resource minimumResource)
+DECL|method|normalize (Resource r, Resource minimumResource, Resource maximumResource)
+specifier|public
+name|Resource
+name|normalize
+parameter_list|(
+name|Resource
+name|r
+parameter_list|,
+name|Resource
+name|minimumResource
+parameter_list|,
+name|Resource
+name|maximumResource
+parameter_list|)
+block|{
+return|return
+name|normalize
+argument_list|(
+name|r
+argument_list|,
+name|minimumResource
+argument_list|,
+name|maximumResource
+argument_list|,
+name|minimumResource
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|roundUp (Resource r, Resource stepFactor)
 specifier|public
 name|Resource
 name|roundUp
@@ -268,7 +301,7 @@ name|Resource
 name|r
 parameter_list|,
 name|Resource
-name|minimumResource
+name|stepFactor
 parameter_list|)
 block|{
 return|return
@@ -283,7 +316,7 @@ operator|.
 name|getMemory
 argument_list|()
 argument_list|,
-name|minimumResource
+name|stepFactor
 operator|.
 name|getMemory
 argument_list|()

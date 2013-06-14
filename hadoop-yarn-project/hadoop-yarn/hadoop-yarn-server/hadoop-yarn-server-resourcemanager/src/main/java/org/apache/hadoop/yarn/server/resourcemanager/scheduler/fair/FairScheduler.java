@@ -1255,6 +1255,11 @@ specifier|private
 name|Resource
 name|maximumAllocation
 decl_stmt|;
+DECL|field|incrAllocation
+specifier|private
+name|Resource
+name|incrAllocation
+decl_stmt|;
 DECL|field|queueMgr
 specifier|private
 name|QueueManager
@@ -3397,6 +3402,16 @@ return|return
 name|minimumAllocation
 return|;
 block|}
+DECL|method|getIncrementResourceCapability ()
+specifier|public
+name|Resource
+name|getIncrementResourceCapability
+parameter_list|()
+block|{
+return|return
+name|incrAllocation
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|getMaximumResourceCapability ()
@@ -4336,6 +4351,8 @@ argument_list|,
 name|minimumAllocation
 argument_list|,
 name|maximumAllocation
+argument_list|,
+name|incrAllocation
 argument_list|)
 expr_stmt|;
 comment|// Release containers
@@ -5596,6 +5613,15 @@ operator|.
 name|conf
 operator|.
 name|getMaximumAllocation
+argument_list|()
+expr_stmt|;
+name|incrAllocation
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getIncrementAllocation
 argument_list|()
 expr_stmt|;
 name|userAsDefaultQueue
