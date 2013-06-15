@@ -285,6 +285,13 @@ name|LOCAL_DIRS
 argument_list|(
 literal|"LOCAL_DIRS"
 argument_list|)
+block|,
+comment|/**      * $LOG_DIRS      * Final, exported by NodeManager and non-modifiable by users.      * Comma separate list of directories that the container should use for      * logging.      */
+DECL|enumConstant|LOG_DIRS
+name|LOG_DIRS
+argument_list|(
+literal|"LOG_DIRS"
+argument_list|)
 block|;
 DECL|field|variable
 specifier|private
