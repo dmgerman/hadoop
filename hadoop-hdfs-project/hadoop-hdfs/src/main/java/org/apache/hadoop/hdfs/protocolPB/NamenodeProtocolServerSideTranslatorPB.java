@@ -1127,10 +1127,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|register (RpcController unused, RegisterRequestProto request)
+DECL|method|registerSubordinateNamenode ( RpcController unused, RegisterRequestProto request)
 specifier|public
 name|RegisterResponseProto
-name|register
+name|registerSubordinateNamenode
 parameter_list|(
 name|RpcController
 name|unused
@@ -1150,7 +1150,7 @@ name|reg
 operator|=
 name|impl
 operator|.
-name|register
+name|registerSubordinateNamenode
 argument_list|(
 name|PBHelper
 operator|.

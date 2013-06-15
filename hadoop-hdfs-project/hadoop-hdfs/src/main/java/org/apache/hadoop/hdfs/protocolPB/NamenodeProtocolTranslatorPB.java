@@ -1118,10 +1118,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|register (NamenodeRegistration registration)
+DECL|method|registerSubordinateNamenode ( NamenodeRegistration registration)
 specifier|public
 name|NamenodeRegistration
-name|register
+name|registerSubordinateNamenode
 parameter_list|(
 name|NamenodeRegistration
 name|registration
@@ -1159,7 +1159,7 @@ name|convert
 argument_list|(
 name|rpcProxy
 operator|.
-name|register
+name|registerSubordinateNamenode
 argument_list|(
 name|NULL_CONTROLLER
 argument_list|,

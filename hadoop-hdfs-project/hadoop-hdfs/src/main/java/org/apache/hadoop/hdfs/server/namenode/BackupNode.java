@@ -1908,7 +1908,7 @@ name|nnReg
 operator|=
 name|namenode
 operator|.
-name|register
+name|registerSubordinateNamenode
 argument_list|(
 name|getRegistration
 argument_list|()

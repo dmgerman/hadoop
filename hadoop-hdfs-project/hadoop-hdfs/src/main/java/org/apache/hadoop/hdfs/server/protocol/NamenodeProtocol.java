@@ -285,10 +285,10 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**     * Register a subordinate name-node like backup node.    *    * @return  {@link NamenodeRegistration} of the node,    *          which this node has just registered with.    */
-DECL|method|register (NamenodeRegistration registration)
+DECL|method|registerSubordinateNamenode ( NamenodeRegistration registration)
 specifier|public
 name|NamenodeRegistration
-name|register
+name|registerSubordinateNamenode
 parameter_list|(
 name|NamenodeRegistration
 name|registration
