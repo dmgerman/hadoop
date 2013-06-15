@@ -171,7 +171,7 @@ argument_list|)
 expr_stmt|;
 name|request
 operator|.
-name|setFinishApplicationStatus
+name|setFinalApplicationStatus
 argument_list|(
 name|finalAppStatus
 argument_list|)
@@ -233,19 +233,19 @@ name|FinalApplicationStatus
 name|getFinalApplicationStatus
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<em>finish state</em> of the<code>ApplicationMaster</code>    * @param finishState<em>finish state</em> of the<code>ApplicationMaster</code>    */
+comment|/**    * Set the<em>final state</em> of the<code>ApplicationMaster</code>    * @param finalState<em>final state</em> of the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setFinishApplicationStatus (FinalApplicationStatus finishState)
+DECL|method|setFinalApplicationStatus (FinalApplicationStatus finalState)
 specifier|public
 specifier|abstract
 name|void
-name|setFinishApplicationStatus
+name|setFinalApplicationStatus
 parameter_list|(
 name|FinalApplicationStatus
-name|finishState
+name|finalState
 parameter_list|)
 function_decl|;
 comment|/**    * Get<em>diagnostic information</em> on application failure.    * @return<em>diagnostic information</em> on application failure    */

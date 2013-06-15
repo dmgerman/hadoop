@@ -342,7 +342,7 @@ name|StringBuilder
 name|getDiagnostics
 parameter_list|()
 function_decl|;
-comment|/**    * The final finish state of the AM when unregistering as in    * {@link FinishApplicationMasterRequest#setFinishApplicationStatus(FinalApplicationStatus)}.    * @return the final finish state of the AM as set in    * {@link FinishApplicationMasterRequest#setFinishApplicationStatus(FinalApplicationStatus)}.    */
+comment|/**    * The final finish state of the AM when unregistering as in    * {@link FinishApplicationMasterRequest#setFinalApplicationStatus(FinalApplicationStatus)}.    * @return the final finish state of the AM as set in    * {@link FinishApplicationMasterRequest#setFinalApplicationStatus(FinalApplicationStatus)}.    */
 DECL|method|getFinalApplicationStatus ()
 name|FinalApplicationStatus
 name|getFinalApplicationStatus

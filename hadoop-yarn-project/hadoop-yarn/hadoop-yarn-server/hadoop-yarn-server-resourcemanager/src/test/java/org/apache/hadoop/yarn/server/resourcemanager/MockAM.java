@@ -1057,7 +1057,7 @@ argument_list|)
 expr_stmt|;
 name|req
 operator|.
-name|setFinishApplicationStatus
+name|setFinalApplicationStatus
 argument_list|(
 name|FinalApplicationStatus
 operator|.

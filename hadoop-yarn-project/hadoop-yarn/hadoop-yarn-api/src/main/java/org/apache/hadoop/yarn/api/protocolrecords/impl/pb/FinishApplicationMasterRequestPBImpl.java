@@ -711,13 +711,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setFinishApplicationStatus (FinalApplicationStatus finishState)
+DECL|method|setFinalApplicationStatus (FinalApplicationStatus finalState)
 specifier|public
 name|void
-name|setFinishApplicationStatus
+name|setFinalApplicationStatus
 parameter_list|(
 name|FinalApplicationStatus
-name|finishState
+name|finalState
 parameter_list|)
 block|{
 name|maybeInitBuilder
@@ -725,7 +725,7 @@ argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|finishState
+name|finalState
 operator|==
 literal|null
 condition|)
@@ -743,7 +743,7 @@ name|setFinalApplicationStatus
 argument_list|(
 name|convertToProtoFormat
 argument_list|(
-name|finishState
+name|finalState
 argument_list|)
 argument_list|)
 expr_stmt|;

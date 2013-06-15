@@ -756,7 +756,7 @@ argument_list|)
 expr_stmt|;
 name|finishAMRequest
 operator|.
-name|setFinishApplicationStatus
+name|setFinalApplicationStatus
 argument_list|(
 name|FinalApplicationStatus
 operator|.
