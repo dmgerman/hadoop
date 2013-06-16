@@ -1445,6 +1445,17 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// On every node manager register we will be clearing NMToken keys if
+comment|// present for any running application.
+name|this
+operator|.
+name|nmTokenSecretManager
+operator|.
+name|removeNodeKey
+argument_list|(
+name|nodeId
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|nmLivelinessMonitor

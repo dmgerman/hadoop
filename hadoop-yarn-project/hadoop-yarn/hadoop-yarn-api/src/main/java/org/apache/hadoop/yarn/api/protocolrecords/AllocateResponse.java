@@ -194,6 +194,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NMToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeReport
 import|;
 end_import
@@ -244,24 +262,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|Records
@@ -283,7 +283,7 @@ specifier|abstract
 class|class
 name|AllocateResponse
 block|{
-DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt)
+DECL|method|newInstance (int responseId, List<ContainerStatus> completedContainers, List<Container> allocatedContainers, List<NodeReport> updatedNodes, Resource availResources, AMCommand command, int numClusterNodes, PreemptionMessage preempt, List<NMToken> nmTokens)
 specifier|public
 specifier|static
 name|AllocateResponse
@@ -321,6 +321,12 @@ name|numClusterNodes
 parameter_list|,
 name|PreemptionMessage
 name|preempt
+parameter_list|,
+name|List
+argument_list|<
+name|NMToken
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 name|AllocateResponse
@@ -389,6 +395,13 @@ operator|.
 name|setPreemptionMessage
 argument_list|(
 name|preempt
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setNMTokens
+argument_list|(
+name|nmTokens
 argument_list|)
 expr_stmt|;
 return|return
@@ -627,7 +640,7 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setNMTokens (List<Token> nmTokens)
+DECL|method|setNMTokens (List<NMToken> nmTokens)
 specifier|public
 specifier|abstract
 name|void
@@ -635,7 +648,7 @@ name|setNMTokens
 parameter_list|(
 name|List
 argument_list|<
-name|Token
+name|NMToken
 argument_list|>
 name|nmTokens
 parameter_list|)
@@ -650,7 +663,7 @@ specifier|public
 specifier|abstract
 name|List
 argument_list|<
-name|Token
+name|NMToken
 argument_list|>
 name|getNMTokens
 parameter_list|()

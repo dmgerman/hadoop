@@ -24,16 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|security
 operator|.
 name|SecureRandom
@@ -79,16 +69,6 @@ operator|.
 name|locks
 operator|.
 name|ReentrantReadWriteLock
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|crypto
-operator|.
-name|SecretKey
 import|;
 end_import
 
@@ -215,22 +195,6 @@ operator|.
 name|records
 operator|.
 name|MasterKey
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Records
 import|;
 end_import
 

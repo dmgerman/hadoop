@@ -346,6 +346,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NMToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeReport
 import|;
 end_import
@@ -572,6 +590,8 @@ argument_list|>
 argument_list|()
 argument_list|,
 name|allocated1
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -588,6 +608,8 @@ argument_list|<
 name|Container
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -609,6 +631,8 @@ argument_list|<
 name|Container
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|TestCallbackHandler
@@ -1265,6 +1289,8 @@ argument_list|<
 name|Container
 argument_list|>
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|rebootResponse
@@ -1392,7 +1418,7 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createAllocateResponse ( List<ContainerStatus> completed, List<Container> allocated)
+DECL|method|createAllocateResponse ( List<ContainerStatus> completed, List<Container> allocated, List<NMToken> nmTokens)
 specifier|private
 name|AllocateResponse
 name|createAllocateResponse
@@ -1408,6 +1434,12 @@ argument_list|<
 name|Container
 argument_list|>
 name|allocated
+parameter_list|,
+name|List
+argument_list|<
+name|NMToken
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 name|AllocateResponse
@@ -1437,6 +1469,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|null
+argument_list|,
+name|nmTokens
 argument_list|)
 decl_stmt|;
 return|return
