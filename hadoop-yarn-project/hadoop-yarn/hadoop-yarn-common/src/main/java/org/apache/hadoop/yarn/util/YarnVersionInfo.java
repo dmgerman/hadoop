@@ -89,7 +89,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class finds the package info for Yarn and the YarnVersionAnnotation  * information.  */
+comment|/**  * This class finds the package info for Yarn.  */
 end_comment
 
 begin_class
