@@ -982,7 +982,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|RMTokenSelector
+name|RMDelegationTokenSelector
 import|;
 end_import
 
@@ -1380,11 +1380,11 @@ operator|)
 condition|)
 block|{
 comment|/*        * note that get delegation token was called. Again this is hack for oozie        * to make sure we add history server delegation tokens to the credentials        */
-name|RMTokenSelector
+name|RMDelegationTokenSelector
 name|tokenSelector
 init|=
 operator|new
-name|RMTokenSelector
+name|RMDelegationTokenSelector
 argument_list|()
 decl_stmt|;
 name|Text

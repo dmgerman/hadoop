@@ -317,7 +317,7 @@ name|value
 parameter_list|()
 block|{
 return|return
-name|RMTokenSelector
+name|RMDelegationTokenSelector
 operator|.
 name|class
 return|;

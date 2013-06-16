@@ -121,10 +121,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|RMTokenSelector
+DECL|class|RMDelegationTokenSelector
 specifier|public
 class|class
-name|RMTokenSelector
+name|RMDelegationTokenSelector
 implements|implements
 name|TokenSelector
 argument_list|<
@@ -142,7 +142,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|RMTokenSelector
+name|RMDelegationTokenSelector
 operator|.
 name|class
 argument_list|)
