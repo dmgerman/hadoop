@@ -283,7 +283,7 @@ parameter_list|>
 extends|extends
 name|Service
 block|{
-comment|/**    * Object to represent container request for resources.    * Resources may be localized to nodes and racks.    * Resources may be assigned priorities.    * All getters return unmodifiable collections.    * Can ask for multiple containers of a given type.    */
+comment|/**    * Object to represent container request for resources. Scheduler    * documentation should be consulted for the specifics of how the parameters    * are honored.    * All getters return immutable values.    *     * @param capability    *    The {@link Resource} to be requested for each container.    * @param nodes    *    Any hosts to request that the containers are placed on.    * @param racks    *    Any racks to request that the containers are placed on. The racks    *    corresponding to any hosts requested will be automatically added to    *    this list.    * @param priority    *    The priority at which to request the containers. Higher priorities have    *    lower numerical values.    * @param containerCount    *    The number of containers to request.    */
 DECL|class|ContainerRequest
 specifier|public
 specifier|static
@@ -295,17 +295,17 @@ specifier|final
 name|Resource
 name|capability
 decl_stmt|;
-DECL|field|hosts
+DECL|field|nodes
 specifier|final
-name|ImmutableList
+name|List
 argument_list|<
 name|String
 argument_list|>
-name|hosts
+name|nodes
 decl_stmt|;
 DECL|field|racks
 specifier|final
-name|ImmutableList
+name|List
 argument_list|<
 name|String
 argument_list|>
@@ -321,7 +321,7 @@ specifier|final
 name|int
 name|containerCount
 decl_stmt|;
-DECL|method|ContainerRequest (Resource capability, String[] hosts, String[] racks, Priority priority, int containerCount)
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, int containerCount)
 specifier|public
 name|ContainerRequest
 parameter_list|(
@@ -330,7 +330,7 @@ name|capability
 parameter_list|,
 name|String
 index|[]
-name|hosts
+name|nodes
 parameter_list|,
 name|String
 index|[]
@@ -351,10 +351,10 @@ name|capability
 expr_stmt|;
 name|this
 operator|.
-name|hosts
+name|nodes
 operator|=
 operator|(
-name|hosts
+name|nodes
 operator|!=
 literal|null
 condition|?
@@ -362,7 +362,7 @@ name|ImmutableList
 operator|.
 name|copyOf
 argument_list|(
-name|hosts
+name|nodes
 argument_list|)
 else|:
 literal|null
@@ -410,17 +410,17 @@ return|return
 name|capability
 return|;
 block|}
-DECL|method|getHosts ()
+DECL|method|getNodes ()
 specifier|public
 name|List
 argument_list|<
 name|String
 argument_list|>
-name|getHosts
+name|getNodes
 parameter_list|()
 block|{
 return|return
-name|hosts
+name|nodes
 return|;
 block|}
 DECL|method|getRacks ()
@@ -537,7 +537,7 @@ name|StoredContainerRequest
 extends|extends
 name|ContainerRequest
 block|{
-DECL|method|StoredContainerRequest (Resource capability, String[] hosts, String[] racks, Priority priority)
+DECL|method|StoredContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority)
 specifier|public
 name|StoredContainerRequest
 parameter_list|(
@@ -546,7 +546,7 @@ name|capability
 parameter_list|,
 name|String
 index|[]
-name|hosts
+name|nodes
 parameter_list|,
 name|String
 index|[]
@@ -560,7 +560,7 @@ name|super
 argument_list|(
 name|capability
 argument_list|,
-name|hosts
+name|nodes
 argument_list|,
 name|racks
 argument_list|,
