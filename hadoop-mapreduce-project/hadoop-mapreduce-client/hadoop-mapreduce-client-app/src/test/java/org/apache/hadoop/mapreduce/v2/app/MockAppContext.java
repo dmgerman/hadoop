@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -225,6 +235,13 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+decl_stmt|;
+DECL|field|blacklistedNodes
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|blacklistedNodes
 decl_stmt|;
 DECL|method|MockAppContext (int appid)
 specifier|public
@@ -571,6 +588,40 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getBlacklistedNodes ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlacklistedNodes
+parameter_list|()
+block|{
+return|return
+name|blacklistedNodes
+return|;
+block|}
+DECL|method|setBlacklistedNodes (Set<String> blacklistedNodes)
+specifier|public
+name|void
+name|setBlacklistedNodes
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|blacklistedNodes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blacklistedNodes
+operator|=
+name|blacklistedNodes
+expr_stmt|;
 block|}
 block|}
 end_class

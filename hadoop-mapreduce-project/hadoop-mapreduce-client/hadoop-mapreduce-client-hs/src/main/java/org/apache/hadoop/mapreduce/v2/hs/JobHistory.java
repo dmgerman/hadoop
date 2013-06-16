@@ -56,6 +56,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|ScheduledThreadPoolExecutor
@@ -1474,6 +1484,22 @@ DECL|method|getClusterInfo ()
 specifier|public
 name|ClusterInfo
 name|getClusterInfo
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+comment|// TODO AppContext - Not Required
+annotation|@
+name|Override
+DECL|method|getBlacklistedNodes ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlacklistedNodes
 parameter_list|()
 block|{
 return|return

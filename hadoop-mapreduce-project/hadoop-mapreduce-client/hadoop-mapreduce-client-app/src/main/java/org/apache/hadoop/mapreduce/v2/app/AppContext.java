@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -239,6 +249,14 @@ function_decl|;
 DECL|method|getClusterInfo ()
 name|ClusterInfo
 name|getClusterInfo
+parameter_list|()
+function_decl|;
+DECL|method|getBlacklistedNodes ()
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlacklistedNodes
 parameter_list|()
 function_decl|;
 block|}

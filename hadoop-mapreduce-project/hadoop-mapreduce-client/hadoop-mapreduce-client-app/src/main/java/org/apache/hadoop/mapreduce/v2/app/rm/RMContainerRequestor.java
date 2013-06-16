@@ -2498,6 +2498,19 @@ return|return
 name|newReq
 return|;
 block|}
+DECL|method|getBlacklistedNodes ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlacklistedNodes
+parameter_list|()
+block|{
+return|return
+name|blacklistedNodes
+return|;
+block|}
 block|}
 end_class
 
