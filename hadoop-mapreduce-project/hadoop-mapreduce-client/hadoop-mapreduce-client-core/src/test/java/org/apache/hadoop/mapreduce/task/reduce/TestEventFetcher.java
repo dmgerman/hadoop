@@ -279,6 +279,8 @@ name|testConsecutiveFetch
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 specifier|final
 name|int
@@ -677,17 +679,11 @@ literal|3
 argument_list|)
 argument_list|)
 operator|.
-name|addKnownMapOutput
+name|resolve
 argument_list|(
-name|anyString
-argument_list|()
-argument_list|,
-name|anyString
-argument_list|()
-argument_list|,
 name|any
 argument_list|(
-name|TaskAttemptID
+name|TaskCompletionEvent
 operator|.
 name|class
 argument_list|)
@@ -875,6 +871,8 @@ name|getMapCompletionEvents
 parameter_list|()
 throws|throws
 name|IOException
+throws|,
+name|InterruptedException
 block|{
 return|return
 name|super

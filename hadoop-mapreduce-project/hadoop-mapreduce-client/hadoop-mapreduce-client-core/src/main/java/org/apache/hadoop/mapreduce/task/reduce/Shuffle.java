@@ -310,7 +310,7 @@ name|umbilical
 decl_stmt|;
 DECL|field|scheduler
 specifier|private
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|K
 argument_list|,
@@ -455,7 +455,7 @@ expr_stmt|;
 name|scheduler
 operator|=
 operator|new
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|K
 argument_list|,
@@ -465,6 +465,8 @@ argument_list|(
 name|jobConf
 argument_list|,
 name|taskStatus
+argument_list|,
+name|reduceId
 argument_list|,
 name|this
 argument_list|,

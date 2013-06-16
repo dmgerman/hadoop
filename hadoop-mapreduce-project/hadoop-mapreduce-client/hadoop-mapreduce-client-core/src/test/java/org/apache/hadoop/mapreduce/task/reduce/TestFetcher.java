@@ -349,7 +349,7 @@ specifier|private
 name|HttpURLConnection
 name|connection
 decl_stmt|;
-DECL|method|FakeFetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManagerImpl<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey jobTokenSecret, HttpURLConnection connection)
+DECL|method|FakeFetcher (JobConf job, TaskAttemptID reduceId, ShuffleSchedulerImpl<K,V> scheduler, MergeManagerImpl<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey jobTokenSecret, HttpURLConnection connection)
 specifier|public
 name|FakeFetcher
 parameter_list|(
@@ -359,7 +359,7 @@ parameter_list|,
 name|TaskAttemptID
 name|reduceId
 parameter_list|,
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|K
 argument_list|,
@@ -495,7 +495,7 @@ argument_list|(
 literal|"attempt_0_1_r_1_1"
 argument_list|)
 decl_stmt|;
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|Text
 argument_list|,
@@ -505,7 +505,7 @@ name|ss
 init|=
 name|mock
 argument_list|(
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 operator|.
 name|class
 argument_list|)
@@ -894,7 +894,7 @@ argument_list|(
 literal|"attempt_0_1_r_1_1"
 argument_list|)
 decl_stmt|;
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|Text
 argument_list|,
@@ -904,7 +904,7 @@ name|ss
 init|=
 name|mock
 argument_list|(
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 operator|.
 name|class
 argument_list|)
@@ -1346,7 +1346,7 @@ argument_list|(
 literal|"attempt_0_1_r_1_1"
 argument_list|)
 decl_stmt|;
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|Text
 argument_list|,
@@ -1356,7 +1356,7 @@ name|ss
 init|=
 name|mock
 argument_list|(
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 operator|.
 name|class
 argument_list|)
@@ -1870,7 +1870,7 @@ argument_list|(
 literal|"attempt_0_1_r_1_1"
 argument_list|)
 decl_stmt|;
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|Text
 argument_list|,
@@ -1880,7 +1880,7 @@ name|ss
 init|=
 name|mock
 argument_list|(
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 operator|.
 name|class
 argument_list|)
@@ -2552,7 +2552,7 @@ argument_list|(
 literal|"attempt_0_1_r_1_1"
 argument_list|)
 decl_stmt|;
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|Text
 argument_list|,
@@ -2562,7 +2562,7 @@ name|ss
 init|=
 name|mock
 argument_list|(
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 operator|.
 name|class
 argument_list|)

@@ -503,7 +503,7 @@ decl_stmt|;
 DECL|field|scheduler
 specifier|private
 specifier|final
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|K
 argument_list|,
@@ -581,7 +581,7 @@ specifier|static
 name|SSLFactory
 name|sslFactory
 decl_stmt|;
-DECL|method|Fetcher (JobConf job, TaskAttemptID reduceId, ShuffleScheduler<K,V> scheduler, MergeManager<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey shuffleKey)
+DECL|method|Fetcher (JobConf job, TaskAttemptID reduceId, ShuffleSchedulerImpl<K,V> scheduler, MergeManager<K,V> merger, Reporter reporter, ShuffleClientMetrics metrics, ExceptionReporter exceptionReporter, SecretKey shuffleKey)
 specifier|public
 name|Fetcher
 parameter_list|(
@@ -591,7 +591,7 @@ parameter_list|,
 name|TaskAttemptID
 name|reduceId
 parameter_list|,
-name|ShuffleScheduler
+name|ShuffleSchedulerImpl
 argument_list|<
 name|K
 argument_list|,
