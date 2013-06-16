@@ -750,15 +750,6 @@ name|Resource
 operator|.
 name|newInstance
 argument_list|(
-literal|1024
-argument_list|,
-literal|1
-argument_list|)
-argument_list|,
-name|Resource
-operator|.
-name|newInstance
-argument_list|(
 literal|10240
 argument_list|,
 literal|1

@@ -56,11 +56,6 @@ specifier|public
 class|class
 name|ClusterInfo
 block|{
-DECL|field|minContainerCapability
-specifier|private
-name|Resource
-name|minContainerCapability
-decl_stmt|;
 DECL|field|maxContainerCapability
 specifier|private
 name|Resource
@@ -73,19 +68,6 @@ parameter_list|()
 block|{
 name|this
 operator|.
-name|minContainerCapability
-operator|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
-name|Resource
-operator|.
-name|class
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
 name|maxContainerCapability
 operator|=
 name|Records
@@ -98,54 +80,19 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ClusterInfo (Resource minCapability, Resource maxCapability)
+DECL|method|ClusterInfo (Resource maxCapability)
 specifier|public
 name|ClusterInfo
 parameter_list|(
 name|Resource
-name|minCapability
-parameter_list|,
-name|Resource
 name|maxCapability
 parameter_list|)
 block|{
-name|this
-operator|.
-name|minContainerCapability
-operator|=
-name|minCapability
-expr_stmt|;
 name|this
 operator|.
 name|maxContainerCapability
 operator|=
 name|maxCapability
-expr_stmt|;
-block|}
-DECL|method|getMinContainerCapability ()
-specifier|public
-name|Resource
-name|getMinContainerCapability
-parameter_list|()
-block|{
-return|return
-name|minContainerCapability
-return|;
-block|}
-DECL|method|setMinContainerCapability (Resource minContainerCapability)
-specifier|public
-name|void
-name|setMinContainerCapability
-parameter_list|(
-name|Resource
-name|minContainerCapability
-parameter_list|)
-block|{
-name|this
-operator|.
-name|minContainerCapability
-operator|=
-name|minContainerCapability
 expr_stmt|;
 block|}
 DECL|method|getMaxContainerCapability ()

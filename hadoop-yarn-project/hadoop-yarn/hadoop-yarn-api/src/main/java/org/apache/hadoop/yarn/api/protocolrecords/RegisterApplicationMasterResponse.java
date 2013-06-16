@@ -212,13 +212,6 @@ argument_list|)
 decl_stmt|;
 name|response
 operator|.
-name|setMinimumResourceCapability
-argument_list|(
-name|minCapability
-argument_list|)
-expr_stmt|;
-name|response
-operator|.
 name|setMaximumResourceCapability
 argument_list|(
 name|maxCapability
@@ -235,32 +228,6 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Get the minimum capability for any {@link Resource} allocated by the     *<code>ResourceManager</code> in the cluster.    * @return minimum capability of allocated resources in the cluster    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getMinimumResourceCapability ()
-specifier|public
-specifier|abstract
-name|Resource
-name|getMinimumResourceCapability
-parameter_list|()
-function_decl|;
-annotation|@
-name|Private
-annotation|@
-name|Unstable
-DECL|method|setMinimumResourceCapability (Resource capability)
-specifier|public
-specifier|abstract
-name|void
-name|setMinimumResourceCapability
-parameter_list|(
-name|Resource
-name|capability
-parameter_list|)
-function_decl|;
 comment|/**    * Get the maximum capability for any {@link Resource} allocated by the     *<code>ResourceManager</code> in the cluster.    * @return maximum capability of allocated resources in the cluster    */
 annotation|@
 name|Public

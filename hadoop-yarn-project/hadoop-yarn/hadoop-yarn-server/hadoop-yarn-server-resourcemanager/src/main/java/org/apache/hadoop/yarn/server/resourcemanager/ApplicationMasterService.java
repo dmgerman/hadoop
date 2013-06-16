@@ -1706,16 +1706,6 @@ argument_list|)
 decl_stmt|;
 name|response
 operator|.
-name|setMinimumResourceCapability
-argument_list|(
-name|rScheduler
-operator|.
-name|getMinimumResourceCapability
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|response
-operator|.
 name|setMaximumResourceCapability
 argument_list|(
 name|rScheduler
