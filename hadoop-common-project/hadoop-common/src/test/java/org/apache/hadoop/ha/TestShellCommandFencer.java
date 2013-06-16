@@ -179,7 +179,7 @@ argument_list|,
 operator|new
 name|InetSocketAddress
 argument_list|(
-literal|"host"
+literal|"dummyhost"
 argument_list|,
 literal|1234
 argument_list|)
@@ -617,7 +617,7 @@ name|tryFence
 argument_list|(
 name|TEST_TARGET
 argument_list|,
-literal|"echo $target_host $target_port $target_address"
+literal|"echo $target_host $target_port"
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -635,7 +635,7 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo $ta...t_address: host 1234 host:1234"
+literal|"echo $ta...rget_port: dummyhost 1234"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -648,7 +648,7 @@ name|tryFence
 argument_list|(
 name|TEST_TARGET
 argument_list|,
-literal|"echo %target_host% %target_port% %target_address%"
+literal|"echo %target_host% %target_port%"
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -666,7 +666,7 @@ name|Mockito
 operator|.
 name|endsWith
 argument_list|(
-literal|"echo %ta..._address%: host 1234 host:1234"
+literal|"echo %ta...get_port%: dummyhost 1234"
 argument_list|)
 argument_list|)
 expr_stmt|;
