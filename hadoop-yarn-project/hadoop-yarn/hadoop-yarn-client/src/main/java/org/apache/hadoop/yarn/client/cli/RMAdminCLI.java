@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client.cli
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|cli
 package|;
 end_package
 
@@ -349,10 +351,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|RMAdmin
+DECL|class|RMAdminCLI
 specifier|public
 class|class
-name|RMAdmin
+name|RMAdminCLI
 extends|extends
 name|Configured
 implements|implements
@@ -371,18 +373,18 @@ argument_list|(
 literal|null
 argument_list|)
 decl_stmt|;
-DECL|method|RMAdmin ()
+DECL|method|RMAdminCLI ()
 specifier|public
-name|RMAdmin
+name|RMAdminCLI
 parameter_list|()
 block|{
 name|super
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|RMAdmin (Configuration conf)
+DECL|method|RMAdminCLI (Configuration conf)
 specifier|public
-name|RMAdmin
+name|RMAdminCLI
 parameter_list|(
 name|Configuration
 name|conf
@@ -2003,7 +2005,7 @@ operator|.
 name|run
 argument_list|(
 operator|new
-name|RMAdmin
+name|RMAdminCLI
 argument_list|()
 argument_list|,
 name|args
