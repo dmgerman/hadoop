@@ -72,6 +72,38 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -212,11 +244,11 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|Service
+name|AbstractService
 import|;
 end_import
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -225,15 +257,81 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|interface|NMClient
+DECL|class|NMClient
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|NMClient
 extends|extends
-name|Service
+name|AbstractService
 block|{
+comment|/**    * Create a new instance of NMClient.    */
+annotation|@
+name|Public
+DECL|method|createNMClient ()
+specifier|public
+specifier|static
+name|NMClient
+name|createNMClient
+parameter_list|()
+block|{
+name|NMClient
+name|client
+init|=
+operator|new
+name|NMClientImpl
+argument_list|()
+decl_stmt|;
+return|return
+name|client
+return|;
+block|}
+comment|/**    * Create a new instance of NMClient.    */
+annotation|@
+name|Public
+DECL|method|createNMClient (String name)
+specifier|public
+specifier|static
+name|NMClient
+name|createNMClient
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|NMClient
+name|client
+init|=
+operator|new
+name|NMClientImpl
+argument_list|(
+name|name
+argument_list|)
+decl_stmt|;
+return|return
+name|client
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|NMClient (String name)
+specifier|protected
+name|NMClient
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    *<p>Start an allocated container.</p>    *    *<p>The<code>ApplicationMaster</code> or other applications that use the    * client must provide the details of the allocated container, including the    * Id, the assigned node's Id and the token via {@link Container}. In    * addition, the AM needs to provide the {@link ContainerLaunchContext} as    * well.</p>    *    * @param container the allocated container    * @param containerLaunchContext the context information needed by the    *<code>NodeManager</code> to launch the    *                               container    * @return a map between the auxiliary service names and their outputs    * @throws YarnException    * @throws IOException    */
 DECL|method|startContainer (Container container, ContainerLaunchContext containerLaunchContext)
+specifier|public
+specifier|abstract
 name|Map
 argument_list|<
 name|String
@@ -255,6 +353,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @throws YarnException    * @throws IOException    */
 DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, Token containerToken)
+specifier|public
+specifier|abstract
 name|void
 name|stopContainer
 parameter_list|(
@@ -274,6 +374,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @return the status of a container    * @throws YarnException    * @throws IOException    */
 DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, Token containerToken)
+specifier|public
+specifier|abstract
 name|ContainerStatus
 name|getContainerStatus
 parameter_list|(
@@ -293,6 +395,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>Set whether the containers that are started by this client, and are    * still running should be stopped when the client stops. By default, the    * feature should be enabled.</p>    *    * @param enabled whether the feature is enabled or not    */
 DECL|method|cleanupRunningContainersOnStop (boolean enabled)
+specifier|public
+specifier|abstract
 name|void
 name|cleanupRunningContainersOnStop
 parameter_list|(
@@ -301,7 +405,7 @@ name|enabled
 parameter_list|)
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

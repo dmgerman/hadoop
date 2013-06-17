@@ -658,7 +658,7 @@ name|yarn
 operator|.
 name|client
 operator|.
-name|YarnClientImpl
+name|YarnClient
 import|;
 end_import
 
@@ -743,8 +743,6 @@ DECL|class|Client
 specifier|public
 class|class
 name|Client
-extends|extends
-name|YarnClientImpl
 block|{
 DECL|field|LOG
 specifier|private
@@ -767,6 +765,11 @@ DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
+decl_stmt|;
+DECL|field|yarnClient
+specifier|private
+name|YarnClient
+name|yarnClient
 decl_stmt|;
 comment|// Application master specific info to register a new Application with RM/ASM
 DECL|field|appName
@@ -1096,15 +1099,21 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|super
-argument_list|()
-expr_stmt|;
 name|this
 operator|.
 name|conf
 operator|=
 name|conf
 expr_stmt|;
+name|yarnClient
+operator|=
+name|YarnClient
+operator|.
+name|createYarnClient
+argument_list|()
+expr_stmt|;
+name|yarnClient
+operator|.
 name|init
 argument_list|(
 name|conf
@@ -1816,13 +1825,15 @@ argument_list|(
 literal|"Running Client"
 argument_list|)
 expr_stmt|;
+name|yarnClient
+operator|.
 name|start
 argument_list|()
 expr_stmt|;
 name|YarnClusterMetrics
 name|clusterMetrics
 init|=
-name|super
+name|yarnClient
 operator|.
 name|getYarnClusterMetrics
 argument_list|()
@@ -1847,7 +1858,7 @@ name|NodeReport
 argument_list|>
 name|clusterNodeReports
 init|=
-name|super
+name|yarnClient
 operator|.
 name|getNodeReports
 argument_list|()
@@ -1906,7 +1917,7 @@ block|}
 name|QueueInfo
 name|queueInfo
 init|=
-name|super
+name|yarnClient
 operator|.
 name|getQueueInfo
 argument_list|(
@@ -1969,7 +1980,7 @@ name|QueueUserACLInfo
 argument_list|>
 name|listAclInfo
 init|=
-name|super
+name|yarnClient
 operator|.
 name|getQueueAclsInfo
 argument_list|()
@@ -2020,7 +2031,7 @@ comment|// Get a new application id
 name|GetNewApplicationResponse
 name|newApp
 init|=
-name|super
+name|yarnClient
 operator|.
 name|getNewApplication
 argument_list|()
@@ -3159,7 +3170,7 @@ argument_list|(
 literal|"Submitting application to ASM"
 argument_list|)
 expr_stmt|;
-name|super
+name|yarnClient
 operator|.
 name|submitApplication
 argument_list|(
@@ -3225,7 +3236,7 @@ comment|// Get application report for the appId we are interested in
 name|ApplicationReport
 name|report
 init|=
-name|super
+name|yarnClient
 operator|.
 name|getApplicationReport
 argument_list|(
@@ -3491,7 +3502,7 @@ comment|// the same time.
 comment|// If yes, can we kill a particular attempt only?
 comment|// Response can be ignored as it is non-null on success or
 comment|// throws an exception in case of failures
-name|super
+name|yarnClient
 operator|.
 name|killApplication
 argument_list|(

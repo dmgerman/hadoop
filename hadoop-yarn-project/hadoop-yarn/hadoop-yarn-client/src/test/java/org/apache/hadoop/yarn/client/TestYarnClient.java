@@ -451,8 +451,9 @@ expr_stmt|;
 name|YarnClient
 name|client
 init|=
-operator|new
-name|YarnClientImpl
+name|YarnClient
+operator|.
+name|createYarnClient
 argument_list|()
 decl_stmt|;
 name|client

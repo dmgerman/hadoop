@@ -736,8 +736,12 @@ expr_stmt|;
 comment|// start rm client
 name|yarnClient
 operator|=
-operator|new
+operator|(
 name|YarnClientImpl
+operator|)
+name|YarnClient
+operator|.
+name|createYarnClient
 argument_list|()
 expr_stmt|;
 name|yarnClient
@@ -973,11 +977,18 @@ block|}
 comment|// start am rm client
 name|rmClient
 operator|=
-operator|new
+operator|(
 name|AMRMClientImpl
 argument_list|<
 name|ContainerRequest
 argument_list|>
+operator|)
+name|AMRMClient
+operator|.
+expr|<
+name|ContainerRequest
+operator|>
+name|createAMRMClient
 argument_list|(
 name|attemptId
 argument_list|)
@@ -1014,8 +1025,12 @@ expr_stmt|;
 comment|// start am nm client
 name|nmClient
 operator|=
-operator|new
+operator|(
 name|NMClientImpl
+operator|)
+name|NMClient
+operator|.
+name|createNMClient
 argument_list|()
 expr_stmt|;
 name|nmClient

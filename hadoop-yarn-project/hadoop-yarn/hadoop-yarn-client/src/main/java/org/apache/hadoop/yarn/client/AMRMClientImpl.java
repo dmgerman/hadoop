@@ -668,22 +668,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
-operator|.
-name|AbstractService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|RackResolver
@@ -698,9 +682,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|base
+name|annotations
 operator|.
-name|Joiner
+name|VisibleForTesting
 import|;
 end_import
 
@@ -712,9 +696,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|annotations
+name|base
 operator|.
-name|VisibleForTesting
+name|Joiner
 import|;
 end_import
 
@@ -735,8 +719,6 @@ extends|extends
 name|ContainerRequest
 parameter_list|>
 extends|extends
-name|AbstractService
-implements|implements
 name|AMRMClient
 argument_list|<
 name|T

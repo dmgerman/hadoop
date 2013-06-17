@@ -32,6 +32,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|List
@@ -49,6 +59,38 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
 import|;
 end_import
 
@@ -270,11 +312,11 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|Service
+name|AbstractService
 import|;
 end_import
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -283,15 +325,112 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|interface|YarnClient
+DECL|class|YarnClient
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|YarnClient
 extends|extends
-name|Service
+name|AbstractService
 block|{
+comment|/**    * Create a new instance of YarnClient.    */
+annotation|@
+name|Public
+DECL|method|createYarnClient ()
+specifier|public
+specifier|static
+name|YarnClient
+name|createYarnClient
+parameter_list|()
+block|{
+name|YarnClient
+name|client
+init|=
+operator|new
+name|YarnClientImpl
+argument_list|()
+decl_stmt|;
+return|return
+name|client
+return|;
+block|}
+comment|/**    * Create a new instance of YarnClient.    */
+annotation|@
+name|Public
+DECL|method|createYarnClient (InetSocketAddress rmAddress)
+specifier|public
+specifier|static
+name|YarnClient
+name|createYarnClient
+parameter_list|(
+name|InetSocketAddress
+name|rmAddress
+parameter_list|)
+block|{
+name|YarnClient
+name|client
+init|=
+operator|new
+name|YarnClientImpl
+argument_list|(
+name|rmAddress
+argument_list|)
+decl_stmt|;
+return|return
+name|client
+return|;
+block|}
+comment|/**    * Create a new instance of YarnClient.    */
+annotation|@
+name|Public
+DECL|method|createYarnClient (String name, InetSocketAddress rmAddress)
+specifier|public
+specifier|static
+name|YarnClient
+name|createYarnClient
+parameter_list|(
+name|String
+name|name
+parameter_list|,
+name|InetSocketAddress
+name|rmAddress
+parameter_list|)
+block|{
+name|YarnClient
+name|client
+init|=
+operator|new
+name|YarnClientImpl
+argument_list|(
+name|name
+argument_list|,
+name|rmAddress
+argument_list|)
+decl_stmt|;
+return|return
+name|client
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|YarnClient (String name)
+specifier|protected
+name|YarnClient
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    *<p>    * Obtain a new {@link ApplicationId} for submitting new applications.    *</p>    *     *<p>    * Returns a response which contains {@link ApplicationId} that can be used to    * submit a new application. See    * {@link #submitApplication(ApplicationSubmissionContext)}.    *</p>    *     *<p>    * See {@link GetNewApplicationResponse} for other information that is    * returned.    *</p>    *     * @return response containing the new<code>ApplicationId</code> to be used    *         to submit an application    * @throws YarnException    * @throws IOException    */
 DECL|method|getNewApplication ()
+specifier|public
+specifier|abstract
 name|GetNewApplicationResponse
 name|getNewApplication
 parameter_list|()
@@ -302,6 +441,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call, such    * that it will not return {@link ApplicationId} until the submitted    * application has been submitted and accepted by the ResourceManager.    *</p>    *     * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnException    * @throws IOException    * @see #getNewApplication()    */
 DECL|method|submitApplication (ApplicationSubmissionContext appContext)
+specifier|public
+specifier|abstract
 name|ApplicationId
 name|submitApplication
 parameter_list|(
@@ -315,6 +456,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Kill an application identified by given ID.    *</p>    *     * @param applicationId    *          {@link ApplicationId} of the application that needs to be killed    * @throws YarnException    *           in case of errors or if YARN rejects the request due to    *           access-control restrictions.    * @throws IOException    * @see #getQueueAclsInfo()    */
 DECL|method|killApplication (ApplicationId applicationId)
+specifier|public
+specifier|abstract
 name|void
 name|killApplication
 parameter_list|(
@@ -328,6 +471,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get a report of the given Application.    *</p>    *     *<p>    * In secure mode,<code>YARN</code> verifies access to the application, queue    * etc. before accepting the request.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access then the following    * fields in the report will be set to stubbed values:    *<ul>    *<li>host - set to "N/A"</li>    *<li>RPC port - set to -1</li>    *<li>client token - set to "N/A"</li>    *<li>diagnostics - set to "N/A"</li>    *<li>tracking URL - set to "N/A"</li>    *<li>original tracking URL - set to "N/A"</li>    *<li>resource usage report - all values are -1</li>    *</ul>    *</p>    *     * @param appId    *          {@link ApplicationId} of the application that needs a report    * @return application report    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationReport (ApplicationId appId)
+specifier|public
+specifier|abstract
 name|ApplicationReport
 name|getApplicationReport
 parameter_list|(
@@ -341,6 +486,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get a report (ApplicationReport) of all Applications in the cluster.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *     * @return a list of reports of all running applications    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplicationList ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|ApplicationReport
@@ -354,6 +501,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get metrics ({@link YarnClusterMetrics}) about the cluster.    *</p>    *     * @return cluster metrics    * @throws YarnException    * @throws IOException    */
 DECL|method|getYarnClusterMetrics ()
+specifier|public
+specifier|abstract
 name|YarnClusterMetrics
 name|getYarnClusterMetrics
 parameter_list|()
@@ -364,6 +513,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get a report of all nodes ({@link NodeReport}) in the cluster.    *</p>    *     * @return A list of report of all nodes    * @throws YarnException    * @throws IOException    */
 DECL|method|getNodeReports ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|NodeReport
@@ -377,6 +528,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get a delegation token so as to be able to talk to YARN using those tokens.    *     * @param renewer    *          Address of the renewer who can renew these tokens when needed by    *          securely talking to YARN.    * @return a delegation token ({@link Token}) that can be used to    *         talk to YARN    * @throws YarnException    * @throws IOException    */
 DECL|method|getRMDelegationToken (Text renewer)
+specifier|public
+specifier|abstract
 name|Token
 name|getRMDelegationToken
 parameter_list|(
@@ -390,6 +543,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get information ({@link QueueInfo}) about a given<em>queue</em>.    *</p>    *     * @param queueName    *          Name of the queue whose information is needed    * @return queue information    * @throws YarnException    *           in case of errors or if YARN rejects the request due to    *           access-control restrictions.    * @throws IOException    */
 DECL|method|getQueueInfo (String queueName)
+specifier|public
+specifier|abstract
 name|QueueInfo
 name|getQueueInfo
 parameter_list|(
@@ -403,6 +558,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get information ({@link QueueInfo}) about all queues, recursively if there    * is a hierarchy    *</p>    *     * @return a list of queue-information for all queues    * @throws YarnException    * @throws IOException    */
 DECL|method|getAllQueues ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|QueueInfo
@@ -416,6 +573,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get information ({@link QueueInfo}) about top level queues.    *</p>    *     * @return a list of queue-information for all the top-level queues    * @throws YarnException    * @throws IOException    */
 DECL|method|getRootQueueInfos ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|QueueInfo
@@ -429,6 +588,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get information ({@link QueueInfo}) about all the immediate children queues    * of the given queue    *</p>    *     * @param parent    *          Name of the queue whose child-queues' information is needed    * @return a list of queue-information for all queues who are direct children    *         of the given parent queue.    * @throws YarnException    * @throws IOException    */
 DECL|method|getChildQueueInfos (String parent)
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|QueueInfo
@@ -445,6 +606,8 @@ name|IOException
 function_decl|;
 comment|/**    *<p>    * Get information about<em>acls</em> for<em>current user</em> on all the    * existing queues.    *</p>    *     * @return a list of queue acls ({@link QueueUserACLInfo}) for    *<em>current user</em>    * @throws YarnException    * @throws IOException    */
 DECL|method|getQueueAclsInfo ()
+specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|QueueUserACLInfo
@@ -457,7 +620,7 @@ throws|,
 name|IOException
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 

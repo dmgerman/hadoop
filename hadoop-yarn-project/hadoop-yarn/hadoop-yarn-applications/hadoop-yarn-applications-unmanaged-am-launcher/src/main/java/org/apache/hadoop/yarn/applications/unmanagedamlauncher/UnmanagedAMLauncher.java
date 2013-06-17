@@ -448,6 +448,22 @@ name|yarn
 operator|.
 name|client
 operator|.
+name|YarnClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
 name|YarnClientImpl
 import|;
 end_import
@@ -534,7 +550,7 @@ decl_stmt|;
 comment|// Handle to talk to the Resource Manager/Applications Manager
 DECL|field|rmClient
 specifier|private
-name|YarnClientImpl
+name|YarnClient
 name|rmClient
 decl_stmt|;
 comment|// Application master specific info to register a new Application with RM/ASM
@@ -962,8 +978,9 @@ argument_list|)
 decl_stmt|;
 name|rmClient
 operator|=
-operator|new
-name|YarnClientImpl
+name|YarnClient
+operator|.
+name|createYarnClient
 argument_list|()
 expr_stmt|;
 name|rmClient

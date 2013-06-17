@@ -762,7 +762,7 @@ literal|null
 decl_stmt|;
 DECL|field|yarnClient
 specifier|static
-name|YarnClientImpl
+name|YarnClient
 name|yarnClient
 init|=
 literal|null
@@ -875,8 +875,9 @@ expr_stmt|;
 comment|// start rm client
 name|yarnClient
 operator|=
-operator|new
-name|YarnClientImpl
+name|YarnClient
+operator|.
+name|createYarnClient
 argument_list|()
 expr_stmt|;
 name|yarnClient
@@ -1234,7 +1235,7 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|AMRMClientImpl
+name|AMRMClient
 argument_list|<
 name|StoredContainerRequest
 argument_list|>
@@ -1247,11 +1248,12 @@ block|{
 comment|// start am rm client
 name|amClient
 operator|=
-operator|new
-name|AMRMClientImpl
-argument_list|<
+name|AMRMClient
+operator|.
+expr|<
 name|StoredContainerRequest
-argument_list|>
+operator|>
+name|createAMRMClient
 argument_list|(
 name|attemptId
 argument_list|)
@@ -2193,11 +2195,18 @@ block|{
 comment|// start am rm client
 name|amClient
 operator|=
-operator|new
+operator|(
 name|AMRMClientImpl
 argument_list|<
 name|StoredContainerRequest
 argument_list|>
+operator|)
+name|AMRMClient
+operator|.
+expr|<
+name|StoredContainerRequest
+operator|>
+name|createAMRMClient
 argument_list|(
 name|attemptId
 argument_list|)
@@ -2996,7 +3005,7 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|AMRMClientImpl
+name|AMRMClient
 argument_list|<
 name|ContainerRequest
 argument_list|>
@@ -3009,11 +3018,12 @@ block|{
 comment|// start am rm client
 name|amClient
 operator|=
-operator|new
-name|AMRMClientImpl
-argument_list|<
+name|AMRMClient
+operator|.
+expr|<
 name|ContainerRequest
-argument_list|>
+operator|>
+name|createAMRMClient
 argument_list|(
 name|attemptId
 argument_list|)
@@ -3043,6 +3053,12 @@ argument_list|)
 expr_stmt|;
 name|testAllocation
 argument_list|(
+operator|(
+name|AMRMClientImpl
+argument_list|<
+name|ContainerRequest
+argument_list|>
+operator|)
 name|amClient
 argument_list|)
 expr_stmt|;

@@ -368,7 +368,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Token
+name|NodeId
 import|;
 end_import
 
@@ -386,7 +386,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
+name|Token
 import|;
 end_import
 
@@ -512,8 +512,6 @@ specifier|public
 class|class
 name|NMClientImpl
 extends|extends
-name|AbstractService
-implements|implements
 name|NMClient
 block|{
 DECL|field|LOG

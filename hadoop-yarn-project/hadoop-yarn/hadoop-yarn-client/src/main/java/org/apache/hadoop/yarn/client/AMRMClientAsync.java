@@ -613,7 +613,7 @@ name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|AMRMClientAsync (AMRMClient<T> client, int intervalMs, CallbackHandler callbackHandler)
-specifier|public
+specifier|protected
 name|AMRMClientAsync
 parameter_list|(
 name|AMRMClient

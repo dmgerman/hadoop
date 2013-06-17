@@ -173,8 +173,9 @@ argument_list|)
 expr_stmt|;
 name|client
 operator|=
-operator|new
-name|YarnClientImpl
+name|YarnClient
+operator|.
+name|createYarnClient
 argument_list|()
 expr_stmt|;
 name|client

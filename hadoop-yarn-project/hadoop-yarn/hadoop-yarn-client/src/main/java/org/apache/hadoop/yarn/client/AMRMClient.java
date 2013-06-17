@@ -84,6 +84,38 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -121,6 +153,24 @@ operator|.
 name|protocolrecords
 operator|.
 name|RegisterApplicationMasterResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationAttemptId
 import|;
 end_import
 
@@ -242,7 +292,7 @@ name|yarn
 operator|.
 name|service
 operator|.
-name|Service
+name|AbstractService
 import|;
 end_import
 
@@ -260,7 +310,7 @@ name|ImmutableList
 import|;
 end_import
 
-begin_interface
+begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
@@ -269,9 +319,10 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|interface|AMRMClient
+DECL|class|AMRMClient
 specifier|public
-interface|interface
+specifier|abstract
+class|class
 name|AMRMClient
 parameter_list|<
 name|T
@@ -281,8 +332,64 @@ operator|.
 name|ContainerRequest
 parameter_list|>
 extends|extends
-name|Service
+name|AbstractService
 block|{
+comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest(appAttemptId)    * }</pre>    * @param appAttemptId the appAttemptId associated with the AMRMClient    * @return the newly create AMRMClient instance.    */
+annotation|@
+name|Public
+DECL|method|createAMRMClient ( ApplicationAttemptId appAttemptId)
+specifier|public
+specifier|static
+parameter_list|<
+name|T
+extends|extends
+name|ContainerRequest
+parameter_list|>
+name|AMRMClient
+argument_list|<
+name|T
+argument_list|>
+name|createAMRMClient
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|)
+block|{
+name|AMRMClient
+argument_list|<
+name|T
+argument_list|>
+name|client
+init|=
+operator|new
+name|AMRMClientImpl
+argument_list|<
+name|T
+argument_list|>
+argument_list|(
+name|appAttemptId
+argument_list|)
+decl_stmt|;
+return|return
+name|client
+return|;
+block|}
+annotation|@
+name|Private
+DECL|method|AMRMClient (String name)
+specifier|protected
+name|AMRMClient
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Object to represent container request for resources. Scheduler    * documentation should be consulted for the specifics of how the parameters    * are honored.    * All getters return immutable values.    *     * @param capability    *    The {@link Resource} to be requested for each container.    * @param nodes    *    Any hosts to request that the containers are placed on.    * @param racks    *    Any racks to request that the containers are placed on. The racks    *    corresponding to any hosts requested will be automatically added to    *    this list.    * @param priority    *    The priority at which to request the containers. Higher priorities have    *    lower numerical values.    * @param containerCount    *    The number of containers to request.    */
 DECL|class|ContainerRequest
 specifier|public
@@ -573,6 +680,7 @@ block|}
 block|}
 comment|/**    * Register the application master. This must be called before any     * other interaction    * @param appHostName Name of the host on which master is running    * @param appHostPort Port master is listening on    * @param appTrackingUrl URL at which the master info can be seen    * @return<code>RegisterApplicationMasterResponse</code>    * @throws YarnException    * @throws IOException    */
 specifier|public
+specifier|abstract
 name|RegisterApplicationMasterResponse
 DECL|method|registerApplicationMaster (String appHostName, int appHostPort, String appTrackingUrl)
 name|registerApplicationMaster
@@ -594,6 +702,7 @@ function_decl|;
 comment|/**    * Request additional containers and receive new container allocations.    * Requests made via<code>addContainerRequest</code> are sent to the     *<code>ResourceManager</code>. New containers assigned to the master are     * retrieved. Status of completed containers and node health updates are     * also retrieved.    * This also doubles up as a heartbeat to the ResourceManager and must be     * made periodically.    * The call may not always return any new allocations of containers.    * App should not make concurrent allocate requests. May cause request loss.    * @param progressIndicator Indicates progress made by the master    * @return the response of the allocate request    * @throws YarnException    * @throws IOException    */
 DECL|method|allocate (float progressIndicator)
 specifier|public
+specifier|abstract
 name|AllocateResponse
 name|allocate
 parameter_list|(
@@ -608,6 +717,7 @@ function_decl|;
 comment|/**    * Unregister the application master. This must be called in the end.    * @param appStatus Success/Failure status of the master    * @param appMessage Diagnostics message on failure    * @param appTrackingUrl New URL to get master info    * @throws YarnException    * @throws IOException    */
 DECL|method|unregisterApplicationMaster (FinalApplicationStatus appStatus, String appMessage, String appTrackingUrl)
 specifier|public
+specifier|abstract
 name|void
 name|unregisterApplicationMaster
 parameter_list|(
@@ -628,6 +738,7 @@ function_decl|;
 comment|/**    * Request containers for resources before calling<code>allocate</code>    * @param req Resource request    */
 DECL|method|addContainerRequest (T req)
 specifier|public
+specifier|abstract
 name|void
 name|addContainerRequest
 parameter_list|(
@@ -638,6 +749,7 @@ function_decl|;
 comment|/**    * Remove previous container request. The previous container request may have     * already been sent to the ResourceManager. So even after the remove request     * the app must be prepared to receive an allocation for the previous request     * even after the remove request    * @param req Resource request    */
 DECL|method|removeContainerRequest (T req)
 specifier|public
+specifier|abstract
 name|void
 name|removeContainerRequest
 parameter_list|(
@@ -648,6 +760,7 @@ function_decl|;
 comment|/**    * Release containers assigned by the Resource Manager. If the app cannot use    * the container or wants to give up the container then it can release them.    * The app needs to make new requests for the released resource capability if    * it still needs it. eg. it released non-local resources    * @param containerId    */
 DECL|method|releaseAssignedContainer (ContainerId containerId)
 specifier|public
+specifier|abstract
 name|void
 name|releaseAssignedContainer
 parameter_list|(
@@ -658,6 +771,7 @@ function_decl|;
 comment|/**    * Get the currently available resources in the cluster.    * A valid value is available after a call to allocate has been made    * @return Currently available resources    */
 DECL|method|getClusterAvailableResources ()
 specifier|public
+specifier|abstract
 name|Resource
 name|getClusterAvailableResources
 parameter_list|()
@@ -665,6 +779,7 @@ function_decl|;
 comment|/**    * Get the current number of nodes in the cluster.    * A valid values is available after a call to allocate has been made    * @return Current number of nodes in the cluster    */
 DECL|method|getClusterNodeCount ()
 specifier|public
+specifier|abstract
 name|int
 name|getClusterNodeCount
 parameter_list|()
@@ -672,6 +787,7 @@ function_decl|;
 comment|/**    * Get outstanding<code>StoredContainerRequest</code>s matching the given     * parameters. These StoredContainerRequests should have been added via    *<code>addContainerRequest</code> earlier in the lifecycle. For performance,    * the AMRMClient may return its internal collection directly without creating     * a copy. Users should not perform mutable operations on the return value.    * Each collection in the list contains requests with identical     *<code>Resource</code> size that fit in the given capability. In a     * collection, requests will be returned in the same order as they were added.    * @return Collection of request matching the parameters    */
 DECL|method|getMatchingRequests ( Priority priority, String resourceName, Resource capability)
 specifier|public
+specifier|abstract
 name|List
 argument_list|<
 name|?
@@ -696,6 +812,7 @@ function_decl|;
 comment|/**    * It returns the NMToken received on allocate call. It will not communicate    * with RM to get NMTokens. On allocate call whenever we receive new token    * along with container AMRMClient will cache this NMToken per node manager.    * This map returned should be shared with any application which is    * communicating with NodeManager (ex. NMClient) using NMTokens. If a new    * NMToken is received for the same node manager then it will be replaced.     */
 DECL|method|getNMTokens ()
 specifier|public
+specifier|abstract
 name|ConcurrentMap
 argument_list|<
 name|String
@@ -706,7 +823,7 @@ name|getNMTokens
 parameter_list|()
 function_decl|;
 block|}
-end_interface
+end_class
 
 end_unit
 
