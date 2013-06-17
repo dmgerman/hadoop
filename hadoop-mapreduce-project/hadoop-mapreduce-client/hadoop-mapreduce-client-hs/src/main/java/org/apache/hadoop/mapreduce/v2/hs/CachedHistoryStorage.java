@@ -302,11 +302,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|service
 operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
+name|AbstractService
 import|;
 end_import
 
@@ -320,9 +318,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|exceptions
 operator|.
-name|AbstractService
+name|YarnRuntimeException
 import|;
 end_import
 

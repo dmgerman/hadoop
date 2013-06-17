@@ -4,15 +4,13 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.service
+DECL|package|org.apache.hadoop.service
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|yarn
 operator|.
 name|service
 package|;
@@ -171,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is the base implementation class for YARN services.  */
+comment|/**  * This is the base implementation class for services.  */
 end_comment
 
 begin_class

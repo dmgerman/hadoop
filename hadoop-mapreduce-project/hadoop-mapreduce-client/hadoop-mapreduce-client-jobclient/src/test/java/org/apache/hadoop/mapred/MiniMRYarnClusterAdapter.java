@@ -100,11 +100,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|service
 operator|.
-name|conf
+name|Service
 operator|.
-name|YarnConfiguration
+name|STATE
 import|;
 end_import
 
@@ -118,11 +118,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|conf
 operator|.
-name|Service
-operator|.
-name|STATE
+name|YarnConfiguration
 import|;
 end_import
 

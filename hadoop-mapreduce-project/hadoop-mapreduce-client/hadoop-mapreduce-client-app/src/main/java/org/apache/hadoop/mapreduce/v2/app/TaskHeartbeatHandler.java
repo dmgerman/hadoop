@@ -214,11 +214,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|service
 operator|.
-name|event
-operator|.
-name|EventHandler
+name|AbstractService
 import|;
 end_import
 
@@ -232,9 +230,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|event
 operator|.
-name|AbstractService
+name|EventHandler
 import|;
 end_import
 

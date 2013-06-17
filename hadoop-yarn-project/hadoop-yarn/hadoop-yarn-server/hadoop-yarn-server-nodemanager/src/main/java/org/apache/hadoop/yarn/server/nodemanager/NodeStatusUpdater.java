@@ -28,15 +28,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|service
 operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeStatus
+name|Service
 import|;
 end_import
 
@@ -50,9 +44,13 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|server
 operator|.
-name|Service
+name|api
+operator|.
+name|records
+operator|.
+name|NodeStatus
 import|;
 end_import
 

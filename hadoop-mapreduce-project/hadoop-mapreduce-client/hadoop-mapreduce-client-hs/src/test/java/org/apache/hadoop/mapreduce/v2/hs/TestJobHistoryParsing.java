@@ -882,13 +882,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|service
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerId
+name|Service
 import|;
 end_import
 
@@ -902,9 +898,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|service
+name|api
 operator|.
-name|Service
+name|records
+operator|.
+name|ContainerId
 import|;
 end_import
 

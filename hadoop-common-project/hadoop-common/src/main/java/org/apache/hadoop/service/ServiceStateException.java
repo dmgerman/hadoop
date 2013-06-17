@@ -4,15 +4,13 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  *  or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.service
+DECL|package|org.apache.hadoop.service
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|yarn
 operator|.
 name|service
 package|;
@@ -50,38 +48,6 @@ name|Evolving
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
-import|;
-end_import
-
 begin_comment
 comment|/**  * Exception that is raised on state change operations.  */
 end_comment
@@ -96,7 +62,7 @@ specifier|public
 class|class
 name|ServiceStateException
 extends|extends
-name|YarnRuntimeException
+name|RuntimeException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -154,7 +120,7 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Convert any exception into a {@link RuntimeException}.    * If the caught exception already is of that type -including    * a {@link YarnException} it is typecast to a {@link RuntimeException}    * and returned.    *    * All other exception types are wrapped in a new instance of    * ServiceStateException    * @param fault exception or throwable    * @return a ServiceStateException to rethrow    */
+comment|/**    * Convert any exception into a {@link RuntimeException}.    * If the caught exception is already of that type, it is typecast to a    * {@link RuntimeException} and returned.    *    * All other exception types are wrapped in a new instance of    * ServiceStateException    * @param fault exception or throwable    * @return a ServiceStateException to rethrow    */
 DECL|method|convert (Throwable fault)
 specifier|public
 specifier|static
@@ -190,7 +156,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Convert any exception into a {@link RuntimeException}.    * If the caught exception already is of that type -including    * a {@link YarnException} it is typecast to a {@link RuntimeException}    * and returned.    *    * All other exception types are wrapped in a new instance of    * ServiceStateException    * @param text text to use if a new exception is created    * @param fault exception or throwable    * @return a ServiceStateException to rethrow    */
+comment|/**    * Convert any exception into a {@link RuntimeException}.    * If the caught exception is already of that type, it is typecast to a    * {@link RuntimeException} and returned.    *    * All other exception types are wrapped in a new instance of    * ServiceStateException    * @param text text to use if a new exception is created    * @param fault exception or throwable    * @return a ServiceStateException to rethrow    */
 DECL|method|convert (String text, Throwable fault)
 specifier|public
 specifier|static

@@ -28,8 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
-operator|.
 name|service
 operator|.
 name|Service
