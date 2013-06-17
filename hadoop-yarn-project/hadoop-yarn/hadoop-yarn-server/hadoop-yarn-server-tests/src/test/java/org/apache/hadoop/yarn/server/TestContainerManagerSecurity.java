@@ -710,7 +710,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -828,7 +828,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 import|;
 end_import
 
@@ -2898,11 +2898,11 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 name|appTokenIdentifier
 init|=
 operator|new
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|(
 name|appAttempt
 operator|.
@@ -2910,11 +2910,11 @@ name|getAppAttemptId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 name|appTokenSecretManager
 init|=
 operator|new
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)
@@ -2925,7 +2925,7 @@ name|setMasterKey
 argument_list|(
 name|resourceManager
 operator|.
-name|getApplicationTokenSecretManager
+name|getAMRMTokenSecretManager
 argument_list|()
 operator|.
 name|getMasterKey
@@ -2934,14 +2934,14 @@ argument_list|)
 expr_stmt|;
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|appToken
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 argument_list|(
 name|appTokenIdentifier

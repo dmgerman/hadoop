@@ -1032,7 +1032,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 import|;
 end_import
 
@@ -1534,7 +1534,7 @@ argument_list|,
 literal|null
 argument_list|,
 operator|new
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)

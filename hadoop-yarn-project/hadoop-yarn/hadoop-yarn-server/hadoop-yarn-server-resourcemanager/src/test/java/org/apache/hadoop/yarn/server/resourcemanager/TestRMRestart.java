@@ -3634,7 +3634,7 @@ name|add
 argument_list|(
 name|attempt1
 operator|.
-name|getApplicationToken
+name|getAMRMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3755,7 +3755,7 @@ name|add
 argument_list|(
 name|loadedAttempt1
 operator|.
-name|getApplicationToken
+name|getAMRMToken
 argument_list|()
 argument_list|)
 expr_stmt|;

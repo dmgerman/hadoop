@@ -650,7 +650,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 import|;
 end_import
 

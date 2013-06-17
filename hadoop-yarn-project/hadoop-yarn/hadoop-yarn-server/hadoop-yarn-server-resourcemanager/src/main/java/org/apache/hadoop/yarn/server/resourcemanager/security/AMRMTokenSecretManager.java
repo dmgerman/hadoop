@@ -192,23 +192,23 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
 begin_comment
-comment|/**  * Application-tokens are per ApplicationAttempt. If users redistribute their  * tokens, it is their headache, god save them. I mean you are not supposed to  * distribute keys to your vault, right? Anyways, ResourceManager saves each  * token locally in memory till application finishes and to a store for restart,  * so no need to remember master-keys even after rolling them.  */
+comment|/**  * AMRM-tokens are per ApplicationAttempt. If users redistribute their  * tokens, it is their headache, god save them. I mean you are not supposed to  * distribute keys to your vault, right? Anyways, ResourceManager saves each  * token locally in memory till application finishes and to a store for restart,  * so no need to remember master-keys even after rolling them.  */
 end_comment
 
 begin_class
-DECL|class|ApplicationTokenSecretManager
+DECL|class|AMRMTokenSecretManager
 specifier|public
 class|class
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 extends|extends
 name|SecretManager
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 block|{
 DECL|field|LOG
@@ -222,7 +222,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 operator|.
 name|class
 argument_list|)
@@ -266,10 +266,10 @@ index|[]
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * Create an {@link ApplicationTokenSecretManager}    */
-DECL|method|ApplicationTokenSecretManager (Configuration conf)
+comment|/**    * Create an {@link AMRMTokenSecretManager}    */
+DECL|method|AMRMTokenSecretManager (Configuration conf)
 specifier|public
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 parameter_list|(
 name|Configuration
 name|conf
@@ -296,11 +296,11 @@ name|getLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RM_APP_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
+name|RM_AMRM_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_RM_APP_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
+name|DEFAULT_RM_AMRM_TOKEN_MASTER_KEY_ROLLING_INTERVAL_SECS
 argument_list|)
 operator|*
 literal|1000
@@ -446,7 +446,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Rolling master-key for application-tokens"
+literal|"Rolling master-key for amrm-tokens"
 argument_list|)
 expr_stmt|;
 name|this
@@ -457,17 +457,17 @@ name|generateSecret
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a password for a given {@link ApplicationTokenIdentifier}. Used to    * send to the AppicationAttempt which can give it back during authentication.    */
+comment|/**    * Create a password for a given {@link AMRMTokenIdentifier}. Used to    * send to the AppicationAttempt which can give it back during authentication.    */
 annotation|@
 name|Override
-DECL|method|createPassword ( ApplicationTokenIdentifier identifier)
+DECL|method|createPassword ( AMRMTokenIdentifier identifier)
 specifier|public
 specifier|synchronized
 name|byte
 index|[]
 name|createPassword
 parameter_list|(
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 name|identifier
 parameter_list|)
 block|{
@@ -526,17 +526,17 @@ return|return
 name|password
 return|;
 block|}
-comment|/**    * Retrieve the password for the given {@link ApplicationTokenIdentifier}.    * Used by RPC layer to validate a remote {@link ApplicationTokenIdentifier}.    */
+comment|/**    * Retrieve the password for the given {@link AMRMTokenIdentifier}.    * Used by RPC layer to validate a remote {@link AMRMTokenIdentifier}.    */
 annotation|@
 name|Override
-DECL|method|retrievePassword ( ApplicationTokenIdentifier identifier)
+DECL|method|retrievePassword ( AMRMTokenIdentifier identifier)
 specifier|public
 specifier|synchronized
 name|byte
 index|[]
 name|retrievePassword
 parameter_list|(
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 name|identifier
 parameter_list|)
 throws|throws
@@ -602,18 +602,18 @@ return|return
 name|password
 return|;
 block|}
-comment|/**    * Creates an empty TokenId to be used for de-serializing an    * {@link ApplicationTokenIdentifier} by the RPC layer.    */
+comment|/**    * Creates an empty TokenId to be used for de-serializing an    * {@link AMRMTokenIdentifier} by the RPC layer.    */
 annotation|@
 name|Override
 DECL|method|createIdentifier ()
 specifier|public
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 name|createIdentifier
 parameter_list|()
 block|{
 return|return
 operator|new
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|()
 return|;
 block|}

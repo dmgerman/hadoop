@@ -638,7 +638,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -654,7 +654,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSelector
+name|AMRMTokenSelector
 import|;
 end_import
 
@@ -1572,13 +1572,13 @@ specifier|final
 name|ApplicationSubmissionContext
 name|submissionContext
 decl_stmt|;
-DECL|field|applicationToken
+DECL|field|amrmToken
 specifier|private
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
-name|applicationToken
+name|amrmToken
 init|=
 literal|null
 decl_stmt|;
@@ -3273,19 +3273,19 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationToken ()
+DECL|method|getAMRMToken ()
 specifier|public
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
-name|getApplicationToken
+name|getAMRMToken
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|applicationToken
+name|amrmToken
 return|;
 block|}
 annotation|@
@@ -4076,16 +4076,16 @@ operator|.
 name|DEFAULT_RM_SCHEDULER_PORT
 argument_list|)
 decl_stmt|;
-name|ApplicationTokenSelector
+name|AMRMTokenSelector
 name|appTokenSelector
 init|=
 operator|new
-name|ApplicationTokenSelector
+name|AMRMTokenSelector
 argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|applicationToken
+name|amrmToken
 operator|=
 name|appTokenSelector
 operator|.
@@ -4105,7 +4105,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// For now, no need to populate tokens back to
-comment|// ApplicationTokenSecretManager, because running attempts are rebooted
+comment|// AMRMTokenSecretManager, because running attempts are rebooted
 comment|// Later in work-preserve restart, we'll create NEW->RUNNING transition
 comment|// in which the restored tokens will be added to the secret manager
 block|}
@@ -4232,11 +4232,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// create application token
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 name|id
 init|=
 operator|new
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|(
 name|appAttempt
 operator|.
@@ -4245,14 +4245,14 @@ argument_list|)
 decl_stmt|;
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
-name|applicationToken
+name|amRmToken
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 argument_list|(
 name|id
@@ -4261,7 +4261,7 @@ name|appAttempt
 operator|.
 name|rmContext
 operator|.
-name|getApplicationTokenSecretManager
+name|getAMRMTokenSecretManager
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4293,16 +4293,16 @@ name|SecurityUtil
 operator|.
 name|setTokenService
 argument_list|(
-name|applicationToken
+name|amRmToken
 argument_list|,
 name|serviceAddr
 argument_list|)
 expr_stmt|;
 name|appAttempt
 operator|.
-name|applicationToken
+name|amrmToken
 operator|=
-name|applicationToken
+name|amRmToken
 expr_stmt|;
 block|}
 comment|// Add the application to the scheduler
@@ -4945,12 +4945,12 @@ name|finalAttemptState
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Remove the AppAttempt from the ApplicationTokenSecretManager
+comment|// Remove the AppAttempt from the AMRMTokenSecretManager
 name|appAttempt
 operator|.
 name|rmContext
 operator|.
-name|getApplicationTokenSecretManager
+name|getAMRMTokenSecretManager
 argument_list|()
 operator|.
 name|applicationMasterFinished
@@ -5786,12 +5786,12 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 expr_stmt|;
-comment|// Remove the AppAttempt from the ApplicationTokenSecretManager
+comment|// Remove the AppAttempt from the AMRMTokenSecretManager
 name|appAttempt
 operator|.
 name|rmContext
 operator|.
-name|getApplicationTokenSecretManager
+name|getAMRMTokenSecretManager
 argument_list|()
 operator|.
 name|applicationMasterFinished

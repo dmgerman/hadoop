@@ -1822,7 +1822,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -7581,7 +7581,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 operator|.
 name|KIND_NAME
 argument_list|)

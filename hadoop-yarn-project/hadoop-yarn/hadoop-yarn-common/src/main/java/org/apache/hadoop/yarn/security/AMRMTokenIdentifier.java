@@ -207,7 +207,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * ApplicationTokenIdentifier is the TokenIdentifier to be used by  * ApplicationMasters to authenticate to the ResourceManager.  */
+comment|/**  * AMRMTokenIdentifier is the TokenIdentifier to be used by  * ApplicationMasters to authenticate to the ResourceManager.  */
 end_comment
 
 begin_class
@@ -215,10 +215,10 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|class|ApplicationTokenIdentifier
+DECL|class|AMRMTokenIdentifier
 specifier|public
 class|class
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 extends|extends
 name|TokenIdentifier
 block|{
@@ -232,7 +232,7 @@ init|=
 operator|new
 name|Text
 argument_list|(
-literal|"YARN_APPLICATION_TOKEN"
+literal|"YARN_AM_RM_TOKEN"
 argument_list|)
 decl_stmt|;
 DECL|field|applicationAttemptId
@@ -240,14 +240,14 @@ specifier|private
 name|ApplicationAttemptId
 name|applicationAttemptId
 decl_stmt|;
-DECL|method|ApplicationTokenIdentifier ()
+DECL|method|AMRMTokenIdentifier ()
 specifier|public
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 parameter_list|()
 block|{   }
-DECL|method|ApplicationTokenIdentifier (ApplicationAttemptId appAttemptId)
+DECL|method|AMRMTokenIdentifier (ApplicationAttemptId appAttemptId)
 specifier|public
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId

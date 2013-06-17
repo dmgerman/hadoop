@@ -250,7 +250,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 import|;
 end_import
 
@@ -453,7 +453,7 @@ decl_stmt|;
 DECL|field|appTokenSecretManager
 specifier|private
 specifier|final
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 name|appTokenSecretManager
 decl_stmt|;
 DECL|field|containerTokenSecretManager
@@ -474,7 +474,7 @@ specifier|final
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
 decl_stmt|;
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -496,7 +496,7 @@ parameter_list|,
 name|DelegationTokenRenewer
 name|tokenRenewer
 parameter_list|,
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 name|appTokenSecretManager
 parameter_list|,
 name|RMContainerTokenSecretManager
@@ -573,7 +573,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, ApplicationTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -592,7 +592,7 @@ parameter_list|,
 name|DelegationTokenRenewer
 name|tokenRenewer
 parameter_list|,
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 name|appTokenSecretManager
 parameter_list|,
 name|RMContainerTokenSecretManager
@@ -809,10 +809,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getApplicationTokenSecretManager ()
+DECL|method|getAMRMTokenSecretManager ()
 specifier|public
-name|ApplicationTokenSecretManager
-name|getApplicationTokenSecretManager
+name|AMRMTokenSecretManager
+name|getAMRMTokenSecretManager
 parameter_list|()
 block|{
 return|return

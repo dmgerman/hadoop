@@ -570,7 +570,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -823,14 +823,14 @@ expr_stmt|;
 comment|// token for authorization
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|token
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 argument_list|(
 literal|"user"
@@ -1108,14 +1108,14 @@ expr_stmt|;
 comment|// token for authorization
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|token
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 argument_list|(
 literal|"user"
@@ -2392,14 +2392,14 @@ try|try
 block|{
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|token
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 argument_list|(
 literal|"user"

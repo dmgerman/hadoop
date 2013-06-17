@@ -648,7 +648,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -2531,21 +2531,21 @@ argument_list|)
 decl_stmt|;
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|appToken
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 argument_list|(
 name|identifier
 argument_list|,
 name|password
 argument_list|,
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 operator|.
 name|KIND_NAME
 argument_list|,

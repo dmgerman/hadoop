@@ -510,7 +510,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -1350,18 +1350,18 @@ block|}
 comment|// Add application token
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
-name|applicationToken
+name|amrmToken
 init|=
 name|application
 operator|.
-name|getApplicationToken
+name|getAMRMToken
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|applicationToken
+name|amrmToken
 operator|!=
 literal|null
 condition|)
@@ -1370,12 +1370,12 @@ name|credentials
 operator|.
 name|addToken
 argument_list|(
-name|applicationToken
+name|amrmToken
 operator|.
 name|getService
 argument_list|()
 argument_list|,
-name|applicationToken
+name|amrmToken
 argument_list|)
 expr_stmt|;
 block|}

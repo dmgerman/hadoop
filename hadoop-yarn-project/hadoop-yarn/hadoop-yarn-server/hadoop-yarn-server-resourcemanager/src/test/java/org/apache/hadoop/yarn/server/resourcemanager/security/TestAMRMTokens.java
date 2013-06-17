@@ -435,10 +435,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestApplicationTokens
+DECL|class|TestAMRMTokens
 specifier|public
 class|class
-name|TestApplicationTokens
+name|TestAMRMTokens
 block|{
 DECL|field|LOG
 specifier|private
@@ -451,7 +451,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TestApplicationTokens
+name|TestAMRMTokens
 operator|.
 name|class
 argument_list|)
@@ -1222,7 +1222,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 comment|// Simulate a master-key-roll-over
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 name|appTokenSecretManager
 init|=
 name|rm
@@ -1230,7 +1230,7 @@ operator|.
 name|getRMContext
 argument_list|()
 operator|.
-name|getApplicationTokenSecretManager
+name|getAMRMTokenSecretManager
 argument_list|()
 decl_stmt|;
 name|SecretKey

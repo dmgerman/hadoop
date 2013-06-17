@@ -155,14 +155,14 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|class|ApplicationTokenSelector
+DECL|class|AMRMTokenSelector
 specifier|public
 class|class
-name|ApplicationTokenSelector
+name|AMRMTokenSelector
 implements|implements
 name|TokenSelector
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 block|{
 DECL|field|LOG
@@ -176,7 +176,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|ApplicationTokenSelector
+name|AMRMTokenSelector
 operator|.
 name|class
 argument_list|)
@@ -190,7 +190,7 @@ DECL|method|selectToken (Text service, Collection<Token<? extends TokenIdentifie
 specifier|public
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|selectToken
 parameter_list|(
@@ -269,7 +269,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 operator|.
 name|KIND_NAME
 operator|.
@@ -296,7 +296,7 @@ return|return
 operator|(
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 operator|)
 name|token

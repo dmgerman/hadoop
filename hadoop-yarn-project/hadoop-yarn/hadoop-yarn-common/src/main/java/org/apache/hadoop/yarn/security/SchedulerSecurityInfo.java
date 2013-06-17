@@ -274,7 +274,7 @@ name|value
 parameter_list|()
 block|{
 return|return
-name|ApplicationTokenSelector
+name|AMRMTokenSelector
 operator|.
 name|class
 return|;

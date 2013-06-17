@@ -362,7 +362,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -1528,13 +1528,13 @@ argument_list|()
 decl_stmt|;
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|appToken
 init|=
 name|appAttempt
 operator|.
-name|getApplicationToken
+name|getAMRMToken
 argument_list|()
 decl_stmt|;
 if|if

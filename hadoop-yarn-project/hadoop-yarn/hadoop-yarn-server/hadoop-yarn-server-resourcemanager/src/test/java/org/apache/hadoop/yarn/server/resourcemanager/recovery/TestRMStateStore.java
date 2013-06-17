@@ -508,7 +508,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -718,7 +718,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 import|;
 end_import
 
@@ -1434,7 +1434,7 @@ name|mockApp
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|storeAttempt (RMStateStore store, ApplicationAttemptId attemptId, String containerIdStr, Token<ApplicationTokenIdentifier> appToken, Token<ClientTokenIdentifier> clientToken, TestDispatcher dispatcher)
+DECL|method|storeAttempt (RMStateStore store, ApplicationAttemptId attemptId, String containerIdStr, Token<AMRMTokenIdentifier> appToken, Token<ClientTokenIdentifier> clientToken, TestDispatcher dispatcher)
 name|ContainerId
 name|storeAttempt
 parameter_list|(
@@ -1449,7 +1449,7 @@ name|containerIdStr
 parameter_list|,
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|appToken
 parameter_list|,
@@ -1524,7 +1524,7 @@ name|when
 argument_list|(
 name|mockAttempt
 operator|.
-name|getApplicationToken
+name|getAMRMToken
 argument_list|()
 argument_list|)
 operator|.
@@ -1629,11 +1629,11 @@ argument_list|(
 name|dispatcher
 argument_list|)
 expr_stmt|;
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 name|appTokenMgr
 init|=
 operator|new
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)
@@ -1733,7 +1733,7 @@ argument_list|,
 call|(
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 call|)
 argument_list|(
@@ -1839,7 +1839,7 @@ argument_list|,
 call|(
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 call|)
 argument_list|(
@@ -2499,7 +2499,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|generateTokens (ApplicationAttemptId attemptId, ApplicationTokenSecretManager appTokenMgr, ClientToAMTokenSecretManagerInRM clientTokenMgr, Configuration conf)
+DECL|method|generateTokens (ApplicationAttemptId attemptId, AMRMTokenSecretManager appTokenMgr, ClientToAMTokenSecretManagerInRM clientTokenMgr, Configuration conf)
 specifier|private
 name|List
 argument_list|<
@@ -2513,7 +2513,7 @@ parameter_list|(
 name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 name|appTokenMgr
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
@@ -2523,25 +2523,25 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 name|appTokenId
 init|=
 operator|new
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|(
 name|attemptId
 argument_list|)
 decl_stmt|;
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 name|appToken
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
 argument_list|(
 name|appTokenId

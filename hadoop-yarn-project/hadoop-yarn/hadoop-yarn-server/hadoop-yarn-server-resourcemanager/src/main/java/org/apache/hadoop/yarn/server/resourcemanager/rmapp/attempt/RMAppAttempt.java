@@ -230,7 +230,7 @@ name|yarn
 operator|.
 name|security
 operator|.
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 import|;
 end_import
 
@@ -395,13 +395,13 @@ name|ApplicationSubmissionContext
 name|getSubmissionContext
 parameter_list|()
 function_decl|;
-comment|/**    * The application token belonging to this app attempt    * @return The application token belonging to this app attempt    */
-DECL|method|getApplicationToken ()
+comment|/**    * The AMRMToken belonging to this app attempt    * @return The AMRMToken belonging to this app attempt    */
+DECL|method|getAMRMToken ()
 name|Token
 argument_list|<
-name|ApplicationTokenIdentifier
+name|AMRMTokenIdentifier
 argument_list|>
-name|getApplicationToken
+name|getAMRMToken
 parameter_list|()
 function_decl|;
 comment|/**    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */

@@ -854,7 +854,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 import|;
 end_import
 
@@ -1133,7 +1133,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The ResourceManager is the main class that is a set of components.  * "I am the ResourceManager. All your resources are belong to us..."  *  */
+comment|/**  * The ResourceManager is the main class that is a set of components.  * "I am the ResourceManager. All your resources belong to us..."  *  */
 end_comment
 
 begin_class
@@ -1208,10 +1208,10 @@ specifier|protected
 name|NMTokenSecretManagerInRM
 name|nmTokenSecretManager
 decl_stmt|;
-DECL|field|appTokenSecretManager
+DECL|field|amRmTokenSecretManager
 specifier|protected
-name|ApplicationTokenSecretManager
-name|appTokenSecretManager
+name|AMRMTokenSecretManager
+name|amRmTokenSecretManager
 decl_stmt|;
 DECL|field|rmDispatcher
 specifier|private
@@ -1382,9 +1382,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|appTokenSecretManager
+name|amRmTokenSecretManager
 operator|=
-name|createApplicationTokenSecretManager
+name|createAMRMTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)
@@ -1581,7 +1581,7 @@ name|tokenRenewer
 argument_list|,
 name|this
 operator|.
-name|appTokenSecretManager
+name|amRmTokenSecretManager
 argument_list|,
 name|this
 operator|.
@@ -2049,10 +2049,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createApplicationTokenSecretManager ( Configuration conf)
+DECL|method|createAMRMTokenSecretManager ( Configuration conf)
 specifier|protected
-name|ApplicationTokenSecretManager
-name|createApplicationTokenSecretManager
+name|AMRMTokenSecretManager
+name|createAMRMTokenSecretManager
 parameter_list|(
 name|Configuration
 name|conf
@@ -2060,7 +2060,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 argument_list|(
 name|conf
 argument_list|)
@@ -3352,7 +3352,7 @@ throw|;
 block|}
 name|this
 operator|.
-name|appTokenSecretManager
+name|amRmTokenSecretManager
 operator|.
 name|start
 argument_list|()
@@ -3614,14 +3614,14 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|appTokenSecretManager
+name|amRmTokenSecretManager
 operator|!=
 literal|null
 condition|)
 block|{
 name|this
 operator|.
-name|appTokenSecretManager
+name|amRmTokenSecretManager
 operator|.
 name|stop
 argument_list|()
@@ -4001,16 +4001,16 @@ return|;
 block|}
 annotation|@
 name|Private
-DECL|method|getApplicationTokenSecretManager ()
+DECL|method|getAMRMTokenSecretManager ()
 specifier|public
-name|ApplicationTokenSecretManager
-name|getApplicationTokenSecretManager
+name|AMRMTokenSecretManager
+name|getAMRMTokenSecretManager
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|appTokenSecretManager
+name|amRmTokenSecretManager
 return|;
 block|}
 annotation|@

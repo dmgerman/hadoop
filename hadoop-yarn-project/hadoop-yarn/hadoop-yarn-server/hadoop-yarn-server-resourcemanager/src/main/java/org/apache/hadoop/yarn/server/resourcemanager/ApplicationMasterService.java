@@ -1271,7 +1271,7 @@ name|this
 operator|.
 name|rmContext
 operator|.
-name|getApplicationTokenSecretManager
+name|getAMRMTokenSecretManager
 argument_list|()
 argument_list|,
 name|conf

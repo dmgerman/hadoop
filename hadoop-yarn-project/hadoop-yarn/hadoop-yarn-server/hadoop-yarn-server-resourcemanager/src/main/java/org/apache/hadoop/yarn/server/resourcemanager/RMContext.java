@@ -202,7 +202,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|ApplicationTokenSecretManager
+name|AMRMTokenSecretManager
 import|;
 end_import
 
@@ -356,9 +356,9 @@ name|DelegationTokenRenewer
 name|getDelegationTokenRenewer
 parameter_list|()
 function_decl|;
-DECL|method|getApplicationTokenSecretManager ()
-name|ApplicationTokenSecretManager
-name|getApplicationTokenSecretManager
+DECL|method|getAMRMTokenSecretManager ()
+name|AMRMTokenSecretManager
+name|getAMRMTokenSecretManager
 parameter_list|()
 function_decl|;
 DECL|method|getContainerTokenSecretManager ()
