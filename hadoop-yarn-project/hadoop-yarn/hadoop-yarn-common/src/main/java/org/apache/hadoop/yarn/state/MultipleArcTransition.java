@@ -18,11 +18,47 @@ name|state
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
 begin_comment
 comment|/**  * Hook for Transition.   * Post state is decided by Transition hook. Post state must be one of the   * valid post states registered in StateMachine.  */
 end_comment
 
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|interface|MultipleArcTransition
 specifier|public
 interface|interface

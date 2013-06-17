@@ -18,11 +18,36 @@ name|webapp
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * Public static constants for webapp parameters. Do NOT put any  * private or application specific constants here as they're part of  * the API for users of the controllers and views.  */
 end_comment
 
 begin_interface
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 DECL|interface|Params
 specifier|public
 interface|interface

@@ -18,7 +18,26 @@ name|logaggregation
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
 begin_enum
+annotation|@
+name|Private
+comment|/**  * This API is not exposed to end-users yet.  */
 DECL|enum|ContainerLogsRetentionPolicy
 specifier|public
 enum|enum

@@ -62,6 +62,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -811,6 +827,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
 DECL|class|ResourceManagerAdministrationProtocolPBClientImpl
 specifier|public
 class|class

@@ -84,6 +84,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Shell
@@ -121,6 +137,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
 DECL|class|WindowsBasedProcessTree
 specifier|public
 class|class

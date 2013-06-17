@@ -58,11 +58,29 @@ name|Pattern
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
 begin_comment
 comment|/**  * Common string manipulation helpers  */
 end_comment
 
 begin_class
+annotation|@
+name|Private
 DECL|class|StringHelper
 specifier|public
 specifier|final

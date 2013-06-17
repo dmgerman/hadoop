@@ -38,6 +38,54 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -64,7 +112,15 @@ name|ApplicationAttemptId
 import|;
 end_import
 
+begin_comment
+comment|/**  * A base {@link SecretManager} for AMs to extend and validate Client-RM tokens  * issued to clients by the RM using the underlying master-key shared by RM to  * the AMs on their launch. All the methods are called by either Hadoop RPC or  * YARN, so this class is strictly for the purpose of inherit/extend and  * register with Hadoop RPC.  */
+end_comment
+
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|BaseClientToAMTokenSecretManager
 specifier|public
 specifier|abstract
@@ -76,6 +132,8 @@ argument_list|<
 name|ClientTokenIdentifier
 argument_list|>
 block|{
+annotation|@
+name|Private
 DECL|method|getMasterKey ( ApplicationAttemptId applicationAttemptId)
 specifier|public
 specifier|abstract
@@ -86,6 +144,8 @@ name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 function_decl|;
+annotation|@
+name|Private
 annotation|@
 name|Override
 DECL|method|createPassword ( ClientTokenIdentifier identifier)
@@ -117,6 +177,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Private
 annotation|@
 name|Override
 DECL|method|retrievePassword (ClientTokenIdentifier identifier)
@@ -173,6 +235,8 @@ name|masterKey
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Private
 annotation|@
 name|Override
 DECL|method|createIdentifier ()

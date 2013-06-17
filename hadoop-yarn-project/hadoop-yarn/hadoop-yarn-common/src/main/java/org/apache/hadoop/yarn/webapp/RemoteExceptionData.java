@@ -60,11 +60,36 @@ name|XmlRootElement
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * Contains the exception information from an exception thrown  * by the web service REST API's.  * Fields include:  *   exception - exception type  *   javaClassName - java class name of the exception  *   message - a detailed message explaining the exception  *  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|XmlRootElement
 argument_list|(

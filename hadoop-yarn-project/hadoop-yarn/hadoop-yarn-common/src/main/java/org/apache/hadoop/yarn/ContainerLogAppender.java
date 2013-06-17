@@ -56,7 +56,25 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -87,13 +105,13 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A simple log4j-appender for the task child's   * map-reduce system logs.  *   */
+comment|/**  * A simple log4j-appender for container's logs.  *   */
 end_comment
 
 begin_class
 annotation|@
-name|InterfaceStability
-operator|.
+name|Public
+annotation|@
 name|Unstable
 DECL|class|ContainerLogAppender
 specifier|public

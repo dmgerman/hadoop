@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn
+DECL|package|org.apache.hadoop.yarn.server.utils
 package|package
 name|org
 operator|.
@@ -13,6 +13,10 @@ operator|.
 name|hadoop
 operator|.
 name|yarn
+operator|.
+name|server
+operator|.
+name|utils
 package|;
 end_package
 
@@ -43,7 +47,9 @@ block|{
 annotation|@
 name|SuppressWarnings
 argument_list|(
-literal|"unchecked"
+block|{
+literal|"rawtypes"
+block|}
 argument_list|)
 DECL|method|value ()
 name|Class

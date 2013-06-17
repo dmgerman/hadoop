@@ -7,7 +7,14 @@ begin_annotation
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"MapReduce"
+block|,
+literal|"YARN"
+block|}
+argument_list|)
 end_annotation
 
 begin_package

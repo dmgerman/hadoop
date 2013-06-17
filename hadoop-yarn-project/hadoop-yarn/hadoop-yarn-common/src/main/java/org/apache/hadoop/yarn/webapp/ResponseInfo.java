@@ -66,11 +66,36 @@ name|List
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/**  * A class to help passing around request scoped info  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|RequestScoped
 DECL|class|ResponseInfo

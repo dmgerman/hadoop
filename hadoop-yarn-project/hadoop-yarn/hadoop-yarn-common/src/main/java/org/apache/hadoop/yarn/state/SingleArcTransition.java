@@ -18,11 +18,47 @@ name|state
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
 begin_comment
 comment|/**  * Hook for Transition. This lead to state machine to move to   * the post state as registered in the state machine.  */
 end_comment
 
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|interface|SingleArcTransition
 specifier|public
 interface|interface

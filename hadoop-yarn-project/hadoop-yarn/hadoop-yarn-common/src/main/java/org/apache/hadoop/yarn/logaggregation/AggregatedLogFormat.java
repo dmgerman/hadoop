@@ -272,6 +272,54 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -523,12 +571,17 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|AggregatedLogFormat
 specifier|public
 class|class
 name|AggregatedLogFormat
 block|{
 DECL|field|LOG
+specifier|private
 specifier|static
 specifier|final
 name|Log
@@ -679,6 +732,8 @@ name|VERSION_KEY
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Public
 DECL|class|LogKey
 specifier|public
 specifier|static
@@ -812,6 +867,8 @@ literal|false
 return|;
 block|}
 annotation|@
+name|Private
+annotation|@
 name|Override
 DECL|method|write (DataOutput out)
 specifier|public
@@ -834,6 +891,8 @@ name|keyString
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Private
 annotation|@
 name|Override
 DECL|method|readFields (DataInput in)
@@ -872,6 +931,8 @@ name|keyString
 return|;
 block|}
 block|}
+annotation|@
+name|Private
 DECL|class|LogValue
 specifier|public
 specifier|static
@@ -1220,6 +1281,9 @@ name|user
 return|;
 block|}
 block|}
+comment|/**    * The writer that writes out the aggregated logs.    */
+annotation|@
+name|Private
 DECL|class|LogWriter
 specifier|public
 specifier|static
@@ -1732,6 +1796,10 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|LogReader
 specifier|public
 specifier|static
@@ -2244,6 +2312,8 @@ name|valueStream
 return|;
 block|}
 comment|/**      * Get a ContainerLogsReader to read the logs for      * the specified container.      *      * @param containerId      * @return object to read the container's logs or null if the      *         logs could not be found      * @throws IOException      */
+annotation|@
+name|Private
 DECL|method|getContainerLogsReader ( ContainerId containerId)
 specifier|public
 name|ContainerLogsReader
@@ -2782,6 +2852,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Private
 DECL|class|ContainerLogsReader
 specifier|public
 specifier|static

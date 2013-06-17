@@ -22,18 +22,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|Constructor
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -75,6 +63,36 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -205,6 +223,17 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MAPREDUCE"
+block|}
+argument_list|)
 DECL|class|RackResolver
 specifier|public
 class|class
@@ -478,6 +507,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Only used by tests    */
+annotation|@
+name|Private
 annotation|@
 name|VisibleForTesting
 DECL|method|getDnsToSwitchMapping ()

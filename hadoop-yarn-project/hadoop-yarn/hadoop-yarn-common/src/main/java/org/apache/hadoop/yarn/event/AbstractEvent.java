@@ -18,11 +18,47 @@ name|event
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
 begin_comment
-comment|/**  * parent class of all the events. All events extend this class.  */
+comment|/**  * Parent class of all the events. All events extend this class.  */
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|AbstractEvent
 specifier|public
 specifier|abstract

@@ -41,20 +41,16 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|webapp
-operator|.
-name|Params
-operator|.
-name|*
+name|InterfaceAudience
 import|;
 end_import
 
@@ -63,6 +59,17 @@ comment|/**  * A jquery-ui themeable error page  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 DECL|class|ErrorPage
 specifier|public
 class|class

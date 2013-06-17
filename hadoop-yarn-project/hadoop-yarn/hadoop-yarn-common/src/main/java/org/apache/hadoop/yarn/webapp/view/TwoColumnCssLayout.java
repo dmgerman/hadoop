@@ -22,13 +22,15 @@ end_package
 
 begin_import
 import|import
-name|com
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|inject
+name|hadoop
 operator|.
-name|Inject
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
@@ -53,6 +55,17 @@ comment|/**  * A reusable, pure-css, cross-browser, left nav, 2 column,  * suppo
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 DECL|class|TwoColumnCssLayout
 specifier|public
 class|class

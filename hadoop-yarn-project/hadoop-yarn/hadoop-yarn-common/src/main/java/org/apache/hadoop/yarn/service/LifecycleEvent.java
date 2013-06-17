@@ -28,11 +28,47 @@ name|Serializable
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
 begin_comment
 comment|/**  * A serializable lifecycle event: the time a state  * transition occurred, and what state was entered.  */
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|LifecycleEvent
 specifier|public
 class|class
@@ -40,6 +76,15 @@ name|LifecycleEvent
 implements|implements
 name|Serializable
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1648576996238247836L
+decl_stmt|;
 comment|/**    * Local time in milliseconds when the event occurred    */
 DECL|field|time
 specifier|public

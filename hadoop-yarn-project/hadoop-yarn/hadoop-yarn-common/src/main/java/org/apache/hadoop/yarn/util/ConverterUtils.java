@@ -106,6 +106,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|Path
@@ -241,6 +257,8 @@ comment|/**  * This class contains a set of utilities which help converting data
 end_comment
 
 begin_class
+annotation|@
+name|Private
 DECL|class|ConverterUtils
 specifier|public
 class|class

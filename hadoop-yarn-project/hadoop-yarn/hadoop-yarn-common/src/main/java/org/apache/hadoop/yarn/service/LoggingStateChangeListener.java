@@ -46,11 +46,47 @@ name|LogFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is a state change listener that logs events at INFO level  */
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|LoggingStateChangeListener
 specifier|public
 class|class

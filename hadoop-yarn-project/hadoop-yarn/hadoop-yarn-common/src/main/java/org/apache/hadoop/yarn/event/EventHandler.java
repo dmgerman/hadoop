@@ -18,11 +18,52 @@ name|event
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
 begin_comment
-comment|/**  * Interface for handling events of type T  *  * @param<T> paremeterized event of type T  */
+comment|/**  * Interface for handling events of type T  *  * @param<T> parameterized event of type T  */
 end_comment
 
 begin_interface
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|interface|EventHandler
 specifier|public
 interface|interface

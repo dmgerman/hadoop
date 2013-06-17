@@ -118,6 +118,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -171,7 +203,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Dispatches events in a separate thread. Currently only single thread does  * that. Potentially there could be multiple channels for each event type  * class and a thread pool can be used to dispatch the events.  */
+comment|/**  * Dispatches {@link Event}s in a separate thread. Currently only single thread  * does that. Potentially there could be multiple channels for each event type  * class and a thread pool can be used to dispatch the events.  */
 end_comment
 
 begin_class
@@ -180,6 +212,10 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|AsyncDispatcher
 specifier|public
 class|class

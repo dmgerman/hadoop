@@ -98,6 +98,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|util
@@ -111,6 +143,10 @@ comment|/**  * State machine topology.  * This object is semantically immutable.
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|StateMachineFactory
 specifier|final
 specifier|public
@@ -1742,6 +1778,11 @@ return|;
 block|}
 block|}
 comment|/**    * Generate a graph represents the state graph of this StateMachine    * @param name graph name    * @return Graph object generated    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"rawtypes"
+argument_list|)
 DECL|method|generateStateGraph (String name)
 specifier|public
 name|Graph

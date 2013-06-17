@@ -84,9 +84,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|conf
+name|classification
 operator|.
-name|Configuration
+name|InterfaceAudience
+operator|.
+name|Public
 import|;
 end_import
 
@@ -98,11 +100,25 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|exceptions
+name|InterfaceStability
 operator|.
-name|YarnRuntimeException
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|conf
+operator|.
+name|Configuration
 import|;
 end_import
 
@@ -111,6 +127,10 @@ comment|/**  * Composition of services.  */
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|CompositeService
 specifier|public
 class|class

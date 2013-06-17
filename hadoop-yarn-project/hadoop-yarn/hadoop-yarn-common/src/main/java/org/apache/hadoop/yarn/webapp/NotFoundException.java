@@ -46,11 +46,36 @@ name|Status
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_comment
 comment|/*  * Created our own NotFoundException because com.sun.jersey.api.NotFoundException  * sets the Response and therefore won't be handled by the GenericExceptionhandler  * to fill in correct response.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 DECL|class|NotFoundException
 specifier|public
 class|class

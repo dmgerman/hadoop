@@ -42,6 +42,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|proto
@@ -1283,6 +1299,8 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
 DECL|class|ApplicationClientProtocolPBServiceImpl
 specifier|public
 class|class

@@ -7,7 +7,7 @@ begin_annotation
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 end_annotation
 
 begin_package

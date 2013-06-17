@@ -84,6 +84,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|conf
 operator|.
 name|Configuration
@@ -178,7 +194,13 @@ name|AbstractService
 import|;
 end_import
 
+begin_comment
+comment|/**  * A service that periodically deletes aggregated logs.  */
+end_comment
+
 begin_class
+annotation|@
+name|Private
 DECL|class|AggregatedLogDeletionService
 specifier|public
 class|class

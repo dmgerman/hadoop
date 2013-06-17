@@ -18,11 +18,47 @@ name|event
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
 begin_comment
 comment|/**  * Interface defining events api.  *  */
 end_comment
 
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|interface|Event
 specifier|public
 interface|interface

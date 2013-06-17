@@ -116,7 +116,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|Lock
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
 import|;
 end_import
 
@@ -130,11 +134,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|server
 operator|.
-name|records
+name|utils
 operator|.
-name|ApplicationId
+name|Lock
 import|;
 end_import
 

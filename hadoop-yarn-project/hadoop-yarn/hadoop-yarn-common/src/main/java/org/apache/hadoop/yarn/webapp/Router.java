@@ -19,7 +19,7 @@ package|;
 end_package
 
 begin_import
-import|import
+import|import static
 name|com
 operator|.
 name|google
@@ -28,7 +28,9 @@ name|common
 operator|.
 name|base
 operator|.
-name|CharMatcher
+name|Preconditions
+operator|.
+name|checkNotNull
 import|;
 end_import
 
@@ -44,35 +46,61 @@ name|base
 operator|.
 name|Preconditions
 operator|.
-name|*
+name|checkState
 import|;
 end_import
 
 begin_import
-import|import
-name|com
+import|import static
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|collect
+name|yarn
 operator|.
-name|ImmutableList
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|djoin
 import|;
 end_import
 
 begin_import
-import|import
-name|com
+import|import static
+name|org
 operator|.
-name|google
+name|apache
 operator|.
-name|common
+name|hadoop
 operator|.
-name|collect
+name|yarn
 operator|.
-name|Maps
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|join
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|util
+operator|.
+name|StringHelper
+operator|.
+name|pjoin
 import|;
 end_import
 
@@ -85,38 +113,6 @@ operator|.
 name|reflect
 operator|.
 name|Method
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|reflect
-operator|.
-name|Modifier
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|NoSuchMethodException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|SecurityException
 import|;
 end_import
 
@@ -187,20 +183,16 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|util
-operator|.
-name|StringHelper
-operator|.
-name|*
+name|InterfaceAudience
 import|;
 end_import
 
@@ -224,11 +216,64 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|CharMatcher
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|ImmutableList
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Maps
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages path info to controller#action routing.  */
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 DECL|class|Router
 class|class
 name|Router

@@ -98,6 +98,36 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -109,6 +139,17 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MapReduce"
+block|}
+argument_list|)
 annotation|@
 name|Singleton
 DECL|class|DefaultWrapperServlet
@@ -127,6 +168,8 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+annotation|@
+name|Private
 DECL|method|doGet (HttpServletRequest req, HttpServletResponse resp)
 specifier|public
 name|void

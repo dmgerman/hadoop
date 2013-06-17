@@ -110,7 +110,14 @@ begin_class
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|LimitedPrivate
+argument_list|(
+block|{
+literal|"YARN"
+block|,
+literal|"MAPREDUCE"
+block|}
+argument_list|)
 annotation|@
 name|InterfaceStability
 operator|.
