@@ -4,7 +4,7 @@ comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or m
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.util
+DECL|package|org.apache.hadoop.yarn.state
 package|package
 name|org
 operator|.
@@ -14,7 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|util
+name|state
 package|;
 end_package
 
@@ -63,22 +63,6 @@ operator|.
 name|InterfaceAudience
 operator|.
 name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|state
-operator|.
-name|StateMachineFactory
 import|;
 end_import
 

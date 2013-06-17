@@ -122,22 +122,6 @@ name|Evolving
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Graph
-import|;
-end_import
-
 begin_comment
 comment|/**  * State machine topology.  * This object is semantically immutable.  If you have a  * StateMachineFactory there's no operation in the API that changes  * its semantic properties.  *  * @param<OPERAND> The object type on which this state machine operates.  * @param<STATE> The state of the entity.  * @param<EVENTTYPE> The external eventType to be handled.  * @param<EVENT> The event object.  *  */
 end_comment
