@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -139,7 +139,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by a client to<em>submit an application</em> to the   *<code>ResourceManager</code>.</p>  *   *<p>The request, via {@link ApplicationSubmissionContext}, contains  * details such as queue, {@link Resource} required to run the   *<code>ApplicationMaster</code>, the equivalent of   * {@link ContainerLaunchContext} for launching the   *<code>ApplicationMaster</code> etc.  *   * @see ClientRMProtocol#submitApplication(SubmitApplicationRequest)  */
+comment|/**  *<p>The request sent by a client to<em>submit an application</em> to the   *<code>ResourceManager</code>.</p>  *   *<p>The request, via {@link ApplicationSubmissionContext}, contains  * details such as queue, {@link Resource} required to run the   *<code>ApplicationMaster</code>, the equivalent of   * {@link ContainerLaunchContext} for launching the   *<code>ApplicationMaster</code> etc.  *   * @see ApplicationClientProtocol#submitApplication(SubmitApplicationRequest)  */
 end_comment
 
 begin_class

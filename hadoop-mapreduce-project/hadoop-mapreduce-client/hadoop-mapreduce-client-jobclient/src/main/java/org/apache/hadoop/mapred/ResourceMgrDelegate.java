@@ -278,7 +278,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -439,7 +439,7 @@ specifier|private
 name|ApplicationId
 name|applicationId
 decl_stmt|;
-comment|/**    * Delegate responsible for communicating with the Resource Manager's {@link ClientRMProtocol}.    * @param conf the configuration object.    */
+comment|/**    * Delegate responsible for communicating with the Resource Manager's {@link ApplicationClientProtocol}.    * @param conf the configuration object.    */
 DECL|method|ResourceMgrDelegate (YarnConfiguration conf)
 specifier|public
 name|ResourceMgrDelegate

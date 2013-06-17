@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request from clients to get a report of all nodes  * in the cluster from the<code>ResourceManager</code>.</p>  *  *<p>Currently, this is empty.</p>  *  * @see ClientRMProtocol#getClusterNodes(GetClusterNodesRequest)   */
+comment|/**  *<p>The request from clients to get a report of all nodes  * in the cluster from the<code>ResourceManager</code>.</p>  *  *<p>Currently, this is empty.</p>  *  * @see ApplicationClientProtocol#getClusterNodes(GetClusterNodesRequest)   */
 end_comment
 
 begin_class

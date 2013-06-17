@@ -162,7 +162,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -178,7 +178,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 import|;
 end_import
 
@@ -1349,23 +1349,23 @@ import|;
 end_import
 
 begin_class
-DECL|class|ClientRMProtocolPBClientImpl
+DECL|class|ApplicationClientProtocolPBClientImpl
 specifier|public
 class|class
-name|ClientRMProtocolPBClientImpl
+name|ApplicationClientProtocolPBClientImpl
 implements|implements
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 implements|,
 name|Closeable
 block|{
 DECL|field|proxy
 specifier|private
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 name|proxy
 decl_stmt|;
-DECL|method|ClientRMProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
+DECL|method|ApplicationClientProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
 specifier|public
-name|ClientRMProtocolPBClientImpl
+name|ApplicationClientProtocolPBClientImpl
 parameter_list|(
 name|long
 name|clientVersion
@@ -1385,7 +1385,7 @@ name|setProtocolEngine
 argument_list|(
 name|conf
 argument_list|,
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -1400,7 +1400,7 @@ name|RPC
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 operator|.
 name|class
 argument_list|,

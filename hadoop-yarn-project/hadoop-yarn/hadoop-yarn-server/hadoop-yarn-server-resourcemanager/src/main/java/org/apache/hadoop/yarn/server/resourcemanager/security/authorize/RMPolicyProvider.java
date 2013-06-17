@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocolPB
+name|ApplicationMasterProtocolPB
 import|;
 end_import
 
@@ -112,7 +112,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 import|;
 end_import
 
@@ -128,7 +128,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 import|;
 end_import
 
@@ -144,7 +144,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 import|;
 end_import
 
@@ -219,7 +219,7 @@ name|Service
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|YARN_SECURITY_SERVICE_AUTHORIZATION_RESOURCETRACKER
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_RESOURCETRACKER_PROTOCOL
 argument_list|,
 name|ResourceTrackerPB
 operator|.
@@ -231,9 +231,9 @@ name|Service
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|YARN_SECURITY_SERVICE_AUTHORIZATION_CLIENT_RESOURCEMANAGER
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_APPLICATIONCLIENT_PROTOCOL
 argument_list|,
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 operator|.
 name|class
 argument_list|)
@@ -243,9 +243,9 @@ name|Service
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|YARN_SECURITY_SERVICE_AUTHORIZATION_APPLICATIONMASTER_RESOURCEMANAGER
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_APPLICATIONMASTER_PROTOCOL
 argument_list|,
-name|AMRMProtocolPB
+name|ApplicationMasterProtocolPB
 operator|.
 name|class
 argument_list|)
@@ -255,9 +255,9 @@ name|Service
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|YARN_SECURITY_SERVICE_AUTHORIZATION_ADMIN
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_RESOURCEMANAGER_ADMINISTRATION_PROTOCOL
 argument_list|,
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 operator|.
 name|class
 argument_list|)
@@ -267,9 +267,9 @@ name|Service
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|YARN_SECURITY_SERVICE_AUTHORIZATION_CONTAINER_MANAGER
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_CONTAINER_MANAGEMENT_PROTOCOL
 argument_list|,
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 operator|.
 name|class
 argument_list|)

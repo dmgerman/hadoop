@@ -44,9 +44,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|ContainerManager
+name|ApplicationClientProtocol
 operator|.
-name|ContainerManagerService
+name|ApplicationClientProtocolService
 import|;
 end_import
 
@@ -56,18 +56,18 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.yarn.api.ContainerManagerPB"
+literal|"org.apache.hadoop.yarn.api.ApplicationClientProtocolPB"
 argument_list|,
 name|protocolVersion
 operator|=
 literal|1
 argument_list|)
-DECL|interface|ContainerManagerPB
+DECL|interface|ApplicationClientProtocolPB
 specifier|public
 interface|interface
-name|ContainerManagerPB
+name|ApplicationClientProtocolPB
 extends|extends
-name|ContainerManagerService
+name|ApplicationClientProtocolService
 operator|.
 name|BlockingInterface
 block|{  }

@@ -104,11 +104,23 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|net
 operator|.
-name|api
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|AMRMProtocol
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
 import|;
 end_import
 
@@ -124,7 +136,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocolPB
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -140,45 +152,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
-operator|.
-name|AllocateRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|AllocateResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|FinishApplicationMasterRequest
+name|ContainerManagementProtocolPB
 import|;
 end_import
 
@@ -196,7 +170,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|FinishApplicationMasterResponse
+name|GetContainerStatusRequest
 import|;
 end_import
 
@@ -214,7 +188,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|RegisterApplicationMasterRequest
+name|GetContainerStatusResponse
 import|;
 end_import
 
@@ -232,7 +206,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|RegisterApplicationMasterResponse
+name|StartContainerRequest
 import|;
 end_import
 
@@ -250,11 +224,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|AllocateRequestPBImpl
+name|StartContainerResponse
 import|;
 end_import
 
@@ -272,11 +242,25 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|impl
+name|StopContainerRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|pb
+name|apache
 operator|.
-name|AllocateResponsePBImpl
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|StopContainerResponse
 import|;
 end_import
 
@@ -298,7 +282,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|FinishApplicationMasterRequestPBImpl
+name|GetContainerStatusRequestPBImpl
 import|;
 end_import
 
@@ -320,7 +304,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|FinishApplicationMasterResponsePBImpl
+name|GetContainerStatusResponsePBImpl
 import|;
 end_import
 
@@ -342,7 +326,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|RegisterApplicationMasterRequestPBImpl
+name|StartContainerRequestPBImpl
 import|;
 end_import
 
@@ -364,7 +348,67 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|RegisterApplicationMasterResponsePBImpl
+name|StartContainerResponsePBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|impl
+operator|.
+name|pb
+operator|.
+name|StopContainerRequestPBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|impl
+operator|.
+name|pb
+operator|.
+name|StopContainerResponsePBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
 import|;
 end_import
 
@@ -414,7 +458,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|AllocateRequestProto
+name|GetContainerStatusRequestProto
 import|;
 end_import
 
@@ -432,7 +476,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|FinishApplicationMasterRequestProto
+name|StartContainerRequestProto
 import|;
 end_import
 
@@ -450,7 +494,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|RegisterApplicationMasterRequestProto
+name|StopContainerRequestProto
 import|;
 end_import
 
@@ -467,23 +511,45 @@ import|;
 end_import
 
 begin_class
-DECL|class|AMRMProtocolPBClientImpl
+DECL|class|ContainerManagementProtocolPBClientImpl
 specifier|public
 class|class
-name|AMRMProtocolPBClientImpl
+name|ContainerManagementProtocolPBClientImpl
 implements|implements
-name|AMRMProtocol
+name|ContainerManagementProtocol
 implements|,
 name|Closeable
 block|{
+comment|// Not a documented config. Only used for tests
+DECL|field|NM_COMMAND_TIMEOUT
+specifier|static
+specifier|final
+name|String
+name|NM_COMMAND_TIMEOUT
+init|=
+name|YarnConfiguration
+operator|.
+name|YARN_PREFIX
+operator|+
+literal|"rpc.nm-command-timeout"
+decl_stmt|;
+comment|/**    * Maximum of 1 minute timeout for a Node to react to the command    */
+DECL|field|DEFAULT_COMMAND_TIMEOUT
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_COMMAND_TIMEOUT
+init|=
+literal|60000
+decl_stmt|;
 DECL|field|proxy
 specifier|private
-name|AMRMProtocolPB
+name|ContainerManagementProtocolPB
 name|proxy
 decl_stmt|;
-DECL|method|AMRMProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
+DECL|method|ContainerManagementProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
 specifier|public
-name|AMRMProtocolPBClientImpl
+name|ContainerManagementProtocolPBClientImpl
 parameter_list|(
 name|long
 name|clientVersion
@@ -503,7 +569,7 @@ name|setProtocolEngine
 argument_list|(
 name|conf
 argument_list|,
-name|AMRMProtocolPB
+name|ContainerManagementProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -512,16 +578,36 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
+name|UserGroupInformation
+name|ugi
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
+name|int
+name|expireIntvl
+init|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|NM_COMMAND_TIMEOUT
+argument_list|,
+name|DEFAULT_COMMAND_TIMEOUT
+argument_list|)
+decl_stmt|;
 name|proxy
 operator|=
 operator|(
-name|AMRMProtocolPB
+name|ContainerManagementProtocolPB
 operator|)
 name|RPC
 operator|.
 name|getProxy
 argument_list|(
-name|AMRMProtocolPB
+name|ContainerManagementProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -529,7 +615,18 @@ name|clientVersion
 argument_list|,
 name|addr
 argument_list|,
+name|ugi
+argument_list|,
 name|conf
+argument_list|,
+name|NetUtils
+operator|.
+name|getDefaultSocketFactory
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
+name|expireIntvl
 argument_list|)
 expr_stmt|;
 block|}
@@ -563,12 +660,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|allocate (AllocateRequest request)
+DECL|method|getContainerStatus ( GetContainerStatusRequest request)
 specifier|public
-name|AllocateResponse
-name|allocate
+name|GetContainerStatusResponse
+name|getContainerStatus
 parameter_list|(
-name|AllocateRequest
+name|GetContainerStatusRequest
 name|request
 parameter_list|)
 throws|throws
@@ -576,12 +673,12 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|AllocateRequestProto
+name|GetContainerStatusRequestProto
 name|requestProto
 init|=
 operator|(
 operator|(
-name|AllocateRequestPBImpl
+name|GetContainerStatusRequestPBImpl
 operator|)
 name|request
 operator|)
@@ -593,11 +690,11 @@ try|try
 block|{
 return|return
 operator|new
-name|AllocateResponsePBImpl
+name|GetContainerStatusResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
-name|allocate
+name|getContainerStatus
 argument_list|(
 literal|null
 argument_list|,
@@ -626,12 +723,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|finishApplicationMaster ( FinishApplicationMasterRequest request)
+DECL|method|startContainer (StartContainerRequest request)
 specifier|public
-name|FinishApplicationMasterResponse
-name|finishApplicationMaster
+name|StartContainerResponse
+name|startContainer
 parameter_list|(
-name|FinishApplicationMasterRequest
+name|StartContainerRequest
 name|request
 parameter_list|)
 throws|throws
@@ -639,12 +736,12 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|FinishApplicationMasterRequestProto
+name|StartContainerRequestProto
 name|requestProto
 init|=
 operator|(
 operator|(
-name|FinishApplicationMasterRequestPBImpl
+name|StartContainerRequestPBImpl
 operator|)
 name|request
 operator|)
@@ -656,11 +753,11 @@ try|try
 block|{
 return|return
 operator|new
-name|FinishApplicationMasterResponsePBImpl
+name|StartContainerResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
-name|finishApplicationMaster
+name|startContainer
 argument_list|(
 literal|null
 argument_list|,
@@ -689,12 +786,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|registerApplicationMaster ( RegisterApplicationMasterRequest request)
+DECL|method|stopContainer (StopContainerRequest request)
 specifier|public
-name|RegisterApplicationMasterResponse
-name|registerApplicationMaster
+name|StopContainerResponse
+name|stopContainer
 parameter_list|(
-name|RegisterApplicationMasterRequest
+name|StopContainerRequest
 name|request
 parameter_list|)
 throws|throws
@@ -702,12 +799,12 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|RegisterApplicationMasterRequestProto
+name|StopContainerRequestProto
 name|requestProto
 init|=
 operator|(
 operator|(
-name|RegisterApplicationMasterRequestPBImpl
+name|StopContainerRequestPBImpl
 operator|)
 name|request
 operator|)
@@ -719,11 +816,11 @@ try|try
 block|{
 return|return
 operator|new
-name|RegisterApplicationMasterResponsePBImpl
+name|StopContainerResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
-name|registerApplicationMaster
+name|stopContainer
 argument_list|(
 literal|null
 argument_list|,

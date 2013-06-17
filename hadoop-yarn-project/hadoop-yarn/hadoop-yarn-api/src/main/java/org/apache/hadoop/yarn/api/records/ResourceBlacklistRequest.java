@@ -74,7 +74,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * {@link ResourceBlacklistRequest} encapsulates the list of resource-names   * which should be added or removed from the<em>blacklist</em> of resources   * for the application.  *   * @see ResourceRequest  * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
+comment|/**  * {@link ResourceBlacklistRequest} encapsulates the list of resource-names   * which should be added or removed from the<em>blacklist</em> of resources   * for the application.  *   * @see ResourceRequest  * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
 end_comment
 
 begin_class

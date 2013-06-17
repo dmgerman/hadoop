@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by clients to the<code>ResourceManager</code> to   * get queue acls for the<em>current user</em>.</p>  *  *<p>Currently, this is empty.</p>  *   * @see ClientRMProtocol#getQueueUserAcls(GetQueueUserAclsInfoRequest)  */
+comment|/**  *<p>The request sent by clients to the<code>ResourceManager</code> to   * get queue acls for the<em>current user</em>.</p>  *  *<p>Currently, this is empty.</p>  *   * @see ApplicationClientProtocol#getQueueUserAcls(GetQueueUserAclsInfoRequest)  */
 end_comment
 
 begin_class

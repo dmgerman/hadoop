@@ -106,7 +106,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -163,7 +163,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a new   *<code>ApplicationMaster</code> on registration.</p>  *   *<p>The response contains critical details such as:  *<ul>  *<li>Minimum capability for allocated resources in the cluster.</li>  *<li>Maximum capability for allocated resources in the cluster.</li>  *</ul>  *</p>  *   * @see AMRMProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a new   *<code>ApplicationMaster</code> on registration.</p>  *   *<p>The response contains critical details such as:  *<ul>  *<li>Minimum capability for allocated resources in the cluster.</li>  *<li>Maximum capability for allocated resources in the cluster.</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
 begin_class

@@ -44,7 +44,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -264,7 +264,7 @@ name|getNodeHealthStatus
 parameter_list|()
 function_decl|;
 DECL|method|getContainerManager ()
-name|ContainerManager
+name|ContainerManagementProtocol
 name|getContainerManager
 parameter_list|()
 function_decl|;

@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -112,7 +112,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -133,7 +133,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>Container</code> represents an allocated resource in the cluster.  *</p>  *   *<p>The<code>ResourceManager</code> is the sole authority to allocate any  *<code>Container</code> to applications. The allocated<code>Container</code>  * is always on a single node and has a unique {@link ContainerId}. It has  * a specific amount of {@link Resource} allocated.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} for the container, which is globally unique.</li>  *<li>  *       {@link NodeId} of the node on which it is allocated.  *</li>  *<li>HTTP uri of the node.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>{@link Priority} at which the container was allocated.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>  *       Container Token {@link Token} of the container, used to securely verify  *       authenticity of the allocation.   *</li>  *<li>{@link ContainerStatus} of the container.</li>  *</ul>  *</p>  *   *<p>Typically, an<code>ApplicationMaster</code> receives the   *<code>Container</code> from the<code>ResourceManager</code> during  * resource-negotiation and then talks to the<code>NodManager</code> to   * start/stop containers.</p>  *   * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  * @see ContainerManager#stopContainer(org.apache.hadoop.yarn.api.protocolrecords.StopContainerRequest)  */
+comment|/**  *<p><code>Container</code> represents an allocated resource in the cluster.  *</p>  *   *<p>The<code>ResourceManager</code> is the sole authority to allocate any  *<code>Container</code> to applications. The allocated<code>Container</code>  * is always on a single node and has a unique {@link ContainerId}. It has  * a specific amount of {@link Resource} allocated.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} for the container, which is globally unique.</li>  *<li>  *       {@link NodeId} of the node on which it is allocated.  *</li>  *<li>HTTP uri of the node.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>{@link Priority} at which the container was allocated.</li>  *<li>{@link ContainerState} of the container.</li>  *<li>  *       Container Token {@link Token} of the container, used to securely verify  *       authenticity of the allocation.   *</li>  *<li>{@link ContainerStatus} of the container.</li>  *</ul>  *</p>  *   *<p>Typically, an<code>ApplicationMaster</code> receives the   *<code>Container</code> from the<code>ResourceManager</code> during  * resource-negotiation and then talks to the<code>NodManager</code> to   * start/stop containers.</p>  *   * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  * @see ContainerManagementProtocol#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  * @see ContainerManagementProtocol#stopContainer(org.apache.hadoop.yarn.api.protocolrecords.StopContainerRequest)  */
 end_comment
 
 begin_class
@@ -363,7 +363,7 @@ name|Priority
 name|priority
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<code>ContainerToken</code> for the container.    *<p><code>ContainerToken</code> is the security token used by the framework    * to verify authenticity of any<code>Container</code>.</p>    *    *<p>The<code>ResourceManager</code>, on container allocation provides a    * secure token which is verified by the<code>NodeManager</code> on    * container launch.</p>    *    *<p>Applications do not need to care about<code>ContainerToken</code>, they    * are transparently handled by the framework - the allocated    *<code>Container</code> includes the<code>ContainerToken</code>.</p>    *    * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)    * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)    *    * @return<code>ContainerToken</code> for the container    */
+comment|/**    * Get the<code>ContainerToken</code> for the container.    *<p><code>ContainerToken</code> is the security token used by the framework    * to verify authenticity of any<code>Container</code>.</p>    *    *<p>The<code>ResourceManager</code>, on container allocation provides a    * secure token which is verified by the<code>NodeManager</code> on    * container launch.</p>    *    *<p>Applications do not need to care about<code>ContainerToken</code>, they    * are transparently handled by the framework - the allocated    *<code>Container</code> includes the<code>ContainerToken</code>.</p>    *    * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)    * @see ContainerManagementProtocol#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)    *    * @return<code>ContainerToken</code> for the container    */
 annotation|@
 name|Public
 annotation|@

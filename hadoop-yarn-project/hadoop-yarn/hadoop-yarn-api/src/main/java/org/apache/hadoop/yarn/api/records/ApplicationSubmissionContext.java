@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ApplicationSubmissionContext</code> represents all of the  * information needed by the<code>ResourceManager</code> to launch   * the<code>ApplicationMaster</code> for an application.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Application user.</li>  *<li>Application name.</li>  *<li>{@link Priority} of the application.</li>  *<li>  *       {@link ContainerLaunchContext} of the container in which the   *<code>ApplicationMaster</code> is executed.  *</li>  *</ul>  *</p>  *   * @see ContainerLaunchContext  * @see ClientRMProtocol#submitApplication(org.apache.hadoop.yarn.api.protocolrecords.SubmitApplicationRequest)  */
+comment|/**  *<p><code>ApplicationSubmissionContext</code> represents all of the  * information needed by the<code>ResourceManager</code> to launch   * the<code>ApplicationMaster</code> for an application.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Application user.</li>  *<li>Application name.</li>  *<li>{@link Priority} of the application.</li>  *<li>  *       {@link ContainerLaunchContext} of the container in which the   *<code>ApplicationMaster</code> is executed.  *</li>  *</ul>  *</p>  *   * @see ContainerLaunchContext  * @see ApplicationClientProtocol#submitApplication(org.apache.hadoop.yarn.api.protocolrecords.SubmitApplicationRequest)  */
 end_comment
 
 begin_class

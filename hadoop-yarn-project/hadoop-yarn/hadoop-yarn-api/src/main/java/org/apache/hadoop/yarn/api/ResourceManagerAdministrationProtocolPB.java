@@ -44,9 +44,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 operator|.
-name|RMAdminProtocolService
+name|ResourceManagerAdministrationProtocolService
 import|;
 end_import
 
@@ -56,18 +56,18 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.yarn.api.RMAdminProtocolPB"
+literal|"org.apache.hadoop.yarn.api.ResourceManagerAdministrationProtocolPB"
 argument_list|,
 name|protocolVersion
 operator|=
 literal|1
 argument_list|)
-DECL|interface|RMAdminProtocolPB
+DECL|interface|ResourceManagerAdministrationProtocolPB
 specifier|public
 interface|interface
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 extends|extends
-name|RMAdminProtocolService
+name|ResourceManagerAdministrationProtocolService
 operator|.
 name|BlockingInterface
 block|{  }

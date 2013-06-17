@@ -444,7 +444,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -908,7 +908,7 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|clientRMWithDT
 init|=
 literal|null
@@ -2122,7 +2122,7 @@ block|}
 block|}
 comment|// Get the delegation token directly as it is a little difficult to setup
 comment|// the kerberos based rpc.
-DECL|method|getDelegationToken ( final UserGroupInformation loggedInUser, final ClientRMProtocol clientRMService, final String renewerString)
+DECL|method|getDelegationToken ( final UserGroupInformation loggedInUser, final ApplicationClientProtocol clientRMService, final String renewerString)
 specifier|private
 name|org
 operator|.
@@ -2144,7 +2144,7 @@ name|UserGroupInformation
 name|loggedInUser
 parameter_list|,
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|clientRMService
 parameter_list|,
 specifier|final
@@ -2255,7 +2255,7 @@ return|return
 name|token
 return|;
 block|}
-DECL|method|renewDelegationToken (final UserGroupInformation loggedInUser, final ClientRMProtocol clientRMService, final org.apache.hadoop.yarn.api.records.Token dToken)
+DECL|method|renewDelegationToken (final UserGroupInformation loggedInUser, final ApplicationClientProtocol clientRMService, final org.apache.hadoop.yarn.api.records.Token dToken)
 specifier|private
 name|long
 name|renewDelegationToken
@@ -2265,7 +2265,7 @@ name|UserGroupInformation
 name|loggedInUser
 parameter_list|,
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|clientRMService
 parameter_list|,
 specifier|final
@@ -2352,7 +2352,7 @@ return|return
 name|nextExpTime
 return|;
 block|}
-DECL|method|cancelDelegationToken (final UserGroupInformation loggedInUser, final ClientRMProtocol clientRMService, final org.apache.hadoop.yarn.api.records.Token dToken)
+DECL|method|cancelDelegationToken (final UserGroupInformation loggedInUser, final ApplicationClientProtocol clientRMService, final org.apache.hadoop.yarn.api.records.Token dToken)
 specifier|private
 name|void
 name|cancelDelegationToken
@@ -2362,7 +2362,7 @@ name|UserGroupInformation
 name|loggedInUser
 parameter_list|,
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|clientRMService
 parameter_list|,
 specifier|final
@@ -2444,7 +2444,7 @@ expr_stmt|;
 block|}
 DECL|method|getClientRMProtocolWithDT ( org.apache.hadoop.yarn.api.records.Token token, final InetSocketAddress rmAddress, String user, final Configuration conf)
 specifier|private
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|getClientRMProtocolWithDT
 parameter_list|(
 name|org
@@ -2511,7 +2511,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|clientRMWithDT
 init|=
 name|ugi
@@ -2521,26 +2521,26 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|run
 parameter_list|()
 block|{
 return|return
 operator|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,

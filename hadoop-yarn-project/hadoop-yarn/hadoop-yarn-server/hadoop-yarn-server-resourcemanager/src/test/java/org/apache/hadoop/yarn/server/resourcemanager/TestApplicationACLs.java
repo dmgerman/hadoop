@@ -174,7 +174,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -740,7 +740,7 @@ decl_stmt|;
 DECL|field|rmClient
 specifier|private
 specifier|static
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|rmClient
 decl_stmt|;
 DECL|field|recordFactory
@@ -1002,14 +1002,14 @@ argument_list|(
 operator|new
 name|PrivilegedExceptionAction
 argument_list|<
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|run
 parameter_list|()
 throws|throws
@@ -1017,13 +1017,13 @@ name|Exception
 block|{
 return|return
 operator|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,
@@ -1269,7 +1269,7 @@ return|;
 block|}
 DECL|method|getRMClientForUser (String user)
 specifier|private
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|getRMClientForUser
 parameter_list|(
 name|String
@@ -1290,7 +1290,7 @@ argument_list|(
 name|user
 argument_list|)
 decl_stmt|;
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|userClient
 init|=
 name|userUGI
@@ -1300,14 +1300,14 @@ argument_list|(
 operator|new
 name|PrivilegedExceptionAction
 argument_list|<
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|run
 parameter_list|()
 throws|throws
@@ -1315,13 +1315,13 @@ name|Exception
 block|{
 return|return
 operator|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,
@@ -1576,7 +1576,7 @@ argument_list|(
 name|applicationId
 argument_list|)
 expr_stmt|;
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|superUserClient
 init|=
 name|getRMClientForUser
@@ -1732,7 +1732,7 @@ argument_list|(
 name|applicationId
 argument_list|)
 expr_stmt|;
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|friendClient
 init|=
 name|getRMClientForUser
@@ -1888,7 +1888,7 @@ argument_list|(
 name|applicationId
 argument_list|)
 expr_stmt|;
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|enemyRmClient
 init|=
 name|getRMClientForUser

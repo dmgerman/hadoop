@@ -196,7 +196,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -635,12 +635,12 @@ name|rmDTToken
 argument_list|)
 expr_stmt|;
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|cRMProtocol
 init|=
 name|mock
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|)

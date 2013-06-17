@@ -322,7 +322,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1530,7 +1530,7 @@ name|CompositeService
 implements|implements
 name|ServiceStateChangeListener
 implements|,
-name|ContainerManager
+name|ContainerManagementProtocol
 implements|,
 name|EventHandler
 argument_list|<
@@ -2135,7 +2135,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,

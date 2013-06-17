@@ -46,7 +46,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -161,14 +161,14 @@ block|{
 DECL|field|containerManager
 specifier|private
 specifier|final
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 decl_stmt|;
-DECL|method|MockRMWithCustomAMLauncher (ContainerManager containerManager)
+DECL|method|MockRMWithCustomAMLauncher (ContainerManagementProtocol containerManager)
 specifier|public
 name|MockRMWithCustomAMLauncher
 parameter_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 parameter_list|)
 block|{
@@ -182,14 +182,14 @@ name|containerManager
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MockRMWithCustomAMLauncher (Configuration conf, ContainerManager containerManager)
+DECL|method|MockRMWithCustomAMLauncher (Configuration conf, ContainerManagementProtocol containerManager)
 specifier|public
 name|MockRMWithCustomAMLauncher
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 parameter_list|)
 block|{
@@ -251,7 +251,7 @@ block|{
 annotation|@
 name|Override
 specifier|protected
-name|ContainerManager
+name|ContainerManagementProtocol
 name|getContainerMgrProxy
 parameter_list|(
 name|ContainerId

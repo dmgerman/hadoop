@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see AMRMProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
+comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
 begin_class

@@ -102,7 +102,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 import|;
 end_import
 
@@ -154,7 +154,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 operator|.
 name|class
 argument_list|)

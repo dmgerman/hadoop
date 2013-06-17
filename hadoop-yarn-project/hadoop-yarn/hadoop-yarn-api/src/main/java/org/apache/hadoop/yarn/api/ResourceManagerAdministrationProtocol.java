@@ -275,10 +275,10 @@ import|;
 end_import
 
 begin_interface
-DECL|interface|RMAdminProtocol
+DECL|interface|ResourceManagerAdministrationProtocol
 specifier|public
 interface|interface
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 extends|extends
 name|GetUserMappingsProtocol
 block|{

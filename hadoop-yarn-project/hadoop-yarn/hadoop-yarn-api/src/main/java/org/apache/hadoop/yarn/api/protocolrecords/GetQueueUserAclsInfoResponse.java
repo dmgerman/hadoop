@@ -106,7 +106,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -163,7 +163,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to clients  * seeking queue acls for the user.</p>  *  *<p>The response contains a list of {@link QueueUserACLInfo} which  * provides information about {@link QueueACL} per queue.</p>  *   * @see QueueACL  * @see QueueUserACLInfo  * @see ClientRMProtocol#getQueueUserAcls(GetQueueUserAclsInfoRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to clients  * seeking queue acls for the user.</p>  *  *<p>The response contains a list of {@link QueueUserACLInfo} which  * provides information about {@link QueueACL} per queue.</p>  *   * @see QueueACL  * @see QueueUserACLInfo  * @see ApplicationClientProtocol#getQueueUserAcls(GetQueueUserAclsInfoRequest)  */
 end_comment
 
 begin_class

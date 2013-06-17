@@ -134,7 +134,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -945,7 +945,7 @@ name|rmClient
 operator|=
 name|mock
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|)

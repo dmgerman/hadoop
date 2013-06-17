@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -511,7 +511,7 @@ specifier|final
 class|class
 name|MyContainerManagerImpl
 implements|implements
-name|ContainerManager
+name|ContainerManagementProtocol
 block|{
 DECL|field|launched
 name|boolean

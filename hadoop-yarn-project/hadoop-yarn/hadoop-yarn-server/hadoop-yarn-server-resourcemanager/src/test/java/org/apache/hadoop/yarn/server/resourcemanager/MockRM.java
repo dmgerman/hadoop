@@ -138,7 +138,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -1174,7 +1174,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|client
 init|=
 name|getClientRMService
@@ -1500,7 +1500,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|client
 init|=
 name|getClientRMService
@@ -1755,7 +1755,7 @@ name|SubmitApplicationResponse
 argument_list|>
 argument_list|()
 block|{
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|client
 decl_stmt|;
 name|SubmitApplicationRequest
@@ -1813,7 +1813,7 @@ name|SubmitApplicationResponse
 argument_list|>
 name|setClientReq
 parameter_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|client
 parameter_list|,
 name|SubmitApplicationRequest
@@ -2139,7 +2139,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|client
 init|=
 name|getClientRMService

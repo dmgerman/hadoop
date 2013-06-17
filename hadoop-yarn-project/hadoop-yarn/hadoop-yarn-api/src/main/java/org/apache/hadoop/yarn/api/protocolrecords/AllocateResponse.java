@@ -122,7 +122,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -269,7 +269,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> know that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> the    *<code>ApplicationMaster</code> during resource negotiation.</p>  *  *<p>The response, includes:  *<ul>  *<li>Response ID to track duplicate responses.</li>  *<li>  *       A reboot flag to let the<code>ApplicationMaster</code> know that its   *       horribly out of sync and needs to reboot.</li>  *<li>A list of newly allocated {@link Container}.</li>  *<li>A list of completed {@link Container}.</li>  *<li>  *       The available headroom for resources in the cluster for the  *       application.   *</li>  *<li>A list of nodes whose status has been updated.</li>  *<li>The number of available nodes in a cluster.</li>  *<li>A description of resources requested back by the cluster</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_class

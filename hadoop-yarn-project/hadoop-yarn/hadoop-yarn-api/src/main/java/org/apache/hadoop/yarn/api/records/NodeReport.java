@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>NodeReport</code> is a summary of runtime information of a   * node in the cluster.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link NodeId} of the node.</li>  *<li>HTTP Tracking URL of the node.</li>  *<li>Rack name for the node.</li>  *<li>Used {@link Resource} on the node.</li>  *<li>Total available {@link Resource} of the node.</li>  *<li>Number of running containers on the node.</li>  *</ul>  *</p>  *  * @see ClientRMProtocol#getClusterNodes(org.apache.hadoop.yarn.api.protocolrecords.GetClusterNodesRequest)  */
+comment|/**  *<p><code>NodeReport</code> is a summary of runtime information of a   * node in the cluster.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link NodeId} of the node.</li>  *<li>HTTP Tracking URL of the node.</li>  *<li>Rack name for the node.</li>  *<li>Used {@link Resource} on the node.</li>  *<li>Total available {@link Resource} of the node.</li>  *<li>Number of running containers on the node.</li>  *</ul>  *</p>  *  * @see ApplicationClientProtocol#getClusterNodes(org.apache.hadoop.yarn.api.protocolrecords.GetClusterNodesRequest)  */
 end_comment
 
 begin_class

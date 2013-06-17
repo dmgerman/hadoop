@@ -74,7 +74,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -185,7 +185,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *</ul>  *</p>  *   * @see AMRMProtocol#allocate(AllocateRequest)  */
+comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_class

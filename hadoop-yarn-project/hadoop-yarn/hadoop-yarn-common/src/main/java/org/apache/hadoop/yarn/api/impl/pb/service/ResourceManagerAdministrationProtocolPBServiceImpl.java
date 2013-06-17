@@ -46,7 +46,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 import|;
 end_import
 
@@ -62,7 +62,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 import|;
 end_import
 
@@ -497,23 +497,23 @@ import|;
 end_import
 
 begin_class
-DECL|class|RMAdminProtocolPBServiceImpl
+DECL|class|ResourceManagerAdministrationProtocolPBServiceImpl
 specifier|public
 class|class
-name|RMAdminProtocolPBServiceImpl
+name|ResourceManagerAdministrationProtocolPBServiceImpl
 implements|implements
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 block|{
 DECL|field|real
 specifier|private
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|real
 decl_stmt|;
-DECL|method|RMAdminProtocolPBServiceImpl (RMAdminProtocol impl)
+DECL|method|ResourceManagerAdministrationProtocolPBServiceImpl (ResourceManagerAdministrationProtocol impl)
 specifier|public
-name|RMAdminProtocolPBServiceImpl
+name|ResourceManagerAdministrationProtocolPBServiceImpl
 parameter_list|(
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|impl
 parameter_list|)
 block|{

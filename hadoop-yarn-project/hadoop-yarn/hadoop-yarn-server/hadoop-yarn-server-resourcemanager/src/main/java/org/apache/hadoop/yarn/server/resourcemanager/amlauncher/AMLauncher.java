@@ -268,7 +268,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -684,7 +684,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|containerMgrProxy
 specifier|private
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerMgrProxy
 decl_stmt|;
 DECL|field|application
@@ -987,7 +987,7 @@ block|}
 comment|// Protected. For tests.
 DECL|method|getContainerMgrProxy ( final ContainerId containerId)
 specifier|protected
-name|ContainerManager
+name|ContainerManagementProtocol
 name|getContainerMgrProxy
 parameter_list|(
 specifier|final
@@ -1090,26 +1090,26 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|ContainerManager
+name|ContainerManagementProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ContainerManager
+name|ContainerManagementProtocol
 name|run
 parameter_list|()
 block|{
 return|return
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,

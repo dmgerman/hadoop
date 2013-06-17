@@ -168,7 +168,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -738,7 +738,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|rmClient
 specifier|protected
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|rmClient
 decl_stmt|;
 DECL|field|rmAddress
@@ -925,13 +925,13 @@ operator|.
 name|rmClient
 operator|=
 operator|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,

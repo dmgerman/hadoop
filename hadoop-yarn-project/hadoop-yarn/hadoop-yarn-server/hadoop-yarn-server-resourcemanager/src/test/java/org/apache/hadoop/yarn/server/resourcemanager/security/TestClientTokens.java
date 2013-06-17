@@ -346,7 +346,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1159,7 +1159,7 @@ specifier|static
 class|class
 name|CustomNM
 implements|implements
-name|ContainerManager
+name|ContainerManagementProtocol
 block|{
 DECL|field|clientTokensSecret
 specifier|public

@@ -132,7 +132,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocolPB
+name|ApplicationMasterProtocolPB
 import|;
 end_import
 
@@ -189,7 +189,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|AMRMProtocolPB
+name|ApplicationMasterProtocolPB
 operator|.
 name|class
 argument_list|)

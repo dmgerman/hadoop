@@ -336,7 +336,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -668,7 +668,7 @@ name|eventHandler
 decl_stmt|;
 DECL|field|scheduler
 specifier|protected
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|scheduler
 decl_stmt|;
 DECL|field|clientService
@@ -1610,7 +1610,7 @@ expr_stmt|;
 block|}
 DECL|method|createSchedulerProxy ()
 specifier|protected
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|createSchedulerProxy
 parameter_list|()
 block|{
@@ -1689,26 +1689,26 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|run
 parameter_list|()
 block|{
 return|return
 operator|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,

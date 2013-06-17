@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to<em>stop</em> an  * allocated container.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ContainerManager#stopContainer(StopContainerRequest)  */
+comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to<em>stop</em> an  * allocated container.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ContainerManagementProtocol#stopContainer(StopContainerRequest)  */
 end_comment
 
 begin_class

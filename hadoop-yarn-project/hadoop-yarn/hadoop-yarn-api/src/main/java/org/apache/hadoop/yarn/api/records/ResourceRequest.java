@@ -74,7 +74,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -95,7 +95,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ResourceRequest</code> represents the request made by an  * application to the<code>ResourceManager</code> to obtain various   *<code>Container</code> allocations.</p>  *   *<p>It includes:  *<ul>  *<li>{@link Priority} of the request.</li>  *<li>  *       The<em>name</em> of the machine or rack on which the allocation is   *       desired. A special value of<em>*</em> signifies that   *<em>any</em> host/rack is acceptable to the application.  *</li>  *<li>{@link Resource} required for each request.</li>  *<li>  *       Number of containers, of above specifications, which are required   *       by the application.  *</li>  *<li>  *       A boolean<em>relaxLocality</em> flag, defaulting to<code>true</code>,  *       which tells the<code>ResourceManager</code> if the application wants  *       locality to be loose (i.e. allows fall-through to rack or<em>any</em>)  *       or strict (i.e. specify hard constraint on resource allocation).  *</li>  *</ul>  *</p>  *   * @see Resource  * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
+comment|/**  *<p><code>ResourceRequest</code> represents the request made by an  * application to the<code>ResourceManager</code> to obtain various   *<code>Container</code> allocations.</p>  *   *<p>It includes:  *<ul>  *<li>{@link Priority} of the request.</li>  *<li>  *       The<em>name</em> of the machine or rack on which the allocation is   *       desired. A special value of<em>*</em> signifies that   *<em>any</em> host/rack is acceptable to the application.  *</li>  *<li>{@link Resource} required for each request.</li>  *<li>  *       Number of containers, of above specifications, which are required   *       by the application.  *</li>  *<li>  *       A boolean<em>relaxLocality</em> flag, defaulting to<code>true</code>,  *       which tells the<code>ResourceManager</code> if the application wants  *       locality to be loose (i.e. allows fall-through to rack or<em>any</em>)  *       or strict (i.e. specify hard constraint on resource allocation).  *</li>  *</ul>  *</p>  *   * @see Resource  * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
 end_comment
 
 begin_class

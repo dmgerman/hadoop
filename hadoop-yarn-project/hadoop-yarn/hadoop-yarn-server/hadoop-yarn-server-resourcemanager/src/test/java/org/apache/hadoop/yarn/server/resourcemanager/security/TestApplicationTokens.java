@@ -152,7 +152,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -543,7 +543,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|rmClient
 init|=
 literal|null
@@ -992,7 +992,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|rmClient
 init|=
 literal|null
@@ -1357,7 +1357,7 @@ block|}
 block|}
 DECL|method|createRMClient (final MockRM rm, final Configuration conf, final YarnRPC rpc, UserGroupInformation currentUser)
 specifier|private
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|createRMClient
 parameter_list|(
 specifier|final
@@ -1384,26 +1384,26 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|run
 parameter_list|()
 block|{
 return|return
 operator|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,

@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -121,7 +121,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to  * inform the<code>ResourceManager</code> about its completion.</p>  *  *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the  *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
+comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to  * inform the<code>ResourceManager</code> about its completion.</p>  *  *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the  *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see ApplicationMasterProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
 begin_class

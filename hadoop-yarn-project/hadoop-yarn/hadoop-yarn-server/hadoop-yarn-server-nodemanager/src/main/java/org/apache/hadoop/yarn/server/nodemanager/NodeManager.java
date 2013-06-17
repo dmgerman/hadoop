@@ -250,7 +250,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1729,7 +1729,7 @@ name|nmTokenSecretManager
 decl_stmt|;
 DECL|field|containerManager
 specifier|private
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 decl_stmt|;
 DECL|field|webServer
@@ -1927,7 +1927,7 @@ annotation|@
 name|Override
 DECL|method|getContainerManager ()
 specifier|public
-name|ContainerManager
+name|ContainerManagementProtocol
 name|getContainerManager
 parameter_list|()
 block|{
@@ -1937,12 +1937,12 @@ operator|.
 name|containerManager
 return|;
 block|}
-DECL|method|setContainerManager (ContainerManager containerManager)
+DECL|method|setContainerManager (ContainerManagementProtocol containerManager)
 specifier|public
 name|void
 name|setContainerManager
 parameter_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 parameter_list|)
 block|{

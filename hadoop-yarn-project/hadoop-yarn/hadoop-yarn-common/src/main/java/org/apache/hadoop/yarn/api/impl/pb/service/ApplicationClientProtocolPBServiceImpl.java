@@ -154,7 +154,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -170,7 +170,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 import|;
 end_import
 
@@ -1283,23 +1283,23 @@ import|;
 end_import
 
 begin_class
-DECL|class|ClientRMProtocolPBServiceImpl
+DECL|class|ApplicationClientProtocolPBServiceImpl
 specifier|public
 class|class
-name|ClientRMProtocolPBServiceImpl
+name|ApplicationClientProtocolPBServiceImpl
 implements|implements
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 block|{
 DECL|field|real
 specifier|private
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|real
 decl_stmt|;
-DECL|method|ClientRMProtocolPBServiceImpl (ClientRMProtocol impl)
+DECL|method|ApplicationClientProtocolPBServiceImpl (ApplicationClientProtocol impl)
 specifier|public
-name|ClientRMProtocolPBServiceImpl
+name|ApplicationClientProtocolPBServiceImpl
 parameter_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|impl
 parameter_list|)
 block|{

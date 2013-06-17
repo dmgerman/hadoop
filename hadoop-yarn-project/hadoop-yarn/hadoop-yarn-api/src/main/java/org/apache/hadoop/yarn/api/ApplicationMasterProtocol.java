@@ -245,10 +245,10 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|interface|AMRMProtocol
+DECL|interface|ApplicationMasterProtocol
 specifier|public
 interface|interface
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 block|{
 comment|/**    *<p>The interface used by a new<code>ApplicationMaster</code> to register     * with the<code>ResourceManager</code>.</p>     *     *<p>The<code>ApplicationMaster</code> needs to provide details such    * as RPC Port, HTTP tracking url etc. as specified in     * {@link RegisterApplicationMasterRequest}.</p>    *     *<p>The<code>ResourceManager</code> responds with critical details such     * as minimum and maximum resource capabilities in the cluster as specified in    * {@link RegisterApplicationMasterResponse}.</p>    *      * @param request registration request    * @return registration respose    * @throws YarnException    * @throws IOException    * @see RegisterApplicationMasterRequest    * @see RegisterApplicationMasterResponse    */
 DECL|method|registerApplicationMaster ( RegisterApplicationMasterRequest request)

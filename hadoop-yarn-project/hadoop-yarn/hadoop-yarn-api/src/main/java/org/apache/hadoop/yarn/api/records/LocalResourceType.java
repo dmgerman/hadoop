@@ -64,12 +64,12 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>LocalResourceType</code> specifies the<em>type</em>  * of a resource localized by the<code>NodeManager</code>.</p>   *  *<p>The<em>type</em> can be one of:  *<ul>  *<li>  *       {@link #FILE} - Regular file i.e. uninterpreted bytes.   *</li>  *<li>  *       {@link #ARCHIVE} - Archive, which is automatically unarchived by the   *<code>NodeManager</code>.  *</li>  *</ul>  *</p>  *  * @see LocalResource  * @see ContainerLaunchContext  * @see ApplicationSubmissionContext  * @see ContainerManager#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
+comment|/**  *<p><code>LocalResourceType</code> specifies the<em>type</em>  * of a resource localized by the<code>NodeManager</code>.</p>   *  *<p>The<em>type</em> can be one of:  *<ul>  *<li>  *       {@link #FILE} - Regular file i.e. uninterpreted bytes.   *</li>  *<li>  *       {@link #ARCHIVE} - Archive, which is automatically unarchived by the   *<code>NodeManager</code>.  *</li>  *</ul>  *</p>  *  * @see LocalResource  * @see ContainerLaunchContext  * @see ApplicationSubmissionContext  * @see ContainerManagementProtocol#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
 end_comment
 
 begin_enum

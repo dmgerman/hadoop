@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -103,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by clients to get a new {@link ApplicationId} for  * submitting an application.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ClientRMProtocol#getNewApplication(GetNewApplicationRequest)  */
+comment|/**  *<p>The request sent by clients to get a new {@link ApplicationId} for  * submitting an application.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ApplicationClientProtocol#getNewApplication(GetNewApplicationRequest)  */
 end_comment
 
 begin_class

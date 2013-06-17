@@ -184,7 +184,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -3774,7 +3774,7 @@ operator|==
 literal|2
 argument_list|)
 expr_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|realRM
 init|=
 name|amClient
@@ -3783,12 +3783,12 @@ name|rmClient
 decl_stmt|;
 try|try
 block|{
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|mockRM
 init|=
 name|mock
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|)

@@ -258,7 +258,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -933,7 +933,7 @@ name|start
 argument_list|()
 expr_stmt|;
 specifier|final
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 init|=
 name|nm

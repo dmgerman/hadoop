@@ -212,7 +212,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 import|;
 end_import
 
@@ -616,7 +616,7 @@ name|AdminService
 extends|extends
 name|AbstractService
 implements|implements
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 block|{
 DECL|field|LOG
 specifier|private
@@ -876,7 +876,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 operator|.
 name|class
 argument_list|,

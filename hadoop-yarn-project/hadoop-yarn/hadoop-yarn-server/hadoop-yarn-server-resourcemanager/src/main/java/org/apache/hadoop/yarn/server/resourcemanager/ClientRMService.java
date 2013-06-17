@@ -278,7 +278,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -1236,7 +1236,7 @@ name|ClientRMService
 extends|extends
 name|AbstractService
 implements|implements
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 block|{
 DECL|field|EMPTY_APPS_REPORT
 specifier|private
@@ -1457,7 +1457,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,

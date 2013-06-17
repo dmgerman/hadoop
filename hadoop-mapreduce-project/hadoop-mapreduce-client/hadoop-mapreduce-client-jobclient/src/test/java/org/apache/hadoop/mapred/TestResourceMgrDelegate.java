@@ -98,7 +98,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -380,14 +380,14 @@ throws|,
 name|InterruptedException
 block|{
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|applicationsManager
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|)
@@ -617,14 +617,14 @@ throws|throws
 name|Exception
 block|{
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|applicationsManager
 init|=
 name|Mockito
 operator|.
 name|mock
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|)

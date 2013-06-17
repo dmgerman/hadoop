@@ -156,7 +156,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 import|;
 end_import
 
@@ -1040,7 +1040,7 @@ return|;
 block|}
 DECL|method|createAdminProtocol ()
 specifier|private
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|createAdminProtocol
 parameter_list|()
 throws|throws
@@ -1091,7 +1091,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|getUGI
@@ -1104,26 +1104,26 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|run
 parameter_list|()
 block|{
 return|return
 operator|(
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 operator|.
 name|class
 argument_list|,
@@ -1151,7 +1151,7 @@ throws|,
 name|YarnException
 block|{
 comment|// Refresh the queue properties
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|createAdminProtocol
@@ -1191,7 +1191,7 @@ throws|,
 name|YarnException
 block|{
 comment|// Refresh the nodes
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|createAdminProtocol
@@ -1231,7 +1231,7 @@ throws|,
 name|YarnException
 block|{
 comment|// Refresh the user-to-groups mappings
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|createAdminProtocol
@@ -1271,7 +1271,7 @@ throws|,
 name|YarnException
 block|{
 comment|// Refresh the super-user groups
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|createAdminProtocol
@@ -1311,7 +1311,7 @@ throws|,
 name|YarnException
 block|{
 comment|// Refresh the admin acls
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|createAdminProtocol
@@ -1351,7 +1351,7 @@ throws|,
 name|YarnException
 block|{
 comment|// Refresh the service acls
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|createAdminProtocol
@@ -1393,7 +1393,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Get groups users belongs to
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 name|createAdminProtocol

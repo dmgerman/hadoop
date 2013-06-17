@@ -484,7 +484,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1894,7 +1894,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -2406,7 +2406,7 @@ block|{
 annotation|@
 name|Override
 specifier|protected
-name|ContainerManager
+name|ContainerManagementProtocol
 name|getCMProxy
 parameter_list|(
 name|ContainerId
@@ -2422,17 +2422,17 @@ throws|throws
 name|IOException
 block|{
 comment|// make proxy connect to our local containerManager server
-name|ContainerManager
+name|ContainerManagementProtocol
 name|proxy
 init|=
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -2460,7 +2460,7 @@ specifier|public
 class|class
 name|DummyContainerManager
 implements|implements
-name|ContainerManager
+name|ContainerManagementProtocol
 block|{
 DECL|field|status
 specifier|private

@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 import|;
 end_import
 
@@ -173,9 +173,9 @@ name|Service
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|YARN_SECURITY_SERVICE_AUTHORIZATION_CONTAINER_MANAGER
+name|YARN_SECURITY_SERVICE_AUTHORIZATION_CONTAINER_MANAGEMENT_PROTOCOL
 argument_list|,
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 operator|.
 name|class
 argument_list|)

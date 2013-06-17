@@ -308,7 +308,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -324,7 +324,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1160,7 +1160,7 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|scheduler
 init|=
 name|submitAndRegisterApplication
@@ -1301,17 +1301,17 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ContainerManager
+name|ContainerManagementProtocol
 name|client
 init|=
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|yarnRPC
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -1464,7 +1464,7 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|scheduler
 init|=
 name|submitAndRegisterApplication
@@ -1844,17 +1844,17 @@ name|Void
 name|run
 parameter_list|()
 block|{
-name|ContainerManager
+name|ContainerManagementProtocol
 name|client
 init|=
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|yarnRPC
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -2079,7 +2079,7 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|scheduler
 init|=
 name|submitAndRegisterApplication
@@ -2289,17 +2289,17 @@ name|Void
 name|run
 parameter_list|()
 block|{
-name|ContainerManager
+name|ContainerManagementProtocol
 name|client
 init|=
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|yarnRPC
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -2516,7 +2516,7 @@ expr_stmt|;
 block|}
 DECL|method|submitAndRegisterApplication ( ResourceManager resourceManager, final YarnRPC yarnRPC, ApplicationId appID)
 specifier|private
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|submitAndRegisterApplication
 parameter_list|(
 name|ResourceManager
@@ -2966,7 +2966,7 @@ name|appToken
 argument_list|)
 expr_stmt|;
 block|}
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|scheduler
 init|=
 name|currentUser
@@ -2976,26 +2976,26 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|run
 parameter_list|()
 block|{
 return|return
 operator|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|)
 name|yarnRPC
 operator|.
 name|getProxy
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,
@@ -3056,12 +3056,12 @@ return|return
 name|scheduler
 return|;
 block|}
-DECL|method|requestAndGetContainer (AMRMProtocol scheduler, ApplicationId appID)
+DECL|method|requestAndGetContainer (ApplicationMasterProtocol scheduler, ApplicationId appID)
 specifier|private
 name|Container
 name|requestAndGetContainer
 parameter_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|scheduler
 parameter_list|,
 name|ApplicationId

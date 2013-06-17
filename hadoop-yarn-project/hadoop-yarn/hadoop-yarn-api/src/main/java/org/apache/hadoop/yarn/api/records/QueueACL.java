@@ -64,12 +64,12 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
 begin_comment
-comment|/**  *<p>  *<code>QueueACL</code> enumerates the various ACLs for queues.  *</p>  *   *<p>  * The ACLs are one of:  *<ul>  *<li>{@link #SUBMIT_APPLICATIONS} - ACL to submit applications to the  * queue.</li>  *<li>{@link #ADMINISTER_QUEUE} - ACL to administer the queue.</li>  *</ul>  *</p>  *   * @see QueueInfo  * @see ClientRMProtocol#getQueueUserAcls(org.apache.hadoop.yarn.api.protocolrecords.GetQueueUserAclsInfoRequest)  */
+comment|/**  *<p>  *<code>QueueACL</code> enumerates the various ACLs for queues.  *</p>  *   *<p>  * The ACLs are one of:  *<ul>  *<li>{@link #SUBMIT_APPLICATIONS} - ACL to submit applications to the  * queue.</li>  *<li>{@link #ADMINISTER_QUEUE} - ACL to administer the queue.</li>  *</ul>  *</p>  *   * @see QueueInfo  * @see ApplicationClientProtocol#getQueueUserAcls(org.apache.hadoop.yarn.api.protocolrecords.GetQueueUserAclsInfoRequest)  */
 end_comment
 
 begin_enum

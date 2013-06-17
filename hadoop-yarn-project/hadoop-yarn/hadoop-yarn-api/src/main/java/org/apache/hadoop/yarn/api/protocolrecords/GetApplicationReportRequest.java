@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -121,7 +121,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by a client to the<code>ResourceManager</code> to   * get an {@link ApplicationReport} for an application.</p>  *   *<p>The request should include the {@link ApplicationId} of the   * application.</p>  *   * @see ClientRMProtocol#getApplicationReport(GetApplicationReportRequest)  * @see ApplicationReport  */
+comment|/**  *<p>The request sent by a client to the<code>ResourceManager</code> to   * get an {@link ApplicationReport} for an application.</p>  *   *<p>The request should include the {@link ApplicationId} of the   * application.</p>  *   * @see ApplicationClientProtocol#getApplicationReport(GetApplicationReportRequest)  * @see ApplicationReport  */
 end_comment
 
 begin_class

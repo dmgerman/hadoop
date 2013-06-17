@@ -246,7 +246,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -1057,7 +1057,7 @@ name|ApplicationMasterService
 extends|extends
 name|AbstractService
 implements|implements
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 block|{
 DECL|field|LOG
 specifier|private
@@ -1259,7 +1259,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,

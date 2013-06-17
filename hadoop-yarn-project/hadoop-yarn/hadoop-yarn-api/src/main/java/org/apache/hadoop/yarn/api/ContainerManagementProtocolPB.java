@@ -44,9 +44,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|ClientRMProtocol
+name|ContainerManagementProtocol
 operator|.
-name|ClientRMProtocolService
+name|ContainerManagementProtocolService
 import|;
 end_import
 
@@ -56,18 +56,18 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.yarn.api.ClientRMProtocolPB"
+literal|"org.apache.hadoop.yarn.api.ContainerManagementProtocolPB"
 argument_list|,
 name|protocolVersion
 operator|=
 literal|1
 argument_list|)
-DECL|interface|ClientRMProtocolPB
+DECL|interface|ContainerManagementProtocolPB
 specifier|public
 interface|interface
-name|ClientRMProtocolPB
+name|ContainerManagementProtocolPB
 extends|extends
-name|ClientRMProtocolService
+name|ContainerManagementProtocolService
 operator|.
 name|BlockingInterface
 block|{  }

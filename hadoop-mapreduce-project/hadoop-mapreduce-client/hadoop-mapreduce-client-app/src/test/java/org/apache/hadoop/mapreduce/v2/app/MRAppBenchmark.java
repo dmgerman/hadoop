@@ -262,7 +262,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -1284,13 +1284,13 @@ block|{
 annotation|@
 name|Override
 specifier|protected
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|createSchedulerProxy
 parameter_list|()
 block|{
 return|return
 operator|new
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 argument_list|()
 block|{
 annotation|@

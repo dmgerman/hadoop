@@ -250,7 +250,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1423,7 +1423,7 @@ name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 init|=
 name|currentUser
@@ -1433,14 +1433,14 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|ContainerManager
+name|ContainerManagementProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ContainerManager
+name|ContainerManagementProtocol
 name|run
 parameter_list|()
 block|{
@@ -1475,13 +1475,13 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,

@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -121,7 +121,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>start</em> a container.</p>  *   *<p>The<code>ApplicationMaster</code> has to provide details such as  * allocated resource capability, security tokens (if enabled), command  * to be executed to start the container, environment for the process,   * necessary binaries/jar/shared-objects etc. via the   * {@link ContainerLaunchContext}.</p>  *  * @see ContainerManager#startContainer(StartContainerRequest)  */
+comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>start</em> a container.</p>  *   *<p>The<code>ApplicationMaster</code> has to provide details such as  * allocated resource capability, security tokens (if enabled), command  * to be executed to start the container, environment for the process,   * necessary binaries/jar/shared-objects etc. via the   * {@link ContainerLaunchContext}.</p>  *  * @see ContainerManagementProtocol#startContainer(StartContainerRequest)  */
 end_comment
 
 begin_class

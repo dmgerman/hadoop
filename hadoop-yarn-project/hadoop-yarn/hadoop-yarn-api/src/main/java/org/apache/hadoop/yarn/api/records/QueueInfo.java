@@ -106,7 +106,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -127,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>QueueInfo is a report of the runtime information of the queue.</p>  *   *<p>It includes information such as:  *<ul>  *<li>Queue name.</li>  *<li>Capacity of the queue.</li>  *<li>Maximum capacity of the queue.</li>  *<li>Current capacity of the queue.</li>  *<li>Child queues.</li>  *<li>Running applications.</li>  *<li>{@link QueueState} of the queue.</li>  *</ul>  *</p>  *  * @see QueueState  * @see ClientRMProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
+comment|/**  *<p>QueueInfo is a report of the runtime information of the queue.</p>  *   *<p>It includes information such as:  *<ul>  *<li>Queue name.</li>  *<li>Capacity of the queue.</li>  *<li>Maximum capacity of the queue.</li>  *<li>Current capacity of the queue.</li>  *<li>Child queues.</li>  *<li>Running applications.</li>  *<li>{@link QueueState} of the queue.</li>  *</ul>  *</p>  *  * @see QueueState  * @see ApplicationClientProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
 end_comment
 
 begin_class

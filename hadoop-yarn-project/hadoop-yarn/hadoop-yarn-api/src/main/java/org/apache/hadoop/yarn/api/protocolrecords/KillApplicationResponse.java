@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client  * aborting a submitted application.</p>  *  *<p>Currently it's empty.</p>  *   * @see ClientRMProtocol#forceKillApplication(KillApplicationRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client  * aborting a submitted application.</p>  *  *<p>Currently it's empty.</p>  *   * @see ApplicationClientProtocol#forceKillApplication(KillApplicationRequest)  */
 end_comment
 
 begin_class

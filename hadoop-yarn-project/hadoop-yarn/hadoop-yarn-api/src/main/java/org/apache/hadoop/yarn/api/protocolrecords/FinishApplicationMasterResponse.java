@@ -64,7 +64,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a   *<code>ApplicationMaster</code> on it's completion.</p>  *   *<p>Currently, this is empty.</p>  *   * @see AMRMProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a   *<code>ApplicationMaster</code> on it's completion.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ApplicationMasterProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
 begin_class

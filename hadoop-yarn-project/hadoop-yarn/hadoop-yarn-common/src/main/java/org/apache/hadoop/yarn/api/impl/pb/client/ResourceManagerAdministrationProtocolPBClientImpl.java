@@ -122,7 +122,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 import|;
 end_import
 
@@ -138,7 +138,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 import|;
 end_import
 
@@ -811,23 +811,23 @@ import|;
 end_import
 
 begin_class
-DECL|class|RMAdminProtocolPBClientImpl
+DECL|class|ResourceManagerAdministrationProtocolPBClientImpl
 specifier|public
 class|class
-name|RMAdminProtocolPBClientImpl
+name|ResourceManagerAdministrationProtocolPBClientImpl
 implements|implements
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 implements|,
 name|Closeable
 block|{
 DECL|field|proxy
 specifier|private
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 name|proxy
 decl_stmt|;
-DECL|method|RMAdminProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
+DECL|method|ResourceManagerAdministrationProtocolPBClientImpl (long clientVersion, InetSocketAddress addr, Configuration conf)
 specifier|public
-name|RMAdminProtocolPBClientImpl
+name|ResourceManagerAdministrationProtocolPBClientImpl
 parameter_list|(
 name|long
 name|clientVersion
@@ -847,7 +847,7 @@ name|setProtocolEngine
 argument_list|(
 name|conf
 argument_list|,
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -859,13 +859,13 @@ expr_stmt|;
 name|proxy
 operator|=
 operator|(
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 operator|)
 name|RPC
 operator|.
 name|getProxy
 argument_list|(
-name|RMAdminProtocolPB
+name|ResourceManagerAdministrationProtocolPB
 operator|.
 name|class
 argument_list|,

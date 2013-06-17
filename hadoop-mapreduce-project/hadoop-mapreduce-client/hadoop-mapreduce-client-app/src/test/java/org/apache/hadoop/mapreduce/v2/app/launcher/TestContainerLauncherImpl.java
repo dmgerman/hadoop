@@ -426,7 +426,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1272,12 +1272,12 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|mockCM
 init|=
 name|mock
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|)
@@ -1290,7 +1290,7 @@ name|getProxy
 argument_list|(
 name|eq
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|)
@@ -1713,12 +1713,12 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|mockCM
 init|=
 name|mock
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|)
@@ -1731,7 +1731,7 @@ name|getProxy
 argument_list|(
 name|eq
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|)
@@ -2160,12 +2160,12 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|mockCM
 init|=
 name|mock
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|)
@@ -2178,7 +2178,7 @@ name|getProxy
 argument_list|(
 name|eq
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|)
@@ -2541,7 +2541,7 @@ argument_list|(
 name|mockEventHandler
 argument_list|)
 expr_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|mockCM
 init|=
 operator|new
@@ -2560,7 +2560,7 @@ name|getProxy
 argument_list|(
 name|eq
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|)
@@ -3060,7 +3060,7 @@ specifier|static
 class|class
 name|ContainerManagerForTest
 implements|implements
-name|ContainerManager
+name|ContainerManagementProtocol
 block|{
 DECL|field|startLaunchBarrier
 specifier|private

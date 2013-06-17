@@ -162,7 +162,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1518,13 +1518,13 @@ block|{}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForContainerState (ContainerManager containerManager, ContainerId containerID, ContainerState finalState)
+DECL|method|waitForContainerState (ContainerManagementProtocol containerManager, ContainerId containerID, ContainerState finalState)
 specifier|public
 specifier|static
 name|void
 name|waitForContainerState
 parameter_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 parameter_list|,
 name|ContainerId
@@ -1552,13 +1552,13 @@ literal|20
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|waitForContainerState (ContainerManager containerManager, ContainerId containerID, ContainerState finalState, int timeOutMax)
+DECL|method|waitForContainerState (ContainerManagementProtocol containerManager, ContainerId containerID, ContainerState finalState, int timeOutMax)
 specifier|public
 specifier|static
 name|void
 name|waitForContainerState
 parameter_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 name|containerManager
 parameter_list|,
 name|ContainerId

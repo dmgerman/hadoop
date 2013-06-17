@@ -44,9 +44,9 @@ name|yarn
 operator|.
 name|proto
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
-name|AMRMProtocolService
+name|ApplicationMasterProtocolService
 import|;
 end_import
 
@@ -56,18 +56,18 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.yarn.api.AMRMProtocolPB"
+literal|"org.apache.hadoop.yarn.api.ApplicationMasterProtocolPB"
 argument_list|,
 name|protocolVersion
 operator|=
 literal|1
 argument_list|)
-DECL|interface|AMRMProtocolPB
+DECL|interface|ApplicationMasterProtocolPB
 specifier|public
 interface|interface
-name|AMRMProtocolPB
+name|ApplicationMasterProtocolPB
 extends|extends
-name|AMRMProtocolService
+name|ApplicationMasterProtocolService
 operator|.
 name|BlockingInterface
 block|{  }

@@ -62,7 +62,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -354,7 +354,7 @@ name|context
 decl_stmt|;
 DECL|field|amRMProtocol
 specifier|private
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|amRMProtocol
 decl_stmt|;
 DECL|field|requests
@@ -389,13 +389,13 @@ name|ContainerId
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|MockAM (RMContext context, AMRMProtocol amRMProtocol, ApplicationAttemptId attemptId)
+DECL|method|MockAM (RMContext context, ApplicationMasterProtocol amRMProtocol, ApplicationAttemptId attemptId)
 name|MockAM
 parameter_list|(
 name|RMContext
 name|context
 parameter_list|,
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|amRMProtocol
 parameter_list|,
 name|ApplicationAttemptId
@@ -421,11 +421,11 @@ operator|=
 name|attemptId
 expr_stmt|;
 block|}
-DECL|method|setAMRMProtocol (AMRMProtocol amRMProtocol)
+DECL|method|setAMRMProtocol (ApplicationMasterProtocol amRMProtocol)
 name|void
 name|setAMRMProtocol
 parameter_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|amRMProtocol
 parameter_list|)
 block|{

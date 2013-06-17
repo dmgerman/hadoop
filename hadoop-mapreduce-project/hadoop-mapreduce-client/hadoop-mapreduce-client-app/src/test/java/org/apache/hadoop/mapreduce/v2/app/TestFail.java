@@ -444,7 +444,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1669,7 +1669,7 @@ block|}
 annotation|@
 name|Override
 specifier|protected
-name|ContainerManager
+name|ContainerManagementProtocol
 name|getCMProxy
 parameter_list|(
 name|ContainerId

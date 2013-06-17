@@ -152,7 +152,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -663,7 +663,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -687,17 +687,17 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|ContainerManager
+name|ContainerManagementProtocol
 name|proxy
 init|=
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -931,7 +931,7 @@ specifier|public
 class|class
 name|DummyContainerManager
 implements|implements
-name|ContainerManager
+name|ContainerManagementProtocol
 block|{
 DECL|field|status
 specifier|private

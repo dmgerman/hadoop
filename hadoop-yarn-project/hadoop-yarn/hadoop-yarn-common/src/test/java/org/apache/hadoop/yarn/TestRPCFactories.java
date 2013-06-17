@@ -100,7 +100,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -337,7 +337,7 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|instance
 init|=
 operator|new
@@ -360,7 +360,7 @@ argument_list|()
 operator|.
 name|getServer
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,
@@ -456,7 +456,7 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|instance
 init|=
 operator|new
@@ -479,7 +479,7 @@ argument_list|()
 operator|.
 name|getServer
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,
@@ -525,7 +525,7 @@ name|server
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|amrmClient
 init|=
 literal|null
@@ -535,7 +535,7 @@ block|{
 name|amrmClient
 operator|=
 operator|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|)
 name|RpcClientFactoryPBImpl
 operator|.
@@ -544,7 +544,7 @@ argument_list|()
 operator|.
 name|getClient
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|,
@@ -622,7 +622,7 @@ specifier|public
 class|class
 name|AMRMProtocolTestImpl
 implements|implements
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 block|{
 annotation|@
 name|Override

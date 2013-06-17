@@ -238,7 +238,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -514,7 +514,7 @@ throws|,
 name|InterruptedException
 block|{
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|rmClient
 init|=
 name|getRmClient
@@ -642,7 +642,7 @@ throws|,
 name|InterruptedException
 block|{
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|rmClient
 init|=
 name|getRmClient
@@ -741,7 +741,7 @@ block|}
 DECL|method|getRmClient (Token<?> token, Configuration conf)
 specifier|private
 specifier|static
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|getRmClient
 parameter_list|(
 name|Token
@@ -840,13 +840,13 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,

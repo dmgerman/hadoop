@@ -96,7 +96,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -135,7 +135,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting cluster metrics.<p>  *   * @see YarnClusterMetrics  * @see ClientRMProtocol#getClusterMetrics(GetClusterMetricsRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting cluster metrics.<p>  *   * @see YarnClusterMetrics  * @see ApplicationClientProtocol#getClusterMetrics(GetClusterMetricsRequest)  */
 end_comment
 
 begin_class

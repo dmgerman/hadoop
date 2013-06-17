@@ -528,7 +528,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -1861,12 +1861,12 @@ name|Exception
 block|{
 comment|/* we not want a mock of resource mgr delegate */
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|clientRMProtocol
 init|=
 name|mock
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|)

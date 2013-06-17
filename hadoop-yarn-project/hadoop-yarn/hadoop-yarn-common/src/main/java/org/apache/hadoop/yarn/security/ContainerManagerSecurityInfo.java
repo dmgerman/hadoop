@@ -132,7 +132,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 import|;
 end_import
 
@@ -189,7 +189,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 operator|.
 name|class
 argument_list|)

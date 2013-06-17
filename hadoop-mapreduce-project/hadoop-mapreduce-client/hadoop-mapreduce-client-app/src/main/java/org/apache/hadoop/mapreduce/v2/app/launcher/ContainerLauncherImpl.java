@@ -448,7 +448,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -1083,7 +1083,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-name|ContainerManager
+name|ContainerManagementProtocol
 name|proxy
 init|=
 literal|null
@@ -1370,7 +1370,7 @@ operator|+
 name|taskAttemptID
 argument_list|)
 expr_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|proxy
 init|=
 literal|null
@@ -2046,7 +2046,7 @@ return|;
 block|}
 DECL|method|getCMProxy (ContainerId containerID, final String containerManagerBindAddr, org.apache.hadoop.yarn.api.records.Token containerToken)
 specifier|protected
-name|ContainerManager
+name|ContainerManagementProtocol
 name|getCMProxy
 parameter_list|(
 name|ContainerId
@@ -2121,7 +2121,7 @@ argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|proxy
 init|=
 name|user
@@ -2131,26 +2131,26 @@ argument_list|(
 operator|new
 name|PrivilegedAction
 argument_list|<
-name|ContainerManager
+name|ContainerManagementProtocol
 argument_list|>
 argument_list|()
 block|{
 annotation|@
 name|Override
 specifier|public
-name|ContainerManager
+name|ContainerManagementProtocol
 name|run
 parameter_list|()
 block|{
 return|return
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,

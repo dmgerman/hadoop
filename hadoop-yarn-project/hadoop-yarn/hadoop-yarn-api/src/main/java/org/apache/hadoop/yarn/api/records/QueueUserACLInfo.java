@@ -106,7 +106,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -127,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>QueueUserACLInfo</code> provides information {@link QueueACL} for  * the given user.</p>  *   * @see QueueACL  * @see ClientRMProtocol#getQueueUserAcls(org.apache.hadoop.yarn.api.protocolrecords.GetQueueUserAclsInfoRequest)  */
+comment|/**  *<p><code>QueueUserACLInfo</code> provides information {@link QueueACL} for  * the given user.</p>  *   * @see QueueACL  * @see ApplicationClientProtocol#getQueueUserAcls(org.apache.hadoop.yarn.api.protocolrecords.GetQueueUserAclsInfoRequest)  */
 end_comment
 
 begin_class

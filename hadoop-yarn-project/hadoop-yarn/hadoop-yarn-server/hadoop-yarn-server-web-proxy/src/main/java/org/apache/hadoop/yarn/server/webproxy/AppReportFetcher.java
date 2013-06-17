@@ -94,7 +94,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -287,7 +287,7 @@ decl_stmt|;
 DECL|field|applicationsManager
 specifier|private
 specifier|final
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|applicationsManager
 decl_stmt|;
 DECL|field|recordFactory
@@ -362,13 +362,13 @@ expr_stmt|;
 name|applicationsManager
 operator|=
 operator|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,
@@ -390,14 +390,14 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Just call directly into the applicationsManager given instead of creating    * a remote connection to it.  This is mostly for when the Proxy is running    * as part of the RM already.    * @param conf the configuration to use    * @param applicationsManager what to use to get the RM reports.    */
-DECL|method|AppReportFetcher (Configuration conf, ClientRMProtocol applicationsManager)
+DECL|method|AppReportFetcher (Configuration conf, ApplicationClientProtocol applicationsManager)
 specifier|public
 name|AppReportFetcher
 parameter_list|(
 name|Configuration
 name|conf
 parameter_list|,
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|applicationsManager
 parameter_list|)
 block|{

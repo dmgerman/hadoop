@@ -80,7 +80,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -101,7 +101,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>Resource</code> models a set of computer resources in the   * cluster.</p>  *   *<p>Currrently it only models<em>memory</em>.</p>  *   *<p>Typically, applications request<code>Resource</code> of suitable  * capability to run their component tasks.</p>  *   * @see ResourceRequest  * @see AMRMProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
+comment|/**  *<p><code>Resource</code> models a set of computer resources in the   * cluster.</p>  *   *<p>Currrently it only models<em>memory</em>.</p>  *   *<p>Typically, applications request<code>Resource</code> of suitable  * capability to run their component tasks.</p>  *   * @see ResourceRequest  * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
 end_comment
 
 begin_class

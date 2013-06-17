@@ -200,7 +200,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -559,16 +559,16 @@ annotation|@
 name|Override
 DECL|method|createSchedulerProxy ()
 specifier|protected
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|createSchedulerProxy
 parameter_list|()
 block|{
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|scheduler
 init|=
 name|mock
 argument_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 operator|.
 name|class
 argument_list|)

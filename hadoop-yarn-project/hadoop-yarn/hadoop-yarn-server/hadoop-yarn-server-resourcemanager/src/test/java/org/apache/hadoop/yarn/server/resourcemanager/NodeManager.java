@@ -146,7 +146,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -654,7 +654,7 @@ specifier|public
 class|class
 name|NodeManager
 implements|implements
-name|ContainerManager
+name|ContainerManagementProtocol
 block|{
 DECL|field|LOG
 specifier|private

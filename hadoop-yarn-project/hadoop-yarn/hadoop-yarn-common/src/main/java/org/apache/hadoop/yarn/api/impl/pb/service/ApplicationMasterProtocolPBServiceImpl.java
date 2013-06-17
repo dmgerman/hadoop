@@ -46,7 +46,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -62,7 +62,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|AMRMProtocolPB
+name|ApplicationMasterProtocolPB
 import|;
 end_import
 
@@ -401,23 +401,23 @@ import|;
 end_import
 
 begin_class
-DECL|class|AMRMProtocolPBServiceImpl
+DECL|class|ApplicationMasterProtocolPBServiceImpl
 specifier|public
 class|class
-name|AMRMProtocolPBServiceImpl
+name|ApplicationMasterProtocolPBServiceImpl
 implements|implements
-name|AMRMProtocolPB
+name|ApplicationMasterProtocolPB
 block|{
 DECL|field|real
 specifier|private
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|real
 decl_stmt|;
-DECL|method|AMRMProtocolPBServiceImpl (AMRMProtocol impl)
+DECL|method|ApplicationMasterProtocolPBServiceImpl (ApplicationMasterProtocol impl)
 specifier|public
-name|AMRMProtocolPBServiceImpl
+name|ApplicationMasterProtocolPBServiceImpl
 parameter_list|(
-name|AMRMProtocol
+name|ApplicationMasterProtocol
 name|impl
 parameter_list|)
 block|{

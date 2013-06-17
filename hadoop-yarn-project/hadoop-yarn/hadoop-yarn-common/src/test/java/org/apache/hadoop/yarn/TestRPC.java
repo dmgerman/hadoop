@@ -156,7 +156,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -172,7 +172,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManager
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -188,7 +188,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 import|;
 end_import
 
@@ -737,7 +737,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -760,17 +760,17 @@ name|start
 argument_list|()
 expr_stmt|;
 comment|// Any unrelated protocol would do
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 name|proxy
 init|=
 operator|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 operator|.
 name|class
 argument_list|,
@@ -827,9 +827,9 @@ name|matches
 argument_list|(
 literal|"Unknown method getNewApplication called on.*"
 operator|+
-literal|"org.apache.hadoop.yarn.proto.ClientRMProtocol"
+literal|"org.apache.hadoop.yarn.proto.ApplicationClientProtocol"
 operator|+
-literal|"\\$ClientRMProtocolService\\$BlockingInterface protocol."
+literal|"\\$ApplicationClientProtocolService\\$BlockingInterface protocol."
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -929,7 +929,7 @@ name|rpc
 operator|.
 name|getServer
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -957,7 +957,7 @@ name|setProtocolEngine
 argument_list|(
 name|conf
 argument_list|,
-name|ContainerManagerPB
+name|ContainerManagementProtocolPB
 operator|.
 name|class
 argument_list|,
@@ -966,17 +966,17 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|ContainerManager
+name|ContainerManagementProtocol
 name|proxy
 init|=
 operator|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|ContainerManager
+name|ContainerManagementProtocol
 operator|.
 name|class
 argument_list|,
@@ -1314,7 +1314,7 @@ specifier|public
 class|class
 name|DummyContainerManager
 implements|implements
-name|ContainerManager
+name|ContainerManagementProtocol
 block|{
 DECL|field|status
 specifier|private

@@ -106,7 +106,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocol
+name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -145,7 +145,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting an {@link ApplicationReport} for all applications.</p>  *   *<p>The<code>ApplicationReport</code> for each application includes details   * such as user, queue, name, host on which the<code>ApplicationMaster</code>   * is running, RPC port, tracking URL, diagnostics, start time etc.</p>  *   * @see ApplicationReport  * @see ClientRMProtocol#getAllApplications(GetAllApplicationsRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting an {@link ApplicationReport} for all applications.</p>  *   *<p>The<code>ApplicationReport</code> for each application includes details   * such as user, queue, name, host on which the<code>ApplicationMaster</code>   * is running, RPC port, tracking URL, diagnostics, start time etc.</p>  *   * @see ApplicationReport  * @see ApplicationClientProtocol#getAllApplications(GetAllApplicationsRequest)  */
 end_comment
 
 begin_class

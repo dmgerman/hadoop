@@ -116,7 +116,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 import|;
 end_import
 
@@ -300,17 +300,17 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 name|adminProtocol
 init|=
 operator|(
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 operator|)
 name|rpc
 operator|.
 name|getProxy
 argument_list|(
-name|RMAdminProtocol
+name|ResourceManagerAdministrationProtocol
 operator|.
 name|class
 argument_list|,

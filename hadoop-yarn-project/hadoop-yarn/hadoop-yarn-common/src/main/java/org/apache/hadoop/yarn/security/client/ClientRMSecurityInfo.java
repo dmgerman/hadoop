@@ -134,7 +134,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 import|;
 end_import
 
@@ -186,7 +186,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 operator|.
 name|class
 argument_list|)
@@ -268,7 +268,7 @@ name|protocol
 operator|.
 name|equals
 argument_list|(
-name|ClientRMProtocolPB
+name|ApplicationClientProtocolPB
 operator|.
 name|class
 argument_list|)
