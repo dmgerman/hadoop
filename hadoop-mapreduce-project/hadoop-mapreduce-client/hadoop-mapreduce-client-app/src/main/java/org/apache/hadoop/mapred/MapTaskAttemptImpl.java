@@ -212,7 +212,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|Clock
+name|event
+operator|.
+name|EventHandler
 import|;
 end_import
 
@@ -226,9 +228,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|util
 operator|.
-name|EventHandler
+name|Clock
 import|;
 end_import
 
