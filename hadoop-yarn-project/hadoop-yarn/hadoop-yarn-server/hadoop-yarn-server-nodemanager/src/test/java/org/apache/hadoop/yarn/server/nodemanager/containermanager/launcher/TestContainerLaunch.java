@@ -1457,6 +1457,19 @@ name|fileWriter
 operator|.
 name|println
 argument_list|(
+literal|"@echo "
+operator|+
+name|cId
+operator|+
+literal|">> "
+operator|+
+name|processStartFile
+argument_list|)
+expr_stmt|;
+name|fileWriter
+operator|.
+name|println
+argument_list|(
 literal|"@ping -n 100 127.0.0.1>nul"
 argument_list|)
 expr_stmt|;
