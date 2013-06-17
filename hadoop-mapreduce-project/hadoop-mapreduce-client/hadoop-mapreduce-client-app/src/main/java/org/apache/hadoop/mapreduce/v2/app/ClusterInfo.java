@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn
+DECL|package|org.apache.hadoop.mapreduce.v2.app
 package|package
 name|org
 operator|.
@@ -12,7 +12,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
 package|;
 end_package
 
@@ -70,11 +74,7 @@ name|InterfaceAudience
 operator|.
 name|LimitedPrivate
 argument_list|(
-block|{
-literal|"YARN"
-block|,
 literal|"MapReduce"
-block|}
 argument_list|)
 DECL|class|ClusterInfo
 specifier|public
