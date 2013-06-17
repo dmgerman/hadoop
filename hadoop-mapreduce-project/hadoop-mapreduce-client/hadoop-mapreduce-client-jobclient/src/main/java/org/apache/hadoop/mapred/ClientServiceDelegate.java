@@ -932,7 +932,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 import|;
 end_import
 
@@ -1586,16 +1586,16 @@ operator|.
 name|records
 operator|.
 name|Token
-name|clientToken
+name|clientToAMToken
 init|=
 name|application
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 decl_stmt|;
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
 name|token
 init|=
@@ -1603,7 +1603,7 @@ name|ProtoUtils
 operator|.
 name|convertFromProtoFormat
 argument_list|(
-name|clientToken
+name|clientToAMToken
 argument_list|,
 name|serviceAddr
 argument_list|)

@@ -706,26 +706,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeHealthStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -1679,11 +1659,11 @@ name|service
 argument_list|)
 return|;
 block|}
-DECL|method|newClientToken (byte[] identifier, String kind, byte[] password, String service)
+DECL|method|newClientToAMToken (byte[] identifier, String kind, byte[] password, String service)
 specifier|public
 specifier|static
 name|Token
-name|newClientToken
+name|newClientToAMToken
 parameter_list|(
 name|byte
 index|[]
@@ -2146,7 +2126,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType)
+DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -2174,7 +2154,7 @@ name|int
 name|rpcPort
 parameter_list|,
 name|Token
-name|clientToken
+name|clientToAMToken
 parameter_list|,
 name|YarnApplicationState
 name|state
@@ -2270,9 +2250,9 @@ argument_list|)
 expr_stmt|;
 name|report
 operator|.
-name|setClientToken
+name|setClientToAMToken
 argument_list|(
-name|clientToken
+name|clientToAMToken
 argument_list|)
 expr_stmt|;
 name|report

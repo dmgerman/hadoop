@@ -672,7 +672,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 import|;
 end_import
 
@@ -690,7 +690,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientTokenSelector
+name|ClientToAMTokenSelector
 import|;
 end_import
 
@@ -1558,13 +1558,13 @@ specifier|final
 name|ApplicationAttemptId
 name|applicationAttemptId
 decl_stmt|;
-DECL|field|clientToken
+DECL|field|clientToAMToken
 specifier|private
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
-name|clientToken
+name|clientToAMToken
 decl_stmt|;
 DECL|field|submissionContext
 specifier|private
@@ -3256,19 +3256,19 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getClientToken ()
+DECL|method|getClientToAMToken ()
 specifier|public
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
-name|getClientToken
+name|getClientToAMToken
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|clientToken
+name|clientToAMToken
 return|;
 block|}
 annotation|@
@@ -4031,18 +4031,18 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|ClientTokenSelector
-name|clientTokenSelector
+name|ClientToAMTokenSelector
+name|clientToAMTokenSelector
 init|=
 operator|new
-name|ClientTokenSelector
+name|ClientToAMTokenSelector
 argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|clientToken
+name|clientToAMToken
 operator|=
-name|clientTokenSelector
+name|clientToAMTokenSelector
 operator|.
 name|selectToken
 argument_list|(
@@ -4204,19 +4204,19 @@ operator|.
 name|applicationAttemptId
 argument_list|)
 expr_stmt|;
-comment|// create clientToken
+comment|// create clientToAMToken
 name|appAttempt
 operator|.
-name|clientToken
+name|clientToAMToken
 operator|=
 operator|new
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
 argument_list|(
 operator|new
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|(
 name|appAttempt
 operator|.
@@ -5492,7 +5492,7 @@ name|getAppAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Unregister from the ClientTokenSecretManager
+comment|// Unregister from the ClientToAMTokenSecretManager
 if|if
 condition|(
 name|UserGroupInformation

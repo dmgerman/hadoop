@@ -135,7 +135,7 @@ annotation|@
 name|Private
 annotation|@
 name|Stable
-DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType)
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -163,7 +163,7 @@ name|int
 name|rpcPort
 parameter_list|,
 name|Token
-name|clientToken
+name|clientToAMToken
 parameter_list|,
 name|YarnApplicationState
 name|state
@@ -259,9 +259,9 @@ argument_list|)
 expr_stmt|;
 name|report
 operator|.
-name|setClientToken
+name|setClientToAMToken
 argument_list|(
-name|clientToken
+name|clientToAMToken
 argument_list|)
 expr_stmt|;
 name|report
@@ -520,30 +520,30 @@ name|int
 name|rpcPort
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>.    *<p>    *<code>ClientToken</code> is the security token used by the AMs to verify    * authenticity of any<code>client</code>.    *</p>    *    *<p>    * The<code>ResourceManager</code>, provides a secure token (via    * {@link ApplicationReport#getClientToken()}) which is verified by the    * ApplicationMaster when the client directly talks to an AM.    *</p>    * @return<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>    */
+comment|/**    * Get the<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>.    *<p>    *<em>ClientToAMToken</em> is the security token used by the AMs to verify    * authenticity of any<code>client</code>.    *</p>    *    *<p>    * The<code>ResourceManager</code>, provides a secure token (via    * {@link ApplicationReport#getClientToAMToken()}) which is verified by the    * ApplicationMaster when the client directly talks to an AM.    *</p>    * @return<em>client token</em> for communicating with the    *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getClientToken ()
+DECL|method|getClientToAMToken ()
 specifier|public
 specifier|abstract
 name|Token
-name|getClientToken
+name|getClientToAMToken
 parameter_list|()
 function_decl|;
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setClientToken (Token clientToken)
+DECL|method|setClientToAMToken (Token clientToAMToken)
 specifier|public
 specifier|abstract
 name|void
-name|setClientToken
+name|setClientToAMToken
 parameter_list|(
 name|Token
-name|clientToken
+name|clientToAMToken
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>YarnApplicationState</code> of the application.    * @return<code>YarnApplicationState</code> of the application    */

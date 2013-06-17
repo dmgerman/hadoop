@@ -150,6 +150,24 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|protocolrecords
+operator|.
+name|RegisterApplicationMasterResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|ApplicationAttemptId
@@ -390,6 +408,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|method|MockAM (RMContext context, ApplicationMasterProtocol amRMProtocol, ApplicationAttemptId attemptId)
+specifier|public
 name|MockAM
 parameter_list|(
 name|RMContext
@@ -558,7 +577,7 @@ expr_stmt|;
 block|}
 DECL|method|registerAppAttempt ()
 specifier|public
-name|void
+name|RegisterApplicationMasterResponse
 name|registerAppAttempt
 parameter_list|()
 throws|throws
@@ -615,13 +634,14 @@ argument_list|(
 literal|""
 argument_list|)
 expr_stmt|;
+return|return
 name|amRMProtocol
 operator|.
 name|registerApplicationMaster
 argument_list|(
 name|req
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 DECL|method|addRequests (String[] hosts, int memory, int priority, int containers)
 specifier|public

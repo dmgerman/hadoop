@@ -526,7 +526,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 import|;
 end_import
 
@@ -1434,7 +1434,7 @@ name|mockApp
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|storeAttempt (RMStateStore store, ApplicationAttemptId attemptId, String containerIdStr, Token<AMRMTokenIdentifier> appToken, Token<ClientTokenIdentifier> clientToken, TestDispatcher dispatcher)
+DECL|method|storeAttempt (RMStateStore store, ApplicationAttemptId attemptId, String containerIdStr, Token<AMRMTokenIdentifier> appToken, Token<ClientToAMTokenIdentifier> clientToAMToken, TestDispatcher dispatcher)
 name|ContainerId
 name|storeAttempt
 parameter_list|(
@@ -1455,9 +1455,9 @@ name|appToken
 parameter_list|,
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
-name|clientToken
+name|clientToAMToken
 parameter_list|,
 name|TestDispatcher
 name|dispatcher
@@ -1537,13 +1537,13 @@ name|when
 argument_list|(
 name|mockAttempt
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 argument_list|)
 operator|.
 name|thenReturn
 argument_list|(
-name|clientToken
+name|clientToAMToken
 argument_list|)
 expr_stmt|;
 name|dispatcher
@@ -1639,7 +1639,7 @@ name|conf
 argument_list|)
 decl_stmt|;
 name|ClientToAMTokenSecretManagerInRM
-name|clientTokenMgr
+name|clientToAMTokenMgr
 init|=
 operator|new
 name|ClientToAMTokenSecretManagerInRM
@@ -1688,7 +1688,7 @@ name|attemptId1
 argument_list|,
 name|appTokenMgr
 argument_list|,
-name|clientTokenMgr
+name|clientToAMTokenMgr
 argument_list|,
 name|conf
 argument_list|)
@@ -1748,7 +1748,7 @@ argument_list|,
 call|(
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
 call|)
 argument_list|(
@@ -1794,7 +1794,7 @@ name|attemptId2
 argument_list|,
 name|appTokenMgr
 argument_list|,
-name|clientTokenMgr
+name|clientToAMTokenMgr
 argument_list|,
 name|conf
 argument_list|)
@@ -1854,7 +1854,7 @@ argument_list|,
 call|(
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
 call|)
 argument_list|(
@@ -2499,7 +2499,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|generateTokens (ApplicationAttemptId attemptId, AMRMTokenSecretManager appTokenMgr, ClientToAMTokenSecretManagerInRM clientTokenMgr, Configuration conf)
+DECL|method|generateTokens (ApplicationAttemptId attemptId, AMRMTokenSecretManager appTokenMgr, ClientToAMTokenSecretManagerInRM clientToAMTokenMgr, Configuration conf)
 specifier|private
 name|List
 argument_list|<
@@ -2517,7 +2517,7 @@ name|AMRMTokenSecretManager
 name|appTokenMgr
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
-name|clientTokenMgr
+name|clientToAMTokenMgr
 parameter_list|,
 name|Configuration
 name|conf
@@ -2560,16 +2560,16 @@ literal|"appToken service"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ClientTokenIdentifier
-name|clientTokenId
+name|ClientToAMTokenIdentifier
+name|clientToAMTokenId
 init|=
 operator|new
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|(
 name|attemptId
 argument_list|)
 decl_stmt|;
-name|clientTokenMgr
+name|clientToAMTokenMgr
 operator|.
 name|registerApplication
 argument_list|(
@@ -2578,29 +2578,29 @@ argument_list|)
 expr_stmt|;
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
-name|clientToken
+name|clientToAMToken
 init|=
 operator|new
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
 argument_list|(
-name|clientTokenId
+name|clientToAMTokenId
 argument_list|,
-name|clientTokenMgr
+name|clientToAMTokenMgr
 argument_list|)
 decl_stmt|;
-name|clientToken
+name|clientToAMToken
 operator|.
 name|setService
 argument_list|(
 operator|new
 name|Text
 argument_list|(
-literal|"clientToken service"
+literal|"clientToAMToken service"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2638,7 +2638,7 @@ name|add
 argument_list|(
 literal|1
 argument_list|,
-name|clientToken
+name|clientToAMToken
 argument_list|)
 expr_stmt|;
 return|return

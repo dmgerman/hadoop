@@ -56,16 +56,6 @@ specifier|public
 interface|interface
 name|ApplicationConstants
 block|{
-comment|// TODO: They say tokens via env isn't good.
-DECL|field|APPLICATION_CLIENT_SECRET_ENV_NAME
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|APPLICATION_CLIENT_SECRET_ENV_NAME
-init|=
-literal|"AppClientSecretEnv"
-decl_stmt|;
 comment|/**    * The environment variable for APP_SUBMIT_TIME. Set in AppMaster environment    * only    */
 DECL|field|APP_SUBMIT_TIME_ENV
 specifier|public

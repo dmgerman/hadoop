@@ -456,6 +456,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|client
+operator|.
+name|ClientToAMTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Clock
@@ -1504,6 +1522,20 @@ argument_list|>
 name|getBlacklistedNodes
 parameter_list|()
 block|{
+comment|// Not Implemented
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getClientToAMTokenSecretManager ()
+specifier|public
+name|ClientToAMTokenSecretManager
+name|getClientToAMTokenSecretManager
+parameter_list|()
+block|{
+comment|// Not implemented.
 return|return
 literal|null
 return|;

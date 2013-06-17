@@ -115,11 +115,10 @@ block|{
 comment|// Only one client-token and one master-key for AM
 DECL|field|masterKey
 specifier|private
-specifier|final
 name|SecretKey
 name|masterKey
 decl_stmt|;
-DECL|method|ClientToAMTokenSecretManager ( ApplicationAttemptId applicationAttemptID, byte[] secretKeyBytes)
+DECL|method|ClientToAMTokenSecretManager ( ApplicationAttemptId applicationAttemptID, byte[] key)
 specifier|public
 name|ClientToAMTokenSecretManager
 parameter_list|(
@@ -128,12 +127,19 @@ name|applicationAttemptID
 parameter_list|,
 name|byte
 index|[]
-name|secretKeyBytes
+name|key
 parameter_list|)
 block|{
 name|super
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|key
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|masterKey
@@ -142,9 +148,19 @@ name|SecretManager
 operator|.
 name|createSecretKey
 argument_list|(
-name|secretKeyBytes
+name|key
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|masterKey
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -163,6 +179,28 @@ name|this
 operator|.
 name|masterKey
 return|;
+block|}
+DECL|method|setMasterKey (byte[] key)
+specifier|public
+name|void
+name|setMasterKey
+parameter_list|(
+name|byte
+index|[]
+name|key
+parameter_list|)
+block|{
+name|this
+operator|.
+name|masterKey
+operator|=
+name|SecretManager
+operator|.
+name|createSecretKey
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

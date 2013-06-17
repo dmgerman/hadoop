@@ -248,7 +248,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 import|;
 end_import
 
@@ -330,12 +330,12 @@ name|getWebProxyBase
 parameter_list|()
 function_decl|;
 comment|/**    * The token required by the clients to talk to the application attempt    * @return the token required by the clients to talk to the application attempt    */
-DECL|method|getClientToken ()
+DECL|method|getClientToAMToken ()
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
-name|getClientToken
+name|getClientToAMToken
 parameter_list|()
 function_decl|;
 comment|/**    * Diagnostics information for the application attempt.    * @return diagnostics information for the application attempt.    */

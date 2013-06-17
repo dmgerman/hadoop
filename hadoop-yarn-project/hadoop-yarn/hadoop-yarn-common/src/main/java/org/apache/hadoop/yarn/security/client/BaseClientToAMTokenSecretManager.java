@@ -129,7 +129,7 @@ name|BaseClientToAMTokenSecretManager
 extends|extends
 name|SecretManager
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
 block|{
 annotation|@
@@ -148,14 +148,14 @@ annotation|@
 name|Private
 annotation|@
 name|Override
-DECL|method|createPassword ( ClientTokenIdentifier identifier)
+DECL|method|createPassword ( ClientToAMTokenIdentifier identifier)
 specifier|public
 specifier|synchronized
 name|byte
 index|[]
 name|createPassword
 parameter_list|(
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 name|identifier
 parameter_list|)
 block|{
@@ -181,13 +181,13 @@ annotation|@
 name|Private
 annotation|@
 name|Override
-DECL|method|retrievePassword (ClientTokenIdentifier identifier)
+DECL|method|retrievePassword (ClientToAMTokenIdentifier identifier)
 specifier|public
 name|byte
 index|[]
 name|retrievePassword
 parameter_list|(
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 name|identifier
 parameter_list|)
 throws|throws
@@ -241,13 +241,13 @@ annotation|@
 name|Override
 DECL|method|createIdentifier ()
 specifier|public
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 name|createIdentifier
 parameter_list|()
 block|{
 return|return
 operator|new
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|()
 return|;
 block|}

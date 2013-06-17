@@ -2072,7 +2072,7 @@ literal|null
 argument_list|,
 name|appReport
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -3608,7 +3608,8 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// the appToken and clientToken that are generated when RMAppAttempt is created,
+comment|// the appToken and clientToAMToken that are generated when RMAppAttempt
+comment|// is created,
 name|HashSet
 argument_list|<
 name|Token
@@ -3644,7 +3645,7 @@ name|add
 argument_list|(
 name|attempt1
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3765,7 +3766,7 @@ name|add
 argument_list|(
 name|loadedAttempt1
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3778,19 +3779,20 @@ argument_list|,
 name|savedTokens
 argument_list|)
 expr_stmt|;
-comment|// assert clientToken is recovered back to api-versioned clientToken
+comment|// assert clientToAMToken is recovered back to api-versioned
+comment|// clientToAMToken
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
 name|attempt1
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 argument_list|,
 name|loadedAttempt1
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 argument_list|)
 expr_stmt|;

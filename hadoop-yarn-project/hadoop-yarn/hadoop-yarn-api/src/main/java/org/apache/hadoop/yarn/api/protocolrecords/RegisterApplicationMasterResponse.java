@@ -24,6 +24,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -290,6 +300,33 @@ name|String
 argument_list|>
 name|acls
 parameter_list|)
+function_decl|;
+comment|/**    * Set ClientToAMToken master key.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setClientToAMTokenMasterKey (ByteBuffer key)
+specifier|public
+specifier|abstract
+name|void
+name|setClientToAMTokenMasterKey
+parameter_list|(
+name|ByteBuffer
+name|key
+parameter_list|)
+function_decl|;
+comment|/**    * Get ClientToAMToken master key.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getClientToAMTokenMasterKey ()
+specifier|public
+specifier|abstract
+name|ByteBuffer
+name|getClientToAMTokenMasterKey
+parameter_list|()
 function_decl|;
 block|}
 end_class

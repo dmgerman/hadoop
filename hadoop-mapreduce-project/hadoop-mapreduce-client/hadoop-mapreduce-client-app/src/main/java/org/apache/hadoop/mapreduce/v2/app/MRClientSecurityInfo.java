@@ -154,7 +154,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientTokenSelector
+name|ClientToAMTokenSelector
 import|;
 end_import
 
@@ -260,7 +260,7 @@ name|value
 parameter_list|()
 block|{
 return|return
-name|ClientTokenSelector
+name|ClientToAMTokenSelector
 operator|.
 name|class
 return|;

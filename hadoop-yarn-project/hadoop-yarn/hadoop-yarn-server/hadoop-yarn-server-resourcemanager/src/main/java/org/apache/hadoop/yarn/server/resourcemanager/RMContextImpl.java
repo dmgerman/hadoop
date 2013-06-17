@@ -474,7 +474,7 @@ specifier|final
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
 decl_stmt|;
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -506,7 +506,7 @@ name|NMTokenSecretManagerInRM
 name|nmTokenSecretManager
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
-name|clientTokenSecretManager
+name|clientToAMTokenSecretManager
 parameter_list|)
 block|{
 name|this
@@ -567,13 +567,13 @@ name|this
 operator|.
 name|clientToAMTokenSecretManager
 operator|=
-name|clientTokenSecretManager
+name|clientToAMTokenSecretManager
 expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -602,7 +602,7 @@ name|NMTokenSecretManagerInRM
 name|nmTokenSecretManager
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
-name|clientTokenSecretManager
+name|clientToAMTokenSecretManager
 parameter_list|)
 block|{
 name|this
@@ -625,7 +625,7 @@ name|containerTokenSecretManager
 argument_list|,
 name|nmTokenSecretManager
 argument_list|,
-name|clientTokenSecretManager
+name|clientToAMTokenSecretManager
 argument_list|)
 expr_stmt|;
 name|RMStateStore

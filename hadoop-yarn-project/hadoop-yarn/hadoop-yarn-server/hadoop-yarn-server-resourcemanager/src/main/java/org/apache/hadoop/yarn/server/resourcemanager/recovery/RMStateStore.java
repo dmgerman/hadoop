@@ -380,7 +380,7 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 import|;
 end_import
 
@@ -1559,18 +1559,18 @@ expr_stmt|;
 block|}
 name|Token
 argument_list|<
-name|ClientTokenIdentifier
+name|ClientToAMTokenIdentifier
 argument_list|>
-name|clientToken
+name|clientToAMToken
 init|=
 name|appAttempt
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|clientToken
+name|clientToAMToken
 operator|!=
 literal|null
 condition|)
@@ -1579,12 +1579,12 @@ name|credentials
 operator|.
 name|addToken
 argument_list|(
-name|clientToken
+name|clientToAMToken
 operator|.
 name|getService
 argument_list|()
 argument_list|,
-name|clientToken
+name|clientToAMToken
 argument_list|)
 expr_stmt|;
 block|}

@@ -2068,11 +2068,11 @@ operator|.
 name|getCurrentApplicationAttemptId
 argument_list|()
 operator|+
-literal|", clientToken="
+literal|", clientToAMToken="
 operator|+
 name|report
 operator|.
-name|getClientToken
+name|getClientToAMToken
 argument_list|()
 operator|+
 literal|", appDiagnostics="
