@@ -1745,16 +1745,6 @@ expr_stmt|;
 comment|// Pick up min/max resource from scheduler...
 name|response
 operator|.
-name|setMinimumResourceCapability
-argument_list|(
-name|scheduler
-operator|.
-name|getMinimumResourceCapability
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|response
-operator|.
 name|setMaximumResourceCapability
 argument_list|(
 name|scheduler

@@ -2039,17 +2039,6 @@ comment|// the required resources from the RM for the app master
 comment|// Memory ask has to be a multiple of min and less than max.
 comment|// Dump out information about cluster capability as seen by the resource manager
 name|int
-name|minMem
-init|=
-name|newApp
-operator|.
-name|getMinimumResourceCapability
-argument_list|()
-operator|.
-name|getMemory
-argument_list|()
-decl_stmt|;
-name|int
 name|maxMem
 init|=
 name|newApp
@@ -2064,51 +2053,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Min mem capabililty of resources in this cluster "
-operator|+
-name|minMem
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
 literal|"Max mem capabililty of resources in this cluster "
 operator|+
 name|maxMem
 argument_list|)
 expr_stmt|;
-comment|// A resource ask has to be atleast the minimum of the capability of the cluster, the value has to be
-comment|// a multiple of the min value and cannot exceed the max.
-comment|// If it is not an exact multiple of min, the RM will allocate to the nearest multiple of min
-if|if
-condition|(
-name|amMemory
-operator|<
-name|minMem
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"AM memory specified below min threshold of cluster. Using min value."
-operator|+
-literal|", specified="
-operator|+
-name|amMemory
-operator|+
-literal|", min="
-operator|+
-name|minMem
-argument_list|)
-expr_stmt|;
-name|amMemory
-operator|=
-name|minMem
-expr_stmt|;
-block|}
-elseif|else
+comment|// A resource ask cannot exceed the max.
 if|if
 condition|(
 name|amMemory
