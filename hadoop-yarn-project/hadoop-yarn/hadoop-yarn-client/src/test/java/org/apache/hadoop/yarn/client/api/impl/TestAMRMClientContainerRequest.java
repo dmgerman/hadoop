@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client.api.impl
 package|package
 name|org
 operator|.
@@ -15,6 +15,10 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|api
+operator|.
+name|impl
 package|;
 end_package
 
@@ -174,14 +178,24 @@ begin_import
 import|import
 name|org
 operator|.
-name|junit
+name|apache
 operator|.
-name|Test
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|AMRMClient
+operator|.
+name|ContainerRequest
 import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
@@ -192,9 +206,21 @@ name|yarn
 operator|.
 name|client
 operator|.
-name|AMRMClientImpl
+name|api
 operator|.
-name|ContainerRequest
+name|impl
+operator|.
+name|AMRMClientImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -457,7 +483,8 @@ name|get
 argument_list|(
 name|request
 operator|.
-name|priority
+name|getPriority
+argument_list|()
 argument_list|)
 operator|.
 name|get
@@ -469,7 +496,8 @@ name|get
 argument_list|(
 name|request
 operator|.
-name|capability
+name|getCapability
+argument_list|()
 argument_list|)
 operator|.
 name|remoteRequest

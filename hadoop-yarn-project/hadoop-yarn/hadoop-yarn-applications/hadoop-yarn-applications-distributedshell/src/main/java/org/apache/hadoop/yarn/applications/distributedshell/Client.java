@@ -658,6 +658,8 @@ name|yarn
 operator|.
 name|client
 operator|.
+name|api
+operator|.
 name|YarnClient
 import|;
 end_import

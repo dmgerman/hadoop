@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client.api.impl
 package|package
 name|org
 operator|.
@@ -15,6 +15,10 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|api
+operator|.
+name|impl
 package|;
 end_package
 
@@ -261,6 +265,44 @@ operator|.
 name|records
 operator|.
 name|YarnApplicationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|YarnClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|impl
+operator|.
+name|YarnClientImpl
 import|;
 end_import
 

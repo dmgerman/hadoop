@@ -448,23 +448,9 @@ name|yarn
 operator|.
 name|client
 operator|.
+name|api
+operator|.
 name|YarnClient
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|client
-operator|.
-name|YarnClientImpl
 import|;
 end_import
 

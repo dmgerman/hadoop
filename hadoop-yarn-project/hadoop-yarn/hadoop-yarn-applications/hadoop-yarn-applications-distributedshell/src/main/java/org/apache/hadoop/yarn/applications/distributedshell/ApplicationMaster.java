@@ -746,6 +746,8 @@ name|yarn
 operator|.
 name|client
 operator|.
+name|api
+operator|.
 name|AMRMClient
 operator|.
 name|ContainerRequest
@@ -764,6 +766,10 @@ name|yarn
 operator|.
 name|client
 operator|.
+name|api
+operator|.
+name|async
+operator|.
 name|AMRMClientAsync
 import|;
 end_import
@@ -779,6 +785,10 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|api
+operator|.
+name|async
 operator|.
 name|NMClientAsync
 import|;
@@ -2296,8 +2306,6 @@ annotation|@
 name|SuppressWarnings
 argument_list|(
 block|{
-literal|"rawtypes"
-block|,
 literal|"unchecked"
 block|}
 argument_list|)
@@ -2329,8 +2337,9 @@ argument_list|()
 decl_stmt|;
 name|resourceManager
 operator|=
-operator|new
 name|AMRMClientAsync
+operator|.
+name|createAMRMClientAsync
 argument_list|(
 name|appAttemptID
 argument_list|,
@@ -2359,8 +2368,9 @@ argument_list|()
 expr_stmt|;
 name|nmClientAsync
 operator|=
-operator|new
 name|NMClientAsync
+operator|.
+name|createNMClientAsync
 argument_list|(
 name|containerListener
 argument_list|)
@@ -3333,7 +3343,7 @@ condition|)
 block|{
 name|nmClientAsync
 operator|.
-name|getContainerStatus
+name|getContainerStatusAsync
 argument_list|(
 name|containerId
 argument_list|,
@@ -3819,7 +3829,7 @@ argument_list|)
 expr_stmt|;
 name|nmClientAsync
 operator|.
-name|startContainer
+name|startContainerAsync
 argument_list|(
 name|container
 argument_list|,

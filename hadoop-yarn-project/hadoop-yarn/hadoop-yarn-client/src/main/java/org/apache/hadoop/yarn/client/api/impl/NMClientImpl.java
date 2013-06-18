@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client.api.impl
 package|package
 name|org
 operator|.
@@ -15,6 +15,10 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|api
+operator|.
+name|impl
 package|;
 end_package
 
@@ -131,6 +135,38 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -414,6 +450,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|NMClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -505,6 +559,10 @@ comment|/**  *<p>  * This class implements {@link NMClient}. All the APIs are bl
 end_comment
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|NMClientImpl
 specifier|public
 class|class
@@ -551,7 +609,7 @@ argument_list|()
 decl_stmt|;
 comment|//enabled by default
 DECL|field|cleanupRunningContainers
-specifier|protected
+specifier|private
 specifier|final
 name|AtomicBoolean
 name|cleanupRunningContainers
@@ -606,7 +664,8 @@ comment|// Usually, started-containers are stopped when this client stops. Unles
 comment|// the flag cleanupRunningContainers is set to false.
 if|if
 condition|(
-name|cleanupRunningContainers
+name|getCleanupRunningContainers
+argument_list|()
 operator|.
 name|get
 argument_list|()
@@ -716,7 +775,8 @@ name|boolean
 name|enabled
 parameter_list|)
 block|{
-name|cleanupRunningContainers
+name|getCleanupRunningContainers
+argument_list|()
 operator|.
 name|set
 argument_list|(
@@ -894,6 +954,7 @@ annotation|@
 name|Override
 DECL|method|serviceStart ()
 specifier|protected
+specifier|synchronized
 name|void
 name|serviceStart
 parameter_list|()
@@ -1033,6 +1094,7 @@ annotation|@
 name|Override
 DECL|method|serviceStop ()
 specifier|protected
+specifier|synchronized
 name|void
 name|serviceStop
 parameter_list|()
@@ -1989,6 +2051,16 @@ name|get
 argument_list|(
 name|containerId
 argument_list|)
+return|;
+block|}
+DECL|method|getCleanupRunningContainers ()
+specifier|public
+name|AtomicBoolean
+name|getCleanupRunningContainers
+parameter_list|()
+block|{
+return|return
+name|cleanupRunningContainers
 return|;
 block|}
 block|}

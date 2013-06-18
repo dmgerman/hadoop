@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client.api.impl
 package|package
 name|org
 operator|.
@@ -15,6 +15,10 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|api
+operator|.
+name|impl
 package|;
 end_package
 
@@ -97,6 +101,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+operator|.
+name|Private
 import|;
 end_import
 
@@ -111,6 +117,8 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -632,6 +640,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|YarnClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -686,15 +712,25 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Public
+name|Private
 annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
+name|Unstable
 DECL|class|YarnClientImpl
 specifier|public
 class|class
@@ -1870,6 +1906,26 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
+DECL|method|setRMClient (ApplicationClientProtocol rmClient)
+specifier|public
+name|void
+name|setRMClient
+parameter_list|(
+name|ApplicationClientProtocol
+name|rmClient
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rmClient
+operator|=
+name|rmClient
+expr_stmt|;
 block|}
 block|}
 end_class

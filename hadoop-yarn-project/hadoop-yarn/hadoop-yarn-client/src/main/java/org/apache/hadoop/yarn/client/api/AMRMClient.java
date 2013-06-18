@@ -4,7 +4,7 @@ comment|/** * Licensed to the Apache Software Foundation (ASF) under one * or mo
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client.api
 package|package
 name|org
 operator|.
@@ -15,6 +15,8 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|api
 package|;
 end_package
 
@@ -288,6 +290,26 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|impl
+operator|.
+name|AMRMClientImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -316,7 +338,7 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Unstable
+name|Stable
 DECL|class|AMRMClient
 specifier|public
 specifier|abstract
@@ -332,7 +354,7 @@ parameter_list|>
 extends|extends
 name|AbstractService
 block|{
-comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest(appAttemptId)    * }</pre>    * @param appAttemptId the appAttemptId associated with the AMRMClient    * @return the newly created AMRMClient instance.    */
+comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest(appAttemptId)    * }</pre>    * @param appAttemptId the appAttemptId associated with the AMRMClient    * @return the newly create AMRMClient instance.    */
 annotation|@
 name|Public
 DECL|method|createAMRMClient ( ApplicationAttemptId appAttemptId)

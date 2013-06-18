@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.client
+DECL|package|org.apache.hadoop.yarn.client.api.async.impl
 package|package
 name|org
 operator|.
@@ -15,6 +15,12 @@ operator|.
 name|yarn
 operator|.
 name|client
+operator|.
+name|api
+operator|.
+name|async
+operator|.
+name|impl
 package|;
 end_package
 
@@ -396,6 +402,66 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|NMClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|async
+operator|.
+name|NMClientAsync
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|async
+operator|.
+name|impl
+operator|.
+name|NMClientAsyncImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -509,7 +575,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|asyncClient
 specifier|private
-name|NMClientAsync
+name|NMClientAsyncImpl
 name|asyncClient
 decl_stmt|;
 DECL|field|nodeId
@@ -543,7 +609,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|10000
 argument_list|)
 DECL|method|testNMClientAsync ()
 specifier|public
@@ -650,7 +716,8 @@ name|TestCallbackHandler1
 operator|)
 name|asyncClient
 operator|.
-name|callbackHandler
+name|getCallbackHandler
+argument_list|()
 operator|)
 operator|.
 name|isAllSuccessCallsExecuted
@@ -667,11 +734,12 @@ expr_stmt|;
 block|}
 name|asyncClient
 operator|.
-name|client
-operator|=
+name|setClient
+argument_list|(
 name|mockNMClient
 argument_list|(
 literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -697,7 +765,7 @@ argument_list|)
 decl_stmt|;
 name|asyncClient
 operator|.
-name|startContainer
+name|startContainerAsync
 argument_list|(
 name|container
 argument_list|,
@@ -714,7 +782,8 @@ name|TestCallbackHandler1
 operator|)
 name|asyncClient
 operator|.
-name|callbackHandler
+name|getCallbackHandler
+argument_list|()
 operator|)
 operator|.
 name|isStartAndQueryFailureCallsExecuted
@@ -731,11 +800,12 @@ expr_stmt|;
 block|}
 name|asyncClient
 operator|.
-name|client
-operator|=
+name|setClient
+argument_list|(
 name|mockNMClient
 argument_list|(
 literal|2
+argument_list|)
 argument_list|)
 expr_stmt|;
 operator|(
@@ -744,7 +814,8 @@ name|TestCallbackHandler1
 operator|)
 name|asyncClient
 operator|.
-name|callbackHandler
+name|getCallbackHandler
+argument_list|()
 operator|)
 operator|.
 name|path
@@ -792,7 +863,7 @@ argument_list|)
 decl_stmt|;
 name|asyncClient
 operator|.
-name|startContainer
+name|startContainerAsync
 argument_list|(
 name|container
 argument_list|,
@@ -809,7 +880,8 @@ name|TestCallbackHandler1
 operator|)
 name|asyncClient
 operator|.
-name|callbackHandler
+name|getCallbackHandler
+argument_list|()
 operator|)
 operator|.
 name|isStopFailureCallsExecuted
@@ -835,7 +907,8 @@ name|TestCallbackHandler1
 operator|)
 name|asyncClient
 operator|.
-name|callbackHandler
+name|getCallbackHandler
+argument_list|()
 operator|)
 operator|.
 name|errorMsgs
@@ -865,7 +938,8 @@ name|TestCallbackHandler1
 operator|)
 name|asyncClient
 operator|.
-name|callbackHandler
+name|getCallbackHandler
+argument_list|()
 operator|)
 operator|.
 name|errorMsgs
@@ -981,7 +1055,7 @@ specifier|private
 class|class
 name|MockNMClientAsync1
 extends|extends
-name|NMClientAsync
+name|NMClientAsyncImpl
 block|{
 DECL|field|errorMsgs
 specifier|private
@@ -1408,7 +1482,7 @@ expr_stmt|;
 comment|// move on to the following success tests
 name|asyncClient
 operator|.
-name|getContainerStatus
+name|getContainerStatusAsync
 argument_list|(
 name|containerId
 argument_list|,
@@ -1423,7 +1497,7 @@ block|{
 comment|// move on to the following failure tests
 name|asyncClient
 operator|.
-name|stopContainer
+name|stopContainerAsync
 argument_list|(
 name|containerId
 argument_list|,
@@ -1501,7 +1575,7 @@ expr_stmt|;
 comment|// move on to the following success tests
 name|asyncClient
 operator|.
-name|stopContainer
+name|stopContainerAsync
 argument_list|(
 name|containerId
 argument_list|,
@@ -1664,7 +1738,7 @@ expr_stmt|;
 comment|// move on to the following failure tests
 name|asyncClient
 operator|.
-name|getContainerStatus
+name|getContainerStatusAsync
 argument_list|(
 name|containerId
 argument_list|,
@@ -2515,7 +2589,7 @@ parameter_list|()
 block|{
 name|asyncClient
 operator|.
-name|startContainer
+name|startContainerAsync
 argument_list|(
 name|container
 argument_list|,
@@ -2537,7 +2611,7 @@ argument_list|()
 expr_stmt|;
 name|asyncClient
 operator|.
-name|stopContainer
+name|stopContainerAsync
 argument_list|(
 name|container
 operator|.
@@ -2572,7 +2646,8 @@ name|TestCallbackHandler2
 operator|)
 name|asyncClient
 operator|.
-name|callbackHandler
+name|getCallbackHandler
+argument_list|()
 operator|)
 operator|.
 name|exceptionOccurred
@@ -2587,7 +2662,7 @@ specifier|private
 class|class
 name|MockNMClientAsync2
 extends|extends
-name|NMClientAsync
+name|NMClientAsyncImpl
 block|{
 DECL|field|barrierA
 specifier|private
@@ -2883,7 +2958,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|NMClientAsync
+name|NMClientAsyncImpl
 operator|.
 name|StatefulContainer
 operator|.
