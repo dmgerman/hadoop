@@ -97,6 +97,18 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -305,7 +317,7 @@ name|void
 name|testPurgingWithNameEditsDirAfterFailure
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 block|{
 name|MiniDFSCluster
 name|cluster
@@ -612,13 +624,21 @@ argument_list|(
 literal|"Failing first storage dir by chmodding it"
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
 name|FileUtil
 operator|.
-name|setExecutable
+name|chmod
 argument_list|(
-name|sd0
+name|cd0
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|,
-literal|false
+literal|"000"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|doSaveNamespace
@@ -633,13 +653,21 @@ argument_list|(
 literal|"Restoring accessibility of first storage dir"
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
 name|FileUtil
 operator|.
-name|setExecutable
+name|chmod
 argument_list|(
-name|sd0
+name|cd0
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|,
-literal|true
+literal|"755"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -812,11 +840,14 @@ finally|finally
 block|{
 name|FileUtil
 operator|.
-name|setExecutable
+name|chmod
 argument_list|(
-name|sd0
+name|cd0
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|,
-literal|true
+literal|"755"
 argument_list|)
 expr_stmt|;
 name|LOG

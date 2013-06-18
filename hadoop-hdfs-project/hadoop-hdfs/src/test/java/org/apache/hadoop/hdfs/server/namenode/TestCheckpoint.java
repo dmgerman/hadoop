@@ -4571,9 +4571,18 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
+comment|// cannot read lock file on Windows, so message cannot get JVM name
 name|String
-name|jvmName
+name|lockingJvmName
 init|=
+name|Path
+operator|.
+name|WINDOWS
+condition|?
+literal|""
+else|:
+literal|" "
+operator|+
 name|ManagementFactory
 operator|.
 name|getRuntimeMXBean
@@ -4582,13 +4591,20 @@ operator|.
 name|getName
 argument_list|()
 decl_stmt|;
+name|String
+name|expectedLogMessage
+init|=
+literal|"It appears that another namenode"
+operator|+
+name|lockingJvmName
+operator|+
+literal|" has already locked the storage directory"
+decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Error message does not include JVM name '"
+literal|"Log output does not contain expected log message: "
 operator|+
-name|jvmName
-operator|+
-literal|"'"
+name|expectedLogMessage
 argument_list|,
 name|logs
 operator|.
@@ -4597,7 +4613,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-name|jvmName
+name|expectedLogMessage
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -10061,13 +10077,21 @@ operator|.
 name|getCurrentDir
 argument_list|()
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
 name|FileUtil
 operator|.
-name|setExecutable
+name|chmod
 argument_list|(
 name|currentDir
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|,
-literal|false
+literal|"000"
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Try to upload checkpoint -- this should fail since there are no
@@ -10102,13 +10126,21 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Restore the good dir
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
 name|FileUtil
 operator|.
-name|setExecutable
+name|chmod
 argument_list|(
 name|currentDir
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|,
-literal|true
+literal|"755"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|nn
@@ -10165,11 +10197,14 @@ condition|)
 block|{
 name|FileUtil
 operator|.
-name|setExecutable
+name|chmod
 argument_list|(
 name|currentDir
+operator|.
+name|getAbsolutePath
+argument_list|()
 argument_list|,
-literal|true
+literal|"755"
 argument_list|)
 expr_stmt|;
 block|}

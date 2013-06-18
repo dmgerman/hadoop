@@ -858,6 +858,20 @@ argument_list|(
 literal|".*Corrupt blocks:\t\t([0123456789]*).*"
 argument_list|)
 decl_stmt|;
+DECL|field|LINE_SEPARATOR
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|LINE_SEPARATOR
+init|=
+name|System
+operator|.
+name|getProperty
+argument_list|(
+literal|"line.separator"
+argument_list|)
+decl_stmt|;
 DECL|method|runFsck (Configuration conf, int expectedErrCode, boolean checkErrorCode,String... path)
 specifier|static
 name|String
@@ -2512,7 +2526,7 @@ name|outStr
 operator|.
 name|split
 argument_list|(
-literal|"\n"
+name|LINE_SEPARATOR
 argument_list|)
 control|)
 block|{
