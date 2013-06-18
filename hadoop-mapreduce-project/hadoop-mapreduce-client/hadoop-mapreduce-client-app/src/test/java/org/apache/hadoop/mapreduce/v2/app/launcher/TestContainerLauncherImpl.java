@@ -1399,7 +1399,7 @@ argument_list|)
 decl_stmt|;
 name|startResp
 operator|.
-name|setAllServiceResponse
+name|setAllServicesMetaData
 argument_list|(
 name|serviceResponse
 argument_list|)
@@ -1840,7 +1840,7 @@ argument_list|)
 decl_stmt|;
 name|startResp
 operator|.
-name|setAllServiceResponse
+name|setAllServicesMetaData
 argument_list|(
 name|serviceResponse
 argument_list|)
@@ -2287,7 +2287,7 @@ argument_list|)
 decl_stmt|;
 name|startResp
 operator|.
-name|setAllServiceResponse
+name|setAllServicesMetaData
 argument_list|(
 name|serviceResponse
 argument_list|)
@@ -2669,7 +2669,7 @@ argument_list|)
 decl_stmt|;
 name|startResp
 operator|.
-name|setAllServiceResponse
+name|setAllServicesMetaData
 argument_list|(
 name|serviceResponse
 argument_list|)

@@ -3245,25 +3245,16 @@ expr_stmt|;
 name|StartContainerResponse
 name|response
 init|=
-name|recordFactory
-operator|.
-name|newRecordInstance
-argument_list|(
 name|StartContainerResponse
 operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|response
-operator|.
-name|setAllServiceResponse
+name|newInstance
 argument_list|(
 name|auxiliaryServices
 operator|.
-name|getMeta
+name|getMetaData
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 comment|// TODO launchedContainer misplaced -> doesn't necessarily mean a container
 comment|// launch. A finished Application will not launch containers.
 name|metrics

@@ -155,7 +155,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( Map<String, ByteBuffer> serviceResponses)
+DECL|method|newInstance ( Map<String, ByteBuffer> servicesMetaData)
 specifier|public
 specifier|static
 name|StartContainerResponse
@@ -167,7 +167,7 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|serviceResponses
+name|servicesMetaData
 parameter_list|)
 block|{
 name|StartContainerResponse
@@ -184,21 +184,21 @@ argument_list|)
 decl_stmt|;
 name|response
 operator|.
-name|setAllServiceResponse
+name|setAllServicesMetaData
 argument_list|(
-name|serviceResponses
+name|servicesMetaData
 argument_list|)
 expr_stmt|;
 return|return
 name|response
 return|;
 block|}
-comment|/**    *<p>Get the responses from all auxiliary services running on the     *<code>NodeManager</code>.</p>    *<p>The responses are returned as a Map between the auxiliary service names    * and their corresponding opaque blob<code>ByteBuffer</code>s</p>     * @return a Map between the auxiliary service names and their outputs    */
+comment|/**    *<p>    * Get the meta-data from all auxiliary services running on the    *<code>NodeManager</code>.    *</p>    *<p>    * The meta-data is returned as a Map between the auxiliary service names and    * their corresponding per service meta-data as an opaque blob    *<code>ByteBuffer</code>    *</p>    *     *<p>    * To be able to interpret the per-service meta-data, you should consult the    * documentation for the Auxiliary-service configured on the NodeManager    *</p>    *     * @return a Map between the names of auxiliary services and their    *         corresponding meta-data    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getAllServiceResponse ()
+DECL|method|getAllServicesMetaData ()
 specifier|public
 specifier|abstract
 name|Map
@@ -207,19 +207,19 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|getAllServiceResponse
+name|getAllServicesMetaData
 parameter_list|()
 function_decl|;
-comment|/**    * Set to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    * @param serviceResponses A map from auxiliary service names to the opaque    * blob<code>ByteBuffer</code>s for that auxiliary service    */
+comment|/**    * Set to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    * @param allServicesMetaData A map from auxiliary service names to the opaque    * blob<code>ByteBuffer</code> for that auxiliary service    */
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setAllServiceResponse (Map<String, ByteBuffer> serviceResponses)
+DECL|method|setAllServicesMetaData ( Map<String, ByteBuffer> allServicesMetaData)
 specifier|public
 specifier|abstract
 name|void
-name|setAllServiceResponse
+name|setAllServicesMetaData
 parameter_list|(
 name|Map
 argument_list|<
@@ -227,7 +227,7 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|serviceResponses
+name|allServicesMetaData
 parameter_list|)
 function_decl|;
 block|}

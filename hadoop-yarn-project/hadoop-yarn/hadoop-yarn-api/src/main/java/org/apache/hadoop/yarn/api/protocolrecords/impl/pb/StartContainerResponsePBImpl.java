@@ -247,7 +247,7 @@ name|viaProto
 init|=
 literal|false
 decl_stmt|;
-DECL|field|serviceResponse
+DECL|field|servicesMetaData
 specifier|private
 name|Map
 argument_list|<
@@ -255,7 +255,7 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|serviceResponse
+name|servicesMetaData
 init|=
 literal|null
 decl_stmt|;
@@ -440,12 +440,12 @@ if|if
 condition|(
 name|this
 operator|.
-name|serviceResponse
+name|servicesMetaData
 operator|!=
 literal|null
 condition|)
 block|{
-name|addServiceResponseToProto
+name|addServicesMetaDataToProto
 argument_list|()
 expr_stmt|;
 block|}
@@ -552,7 +552,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAllServiceResponse ()
+DECL|method|getAllServicesMetaData ()
 specifier|public
 specifier|synchronized
 name|Map
@@ -561,25 +561,25 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|getAllServiceResponse
+name|getAllServicesMetaData
 parameter_list|()
 block|{
-name|initServiceResponse
+name|initServicesMetaData
 argument_list|()
 expr_stmt|;
 return|return
 name|this
 operator|.
-name|serviceResponse
+name|servicesMetaData
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAllServiceResponse ( Map<String, ByteBuffer> serviceResponses)
+DECL|method|setAllServicesMetaData ( Map<String, ByteBuffer> servicesMetaData)
 specifier|public
 specifier|synchronized
 name|void
-name|setAllServiceResponse
+name|setAllServicesMetaData
 parameter_list|(
 name|Map
 argument_list|<
@@ -587,50 +587,50 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|serviceResponses
+name|servicesMetaData
 parameter_list|)
 block|{
 if|if
 condition|(
-name|serviceResponses
+name|servicesMetaData
 operator|==
 literal|null
 condition|)
 block|{
 return|return;
 block|}
-name|initServiceResponse
+name|initServicesMetaData
 argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|serviceResponse
+name|servicesMetaData
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|serviceResponse
+name|servicesMetaData
 operator|.
 name|putAll
 argument_list|(
-name|serviceResponses
+name|servicesMetaData
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initServiceResponse ()
+DECL|method|initServicesMetaData ()
 specifier|private
 specifier|synchronized
 name|void
-name|initServiceResponse
+name|initServicesMetaData
 parameter_list|()
 block|{
 if|if
 condition|(
 name|this
 operator|.
-name|serviceResponse
+name|servicesMetaData
 operator|!=
 literal|null
 condition|)
@@ -654,12 +654,12 @@ name|list
 init|=
 name|p
 operator|.
-name|getServiceResponseList
+name|getServicesMetaDataList
 argument_list|()
 decl_stmt|;
 name|this
 operator|.
-name|serviceResponse
+name|servicesMetaData
 operator|=
 operator|new
 name|HashMap
@@ -680,7 +680,7 @@ control|)
 block|{
 name|this
 operator|.
-name|serviceResponse
+name|servicesMetaData
 operator|.
 name|put
 argument_list|(
@@ -700,11 +700,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addServiceResponseToProto ()
+DECL|method|addServicesMetaDataToProto ()
 specifier|private
 specifier|synchronized
 name|void
-name|addServiceResponseToProto
+name|addServicesMetaDataToProto
 parameter_list|()
 block|{
 name|maybeInitBuilder
@@ -712,12 +712,12 @@ argument_list|()
 expr_stmt|;
 name|builder
 operator|.
-name|clearServiceResponse
+name|clearServicesMetaData
 argument_list|()
 expr_stmt|;
 if|if
 condition|(
-name|serviceResponse
+name|servicesMetaData
 operator|==
 literal|null
 condition|)
@@ -760,7 +760,7 @@ name|String
 argument_list|>
 name|keyIter
 init|=
-name|serviceResponse
+name|servicesMetaData
 operator|.
 name|keySet
 argument_list|()
@@ -813,7 +813,7 @@ name|setValue
 argument_list|(
 name|convertToProtoFormat
 argument_list|(
-name|serviceResponse
+name|servicesMetaData
 operator|.
 name|get
 argument_list|(
@@ -848,7 +848,7 @@ block|}
 decl_stmt|;
 name|builder
 operator|.
-name|addAllServiceResponse
+name|addAllServicesMetaData
 argument_list|(
 name|iterable
 argument_list|)

@@ -1314,7 +1314,7 @@ block|}
 return|return
 name|startResponse
 operator|.
-name|getAllServiceResponse
+name|getAllServicesMetaData
 argument_list|()
 return|;
 block|}

@@ -192,24 +192,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -229,6 +211,60 @@ operator|.
 name|event
 operator|.
 name|EventHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|ApplicationTerminationContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|AuxiliaryService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|ApplicationInitializationContext
 import|;
 end_import
 
@@ -274,7 +310,7 @@ name|AuxiliaryService
 argument_list|>
 name|serviceMap
 decl_stmt|;
-DECL|field|serviceMeta
+DECL|field|serviceMetaData
 specifier|protected
 specifier|final
 name|Map
@@ -283,7 +319,7 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|serviceMeta
+name|serviceMetaData
 decl_stmt|;
 DECL|method|AuxServices ()
 specifier|public
@@ -316,7 +352,7 @@ argument_list|>
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|serviceMeta
+name|serviceMetaData
 operator|=
 name|Collections
 operator|.
@@ -397,7 +433,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * @return the meta data for all registered services, that have been started.    * If a service has not been started no metadata will be available. The key    * is the name of the service as defined in the configuration.    */
-DECL|method|getMeta ()
+DECL|method|getMetaData ()
 specifier|public
 name|Map
 argument_list|<
@@ -405,7 +441,7 @@ name|String
 argument_list|,
 name|ByteBuffer
 argument_list|>
-name|getMeta
+name|getMetaData
 parameter_list|()
 block|{
 name|Map
@@ -424,7 +460,7 @@ argument_list|,
 name|ByteBuffer
 argument_list|>
 argument_list|(
-name|serviceMeta
+name|serviceMetaData
 operator|.
 name|size
 argument_list|()
@@ -432,7 +468,7 @@ argument_list|)
 decl_stmt|;
 synchronized|synchronized
 init|(
-name|serviceMeta
+name|serviceMetaData
 init|)
 block|{
 for|for
@@ -445,7 +481,7 @@ name|ByteBuffer
 argument_list|>
 name|entry
 range|:
-name|serviceMeta
+name|serviceMetaData
 operator|.
 name|entrySet
 argument_list|()
@@ -729,7 +765,7 @@ name|meta
 init|=
 name|service
 operator|.
-name|getMeta
+name|getMetaData
 argument_list|()
 decl_stmt|;
 if|if
@@ -739,7 +775,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|serviceMeta
+name|serviceMetaData
 operator|.
 name|put
 argument_list|(
@@ -817,7 +853,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|serviceMeta
+name|serviceMetaData
 operator|.
 name|clear
 argument_list|()
@@ -952,7 +988,10 @@ return|return;
 block|}
 name|service
 operator|.
-name|initApp
+name|initializeApplication
+argument_list|(
+operator|new
+name|ApplicationInitializationContext
 argument_list|(
 name|event
 operator|.
@@ -968,6 +1007,7 @@ name|event
 operator|.
 name|getServiceData
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 break|break;
@@ -987,12 +1027,16 @@ control|)
 block|{
 name|serv
 operator|.
-name|stopApp
+name|stopApplication
+argument_list|(
+operator|new
+name|ApplicationTerminationContext
 argument_list|(
 name|event
 operator|.
 name|getApplicationID
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -1011,42 +1055,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-block|}
-DECL|interface|AuxiliaryService
-specifier|public
-interface|interface
-name|AuxiliaryService
-extends|extends
-name|Service
-block|{
-DECL|method|initApp (String user, ApplicationId appId, ByteBuffer data)
-name|void
-name|initApp
-parameter_list|(
-name|String
-name|user
-parameter_list|,
-name|ApplicationId
-name|appId
-parameter_list|,
-name|ByteBuffer
-name|data
-parameter_list|)
-function_decl|;
-DECL|method|stopApp (ApplicationId appId)
-name|void
-name|stopApp
-parameter_list|(
-name|ApplicationId
-name|appId
-parameter_list|)
-function_decl|;
-comment|/**      * Retreive metadata for this service.  This is likely going to be contact      * information so that applications can access the service remotely.  Ideally      * each service should provide a method to parse out the information to a usable      * class.  This will only be called after the services start method has finished.      * the result may be cached.      * @return metadata for this service that should be made avaiable to applications.      */
-DECL|method|getMeta ()
-name|ByteBuffer
-name|getMeta
-parameter_list|()
-function_decl|;
 block|}
 block|}
 end_class

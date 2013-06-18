@@ -108,6 +108,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|ApplicationInitializationContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|api
+operator|.
+name|AuxiliaryService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -303,7 +339,7 @@ argument_list|>
 name|localResources
 parameter_list|)
 function_decl|;
-comment|/**    * Get application-specific binary<em>service data</em>.    * @return application-specific binary<em>service data</em>    */
+comment|/**    *<p>    * Get application-specific binary<em>service data</em>. This is a map keyed    * by the name of each {@link AuxiliaryService} that is configured on a    * NodeManager and value correspond to the application specific data targeted    * for the keyed {@link AuxiliaryService}.    *</p>    *     *<p>    * This will be used to initialize this application on the specific    * {@link AuxiliaryService} running on the NodeManager by calling    * {@link AuxiliaryService#initializeApplication(ApplicationInitializationContext)}    *</p>    *     * @return application-specific binary<em>service data</em>    */
 annotation|@
 name|Public
 annotation|@
@@ -320,7 +356,7 @@ argument_list|>
 name|getServiceData
 parameter_list|()
 function_decl|;
-comment|/**    * Set application-specific binary<em>service data</em>. All pre-existing Map    * entries are preserved.    * @param serviceData application-specific binary<em>service data</em>    */
+comment|/**    *<p>    * Get application-specific binary<em>service data</em>. This is a map keyed    * by the name of each {@link AuxiliaryService} that is configured on a    * NodeManager and value correspond to the application specific data targeted    * for the keyed {@link AuxiliaryService}. All pre-existing Map entries are    * preserved.    *</p>    *     * @param serviceData    *          application-specific binary<em>service data</em>    */
 annotation|@
 name|Public
 annotation|@

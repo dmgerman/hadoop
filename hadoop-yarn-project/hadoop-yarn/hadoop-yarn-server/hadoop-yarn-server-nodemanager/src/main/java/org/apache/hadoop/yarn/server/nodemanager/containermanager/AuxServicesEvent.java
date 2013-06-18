@@ -66,22 +66,6 @@ name|AbstractEvent
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|event
-operator|.
-name|Event
-import|;
-end_import
-
 begin_class
 DECL|class|AuxServicesEvent
 specifier|public

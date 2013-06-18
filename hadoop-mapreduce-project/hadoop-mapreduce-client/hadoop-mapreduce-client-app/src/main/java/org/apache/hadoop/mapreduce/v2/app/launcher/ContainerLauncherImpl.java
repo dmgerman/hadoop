@@ -1153,7 +1153,7 @@ name|portInfo
 init|=
 name|response
 operator|.
-name|getAllServiceResponse
+name|getAllServicesMetaData
 argument_list|()
 operator|.
 name|get
