@@ -125,6 +125,10 @@ specifier|abstract
 class|class
 name|StrictPreemptionContract
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (Set<PreemptionContainer> containers)
 specifier|public
 specifier|static

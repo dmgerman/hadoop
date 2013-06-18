@@ -48,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 import|;
 end_import
 
@@ -60,7 +60,7 @@ begin_class
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Unstable
 DECL|class|ContainerExitStatus
 specifier|public
 class|class

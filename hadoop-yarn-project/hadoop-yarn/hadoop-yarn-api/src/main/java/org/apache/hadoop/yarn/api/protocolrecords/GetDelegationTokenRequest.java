@@ -48,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Stable
 import|;
 end_import
 
@@ -76,13 +76,17 @@ begin_class
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|class|GetDelegationTokenRequest
 specifier|public
 specifier|abstract
 class|class
 name|GetDelegationTokenRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance (String renewer)
 specifier|public
 name|GetDelegationTokenRequest
@@ -115,6 +119,10 @@ return|return
 name|request
 return|;
 block|}
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getRenewer ()
 specifier|public
 specifier|abstract
@@ -122,6 +130,10 @@ name|String
 name|getRenewer
 parameter_list|()
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setRenewer (String renewer)
 specifier|public
 specifier|abstract

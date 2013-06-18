@@ -100,6 +100,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NMToken
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Token
 import|;
 end_import
@@ -135,6 +153,10 @@ specifier|abstract
 class|class
 name|StartContainerRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ( ContainerLaunchContext context, Token container)
 specifier|public
 specifier|static
@@ -205,6 +227,7 @@ name|ContainerLaunchContext
 name|context
 parameter_list|)
 function_decl|;
+comment|/**    *<p>Get the container token to be used for authorization during starting    * container.</p>    *<p>Note: {@link NMToken} will be used for authenticating communication with</code>    * NodeManager</code>.</p>    * @return the container token to be used for authorization during starting    * container.    * @see NMToken    * @see ContainerManagementProtocol#startContainer(StartContainerRequest)    */
 annotation|@
 name|Public
 annotation|@

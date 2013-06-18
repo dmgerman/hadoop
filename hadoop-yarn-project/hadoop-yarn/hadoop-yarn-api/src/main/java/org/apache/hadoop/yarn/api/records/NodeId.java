@@ -76,6 +76,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|util
@@ -106,6 +122,8 @@ argument_list|>
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (String host, int port)
 specifier|public
 specifier|static
@@ -168,6 +186,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|setHost (String host)
 specifier|protected
 specifier|abstract
@@ -192,6 +212,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|setPort (int port)
 specifier|protected
 specifier|abstract

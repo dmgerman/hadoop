@@ -26,6 +26,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Evolving
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -51,6 +83,10 @@ comment|/**  * This is the API for the applications comprising of constants that
 end_comment
 
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|interface|ApplicationConstants
 specifier|public
 interface|interface
@@ -66,6 +102,7 @@ name|APP_SUBMIT_TIME_ENV
 init|=
 literal|"APP_SUBMIT_TIME_ENV"
 decl_stmt|;
+comment|/**    * The cache file into which container token is written    */
 DECL|field|CONTAINER_TOKEN_FILE_ENV_NAME
 specifier|public
 specifier|static
@@ -87,6 +124,7 @@ name|APPLICATION_WEB_PROXY_BASE_ENV
 init|=
 literal|"APPLICATION_WEB_PROXY_BASE"
 decl_stmt|;
+comment|/**    * The temporary environmental variable for container log directory. This    * should be replaced by real container log directory on container launch.    */
 DECL|field|LOG_DIR_EXPANSION_VAR
 specifier|public
 specifier|static

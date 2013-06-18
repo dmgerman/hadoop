@@ -99,6 +99,10 @@ specifier|abstract
 class|class
 name|GetQueueInfoRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 specifier|public
 specifier|static
 name|GetQueueInfoRequest
@@ -163,6 +167,10 @@ name|request
 return|;
 block|}
 comment|/**    * Get the<em>queue name</em> for which to get queue information.    * @return<em>queue name</em> for which to get queue information    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getQueueName ()
 specifier|public
 specifier|abstract
@@ -171,6 +179,10 @@ name|getQueueName
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<em>queue name</em> for which to get queue information    * @param queueName<em>queue name</em> for which to get queue information    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setQueueName (String queueName)
 specifier|public
 specifier|abstract
@@ -182,6 +194,10 @@ name|queueName
 parameter_list|)
 function_decl|;
 comment|/**    * Is information about<em>active applications<e/m> required?    * @return<code>true</code> if applications' information is to be included,    *         else<code>false</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getIncludeApplications ()
 specifier|public
 specifier|abstract
@@ -190,6 +206,10 @@ name|getIncludeApplications
 parameter_list|()
 function_decl|;
 comment|/**    * Should we get fetch information about<em>active applications</em>?    * @param includeApplications fetch information about<em>active     *                            applications</em>?    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setIncludeApplications (boolean includeApplications)
 specifier|public
 specifier|abstract
@@ -201,6 +221,10 @@ name|includeApplications
 parameter_list|)
 function_decl|;
 comment|/**    * Is information about<em>child queues</em> required?    * @return<code>true</code> if information about child queues is required,    *         else<code>false</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getIncludeChildQueues ()
 specifier|public
 specifier|abstract
@@ -209,6 +233,10 @@ name|getIncludeChildQueues
 parameter_list|()
 function_decl|;
 comment|/**    * Should we fetch information about<em>child queues</em>?    * @param includeChildQueues fetch information about<em>child queues</em>?    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setIncludeChildQueues (boolean includeChildQueues)
 specifier|public
 specifier|abstract
@@ -220,6 +248,10 @@ name|includeChildQueues
 parameter_list|)
 function_decl|;
 comment|/**    * Is information on the entire<em>child queue hierarchy</em> required?    * @return<code>true</code> if information about entire hierarchy is     *         required,<code>false</code> otherwise    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getRecursive ()
 specifier|public
 specifier|abstract
@@ -228,6 +260,10 @@ name|getRecursive
 parameter_list|()
 function_decl|;
 comment|/**    * Should we fetch information on the entire<em>child queue hierarchy</em>?    * @param recursive fetch information on the entire<em>child queue     *                  hierarchy</em>?    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setRecursive (boolean recursive)
 specifier|public
 specifier|abstract

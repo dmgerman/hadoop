@@ -117,6 +117,8 @@ name|ContainerStatus
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (ContainerId containerId, ContainerState containerState, String diagnostics, int exitStatus)
 specifier|public
 specifier|static
@@ -236,7 +238,7 @@ comment|/**    *<p>Get the<em>exit status</em> for the container.</p>    *      
 annotation|@
 name|Public
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|getExitStatus ()
 specifier|public
 specifier|abstract

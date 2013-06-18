@@ -32,7 +32,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
 import|;
 end_import
 
@@ -48,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 import|;
 end_import
 
@@ -92,15 +92,19 @@ end_comment
 
 begin_class
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Evolving
+name|Unstable
 DECL|class|CancelDelegationTokenRequest
 specifier|public
 specifier|abstract
 class|class
 name|CancelDelegationTokenRequest
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (Token dToken)
 specifier|public
 specifier|static
@@ -134,6 +138,11 @@ return|return
 name|request
 return|;
 block|}
+comment|/**    * Get the delegation token requested to be cancelled.    * @return the delegation token requested to be cancelled.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|getDelegationToken ()
 specifier|public
 specifier|abstract
@@ -141,6 +150,10 @@ name|Token
 name|getDelegationToken
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setDelegationToken (Token dToken)
 specifier|public
 specifier|abstract

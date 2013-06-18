@@ -167,6 +167,10 @@ specifier|abstract
 class|class
 name|GetNewApplicationResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( ApplicationId applicationId, Resource minCapability, Resource maxCapability)
 specifier|public
 specifier|static

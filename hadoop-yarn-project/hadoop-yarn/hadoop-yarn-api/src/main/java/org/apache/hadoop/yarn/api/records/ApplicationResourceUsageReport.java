@@ -117,6 +117,8 @@ name|ApplicationResourceUsageReport
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( int numUsedContainers, int numReservedContainers, Resource usedResources, Resource reservedResources, Resource neededResources)
 specifier|public
 specifier|static
@@ -219,9 +221,9 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get the number of reserved containers    * @return the number of reserved containers    */
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|getNumReservedContainers ()
 specifier|public
 specifier|abstract

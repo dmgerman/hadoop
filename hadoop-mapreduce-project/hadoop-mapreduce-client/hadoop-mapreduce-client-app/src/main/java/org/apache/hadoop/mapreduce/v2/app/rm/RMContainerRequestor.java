@@ -1544,6 +1544,11 @@ name|req
 operator|.
 name|getNumContainers
 argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getRelaxLocality
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|zeroedRequest

@@ -32,22 +32,6 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Private
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-operator|.
 name|Public
 import|;
 end_import
@@ -65,22 +49,6 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
-name|Unstable
 import|;
 end_import
 
@@ -149,6 +117,11 @@ specifier|abstract
 class|class
 name|RegisterApplicationMasterRequest
 block|{
+comment|/**    * Create a new instance of<code>RegisterApplicationMasterRequest</code>.    * If<em>port, trackingUrl</em> is not used, use the following default value:    *<ul>    *<li>port: -1</li>    *<li>trackingUrl: null</li>    *</ul>    * @return the new instance of<code>RegisterApplicationMasterRequest</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, String host, int port, String trackingUrl)
 specifier|public
 specifier|static
@@ -253,9 +226,9 @@ parameter_list|()
 function_decl|;
 comment|/**    * Set the<em>host</em> on which the<code>ApplicationMaster</code> is     * running.    * @param host<em>host</em> on which the<code>ApplicationMaster</code>     *             is running    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setHost (String host)
 specifier|public
 specifier|abstract

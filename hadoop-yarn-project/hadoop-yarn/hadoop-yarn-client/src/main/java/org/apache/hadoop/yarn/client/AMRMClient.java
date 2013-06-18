@@ -332,7 +332,7 @@ parameter_list|>
 extends|extends
 name|AbstractService
 block|{
-comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest(appAttemptId)    * }</pre>    * @param appAttemptId the appAttemptId associated with the AMRMClient    * @return the newly create AMRMClient instance.    */
+comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest(appAttemptId)    * }</pre>    * @param appAttemptId the appAttemptId associated with the AMRMClient    * @return the newly created AMRMClient instance.    */
 annotation|@
 name|Public
 DECL|method|createAMRMClient ( ApplicationAttemptId appAttemptId)

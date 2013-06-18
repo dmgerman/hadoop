@@ -125,12 +125,20 @@ comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</co
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|class|FinishApplicationMasterRequest
 specifier|public
 specifier|abstract
 class|class
 name|FinishApplicationMasterRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ( ApplicationAttemptId appAttemptId, FinalApplicationStatus finalAppStatus, String diagnostics, String url)
 specifier|public
 specifier|static

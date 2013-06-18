@@ -153,6 +153,10 @@ specifier|abstract
 class|class
 name|SubmitApplicationRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ( ApplicationSubmissionContext context)
 specifier|public
 specifier|static

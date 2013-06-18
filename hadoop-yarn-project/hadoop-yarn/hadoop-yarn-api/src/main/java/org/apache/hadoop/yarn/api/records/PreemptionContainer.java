@@ -105,12 +105,20 @@ comment|/**  * Specific container requested back by the<code>ResourceManager</co
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|PreemptionContainer
 specifier|public
 specifier|abstract
 class|class
 name|PreemptionContainer
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (ContainerId id)
 specifier|public
 specifier|static

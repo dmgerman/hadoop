@@ -117,6 +117,8 @@ name|YarnClusterMetrics
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (int numNodeManagers)
 specifier|public
 specifier|static

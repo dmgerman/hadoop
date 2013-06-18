@@ -137,6 +137,47 @@ name|int
 name|numContainers
 parameter_list|)
 block|{
+return|return
+name|newInstance
+argument_list|(
+name|priority
+argument_list|,
+name|hostName
+argument_list|,
+name|capability
+argument_list|,
+name|numContainers
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance (Priority priority, String hostName, Resource capability, int numContainers, boolean relaxLocality)
+specifier|public
+specifier|static
+name|ResourceRequest
+name|newInstance
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|,
+name|String
+name|hostName
+parameter_list|,
+name|Resource
+name|capability
+parameter_list|,
+name|int
+name|numContainers
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|)
+block|{
 name|ResourceRequest
 name|request
 init|=
@@ -177,10 +218,21 @@ argument_list|(
 name|numContainers
 argument_list|)
 expr_stmt|;
+name|request
+operator|.
+name|setRelaxLocality
+argument_list|(
+name|relaxLocality
+argument_list|)
+expr_stmt|;
 return|return
 name|request
 return|;
 block|}
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|class|ResourceRequestComparator
 specifier|public
 specifier|static
@@ -198,6 +250,15 @@ argument_list|>
 implements|,
 name|Serializable
 block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
 annotation|@
 name|Override
 DECL|method|compare (ResourceRequest r1, ResourceRequest r2)
@@ -301,6 +362,10 @@ init|=
 literal|"*"
 decl_stmt|;
 comment|/**    * Check whether the given<em>host/rack</em> string represents an arbitrary    * host name.    *    * @param hostName<em>host/rack</em> on which the allocation is desired    * @return whether the given<em>host/rack</em> string represents an arbitrary    * host name    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|isAnyLocation (String hostName)
 specifier|public
 specifier|static
@@ -359,7 +424,7 @@ name|String
 name|getResourceName
 parameter_list|()
 function_decl|;
-comment|/**    * Set the resource (e.g.<em>host/rack</em>) on which the allocation     * is desired.    *     * A special value of<em>*</em> signifies that<em>any</em> resource     * (e.g. host/rack) is acceptable.     *     * @param resourceName (e.g.<em>host/rack</em>) on which the     *                     allocation is desired    */
+comment|/**    * Set the resource name (e.g.<em>host/rack</em>) on which the allocation     * is desired.    *     * A special value of<em>*</em> signifies that<em>any</em> resource name    * (e.g. host/rack) is acceptable.     *     * @param resourceName (e.g.<em>host/rack</em>) on which the     *                     allocation is desired    */
 annotation|@
 name|Public
 annotation|@
@@ -440,7 +505,7 @@ name|boolean
 name|getRelaxLocality
 parameter_list|()
 function_decl|;
-comment|/**    * For a request at a network hierarchy level, set whether locality can be relaxed    * to that level and beyond.    *     * If the flag is off on a rack-level<code>ResourceRequest</code>,    * containers at that request's priority will not be assigned to nodes on that    * request's rack unless requests specifically for those nodes have also been    * submitted.    *     * If the flag is off on an {@link ResourceRequest#ANY}-level    *<code>ResourceRequest</code>, containers at that request's priority will    * only be assigned on racks for which specific requests have also been    * submitted.    *     * For example, to request a container strictly on a specific node, the    * corresponding rack-level and any-level requests should have locality    * relaxation set to false.  Similarly, to request a container strictly on a    * specific rack, the corresponding any-level request should have locality    * relaxation set to false.    *     * @param relaxLocality whether locality relaxation is enabled with this    *<code>ResourceRequest</code>.    */
+comment|/**    *<p>For a request at a network hierarchy level, set whether locality can be relaxed    * to that level and beyond.<p>    *     *<p>If the flag is off on a rack-level<code>ResourceRequest</code>,    * containers at that request's priority will not be assigned to nodes on that    * request's rack unless requests specifically for those nodes have also been    * submitted.<p>    *     *<p>If the flag is off on an {@link ResourceRequest#ANY}-level    *<code>ResourceRequest</code>, containers at that request's priority will    * only be assigned on racks for which specific requests have also been    * submitted.<p>    *     *<p>For example, to request a container strictly on a specific node, the    * corresponding rack-level and any-level requests should have locality    * relaxation set to false.  Similarly, to request a container strictly on a    * specific rack, the corresponding any-level request should have locality    * relaxation set to false.<p>    *     * @param relaxLocality whether locality relaxation is enabled with this    *<code>ResourceRequest</code>.    */
 annotation|@
 name|Public
 annotation|@

@@ -62,6 +62,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -104,7 +136,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ResourceBlacklistRequest
+name|ContainerId
 import|;
 end_import
 
@@ -122,7 +154,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerId
+name|ResourceBlacklistRequest
 import|;
 end_import
 
@@ -184,7 +216,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ResourceBlacklistRequestPBImpl
+name|ContainerIdPBImpl
 import|;
 end_import
 
@@ -206,7 +238,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|ContainerIdPBImpl
+name|ResourceBlacklistRequestPBImpl
 import|;
 end_import
 
@@ -264,7 +296,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|ResourceBlacklistRequestProto
+name|ContainerIdProto
 import|;
 end_import
 
@@ -282,7 +314,7 @@ name|proto
 operator|.
 name|YarnProtos
 operator|.
-name|ContainerIdProto
+name|ResourceBlacklistRequestProto
 import|;
 end_import
 
@@ -341,6 +373,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|AllocateRequestPBImpl
 specifier|public
 class|class

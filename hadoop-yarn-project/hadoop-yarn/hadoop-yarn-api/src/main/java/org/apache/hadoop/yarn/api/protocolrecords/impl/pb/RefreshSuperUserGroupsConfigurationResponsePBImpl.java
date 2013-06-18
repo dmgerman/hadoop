@@ -32,13 +32,27 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|classification
 operator|.
-name|api
+name|InterfaceAudience
 operator|.
-name|protocolrecords
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|RefreshSuperUserGroupsConfigurationResponse
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -54,13 +68,9 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
+name|protocolrecords
 operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|ProtoBase
+name|RefreshSuperUserGroupsConfigurationResponse
 import|;
 end_import
 
@@ -83,6 +93,10 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|class|RefreshSuperUserGroupsConfigurationResponsePBImpl
 specifier|public
 class|class

@@ -48,22 +48,6 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
-operator|.
 name|Stable
 import|;
 end_import
@@ -92,7 +76,7 @@ begin_class
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|class|URL
 specifier|public
 specifier|abstract
@@ -170,7 +154,7 @@ comment|/**    * Get the scheme of the URL.    * @return scheme of the URL    */
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|getScheme ()
 specifier|public
 specifier|abstract
@@ -182,7 +166,7 @@ comment|/**    * Set the scheme of the URL    * @param scheme scheme of the URL 
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|setScheme (String scheme)
 specifier|public
 specifier|abstract
@@ -197,7 +181,7 @@ comment|/**    * Get the host of the URL.    * @return host of the URL    */
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|getHost ()
 specifier|public
 specifier|abstract
@@ -209,7 +193,7 @@ comment|/**    * Set the host of the URL.    * @param host host of the URL    */
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|setHost (String host)
 specifier|public
 specifier|abstract
@@ -224,7 +208,7 @@ comment|/**    * Get the port of the URL.    * @return port of the URL    */
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|getPort ()
 specifier|public
 specifier|abstract
@@ -236,7 +220,7 @@ comment|/**    * Set the port of the URL    * @param port port of the URL    */
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|setPort (int port)
 specifier|public
 specifier|abstract
@@ -251,7 +235,7 @@ comment|/**    * Get the file of the URL.    * @return file of the URL    */
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|getFile ()
 specifier|public
 specifier|abstract
@@ -263,7 +247,7 @@ comment|/**    * Set the file of the URL.    * @param file file of the URL    */
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|method|setFile (String file)
 specifier|public
 specifier|abstract

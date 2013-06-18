@@ -53,7 +53,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Ennumeration of various states of an<code>ApplicationMaster</code>.  */
+comment|/**  * Enumeration of various states of an<code>ApplicationMaster</code>.  */
 end_comment
 
 begin_enum

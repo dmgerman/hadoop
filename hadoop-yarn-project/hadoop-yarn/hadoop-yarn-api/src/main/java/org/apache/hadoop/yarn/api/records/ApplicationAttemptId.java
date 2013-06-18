@@ -86,6 +86,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|util
@@ -114,6 +130,10 @@ argument_list|<
 name|ApplicationAttemptId
 argument_list|>
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|field|appAttemptIdStrPrefix
 specifier|public
 specifier|static
@@ -125,6 +145,8 @@ literal|"appattempt_"
 decl_stmt|;
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (ApplicationId appId, int attemptId)
 specifier|public
 specifier|static
@@ -187,6 +209,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|setApplicationId (ApplicationId appID)
 specifier|protected
 specifier|abstract
@@ -198,6 +222,10 @@ name|appID
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>attempt id</code> of the<code>Application</code>.    * @return<code>attempt id</code> of the<code>Application</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getAttemptId ()
 specifier|public
 specifier|abstract
@@ -207,6 +235,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|setAttemptId (int attemptId)
 specifier|protected
 specifier|abstract

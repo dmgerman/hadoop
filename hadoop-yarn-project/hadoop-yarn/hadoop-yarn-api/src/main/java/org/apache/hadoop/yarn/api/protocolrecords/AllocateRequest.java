@@ -199,6 +199,10 @@ specifier|abstract
 class|class
 name|AllocateRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest)
 specifier|public
 specifier|static

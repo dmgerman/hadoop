@@ -69,7 +69,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>State of a Queue.</p>  *   *<p>A queue is one of:  *<ul>  *<li>{@link #RUNNING} - normal state.</li>   *<li>{@link #STOPPED} - not accepting new application submissions.  *</ul>  *</p>  *   * @see QueueInfo  * @see ApplicationClientProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
+comment|/**  *<p>State of a Queue.</p>  *   *<p>A queue is in one of:  *<ul>  *<li>{@link #RUNNING} - normal state.</li>   *<li>{@link #STOPPED} - not accepting new application submissions.  *</ul>  *</p>  *   * @see QueueInfo  * @see ApplicationClientProtocol#getQueueInfo(org.apache.hadoop.yarn.api.protocolrecords.GetQueueInfoRequest)  */
 end_comment
 
 begin_enum

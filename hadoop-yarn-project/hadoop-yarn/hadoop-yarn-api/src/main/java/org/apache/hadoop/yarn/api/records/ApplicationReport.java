@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code> is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link YarnApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client token of the application (if security is enabled).</li>  *</ul>  *</p>  *  * @see ApplicationClientProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
+comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code> is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link YarnApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client {@link Token} of the application (if security is enabled).</li>  *</ul>  *</p>  *  * @see ApplicationClientProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
 end_comment
 
 begin_class
@@ -134,7 +134,7 @@ block|{
 annotation|@
 name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType)
 specifier|public
 specifier|static
@@ -366,9 +366,9 @@ parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>ApplicationAttemptId</code> of the current    * attempt of the application    * @return<code>ApplicationAttemptId</code> of the attempt    */
 annotation|@
-name|Private
+name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|getCurrentApplicationAttemptId ()
 specifier|public
 specifier|abstract

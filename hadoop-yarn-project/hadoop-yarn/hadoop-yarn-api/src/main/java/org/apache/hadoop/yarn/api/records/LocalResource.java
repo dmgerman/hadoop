@@ -230,6 +230,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get the<em>location</em> of the resource to be localized.    * @return<em>location</em> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getResource ()
 specifier|public
 specifier|abstract
@@ -238,6 +242,10 @@ name|getResource
 parameter_list|()
 function_decl|;
 comment|/**    * Set<em>location</em> of the resource to be localized.    * @param resource<em>location</em> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setResource (URL resource)
 specifier|public
 specifier|abstract
@@ -249,6 +257,10 @@ name|resource
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<em>size</em> of the resource to be localized.    * @return<em>size</em> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getSize ()
 specifier|public
 specifier|abstract
@@ -257,6 +269,10 @@ name|getSize
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<em>size</em> of the resource to be localized.    * @param size<em>size</em> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setSize (long size)
 specifier|public
 specifier|abstract
@@ -268,6 +284,10 @@ name|size
 parameter_list|)
 function_decl|;
 comment|/**    * Get the original<em>timestamp</em> of the resource to be localized, used    * for verification.    * @return<em>timestamp</em> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getTimestamp ()
 specifier|public
 specifier|abstract
@@ -276,6 +296,10 @@ name|getTimestamp
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<em>timestamp</em> of the resource to be localized, used    * for verification.    * @param timestamp<em>timestamp</em> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setTimestamp (long timestamp)
 specifier|public
 specifier|abstract
@@ -287,6 +311,10 @@ name|timestamp
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>LocalResourceType</code> of the resource to be localized.    * @return<code>LocalResourceType</code> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getType ()
 specifier|public
 specifier|abstract
@@ -295,6 +323,10 @@ name|getType
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<code>LocalResourceType</code> of the resource to be localized.    * @param type<code>LocalResourceType</code> of the resource to be localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setType (LocalResourceType type)
 specifier|public
 specifier|abstract
@@ -306,6 +338,10 @@ name|type
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>LocalResourceVisibility</code> of the resource to be     * localized.    * @return<code>LocalResourceVisibility</code> of the resource to be     *         localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getVisibility ()
 specifier|public
 specifier|abstract
@@ -314,6 +350,10 @@ name|getVisibility
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<code>LocalResourceVisibility</code> of the resource to be     * localized.    * @param visibility<code>LocalResourceVisibility</code> of the resource to be     *                   localized    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setVisibility (LocalResourceVisibility visibility)
 specifier|public
 specifier|abstract
@@ -325,6 +365,10 @@ name|visibility
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<em>pattern</em> that should be used to extract entries from the    * archive (only used when type is<code>PATTERN</code>).    * @return<em>pattern</em> that should be used to extract entries from the     * archive.     */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getPattern ()
 specifier|public
 specifier|abstract
@@ -333,6 +377,10 @@ name|getPattern
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<em>pattern</em> that should be used to extract entries from the    * archive (only used when type is<code>PATTERN</code>).    * @param pattern<em>pattern</em> that should be used to extract entries     * from the archive.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setPattern (String pattern)
 specifier|public
 specifier|abstract

@@ -177,6 +177,10 @@ specifier|abstract
 class|class
 name|GetQueueUserAclsInfoResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( List<QueueUserACLInfo> queueUserAclsList)
 specifier|public
 specifier|static

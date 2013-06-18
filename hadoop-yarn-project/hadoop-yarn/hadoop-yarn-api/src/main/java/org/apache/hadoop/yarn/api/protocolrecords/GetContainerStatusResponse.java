@@ -149,6 +149,10 @@ specifier|abstract
 class|class
 name|GetContainerStatusResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( ContainerStatus containerStatus)
 specifier|public
 specifier|static

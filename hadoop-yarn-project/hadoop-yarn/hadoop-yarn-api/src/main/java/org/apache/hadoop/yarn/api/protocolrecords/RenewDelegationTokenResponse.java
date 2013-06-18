@@ -32,7 +32,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
 import|;
 end_import
 
@@ -48,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 import|;
 end_import
 
@@ -74,15 +74,19 @@ end_comment
 
 begin_class
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Evolving
+name|Unstable
 DECL|class|RenewDelegationTokenResponse
 specifier|public
 specifier|abstract
 class|class
 name|RenewDelegationTokenResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (long expTime)
 specifier|public
 specifier|static
@@ -116,6 +120,10 @@ return|return
 name|response
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|getNextExpirationTime ()
 specifier|public
 specifier|abstract
@@ -123,6 +131,10 @@ name|long
 name|getNextExpirationTime
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setNextExpirationTime (long expTime)
 specifier|public
 specifier|abstract

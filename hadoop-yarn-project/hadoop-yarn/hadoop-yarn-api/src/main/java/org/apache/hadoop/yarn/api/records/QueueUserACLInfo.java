@@ -143,6 +143,8 @@ name|QueueUserACLInfo
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (String queueName, List<QueueACL> acls)
 specifier|public
 specifier|static

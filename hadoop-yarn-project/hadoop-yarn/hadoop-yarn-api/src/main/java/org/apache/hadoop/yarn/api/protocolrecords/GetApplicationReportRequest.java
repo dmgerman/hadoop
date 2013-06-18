@@ -135,6 +135,10 @@ specifier|abstract
 class|class
 name|GetApplicationReportRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ( ApplicationId applicationId)
 specifier|public
 specifier|static
@@ -169,6 +173,10 @@ name|request
 return|;
 block|}
 comment|/**    * Get the<code>ApplicationId</code> of the application.    * @return<code>ApplicationId</code> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getApplicationId ()
 specifier|public
 specifier|abstract
@@ -177,6 +185,10 @@ name|getApplicationId
 parameter_list|()
 function_decl|;
 comment|/**    * Set the<code>ApplicationId</code> of the application    * @param applicationId<code>ApplicationId</code> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setApplicationId (ApplicationId applicationId)
 specifier|public
 specifier|abstract

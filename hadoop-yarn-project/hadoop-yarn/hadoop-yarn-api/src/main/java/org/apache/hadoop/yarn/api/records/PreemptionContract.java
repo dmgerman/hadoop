@@ -143,12 +143,20 @@ comment|/**  * Description of resources requested back by the<code>ResourceManag
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|PreemptionContract
 specifier|public
 specifier|abstract
 class|class
 name|PreemptionContract
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( List<PreemptionResourceRequest> req, Set<PreemptionContainer> containers)
 specifier|public
 specifier|static

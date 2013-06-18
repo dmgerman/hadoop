@@ -135,6 +135,10 @@ specifier|abstract
 class|class
 name|GetContainerStatusRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance (ContainerId containerId)
 specifier|public
 specifier|static

@@ -32,6 +32,22 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
 name|Public
 import|;
 end_import
@@ -49,6 +65,22 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -99,6 +131,10 @@ specifier|abstract
 class|class
 name|FinishApplicationMasterResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ()
 specifier|public
 specifier|static

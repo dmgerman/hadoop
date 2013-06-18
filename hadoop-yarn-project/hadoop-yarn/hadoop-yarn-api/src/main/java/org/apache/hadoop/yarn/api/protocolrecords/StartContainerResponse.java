@@ -52,6 +52,22 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
 name|Public
 import|;
 end_import
@@ -69,6 +85,22 @@ operator|.
 name|InterfaceStability
 operator|.
 name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -119,6 +151,10 @@ specifier|abstract
 class|class
 name|StartContainerResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( Map<String, ByteBuffer> serviceResponses)
 specifier|public
 specifier|static
@@ -158,6 +194,10 @@ name|response
 return|;
 block|}
 comment|/**    *<p>Get the responses from all auxiliary services running on the     *<code>NodeManager</code>.</p>    *<p>The responses are returned as a Map between the auxiliary service names    * and their corresponding opaque blob<code>ByteBuffer</code>s</p>     * @return a Map between the auxiliary service names and their outputs    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getAllServiceResponse ()
 specifier|public
 specifier|abstract
@@ -171,6 +211,10 @@ name|getAllServiceResponse
 parameter_list|()
 function_decl|;
 comment|/**    * Set to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    * @param serviceResponses A map from auxiliary service names to the opaque    * blob<code>ByteBuffer</code>s for that auxiliary service    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setAllServiceResponse (Map<String, ByteBuffer> serviceResponses)
 specifier|public
 specifier|abstract

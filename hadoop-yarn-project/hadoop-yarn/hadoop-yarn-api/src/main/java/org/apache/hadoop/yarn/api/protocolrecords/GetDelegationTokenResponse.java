@@ -32,6 +32,22 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
 name|Public
 import|;
 end_import
@@ -48,7 +64,23 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
 import|;
 end_import
 
@@ -112,13 +144,17 @@ begin_class
 annotation|@
 name|Public
 annotation|@
-name|Evolving
+name|Stable
 DECL|class|GetDelegationTokenResponse
 specifier|public
 specifier|abstract
 class|class
 name|GetDelegationTokenResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (Token rmDTToken)
 specifier|public
 specifier|static
@@ -153,6 +189,10 @@ name|response
 return|;
 block|}
 comment|/**    * The Delegation tokens have a identifier which maps to    * {@link AbstractDelegationTokenIdentifier}.    *    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getRMDelegationToken ()
 specifier|public
 specifier|abstract
@@ -160,6 +200,10 @@ name|Token
 name|getRMDelegationToken
 parameter_list|()
 function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|setRMDelegationToken (Token rmDTToken)
 specifier|public
 specifier|abstract

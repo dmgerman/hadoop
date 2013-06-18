@@ -48,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Stable
+name|Unstable
 import|;
 end_import
 
@@ -78,7 +78,7 @@ begin_enum
 annotation|@
 name|Public
 annotation|@
-name|Stable
+name|Unstable
 DECL|enum|AMCommand
 specifier|public
 enum|enum

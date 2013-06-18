@@ -109,6 +109,10 @@ specifier|abstract
 class|class
 name|ResourceBlacklistRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ( List<String> additions, List<String> removals)
 specifier|public
 specifier|static
@@ -158,7 +162,11 @@ return|return
 name|blacklistRequest
 return|;
 block|}
-comment|/**    * Get the list of resources which should be added to the     * application blacklist.    *     * @return list of resources which should be added to the     *         application blacklist    */
+comment|/**    * Get the list of resource-names which should be added to the     * application blacklist.    *     * @return list of resource-names which should be added to the     *         application blacklist    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getBlacklistAdditions ()
 specifier|public
 specifier|abstract
@@ -169,7 +177,11 @@ argument_list|>
 name|getBlacklistAdditions
 parameter_list|()
 function_decl|;
-comment|/**    * Set list of resources which should be added to the application blacklist.    *     * @param resourceNames list of resources which should be added to the     *                  application blacklist    */
+comment|/**    * Set list of resource-names which should be added to the application blacklist.    *     * @param resourceNames list of resource-names which should be added to the     *                  application blacklist    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setBlacklistAdditions (List<String> resourceNames)
 specifier|public
 specifier|abstract
@@ -183,7 +195,11 @@ argument_list|>
 name|resourceNames
 parameter_list|)
 function_decl|;
-comment|/**    * Get the list of resources which should be removed from the     * application blacklist.    *     * @return list of resources which should be removed from the     *         application blacklist    */
+comment|/**    * Get the list of resource-names which should be removed from the     * application blacklist.    *     * @return list of resource-names which should be removed from the     *         application blacklist    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getBlacklistRemovals ()
 specifier|public
 specifier|abstract
@@ -194,7 +210,11 @@ argument_list|>
 name|getBlacklistRemovals
 parameter_list|()
 function_decl|;
-comment|/**    * Set list of resources which should be removed from the     * application blacklist.    *     * @param resourceNames list of resources which should be removed from the     *                  application blacklist    */
+comment|/**    * Set list of resource-names which should be removed from the     * application blacklist.    *     * @param resourceNames list of resource-names which should be removed from the     *                  application blacklist    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setBlacklistRemovals (List<String> resourceNames)
 specifier|public
 specifier|abstract

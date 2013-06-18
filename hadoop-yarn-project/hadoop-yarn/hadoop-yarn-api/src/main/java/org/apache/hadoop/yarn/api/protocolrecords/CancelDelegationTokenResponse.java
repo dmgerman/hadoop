@@ -32,7 +32,7 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
-name|Public
+name|Private
 import|;
 end_import
 
@@ -48,7 +48,7 @@ name|classification
 operator|.
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 import|;
 end_import
 
@@ -74,15 +74,19 @@ end_comment
 
 begin_class
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Evolving
+name|Unstable
 DECL|class|CancelDelegationTokenResponse
 specifier|public
 specifier|abstract
 class|class
 name|CancelDelegationTokenResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ()
 specifier|public
 specifier|static

@@ -123,12 +123,20 @@ comment|/**  * Description of resources requested back by the cluster.  * @see P
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Evolving
 DECL|class|PreemptionResourceRequest
 specifier|public
 specifier|abstract
 class|class
 name|PreemptionResourceRequest
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (ResourceRequest req)
 specifier|public
 specifier|static

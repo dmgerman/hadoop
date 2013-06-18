@@ -187,6 +187,10 @@ specifier|abstract
 class|class
 name|RegisterApplicationMasterResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls)
 specifier|public
 specifier|static
@@ -301,6 +305,18 @@ argument_list|>
 name|acls
 parameter_list|)
 function_decl|;
+comment|/**    *<p>Get ClientToAMToken master key.</p>    *<p>The ClientToAMToken master key is sent to<code>ApplicationMaster</code>    * by<code>ResourceManager</code> via {@link RegisterApplicationMasterResponse}    * , used to verify corresponding ClientToAMToken.</p>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getClientToAMTokenMasterKey ()
+specifier|public
+specifier|abstract
+name|ByteBuffer
+name|getClientToAMTokenMasterKey
+parameter_list|()
+function_decl|;
 comment|/**    * Set ClientToAMToken master key.    */
 annotation|@
 name|Public
@@ -315,18 +331,6 @@ parameter_list|(
 name|ByteBuffer
 name|key
 parameter_list|)
-function_decl|;
-comment|/**    * Get ClientToAMToken master key.    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getClientToAMTokenMasterKey ()
-specifier|public
-specifier|abstract
-name|ByteBuffer
-name|getClientToAMTokenMasterKey
-parameter_list|()
 function_decl|;
 block|}
 end_class

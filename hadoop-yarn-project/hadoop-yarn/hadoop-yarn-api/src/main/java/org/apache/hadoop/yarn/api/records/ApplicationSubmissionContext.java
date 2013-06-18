@@ -48,6 +48,22 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
 name|Public
 import|;
 end_import
@@ -416,9 +432,9 @@ parameter_list|()
 function_decl|;
 comment|/**    * Set the<code>Priority</code> of the application.    * @param priority<code>Priority</code> of the application    */
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|setPriority (Priority priority)
 specifier|public
 specifier|abstract
@@ -460,7 +476,7 @@ comment|/**    * Get if the RM should manage the execution of the AM.     * If t
 annotation|@
 name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|getUnmanagedAM ()
 specifier|public
 specifier|abstract
@@ -472,7 +488,7 @@ comment|/**    * @param value true if RM should not manage the AM    */
 annotation|@
 name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setUnmanagedAM (boolean value)
 specifier|public
 specifier|abstract
@@ -520,7 +536,7 @@ comment|/**    * @return the number of max attempts of the application to be sub
 annotation|@
 name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|getMaxAppAttempts ()
 specifier|public
 specifier|abstract
@@ -532,7 +548,7 @@ comment|/**    * Set the number of max attempts of the application to be submitt
 annotation|@
 name|Public
 annotation|@
-name|Unstable
+name|Stable
 DECL|method|setMaxAppAttempts (int maxAppAttempts)
 specifier|public
 specifier|abstract
@@ -543,6 +559,7 @@ name|int
 name|maxAppAttempts
 parameter_list|)
 function_decl|;
+comment|/**    * Get the resource required by the<code>ApplicationMaster</code> for this    * application.    *     * @return the resource required by the<code>ApplicationMaster</code> for    *         this application.    */
 annotation|@
 name|Public
 annotation|@
@@ -554,6 +571,7 @@ name|Resource
 name|getResource
 parameter_list|()
 function_decl|;
+comment|/**    * Set the resource required by the<code>ApplicationMaster</code> for this    * application.    *    * @param resource the resource required by the<code>ApplicationMaster</code>    * for this application.    */
 annotation|@
 name|Public
 annotation|@
@@ -568,7 +586,7 @@ name|Resource
 name|resource
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>applicationType</em> is the application type    *     * @return<em>applicationType</em> is the application type    */
+comment|/**    * Get the application type    *     * @return the application type    */
 annotation|@
 name|Public
 annotation|@
@@ -580,7 +598,7 @@ name|String
 name|getApplicationType
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<em>applicationType</em> is the application type    *     * @param applicationType    *<em>applicationType</em> is the application type    */
+comment|/**    * Set the application type    *     * @param applicationType the application type    */
 annotation|@
 name|Public
 annotation|@

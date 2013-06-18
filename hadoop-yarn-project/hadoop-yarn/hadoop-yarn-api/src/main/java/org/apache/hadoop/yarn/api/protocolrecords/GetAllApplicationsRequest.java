@@ -99,6 +99,10 @@ specifier|abstract
 class|class
 name|GetAllApplicationsRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|newInstance ()
 specifier|public
 specifier|static

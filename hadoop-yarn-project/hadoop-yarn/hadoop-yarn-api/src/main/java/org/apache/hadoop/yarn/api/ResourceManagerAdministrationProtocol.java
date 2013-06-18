@@ -36,6 +36,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|tools
 operator|.
 name|GetUserMappingsProtocol
@@ -275,6 +307,10 @@ import|;
 end_import
 
 begin_interface
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|interface|ResourceManagerAdministrationProtocol
 specifier|public
 interface|interface
@@ -282,6 +318,10 @@ name|ResourceManagerAdministrationProtocol
 extends|extends
 name|GetUserMappingsProtocol
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|refreshQueues (RefreshQueuesRequest request)
 specifier|public
 name|RefreshQueuesResponse
@@ -295,6 +335,10 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|refreshNodes (RefreshNodesRequest request)
 specifier|public
 name|RefreshNodesResponse
@@ -308,6 +352,10 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
 specifier|public
 name|RefreshSuperUserGroupsConfigurationResponse
 DECL|method|refreshSuperUserGroupsConfiguration ( RefreshSuperUserGroupsConfigurationRequest request)
@@ -321,6 +369,10 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|refreshUserToGroupsMappings ( RefreshUserToGroupsMappingsRequest request)
 specifier|public
 name|RefreshUserToGroupsMappingsResponse
@@ -334,6 +386,10 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|refreshAdminAcls ( RefreshAdminAclsRequest request)
 specifier|public
 name|RefreshAdminAclsResponse
@@ -347,6 +403,10 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|refreshServiceAcls ( RefreshServiceAclsRequest request)
 specifier|public
 name|RefreshServiceAclsResponse

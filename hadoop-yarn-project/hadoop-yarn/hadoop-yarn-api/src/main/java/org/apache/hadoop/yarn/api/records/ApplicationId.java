@@ -86,6 +86,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|util
@@ -114,6 +130,10 @@ argument_list|<
 name|ApplicationId
 argument_list|>
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|field|appIdStrPrefix
 specifier|public
 specifier|static
@@ -123,6 +143,10 @@ name|appIdStrPrefix
 init|=
 literal|"application_"
 decl_stmt|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (long clusterTimestamp, int id)
 specifier|public
 specifier|static
@@ -185,6 +209,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|setId (int id)
 specifier|protected
 specifier|abstract
@@ -196,6 +222,10 @@ name|id
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<em>start time</em> of the<code>ResourceManager</code> which is     * used to generate globally unique<code>ApplicationId</code>.    * @return<em>start time</em> of the<code>ResourceManager</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getClusterTimestamp ()
 specifier|public
 specifier|abstract
@@ -205,6 +235,8 @@ parameter_list|()
 function_decl|;
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|setClusterTimestamp (long clusterTimestamp)
 specifier|protected
 specifier|abstract

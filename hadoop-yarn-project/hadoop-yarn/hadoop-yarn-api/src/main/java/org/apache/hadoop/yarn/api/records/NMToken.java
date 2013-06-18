@@ -76,6 +76,40 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|util
@@ -85,10 +119,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * NMToken is returned by RM on AllocateResponse.  */
+comment|/**  *<p>The NMToken is used for authenticating communication with  *<code>NodeManager</code></p>  *<p>It is issued by<code>ResourceMananger</code> when<code>ApplicationMaster</code>  * negotiates resource with<code>ResourceManager</code> and  * validated on<code>NodeManager</code> side.</p>  * @see  AllocateResponse#getNMTokens()  */
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|class|NMToken
 specifier|public
 specifier|abstract
@@ -96,57 +134,9 @@ class|class
 name|NMToken
 block|{
 annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getNodeId ()
-specifier|public
-specifier|abstract
-name|NodeId
-name|getNodeId
-parameter_list|()
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setNodeId (NodeId nodeId)
-specifier|public
-specifier|abstract
-name|void
-name|setNodeId
-parameter_list|(
-name|NodeId
-name|nodeId
-parameter_list|)
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getToken ()
-specifier|public
-specifier|abstract
-name|Token
-name|getToken
-parameter_list|()
-function_decl|;
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setToken (Token token)
-specifier|public
-specifier|abstract
-name|void
-name|setToken
-parameter_list|(
-name|Token
-name|token
-parameter_list|)
-function_decl|;
-annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (NodeId nodeId, Token token)
 specifier|public
 specifier|static
@@ -190,6 +180,58 @@ return|return
 name|nmToken
 return|;
 block|}
+comment|/**    * Get the {@link NodeId} of the<code>NodeManager</code> for which the NMToken    * is used to authenticate.    * @return the {@link NodeId} of the<code>NodeManager</code> for which the    * NMToken is used to authenticate.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getNodeId ()
+specifier|public
+specifier|abstract
+name|NodeId
+name|getNodeId
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setNodeId (NodeId nodeId)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeId
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|)
+function_decl|;
+comment|/**    * Get the {@link Token} used for authenticating with<code>NodeManager</code>    * @return the {@link Token} used for authenticating with<code>NodeManager</code>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getToken ()
+specifier|public
+specifier|abstract
+name|Token
+name|getToken
+parameter_list|()
+function_decl|;
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setToken (Token token)
+specifier|public
+specifier|abstract
+name|void
+name|setToken
+parameter_list|(
+name|Token
+name|token
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

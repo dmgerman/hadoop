@@ -73,6 +73,10 @@ comment|/**  * The priority assigned to a ResourceRequest or Application or Cont
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|class|Priority
 specifier|public
 specifier|abstract
@@ -122,6 +126,10 @@ name|priority
 return|;
 block|}
 comment|/**    * Get the assigned priority    * @return the assigned priority    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getPriority ()
 specifier|public
 specifier|abstract
@@ -130,6 +138,10 @@ name|getPriority
 parameter_list|()
 function_decl|;
 comment|/**    * Set the assigned priority    * @param priority the assigned priority    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|setPriority (int priority)
 specifier|public
 specifier|abstract

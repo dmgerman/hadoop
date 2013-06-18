@@ -86,6 +86,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|util
@@ -111,6 +127,8 @@ name|Token
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (byte[] identifier, String kind, byte[] password, String service)
 specifier|public
 specifier|static
@@ -201,7 +219,7 @@ function_decl|;
 annotation|@
 name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|setIdentifier (ByteBuffer identifier)
 specifier|public
 specifier|abstract
@@ -227,7 +245,7 @@ function_decl|;
 annotation|@
 name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|setPassword (ByteBuffer password)
 specifier|public
 specifier|abstract
@@ -253,7 +271,7 @@ function_decl|;
 annotation|@
 name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|setKind (String kind)
 specifier|public
 specifier|abstract
@@ -279,7 +297,7 @@ function_decl|;
 annotation|@
 name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|setService (String service)
 specifier|public
 specifier|abstract

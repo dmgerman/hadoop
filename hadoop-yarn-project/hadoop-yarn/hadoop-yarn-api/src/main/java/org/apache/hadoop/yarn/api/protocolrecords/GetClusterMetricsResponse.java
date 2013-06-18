@@ -149,6 +149,10 @@ specifier|abstract
 class|class
 name|GetClusterMetricsResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 specifier|public
 specifier|static
 name|GetClusterMetricsResponse

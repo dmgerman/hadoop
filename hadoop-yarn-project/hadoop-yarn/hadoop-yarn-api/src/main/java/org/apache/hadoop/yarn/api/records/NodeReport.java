@@ -133,6 +133,8 @@ name|NodeReport
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (NodeId nodeId, NodeState nodeState, String httpAddress, String rackName, Resource used, Resource capability, int numContainers, String healthReport, long lastHealthReportTime)
 specifier|public
 specifier|static
@@ -247,6 +249,10 @@ name|nodeReport
 return|;
 block|}
 comment|/**    * Get the<code>NodeId</code> of the node.    * @return<code>NodeId</code> of the node    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getNodeId ()
 specifier|public
 specifier|abstract
@@ -269,6 +275,10 @@ name|nodeId
 parameter_list|)
 function_decl|;
 comment|/**    * Get the<code>NodeState</code> of the node.    * @return<code>NodeState</code> of the node    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getNodeState ()
 specifier|public
 specifier|abstract
@@ -394,11 +404,11 @@ name|Resource
 name|capability
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>number of running containers</em> on the node.    * @return<em>number of running containers</em> on the node    */
+comment|/**    * Get the<em>number of allocated containers</em> on the node.    * @return<em>number of allocated containers</em> on the node    */
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Stable
+name|Unstable
 DECL|method|getNumContainers ()
 specifier|public
 specifier|abstract

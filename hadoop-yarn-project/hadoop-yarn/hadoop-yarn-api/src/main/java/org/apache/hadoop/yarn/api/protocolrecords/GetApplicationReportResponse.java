@@ -149,6 +149,10 @@ specifier|abstract
 class|class
 name|GetApplicationReportResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance ( ApplicationReport ApplicationReport)
 specifier|public
 specifier|static

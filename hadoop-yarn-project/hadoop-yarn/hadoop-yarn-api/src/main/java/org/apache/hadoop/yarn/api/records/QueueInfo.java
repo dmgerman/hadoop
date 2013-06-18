@@ -143,6 +143,8 @@ name|QueueInfo
 block|{
 annotation|@
 name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (String queueName, float capacity, float maximumCapacity, float currentCapacity, List<QueueInfo> childQueues, List<ApplicationReport> applications, QueueState queueState)
 specifier|public
 specifier|static

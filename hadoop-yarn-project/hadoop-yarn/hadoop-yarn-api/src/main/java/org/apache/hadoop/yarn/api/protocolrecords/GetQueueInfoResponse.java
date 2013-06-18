@@ -149,6 +149,10 @@ specifier|abstract
 class|class
 name|GetQueueInfoResponse
 block|{
+annotation|@
+name|Private
+annotation|@
+name|Unstable
 DECL|method|newInstance (QueueInfo queueInfo)
 specifier|public
 specifier|static
@@ -183,6 +187,10 @@ name|response
 return|;
 block|}
 comment|/**    * Get the<code>QueueInfo</code> for the specified queue.    * @return<code>QueueInfo</code> for the specified queue    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
 DECL|method|getQueueInfo ()
 specifier|public
 specifier|abstract
