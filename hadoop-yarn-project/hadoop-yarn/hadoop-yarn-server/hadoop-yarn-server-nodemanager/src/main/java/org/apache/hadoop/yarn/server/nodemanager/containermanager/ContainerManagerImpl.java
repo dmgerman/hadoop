@@ -2267,7 +2267,10 @@ name|newInstance
 argument_list|(
 name|connectAddress
 operator|.
-name|getHostName
+name|getAddress
+argument_list|()
+operator|.
+name|getCanonicalHostName
 argument_list|()
 argument_list|,
 name|connectAddress
