@@ -7213,7 +7213,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"parsing URL "
 operator|+
@@ -7276,7 +7276,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"parsing input stream "
 operator|+
@@ -7672,7 +7672,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"parsing File "
 operator|+
