@@ -363,7 +363,7 @@ name|void
 name|testContainerSetup
 parameter_list|()
 throws|throws
-name|IOException
+name|Exception
 throws|,
 name|InterruptedException
 throws|,

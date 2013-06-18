@@ -1773,7 +1773,7 @@ name|newContainerToken
 argument_list|(
 name|firstContainerID
 argument_list|,
-literal|"127.0.0.1"
+literal|"localhost"
 argument_list|,
 literal|1234
 argument_list|,
@@ -1978,7 +1978,7 @@ name|newContainerToken
 argument_list|(
 name|secondContainerID
 argument_list|,
-literal|"127.0.0.1"
+literal|"localhost"
 argument_list|,
 literal|1234
 argument_list|,
@@ -6844,7 +6844,7 @@ name|YarnConfiguration
 operator|.
 name|NM_ADDRESS
 argument_list|,
-literal|"127.0.0.1:12345"
+literal|"localhost:12345"
 argument_list|)
 expr_stmt|;
 name|conf
@@ -6855,7 +6855,7 @@ name|YarnConfiguration
 operator|.
 name|NM_LOCALIZER_ADDRESS
 argument_list|,
-literal|"127.0.0.1:12346"
+literal|"localhost:12346"
 argument_list|)
 expr_stmt|;
 name|conf

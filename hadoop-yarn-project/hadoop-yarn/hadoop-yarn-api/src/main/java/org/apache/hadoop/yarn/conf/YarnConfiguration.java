@@ -2666,6 +2666,27 @@ name|DEFAULT_NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE
 init|=
 literal|500
 decl_stmt|;
+comment|/**    * Maximum number of proxy connections for node manager. It should always be    * more than 1. NMClient and MRAppMaster will use this to cache connection    * with node manager. There will be at max one connection per node manager.    * Ex. configuring it to a value of 5 will make sure that client will at    * max have 5 connections cached with 5 different node managers. These    * connections will be timed out if idle for more than system wide idle    * timeout period. The token if used for authentication then it will be used    * only at connection creation time. If new token is received then earlier    * connection should be closed in order to use newer token.    * Note: {@link YarnConfiguration#NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE}    * are related to each other.    */
+DECL|field|NM_CLIENT_MAX_NM_PROXIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_CLIENT_MAX_NM_PROXIES
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"client.max-nodemanagers-proxies"
+decl_stmt|;
+DECL|field|DEFAULT_NM_CLIENT_MAX_NM_PROXIES
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_NM_CLIENT_MAX_NM_PROXIES
+init|=
+literal|500
+decl_stmt|;
 DECL|method|YarnConfiguration ()
 specifier|public
 name|YarnConfiguration

@@ -50,16 +50,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -129,34 +119,6 @@ operator|.
 name|io
 operator|.
 name|Text
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|net
-operator|.
-name|NetUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|SecurityUtil
 import|;
 end_import
 
@@ -244,24 +206,6 @@ name|NodeId
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Token
-import|;
-end_import
-
 begin_class
 annotation|@
 name|Public
@@ -317,10 +261,10 @@ specifier|private
 name|String
 name|appSubmitter
 decl_stmt|;
-DECL|field|masterKeyId
+DECL|field|keyId
 specifier|private
 name|int
-name|masterKeyId
+name|keyId
 decl_stmt|;
 DECL|method|NMTokenIdentifier (ApplicationAttemptId appAttemptId, NodeId nodeId, String applicationSubmitter, int masterKeyId)
 specifier|public
@@ -359,7 +303,7 @@ name|applicationSubmitter
 expr_stmt|;
 name|this
 operator|.
-name|masterKeyId
+name|keyId
 operator|=
 name|masterKeyId
 expr_stmt|;
@@ -400,14 +344,14 @@ return|return
 name|appSubmitter
 return|;
 block|}
-DECL|method|getMastKeyId ()
+DECL|method|getKeyId ()
 specifier|public
 name|int
-name|getMastKeyId
+name|getKeyId
 parameter_list|()
 block|{
 return|return
-name|masterKeyId
+name|keyId
 return|;
 block|}
 annotation|@
@@ -497,7 +441,7 @@ name|writeInt
 argument_list|(
 name|this
 operator|.
-name|masterKeyId
+name|keyId
 argument_list|)
 expr_stmt|;
 block|}
@@ -584,7 +528,7 @@ operator|.
 name|readUTF
 argument_list|()
 expr_stmt|;
-name|masterKeyId
+name|keyId
 operator|=
 name|in
 operator|.

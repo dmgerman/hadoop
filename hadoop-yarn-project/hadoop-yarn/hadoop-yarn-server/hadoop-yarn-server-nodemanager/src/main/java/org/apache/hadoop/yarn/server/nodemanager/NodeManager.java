@@ -2173,6 +2173,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getNMContext ()
+specifier|public
 name|Context
 name|getNMContext
 parameter_list|()

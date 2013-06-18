@@ -755,17 +755,25 @@ name|StatefulContainer
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|NMClientAsyncImpl (CallbackHandler callbackHandler)
+DECL|method|NMClientAsyncImpl (CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
 specifier|public
 name|NMClientAsyncImpl
 parameter_list|(
 name|CallbackHandler
 name|callbackHandler
+parameter_list|,
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 name|this
 argument_list|(
-name|NMClientAsyncImpl
+name|NMClientAsync
 operator|.
 name|class
 operator|.
@@ -773,10 +781,12 @@ name|getName
 argument_list|()
 argument_list|,
 name|callbackHandler
+argument_list|,
+name|nmTokens
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NMClientAsyncImpl (String name, CallbackHandler callbackHandler)
+DECL|method|NMClientAsyncImpl (String name, CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
 specifier|public
 name|NMClientAsyncImpl
 parameter_list|(
@@ -785,6 +795,14 @@ name|name
 parameter_list|,
 name|CallbackHandler
 name|callbackHandler
+parameter_list|,
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 name|this
@@ -793,7 +811,9 @@ name|name
 argument_list|,
 operator|new
 name|NMClientImpl
-argument_list|()
+argument_list|(
+name|nmTokens
+argument_list|)
 argument_list|,
 name|callbackHandler
 argument_list|)
@@ -1452,7 +1472,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|stopContainerAsync (ContainerId containerId, NodeId nodeId, Token containerToken)
+DECL|method|stopContainerAsync (ContainerId containerId, NodeId nodeId)
 specifier|public
 name|void
 name|stopContainerAsync
@@ -1462,9 +1482,6 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
-parameter_list|,
-name|Token
-name|containerToken
 parameter_list|)
 block|{
 if|if
@@ -1511,7 +1528,7 @@ name|containerId
 argument_list|,
 name|nodeId
 argument_list|,
-name|containerToken
+literal|null
 argument_list|,
 name|ContainerEventType
 operator|.
@@ -1546,7 +1563,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getContainerStatusAsync (ContainerId containerId, NodeId nodeId, Token containerToken)
+DECL|method|getContainerStatusAsync (ContainerId containerId, NodeId nodeId)
 specifier|public
 name|void
 name|getContainerStatusAsync
@@ -1556,9 +1573,6 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
-parameter_list|,
-name|Token
-name|containerToken
 parameter_list|)
 block|{
 try|try
@@ -1574,7 +1588,7 @@ name|containerId
 argument_list|,
 name|nodeId
 argument_list|,
-name|containerToken
+literal|null
 argument_list|,
 name|ContainerEventType
 operator|.
@@ -2354,11 +2368,6 @@ name|event
 operator|.
 name|getNodeId
 argument_list|()
-argument_list|,
-name|event
-operator|.
-name|getContainerToken
-argument_list|()
 argument_list|)
 expr_stmt|;
 try|try
@@ -2888,11 +2897,6 @@ argument_list|,
 name|event
 operator|.
 name|getNodeId
-argument_list|()
-argument_list|,
-name|event
-operator|.
-name|getContainerToken
 argument_list|()
 argument_list|)
 decl_stmt|;

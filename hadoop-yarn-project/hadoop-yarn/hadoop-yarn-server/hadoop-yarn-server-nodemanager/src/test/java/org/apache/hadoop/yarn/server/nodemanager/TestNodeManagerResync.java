@@ -1162,6 +1162,11 @@ name|AssertionError
 name|ae
 parameter_list|)
 block|{
+name|ae
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
 name|assertionFailedInThread
 operator|.
 name|set
@@ -1346,7 +1351,13 @@ parameter_list|(
 name|InterruptedException
 name|e
 parameter_list|)
-block|{             }
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -1470,6 +1481,11 @@ name|AssertionError
 name|ae
 parameter_list|)
 block|{
+name|ae
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
 name|assertionFailedInThread
 operator|.
 name|set
@@ -1662,6 +1678,11 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
 name|assertionFailedInThread
 operator|.
 name|set

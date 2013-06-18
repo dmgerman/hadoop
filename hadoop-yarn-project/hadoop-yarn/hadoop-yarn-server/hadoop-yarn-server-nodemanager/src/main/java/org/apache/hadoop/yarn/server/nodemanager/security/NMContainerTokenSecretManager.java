@@ -186,6 +186,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|security
 operator|.
 name|ContainerTokenIdentifier
@@ -248,20 +266,6 @@ name|MasterKeyData
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
 comment|/**  * The NM maintains only two master-keys. The current key that RM knows and the  * key from the previous rolling-interval.  *   */
 end_comment
@@ -310,6 +314,11 @@ name|MasterKeyData
 argument_list|>
 argument_list|>
 name|oldMasterKeys
+decl_stmt|;
+DECL|field|nodeHostAddr
+specifier|private
+name|String
+name|nodeHostAddr
 decl_stmt|;
 DECL|method|NMContainerTokenSecretManager (Configuration conf)
 specifier|public
@@ -613,6 +622,54 @@ expr_stmt|;
 block|}
 if|if
 condition|(
+name|nodeHostAddr
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|identifier
+operator|.
+name|getNmHostAddress
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|nodeHostAddr
+argument_list|)
+condition|)
+block|{
+comment|// Valid container token used for incorrect node.
+throw|throw
+operator|new
+name|SecretManager
+operator|.
+name|InvalidToken
+argument_list|(
+literal|"Given Container "
+operator|+
+name|identifier
+operator|.
+name|getContainerID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" identifier is not valid for current Node manager. Expected : "
+operator|+
+name|nodeHostAddr
+operator|+
+literal|" Found : "
+operator|+
+name|identifier
+operator|.
+name|getNmHostAddress
+argument_list|()
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|masterKeyToUse
 operator|!=
 literal|null
@@ -892,6 +949,33 @@ operator|.
 name|remove
 argument_list|(
 name|appId
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setNodeId (NodeId nodeId)
+specifier|public
+specifier|synchronized
+name|void
+name|setNodeId
+parameter_list|(
+name|NodeId
+name|nodeId
+parameter_list|)
+block|{
+name|nodeHostAddr
+operator|=
+name|nodeId
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Updating node address : "
+operator|+
+name|nodeHostAddr
 argument_list|)
 expr_stmt|;
 block|}

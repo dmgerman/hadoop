@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/**   * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -47,6 +47,18 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentMap
 import|;
 end_import
 
@@ -136,6 +148,24 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|protocolrecords
+operator|.
+name|AllocateResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|Container
@@ -193,6 +223,24 @@ operator|.
 name|records
 operator|.
 name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NMToken
 import|;
 end_import
 
@@ -285,31 +333,41 @@ name|NMClient
 extends|extends
 name|AbstractService
 block|{
-comment|/**    * Create a new instance of NMClient.    */
+comment|/**    * Create a new instance of NMClient.    * @param nmTokens need to pass map of NMTokens which are received on    * {@link AMRMClient#allocate(float)} call as a part of    * {@link AllocateResponse}.     * key :- NodeAddr (host:port)    * Value :- Token {@link NMToken#getToken()}    */
 annotation|@
 name|Public
-DECL|method|createNMClient ()
+DECL|method|createNMClient (ConcurrentMap<String, Token> nmTokens)
 specifier|public
 specifier|static
 name|NMClient
 name|createNMClient
-parameter_list|()
+parameter_list|(
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|nmTokens
+parameter_list|)
 block|{
 name|NMClient
 name|client
 init|=
 operator|new
 name|NMClientImpl
-argument_list|()
+argument_list|(
+name|nmTokens
+argument_list|)
 decl_stmt|;
 return|return
 name|client
 return|;
 block|}
-comment|/**    * Create a new instance of NMClient.    */
+comment|/**    * Create a new instance of NMClient.    * @param nmTokens need to pass map of NMTokens which are received on    * {@link AMRMClient#allocate(float)} call as a part of    * {@link AllocateResponse}.     * key :- NodeAddr (host:port)    * Value :- Token {@link NMToken#getToken()}    */
 annotation|@
 name|Public
-DECL|method|createNMClient (String name)
+DECL|method|createNMClient (String name, ConcurrentMap<String, Token> nmTokens)
 specifier|public
 specifier|static
 name|NMClient
@@ -317,6 +375,14 @@ name|createNMClient
 parameter_list|(
 name|String
 name|name
+parameter_list|,
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 name|NMClient
@@ -326,6 +392,8 @@ operator|new
 name|NMClientImpl
 argument_list|(
 name|name
+argument_list|,
+name|nmTokens
 argument_list|)
 decl_stmt|;
 return|return
@@ -371,8 +439,8 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @throws YarnException    * @throws IOException    */
-DECL|method|stopContainer (ContainerId containerId, NodeId nodeId, Token containerToken)
+comment|/**    *<p>Stop an started container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    *     * @throws YarnException    * @throws IOException    */
+DECL|method|stopContainer (ContainerId containerId, NodeId nodeId)
 specifier|public
 specifier|abstract
 name|void
@@ -383,17 +451,14 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
-parameter_list|,
-name|Token
-name|containerToken
 parameter_list|)
 throws|throws
 name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    * @param containerToken the security token to verify authenticity of the    *                       started container    * @return the status of a container    * @throws YarnException    * @throws IOException    */
-DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId, Token containerToken)
+comment|/**    *<p>Query the status of a container.</p>    *    * @param containerId the Id of the started container    * @param nodeId the Id of the<code>NodeManager</code>    *     * @return the status of a container    * @throws YarnException    * @throws IOException    */
+DECL|method|getContainerStatus (ContainerId containerId, NodeId nodeId)
 specifier|public
 specifier|abstract
 name|ContainerStatus
@@ -404,16 +469,13 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
-parameter_list|,
-name|Token
-name|containerToken
 parameter_list|)
 throws|throws
 name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>Set whether the containers that are started by this client, and are    * still running should be stopped when the client stops. By default, the    * feature should be enabled.</p>    *    * @param enabled whether the feature is enabled or not    */
+comment|/**    *<p>Set whether the containers that are started by this client, and are    * still running should be stopped when the client stops. By default, the    * feature should be enabled.</p> However, containers will be stopped only      * when service is stopped. i.e. after {@link NMClient#stop()}.     *    * @param enabled whether the feature is enabled or not    */
 DECL|method|cleanupRunningContainersOnStop (boolean enabled)
 specifier|public
 specifier|abstract

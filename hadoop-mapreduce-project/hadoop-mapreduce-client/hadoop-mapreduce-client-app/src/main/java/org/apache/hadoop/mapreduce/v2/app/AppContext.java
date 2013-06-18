@@ -140,6 +140,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -268,6 +286,16 @@ function_decl|;
 DECL|method|getClientToAMTokenSecretManager ()
 name|ClientToAMTokenSecretManager
 name|getClientToAMTokenSecretManager
+parameter_list|()
+function_decl|;
+DECL|method|getNMTokens ()
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|getNMTokens
 parameter_list|()
 function_decl|;
 block|}

@@ -2557,7 +2557,7 @@ operator|.
 name|getNMTokenSecretManager
 argument_list|()
 operator|.
-name|getNMTokens
+name|createAndGetNMTokens
 argument_list|(
 name|app
 operator|.

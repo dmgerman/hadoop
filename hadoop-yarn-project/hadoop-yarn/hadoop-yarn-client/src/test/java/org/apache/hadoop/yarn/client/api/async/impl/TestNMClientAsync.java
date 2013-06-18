@@ -1487,8 +1487,6 @@ argument_list|(
 name|containerId
 argument_list|,
 name|nodeId
-argument_list|,
-name|containerToken
 argument_list|)
 expr_stmt|;
 block|}
@@ -1502,8 +1500,6 @@ argument_list|(
 name|containerId
 argument_list|,
 name|nodeId
-argument_list|,
-name|containerToken
 argument_list|)
 expr_stmt|;
 block|}
@@ -1580,8 +1576,6 @@ argument_list|(
 name|containerId
 argument_list|,
 name|nodeId
-argument_list|,
-name|containerToken
 argument_list|)
 expr_stmt|;
 comment|// Shouldn't crash the test thread
@@ -1743,8 +1737,6 @@ argument_list|(
 name|containerId
 argument_list|,
 name|nodeId
-argument_list|,
-name|containerToken
 argument_list|)
 expr_stmt|;
 comment|// Shouldn't crash the test thread
@@ -2190,13 +2182,6 @@ name|NodeId
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -2232,13 +2217,6 @@ argument_list|,
 name|any
 argument_list|(
 name|NodeId
-operator|.
-name|class
-argument_list|)
-argument_list|,
-name|any
-argument_list|(
-name|Token
 operator|.
 name|class
 argument_list|)
@@ -2310,13 +2288,6 @@ name|NodeId
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|doThrow
@@ -2346,13 +2317,6 @@ argument_list|,
 name|any
 argument_list|(
 name|NodeId
-operator|.
-name|class
-argument_list|)
-argument_list|,
-name|any
-argument_list|(
-name|Token
 operator|.
 name|class
 argument_list|)
@@ -2416,13 +2380,6 @@ name|NodeId
 operator|.
 name|class
 argument_list|)
-argument_list|,
-name|any
-argument_list|(
-name|Token
-operator|.
-name|class
-argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -2465,13 +2422,6 @@ argument_list|,
 name|any
 argument_list|(
 name|NodeId
-operator|.
-name|class
-argument_list|)
-argument_list|,
-name|any
-argument_list|(
-name|Token
 operator|.
 name|class
 argument_list|)
@@ -2621,11 +2571,6 @@ argument_list|,
 name|container
 operator|.
 name|getNodeId
-argument_list|()
-argument_list|,
-name|container
-operator|.
-name|getContainerToken
 argument_list|()
 argument_list|)
 expr_stmt|;

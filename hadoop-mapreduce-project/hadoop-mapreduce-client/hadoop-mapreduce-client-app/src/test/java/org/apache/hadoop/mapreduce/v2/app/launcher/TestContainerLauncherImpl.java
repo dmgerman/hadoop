@@ -912,21 +912,6 @@ operator|=
 name|rpc
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|createYarnRPC (Configuration conf)
-specifier|protected
-name|YarnRPC
-name|createYarnRPC
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|rpc
-return|;
-block|}
 DECL|method|waitForPoolToIdle ()
 specifier|public
 name|void

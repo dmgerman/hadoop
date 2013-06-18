@@ -108,6 +108,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Text
@@ -712,6 +728,20 @@ name|ConverterUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Builder utilities to construct various objects.  *  */
 end_comment
@@ -1194,6 +1224,10 @@ argument_list|(
 name|cId
 argument_list|,
 name|host
+operator|+
+literal|":"
+operator|+
+name|port
 argument_list|,
 name|user
 argument_list|,
@@ -1697,6 +1731,10 @@ name|service
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Private
+annotation|@
+name|VisibleForTesting
 DECL|method|newContainerToken (NodeId nodeId, byte[] password, ContainerTokenIdentifier tokenIdentifier)
 specifier|public
 specifier|static

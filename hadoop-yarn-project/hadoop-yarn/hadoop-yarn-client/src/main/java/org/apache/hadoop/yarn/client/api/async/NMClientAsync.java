@@ -44,6 +44,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentMap
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -329,7 +341,7 @@ specifier|protected
 name|CallbackHandler
 name|callbackHandler
 decl_stmt|;
-DECL|method|createNMClientAsync (CallbackHandler callbackHandler)
+DECL|method|createNMClientAsync ( CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
 specifier|public
 specifier|static
 name|NMClientAsync
@@ -337,6 +349,14 @@ name|createNMClientAsync
 parameter_list|(
 name|CallbackHandler
 name|callbackHandler
+parameter_list|,
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 return|return
@@ -344,15 +364,25 @@ operator|new
 name|NMClientAsyncImpl
 argument_list|(
 name|callbackHandler
+argument_list|,
+name|nmTokens
 argument_list|)
 return|;
 block|}
-DECL|method|NMClientAsync (CallbackHandler callbackHandler)
+DECL|method|NMClientAsync (CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
 specifier|protected
 name|NMClientAsync
 parameter_list|(
 name|CallbackHandler
 name|callbackHandler
+parameter_list|,
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 name|this
@@ -365,10 +395,12 @@ name|getName
 argument_list|()
 argument_list|,
 name|callbackHandler
+argument_list|,
+name|nmTokens
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NMClientAsync (String name, CallbackHandler callbackHandler)
+DECL|method|NMClientAsync (String name, CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
 specifier|protected
 name|NMClientAsync
 parameter_list|(
@@ -377,6 +409,14 @@ name|name
 parameter_list|,
 name|CallbackHandler
 name|callbackHandler
+parameter_list|,
+name|ConcurrentMap
+argument_list|<
+name|String
+argument_list|,
+name|Token
+argument_list|>
+name|nmTokens
 parameter_list|)
 block|{
 name|this
@@ -385,7 +425,9 @@ name|name
 argument_list|,
 operator|new
 name|NMClientImpl
-argument_list|()
+argument_list|(
+name|nmTokens
+argument_list|)
 argument_list|,
 name|callbackHandler
 argument_list|)
@@ -442,7 +484,7 @@ name|ContainerLaunchContext
 name|containerLaunchContext
 parameter_list|)
 function_decl|;
-DECL|method|stopContainerAsync ( ContainerId containerId, NodeId nodeId, Token containerToken)
+DECL|method|stopContainerAsync ( ContainerId containerId, NodeId nodeId)
 specifier|public
 specifier|abstract
 name|void
@@ -453,12 +495,9 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
-parameter_list|,
-name|Token
-name|containerToken
 parameter_list|)
 function_decl|;
-DECL|method|getContainerStatusAsync ( ContainerId containerId, NodeId nodeId, Token containerToken)
+DECL|method|getContainerStatusAsync ( ContainerId containerId, NodeId nodeId)
 specifier|public
 specifier|abstract
 name|void
@@ -469,9 +508,6 @@ name|containerId
 parameter_list|,
 name|NodeId
 name|nodeId
-parameter_list|,
-name|Token
-name|containerToken
 parameter_list|)
 function_decl|;
 DECL|method|getClient ()

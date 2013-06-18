@@ -28,6 +28,16 @@ end_package
 
 begin_import
 import|import
+name|javax
+operator|.
+name|crypto
+operator|.
+name|SecretKey
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -53,6 +63,25 @@ argument_list|<
 name|LocalizerTokenIdentifier
 argument_list|>
 block|{
+DECL|field|secretKey
+specifier|private
+specifier|final
+name|SecretKey
+name|secretKey
+decl_stmt|;
+DECL|method|LocalizerTokenSecretManager ()
+specifier|public
+name|LocalizerTokenSecretManager
+parameter_list|()
+block|{
+name|this
+operator|.
+name|secretKey
+operator|=
+name|generateSecret
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|createPassword (LocalizerTokenIdentifier identifier)
@@ -66,10 +95,15 @@ name|identifier
 parameter_list|)
 block|{
 return|return
-literal|"testing"
+name|createPassword
+argument_list|(
+name|identifier
 operator|.
 name|getBytes
 argument_list|()
+argument_list|,
+name|secretKey
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -98,12 +132,16 @@ name|SecretManager
 operator|.
 name|InvalidToken
 block|{
-comment|// TODO Auto-generated method stub
 return|return
-literal|"testing"
+name|createPassword
+argument_list|(
+name|identifier
 operator|.
 name|getBytes
 argument_list|()
+argument_list|,
+name|secretKey
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -114,7 +152,6 @@ name|LocalizerTokenIdentifier
 name|createIdentifier
 parameter_list|()
 block|{
-comment|// TODO Auto-generated method stub
 return|return
 operator|new
 name|LocalizerTokenIdentifier
