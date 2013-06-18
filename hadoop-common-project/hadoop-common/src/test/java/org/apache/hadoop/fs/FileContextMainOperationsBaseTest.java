@@ -313,7 +313,7 @@ return|;
 block|}
 block|}
 decl_stmt|;
-comment|//A test filter with returns any path containing a "b"
+comment|//A test filter with returns any path containing an "x" or "X"
 DECL|field|TEST_X_FILTER
 specifier|final
 specifier|private
