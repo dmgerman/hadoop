@@ -1129,7 +1129,7 @@ argument_list|,
 name|containerName
 argument_list|)
 operator|+
-literal|"/cgroup.procs"
+literal|"/tasks"
 argument_list|)
 expr_stmt|;
 name|sb
