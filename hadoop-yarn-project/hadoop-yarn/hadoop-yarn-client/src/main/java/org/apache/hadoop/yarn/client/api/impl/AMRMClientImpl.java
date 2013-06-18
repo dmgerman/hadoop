@@ -2311,11 +2311,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getClusterAvailableResources ()
+DECL|method|getAvailableResources ()
 specifier|public
 specifier|synchronized
 name|Resource
-name|getClusterAvailableResources
+name|getAvailableResources
 parameter_list|()
 block|{
 return|return

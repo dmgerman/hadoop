@@ -1006,16 +1006,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Get the currently available resources in the cluster.    * A valid value is available after a call to allocate has been made    * @return Currently available resources    */
-DECL|method|getClusterAvailableResources ()
+DECL|method|getAvailableResources ()
 specifier|public
 name|Resource
-name|getClusterAvailableResources
+name|getAvailableResources
 parameter_list|()
 block|{
 return|return
 name|client
 operator|.
-name|getClusterAvailableResources
+name|getAvailableResources
 argument_list|()
 return|;
 block|}

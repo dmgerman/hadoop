@@ -837,7 +837,7 @@ name|when
 argument_list|(
 name|client
 operator|.
-name|getClusterAvailableResources
+name|getAvailableResources
 argument_list|()
 argument_list|)
 operator|.
@@ -958,7 +958,7 @@ operator|)
 assert|;
 name|asyncClient
 operator|.
-name|getClusterAvailableResources
+name|getAvailableResources
 argument_list|()
 expr_stmt|;
 comment|// method returned. now unblock heartbeat

@@ -789,11 +789,11 @@ name|containerId
 parameter_list|)
 function_decl|;
 comment|/**    * Get the currently available resources in the cluster.    * A valid value is available after a call to allocate has been made    * @return Currently available resources    */
-DECL|method|getClusterAvailableResources ()
+DECL|method|getAvailableResources ()
 specifier|public
 specifier|abstract
 name|Resource
-name|getClusterAvailableResources
+name|getAvailableResources
 parameter_list|()
 function_decl|;
 comment|/**    * Get the current number of nodes in the cluster.    * A valid values is available after a call to allocate has been made    * @return Current number of nodes in the cluster    */
