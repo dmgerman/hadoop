@@ -702,7 +702,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ProtoUtils
+name|ConverterUtils
 import|;
 end_import
 
@@ -1576,9 +1576,9 @@ name|ClientToAMTokenIdentifier
 argument_list|>
 name|token
 init|=
-name|ProtoUtils
+name|ConverterUtils
 operator|.
-name|convertFromProtoFormat
+name|convertFromYarn
 argument_list|(
 name|clientToAMToken
 argument_list|,

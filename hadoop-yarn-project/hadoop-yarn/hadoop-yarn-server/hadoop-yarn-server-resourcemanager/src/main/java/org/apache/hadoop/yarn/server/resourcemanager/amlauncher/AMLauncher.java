@@ -74,32 +74,6 @@ end_import
 
 begin_import
 import|import
-name|javax
-operator|.
-name|crypto
-operator|.
-name|SecretKey
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|codec
-operator|.
-name|binary
-operator|.
-name|Base64
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -650,7 +624,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ProtoUtils
+name|ConverterUtils
 import|;
 end_import
 
@@ -1062,9 +1036,9 @@ name|ContainerTokenIdentifier
 argument_list|>
 name|token
 init|=
-name|ProtoUtils
+name|ConverterUtils
 operator|.
-name|convertFromProtoFormat
+name|convertFromYarn
 argument_list|(
 name|masterContainer
 operator|.

@@ -200,22 +200,6 @@ name|ResourceProto
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|ProtoUtils
-import|;
-end_import
-
 begin_class
 annotation|@
 name|Private

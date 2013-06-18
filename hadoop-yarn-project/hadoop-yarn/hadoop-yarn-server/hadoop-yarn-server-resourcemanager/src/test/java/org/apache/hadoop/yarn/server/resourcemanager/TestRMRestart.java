@@ -768,7 +768,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ProtoUtils
+name|ConverterUtils
 import|;
 end_import
 
@@ -3982,9 +3982,9 @@ name|RMDelegationTokenIdentifier
 argument_list|>
 name|token1
 init|=
-name|ProtoUtils
+name|ConverterUtils
 operator|.
-name|convertFromProtoFormat
+name|convertFromYarn
 argument_list|(
 name|delegationToken1
 argument_list|,
@@ -4231,9 +4231,9 @@ name|RMDelegationTokenIdentifier
 argument_list|>
 name|token2
 init|=
-name|ProtoUtils
+name|ConverterUtils
 operator|.
-name|convertFromProtoFormat
+name|convertFromYarn
 argument_list|(
 name|delegationToken2
 argument_list|,

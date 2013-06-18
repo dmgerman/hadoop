@@ -510,7 +510,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ProtoUtils
+name|ConverterUtils
 import|;
 end_import
 
@@ -991,9 +991,9 @@ block|{
 try|try
 block|{
 return|return
-name|ProtoUtils
+name|ConverterUtils
 operator|.
-name|convertFromProtoFormat
+name|convertFromYarn
 argument_list|(
 name|client
 operator|.

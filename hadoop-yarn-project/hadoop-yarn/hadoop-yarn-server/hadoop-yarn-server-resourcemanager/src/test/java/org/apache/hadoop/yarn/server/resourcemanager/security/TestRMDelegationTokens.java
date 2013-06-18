@@ -388,7 +388,7 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|ProtoUtils
+name|ConverterUtils
 import|;
 end_import
 
@@ -753,9 +753,9 @@ name|RMDelegationTokenIdentifier
 argument_list|>
 name|token1
 init|=
-name|ProtoUtils
+name|ConverterUtils
 operator|.
-name|convertFromProtoFormat
+name|convertFromYarn
 argument_list|(
 name|delegationToken
 argument_list|,
