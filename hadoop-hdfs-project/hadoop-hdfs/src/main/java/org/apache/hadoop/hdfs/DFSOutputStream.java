@@ -152,6 +152,18 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|ClosedChannelException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -6394,10 +6406,10 @@ return|return
 name|sock
 return|;
 block|}
-DECL|method|isClosed ()
-specifier|private
+DECL|method|checkClosed ()
+specifier|protected
 name|void
-name|isClosed
+name|checkClosed
 parameter_list|()
 throws|throws
 name|IOException
@@ -6420,10 +6432,8 @@ condition|?
 name|e
 else|:
 operator|new
-name|IOException
-argument_list|(
-literal|"DFSOutputStream is closed"
-argument_list|)
+name|ClosedChannelException
+argument_list|()
 throw|;
 block|}
 block|}
@@ -7376,7 +7386,7 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 name|queueCurrentPacket
@@ -7415,7 +7425,7 @@ operator|.
 name|checkOpen
 argument_list|()
 expr_stmt|;
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 name|int
@@ -7868,7 +7878,7 @@ operator|.
 name|checkOpen
 argument_list|()
 expr_stmt|;
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 try|try
@@ -8185,7 +8195,7 @@ expr_stmt|;
 comment|// If we got an error here, it might be because some other thread called
 comment|// close before our hflush completed. In that case, we should throw an
 comment|// exception that the stream is closed.
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 comment|// If we aren't closed but failed to sync, we should expose that to the
@@ -8310,7 +8320,7 @@ operator|.
 name|checkOpen
 argument_list|()
 expr_stmt|;
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 if|if
@@ -8374,7 +8384,7 @@ operator|.
 name|checkOpen
 argument_list|()
 expr_stmt|;
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 comment|//
@@ -8438,7 +8448,7 @@ operator|!
 name|closed
 condition|)
 block|{
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 if|if
@@ -8477,7 +8487,7 @@ throw|;
 block|}
 block|}
 block|}
-name|isClosed
+name|checkClosed
 argument_list|()
 expr_stmt|;
 block|}

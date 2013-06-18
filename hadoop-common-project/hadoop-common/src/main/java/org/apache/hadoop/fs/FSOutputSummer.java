@@ -199,6 +199,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Check if the implementing OutputStream is closed and should no longer    * accept writes. Implementations should do nothing if this stream is not    * closed, and should throw an {@link IOException} if it is closed.    *     * @throws IOException if this stream is already closed.    */
+DECL|method|checkClosed ()
+specifier|protected
+specifier|abstract
+name|void
+name|checkClosed
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/** Write one byte */
 annotation|@
 name|Override
@@ -268,6 +278,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|checkClosed
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|off
