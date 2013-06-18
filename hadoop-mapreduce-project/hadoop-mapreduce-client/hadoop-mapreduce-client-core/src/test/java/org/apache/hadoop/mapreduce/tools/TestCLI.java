@@ -386,6 +386,27 @@ literal|"running"
 block|}
 argument_list|)
 decl_stmt|;
+name|int
+name|retCode_completed
+init|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-list-attempt-ids"
+block|,
+name|jobIdStr
+block|,
+literal|"REDUCE"
+block|,
+literal|"completed"
+block|}
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
 literal|"MAP is a valid input,exit code should be 0"
@@ -413,6 +434,15 @@ argument_list|,
 name|retCode_REDUCE
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"REDUCE and completed are a valid inputs to -list-attempt-ids,exit code should be 0"
+argument_list|,
+literal|0
+argument_list|,
+name|retCode_completed
+argument_list|)
+expr_stmt|;
 name|verify
 argument_list|(
 name|job
@@ -436,7 +466,7 @@ name|job
 argument_list|,
 name|times
 argument_list|(
-literal|1
+literal|2
 argument_list|)
 argument_list|)
 operator|.
@@ -568,9 +598,30 @@ literal|"running"
 block|}
 argument_list|)
 decl_stmt|;
+name|int
+name|retCode_invalidTaskState
+init|=
+name|cli
+operator|.
+name|run
+argument_list|(
+operator|new
+name|String
+index|[]
+block|{
+literal|"-list-attempt-ids"
+block|,
+name|jobIdStr
+block|,
+literal|"REDUCE"
+block|,
+literal|"complete"
+block|}
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"JOB_SETUP is a invalid input,exit code should be -1"
+literal|"JOB_SETUP is an invalid input,exit code should be -1"
 argument_list|,
 operator|-
 literal|1
@@ -580,12 +631,22 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"JOB_CLEANUP is a invalid input,exit code should be -1"
+literal|"JOB_CLEANUP is an invalid input,exit code should be -1"
 argument_list|,
 operator|-
 literal|1
 argument_list|,
 name|retCode_JOB_CLEANUP
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"complete is an invalid input,exit code should be -1"
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+name|retCode_invalidTaskState
 argument_list|)
 expr_stmt|;
 block|}
