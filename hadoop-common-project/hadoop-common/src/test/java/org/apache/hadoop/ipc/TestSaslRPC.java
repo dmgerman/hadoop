@@ -4432,6 +4432,17 @@ argument_list|(
 name|clientConf
 argument_list|)
 expr_stmt|;
+name|clientConf
+operator|.
+name|setBoolean
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 specifier|final
 name|UserGroupInformation
 name|clientUgi
