@@ -1599,23 +1599,6 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-comment|// Get a new application id
-name|GetNewApplicationResponse
-name|newApp
-init|=
-name|rmClient
-operator|.
-name|getNewApplication
-argument_list|()
-decl_stmt|;
-name|ApplicationId
-name|appId
-init|=
-name|newApp
-operator|.
-name|getApplicationId
-argument_list|()
-decl_stmt|;
 comment|// Create launch context for app master
 name|LOG
 operator|.
@@ -1627,23 +1610,22 @@ expr_stmt|;
 name|ApplicationSubmissionContext
 name|appContext
 init|=
-name|Records
+name|rmClient
 operator|.
-name|newRecord
-argument_list|(
-name|ApplicationSubmissionContext
+name|createApplication
+argument_list|()
 operator|.
-name|class
-argument_list|)
+name|getApplicationSubmissionContext
+argument_list|()
 decl_stmt|;
-comment|// set the application id
+name|ApplicationId
+name|appId
+init|=
 name|appContext
 operator|.
-name|setApplicationId
-argument_list|(
-name|appId
-argument_list|)
-expr_stmt|;
+name|getApplicationId
+argument_list|()
+decl_stmt|;
 comment|// set the application name
 name|appContext
 operator|.

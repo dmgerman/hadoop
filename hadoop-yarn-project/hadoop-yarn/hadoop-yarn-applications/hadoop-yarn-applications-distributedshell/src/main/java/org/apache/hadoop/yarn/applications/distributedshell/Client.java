@@ -674,6 +674,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|YarnClientApplication
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -1320,7 +1338,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Helper function to print out usage    * @param opts Parsed command line options     */
+comment|/**    * Helper function to print out usage    */
 DECL|method|printUsage ()
 specifier|private
 name|void
@@ -2030,20 +2048,20 @@ expr_stmt|;
 block|}
 block|}
 comment|// Get a new application id
-name|GetNewApplicationResponse
-name|newApp
+name|YarnClientApplication
+name|app
 init|=
 name|yarnClient
 operator|.
-name|getNewApplication
+name|createApplication
 argument_list|()
 decl_stmt|;
-name|ApplicationId
-name|appId
+name|GetNewApplicationResponse
+name|appResponse
 init|=
-name|newApp
+name|app
 operator|.
-name|getApplicationId
+name|getNewApplicationResponse
 argument_list|()
 decl_stmt|;
 comment|// TODO get min/max resource capabilities from RM and change memory ask if needed
@@ -2054,7 +2072,7 @@ comment|// Dump out information about cluster capability as seen by the resource
 name|int
 name|maxMem
 init|=
-name|newApp
+name|appResponse
 operator|.
 name|getMaximumResourceCapability
 argument_list|()
@@ -2099,35 +2117,23 @@ operator|=
 name|maxMem
 expr_stmt|;
 block|}
-comment|// Create launch context for app master
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Setting up application submission context for ASM"
-argument_list|)
-expr_stmt|;
+comment|// set the application name
 name|ApplicationSubmissionContext
 name|appContext
 init|=
-name|Records
+name|app
 operator|.
-name|newRecord
-argument_list|(
-name|ApplicationSubmissionContext
-operator|.
-name|class
-argument_list|)
+name|getApplicationSubmissionContext
+argument_list|()
 decl_stmt|;
-comment|// set the application id
+name|ApplicationId
+name|appId
+init|=
 name|appContext
 operator|.
-name|setApplicationId
-argument_list|(
-name|appId
-argument_list|)
-expr_stmt|;
-comment|// set the application name
+name|getApplicationId
+argument_list|()
+decl_stmt|;
 name|appContext
 operator|.
 name|setApplicationName

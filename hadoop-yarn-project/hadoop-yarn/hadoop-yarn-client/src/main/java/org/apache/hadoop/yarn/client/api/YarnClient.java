@@ -150,24 +150,6 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
-operator|.
-name|GetNewApplicationResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
 name|records
 operator|.
 name|ApplicationId
@@ -447,19 +429,19 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *<p>    * Obtain a new {@link ApplicationId} for submitting new applications.    *</p>    *     *<p>    * Returns a response which contains {@link ApplicationId} that can be used to    * submit a new application. See    * {@link #submitApplication(ApplicationSubmissionContext)}.    *</p>    *     *<p>    * See {@link GetNewApplicationResponse} for other information that is    * returned.    *</p>    *     * @return response containing the new<code>ApplicationId</code> to be used    *         to submit an application    * @throws YarnException    * @throws IOException    */
-DECL|method|getNewApplication ()
+comment|/**    *<p>    * Obtain a {@link YarnClientApplication} for a new application,    * which in turn contains the {@link ApplicationSubmissionContext} and    * {@link org.apache.hadoop.yarn.api.protocolrecords.GetNewApplicationResponse}    * objects.    *</p>    *    * @return {@link YarnClientApplication} built for a new application    * @throws YarnException    * @throws IOException    */
+DECL|method|createApplication ()
 specifier|public
 specifier|abstract
-name|GetNewApplicationResponse
-name|getNewApplication
+name|YarnClientApplication
+name|createApplication
 parameter_list|()
 throws|throws
 name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call, such    * that it will not return {@link ApplicationId} until the submitted    * application has been submitted and accepted by the ResourceManager.    *</p>    *     * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnException    * @throws IOException    * @see #getNewApplication()    */
+comment|/**    *<p>    * Submit a new application to<code>YARN.</code> It is a blocking call, such    * that it will not return {@link ApplicationId} until the submitted    * application has been submitted and accepted by the ResourceManager.    *</p>    *     * @param appContext    *          {@link ApplicationSubmissionContext} containing all the details    *          needed to submit a new application    * @return {@link ApplicationId} of the accepted application    * @throws YarnException    * @throws IOException    * @see #createApplication()    */
 DECL|method|submitApplication (ApplicationSubmissionContext appContext)
 specifier|public
 specifier|abstract
