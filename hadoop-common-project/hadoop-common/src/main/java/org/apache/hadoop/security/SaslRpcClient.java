@@ -439,8 +439,14 @@ specifier|final
 name|SaslClient
 name|saslClient
 decl_stmt|;
+DECL|field|fallbackAllowed
+specifier|private
+specifier|final
+name|boolean
+name|fallbackAllowed
+decl_stmt|;
 comment|/**    * Create a SaslRpcClient for an authentication method    *     * @param method    *          the requested authentication method    * @param token    *          token to use if needed by the authentication method    */
-DECL|method|SaslRpcClient (AuthMethod method, Token<? extends TokenIdentifier> token, String serverPrincipal)
+DECL|method|SaslRpcClient (AuthMethod method, Token<? extends TokenIdentifier> token, String serverPrincipal, boolean fallbackAllowed)
 specifier|public
 name|SaslRpcClient
 parameter_list|(
@@ -457,10 +463,19 @@ name|token
 parameter_list|,
 name|String
 name|serverPrincipal
+parameter_list|,
+name|boolean
+name|fallbackAllowed
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+operator|.
+name|fallbackAllowed
+operator|=
+name|fallbackAllowed
+expr_stmt|;
 name|String
 name|saslUser
 init|=
@@ -863,6 +878,24 @@ operator|.
 name|SWITCH_TO_SIMPLE_AUTH
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|fallbackAllowed
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Server asks us to fall back to SIMPLE "
+operator|+
+literal|"auth, but this client is configured to only allow secure "
+operator|+
+literal|"connections."
+argument_list|)
+throw|;
+block|}
 if|if
 condition|(
 name|LOG
