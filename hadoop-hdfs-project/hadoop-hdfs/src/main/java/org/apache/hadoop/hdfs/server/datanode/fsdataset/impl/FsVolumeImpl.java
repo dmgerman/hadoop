@@ -630,6 +630,21 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getBasePath ()
+specifier|public
+name|String
+name|getBasePath
+parameter_list|()
+block|{
+return|return
+name|currentDir
+operator|.
+name|getParent
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getPath (String bpid)
 specifier|public
 name|String

@@ -69,6 +69,13 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/** @return the base path to the volume */
+DECL|method|getBasePath ()
+specifier|public
+name|String
+name|getBasePath
+parameter_list|()
+function_decl|;
 comment|/** @return the path to the volume */
 DECL|method|getPath (String bpid)
 specifier|public
