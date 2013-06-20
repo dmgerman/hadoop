@@ -1217,7 +1217,7 @@ expr_stmt|;
 name|String
 name|bindAddress
 init|=
-literal|"127.0.0.1:12345"
+literal|"0.0.0.0:12345"
 decl_stmt|;
 name|conf
 operator|.
