@@ -786,6 +786,22 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getFsPermissionShort ()
+specifier|public
+specifier|final
+name|short
+name|getFsPermissionShort
+parameter_list|()
+block|{
+return|return
+name|referred
+operator|.
+name|getFsPermissionShort
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|setPermission (FsPermission permission)
 name|void
 name|setPermission
@@ -801,6 +817,21 @@ argument_list|(
 name|permission
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getPermissionLong ()
+specifier|public
+name|long
+name|getPermissionLong
+parameter_list|()
+block|{
+return|return
+name|referred
+operator|.
+name|getPermissionLong
+argument_list|()
+return|;
 block|}
 annotation|@
 name|Override
@@ -1101,7 +1132,7 @@ name|Override
 DECL|method|getSnapshotINode (Snapshot snapshot)
 specifier|public
 specifier|final
-name|INode
+name|INodeAttributes
 name|getSnapshotINode
 parameter_list|(
 name|Snapshot

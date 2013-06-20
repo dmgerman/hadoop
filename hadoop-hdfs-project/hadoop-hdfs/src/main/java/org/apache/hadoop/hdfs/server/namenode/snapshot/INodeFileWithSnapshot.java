@@ -130,6 +130,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeFileAttributes
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INodeMap
 import|;
 end_import
@@ -310,7 +328,7 @@ annotation|@
 name|Override
 DECL|method|getSnapshotINode (Snapshot snapshot)
 specifier|public
-name|INodeFile
+name|INodeFileAttributes
 name|getSnapshotINode
 parameter_list|(
 name|Snapshot

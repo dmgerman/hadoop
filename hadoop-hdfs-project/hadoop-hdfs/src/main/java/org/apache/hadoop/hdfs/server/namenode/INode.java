@@ -391,6 +391,8 @@ specifier|abstract
 class|class
 name|INode
 implements|implements
+name|INodeAttributes
+implements|,
 name|Diff
 operator|.
 name|Element
@@ -496,6 +498,8 @@ name|snapshot
 parameter_list|)
 function_decl|;
 comment|/** The same as getUserName(null). */
+annotation|@
+name|Override
 DECL|method|getUserName ()
 specifier|public
 specifier|final
@@ -571,6 +575,8 @@ name|snapshot
 parameter_list|)
 function_decl|;
 comment|/** The same as getGroupName(null). */
+annotation|@
+name|Override
 DECL|method|getGroupName ()
 specifier|public
 specifier|final
@@ -646,6 +652,8 @@ name|snapshot
 parameter_list|)
 function_decl|;
 comment|/** The same as getFsPermission(null). */
+annotation|@
+name|Override
 DECL|method|getFsPermission ()
 specifier|public
 specifier|final
@@ -712,7 +720,7 @@ block|}
 comment|/**    * @return if the given snapshot is null, return this;    *     otherwise return the corresponding snapshot inode.    */
 DECL|method|getSnapshotINode (final Snapshot snapshot)
 specifier|public
-name|INode
+name|INodeAttributes
 name|getSnapshotINode
 parameter_list|(
 specifier|final
@@ -1448,15 +1456,6 @@ name|name
 argument_list|)
 return|;
 block|}
-comment|/**    * @return null if the local name is null;    *         otherwise, return the local name byte array.    */
-DECL|method|getLocalNameBytes ()
-specifier|public
-specifier|abstract
-name|byte
-index|[]
-name|getLocalNameBytes
-parameter_list|()
-function_decl|;
 annotation|@
 name|Override
 DECL|method|getKey ()
@@ -1753,6 +1752,8 @@ name|snapshot
 parameter_list|)
 function_decl|;
 comment|/** The same as getModificationTime(null). */
+annotation|@
+name|Override
 DECL|method|getModificationTime ()
 specifier|public
 specifier|final
@@ -1849,6 +1850,8 @@ name|snapshot
 parameter_list|)
 function_decl|;
 comment|/** The same as getAccessTime(null). */
+annotation|@
+name|Override
 DECL|method|getAccessTime ()
 specifier|public
 specifier|final

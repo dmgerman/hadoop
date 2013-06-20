@@ -348,6 +348,8 @@ name|INodeFile
 extends|extends
 name|INodeWithAdditionalFields
 implements|implements
+name|INodeFileAttributes
+implements|,
 name|BlockCollection
 block|{
 comment|/** The same as valueOf(inode, path, false). */
@@ -453,7 +455,6 @@ return|;
 block|}
 comment|/** Format: [16 bits for replication][48 bits for PreferredBlockSize] */
 DECL|class|HeaderFormat
-specifier|private
 specifier|static
 class|class
 name|HeaderFormat
@@ -837,7 +838,7 @@ annotation|@
 name|Override
 DECL|method|getSnapshotINode (final Snapshot snapshot)
 specifier|public
-name|INodeFile
+name|INodeFileAttributes
 name|getSnapshotINode
 parameter_list|(
 specifier|final
@@ -944,6 +945,8 @@ argument_list|)
 return|;
 block|}
 comment|/** The same as getFileReplication(null). */
+annotation|@
+name|Override
 DECL|method|getFileReplication ()
 specifier|public
 specifier|final
@@ -1069,6 +1072,18 @@ name|getPreferredBlockSize
 argument_list|(
 name|header
 argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHeaderLong ()
+specifier|public
+name|long
+name|getHeaderLong
+parameter_list|()
+block|{
+return|return
+name|header
 return|;
 block|}
 comment|/** @return the diskspace required for a full block. */

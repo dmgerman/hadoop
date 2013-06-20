@@ -359,6 +359,8 @@ class|class
 name|INodeDirectory
 extends|extends
 name|INodeWithAdditionalFields
+implements|implements
+name|INodeDirectoryAttributes
 block|{
 comment|/** Cast INode to INodeDirectory. */
 DECL|method|valueOf (INode inode, Object path )
@@ -2728,12 +2730,14 @@ return|;
 block|}
 block|}
 comment|/**    * Compare the metadata with another INodeDirectory    */
-DECL|method|metadataEquals (INodeDirectory other)
+annotation|@
+name|Override
+DECL|method|metadataEquals (INodeDirectoryAttributes other)
 specifier|public
 name|boolean
 name|metadataEquals
 parameter_list|(
-name|INodeDirectory
+name|INodeDirectoryAttributes
 name|other
 parameter_list|)
 block|{
@@ -2758,38 +2762,13 @@ operator|.
 name|getDsQuota
 argument_list|()
 operator|&&
-name|getUserName
+name|getPermissionLong
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|other
 operator|.
-name|getUserName
+name|getPermissionLong
 argument_list|()
-argument_list|)
-operator|&&
-name|getGroupName
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|other
-operator|.
-name|getGroupName
-argument_list|()
-argument_list|)
-operator|&&
-name|getFsPermission
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|other
-operator|.
-name|getFsPermission
-argument_list|()
-argument_list|)
 return|;
 block|}
 comment|/*    * The following code is to dump the tree recursively for testing.    *     *      \- foo   (INodeDirectory@33dd2717)    *        \- sub1   (INodeDirectory@442172)    *          +- file1   (INodeFile@78392d4)    *          +- file2   (INodeFile@78392d5)    *          +- sub11   (INodeDirectory@8400cff)    *            \- file3   (INodeFile@78392d6)    *          \- z_file4   (INodeFile@45848712)    */

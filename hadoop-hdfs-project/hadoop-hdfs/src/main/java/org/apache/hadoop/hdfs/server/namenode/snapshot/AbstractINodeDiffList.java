@@ -126,6 +126,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeAttributes
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INode
 operator|.
 name|BlocksMapUpdateInfo
@@ -164,11 +182,17 @@ name|N
 extends|extends
 name|INode
 parameter_list|,
+name|A
+extends|extends
+name|INodeAttributes
+parameter_list|,
 name|D
 extends|extends
 name|AbstractINodeDiff
 parameter_list|<
 name|N
+parameter_list|,
+name|A
 parameter_list|,
 name|D
 parameter_list|>
@@ -245,7 +269,7 @@ function_decl|;
 comment|/** @return a snapshot copy of the current inode. */
 DECL|method|createSnapshotCopy (N currentINode)
 specifier|abstract
-name|N
+name|A
 name|createSnapshotCopy
 parameter_list|(
 name|N
@@ -426,6 +450,8 @@ name|AbstractINodeDiff
 argument_list|<
 name|N
 argument_list|,
+name|A
+argument_list|,
 name|D
 argument_list|>
 name|previous
@@ -526,24 +552,6 @@ operator|=
 name|removed
 operator|.
 name|snapshotINode
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|removed
-operator|.
-name|snapshotINode
-operator|!=
-literal|null
-condition|)
-block|{
-name|removed
-operator|.
-name|snapshotINode
-operator|.
-name|clear
-argument_list|()
 expr_stmt|;
 block|}
 name|counts
@@ -760,6 +768,8 @@ specifier|final
 name|AbstractINodeDiff
 argument_list|<
 name|N
+argument_list|,
+name|A
 argument_list|,
 name|D
 argument_list|>
@@ -1270,8 +1280,8 @@ literal|true
 return|;
 block|}
 comment|/**    * @return the inode corresponding to the given snapshot.    *         Note that the current inode is returned if there is no change    *         between the given snapshot and the current state.     */
-DECL|method|getSnapshotINode (final Snapshot snapshot, final N currentINode)
-name|N
+DECL|method|getSnapshotINode (final Snapshot snapshot, final A currentINode)
+name|A
 name|getSnapshotINode
 parameter_list|(
 specifier|final
@@ -1279,7 +1289,7 @@ name|Snapshot
 name|snapshot
 parameter_list|,
 specifier|final
-name|N
+name|A
 name|currentINode
 parameter_list|)
 block|{
@@ -1293,7 +1303,7 @@ name|snapshot
 argument_list|)
 decl_stmt|;
 specifier|final
-name|N
+name|A
 name|inode
 init|=
 name|diff
@@ -1399,7 +1409,7 @@ block|}
 block|}
 block|}
 comment|/** Save the snapshot copy to the latest snapshot. */
-DECL|method|saveSelf2Snapshot (Snapshot latest, N currentINode, N snapshotCopy)
+DECL|method|saveSelf2Snapshot (Snapshot latest, N currentINode, A snapshotCopy)
 specifier|public
 name|void
 name|saveSelf2Snapshot
@@ -1410,7 +1420,7 @@ parameter_list|,
 name|N
 name|currentINode
 parameter_list|,
-name|N
+name|A
 name|snapshotCopy
 parameter_list|)
 throws|throws

@@ -381,6 +381,38 @@ literal|43
 argument_list|,
 literal|"Support for snapshot feature"
 argument_list|)
+block|,
+DECL|enumConstant|RESERVED_REL1_3_0
+name|RESERVED_REL1_3_0
+argument_list|(
+operator|-
+literal|44
+argument_list|,
+operator|-
+literal|41
+argument_list|,
+literal|"Reserved for release 1.3.0"
+argument_list|,
+literal|true
+argument_list|,
+name|ADD_INODE_ID
+argument_list|,
+name|SNAPSHOT
+argument_list|)
+block|,
+DECL|enumConstant|OPTIMIZE_SNAPSHOT_INODES
+name|OPTIMIZE_SNAPSHOT_INODES
+argument_list|(
+operator|-
+literal|45
+argument_list|,
+operator|-
+literal|43
+argument_list|,
+literal|"Reduce snapshot inode memory footprint"
+argument_list|,
+literal|false
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

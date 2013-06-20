@@ -154,7 +154,6 @@ implements|implements
 name|LinkedElement
 block|{
 DECL|enum|PermissionStatusFormat
-specifier|private
 specifier|static
 enum|enum
 name|PermissionStatusFormat
@@ -950,21 +949,15 @@ return|return
 operator|new
 name|FsPermission
 argument_list|(
-operator|(
-name|short
-operator|)
-name|PermissionStatusFormat
-operator|.
-name|MODE
-operator|.
-name|retrieve
-argument_list|(
-name|permission
-argument_list|)
+name|getFsPermissionShort
+argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getFsPermissionShort ()
+specifier|public
 specifier|final
 name|short
 name|getFsPermissionShort
@@ -1015,6 +1008,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getPermissionLong ()
+specifier|public
+name|long
+name|getPermissionLong
+parameter_list|()
+block|{
+return|return
+name|permission
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getModificationTime (Snapshot snapshot)
 specifier|final
 name|long
@@ -1038,9 +1043,7 @@ name|snapshot
 argument_list|)
 operator|.
 name|getModificationTime
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 return|;
 block|}
 return|return
@@ -1161,9 +1164,7 @@ name|snapshot
 argument_list|)
 operator|.
 name|getAccessTime
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 return|;
 block|}
 return|return

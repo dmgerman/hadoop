@@ -84,6 +84,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeAttributes
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INode
 operator|.
 name|BlocksMapUpdateInfo
@@ -158,11 +176,17 @@ name|N
 extends|extends
 name|INode
 parameter_list|,
+name|A
+extends|extends
+name|INodeAttributes
+parameter_list|,
 name|D
 extends|extends
 name|AbstractINodeDiff
 parameter_list|<
 name|N
+parameter_list|,
+name|A
 parameter_list|,
 name|D
 parameter_list|>
@@ -180,7 +204,7 @@ name|snapshot
 decl_stmt|;
 comment|/** The snapshot inode data.  It is null when there is no change. */
 DECL|field|snapshotINode
-name|N
+name|A
 name|snapshotINode
 decl_stmt|;
 comment|/**    * Posterior diff is the diff happened after this diff.    * The posterior diff should be first applied to obtain the posterior    * snapshot and then apply this diff in order to obtain this snapshot.    * If the posterior diff is null, the posterior state is the current state.     */
@@ -189,13 +213,13 @@ specifier|private
 name|D
 name|posteriorDiff
 decl_stmt|;
-DECL|method|AbstractINodeDiff (Snapshot snapshot, N snapshotINode, D posteriorDiff)
+DECL|method|AbstractINodeDiff (Snapshot snapshot, A snapshotINode, D posteriorDiff)
 name|AbstractINodeDiff
 parameter_list|(
 name|Snapshot
 name|snapshot
 parameter_list|,
-name|N
+name|A
 name|snapshotINode
 parameter_list|,
 name|D
@@ -317,11 +341,11 @@ name|posterior
 expr_stmt|;
 block|}
 comment|/** Save the INode state to the snapshot if it is not done already. */
-DECL|method|saveSnapshotCopy (N snapshotCopy, N currentINode)
+DECL|method|saveSnapshotCopy (A snapshotCopy, N currentINode)
 name|void
 name|saveSnapshotCopy
 parameter_list|(
-name|N
+name|A
 name|snapshotCopy
 parameter_list|,
 name|N
@@ -346,7 +370,7 @@ expr_stmt|;
 block|}
 comment|/** @return the inode corresponding to the snapshot. */
 DECL|method|getSnapshotINode ()
-name|N
+name|A
 name|getSnapshotINode
 parameter_list|()
 block|{
@@ -357,6 +381,8 @@ control|(
 name|AbstractINodeDiff
 argument_list|<
 name|N
+argument_list|,
+name|A
 argument_list|,
 name|D
 argument_list|>
