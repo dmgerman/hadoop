@@ -1660,7 +1660,8 @@ argument_list|()
 argument_list|,
 name|dfsClient
 operator|.
-name|dfsClientConf
+name|getConf
+argument_list|()
 operator|.
 name|ioBufferSize
 argument_list|,

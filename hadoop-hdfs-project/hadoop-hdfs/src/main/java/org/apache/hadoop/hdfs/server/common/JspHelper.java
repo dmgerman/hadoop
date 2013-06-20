@@ -302,6 +302,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSClient
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSUtil
 import|;
 end_import
@@ -1422,7 +1436,7 @@ return|return
 name|chosenNode
 return|;
 block|}
-DECL|method|streamBlockInAscii (InetSocketAddress addr, String poolId, long blockId, Token<BlockTokenIdentifier> blockToken, long genStamp, long blockSize, long offsetIntoBlock, long chunkSizeToView, JspWriter out, Configuration conf, DataEncryptionKey encryptionKey)
+DECL|method|streamBlockInAscii (InetSocketAddress addr, String poolId, long blockId, Token<BlockTokenIdentifier> blockToken, long genStamp, long blockSize, long offsetIntoBlock, long chunkSizeToView, JspWriter out, Configuration conf, DFSClient.Conf dfsConf, DataEncryptionKey encryptionKey)
 specifier|public
 specifier|static
 name|void
@@ -1460,6 +1474,11 @@ name|out
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|DFSClient
+operator|.
+name|Conf
+name|dfsConf
 parameter_list|,
 name|DataEncryptionKey
 name|encryptionKey
@@ -1546,7 +1565,7 @@ name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
-name|conf
+name|dfsConf
 argument_list|,
 name|file
 argument_list|,
@@ -1618,6 +1637,7 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
+specifier|final
 name|byte
 index|[]
 name|buf
@@ -1625,9 +1645,6 @@ init|=
 operator|new
 name|byte
 index|[
-operator|(
-name|int
-operator|)
 name|amtToRead
 index|]
 decl_stmt|;

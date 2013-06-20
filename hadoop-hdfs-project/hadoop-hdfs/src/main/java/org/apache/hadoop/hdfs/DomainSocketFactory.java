@@ -82,11 +82,9 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
+name|hadoop
 operator|.
-name|logging
-operator|.
-name|LogFactory
+name|HadoopIllegalArgumentException
 import|;
 end_import
 
@@ -156,20 +154,15 @@ class|class
 name|DomainSocketFactory
 block|{
 DECL|field|LOG
-specifier|public
+specifier|private
 specifier|static
 specifier|final
 name|Log
 name|LOG
 init|=
-name|LogFactory
+name|BlockReaderLocal
 operator|.
-name|getLog
-argument_list|(
-name|DomainSocketFactory
-operator|.
-name|class
-argument_list|)
+name|LOG
 decl_stmt|;
 DECL|field|conf
 specifier|private
@@ -228,10 +221,9 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+specifier|final
 name|String
 name|feature
-init|=
-literal|null
 decl_stmt|;
 if|if
 condition|(
@@ -265,12 +257,29 @@ operator|=
 literal|"UNIX domain socket data traffic"
 expr_stmt|;
 block|}
+else|else
+block|{
+name|feature
+operator|=
+literal|null
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|feature
-operator|!=
+operator|==
 literal|null
 condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Both short-circuit local reads and UNIX domain socket are disabled."
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
 if|if
 condition|(
@@ -282,19 +291,21 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|LOG
-operator|.
-name|warn
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
 argument_list|(
 name|feature
 operator|+
-literal|" is disabled because you have not set "
+literal|" is enabled but "
 operator|+
 name|DFSConfigKeys
 operator|.
 name|DFS_DOMAIN_SOCKET_PATH_KEY
+operator|+
+literal|" is not set."
 argument_list|)
-expr_stmt|;
+throw|;
 block|}
 elseif|else
 if|if
@@ -313,7 +324,7 @@ name|warn
 argument_list|(
 name|feature
 operator|+
-literal|" is disabled because "
+literal|" cannot be used because "
 operator|+
 name|DomainSocket
 operator|.
@@ -330,7 +341,7 @@ name|debug
 argument_list|(
 name|feature
 operator|+
-literal|"is enabled."
+literal|" is enabled."
 argument_list|)
 expr_stmt|;
 block|}
@@ -365,21 +376,16 @@ return|;
 comment|// If we can't do anything with the domain socket, don't create it.
 if|if
 condition|(
-operator|(
+operator|!
 name|conf
 operator|.
 name|domainSocketDataTraffic
-operator|==
-literal|false
-operator|)
 operator|&&
-operator|(
 operator|(
 operator|!
 name|conf
 operator|.
 name|shortCircuitLocalReads
-operator|)
 operator|||
 name|conf
 operator|.

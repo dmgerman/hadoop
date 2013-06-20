@@ -6281,8 +6281,10 @@ name|getXferAddr
 argument_list|(
 name|client
 operator|.
-name|connectToDnViaHostname
+name|getConf
 argument_list|()
+operator|.
+name|connectToDnViaHostname
 argument_list|)
 decl_stmt|;
 if|if
@@ -8532,7 +8534,8 @@ operator|+
 operator|(
 name|dfsClient
 operator|.
-name|hdfsTimeout
+name|getHdfsTimeout
+argument_list|()
 operator|/
 literal|1000
 operator|)
@@ -8813,6 +8816,15 @@ operator|!
 name|fileComplete
 condition|)
 block|{
+specifier|final
+name|int
+name|hdfsTimeout
+init|=
+name|dfsClient
+operator|.
+name|getHdfsTimeout
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -8821,16 +8833,12 @@ operator|.
 name|clientRunning
 operator|||
 operator|(
-name|dfsClient
-operator|.
 name|hdfsTimeout
 operator|>
 literal|0
 operator|&&
 name|localstart
 operator|+
-name|dfsClient
-operator|.
 name|hdfsTimeout
 operator|<
 name|Time
@@ -8855,8 +8863,6 @@ name|clientRunning
 operator|+
 literal|" hdfsTimeout "
 operator|+
-name|dfsClient
-operator|.
 name|hdfsTimeout
 decl_stmt|;
 name|DFSClient

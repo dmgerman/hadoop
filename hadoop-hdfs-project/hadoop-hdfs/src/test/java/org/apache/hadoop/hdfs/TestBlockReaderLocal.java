@@ -848,7 +848,13 @@ operator|=
 operator|new
 name|BlockReaderLocal
 argument_list|(
+operator|new
+name|DFSClient
+operator|.
+name|Conf
+argument_list|(
 name|conf
+argument_list|)
 argument_list|,
 name|TEST_PATH
 operator|.

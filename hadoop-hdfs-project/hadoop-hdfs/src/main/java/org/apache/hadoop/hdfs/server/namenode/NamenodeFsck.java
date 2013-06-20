@@ -3303,7 +3303,10 @@ name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
-name|conf
+name|dfs
+operator|.
+name|getConf
+argument_list|()
 argument_list|,
 name|file
 argument_list|,

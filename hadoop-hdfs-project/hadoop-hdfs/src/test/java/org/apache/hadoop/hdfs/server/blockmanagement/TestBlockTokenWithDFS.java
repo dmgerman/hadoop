@@ -1127,7 +1127,13 @@ name|BlockReaderFactory
 operator|.
 name|newBlockReader
 argument_list|(
+operator|new
+name|DFSClient
+operator|.
+name|Conf
+argument_list|(
 name|conf
+argument_list|)
 argument_list|,
 name|file
 argument_list|,
