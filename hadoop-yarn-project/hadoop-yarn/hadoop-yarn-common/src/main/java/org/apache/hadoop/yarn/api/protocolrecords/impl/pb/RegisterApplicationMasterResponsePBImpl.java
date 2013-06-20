@@ -1034,6 +1034,11 @@ operator|==
 literal|null
 condition|)
 block|{
+name|builder
+operator|.
+name|clearClientToAmTokenMasterKey
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 name|maybeInitBuilder
@@ -1060,6 +1065,9 @@ name|ByteBuffer
 name|getClientToAMTokenMasterKey
 parameter_list|()
 block|{
+name|maybeInitBuilder
+argument_list|()
+expr_stmt|;
 name|ByteBuffer
 name|key
 init|=
