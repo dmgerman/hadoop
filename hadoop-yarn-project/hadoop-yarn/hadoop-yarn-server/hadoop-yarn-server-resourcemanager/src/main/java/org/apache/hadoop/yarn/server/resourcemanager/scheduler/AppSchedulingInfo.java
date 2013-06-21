@@ -288,9 +288,11 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
+name|rmapp
 operator|.
-name|Resources
+name|attempt
+operator|.
+name|RMAppAttemptState
 import|;
 end_import
 
@@ -304,15 +306,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|resourcemanager
+name|resource
 operator|.
-name|rmapp
-operator|.
-name|attempt
-operator|.
-name|RMAppAttemptState
+name|Resources
 import|;
 end_import
 

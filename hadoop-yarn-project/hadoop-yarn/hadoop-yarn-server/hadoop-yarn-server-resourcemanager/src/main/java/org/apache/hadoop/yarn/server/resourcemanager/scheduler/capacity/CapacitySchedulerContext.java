@@ -118,9 +118,13 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
+name|scheduler
 operator|.
-name|ResourceCalculator
+name|common
+operator|.
+name|fica
+operator|.
+name|FiCaSchedulerApp
 import|;
 end_import
 
@@ -134,17 +138,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|resourcemanager
+name|resource
 operator|.
-name|scheduler
-operator|.
-name|common
-operator|.
-name|fica
-operator|.
-name|FiCaSchedulerApp
+name|ResourceCalculator
 import|;
 end_import
 

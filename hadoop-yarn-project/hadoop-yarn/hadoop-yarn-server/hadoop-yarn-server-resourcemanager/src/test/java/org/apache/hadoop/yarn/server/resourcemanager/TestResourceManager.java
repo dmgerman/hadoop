@@ -236,9 +236,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|resource
+name|rmnode
 operator|.
-name|Resources
+name|RMNode
 import|;
 end_import
 
@@ -252,13 +252,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|resourcemanager
+name|resource
 operator|.
-name|rmnode
-operator|.
-name|RMNode
+name|Resources
 import|;
 end_import
 

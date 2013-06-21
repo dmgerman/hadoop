@@ -90,13 +90,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|resourcemanager
-operator|.
-name|resource
-operator|.
-name|Resources
+name|Records
 import|;
 end_import
 
@@ -112,7 +108,9 @@ name|yarn
 operator|.
 name|util
 operator|.
-name|Records
+name|resource
+operator|.
+name|Resources
 import|;
 end_import
 

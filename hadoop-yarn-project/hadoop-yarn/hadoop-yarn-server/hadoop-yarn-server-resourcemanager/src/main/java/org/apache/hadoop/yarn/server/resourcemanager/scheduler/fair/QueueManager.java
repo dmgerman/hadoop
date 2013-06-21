@@ -320,7 +320,7 @@ name|resourcemanager
 operator|.
 name|resource
 operator|.
-name|Resources
+name|ResourceWeights
 import|;
 end_import
 
@@ -334,13 +334,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
+name|util
 operator|.
 name|resource
 operator|.
-name|ResourceWeights
+name|Resources
 import|;
 end_import
 

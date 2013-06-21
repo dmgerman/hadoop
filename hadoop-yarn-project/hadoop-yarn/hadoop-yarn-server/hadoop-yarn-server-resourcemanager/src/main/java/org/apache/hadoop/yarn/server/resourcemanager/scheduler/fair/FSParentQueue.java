@@ -202,9 +202,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
+name|util
 operator|.
 name|resource
 operator|.

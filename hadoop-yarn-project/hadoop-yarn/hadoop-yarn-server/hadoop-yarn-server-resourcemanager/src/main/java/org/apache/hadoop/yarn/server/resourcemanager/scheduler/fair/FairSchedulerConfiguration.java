@@ -150,11 +150,9 @@ name|yarn
 operator|.
 name|server
 operator|.
-name|resourcemanager
+name|utils
 operator|.
-name|resource
-operator|.
-name|Resources
+name|BuilderUtils
 import|;
 end_import
 
@@ -168,11 +166,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|util
 operator|.
-name|utils
+name|resource
 operator|.
-name|BuilderUtils
+name|Resources
 import|;
 end_import
 
