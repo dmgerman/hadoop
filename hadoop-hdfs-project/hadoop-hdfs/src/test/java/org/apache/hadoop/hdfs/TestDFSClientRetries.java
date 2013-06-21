@@ -2925,6 +2925,9 @@ name|ExtendedBlock
 operator|>
 name|any
 argument_list|()
+argument_list|,
+name|anyLong
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|OutputStream
@@ -3064,6 +3067,9 @@ expr|<
 name|ExtendedBlock
 operator|>
 name|any
+argument_list|()
+argument_list|,
+name|anyLong
 argument_list|()
 argument_list|)
 expr_stmt|;

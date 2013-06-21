@@ -60,6 +60,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|anyLong
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|anyObject
 import|;
 end_import
@@ -941,6 +953,9 @@ name|ExtendedBlock
 operator|)
 name|anyObject
 argument_list|()
+argument_list|,
+name|anyLong
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DFSClient
@@ -1284,6 +1299,9 @@ operator|(
 name|ExtendedBlock
 operator|)
 name|anyObject
+argument_list|()
+argument_list|,
+name|anyLong
 argument_list|()
 argument_list|)
 expr_stmt|;

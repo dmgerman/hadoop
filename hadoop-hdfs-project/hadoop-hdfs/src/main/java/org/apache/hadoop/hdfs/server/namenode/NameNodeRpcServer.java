@@ -3926,7 +3926,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|complete (String src, String clientName, ExtendedBlock last)
+DECL|method|complete (String src, String clientName, ExtendedBlock last, long fileId)
 specifier|public
 name|boolean
 name|complete
@@ -3939,6 +3939,9 @@ name|clientName
 parameter_list|,
 name|ExtendedBlock
 name|last
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 throws|throws
 name|IOException
@@ -3959,6 +3962,10 @@ literal|"*DIR* NameNode.complete: "
 operator|+
 name|src
 operator|+
+literal|" fileId="
+operator|+
+name|fileId
+operator|+
 literal|" for "
 operator|+
 name|clientName
@@ -3975,6 +3982,8 @@ argument_list|,
 name|clientName
 argument_list|,
 name|last
+argument_list|,
+name|fileId
 argument_list|)
 return|;
 block|}

@@ -13742,7 +13742,7 @@ name|pendingFile
 return|;
 block|}
 comment|/**    * Complete in-progress write to the given file.    * @return true if successful, false if the client should continue to retry    *         (e.g if not all blocks have reached minimum replication yet)    * @throws IOException on error (eg lease mismatch, file not open, file deleted)    */
-DECL|method|completeFile (String src, String holder, ExtendedBlock last)
+DECL|method|completeFile (String src, String holder, ExtendedBlock last, long fileId)
 name|boolean
 name|completeFile
 parameter_list|(
@@ -13754,6 +13754,9 @@ name|holder
 parameter_list|,
 name|ExtendedBlock
 name|last
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 throws|throws
 name|SafeModeException
@@ -13874,6 +13877,8 @@ name|getLocalBlock
 argument_list|(
 name|last
 argument_list|)
+argument_list|,
+name|fileId
 argument_list|)
 expr_stmt|;
 block|}
@@ -13908,7 +13913,7 @@ return|return
 name|success
 return|;
 block|}
-DECL|method|completeFileInternal (String src, String holder, Block last)
+DECL|method|completeFileInternal (String src, String holder, Block last, long fileId)
 specifier|private
 name|boolean
 name|completeFileInternal
@@ -13921,6 +13926,9 @@ name|holder
 parameter_list|,
 name|Block
 name|last
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 throws|throws
 name|SafeModeException
@@ -13956,9 +13964,7 @@ name|checkLease
 argument_list|(
 name|src
 argument_list|,
-name|INodeId
-operator|.
-name|GRANDFATHER_INODE_ID
+name|fileId
 argument_list|,
 name|holder
 argument_list|,

@@ -3203,7 +3203,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|complete (String src, String clientName, ExtendedBlock last)
+DECL|method|complete (String src, String clientName, ExtendedBlock last, long fileId)
 specifier|public
 name|boolean
 name|complete
@@ -3216,6 +3216,9 @@ name|clientName
 parameter_list|,
 name|ExtendedBlock
 name|last
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -3246,6 +3249,11 @@ operator|.
 name|setClientName
 argument_list|(
 name|clientName
+argument_list|)
+operator|.
+name|setFileId
+argument_list|(
+name|fileId
 argument_list|)
 decl_stmt|;
 if|if

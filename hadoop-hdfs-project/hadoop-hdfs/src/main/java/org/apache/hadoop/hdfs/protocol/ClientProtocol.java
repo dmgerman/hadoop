@@ -804,10 +804,10 @@ name|UnresolvedLinkException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * The client is done writing data to the given filename, and would     * like to complete it.      *    * The function returns whether the file has been closed successfully.    * If the function returns false, the caller should try again.    *     * close() also commits the last block of file by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * A call to complete() will not return true until all the file's    * blocks have been replicated the minimum number of times.  Thus,    * DataNode failures may cause a client to call complete() several    * times before succeeding.    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink     * @throws IOException If an I/O error occurred    */
+comment|/**    * The client is done writing data to the given filename, and would     * like to complete it.      *    * The function returns whether the file has been closed successfully.    * If the function returns false, the caller should try again.    *     * close() also commits the last block of file by reporting    * to the name-node the actual generation stamp and the length    * of the block that the client has transmitted to data-nodes.    *    * A call to complete() will not return true until all the file's    * blocks have been replicated the minimum number of times.  Thus,    * DataNode failures may cause a client to call complete() several    * times before succeeding.    *    * @param src the file being created    * @param clientName the name of the client that adds the block    * @param last the last block info    * @param fileId the id uniquely identifying a file    *    * @return true if all file blocks are minimally replicated or false otherwise    *    * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink     * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|complete (String src, String clientName, ExtendedBlock last)
+DECL|method|complete (String src, String clientName, ExtendedBlock last, long fileId)
 specifier|public
 name|boolean
 name|complete
@@ -820,6 +820,9 @@ name|clientName
 parameter_list|,
 name|ExtendedBlock
 name|last
+parameter_list|,
+name|long
+name|fileId
 parameter_list|)
 throws|throws
 name|AccessControlException
