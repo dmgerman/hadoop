@@ -618,6 +618,8 @@ name|next
 return|;
 block|}
 comment|/** Get inode id */
+annotation|@
+name|Override
 DECL|method|getId ()
 specifier|public
 specifier|final
@@ -1053,6 +1055,8 @@ name|modificationTime
 return|;
 block|}
 comment|/** Update modification time if it is larger than the current value. */
+annotation|@
+name|Override
 DECL|method|updateModificationTime (long mtime, Snapshot latest, final INodeMap inodeMap)
 specifier|public
 specifier|final
@@ -1172,6 +1176,8 @@ name|accessTime
 return|;
 block|}
 comment|/**    * Set last access time of inode.    */
+annotation|@
+name|Override
 DECL|method|setAccessTime (long accessTime)
 specifier|public
 specifier|final

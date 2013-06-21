@@ -1363,6 +1363,13 @@ argument_list|()
 argument_list|,
 name|dir
 operator|.
+name|getChildrenNum
+argument_list|(
+literal|null
+argument_list|)
+argument_list|,
+name|dir
+operator|.
 name|getNumSnapshots
 argument_list|()
 argument_list|,

@@ -1864,6 +1864,8 @@ literal|0
 index|]
 argument_list|,
 literal|1010
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 operator|.
@@ -1923,6 +1925,8 @@ literal|0
 index|]
 argument_list|,
 literal|1010
+argument_list|,
+literal|0
 argument_list|)
 argument_list|)
 operator|.

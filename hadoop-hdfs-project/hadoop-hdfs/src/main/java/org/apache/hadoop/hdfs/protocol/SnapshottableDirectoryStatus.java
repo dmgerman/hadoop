@@ -213,7 +213,7 @@ name|byte
 index|[]
 name|parentFullPath
 decl_stmt|;
-DECL|method|SnapshottableDirectoryStatus (long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] localName, long inodeId, int snapshotNumber, int snapshotQuota, byte[] parentFullPath)
+DECL|method|SnapshottableDirectoryStatus (long modification_time, long access_time, FsPermission permission, String owner, String group, byte[] localName, long inodeId, int childrenNum, int snapshotNumber, int snapshotQuota, byte[] parentFullPath)
 specifier|public
 name|SnapshottableDirectoryStatus
 parameter_list|(
@@ -238,6 +238,9 @@ name|localName
 parameter_list|,
 name|long
 name|inodeId
+parameter_list|,
+name|int
+name|childrenNum
 parameter_list|,
 name|int
 name|snapshotNumber
@@ -280,6 +283,8 @@ argument_list|,
 name|localName
 argument_list|,
 name|inodeId
+argument_list|,
+name|childrenNum
 argument_list|)
 expr_stmt|;
 name|this

@@ -3180,6 +3180,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|getChildrenNum (final Snapshot snapshot)
+specifier|public
+specifier|final
+name|int
+name|getChildrenNum
+parameter_list|(
+specifier|final
+name|Snapshot
+name|snapshot
+parameter_list|)
+block|{
+return|return
+name|getChildrenList
+argument_list|(
+name|snapshot
+argument_list|)
+operator|.
+name|size
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

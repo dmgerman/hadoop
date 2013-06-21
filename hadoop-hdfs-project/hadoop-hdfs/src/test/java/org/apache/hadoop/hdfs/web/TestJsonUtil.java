@@ -340,6 +340,8 @@ argument_list|,
 name|INodeId
 operator|.
 name|GRANDFATHER_INODE_ID
+argument_list|,
+literal|0
 argument_list|)
 decl_stmt|;
 specifier|final
