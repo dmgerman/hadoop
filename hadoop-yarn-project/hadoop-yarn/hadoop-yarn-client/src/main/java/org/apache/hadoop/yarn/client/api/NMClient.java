@@ -52,18 +52,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -133,24 +121,6 @@ operator|.
 name|service
 operator|.
 name|AbstractService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|AllocateResponse
 import|;
 end_import
 
@@ -240,43 +210,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NMToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|NodeId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Token
 import|;
 end_import
 
@@ -333,41 +267,31 @@ name|NMClient
 extends|extends
 name|AbstractService
 block|{
-comment|/**    * Create a new instance of NMClient.    * @param nmTokens need to pass map of NMTokens which are received on    * {@link AMRMClient#allocate(float)} call as a part of    * {@link AllocateResponse}.     * key :- NodeAddr (host:port)    * Value :- Token {@link NMToken#getToken()}    */
+comment|/**    * Create a new instance of NMClient.    */
 annotation|@
 name|Public
-DECL|method|createNMClient (ConcurrentMap<String, Token> nmTokens)
+DECL|method|createNMClient ()
 specifier|public
 specifier|static
 name|NMClient
 name|createNMClient
-parameter_list|(
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
-parameter_list|)
+parameter_list|()
 block|{
 name|NMClient
 name|client
 init|=
 operator|new
 name|NMClientImpl
-argument_list|(
-name|nmTokens
-argument_list|)
+argument_list|()
 decl_stmt|;
 return|return
 name|client
 return|;
 block|}
-comment|/**    * Create a new instance of NMClient.    * @param nmTokens need to pass map of NMTokens which are received on    * {@link AMRMClient#allocate(float)} call as a part of    * {@link AllocateResponse}.     * key :- NodeAddr (host:port)    * Value :- Token {@link NMToken#getToken()}    */
+comment|/**    * Create a new instance of NMClient.    */
 annotation|@
 name|Public
-DECL|method|createNMClient (String name, ConcurrentMap<String, Token> nmTokens)
+DECL|method|createNMClient (String name)
 specifier|public
 specifier|static
 name|NMClient
@@ -375,14 +299,6 @@ name|createNMClient
 parameter_list|(
 name|String
 name|name
-parameter_list|,
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
 parameter_list|)
 block|{
 name|NMClient
@@ -392,8 +308,6 @@ operator|new
 name|NMClientImpl
 argument_list|(
 name|name
-argument_list|,
-name|nmTokens
 argument_list|)
 decl_stmt|;
 return|return

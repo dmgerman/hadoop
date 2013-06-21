@@ -184,18 +184,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentHashMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -538,11 +526,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|client
+operator|.
 name|api
 operator|.
-name|records
-operator|.
-name|Token
+name|AMRMClient
 import|;
 end_import
 
@@ -560,7 +548,7 @@ name|client
 operator|.
 name|api
 operator|.
-name|AMRMClient
+name|NMTokenCache
 import|;
 end_import
 
@@ -785,16 +773,6 @@ name|int
 name|lastResponseId
 init|=
 literal|0
-decl_stmt|;
-DECL|field|nmTokens
-specifier|private
-name|ConcurrentHashMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
 decl_stmt|;
 DECL|field|rmClient
 specifier|protected
@@ -1160,19 +1138,6 @@ operator|.
 name|appAttemptId
 operator|=
 name|appAttemptId
-expr_stmt|;
-name|this
-operator|.
-name|nmTokens
-operator|=
-operator|new
-name|ConcurrentHashMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -1726,9 +1691,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|nmTokens
+name|NMTokenCache
 operator|.
-name|containsKey
+name|containsNMToken
 argument_list|(
 name|nodeId
 argument_list|)
@@ -1756,9 +1721,9 @@ name|nodeId
 argument_list|)
 expr_stmt|;
 block|}
-name|nmTokens
+name|NMTokenCache
 operator|.
-name|put
+name|setNMToken
 argument_list|(
 name|nodeId
 argument_list|,
@@ -3290,23 +3255,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-annotation|@
-name|Override
-DECL|method|getNMTokens ()
-specifier|public
-name|ConcurrentHashMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|getNMTokens
-parameter_list|()
-block|{
-return|return
-name|nmTokens
-return|;
 block|}
 block|}
 end_class

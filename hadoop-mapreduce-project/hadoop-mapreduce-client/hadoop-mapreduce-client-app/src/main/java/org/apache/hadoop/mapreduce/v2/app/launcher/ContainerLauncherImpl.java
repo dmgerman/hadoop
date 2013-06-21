@@ -1464,11 +1464,6 @@ operator|new
 name|ContainerManagementProtocolProxy
 argument_list|(
 name|conf
-argument_list|,
-name|context
-operator|.
-name|getNMTokens
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

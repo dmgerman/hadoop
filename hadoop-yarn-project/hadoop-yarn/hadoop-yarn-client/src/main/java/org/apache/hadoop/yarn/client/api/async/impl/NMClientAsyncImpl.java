@@ -755,20 +755,12 @@ name|StatefulContainer
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|NMClientAsyncImpl (CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
+DECL|method|NMClientAsyncImpl (CallbackHandler callbackHandler)
 specifier|public
 name|NMClientAsyncImpl
 parameter_list|(
 name|CallbackHandler
 name|callbackHandler
-parameter_list|,
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
 parameter_list|)
 block|{
 name|this
@@ -781,12 +773,10 @@ name|getName
 argument_list|()
 argument_list|,
 name|callbackHandler
-argument_list|,
-name|nmTokens
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NMClientAsyncImpl (String name, CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
+DECL|method|NMClientAsyncImpl (String name, CallbackHandler callbackHandler)
 specifier|public
 name|NMClientAsyncImpl
 parameter_list|(
@@ -795,14 +785,6 @@ name|name
 parameter_list|,
 name|CallbackHandler
 name|callbackHandler
-parameter_list|,
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
 parameter_list|)
 block|{
 name|this
@@ -811,9 +793,7 @@ name|name
 argument_list|,
 operator|new
 name|NMClientImpl
-argument_list|(
-name|nmTokens
-argument_list|)
+argument_list|()
 argument_list|,
 name|callbackHandler
 argument_list|)

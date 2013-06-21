@@ -2394,11 +2394,6 @@ operator|new
 name|NMClientAsyncImpl
 argument_list|(
 name|containerListener
-argument_list|,
-name|resourceManager
-operator|.
-name|getNMTokens
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|nmClientAsync

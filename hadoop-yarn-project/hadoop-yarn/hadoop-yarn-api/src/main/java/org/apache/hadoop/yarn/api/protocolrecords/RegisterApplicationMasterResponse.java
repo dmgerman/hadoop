@@ -173,7 +173,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a new   *<code>ApplicationMaster</code> on registration.</p>  *   *<p>The response contains critical details such as:  *<ul>  *<li>Minimum capability for allocated resources in the cluster.</li>  *<li>Maximum capability for allocated resources in the cluster.</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a new   *<code>ApplicationMaster</code> on registration.</p>  *   *<p>The response contains critical details such as:  *<ul>  *<li>Maximum capability for allocated resources in the cluster.</li>  *<li><code>ApplicationACL</code>s for the application.</li>  *<li>ClientToAMToken master key.</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
 begin_class
@@ -191,7 +191,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls)
+DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls, ByteBuffer key)
 specifier|public
 specifier|static
 name|RegisterApplicationMasterResponse
@@ -210,6 +210,9 @@ argument_list|,
 name|String
 argument_list|>
 name|acls
+parameter_list|,
+name|ByteBuffer
+name|key
 parameter_list|)
 block|{
 name|RegisterApplicationMasterResponse
@@ -236,6 +239,13 @@ operator|.
 name|setApplicationACLs
 argument_list|(
 name|acls
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setClientToAMTokenMasterKey
+argument_list|(
+name|key
 argument_list|)
 expr_stmt|;
 return|return

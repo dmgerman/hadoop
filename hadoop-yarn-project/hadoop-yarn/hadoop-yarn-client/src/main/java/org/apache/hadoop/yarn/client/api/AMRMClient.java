@@ -52,18 +52,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -259,24 +247,6 @@ operator|.
 name|records
 operator|.
 name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Token
 import|;
 end_import
 
@@ -828,19 +798,6 @@ parameter_list|,
 name|Resource
 name|capability
 parameter_list|)
-function_decl|;
-comment|/**    * It returns the NMToken received on allocate call. It will not communicate    * with RM to get NMTokens. On allocate call whenever we receive new token    * along with container AMRMClient will cache this NMToken per node manager.    * This map returned should be shared with any application which is    * communicating with NodeManager (ex. NMClient) using NMTokens. If a new    * NMToken is received for the same node manager then it will be replaced.     */
-DECL|method|getNMTokens ()
-specifier|public
-specifier|abstract
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|getNMTokens
-parameter_list|()
 function_decl|;
 block|}
 end_class

@@ -341,7 +341,7 @@ specifier|protected
 name|CallbackHandler
 name|callbackHandler
 decl_stmt|;
-DECL|method|createNMClientAsync ( CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
+DECL|method|createNMClientAsync ( CallbackHandler callbackHandler)
 specifier|public
 specifier|static
 name|NMClientAsync
@@ -349,14 +349,6 @@ name|createNMClientAsync
 parameter_list|(
 name|CallbackHandler
 name|callbackHandler
-parameter_list|,
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
 parameter_list|)
 block|{
 return|return
@@ -364,25 +356,15 @@ operator|new
 name|NMClientAsyncImpl
 argument_list|(
 name|callbackHandler
-argument_list|,
-name|nmTokens
 argument_list|)
 return|;
 block|}
-DECL|method|NMClientAsync (CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
+DECL|method|NMClientAsync (CallbackHandler callbackHandler)
 specifier|protected
 name|NMClientAsync
 parameter_list|(
 name|CallbackHandler
 name|callbackHandler
-parameter_list|,
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
 parameter_list|)
 block|{
 name|this
@@ -395,12 +377,10 @@ name|getName
 argument_list|()
 argument_list|,
 name|callbackHandler
-argument_list|,
-name|nmTokens
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|NMClientAsync (String name, CallbackHandler callbackHandler, ConcurrentMap<String, Token> nmTokens)
+DECL|method|NMClientAsync (String name, CallbackHandler callbackHandler)
 specifier|protected
 name|NMClientAsync
 parameter_list|(
@@ -409,14 +389,6 @@ name|name
 parameter_list|,
 name|CallbackHandler
 name|callbackHandler
-parameter_list|,
-name|ConcurrentMap
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|nmTokens
 parameter_list|)
 block|{
 name|this
@@ -425,9 +397,7 @@ name|name
 argument_list|,
 operator|new
 name|NMClientImpl
-argument_list|(
-name|nmTokens
-argument_list|)
+argument_list|()
 argument_list|,
 name|callbackHandler
 argument_list|)

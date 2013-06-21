@@ -4376,24 +4376,6 @@ return|return
 literal|null
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|getNMTokens ()
-specifier|public
-name|Map
-argument_list|<
-name|String
-argument_list|,
-name|Token
-argument_list|>
-name|getNMTokens
-parameter_list|()
-block|{
-comment|// Not Implemented
-return|return
-literal|null
-return|;
-block|}
 block|}
 block|}
 end_class
