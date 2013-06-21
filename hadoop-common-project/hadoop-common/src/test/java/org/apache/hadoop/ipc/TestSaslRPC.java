@@ -4135,6 +4135,15 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Auth method failure"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return
 name|e
 operator|.
@@ -4184,6 +4193,15 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Auth method failure"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 return|return
 name|e
 operator|.
@@ -4263,7 +4281,7 @@ name|createRemoteUser
 argument_list|(
 name|currentUser
 operator|+
-literal|"-SERVER"
+literal|"-SERVER/localhost@NONE"
 argument_list|)
 decl_stmt|;
 name|serverUgi

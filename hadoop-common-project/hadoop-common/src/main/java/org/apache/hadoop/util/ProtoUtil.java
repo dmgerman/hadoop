@@ -437,7 +437,7 @@ name|authMethod
 operator|==
 name|AuthMethod
 operator|.
-name|DIGEST
+name|TOKEN
 condition|)
 block|{
 comment|// With token, the connection itself establishes

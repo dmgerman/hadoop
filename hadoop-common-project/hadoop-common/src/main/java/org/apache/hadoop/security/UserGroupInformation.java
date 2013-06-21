@@ -4935,7 +4935,7 @@ name|TOKEN
 parameter_list|(
 name|AuthMethod
 operator|.
-name|DIGEST
+name|TOKEN
 parameter_list|)
 operator|,
 DECL|enumConstant|CERTIFICATE
