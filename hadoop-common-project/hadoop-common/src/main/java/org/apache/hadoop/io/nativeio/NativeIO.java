@@ -515,7 +515,7 @@ specifier|final
 name|boolean
 name|WORKAROUND_NON_THREADSAFE_CALLS_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|cacheTimeout
 specifier|private

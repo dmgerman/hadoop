@@ -159,16 +159,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|getGroupForUser (String user)
-specifier|native
-name|String
-index|[]
-name|getGroupForUser
-parameter_list|(
-name|String
-name|user
-parameter_list|)
-function_decl|;
 static|static
 block|{
 if|if
@@ -190,11 +180,62 @@ literal|"be loaded"
 argument_list|)
 throw|;
 block|}
+name|anchorNative
+argument_list|()
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
 literal|"Using JniBasedUnixGroupsMapping for Group resolution"
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Set up our JNI resources.    *    * @throws                 RuntimeException if setup fails.    */
+DECL|method|anchorNative ()
+specifier|native
+specifier|static
+name|void
+name|anchorNative
+parameter_list|()
+function_decl|;
+comment|/**    * Get the set of groups associated with a user.    *    * @param username           The user name    *    * @return                   The set of groups associated with a user.    */
+DECL|method|getGroupsForUser (String username)
+specifier|native
+specifier|static
+name|String
+index|[]
+name|getGroupsForUser
+parameter_list|(
+name|String
+name|username
+parameter_list|)
+function_decl|;
+comment|/**    * Log an error message about a group.  Used from JNI.    */
+DECL|method|logError (int groupId, String error)
+specifier|static
+specifier|private
+name|void
+name|logError
+parameter_list|(
+name|int
+name|groupId
+parameter_list|,
+name|String
+name|error
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"error looking up the name of group "
+operator|+
+name|groupId
+operator|+
+literal|": "
+operator|+
+name|error
 argument_list|)
 expr_stmt|;
 block|}
@@ -228,7 +269,7 @@ try|try
 block|{
 name|groups
 operator|=
-name|getGroupForUser
+name|getGroupsForUser
 argument_list|(
 name|user
 argument_list|)
