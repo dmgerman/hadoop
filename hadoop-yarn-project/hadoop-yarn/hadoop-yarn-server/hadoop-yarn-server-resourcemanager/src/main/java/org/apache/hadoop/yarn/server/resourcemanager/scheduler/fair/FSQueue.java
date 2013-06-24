@@ -567,6 +567,24 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getMaxShare ()
+specifier|public
+name|Resource
+name|getMaxShare
+parameter_list|()
+block|{
+return|return
+name|queueMgr
+operator|.
+name|getMaxResources
+argument_list|(
+name|getName
+argument_list|()
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStartTime ()
 specifier|public
 name|long

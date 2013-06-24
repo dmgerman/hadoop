@@ -190,6 +190,14 @@ name|Resource
 name|getMinShare
 parameter_list|()
 function_decl|;
+comment|/** Maximum Resource share assigned to the schedulable. */
+DECL|method|getMaxShare ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getMaxShare
+parameter_list|()
+function_decl|;
 comment|/** Job/queue weight in fair sharing. */
 DECL|method|getWeights ()
 specifier|public

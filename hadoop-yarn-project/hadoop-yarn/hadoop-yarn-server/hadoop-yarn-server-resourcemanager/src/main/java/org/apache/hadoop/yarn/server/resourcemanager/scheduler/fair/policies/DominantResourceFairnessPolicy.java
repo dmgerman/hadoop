@@ -314,25 +314,26 @@ name|Resource
 name|totalResources
 parameter_list|)
 block|{
-comment|// TODO: For now, set all fair shares to 0, because, in the context of DRF,
-comment|// it doesn't make sense to set a value for each resource.  YARN-736 should
-comment|// add in a sensible replacement.
 for|for
 control|(
-name|Schedulable
-name|schedulable
+name|ResourceType
+name|type
 range|:
-name|schedulables
+name|ResourceType
+operator|.
+name|values
+argument_list|()
 control|)
 block|{
-name|schedulable
+name|ComputeFairShares
 operator|.
-name|setFairShare
+name|computeShares
 argument_list|(
-name|Resources
-operator|.
-name|none
-argument_list|()
+name|schedulables
+argument_list|,
+name|totalResources
+argument_list|,
+name|type
 argument_list|)
 expr_stmt|;
 block|}

@@ -714,10 +714,23 @@ block|{
 return|return
 name|Resources
 operator|.
-name|createResource
-argument_list|(
-literal|0
-argument_list|)
+name|none
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getMaxShare ()
+specifier|public
+name|Resource
+name|getMaxShare
+parameter_list|()
+block|{
+return|return
+name|Resources
+operator|.
+name|unbounded
+argument_list|()
 return|;
 block|}
 comment|/**    * Get metrics reference from containing queue.    */

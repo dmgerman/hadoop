@@ -2936,6 +2936,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Divided three ways - betwen the two queues and the default queue
 for|for
 control|(
 name|FSLeafQueue
@@ -2944,23 +2945,9 @@ range|:
 name|queues
 control|)
 block|{
-if|if
-condition|(
-operator|!
-name|p
-operator|.
-name|getName
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|"root.default"
-argument_list|)
-condition|)
-block|{
 name|assertEquals
 argument_list|(
-literal|5120
+literal|3414
 argument_list|,
 name|p
 operator|.
@@ -2971,7 +2958,6 @@ name|getMemory
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@
@@ -3034,7 +3020,7 @@ literal|10
 operator|*
 literal|1024
 argument_list|,
-literal|"queue1"
+literal|"default"
 argument_list|,
 literal|"user1"
 argument_list|)
@@ -3087,7 +3073,7 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|4
+literal|3
 argument_list|,
 name|queues
 operator|.
@@ -3102,7 +3088,7 @@ name|queueManager
 operator|.
 name|getLeafQueue
 argument_list|(
-literal|"queue1"
+literal|"default"
 argument_list|)
 decl_stmt|;
 name|FSLeafQueue

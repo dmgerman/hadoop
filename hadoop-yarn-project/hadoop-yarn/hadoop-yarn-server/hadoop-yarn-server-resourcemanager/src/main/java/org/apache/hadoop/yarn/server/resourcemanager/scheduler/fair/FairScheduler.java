@@ -1998,7 +1998,7 @@ name|desiredFairShare
 init|=
 name|Resources
 operator|.
-name|max
+name|min
 argument_list|(
 name|RESOURCE_CALCULATOR
 argument_list|,
