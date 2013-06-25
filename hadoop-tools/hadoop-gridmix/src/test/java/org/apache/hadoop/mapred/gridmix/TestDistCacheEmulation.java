@@ -779,10 +779,9 @@ argument_list|,
 operator|new
 name|FsPermission
 argument_list|(
-operator|(
-name|short
-operator|)
-literal|0644
+name|GenerateDistCacheData
+operator|.
+name|GRIDMIX_DISTCACHE_FILE_PERM
 argument_list|)
 argument_list|,
 name|perm

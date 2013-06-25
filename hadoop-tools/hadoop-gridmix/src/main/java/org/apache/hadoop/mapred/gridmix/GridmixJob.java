@@ -1675,9 +1675,9 @@ name|MRJobConfig
 operator|.
 name|MAP_MEMORY_MB
 argument_list|,
-name|JobConf
+name|MRJobConfig
 operator|.
-name|DISABLED_MEMORY_LIMIT
+name|DEFAULT_MAP_MEMORY_MB
 argument_list|)
 expr_stmt|;
 comment|// validate and fail early
@@ -1709,9 +1709,9 @@ name|MRJobConfig
 operator|.
 name|REDUCE_MEMORY_MB
 argument_list|,
-name|JobConf
+name|MRJobConfig
 operator|.
-name|DISABLED_MEMORY_LIMIT
+name|DEFAULT_REDUCE_MEMORY_MB
 argument_list|)
 expr_stmt|;
 comment|// validate and fail early

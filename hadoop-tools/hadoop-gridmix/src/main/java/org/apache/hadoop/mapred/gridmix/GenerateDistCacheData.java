@@ -536,6 +536,15 @@ name|JOB_NAME
 init|=
 literal|"GRIDMIX_GENERATE_DISTCACHE_DATA"
 decl_stmt|;
+comment|/**    * Create distributed cache file with the permissions 0644.    * Since the private distributed cache directory doesn't have execute    * permission for others, it is OK to set read permission for others for    * the files under that directory and still they will become 'private'    * distributed cache files on the simulated cluster.    */
+DECL|field|GRIDMIX_DISTCACHE_FILE_PERM
+specifier|static
+specifier|final
+name|short
+name|GRIDMIX_DISTCACHE_FILE_PERM
+init|=
+literal|0644
+decl_stmt|;
 DECL|method|GenerateDistCacheData (Configuration conf)
 specifier|public
 name|GenerateDistCacheData
@@ -864,7 +873,6 @@ argument_list|(
 name|fileName
 argument_list|)
 decl_stmt|;
-comment|/**        * Create distributed cache file with the permissions 0755.        * Since the private distributed cache directory doesn't have execute        * permission for others, it is OK to set read permission for others for        * the files under that directory and still they will become 'private'        * distributed cache files on the simulated cluster.        */
 name|FSDataOutputStream
 name|dos
 init|=
@@ -879,10 +887,7 @@ argument_list|,
 operator|new
 name|FsPermission
 argument_list|(
-operator|(
-name|short
-operator|)
-literal|0755
+name|GRIDMIX_DISTCACHE_FILE_PERM
 argument_list|)
 argument_list|)
 decl_stmt|;
