@@ -148,18 +148,6 @@ name|ApplicationStateData
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|mortbay
-operator|.
-name|log
-operator|.
-name|Log
-import|;
-end_import
-
 begin_class
 DECL|class|ApplicationStateDataPBImpl
 specifier|public

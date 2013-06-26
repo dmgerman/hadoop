@@ -142,9 +142,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
+name|conf
 operator|.
-name|ResourceManagerAdministrationProtocolPB
+name|YarnConfiguration
 import|;
 end_import
 
@@ -158,9 +158,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|server
 operator|.
-name|YarnConfiguration
+name|api
+operator|.
+name|ResourceManagerAdministrationProtocolPB
 import|;
 end_import
 
