@@ -626,7 +626,7 @@ name|ipc
 operator|.
 name|ProtobufRpcEngine
 operator|.
-name|RpcResponseWrapper
+name|RpcRequestMessageWrapper
 import|;
 end_import
 
@@ -642,7 +642,7 @@ name|ipc
 operator|.
 name|ProtobufRpcEngine
 operator|.
-name|RpcRequestMessageWrapper
+name|RpcResponseWrapper
 import|;
 end_import
 
@@ -742,9 +742,43 @@ name|protobuf
 operator|.
 name|RpcHeaderProtos
 operator|.
-name|RpcResponseHeaderProto
+name|RpcKindProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|RpcStatusProto
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
+operator|.
+name|RpcRequestHeaderProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
+operator|.
+name|RpcResponseHeaderProto
 import|;
 end_import
 
@@ -782,9 +816,9 @@ name|protobuf
 operator|.
 name|RpcHeaderProtos
 operator|.
-name|RpcSaslProto
+name|RpcResponseHeaderProto
 operator|.
-name|*
+name|RpcStatusProto
 import|;
 end_import
 
@@ -802,7 +836,27 @@ name|protobuf
 operator|.
 name|RpcHeaderProtos
 operator|.
-name|*
+name|RpcSaslProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|protobuf
+operator|.
+name|RpcHeaderProtos
+operator|.
+name|RpcSaslProto
+operator|.
+name|SaslState
 import|;
 end_import
 
@@ -7450,12 +7504,20 @@ case|case
 name|SASL
 case|:
 block|{
+comment|// switch to simple hack, but don't switch if other auths are
+comment|// supported, ex. tokens
 if|if
 condition|(
 name|isSimpleEnabled
+operator|&&
+name|enabledAuthMethods
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|1
 condition|)
 block|{
-comment|// switch to simple hack
 name|skipInitialSaslHandshake
 operator|=
 literal|true

@@ -1409,7 +1409,7 @@ name|contains
 argument_list|(
 literal|"SIMPLE authentication is not enabled.  "
 operator|+
-literal|"Available:[KERBEROS, DIGEST]"
+literal|"Available:[TOKEN, KERBEROS]"
 argument_list|)
 argument_list|)
 expr_stmt|;
