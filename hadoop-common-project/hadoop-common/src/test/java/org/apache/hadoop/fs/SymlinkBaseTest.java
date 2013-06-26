@@ -151,18 +151,16 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|test
 operator|.
-name|FileContextTestHelper
-operator|.
-name|*
+name|GenericTestUtils
 import|;
 end_import
 
@@ -221,15 +219,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test symbolic links using FileContext.  */
+comment|/**  * Base test for symbolic links  */
 end_comment
 
 begin_class
-DECL|class|FileContextSymlinkBaseTest
+DECL|class|SymlinkBaseTest
 specifier|public
 specifier|abstract
 class|class
-name|FileContextSymlinkBaseTest
+name|SymlinkBaseTest
 block|{
 DECL|field|seed
 specifier|static
@@ -255,21 +253,21 @@ name|fileSize
 init|=
 literal|16384
 decl_stmt|;
-DECL|field|fileContextTestHelper
-specifier|protected
+DECL|field|numBlocks
+specifier|static
 specifier|final
-name|FileContextTestHelper
-name|fileContextTestHelper
+name|int
+name|numBlocks
 init|=
-operator|new
-name|FileContextTestHelper
-argument_list|()
+name|fileSize
+operator|/
+name|blockSize
 decl_stmt|;
-DECL|field|fc
+DECL|field|wrapper
 specifier|protected
 specifier|static
-name|FileContext
-name|fc
+name|FSTestWrapper
+name|wrapper
 decl_stmt|;
 DECL|method|getScheme ()
 specifier|abstract
@@ -316,14 +314,34 @@ return|return
 name|e
 return|;
 block|}
-DECL|method|createAndWriteFile (FileContext fc, Path p)
+DECL|method|createAndWriteFile (Path p)
 specifier|protected
 specifier|static
 name|void
 name|createAndWriteFile
 parameter_list|(
-name|FileContext
-name|fc
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|createAndWriteFile
+argument_list|(
+name|wrapper
+argument_list|,
+name|p
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|createAndWriteFile (FSTestWrapper wrapper, Path p)
+specifier|protected
+specifier|static
+name|void
+name|createAndWriteFile
+parameter_list|(
+name|FSTestWrapper
+name|wrapper
 parameter_list|,
 name|Path
 name|p
@@ -331,15 +349,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|wrapper
+operator|.
 name|createFile
 argument_list|(
-name|fc
-argument_list|,
 name|p
 argument_list|,
-name|fileSize
-operator|/
-name|blockSize
+name|numBlocks
 argument_list|,
 name|CreateOpts
 operator|.
@@ -365,26 +381,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|createAndWriteFile (Path p)
-specifier|protected
-specifier|static
-name|void
-name|createAndWriteFile
-parameter_list|(
-name|Path
-name|p
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|createAndWriteFile
-argument_list|(
-name|fc
-argument_list|,
-name|p
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|readFile (Path p)
 specifier|protected
 specifier|static
@@ -397,39 +393,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|wrapper
 operator|.
 name|readFile
 argument_list|(
-name|fc
-argument_list|,
-name|p
-argument_list|,
-name|fileSize
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|readFile (FileContext fc, Path p)
-specifier|protected
-specifier|static
-name|void
-name|readFile
-parameter_list|(
-name|FileContext
-name|fc
-parameter_list|,
-name|Path
-name|p
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|FileContextTestHelper
-operator|.
-name|readFile
-argument_list|(
-name|fc
-argument_list|,
 name|p
 argument_list|,
 name|fileSize
@@ -448,17 +415,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|FileContextTestHelper
+name|wrapper
 operator|.
 name|appendToFile
 argument_list|(
-name|fc
-argument_list|,
 name|p
 argument_list|,
-name|fileSize
-operator|/
-name|blockSize
+name|numBlocks
 argument_list|,
 name|CreateOpts
 operator|.
@@ -479,7 +442,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -497,7 +460,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -526,7 +489,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -540,7 +503,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -557,6 +520,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** The root is not a symlink */
 DECL|method|testStatRoot ()
 specifier|public
@@ -568,7 +536,7 @@ name|IOException
 block|{
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -586,6 +554,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test setWorkingDirectory not resolves symlinks */
 DECL|method|testSetWDNotResolvesLinks ()
 specifier|public
@@ -617,7 +590,7 @@ operator|+
 literal|"/link"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -628,7 +601,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
@@ -642,7 +615,7 @@ operator|.
 name|getName
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getWorkingDirectory
 argument_list|()
@@ -654,6 +627,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create a dangling link */
 DECL|method|testCreateDanglingLink ()
 specifier|public
@@ -684,7 +662,7 @@ operator|+
 literal|"/link"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -697,7 +675,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -718,7 +696,7 @@ parameter_list|)
 block|{
 comment|// Expected
 block|}
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -730,6 +708,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create a link to null and empty path */
 DECL|method|testCreateLinkToNullEmpty ()
 specifier|public
@@ -753,7 +736,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -784,7 +767,7 @@ comment|// Expected, create* with null yields NPEs
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -820,6 +803,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Create a link with createParent set */
 DECL|method|testCreateLinkCanCreateParent ()
 specifier|public
@@ -858,7 +846,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -874,7 +862,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -901,10 +889,10 @@ comment|// Expected. Need to create testBaseDir2() first.
 block|}
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 operator|new
 name|Path
 argument_list|(
@@ -914,7 +902,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -933,6 +921,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Try to create a directory given a path that refers to a symlink */
 DECL|method|testMkdirExistingLink ()
 specifier|public
@@ -954,7 +947,7 @@ operator|+
 literal|"/link"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -971,7 +964,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -1017,6 +1010,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Try to create a file with parent that is a dangling link */
 DECL|method|testCreateFileViaDanglingLinkParent ()
 specifier|public
@@ -1050,7 +1048,7 @@ operator|+
 literal|"/dangling/file"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1072,7 +1070,7 @@ try|try
 block|{
 name|out
 operator|=
-name|fc
+name|wrapper
 operator|.
 name|create
 argument_list|(
@@ -1127,6 +1125,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Delete a link */
 DECL|method|testDeleteLink ()
 specifier|public
@@ -1165,7 +1168,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1181,7 +1184,7 @@ argument_list|(
 name|link
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -1212,7 +1215,7 @@ block|{
 comment|// Expected
 block|}
 comment|// If we deleted the link we can put it back
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1226,6 +1229,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Ensure open resolves symlinks */
 DECL|method|testOpenResolvesLinks ()
 specifier|public
@@ -1259,7 +1267,7 @@ operator|+
 literal|"/link"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1272,7 +1280,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|open
 argument_list|(
@@ -1293,7 +1301,7 @@ parameter_list|)
 block|{
 comment|// Expected
 block|}
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -1305,6 +1313,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Stat a link to a file */
 DECL|method|testStatLinkToFile ()
 specifier|public
@@ -1343,7 +1356,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1356,7 +1369,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1369,30 +1382,30 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isSymlink
 argument_list|(
-name|fc
-argument_list|,
 name|linkToFile
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|linkToFile
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|linkToFile
 argument_list|)
 argument_list|)
@@ -1407,7 +1420,7 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -1434,14 +1447,14 @@ condition|)
 block|{
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1451,14 +1464,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|makeQualified
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1471,14 +1484,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|makeQualified
 argument_list|(
 name|linkToFile
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1493,6 +1506,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Stat a relative link to a file */
 DECL|method|testStatRelLinkToFile ()
 specifier|public
@@ -1514,16 +1532,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Path
-name|baseDir
-init|=
-operator|new
-name|Path
-argument_list|(
-name|testBaseDir1
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|Path
 name|file
 init|=
@@ -1553,7 +1561,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1570,14 +1578,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1587,14 +1595,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|makeQualified
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1607,14 +1615,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|makeQualified
 argument_list|(
 name|linkToFile
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1628,6 +1636,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Stat a link to a directory */
 DECL|method|testStatLinkToDir ()
 specifier|public
@@ -1659,7 +1672,7 @@ operator|+
 literal|"/linkToDir"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1672,7 +1685,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1685,17 +1698,17 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|linkToDir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1708,7 +1721,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1721,20 +1734,20 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|linkToDir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|linkToDir
 argument_list|)
 argument_list|)
@@ -1749,7 +1762,7 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -1763,6 +1776,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Stat a dangling link */
 DECL|method|testStatDanglingLink ()
 specifier|public
@@ -1793,7 +1811,7 @@ operator|+
 literal|"/link"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1806,7 +1824,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1819,7 +1837,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1833,11 +1851,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Stat a non-existant file */
-DECL|method|testStatNonExistantFiles ()
+DECL|method|testStatNonExistentFiles ()
 specifier|public
 name|void
-name|testStatNonExistantFiles
+name|testStatNonExistentFiles
 parameter_list|()
 throws|throws
 name|IOException
@@ -1853,7 +1876,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1876,7 +1899,7 @@ comment|// Expected
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -1900,6 +1923,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test stat'ing a regular file and directory */
 DECL|method|testStatNonLinks ()
 specifier|public
@@ -1938,7 +1966,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -1961,7 +1989,7 @@ comment|// Expected.
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -1985,6 +2013,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test links that link to each other */
 DECL|method|testRecursiveLinks ()
 specifier|public
@@ -2018,7 +2051,7 @@ operator|+
 literal|"/link2"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -2029,7 +2062,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -2116,20 +2149,20 @@ decl_stmt|;
 comment|// isFile/Directory
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|linkAbs
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|linkAbs
 argument_list|)
 argument_list|)
@@ -2137,7 +2170,7 @@ expr_stmt|;
 comment|// Check getFileStatus
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -2150,7 +2183,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -2165,7 +2198,7 @@ name|assertEquals
 argument_list|(
 name|fileSize
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -2179,17 +2212,17 @@ expr_stmt|;
 comment|// Check getFileLinkStatus
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isSymlink
 argument_list|(
-name|fc
-argument_list|,
 name|linkAbs
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -2209,7 +2242,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -2227,7 +2260,7 @@ name|assertEquals
 argument_list|(
 name|targetQual
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -2297,7 +2330,7 @@ name|assertEquals
 argument_list|(
 name|expectedTarget
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -2306,7 +2339,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Now read using all path types..
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
@@ -2347,6 +2380,11 @@ comment|// And partially qualified..
 name|boolean
 name|failureExpected
 init|=
+literal|true
+decl_stmt|;
+comment|// local files are special cased, no authority
+if|if
+condition|(
 literal|"file"
 operator|.
 name|equals
@@ -2354,11 +2392,27 @@ argument_list|(
 name|getScheme
 argument_list|()
 argument_list|)
-condition|?
+condition|)
+block|{
+name|failureExpected
+operator|=
 literal|false
-else|:
-literal|true
-decl_stmt|;
+expr_stmt|;
+block|}
+comment|// FileSystem automatically adds missing authority if scheme matches default
+elseif|else
+if|if
+condition|(
+name|wrapper
+operator|instanceof
+name|FileSystemTestWrapper
+condition|)
+block|{
+name|failureExpected
+operator|=
+literal|false
+expr_stmt|;
+block|}
 try|try
 block|{
 name|readFile
@@ -2390,15 +2444,29 @@ name|Exception
 name|e
 parameter_list|)
 block|{
-name|assertTrue
-argument_list|(
+if|if
+condition|(
+operator|!
 name|failureExpected
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
 argument_list|)
-expr_stmt|;
+throw|;
+block|}
+comment|//assertTrue(failureExpected);
 block|}
 comment|// Now read using a different file context (for HDFS at least)
 if|if
 condition|(
+name|wrapper
+operator|instanceof
+name|FileContextTestWrapper
+operator|&&
 operator|!
 literal|"file"
 operator|.
@@ -2409,18 +2477,18 @@ argument_list|()
 argument_list|)
 condition|)
 block|{
-name|FileContext
-name|localFc
+name|FSTestWrapper
+name|localWrapper
 init|=
-name|FileContext
+name|wrapper
 operator|.
-name|getLocalFSFileContext
+name|getLocalFSWrapper
 argument_list|()
 decl_stmt|;
+name|localWrapper
+operator|.
 name|readFile
 argument_list|(
-name|localFc
-argument_list|,
 operator|new
 name|Path
 argument_list|(
@@ -2432,12 +2500,19 @@ argument_list|()
 argument_list|,
 name|linkAbs
 argument_list|)
+argument_list|,
+name|fileSize
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test creating a symlink using relative paths */
 DECL|method|testCreateLinkUsingRelPaths ()
 specifier|public
@@ -2503,7 +2578,7 @@ argument_list|(
 name|fileAbs
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
@@ -2515,7 +2590,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -2595,7 +2670,7 @@ operator|+
 literal|"/file"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -2608,11 +2683,22 @@ operator|.
 name|OVERWRITE
 argument_list|)
 expr_stmt|;
+name|FileStatus
+index|[]
+name|stats
+init|=
+name|wrapper
+operator|.
+name|listStatus
+argument_list|(
+name|dir2
+argument_list|)
+decl_stmt|;
 name|assertEquals
 argument_list|(
 name|fileViaDir2
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -2631,6 +2717,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test creating a symlink using absolute paths */
 DECL|method|testCreateLinkUsingAbsPaths ()
 specifier|public
@@ -2696,7 +2787,7 @@ argument_list|(
 name|fileAbs
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -2750,7 +2841,7 @@ argument_list|,
 literal|"linkToFile"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -2767,7 +2858,7 @@ name|assertEquals
 argument_list|(
 name|fileQual
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -2802,7 +2893,12 @@ block|}
 block|}
 annotation|@
 name|Test
-comment|/**     * Test creating a symlink using fully and partially qualified paths.    * NB: For local fs this actually tests partially qualified paths,    * as they don't support fully qualified paths.    */
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+comment|/**    * Test creating a symlink using fully and partially qualified paths.    * NB: For local fs this actually tests partially qualified paths,    * as they don't support fully qualified paths.    */
 DECL|method|testCreateLinkUsingFullyQualPaths ()
 specifier|public
 name|void
@@ -2870,7 +2966,7 @@ argument_list|(
 name|fileAbs
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -2934,7 +3030,7 @@ argument_list|,
 literal|"linkToFile"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -2951,7 +3047,7 @@ name|assertEquals
 argument_list|(
 name|fileQual
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -2986,7 +3082,12 @@ block|}
 block|}
 annotation|@
 name|Test
-comment|/**     * Test creating a symlink using partially qualified paths, ie a scheme     * but no authority and vice versa. We just test link targets here since    * creating using a partially qualified path is file system specific.    */
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+comment|/**    * Test creating a symlink using partially qualified paths, ie a scheme    * but no authority and vice versa. We just test link targets here since    * creating using a partially qualified path is file system specific.    */
 DECL|method|testCreateLinkUsingPartQualPath1 ()
 specifier|public
 name|void
@@ -3065,15 +3166,15 @@ operator|+
 literal|"/linkToFile"
 argument_list|)
 decl_stmt|;
-name|FileContext
-name|localFc
+name|FSTestWrapper
+name|localWrapper
 init|=
-name|FileContext
+name|wrapper
 operator|.
-name|getLocalFSFileContext
+name|getLocalFSWrapper
 argument_list|()
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -3089,7 +3190,7 @@ name|assertEquals
 argument_list|(
 name|fileWoHost
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -3105,7 +3206,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3126,7 +3227,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3141,6 +3242,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Ditto even from another file system
+if|if
+condition|(
+name|wrapper
+operator|instanceof
+name|FileContextTestWrapper
+condition|)
+block|{
 name|assertEquals
 argument_list|(
 name|fileWoHost
@@ -3148,7 +3256,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|localFc
+name|localWrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3162,6 +3270,7 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// Same as if we accessed a partially qualified path directly
 try|try
 block|{
@@ -3186,11 +3295,46 @@ name|RuntimeException
 name|e
 parameter_list|)
 block|{
+name|assertTrue
+argument_list|(
+name|wrapper
+operator|instanceof
+name|FileContextTestWrapper
+argument_list|)
+expr_stmt|;
 comment|// Expected
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|e
+parameter_list|)
+block|{
+name|assertTrue
+argument_list|(
+name|wrapper
+operator|instanceof
+name|FileSystemTestWrapper
+argument_list|)
+expr_stmt|;
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"File does not exist: /test1/file"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Same as above but vice versa (authority but no scheme) */
 DECL|method|testCreateLinkUsingPartQualPath2 ()
 specifier|public
@@ -3245,7 +3389,7 @@ condition|)
 block|{
 return|return;
 block|}
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -3260,7 +3404,7 @@ name|assertEquals
 argument_list|(
 name|fileWoScheme
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -3275,7 +3419,7 @@ operator|.
 name|toString
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3309,6 +3453,13 @@ name|e
 parameter_list|)
 block|{
 comment|// Expected
+if|if
+condition|(
+name|wrapper
+operator|instanceof
+name|FileContextTestWrapper
+condition|)
+block|{
 name|assertEquals
 argument_list|(
 literal|"No AbstractFileSystem for scheme: null"
@@ -3320,9 +3471,34 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|wrapper
+operator|instanceof
+name|FileSystemTestWrapper
+condition|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"No FileSystem for scheme: null"
+argument_list|,
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Lstat and readlink on a normal file and directory */
 DECL|method|testLinkStatusAndTargetWithNonLink ()
 specifier|public
@@ -3402,14 +3578,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3419,14 +3595,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|dir
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3436,7 +3612,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -3472,7 +3648,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -3509,6 +3685,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink to a directory */
 DECL|method|testCreateLinkToDirectory ()
 specifier|public
@@ -3557,7 +3738,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -3570,27 +3751,27 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|linkToDir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|linkToDir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -3603,7 +3784,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3617,6 +3798,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create and remove a file through a symlink */
 DECL|method|testCreateFileViaSymlink ()
 specifier|public
@@ -3659,7 +3845,7 @@ argument_list|,
 literal|"file"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -3677,27 +3863,27 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3710,7 +3896,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -3726,7 +3912,7 @@ argument_list|(
 name|fileViaLink
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -3737,10 +3923,10 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
@@ -3748,6 +3934,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test make and delete directory through a symlink */
 DECL|method|testCreateDirViaSymlink ()
 specifier|public
@@ -3802,7 +3993,7 @@ argument_list|,
 literal|"subDir"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -3813,7 +4004,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -3828,15 +4019,15 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|subDirViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -3847,20 +4038,20 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|subDirViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|subDir
 argument_list|)
 argument_list|)
@@ -3868,6 +4059,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Create symlink through a symlink */
 DECL|method|testCreateLinkViaLink ()
 specifier|public
@@ -3939,7 +4135,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -3950,7 +4146,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -3963,17 +4159,17 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|linkToFile
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -3993,7 +4189,7 @@ name|assertEquals
 argument_list|(
 name|fileSize
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -4008,7 +4204,7 @@ name|assertEquals
 argument_list|(
 name|fileViaLink
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -4019,6 +4215,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink to a directory */
 DECL|method|testListStatusUsingLink ()
 specifier|public
@@ -4057,7 +4258,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4079,10 +4280,7 @@ name|FileStatus
 index|[]
 name|stats
 init|=
-name|fc
-operator|.
-name|util
-argument_list|()
+name|wrapper
 operator|.
 name|listStatus
 argument_list|(
@@ -4110,9 +4308,9 @@ name|FileStatus
 argument_list|>
 name|statsItor
 init|=
-name|fc
+name|wrapper
 operator|.
-name|listStatus
+name|listStatusIterator
 argument_list|(
 name|link
 argument_list|)
@@ -4153,6 +4351,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink using the same path */
 DECL|method|testCreateLinkTwice ()
 specifier|public
@@ -4191,7 +4394,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4204,7 +4407,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4232,6 +4435,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test access via a symlink to a symlink */
 DECL|method|testCreateLinkToLink ()
 specifier|public
@@ -4304,7 +4512,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4315,7 +4523,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4328,27 +4536,27 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -4361,7 +4569,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -4380,6 +4588,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Can not create a file with path that refers to a symlink */
 DECL|method|testCreateFileDirExistingLink ()
 specifier|public
@@ -4418,7 +4631,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4452,7 +4665,7 @@ comment|// Expected
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -4483,6 +4696,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test deleting and recreating a symlink */
 DECL|method|testUseLinkAferDeleteLink ()
 specifier|public
@@ -4521,7 +4739,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4532,7 +4750,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -4567,7 +4785,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4586,6 +4804,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink to . */
 DECL|method|testCreateLinkToDot ()
 specifier|public
@@ -4634,7 +4857,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
@@ -4643,7 +4866,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4676,6 +4899,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink to .. */
 DECL|method|testCreateLinkToDotDot ()
 specifier|public
@@ -4749,7 +4977,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4769,7 +4997,7 @@ name|assertEquals
 argument_list|(
 name|fileSize
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -4783,6 +5011,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink to ../file */
 DECL|method|testCreateLinkToDotDotPrefix ()
 specifier|public
@@ -4833,7 +5066,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -4847,14 +5080,14 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
 name|dir
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4882,7 +5115,7 @@ argument_list|(
 literal|"../file"
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -4893,7 +5126,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-comment|/** Test rename file using a path that contains a symlink. The rename should     * work as if the path did not contain a symlink */
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+comment|/** Test rename file using a path that contains a symlink. The rename should    * work as if the path did not contain a symlink */
 DECL|method|testRenameFileViaSymlink ()
 specifier|public
 name|void
@@ -4963,7 +5201,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -4974,7 +5212,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -4985,30 +5223,30 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|fileNewViaLink
 argument_list|)
 argument_list|)
@@ -5016,7 +5254,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-comment|/** Test rename a file through a symlink but this time only the     * destination path has an intermediate symlink. The rename should work     * as if the path did not contain a symlink */
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+comment|/** Test rename a file through a symlink but this time only the    * destination path has an intermediate symlink. The rename should work    * as if the path did not contain a symlink */
 DECL|method|testRenameFileToDestViaSymlink ()
 specifier|public
 name|void
@@ -5075,7 +5318,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5086,7 +5329,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -5101,7 +5344,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5136,10 +5379,10 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file
 argument_list|)
 argument_list|)
@@ -5147,6 +5390,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Similar tests as the previous ones but rename a directory */
 DECL|method|testRenameDirViaSymlink ()
 specifier|public
@@ -5211,7 +5459,7 @@ argument_list|,
 literal|"dirNew"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -5224,7 +5472,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5237,15 +5485,15 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dirViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5256,30 +5504,30 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dirViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dirNewViaLink
 argument_list|)
 argument_list|)
@@ -5287,6 +5535,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Similar tests as the previous ones but rename a symlink */
 DECL|method|testRenameSymlinkViaSymlink ()
 specifier|public
@@ -5369,7 +5622,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5380,7 +5633,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5391,7 +5644,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5402,10 +5655,10 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|linkViaLink
 argument_list|)
 argument_list|)
@@ -5413,17 +5666,17 @@ expr_stmt|;
 comment|// Check that we didn't rename the link target
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -5442,6 +5695,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename a directory to a symlink to a directory */
 DECL|method|testRenameDirToSymlinkToDir ()
 specifier|public
@@ -5485,7 +5743,7 @@ argument_list|,
 literal|"linkToDir"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -5498,7 +5756,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5511,7 +5769,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5550,20 +5808,20 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dir1
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|linkToDir
 argument_list|)
 argument_list|)
@@ -5571,6 +5829,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename a directory to a symlink to a file */
 DECL|method|testRenameDirToSymlinkToFile ()
 specifier|public
@@ -5619,7 +5882,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5632,7 +5895,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5671,20 +5934,20 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dir1
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|linkToFile
 argument_list|)
 argument_list|)
@@ -5692,6 +5955,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename a directory to a dangling symlink */
 DECL|method|testRenameDirToDanglingSymlink ()
 specifier|public
@@ -5723,7 +5991,7 @@ argument_list|,
 literal|"linkToFile"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5740,7 +6008,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5779,17 +6047,17 @@ expr_stmt|;
 block|}
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -5802,6 +6070,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename a file to a symlink to a directory */
 DECL|method|testRenameFileToSymlinkToDir ()
 specifier|public
@@ -5847,7 +6120,7 @@ argument_list|,
 literal|"link"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -5860,7 +6133,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -5878,7 +6151,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5911,7 +6184,7 @@ name|FileAlreadyExistsException
 argument_list|)
 expr_stmt|;
 block|}
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -5926,37 +6199,37 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -5970,6 +6243,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename a file to a symlink to a file */
 DECL|method|testRenameFileToSymlinkToFile ()
 specifier|public
@@ -6025,7 +6303,7 @@ argument_list|(
 name|file2
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -6038,7 +6316,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6071,7 +6349,7 @@ name|FileAlreadyExistsException
 argument_list|)
 expr_stmt|;
 block|}
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6086,37 +6364,37 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file1
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -6130,6 +6408,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename a file to a dangling symlink */
 DECL|method|testRenameFileToDanglingSymlink ()
 specifier|public
@@ -6182,7 +6465,7 @@ argument_list|(
 name|file1
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -6199,7 +6482,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6217,7 +6500,7 @@ parameter_list|)
 block|{
 comment|// Expected
 block|}
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6232,37 +6515,37 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file1
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -6276,6 +6559,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Rename a symlink to a new non-existant name */
 DECL|method|testRenameSymlinkNonExistantDest ()
 specifier|public
@@ -6326,7 +6614,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -6337,7 +6625,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6348,7 +6636,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -6371,10 +6659,10 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link1
 argument_list|)
 argument_list|)
@@ -6382,6 +6670,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Rename a symlink to a file that exists */
 DECL|method|testRenameSymlinkToExistingFile ()
 specifier|public
@@ -6437,7 +6730,7 @@ argument_list|(
 name|file2
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -6450,7 +6743,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6483,7 +6776,7 @@ name|FileAlreadyExistsException
 argument_list|)
 expr_stmt|;
 block|}
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6498,17 +6791,17 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -6523,7 +6816,7 @@ name|assertEquals
 argument_list|(
 name|file2
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -6534,6 +6827,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Rename a symlink to a directory that exists */
 DECL|method|testRenameSymlinkToExistingDir ()
 specifier|public
@@ -6587,7 +6885,7 @@ argument_list|,
 literal|"linkToDir"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -6600,7 +6898,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6635,7 +6933,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6673,7 +6971,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Also fails when dir2 has a sub-directory
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -6689,7 +6987,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6729,6 +7027,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Rename a symlink to itself */
 DECL|method|testRenameSymlinkToItself ()
 specifier|public
@@ -6750,7 +7053,7 @@ argument_list|,
 literal|"linkToFile1"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -6767,7 +7070,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6797,7 +7100,7 @@ block|}
 comment|// Fails with overwrite as well
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6831,6 +7134,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Rename a symlink */
 DECL|method|testRenameSymlink ()
 specifier|public
@@ -6881,7 +7189,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -6892,7 +7200,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -6903,7 +7211,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -6916,7 +7224,7 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -6961,6 +7269,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Rename a symlink to the file it links to */
 DECL|method|testRenameSymlinkToFileItLinksTo ()
 specifier|public
@@ -6970,7 +7283,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|/* NB: The rename is not atomic, so file is deleted before renaming      * linkToFile. In this interval linkToFile is dangling and local file       * system does not handle dangling links because File.exists returns       * false for dangling links. */
+comment|/* NB: The rename is not atomic, so file is deleted before renaming      * linkToFile. In this interval linkToFile is dangling and local file      * system does not handle dangling links because File.exists returns      * false for dangling links. */
 if|if
 condition|(
 literal|"file"
@@ -7013,7 +7326,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -7026,7 +7339,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7061,30 +7374,30 @@ block|}
 comment|// Check the rename didn't happen
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|file
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isSymlink
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
@@ -7093,7 +7406,7 @@ name|assertEquals
 argument_list|(
 name|file
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -7103,7 +7416,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7142,30 +7455,30 @@ block|}
 comment|// Check the rename didn't happen
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|file
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isSymlink
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
@@ -7174,7 +7487,7 @@ name|assertEquals
 argument_list|(
 name|file
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -7185,6 +7498,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Rename a symlink to the directory it links to */
 DECL|method|testRenameSymlinkToDirItLinksTo ()
 specifier|public
@@ -7194,7 +7512,7 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|/* NB: The rename is not atomic, so dir is deleted before renaming      * linkToFile. In this interval linkToFile is dangling and local file       * system does not handle dangling links because File.exists returns       * false for dangling links. */
+comment|/* NB: The rename is not atomic, so dir is deleted before renaming      * linkToFile. In this interval linkToFile is dangling and local file      * system does not handle dangling links because File.exists returns      * false for dangling links. */
 if|if
 condition|(
 literal|"file"
@@ -7232,7 +7550,7 @@ argument_list|,
 literal|"linkToDir"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -7245,7 +7563,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -7258,7 +7576,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7293,30 +7611,30 @@ block|}
 comment|// Check the rename didn't happen
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|dir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isSymlink
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
@@ -7325,7 +7643,7 @@ name|assertEquals
 argument_list|(
 name|dir
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -7335,7 +7653,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7374,30 +7692,30 @@ block|}
 comment|// Check the rename didn't happen
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|dir
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isSymlink
 argument_list|(
-name|fc
-argument_list|,
 name|link
 argument_list|)
 argument_list|)
@@ -7406,7 +7724,7 @@ name|assertEquals
 argument_list|(
 name|dir
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -7417,6 +7735,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename the symlink's target */
 DECL|method|testRenameLinkTarget ()
 specifier|public
@@ -7467,7 +7790,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -7478,7 +7801,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7512,7 +7835,7 @@ parameter_list|)
 block|{
 comment|// Expected
 block|}
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7533,6 +7856,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test rename a file to path with destination that has symlink parent */
 DECL|method|testRenameFileWithDestParentSymlink ()
 specifier|public
@@ -7601,7 +7929,7 @@ argument_list|)
 decl_stmt|;
 comment|// Renaming /dir1/file1 to non-existant file /dir1/link/file3 is OK
 comment|// if link points to a directory...
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -7617,7 +7945,7 @@ argument_list|(
 name|file1
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7628,25 +7956,25 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file1
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|file3
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7656,7 +7984,7 @@ name|file1
 argument_list|)
 expr_stmt|;
 comment|// But fails if link is dangling...
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -7665,7 +7993,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -7678,7 +8006,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7714,7 +8042,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7745,6 +8073,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/**    * Create, write, read, append, rename, get the block locations,    * checksums, and delete a file using a path with a symlink as an    * intermediate path component where the link target was specified    * using an absolute path. Rename is covered in more depth below.    */
 DECL|method|testAccessFileViaInterSymlinkAbsTarget ()
 specifier|public
@@ -7821,7 +8154,7 @@ argument_list|,
 literal|"fileNew"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -7839,37 +8172,37 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|isFile
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -7882,24 +8215,24 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|isDir
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -7909,14 +8242,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|fileViaLink
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -7934,7 +8267,7 @@ argument_list|(
 name|fileViaLink
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -7945,20 +8278,20 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|fileViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|fileNewViaLink
 argument_list|)
 argument_list|)
@@ -7970,7 +8303,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileBlockLocations
 argument_list|(
@@ -7983,7 +8316,7 @@ argument_list|)
 operator|.
 name|length
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileBlockLocations
 argument_list|(
@@ -7999,14 +8332,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileChecksum
 argument_list|(
 name|fileNew
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileChecksum
 argument_list|(
@@ -8014,7 +8347,7 @@ name|fileNewViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -8025,10 +8358,10 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|fileNewViaLink
 argument_list|)
 argument_list|)
@@ -8036,6 +8369,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/**    * Operate on a file using a path with an intermediate symlink where    * the link target was specified as a fully qualified path.    */
 DECL|method|testAccessFileViaInterSymlinkQualTarget ()
 specifier|public
@@ -8068,17 +8406,6 @@ literal|"file"
 argument_list|)
 decl_stmt|;
 name|Path
-name|fileNew
-init|=
-operator|new
-name|Path
-argument_list|(
-name|baseDir
-argument_list|,
-literal|"fileNew"
-argument_list|)
-decl_stmt|;
-name|Path
 name|linkToDir
 init|=
 operator|new
@@ -8101,22 +8428,11 @@ argument_list|,
 literal|"file"
 argument_list|)
 decl_stmt|;
-name|Path
-name|fileNewViaLink
-init|=
-operator|new
-name|Path
-argument_list|(
-name|linkToDir
-argument_list|,
-literal|"fileNew"
-argument_list|)
-decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|makeQualified
 argument_list|(
@@ -8135,14 +8451,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -8152,14 +8468,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|fileViaLink
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -8175,6 +8491,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/**    * Operate on a file using a path with an intermediate symlink where    * the link target was specified as a relative path.    */
 DECL|method|testAccessFileViaInterSymlinkRelTarget ()
 specifier|public
@@ -8196,16 +8517,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|Path
-name|baseDir
-init|=
-operator|new
-name|Path
-argument_list|(
-name|testBaseDir1
-argument_list|()
-argument_list|)
-decl_stmt|;
 name|Path
 name|dir
 init|=
@@ -8252,7 +8563,7 @@ argument_list|,
 literal|"file"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -8265,7 +8576,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -8289,14 +8600,14 @@ comment|// Note that getFileStatus returns fully qualified paths even
 comment|// when called on an absolute path.
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|makeQualified
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -8312,14 +8623,14 @@ comment|// as getFileStatus since we're not calling it on a link and
 comment|// FileStatus objects are compared by Path.
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|file
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -8329,14 +8640,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|fileViaLink
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -8346,14 +8657,14 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
 name|fileViaLink
 argument_list|)
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -8364,6 +8675,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create, list, and delete a directory through a symlink */
 DECL|method|testAccessDirViaSymlink ()
 specifier|public
@@ -8418,7 +8734,7 @@ argument_list|,
 literal|"dir"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -8429,7 +8745,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -8444,7 +8760,7 @@ argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -8459,10 +8775,7 @@ name|FileStatus
 index|[]
 name|stats
 init|=
-name|fc
-operator|.
-name|util
-argument_list|()
+name|wrapper
 operator|.
 name|listStatus
 argument_list|(
@@ -8484,9 +8797,9 @@ name|FileStatus
 argument_list|>
 name|statsItor
 init|=
-name|fc
+name|wrapper
 operator|.
-name|listStatus
+name|listStatusIterator
 argument_list|(
 name|dirViaLink
 argument_list|)
@@ -8499,7 +8812,7 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -8510,20 +8823,20 @@ argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dirViaLink
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertFalse
 argument_list|(
+name|wrapper
+operator|.
 name|exists
 argument_list|(
-name|fc
-argument_list|,
 name|dir
 argument_list|)
 argument_list|)
@@ -8531,6 +8844,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** setTimes affects the target not the link */
 DECL|method|testSetTimes ()
 specifier|public
@@ -8569,7 +8887,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -8583,7 +8901,7 @@ expr_stmt|;
 name|long
 name|at
 init|=
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -8593,7 +8911,7 @@ operator|.
 name|getAccessTime
 argument_list|()
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setTimes
 argument_list|(
@@ -8621,7 +8939,7 @@ name|assertEquals
 argument_list|(
 name|at
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -8636,7 +8954,7 @@ name|assertEquals
 argument_list|(
 literal|3
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -8651,7 +8969,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(

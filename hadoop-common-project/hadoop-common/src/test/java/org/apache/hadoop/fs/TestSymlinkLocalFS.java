@@ -17,12 +17,92 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
 name|io
 operator|.
-name|*
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
 import|;
 end_import
 
@@ -56,75 +136,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileContext
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|permission
 operator|.
 name|FsPermission
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileUtil
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assume
-operator|.
-name|assumeTrue
 import|;
 end_import
 
@@ -138,27 +152,18 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
-import|;
-end_import
-
 begin_comment
-comment|/**  * Test symbolic links using FileContext and LocalFs.  */
+comment|/**  * Test symbolic links using LocalFs.  */
 end_comment
 
 begin_class
-DECL|class|TestLocalFSFileContextSymlink
+DECL|class|TestSymlinkLocalFS
+specifier|abstract
 specifier|public
 class|class
-name|TestLocalFSFileContextSymlink
+name|TestSymlinkLocalFS
 extends|extends
-name|FileContextSymlinkBaseTest
+name|SymlinkBaseTest
 block|{
 annotation|@
 name|Override
@@ -183,12 +188,10 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|fileContextTestHelper
+name|wrapper
 operator|.
 name|getAbsoluteTestRootDir
-argument_list|(
-name|fc
-argument_list|)
+argument_list|()
 operator|+
 literal|"/test1"
 return|;
@@ -204,12 +207,10 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|fileContextTestHelper
+name|wrapper
 operator|.
 name|getAbsoluteTestRootDir
-argument_list|(
-name|fc
-argument_list|)
+argument_list|()
 operator|+
 literal|"/test2"
 return|;
@@ -242,31 +243,6 @@ return|return
 literal|null
 return|;
 block|}
-block|}
-annotation|@
-name|Override
-annotation|@
-name|Before
-DECL|method|setUp ()
-specifier|public
-name|void
-name|setUp
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|fc
-operator|=
-name|FileContext
-operator|.
-name|getLocalFSFileContext
-argument_list|()
-expr_stmt|;
-name|super
-operator|.
-name|setUp
-argument_list|()
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -415,6 +391,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|1000
+argument_list|)
 comment|/** lstat a non-existant file using a partially qualified path */
 DECL|method|testDanglingLinkFilePartQual ()
 specifier|public
@@ -438,7 +419,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -461,7 +442,7 @@ comment|// Expected
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getLinkTarget
 argument_list|(
@@ -485,6 +466,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|1000
+argument_list|)
 comment|/** Stat and lstat a dangling link */
 DECL|method|testDanglingLink ()
 specifier|public
@@ -541,7 +527,7 @@ operator|+
 literal|"/linkToFile"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -576,7 +562,7 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -589,7 +575,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -614,7 +600,7 @@ comment|// We can stat a dangling link
 name|FileStatus
 name|fsd
 init|=
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -758,7 +744,7 @@ argument_list|(
 name|fileAbs
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -768,6 +754,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|1000
+argument_list|)
 comment|/**     * Test getLinkTarget with a partially qualified target.     * NB: Hadoop does not support fully qualified URIs for the     * file scheme (eg file://host/tmp/test).    */
 DECL|method|testGetLinkStatusPartQualTarget ()
 specifier|public
@@ -848,7 +839,7 @@ operator|+
 literal|"/linkToFile"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|delete
 argument_list|(
@@ -862,7 +853,7 @@ argument_list|(
 name|fileQual
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
@@ -870,7 +861,7 @@ name|dir
 argument_list|)
 expr_stmt|;
 comment|// Link target is partially qualified, we get the same back.
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -885,7 +876,7 @@ name|assertEquals
 argument_list|(
 name|fileQual
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -898,7 +889,7 @@ argument_list|)
 expr_stmt|;
 comment|// Because the target was specified with an absolute path the
 comment|// link fails to resolve after moving the parent directory.
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -912,7 +903,7 @@ name|assertEquals
 argument_list|(
 name|fileQual
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -971,7 +962,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(

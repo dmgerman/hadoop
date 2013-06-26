@@ -264,6 +264,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|GenericTestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -301,16 +315,17 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Test symbolic links using FileContext and Hdfs.  */
+comment|/**  * Test symbolic links in Hdfs.  */
 end_comment
 
 begin_class
-DECL|class|TestFcHdfsSymlink
+DECL|class|TestSymlinkHdfs
+specifier|abstract
 specifier|public
 class|class
-name|TestFcHdfsSymlink
+name|TestSymlinkHdfs
 extends|extends
-name|FileContextSymlinkBaseTest
+name|SymlinkBaseTest
 block|{
 block|{
 operator|(
@@ -333,32 +348,20 @@ name|ALL
 argument_list|)
 expr_stmt|;
 block|}
-DECL|field|fileContextTestHelper
-specifier|private
-specifier|static
-name|FileContextTestHelper
-name|fileContextTestHelper
-init|=
-operator|new
-name|FileContextTestHelper
-argument_list|(
-literal|"/tmp/TestFcHdfsSymlink"
-argument_list|)
-decl_stmt|;
 DECL|field|cluster
-specifier|private
+specifier|protected
 specifier|static
 name|MiniDFSCluster
 name|cluster
 decl_stmt|;
 DECL|field|webhdfs
-specifier|private
+specifier|protected
 specifier|static
 name|WebHdfsFileSystem
 name|webhdfs
 decl_stmt|;
 DECL|field|dfs
-specifier|private
+specifier|protected
 specifier|static
 name|DistributedFileSystem
 name|dfs
@@ -456,11 +459,11 @@ return|;
 block|}
 annotation|@
 name|BeforeClass
-DECL|method|testSetUp ()
+DECL|method|beforeClassSetup ()
 specifier|public
 specifier|static
 name|void
-name|testSetUp
+name|beforeClassSetup
 parameter_list|()
 throws|throws
 name|Exception
@@ -507,20 +510,6 @@ operator|.
 name|build
 argument_list|()
 expr_stmt|;
-name|fc
-operator|=
-name|FileContext
-operator|.
-name|getFileContext
-argument_list|(
-name|cluster
-operator|.
-name|getURI
-argument_list|(
-literal|0
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|webhdfs
 operator|=
 name|WebHdfsTestUtil
@@ -540,11 +529,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|AfterClass
-DECL|method|testTearDown ()
+DECL|method|afterClassTeardown ()
 specifier|public
 specifier|static
 name|void
-name|testTearDown
+name|afterClassTeardown
 parameter_list|()
 throws|throws
 name|Exception
@@ -557,6 +546,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Access a file using a link that spans Hdfs to LocalFs */
 DECL|method|testLinkAcrossFileSystems ()
 specifier|public
@@ -566,14 +560,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContext
-name|localFc
-init|=
-name|FileContext
-operator|.
-name|getLocalFSFileContext
-argument_list|()
-decl_stmt|;
 name|Path
 name|localDir
 init|=
@@ -582,12 +568,10 @@ name|Path
 argument_list|(
 literal|"file://"
 operator|+
-name|fileContextTestHelper
+name|wrapper
 operator|.
 name|getAbsoluteTestRootDir
-argument_list|(
-name|localFc
-argument_list|)
+argument_list|()
 operator|+
 literal|"/test"
 argument_list|)
@@ -600,12 +584,10 @@ name|Path
 argument_list|(
 literal|"file://"
 operator|+
-name|fileContextTestHelper
+name|wrapper
 operator|.
 name|getAbsoluteTestRootDir
-argument_list|(
-name|localFc
-argument_list|)
+argument_list|()
 operator|+
 literal|"/test/file"
 argument_list|)
@@ -622,7 +604,15 @@ argument_list|,
 literal|"linkToFile"
 argument_list|)
 decl_stmt|;
-name|localFc
+name|FSTestWrapper
+name|localWrapper
+init|=
+name|wrapper
+operator|.
+name|getLocalFSWrapper
+argument_list|()
+decl_stmt|;
+name|localWrapper
 operator|.
 name|delete
 argument_list|(
@@ -631,7 +621,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|localFc
+name|localWrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -644,7 +634,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|localFc
+name|localWrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
@@ -655,7 +645,7 @@ name|assertEquals
 argument_list|(
 name|localDir
 argument_list|,
-name|localFc
+name|localWrapper
 operator|.
 name|getWorkingDirectory
 argument_list|()
@@ -663,12 +653,12 @@ argument_list|)
 expr_stmt|;
 name|createAndWriteFile
 argument_list|(
-name|localFc
+name|localWrapper
 argument_list|,
 name|localFile
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -688,7 +678,7 @@ name|assertEquals
 argument_list|(
 name|fileSize
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -702,6 +692,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test renaming a file across two file systems using a link */
 DECL|method|testRenameAcrossFileSystemsViaLink ()
 specifier|public
@@ -711,14 +706,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|FileContext
-name|localFc
-init|=
-name|FileContext
-operator|.
-name|getLocalFSFileContext
-argument_list|()
-decl_stmt|;
 name|Path
 name|localDir
 init|=
@@ -727,12 +714,10 @@ name|Path
 argument_list|(
 literal|"file://"
 operator|+
-name|fileContextTestHelper
+name|wrapper
 operator|.
 name|getAbsoluteTestRootDir
-argument_list|(
-name|localFc
-argument_list|)
+argument_list|()
 operator|+
 literal|"/test"
 argument_list|)
@@ -784,7 +769,15 @@ argument_list|,
 literal|"fileNew"
 argument_list|)
 decl_stmt|;
-name|localFc
+name|FSTestWrapper
+name|localWrapper
+init|=
+name|wrapper
+operator|.
+name|getLocalFSWrapper
+argument_list|()
+decl_stmt|;
+name|localWrapper
 operator|.
 name|delete
 argument_list|(
@@ -793,7 +786,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|localFc
+name|localWrapper
 operator|.
 name|mkdir
 argument_list|(
@@ -806,7 +799,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|localFc
+name|localWrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
@@ -815,12 +808,10 @@ argument_list|)
 expr_stmt|;
 name|createAndWriteFile
 argument_list|(
-name|fc
-argument_list|,
 name|hdfsFile
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -836,7 +827,7 @@ comment|// which renames to file://TEST_ROOT/test/fileNew which
 comment|// spans AbstractFileSystems and therefore fails.
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -857,21 +848,36 @@ name|InvalidPathException
 name|ipe
 parameter_list|)
 block|{
-comment|// Expected
+comment|// Expected from FileContext
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|e
+parameter_list|)
+block|{
+comment|// Expected from Filesystem
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Wrong FS: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 comment|// Now rename hdfs://test1/link/fileNew to hdfs://test1/fileNew
 comment|// which renames file://TEST_ROOT/test/fileNew to hdfs://test1/fileNew
 comment|// which spans AbstractFileSystems and therefore fails.
 name|createAndWriteFile
 argument_list|(
-name|fc
-argument_list|,
 name|hdfsFileNewViaLink
 argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|rename
 argument_list|(
@@ -892,94 +898,33 @@ name|InvalidPathException
 name|ipe
 parameter_list|)
 block|{
-comment|// Expected
-block|}
-block|}
-annotation|@
-name|Test
-comment|/** Test access a symlink using AbstractFileSystem */
-DECL|method|testAccessLinkFromAbstractFileSystem ()
-specifier|public
-name|void
-name|testAccessLinkFromAbstractFileSystem
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|Path
-name|file
-init|=
-operator|new
-name|Path
-argument_list|(
-name|testBaseDir1
-argument_list|()
-argument_list|,
-literal|"file"
-argument_list|)
-decl_stmt|;
-name|Path
-name|link
-init|=
-operator|new
-name|Path
-argument_list|(
-name|testBaseDir1
-argument_list|()
-argument_list|,
-literal|"linkToFile"
-argument_list|)
-decl_stmt|;
-name|createAndWriteFile
-argument_list|(
-name|file
-argument_list|)
-expr_stmt|;
-name|fc
-operator|.
-name|createSymlink
-argument_list|(
-name|file
-argument_list|,
-name|link
-argument_list|,
-literal|false
-argument_list|)
-expr_stmt|;
-try|try
-block|{
-name|AbstractFileSystem
-name|afs
-init|=
-name|fc
-operator|.
-name|getDefaultFileSystem
-argument_list|()
-decl_stmt|;
-name|afs
-operator|.
-name|open
-argument_list|(
-name|link
-argument_list|)
-expr_stmt|;
-name|fail
-argument_list|(
-literal|"Opened a link using AFS"
-argument_list|)
-expr_stmt|;
+comment|// Expected from FileContext
 block|}
 catch|catch
 parameter_list|(
-name|UnresolvedLinkException
-name|x
+name|IllegalArgumentException
+name|e
 parameter_list|)
 block|{
-comment|// Expected
+comment|// Expected from Filesystem
+name|GenericTestUtils
+operator|.
+name|assertExceptionContains
+argument_list|(
+literal|"Wrong FS: "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink to / */
 DECL|method|testCreateLinkToSlash ()
 specifier|public
@@ -1045,14 +990,14 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
 name|dir
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1076,7 +1021,7 @@ name|assertEquals
 argument_list|(
 name|fileSize
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1089,12 +1034,19 @@ argument_list|)
 expr_stmt|;
 comment|// Ditto when using another file context since the file system
 comment|// for the slash is resolved according to the link's parent.
-name|FileContext
-name|localFc
+if|if
+condition|(
+name|wrapper
+operator|instanceof
+name|FileContextTestWrapper
+condition|)
+block|{
+name|FSTestWrapper
+name|localWrapper
 init|=
-name|FileContext
+name|wrapper
 operator|.
-name|getLocalFSFileContext
+name|getLocalFSWrapper
 argument_list|()
 decl_stmt|;
 name|Path
@@ -1120,7 +1072,7 @@ name|assertEquals
 argument_list|(
 name|fileSize
 argument_list|,
-name|localFc
+name|localWrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1132,8 +1084,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** setPermission affects the target not the link */
 DECL|method|testSetPermissionAffectsTarget ()
 specifier|public
@@ -1194,7 +1152,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1205,7 +1163,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1221,7 +1179,7 @@ comment|// the permissions of the link..
 name|FsPermission
 name|perms
 init|=
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1231,7 +1189,7 @@ operator|.
 name|getPermission
 argument_list|()
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setPermission
 argument_list|(
@@ -1247,7 +1205,7 @@ literal|0664
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setOwner
 argument_list|(
@@ -1262,7 +1220,7 @@ name|assertEquals
 argument_list|(
 name|perms
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1277,7 +1235,7 @@ comment|// but the file's permissions were adjusted appropriately
 name|FileStatus
 name|stat
 init|=
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1326,7 +1284,7 @@ operator|.
 name|getPermission
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1340,7 +1298,7 @@ expr_stmt|;
 comment|// Ditto for a link to a directory
 name|perms
 operator|=
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1350,7 +1308,7 @@ operator|.
 name|getPermission
 argument_list|()
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setPermission
 argument_list|(
@@ -1366,7 +1324,7 @@ literal|0664
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setOwner
 argument_list|(
@@ -1381,7 +1339,7 @@ name|assertEquals
 argument_list|(
 name|perms
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1394,7 +1352,7 @@ argument_list|)
 expr_stmt|;
 name|stat
 operator|=
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1441,7 +1399,7 @@ operator|.
 name|getPermission
 argument_list|()
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1455,6 +1413,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Create a symlink using a path with scheme but no authority */
 DECL|method|testCreateWithPartQualPathFails ()
 specifier|public
@@ -1505,7 +1468,7 @@ comment|// Expected
 block|}
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1537,6 +1500,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** setReplication affects the target not the link */
 DECL|method|testSetReplication ()
 specifier|public
@@ -1575,7 +1543,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1586,7 +1554,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setReplication
 argument_list|(
@@ -1602,7 +1570,7 @@ name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -1617,7 +1585,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1632,7 +1600,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1646,6 +1614,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test create symlink with a max len name */
 DECL|method|testCreateLinkMaxPathLink ()
 specifier|public
@@ -1803,14 +1776,14 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setWorkingDirectory
 argument_list|(
 name|dir
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1842,7 +1815,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1870,6 +1843,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test symlink owner */
 DECL|method|testLinkOwner ()
 specifier|public
@@ -1908,7 +1886,7 @@ argument_list|(
 name|file
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -1922,7 +1900,7 @@ expr_stmt|;
 name|FileStatus
 name|statFile
 init|=
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1932,7 +1910,7 @@ decl_stmt|;
 name|FileStatus
 name|statLink
 init|=
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -1955,7 +1933,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-comment|/** Test WebHdfsFileSystem.craeteSymlink(..). */
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+comment|/** Test WebHdfsFileSystem.createSymlink(..). */
 DECL|method|testWebHDFS ()
 specifier|public
 name|void
@@ -2004,7 +1987,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|setReplication
 argument_list|(
@@ -2020,7 +2003,7 @@ name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileLinkStatus
 argument_list|(
@@ -2035,7 +2018,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -2050,7 +2033,7 @@ name|assertEquals
 argument_list|(
 literal|2
 argument_list|,
-name|fc
+name|wrapper
 operator|.
 name|getFileStatus
 argument_list|(
@@ -2064,6 +2047,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
 comment|/** Test craeteSymlink(..) with quota. */
 DECL|method|testQuota ()
 specifier|public
@@ -2127,7 +2115,7 @@ argument_list|,
 literal|"link1"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
@@ -2153,7 +2141,7 @@ argument_list|,
 literal|"link2"
 argument_list|)
 decl_stmt|;
-name|fc
+name|wrapper
 operator|.
 name|createSymlink
 argument_list|(
