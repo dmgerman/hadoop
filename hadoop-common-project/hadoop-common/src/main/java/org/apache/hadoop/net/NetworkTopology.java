@@ -1746,7 +1746,16 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Error: can't add leaf node at depth "
+literal|"Error: can't add leaf node "
+operator|+
+name|NodeBase
+operator|.
+name|getPath
+argument_list|(
+name|node
+argument_list|)
+operator|+
+literal|" at depth "
 operator|+
 name|newDepth
 operator|+
@@ -1759,9 +1768,16 @@ throw|throw
 operator|new
 name|InvalidTopologyException
 argument_list|(
-literal|"Invalid network topology. "
+literal|"Failed to add "
 operator|+
-literal|"You cannot have a rack and a non-rack node at the same "
+name|NodeBase
+operator|.
+name|getPath
+argument_list|(
+name|node
+argument_list|)
+operator|+
+literal|": You cannot have a rack and a non-rack node at the same "
 operator|+
 literal|"level of the network topology."
 argument_list|)

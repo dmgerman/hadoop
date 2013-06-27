@@ -600,18 +600,32 @@ name|InvalidTopologyException
 name|e
 parameter_list|)
 block|{
-name|assertEquals
+name|assertTrue
 argument_list|(
 name|e
 operator|.
 name|getMessage
 argument_list|()
-argument_list|,
-literal|"Invalid network topology. "
-operator|+
+operator|.
+name|startsWith
+argument_list|(
+literal|"Failed to add "
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
 literal|"You cannot have a rack and a non-rack node at the same "
 operator|+
 literal|"level of the network topology."
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
