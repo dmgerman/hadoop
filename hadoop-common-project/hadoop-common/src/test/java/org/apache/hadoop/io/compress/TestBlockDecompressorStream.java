@@ -19,6 +19,30 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -45,6 +69,16 @@ operator|.
 name|io
 operator|.
 name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
 import|;
 end_import
 
@@ -72,18 +106,6 @@ name|Test
 import|;
 end_import
 
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
-name|*
-import|;
-end_import
-
 begin_class
 DECL|class|TestBlockDecompressorStream
 specifier|public
@@ -108,11 +130,45 @@ name|bytesOut
 decl_stmt|;
 annotation|@
 name|Test
-DECL|method|testRead ()
+DECL|method|testRead1 ()
 specifier|public
 name|void
-name|testRead
+name|testRead1
 parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|testRead
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testRead2 ()
+specifier|public
+name|void
+name|testRead2
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Test eof after getting non-zero block size info
+name|testRead
+argument_list|(
+literal|4
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|testRead (int bufLen)
+specifier|private
+name|void
+name|testRead
+parameter_list|(
+name|int
+name|bufLen
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -123,6 +179,38 @@ operator|new
 name|ByteArrayOutputStream
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|bufLen
+operator|>
+literal|0
+condition|)
+block|{
+name|bytesOut
+operator|.
+name|write
+argument_list|(
+name|ByteBuffer
+operator|.
+name|allocate
+argument_list|(
+name|bufLen
+argument_list|)
+operator|.
+name|putInt
+argument_list|(
+literal|1024
+argument_list|)
+operator|.
+name|array
+argument_list|()
+argument_list|,
+literal|0
+argument_list|,
+name|bufLen
+argument_list|)
+expr_stmt|;
+block|}
 name|BlockCompressorStream
 name|blockCompressorStream
 init|=
@@ -156,8 +244,16 @@ argument_list|()
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"empty file compressed output size is not 4"
+literal|"empty file compressed output size is not "
+operator|+
+operator|(
+name|bufLen
+operator|+
+literal|4
+operator|)
 argument_list|,
+name|bufLen
+operator|+
 literal|4
 argument_list|,
 name|buf
@@ -218,6 +314,14 @@ literal|"unexpected IOException : "
 operator|+
 name|e
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|blockDecompressorStream
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 block|}
