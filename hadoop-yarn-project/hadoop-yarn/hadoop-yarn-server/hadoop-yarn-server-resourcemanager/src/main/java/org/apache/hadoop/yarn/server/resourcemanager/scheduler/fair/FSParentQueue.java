@@ -358,7 +358,7 @@ operator|.
 name|getMetrics
 argument_list|()
 operator|.
-name|setAvailableResourcesToQueue
+name|setFairShare
 argument_list|(
 name|childQueue
 operator|.

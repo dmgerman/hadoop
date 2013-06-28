@@ -1319,22 +1319,6 @@ name|none
 argument_list|()
 return|;
 block|}
-else|else
-block|{
-comment|// TODO this should subtract resource just assigned
-comment|// TEMPROARY
-name|getMetrics
-argument_list|()
-operator|.
-name|setAvailableResourcesToQueue
-argument_list|(
-name|scheduler
-operator|.
-name|getClusterCapacity
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 comment|// If we had previously made a reservation, delete it
 if|if
 condition|(

@@ -1366,7 +1366,7 @@ argument_list|)
 decl_stmt|;
 comment|// Aggregate metrics
 DECL|field|rootMetrics
-name|QueueMetrics
+name|FSQueueMetrics
 name|rootMetrics
 decl_stmt|;
 comment|// Time when we last updated preemption vars
@@ -5709,7 +5709,7 @@ condition|)
 block|{
 name|rootMetrics
 operator|=
-name|QueueMetrics
+name|FSQueueMetrics
 operator|.
 name|forQueue
 argument_list|(

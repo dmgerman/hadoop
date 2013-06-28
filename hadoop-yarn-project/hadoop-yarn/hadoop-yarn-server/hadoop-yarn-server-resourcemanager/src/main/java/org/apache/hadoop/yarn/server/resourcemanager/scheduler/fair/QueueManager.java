@@ -2237,6 +2237,47 @@ argument_list|,
 name|defaultMinSharePreemptionTimeout
 argument_list|)
 expr_stmt|;
+comment|// Update metrics
+for|for
+control|(
+name|FSQueue
+name|queue
+range|:
+name|queues
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|FSQueueMetrics
+name|queueMetrics
+init|=
+name|queue
+operator|.
+name|getMetrics
+argument_list|()
+decl_stmt|;
+name|queueMetrics
+operator|.
+name|setMinShare
+argument_list|(
+name|queue
+operator|.
+name|getMinShare
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|queueMetrics
+operator|.
+name|setMaxShare
+argument_list|(
+name|queue
+operator|.
+name|getMaxShare
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Root queue should have empty ACLs.  As a queue's ACL is the union of
 comment|// its ACL and all its parents' ACLs, setting the roots' to empty will
 comment|// neither allow nor prohibit more access to its children.

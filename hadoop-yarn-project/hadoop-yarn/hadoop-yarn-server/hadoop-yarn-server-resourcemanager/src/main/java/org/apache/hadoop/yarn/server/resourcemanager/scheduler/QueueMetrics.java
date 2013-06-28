@@ -678,6 +678,7 @@ literal|"Metrics for the resource scheduler"
 argument_list|)
 decl_stmt|;
 DECL|field|QUEUE_INFO
+specifier|protected
 specifier|static
 specifier|final
 name|MetricsInfo
@@ -760,6 +761,7 @@ name|Configuration
 name|conf
 decl_stmt|;
 DECL|method|QueueMetrics (MetricsSystem ms, String queueName, Queue parent, boolean enableUserMetrics, Configuration conf)
+specifier|protected
 name|QueueMetrics
 parameter_list|(
 name|MetricsSystem
@@ -843,6 +845,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|tag (MetricsInfo info, String value)
+specifier|protected
 name|QueueMetrics
 name|tag
 parameter_list|(
@@ -867,6 +870,7 @@ name|this
 return|;
 block|}
 DECL|method|sourceName (String queueName)
+specifier|protected
 specifier|static
 name|StringBuilder
 name|sourceName
@@ -974,7 +978,7 @@ block|}
 comment|// this method is here because we want to make sure these metrics show up on
 comment|// queue registration.
 DECL|method|initMetrics ()
-specifier|private
+specifier|public
 name|void
 name|initMetrics
 parameter_list|()
@@ -1048,7 +1052,8 @@ expr_stmt|;
 block|}
 comment|/**    * Simple metrics cache to help prevent re-registrations.    */
 DECL|field|queueMetrics
-specifier|private
+specifier|protected
+specifier|final
 specifier|static
 name|Map
 argument_list|<

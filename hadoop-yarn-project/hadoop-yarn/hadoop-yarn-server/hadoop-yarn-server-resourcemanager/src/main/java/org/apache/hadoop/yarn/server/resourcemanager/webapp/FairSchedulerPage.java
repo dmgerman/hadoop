@@ -570,6 +570,9 @@ name|qinfo
 operator|.
 name|getFairShare
 argument_list|()
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|html
@@ -673,7 +676,7 @@ name|fairShare
 init|=
 name|info
 operator|.
-name|getFairShareFraction
+name|getFairShareMemoryFraction
 argument_list|()
 decl_stmt|;
 name|float
@@ -681,7 +684,7 @@ name|used
 init|=
 name|info
 operator|.
-name|getUsedFraction
+name|getUsedMemoryFraction
 argument_list|()
 decl_stmt|;
 name|LI
@@ -1081,7 +1084,7 @@ name|fsqinfo
 operator|.
 name|qinfo
 operator|.
-name|getUsedFraction
+name|getUsedMemoryFraction
 argument_list|()
 decl_stmt|;
 name|ul
