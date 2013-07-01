@@ -19817,7 +19817,7 @@ name|double
 name|replQueueThreshold
 decl_stmt|;
 comment|// internal fields
-comment|/** Time when threshold was reached.      *       *<br>-1 safe mode is off      *<br> 0 safe mode is on, but threshold is not reached yet       */
+comment|/** Time when threshold was reached.      *<br> -1 safe mode is off      *<br> 0 safe mode is on, and threshold is not reached yet      *<br>>0 safe mode is on, but we are in extension period       */
 DECL|field|reached
 specifier|private
 name|long
@@ -20226,6 +20226,7 @@ operator|)
 name|timeInSafemode
 argument_list|)
 expr_stmt|;
+comment|//Log the following only once (when transitioning from ON -> OFF)
 if|if
 condition|(
 name|reached
@@ -20798,17 +20799,18 @@ parameter_list|()
 block|{
 if|if
 condition|(
-name|reached
-operator|<
-literal|0
+operator|!
+name|isOn
+argument_list|()
 condition|)
 return|return
 literal|"Safe mode is OFF."
 return|;
+comment|//Manual OR low-resource safemode. (Admin intervention required)
 name|String
 name|leaveMsg
 init|=
-literal|""
+literal|"It was turned on manually. "
 decl_stmt|;
 if|if
 condition|(
@@ -20818,48 +20820,35 @@ condition|)
 block|{
 name|leaveMsg
 operator|=
-literal|"Resources are low on NN. "
+literal|"Resources are low on NN. Please add or free up more "
 operator|+
-literal|"Please add or free up more resources then turn off safe mode manually.  "
+literal|"resources then turn off safe mode manually. NOTE:  If you turn off"
 operator|+
-literal|"NOTE:  If you turn off safe mode before adding resources, "
+literal|" safe mode before adding resources, "
 operator|+
-literal|"the NN will immediately return to safe mode."
-expr_stmt|;
-block|}
-else|else
-block|{
-name|leaveMsg
-operator|=
-literal|"Safe mode will be turned off automatically"
+literal|"the NN will immediately return to safe mode. "
 expr_stmt|;
 block|}
 if|if
 condition|(
 name|isManual
 argument_list|()
-operator|&&
-operator|!
+operator|||
 name|areResourcesLow
 argument_list|()
 condition|)
 block|{
-name|leaveMsg
-operator|=
-literal|"Use \"hdfs dfsadmin -safemode leave\" to turn safe mode off"
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|blockTotal
-operator|<
-literal|0
-condition|)
 return|return
 name|leaveMsg
 operator|+
-literal|"."
+literal|"Use \"hdfs dfsadmin -safemode leave\" to turn safe mode off."
 return|;
+block|}
+comment|//Automatic safemode. System will come out of safemode automatically.
+name|leaveMsg
+operator|=
+literal|"Safe mode will be turned off automatically"
+expr_stmt|;
 name|int
 name|numLive
 init|=
@@ -20893,7 +20882,7 @@ name|format
 argument_list|(
 literal|"The reported blocks %d needs additional %d"
 operator|+
-literal|" blocks to reach the threshold %.4f of total blocks %d."
+literal|" blocks to reach the threshold %.4f of total blocks %d.\n"
 argument_list|,
 name|blockSafe
 argument_list|,
@@ -20918,22 +20907,6 @@ operator|<
 name|datanodeThreshold
 condition|)
 block|{
-if|if
-condition|(
-operator|!
-literal|""
-operator|.
-name|equals
-argument_list|(
-name|msg
-argument_list|)
-condition|)
-block|{
-name|msg
-operator|+=
-literal|"\n"
-expr_stmt|;
-block|}
 name|msg
 operator|+=
 name|String
@@ -20942,7 +20915,7 @@ name|format
 argument_list|(
 literal|"The number of live datanodes %d needs an additional %d live "
 operator|+
-literal|"datanodes to reach the minimum number %d."
+literal|"datanodes to reach the minimum number %d.\n"
 argument_list|,
 name|numLive
 argument_list|,
@@ -20956,12 +20929,6 @@ name|datanodeThreshold
 argument_list|)
 expr_stmt|;
 block|}
-name|msg
-operator|+=
-literal|" "
-operator|+
-name|leaveMsg
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -20973,7 +20940,7 @@ name|format
 argument_list|(
 literal|"The reported blocks %d has reached the threshold"
 operator|+
-literal|" %.4f of total blocks %d."
+literal|" %.4f of total blocks %d. "
 argument_list|,
 name|blockSafe
 argument_list|,
@@ -20982,22 +20949,15 @@ argument_list|,
 name|blockTotal
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|datanodeThreshold
-operator|>
-literal|0
-condition|)
-block|{
 name|msg
 operator|+=
 name|String
 operator|.
 name|format
 argument_list|(
-literal|" The number of live datanodes %d has reached "
+literal|"The number of live datanodes %d has reached "
 operator|+
-literal|"the minimum number %d."
+literal|"the minimum number %d. "
 argument_list|,
 name|numLive
 argument_list|,
@@ -21007,11 +20967,8 @@ expr_stmt|;
 block|}
 name|msg
 operator|+=
-literal|" "
-operator|+
 name|leaveMsg
 expr_stmt|;
-block|}
 comment|// threshold is not reached or manual or resources low
 if|if
 condition|(
@@ -21031,31 +20988,39 @@ condition|)
 block|{
 return|return
 name|msg
-operator|+
-literal|"."
 return|;
 block|}
 comment|// extension period is in progress
 return|return
 name|msg
 operator|+
-literal|" in "
-operator|+
-name|Math
-operator|.
-name|abs
-argument_list|(
+operator|(
 name|reached
 operator|+
 name|extension
 operator|-
 name|now
 argument_list|()
-argument_list|)
+operator|>
+literal|0
+condition|?
+literal|" in "
+operator|+
+operator|(
+name|reached
+operator|+
+name|extension
+operator|-
+name|now
+argument_list|()
+operator|)
 operator|/
 literal|1000
 operator|+
 literal|" seconds."
+else|:
+literal|" soon."
+operator|)
 return|;
 block|}
 comment|/**      * Print status every 20 seconds.      */
@@ -25892,7 +25857,7 @@ return|return
 literal|""
 return|;
 return|return
-literal|"Safe mode is ON."
+literal|"Safe mode is ON. "
 operator|+
 name|this
 operator|.

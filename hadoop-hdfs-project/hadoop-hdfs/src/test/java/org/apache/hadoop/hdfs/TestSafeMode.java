@@ -1002,11 +1002,11 @@ argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Safe mode is ON.The reported blocks 0 needs additional "
+literal|"Safe mode is ON. The reported blocks 0 needs additional "
 operator|+
-literal|"15 blocks to reach the threshold 0.9990 of total blocks 15. "
+literal|"15 blocks to reach the threshold 0.9990 of total blocks 15.\n"
 operator|+
-literal|"Safe mode will be turned off automatically."
+literal|"Safe mode will be turned off automatically"
 argument_list|,
 name|status
 argument_list|)
@@ -1895,7 +1895,7 @@ argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
-literal|"Safemode tip message looks right: "
+literal|"Safemode tip message doesn't look right: "
 operator|+
 name|tipMsg
 argument_list|,
@@ -1905,9 +1905,9 @@ name|contains
 argument_list|(
 literal|"The number of live datanodes 0 needs an additional "
 operator|+
-literal|"1 live datanodes to reach the minimum number 1. "
+literal|"1 live datanodes to reach the minimum number 1.\n"
 operator|+
-literal|"Safe mode will be turned off automatically."
+literal|"Safe mode will be turned off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;

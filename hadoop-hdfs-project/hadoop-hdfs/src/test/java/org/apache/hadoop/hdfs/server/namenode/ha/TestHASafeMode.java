@@ -1314,6 +1314,10 @@ argument_list|,
 literal|3
 argument_list|,
 literal|3
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|banner
@@ -1337,6 +1341,10 @@ argument_list|,
 literal|8
 argument_list|,
 literal|8
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1405,6 +1413,10 @@ argument_list|,
 literal|3
 argument_list|,
 literal|3
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Create a few blocks which will send blockReceived calls to the
@@ -1459,6 +1471,10 @@ argument_list|,
 literal|8
 argument_list|,
 literal|8
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1565,6 +1581,10 @@ argument_list|,
 literal|0
 argument_list|,
 literal|5
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|banner
@@ -1586,6 +1606,10 @@ argument_list|(
 name|nn1
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|3
 argument_list|,
 literal|0
 argument_list|)
@@ -1657,6 +1681,10 @@ argument_list|,
 literal|10
 argument_list|,
 literal|10
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Delete those blocks while the SBN is in safe mode.
@@ -1722,6 +1750,10 @@ argument_list|,
 literal|10
 argument_list|,
 literal|10
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// When we catch up to active namespace, it will restore back
@@ -1745,6 +1777,10 @@ argument_list|(
 name|nn1
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|3
 argument_list|,
 literal|0
 argument_list|)
@@ -1822,6 +1858,10 @@ argument_list|,
 literal|5
 argument_list|,
 literal|5
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Append to a block while SBN is in safe mode. This should
@@ -1850,6 +1890,10 @@ argument_list|,
 literal|5
 argument_list|,
 literal|5
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// if we roll edits now, the SBN should see that it's under construction
@@ -1871,6 +1915,10 @@ argument_list|,
 literal|4
 argument_list|,
 literal|4
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -1947,6 +1995,10 @@ argument_list|,
 literal|4
 argument_list|,
 literal|4
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// When we roll the edit log, the deletions will go through.
@@ -1969,6 +2021,10 @@ argument_list|(
 name|nn1
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|3
 argument_list|,
 literal|0
 argument_list|)
@@ -2081,7 +2137,7 @@ name|restartActive
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|assertSafeMode (NameNode nn, int safe, int total)
+DECL|method|assertSafeMode (NameNode nn, int safe, int total, int numNodes, int nodeThresh)
 specifier|private
 specifier|static
 name|void
@@ -2095,6 +2151,12 @@ name|safe
 parameter_list|,
 name|int
 name|total
+parameter_list|,
+name|int
+name|numNodes
+parameter_list|,
+name|int
+name|nodeThresh
 parameter_list|)
 block|{
 name|String
@@ -2127,21 +2189,27 @@ name|status
 operator|.
 name|startsWith
 argument_list|(
-literal|"Safe mode is ON."
-operator|+
-literal|"The reported blocks "
+literal|"Safe mode is ON. The reported blocks "
 operator|+
 name|safe
 operator|+
-literal|" has reached the threshold "
+literal|" has reached the "
 operator|+
-literal|"0.9990 of total blocks "
+literal|"threshold 0.9990 of total blocks "
 operator|+
 name|total
 operator|+
-literal|". Safe mode will be "
+literal|". The number of "
 operator|+
-literal|"turned off automatically"
+literal|"live datanodes "
+operator|+
+name|numNodes
+operator|+
+literal|" has reached the minimum number "
+operator|+
+name|nodeThresh
+operator|+
+literal|". Safe mode will be turned off automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2167,7 +2235,7 @@ name|status
 operator|.
 name|startsWith
 argument_list|(
-literal|"Safe mode is ON."
+literal|"Safe mode is ON. "
 operator|+
 literal|"The reported blocks "
 operator|+
@@ -2297,6 +2365,10 @@ argument_list|,
 literal|3
 argument_list|,
 literal|3
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 comment|// Initiate a failover into it while it's in safemode
@@ -2326,6 +2398,10 @@ argument_list|,
 literal|5
 argument_list|,
 literal|5
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -2411,11 +2487,13 @@ name|status
 operator|.
 name|startsWith
 argument_list|(
-literal|"Safe mode is ON."
+literal|"Safe mode is ON. The reported blocks 10 has reached the threshold "
 operator|+
-literal|"The reported blocks 10 has reached the threshold 0.9990 of "
+literal|"0.9990 of total blocks 10. The number of live datanodes 3 has "
 operator|+
-literal|"total blocks 10. Safe mode will be turned off automatically"
+literal|"reached the minimum number 0. Safe mode will be turned off "
+operator|+
+literal|"automatically"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2455,6 +2533,10 @@ argument_list|(
 name|nn1
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|3
 argument_list|,
 literal|0
 argument_list|)
@@ -2502,6 +2584,10 @@ argument_list|(
 name|nn1
 argument_list|,
 literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|3
 argument_list|,
 literal|0
 argument_list|)
@@ -2658,6 +2744,10 @@ argument_list|,
 literal|10
 argument_list|,
 literal|10
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 name|banner
@@ -2681,6 +2771,10 @@ argument_list|,
 literal|15
 argument_list|,
 literal|15
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
@@ -2778,6 +2872,10 @@ argument_list|,
 literal|6
 argument_list|,
 literal|6
+argument_list|,
+literal|3
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
