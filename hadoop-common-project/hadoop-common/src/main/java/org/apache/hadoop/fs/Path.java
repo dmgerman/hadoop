@@ -94,6 +94,18 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|HadoopIllegalArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|classification
 operator|.
 name|InterfaceAudience
@@ -232,6 +244,105 @@ name|URI
 name|uri
 decl_stmt|;
 comment|// a hierarchical uri
+comment|/**    * Pathnames with scheme and relative path are illegal.    * @param path to be checked    */
+DECL|method|checkNotSchemeWithRelative ()
+name|void
+name|checkNotSchemeWithRelative
+parameter_list|()
+block|{
+if|if
+condition|(
+name|toUri
+argument_list|()
+operator|.
+name|isAbsolute
+argument_list|()
+operator|&&
+operator|!
+name|isUriPathAbsolute
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Unsupported name: has scheme but relative path-part"
+argument_list|)
+throw|;
+block|}
+block|}
+DECL|method|checkNotRelative ()
+name|void
+name|checkNotRelative
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|isAbsolute
+argument_list|()
+operator|&&
+name|toUri
+argument_list|()
+operator|.
+name|getScheme
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|HadoopIllegalArgumentException
+argument_list|(
+literal|"Path is relative"
+argument_list|)
+throw|;
+block|}
+block|}
+DECL|method|getPathWithoutSchemeAndAuthority (Path path)
+specifier|public
+specifier|static
+name|Path
+name|getPathWithoutSchemeAndAuthority
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+comment|// This code depends on Path.toString() to remove the leading slash before
+comment|// the drive specification on Windows.
+name|Path
+name|newPath
+init|=
+name|path
+operator|.
+name|isUriPathAbsolute
+argument_list|()
+condition|?
+operator|new
+name|Path
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|path
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+else|:
+name|path
+decl_stmt|;
+return|return
+name|newPath
+return|;
+block|}
 comment|/** Resolve a child path against a parent path. */
 DECL|method|Path (String parent, String child)
 specifier|public

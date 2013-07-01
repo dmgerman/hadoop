@@ -3064,7 +3064,7 @@ name|dst
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns true if the file system supports symlinks, false otherwise.    */
+comment|/**    * Returns true if the file system supports symlinks, false otherwise.    * @return true if filesystem supports symlinks    */
 DECL|method|supportsSymlinks ()
 specifier|public
 name|boolean
@@ -3106,7 +3106,7 @@ literal|"File system does not support symlinks"
 argument_list|)
 throw|;
 block|}
-comment|/**    * The specification of this method matches that of      * {@link FileContext#getLinkTarget(Path)};    */
+comment|/**    * Partially resolves the path. This is used during symlink resolution in    * {@link FSLinkResolver}, and differs from the similarly named method    * {@link FileContext#getLinkTarget(Path)}.    */
 DECL|method|getLinkTarget (final Path f)
 specifier|public
 name|Path
