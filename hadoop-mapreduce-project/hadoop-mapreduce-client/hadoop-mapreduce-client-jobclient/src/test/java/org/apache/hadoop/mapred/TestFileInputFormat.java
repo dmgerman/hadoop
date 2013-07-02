@@ -1304,7 +1304,9 @@ name|job
 operator|.
 name|setBoolean
 argument_list|(
-literal|"mapred.input.dir.recursive"
+name|FileInputFormat
+operator|.
+name|INPUT_DIR_RECURSIVE
 argument_list|,
 literal|true
 argument_list|)
