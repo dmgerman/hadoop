@@ -255,18 +255,32 @@ operator|=
 name|program
 expr_stmt|;
 block|}
-DECL|method|start ()
+DECL|method|start (boolean register)
 specifier|public
 name|void
 name|start
-parameter_list|()
+parameter_list|(
+name|boolean
+name|register
+parameter_list|)
 block|{
 name|mountd
 operator|.
 name|start
-argument_list|()
+argument_list|(
+name|register
+argument_list|)
 expr_stmt|;
 comment|// Start mountd
+name|startTCPServer
+argument_list|()
+expr_stmt|;
+comment|// Start TCP server
+if|if
+condition|(
+name|register
+condition|)
+block|{
 name|rpcProgram
 operator|.
 name|register
@@ -276,10 +290,7 @@ operator|.
 name|TRANSPORT_TCP
 argument_list|)
 expr_stmt|;
-name|startTCPServer
-argument_list|()
-expr_stmt|;
-comment|// Start TCP server
+block|}
 block|}
 DECL|method|startTCPServer ()
 specifier|private
