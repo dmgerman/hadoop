@@ -2789,7 +2789,7 @@ operator|.
 name|toUri
 argument_list|()
 operator|.
-name|getPath
+name|getRawPath
 argument_list|()
 operator|)
 decl_stmt|;
