@@ -574,6 +574,17 @@ name|JOB_DIR_PERMISSION
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|fs
+operator|.
+name|setOwner
+argument_list|(
+name|stagingArea
+argument_list|,
+name|currentUser
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
 block|}
 return|return
 name|stagingArea
