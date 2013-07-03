@@ -1370,6 +1370,19 @@ return|return
 literal|"dontcheck"
 return|;
 block|}
+DECL|method|fixRelativePart (Path p)
+specifier|public
+name|Path
+name|fixRelativePart
+parameter_list|(
+name|Path
+name|p
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 annotation|@
 name|Test

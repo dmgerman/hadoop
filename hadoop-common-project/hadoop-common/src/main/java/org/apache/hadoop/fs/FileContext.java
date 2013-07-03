@@ -2838,9 +2838,14 @@ name|fi
 operator|.
 name|setSymlink
 argument_list|(
+name|FSLinkResolver
+operator|.
 name|qualifySymlinkTarget
 argument_list|(
 name|fs
+operator|.
+name|getUri
+argument_list|()
 argument_list|,
 name|p
 argument_list|,

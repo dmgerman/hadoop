@@ -438,6 +438,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|Credentials
 import|;
 end_import
@@ -1107,6 +1121,48 @@ parameter_list|()
 block|{
 return|return
 literal|0
+return|;
+block|}
+DECL|method|getFSofPath (final Path absOrFqPath, final Configuration conf)
+specifier|protected
+specifier|static
+name|FileSystem
+name|getFSofPath
+parameter_list|(
+specifier|final
+name|Path
+name|absOrFqPath
+parameter_list|,
+specifier|final
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|UnsupportedFileSystemException
+throws|,
+name|IOException
+block|{
+name|absOrFqPath
+operator|.
+name|checkNotSchemeWithRelative
+argument_list|()
+expr_stmt|;
+name|absOrFqPath
+operator|.
+name|checkNotRelative
+argument_list|()
+expr_stmt|;
+comment|// Uses the default file system if not fully qualified
+return|return
+name|get
+argument_list|(
+name|absOrFqPath
+operator|.
+name|toUri
+argument_list|()
+argument_list|,
+name|conf
+argument_list|)
 return|;
 block|}
 comment|/**    * Get a canonical service name for this file system.  The token cache is    * the only user of the canonical service name, and uses it to lookup this    * filesystem's service tokens.    * If file system provides a token of its own then it must have a canonical    * name, otherwise canonical name can be null.    *     * Default Impl: If the file system has child file systems     * (such as an embedded file system) then it is assumed that the fs has no    * tokens of its own and hence returns a null name; otherwise a service    * name is built using Uri and port.    *     * @return a service string that uniquely identifies this file system, null    *         if the filesystem does not implement tokens    * @see SecurityUtil#buildDTServiceName(URI, int)     */
@@ -2835,9 +2891,13 @@ argument_list|()
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 argument_list|,
 name|replication
@@ -3861,7 +3921,7 @@ specifier|final
 name|FileStatus
 name|srcStatus
 init|=
-name|getFileStatus
+name|getFileLinkStatus
 argument_list|(
 name|src
 argument_list|)
@@ -3928,7 +3988,7 @@ try|try
 block|{
 name|dstStatus
 operator|=
-name|getFileStatus
+name|getFileLinkStatus
 argument_list|(
 name|dst
 argument_list|)
@@ -6706,6 +6766,162 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * See {@link FileContext#fixRelativePart}    */
+DECL|method|fixRelativePart (Path p)
+specifier|protected
+name|Path
+name|fixRelativePart
+parameter_list|(
+name|Path
+name|p
+parameter_list|)
+block|{
+if|if
+condition|(
+name|p
+operator|.
+name|isUriPathAbsolute
+argument_list|()
+condition|)
+block|{
+return|return
+name|p
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+name|getWorkingDirectory
+argument_list|()
+argument_list|,
+name|p
+argument_list|)
+return|;
+block|}
+block|}
+comment|/**    * See {@link FileContext#createSymlink(Path, Path, boolean)}    */
+DECL|method|createSymlink (final Path target, final Path link, final boolean createParent)
+specifier|public
+name|void
+name|createSymlink
+parameter_list|(
+specifier|final
+name|Path
+name|target
+parameter_list|,
+specifier|final
+name|Path
+name|link
+parameter_list|,
+specifier|final
+name|boolean
+name|createParent
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|FileAlreadyExistsException
+throws|,
+name|FileNotFoundException
+throws|,
+name|ParentNotDirectoryException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|IOException
+block|{
+comment|// Supporting filesystems should override this method
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Filesystem does not support symlinks!"
+argument_list|)
+throw|;
+block|}
+comment|/**    * See {@link FileContext#getFileLinkStatus(Path)}    */
+DECL|method|getFileLinkStatus (final Path f)
+specifier|public
+name|FileStatus
+name|getFileLinkStatus
+parameter_list|(
+specifier|final
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|IOException
+block|{
+comment|// Supporting filesystems should override this method
+return|return
+name|getFileStatus
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+comment|/**    * See {@link AbstractFileSystem#supportsSymlinks()}    */
+DECL|method|supportsSymlinks ()
+specifier|public
+name|boolean
+name|supportsSymlinks
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+comment|/**    * See {@link FileContext#getLinkTarget(Path)}    */
+DECL|method|getLinkTarget (Path f)
+specifier|public
+name|Path
+name|getLinkTarget
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Supporting filesystems should override this method
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Filesystem does not support symlinks!"
+argument_list|)
+throw|;
+block|}
+comment|/**    * See {@link AbstractFileSystem#getLinkTarget(Path)}    */
+DECL|method|resolveLink (Path f)
+specifier|protected
+name|Path
+name|resolveLink
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// Supporting filesystems should override this method
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Filesystem does not support symlinks!"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Get the checksum of a file.    *    * @param f The file path    * @return The file checksum.  The default return value is null,    *  which indicates that no checksum algorithm is implemented    *  in the corresponding FileSystem.    */
 DECL|method|getFileChecksum (Path f)
 specifier|public

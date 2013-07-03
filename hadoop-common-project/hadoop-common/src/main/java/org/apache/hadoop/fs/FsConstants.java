@@ -97,6 +97,15 @@ name|FTP_SCHEME
 init|=
 literal|"ftp"
 decl_stmt|;
+comment|// Maximum number of symlinks to recursively resolve in a path
+DECL|field|MAX_PATH_LINKS
+specifier|static
+specifier|final
+name|int
+name|MAX_PATH_LINKS
+init|=
+literal|32
+decl_stmt|;
 comment|/**    * ViewFs: viewFs file system (ie the mount file system on client side)    */
 DECL|field|VIEWFS_URI
 specifier|public

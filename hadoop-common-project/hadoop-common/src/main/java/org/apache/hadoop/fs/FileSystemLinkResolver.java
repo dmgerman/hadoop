@@ -28,16 +28,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -65,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Used primarily by {@link FileContext} to operate on and resolve  * symlinks in a path. Operations can potentially span multiple  * {@link AbstractFileSystem}s.  *   * @see FileSystemLinkResolver  */
+comment|/**  * FileSystem-specific class used to operate on and resolve symlinks in a path.  * Operation can potentially span multiple {@link FileSystem}s.  *   * @see FSLinkResolver  */
 end_comment
 
 begin_class
@@ -77,99 +67,22 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|FSLinkResolver
+DECL|class|FileSystemLinkResolver
 specifier|public
 specifier|abstract
 class|class
-name|FSLinkResolver
+name|FileSystemLinkResolver
 parameter_list|<
 name|T
 parameter_list|>
 block|{
-comment|/**    * Return a fully-qualified version of the given symlink target if it    * has no scheme and authority. Partially and fully-qualified paths    * are returned unmodified.    * @param pathURI URI of the filesystem of pathWithLink    * @param pathWithLink Path that contains the symlink    * @param target The symlink's absolute target    * @return Fully qualified version of the target.    */
-DECL|method|qualifySymlinkTarget (final URI pathURI, Path pathWithLink, Path target)
-specifier|public
-specifier|static
-name|Path
-name|qualifySymlinkTarget
-parameter_list|(
-specifier|final
-name|URI
-name|pathURI
-parameter_list|,
-name|Path
-name|pathWithLink
-parameter_list|,
-name|Path
-name|target
-parameter_list|)
-block|{
-comment|// NB: makeQualified uses the target's scheme and authority, if
-comment|// specified, and the scheme and authority of pathURI, if not.
-specifier|final
-name|URI
-name|targetUri
-init|=
-name|target
-operator|.
-name|toUri
-argument_list|()
-decl_stmt|;
-specifier|final
-name|String
-name|scheme
-init|=
-name|targetUri
-operator|.
-name|getScheme
-argument_list|()
-decl_stmt|;
-specifier|final
-name|String
-name|auth
-init|=
-name|targetUri
-operator|.
-name|getAuthority
-argument_list|()
-decl_stmt|;
-return|return
-operator|(
-name|scheme
-operator|==
-literal|null
-operator|&&
-name|auth
-operator|==
-literal|null
-operator|)
-condition|?
-name|target
-operator|.
-name|makeQualified
-argument_list|(
-name|pathURI
-argument_list|,
-name|pathWithLink
-operator|.
-name|getParent
-argument_list|()
-argument_list|)
-else|:
-name|target
-return|;
-block|}
-comment|/**    * Generic helper function overridden on instantiation to perform a    * specific operation on the given file system using the given path    * which may result in an UnresolvedLinkException.    * @param fs AbstractFileSystem to perform the operation on.    * @param p Path given the file system.    * @return Generic type determined by the specific implementation.    * @throws UnresolvedLinkException If symbolic link<code>path</code> could    *           not be resolved    * @throws IOException an I/O error occurred    */
-DECL|method|next (final AbstractFileSystem fs, final Path p)
+comment|/**    * FileSystem subclass-specific implementation of superclass method.    * Overridden on instantiation to perform the actual method call, which throws    * an UnresolvedLinkException if called on an unresolved {@link Path}.    * @param p Path on which to perform an operation    * @return Generic type returned by operation    * @throws IOException    * @throws UnresolvedLinkException    */
+DECL|method|doCall (final Path p)
 specifier|abstract
 specifier|public
 name|T
-name|next
+name|doCall
 parameter_list|(
-specifier|final
-name|AbstractFileSystem
-name|fs
-parameter_list|,
 specifier|final
 name|Path
 name|p
@@ -179,15 +92,33 @@ name|IOException
 throws|,
 name|UnresolvedLinkException
 function_decl|;
-comment|/**    * Performs the operation specified by the next function, calling it    * repeatedly until all symlinks in the given path are resolved.    * @param fc FileContext used to access file systems.    * @param path The path to resolve symlinks on.    * @return Generic type determined by the implementation of next.    * @throws IOException    */
-DECL|method|resolve (final FileContext fc, final Path path)
+comment|/**    * Calls the abstract FileSystem call equivalent to the specialized subclass    * implementation in {@link #doCall(Path)}. This is used when retrying the    * call with a newly resolved Path and corresponding new FileSystem.    *     * @param fs    *          FileSystem with which to retry call    * @param p    *          Resolved Target of path    * @return Generic type determined by implementation    * @throws IOException    */
+DECL|method|next (final FileSystem fs, final Path p)
+specifier|abstract
+specifier|public
+name|T
+name|next
+parameter_list|(
+specifier|final
+name|FileSystem
+name|fs
+parameter_list|,
+specifier|final
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Attempt calling overridden {@link #doCall(Path)} method with    * specified {@link FileSystem} and {@link Path}. If the call fails with an    * UnresolvedLinkException, it will try to resolve the path and retry the call    * by calling {@link #next(FileSystem, Path)}.    * @param filesys FileSystem with which to try call    * @param path Path with which to try call    * @return Generic type determined by implementation    * @throws IOException    */
+DECL|method|resolve (final FileSystem filesys, final Path path)
 specifier|public
 name|T
 name|resolve
 parameter_list|(
 specifier|final
-name|FileContext
-name|fc
+name|FileSystem
+name|filesys
 parameter_list|,
 specifier|final
 name|Path
@@ -211,19 +142,21 @@ name|p
 init|=
 name|path
 decl_stmt|;
-comment|// NB: More than one AbstractFileSystem can match a scheme, eg
-comment|// "file" resolves to LocalFs but could have come by RawLocalFs.
-name|AbstractFileSystem
+name|FileSystem
 name|fs
 init|=
-name|fc
+name|FileSystem
 operator|.
 name|getFSofPath
 argument_list|(
 name|p
+argument_list|,
+name|filesys
+operator|.
+name|getConf
+argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Loop until all symlinks are resolved or the limit is reached
 for|for
 control|(
 name|boolean
@@ -239,10 +172,8 @@ try|try
 block|{
 name|in
 operator|=
-name|next
+name|doCall
 argument_list|(
-name|fs
-argument_list|,
 name|p
 argument_list|)
 expr_stmt|;
@@ -282,6 +213,8 @@ block|}
 comment|// Resolve the first unresolved path component
 name|p
 operator|=
+name|FSLinkResolver
+operator|.
 name|qualifySymlinkTarget
 argument_list|(
 name|fs
@@ -291,9 +224,9 @@ argument_list|()
 argument_list|,
 name|p
 argument_list|,
-name|fs
+name|filesys
 operator|.
-name|getLinkTarget
+name|resolveLink
 argument_list|(
 name|p
 argument_list|)
@@ -301,15 +234,43 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|fc
+name|FileSystem
 operator|.
 name|getFSofPath
 argument_list|(
 name|p
+argument_list|,
+name|filesys
+operator|.
+name|getConf
+argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Have to call next if it's a new FS
+if|if
+condition|(
+operator|!
+name|fs
+operator|.
+name|equals
+argument_list|(
+name|filesys
+argument_list|)
+condition|)
+block|{
+return|return
+name|next
+argument_list|(
+name|fs
+argument_list|,
+name|p
+argument_list|)
+return|;
+block|}
+comment|// Else, we keep resolving with this filesystem
 block|}
 block|}
+comment|// Successful call, path was fully resolved
 return|return
 name|in
 return|;
