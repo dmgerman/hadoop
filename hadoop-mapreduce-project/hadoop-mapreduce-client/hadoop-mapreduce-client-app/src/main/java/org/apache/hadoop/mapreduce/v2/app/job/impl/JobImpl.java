@@ -3427,6 +3427,14 @@ argument_list|,
 name|JobEventType
 operator|.
 name|JOB_AM_REBOOT
+argument_list|,
+name|JobEventType
+operator|.
+name|JOB_TASK_ATTEMPT_COMPLETED
+argument_list|,
+name|JobEventType
+operator|.
+name|JOB_MAP_TASK_RESCHEDULED
 argument_list|)
 argument_list|)
 comment|// Transitions from FAIL_ABORT state
