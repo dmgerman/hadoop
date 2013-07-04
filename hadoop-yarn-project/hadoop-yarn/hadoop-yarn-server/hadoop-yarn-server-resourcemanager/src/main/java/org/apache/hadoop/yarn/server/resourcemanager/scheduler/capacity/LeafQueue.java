@@ -3994,6 +3994,11 @@ name|getApplicationAttemptId
 argument_list|()
 argument_list|)
 decl_stmt|;
+synchronized|synchronized
+init|(
+name|application
+init|)
+block|{
 return|return
 name|assignReservedContainer
 argument_list|(
@@ -4006,6 +4011,7 @@ argument_list|,
 name|clusterResource
 argument_list|)
 return|;
+block|}
 block|}
 comment|// Try to assign containers to applications in order
 for|for

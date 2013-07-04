@@ -324,6 +324,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -2442,6 +2458,58 @@ argument_list|(
 name|priority
 argument_list|)
 expr_stmt|;
+block|}
+comment|// reservedContainer should not be null here
+if|if
+condition|(
+name|reservedContainer
+operator|==
+literal|null
+condition|)
+block|{
+name|String
+name|errorMesssage
+init|=
+literal|"Application "
+operator|+
+name|getApplicationId
+argument_list|()
+operator|+
+literal|" is trying to unreserve "
+operator|+
+literal|" on node "
+operator|+
+name|node
+operator|+
+literal|", currently has "
+operator|+
+name|reservedContainers
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" at priority "
+operator|+
+name|priority
+operator|+
+literal|"; currentReservation "
+operator|+
+name|currentReservation
+decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|errorMesssage
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+name|errorMesssage
+argument_list|)
+throw|;
 block|}
 comment|// Reset the re-reservation count
 name|resetReReservations
