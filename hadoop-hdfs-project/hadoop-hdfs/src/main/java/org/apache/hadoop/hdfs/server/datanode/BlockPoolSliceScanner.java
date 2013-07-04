@@ -136,16 +136,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|SortedSet
 import|;
 end_import
@@ -416,6 +406,56 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|GSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|LightWeightGSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|util
+operator|.
+name|LightWeightGSet
+operator|.
+name|LinkedElement
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -595,7 +635,7 @@ decl_stmt|;
 DECL|field|blockMap
 specifier|private
 specifier|final
-name|Map
+name|GSet
 argument_list|<
 name|Block
 argument_list|,
@@ -604,13 +644,22 @@ argument_list|>
 name|blockMap
 init|=
 operator|new
-name|HashMap
+name|LightWeightGSet
 argument_list|<
 name|Block
 argument_list|,
 name|BlockScanInfo
 argument_list|>
-argument_list|()
+argument_list|(
+name|LightWeightGSet
+operator|.
+name|computeCapacity
+argument_list|(
+literal|0.5
+argument_list|,
+literal|"BlockMap"
+argument_list|)
+argument_list|)
 decl_stmt|;
 comment|// processedBlocks keeps track of which blocks are scanned
 comment|// since the last run.
@@ -715,10 +764,20 @@ comment|// scanned as part of periodic verfication
 DECL|enumConstant|NONE
 name|NONE
 block|,   }
+comment|// Extend Block because in the DN process there's a 1-to-1 correspondence of
+comment|// BlockScanInfo to Block instances, so by extending rather than containing
+comment|// Block, we can save a bit of Object overhead (about 24 bytes per block
+comment|// replica.)
 DECL|class|BlockScanInfo
 specifier|static
 class|class
 name|BlockScanInfo
+extends|extends
+name|Block
+implements|implements
+name|LightWeightGSet
+operator|.
+name|LinkedElement
 block|{
 comment|/** Compare the info by the last scan time. */
 DECL|field|LAST_SCAN_TIME_COMPARATOR
@@ -787,11 +846,6 @@ return|;
 block|}
 block|}
 decl_stmt|;
-DECL|field|block
-specifier|final
-name|Block
-name|block
-decl_stmt|;
 DECL|field|lastScanTime
 name|long
 name|lastScanTime
@@ -812,6 +866,11 @@ name|lastScanOk
 init|=
 literal|true
 decl_stmt|;
+DECL|field|next
+specifier|private
+name|LinkedElement
+name|next
+decl_stmt|;
 DECL|method|BlockScanInfo (Block block)
 name|BlockScanInfo
 parameter_list|(
@@ -819,11 +878,10 @@ name|Block
 name|block
 parameter_list|)
 block|{
-name|this
-operator|.
+name|super
+argument_list|(
 name|block
-operator|=
-name|block
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -835,7 +893,7 @@ name|hashCode
 parameter_list|()
 block|{
 return|return
-name|block
+name|super
 operator|.
 name|hashCode
 argument_list|()
@@ -883,18 +941,11 @@ literal|false
 return|;
 block|}
 return|return
-name|block
+name|super
 operator|.
 name|equals
 argument_list|(
-operator|(
-operator|(
-name|BlockScanInfo
-operator|)
 name|that
-operator|)
-operator|.
-name|block
 argument_list|)
 return|;
 block|}
@@ -915,6 +966,36 @@ condition|?
 literal|0
 else|:
 name|lastScanTime
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setNext (LinkedElement next)
+specifier|public
+name|void
+name|setNext
+parameter_list|(
+name|LinkedElement
+name|next
+parameter_list|)
+block|{
+name|this
+operator|.
+name|next
+operator|=
+name|next
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNext ()
+specifier|public
+name|LinkedElement
+name|getNext
+parameter_list|()
+block|{
+return|return
+name|next
 return|;
 block|}
 block|}
@@ -1182,10 +1263,6 @@ operator|.
 name|put
 argument_list|(
 name|info
-operator|.
-name|block
-argument_list|,
-name|info
 argument_list|)
 expr_stmt|;
 if|if
@@ -1196,8 +1273,6 @@ block|{
 name|updateBytesToScan
 argument_list|(
 name|info
-operator|.
-name|block
 operator|.
 name|getNumBytes
 argument_list|()
@@ -1234,8 +1309,6 @@ operator|.
 name|remove
 argument_list|(
 name|info
-operator|.
-name|block
 argument_list|)
 expr_stmt|;
 if|if
@@ -1247,8 +1320,6 @@ name|updateBytesToScan
 argument_list|(
 operator|-
 name|info
-operator|.
-name|block
 operator|.
 name|getNumBytes
 argument_list|()
@@ -2392,8 +2463,6 @@ operator|.
 name|first
 argument_list|()
 operator|.
-name|block
-operator|.
 name|getBlockId
 argument_list|()
 decl_stmt|;
@@ -2463,8 +2532,6 @@ name|blockInfoSet
 operator|.
 name|first
 argument_list|()
-operator|.
-name|block
 expr_stmt|;
 block|}
 block|}
@@ -2669,8 +2736,6 @@ name|updateBytesLeft
 argument_list|(
 operator|-
 name|info
-operator|.
-name|block
 operator|.
 name|getNumBytes
 argument_list|()
@@ -3556,8 +3621,6 @@ operator|+
 literal|"%-15d %s%n"
 argument_list|,
 name|info
-operator|.
-name|block
 argument_list|,
 operator|(
 name|info
