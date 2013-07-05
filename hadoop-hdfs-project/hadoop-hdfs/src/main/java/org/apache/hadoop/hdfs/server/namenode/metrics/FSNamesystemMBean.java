@@ -141,6 +141,20 @@ name|int
 name|getNumStaleDataNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Number of decommissioned Live data nodes    * @return number of decommissioned live data nodes    */
+DECL|method|getNumDecomLiveDataNodes ()
+specifier|public
+name|int
+name|getNumDecomLiveDataNodes
+parameter_list|()
+function_decl|;
+comment|/**    * Number of decommissioned dead data nodes    * @return number of decommissioned dead data nodes    */
+DECL|method|getNumDecomDeadDataNodes ()
+specifier|public
+name|int
+name|getNumDecomDeadDataNodes
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

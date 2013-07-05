@@ -96,6 +96,12 @@ argument_list|(
 literal|"Non-heap memory committed in MB"
 argument_list|)
 block|,
+DECL|enumConstant|MemNonHeapMaxM
+name|MemNonHeapMaxM
+argument_list|(
+literal|"Non-heap memory max in MB"
+argument_list|)
+block|,
 DECL|enumConstant|MemHeapUsedM
 name|MemHeapUsedM
 argument_list|(
@@ -106,6 +112,12 @@ DECL|enumConstant|MemHeapCommittedM
 name|MemHeapCommittedM
 argument_list|(
 literal|"Heap memory committed in MB"
+argument_list|)
+block|,
+DECL|enumConstant|MemHeapMaxM
+name|MemHeapMaxM
+argument_list|(
+literal|"Heap memory max in MB"
 argument_list|)
 block|,
 DECL|enumConstant|MemMaxM

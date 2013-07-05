@@ -213,6 +213,34 @@ name|String
 name|getNameDirStatuses
 parameter_list|()
 function_decl|;
+comment|/**    * Get Max, Median, Min and Standard Deviation of DataNodes usage.    *    * @return the DataNode usage information, as a JSON string.    */
+DECL|method|getNodeUsage ()
+specifier|public
+name|String
+name|getNodeUsage
+parameter_list|()
+function_decl|;
+comment|/**    * Get status information about the journals of the NN.    *    * @return the name journal status information, as a JSON string.    */
+DECL|method|getNameJournalStatus ()
+specifier|public
+name|String
+name|getNameJournalStatus
+parameter_list|()
+function_decl|;
+comment|/**    * Gets the NN start time    *    * @return the NN start time    */
+DECL|method|getNNStarted ()
+specifier|public
+name|String
+name|getNNStarted
+parameter_list|()
+function_decl|;
+comment|/**    * Get the compilation information which contains date, user and branch    *    * @return the compilation information, as a JSON string.    */
+DECL|method|getCompileInfo ()
+specifier|public
+name|String
+name|getCompileInfo
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
