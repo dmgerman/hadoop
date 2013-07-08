@@ -162,6 +162,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|conf
@@ -334,7 +348,12 @@ name|File
 argument_list|(
 name|testRootDir
 argument_list|,
-literal|"failingscript.sh"
+name|Shell
+operator|.
+name|appendScriptExtension
+argument_list|(
+literal|"failingscript"
+argument_list|)
 argument_list|)
 decl_stmt|;
 annotation|@
@@ -699,7 +718,13 @@ decl_stmt|;
 name|String
 name|timeOutScript
 init|=
-literal|"sleep 4\n echo\"I am fine\""
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"@echo off\nping -n 4 127.0.0.1>nul\necho \"I am fine\""
+else|:
+literal|"sleep 4\necho \"I am fine\""
 decl_stmt|;
 name|Configuration
 name|conf
