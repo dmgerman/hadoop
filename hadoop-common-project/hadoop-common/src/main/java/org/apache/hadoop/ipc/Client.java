@@ -848,6 +848,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|StringUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -1006,14 +1020,12 @@ specifier|final
 name|boolean
 name|fallbackAllowed
 decl_stmt|;
-DECL|field|PING_CALL_ID
+DECL|field|uuid
+specifier|private
 specifier|final
-specifier|static
-name|int
-name|PING_CALL_ID
-init|=
-operator|-
-literal|1
+name|byte
+index|[]
+name|uuid
 decl_stmt|;
 comment|/**    * Executor on which IPC calls' parameters are sent. Deferring    * the sending of parameters to a separate thread isolates them    * from thread interruptions in the calling code.    */
 DECL|field|SEND_PARAMS_EXECUTOR
@@ -3536,7 +3548,7 @@ name|out
 operator|.
 name|write
 argument_list|(
-name|Server
+name|RpcConstants
 operator|.
 name|HEADER
 operator|.
@@ -3548,7 +3560,7 @@ name|out
 operator|.
 name|write
 argument_list|(
-name|Server
+name|RpcConstants
 operator|.
 name|CURRENT_VERSION
 argument_list|)
@@ -3887,6 +3899,8 @@ name|out
 operator|.
 name|writeInt
 argument_list|(
+name|RpcConstants
+operator|.
 name|PING_CALL_ID
 argument_list|)
 expr_stmt|;
@@ -4062,6 +4076,8 @@ argument_list|,
 name|call
 operator|.
 name|id
+argument_list|,
+name|uuid
 argument_list|)
 decl_stmt|;
 name|header
@@ -4982,6 +4998,15 @@ name|CommonConfigurationKeys
 operator|.
 name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_DEFAULT
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|uuid
+operator|=
+name|StringUtils
+operator|.
+name|getUuidBytes
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Construct an IPC client with the default SocketFactory    * @param valueClass    * @param conf    */

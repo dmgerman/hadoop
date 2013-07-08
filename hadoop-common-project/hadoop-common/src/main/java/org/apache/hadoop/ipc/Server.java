@@ -615,6 +615,22 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|RpcConstants
+operator|.
+name|CURRENT_VERSION
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -1373,24 +1389,6 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * The first four bytes of Hadoop RPC connections    */
-DECL|field|HEADER
-specifier|public
-specifier|static
-specifier|final
-name|ByteBuffer
-name|HEADER
-init|=
-name|ByteBuffer
-operator|.
-name|wrap
-argument_list|(
-literal|"hrpc"
-operator|.
-name|getBytes
-argument_list|()
-argument_list|)
-decl_stmt|;
 comment|/**    * If the user accidentally sends an HTTP GET to an IPC port, we detect this    * and send back a nicer response.    */
 DECL|field|HTTP_GET_BYTES
 specifier|private
@@ -1423,24 +1421,6 @@ operator|+
 literal|"It looks like you are making an HTTP request to a Hadoop IPC port. "
 operator|+
 literal|"This is not the correct port for the web interface on this daemon.\r\n"
-decl_stmt|;
-comment|// 1 : Introduce ping and server does not throw away RPCs
-comment|// 3 : Introduce the protocol into the RPC connection header
-comment|// 4 : Introduced SASL security layer
-comment|// 5 : Introduced use of {@link ArrayPrimitiveWritable$Internal}
-comment|//     in ObjectWritable to efficiently transmit arrays of primitives
-comment|// 6 : Made RPC Request header explicit
-comment|// 7 : Changed Ipc Connection Header to use Protocol buffers
-comment|// 8 : SASL server always sends a final response
-comment|// 9 : Changes to protocol for HADOOP-8990
-DECL|field|CURRENT_VERSION
-specifier|public
-specifier|static
-specifier|final
-name|byte
-name|CURRENT_VERSION
-init|=
-literal|9
 decl_stmt|;
 comment|/**    * Initial and max size of response buffer    */
 DECL|field|INITIAL_RESP_BUF_SIZE
@@ -1924,6 +1904,37 @@ return|;
 block|}
 return|return
 literal|null
+return|;
+block|}
+comment|/**    * Returns the clientId from the current RPC request    */
+DECL|method|getClientId ()
+specifier|public
+specifier|static
+name|byte
+index|[]
+name|getClientId
+parameter_list|()
+block|{
+name|Call
+name|call
+init|=
+name|CurCall
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+return|return
+name|call
+operator|!=
+literal|null
+condition|?
+name|call
+operator|.
+name|clientId
+else|:
+name|RpcConstants
+operator|.
+name|DUMMY_CLIENT_ID
 return|;
 block|}
 comment|/** Returns remote address as a string when invoked inside an RPC.    *  Returns null in case of an error.    */
@@ -2570,6 +2581,13 @@ operator|.
 name|RpcKind
 name|rpcKind
 decl_stmt|;
+DECL|field|clientId
+specifier|private
+specifier|final
+name|byte
+index|[]
+name|clientId
+decl_stmt|;
 DECL|method|Call (int id, Writable param, Connection connection)
 specifier|public
 name|Call
@@ -2597,10 +2615,14 @@ operator|.
 name|RpcKind
 operator|.
 name|RPC_BUILTIN
+argument_list|,
+name|RpcConstants
+operator|.
+name|DUMMY_CLIENT_ID
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Call (int id, Writable param, Connection connection, RPC.RpcKind kind)
+DECL|method|Call (int id, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId)
 specifier|public
 name|Call
 parameter_list|(
@@ -2617,6 +2639,10 @@ name|RPC
 operator|.
 name|RpcKind
 name|kind
+parameter_list|,
+name|byte
+index|[]
+name|clientId
 parameter_list|)
 block|{
 name|this
@@ -2657,6 +2683,12 @@ operator|.
 name|rpcKind
 operator|=
 name|kind
+expr_stmt|;
+name|this
+operator|.
+name|clientId
+operator|=
+name|clientId
 expr_stmt|;
 block|}
 annotation|@
@@ -7242,6 +7274,8 @@ block|}
 if|if
 condition|(
 operator|!
+name|RpcConstants
+operator|.
 name|HEADER
 operator|.
 name|equals
@@ -7338,7 +7372,7 @@ condition|(
 operator|(
 name|dataLength
 operator|==
-name|Client
+name|RpcConstants
 operator|.
 name|PING_CALL_ID
 operator|)
@@ -8365,7 +8399,7 @@ if|if
 condition|(
 name|unwrappedDataLength
 operator|==
-name|Client
+name|RpcConstants
 operator|.
 name|PING_CALL_ID
 condition|)
@@ -8982,6 +9016,14 @@ operator|.
 name|getRpcKind
 argument_list|()
 argument_list|)
+argument_list|,
+name|header
+operator|.
+name|getClientId
+argument_list|()
+operator|.
+name|toByteArray
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|callQueue
@@ -10734,8 +10776,6 @@ name|headerBuilder
 operator|.
 name|setServerIpcVersionNum
 argument_list|(
-name|Server
-operator|.
 name|CURRENT_VERSION
 argument_list|)
 expr_stmt|;

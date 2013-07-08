@@ -134,6 +134,18 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|ByteString
+import|;
+end_import
+
 begin_class
 DECL|class|ProtoUtil
 specifier|public
@@ -741,7 +753,7 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|makeRpcRequestHeader (RPC.RpcKind rpcKind, RpcRequestHeaderProto.OperationProto operation, int callId)
+DECL|method|makeRpcRequestHeader (RPC.RpcKind rpcKind, RpcRequestHeaderProto.OperationProto operation, int callId, byte[] uuid)
 specifier|public
 specifier|static
 name|RpcRequestHeaderProto
@@ -759,6 +771,10 @@ name|operation
 parameter_list|,
 name|int
 name|callId
+parameter_list|,
+name|byte
+index|[]
+name|uuid
 parameter_list|)
 block|{
 name|RpcRequestHeaderProto
@@ -789,6 +805,16 @@ operator|.
 name|setCallId
 argument_list|(
 name|callId
+argument_list|)
+operator|.
+name|setClientId
+argument_list|(
+name|ByteString
+operator|.
+name|copyFrom
+argument_list|(
+name|uuid
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return

@@ -3560,7 +3560,7 @@ name|HADOOP0_18_ERROR_MSG
 init|=
 literal|"Server IPC version "
 operator|+
-name|Server
+name|RpcConstants
 operator|.
 name|CURRENT_VERSION
 operator|+
@@ -3656,7 +3656,7 @@ name|HADOOP0_20_ERROR_MSG
 init|=
 literal|"Server IPC version "
 operator|+
-name|Server
+name|RpcConstants
 operator|.
 name|CURRENT_VERSION
 operator|+
@@ -3708,7 +3708,7 @@ name|HADOOP0_21_ERROR_MSG
 init|=
 literal|"Server IPC version "
 operator|+
-name|Server
+name|RpcConstants
 operator|.
 name|CURRENT_VERSION
 operator|+
