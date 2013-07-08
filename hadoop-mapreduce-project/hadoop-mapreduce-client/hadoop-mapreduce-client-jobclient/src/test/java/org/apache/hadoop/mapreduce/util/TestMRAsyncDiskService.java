@@ -291,9 +291,9 @@ name|cwd
 operator|.
 name|split
 argument_list|(
-name|File
+name|Path
 operator|.
-name|separator
+name|SEPARATOR
 argument_list|)
 decl_stmt|;
 name|String
@@ -304,9 +304,9 @@ name|pathname
 operator|.
 name|split
 argument_list|(
-name|File
+name|Path
 operator|.
-name|separator
+name|SEPARATOR
 argument_list|)
 decl_stmt|;
 comment|// There are three possible cases:
@@ -445,9 +445,9 @@ name|sb
 operator|.
 name|append
 argument_list|(
-name|File
+name|Path
 operator|.
-name|separator
+name|SEPARATOR
 argument_list|)
 expr_stmt|;
 block|}
@@ -483,9 +483,9 @@ name|sb
 operator|.
 name|append
 argument_list|(
-name|File
+name|Path
 operator|.
-name|separator
+name|SEPARATOR
 argument_list|)
 expr_stmt|;
 block|}
@@ -504,9 +504,9 @@ name|s
 operator|.
 name|endsWith
 argument_list|(
-name|File
+name|Path
 operator|.
-name|separator
+name|SEPARATOR
 argument_list|)
 condition|)
 block|{
