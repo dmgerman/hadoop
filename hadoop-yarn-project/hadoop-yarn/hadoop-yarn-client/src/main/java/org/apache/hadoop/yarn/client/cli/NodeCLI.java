@@ -234,6 +234,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|exceptions
 operator|.
 name|YarnException
@@ -387,7 +405,7 @@ name|LIST_CMD
 argument_list|,
 literal|false
 argument_list|,
-literal|"Lists all the nodes."
+literal|"Lists all the nodes in the RUNNING state."
 argument_list|)
 expr_stmt|;
 name|CommandLine
@@ -534,7 +552,11 @@ init|=
 name|client
 operator|.
 name|getNodeReports
-argument_list|()
+argument_list|(
+name|NodeState
+operator|.
+name|RUNNING
+argument_list|)
 decl_stmt|;
 name|writer
 operator|.

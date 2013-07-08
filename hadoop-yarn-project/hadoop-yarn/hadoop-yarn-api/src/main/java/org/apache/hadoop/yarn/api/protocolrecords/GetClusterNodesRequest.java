@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -78,6 +88,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -85,7 +113,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request from clients to get a report of all nodes  * in the cluster from the<code>ResourceManager</code>.</p>  *  *<p>Currently, this is empty.</p>  *  * @see ApplicationClientProtocol#getClusterNodes(GetClusterNodesRequest)   */
+comment|/**  *<p>The request from clients to get a report of all nodes  * in the cluster from the<code>ResourceManager</code>.</p>  *  * The request will ask for all nodes in the given {@link NodeState}s.  *  * @see ApplicationClientProtocol#getClusterNodes(GetClusterNodesRequest)   */
 end_comment
 
 begin_class
@@ -99,6 +127,46 @@ specifier|abstract
 class|class
 name|GetClusterNodesRequest
 block|{
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance (EnumSet<NodeState> states)
+specifier|public
+specifier|static
+name|GetClusterNodesRequest
+name|newInstance
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|NodeState
+argument_list|>
+name|states
+parameter_list|)
+block|{
+name|GetClusterNodesRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetClusterNodesRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setNodeStates
+argument_list|(
+name|states
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
 annotation|@
 name|Public
 annotation|@
@@ -126,6 +194,31 @@ return|return
 name|request
 return|;
 block|}
+comment|/**    * The state to filter the cluster nodes with.    */
+DECL|method|getNodeStates ()
+specifier|public
+specifier|abstract
+name|EnumSet
+argument_list|<
+name|NodeState
+argument_list|>
+name|getNodeStates
+parameter_list|()
+function_decl|;
+comment|/**    * The state to filter the cluster nodes with.    */
+DECL|method|setNodeStates (EnumSet<NodeState> states)
+specifier|public
+specifier|abstract
+name|void
+name|setNodeStates
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|NodeState
+argument_list|>
+name|states
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

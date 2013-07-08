@@ -224,6 +224,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueInfo
 import|;
 end_import
@@ -513,8 +531,8 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report of all nodes ({@link NodeReport}) in the cluster.    *</p>    *     * @return A list of report of all nodes    * @throws YarnException    * @throws IOException    */
-DECL|method|getNodeReports ()
+comment|/**    *<p>    * Get a report of nodes ({@link NodeReport}) in the cluster.    *</p>    *     * @param states The {@link NodeState}s to filter on. If no filter states are    *          given, nodes in all states will be returned.    * @return A list of node reports    * @throws YarnException    * @throws IOException    */
+DECL|method|getNodeReports (NodeState... states)
 specifier|public
 specifier|abstract
 name|List
@@ -522,7 +540,11 @@ argument_list|<
 name|NodeReport
 argument_list|>
 name|getNodeReports
-parameter_list|()
+parameter_list|(
+name|NodeState
+modifier|...
+name|states
+parameter_list|)
 throws|throws
 name|YarnException
 throws|,

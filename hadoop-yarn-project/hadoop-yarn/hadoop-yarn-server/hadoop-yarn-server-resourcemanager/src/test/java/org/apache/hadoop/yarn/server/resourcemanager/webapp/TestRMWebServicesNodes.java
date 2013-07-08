@@ -80,6 +80,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|ws
@@ -515,6 +525,20 @@ operator|.
 name|sax
 operator|.
 name|InputSource
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Joiner
 import|;
 end_import
 
@@ -1058,8 +1082,6 @@ operator|.
 name|NEW
 argument_list|)
 expr_stmt|;
-comment|// One unhealthy node which should not appear in the list after
-comment|// MAPREDUCE-3760.
 name|MockNM
 name|nm3
 init|=
@@ -1294,12 +1316,12 @@ argument_list|(
 literal|"node"
 argument_list|)
 decl_stmt|;
-comment|// Just 2 nodes, leaving behind the unhealthy node.
+comment|// 3 nodes, including the unhealthy node and the new node.
 name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|2
+literal|3
 argument_list|,
 name|nodeArray
 operator|.
@@ -1412,7 +1434,7 @@ argument_list|)
 operator|.
 name|queryParam
 argument_list|(
-literal|"state"
+literal|"states"
 argument_list|,
 name|NodeState
 operator|.
@@ -1597,7 +1619,7 @@ argument_list|)
 operator|.
 name|queryParam
 argument_list|(
-literal|"state"
+literal|"states"
 argument_list|,
 name|NodeState
 operator|.
@@ -1736,7 +1758,7 @@ argument_list|)
 operator|.
 name|queryParam
 argument_list|(
-literal|"state"
+literal|"states"
 argument_list|,
 literal|"BOGUSSTATE"
 argument_list|)
@@ -2031,7 +2053,7 @@ argument_list|)
 operator|.
 name|queryParam
 argument_list|(
-literal|"state"
+literal|"states"
 argument_list|,
 name|NodeState
 operator|.
@@ -2585,7 +2607,7 @@ argument_list|)
 operator|.
 name|queryParam
 argument_list|(
-literal|"state"
+literal|"states"
 argument_list|,
 literal|"running"
 argument_list|)
@@ -2789,7 +2811,7 @@ argument_list|)
 operator|.
 name|queryParam
 argument_list|(
-literal|"state"
+literal|"states"
 argument_list|,
 literal|"UNHEALTHY"
 argument_list|)
@@ -2907,6 +2929,48 @@ argument_list|,
 literal|5121
 argument_list|)
 decl_stmt|;
+name|rm
+operator|.
+name|sendNodeStarted
+argument_list|(
+name|nm1
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|sendNodeStarted
+argument_list|(
+name|nm2
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|NMwaitForState
+argument_list|(
+name|nm1
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|NodeState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|NMwaitForState
+argument_list|(
+name|nm2
+operator|.
+name|getNodeId
+argument_list|()
+argument_list|,
+name|NodeState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
 name|ClientResponse
 name|response
 init|=
@@ -5018,9 +5082,26 @@ argument_list|)
 operator|.
 name|queryParam
 argument_list|(
-literal|"state"
+literal|"states"
 argument_list|,
-literal|"aLl"
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|','
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|EnumSet
+operator|.
+name|allOf
+argument_list|(
+name|NodeState
+operator|.
+name|class
+argument_list|)
+argument_list|)
 argument_list|)
 operator|.
 name|accept

@@ -1215,7 +1215,11 @@ argument_list|(
 name|client
 operator|.
 name|getNodeReports
-argument_list|()
+argument_list|(
+name|NodeState
+operator|.
+name|RUNNING
+argument_list|)
 argument_list|)
 operator|.
 name|thenReturn
@@ -1268,7 +1272,11 @@ name|client
 argument_list|)
 operator|.
 name|getNodeReports
-argument_list|()
+argument_list|(
+name|NodeState
+operator|.
+name|RUNNING
+argument_list|)
 expr_stmt|;
 name|ByteArrayOutputStream
 name|baos
