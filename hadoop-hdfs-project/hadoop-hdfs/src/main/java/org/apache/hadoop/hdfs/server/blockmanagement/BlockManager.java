@@ -8380,9 +8380,6 @@ operator|.
 name|isGenStampInFuture
 argument_list|(
 name|iblk
-operator|.
-name|getGenerationStamp
-argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -8857,9 +8854,6 @@ operator|.
 name|isGenStampInFuture
 argument_list|(
 name|block
-operator|.
-name|getGenerationStamp
-argument_list|()
 argument_list|)
 condition|)
 block|{

@@ -1379,6 +1379,12 @@ name|numDataNodes
 init|=
 literal|1
 decl_stmt|;
+specifier|final
+name|long
+name|BLOCK_ID_FUDGE
+init|=
+literal|128
+decl_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -1724,7 +1730,8 @@ argument_list|(
 name|newGS
 argument_list|)
 expr_stmt|;
-comment|/* Test writing to a new block */
+comment|// Test writing to a new block. Don't choose the next sequential
+comment|// block ID to avoid conflicting with IDs chosen by the NN.
 name|long
 name|newBlockId
 init|=
@@ -1733,7 +1740,7 @@ operator|.
 name|getBlockId
 argument_list|()
 operator|+
-literal|1
+name|BLOCK_ID_FUDGE
 decl_stmt|;
 name|ExtendedBlock
 name|newBlock

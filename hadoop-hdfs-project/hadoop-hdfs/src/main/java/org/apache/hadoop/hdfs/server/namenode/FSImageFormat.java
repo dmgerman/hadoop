@@ -625,7 +625,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Contains inner classes for reading or writing the on-disk format for  * FSImages.  *   * In particular, the format of the FSImage looks like:  *<pre>  * FSImage {  *   layoutVersion: int, namespaceID: int, numberItemsInFSDirectoryTree: long,  *   namesystemGenerationStamp: long, transactionID: long,   *   snapshotCounter: int, numberOfSnapshots: int, numOfSnapshottableDirs: int,  *   {FSDirectoryTree, FilesUnderConstruction, SecretManagerState} (can be compressed)  * }  *   * FSDirectoryTree (if {@link Feature#FSIMAGE_NAME_OPTIMIZATION} is supported) {  *   INodeInfo of root, numberOfChildren of root: int  *   [list of INodeInfo of root's children],  *   [list of INodeDirectoryInfo of root's directory children]  * }  *   * FSDirectoryTree (if {@link Feature#FSIMAGE_NAME_OPTIMIZATION} not supported){  *   [list of INodeInfo of INodes in topological order]  * }  *   * INodeInfo {  *   {  *     localName: short + byte[]  *   } when {@link Feature#FSIMAGE_NAME_OPTIMIZATION} is supported  *   or   *   {  *     fullPath: byte[]  *   } when {@link Feature#FSIMAGE_NAME_OPTIMIZATION} is not supported  *   replicationFactor: short, modificationTime: long,  *   accessTime: long, preferredBlockSize: long,  *   numberOfBlocks: int (-1 for INodeDirectory, -2 for INodeSymLink),  *   {   *     nsQuota: long, dsQuota: long,   *     {  *       isINodeSnapshottable: byte,  *       isINodeWithSnapshot: byte (if isINodeSnapshottable is false)  *     } (when {@link Feature#SNAPSHOT} is supported),   *     fsPermission: short, PermissionStatus  *   } for INodeDirectory  *   or   *   {  *     symlinkString, fsPermission: short, PermissionStatus  *   } for INodeSymlink  *   or  *   {  *     [list of BlockInfo]  *     [list of FileDiff]  *     {  *       isINodeFileUnderConstructionSnapshot: byte,   *       {clientName: short + byte[], clientMachine: short + byte[]} (when   *       isINodeFileUnderConstructionSnapshot is true),  *     } (when {@link Feature#SNAPSHOT} is supported and writing snapshotINode),   *     fsPermission: short, PermissionStatus  *   } for INodeFile  * }  *   * INodeDirectoryInfo {  *   fullPath of the directory: short + byte[],  *   numberOfChildren: int, [list of INodeInfo of children INode],  *   {  *     numberOfSnapshots: int,  *     [list of Snapshot] (when NumberOfSnapshots is positive),  *     numberOfDirectoryDiffs: int,  *     [list of DirectoryDiff] (NumberOfDirectoryDiffs is positive),  *     number of children that are directories,  *     [list of INodeDirectoryInfo of the directory children] (includes  *     snapshot copies of deleted sub-directories)  *   } (when {@link Feature#SNAPSHOT} is supported),   * }  *   * Snapshot {  *   snapshotID: int, root of Snapshot: INodeDirectoryInfo (its local name is   *   the name of the snapshot)  * }  *   * DirectoryDiff {  *   full path of the root of the associated Snapshot: short + byte[],   *   childrenSize: int,   *   isSnapshotRoot: byte,   *   snapshotINodeIsNotNull: byte (when isSnapshotRoot is false),  *   snapshotINode: INodeDirectory (when SnapshotINodeIsNotNull is true), Diff   * }  *   * Diff {  *   createdListSize: int, [Local name of INode in created list],  *   deletedListSize: int, [INode in deleted list: INodeInfo]  * }  *  * FileDiff {  *   full path of the root of the associated Snapshot: short + byte[],   *   fileSize: long,   *   snapshotINodeIsNotNull: byte,  *   snapshotINode: INodeFile (when SnapshotINodeIsNotNull is true), Diff   * }  *</pre>  */
+comment|/**  * Contains inner classes for reading or writing the on-disk format for  * FSImages.  *   * In particular, the format of the FSImage looks like:  *<pre>  * FSImage {  *   layoutVersion: int, namespaceID: int, numberItemsInFSDirectoryTree: long,  *   namesystemGenerationStampV1: long, namesystemGenerationStampV2: long,  *   generationStampAtBlockIdSwitch:long, lastAllocatedBlockId:  *   long transactionID: long, snapshotCounter: int, numberOfSnapshots: int,  *   numOfSnapshottableDirs: int,  *   {FSDirectoryTree, FilesUnderConstruction, SecretManagerState} (can be compressed)  * }  *   * FSDirectoryTree (if {@link Feature#FSIMAGE_NAME_OPTIMIZATION} is supported) {  *   INodeInfo of root, numberOfChildren of root: int  *   [list of INodeInfo of root's children],  *   [list of INodeDirectoryInfo of root's directory children]  * }  *   * FSDirectoryTree (if {@link Feature#FSIMAGE_NAME_OPTIMIZATION} not supported){  *   [list of INodeInfo of INodes in topological order]  * }  *   * INodeInfo {  *   {  *     localName: short + byte[]  *   } when {@link Feature#FSIMAGE_NAME_OPTIMIZATION} is supported  *   or   *   {  *     fullPath: byte[]  *   } when {@link Feature#FSIMAGE_NAME_OPTIMIZATION} is not supported  *   replicationFactor: short, modificationTime: long,  *   accessTime: long, preferredBlockSize: long,  *   numberOfBlocks: int (-1 for INodeDirectory, -2 for INodeSymLink),  *   {   *     nsQuota: long, dsQuota: long,   *     {  *       isINodeSnapshottable: byte,  *       isINodeWithSnapshot: byte (if isINodeSnapshottable is false)  *     } (when {@link Feature#SNAPSHOT} is supported),   *     fsPermission: short, PermissionStatus  *   } for INodeDirectory  *   or   *   {  *     symlinkString, fsPermission: short, PermissionStatus  *   } for INodeSymlink  *   or  *   {  *     [list of BlockInfo]  *     [list of FileDiff]  *     {  *       isINodeFileUnderConstructionSnapshot: byte,   *       {clientName: short + byte[], clientMachine: short + byte[]} (when   *       isINodeFileUnderConstructionSnapshot is true),  *     } (when {@link Feature#SNAPSHOT} is supported and writing snapshotINode),   *     fsPermission: short, PermissionStatus  *   } for INodeFile  * }  *   * INodeDirectoryInfo {  *   fullPath of the directory: short + byte[],  *   numberOfChildren: int, [list of INodeInfo of children INode],  *   {  *     numberOfSnapshots: int,  *     [list of Snapshot] (when NumberOfSnapshots is positive),  *     numberOfDirectoryDiffs: int,  *     [list of DirectoryDiff] (NumberOfDirectoryDiffs is positive),  *     number of children that are directories,  *     [list of INodeDirectoryInfo of the directory children] (includes  *     snapshot copies of deleted sub-directories)  *   } (when {@link Feature#SNAPSHOT} is supported),   * }  *   * Snapshot {  *   snapshotID: int, root of Snapshot: INodeDirectoryInfo (its local name is   *   the name of the snapshot)  * }  *   * DirectoryDiff {  *   full path of the root of the associated Snapshot: short + byte[],   *   childrenSize: int,   *   isSnapshotRoot: byte,   *   snapshotINodeIsNotNull: byte (when isSnapshotRoot is false),  *   snapshotINode: INodeDirectory (when SnapshotINodeIsNotNull is true), Diff   * }  *   * Diff {  *   createdListSize: int, [Local name of INode in created list],  *   deletedListSize: int, [INode in deleted list: INodeInfo]  * }  *  * FileDiff {  *   full path of the root of the associated Snapshot: short + byte[],   *   fileSize: long,   *   snapshotINodeIsNotNull: byte,  *   snapshotINode: INodeFile (when SnapshotINodeIsNotNull is true), Diff   * }  *</pre>  */
 end_comment
 
 begin_class
@@ -937,7 +937,7 @@ operator|.
 name|readLong
 argument_list|()
 decl_stmt|;
-comment|// read in the last generation stamp.
+comment|// read in the last generation stamp for legacy blocks.
 name|long
 name|genstamp
 init|=
@@ -948,11 +948,97 @@ argument_list|()
 decl_stmt|;
 name|namesystem
 operator|.
-name|setGenerationStamp
+name|setGenerationStampV1
 argument_list|(
 name|genstamp
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|SEQUENTIAL_BLOCK_ID
+argument_list|,
+name|imgVersion
+argument_list|)
+condition|)
+block|{
+comment|// read the starting generation stamp for sequential block IDs
+name|genstamp
+operator|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+expr_stmt|;
+name|namesystem
+operator|.
+name|setGenerationStampV2
+argument_list|(
+name|genstamp
+argument_list|)
+expr_stmt|;
+comment|// read the last generation stamp for blocks created after
+comment|// the switch to sequential block IDs.
+name|long
+name|stampAtIdSwitch
+init|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+decl_stmt|;
+name|namesystem
+operator|.
+name|setGenerationStampV1Limit
+argument_list|(
+name|stampAtIdSwitch
+argument_list|)
+expr_stmt|;
+comment|// read the max sequential block ID.
+name|long
+name|maxSequentialBlockId
+init|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+decl_stmt|;
+name|namesystem
+operator|.
+name|setLastAllocatedBlockId
+argument_list|(
+name|maxSequentialBlockId
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|long
+name|startingGenStamp
+init|=
+name|namesystem
+operator|.
+name|upgradeGenerationStampToV2
+argument_list|()
+decl_stmt|;
+comment|// This is an upgrade.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Upgrading to sequential block IDs. Generation stamp "
+operator|+
+literal|"for new blocks set to "
+operator|+
+name|startingGenStamp
+argument_list|)
+expr_stmt|;
+block|}
 comment|// read the transaction ID of the last edit represented by
 comment|// this image
 if|if
@@ -3986,7 +4072,37 @@ name|writeLong
 argument_list|(
 name|sourceNamesystem
 operator|.
-name|getGenerationStamp
+name|getGenerationStampV1
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|sourceNamesystem
+operator|.
+name|getGenerationStampV2
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|sourceNamesystem
+operator|.
+name|getGenerationStampAtblockIdSwitch
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|sourceNamesystem
+operator|.
+name|getLastAllocatedBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;

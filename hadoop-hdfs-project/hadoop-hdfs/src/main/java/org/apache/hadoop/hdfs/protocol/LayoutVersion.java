@@ -413,6 +413,17 @@ literal|"Reduce snapshot inode memory footprint"
 argument_list|,
 literal|false
 argument_list|)
+block|,
+DECL|enumConstant|SEQUENTIAL_BLOCK_ID
+name|SEQUENTIAL_BLOCK_ID
+argument_list|(
+operator|-
+literal|46
+argument_list|,
+literal|"Allocate block IDs sequentially and store "
+operator|+
+literal|"block IDs in the edits log and image files"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

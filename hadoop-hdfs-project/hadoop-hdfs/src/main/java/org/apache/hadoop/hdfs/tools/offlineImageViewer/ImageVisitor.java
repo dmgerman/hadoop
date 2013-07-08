@@ -70,6 +70,15 @@ block|,
 DECL|enumConstant|GENERATION_STAMP
 name|GENERATION_STAMP
 block|,
+DECL|enumConstant|GENERATION_STAMP_V2
+name|GENERATION_STAMP_V2
+block|,
+DECL|enumConstant|GENERATION_STAMP_V1_LIMIT
+name|GENERATION_STAMP_V1_LIMIT
+block|,
+DECL|enumConstant|LAST_ALLOCATED_BLOCK_ID
+name|LAST_ALLOCATED_BLOCK_ID
+block|,
 DECL|enumConstant|INODES
 name|INODES
 block|,

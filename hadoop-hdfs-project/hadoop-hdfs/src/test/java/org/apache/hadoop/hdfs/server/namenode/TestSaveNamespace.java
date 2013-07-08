@@ -2561,7 +2561,7 @@ argument_list|(
 name|spyFsn
 argument_list|)
 operator|.
-name|getGenerationStamp
+name|getGenerationStampV2
 argument_list|()
 expr_stmt|;
 name|ExecutorService

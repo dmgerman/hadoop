@@ -44,20 +44,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DFSUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|Block
@@ -92,12 +78,12 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|IdGenerator
+name|SequentialNumber
 import|;
 end_import
 
 begin_comment
-comment|/**  * Generator of random block IDs.  */
+comment|/**  * Generate the next valid block ID by incrementing the maximum block  * ID allocated so far, starting at 2^30+1.  *  * Block IDs used to be allocated randomly in the past. Hence we may  * find some conflicts while stepping through the ID space sequentially.  * However given the sparsity of the ID space, conflicts should be rare  * and can be skipped over when detected.  */
 end_comment
 
 begin_class
@@ -105,34 +91,50 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|RandomBlockIdGenerator
+DECL|class|SequentialBlockIdGenerator
 specifier|public
 class|class
-name|RandomBlockIdGenerator
-implements|implements
-name|IdGenerator
+name|SequentialBlockIdGenerator
+extends|extends
+name|SequentialNumber
 block|{
+comment|/**    * The last reserved block ID.    */
+DECL|field|LAST_RESERVED_BLOCK_ID
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|LAST_RESERVED_BLOCK_ID
+init|=
+literal|1024L
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 DECL|field|blockManager
 specifier|private
 specifier|final
 name|BlockManager
 name|blockManager
 decl_stmt|;
-DECL|method|RandomBlockIdGenerator (FSNamesystem namesystem)
-name|RandomBlockIdGenerator
+DECL|method|SequentialBlockIdGenerator (BlockManager blockManagerRef)
+name|SequentialBlockIdGenerator
 parameter_list|(
-name|FSNamesystem
-name|namesystem
+name|BlockManager
+name|blockManagerRef
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|LAST_RESERVED_BLOCK_ID
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|blockManager
 operator|=
-name|namesystem
-operator|.
-name|getBlockManager
-argument_list|()
+name|blockManagerRef
 expr_stmt|;
 block|}
 annotation|@
@@ -150,19 +152,14 @@ init|=
 operator|new
 name|Block
 argument_list|(
-name|DFSUtil
+name|super
 operator|.
-name|getRandom
+name|nextValue
 argument_list|()
-operator|.
-name|nextLong
-argument_list|()
-argument_list|,
-literal|0
-argument_list|,
-literal|0
 argument_list|)
 decl_stmt|;
+comment|// There may be an occasional conflict with randomly generated
+comment|// block IDs. Skip over the conflicts.
 while|while
 condition|(
 name|isValidBlock
@@ -175,12 +172,9 @@ name|b
 operator|.
 name|setBlockId
 argument_list|(
-name|DFSUtil
+name|super
 operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextLong
+name|nextValue
 argument_list|()
 argument_list|)
 expr_stmt|;

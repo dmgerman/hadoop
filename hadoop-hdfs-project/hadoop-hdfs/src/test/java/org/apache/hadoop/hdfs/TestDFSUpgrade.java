@@ -394,6 +394,7 @@ specifier|public
 class|class
 name|TestDFSUpgrade
 block|{
+comment|// TODO: Avoid hard-coding expected_txid. The test should be more robust.
 DECL|field|EXPECTED_TXID
 specifier|private
 specifier|static
@@ -401,7 +402,7 @@ specifier|final
 name|int
 name|EXPECTED_TXID
 init|=
-literal|45
+literal|61
 decl_stmt|;
 DECL|field|LOG
 specifier|private

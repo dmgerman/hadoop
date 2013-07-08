@@ -325,6 +325,22 @@ init|=
 operator|-
 literal|12345
 decl_stmt|;
+comment|// Number of generation stamps reserved for legacy blocks.
+DECL|field|RESERVED_GENERATION_STAMPS_V1
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|RESERVED_GENERATION_STAMPS_V1
+init|=
+literal|1024L
+operator|*
+literal|1024
+operator|*
+literal|1024
+operator|*
+literal|1024
+decl_stmt|;
 comment|/**    * URI Scheme for hdfs://namenode/ URIs.    */
 DECL|field|HDFS_URI_SCHEME
 specifier|public

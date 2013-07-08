@@ -44,6 +44,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|Block
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|namenode
@@ -145,13 +161,13 @@ name|boolean
 name|isInStandbyState
 parameter_list|()
 function_decl|;
-DECL|method|isGenStampInFuture (long generationStamp)
+DECL|method|isGenStampInFuture (Block block)
 specifier|public
 name|boolean
 name|isGenStampInFuture
 parameter_list|(
-name|long
-name|generationStamp
+name|Block
+name|block
 parameter_list|)
 function_decl|;
 DECL|method|adjustSafeModeBlockTotals (int deltaSafe, int deltaTotal)

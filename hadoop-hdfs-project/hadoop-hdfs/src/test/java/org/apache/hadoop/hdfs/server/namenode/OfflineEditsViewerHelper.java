@@ -462,7 +462,7 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
-comment|/**    * Generates edits with all op codes and returns the edits filename    *    * @param dfsDir DFS directory (where to setup MiniDFS cluster)    * @param editsFilename where to copy the edits    */
+comment|/**    * Generates edits with all op codes and returns the edits filename    */
 DECL|method|generateEdits ()
 specifier|public
 name|String
@@ -763,7 +763,7 @@ argument_list|,
 name|config
 argument_list|)
 decl_stmt|;
-comment|// OP_ADD 0, OP_SET_GENSTAMP 10
+comment|// OP_ADD 0
 name|Path
 name|pathFileCreate
 init|=

@@ -6060,11 +6060,12 @@ name|e
 argument_list|)
 throw|;
 block|}
+comment|// TODO: Fix the test to not require a hard-coded transaction count.
 specifier|final
 name|int
 name|EXPECTED_TXNS_FIRST_SEG
 init|=
-literal|11
+literal|13
 decl_stmt|;
 comment|// the following steps should have happened:
 comment|//   edits_inprogress_1 -> edits_1-12  (finalized)

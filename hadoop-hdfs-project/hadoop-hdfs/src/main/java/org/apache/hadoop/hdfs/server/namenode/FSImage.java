@@ -819,11 +819,6 @@ specifier|protected
 name|NNStorageRetentionManager
 name|archivalManager
 decl_stmt|;
-DECL|field|blockIdGenerator
-specifier|protected
-name|IdGenerator
-name|blockIdGenerator
-decl_stmt|;
 comment|/**    * Construct an FSImage    * @param conf Configuration    * @throws IOException if default directories are invalid.    */
 DECL|method|FSImage (Configuration conf)
 specifier|public
@@ -982,15 +977,6 @@ operator|+
 name|fileCount
 operator|+
 literal|" files"
-argument_list|)
-expr_stmt|;
-comment|// BlockIdGenerator is defined during formatting
-comment|// currently there is only one BlockIdGenerator
-name|blockIdGenerator
-operator|=
-name|createBlockIdGenerator
-argument_list|(
-name|fsn
 argument_list|)
 expr_stmt|;
 name|NamespaceInfo
@@ -4200,15 +4186,6 @@ argument_list|(
 name|curFile
 argument_list|)
 expr_stmt|;
-comment|// BlockIdGenerator is determined after loading image
-comment|// currently there is only one BlockIdGenerator
-name|blockIdGenerator
-operator|=
-name|createBlockIdGenerator
-argument_list|(
-name|target
-argument_list|)
-expr_stmt|;
 name|target
 operator|.
 name|setBlockPoolId
@@ -6079,36 +6056,6 @@ name|storage
 operator|.
 name|getMostRecentCheckpointTxId
 argument_list|()
-return|;
-block|}
-DECL|method|getUniqueBlockId ()
-specifier|public
-name|long
-name|getUniqueBlockId
-parameter_list|()
-block|{
-return|return
-name|blockIdGenerator
-operator|.
-name|nextValue
-argument_list|()
-return|;
-block|}
-DECL|method|createBlockIdGenerator (FSNamesystem fsn)
-specifier|public
-name|IdGenerator
-name|createBlockIdGenerator
-parameter_list|(
-name|FSNamesystem
-name|fsn
-parameter_list|)
-block|{
-return|return
-operator|new
-name|RandomBlockIdGenerator
-argument_list|(
-name|fsn
-argument_list|)
 return|;
 block|}
 block|}
