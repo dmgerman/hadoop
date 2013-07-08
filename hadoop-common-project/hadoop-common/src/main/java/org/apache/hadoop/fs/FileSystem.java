@@ -7702,6 +7702,15 @@ name|map
 operator|.
 name|isEmpty
 argument_list|()
+operator|&&
+operator|!
+name|ShutdownHookManager
+operator|.
+name|get
+argument_list|()
+operator|.
+name|isShutdownInProgress
+argument_list|()
 condition|)
 block|{
 name|ShutdownHookManager
