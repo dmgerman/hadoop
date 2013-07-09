@@ -326,15 +326,6 @@ name|RENEWER_PARAM
 init|=
 literal|"renewer"
 decl_stmt|;
-DECL|field|TOKEN_KIND
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|TOKEN_KIND
-init|=
-literal|"HTTPFS_DELEGATION_TOKEN"
-decl_stmt|;
 DECL|field|DELEGATION_TOKEN_JSON
 specifier|public
 specifier|static

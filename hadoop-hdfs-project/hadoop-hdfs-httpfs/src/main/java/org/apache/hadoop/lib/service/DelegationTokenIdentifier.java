@@ -40,13 +40,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|hdfs
 operator|.
-name|http
+name|web
 operator|.
-name|client
-operator|.
-name|HttpFSKerberosAuthenticator
+name|WebHdfsFileSystem
 import|;
 end_import
 
@@ -105,13 +103,9 @@ specifier|final
 name|Text
 name|KIND_NAME
 init|=
-operator|new
-name|Text
-argument_list|(
-name|HttpFSKerberosAuthenticator
+name|WebHdfsFileSystem
 operator|.
 name|TOKEN_KIND
-argument_list|)
 decl_stmt|;
 DECL|method|DelegationTokenIdentifier ()
 specifier|public
