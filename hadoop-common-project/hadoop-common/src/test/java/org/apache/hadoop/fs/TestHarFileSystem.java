@@ -122,6 +122,20 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|checkInvalidPath
+argument_list|(
+literal|"har://127.0.0.1-/foo.har"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|checkInvalidPath
+argument_list|(
+literal|"har://127.0.0.1/foo.har"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|checkInvalidPath (String s, Configuration conf)
 specifier|static
