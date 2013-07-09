@@ -1870,6 +1870,36 @@ name|Call
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/**    * Returns the currently active RPC call's sequential ID number.  A negative    * call ID indicates an invalid value, such as if there is no currently active    * RPC call.    *     * @return int sequential ID number of currently active RPC call    */
+DECL|method|getCallId ()
+specifier|public
+specifier|static
+name|int
+name|getCallId
+parameter_list|()
+block|{
+name|Call
+name|call
+init|=
+name|CurCall
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+return|return
+name|call
+operator|!=
+literal|null
+condition|?
+name|call
+operator|.
+name|callId
+else|:
+name|RpcConstants
+operator|.
+name|INVALID_CALL_ID
+return|;
+block|}
 comment|/** Returns the remote side ip address when invoked inside an RPC     *  Returns null incase of an error.    */
 DECL|method|getRemoteIp ()
 specifier|public

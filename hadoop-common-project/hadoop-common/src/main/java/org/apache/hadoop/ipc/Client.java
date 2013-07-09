@@ -314,6 +314,20 @@ name|concurrent
 operator|.
 name|atomic
 operator|.
+name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
 name|AtomicLong
 import|;
 end_import
@@ -973,10 +987,15 @@ decl_stmt|;
 comment|// class of call values
 DECL|field|counter
 specifier|private
-name|int
+specifier|final
+name|AtomicInteger
 name|counter
+init|=
+operator|new
+name|AtomicInteger
+argument_list|()
 decl_stmt|;
-comment|// counter for call ids
+comment|// call ID sequence
 DECL|field|running
 specifier|private
 name|AtomicBoolean
@@ -1277,21 +1296,13 @@ name|rpcRequest
 operator|=
 name|param
 expr_stmt|;
-synchronized|synchronized
-init|(
-name|Client
-operator|.
-name|this
-init|)
-block|{
 name|this
 operator|.
 name|id
 operator|=
-name|counter
-operator|++
+name|nextCallId
+argument_list|()
 expr_stmt|;
-block|}
 block|}
 comment|/** Indicate when the call is complete and the      * value or error are available.  Notifies by default.  */
 DECL|method|callComplete ()
@@ -6947,6 +6958,22 @@ operator|+
 name|address
 return|;
 block|}
+block|}
+comment|/**    * Returns the next valid sequential call ID by incrementing an atomic counter    * and masking off the sign bit.  Valid call IDs are non-negative integers in    * the range [ 0, 2^31 - 1 ].  Negative numbers are reserved for special    * purposes.  The values can overflow back to 0 and be reused.  Note that prior    * versions of the client did not mask off the sign bit, so a server may still    * see a negative call ID if it receives connections from an old client.    *     * @return int next valid call ID    */
+DECL|method|nextCallId ()
+specifier|private
+name|int
+name|nextCallId
+parameter_list|()
+block|{
+return|return
+name|counter
+operator|.
+name|getAndIncrement
+argument_list|()
+operator|&
+literal|0x7FFFFFFF
+return|;
 block|}
 block|}
 end_class

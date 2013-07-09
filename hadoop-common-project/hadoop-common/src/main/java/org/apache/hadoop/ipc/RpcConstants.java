@@ -81,6 +81,16 @@ index|[
 literal|0
 index|]
 decl_stmt|;
+DECL|field|INVALID_CALL_ID
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|INVALID_CALL_ID
+init|=
+operator|-
+literal|2
+decl_stmt|;
 comment|/**    * The first four bytes of Hadoop RPC connections    */
 DECL|field|HEADER
 specifier|public
