@@ -583,6 +583,29 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+return|return
+name|registerAppAttempt
+argument_list|(
+literal|true
+argument_list|)
+return|;
+block|}
+DECL|method|registerAppAttempt (boolean wait)
+specifier|public
+name|RegisterApplicationMasterResponse
+name|registerAppAttempt
+parameter_list|(
+name|boolean
+name|wait
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+if|if
+condition|(
+name|wait
+condition|)
+block|{
 name|waitForState
 argument_list|(
 name|RMAppAttemptState
@@ -590,6 +613,7 @@ operator|.
 name|LAUNCHED
 argument_list|)
 expr_stmt|;
+block|}
 name|responseId
 operator|=
 literal|0
