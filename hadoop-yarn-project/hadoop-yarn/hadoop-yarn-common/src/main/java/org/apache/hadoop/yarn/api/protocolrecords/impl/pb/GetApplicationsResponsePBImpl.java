@@ -100,7 +100,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 import|;
 end_import
 
@@ -176,7 +176,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 import|;
 end_import
 
@@ -194,7 +194,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetAllApplicationsResponseProtoOrBuilder
+name|GetApplicationsResponseProtoOrBuilder
 import|;
 end_import
 
@@ -203,24 +203,24 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|GetAllApplicationsResponsePBImpl
+DECL|class|GetApplicationsResponsePBImpl
 specifier|public
 class|class
-name|GetAllApplicationsResponsePBImpl
+name|GetApplicationsResponsePBImpl
 extends|extends
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 block|{
 DECL|field|proto
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 name|proto
 init|=
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 operator|.
 name|getDefaultInstance
 argument_list|()
 decl_stmt|;
 DECL|field|builder
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 operator|.
 name|Builder
 name|builder
@@ -240,24 +240,24 @@ name|ApplicationReport
 argument_list|>
 name|applicationList
 decl_stmt|;
-DECL|method|GetAllApplicationsResponsePBImpl ()
+DECL|method|GetApplicationsResponsePBImpl ()
 specifier|public
-name|GetAllApplicationsResponsePBImpl
+name|GetApplicationsResponsePBImpl
 parameter_list|()
 block|{
 name|builder
 operator|=
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 operator|.
 name|newBuilder
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|GetAllApplicationsResponsePBImpl (GetAllApplicationsResponseProto proto)
+DECL|method|GetApplicationsResponsePBImpl (GetApplicationsResponseProto proto)
 specifier|public
-name|GetAllApplicationsResponsePBImpl
+name|GetApplicationsResponsePBImpl
 parameter_list|(
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 name|proto
 parameter_list|)
 block|{
@@ -329,7 +329,7 @@ expr_stmt|;
 block|}
 DECL|method|getProto ()
 specifier|public
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 name|getProto
 parameter_list|()
 block|{
@@ -529,7 +529,7 @@ condition|)
 block|{
 name|builder
 operator|=
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 operator|.
 name|newBuilder
 argument_list|(
@@ -561,7 +561,7 @@ condition|)
 block|{
 return|return;
 block|}
-name|GetAllApplicationsResponseProtoOrBuilder
+name|GetApplicationsResponseProtoOrBuilder
 name|p
 init|=
 name|viaProto

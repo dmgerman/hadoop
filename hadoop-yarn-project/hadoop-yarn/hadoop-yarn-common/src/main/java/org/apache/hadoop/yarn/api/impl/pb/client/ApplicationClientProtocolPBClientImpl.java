@@ -248,7 +248,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 import|;
 end_import
 
@@ -266,7 +266,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 import|;
 end_import
 
@@ -692,7 +692,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetAllApplicationsRequestPBImpl
+name|GetApplicationsRequestPBImpl
 import|;
 end_import
 
@@ -714,7 +714,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetAllApplicationsResponsePBImpl
+name|GetApplicationsResponsePBImpl
 import|;
 end_import
 
@@ -1204,7 +1204,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetAllApplicationsRequestProto
+name|GetApplicationsRequestProto
 import|;
 end_import
 
@@ -1775,12 +1775,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getAllApplications ( GetAllApplicationsRequest request)
+DECL|method|getApplications ( GetApplicationsRequest request)
 specifier|public
-name|GetAllApplicationsResponse
-name|getAllApplications
+name|GetApplicationsResponse
+name|getApplications
 parameter_list|(
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 name|request
 parameter_list|)
 throws|throws
@@ -1788,12 +1788,12 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|GetAllApplicationsRequestProto
+name|GetApplicationsRequestProto
 name|requestProto
 init|=
 operator|(
 operator|(
-name|GetAllApplicationsRequestPBImpl
+name|GetApplicationsRequestPBImpl
 operator|)
 name|request
 operator|)
@@ -1805,11 +1805,11 @@ try|try
 block|{
 return|return
 operator|new
-name|GetAllApplicationsResponsePBImpl
+name|GetApplicationsResponsePBImpl
 argument_list|(
 name|proxy
 operator|.
-name|getAllApplications
+name|getApplications
 argument_list|(
 literal|null
 argument_list|,

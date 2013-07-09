@@ -142,7 +142,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 import|;
 end_import
 
@@ -160,7 +160,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 import|;
 end_import
 
@@ -770,17 +770,17 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>The interface used by clients to get a report of all Applications    * in the cluster from the<code>ResourceManager</code>.</p>    *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetAllApplicationsResponse} which includes the     * {@link ApplicationReport} for all the applications.</p>    *     *<p>If the user does not have<code>VIEW_APP</code> access for an    * application then the corresponding report will be filtered as    * described in {@link #getApplicationReport(GetApplicationReportRequest)}.    *</p>    *    * @param request request for report on all running applications    * @return report on all running applications    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>The interface used by clients to get a report of Applications    * matching the filters defined by {@link GetApplicationsRequest}    * in the cluster from the<code>ResourceManager</code>.</p>    *     *<p>The<code>ResourceManager</code> responds with a     * {@link GetApplicationsResponse} which includes the    * {@link ApplicationReport} for the applications.</p>    *     *<p>If the user does not have<code>VIEW_APP</code> access for an    * application then the corresponding report will be filtered as    * described in {@link #getApplicationReport(GetApplicationReportRequest)}.    *</p>    *    * @param request request for report on applications    * @return report on applications matching the given application types    *           defined in the request    * @throws YarnException    * @throws IOException    * @see GetApplicationsRequest    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getAllApplications ( GetAllApplicationsRequest request)
+DECL|method|getApplications ( GetApplicationsRequest request)
 specifier|public
-name|GetAllApplicationsResponse
-name|getAllApplications
+name|GetApplicationsResponse
+name|getApplications
 parameter_list|(
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 name|request
 parameter_list|)
 throws|throws

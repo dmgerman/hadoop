@@ -926,7 +926,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 import|;
 end_import
 
@@ -944,7 +944,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 import|;
 end_import
 
@@ -2601,12 +2601,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAllApplications ( GetAllApplicationsRequest request)
+DECL|method|getApplications ( GetApplicationsRequest request)
 specifier|public
-name|GetAllApplicationsResponse
-name|getAllApplications
+name|GetApplicationsResponse
+name|getApplications
 parameter_list|(
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 name|request
 parameter_list|)
 throws|throws

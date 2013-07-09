@@ -116,7 +116,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 import|;
 end_import
 
@@ -134,7 +134,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 import|;
 end_import
 
@@ -670,14 +670,14 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 name|allApplicationsResponse
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 operator|.
 name|class
 argument_list|)
@@ -772,13 +772,13 @@ name|when
 argument_list|(
 name|applicationsManager
 operator|.
-name|getAllApplications
+name|getApplications
 argument_list|(
 name|Mockito
 operator|.
 name|any
 argument_list|(
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 operator|.
 name|class
 argument_list|)

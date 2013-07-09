@@ -222,7 +222,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 import|;
 end_import
 
@@ -468,7 +468,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetAllApplicationsRequestPBImpl
+name|GetApplicationsRequestPBImpl
 import|;
 end_import
 
@@ -490,7 +490,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetAllApplicationsResponsePBImpl
+name|GetApplicationsResponsePBImpl
 import|;
 end_import
 
@@ -964,7 +964,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetAllApplicationsRequestProto
+name|GetApplicationsRequestProto
 import|;
 end_import
 
@@ -982,7 +982,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetAllApplicationsResponseProto
+name|GetApplicationsResponseProto
 import|;
 end_import
 
@@ -1720,37 +1720,37 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getAllApplications ( RpcController controller, GetAllApplicationsRequestProto proto)
+DECL|method|getApplications ( RpcController controller, GetApplicationsRequestProto proto)
 specifier|public
-name|GetAllApplicationsResponseProto
-name|getAllApplications
+name|GetApplicationsResponseProto
+name|getApplications
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|GetAllApplicationsRequestProto
+name|GetApplicationsRequestProto
 name|proto
 parameter_list|)
 throws|throws
 name|ServiceException
 block|{
-name|GetAllApplicationsRequestPBImpl
+name|GetApplicationsRequestPBImpl
 name|request
 init|=
 operator|new
-name|GetAllApplicationsRequestPBImpl
+name|GetApplicationsRequestPBImpl
 argument_list|(
 name|proto
 argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 name|response
 init|=
 name|real
 operator|.
-name|getAllApplications
+name|getApplications
 argument_list|(
 name|request
 argument_list|)
@@ -1758,7 +1758,7 @@ decl_stmt|;
 return|return
 operator|(
 operator|(
-name|GetAllApplicationsResponsePBImpl
+name|GetApplicationsResponsePBImpl
 operator|)
 name|response
 operator|)

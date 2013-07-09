@@ -22,6 +22,32 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -60,6 +86,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -85,7 +127,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request from clients to get a report of all Applications  * in the cluster from the<code>ResourceManager</code>.</p>  *  *<p>Currently, this is empty.</p>  *   * @see ApplicationClientProtocol#getAllApplications(GetAllApplicationsRequest)  */
+comment|/**  *<p>The request from clients to get a report of Applications  * in the cluster from the<code>ResourceManager</code>.</p>  *  *  * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)  */
 end_comment
 
 begin_class
@@ -93,11 +135,11 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|class|GetAllApplicationsRequest
+DECL|class|GetApplicationsRequest
 specifier|public
 specifier|abstract
 class|class
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 block|{
 annotation|@
 name|Public
@@ -106,18 +148,18 @@ name|Stable
 DECL|method|newInstance ()
 specifier|public
 specifier|static
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 name|newInstance
 parameter_list|()
 block|{
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 name|request
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|GetAllApplicationsRequest
+name|GetApplicationsRequest
 operator|.
 name|class
 argument_list|)
@@ -126,6 +168,79 @@ return|return
 name|request
 return|;
 block|}
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|newInstance ( Set<String> applicationTypes)
+specifier|public
+specifier|static
+name|GetApplicationsRequest
+name|newInstance
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationTypes
+parameter_list|)
+block|{
+name|GetApplicationsRequest
+name|request
+init|=
+name|Records
+operator|.
+name|newRecord
+argument_list|(
+name|GetApplicationsRequest
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|request
+operator|.
+name|setApplicationTypes
+argument_list|(
+name|applicationTypes
+argument_list|)
+expr_stmt|;
+return|return
+name|request
+return|;
+block|}
+comment|/**    * Get the application types to filter applications on    *    * @return Set of Application Types to filter on    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationTypes ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTypes
+parameter_list|()
+function_decl|;
+comment|/**    * Set the application types to filter applications on    *    * @param applicationTypes    * A Set of Application Types to filter on.    * If not defined, match all applications    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+specifier|public
+specifier|abstract
+name|void
+DECL|method|setApplicationTypes (Set<String> applicationTypes)
+name|setApplicationTypes
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationTypes
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

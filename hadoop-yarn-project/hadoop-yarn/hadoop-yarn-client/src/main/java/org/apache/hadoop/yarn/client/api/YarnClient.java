@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -505,15 +515,36 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    *<p>    * Get a report (ApplicationReport) of all Applications in the cluster.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *     * @return a list of reports of all running applications    * @throws YarnException    * @throws IOException    */
-DECL|method|getApplicationList ()
+DECL|method|getApplications ()
 specifier|public
 specifier|abstract
 name|List
 argument_list|<
 name|ApplicationReport
 argument_list|>
-name|getApplicationList
+name|getApplications
 parameter_list|()
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * Get a report (ApplicationReport) of Applications    * matching the given application types in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationTypes    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
+DECL|method|getApplications ( Set<String> applicationTypes)
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|getApplications
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationTypes
+parameter_list|)
 throws|throws
 name|YarnException
 throws|,

@@ -145,7 +145,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting an {@link ApplicationReport} for all applications.</p>  *   *<p>The<code>ApplicationReport</code> for each application includes details   * such as user, queue, name, host on which the<code>ApplicationMaster</code>   * is running, RPC port, tracking URL, diagnostics, start time etc.</p>  *   * @see ApplicationReport  * @see ApplicationClientProtocol#getAllApplications(GetAllApplicationsRequest)  */
+comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a client  * requesting an {@link ApplicationReport} for applications.</p>  *  *<p>The<code>ApplicationReport</code> for each application includes details  * such as user, queue, name, host on which the<code>ApplicationMaster</code>  * is running, RPC port, tracking URL, diagnostics, start time etc.</p>  *  * @see ApplicationReport  * @see ApplicationClientProtocol#getApplications(GetApplicationsRequest)  */
 end_comment
 
 begin_class
@@ -153,11 +153,11 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|class|GetAllApplicationsResponse
+DECL|class|GetApplicationsResponse
 specifier|public
 specifier|abstract
 class|class
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 block|{
 annotation|@
 name|Private
@@ -166,7 +166,7 @@ name|Unstable
 DECL|method|newInstance ( List<ApplicationReport> applications)
 specifier|public
 specifier|static
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 name|newInstance
 parameter_list|(
 name|List
@@ -176,14 +176,14 @@ argument_list|>
 name|applications
 parameter_list|)
 block|{
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|GetAllApplicationsResponse
+name|GetApplicationsResponse
 operator|.
 name|class
 argument_list|)
@@ -199,7 +199,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * Get<code>ApplicationReport</code> for all applications.    * @return<code>ApplicationReport</code> for all applications    */
+comment|/**    * Get<code>ApplicationReport</code> for applications.    * @return<code>ApplicationReport</code> for applications    */
 annotation|@
 name|Public
 annotation|@

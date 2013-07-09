@@ -166,6 +166,15 @@ name|KILL_CMD
 init|=
 literal|"kill"
 decl_stmt|;
+DECL|field|HELP_CMD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HELP_CMD
+init|=
+literal|"help"
+decl_stmt|;
 DECL|field|sysout
 specifier|protected
 name|PrintStream
