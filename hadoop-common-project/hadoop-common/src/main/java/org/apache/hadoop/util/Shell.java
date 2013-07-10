@@ -768,6 +768,24 @@ name|pid
 block|}
 return|;
 block|}
+comment|/** Return a regular expression string that match environment variables */
+DECL|method|getEnvironmentVariableRegex ()
+specifier|public
+specifier|static
+name|String
+name|getEnvironmentVariableRegex
+parameter_list|()
+block|{
+return|return
+operator|(
+name|WINDOWS
+operator|)
+condition|?
+literal|"%([A-Za-z_][A-Za-z0-9_]*?)%"
+else|:
+literal|"\\$([A-Za-z_][A-Za-z0-9_]*)"
+return|;
+block|}
 comment|/**    * Returns a File referencing a script with the given basename, inside the    * given parent directory.  The file extension is inferred by platform: ".cmd"    * on Windows, or ".sh" otherwise.    *     * @param parent File parent directory    * @param basename String script file basename    * @return File referencing the script in the directory    */
 DECL|method|appendScriptExtension (File parent, String basename)
 specifier|public

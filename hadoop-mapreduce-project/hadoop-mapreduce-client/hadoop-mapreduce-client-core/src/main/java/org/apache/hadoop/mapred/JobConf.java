@@ -725,7 +725,7 @@ name|MAPRED_REDUCE_TASK_ULIMIT
 init|=
 literal|"mapreduce.reduce.ulimit"
 decl_stmt|;
-comment|/**    * Configuration key to set the environment of the child map/reduce tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code>.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *<li> B=$X:c This is inherit tasktracker's X env variable.</li>    *</ul>    *     * @deprecated Use {@link #MAPRED_MAP_TASK_ENV} or     *                 {@link #MAPRED_REDUCE_TASK_ENV}    */
+comment|/**    * Configuration key to set the environment of the child map/reduce tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code> on    * Linux or<code>%key%</code> on Windows.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *<li> B=$X:c This is inherit tasktracker's X env variable on Linux.</li>    *<li> B=%X%;c This is inherit tasktracker's X env variable on Windows.</li>    *</ul>    *     * @deprecated Use {@link #MAPRED_MAP_TASK_ENV} or     *                 {@link #MAPRED_REDUCE_TASK_ENV}    */
 annotation|@
 name|Deprecated
 DECL|field|MAPRED_TASK_ENV
@@ -737,7 +737,7 @@ name|MAPRED_TASK_ENV
 init|=
 literal|"mapred.child.env"
 decl_stmt|;
-comment|/**    * Configuration key to set the maximum virutal memory available to the    * map tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code>.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *<li> B=$X:c This is inherit tasktracker's X env variable.</li>    *</ul>    */
+comment|/**    * Configuration key to set the environment of the child map tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can    * reference existing environment variables via<code>$key</code> on    * Linux or<code>%key%</code> on Windows.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *<li> B=$X:c This is inherit tasktracker's X env variable on Linux.</li>    *<li> B=%X%;c This is inherit tasktracker's X env variable on Windows.</li>    *</ul>    */
 DECL|field|MAPRED_MAP_TASK_ENV
 specifier|public
 specifier|static
@@ -749,7 +749,7 @@ name|JobContext
 operator|.
 name|MAP_ENV
 decl_stmt|;
-comment|/**    * Configuration key to set the maximum virutal memory available to the    * reduce tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code>.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *<li> B=$X:c This is inherit tasktracker's X env variable.</li>    *</ul>    */
+comment|/**    * Configuration key to set the environment of the child reduce tasks.    *     * The format of the value is<code>k1=v1,k2=v2</code>. Further it can     * reference existing environment variables via<code>$key</code> on    * Linux or<code>%key%</code> on Windows.    *     * Example:    *<ul>    *<li> A=foo - This will set the env variable A to foo.</li>    *<li> B=$X:c This is inherit tasktracker's X env variable on Linux.</li>    *<li> B=%X%;c This is inherit tasktracker's X env variable on Windows.</li>    *</ul>    */
 DECL|field|MAPRED_REDUCE_TASK_ENV
 specifier|public
 specifier|static

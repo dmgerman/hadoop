@@ -344,6 +344,20 @@ name|MiniMRYarnCluster
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class to test mapred task's   *   - temp directory  *   - child env  */
 end_comment
@@ -1033,7 +1047,9 @@ name|envValue
 operator|.
 name|contains
 argument_list|(
-literal|":"
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 condition|)
 block|{
@@ -1055,7 +1071,9 @@ name|envValue
 operator|.
 name|split
 argument_list|(
-literal|":"
+name|File
+operator|.
+name|pathSeparator
 argument_list|)
 decl_stmt|;
 comment|// check if the value is appended
@@ -1312,7 +1330,11 @@ name|checkEnv
 argument_list|(
 literal|"NEW_PATH"
 argument_list|,
-literal|":/tmp"
+name|File
+operator|.
+name|pathSeparator
+operator|+
+literal|"/tmp"
 argument_list|,
 literal|"noappend"
 argument_list|)
@@ -1325,7 +1347,11 @@ literal|"PATH"
 argument_list|,
 name|path
 operator|+
-literal|":/tmp"
+name|File
+operator|.
+name|pathSeparator
+operator|+
+literal|"/tmp"
 argument_list|,
 literal|"noappend"
 argument_list|)
@@ -1579,7 +1605,11 @@ name|checkEnv
 argument_list|(
 literal|"NEW_PATH"
 argument_list|,
-literal|":/tmp"
+name|File
+operator|.
+name|pathSeparator
+operator|+
+literal|"/tmp"
 argument_list|,
 literal|"noappend"
 argument_list|)
@@ -1592,7 +1622,11 @@ literal|"PATH"
 argument_list|,
 name|path
 operator|+
-literal|":/tmp"
+name|File
+operator|.
+name|pathSeparator
+operator|+
+literal|"/tmp"
 argument_list|,
 literal|"noappend"
 argument_list|)
@@ -2243,6 +2277,14 @@ name|set
 argument_list|(
 name|mapTaskEnvKey
 argument_list|,
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"MY_PATH=/tmp,LANG=en_us_8859_1,LD_LIBRARY_PATH=%LD_LIBRARY_PATH%;/tmp,"
+operator|+
+literal|"PATH=%PATH%;/tmp,NEW_PATH=%NEW_PATH%;/tmp"
+else|:
 literal|"MY_PATH=/tmp,LANG=en_us_8859_1,LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp,"
 operator|+
 literal|"PATH=$PATH:/tmp,NEW_PATH=$NEW_PATH:/tmp"
@@ -2254,6 +2296,14 @@ name|set
 argument_list|(
 name|reduceTaskEnvKey
 argument_list|,
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"MY_PATH=/tmp,LANG=en_us_8859_1,LD_LIBRARY_PATH=%LD_LIBRARY_PATH%;/tmp,"
+operator|+
+literal|"PATH=%PATH%;/tmp,NEW_PATH=%NEW_PATH%;/tmp"
+else|:
 literal|"MY_PATH=/tmp,LANG=en_us_8859_1,LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/tmp,"
 operator|+
 literal|"PATH=$PATH:/tmp,NEW_PATH=$NEW_PATH:/tmp"
