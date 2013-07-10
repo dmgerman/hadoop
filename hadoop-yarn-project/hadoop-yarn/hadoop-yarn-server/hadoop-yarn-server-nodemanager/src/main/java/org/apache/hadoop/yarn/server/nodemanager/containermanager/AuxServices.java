@@ -591,7 +591,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"No class defiend for "
+literal|"No class defined for "
 operator|+
 name|sName
 argument_list|)
