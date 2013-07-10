@@ -49,45 +49,21 @@ specifier|public
 enum|enum
 name|RejectState
 block|{
+comment|// the order of the values below are significant.
 DECL|enumConstant|RPC_MISMATCH
-DECL|enumConstant|AUTH_ERROR
 name|RPC_MISMATCH
-argument_list|(
-literal|0
-argument_list|)
 block|,
+DECL|enumConstant|AUTH_ERROR
 name|AUTH_ERROR
-argument_list|(
-literal|1
-argument_list|)
 block|;
-DECL|field|value
-specifier|private
-specifier|final
-name|int
-name|value
-decl_stmt|;
-DECL|method|RejectState (int value)
-name|RejectState
-parameter_list|(
-name|int
-name|value
-parameter_list|)
-block|{
-name|this
-operator|.
-name|value
-operator|=
-name|value
-expr_stmt|;
-block|}
 DECL|method|getValue ()
 name|int
 name|getValue
 parameter_list|()
 block|{
 return|return
-name|value
+name|ordinal
+argument_list|()
 return|;
 block|}
 DECL|method|fromValue (int value)
@@ -114,13 +90,15 @@ specifier|final
 name|RejectState
 name|rejectState
 decl_stmt|;
-DECL|method|RpcDeniedReply (int xid, int messageType, ReplyState replyState, RejectState rejectState)
+DECL|method|RpcDeniedReply (int xid, RpcMessage.Type messageType, ReplyState replyState, RejectState rejectState)
 name|RpcDeniedReply
 parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|messageType
 parameter_list|,
 name|ReplyState
@@ -146,7 +124,7 @@ operator|=
 name|rejectState
 expr_stmt|;
 block|}
-DECL|method|read (int xid, int messageType, ReplyState replyState, XDR xdr)
+DECL|method|read (int xid, RpcMessage.Type messageType, ReplyState replyState, XDR xdr)
 specifier|public
 specifier|static
 name|RpcDeniedReply
@@ -155,7 +133,9 @@ parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|messageType
 parameter_list|,
 name|ReplyState
@@ -281,7 +261,12 @@ name|writeInt
 argument_list|(
 name|RpcMessage
 operator|.
+name|Type
+operator|.
 name|RPC_REPLY
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|xdr

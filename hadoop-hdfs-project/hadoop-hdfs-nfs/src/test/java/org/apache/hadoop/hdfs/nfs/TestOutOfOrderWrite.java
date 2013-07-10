@@ -501,7 +501,12 @@ name|VERSION
 argument_list|,
 name|Nfs3Constant
 operator|.
-name|NFSPROC3_CREATE
+name|NFSPROC3
+operator|.
+name|CREATE
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// credentials
@@ -629,7 +634,12 @@ name|VERSION
 argument_list|,
 name|Nfs3Constant
 operator|.
-name|NFSPROC3_WRITE
+name|NFSPROC3
+operator|.
+name|WRITE
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// credentials

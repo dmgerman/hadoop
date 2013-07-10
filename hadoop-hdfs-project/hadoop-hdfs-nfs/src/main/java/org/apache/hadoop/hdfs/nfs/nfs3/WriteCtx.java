@@ -151,6 +151,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * In memory write data has 3 states. ALLOW_DUMP: not sequential write, still    * wait for prerequisit writes. NO_DUMP: sequential write, no need to dump    * since it will be written to HDFS soon. DUMPED: already dumped to a file.    */
+DECL|enum|DataState
+specifier|public
+specifier|static
+enum|enum
+name|DataState
+block|{
+DECL|enumConstant|ALLOW_DUMP
+name|ALLOW_DUMP
+block|,
+DECL|enumConstant|NO_DUMP
+name|NO_DUMP
+block|,
+DECL|enumConstant|DUMPED
+name|DUMPED
+block|;   }
 DECL|field|handle
 specifier|private
 specifier|final
@@ -198,42 +214,14 @@ specifier|private
 name|boolean
 name|replied
 decl_stmt|;
-comment|/**    * In memory write data has 3 states. ALLOW_DUMP: not sequential write, still    * wait for prerequisit writes. NO_DUMP: sequential write, no need to dump    * since it will be written to HDFS soon. DUMPED: already dumped to a file.    */
-DECL|field|ALLOW_DUMP
-specifier|public
-specifier|final
-specifier|static
-name|int
-name|ALLOW_DUMP
-init|=
-literal|0
-decl_stmt|;
-DECL|field|NO_DUMP
-specifier|public
-specifier|final
-specifier|static
-name|int
-name|NO_DUMP
-init|=
-literal|1
-decl_stmt|;
-DECL|field|DUMPED
-specifier|public
-specifier|final
-specifier|static
-name|int
-name|DUMPED
-init|=
-literal|2
-decl_stmt|;
 DECL|field|dataState
 specifier|private
-name|int
+name|DataState
 name|dataState
 decl_stmt|;
 DECL|method|getDataState ()
 specifier|public
-name|int
+name|DataState
 name|getDataState
 parameter_list|()
 block|{
@@ -241,12 +229,12 @@ return|return
 name|dataState
 return|;
 block|}
-DECL|method|setDataState (int dataState)
+DECL|method|setDataState (DataState dataState)
 specifier|public
 name|void
 name|setDataState
 parameter_list|(
-name|int
+name|DataState
 name|dataState
 parameter_list|)
 block|{
@@ -286,6 +274,8 @@ if|if
 condition|(
 name|dataState
 operator|!=
+name|DataState
+operator|.
 name|ALLOW_DUMP
 condition|)
 block|{
@@ -370,6 +360,8 @@ literal|null
 expr_stmt|;
 name|dataState
 operator|=
+name|DataState
+operator|.
 name|DUMPED
 expr_stmt|;
 return|return
@@ -429,6 +421,8 @@ if|if
 condition|(
 name|dataState
 operator|!=
+name|DataState
+operator|.
 name|DUMPED
 condition|)
 block|{
@@ -567,7 +561,7 @@ operator|=
 name|replied
 expr_stmt|;
 block|}
-DECL|method|WriteCtx (FileHandle handle, long offset, int count, WriteStableHow stableHow, byte[] data, Channel channel, int xid, boolean replied, int dataState)
+DECL|method|WriteCtx (FileHandle handle, long offset, int count, WriteStableHow stableHow, byte[] data, Channel channel, int xid, boolean replied, DataState dataState)
 name|WriteCtx
 parameter_list|(
 name|FileHandle
@@ -595,7 +589,7 @@ parameter_list|,
 name|boolean
 name|replied
 parameter_list|,
-name|int
+name|DataState
 name|dataState
 parameter_list|)
 block|{

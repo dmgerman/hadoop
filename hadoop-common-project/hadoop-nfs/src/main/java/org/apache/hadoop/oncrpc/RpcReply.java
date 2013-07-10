@@ -35,45 +35,21 @@ specifier|public
 enum|enum
 name|ReplyState
 block|{
+comment|// the order of the values below are significant.
 DECL|enumConstant|MSG_ACCEPTED
 name|MSG_ACCEPTED
-argument_list|(
-literal|0
-argument_list|)
 block|,
 DECL|enumConstant|MSG_DENIED
 name|MSG_DENIED
-argument_list|(
-literal|1
-argument_list|)
 block|;
-DECL|field|value
-specifier|private
-specifier|final
-name|int
-name|value
-decl_stmt|;
-DECL|method|ReplyState (int value)
-name|ReplyState
-parameter_list|(
-name|int
-name|value
-parameter_list|)
-block|{
-name|this
-operator|.
-name|value
-operator|=
-name|value
-expr_stmt|;
-block|}
 DECL|method|getValue ()
 name|int
 name|getValue
 parameter_list|()
 block|{
 return|return
-name|value
+name|ordinal
+argument_list|()
 return|;
 block|}
 DECL|method|fromValue (int value)
@@ -101,13 +77,15 @@ specifier|final
 name|ReplyState
 name|state
 decl_stmt|;
-DECL|method|RpcReply (int xid, int messageType, ReplyState state)
+DECL|method|RpcReply (int xid, RpcMessage.Type messageType, ReplyState state)
 name|RpcReply
 parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|messageType
 parameter_list|,
 name|ReplyState
@@ -129,6 +107,10 @@ name|state
 expr_stmt|;
 name|validateMessageType
 argument_list|(
+name|RpcMessage
+operator|.
+name|Type
+operator|.
 name|RPC_REPLY
 argument_list|)
 expr_stmt|;
@@ -151,13 +133,19 @@ operator|.
 name|readInt
 argument_list|()
 decl_stmt|;
-name|int
+specifier|final
+name|Type
 name|messageType
 init|=
+name|Type
+operator|.
+name|fromValue
+argument_list|(
 name|xdr
 operator|.
 name|readInt
 argument_list|()
+argument_list|)
 decl_stmt|;
 name|ReplyState
 name|stat

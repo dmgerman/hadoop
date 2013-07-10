@@ -95,7 +95,7 @@ specifier|private
 name|MountResponse
 parameter_list|()
 block|{   }
-comment|/** Response for RPC call {@link MountInterface#MNTPROC_MNT} */
+comment|/** Response for RPC call {@link MountInterface.MNTPROC#MNT} */
 DECL|method|writeMNTResponse (int status, XDR xdr, int xid, byte[] handle)
 specifier|public
 specifier|static
@@ -180,7 +180,7 @@ return|return
 name|xdr
 return|;
 block|}
-comment|/** Response for RPC call {@link MountInterface#MNTPROC_DUMP} */
+comment|/** Response for RPC call {@link MountInterface.MNTPROC#DUMP} */
 DECL|method|writeMountList (XDR xdr, int xid, List<MountEntry> mounts)
 specifier|public
 specifier|static
@@ -258,7 +258,7 @@ return|return
 name|xdr
 return|;
 block|}
-comment|/** Response for RPC call {@link MountInterface#MNTPROC_EXPORT} */
+comment|/** Response for RPC call {@link MountInterface.MNTPROC#EXPORT} */
 DECL|method|writeExportList (XDR xdr, int xid, List<String> exports)
 specifier|public
 specifier|static

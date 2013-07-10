@@ -46,7 +46,7 @@ specifier|public
 class|class
 name|TestRpcMessage
 block|{
-DECL|method|getRpcMessage (int xid, int msgType)
+DECL|method|getRpcMessage (int xid, RpcMessage.Type msgType)
 specifier|private
 name|RpcMessage
 name|getRpcMessage
@@ -54,7 +54,9 @@ parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|msgType
 parameter_list|)
 block|{
@@ -73,35 +75,6 @@ return|;
 block|}
 annotation|@
 name|Test
-argument_list|(
-name|expected
-operator|=
-name|IllegalArgumentException
-operator|.
-name|class
-argument_list|)
-DECL|method|testInvalidMessageType ()
-specifier|public
-name|void
-name|testInvalidMessageType
-parameter_list|()
-block|{
-name|int
-name|invalidMsgType
-init|=
-literal|2
-decl_stmt|;
-comment|// valid values are 0 and 1
-name|getRpcMessage
-argument_list|(
-literal|0
-argument_list|,
-name|invalidMsgType
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Test
 DECL|method|testRpcMessage ()
 specifier|public
 name|void
@@ -116,6 +89,8 @@ argument_list|(
 literal|0
 argument_list|,
 name|RpcMessage
+operator|.
+name|Type
 operator|.
 name|RPC_CALL
 argument_list|)
@@ -137,6 +112,8 @@ operator|.
 name|assertEquals
 argument_list|(
 name|RpcMessage
+operator|.
+name|Type
 operator|.
 name|RPC_CALL
 argument_list|,
@@ -164,6 +141,8 @@ literal|0
 argument_list|,
 name|RpcMessage
 operator|.
+name|Type
+operator|.
 name|RPC_CALL
 argument_list|)
 decl_stmt|;
@@ -172,6 +151,8 @@ operator|.
 name|validateMessageType
 argument_list|(
 name|RpcMessage
+operator|.
+name|Type
 operator|.
 name|RPC_CALL
 argument_list|)
@@ -201,6 +182,8 @@ literal|0
 argument_list|,
 name|RpcMessage
 operator|.
+name|Type
+operator|.
 name|RPC_CALL
 argument_list|)
 decl_stmt|;
@@ -209,6 +192,8 @@ operator|.
 name|validateMessageType
 argument_list|(
 name|RpcMessage
+operator|.
+name|Type
 operator|.
 name|RPC_REPLY
 argument_list|)

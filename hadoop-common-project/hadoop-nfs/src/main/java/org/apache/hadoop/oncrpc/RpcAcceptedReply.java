@@ -49,68 +49,31 @@ specifier|public
 enum|enum
 name|AcceptState
 block|{
+comment|// the order of the values below are significant.
 DECL|enumConstant|SUCCESS
 name|SUCCESS
-argument_list|(
-literal|0
-argument_list|)
 block|,
 comment|/* RPC executed successfully */
 DECL|enumConstant|PROG_UNAVAIL
 name|PROG_UNAVAIL
-argument_list|(
-literal|1
-argument_list|)
 block|,
 comment|/* remote hasn't exported program */
 DECL|enumConstant|PROG_MISMATCH
 name|PROG_MISMATCH
-argument_list|(
-literal|2
-argument_list|)
 block|,
 comment|/* remote can't support version # */
 DECL|enumConstant|PROC_UNAVAIL
 name|PROC_UNAVAIL
-argument_list|(
-literal|3
-argument_list|)
 block|,
 comment|/* program can't support procedure */
 DECL|enumConstant|GARBAGE_ARGS
 name|GARBAGE_ARGS
-argument_list|(
-literal|4
-argument_list|)
 block|,
 comment|/* procedure can't decode params */
 DECL|enumConstant|SYSTEM_ERR
 name|SYSTEM_ERR
-argument_list|(
-literal|5
-argument_list|)
 block|;
 comment|/* e.g. memory allocation failure */
-DECL|field|value
-specifier|private
-specifier|final
-name|int
-name|value
-decl_stmt|;
-DECL|method|AcceptState (int value)
-name|AcceptState
-parameter_list|(
-name|int
-name|value
-parameter_list|)
-block|{
-name|this
-operator|.
-name|value
-operator|=
-name|value
-expr_stmt|;
-block|}
 DECL|method|fromValue (int value)
 specifier|public
 specifier|static
@@ -136,7 +99,8 @@ name|getValue
 parameter_list|()
 block|{
 return|return
-name|value
+name|ordinal
+argument_list|()
 return|;
 block|}
 block|}
@@ -153,13 +117,15 @@ specifier|final
 name|AcceptState
 name|acceptState
 decl_stmt|;
-DECL|method|RpcAcceptedReply (int xid, int messageType, ReplyState state, RpcAuthInfo verifier, AcceptState acceptState)
+DECL|method|RpcAcceptedReply (int xid, RpcMessage.Type messageType, ReplyState state, RpcAuthInfo verifier, AcceptState acceptState)
 name|RpcAcceptedReply
 parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|messageType
 parameter_list|,
 name|ReplyState
@@ -194,7 +160,7 @@ operator|=
 name|acceptState
 expr_stmt|;
 block|}
-DECL|method|read (int xid, int messageType, ReplyState replyState, XDR xdr)
+DECL|method|read (int xid, RpcMessage.Type messageType, ReplyState replyState, XDR xdr)
 specifier|public
 specifier|static
 name|RpcAcceptedReply
@@ -203,7 +169,9 @@ parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|messageType
 parameter_list|,
 name|ReplyState
@@ -327,7 +295,12 @@ name|writeInt
 argument_list|(
 name|RpcMessage
 operator|.
+name|Type
+operator|.
 name|RPC_REPLY
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|xdr

@@ -27,24 +27,68 @@ specifier|abstract
 class|class
 name|RpcMessage
 block|{
-DECL|field|RPC_CALL
+comment|/** Message type */
+DECL|enum|Type
 specifier|public
 specifier|static
-specifier|final
-name|int
+enum|enum
+name|Type
+block|{
+comment|// the order of the values below are significant.
+DECL|enumConstant|RPC_CALL
 name|RPC_CALL
-init|=
-literal|0
-decl_stmt|;
-DECL|field|RPC_REPLY
+block|,
+DECL|enumConstant|RPC_REPLY
+name|RPC_REPLY
+block|;
+DECL|method|getValue ()
+specifier|public
+name|int
+name|getValue
+parameter_list|()
+block|{
+return|return
+name|ordinal
+argument_list|()
+return|;
+block|}
+DECL|method|fromValue (int value)
 specifier|public
 specifier|static
-specifier|final
+name|Type
+name|fromValue
+parameter_list|(
 name|int
-name|RPC_REPLY
-init|=
-literal|1
-decl_stmt|;
+name|value
+parameter_list|)
+block|{
+if|if
+condition|(
+name|value
+operator|<
+literal|0
+operator|||
+name|value
+operator|>=
+name|values
+argument_list|()
+operator|.
+name|length
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+name|values
+argument_list|()
+index|[
+name|value
+index|]
+return|;
+block|}
+block|}
 DECL|field|xid
 specifier|protected
 specifier|final
@@ -54,16 +98,16 @@ decl_stmt|;
 DECL|field|messageType
 specifier|protected
 specifier|final
-name|int
+name|Type
 name|messageType
 decl_stmt|;
-DECL|method|RpcMessage (int xid, int messageType)
+DECL|method|RpcMessage (int xid, Type messageType)
 name|RpcMessage
 parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|Type
 name|messageType
 parameter_list|)
 block|{
@@ -71,10 +115,14 @@ if|if
 condition|(
 name|messageType
 operator|!=
+name|Type
+operator|.
 name|RPC_CALL
 operator|&&
 name|messageType
 operator|!=
+name|Type
+operator|.
 name|RPC_REPLY
 condition|)
 block|{
@@ -113,7 +161,7 @@ return|;
 block|}
 DECL|method|getMessageType ()
 specifier|public
-name|int
+name|Type
 name|getMessageType
 parameter_list|()
 block|{
@@ -121,12 +169,12 @@ return|return
 name|messageType
 return|;
 block|}
-DECL|method|validateMessageType (int expected)
+DECL|method|validateMessageType (Type expected)
 specifier|protected
 name|void
 name|validateMessageType
 parameter_list|(
-name|int
+name|Type
 name|expected
 parameter_list|)
 block|{

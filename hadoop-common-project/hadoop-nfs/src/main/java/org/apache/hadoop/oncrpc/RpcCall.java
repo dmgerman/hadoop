@@ -117,14 +117,16 @@ specifier|final
 name|RpcAuthInfo
 name|verifier
 decl_stmt|;
-DECL|method|RpcCall (int xid, int messageType, int rpcVersion, int program, int version, int procedure, RpcAuthInfo credential, RpcAuthInfo verifier)
+DECL|method|RpcCall (int xid, RpcMessage.Type messageType, int rpcVersion, int program, int version, int procedure, RpcAuthInfo credential, RpcAuthInfo verifier)
 specifier|protected
 name|RpcCall
 parameter_list|(
 name|int
 name|xid
 parameter_list|,
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|messageType
 parameter_list|,
 name|int
@@ -245,6 +247,10 @@ parameter_list|()
 block|{
 name|validateMessageType
 argument_list|(
+name|RpcMessage
+operator|.
+name|Type
+operator|.
 name|RPC_CALL
 argument_list|)
 expr_stmt|;
@@ -333,10 +339,17 @@ operator|.
 name|readInt
 argument_list|()
 argument_list|,
+name|RpcMessage
+operator|.
+name|Type
+operator|.
+name|fromValue
+argument_list|(
 name|xdr
 operator|.
 name|readInt
 argument_list|()
+argument_list|)
 argument_list|,
 name|xdr
 operator|.
@@ -409,7 +422,12 @@ name|writeInt
 argument_list|(
 name|RpcMessage
 operator|.
+name|Type
+operator|.
 name|RPC_CALL
+operator|.
+name|getValue
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|out
@@ -454,7 +472,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Xid:%d, messageType:%d, rpcVersion:%d, program:%d,"
+literal|"Xid:%d, messageType:%s, rpcVersion:%d, program:%d,"
 operator|+
 literal|" version:%d, procedure:%d, credential:%s, verifier:%s"
 argument_list|,

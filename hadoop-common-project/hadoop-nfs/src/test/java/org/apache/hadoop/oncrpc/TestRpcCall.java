@@ -138,6 +138,8 @@ literal|0
 argument_list|,
 name|RpcMessage
 operator|.
+name|Type
+operator|.
 name|RPC_CALL
 argument_list|,
 name|rpcVersion
@@ -166,6 +168,8 @@ expr_stmt|;
 name|assertEquals
 argument_list|(
 name|RpcMessage
+operator|.
+name|Type
 operator|.
 name|RPC_CALL
 argument_list|,
@@ -263,6 +267,8 @@ literal|0
 argument_list|,
 name|RpcMessage
 operator|.
+name|Type
+operator|.
 name|RPC_CALL
 argument_list|,
 name|invalidRpcVersion
@@ -294,10 +300,16 @@ name|void
 name|testInvalidRpcMessageType
 parameter_list|()
 block|{
-name|int
+name|RpcMessage
+operator|.
+name|Type
 name|invalidMessageType
 init|=
-literal|3
+name|RpcMessage
+operator|.
+name|Type
+operator|.
+name|RPC_REPLY
 decl_stmt|;
 comment|// Message typ is not RpcMessage.RPC_CALL
 operator|new

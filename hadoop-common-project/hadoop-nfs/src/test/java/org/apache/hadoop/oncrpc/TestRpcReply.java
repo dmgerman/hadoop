@@ -142,7 +142,11 @@ name|RpcReply
 argument_list|(
 literal|0
 argument_list|,
-literal|1
+name|RpcMessage
+operator|.
+name|Type
+operator|.
+name|RPC_REPLY
 argument_list|,
 name|ReplyState
 operator|.
@@ -168,7 +172,11 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|1
+name|RpcMessage
+operator|.
+name|Type
+operator|.
+name|RPC_REPLY
 argument_list|,
 name|reply
 operator|.
