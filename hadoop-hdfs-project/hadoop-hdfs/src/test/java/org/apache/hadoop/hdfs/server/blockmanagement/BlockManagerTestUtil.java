@@ -514,6 +514,57 @@ operator|.
 name|replicationThread
 return|;
 block|}
+comment|/**    * Stop the replication monitor thread    * @param blockManager    */
+DECL|method|stopReplicationThread (final BlockManager blockManager)
+specifier|public
+specifier|static
+name|void
+name|stopReplicationThread
+parameter_list|(
+specifier|final
+name|BlockManager
+name|blockManager
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|blockManager
+operator|.
+name|enableRMTerminationForTesting
+argument_list|()
+expr_stmt|;
+name|blockManager
+operator|.
+name|replicationThread
+operator|.
+name|interrupt
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+name|blockManager
+operator|.
+name|replicationThread
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Interrupted while trying to stop ReplicationMonitor"
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/**    * @param blockManager    * @return corruptReplicas from block manager    */
 DECL|method|getCorruptReplicas (final BlockManager blockManager)
 specifier|public

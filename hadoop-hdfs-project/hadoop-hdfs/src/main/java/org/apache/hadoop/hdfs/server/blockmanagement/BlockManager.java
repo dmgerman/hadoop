@@ -1324,6 +1324,14 @@ specifier|private
 name|BlockPlacementPolicy
 name|blockplacement
 decl_stmt|;
+comment|/** Check whether name system is running before terminating */
+DECL|field|checkNSRunning
+specifier|private
+name|boolean
+name|checkNSRunning
+init|=
+literal|true
+decl_stmt|;
 DECL|method|BlockManager (final Namesystem namesystem, final FSClusterStats stats, final Configuration conf)
 specifier|public
 name|BlockManager
@@ -2053,6 +2061,19 @@ block|{
 return|return
 name|blockTokenSecretManager
 return|;
+block|}
+comment|/** Allow silent termination of replication monitor for testing */
+annotation|@
+name|VisibleForTesting
+DECL|method|enableRMTerminationForTesting ()
+name|void
+name|enableRMTerminationForTesting
+parameter_list|()
+block|{
+name|checkNSRunning
+operator|=
+literal|false
+expr_stmt|;
 block|}
 DECL|method|isBlockTokenEnabled ()
 specifier|private
@@ -14415,6 +14436,26 @@ name|t
 argument_list|)
 expr_stmt|;
 block|}
+break|break;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|checkNSRunning
+operator|&&
+name|t
+operator|instanceof
+name|InterruptedException
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Stopping ReplicationMonitor for testing."
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 name|LOG
