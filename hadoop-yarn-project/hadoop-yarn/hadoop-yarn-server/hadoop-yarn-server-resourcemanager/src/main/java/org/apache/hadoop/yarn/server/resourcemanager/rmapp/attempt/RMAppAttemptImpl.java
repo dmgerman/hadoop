@@ -2144,6 +2144,25 @@ operator|new
 name|KillAllocatedAMTransition
 argument_list|()
 argument_list|)
+operator|.
+name|addTransition
+argument_list|(
+name|RMAppAttemptState
+operator|.
+name|ALLOCATED
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|FAILED
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|CONTAINER_FINISHED
+argument_list|,
+operator|new
+name|AMContainerCrashedTransition
+argument_list|()
+argument_list|)
 comment|// Transitions from LAUNCHED State
 operator|.
 name|addTransition
