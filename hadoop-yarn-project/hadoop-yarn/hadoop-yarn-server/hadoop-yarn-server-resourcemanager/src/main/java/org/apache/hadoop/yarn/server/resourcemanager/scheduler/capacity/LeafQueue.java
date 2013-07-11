@@ -6459,7 +6459,7 @@ expr_stmt|;
 block|}
 DECL|method|unreserve (FiCaSchedulerApp application, Priority priority, FiCaSchedulerNode node, RMContainer rmContainer)
 specifier|private
-name|void
+name|boolean
 name|unreserve
 parameter_list|(
 name|FiCaSchedulerApp
@@ -6476,6 +6476,8 @@ name|rmContainer
 parameter_list|)
 block|{
 comment|// Done with the reservation?
+if|if
+condition|(
 name|application
 operator|.
 name|unreserve
@@ -6484,7 +6486,8 @@ name|node
 argument_list|,
 name|priority
 argument_list|)
-expr_stmt|;
+condition|)
+block|{
 name|node
 operator|.
 name|unreserveResource
@@ -6512,6 +6515,13 @@ name|getResource
 argument_list|()
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
 block|}
 annotation|@
 name|Override
@@ -6560,6 +6570,11 @@ operator|.
 name|getContainer
 argument_list|()
 decl_stmt|;
+name|boolean
+name|removed
+init|=
+literal|false
+decl_stmt|;
 comment|// Inform the application& the node
 comment|// Note: It's safe to assume that all state changes to RMContainer
 comment|// happen under scheduler's lock...
@@ -6576,6 +6591,8 @@ operator|.
 name|RESERVED
 condition|)
 block|{
+name|removed
+operator|=
 name|unreserve
 argument_list|(
 name|application
@@ -6593,6 +6610,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|removed
+operator|=
 name|application
 operator|.
 name|containerCompleted
@@ -6613,6 +6632,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Book-keeping
+if|if
+condition|(
+name|removed
+condition|)
+block|{
 name|releaseResource
 argument_list|(
 name|clusterResource
@@ -6665,7 +6689,6 @@ operator|+
 name|clusterResource
 argument_list|)
 expr_stmt|;
-block|}
 comment|// Inform the parent queue
 name|getParent
 argument_list|()
@@ -6685,6 +6708,8 @@ argument_list|,
 name|event
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 DECL|method|allocateResource (Resource clusterResource, FiCaSchedulerApp application, Resource resource)
@@ -7269,6 +7294,69 @@ argument_list|,
 name|container
 argument_list|)
 expr_stmt|;
+block|}
+comment|// need to access the list of apps from the preemption monitor
+DECL|method|getApplications ()
+specifier|public
+name|Set
+argument_list|<
+name|FiCaSchedulerApp
+argument_list|>
+name|getApplications
+parameter_list|()
+block|{
+return|return
+name|Collections
+operator|.
+name|unmodifiableSet
+argument_list|(
+name|activeApplications
+argument_list|)
+return|;
+block|}
+comment|// return a single Resource capturing the overal amount of pending resources
+DECL|method|getTotalResourcePending ()
+specifier|public
+name|Resource
+name|getTotalResourcePending
+parameter_list|()
+block|{
+name|Resource
+name|ret
+init|=
+name|BuilderUtils
+operator|.
+name|newResource
+argument_list|(
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|FiCaSchedulerApp
+name|f
+range|:
+name|activeApplications
+control|)
+block|{
+name|Resources
+operator|.
+name|addTo
+argument_list|(
+name|ret
+argument_list|,
+name|f
+operator|.
+name|getTotalPendingRequests
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|ret
+return|;
 block|}
 block|}
 end_class

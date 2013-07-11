@@ -557,6 +557,39 @@ name|DEFAULT_RM_SCHEDULER_CLIENT_THREAD_COUNT
 init|=
 literal|50
 decl_stmt|;
+comment|/**    * Enable periodic monitor threads.    * @see #RM_SCHEDULER_MONITOR_POLICIES    */
+DECL|field|RM_SCHEDULER_ENABLE_MONITORS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_ENABLE_MONITORS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"scheduler.monitor.enable"
+decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_ENABLE_MONITORS
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_SCHEDULER_ENABLE_MONITORS
+init|=
+literal|false
+decl_stmt|;
+comment|/** List of SchedulingEditPolicy classes affecting the scheduler. */
+DECL|field|RM_SCHEDULER_MONITOR_POLICIES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_MONITOR_POLICIES
+init|=
+name|RM_PREFIX
+operator|+
+literal|"scheduler.monitor.policies"
+decl_stmt|;
 comment|/** The address of the RM web application.*/
 DECL|field|RM_WEBAPP_ADDRESS
 specifier|public
