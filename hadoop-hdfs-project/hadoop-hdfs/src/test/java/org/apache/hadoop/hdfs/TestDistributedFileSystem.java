@@ -1009,6 +1009,43 @@ literal|true
 return|;
 comment|// trick out deleteOnExit
 block|}
+comment|// Symlink resolution doesn't work with a mock, since it doesn't
+comment|// have a valid Configuration to resolve paths to the right FileSystem.
+comment|// Just call the DFSClient directly to register the delete
+annotation|@
+name|Override
+DECL|method|delete (Path f, final boolean recursive)
+specifier|public
+name|boolean
+name|delete
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+specifier|final
+name|boolean
+name|recursive
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|delete
+argument_list|(
+name|f
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|recursive
+argument_list|)
+return|;
+block|}
 block|}
 annotation|@
 name|Test
