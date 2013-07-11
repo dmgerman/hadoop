@@ -1213,6 +1213,11 @@ argument_list|)
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|mkdir (Path dir, FsPermission permission, boolean createParent)
 specifier|public
@@ -1241,15 +1246,15 @@ name|UnsupportedFileSystemException
 throws|,
 name|IOException
 block|{
-comment|// Note that there is no "mkdir" in FileSystem, it always does
-comment|// "mkdir -p" (creating parent directories).
 name|fs
 operator|.
-name|mkdirs
+name|primitiveMkdir
 argument_list|(
 name|dir
 argument_list|,
 name|permission
+argument_list|,
+name|createParent
 argument_list|)
 expr_stmt|;
 block|}
