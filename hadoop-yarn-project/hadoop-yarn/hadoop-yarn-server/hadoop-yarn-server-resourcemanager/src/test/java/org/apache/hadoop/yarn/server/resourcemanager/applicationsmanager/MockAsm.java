@@ -731,6 +731,25 @@ literal|"Not supported yet."
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|setQueue (String name)
+specifier|public
+name|void
+name|setQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|newApplication (int i)
 specifier|public

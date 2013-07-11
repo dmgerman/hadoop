@@ -209,7 +209,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The read interface to an Application in the ResourceManager. Take a  * look at {@link RMAppImpl} for its implementation. This interface  * exposes methods to access various updates in application status/report.  */
+comment|/**  * The interface to an Application in the ResourceManager. Take a  * look at {@link RMAppImpl} for its implementation. This interface  * exposes methods to access various updates in application status/report.  */
 end_comment
 
 begin_interface
@@ -267,6 +267,15 @@ DECL|method|getQueue ()
 name|String
 name|getQueue
 parameter_list|()
+function_decl|;
+comment|/**    * Reflects a change in the application's queue from the one specified in the    * {@link ApplicationSubmissionContext}.    * @param name the new queue name    */
+DECL|method|setQueue (String name)
+name|void
+name|setQueue
+parameter_list|(
+name|String
+name|name
+parameter_list|)
 function_decl|;
 comment|/**    * The name of the application as set in {@link    * ApplicationSubmissionContext#setApplicationName(String)}.    * @return the name of the application.    */
 DECL|method|getName ()
