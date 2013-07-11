@@ -96,6 +96,18 @@ name|cachedOp
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * Returns the name of the currently active underlying stream.  The default    * implementation returns the same value as getName unless overridden by the    * subclass.    *     * @return String name of the currently active underlying stream    */
+DECL|method|getCurrentStreamName ()
+specifier|public
+name|String
+name|getCurrentStreamName
+parameter_list|()
+block|{
+return|return
+name|getName
+argument_list|()
+return|;
+block|}
 comment|/**     * @return the name of the EditLogInputStream    */
 DECL|method|getName ()
 specifier|public
@@ -300,7 +312,7 @@ name|long
 name|getPosition
 parameter_list|()
 function_decl|;
-comment|/**    * Return the size of the current edits log.    */
+comment|/**    * Return the size of the current edits log or -1 if unknown.    *     * @return long size of the current edits log or -1 if unknown    */
 DECL|method|length ()
 specifier|public
 specifier|abstract

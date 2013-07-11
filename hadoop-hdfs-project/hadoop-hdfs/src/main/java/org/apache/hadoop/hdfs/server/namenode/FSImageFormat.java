@@ -590,6 +590,108 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|startupprogress
+operator|.
+name|Phase
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|startupprogress
+operator|.
+name|StartupProgress
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|startupprogress
+operator|.
+name|StartupProgress
+operator|.
+name|Counter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|startupprogress
+operator|.
+name|Step
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|startupprogress
+operator|.
+name|StepType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|ReadOnlyList
@@ -832,6 +934,36 @@ literal|null
 operator|:
 literal|"curFile is null"
 assert|;
+name|StartupProgress
+name|prog
+init|=
+name|NameNode
+operator|.
+name|getStartupProgress
+argument_list|()
+decl_stmt|;
+name|Step
+name|step
+init|=
+operator|new
+name|Step
+argument_list|(
+name|StepType
+operator|.
+name|INODES
+argument_list|)
+decl_stmt|;
+name|prog
+operator|.
+name|beginStep
+argument_list|(
+name|Phase
+operator|.
+name|LOADING_FSIMAGE
+argument_list|,
+name|step
+argument_list|)
+expr_stmt|;
 name|long
 name|startTime
 init|=
@@ -1232,6 +1364,33 @@ operator|+
 name|numFiles
 argument_list|)
 expr_stmt|;
+name|prog
+operator|.
+name|setTotal
+argument_list|(
+name|Phase
+operator|.
+name|LOADING_FSIMAGE
+argument_list|,
+name|step
+argument_list|,
+name|numFiles
+argument_list|)
+expr_stmt|;
+name|Counter
+name|counter
+init|=
+name|prog
+operator|.
+name|getCounter
+argument_list|(
+name|Phase
+operator|.
+name|LOADING_FSIMAGE
+argument_list|,
+name|step
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|LayoutVersion
@@ -1253,7 +1412,11 @@ condition|)
 block|{
 name|loadLocalNameINodesWithSnapshot
 argument_list|(
+name|numFiles
+argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
@@ -1264,6 +1427,8 @@ argument_list|(
 name|numFiles
 argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
@@ -1275,6 +1440,8 @@ argument_list|(
 name|numFiles
 argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
@@ -1283,6 +1450,34 @@ argument_list|(
 name|in
 argument_list|,
 name|supportSnapshot
+argument_list|,
+name|counter
+argument_list|)
+expr_stmt|;
+name|prog
+operator|.
+name|endStep
+argument_list|(
+name|Phase
+operator|.
+name|LOADING_FSIMAGE
+argument_list|,
+name|step
+argument_list|)
+expr_stmt|;
+comment|// Now that the step is finished, set counter equal to total to adjust
+comment|// for possible under-counting due to reference inodes.
+name|prog
+operator|.
+name|setCount
+argument_list|(
+name|Phase
+operator|.
+name|LOADING_FSIMAGE
+argument_list|,
+name|step
+argument_list|,
+name|numFiles
 argument_list|)
 expr_stmt|;
 name|loadSecretManagerState
@@ -1442,14 +1637,20 @@ name|root
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Load fsimage files when 1) only local names are stored,       * and 2) snapshot is supported.      *       * @param in Image input stream      */
-DECL|method|loadLocalNameINodesWithSnapshot (DataInput in)
+comment|/**      * Load fsimage files when 1) only local names are stored,       * and 2) snapshot is supported.      *       * @param numFiles number of files expected to be read      * @param in Image input stream      * @param counter Counter to increment for namenode startup progress      */
+DECL|method|loadLocalNameINodesWithSnapshot (long numFiles, DataInput in, Counter counter)
 specifier|private
 name|void
 name|loadLocalNameINodesWithSnapshot
 parameter_list|(
+name|long
+name|numFiles
+parameter_list|,
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1484,17 +1685,21 @@ comment|// load root
 name|loadRoot
 argument_list|(
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 comment|// load rest of the nodes recursively
 name|loadDirectoryWithSnapshot
 argument_list|(
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * load fsimage files assuming only local names are stored    *       * @param numFiles number of files expected to be read    * @param in image input stream    * @throws IOException    */
-DECL|method|loadLocalNameINodes (long numFiles, DataInput in)
+comment|/**     * load fsimage files assuming only local names are stored    *       * @param numFiles number of files expected to be read    * @param in image input stream    * @param counter Counter to increment for namenode startup progress    * @throws IOException    */
+DECL|method|loadLocalNameINodes (long numFiles, DataInput in, Counter counter)
 specifier|private
 name|void
 name|loadLocalNameINodes
@@ -1504,6 +1709,9 @@ name|numFiles
 parameter_list|,
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1530,6 +1738,8 @@ comment|// load root
 name|loadRoot
 argument_list|(
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 comment|// have loaded the first file (the root)
@@ -1549,6 +1759,8 @@ operator|-=
 name|loadDirectory
 argument_list|(
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
@@ -1571,14 +1783,17 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Load information about root, and use the information to update the root      * directory of NameSystem.      * @param in The {@link DataInput} instance to read.      */
-DECL|method|loadRoot (DataInput in)
+comment|/**      * Load information about root, and use the information to update the root      * directory of NameSystem.      * @param in The {@link DataInput} instance to read.      * @param counter Counter to increment for namenode startup progress      */
+DECL|method|loadRoot (DataInput in, Counter counter)
 specifier|private
 name|void
 name|loadRoot
 parameter_list|(
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1613,6 +1828,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 operator|.
 name|asDirectory
@@ -1626,7 +1843,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Load children nodes for the parent directory. */
-DECL|method|loadChildren (INodeDirectory parent, DataInput in)
+DECL|method|loadChildren (INodeDirectory parent, DataInput in, Counter counter)
 specifier|private
 name|int
 name|loadChildren
@@ -1636,6 +1853,9 @@ name|parent
 parameter_list|,
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1674,6 +1894,8 @@ argument_list|,
 name|in
 argument_list|,
 literal|true
+argument_list|,
+name|counter
 argument_list|)
 decl_stmt|;
 name|addToParent
@@ -1688,14 +1910,17 @@ return|return
 name|numChildren
 return|;
 block|}
-comment|/**      * Load a directory when snapshot is supported.      * @param in The {@link DataInput} instance to read.      */
-DECL|method|loadDirectoryWithSnapshot (DataInput in)
+comment|/**      * Load a directory when snapshot is supported.      * @param in The {@link DataInput} instance to read.      * @param counter Counter to increment for namenode startup progress      */
+DECL|method|loadDirectoryWithSnapshot (DataInput in, Counter counter)
 specifier|private
 name|void
 name|loadDirectoryWithSnapshot
 parameter_list|(
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1828,6 +2053,8 @@ argument_list|(
 name|parent
 argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 comment|// Step 4. load Directory Diff List
@@ -1870,18 +2097,23 @@ block|{
 name|loadDirectoryWithSnapshot
 argument_list|(
 name|in
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**     * Load all children of a directory     *      * @param in     * @return number of child inodes read     * @throws IOException     */
-DECL|method|loadDirectory (DataInput in)
+comment|/**     * Load all children of a directory     *      * @param in     * @param counter Counter to increment for namenode startup progress     * @return number of child inodes read     * @throws IOException     */
+DECL|method|loadDirectory (DataInput in, Counter counter)
 specifier|private
 name|int
 name|loadDirectory
 parameter_list|(
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -1926,11 +2158,13 @@ argument_list|(
 name|parent
 argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 return|;
 block|}
-comment|/**    * load fsimage files assuming full path names are stored    *     * @param numFiles total number of files to load    * @param in data input stream    * @throws IOException if any error occurs    */
-DECL|method|loadFullNameINodes (long numFiles, DataInput in)
+comment|/**    * load fsimage files assuming full path names are stored    *     * @param numFiles total number of files to load    * @param in data input stream    * @param counter Counter to increment for namenode startup progress    * @throws IOException if any error occurs    */
+DECL|method|loadFullNameINodes (long numFiles, DataInput in, Counter counter)
 specifier|private
 name|void
 name|loadFullNameINodes
@@ -1940,6 +2174,9 @@ name|numFiles
 parameter_list|,
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -2014,6 +2251,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 decl_stmt|;
 if|if
@@ -2327,6 +2566,39 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
+name|loadINodeWithLocalName
+argument_list|(
+name|isSnapshotINode
+argument_list|,
+name|in
+argument_list|,
+name|updateINodeMap
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+DECL|method|loadINodeWithLocalName (boolean isSnapshotINode, DataInput in, boolean updateINodeMap, Counter counter)
+specifier|public
+name|INode
+name|loadINodeWithLocalName
+parameter_list|(
+name|boolean
+name|isSnapshotINode
+parameter_list|,
+name|DataInput
+name|in
+parameter_list|,
+name|boolean
+name|updateINodeMap
+parameter_list|,
+name|Counter
+name|counter
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 specifier|final
 name|byte
 index|[]
@@ -2349,6 +2621,8 @@ argument_list|,
 name|isSnapshotINode
 argument_list|,
 name|in
+argument_list|,
+name|counter
 argument_list|)
 decl_stmt|;
 if|if
@@ -2382,8 +2656,8 @@ return|return
 name|inode
 return|;
 block|}
-comment|/**    * load an inode from fsimage except for its name    *     * @param in data input stream from which image is read    * @return an inode    */
-DECL|method|loadINode (final byte[] localName, boolean isSnapshotINode, DataInput in)
+comment|/**    * load an inode from fsimage except for its name    *     * @param in data input stream from which image is read    * @param counter Counter to increment for namenode startup progress    * @return an inode    */
+DECL|method|loadINode (final byte[] localName, boolean isSnapshotINode, DataInput in, Counter counter)
 name|INode
 name|loadINode
 parameter_list|(
@@ -2397,6 +2671,9 @@ name|isSnapshotINode
 parameter_list|,
 name|DataInput
 name|in
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -2692,6 +2969,19 @@ name|in
 argument_list|)
 decl_stmt|;
 comment|// return
+if|if
+condition|(
+name|counter
+operator|!=
+literal|null
+condition|)
+block|{
+name|counter
+operator|.
+name|increment
+argument_list|()
+expr_stmt|;
+block|}
 specifier|final
 name|INodeFile
 name|file
@@ -2853,6 +3143,19 @@ name|in
 argument_list|)
 decl_stmt|;
 comment|//return
+if|if
+condition|(
+name|counter
+operator|!=
+literal|null
+condition|)
+block|{
+name|counter
+operator|.
+name|increment
+argument_list|()
+expr_stmt|;
+block|}
 specifier|final
 name|INodeDirectory
 name|dir
@@ -2945,6 +3248,19 @@ argument_list|(
 name|in
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|counter
+operator|!=
+literal|null
+condition|)
+block|{
+name|counter
+operator|.
+name|increment
+argument_list|()
+expr_stmt|;
+block|}
 return|return
 operator|new
 name|INodeSymlink
@@ -2973,6 +3289,9 @@ literal|3
 condition|)
 block|{
 comment|//reference
+comment|// Intentionally do not increment counter, because it is too difficult at
+comment|// this point to assess whether or not this is a reference that counts
+comment|// toward quota.
 specifier|final
 name|boolean
 name|isWithName
@@ -3335,7 +3654,7 @@ name|dsQuota
 argument_list|)
 return|;
 block|}
-DECL|method|loadFilesUnderConstruction (DataInput in, boolean supportSnapshot)
+DECL|method|loadFilesUnderConstruction (DataInput in, boolean supportSnapshot, Counter counter)
 specifier|private
 name|void
 name|loadFilesUnderConstruction
@@ -3345,6 +3664,9 @@ name|in
 parameter_list|,
 name|boolean
 name|supportSnapshot
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -3403,6 +3725,11 @@ name|getLayoutVersion
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|counter
+operator|.
+name|increment
+argument_list|()
+expr_stmt|;
 comment|// verify that file exists in namespace
 name|String
 name|path
@@ -3979,6 +4306,84 @@ name|sourceNamesystem
 operator|.
 name|dir
 decl_stmt|;
+name|String
+name|sdPath
+init|=
+name|newFile
+operator|.
+name|getParentFile
+argument_list|()
+operator|.
+name|getParentFile
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
+decl_stmt|;
+name|Step
+name|step
+init|=
+operator|new
+name|Step
+argument_list|(
+name|StepType
+operator|.
+name|INODES
+argument_list|,
+name|sdPath
+argument_list|)
+decl_stmt|;
+name|StartupProgress
+name|prog
+init|=
+name|NameNode
+operator|.
+name|getStartupProgress
+argument_list|()
+decl_stmt|;
+name|prog
+operator|.
+name|beginStep
+argument_list|(
+name|Phase
+operator|.
+name|SAVING_CHECKPOINT
+argument_list|,
+name|step
+argument_list|)
+expr_stmt|;
+name|prog
+operator|.
+name|setTotal
+argument_list|(
+name|Phase
+operator|.
+name|SAVING_CHECKPOINT
+argument_list|,
+name|step
+argument_list|,
+name|fsDir
+operator|.
+name|rootDir
+operator|.
+name|numItemsInTree
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Counter
+name|counter
+init|=
+name|prog
+operator|.
+name|getCounter
+argument_list|(
+name|Phase
+operator|.
+name|SAVING_CHECKPOINT
+argument_list|,
+name|step
+argument_list|)
+decl_stmt|;
 name|long
 name|startTime
 init|=
@@ -4160,8 +4565,6 @@ name|compression
 argument_list|)
 expr_stmt|;
 comment|// save the root
-name|FSImageSerialization
-operator|.
 name|saveINode2Image
 argument_list|(
 name|fsDir
@@ -4173,6 +4576,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|referenceMap
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 comment|// save the rest of the nodes
@@ -4185,6 +4590,39 @@ argument_list|,
 name|out
 argument_list|,
 literal|true
+argument_list|,
+name|counter
+argument_list|)
+expr_stmt|;
+name|prog
+operator|.
+name|endStep
+argument_list|(
+name|Phase
+operator|.
+name|SAVING_CHECKPOINT
+argument_list|,
+name|step
+argument_list|)
+expr_stmt|;
+comment|// Now that the step is finished, set counter equal to total to adjust
+comment|// for possible under-counting due to reference inodes.
+name|prog
+operator|.
+name|setCount
+argument_list|(
+name|Phase
+operator|.
+name|SAVING_CHECKPOINT
+argument_list|,
+name|step
+argument_list|,
+name|fsDir
+operator|.
+name|rootDir
+operator|.
+name|numItemsInTree
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// save files under construction
@@ -4205,6 +4643,8 @@ operator|.
 name|saveSecretManagerState
 argument_list|(
 name|out
+argument_list|,
+name|sdPath
 argument_list|)
 expr_stmt|;
 name|context
@@ -4287,8 +4727,8 @@ literal|" seconds."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Save children INodes.      * @param children The list of children INodes      * @param out The DataOutputStream to write      * @return Number of children that are directory      */
-DECL|method|saveChildren (ReadOnlyList<INode> children, DataOutputStream out)
+comment|/**      * Save children INodes.      * @param children The list of children INodes      * @param out The DataOutputStream to write      * @param counter Counter to increment for namenode startup progress      * @return Number of children that are directory      */
+DECL|method|saveChildren (ReadOnlyList<INode> children, DataOutputStream out, Counter counter)
 specifier|private
 name|int
 name|saveChildren
@@ -4301,6 +4741,9 @@ name|children
 parameter_list|,
 name|DataOutputStream
 name|out
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -4335,8 +4778,6 @@ name|children
 control|)
 block|{
 comment|// print all children first
-name|FSImageSerialization
-operator|.
 name|saveINode2Image
 argument_list|(
 name|child
@@ -4346,6 +4787,8 @@ argument_list|,
 literal|false
 argument_list|,
 name|referenceMap
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 if|if
@@ -4381,8 +4824,8 @@ return|return
 name|dirNum
 return|;
 block|}
-comment|/**      * Save file tree image starting from the given root.      * This is a recursive procedure, which first saves all children and       * snapshot diffs of a current directory and then moves inside the       * sub-directories.      *       * @param current The current node      * @param out The DataoutputStream to write the image      * @param snapshot The possible snapshot associated with the current node      * @param toSaveSubtree Whether or not to save the subtree to fsimage. For      *                      reference node, its subtree may already have been      *                      saved before.      */
-DECL|method|saveImage (INodeDirectory current, DataOutputStream out, boolean toSaveSubtree)
+comment|/**      * Save file tree image starting from the given root.      * This is a recursive procedure, which first saves all children and       * snapshot diffs of a current directory and then moves inside the       * sub-directories.      *       * @param current The current node      * @param out The DataoutputStream to write the image      * @param snapshot The possible snapshot associated with the current node      * @param toSaveSubtree Whether or not to save the subtree to fsimage. For      *                      reference node, its subtree may already have been      *                      saved before.      * @param counter Counter to increment for namenode startup progress      */
+DECL|method|saveImage (INodeDirectory current, DataOutputStream out, boolean toSaveSubtree, Counter counter)
 specifier|private
 name|void
 name|saveImage
@@ -4395,6 +4838,9 @@ name|out
 parameter_list|,
 name|boolean
 name|toSaveSubtree
+parameter_list|,
+name|Counter
+name|counter
 parameter_list|)
 throws|throws
 name|IOException
@@ -4528,6 +4974,8 @@ argument_list|(
 name|children
 argument_list|,
 name|out
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 comment|// 4. Write DirectoryDiff lists, if there is any.
@@ -4602,6 +5050,8 @@ argument_list|,
 name|out
 argument_list|,
 name|toSave
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
@@ -4650,9 +5100,68 @@ argument_list|,
 name|out
 argument_list|,
 name|toSave
+argument_list|,
+name|counter
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+comment|/**      * Saves inode and increments progress counter.      *       * @param inode INode to save      * @param out DataOutputStream to receive inode      * @param writeUnderConstruction boolean true if this is under construction      * @param referenceMap ReferenceMap containing reference inodes      * @param counter Counter to increment for namenode startup progress      * @throws IOException thrown if there is an I/O error      */
+DECL|method|saveINode2Image (INode inode, DataOutputStream out, boolean writeUnderConstruction, ReferenceMap referenceMap, Counter counter)
+specifier|private
+name|void
+name|saveINode2Image
+parameter_list|(
+name|INode
+name|inode
+parameter_list|,
+name|DataOutputStream
+name|out
+parameter_list|,
+name|boolean
+name|writeUnderConstruction
+parameter_list|,
+name|ReferenceMap
+name|referenceMap
+parameter_list|,
+name|Counter
+name|counter
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|FSImageSerialization
+operator|.
+name|saveINode2Image
+argument_list|(
+name|inode
+argument_list|,
+name|out
+argument_list|,
+name|writeUnderConstruction
+argument_list|,
+name|referenceMap
+argument_list|)
+expr_stmt|;
+comment|// Intentionally do not increment counter for reference inodes, because it
+comment|// is too difficult at this point to assess whether or not this is a
+comment|// reference that counts toward quota.
+if|if
+condition|(
+operator|!
+operator|(
+name|inode
+operator|instanceof
+name|INodeReference
+operator|)
+condition|)
+block|{
+name|counter
+operator|.
+name|increment
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}

@@ -1700,18 +1700,6 @@ name|long
 name|length
 parameter_list|()
 block|{
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-name|advertisedSize
-operator|!=
-operator|-
-literal|1
-argument_list|,
-literal|"must get input stream before length is available"
-argument_list|)
-expr_stmt|;
 return|return
 name|advertisedSize
 return|;

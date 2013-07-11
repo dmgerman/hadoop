@@ -469,6 +469,24 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|getCurrentStreamName ()
+specifier|public
+name|String
+name|getCurrentStreamName
+parameter_list|()
+block|{
+return|return
+name|streams
+index|[
+name|curIdx
+index|]
+operator|.
+name|getCurrentStreamName
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getName ()
 specifier|public
 name|String
