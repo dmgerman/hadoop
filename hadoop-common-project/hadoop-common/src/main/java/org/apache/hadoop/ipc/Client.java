@@ -1039,12 +1039,12 @@ specifier|final
 name|boolean
 name|fallbackAllowed
 decl_stmt|;
-DECL|field|uuid
+DECL|field|clientId
 specifier|private
 specifier|final
 name|byte
 index|[]
-name|uuid
+name|clientId
 decl_stmt|;
 comment|/**    * Executor on which IPC calls' parameters are sent. Deferring    * the sending of parameters to a separate thread isolates them    * from thread interruptions in the calling code.    */
 DECL|field|SEND_PARAMS_EXECUTOR
@@ -4088,7 +4088,7 @@ name|call
 operator|.
 name|id
 argument_list|,
-name|uuid
+name|clientId
 argument_list|)
 decl_stmt|;
 name|header
@@ -5012,7 +5012,7 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|uuid
+name|clientId
 operator|=
 name|StringUtils
 operator|.
