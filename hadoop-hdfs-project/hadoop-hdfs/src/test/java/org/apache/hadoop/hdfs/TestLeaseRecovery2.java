@@ -901,7 +901,7 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// test recoverLese from a different client
+comment|// test recoverLease from a different client
 name|recoverLease
 argument_list|(
 name|filepath
