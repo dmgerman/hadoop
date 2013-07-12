@@ -1631,6 +1631,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Allow snapshot on a directory.    * @param snapshotRoot the directory to be snapped    * @throws IOException on error    */
+annotation|@
+name|Idempotent
 DECL|method|allowSnapshot (String snapshotRoot)
 specifier|public
 name|void
@@ -1643,6 +1645,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Disallow snapshot on a directory.    * @param snapshotRoot the directory to disallow snapshot    * @throws IOException on error    */
+annotation|@
+name|Idempotent
 DECL|method|disallowSnapshot (String snapshotRoot)
 specifier|public
 name|void
@@ -1655,6 +1659,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the difference between two snapshots, or between a snapshot and the    * current tree of a directory.    *     * @param snapshotRoot    *          full path of the directory where snapshots are taken    * @param fromSnapshot    *          snapshot name of the from point. Null indicates the current    *          tree    * @param toSnapshot    *          snapshot name of the to point. Null indicates the current    *          tree.    * @return The difference report represented as a {@link SnapshotDiffReport}.    * @throws IOException on error    */
+annotation|@
+name|Idempotent
 DECL|method|getSnapshotDiffReport (String snapshotRoot, String fromSnapshot, String toSnapshot)
 specifier|public
 name|SnapshotDiffReport
