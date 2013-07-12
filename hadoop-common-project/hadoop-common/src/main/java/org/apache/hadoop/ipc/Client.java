@@ -1046,14 +1046,60 @@ name|byte
 index|[]
 name|clientId
 decl_stmt|;
-comment|/**    * Executor on which IPC calls' parameters are sent. Deferring    * the sending of parameters to a separate thread isolates them    * from thread interruptions in the calling code.    */
-DECL|field|SEND_PARAMS_EXECUTOR
+comment|/**    * Executor on which IPC calls' parameters are sent.    * Deferring the sending of parameters to a separate    * thread isolates them from thread interruptions in the    * calling code.    */
+DECL|field|sendParamsExecutor
 specifier|private
-specifier|static
 specifier|final
 name|ExecutorService
-name|SEND_PARAMS_EXECUTOR
+name|sendParamsExecutor
+decl_stmt|;
+DECL|field|clientExcecutorFactory
+specifier|private
+specifier|final
+specifier|static
+name|ClientExecutorServiceFactory
+name|clientExcecutorFactory
 init|=
+operator|new
+name|ClientExecutorServiceFactory
+argument_list|()
+decl_stmt|;
+DECL|class|ClientExecutorServiceFactory
+specifier|private
+specifier|static
+class|class
+name|ClientExecutorServiceFactory
+block|{
+DECL|field|executorRefCount
+specifier|private
+name|int
+name|executorRefCount
+init|=
+literal|0
+decl_stmt|;
+DECL|field|clientExecutor
+specifier|private
+name|ExecutorService
+name|clientExecutor
+init|=
+literal|null
+decl_stmt|;
+comment|/**      * Get Executor on which IPC calls' parameters are sent.      * If the internal reference counter is zero, this method      * creates the instance of Executor. If not, this method      * just returns the reference of clientExecutor.      *       * @return An ExecutorService instance      */
+DECL|method|refAndGetInstance ()
+specifier|synchronized
+name|ExecutorService
+name|refAndGetInstance
+parameter_list|()
+block|{
+if|if
+condition|(
+name|executorRefCount
+operator|==
+literal|0
+condition|)
+block|{
+name|clientExecutor
+operator|=
 name|Executors
 operator|.
 name|newCachedThreadPool
@@ -1075,7 +1121,102 @@ operator|.
 name|build
 argument_list|()
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+name|executorRefCount
+operator|++
+expr_stmt|;
+return|return
+name|clientExecutor
+return|;
+block|}
+comment|/**      * Cleanup Executor on which IPC calls' parameters are sent.      * If reference counter is zero, this method discards the      * instance of the Executor. If not, this method      * just decrements the internal reference counter.      *       * @return An ExecutorService instance if it exists.      *   Null is returned if not.      */
+DECL|method|unrefAndCleanup ()
+specifier|synchronized
+name|ExecutorService
+name|unrefAndCleanup
+parameter_list|()
+block|{
+name|executorRefCount
+operator|--
+expr_stmt|;
+assert|assert
+operator|(
+name|executorRefCount
+operator|>=
+literal|0
+operator|)
+assert|;
+if|if
+condition|(
+name|executorRefCount
+operator|==
+literal|0
+condition|)
+block|{
+name|clientExecutor
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+if|if
+condition|(
+operator|!
+name|clientExecutor
+operator|.
+name|awaitTermination
+argument_list|(
+literal|1
+argument_list|,
+name|TimeUnit
+operator|.
+name|MINUTES
+argument_list|)
+condition|)
+block|{
+name|clientExecutor
+operator|.
+name|shutdownNow
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Interrupted while waiting for clientExecutor"
+operator|+
+literal|"to stop"
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|clientExecutor
+operator|.
+name|shutdownNow
+argument_list|()
+expr_stmt|;
+block|}
+name|clientExecutor
+operator|=
+literal|null
+expr_stmt|;
+block|}
+return|return
+name|clientExecutor
+return|;
+block|}
+block|}
+empty_stmt|;
 comment|/**    * set the ping interval value in configuration    *     * @param conf Configuration    * @param pingInterval the ping interval    */
 DECL|method|setPingInterval (Configuration conf, int pingInterval)
 specifier|final
@@ -4051,7 +4192,7 @@ block|{
 return|return;
 block|}
 comment|// Serialize the call to be sent. This is done from the actual
-comment|// caller thread, rather than the SEND_PARAMS_EXECUTOR thread,
+comment|// caller thread, rather than the sendParamsExecutor thread,
 comment|// so that if the serialization throws an error, it is reported
 comment|// properly. This also parallelizes the serialization.
 comment|//
@@ -4118,7 +4259,7 @@ name|?
 argument_list|>
 name|senderFuture
 init|=
-name|SEND_PARAMS_EXECUTOR
+name|sendParamsExecutor
 operator|.
 name|submit
 argument_list|(
@@ -5019,6 +5160,15 @@ operator|.
 name|getUuidBytes
 argument_list|()
 expr_stmt|;
+name|this
+operator|.
+name|sendParamsExecutor
+operator|=
+name|clientExcecutorFactory
+operator|.
+name|refAndGetInstance
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Construct an IPC client with the default SocketFactory    * @param valueClass    * @param conf    */
 DECL|method|Client (Class<? extends Writable> valueClass, Configuration conf)
@@ -5151,6 +5301,11 @@ name|e
 parameter_list|)
 block|{       }
 block|}
+name|clientExcecutorFactory
+operator|.
+name|unrefAndCleanup
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Same as {@link #call(RPC.RpcKind, Writable, ConnectionId)}    *  for RPC_BUILTIN    */
 DECL|method|call (Writable param, InetSocketAddress address)
