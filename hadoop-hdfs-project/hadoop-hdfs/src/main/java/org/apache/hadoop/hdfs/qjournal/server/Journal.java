@@ -608,6 +608,20 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -3713,6 +3727,24 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// We may have lost our ticket since last checkpoint, log in again, just in case
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|checkTGTAndReloginFromKeytab
+argument_list|()
+expr_stmt|;
+block|}
 name|boolean
 name|success
 init|=
