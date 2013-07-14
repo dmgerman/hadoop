@@ -126,6 +126,26 @@ name|FS_DF_INTERVAL_DEFAULT
 init|=
 literal|60000
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|FS_DU_INTERVAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_DU_INTERVAL_KEY
+init|=
+literal|"fs.du.interval"
+decl_stmt|;
+comment|/** Default value for FS_DU_INTERVAL_KEY */
+DECL|field|FS_DU_INTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|FS_DU_INTERVAL_DEFAULT
+init|=
+literal|600000
+decl_stmt|;
 comment|//Defaults are not specified for following keys
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY
