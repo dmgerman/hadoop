@@ -300,6 +300,20 @@ name|ImmutableList
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -345,6 +359,17 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|appAttemptId
+operator|!=
+literal|null
+argument_list|,
+literal|"ApplicationAttempId should not be null"
+argument_list|)
+expr_stmt|;
 name|AMRMClient
 argument_list|<
 name|T
@@ -440,6 +465,41 @@ name|int
 name|containerCount
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|capability
+operator|!=
+literal|null
+argument_list|,
+literal|"The Resource to be requested for each container "
+operator|+
+literal|"should not be null "
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|priority
+operator|!=
+literal|null
+argument_list|,
+literal|"The priority at which to request containers should not be null "
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|containerCount
+operator|>
+literal|0
+argument_list|,
+literal|"The number of containers to request should larger than 0"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|capability

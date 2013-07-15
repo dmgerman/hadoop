@@ -714,9 +714,19 @@ name|Joiner
 import|;
 end_import
 
-begin_comment
-comment|// TODO check inputs for null etc. YARN-654
-end_comment
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
 
 begin_class
 annotation|@
@@ -1361,6 +1371,28 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|appHostName
+operator|!=
+literal|null
+argument_list|,
+literal|"The host name should not be null"
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|appHostPort
+operator|>=
+literal|0
+argument_list|,
+literal|"Port number of the host should not be negative"
+argument_list|)
+expr_stmt|;
 comment|// do this only once ???
 name|RegisterApplicationMasterRequest
 name|request
@@ -1445,6 +1477,17 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|progressIndicator
+operator|>
+literal|0
+argument_list|,
+literal|"Progress indicator should not be negative"
+argument_list|)
+expr_stmt|;
 name|AllocateResponse
 name|allocateResponse
 init|=
@@ -1805,6 +1848,17 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|appStatus
+operator|!=
+literal|null
+argument_list|,
+literal|"AppStatus should not be null."
+argument_list|)
+expr_stmt|;
 name|FinishApplicationMasterRequest
 name|request
 init|=
@@ -1881,6 +1935,17 @@ name|T
 name|req
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|req
+operator|!=
+literal|null
+argument_list|,
+literal|"Resource request can not be null."
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -2147,6 +2212,17 @@ name|T
 name|req
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|req
+operator|!=
+literal|null
+argument_list|,
+literal|"Resource request can not be null."
+argument_list|)
+expr_stmt|;
 name|Set
 argument_list|<
 name|String
@@ -2315,6 +2391,17 @@ name|ContainerId
 name|containerId
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|containerId
+operator|!=
+literal|null
+argument_list|,
+literal|"ContainerId can not be null."
+argument_list|)
+expr_stmt|;
 name|release
 operator|.
 name|add
@@ -2375,6 +2462,28 @@ name|Resource
 name|capability
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|capability
+operator|!=
+literal|null
+argument_list|,
+literal|"The Resource to be requested should not be null "
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|priority
+operator|!=
+literal|null
+argument_list|,
+literal|"The priority at which to request containers should not be null "
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|LinkedHashSet
