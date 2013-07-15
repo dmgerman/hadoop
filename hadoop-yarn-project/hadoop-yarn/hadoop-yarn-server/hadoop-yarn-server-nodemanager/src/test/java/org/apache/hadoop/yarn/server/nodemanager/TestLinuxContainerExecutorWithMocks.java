@@ -36,6 +36,18 @@ begin_import
 import|import static
 name|org
 operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -500,6 +512,14 @@ name|void
 name|setup
 parameter_list|()
 block|{
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 name|File
 name|f
 init|=
