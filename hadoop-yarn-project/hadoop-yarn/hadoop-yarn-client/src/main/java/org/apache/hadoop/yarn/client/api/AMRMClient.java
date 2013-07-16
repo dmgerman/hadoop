@@ -553,6 +553,7 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
+operator|!
 operator|(
 operator|!
 name|relaxLocality
