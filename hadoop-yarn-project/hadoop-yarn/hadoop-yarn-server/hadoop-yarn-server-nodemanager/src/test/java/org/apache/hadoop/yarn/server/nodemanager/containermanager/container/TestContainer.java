@@ -264,6 +264,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -938,6 +948,13 @@ init|=
 operator|new
 name|YarnConfiguration
 argument_list|()
+decl_stmt|;
+DECL|field|FAKE_LOCALIZATION_ERROR
+specifier|final
+name|String
+name|FAKE_LOCALIZATION_ERROR
+init|=
+literal|"Fake localization error"
 decl_stmt|;
 comment|/**    * Verify correct container request events sent to localizer.    */
 annotation|@
@@ -2031,6 +2048,21 @@ expr_stmt|;
 name|verifyCleanupCall
 argument_list|(
 name|wc
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|wc
+operator|.
+name|getDiagnostics
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|FAKE_LOCALIZATION_ERROR
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -4449,7 +4481,7 @@ init|=
 operator|new
 name|Exception
 argument_list|(
-literal|"Fake localization error"
+name|FAKE_LOCALIZATION_ERROR
 argument_list|)
 decl_stmt|;
 name|c
@@ -4540,7 +4572,7 @@ init|=
 operator|new
 name|Exception
 argument_list|(
-literal|"Fake localization error"
+name|FAKE_LOCALIZATION_ERROR
 argument_list|)
 decl_stmt|;
 name|c
@@ -4752,6 +4784,22 @@ return|return
 name|localResources
 operator|.
 name|size
+argument_list|()
+return|;
+block|}
+DECL|method|getDiagnostics ()
+specifier|public
+name|String
+name|getDiagnostics
+parameter_list|()
+block|{
+return|return
+name|c
+operator|.
+name|cloneAndGetContainerStatus
+argument_list|()
+operator|.
+name|getDiagnostics
 argument_list|()
 return|;
 block|}
