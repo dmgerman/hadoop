@@ -405,7 +405,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Object to represent container request for resources. Scheduler    * documentation should be consulted for the specifics of how the parameters    * are honored.    * All getters return immutable values.    *     * @param capability    *    The {@link Resource} to be requested for each container.    * @param nodes    *    Any hosts to request that the containers are placed on.    * @param racks    *    Any racks to request that the containers are placed on. The racks    *    corresponding to any hosts requested will be automatically added to    *    this list.    * @param priority    *    The priority at which to request the containers. Higher priorities have    *    lower numerical values.    * @param containerCount    *    The number of containers to request.    */
+comment|/**    * Object to represent a container request for resources. Scheduler    * documentation should be consulted for the specifics of how the parameters    * are honored.    *     * By default, YARN schedulers try to allocate containers at the requested    * locations but they may relax the constraints in order to expedite meeting    * allocations limits. They first relax the constraint to the same rack as the    * requested node and then to anywhere in the cluster. The relaxLocality flag    * may be used to disable locality relaxation and request containers at only     * specific locations. The following conditions apply.    *<ul>    *<li>Within a priority, all container requests must have the same value for    * locality relaxation. Either enabled or disabled.</li>    *<li>If locality relaxation is disabled, then across requests, locations at    * different network levels may not be specified. E.g. its invalid to make a    * request for a specific node and another request for a specific rack.</li>    *<li>If locality relaxation is disabled, then only within the same request,      * a node and its rack may be specified together. This allows for a specific       * rack with a preference for a specific node within that rack.</li>    *<li></li>    *</ul>    * To re-enable locality relaxation at a given priority, all pending requests     * with locality relaxation disabled must be first removed. Then they can be     * added back with locality relaxation enabled.    *     * All getters return immutable values.    */
 DECL|class|ContainerRequest
 specifier|public
 specifier|static
@@ -443,6 +443,12 @@ specifier|final
 name|int
 name|containerCount
 decl_stmt|;
+DECL|field|relaxLocality
+specifier|final
+name|boolean
+name|relaxLocality
+decl_stmt|;
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints and      * locality relaxation enabled.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param containerCount      *          The number of containers to request.      */
 DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, int containerCount)
 specifier|public
 name|ContainerRequest
@@ -465,6 +471,49 @@ name|int
 name|containerCount
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|capability
+argument_list|,
+name|nodes
+argument_list|,
+name|racks
+argument_list|,
+name|priority
+argument_list|,
+name|containerCount
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Instantiates a {@link ContainerRequest} with the given constraints.      *       * @param capability      *          The {@link Resource} to be requested for each container.      * @param nodes      *          Any hosts to request that the containers are placed on.      * @param racks      *          Any racks to request that the containers are placed on. The      *          racks corresponding to any hosts requested will be automatically      *          added to this list.      * @param priority      *          The priority at which to request the containers. Higher      *          priorities have lower numerical values.      * @param containerCount      *          The number of containers to request.      * @param relaxLocality      *          If true, containers for this request may be assigned on hosts      *          and racks other than the ones explicitly requested.      */
+DECL|method|ContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, int containerCount, boolean relaxLocality)
+specifier|public
+name|ContainerRequest
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|,
+name|String
+index|[]
+name|nodes
+parameter_list|,
+name|String
+index|[]
+name|racks
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|int
+name|containerCount
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|)
+block|{
+comment|// Validate request
 name|Preconditions
 operator|.
 name|checkArgument
@@ -500,6 +549,44 @@ argument_list|,
 literal|"The number of containers to request should larger than 0"
 argument_list|)
 expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|(
+operator|!
+name|relaxLocality
+operator|&&
+operator|(
+name|racks
+operator|==
+literal|null
+operator|||
+name|racks
+operator|.
+name|length
+operator|==
+literal|0
+operator|)
+operator|&&
+operator|(
+name|nodes
+operator|==
+literal|null
+operator|||
+name|nodes
+operator|.
+name|length
+operator|==
+literal|0
+operator|)
+operator|)
+argument_list|,
+literal|"Can't turn off locality relaxation on a "
+operator|+
+literal|"request with no location constraints"
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|capability
@@ -555,6 +642,12 @@ operator|.
 name|containerCount
 operator|=
 name|containerCount
+expr_stmt|;
+name|this
+operator|.
+name|relaxLocality
+operator|=
+name|relaxLocality
 expr_stmt|;
 block|}
 DECL|method|getCapability ()
@@ -611,6 +704,16 @@ parameter_list|()
 block|{
 return|return
 name|containerCount
+return|;
+block|}
+DECL|method|getRelaxLocality ()
+specifier|public
+name|boolean
+name|getRelaxLocality
+parameter_list|()
+block|{
+return|return
+name|relaxLocality
 return|;
 block|}
 DECL|method|toString ()
@@ -724,6 +827,44 @@ argument_list|,
 name|priority
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|StoredContainerRequest (Resource capability, String[] nodes, String[] racks, Priority priority, boolean relaxLocality)
+specifier|public
+name|StoredContainerRequest
+parameter_list|(
+name|Resource
+name|capability
+parameter_list|,
+name|String
+index|[]
+name|nodes
+parameter_list|,
+name|String
+index|[]
+name|racks
+parameter_list|,
+name|Priority
+name|priority
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|capability
+argument_list|,
+name|nodes
+argument_list|,
+name|racks
+argument_list|,
+name|priority
+argument_list|,
+literal|1
+argument_list|,
+name|relaxLocality
 argument_list|)
 expr_stmt|;
 block|}

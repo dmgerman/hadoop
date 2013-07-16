@@ -78,6 +78,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Comparator
 import|;
 end_import
@@ -548,6 +558,24 @@ name|client
 operator|.
 name|api
 operator|.
+name|InvalidContainerRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
 name|NMTokenCache
 import|;
 end_import
@@ -764,6 +792,25 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|ANY_LIST
+specifier|private
+specifier|static
+specifier|final
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|ANY_LIST
+init|=
+name|Collections
+operator|.
+name|singletonList
+argument_list|(
+name|ResourceRequest
+operator|.
+name|ANY
+argument_list|)
+decl_stmt|;
 DECL|field|recordFactory
 specifier|private
 specifier|final
@@ -820,7 +867,7 @@ name|T
 argument_list|>
 name|containerRequests
 decl_stmt|;
-DECL|method|ResourceRequestInfo (Priority priority, String resourceName, Resource capability)
+DECL|method|ResourceRequestInfo (Priority priority, String resourceName, Resource capability, boolean relaxLocality)
 name|ResourceRequestInfo
 parameter_list|(
 name|Priority
@@ -831,6 +878,9 @@ name|resourceName
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|boolean
+name|relaxLocality
 parameter_list|)
 block|{
 name|remoteRequest
@@ -846,6 +896,13 @@ argument_list|,
 name|capability
 argument_list|,
 literal|0
+argument_list|)
+expr_stmt|;
+name|remoteRequest
+operator|.
+name|setRelaxLocality
+argument_list|(
+name|relaxLocality
 argument_list|)
 expr_stmt|;
 name|containerRequests
@@ -1482,7 +1539,7 @@ operator|.
 name|checkArgument
 argument_list|(
 name|progressIndicator
-operator|>
+operator|>=
 literal|0
 argument_list|,
 literal|"Progress indicator should not be negative"
@@ -1950,7 +2007,7 @@ name|Set
 argument_list|<
 name|String
 argument_list|>
-name|allRacks
+name|dedupedRacks
 init|=
 operator|new
 name|HashSet
@@ -1969,7 +2026,7 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|allRacks
+name|dedupedRacks
 operator|.
 name|addAll
 argument_list|(
@@ -1989,7 +2046,7 @@ operator|.
 name|size
 argument_list|()
 operator|!=
-name|allRacks
+name|dedupedRacks
 operator|.
 name|size
 argument_list|()
@@ -2024,10 +2081,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|allRacks
-operator|.
-name|addAll
-argument_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|inferredRacks
+init|=
 name|resolveRacks
 argument_list|(
 name|req
@@ -2035,6 +2094,60 @@ operator|.
 name|getNodes
 argument_list|()
 argument_list|)
+decl_stmt|;
+name|inferredRacks
+operator|.
+name|removeAll
+argument_list|(
+name|dedupedRacks
+argument_list|)
+expr_stmt|;
+comment|// check that specific and non-specific requests cannot be mixed within a
+comment|// priority
+name|checkLocalityRelaxationConflict
+argument_list|(
+name|req
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|ANY_LIST
+argument_list|,
+name|req
+operator|.
+name|getRelaxLocality
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// check that specific rack cannot be mixed with specific node within a
+comment|// priority. If node and its rack are both specified then they must be
+comment|// in the same request.
+comment|// For explicitly requested racks, we set locality relaxation to true
+name|checkLocalityRelaxationConflict
+argument_list|(
+name|req
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|dedupedRacks
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|checkLocalityRelaxationConflict
+argument_list|(
+name|req
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|inferredRacks
+argument_list|,
+name|req
+operator|.
+name|getRelaxLocality
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
@@ -2117,8 +2230,6 @@ range|:
 name|dedupedNodes
 control|)
 block|{
-comment|// Ensure node requests are accompanied by requests for
-comment|// corresponding rack
 name|addResourceRequest
 argument_list|(
 name|req
@@ -2139,6 +2250,8 @@ name|getContainerCount
 argument_list|()
 argument_list|,
 name|req
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2148,7 +2261,7 @@ control|(
 name|String
 name|rack
 range|:
-name|allRacks
+name|dedupedRacks
 control|)
 block|{
 name|addResourceRequest
@@ -2171,6 +2284,46 @@ name|getContainerCount
 argument_list|()
 argument_list|,
 name|req
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Ensure node requests are accompanied by requests for
+comment|// corresponding rack
+for|for
+control|(
+name|String
+name|rack
+range|:
+name|inferredRacks
+control|)
+block|{
+name|addResourceRequest
+argument_list|(
+name|req
+operator|.
+name|getPriority
+argument_list|()
+argument_list|,
+name|rack
+argument_list|,
+name|req
+operator|.
+name|getCapability
+argument_list|()
+argument_list|,
+name|req
+operator|.
+name|getContainerCount
+argument_list|()
+argument_list|,
+name|req
+argument_list|,
+name|req
+operator|.
+name|getRelaxLocality
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2197,6 +2350,11 @@ name|getContainerCount
 argument_list|()
 argument_list|,
 name|req
+argument_list|,
+name|req
+operator|.
+name|getRelaxLocality
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -2577,6 +2735,14 @@ condition|(
 name|resourceRequestInfo
 operator|!=
 literal|null
+operator|&&
+operator|!
+name|resourceRequestInfo
+operator|.
+name|containerRequests
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|list
@@ -2638,6 +2804,17 @@ argument_list|()
 argument_list|,
 name|capability
 argument_list|)
+operator|&&
+operator|!
+name|entry
+operator|.
+name|getValue
+argument_list|()
+operator|.
+name|containerRequests
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 comment|// match found that fits in the larger resource
@@ -2753,6 +2930,136 @@ return|return
 name|racks
 return|;
 block|}
+comment|/**    * ContainerRequests with locality relaxation cannot be made at the same    * priority as ContainerRequests without locality relaxation.    */
+DECL|method|checkLocalityRelaxationConflict (Priority priority, Collection<String> locations, boolean relaxLocality)
+specifier|private
+name|void
+name|checkLocalityRelaxationConflict
+parameter_list|(
+name|Priority
+name|priority
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|locations
+parameter_list|,
+name|boolean
+name|relaxLocality
+parameter_list|)
+block|{
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|TreeMap
+argument_list|<
+name|Resource
+argument_list|,
+name|ResourceRequestInfo
+argument_list|>
+argument_list|>
+name|remoteRequests
+init|=
+name|this
+operator|.
+name|remoteRequestsTable
+operator|.
+name|get
+argument_list|(
+name|priority
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|remoteRequests
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
+comment|// Locality relaxation will be set to relaxLocality for all implicitly
+comment|// requested racks. Make sure that existing rack requests match this.
+for|for
+control|(
+name|String
+name|location
+range|:
+name|locations
+control|)
+block|{
+name|TreeMap
+argument_list|<
+name|Resource
+argument_list|,
+name|ResourceRequestInfo
+argument_list|>
+name|reqs
+init|=
+name|remoteRequests
+operator|.
+name|get
+argument_list|(
+name|location
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|reqs
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|reqs
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
+name|reqs
+operator|.
+name|values
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+operator|.
+name|next
+argument_list|()
+operator|.
+name|remoteRequest
+operator|.
+name|getRelaxLocality
+argument_list|()
+operator|!=
+name|relaxLocality
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidContainerRequestException
+argument_list|(
+literal|"Cannot submit a "
+operator|+
+literal|"ContainerRequest asking for location "
+operator|+
+name|location
+operator|+
+literal|" with locality relaxation "
+operator|+
+name|relaxLocality
+operator|+
+literal|" when it has "
+operator|+
+literal|"already been requested with locality relaxation "
+operator|+
+name|relaxLocality
+argument_list|)
+throw|;
+block|}
+block|}
+block|}
 DECL|method|addResourceRequestToAsk (ResourceRequest remoteRequest)
 specifier|private
 name|void
@@ -2798,7 +3105,7 @@ name|remoteRequest
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability, int containerCount, T req)
+DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability, int containerCount, T req, boolean relaxLocality)
 specifier|private
 name|void
 name|addResourceRequest
@@ -2817,6 +3124,9 @@ name|containerCount
 parameter_list|,
 name|T
 name|req
+parameter_list|,
+name|boolean
+name|relaxLocality
 parameter_list|)
 block|{
 name|Map
@@ -2969,6 +3279,8 @@ argument_list|,
 name|resourceName
 argument_list|,
 name|capability
+argument_list|,
+name|relaxLocality
 argument_list|)
 expr_stmt|;
 name|reqMap
@@ -3002,6 +3314,8 @@ condition|(
 name|req
 operator|instanceof
 name|StoredContainerRequest
+operator|&&
+name|relaxLocality
 condition|)
 block|{
 name|resourceRequestInfo
