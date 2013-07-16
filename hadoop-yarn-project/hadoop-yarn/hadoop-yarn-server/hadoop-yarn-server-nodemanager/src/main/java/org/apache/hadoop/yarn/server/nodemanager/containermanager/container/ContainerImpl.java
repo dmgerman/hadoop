@@ -2010,6 +2010,24 @@ name|UPDATE_DIAGNOSTICS_MSG
 argument_list|,
 name|UPDATE_DIAGNOSTICS_TRANSITION
 argument_list|)
+comment|// This transition may result when
+comment|// we notify container of failed localization if localizer thread (for
+comment|// that container) fails for some reason
+operator|.
+name|addTransition
+argument_list|(
+name|ContainerState
+operator|.
+name|DONE
+argument_list|,
+name|ContainerState
+operator|.
+name|DONE
+argument_list|,
+name|ContainerEventType
+operator|.
+name|RESOURCE_FAILED
+argument_list|)
 comment|// create the topology tables
 operator|.
 name|installTopology

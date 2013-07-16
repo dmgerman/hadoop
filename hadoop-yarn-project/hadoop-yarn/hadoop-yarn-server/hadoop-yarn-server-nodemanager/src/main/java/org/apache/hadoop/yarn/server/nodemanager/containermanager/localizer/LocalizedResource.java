@@ -891,6 +891,15 @@ argument_list|(
 literal|",["
 argument_list|)
 expr_stmt|;
+try|try
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
 for|for
 control|(
 name|ContainerId
@@ -955,6 +964,17 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+finally|finally
+block|{
+name|this
+operator|.
+name|readLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|release (ContainerId container)
 specifier|private
