@@ -2054,17 +2054,14 @@ name|getLocalizedMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertEquals
 argument_list|(
 name|ERROR_MESSAGE
-operator|.
-name|equals
-argument_list|(
+argument_list|,
 name|e
 operator|.
 name|getLocalizedMessage
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
@@ -5006,6 +5003,22 @@ expr_stmt|;
 block|}
 try|try
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"trying ugi:"
+operator|+
+name|clientUgi
+operator|+
+literal|" tokens:"
+operator|+
+name|clientUgi
+operator|.
+name|getTokens
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|clientUgi
 operator|.
