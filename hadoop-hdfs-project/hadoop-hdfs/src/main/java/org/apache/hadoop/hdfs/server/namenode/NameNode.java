@@ -2773,7 +2773,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Cannot start tresh emptier with negative interval."
+literal|"Cannot start trash emptier with negative interval."
 operator|+
 literal|" Set "
 operator|+

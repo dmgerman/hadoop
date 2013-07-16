@@ -537,6 +537,25 @@ operator|*
 name|MSECS_PER_MINUTE
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Namenode trash configuration: Deletion interval = "
+operator|+
+name|this
+operator|.
+name|deletionInterval
+operator|+
+literal|" minutes, Emptier interval = "
+operator|+
+name|this
+operator|.
+name|emptierInterval
+operator|+
+literal|" minutes."
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|makeTrashRelativePath (Path basePath, Path rmFilePath)
 specifier|private

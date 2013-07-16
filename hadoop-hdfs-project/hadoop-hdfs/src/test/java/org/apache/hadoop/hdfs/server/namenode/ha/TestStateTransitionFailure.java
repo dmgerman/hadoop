@@ -250,7 +250,7 @@ parameter_list|)
 block|{
 name|assertExceptionContains
 argument_list|(
-literal|"Cannot start tresh emptier with negative interval"
+literal|"Cannot start trash emptier with negative interval"
 argument_list|,
 name|ee
 argument_list|)
