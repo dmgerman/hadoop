@@ -1310,6 +1310,13 @@ specifier|final
 name|boolean
 name|encryptDataTransfer
 decl_stmt|;
+comment|// Max number of blocks to log info about during a block report.
+DECL|field|maxNumBlocksToLog
+specifier|private
+specifier|final
+name|long
+name|maxNumBlocksToLog
+decl_stmt|;
 comment|/**    * When running inside a Standby node, the node may receive block reports    * from datanodes before receiving the corresponding namespace edits from    * the active NameNode. Thus, it will postpone them for later processing,    * instead of marking the blocks as corrupt.    */
 DECL|field|shouldPostponeBlocksFromFuture
 specifier|private
@@ -1717,6 +1724,23 @@ operator|.
 name|DFS_ENCRYPT_DATA_TRANSFER_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|maxNumBlocksToLog
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_MAX_NUM_BLOCKS_TO_LOG_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_MAX_NUM_BLOCKS_TO_LOG_DEFAULT
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -1778,6 +1802,15 @@ argument_list|(
 literal|"encryptDataTransfer        = "
 operator|+
 name|encryptDataTransfer
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"maxNumBlocksToLog          = "
+operator|+
+name|maxNumBlocksToLog
 argument_list|)
 expr_stmt|;
 block|}
@@ -8243,6 +8276,11 @@ name|node
 argument_list|)
 expr_stmt|;
 block|}
+name|int
+name|numBlocksLogged
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|BlockInfo
@@ -8259,7 +8297,35 @@ name|node
 argument_list|,
 literal|null
 argument_list|,
-literal|true
+name|numBlocksLogged
+operator|<
+name|maxNumBlocksToLog
+argument_list|)
+expr_stmt|;
+name|numBlocksLogged
+operator|++
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|numBlocksLogged
+operator|>
+name|maxNumBlocksToLog
+condition|)
+block|{
+name|blockLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* processReport: logged info for "
+operator|+
+name|maxNumBlocksToLog
+operator|+
+literal|" of "
+operator|+
+name|numBlocksLogged
+operator|+
+literal|" reported."
 argument_list|)
 expr_stmt|;
 block|}
@@ -12169,6 +12235,11 @@ name|reportedState
 argument_list|)
 expr_stmt|;
 block|}
+name|long
+name|numBlocksLogged
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|BlockInfo
@@ -12185,7 +12256,35 @@ name|node
 argument_list|,
 name|delHintNode
 argument_list|,
-literal|true
+name|numBlocksLogged
+operator|<
+name|maxNumBlocksToLog
+argument_list|)
+expr_stmt|;
+name|numBlocksLogged
+operator|++
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|numBlocksLogged
+operator|>
+name|maxNumBlocksToLog
+condition|)
+block|{
+name|blockLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* addBlock: logged info for "
+operator|+
+name|maxNumBlocksToLog
+operator|+
+literal|" of "
+operator|+
+name|numBlocksLogged
+operator|+
+literal|" reported."
 argument_list|)
 expr_stmt|;
 block|}

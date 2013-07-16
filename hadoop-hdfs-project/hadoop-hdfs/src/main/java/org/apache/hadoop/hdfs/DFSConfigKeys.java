@@ -3737,6 +3737,24 @@ name|DFS_QJOURNAL_WRITE_TXNS_TIMEOUT_DEFAULT
 init|=
 literal|20000
 decl_stmt|;
+DECL|field|DFS_MAX_NUM_BLOCKS_TO_LOG_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_MAX_NUM_BLOCKS_TO_LOG_KEY
+init|=
+literal|"dfs.namenode.max-num-blocks-to-log"
+decl_stmt|;
+DECL|field|DFS_MAX_NUM_BLOCKS_TO_LOG_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_MAX_NUM_BLOCKS_TO_LOG_DEFAULT
+init|=
+literal|1000l
+decl_stmt|;
 block|}
 end_class
 
