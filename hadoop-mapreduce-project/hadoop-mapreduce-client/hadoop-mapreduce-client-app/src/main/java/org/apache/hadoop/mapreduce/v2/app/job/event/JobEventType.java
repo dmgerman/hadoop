@@ -75,9 +75,6 @@ comment|//Producer:Job
 DECL|enumConstant|JOB_COMPLETED
 name|JOB_COMPLETED
 block|,
-DECL|enumConstant|JOB_FAIL_WAIT_TIMEDOUT
-name|JOB_FAIL_WAIT_TIMEDOUT
-block|,
 comment|//Producer:Any component
 DECL|enumConstant|JOB_DIAGNOSTIC_UPDATE
 name|JOB_DIAGNOSTIC_UPDATE

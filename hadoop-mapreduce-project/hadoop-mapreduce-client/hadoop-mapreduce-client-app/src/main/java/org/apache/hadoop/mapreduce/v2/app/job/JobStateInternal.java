@@ -46,9 +46,6 @@ block|,
 DECL|enumConstant|SUCCEEDED
 name|SUCCEEDED
 block|,
-DECL|enumConstant|FAIL_WAIT
-name|FAIL_WAIT
-block|,
 DECL|enumConstant|FAIL_ABORT
 name|FAIL_ABORT
 block|,
