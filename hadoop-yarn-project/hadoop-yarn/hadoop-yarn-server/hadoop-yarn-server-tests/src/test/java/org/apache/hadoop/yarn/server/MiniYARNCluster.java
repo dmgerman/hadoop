@@ -2212,6 +2212,15 @@ block|}
 return|;
 block|}
 empty_stmt|;
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|stopRMProxy
+parameter_list|()
+block|{
+return|return;
+block|}
 block|}
 return|;
 block|}

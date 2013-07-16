@@ -427,6 +427,16 @@ return|return
 name|resourceTracker
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|stopRMProxy ()
+specifier|protected
+name|void
+name|stopRMProxy
+parameter_list|()
+block|{
+return|return;
+block|}
 DECL|class|MockResourceTracker
 specifier|private
 specifier|static

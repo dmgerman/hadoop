@@ -2447,30 +2447,30 @@ name|DEFAULT_NM_PROCESS_KILL_WAIT_MS
 init|=
 literal|2000
 decl_stmt|;
-comment|/** Max time to wait to establish a connection to RM when NM starts    */
-DECL|field|RESOURCEMANAGER_CONNECT_WAIT_SECS
+comment|/** Max time to wait to establish a connection to RM    */
+DECL|field|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RESOURCEMANAGER_CONNECT_WAIT_SECS
+name|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
 init|=
-name|NM_PREFIX
+name|RM_PREFIX
 operator|+
-literal|"resourcemanager.connect.wait.secs"
+literal|"resourcemanager.connect.max.wait.secs"
 decl_stmt|;
-DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_WAIT_SECS
+DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_RESOURCEMANAGER_CONNECT_WAIT_SECS
+name|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
 init|=
 literal|15
 operator|*
 literal|60
 decl_stmt|;
-comment|/** Time interval between each NM attempt to connect to RM    */
+comment|/** Time interval between each attempt to connect to RM    */
 DECL|field|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
 specifier|public
 specifier|static
@@ -2478,7 +2478,7 @@ specifier|final
 name|String
 name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
 init|=
-name|NM_PREFIX
+name|RM_PREFIX
 operator|+
 literal|"resourcemanager.connect.retry_interval.secs"
 decl_stmt|;

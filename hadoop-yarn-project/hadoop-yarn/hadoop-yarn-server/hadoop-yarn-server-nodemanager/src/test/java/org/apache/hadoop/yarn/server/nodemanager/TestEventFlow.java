@@ -870,6 +870,15 @@ annotation|@
 name|Override
 specifier|protected
 name|void
+name|stopRMProxy
+parameter_list|()
+block|{
+return|return;
+block|}
+annotation|@
+name|Override
+specifier|protected
+name|void
 name|startStatusUpdater
 parameter_list|()
 block|{
