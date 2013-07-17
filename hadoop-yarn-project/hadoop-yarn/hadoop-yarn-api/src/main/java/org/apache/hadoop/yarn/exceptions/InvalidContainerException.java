@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager
+DECL|package|org.apache.hadoop.yarn.exceptions
 package|package
 name|org
 operator|.
@@ -14,9 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
+name|exceptions
 package|;
 end_package
 
@@ -30,21 +28,39 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|api
 operator|.
-name|YarnException
+name|ContainerManagementProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|StartContainerRequest
 import|;
 end_import
 
 begin_comment
-comment|/**  * The exception is thrown when an application Master call allocate without  * calling RegisterApplicationMaster or try to register more then once.  */
+comment|/**  * This exception is thrown by a NodeManager that is rejecting start-container  * requests via  * {@link ContainerManagementProtocol#startContainer(StartContainerRequest)}  * for containers allocated by a previous instance of the RM.  */
 end_comment
 
 begin_class
-DECL|class|InvalidApplicationMasterRequestException
+DECL|class|InvalidContainerException
 specifier|public
 class|class
-name|InvalidApplicationMasterRequestException
+name|InvalidContainerException
 extends|extends
 name|YarnException
 block|{
@@ -55,52 +71,19 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|1357686L
+literal|1L
 decl_stmt|;
-DECL|method|InvalidApplicationMasterRequestException (Throwable cause)
+DECL|method|InvalidContainerException (String msg)
 specifier|public
-name|InvalidApplicationMasterRequestException
-parameter_list|(
-name|Throwable
-name|cause
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|cause
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|InvalidApplicationMasterRequestException (String message)
-specifier|public
-name|InvalidApplicationMasterRequestException
+name|InvalidContainerException
 parameter_list|(
 name|String
-name|message
+name|msg
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|message
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|InvalidApplicationMasterRequestException (String message, Throwable cause)
-specifier|public
-name|InvalidApplicationMasterRequestException
-parameter_list|(
-name|String
-name|message
-parameter_list|,
-name|Throwable
-name|cause
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|message
-argument_list|,
-name|cause
+name|msg
 argument_list|)
 expr_stmt|;
 block|}

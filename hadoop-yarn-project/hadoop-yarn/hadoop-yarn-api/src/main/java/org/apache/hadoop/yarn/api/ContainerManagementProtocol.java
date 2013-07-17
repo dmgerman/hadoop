@@ -252,6 +252,38 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|InvalidContainerException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|NMNotYetReadyException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -270,7 +302,7 @@ specifier|public
 interface|interface
 name|ContainerManagementProtocol
 block|{
-comment|/**    *<p>The<code>ApplicationMaster</code> requests a<code>NodeManager</code>    * to<em>start</em> a {@link Container} allocated to it using this interface.    *</p>    *     *<p>The<code>ApplicationMaster</code> has to provide details such as    * allocated resource capability, security tokens (if enabled), command    * to be executed to start the container, environment for the process,     * necessary binaries/jar/shared-objects etc. via the     * {@link ContainerLaunchContext} in the {@link StartContainerRequest}.</p>    *     *<p>Currently the<code>NodeManager</code> sends an immediate, empty     * response via {@link StartContainerResponse} to signify acceptance of the    * request and throws an exception in case of errors. The     *<code>ApplicationMaster</code> can use     * {@link #getContainerStatus(GetContainerStatusRequest)} to get updated     * status of the to-be-launched or launched container.</p>    *     * @param request request to start a container    * @return empty response to indicate acceptance of the request     *         or an exception    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * The<code>ApplicationMaster</code> requests a<code>NodeManager</code> to    *<em>start</em> a {@link Container} allocated to it using this interface.    *</p>    *     *<p>    * The<code>ApplicationMaster</code> has to provide details such as allocated    * resource capability, security tokens (if enabled), command to be executed    * to start the container, environment for the process, necessary    * binaries/jar/shared-objects etc. via the {@link ContainerLaunchContext} in    * the {@link StartContainerRequest}.    *</p>    *     *<p>    * Currently the<code>NodeManager</code> sends an immediate, empty response    * via {@link StartContainerResponse} to signify acceptance of the request and    * throws an exception in case of errors. The<code>ApplicationMaster</code>    * can use {@link #getContainerStatus(GetContainerStatusRequest)} to get    * updated status of the to-be-launched or launched container.    *</p>    *     * @param request    *          request to start a container    * @return empty response to indicate acceptance of the request or an    *         exception    * @throws YarnException    * @throws IOException    * @throws NMNotYetReadyException    *           This exception is thrown when NM starts from scratch but has not    *           yet connected with RM.    * @throws InvalidContainerException    *           This exception is thrown when NM is rejecting start-container    *           requests for containers allocated by a previous instance of the    *           RM    */
 annotation|@
 name|Public
 annotation|@

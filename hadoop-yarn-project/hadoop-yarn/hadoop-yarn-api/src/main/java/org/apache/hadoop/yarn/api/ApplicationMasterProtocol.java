@@ -214,9 +214,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|conf
 operator|.
-name|YarnException
+name|YarnConfiguration
 import|;
 end_import
 
@@ -230,9 +230,57 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|exceptions
 operator|.
-name|YarnConfiguration
+name|InvalidApplicationMasterRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidResourceBlacklistRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnException
 import|;
 end_import
 
@@ -250,7 +298,7 @@ specifier|public
 interface|interface
 name|ApplicationMasterProtocol
 block|{
-comment|/**    *<p>The interface used by a new<code>ApplicationMaster</code> to register     * with the<code>ResourceManager</code>.</p>     *     *<p>The<code>ApplicationMaster</code> needs to provide details such    * as RPC Port, HTTP tracking url etc. as specified in     * {@link RegisterApplicationMasterRequest}.</p>    *     *<p>The<code>ResourceManager</code> responds with critical details such     * as maximum resource capabilities in the cluster as specified in    * {@link RegisterApplicationMasterResponse}.</p>    *      * @param request registration request    * @return registration respose    * @throws YarnException    * @throws IOException    * @see RegisterApplicationMasterRequest    * @see RegisterApplicationMasterResponse    */
+comment|/**    *<p>    * The interface used by a new<code>ApplicationMaster</code> to register with    * the<code>ResourceManager</code>.    *</p>    *     *<p>    * The<code>ApplicationMaster</code> needs to provide details such as RPC    * Port, HTTP tracking url etc. as specified in    * {@link RegisterApplicationMasterRequest}.    *</p>    *     *<p>    * The<code>ResourceManager</code> responds with critical details such as    * maximum resource capabilities in the cluster as specified in    * {@link RegisterApplicationMasterResponse}.    *</p>    *     * @param request    *          registration request    * @return registration respose    * @throws YarnException    * @throws IOException    * @throws InvalidApplicationMasterRequestException    *           The exception is thrown when an ApplicationMaster tries to    *           register more then once.    * @see RegisterApplicationMasterRequest    * @see RegisterApplicationMasterResponse    */
 annotation|@
 name|Public
 annotation|@
@@ -286,7 +334,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>The main interface between an<code>ApplicationMaster</code>     * and the<code>ResourceManager</code>.</p>    *     *<p>The<code>ApplicationMaster</code> uses this interface to provide a list      * of {@link ResourceRequest} and returns unused {@link Container} allocated     * to it via {@link AllocateRequest}. Optionally, the     *<code>ApplicationMaster</code> can also<em>blacklist</em> resources    * which it doesn't want to use.</p>    *     *<p>This also doubles up as a<em>heartbeat</em> to let the     *<code>ResourceManager</code> know that the<code>ApplicationMaster</code>    * is alive. Thus, applications should periodically make this call to be kept    * alive. The frequency depends on     * {@link YarnConfiguration#RM_AM_EXPIRY_INTERVAL_MS} which defaults to    * {@link YarnConfiguration#DEFAULT_RM_AM_EXPIRY_INTERVAL_MS}.</p>    *     *<p>The<code>ResourceManager</code> responds with list of allocated     * {@link Container}, status of completed containers and headroom information     * for the application.</p>     *     *<p>The<code>ApplicationMaster</code> can use the available headroom     * (resources) to decide how to utilized allocated resources and make     * informed decisions about future resource requests.</p>    *     * @param request allocation request    * @return allocation response    * @throws YarnException    * @throws IOException    * @see AllocateRequest    * @see AllocateResponse    */
+comment|/**    *<p>    * The main interface between an<code>ApplicationMaster</code> and the    *<code>ResourceManager</code>.    *</p>    *     *<p>    * The<code>ApplicationMaster</code> uses this interface to provide a list of    * {@link ResourceRequest} and returns unused {@link Container} allocated to    * it via {@link AllocateRequest}. Optionally, the    *<code>ApplicationMaster</code> can also<em>blacklist</em> resources which    * it doesn't want to use.    *</p>    *     *<p>    * This also doubles up as a<em>heartbeat</em> to let the    *<code>ResourceManager</code> know that the<code>ApplicationMaster</code>    * is alive. Thus, applications should periodically make this call to be kept    * alive. The frequency depends on    * {@link YarnConfiguration#RM_AM_EXPIRY_INTERVAL_MS} which defaults to    * {@link YarnConfiguration#DEFAULT_RM_AM_EXPIRY_INTERVAL_MS}.    *</p>    *     *<p>    * The<code>ResourceManager</code> responds with list of allocated    * {@link Container}, status of completed containers and headroom information    * for the application.    *</p>    *     *<p>    * The<code>ApplicationMaster</code> can use the available headroom    * (resources) to decide how to utilized allocated resources and make informed    * decisions about future resource requests.    *</p>    *     * @param request    *          allocation request    * @return allocation response    * @throws YarnException    * @throws IOException    * @throws InvalidApplicationMasterRequestException    *           This exception is thrown when an ApplicationMaster calls allocate    *           without registering first.    * @throws InvalidResourceBlacklistRequestException    *           This exception is thrown when an application provides an invalid    *           specification for blacklist of resources.    * @throws InvalidResourceRequestException    *           This exception is thrown when a {@link ResourceRequest} is out of    *           the range of the configured lower and upper limits on the    *           resources.    * @see AllocateRequest    * @see AllocateResponse    */
 annotation|@
 name|Public
 annotation|@

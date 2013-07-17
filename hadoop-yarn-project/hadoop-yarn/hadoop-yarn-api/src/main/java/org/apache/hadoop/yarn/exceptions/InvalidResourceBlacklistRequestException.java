@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler
+DECL|package|org.apache.hadoop.yarn.exceptions
 package|package
 name|org
 operator|.
@@ -14,13 +14,61 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
+name|exceptions
 package|;
 end_package
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationMasterProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceBlacklistRequest
+import|;
+end_import
 
 begin_import
 import|import
@@ -40,31 +88,15 @@ name|ResourceRequest
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnException
-import|;
-end_import
-
 begin_comment
-comment|/**  * The exception is thrown when a {@link ResourceRequest} is out of the range  * of the configured lower and upper resource boundaries.  *  */
+comment|/**  * This exception is thrown when an application provides an invalid  * {@link ResourceBlacklistRequest} specification for blacklisting of resources  * in {@link ApplicationMasterProtocol#allocate(AllocateRequest)} API.  *   * Currently this exceptions is thrown when an application tries to  * blacklist {@link ResourceRequest#ANY}.  */
 end_comment
 
 begin_class
-DECL|class|InvalidResourceRequestException
+DECL|class|InvalidResourceBlacklistRequestException
 specifier|public
 class|class
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 extends|extends
 name|YarnException
 block|{
@@ -75,11 +107,11 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|13498237L
+literal|384957911L
 decl_stmt|;
-DECL|method|InvalidResourceRequestException (Throwable cause)
+DECL|method|InvalidResourceBlacklistRequestException (Throwable cause)
 specifier|public
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 parameter_list|(
 name|Throwable
 name|cause
@@ -91,9 +123,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidResourceRequestException (String message)
+DECL|method|InvalidResourceBlacklistRequestException (String message)
 specifier|public
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 parameter_list|(
 name|String
 name|message
@@ -105,9 +137,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidResourceRequestException (String message, Throwable cause)
+DECL|method|InvalidResourceBlacklistRequestException (String message, Throwable cause)
 specifier|public
-name|InvalidResourceRequestException
+name|InvalidResourceBlacklistRequestException
 parameter_list|(
 name|String
 name|message

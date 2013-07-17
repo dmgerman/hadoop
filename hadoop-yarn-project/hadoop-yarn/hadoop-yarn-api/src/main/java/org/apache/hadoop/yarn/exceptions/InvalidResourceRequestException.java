@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager
+DECL|package|org.apache.hadoop.yarn.exceptions
 package|package
 name|org
 operator|.
@@ -14,11 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
+name|exceptions
 package|;
 end_package
 
@@ -32,21 +28,57 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|api
 operator|.
-name|YarnException
+name|ApplicationMasterProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|AllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceRequest
 import|;
 end_import
 
 begin_comment
-comment|/**  * This Exception happens when NM is rejecting container requests from RM  */
+comment|/**  * This exception is thrown when a resource requested via  * {@link ResourceRequest} in the  * {@link ApplicationMasterProtocol#allocate(AllocateRequest)} API is out of the  * range of the configured lower and upper limits on resources.  *   */
 end_comment
 
 begin_class
-DECL|class|InvalidContainerException
+DECL|class|InvalidResourceRequestException
 specifier|public
 class|class
-name|InvalidContainerException
+name|InvalidResourceRequestException
 extends|extends
 name|YarnException
 block|{
@@ -57,19 +89,52 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|1L
+literal|13498237L
 decl_stmt|;
-DECL|method|InvalidContainerException (String msg)
+DECL|method|InvalidResourceRequestException (Throwable cause)
 specifier|public
-name|InvalidContainerException
+name|InvalidResourceRequestException
 parameter_list|(
-name|String
-name|msg
+name|Throwable
+name|cause
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|msg
+name|cause
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|InvalidResourceRequestException (String message)
+specifier|public
+name|InvalidResourceRequestException
+parameter_list|(
+name|String
+name|message
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|InvalidResourceRequestException (String message, Throwable cause)
+specifier|public
+name|InvalidResourceRequestException
+parameter_list|(
+name|String
+name|message
+parameter_list|,
+name|Throwable
+name|cause
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|message
+argument_list|,
+name|cause
 argument_list|)
 expr_stmt|;
 block|}

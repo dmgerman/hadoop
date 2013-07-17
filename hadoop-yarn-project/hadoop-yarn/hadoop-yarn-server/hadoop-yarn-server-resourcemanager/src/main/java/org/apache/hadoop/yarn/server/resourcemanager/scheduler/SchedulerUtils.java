@@ -200,6 +200,38 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|exceptions
+operator|.
+name|InvalidResourceBlacklistRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|InvalidResourceRequestException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -616,7 +648,7 @@ name|normalized
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    */
+comment|/**    * Utility method to validate a resource request, by insuring that the    * requested memory/vcore is non-negative and not greater than max    *     * @throws<code>InvalidResourceRequestException</code> when there is invalid    *         request    */
 DECL|method|validateResourceRequest (ResourceRequest resReq, Resource maximumResource)
 specifier|public
 specifier|static
@@ -779,6 +811,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|/*    * @throw<code>InvalidResourceBlacklistRequestException</code> if the    * resource is not able to be added to the blacklist.    */
 DECL|method|validateBlacklistRequest (ResourceBlacklistRequest blacklistRequest)
 specifier|public
 specifier|static

@@ -628,6 +628,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Token
 import|;
 end_import
@@ -698,7 +716,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>The interface used by clients to submit a new application to the    *<code>ResourceManager.</code></p>    *     *<p>The client is required to provide details such as queue,     * {@link Resource} required to run the<code>ApplicationMaster</code>,     * the equivalent of {@link ContainerLaunchContext} for launching    * the<code>ApplicationMaster</code> etc. via the     * {@link SubmitApplicationRequest}.</p>    *     *<p>Currently the<code>ResourceManager</code> sends an immediate (empty)     * {@link SubmitApplicationResponse} on accepting the submission and throws     * an exception if it rejects the submission. However, this call needs to be    * followed by {@link #getApplicationReport(GetApplicationReportRequest)}    * to make sure that the application gets properly submitted.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to    * queues etc. before accepting the application submission.</p>    *     * @param request request to submit a new application    * @return (empty) response on accepting the submission    * @throws YarnException    * @throws IOException    * @see #getNewApplication(GetNewApplicationRequest)    */
+comment|/**    *<p>The interface used by clients to submit a new application to the    *<code>ResourceManager.</code></p>    *     *<p>The client is required to provide details such as queue,     * {@link Resource} required to run the<code>ApplicationMaster</code>,     * the equivalent of {@link ContainerLaunchContext} for launching    * the<code>ApplicationMaster</code> etc. via the     * {@link SubmitApplicationRequest}.</p>    *     *<p>Currently the<code>ResourceManager</code> sends an immediate (empty)     * {@link SubmitApplicationResponse} on accepting the submission and throws     * an exception if it rejects the submission. However, this call needs to be    * followed by {@link #getApplicationReport(GetApplicationReportRequest)}    * to make sure that the application gets properly submitted.</p>    *     *<p> In secure mode,the<code>ResourceManager</code> verifies access to    * queues etc. before accepting the application submission.</p>    *     * @param request request to submit a new application    * @return (empty) response on accepting the submission    * @throws YarnException    * @throws IOException    * @throws InvalidResourceRequestException    *           The exception is thrown when a {@link ResourceRequest} is out of    *           the range of the configured lower and upper resource boundaries.    * @see #getNewApplication(GetNewApplicationRequest)    */
 annotation|@
 name|Public
 annotation|@

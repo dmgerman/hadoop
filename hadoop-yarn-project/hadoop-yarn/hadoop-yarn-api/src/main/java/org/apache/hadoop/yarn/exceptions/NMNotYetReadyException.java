@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.nodemanager.containermanager
+DECL|package|org.apache.hadoop.yarn.exceptions
 package|package
 name|org
 operator|.
@@ -14,11 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|nodemanager
-operator|.
-name|containermanager
+name|exceptions
 package|;
 end_package
 
@@ -32,14 +28,32 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|api
 operator|.
-name|YarnException
+name|ContainerManagementProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|StartContainerRequest
 import|;
 end_import
 
 begin_comment
-comment|/**  * This exception happens when NM starts from scratch but has not yet connected  * with RM.  */
+comment|/**  * This exception is thrown on  * {@link ContainerManagementProtocol#startContainer(StartContainerRequest)} API  * when an NM starts from scratch but has not yet connected with RM.  */
 end_comment
 
 begin_class

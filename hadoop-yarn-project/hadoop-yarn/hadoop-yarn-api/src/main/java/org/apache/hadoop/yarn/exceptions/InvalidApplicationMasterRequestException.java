@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler
+DECL|package|org.apache.hadoop.yarn.exceptions
 package|package
 name|org
 operator|.
@@ -14,11 +14,7 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
+name|exceptions
 package|;
 end_package
 
@@ -34,9 +30,7 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|records
-operator|.
-name|ResourceRequest
+name|ApplicationMasterProtocol
 import|;
 end_import
 
@@ -50,21 +44,41 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|api
 operator|.
-name|YarnException
+name|protocolrecords
+operator|.
+name|AllocateRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|RegisterApplicationMasterRequest
 import|;
 end_import
 
 begin_comment
-comment|/**  * The exception is thrown when an application provides an invalid  * specification for the blacklist.  *   * As an e.g., currently this exceptions is thrown when an application   * tries to blacklist {@link ResourceRequest#ANY}.   */
+comment|/**  * This exception is thrown when an ApplicationMaster asks for resources by  * calling {@link ApplicationMasterProtocol#allocate(AllocateRequest)} API  * without first registering by calling  * {@link ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)}  * or if it tries to register more then once.  */
 end_comment
 
 begin_class
-DECL|class|InvalidResourceBlacklistRequestException
+DECL|class|InvalidApplicationMasterRequestException
 specifier|public
 class|class
-name|InvalidResourceBlacklistRequestException
+name|InvalidApplicationMasterRequestException
 extends|extends
 name|YarnException
 block|{
@@ -75,11 +89,11 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|384957911L
+literal|1357686L
 decl_stmt|;
-DECL|method|InvalidResourceBlacklistRequestException (Throwable cause)
+DECL|method|InvalidApplicationMasterRequestException (Throwable cause)
 specifier|public
-name|InvalidResourceBlacklistRequestException
+name|InvalidApplicationMasterRequestException
 parameter_list|(
 name|Throwable
 name|cause
@@ -91,9 +105,9 @@ name|cause
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidResourceBlacklistRequestException (String message)
+DECL|method|InvalidApplicationMasterRequestException (String message)
 specifier|public
-name|InvalidResourceBlacklistRequestException
+name|InvalidApplicationMasterRequestException
 parameter_list|(
 name|String
 name|message
@@ -105,9 +119,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|InvalidResourceBlacklistRequestException (String message, Throwable cause)
+DECL|method|InvalidApplicationMasterRequestException (String message, Throwable cause)
 specifier|public
-name|InvalidResourceBlacklistRequestException
+name|InvalidApplicationMasterRequestException
 parameter_list|(
 name|String
 name|message
