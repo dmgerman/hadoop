@@ -2044,21 +2044,6 @@ name|ApplicationEvent
 name|event
 parameter_list|)
 block|{
-comment|// Inform the ContainerTokenSecretManager
-name|app
-operator|.
-name|context
-operator|.
-name|getContainerTokenSecretManager
-argument_list|()
-operator|.
-name|appFinished
-argument_list|(
-name|app
-operator|.
-name|appId
-argument_list|)
-expr_stmt|;
 comment|// Inform the logService
 name|app
 operator|.
