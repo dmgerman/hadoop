@@ -799,6 +799,12 @@ name|ChPermissionStatus
 extends|extends
 name|PermissionStatus
 block|{
+DECL|field|defaultPerm
+specifier|private
+specifier|final
+name|boolean
+name|defaultPerm
+decl_stmt|;
 DECL|method|ChPermissionStatus (FileStatus filestatus)
 name|ChPermissionStatus
 parameter_list|(
@@ -888,6 +894,19 @@ argument_list|,
 literal|8
 argument_list|)
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|defaultPerm
+operator|=
+name|permission
+operator|==
+literal|null
+operator|||
+literal|""
+operator|.
+name|equals
+argument_list|(
+name|permission
 argument_list|)
 expr_stmt|;
 block|}
@@ -1044,12 +1063,12 @@ name|NUN_SUBS
 index|]
 decl_stmt|;
 specifier|final
-name|PermissionStatus
+name|ChPermissionStatus
 index|[]
 name|newstatus
 init|=
 operator|new
-name|PermissionStatus
+name|ChPermissionStatus
 index|[
 name|NUN_SUBS
 index|]
@@ -1393,12 +1412,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|checkFileStatus (PermissionStatus expected, FileStatus actual)
+DECL|method|checkFileStatus (ChPermissionStatus expected, FileStatus actual)
 specifier|static
 name|void
 name|checkFileStatus
 parameter_list|(
-name|PermissionStatus
+name|ChPermissionStatus
 name|expected
 parameter_list|,
 name|FileStatus
@@ -1445,6 +1464,10 @@ name|actual
 operator|.
 name|isFile
 argument_list|()
+operator|&&
+name|expected
+operator|.
+name|defaultPerm
 condition|)
 block|{
 name|perm
