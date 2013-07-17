@@ -2131,11 +2131,6 @@ name|getCapability
 argument_list|()
 argument_list|,
 name|req
-operator|.
-name|getContainerCount
-argument_list|()
-argument_list|,
-name|req
 argument_list|,
 literal|true
 argument_list|)
@@ -2162,11 +2157,6 @@ argument_list|,
 name|req
 operator|.
 name|getCapability
-argument_list|()
-argument_list|,
-name|req
-operator|.
-name|getContainerCount
 argument_list|()
 argument_list|,
 name|req
@@ -2200,11 +2190,6 @@ name|getCapability
 argument_list|()
 argument_list|,
 name|req
-operator|.
-name|getContainerCount
-argument_list|()
-argument_list|,
-name|req
 argument_list|,
 name|req
 operator|.
@@ -2228,11 +2213,6 @@ argument_list|,
 name|req
 operator|.
 name|getCapability
-argument_list|()
-argument_list|,
-name|req
-operator|.
-name|getContainerCount
 argument_list|()
 argument_list|,
 name|req
@@ -2358,11 +2338,6 @@ name|getCapability
 argument_list|()
 argument_list|,
 name|req
-operator|.
-name|getContainerCount
-argument_list|()
-argument_list|,
-name|req
 argument_list|)
 expr_stmt|;
 block|}
@@ -2390,11 +2365,6 @@ name|getCapability
 argument_list|()
 argument_list|,
 name|req
-operator|.
-name|getContainerCount
-argument_list|()
-argument_list|,
-name|req
 argument_list|)
 expr_stmt|;
 block|}
@@ -2412,11 +2382,6 @@ argument_list|,
 name|req
 operator|.
 name|getCapability
-argument_list|()
-argument_list|,
-name|req
-operator|.
-name|getContainerCount
 argument_list|()
 argument_list|,
 name|req
@@ -2991,7 +2956,7 @@ name|remoteRequest
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability, int containerCount, T req, boolean relaxLocality)
+DECL|method|addResourceRequest (Priority priority, String resourceName, Resource capability, T req, boolean relaxLocality)
 specifier|private
 name|void
 name|addResourceRequest
@@ -3004,9 +2969,6 @@ name|resourceName
 parameter_list|,
 name|Resource
 name|capability
-parameter_list|,
-name|int
-name|containerCount
 parameter_list|,
 name|T
 name|req
@@ -3192,15 +3154,11 @@ operator|.
 name|getNumContainers
 argument_list|()
 operator|+
-name|containerCount
+literal|1
 argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|req
-operator|instanceof
-name|StoredContainerRequest
-operator|&&
 name|relaxLocality
 condition|)
 block|{
@@ -3270,7 +3228,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|decResourceRequest (Priority priority, String resourceName, Resource capability, int containerCount, T req)
+DECL|method|decResourceRequest (Priority priority, String resourceName, Resource capability, T req)
 specifier|private
 name|void
 name|decResourceRequest
@@ -3283,9 +3241,6 @@ name|resourceName
 parameter_list|,
 name|Resource
 name|capability
-parameter_list|,
-name|int
-name|containerCount
 parameter_list|,
 name|T
 name|req
@@ -3456,16 +3411,9 @@ operator|.
 name|getNumContainers
 argument_list|()
 operator|-
-name|containerCount
+literal|1
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|req
-operator|instanceof
-name|StoredContainerRequest
-condition|)
-block|{
 name|resourceRequestInfo
 operator|.
 name|containerRequests
@@ -3475,7 +3423,6 @@ argument_list|(
 name|req
 argument_list|)
 expr_stmt|;
-block|}
 if|if
 condition|(
 name|resourceRequestInfo

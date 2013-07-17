@@ -2487,13 +2487,26 @@ comment|// Until we get our fully allocated quota, we keep on polling RM for
 comment|// containers
 comment|// Keep looping until all the containers are launched and shell script
 comment|// executed on them ( regardless of success/failure).
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|numTotalContainers
+condition|;
+operator|++
+name|i
+control|)
+block|{
 name|ContainerRequest
 name|containerAsk
 init|=
 name|setupContainerAskForRM
-argument_list|(
-name|numTotalContainers
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|resourceManager
 operator|.
@@ -2502,6 +2515,7 @@ argument_list|(
 name|containerAsk
 argument_list|)
 expr_stmt|;
+block|}
 name|numRequestedContainers
 operator|.
 name|set
@@ -2948,13 +2962,26 @@ operator|>
 literal|0
 condition|)
 block|{
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|askCount
+condition|;
+operator|++
+name|i
+control|)
+block|{
 name|ContainerRequest
 name|containerAsk
 init|=
 name|setupContainerAskForRM
-argument_list|(
-name|askCount
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|resourceManager
 operator|.
@@ -2963,6 +2990,7 @@ argument_list|(
 name|containerAsk
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -3855,14 +3883,11 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @param numContainers Containers to ask for from RM    * @return the setup ResourceRequest to be sent to RM    */
-DECL|method|setupContainerAskForRM (int numContainers)
+DECL|method|setupContainerAskForRM ()
 specifier|private
 name|ContainerRequest
 name|setupContainerAskForRM
-parameter_list|(
-name|int
-name|numContainers
-parameter_list|)
+parameter_list|()
 block|{
 comment|// setup requirements for hosts
 comment|// using * as any host will do for the distributed shell app
@@ -3921,8 +3946,6 @@ argument_list|,
 literal|null
 argument_list|,
 name|pri
-argument_list|,
-name|numContainers
 argument_list|)
 decl_stmt|;
 name|LOG

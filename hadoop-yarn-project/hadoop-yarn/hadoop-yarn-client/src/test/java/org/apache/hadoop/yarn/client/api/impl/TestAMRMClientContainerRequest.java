@@ -92,20 +92,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|net
-operator|.
-name|NetworkTopology
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -402,8 +388,6 @@ name|newInstance
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
-literal|4
 argument_list|)
 decl_stmt|;
 name|client
@@ -577,8 +561,6 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-literal|4
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -663,8 +645,6 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-literal|4
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -704,8 +684,6 @@ name|newInstance
 argument_list|(
 literal|2
 argument_list|)
-argument_list|,
-literal|3
 argument_list|,
 literal|false
 argument_list|)
@@ -784,8 +762,6 @@ argument_list|(
 literal|2
 argument_list|)
 argument_list|,
-literal|3
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -828,8 +804,6 @@ name|newInstance
 argument_list|(
 literal|3
 argument_list|)
-argument_list|,
-literal|4
 argument_list|,
 literal|false
 argument_list|)
@@ -932,8 +906,6 @@ name|newInstance
 argument_list|(
 literal|3
 argument_list|)
-argument_list|,
-literal|4
 argument_list|,
 literal|false
 argument_list|)
@@ -1059,8 +1031,6 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-literal|4
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -1094,8 +1064,6 @@ name|newInstance
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
-literal|4
 argument_list|,
 literal|true
 argument_list|)
@@ -1214,8 +1182,6 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-literal|4
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -1256,8 +1222,6 @@ name|newInstance
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
-literal|4
 argument_list|,
 literal|true
 argument_list|)
@@ -1302,8 +1266,6 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-literal|4
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -1344,8 +1306,6 @@ name|newInstance
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
-literal|4
 argument_list|,
 literal|true
 argument_list|)
@@ -1471,8 +1431,6 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-literal|4
-argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
@@ -1506,8 +1464,6 @@ name|newInstance
 argument_list|(
 literal|1
 argument_list|)
-argument_list|,
-literal|4
 argument_list|,
 literal|true
 argument_list|)
@@ -1626,10 +1582,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|request
-operator|.
-name|getContainerCount
-argument_list|()
+literal|1
 argument_list|,
 name|ask
 operator|.
