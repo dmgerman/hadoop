@@ -913,19 +913,6 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
-DECL|method|addOrphanAttemptIfNeeded (RMStateStore testStore, TestDispatcher dispatcher)
-name|void
-name|addOrphanAttemptIfNeeded
-parameter_list|(
-name|RMStateStore
-name|testStore
-parameter_list|,
-name|TestDispatcher
-name|dispatcher
-parameter_list|)
-throws|throws
-name|Exception
-function_decl|;
 DECL|method|isFinalStateValid ()
 name|boolean
 name|isFinalStateValid
@@ -1163,48 +1150,6 @@ expr_stmt|;
 return|return
 name|store
 return|;
-block|}
-annotation|@
-name|Override
-DECL|method|addOrphanAttemptIfNeeded (RMStateStore testStore, TestDispatcher dispatcher)
-specifier|public
-name|void
-name|addOrphanAttemptIfNeeded
-parameter_list|(
-name|RMStateStore
-name|testStore
-parameter_list|,
-name|TestDispatcher
-name|dispatcher
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-name|ApplicationAttemptId
-name|attemptId
-init|=
-name|ConverterUtils
-operator|.
-name|toApplicationAttemptId
-argument_list|(
-literal|"appattempt_1352994193343_0003_000001"
-argument_list|)
-decl_stmt|;
-name|storeAttempt
-argument_list|(
-name|testStore
-argument_list|,
-name|attemptId
-argument_list|,
-literal|"container_1352994193343_0003_01_000001"
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-name|dispatcher
-argument_list|)
-expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -2030,16 +1975,6 @@ argument_list|(
 name|mockRemovedApp
 argument_list|)
 expr_stmt|;
-comment|// add orphan attempt file to simulate incomplete removal of app state
-name|stateStoreHelper
-operator|.
-name|addOrphanAttemptIfNeeded
-argument_list|(
-name|store
-argument_list|,
-name|dispatcher
-argument_list|)
-expr_stmt|;
 comment|// let things settle down
 name|Thread
 operator|.
@@ -2082,17 +2017,6 @@ operator|.
 name|getApplicationState
 argument_list|()
 decl_stmt|;
-comment|// removed app or orphan attempt is not loaded
-name|assertEquals
-argument_list|(
-literal|1
-argument_list|,
-name|rmAppState
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|ApplicationState
 name|appState
 init|=
