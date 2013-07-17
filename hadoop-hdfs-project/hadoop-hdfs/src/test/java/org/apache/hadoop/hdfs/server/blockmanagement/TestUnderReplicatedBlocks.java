@@ -185,9 +185,9 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|300000
+literal|60000
 argument_list|)
-comment|// 5 min timeout
+comment|// 1 min timeout
 DECL|method|testSetrepIncWithUnderReplicatedBlocks ()
 specifier|public
 name|void
@@ -368,7 +368,7 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|1000
+literal|5000
 argument_list|)
 expr_stmt|;
 comment|// Remove the record from blocksMap
