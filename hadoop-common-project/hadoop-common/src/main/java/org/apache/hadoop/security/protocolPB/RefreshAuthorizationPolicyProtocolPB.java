@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.protocolPB
+DECL|package|org.apache.hadoop.security.protocolPB
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
+name|security
 operator|.
 name|protocolPB
 package|;
@@ -68,26 +68,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|RefreshUserMappingsProtocolProtos
-operator|.
-name|RefreshUserMappingsProtocolService
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|ipc
 operator|.
 name|ProtocolInfo
@@ -108,6 +88,24 @@ name|KerberosInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|proto
+operator|.
+name|RefreshAuthorizationPolicyProtocolProtos
+operator|.
+name|RefreshAuthorizationPolicyProtocolService
+import|;
+end_import
+
 begin_interface
 annotation|@
 name|KerberosInfo
@@ -123,7 +121,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.security.RefreshUserMappingsProtocol"
+literal|"org.apache.hadoop.security.authorize.RefreshAuthorizationPolicyProtocol"
 argument_list|,
 name|protocolVersion
 operator|=
@@ -144,12 +142,12 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|interface|RefreshUserMappingsProtocolPB
+DECL|interface|RefreshAuthorizationPolicyProtocolPB
 specifier|public
 interface|interface
-name|RefreshUserMappingsProtocolPB
+name|RefreshAuthorizationPolicyProtocolPB
 extends|extends
-name|RefreshUserMappingsProtocolService
+name|RefreshAuthorizationPolicyProtocolService
 operator|.
 name|BlockingInterface
 block|{ }
