@@ -2076,9 +2076,6 @@ decl_stmt|;
 comment|// create a client
 name|proxy
 operator|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -2226,9 +2223,6 @@ decl_stmt|;
 comment|// create a client
 name|proxy
 operator|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -2470,9 +2464,6 @@ argument_list|)
 decl_stmt|;
 name|proxy
 operator|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -3202,9 +3193,6 @@ try|try
 block|{
 name|proxy
 operator|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -3677,9 +3665,6 @@ block|{
 name|StoppedProtocol
 name|proxy
 init|=
-operator|(
-name|StoppedProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -3751,9 +3736,6 @@ block|{
 name|StoppedProtocol
 name|wrappedProxy
 init|=
-operator|(
-name|StoppedProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -3956,9 +3938,6 @@ try|try
 block|{
 name|proxy
 operator|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -4147,9 +4126,6 @@ argument_list|)
 expr_stmt|;
 name|proxy
 operator|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -4802,9 +4778,6 @@ specifier|final
 name|TestProtocol
 name|proxy
 init|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -5040,9 +5013,6 @@ specifier|final
 name|TestProtocol
 name|proxy
 init|=
-operator|(
-name|TestProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -5147,6 +5117,10 @@ name|LOG
 operator|.
 name|error
 argument_list|(
+literal|"thread "
+operator|+
+name|num
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;

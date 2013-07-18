@@ -936,7 +936,7 @@ expr_stmt|;
 block|}
 comment|/**      * This constructor takes a connectionId, instead of creating a new one.      */
 DECL|method|Invoker (Class<?> protocol, Client.ConnectionId connId, Configuration conf, SocketFactory factory)
-specifier|public
+specifier|private
 name|Invoker
 parameter_list|(
 name|Class

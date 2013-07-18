@@ -1886,7 +1886,6 @@ argument_list|()
 decl_stmt|;
 comment|/**    * Returns the currently active RPC call's sequential ID number.  A negative    * call ID indicates an invalid value, such as if there is no currently active    * RPC call.    *     * @return int sequential ID number of currently active RPC call    */
 DECL|method|getCallId ()
-specifier|public
 specifier|static
 name|int
 name|getCallId
@@ -2633,7 +2632,7 @@ index|[]
 name|clientId
 decl_stmt|;
 DECL|method|Call (int id, Writable param, Connection connection)
-specifier|public
+specifier|private
 name|Call
 parameter_list|(
 name|int
@@ -2667,7 +2666,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|Call (int id, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId)
-specifier|public
+specifier|private
 name|Call
 parameter_list|(
 name|int
@@ -2745,16 +2744,14 @@ parameter_list|()
 block|{
 return|return
 name|rpcRequest
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|" from "
 operator|+
 name|connection
-operator|.
-name|toString
-argument_list|()
+operator|+
+literal|" Call#"
+operator|+
+name|callId
 return|;
 block|}
 DECL|method|setResponse (ByteBuffer response)
@@ -5152,17 +5149,9 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|": responding to #"
+literal|": responding to "
 operator|+
 name|call
-operator|.
-name|callId
-operator|+
-literal|" from "
-operator|+
-name|call
-operator|.
-name|connection
 argument_list|)
 expr_stmt|;
 block|}
@@ -5254,17 +5243,9 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|": responding to #"
+literal|": responding to "
 operator|+
 name|call
-operator|.
-name|callId
-operator|+
-literal|" from "
-operator|+
-name|call
-operator|.
-name|connection
 operator|+
 literal|" Wrote "
 operator|+
@@ -5367,17 +5348,9 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|": responding to #"
+literal|": responding to "
 operator|+
 name|call
-operator|.
-name|callId
-operator|+
-literal|" from "
-operator|+
-name|call
-operator|.
-name|connection
 operator|+
 literal|" Wrote partial "
 operator|+
@@ -9737,23 +9710,15 @@ argument_list|(
 name|getName
 argument_list|()
 operator|+
-literal|": has Call#"
+literal|": "
 operator|+
 name|call
-operator|.
-name|callId
 operator|+
-literal|"for RpcKind "
+literal|" for RpcKind "
 operator|+
 name|call
 operator|.
 name|rpcKind
-operator|+
-literal|" from "
-operator|+
-name|call
-operator|.
-name|connection
 argument_list|)
 expr_stmt|;
 block|}

@@ -536,9 +536,6 @@ argument_list|(
 name|bytes
 argument_list|)
 decl_stmt|;
-name|Writable
-name|value
-init|=
 name|client
 operator|.
 name|call
@@ -547,7 +544,7 @@ name|param
 argument_list|,
 name|address
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|Thread
 operator|.
 name|sleep
@@ -571,8 +568,8 @@ name|LOG
 operator|.
 name|fatal
 argument_list|(
-literal|"Caught: "
-operator|+
+literal|"Caught Exception"
+argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
