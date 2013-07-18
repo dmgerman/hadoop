@@ -4073,6 +4073,7 @@ name|getAllTokens
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|InetSocketAddress
 name|serviceAddr
 init|=
@@ -4121,11 +4122,10 @@ name|getAllTokens
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// For now, no need to populate tokens back to
-comment|// AMRMTokenSecretManager, because running attempts are rebooted
-comment|// Later in work-preserve restart, we'll create NEW->RUNNING transition
-comment|// in which the restored tokens will be added to the secret manager
-block|}
+comment|// For now, no need to populate tokens back to AMRMTokenSecretManager,
+comment|// because running attempts are rebooted. Later in work-preserve restart,
+comment|// we'll create NEW->RUNNING transition in which the restored tokens will be
+comment|// added to the secret manager
 block|}
 DECL|class|BaseTransition
 specifier|private
@@ -4248,7 +4248,8 @@ name|getClientToAMTokenSecretManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// create application token
+block|}
+comment|// create AMRMToken
 name|AMRMTokenIdentifier
 name|id
 init|=
@@ -4321,7 +4322,6 @@ name|amrmToken
 operator|=
 name|amRmToken
 expr_stmt|;
-block|}
 comment|// Add the application to the scheduler
 name|appAttempt
 operator|.

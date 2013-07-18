@@ -498,22 +498,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|security
-operator|.
-name|ContainerTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -1306,6 +1290,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Credentials
+name|credentials
+init|=
+operator|new
+name|Credentials
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|UserGroupInformation
@@ -1315,13 +1306,6 @@ argument_list|()
 condition|)
 block|{
 comment|// TODO: Security enabled/disabled info should come from RM.
-name|Credentials
-name|credentials
-init|=
-operator|new
-name|Credentials
-argument_list|()
-decl_stmt|;
 name|DataInputByteBuffer
 name|dibb
 init|=
@@ -1358,7 +1342,8 @@ name|dibb
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Add application token
+block|}
+comment|// Add AMRMToken
 name|Token
 argument_list|<
 name|AMRMTokenIdentifier
@@ -1426,7 +1411,6 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 annotation|@
 name|SuppressWarnings

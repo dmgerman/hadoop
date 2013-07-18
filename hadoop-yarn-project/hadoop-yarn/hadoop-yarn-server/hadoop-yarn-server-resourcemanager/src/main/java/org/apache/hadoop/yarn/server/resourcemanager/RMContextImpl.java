@@ -450,11 +450,11 @@ specifier|final
 name|DelegationTokenRenewer
 name|tokenRenewer
 decl_stmt|;
-DECL|field|appTokenSecretManager
+DECL|field|amRMTokenSecretManager
 specifier|private
 specifier|final
 name|AMRMTokenSecretManager
-name|appTokenSecretManager
+name|amRMTokenSecretManager
 decl_stmt|;
 DECL|field|containerTokenSecretManager
 specifier|private
@@ -474,7 +474,7 @@ specifier|final
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
 decl_stmt|;
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager amRMTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -497,7 +497,7 @@ name|DelegationTokenRenewer
 name|tokenRenewer
 parameter_list|,
 name|AMRMTokenSecretManager
-name|appTokenSecretManager
+name|amRMTokenSecretManager
 parameter_list|,
 name|RMContainerTokenSecretManager
 name|containerTokenSecretManager
@@ -547,9 +547,9 @@ name|tokenRenewer
 expr_stmt|;
 name|this
 operator|.
-name|appTokenSecretManager
+name|amRMTokenSecretManager
 operator|=
-name|appTokenSecretManager
+name|amRMTokenSecretManager
 expr_stmt|;
 name|this
 operator|.
@@ -818,7 +818,7 @@ block|{
 return|return
 name|this
 operator|.
-name|appTokenSecretManager
+name|amRMTokenSecretManager
 return|;
 block|}
 annotation|@
