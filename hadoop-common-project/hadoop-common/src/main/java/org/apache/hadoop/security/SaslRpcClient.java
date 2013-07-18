@@ -666,6 +666,10 @@ name|callId
 argument_list|,
 name|RpcConstants
 operator|.
+name|INVALID_RETRY_COUNT
+argument_list|,
+name|RpcConstants
+operator|.
 name|DUMMY_CLIENT_ID
 argument_list|)
 decl_stmt|;

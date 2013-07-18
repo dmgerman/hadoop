@@ -1913,6 +1913,36 @@ operator|.
 name|INVALID_CALL_ID
 return|;
 block|}
+comment|/**    * @return The current active RPC call's retry count. -1 indicates the retry    *         cache is not supported in the client side.    */
+DECL|method|getCallRetryCount ()
+specifier|public
+specifier|static
+name|int
+name|getCallRetryCount
+parameter_list|()
+block|{
+name|Call
+name|call
+init|=
+name|CurCall
+operator|.
+name|get
+argument_list|()
+decl_stmt|;
+return|return
+name|call
+operator|!=
+literal|null
+condition|?
+name|call
+operator|.
+name|retryCount
+else|:
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
+return|;
+block|}
 comment|/** Returns the remote side ip address when invoked inside an RPC     *  Returns null incase of an error.    */
 DECL|method|getRemoteIp ()
 specifier|public
@@ -2589,6 +2619,13 @@ name|int
 name|callId
 decl_stmt|;
 comment|// the client's call id
+DECL|field|retryCount
+specifier|private
+specifier|final
+name|int
+name|retryCount
+decl_stmt|;
+comment|// the retry count of the call
 DECL|field|rpcRequest
 specifier|private
 specifier|final
@@ -2631,12 +2668,15 @@ name|byte
 index|[]
 name|clientId
 decl_stmt|;
-DECL|method|Call (int id, Writable param, Connection connection)
+DECL|method|Call (int id, int retryCount, Writable param, Connection connection)
 specifier|private
 name|Call
 parameter_list|(
 name|int
 name|id
+parameter_list|,
+name|int
+name|retryCount
 parameter_list|,
 name|Writable
 name|param
@@ -2648,6 +2688,8 @@ block|{
 name|this
 argument_list|(
 name|id
+argument_list|,
+name|retryCount
 argument_list|,
 name|param
 argument_list|,
@@ -2665,12 +2707,15 @@ name|DUMMY_CLIENT_ID
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Call (int id, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId)
+DECL|method|Call (int id, int retryCount, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId)
 specifier|private
 name|Call
 parameter_list|(
 name|int
 name|id
+parameter_list|,
+name|int
+name|retryCount
 parameter_list|,
 name|Writable
 name|param
@@ -2693,6 +2738,12 @@ operator|.
 name|callId
 operator|=
 name|id
+expr_stmt|;
+name|this
+operator|.
+name|retryCount
+operator|=
+name|retryCount
 expr_stmt|;
 name|this
 operator|.
@@ -2752,6 +2803,10 @@ operator|+
 literal|" Call#"
 operator|+
 name|callId
+operator|+
+literal|" Retry#"
+operator|+
+name|retryCount
 return|;
 block|}
 DECL|method|setResponse (ByteBuffer response)
@@ -5881,6 +5936,10 @@ name|Call
 argument_list|(
 name|AUTHORIZATION_FAILED_CALLID
 argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
+argument_list|,
 literal|null
 argument_list|,
 name|this
@@ -5909,6 +5968,10 @@ operator|.
 name|SASL
 operator|.
 name|callId
+argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
 argument_list|,
 literal|null
 argument_list|,
@@ -7924,6 +7987,10 @@ argument_list|(
 operator|-
 literal|1
 argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
+argument_list|,
 literal|null
 argument_list|,
 name|this
@@ -7980,6 +8047,10 @@ argument_list|(
 operator|-
 literal|1
 argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
+argument_list|,
 literal|null
 argument_list|,
 name|this
@@ -8028,6 +8099,10 @@ operator|new
 name|Call
 argument_list|(
 literal|0
+argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
 argument_list|,
 literal|null
 argument_list|,
@@ -8121,6 +8196,10 @@ operator|new
 name|Call
 argument_list|(
 literal|0
+argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
 argument_list|,
 literal|null
 argument_list|,
@@ -8628,6 +8707,13 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+name|int
+name|retry
+init|=
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
+decl_stmt|;
 try|try
 block|{
 specifier|final
@@ -8663,6 +8749,13 @@ operator|=
 name|header
 operator|.
 name|getCallId
+argument_list|()
+expr_stmt|;
+name|retry
+operator|=
+name|header
+operator|.
+name|getRetryCount
 argument_list|()
 expr_stmt|;
 if|if
@@ -8757,6 +8850,8 @@ operator|new
 name|Call
 argument_list|(
 name|callId
+argument_list|,
+name|retry
 argument_list|,
 literal|null
 argument_list|,
@@ -9078,6 +9173,11 @@ argument_list|(
 name|header
 operator|.
 name|getCallId
+argument_list|()
+argument_list|,
+name|header
+operator|.
+name|getRetryCount
 argument_list|()
 argument_list|,
 name|rpcRequest

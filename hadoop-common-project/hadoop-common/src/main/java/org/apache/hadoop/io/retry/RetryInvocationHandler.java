@@ -228,6 +228,20 @@ name|ThreadUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_class
 DECL|class|RetryInvocationHandler
 class|class
@@ -475,9 +489,11 @@ condition|)
 block|{
 name|Client
 operator|.
-name|setCallId
+name|setCallIdAndRetryCount
 argument_list|(
 name|callId
+argument_list|,
+name|retries
 argument_list|)
 expr_stmt|;
 block|}

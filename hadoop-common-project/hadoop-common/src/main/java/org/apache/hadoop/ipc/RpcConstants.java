@@ -101,6 +101,16 @@ init|=
 operator|-
 literal|3
 decl_stmt|;
+DECL|field|INVALID_RETRY_COUNT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|INVALID_RETRY_COUNT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * The first four bytes of Hadoop RPC connections    */
 DECL|field|HEADER
 specifier|public

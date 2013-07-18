@@ -753,7 +753,7 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|makeRpcRequestHeader (RPC.RpcKind rpcKind, RpcRequestHeaderProto.OperationProto operation, int callId, byte[] uuid)
+DECL|method|makeRpcRequestHeader (RPC.RpcKind rpcKind, RpcRequestHeaderProto.OperationProto operation, int callId, int retryCount, byte[] uuid)
 specifier|public
 specifier|static
 name|RpcRequestHeaderProto
@@ -771,6 +771,9 @@ name|operation
 parameter_list|,
 name|int
 name|callId
+parameter_list|,
+name|int
+name|retryCount
 parameter_list|,
 name|byte
 index|[]
@@ -805,6 +808,11 @@ operator|.
 name|setCallId
 argument_list|(
 name|callId
+argument_list|)
+operator|.
+name|setRetryCount
+argument_list|(
+name|retryCount
 argument_list|)
 operator|.
 name|setClientId
