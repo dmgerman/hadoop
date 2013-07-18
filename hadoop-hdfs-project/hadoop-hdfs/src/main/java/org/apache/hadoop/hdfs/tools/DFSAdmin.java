@@ -3025,6 +3025,8 @@ literal|"-metasave<filename>: \tSave Namenode's primary data structures\n"
 operator|+
 literal|"\t\tto<filename> in the directory specified by hadoop.log.dir property.\n"
 operator|+
+literal|"\t\t<filename> is overwritten if it exists.\n"
+operator|+
 literal|"\t\t<filename> will contain one line for each of the following\n"
 operator|+
 literal|"\t\t\t1. Datanodes heart beating with Namenode\n"

@@ -7096,8 +7096,6 @@ operator|new
 name|FileOutputStream
 argument_list|(
 name|file
-argument_list|,
-literal|true
 argument_list|)
 argument_list|,
 name|Charsets
