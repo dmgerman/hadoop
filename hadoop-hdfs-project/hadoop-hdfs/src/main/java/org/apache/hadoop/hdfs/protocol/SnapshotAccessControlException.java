@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode.snapshot
+DECL|package|org.apache.hadoop.hdfs.protocol
 package|package
 name|org
 operator|.
@@ -14,35 +14,35 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
+name|protocol
 package|;
 end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
 import|;
 end_import
 
 begin_comment
-comment|/** Snapshot related exception. */
+comment|/** Snapshot access related exception. */
 end_comment
 
 begin_class
-DECL|class|SnapshotException
+DECL|class|SnapshotAccessControlException
 specifier|public
 class|class
-name|SnapshotException
+name|SnapshotAccessControlException
 extends|extends
-name|IOException
+name|AccessControlException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -53,9 +53,9 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|SnapshotException (final String message)
+DECL|method|SnapshotAccessControlException (final String message)
 specifier|public
-name|SnapshotException
+name|SnapshotAccessControlException
 parameter_list|(
 specifier|final
 name|String
@@ -68,9 +68,9 @@ name|message
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|SnapshotException (final Throwable cause)
+DECL|method|SnapshotAccessControlException (final Throwable cause)
 specifier|public
-name|SnapshotException
+name|SnapshotAccessControlException
 parameter_list|(
 specifier|final
 name|Throwable
