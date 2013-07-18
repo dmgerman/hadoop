@@ -213,6 +213,20 @@ name|isNativeCodeLoaded
 argument_list|()
 return|;
 block|}
+DECL|method|getLibraryName ()
+specifier|public
+specifier|static
+name|String
+name|getLibraryName
+parameter_list|()
+block|{
+return|return
+name|Lz4Compressor
+operator|.
+name|getLibraryName
+argument_list|()
+return|;
+block|}
 comment|/**    * Create a {@link CompressionOutputStream} that will write to the given    * {@link OutputStream}.    *    * @param out the location for the final output stream    * @return a stream the user can write uncompressed data to have it compressed    * @throws IOException    */
 annotation|@
 name|Override

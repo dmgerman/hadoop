@@ -983,6 +983,14 @@ name|int
 name|compressBytesDirect
 parameter_list|()
 function_decl|;
+DECL|method|getLibraryName ()
+specifier|public
+specifier|native
+specifier|static
+name|String
+name|getLibraryName
+parameter_list|()
+function_decl|;
 block|}
 end_class
 

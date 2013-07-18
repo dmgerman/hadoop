@@ -271,6 +271,20 @@ name|IO_NATIVE_LIB_AVAILABLE_DEFAULT
 argument_list|)
 return|;
 block|}
+DECL|method|getLibraryName ()
+specifier|public
+specifier|static
+name|String
+name|getLibraryName
+parameter_list|()
+block|{
+return|return
+name|ZlibCompressor
+operator|.
+name|getLibraryName
+argument_list|()
+return|;
+block|}
 comment|/**    * Return the appropriate type of the zlib compressor.     *     * @param conf configuration    * @return the appropriate type of the zlib compressor.    */
 specifier|public
 specifier|static
