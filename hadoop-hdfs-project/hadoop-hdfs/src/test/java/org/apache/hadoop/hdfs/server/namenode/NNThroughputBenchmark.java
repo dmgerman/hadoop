@@ -844,6 +844,15 @@ operator|.
 name|getParentFile
 argument_list|()
 operator|.
+name|exists
+argument_list|()
+operator|&&
+operator|!
+name|excludeFile
+operator|.
+name|getParentFile
+argument_list|()
+operator|.
 name|mkdirs
 argument_list|()
 condition|)
