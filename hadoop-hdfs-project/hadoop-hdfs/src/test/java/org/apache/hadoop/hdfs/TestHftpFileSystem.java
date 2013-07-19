@@ -1682,7 +1682,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.http.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTP_PORT_KEY
 argument_list|,
 literal|123
 argument_list|)
@@ -1691,7 +1693,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_KEY
 argument_list|,
 literal|456
 argument_list|)
@@ -1874,7 +1878,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.http.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTP_PORT_KEY
 argument_list|,
 literal|123
 argument_list|)
@@ -1883,7 +1889,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_KEY
 argument_list|,
 literal|456
 argument_list|)
@@ -2067,7 +2075,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.http.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTP_PORT_KEY
 argument_list|,
 literal|123
 argument_list|)
@@ -2076,7 +2086,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_KEY
 argument_list|,
 literal|456
 argument_list|)
@@ -2255,7 +2267,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.http.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTP_PORT_KEY
 argument_list|,
 literal|123
 argument_list|)
@@ -2264,7 +2278,9 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-literal|"dfs.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_KEY
 argument_list|,
 literal|456
 argument_list|)

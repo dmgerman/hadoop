@@ -819,7 +819,9 @@ name|conf
 operator|.
 name|getBoolean
 argument_list|(
-literal|"dfs.https.enable"
+name|DFSConfigKeys
+operator|.
+name|DFS_HTTPS_ENABLE_KEY
 argument_list|,
 literal|false
 argument_list|)
@@ -856,7 +858,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_KEY
 argument_list|,
 name|infoHost
 operator|+
@@ -888,7 +892,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.https.server.keystore.resource"
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY
 argument_list|,
 literal|"ssl-server.xml"
 argument_list|)
@@ -918,7 +924,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.datanode.https.address"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTPS_ADDRESS_KEY
 argument_list|,
 name|infoHost
 operator|+
@@ -932,7 +940,9 @@ name|httpServer
 operator|.
 name|setAttribute
 argument_list|(
-literal|"datanode.https.port"
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_HTTPS_PORT_KEY
 argument_list|,
 name|datanodeSslPort
 operator|.

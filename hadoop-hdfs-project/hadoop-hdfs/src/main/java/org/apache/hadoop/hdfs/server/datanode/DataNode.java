@@ -3318,7 +3318,9 @@ name|conf
 operator|.
 name|get
 argument_list|(
-literal|"dfs.https.server.keystore.resource"
+name|DFSConfigKeys
+operator|.
+name|DFS_SERVER_HTTPS_KEYSTORE_RESOURCE_KEY
 argument_list|,
 literal|"ssl-server.xml"
 argument_list|)

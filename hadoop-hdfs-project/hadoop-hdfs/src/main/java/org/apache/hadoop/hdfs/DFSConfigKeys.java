@@ -2490,15 +2490,6 @@ name|DFS_HTTPS_ENABLE_DEFAULT
 init|=
 literal|false
 decl_stmt|;
-DECL|field|DFS_HTTPS_PORT_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|DFS_HTTPS_PORT_KEY
-init|=
-literal|"dfs.https.port"
-decl_stmt|;
 DECL|field|DFS_DEFAULT_CHUNK_VIEW_SIZE_KEY
 specifier|public
 specifier|static
