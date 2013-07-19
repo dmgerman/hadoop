@@ -830,6 +830,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Daemon
@@ -1861,6 +1875,34 @@ operator|!
 name|isEnabled
 condition|)
 block|{
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Security is enabled but block access tokens "
+operator|+
+literal|"(via "
+operator|+
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
+operator|+
+literal|") "
+operator|+
+literal|"aren't enabled. This may cause issues "
+operator|+
+literal|"when clients attempt to talk to a DataNode."
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 literal|null
 return|;
