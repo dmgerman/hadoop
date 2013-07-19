@@ -358,11 +358,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|allocate (final AllocateRequest req)
+DECL|method|allocate (ApplicationAttemptId attemptId, final AllocateRequest req)
 specifier|private
 name|AllocateResponse
 name|allocate
 parameter_list|(
+name|ApplicationAttemptId
+name|attemptId
+parameter_list|,
 specifier|final
 name|AllocateRequest
 name|req
@@ -370,14 +373,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ApplicationAttemptId
-name|attemptId
-init|=
-name|req
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-decl_stmt|;
 name|UserGroupInformation
 name|ugi
 init|=
@@ -548,11 +543,6 @@ name|AllocateRequest
 operator|.
 name|newInstance
 argument_list|(
-name|attempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-argument_list|,
 literal|0
 argument_list|,
 literal|0F
@@ -569,6 +559,11 @@ name|response
 init|=
 name|allocate
 argument_list|(
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
 name|allocateRequest
 argument_list|)
 decl_stmt|;
@@ -602,11 +597,6 @@ name|AllocateRequest
 operator|.
 name|newInstance
 argument_list|(
-name|attempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-argument_list|,
 name|response
 operator|.
 name|getResponseId
@@ -625,6 +615,11 @@ name|response
 operator|=
 name|allocate
 argument_list|(
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
 name|allocateRequest
 argument_list|)
 expr_stmt|;
@@ -645,6 +640,11 @@ name|response
 operator|=
 name|allocate
 argument_list|(
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
 name|allocateRequest
 argument_list|)
 expr_stmt|;
@@ -667,11 +667,6 @@ name|AllocateRequest
 operator|.
 name|newInstance
 argument_list|(
-name|attempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-argument_list|,
 literal|0
 argument_list|,
 literal|0F
@@ -687,6 +682,11 @@ name|response
 operator|=
 name|allocate
 argument_list|(
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
 name|allocateRequest
 argument_list|)
 expr_stmt|;

@@ -220,24 +220,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Container
 import|;
 end_import
@@ -559,13 +541,10 @@ specifier|volatile
 name|Exception
 name|savedException
 decl_stmt|;
-DECL|method|AMRMClientAsyncImpl (ApplicationAttemptId id, int intervalMs, CallbackHandler callbackHandler)
+DECL|method|AMRMClientAsyncImpl (int intervalMs, CallbackHandler callbackHandler)
 specifier|public
 name|AMRMClientAsyncImpl
 parameter_list|(
-name|ApplicationAttemptId
-name|id
-parameter_list|,
 name|int
 name|intervalMs
 parameter_list|,
@@ -580,9 +559,7 @@ name|AMRMClientImpl
 argument_list|<
 name|T
 argument_list|>
-argument_list|(
-name|id
-argument_list|)
+argument_list|()
 argument_list|,
 name|intervalMs
 argument_list|,

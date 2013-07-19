@@ -174,24 +174,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|ContainerId
 import|;
 end_import
@@ -294,9 +276,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|collect
+name|base
 operator|.
-name|ImmutableList
+name|Preconditions
 import|;
 end_import
 
@@ -308,9 +290,9 @@ name|google
 operator|.
 name|common
 operator|.
-name|base
+name|collect
 operator|.
-name|Preconditions
+name|ImmutableList
 import|;
 end_import
 
@@ -338,10 +320,10 @@ parameter_list|>
 extends|extends
 name|AbstractService
 block|{
-comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest(appAttemptId)    * }</pre>    * @param appAttemptId the appAttemptId associated with the AMRMClient    * @return the newly create AMRMClient instance.    */
+comment|/**    * Create a new instance of AMRMClient.    * For usage:    *<pre>    * {@code    * AMRMClient.<T>createAMRMClientContainerRequest()    * }</pre>    * @return the newly create AMRMClient instance.    */
 annotation|@
 name|Public
-DECL|method|createAMRMClient ( ApplicationAttemptId appAttemptId)
+DECL|method|createAMRMClient ()
 specifier|public
 specifier|static
 parameter_list|<
@@ -354,22 +336,8 @@ argument_list|<
 name|T
 argument_list|>
 name|createAMRMClient
-parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
-parameter_list|)
+parameter_list|()
 block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|appAttemptId
-operator|!=
-literal|null
-argument_list|,
-literal|"ApplicationAttempId should not be null"
-argument_list|)
-expr_stmt|;
 name|AMRMClient
 argument_list|<
 name|T
@@ -381,9 +349,7 @@ name|AMRMClientImpl
 argument_list|<
 name|T
 argument_list|>
-argument_list|(
-name|appAttemptId
-argument_list|)
+argument_list|()
 decl_stmt|;
 return|return
 name|client

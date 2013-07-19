@@ -92,42 +92,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ResourceBlacklistRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Container
 import|;
 end_import
@@ -147,6 +111,24 @@ operator|.
 name|records
 operator|.
 name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceBlacklistRequest
 import|;
 end_import
 
@@ -185,7 +167,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
+comment|/**  *<p>The core request sent by the<code>ApplicationMaster</code> to the   *<code>ResourceManager</code> to obtain resources in the cluster.</p>   *  *<p>The request includes:  *<ul>  *<li>A response id to track duplicate responses.</li>  *<li>Progress information.</li>  *<li>  *       A list of {@link ResourceRequest} to inform the   *<code>ResourceManager</code> about the application's   *       resource requirements.  *</li>  *<li>  *       A list of unused {@link Container} which are being returned.   *</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#allocate(AllocateRequest)  */
 end_comment
 
 begin_class
@@ -203,15 +185,12 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest)
+DECL|method|newInstance (int responseID, float appProgress, List<ResourceRequest> resourceAsk, List<ContainerId> containersToBeReleased, ResourceBlacklistRequest resourceBlacklistRequest)
 specifier|public
 specifier|static
 name|AllocateRequest
 name|newInstance
 parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
-parameter_list|,
 name|int
 name|responseID
 parameter_list|,
@@ -246,13 +225,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|allocateRequest
-operator|.
-name|setApplicationAttemptId
-argument_list|(
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 name|allocateRequest
 operator|.
 name|setResponseId
@@ -292,33 +264,6 @@ return|return
 name|allocateRequest
 return|;
 block|}
-comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getApplicationAttemptId ()
-specifier|public
-specifier|abstract
-name|ApplicationAttemptId
-name|getApplicationAttemptId
-parameter_list|()
-function_decl|;
-comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed     *                             by the<code>ApplicationMaster</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
-specifier|public
-specifier|abstract
-name|void
-name|setApplicationAttemptId
-parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
-parameter_list|)
-function_decl|;
 comment|/**    * Get the<em>response id</em> used to track duplicate responses.    * @return<em>response id</em>    */
 annotation|@
 name|Public

@@ -78,24 +78,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|Records
@@ -103,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the   *<code>ApplicationMaster</code>  *</li>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
+comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to   *<code>ResourceManager</code> on registration.</p>  *   *<p>The registration includes details such as:  *<ul>  *<li>Hostname on which the AM is running.</li>  *<li>RPC Port</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *   * @see ApplicationMasterProtocol#registerApplicationMaster(RegisterApplicationMasterRequest)  */
 end_comment
 
 begin_class
@@ -122,15 +104,12 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance ( ApplicationAttemptId applicationAttemptId, String host, int port, String trackingUrl)
+DECL|method|newInstance (String host, int port, String trackingUrl)
 specifier|public
 specifier|static
 name|RegisterApplicationMasterRequest
 name|newInstance
 parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
-parameter_list|,
 name|String
 name|host
 parameter_list|,
@@ -153,13 +132,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|request
-operator|.
-name|setApplicationAttemptId
-argument_list|(
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 name|request
 operator|.
 name|setHost
@@ -185,33 +157,6 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getApplicationAttemptId ()
-specifier|public
-specifier|abstract
-name|ApplicationAttemptId
-name|getApplicationAttemptId
-parameter_list|()
-function_decl|;
-comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the     *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed      *                             by the<code>ApplicationMaster</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setApplicationAttemptId (ApplicationAttemptId applicationAttemptId)
-specifier|public
-specifier|abstract
-name|void
-name|setApplicationAttemptId
-parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
-parameter_list|)
-function_decl|;
 comment|/**    * Get the<em>host</em> on which the<code>ApplicationMaster</code> is     * running.    * @return<em>host</em> on which the<code>ApplicationMaster</code> is running    */
 annotation|@
 name|Public

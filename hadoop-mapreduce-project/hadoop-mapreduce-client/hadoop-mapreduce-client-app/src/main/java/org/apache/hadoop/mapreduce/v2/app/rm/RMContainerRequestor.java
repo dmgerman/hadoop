@@ -998,8 +998,6 @@ name|AllocateRequest
 operator|.
 name|newInstance
 argument_list|(
-name|applicationAttemptId
-argument_list|,
 name|lastResponseID
 argument_list|,
 name|super

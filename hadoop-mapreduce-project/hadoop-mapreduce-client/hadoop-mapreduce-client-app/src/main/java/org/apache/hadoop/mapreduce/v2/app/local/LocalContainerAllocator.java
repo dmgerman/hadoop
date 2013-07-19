@@ -701,10 +701,6 @@ name|newInstance
 argument_list|(
 name|this
 operator|.
-name|applicationAttemptId
-argument_list|,
-name|this
-operator|.
 name|lastResponseID
 argument_list|,
 name|super
@@ -969,7 +965,11 @@ name|ContainerId
 operator|.
 name|newInstance
 argument_list|(
-name|applicationAttemptId
+name|getContext
+argument_list|()
+operator|.
+name|getApplicationAttemptId
+argument_list|()
 argument_list|,
 name|this
 operator|.

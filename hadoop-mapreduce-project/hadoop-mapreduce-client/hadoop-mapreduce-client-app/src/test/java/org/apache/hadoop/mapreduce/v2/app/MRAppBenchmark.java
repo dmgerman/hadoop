@@ -1463,7 +1463,8 @@ name|ContainerId
 operator|.
 name|newInstance
 argument_list|(
-name|request
+name|getContext
+argument_list|()
 operator|.
 name|getApplicationAttemptId
 argument_list|()

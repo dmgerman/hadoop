@@ -1210,9 +1210,7 @@ expr|<
 name|ContainerRequest
 operator|>
 name|createAMRMClient
-argument_list|(
-name|attemptId
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|rmClient
 operator|.

@@ -2162,13 +2162,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|request
-operator|.
-name|setApplicationAttemptId
-argument_list|(
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 name|client
 operator|.
 name|registerApplicationMaster
@@ -2202,8 +2195,6 @@ name|AllocateRequest
 operator|.
 name|newInstance
 argument_list|(
-name|applicationAttemptId
-argument_list|,
 literal|0
 argument_list|,
 literal|0.0f

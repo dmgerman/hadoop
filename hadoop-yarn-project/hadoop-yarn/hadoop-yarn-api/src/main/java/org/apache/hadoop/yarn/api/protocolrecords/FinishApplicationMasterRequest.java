@@ -82,24 +82,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|FinalApplicationStatus
 import|;
 end_import
@@ -121,7 +103,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to  * inform the<code>ResourceManager</code> about its completion.</p>  *  *<p>The final request includes details such:  *<ul>  *<li>  *         {@link ApplicationAttemptId} being managed by the  *<code>ApplicationMaster</code>  *</li>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see ApplicationMasterProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
+comment|/**  *<p>The finalization request sent by the<code>ApplicationMaster</code> to  * inform the<code>ResourceManager</code> about its completion.</p>  *  *<p>The final request includes details such:  *<ul>  *<li>Final state of the<code>ApplicationMaster</code></li>  *<li>  *       Diagnostic information in case of failure of the  *<code>ApplicationMaster</code>  *</li>  *<li>Tracking URL</li>  *</ul>  *</p>  *  * @see ApplicationMasterProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
 begin_class
@@ -139,15 +121,12 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance ( ApplicationAttemptId appAttemptId, FinalApplicationStatus finalAppStatus, String diagnostics, String url)
+DECL|method|newInstance ( FinalApplicationStatus finalAppStatus, String diagnostics, String url)
 specifier|public
 specifier|static
 name|FinishApplicationMasterRequest
 name|newInstance
 parameter_list|(
-name|ApplicationAttemptId
-name|appAttemptId
-parameter_list|,
 name|FinalApplicationStatus
 name|finalAppStatus
 parameter_list|,
@@ -170,13 +149,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|request
-operator|.
-name|setAppAttemptId
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
 name|request
 operator|.
 name|setFinalApplicationStatus
@@ -202,33 +174,6 @@ return|return
 name|request
 return|;
 block|}
-comment|/**    * Get the<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>.    * @return<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|getApplicationAttemptId ()
-specifier|public
-specifier|abstract
-name|ApplicationAttemptId
-name|getApplicationAttemptId
-parameter_list|()
-function_decl|;
-comment|/**    * Set the<code>ApplicationAttemptId</code> being managed by the    *<code>ApplicationMaster</code>.    * @param applicationAttemptId<code>ApplicationAttemptId</code> being managed    *                             by the<code>ApplicationMaster</code>    */
-annotation|@
-name|Public
-annotation|@
-name|Stable
-DECL|method|setAppAttemptId (ApplicationAttemptId applicationAttemptId)
-specifier|public
-specifier|abstract
-name|void
-name|setAppAttemptId
-parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
-parameter_list|)
-function_decl|;
 comment|/**    * Get<em>final state</em> of the<code>ApplicationMaster</code>.    * @return<em>final state</em> of the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public

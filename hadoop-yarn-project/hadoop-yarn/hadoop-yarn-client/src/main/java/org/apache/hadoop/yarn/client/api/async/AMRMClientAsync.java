@@ -160,24 +160,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Container
 import|;
 end_import
@@ -458,12 +440,9 @@ name|AMRMClientAsync
 argument_list|<
 name|T
 argument_list|>
-DECL|method|createAMRMClientAsync ( ApplicationAttemptId id, int intervalMs, CallbackHandler callbackHandler)
+DECL|method|createAMRMClientAsync (int intervalMs, CallbackHandler callbackHandler)
 name|createAMRMClientAsync
 parameter_list|(
-name|ApplicationAttemptId
-name|id
-parameter_list|,
 name|int
 name|intervalMs
 parameter_list|,
@@ -478,8 +457,6 @@ argument_list|<
 name|T
 argument_list|>
 argument_list|(
-name|id
-argument_list|,
 name|intervalMs
 argument_list|,
 name|callbackHandler
@@ -497,7 +474,7 @@ name|AMRMClientAsync
 argument_list|<
 name|T
 argument_list|>
-DECL|method|createAMRMClientAsync ( AMRMClient<T> client, int intervalMs, CallbackHandler callbackHandler)
+DECL|method|createAMRMClientAsync (AMRMClient<T> client, int intervalMs, CallbackHandler callbackHandler)
 name|createAMRMClientAsync
 parameter_list|(
 name|AMRMClient
@@ -528,13 +505,10 @@ name|callbackHandler
 argument_list|)
 return|;
 block|}
-DECL|method|AMRMClientAsync (ApplicationAttemptId id, int intervalMs, CallbackHandler callbackHandler)
+DECL|method|AMRMClientAsync (int intervalMs, CallbackHandler callbackHandler)
 specifier|protected
 name|AMRMClientAsync
 parameter_list|(
-name|ApplicationAttemptId
-name|id
-parameter_list|,
 name|int
 name|intervalMs
 parameter_list|,
@@ -549,9 +523,7 @@ name|AMRMClientImpl
 argument_list|<
 name|T
 argument_list|>
-argument_list|(
-name|id
-argument_list|)
+argument_list|()
 argument_list|,
 name|intervalMs
 argument_list|,

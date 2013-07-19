@@ -1602,9 +1602,7 @@ expr|<
 name|ContainerRequest
 operator|>
 name|createAMRMClient
-argument_list|(
-name|attemptId
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|amClient
 operator|.
@@ -2380,9 +2378,7 @@ name|AMRMClientImpl
 argument_list|<
 name|ContainerRequest
 argument_list|>
-argument_list|(
-name|attemptId
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|amClient
 operator|.
@@ -2649,9 +2645,7 @@ expr|<
 name|ContainerRequest
 operator|>
 name|createAMRMClient
-argument_list|(
-name|attemptId
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|amClient
 operator|.
@@ -3473,9 +3467,7 @@ expr|<
 name|ContainerRequest
 operator|>
 name|createAMRMClient
-argument_list|(
-name|attemptId
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|amClient
 operator|.

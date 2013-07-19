@@ -1498,25 +1498,14 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|authorizeRequest (ApplicationAttemptId appAttemptID)
+DECL|method|authorizeRequest ()
 specifier|private
-name|void
-name|authorizeRequest
-parameter_list|(
 name|ApplicationAttemptId
-name|appAttemptID
-parameter_list|)
+name|authorizeRequest
+parameter_list|()
 throws|throws
 name|YarnException
 block|{
-name|String
-name|appAttemptIDStr
-init|=
-name|appAttemptID
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|UserGroupInformation
 name|remoteUgi
 decl_stmt|;
@@ -1539,11 +1528,9 @@ block|{
 name|String
 name|msg
 init|=
-literal|"Cannot obtain the user-name for ApplicationAttemptID: "
+literal|"Cannot obtain the user-name for authorizing ApplicationMaster. "
 operator|+
-name|appAttemptIDStr
-operator|+
-literal|". Got exception: "
+literal|"Got exception: "
 operator|+
 name|StringUtils
 operator|.
@@ -1605,9 +1592,12 @@ literal|false
 expr_stmt|;
 name|message
 operator|=
-literal|"No AMRMToken found for "
+literal|"No AMRMToken found for user "
 operator|+
-name|appAttemptIDStr
+name|remoteUgi
+operator|.
+name|getUserName
+argument_list|()
 expr_stmt|;
 block|}
 else|else
@@ -1630,9 +1620,12 @@ literal|false
 expr_stmt|;
 name|message
 operator|=
-literal|"Got exception while looking for AMRMToken for "
+literal|"Got exception while looking for AMRMToken for user "
 operator|+
-name|appAttemptIDStr
+name|remoteUgi
+operator|.
+name|getUserName
+argument_list|()
 expr_stmt|;
 block|}
 if|if
@@ -1657,54 +1650,12 @@ name|message
 argument_list|)
 throw|;
 block|}
-name|ApplicationAttemptId
-name|remoteApplicationAttemptId
-init|=
+return|return
 name|appTokenIdentifier
 operator|.
 name|getApplicationAttemptId
 argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|remoteApplicationAttemptId
-operator|.
-name|equals
-argument_list|(
-name|appAttemptID
-argument_list|)
-condition|)
-block|{
-name|String
-name|msg
-init|=
-literal|"Unauthorized request from ApplicationMaster. "
-operator|+
-literal|"Expected ApplicationAttemptID: "
-operator|+
-name|remoteApplicationAttemptId
-operator|+
-literal|" Found: "
-operator|+
-name|appAttemptIDStr
-decl_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-name|msg
-argument_list|)
-throw|;
-block|}
+return|;
 block|}
 annotation|@
 name|Override
@@ -1724,16 +1675,9 @@ block|{
 name|ApplicationAttemptId
 name|applicationAttemptId
 init|=
-name|request
-operator|.
-name|getApplicationAttemptId
+name|authorizeRequest
 argument_list|()
 decl_stmt|;
-name|authorizeRequest
-argument_list|(
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 name|ApplicationId
 name|appID
 init|=
@@ -2110,16 +2054,9 @@ block|{
 name|ApplicationAttemptId
 name|applicationAttemptId
 init|=
-name|request
-operator|.
-name|getApplicationAttemptId
+name|authorizeRequest
 argument_list|()
 decl_stmt|;
-name|authorizeRequest
-argument_list|(
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 name|AllocateResponse
 name|lastResponse
 init|=
@@ -2300,16 +2237,9 @@ block|{
 name|ApplicationAttemptId
 name|appAttemptId
 init|=
-name|request
-operator|.
-name|getApplicationAttemptId
+name|authorizeRequest
 argument_list|()
 decl_stmt|;
-name|authorizeRequest
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|amLivelinessMonitor
