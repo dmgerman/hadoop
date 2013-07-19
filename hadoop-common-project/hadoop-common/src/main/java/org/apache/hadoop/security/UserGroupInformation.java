@@ -1221,7 +1221,6 @@ comment|/**     * A method to initialize the fields that depend on a configurati
 DECL|method|ensureInitialized ()
 specifier|private
 specifier|static
-specifier|synchronized
 name|void
 name|ensureInitialized
 parameter_list|()
@@ -1233,6 +1232,21 @@ operator|==
 literal|null
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|UserGroupInformation
+operator|.
+name|class
+init|)
+block|{
+if|if
+condition|(
+name|conf
+operator|==
+literal|null
+condition|)
+block|{
+comment|// someone might have beat us
 name|initialize
 argument_list|(
 operator|new
@@ -1242,6 +1256,8 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 comment|/**    * Initialize UGI and related classes.    * @param conf the configuration to use    */
