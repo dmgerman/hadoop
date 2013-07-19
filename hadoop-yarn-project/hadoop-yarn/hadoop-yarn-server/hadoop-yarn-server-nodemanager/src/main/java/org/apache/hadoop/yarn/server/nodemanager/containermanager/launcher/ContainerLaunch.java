@@ -644,6 +644,28 @@ name|containermanager
 operator|.
 name|container
 operator|.
+name|ContainerDiagnosticsUpdateEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
+name|container
+operator|.
 name|ContainerEvent
 import|;
 end_import
@@ -2015,6 +2037,12 @@ literal|0
 return|;
 block|}
 comment|/**    * Cleanup the container.    * Cancels the launch if launch has not started yet or signals    * the executor to not execute the process if not already done so.    * Also, sends a SIGTERM followed by a SIGKILL to the process if    * the process id is available.    * @throws IOException    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
+comment|// dispatcher not typed
 DECL|method|cleanupContainer ()
 specifier|public
 name|void
@@ -2251,6 +2279,8 @@ expr_stmt|;
 operator|new
 name|DelayedProcessKiller
 argument_list|(
+name|container
+argument_list|,
 name|user
 argument_list|,
 name|processId
@@ -2276,20 +2306,43 @@ name|Exception
 name|e
 parameter_list|)
 block|{
+name|String
+name|message
+init|=
+literal|"Exception when trying to cleanup container "
+operator|+
+name|containerIdStr
+operator|+
+literal|": "
+operator|+
+name|StringUtils
+operator|.
+name|stringifyException
+argument_list|(
+name|e
+argument_list|)
+decl_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Got error when trying to cleanup container "
-operator|+
-name|containerIdStr
-operator|+
-literal|", error="
-operator|+
-name|e
+name|message
+argument_list|)
+expr_stmt|;
+name|dispatcher
 operator|.
-name|getMessage
+name|getEventHandler
 argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|ContainerDiagnosticsUpdateEvent
+argument_list|(
+name|containerId
+argument_list|,
+name|message
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

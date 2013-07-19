@@ -864,9 +864,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exit code from container is : "
+literal|"Exit code from container executor initialization is : "
 operator|+
 name|exitCode
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|logOutput
@@ -1276,9 +1278,15 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exit code from container is : "
+literal|"Exit code from container "
+operator|+
+name|locId
+operator|+
+literal|" startLocalizer is : "
 operator|+
 name|exitCode
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|logOutput
@@ -1293,7 +1301,13 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"App initialization failed ("
+literal|"Application "
+operator|+
+name|appId
+operator|+
+literal|" initialization failed"
+operator|+
+literal|" (exitCode="
 operator|+
 name|exitCode
 operator|+
@@ -1636,7 +1650,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exit code from container is : "
+literal|"Exit code from container "
+operator|+
+name|containerId
+operator|+
+literal|" is : "
 operator|+
 name|exitCode
 argument_list|)
@@ -1669,7 +1687,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Exception from container-launch : "
+literal|"Exception from container-launch with container ID: "
+operator|+
+name|containerId
+operator|+
+literal|" and exit code: "
+operator|+
+name|exitCode
 argument_list|,
 name|e
 argument_list|)
@@ -1901,6 +1925,25 @@ return|return
 literal|false
 return|;
 block|}
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Error in signalling container "
+operator|+
+name|pid
+operator|+
+literal|" with "
+operator|+
+name|signal
+operator|+
+literal|"; exit = "
+operator|+
+name|ret_code
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|logOutput
 argument_list|(
 name|shExec
@@ -1921,9 +1964,18 @@ literal|" with "
 operator|+
 name|signal
 operator|+
-literal|"; exit = "
+literal|"; output: "
+operator|+
+name|shExec
+operator|.
+name|getOutput
+argument_list|()
+operator|+
+literal|" and exitCode: "
 operator|+
 name|ret_code
+argument_list|,
+name|e
 argument_list|)
 throw|;
 block|}
@@ -2176,22 +2228,6 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|warn
-argument_list|(
-literal|"Exit code from container is : "
-operator|+
-name|exitCode
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|exitCode
-operator|!=
-literal|0
-condition|)
-block|{
-name|LOG
-operator|.
 name|error
 argument_list|(
 literal|"DeleteAsUser for "
@@ -2204,9 +2240,11 @@ operator|.
 name|getPath
 argument_list|()
 operator|+
-literal|" returned with non-zero exit code"
+literal|" returned with exit code: "
 operator|+
 name|exitCode
+argument_list|,
+name|e
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2224,7 +2262,6 @@ name|getOutput
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|mountCgroups (List<String> cgroupKVs, String hierarchy)
@@ -2347,6 +2384,15 @@ operator|.
 name|getExitCode
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Exception in LinuxContainerExecutor mountCgroups "
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 name|logOutput
 argument_list|(
 name|shExec
@@ -2366,6 +2412,13 @@ operator|+
 literal|"; exit code = "
 operator|+
 name|ret_code
+operator|+
+literal|" and output: "
+operator|+
+name|shExec
+operator|.
+name|getOutput
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
