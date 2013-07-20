@@ -6525,7 +6525,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event, CSQueue childQueue)
 specifier|public
 name|void
 name|completedContainer
@@ -6547,6 +6547,9 @@ name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event
+parameter_list|,
+name|CSQueue
+name|childQueue
 parameter_list|)
 block|{
 if|if
@@ -6706,6 +6709,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|event
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 block|}

@@ -1866,6 +1866,13 @@ name|RMContainerEventType
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|any
+argument_list|(
+name|CSQueue
+operator|.
+name|class
+argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
@@ -3631,6 +3638,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -3738,6 +3747,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -6288,6 +6299,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -6395,6 +6408,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -6502,6 +6517,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -7195,6 +7212,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|a
@@ -7338,6 +7357,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|a
@@ -8187,6 +8208,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|a
@@ -8901,6 +8924,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|a
@@ -9222,6 +9247,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|KILL
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|CSAssignment

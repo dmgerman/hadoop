@@ -506,8 +506,8 @@ name|FiCaSchedulerNode
 name|node
 parameter_list|)
 function_decl|;
-comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param event event to be sent to the container    */
-DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event)
+comment|/**    * A container assigned to the queue has completed.    * @param clusterResource the resource of the cluster    * @param application application to which the container was assigned    * @param node node on which the container completed    * @param container completed container,     *<code>null</code> if it was just a reservation    * @param containerStatus<code>ContainerStatus</code> for the completed     *                        container    * @param childQueue<code>CSQueue</code> to reinsert in childQueues     * @param event event to be sent to the container    */
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer container, ContainerStatus containerStatus, RMContainerEventType event, CSQueue childQueue)
 specifier|public
 name|void
 name|completedContainer
@@ -529,6 +529,9 @@ name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event
+parameter_list|,
+name|CSQueue
+name|childQueue
 parameter_list|)
 function_decl|;
 comment|/**    * Get the number of applications in the queue.    * @return number of applications    */

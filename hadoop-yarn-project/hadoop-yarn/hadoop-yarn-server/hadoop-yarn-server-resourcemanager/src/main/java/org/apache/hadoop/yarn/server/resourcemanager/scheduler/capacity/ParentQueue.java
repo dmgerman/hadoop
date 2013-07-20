@@ -3300,7 +3300,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Re-sorting queues since queue: "
+literal|"Re-sorting assigned queue: "
 operator|+
 name|childQueue
 operator|.
@@ -3417,7 +3417,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
+DECL|method|completedContainer (Resource clusterResource, FiCaSchedulerApp application, FiCaSchedulerNode node, RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event, CSQueue completedChildQueue)
 specifier|public
 name|void
 name|completedContainer
@@ -3439,6 +3439,9 @@ name|containerStatus
 parameter_list|,
 name|RMContainerEventType
 name|event
+parameter_list|,
+name|CSQueue
+name|completedChildQueue
 parameter_list|)
 block|{
 if|if
@@ -3499,6 +3502,76 @@ name|clusterResource
 argument_list|)
 expr_stmt|;
 block|}
+comment|// reinsert the updated queue
+for|for
+control|(
+name|Iterator
+argument_list|<
+name|CSQueue
+argument_list|>
+name|iter
+init|=
+name|childQueues
+operator|.
+name|iterator
+argument_list|()
+init|;
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|;
+control|)
+block|{
+name|CSQueue
+name|csqueue
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|csqueue
+operator|.
+name|equals
+argument_list|(
+name|completedChildQueue
+argument_list|)
+condition|)
+block|{
+name|iter
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Re-sorting completed queue: "
+operator|+
+name|csqueue
+operator|.
+name|getQueuePath
+argument_list|()
+operator|+
+literal|" stats: "
+operator|+
+name|csqueue
+argument_list|)
+expr_stmt|;
+name|childQueues
+operator|.
+name|add
+argument_list|(
+name|csqueue
+argument_list|)
+expr_stmt|;
+break|break;
+block|}
+block|}
 comment|// Inform the parent
 if|if
 condition|(
@@ -3507,6 +3580,7 @@ operator|!=
 literal|null
 condition|)
 block|{
+comment|// complete my parent
 name|parent
 operator|.
 name|completedContainer
@@ -3522,6 +3596,8 @@ argument_list|,
 literal|null
 argument_list|,
 name|event
+argument_list|,
+name|this
 argument_list|)
 expr_stmt|;
 block|}

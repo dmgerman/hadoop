@@ -3848,6 +3848,8 @@ argument_list|,
 name|RMContainerEventType
 operator|.
 name|RELEASED
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -4570,6 +4572,8 @@ argument_list|,
 name|containerStatus
 argument_list|,
 name|event
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|LOG
