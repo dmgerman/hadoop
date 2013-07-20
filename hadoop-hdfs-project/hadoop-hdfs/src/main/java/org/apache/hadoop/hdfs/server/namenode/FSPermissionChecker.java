@@ -306,7 +306,7 @@ specifier|final
 name|boolean
 name|isSuper
 decl_stmt|;
-DECL|method|FSPermissionChecker (String fsOwner, String supergroup )
+DECL|method|FSPermissionChecker (String fsOwner, String supergroup, UserGroupInformation callerUgi)
 name|FSPermissionChecker
 parameter_list|(
 name|String
@@ -314,34 +314,15 @@ name|fsOwner
 parameter_list|,
 name|String
 name|supergroup
+parameter_list|,
+name|UserGroupInformation
+name|callerUgi
 parameter_list|)
-throws|throws
-name|AccessControlException
-block|{
-try|try
 block|{
 name|ugi
 operator|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
-argument_list|()
+name|callerUgi
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|AccessControlException
-argument_list|(
-name|e
-argument_list|)
-throw|;
-block|}
 name|HashSet
 argument_list|<
 name|String

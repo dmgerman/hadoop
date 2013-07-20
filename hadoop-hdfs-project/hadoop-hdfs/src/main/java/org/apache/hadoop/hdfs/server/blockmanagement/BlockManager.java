@@ -4540,6 +4540,7 @@ name|isBlockTokenEnabled
 argument_list|()
 condition|)
 block|{
+comment|// Use cached UGI if serving RPC calls.
 name|b
 operator|.
 name|setBlockToken
@@ -4548,6 +4549,14 @@ name|blockTokenSecretManager
 operator|.
 name|generateToken
 argument_list|(
+name|NameNode
+operator|.
+name|getRemoteUser
+argument_list|()
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
 name|b
 operator|.
 name|getBlock

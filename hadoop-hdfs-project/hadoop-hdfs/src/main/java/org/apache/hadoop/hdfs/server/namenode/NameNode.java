@@ -2235,6 +2235,39 @@ return|return
 name|nodeRegistration
 return|;
 block|}
+comment|/* optimize ugi lookup for RPC operations to avoid a trip through    * UGI.getCurrentUser which is synch'ed    */
+DECL|method|getRemoteUser ()
+specifier|public
+specifier|static
+name|UserGroupInformation
+name|getRemoteUser
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|UserGroupInformation
+name|ugi
+init|=
+name|Server
+operator|.
+name|getRemoteUser
+argument_list|()
+decl_stmt|;
+return|return
+operator|(
+name|ugi
+operator|!=
+literal|null
+operator|)
+condition|?
+name|ugi
+else|:
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+return|;
+block|}
 comment|/**    * Login as the configured user for the NameNode.    */
 DECL|method|loginAsNameNodeUser (Configuration conf)
 name|void

@@ -1113,6 +1113,24 @@ operator|.
 name|namenode
 operator|.
 name|NameNode
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|NameNode
 operator|.
 name|OperationCategory
 import|;
@@ -2758,6 +2776,22 @@ return|return
 name|clientRpcAddress
 return|;
 block|}
+DECL|method|getRemoteUser ()
+specifier|private
+specifier|static
+name|UserGroupInformation
+name|getRemoteUser
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|NameNode
+operator|.
+name|getRemoteUser
+argument_list|()
+return|;
+block|}
 comment|/////////////////////////////////////////////////////
 comment|// NamenodeProtocol
 comment|/////////////////////////////////////////////////////
@@ -3287,9 +3321,7 @@ argument_list|,
 operator|new
 name|PermissionStatus
 argument_list|(
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
+name|getRemoteUser
 argument_list|()
 operator|.
 name|getShortUserName
@@ -4530,9 +4562,7 @@ argument_list|,
 operator|new
 name|PermissionStatus
 argument_list|(
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
+name|getRemoteUser
 argument_list|()
 operator|.
 name|getShortUserName
@@ -5428,9 +5458,7 @@ specifier|final
 name|UserGroupInformation
 name|ugi
 init|=
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
+name|getRemoteUser
 argument_list|()
 decl_stmt|;
 name|namesystem
@@ -6188,9 +6216,7 @@ name|info
 argument_list|(
 literal|"Refreshing all user-to-groups mappings. Requested by user: "
 operator|+
-name|UserGroupInformation
-operator|.
-name|getCurrentUser
+name|getRemoteUser
 argument_list|()
 operator|.
 name|getShortUserName
