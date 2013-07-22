@@ -476,6 +476,20 @@ name|DataChecksum
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/** A class that receives a block and writes to its own disk, meanwhile  * may copies it to another site. If a throttler is provided,  * streaming throttling is also supported.  **/
 end_comment
@@ -508,10 +522,10 @@ name|DataNode
 operator|.
 name|ClientTraceLog
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|CACHE_DROP_LAG_BYTES
-specifier|private
 specifier|static
-specifier|final
 name|long
 name|CACHE_DROP_LAG_BYTES
 init|=
@@ -668,17 +682,17 @@ specifier|private
 name|boolean
 name|dropCacheBehindWrites
 decl_stmt|;
+DECL|field|lastCacheManagementOffset
+specifier|private
+name|long
+name|lastCacheManagementOffset
+init|=
+literal|0
+decl_stmt|;
 DECL|field|syncBehindWrites
 specifier|private
 name|boolean
 name|syncBehindWrites
-decl_stmt|;
-DECL|field|lastCacheDropOffset
-specifier|private
-name|long
-name|lastCacheDropOffset
-init|=
-literal|0
 decl_stmt|;
 comment|/** The client name.  It is empty if a datanode is the client */
 DECL|field|clientname
@@ -731,7 +745,7 @@ specifier|private
 name|boolean
 name|syncOnClose
 decl_stmt|;
-DECL|method|BlockReceiver (final ExtendedBlock block, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum)
+DECL|method|BlockReceiver (final ExtendedBlock block, final DataInputStream in, final String inAddr, final String myAddr, final BlockConstructionStage stage, final long newGs, final long minBytesRcvd, final long maxBytesRcvd, final String clientname, final DatanodeInfo srcDataNode, final DataNode datanode, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
 name|BlockReceiver
 parameter_list|(
 specifier|final
@@ -780,6 +794,9 @@ name|datanode
 parameter_list|,
 name|DataChecksum
 name|requestedChecksum
+parameter_list|,
+name|CachingStrategy
+name|cachingStrategy
 parameter_list|)
 throws|throws
 name|IOException
@@ -918,6 +935,10 @@ operator|+
 literal|", myAddr="
 operator|+
 name|myAddr
+operator|+
+literal|"\n  cachingStrategy = "
+operator|+
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 block|}
@@ -1164,12 +1185,26 @@ name|this
 operator|.
 name|dropCacheBehindWrites
 operator|=
+operator|(
+name|cachingStrategy
+operator|.
+name|getDropBehind
+argument_list|()
+operator|==
+literal|null
+operator|)
+condition|?
 name|datanode
 operator|.
 name|getDnConf
 argument_list|()
 operator|.
 name|dropCacheBehindWrites
+else|:
+name|cachingStrategy
+operator|.
+name|getDropBehind
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -3060,7 +3095,7 @@ argument_list|(
 name|len
 argument_list|)
 expr_stmt|;
-name|dropOsCacheBehindWriter
+name|manageWriterOsCache
 argument_list|(
 name|offsetInBlock
 argument_list|)
@@ -3150,10 +3185,10 @@ else|:
 name|len
 return|;
 block|}
-DECL|method|dropOsCacheBehindWriter (long offsetInBlock)
+DECL|method|manageWriterOsCache (long offsetInBlock)
 specifier|private
 name|void
-name|dropOsCacheBehindWriter
+name|manageWriterOsCache
 parameter_list|(
 name|long
 name|offsetInBlock
@@ -3169,47 +3204,20 @@ literal|null
 operator|&&
 name|offsetInBlock
 operator|>
-name|lastCacheDropOffset
+name|lastCacheManagementOffset
 operator|+
 name|CACHE_DROP_LAG_BYTES
 condition|)
 block|{
-name|long
-name|twoWindowsAgo
-init|=
-name|lastCacheDropOffset
-operator|-
-name|CACHE_DROP_LAG_BYTES
-decl_stmt|;
-if|if
-condition|(
-name|twoWindowsAgo
-operator|>
-literal|0
-operator|&&
-name|dropCacheBehindWrites
-condition|)
-block|{
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|posixFadviseIfPossible
-argument_list|(
-name|outFd
-argument_list|,
-literal|0
-argument_list|,
-name|lastCacheDropOffset
-argument_list|,
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|POSIX_FADV_DONTNEED
-argument_list|)
-expr_stmt|;
-block|}
+comment|//
+comment|// For SYNC_FILE_RANGE_WRITE, we want to sync from
+comment|// lastCacheManagementOffset to a position "two windows ago"
+comment|//
+comment|//<========= sync ===========>
+comment|// +-----------------------O--------------------------X
+comment|// start                  last                      curPos
+comment|// of file
+comment|//
 if|if
 condition|(
 name|syncBehindWrites
@@ -3223,9 +3231,11 @@ name|syncFileRangeIfPossible
 argument_list|(
 name|outFd
 argument_list|,
-name|lastCacheDropOffset
+name|lastCacheManagementOffset
 argument_list|,
-name|CACHE_DROP_LAG_BYTES
+name|offsetInBlock
+operator|-
+name|lastCacheManagementOffset
 argument_list|,
 name|NativeIO
 operator|.
@@ -3235,9 +3245,60 @@ name|SYNC_FILE_RANGE_WRITE
 argument_list|)
 expr_stmt|;
 block|}
-name|lastCacheDropOffset
-operator|+=
+comment|//
+comment|// For POSIX_FADV_DONTNEED, we want to drop from the beginning
+comment|// of the file to a position prior to the current position.
+comment|//
+comment|//<=== drop =====>
+comment|//<---W--->
+comment|// +--------------+--------O--------------------------X
+comment|// start        dropPos   last                      curPos
+comment|// of file
+comment|//
+name|long
+name|dropPos
+init|=
+name|lastCacheManagementOffset
+operator|-
 name|CACHE_DROP_LAG_BYTES
+decl_stmt|;
+if|if
+condition|(
+name|dropPos
+operator|>
+literal|0
+operator|&&
+name|dropCacheBehindWrites
+condition|)
+block|{
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|posixFadviseIfPossible
+argument_list|(
+name|block
+operator|.
+name|getBlockName
+argument_list|()
+argument_list|,
+name|outFd
+argument_list|,
+literal|0
+argument_list|,
+name|dropPos
+argument_list|,
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|POSIX_FADV_DONTNEED
+argument_list|)
+expr_stmt|;
+block|}
+name|lastCacheManagementOffset
+operator|=
+name|offsetInBlock
 expr_stmt|;
 block|}
 block|}
@@ -3251,7 +3312,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Couldn't drop os cache behind writer for "
+literal|"Error managing cache for writer of block "
 operator|+
 name|block
 argument_list|,

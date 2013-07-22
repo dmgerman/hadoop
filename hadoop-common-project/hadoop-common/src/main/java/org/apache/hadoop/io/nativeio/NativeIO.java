@@ -228,6 +228,20 @@ name|LogFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * JNI wrappers for various native IO-related calls not available in Java.  * These functions should generally be used alongside a fallback to another  * more portable mechanism.  */
 end_comment
@@ -477,6 +491,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|cacheTracker
+specifier|public
+specifier|static
+name|CacheTracker
+name|cacheTracker
+init|=
+literal|null
+decl_stmt|;
 DECL|field|nativeLoaded
 specifier|private
 specifier|static
@@ -526,6 +550,31 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|interface|CacheTracker
+specifier|public
+specifier|static
+interface|interface
+name|CacheTracker
+block|{
+DECL|method|fadvise (String identifier, long offset, long len, int flags)
+specifier|public
+name|void
+name|fadvise
+parameter_list|(
+name|String
+name|identifier
+parameter_list|,
+name|long
+name|offset
+parameter_list|,
+name|long
+name|len
+parameter_list|,
+name|int
+name|flags
+parameter_list|)
+function_decl|;
+block|}
 static|static
 block|{
 if|if
@@ -840,12 +889,15 @@ throws|throws
 name|NativeIOException
 function_decl|;
 comment|/**      * Call posix_fadvise on the given file descriptor. See the manpage      * for this syscall for more information. On systems where this      * call is not available, does nothing.      *      * @throws NativeIOException if there is an error with the syscall      */
-DECL|method|posixFadviseIfPossible ( FileDescriptor fd, long offset, long len, int flags)
+DECL|method|posixFadviseIfPossible (String identifier, FileDescriptor fd, long offset, long len, int flags)
 specifier|public
 specifier|static
 name|void
 name|posixFadviseIfPossible
 parameter_list|(
+name|String
+name|identifier
+parameter_list|,
 name|FileDescriptor
 name|fd
 parameter_list|,
@@ -861,6 +913,27 @@ parameter_list|)
 throws|throws
 name|NativeIOException
 block|{
+if|if
+condition|(
+name|cacheTracker
+operator|!=
+literal|null
+condition|)
+block|{
+name|cacheTracker
+operator|.
+name|fadvise
+argument_list|(
+name|identifier
+argument_list|,
+name|offset
+argument_list|,
+name|len
+argument_list|,
+name|flags
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|nativeLoaded

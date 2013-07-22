@@ -1634,6 +1634,11 @@ argument_list|,
 literal|null
 argument_list|,
 literal|false
+argument_list|,
+name|CachingStrategy
+operator|.
+name|newDefaultStrategy
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|blockReader

@@ -2022,7 +2022,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|readBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum)
+DECL|method|readBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum, final CachingStrategy cachingStrategy)
 specifier|public
 name|void
 name|readBlock
@@ -2053,6 +2053,10 @@ parameter_list|,
 specifier|final
 name|boolean
 name|sendChecksum
+parameter_list|,
+specifier|final
+name|CachingStrategy
+name|cachingStrategy
 parameter_list|)
 throws|throws
 name|IOException
@@ -2209,6 +2213,8 @@ argument_list|,
 name|datanode
 argument_list|,
 name|clientTraceFmt
+argument_list|,
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 block|}
@@ -2502,7 +2508,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|writeBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum)
+DECL|method|writeBlock (final ExtendedBlock block, final Token<BlockTokenIdentifier> blockToken, final String clientname, final DatanodeInfo[] targets, final DatanodeInfo srcDataNode, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, DataChecksum requestedChecksum, CachingStrategy cachingStrategy)
 specifier|public
 name|void
 name|writeBlock
@@ -2553,6 +2559,9 @@ name|latestGenerationStamp
 parameter_list|,
 name|DataChecksum
 name|requestedChecksum
+parameter_list|,
+name|CachingStrategy
+name|cachingStrategy
 parameter_list|)
 throws|throws
 name|IOException
@@ -2893,6 +2902,8 @@ argument_list|,
 name|datanode
 argument_list|,
 name|requestedChecksum
+argument_list|,
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 block|}
@@ -3158,6 +3169,8 @@ argument_list|,
 name|latestGenerationStamp
 argument_list|,
 name|requestedChecksum
+argument_list|,
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 name|mirrorOut
@@ -4260,6 +4273,11 @@ argument_list|,
 name|datanode
 argument_list|,
 literal|null
+argument_list|,
+name|CachingStrategy
+operator|.
+name|newDropBehind
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// set up response stream
@@ -4948,6 +4966,11 @@ argument_list|,
 name|datanode
 argument_list|,
 name|remoteChecksum
+argument_list|,
+name|CachingStrategy
+operator|.
+name|newDropBehind
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// receive a block

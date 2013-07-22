@@ -7888,6 +7888,11 @@ specifier|final
 name|String
 name|clientname
 decl_stmt|;
+DECL|field|cachingStrategy
+specifier|final
+name|CachingStrategy
+name|cachingStrategy
+decl_stmt|;
 comment|/**      * Connect to the first item in the target list.  Pass along the       * entire target list, the block, and the data.      */
 DECL|method|DataTransfer (DatanodeInfo targets[], ExtendedBlock b, BlockConstructionStage stage, final String clientname)
 name|DataTransfer
@@ -8003,6 +8008,21 @@ operator|.
 name|clientname
 operator|=
 name|clientname
+expr_stmt|;
+name|this
+operator|.
+name|cachingStrategy
+operator|=
+operator|new
+name|CachingStrategy
+argument_list|(
+literal|true
+argument_list|,
+name|getDnConf
+argument_list|()
+operator|.
+name|readaheadLength
+argument_list|)
 expr_stmt|;
 block|}
 comment|/**      * Do the deed, write the bytes      */
@@ -8257,6 +8277,8 @@ operator|.
 name|this
 argument_list|,
 literal|null
+argument_list|,
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 name|DatanodeInfo
@@ -8339,6 +8361,8 @@ name|blockSender
 operator|.
 name|getChecksum
 argument_list|()
+argument_list|,
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 comment|// send data& checksum

@@ -274,6 +274,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|CachingStrategy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -373,7 +391,7 @@ class|class
 name|BlockReaderFactory
 block|{
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *     * @param conf the DFSClient configuration    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read, or -1 to read as many as    *             possible.    * @param bufferSize  The IO buffer size (not the client buffer size)    *                    Ignored except on the legacy BlockReader.    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name.  Used for log messages.    * @param peer  The peer    * @param datanodeID  The datanode that the Peer is connected to    * @param domainSocketFactory  The DomainSocketFactory to notify if the Peer    *                             is a DomainPeer which turns out to be faulty.    *                             If null, no factory will be notified in this    *                             case.    * @param allowShortCircuitLocalReads  True if short-circuit local reads    *                                     should be allowed.    * @return New BlockReader instance    */
-DECL|method|newBlockReader (DFSClient.Conf conf, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, DomainSocketFactory domSockFactory, PeerCache peerCache, FileInputStreamCache fisCache, boolean allowShortCircuitLocalReads)
+DECL|method|newBlockReader (DFSClient.Conf conf, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, DomainSocketFactory domSockFactory, PeerCache peerCache, FileInputStreamCache fisCache, boolean allowShortCircuitLocalReads, CachingStrategy cachingStrategy)
 specifier|public
 specifier|static
 name|BlockReader
@@ -425,6 +443,9 @@ name|fisCache
 parameter_list|,
 name|boolean
 name|allowShortCircuitLocalReads
+parameter_list|,
+name|CachingStrategy
+name|cachingStrategy
 parameter_list|)
 throws|throws
 name|IOException
@@ -608,6 +629,8 @@ argument_list|,
 name|datanodeID
 argument_list|,
 name|peerCache
+argument_list|,
+name|cachingStrategy
 argument_list|)
 decl_stmt|;
 return|return
@@ -640,6 +663,8 @@ argument_list|,
 name|datanodeID
 argument_list|,
 name|peerCache
+argument_list|,
+name|cachingStrategy
 argument_list|)
 return|;
 block|}

@@ -2189,6 +2189,11 @@ argument_list|,
 name|datanode
 argument_list|,
 literal|null
+argument_list|,
+name|CachingStrategy
+operator|.
+name|newDropBehind
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|DataOutputStream

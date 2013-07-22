@@ -324,6 +324,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|CachingStrategy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|IOUtils
@@ -1612,7 +1630,7 @@ name|peerCache
 expr_stmt|;
 block|}
 comment|/**    * Create a new BlockReader specifically to satisfy a read.    * This method also sends the OP_READ_BLOCK request.    *    * @param sock  An established Socket to the DN. The BlockReader will not close it normally    * @param file  File location    * @param block  The block object    * @param blockToken  The block token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance, or null on error.    */
-DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache)
+DECL|method|newBlockReader (String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, Peer peer, DatanodeID datanodeID, PeerCache peerCache, CachingStrategy cachingStrategy)
 specifier|public
 specifier|static
 name|RemoteBlockReader
@@ -1653,6 +1671,9 @@ name|datanodeID
 parameter_list|,
 name|PeerCache
 name|peerCache
+parameter_list|,
+name|CachingStrategy
+name|cachingStrategy
 parameter_list|)
 throws|throws
 name|IOException
@@ -1694,6 +1715,8 @@ argument_list|,
 name|len
 argument_list|,
 name|verifyChecksum
+argument_list|,
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 comment|//

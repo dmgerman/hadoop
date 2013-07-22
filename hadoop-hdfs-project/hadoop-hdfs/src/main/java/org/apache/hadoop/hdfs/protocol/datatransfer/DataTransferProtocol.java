@@ -146,6 +146,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
+name|CachingStrategy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -213,8 +231,8 @@ name|DATA_TRANSFER_VERSION
 init|=
 literal|28
 decl_stmt|;
-comment|/**     * Read a block.    *     * @param blk the block being read.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param blockOffset offset of the block.    * @param length maximum number of bytes for this read.    * @param sendChecksum if false, the DN should skip reading and sending    *        checksums    */
-DECL|method|readBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum)
+comment|/**     * Read a block.    *     * @param blk the block being read.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param blockOffset offset of the block.    * @param length maximum number of bytes for this read.    * @param sendChecksum if false, the DN should skip reading and sending    *        checksums    * @param cachingStrategy  The caching strategy to use.    */
+DECL|method|readBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final long blockOffset, final long length, final boolean sendChecksum, final CachingStrategy cachingStrategy)
 specifier|public
 name|void
 name|readBlock
@@ -245,12 +263,16 @@ parameter_list|,
 specifier|final
 name|boolean
 name|sendChecksum
+parameter_list|,
+specifier|final
+name|CachingStrategy
+name|cachingStrategy
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Write a block to a datanode pipeline.    *     * @param blk the block being written.    * @param blockToken security token for accessing the block.    * @param clientName client's name.    * @param targets target datanodes in the pipeline.    * @param source source datanode.    * @param stage pipeline stage.    * @param pipelineSize the size of the pipeline.    * @param minBytesRcvd minimum number of bytes received.    * @param maxBytesRcvd maximum number of bytes received.    * @param latestGenerationStamp the latest generation stamp of the block.    */
-DECL|method|writeBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, final DataChecksum requestedChecksum)
+DECL|method|writeBlock (final ExtendedBlock blk, final Token<BlockTokenIdentifier> blockToken, final String clientName, final DatanodeInfo[] targets, final DatanodeInfo source, final BlockConstructionStage stage, final int pipelineSize, final long minBytesRcvd, final long maxBytesRcvd, final long latestGenerationStamp, final DataChecksum requestedChecksum, final CachingStrategy cachingStrategy)
 specifier|public
 name|void
 name|writeBlock
@@ -302,6 +324,10 @@ parameter_list|,
 specifier|final
 name|DataChecksum
 name|requestedChecksum
+parameter_list|,
+specifier|final
+name|CachingStrategy
+name|cachingStrategy
 parameter_list|)
 throws|throws
 name|IOException

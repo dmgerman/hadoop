@@ -964,6 +964,11 @@ argument_list|,
 literal|0L
 argument_list|,
 name|checksum
+argument_list|,
+name|CachingStrategy
+operator|.
+name|newDefaultStrategy
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|out
