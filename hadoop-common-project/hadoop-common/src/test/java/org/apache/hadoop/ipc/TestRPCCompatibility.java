@@ -350,8 +350,6 @@ specifier|public
 interface|interface
 name|TestProtocol1
 extends|extends
-name|VersionedProtocol
-extends|,
 name|TestProtocol0
 block|{
 DECL|method|echo (String value)
@@ -633,8 +631,6 @@ specifier|public
 name|void
 name|tearDown
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 if|if
 condition|(

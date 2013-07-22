@@ -330,8 +330,6 @@ interface|interface
 name|Bar
 extends|extends
 name|Mixin
-extends|,
-name|VersionedProtocol
 block|{
 DECL|field|versionID
 specifier|public

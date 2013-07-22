@@ -3338,8 +3338,6 @@ name|testIpcAfterStopping
 parameter_list|()
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 comment|// start server
 name|Server
@@ -4743,8 +4741,6 @@ name|maxTimeoutRetries
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|SocketFactory
 name|mockFactory

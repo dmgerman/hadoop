@@ -1170,11 +1170,6 @@ argument_list|(
 name|method
 argument_list|)
 decl_stmt|;
-name|RpcResponseWrapper
-name|val
-init|=
-literal|null
-decl_stmt|;
 if|if
 condition|(
 name|LOG
@@ -1235,6 +1230,10 @@ name|args
 index|[
 literal|1
 index|]
+decl_stmt|;
+specifier|final
+name|RpcResponseWrapper
+name|val
 decl_stmt|;
 try|try
 block|{

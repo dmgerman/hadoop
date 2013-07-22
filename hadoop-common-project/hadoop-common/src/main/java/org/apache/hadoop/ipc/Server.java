@@ -4821,8 +4821,6 @@ range|:
 name|calls
 control|)
 block|{
-try|try
-block|{
 name|doPurge
 argument_list|(
 name|call
@@ -4830,23 +4828,6 @@ argument_list|,
 name|now
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Error in purging old calls "
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 catch|catch
@@ -5025,8 +5006,6 @@ parameter_list|,
 name|long
 name|now
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|LinkedList
 argument_list|<
@@ -7585,8 +7564,6 @@ name|authType
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 name|AuthProtocol
 name|authProtocol
@@ -9619,8 +9596,6 @@ specifier|synchronized
 name|void
 name|close
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|disposeSasl
 argument_list|()
@@ -11084,20 +11059,11 @@ name|numConnections
 operator|--
 expr_stmt|;
 block|}
-try|try
-block|{
 name|connection
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{     }
 block|}
 comment|/**    * Setup response for the IPC Call.    *     * @param responseBuf buffer to serialize the response into    * @param call {@link Call} to which we are setting up the response    * @param status of the IPC call    * @param rv return value for the IPC Call, if the call was successful    * @param errorClass error class, if the the call failed    * @param error error message, if the call failed    * @throws IOException    */
 DECL|method|setupResponse (ByteArrayOutputStream responseBuf, Call call, RpcStatusProto status, RpcErrorCodeProto erCode, Writable rv, String errorClass, String error)

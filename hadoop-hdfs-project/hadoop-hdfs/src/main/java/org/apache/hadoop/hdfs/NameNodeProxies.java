@@ -1937,12 +1937,7 @@ name|proxy
 argument_list|)
 return|;
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-DECL|method|createNameNodeProxy (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, Class xface, int rpcTimeout)
+DECL|method|createNameNodeProxy (InetSocketAddress address, Configuration conf, UserGroupInformation ugi, Class<?> xface, int rpcTimeout)
 specifier|private
 specifier|static
 name|Object
@@ -1958,6 +1953,9 @@ name|UserGroupInformation
 name|ugi
 parameter_list|,
 name|Class
+argument_list|<
+name|?
+argument_list|>
 name|xface
 parameter_list|,
 name|int

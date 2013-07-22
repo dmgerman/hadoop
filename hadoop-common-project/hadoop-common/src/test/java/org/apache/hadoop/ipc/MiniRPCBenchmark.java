@@ -947,9 +947,6 @@ argument_list|()
 decl_stmt|;
 name|client
 operator|=
-operator|(
-name|MiniProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -1063,9 +1060,6 @@ block|{
 name|MiniProtocol
 name|p
 init|=
-operator|(
-name|MiniProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -1226,9 +1220,6 @@ throws|throws
 name|IOException
 block|{
 return|return
-operator|(
-name|MiniProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy

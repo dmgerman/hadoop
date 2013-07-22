@@ -2182,9 +2182,6 @@ try|try
 block|{
 name|proxy
 operator|=
-operator|(
-name|TestSaslProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -2708,9 +2705,6 @@ try|try
 block|{
 name|proxy1
 operator|=
-operator|(
-name|TestSaslProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -2769,9 +2763,6 @@ expr_stmt|;
 comment|// same conf, connection should be re-used
 name|proxy2
 operator|=
-operator|(
-name|TestSaslProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -2818,9 +2809,6 @@ argument_list|)
 expr_stmt|;
 name|proxy3
 operator|=
-operator|(
-name|TestSaslProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -3125,9 +3113,6 @@ try|try
 block|{
 name|proxy
 operator|=
-operator|(
-name|TestSaslProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy
@@ -3225,8 +3210,6 @@ specifier|public
 name|void
 name|testSaslPlainServerBadPassword
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|SaslException
 name|e
@@ -5049,9 +5032,6 @@ try|try
 block|{
 name|proxy
 operator|=
-operator|(
-name|TestSaslProtocol
-operator|)
 name|RPC
 operator|.
 name|getProxy

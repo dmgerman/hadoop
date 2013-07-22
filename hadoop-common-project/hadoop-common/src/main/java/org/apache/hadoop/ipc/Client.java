@@ -2470,10 +2470,18 @@ name|authMethod
 operator|+
 literal|" authentication for protocol "
 operator|+
+operator|(
+name|protocol
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|protocol
 operator|.
 name|getSimpleName
 argument_list|()
+operator|)
 argument_list|)
 expr_stmt|;
 name|this
@@ -3437,8 +3445,6 @@ specifier|synchronized
 name|void
 name|setupIOstreams
 parameter_list|()
-throws|throws
-name|InterruptedException
 block|{
 if|if
 condition|(
@@ -5719,8 +5725,6 @@ name|InetSocketAddress
 name|address
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 return|return
@@ -5758,8 +5762,6 @@ name|InetSocketAddress
 name|address
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 return|return
@@ -5798,8 +5800,6 @@ name|UserGroupInformation
 name|ticket
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 name|ConnectionId
@@ -5863,8 +5863,6 @@ name|int
 name|rpcTimeout
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 name|ConnectionId
@@ -5924,8 +5922,6 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 name|ConnectionId
@@ -5992,8 +5988,6 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 name|ConnectionId
@@ -6064,8 +6058,6 @@ name|Configuration
 name|conf
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 name|ConnectionId
@@ -6110,8 +6102,6 @@ name|ConnectionId
 name|remoteId
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 return|return
@@ -6147,8 +6137,6 @@ name|ConnectionId
 name|remoteId
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 return|return
@@ -6187,8 +6175,6 @@ name|int
 name|serviceClass
 parameter_list|)
 throws|throws
-name|InterruptedException
-throws|,
 name|IOException
 block|{
 specifier|final
@@ -6456,8 +6442,6 @@ name|serviceClass
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|InterruptedException
 block|{
 if|if
 condition|(

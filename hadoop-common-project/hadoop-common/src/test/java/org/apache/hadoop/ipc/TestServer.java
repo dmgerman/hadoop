@@ -543,8 +543,6 @@ specifier|public
 name|void
 name|testExceptionsHandler
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 name|Server
 operator|.

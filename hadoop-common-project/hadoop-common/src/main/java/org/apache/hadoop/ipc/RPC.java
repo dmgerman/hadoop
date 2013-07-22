@@ -3638,8 +3638,6 @@ parameter_list|,
 name|Object
 name|protocolImpl
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|String
 name|protocolName
@@ -3783,12 +3781,6 @@ name|protocolTarget
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unused"
-argument_list|)
-comment|// will be useful later.
 DECL|method|getSupportedProtocolVersions (RPC.RpcKind rpcKind, String protocolName)
 name|VerProtocolImpl
 index|[]
@@ -4153,8 +4145,6 @@ parameter_list|(
 name|Configuration
 name|conf
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|RPC
 operator|.
@@ -4222,8 +4212,6 @@ parameter_list|,
 name|Object
 name|protocolImpl
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|registerProtocolAndImpl
 argument_list|(
