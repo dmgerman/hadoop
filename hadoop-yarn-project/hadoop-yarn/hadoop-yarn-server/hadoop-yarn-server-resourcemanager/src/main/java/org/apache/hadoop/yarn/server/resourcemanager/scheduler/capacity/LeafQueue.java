@@ -1368,10 +1368,9 @@ operator|*
 name|userLimitFactor
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
+name|float
 name|maxAMResourcePerQueuePercent
-operator|=
+init|=
 name|cs
 operator|.
 name|getConfiguration
@@ -1382,7 +1381,7 @@ argument_list|(
 name|getQueuePath
 argument_list|()
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|int
 name|maxActiveApplications
 init|=
@@ -1534,6 +1533,8 @@ name|userLimitFactor
 argument_list|,
 name|maxApplications
 argument_list|,
+name|maxAMResourcePerQueuePercent
+argument_list|,
 name|maxApplicationsPerUser
 argument_list|,
 name|maxActiveApplications
@@ -1616,7 +1617,7 @@ name|applicationComparator
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay)
+DECL|method|setupQueueConfigs ( Resource clusterResource, float capacity, float absoluteCapacity, float maximumCapacity, float absoluteMaxCapacity, int userLimit, float userLimitFactor, int maxApplications, float maxAMResourcePerQueuePercent, int maxApplicationsPerUser, int maxActiveApplications, int maxActiveApplicationsPerUser, QueueState state, Map<QueueACL, AccessControlList> acls, int nodeLocalityDelay)
 specifier|private
 specifier|synchronized
 name|void
@@ -1645,6 +1646,9 @@ name|userLimitFactor
 parameter_list|,
 name|int
 name|maxApplications
+parameter_list|,
+name|float
+name|maxAMResourcePerQueuePercent
 parameter_list|,
 name|int
 name|maxApplicationsPerUser
@@ -1747,6 +1751,12 @@ operator|.
 name|maxApplications
 operator|=
 name|maxApplications
+expr_stmt|;
+name|this
+operator|.
+name|maxAMResourcePerQueuePercent
+operator|=
+name|maxAMResourcePerQueuePercent
 expr_stmt|;
 name|this
 operator|.
@@ -2240,6 +2250,19 @@ parameter_list|()
 block|{
 return|return
 name|minimumAllocationFactor
+return|;
+block|}
+comment|/**    * Used only by tests.    */
+annotation|@
+name|Private
+DECL|method|getMaxAMResourcePerQueuePercent ()
+specifier|public
+name|float
+name|getMaxAMResourcePerQueuePercent
+parameter_list|()
+block|{
+return|return
+name|maxAMResourcePerQueuePercent
 return|;
 block|}
 DECL|method|getMaxApplications ()
@@ -3078,6 +3101,10 @@ argument_list|,
 name|newlyParsedLeafQueue
 operator|.
 name|maxApplications
+argument_list|,
+name|newlyParsedLeafQueue
+operator|.
+name|maxAMResourcePerQueuePercent
 argument_list|,
 name|newlyParsedLeafQueue
 operator|.
