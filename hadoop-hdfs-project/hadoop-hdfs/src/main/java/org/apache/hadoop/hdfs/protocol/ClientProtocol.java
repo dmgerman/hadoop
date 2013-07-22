@@ -674,7 +674,9 @@ name|SnapshotAccessControlException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    * The client can give up on a block by calling abandonBlock().    * The client can then    * either obtain a new block, or complete or abandon the file.    * Any partial writes to the block will be discarded.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+comment|/**    * The client can give up on a block by calling abandonBlock().    * The client can then either obtain a new block, or complete or abandon the     * file.    * Any partial writes to the block will be discarded.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException file<code>src</code> is not found    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|Idempotent
 DECL|method|abandonBlock (ExtendedBlock b, String src, String holder)
 specifier|public
 name|void

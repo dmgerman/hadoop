@@ -2161,9 +2161,9 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Remove a block from the file.    */
+comment|/**    * Remove a block from the file.    * @return Whether the block exists in the corresponding file    */
 DECL|method|removeBlock (String path, INodeFileUnderConstruction fileNode, Block block)
-name|void
+name|boolean
 name|removeBlock
 parameter_list|(
 name|String
@@ -2186,6 +2186,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+return|return
 name|unprotectedRemoveBlock
 argument_list|(
 name|path
@@ -2194,7 +2195,7 @@ name|fileNode
 argument_list|,
 name|block
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 finally|finally
 block|{
@@ -2204,7 +2205,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|unprotectedRemoveBlock (String path, INodeFileUnderConstruction fileNode, Block block)
-name|void
+name|boolean
 name|unprotectedRemoveBlock
 parameter_list|(
 name|String
@@ -2220,13 +2221,26 @@ throws|throws
 name|IOException
 block|{
 comment|// modify file-> block and blocksMap
+name|boolean
+name|removed
+init|=
 name|fileNode
 operator|.
 name|removeLastBlock
 argument_list|(
 name|block
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|removed
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 name|getBlockManager
 argument_list|()
 operator|.
@@ -2292,6 +2306,9 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, Rename...)} instead.    */
 annotation|@

@@ -40,6 +40,16 @@ end_import
 
 begin_import
 import|import
+name|junit
+operator|.
+name|framework
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -91,20 +101,6 @@ operator|.
 name|fs
 operator|.
 name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|FileSystem
 import|;
 end_import
 
@@ -277,7 +273,7 @@ name|cluster
 decl_stmt|;
 DECL|field|fs
 specifier|private
-name|FileSystem
+name|DistributedFileSystem
 name|fs
 decl_stmt|;
 annotation|@
@@ -422,9 +418,6 @@ name|DFSClientAdapter
 operator|.
 name|getDFSClient
 argument_list|(
-operator|(
-name|DistributedFileSystem
-operator|)
 name|fs
 argument_list|)
 decl_stmt|;
@@ -482,6 +475,26 @@ operator|.
 name|clientName
 argument_list|)
 expr_stmt|;
+comment|// call abandonBlock again to make sure the operation is idempotent
+name|dfsclient
+operator|.
+name|getNamenode
+argument_list|()
+operator|.
+name|abandonBlock
+argument_list|(
+name|b
+operator|.
+name|getBlock
+argument_list|()
+argument_list|,
+name|src
+argument_list|,
+name|dfsclient
+operator|.
+name|clientName
+argument_list|)
+expr_stmt|;
 comment|// And close the file
 name|fout
 operator|.
@@ -512,22 +525,26 @@ operator|.
 name|MAX_VALUE
 argument_list|)
 expr_stmt|;
-assert|assert
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|"Blocks "
+operator|+
+name|b
+operator|+
+literal|" has not been abandoned."
+argument_list|,
 name|orginalNumBlocks
-operator|==
+argument_list|,
 name|blocks
 operator|.
 name|locatedBlockCount
 argument_list|()
 operator|+
 literal|1
-operator|:
-literal|"Blocks "
-operator|+
-name|b
-operator|+
-literal|" has not been abandoned."
-assert|;
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -540,16 +557,8 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|DistributedFileSystem
-name|dfs
-init|=
-operator|(
-name|DistributedFileSystem
-operator|)
-name|fs
-decl_stmt|;
 comment|// Setting diskspace quota to 3MB
-name|dfs
+name|fs
 operator|.
 name|setQuota
 argument_list|(

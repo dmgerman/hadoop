@@ -766,7 +766,7 @@ block|}
 block|}
 comment|/**    * Remove a block from the block list. This block should be    * the last one on the list.    */
 DECL|method|removeLastBlock (Block oldblock)
-name|void
+name|boolean
 name|removeLastBlock
 parameter_list|(
 name|Block
@@ -788,17 +788,17 @@ condition|(
 name|blocks
 operator|==
 literal|null
+operator|||
+name|blocks
+operator|.
+name|length
+operator|==
+literal|0
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Trying to delete non-existant block "
-operator|+
-name|oldblock
-argument_list|)
-throw|;
+return|return
+literal|false
+return|;
 block|}
 name|int
 name|size_1
@@ -823,15 +823,9 @@ name|oldblock
 argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Trying to delete non-last block "
-operator|+
-name|oldblock
-argument_list|)
-throw|;
+return|return
+literal|false
+return|;
 block|}
 comment|//copy to a new list
 name|BlockInfo
@@ -864,6 +858,9 @@ argument_list|(
 name|newlist
 argument_list|)
 expr_stmt|;
+return|return
+literal|true
+return|;
 block|}
 comment|/**    * Convert the last block of the file to an under-construction block.    * Set its locations.    */
 annotation|@
