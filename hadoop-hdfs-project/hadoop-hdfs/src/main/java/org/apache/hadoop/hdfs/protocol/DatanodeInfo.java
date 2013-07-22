@@ -1640,7 +1640,7 @@ return|return
 name|adminState
 return|;
 block|}
-comment|/**    * Check if the datanode is in stale state. Here if     * the namenode has not received heartbeat msg from a     * datanode for more than staleInterval (default value is    * {@link DFSConfigKeys#DFS_NAMENODE_STALE_DATANODE_INTERVAL_MILLI_DEFAULT}),    * the datanode will be treated as stale node.    *     * @param staleInterval    *          the time interval for marking the node as stale. If the last    *          update time is beyond the given time interval, the node will be    *          marked as stale.    * @return true if the node is stale    */
+comment|/**    * Check if the datanode is in stale state. Here if     * the namenode has not received heartbeat msg from a     * datanode for more than staleInterval (default value is    * {@link DFSConfigKeys#DFS_NAMENODE_STALE_DATANODE_INTERVAL_DEFAULT}),    * the datanode will be treated as stale node.    *     * @param staleInterval    *          the time interval for marking the node as stale. If the last    *          update time is beyond the given time interval, the node will be    *          marked as stale.    * @return true if the node is stale    */
 DECL|method|isStale (long staleInterval)
 specifier|public
 name|boolean
