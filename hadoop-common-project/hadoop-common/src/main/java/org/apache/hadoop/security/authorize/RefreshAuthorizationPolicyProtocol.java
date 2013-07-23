@@ -78,6 +78,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -129,6 +145,8 @@ init|=
 literal|1L
 decl_stmt|;
 comment|/**    * Refresh the service-level authorization policy in-effect.    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|refreshServiceAcl ()
 name|void
 name|refreshServiceAcl

@@ -66,6 +66,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -247,6 +263,8 @@ return|;
 block|}
 block|}
 comment|/**    * Monitor the health of service. This periodically called by the HA    * frameworks to monitor the health of the service.    *     * Service is expected to perform checks to ensure it is functional.    * If the service is not healthy due to failure or partial failure,    * it is expected to throw {@link HealthCheckFailedException}.    * The definition of service not healthy is left to the service.    *     * Note that when health check of an Active service fails,    * failover to standby may be done.    *     * @throws HealthCheckFailedException    *           if the health check of a service fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
+annotation|@
+name|Idempotent
 DECL|method|monitorHealth ()
 specifier|public
 name|void
@@ -260,6 +278,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Request service to transition to active state. No operation, if the    * service is already in active state.    *     * @throws ServiceFailedException    *           if transition from standby to active fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
+annotation|@
+name|Idempotent
 DECL|method|transitionToActive (StateChangeRequestInfo reqInfo)
 specifier|public
 name|void
@@ -276,6 +296,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Request service to transition to standby state. No operation, if the    * service is already in standby state.    *     * @throws ServiceFailedException    *           if transition from active to standby fails.    * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    */
+annotation|@
+name|Idempotent
 DECL|method|transitionToStandby (StateChangeRequestInfo reqInfo)
 specifier|public
 name|void
@@ -292,6 +314,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Return the current status of the service. The status indicates    * the current<em>state</em> (e.g ACTIVE/STANDBY) as well as    * some additional information.    *     * @throws AccessControlException    *           if access is denied.    * @throws IOException    *           if other errors happen    * @see HAServiceStatus    */
+annotation|@
+name|Idempotent
 DECL|method|getServiceStatus ()
 specifier|public
 name|HAServiceStatus

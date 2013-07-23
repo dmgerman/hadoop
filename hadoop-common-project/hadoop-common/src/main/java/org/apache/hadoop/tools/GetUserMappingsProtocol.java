@@ -54,6 +54,22 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
 begin_comment
 comment|/**  * Protocol implemented by the Name Node and Job Tracker which maps users to  * groups.  */
 end_comment
@@ -90,6 +106,8 @@ init|=
 literal|1L
 decl_stmt|;
 comment|/**    * Get the groups which are mapped to the given user.    * @param user The user to get the groups for.    * @return The set of groups the user belongs to.    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|getGroupsForUser (String user)
 specifier|public
 name|String

@@ -360,6 +360,22 @@ name|io
 operator|.
 name|retry
 operator|.
+name|AtMostOnce
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
 name|Idempotent
 import|;
 end_import
@@ -508,7 +524,9 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Create a new file entry in the namespace.    *<p>    * This will create an empty file specified by the source path.    * The path should reflect a full path originated at the root.    * The name-node does not have a notion of "current" directory for a client.    *<p>    * Once created, the file is visible and available for read to other clients.    * Although, other clients cannot {@link #delete(String, boolean)}, re-create or     * {@link #rename(String, String)} it until the file is completed    * or explicitly as a result of lease expiration.    *<p>    * Blocks have a maximum size.  Clients that intend to create    * multi-block files must also use     * {@link #addBlock(String, String, ExtendedBlock, DatanodeInfo[])}    *    * @param src path of the file being created.    * @param masked masked permission.    * @param clientName name of the current client.    * @param flag indicates whether the file should be     * overwritten if it already exists or create if it does not exist or append.    * @param createParent create missing parent directory if true    * @param replication block replication factor.    * @param blockSize maximum block size.    *     * @return the status of the created file, it could be null if the server    *           doesn't support returning the file status    * @throws AccessControlException If access is denied    * @throws AlreadyBeingCreatedException if the path does not exist.    * @throws DSQuotaExceededException If file creation violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If file<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>src</code> is not a    *           directory.    * @throws NSQuotaExceededException If file creation violates name space     *           quota restriction    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    *    * RuntimeExceptions:    * @throws InvalidPathException Path<code>src</code> is invalid    */
+comment|/**    * Create a new file entry in the namespace.    *<p>    * This will create an empty file specified by the source path.    * The path should reflect a full path originated at the root.    * The name-node does not have a notion of "current" directory for a client.    *<p>    * Once created, the file is visible and available for read to other clients.    * Although, other clients cannot {@link #delete(String, boolean)}, re-create or     * {@link #rename(String, String)} it until the file is completed    * or explicitly as a result of lease expiration.    *<p>    * Blocks have a maximum size.  Clients that intend to create    * multi-block files must also use     * {@link #addBlock}    *    * @param src path of the file being created.    * @param masked masked permission.    * @param clientName name of the current client.    * @param flag indicates whether the file should be     * overwritten if it already exists or create if it does not exist or append.    * @param createParent create missing parent directory if true    * @param replication block replication factor.    * @param blockSize maximum block size.    *     * @return the status of the created file, it could be null if the server    *           doesn't support returning the file status    * @throws AccessControlException If access is denied    * @throws AlreadyBeingCreatedException if the path does not exist.    * @throws DSQuotaExceededException If file creation violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If file<code>src</code> already exists    * @throws FileNotFoundException If parent of<code>src</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>src</code> is not a    *           directory.    * @throws NSQuotaExceededException If file creation violates name space     *           quota restriction    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    *    * RuntimeExceptions:    * @throws InvalidPathException Path<code>src</code> is invalid    *<p>    *<em>Note that create with {@link CreateFlag#OVERWRITE} is idempotent.</em>    */
+annotation|@
+name|AtMostOnce
 DECL|method|create (String src, FsPermission masked, String clientName, EnumSetWritable<CreateFlag> flag, boolean createParent, short replication, long blockSize)
 specifier|public
 name|HdfsFileStatus
@@ -562,6 +580,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Append to the end of the file.     * @param src path of the file being created.    * @param clientName name of the current client.    * @return information about the last partial block if any.    * @throws AccessControlException if permission to append file is     * denied by the system. As usually on the client side the exception will     * be wrapped into {@link org.apache.hadoop.ipc.RemoteException}.    * Allows appending to an existing file if the server is    * configured with the parameter dfs.support.append set to true, otherwise    * throws an IOException.    *     * @throws AccessControlException If permission to append to file is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws DSQuotaExceededException If append violates disk space quota     *           restriction    * @throws SafeModeException append not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred.    *    * RuntimeExceptions:    * @throws UnsupportedOperationException if append is not supported    */
+annotation|@
+name|AtMostOnce
 DECL|method|append (String src, String clientName)
 specifier|public
 name|LocatedBlock
@@ -836,6 +856,8 @@ comment|///////////////////////////////////////
 comment|// Namespace management
 comment|///////////////////////////////////////
 comment|/**    * Rename an item in the file system namespace.    * @param src existing file or directory name.    * @param dst new name.    * @return true if successful, or false if the old name does not exist    * or if the new name already belongs to the namespace.    *     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException an I/O error occurred     */
+annotation|@
+name|AtMostOnce
 DECL|method|rename (String src, String dst)
 specifier|public
 name|boolean
@@ -855,6 +877,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Moves blocks from srcs to trg and delete srcs    *     * @param trg existing file    * @param srcs - list of existing files (same block size, same replication)    * @throws IOException if some arguments are invalid    * @throws UnresolvedLinkException if<code>trg</code> or<code>srcs</code>    *           contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    */
+annotation|@
+name|AtMostOnce
 DECL|method|concat (String trg, String[] srcs)
 specifier|public
 name|void
@@ -875,6 +899,8 @@ throws|,
 name|SnapshotAccessControlException
 function_decl|;
 comment|/**    * Rename src to dst.    *<ul>    *<li>Fails if src is a file and dst is a directory.    *<li>Fails if src is a directory and dst is a file.    *<li>Fails if the parent of dst does not exist or is a file.    *</ul>    *<p>    * Without OVERWRITE option, rename fails if the dst already exists.    * With OVERWRITE option, rename overwrites the dst, if it is a file     * or an empty directory. Rename fails if dst is a non-empty directory.    *<p>    * This implementation of rename is atomic.    *<p>    * @param src existing file or directory name.    * @param dst new name.    * @param options Rename options    *     * @throws AccessControlException If access is denied    * @throws DSQuotaExceededException If rename violates disk space     *           quota restriction    * @throws FileAlreadyExistsException If<code>dst</code> already exists and    *<code>options</options> has {@link Rename#OVERWRITE} option    *           false.    * @throws FileNotFoundException If<code>src</code> does not exist    * @throws NSQuotaExceededException If rename violates namespace     *           quota restriction    * @throws ParentNotDirectoryException If parent of<code>dst</code>     *           is not a directory    * @throws SafeModeException rename not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> or    *<code>dst</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|AtMostOnce
 DECL|method|rename2 (String src, String dst, Options.Rename... options)
 specifier|public
 name|void
@@ -914,6 +940,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Delete the given file or directory from the file system.    *<p>    * same as delete but provides a way to avoid accidentally     * deleting non empty directories programmatically.     * @param src existing name    * @param recursive if true deletes a non empty directory recursively,    * else throws an exception.    * @return true only if the existing file or directory was actually removed     * from the file system.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|AtMostOnce
 DECL|method|delete (String src, boolean recursive)
 specifier|public
 name|boolean
@@ -1156,6 +1184,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Save namespace image.    *<p>    * Saves current namespace into storage directories and reset edits log.    * Requires superuser privilege and safe mode.    *     * @throws AccessControlException if the superuser privilege is violated.    * @throws IOException if image creation failed.    */
+annotation|@
+name|AtMostOnce
 DECL|method|saveNamespace ()
 specifier|public
 name|void
@@ -1180,6 +1210,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Enable/Disable restore failed storage.    *<p>    * sets flag to enable restore of failed storage replicas    *     * @throws AccessControlException if the superuser privilege is violated.    */
+annotation|@
+name|Idempotent
 DECL|method|restoreFailedStorage (String arg)
 specifier|public
 name|boolean
@@ -1194,6 +1226,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Tells the namenode to reread the hosts and exclude files.     * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|refreshNodes ()
 specifier|public
 name|void
@@ -1203,6 +1237,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Finalize previous upgrade.    * Remove file system state saved during the upgrade.    * The upgrade will become irreversible.    *     * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|finalizeUpgrade ()
 specifier|public
 name|void
@@ -1229,6 +1265,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Dumps namenode data structures into specified file. If the file    * already exists, then append.    *    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|metaSave (String filename)
 specifier|public
 name|void
@@ -1415,6 +1453,8 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Create symlink to a file or directory.    * @param target The path of the destination that the    *               link points to.    * @param link The path of the link being created.    * @param dirPerm permissions to use when creating parent directories    * @param createParent - if true then missing parent dirs are created    *                       if false then parent must exist    *    * @throws AccessControlException permission denied    * @throws FileAlreadyExistsException If file<code>link</code> already exists    * @throws FileNotFoundException If parent of<code>link</code> does not exist    *           and<code>createParent</code> is false    * @throws ParentNotDirectoryException If parent of<code>link</code> is not a    *           directory.    * @throws UnresolvedLinkException if<code>link</target> contains a symlink.     * @throws SnapshotAccessControlException if path is in RO snapshot    * @throws IOException If an I/O error occurred    */
+annotation|@
+name|AtMostOnce
 DECL|method|createSymlink (String target, String link, FsPermission dirPerm, boolean createParent)
 specifier|public
 name|void
@@ -1485,6 +1525,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Update a pipeline for a block under construction    *     * @param clientName the name of the client    * @param oldBlock the old block    * @param newBlock the new block containing new generation stamp and length    * @param newNodes datanodes in the pipeline    * @throws IOException if any error occurs    */
+annotation|@
+name|AtMostOnce
 DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
 specifier|public
 name|void
@@ -1541,6 +1583,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Cancel an existing delegation token.    *     * @param token delegation token    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|cancelDelegationToken (Token<DelegationTokenIdentifier> token)
 specifier|public
 name|void
@@ -1556,6 +1600,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * @return encryption key so a client can encrypt data sent via the    *         DataTransferProtocol to/from DataNodes.    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|getDataEncryptionKey ()
 specifier|public
 name|DataEncryptionKey
@@ -1565,6 +1611,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Create a snapshot    * @param snapshotRoot the path that is being snapshotted    * @param snapshotName name of the snapshot created    * @return the snapshot path.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
 DECL|method|createSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
 name|String
@@ -1580,6 +1628,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Delete a specific snapshot of a snapshottable directory    * @param snapshotRoot  The snapshottable directory    * @param snapshotName Name of the snapshot for the snapshottable directory    * @throws IOException    */
+annotation|@
+name|AtMostOnce
 DECL|method|deleteSnapshot (String snapshotRoot, String snapshotName)
 specifier|public
 name|void
@@ -1595,6 +1645,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Rename a snapshot    * @param snapshotRoot the directory path where the snapshot was taken     * @param snapshotOldName old name of the snapshot    * @param snapshotNewName new name of the snapshot    * @throws IOException    */
+annotation|@
+name|AtMostOnce
 DECL|method|renameSnapshot (String snapshotRoot, String snapshotOldName, String snapshotNewName)
 specifier|public
 name|void

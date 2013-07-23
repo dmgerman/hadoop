@@ -114,6 +114,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|AtMostOnce
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -277,6 +309,8 @@ literal|8
 decl_stmt|;
 comment|// update balancer bandwidth
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
+annotation|@
+name|Idempotent
 DECL|method|registerDatanode (DatanodeRegistration registration )
 specifier|public
 name|DatanodeRegistration
@@ -289,6 +323,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
+annotation|@
+name|Idempotent
 DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|HeartbeatResponse
@@ -314,6 +350,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * blockReport() tells the NameNode about all the locally-stored blocks.    * The NameNode returns an array of Blocks that have become obsolete    * and should be deleted.  This function is meant to upload *all*    * the locally-stored blocks.  It's invoked upon startup and then    * infrequently afterwards.    * @param registration    * @param poolId - the block pool ID for the blocks    * @param reports - report of blocks per storage    *     Each finalized block is represented as 3 longs. Each under-    *     construction replica is represented as 4 longs.    *     This is done instead of Block[] to reduce memory used by block reports.    *         * @return - the next command for DN to process.    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|blockReport (DatanodeRegistration registration, String poolId, StorageBlockReport[] reports)
 specifier|public
 name|DatanodeCommand
@@ -333,6 +371,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * blockReceivedAndDeleted() allows the DataNode to tell the NameNode about    * recently-received and -deleted block data.     *     * For the case of received blocks, a hint for preferred replica to be     * deleted when there is any excessive blocks is provided.    * For example, whenever client code    * writes a new Block here, or another DataNode copies a Block to    * this DataNode, it will call blockReceived().    */
+annotation|@
+name|AtMostOnce
 DECL|method|blockReceivedAndDeleted (DatanodeRegistration registration, String poolId, StorageReceivedDeletedBlocks[] rcvdAndDeletedBlocks)
 specifier|public
 name|void
@@ -352,6 +392,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * errorReport() tells the NameNode about something that has gone    * awry.  Useful for debugging.    */
+annotation|@
+name|Idempotent
 DECL|method|errorReport (DatanodeRegistration registration, int errorCode, String msg)
 specifier|public
 name|void
@@ -369,6 +411,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+annotation|@
+name|Idempotent
 DECL|method|versionRequest ()
 specifier|public
 name|NamespaceInfo
@@ -378,6 +422,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * same as {@link org.apache.hadoop.hdfs.protocol.ClientProtocol#reportBadBlocks(LocatedBlock[])}    * }    */
+annotation|@
+name|Idempotent
 DECL|method|reportBadBlocks (LocatedBlock[] blocks)
 specifier|public
 name|void
@@ -391,6 +437,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Commit block synchronization in lease recovery    */
+annotation|@
+name|AtMostOnce
 DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets, String[] newtargetstorages)
 specifier|public
 name|void

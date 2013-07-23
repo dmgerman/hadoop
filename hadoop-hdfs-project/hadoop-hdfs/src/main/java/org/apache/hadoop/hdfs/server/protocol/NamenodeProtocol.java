@@ -120,6 +120,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|AtMostOnce
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -207,6 +239,8 @@ literal|51
 decl_stmt|;
 comment|// do checkpoint
 comment|/**    * Get a list of blocks belonging to<code>datanode</code>    * whose total size equals<code>size</code>.    *     * @see org.apache.hadoop.hdfs.server.balancer.Balancer    * @param datanode  a data node    * @param size      requested size    * @return          a list of blocks& their locations    * @throws IOException if size is less than or equal to 0 or                                    datanode does not exist    */
+annotation|@
+name|Idempotent
 DECL|method|getBlocks (DatanodeInfo datanode, long size)
 specifier|public
 name|BlocksWithLocations
@@ -222,6 +256,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the current block keys    *     * @return ExportedBlockKeys containing current block keys    * @throws IOException     */
+annotation|@
+name|Idempotent
 DECL|method|getBlockKeys ()
 specifier|public
 name|ExportedBlockKeys
@@ -231,6 +267,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * @return The most recent transaction ID that has been synced to    * persistent storage, or applied from persistent storage in the    * case of a non-active node.    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|getTransactionID ()
 specifier|public
 name|long
@@ -240,6 +278,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Get the transaction ID of the most recent checkpoint.    */
+annotation|@
+name|Idempotent
 DECL|method|getMostRecentCheckpointTxId ()
 specifier|public
 name|long
@@ -249,6 +289,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Closes the current edit log and opens a new one. The     * call fails if the file system is in SafeMode.    * @throws IOException    * @return a unique token to identify this transaction.    */
+annotation|@
+name|Idempotent
 DECL|method|rollEditLog ()
 specifier|public
 name|CheckpointSignature
@@ -258,6 +300,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Request name-node version and storage information.    *     * @return {@link NamespaceInfo} identifying versions and storage information     *          of the name-node    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|versionRequest ()
 specifier|public
 name|NamespaceInfo
@@ -267,6 +311,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Report to the active name-node an error occurred on a subordinate node.    * Depending on the error code the active node may decide to unregister the    * reporting node.    *     * @param registration requesting node.    * @param errorCode indicates the error    * @param msg free text description of the error    * @throws IOException    */
+annotation|@
+name|Idempotent
 DECL|method|errorReport (NamenodeRegistration registration, int errorCode, String msg)
 specifier|public
 name|void
@@ -285,6 +331,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**     * Register a subordinate name-node like backup node.    *    * @return  {@link NamenodeRegistration} of the node,    *          which this node has just registered with.    */
+annotation|@
+name|Idempotent
 DECL|method|registerSubordinateNamenode ( NamenodeRegistration registration)
 specifier|public
 name|NamenodeRegistration
@@ -297,6 +345,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * A request to the active name-node to start a checkpoint.    * The name-node should decide whether to admit it or reject.    * The name-node also decides what should be done with the backup node    * image before and after the checkpoint.    *     * @see CheckpointCommand    * @see NamenodeCommand    * @see #ACT_SHUTDOWN    *     * @param registration the requesting node    * @return {@link CheckpointCommand} if checkpoint is allowed.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
 DECL|method|startCheckpoint (NamenodeRegistration registration)
 specifier|public
 name|NamenodeCommand
@@ -309,6 +359,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * A request to the active name-node to finalize    * previously started checkpoint.    *     * @param registration the requesting node    * @param sig {@code CheckpointSignature} which identifies the checkpoint.    * @throws IOException    */
+annotation|@
+name|AtMostOnce
 DECL|method|endCheckpoint (NamenodeRegistration registration, CheckpointSignature sig)
 specifier|public
 name|void
@@ -324,6 +376,8 @@ throws|throws
 name|IOException
 function_decl|;
 comment|/**    * Return a structure containing details about all edit logs    * available to be fetched from the NameNode.    * @param sinceTxId return only logs that contain transactions>= sinceTxId    */
+annotation|@
+name|Idempotent
 DECL|method|getEditLogManifest (long sinceTxId)
 specifier|public
 name|RemoteEditLogManifest
