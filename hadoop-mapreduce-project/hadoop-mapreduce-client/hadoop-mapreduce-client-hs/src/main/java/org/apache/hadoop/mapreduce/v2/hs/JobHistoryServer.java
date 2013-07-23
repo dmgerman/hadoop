@@ -517,7 +517,9 @@ name|hsAdminServer
 operator|=
 operator|new
 name|HSAdminServer
-argument_list|()
+argument_list|(
+name|aggLogDelService
+argument_list|)
 expr_stmt|;
 name|addService
 argument_list|(
