@@ -54,8 +54,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|GSet
@@ -69,8 +67,6 @@ operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|hdfs
 operator|.
 name|util
 operator|.

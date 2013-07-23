@@ -406,8 +406,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|GSet
@@ -422,8 +420,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
 name|util
 operator|.
 name|LightWeightGSet
@@ -437,8 +433,6 @@ operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|hdfs
 operator|.
 name|util
 operator|.
