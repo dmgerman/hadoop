@@ -422,7 +422,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 import|;
 end_import
 
@@ -440,7 +440,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 import|;
 end_import
 
@@ -458,7 +458,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerRequest
+name|StartContainersRequest
 import|;
 end_import
 
@@ -476,7 +476,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerResponse
+name|StartContainersResponse
 import|;
 end_import
 
@@ -494,7 +494,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StopContainerRequest
+name|StopContainersRequest
 import|;
 end_import
 
@@ -512,7 +512,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StopContainerResponse
+name|StopContainersResponse
 import|;
 end_import
 
@@ -1358,14 +1358,14 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
-name|StartContainerResponse
+name|StartContainersResponse
 name|startResp
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|StartContainerResponse
+name|StartContainersResponse
 operator|.
 name|class
 argument_list|)
@@ -1452,11 +1452,11 @@ name|when
 argument_list|(
 name|mockCM
 operator|.
-name|startContainer
+name|startContainers
 argument_list|(
 name|any
 argument_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -1503,11 +1503,11 @@ argument_list|(
 name|mockCM
 argument_list|)
 operator|.
-name|startContainer
+name|startContainers
 argument_list|(
 name|any
 argument_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -1601,11 +1601,11 @@ argument_list|(
 name|mockCM
 argument_list|)
 operator|.
-name|stopContainer
+name|stopContainers
 argument_list|(
 name|any
 argument_list|(
-name|StopContainerRequest
+name|StopContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -1760,14 +1760,14 @@ name|cmAddress
 init|=
 literal|"127.0.0.1:8000"
 decl_stmt|;
-name|StartContainerResponse
+name|StartContainersResponse
 name|startResp
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|StartContainerResponse
+name|StartContainersResponse
 operator|.
 name|class
 argument_list|)
@@ -1870,11 +1870,11 @@ name|never
 argument_list|()
 argument_list|)
 operator|.
-name|stopContainer
+name|stopContainers
 argument_list|(
 name|any
 argument_list|(
-name|StopContainerRequest
+name|StopContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -1955,11 +1955,11 @@ name|when
 argument_list|(
 name|mockCM
 operator|.
-name|startContainer
+name|startContainers
 argument_list|(
 name|any
 argument_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -2009,11 +2009,11 @@ name|never
 argument_list|()
 argument_list|)
 operator|.
-name|startContainer
+name|startContainers
 argument_list|(
 name|any
 argument_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -2168,14 +2168,14 @@ name|cmAddress
 init|=
 literal|"127.0.0.1:8000"
 decl_stmt|;
-name|StartContainerResponse
+name|StartContainersResponse
 name|startResp
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|StartContainerResponse
+name|StartContainersResponse
 operator|.
 name|class
 argument_list|)
@@ -2262,11 +2262,11 @@ name|when
 argument_list|(
 name|mockCM
 operator|.
-name|startContainer
+name|startContainers
 argument_list|(
 name|any
 argument_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -2313,11 +2313,11 @@ argument_list|(
 name|mockCM
 argument_list|)
 operator|.
-name|startContainer
+name|startContainers
 argument_list|(
 name|any
 argument_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -2337,11 +2337,11 @@ argument_list|(
 name|mockCM
 argument_list|)
 operator|.
-name|stopContainer
+name|stopContainers
 argument_list|(
 name|any
 argument_list|(
-name|StopContainerRequest
+name|StopContainersRequest
 operator|.
 name|class
 argument_list|)
@@ -2511,14 +2511,14 @@ name|cmAddress
 init|=
 literal|"127.0.0.1:8000"
 decl_stmt|;
-name|StartContainerResponse
+name|StartContainersResponse
 name|startResp
 init|=
 name|recordFactory
 operator|.
 name|newRecordInstance
 argument_list|(
-name|StartContainerResponse
+name|StartContainersResponse
 operator|.
 name|class
 argument_list|)
@@ -2953,12 +2953,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|startContainer (StartContainerRequest request)
+DECL|method|startContainers (StartContainersRequest request)
 specifier|public
-name|StartContainerResponse
-name|startContainer
+name|StartContainersResponse
+name|startContainers
 parameter_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 name|request
 parameter_list|)
 throws|throws
@@ -3023,12 +3023,12 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|stopContainer (StopContainerRequest request)
+DECL|method|stopContainers (StopContainersRequest request)
 specifier|public
-name|StopContainerResponse
-name|stopContainer
+name|StopContainersResponse
+name|stopContainers
 parameter_list|(
-name|StopContainerRequest
+name|StopContainersRequest
 name|request
 parameter_list|)
 throws|throws
@@ -3040,12 +3040,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainerStatus ( GetContainerStatusRequest request)
+DECL|method|getContainerStatuses ( GetContainerStatusesRequest request)
 specifier|public
-name|GetContainerStatusResponse
-name|getContainerStatus
+name|GetContainerStatusesResponse
+name|getContainerStatuses
 parameter_list|(
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 name|request
 parameter_list|)
 throws|throws

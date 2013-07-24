@@ -34,9 +34,39 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -142,7 +172,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 import|;
 end_import
 
@@ -160,7 +190,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 import|;
 end_import
 
@@ -196,7 +226,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerResponse
+name|StartContainersRequest
 import|;
 end_import
 
@@ -214,7 +244,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StopContainerRequest
+name|StartContainersResponse
 import|;
 end_import
 
@@ -232,7 +262,25 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StopContainerResponse
+name|StopContainersRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|StopContainersResponse
 import|;
 end_import
 
@@ -305,6 +353,24 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SerializedException
 import|;
 end_import
 
@@ -600,16 +666,29 @@ decl_stmt|;
 annotation|@
 name|Override
 specifier|public
-name|StartContainerResponse
-DECL|method|startContainer (StartContainerRequest request)
-name|startContainer
+name|StartContainersResponse
+DECL|method|startContainers (StartContainersRequest requests)
+name|startContainers
 parameter_list|(
-name|StartContainerRequest
-name|request
+name|StartContainersRequest
+name|requests
 parameter_list|)
 throws|throws
 name|YarnException
 block|{
+name|StartContainerRequest
+name|request
+init|=
+name|requests
+operator|.
+name|getStartContainerRequests
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -744,17 +823,45 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-literal|null
+name|StartContainersResponse
+operator|.
+name|newInstance
+argument_list|(
+operator|new
+name|HashMap
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+argument_list|()
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|stopContainer (StopContainerRequest request)
+DECL|method|stopContainers (StopContainersRequest request)
 specifier|public
-name|StopContainerResponse
-name|stopContainer
+name|StopContainersResponse
+name|stopContainers
 parameter_list|(
-name|StopContainerRequest
+name|StopContainersRequest
 name|request
 parameter_list|)
 throws|throws
@@ -777,12 +884,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainerStatus ( GetContainerStatusRequest request)
+DECL|method|getContainerStatuses ( GetContainerStatusesRequest request)
 specifier|public
-name|GetContainerStatusResponse
-name|getContainerStatus
+name|GetContainerStatusesResponse
+name|getContainerStatuses
 parameter_list|(
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 name|request
 parameter_list|)
 throws|throws

@@ -1333,7 +1333,7 @@ comment|// do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|authorizeStartRequest (NMTokenIdentifier nmTokenIdentifier, ContainerTokenIdentifier containerTokenIdentifier, UserGroupInformation ugi)
+DECL|method|authorizeStartRequest (NMTokenIdentifier nmTokenIdentifier, ContainerTokenIdentifier containerTokenIdentifier)
 specifier|protected
 name|void
 name|authorizeStartRequest
@@ -1343,9 +1343,6 @@ name|nmTokenIdentifier
 parameter_list|,
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
-parameter_list|,
-name|UserGroupInformation
-name|ugi
 parameter_list|)
 throws|throws
 name|YarnException
@@ -1354,7 +1351,7 @@ comment|// do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|authorizeGetAndStopContainerRequest (ContainerId containerId, Container container, boolean stopRequest)
+DECL|method|authorizeGetAndStopContainerRequest (ContainerId containerId, Container container, boolean stopRequest, NMTokenIdentifier identifier)
 specifier|protected
 name|void
 name|authorizeGetAndStopContainerRequest
@@ -1367,6 +1364,9 @@ name|container
 parameter_list|,
 name|boolean
 name|stopRequest
+parameter_list|,
+name|NMTokenIdentifier
+name|identifier
 parameter_list|)
 throws|throws
 name|YarnException

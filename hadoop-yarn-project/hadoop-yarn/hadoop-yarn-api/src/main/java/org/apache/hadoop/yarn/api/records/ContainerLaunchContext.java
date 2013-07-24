@@ -151,7 +151,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>ContainerLaunchContext</code> represents all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to launch the container.</li>  *</ul>  *</p>  *   * @see ContainerManagementProtocol#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
+comment|/**  *<p><code>ContainerLaunchContext</code> represents all of the information  * needed by the<code>NodeManager</code> to launch a container.</p>  *   *<p>It includes details such as:  *<ul>  *<li>{@link ContainerId} of the container.</li>  *<li>{@link Resource} allocated to the container.</li>  *<li>User to whom the container is allocated.</li>  *<li>Security tokens (if security is enabled).</li>  *<li>  *       {@link LocalResource} necessary for running the container such  *       as binaries, jar, shared-objects, side-files etc.   *</li>  *<li>Optional, application-specific binary service data.</li>  *<li>Environment variables for the launched process.</li>  *<li>Command to launch the container.</li>  *</ul>  *</p>  *   * @see ContainerManagementProtocol#startContainers(org.apache.hadoop.yarn.api.protocolrecords.StartContainersRequest)  */
 end_comment
 
 begin_class
@@ -356,7 +356,7 @@ argument_list|>
 name|getServiceData
 parameter_list|()
 function_decl|;
-comment|/**    *<p>    * Get application-specific binary<em>service data</em>. This is a map keyed    * by the name of each {@link AuxiliaryService} that is configured on a    * NodeManager and value correspond to the application specific data targeted    * for the keyed {@link AuxiliaryService}. All pre-existing Map entries are    * preserved.    *</p>    *     * @param serviceData    *          application-specific binary<em>service data</em>    */
+comment|/**    *<p>    * Set application-specific binary<em>service data</em>. This is a map keyed    * by the name of each {@link AuxiliaryService} that is configured on a    * NodeManager and value correspond to the application specific data targeted    * for the keyed {@link AuxiliaryService}. All pre-existing Map entries are    * preserved.    *</p>    *     * @param serviceData    *          application-specific binary<em>service data</em>    */
 annotation|@
 name|Public
 annotation|@

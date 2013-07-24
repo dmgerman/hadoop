@@ -56,7 +56,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|URL
+name|SerializedException
 import|;
 end_import
 
@@ -70,13 +70,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
 name|api
 operator|.
 name|records
 operator|.
-name|SerializedException
+name|URL
 import|;
 end_import
 

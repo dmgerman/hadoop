@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -130,6 +140,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SerializedException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
@@ -137,7 +183,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to<em>start</em> an  * allocated container.</p>  *   * @see ContainerManagementProtocol#startContainer(StartContainerRequest)  */
+comment|/**  *<p>  * The response sent by the<code>NodeManager</code> to the  *<code>ApplicationMaster</code> when asked to<em>start</em> an allocated  * container.  *</p>  *   * @see ContainerManagementProtocol#startContainers(StartContainersRequest)  */
 end_comment
 
 begin_class
@@ -145,20 +191,20 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|class|StartContainerResponse
+DECL|class|StartContainersResponse
 specifier|public
 specifier|abstract
 class|class
-name|StartContainerResponse
+name|StartContainersResponse
 block|{
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( Map<String, ByteBuffer> servicesMetaData)
+DECL|method|newInstance ( Map<String, ByteBuffer> servicesMetaData, List<ContainerId> succeededContainers, Map<ContainerId, SerializedException> failedContainers)
 specifier|public
 specifier|static
-name|StartContainerResponse
+name|StartContainersResponse
 name|newInstance
 parameter_list|(
 name|Map
@@ -168,16 +214,30 @@ argument_list|,
 name|ByteBuffer
 argument_list|>
 name|servicesMetaData
+parameter_list|,
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|succeededContainers
+parameter_list|,
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|failedContainers
 parameter_list|)
 block|{
-name|StartContainerResponse
+name|StartContainersResponse
 name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|StartContainerResponse
+name|StartContainersResponse
 operator|.
 name|class
 argument_list|)
@@ -189,10 +249,93 @@ argument_list|(
 name|servicesMetaData
 argument_list|)
 expr_stmt|;
+name|response
+operator|.
+name|setSuccessfullyStartedContainers
+argument_list|(
+name|succeededContainers
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setFailedRequests
+argument_list|(
+name|failedContainers
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;
 block|}
+comment|/**    * Get the list of<code>ContainerId</code> s of the containers that are    * started successfully.    *     * @return the list of<code>ContainerId</code> s of the containers that are    *         started successfully.    * @see ContainerManagementProtocol#startContainers(StartContainersRequest)    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getSuccessfullyStartedContainers ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|getSuccessfullyStartedContainers
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setSuccessfullyStartedContainers ( List<ContainerId> succeededContainers)
+specifier|public
+specifier|abstract
+name|void
+name|setSuccessfullyStartedContainers
+parameter_list|(
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|succeededContainers
+parameter_list|)
+function_decl|;
+comment|/**    * Get the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getFailedRequests ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|getFailedRequests
+parameter_list|()
+function_decl|;
+comment|/**    * Set the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setFailedRequests ( Map<ContainerId, SerializedException> failedContainers)
+specifier|public
+specifier|abstract
+name|void
+name|setFailedRequests
+parameter_list|(
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|failedContainers
+parameter_list|)
+function_decl|;
 comment|/**    *<p>    * Get the meta-data from all auxiliary services running on the    *<code>NodeManager</code>.    *</p>    *<p>    * The meta-data is returned as a Map between the auxiliary service names and    * their corresponding per service meta-data as an opaque blob    *<code>ByteBuffer</code>    *</p>    *     *<p>    * To be able to interpret the per-service meta-data, you should consult the    * documentation for the Auxiliary-service configured on the NodeManager    *</p>    *     * @return a Map between the names of auxiliary services and their    *         corresponding meta-data    */
 annotation|@
 name|Public
@@ -210,7 +353,7 @@ argument_list|>
 name|getAllServicesMetaData
 parameter_list|()
 function_decl|;
-comment|/**    * Set to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    * @param allServicesMetaData A map from auxiliary service names to the opaque    * blob<code>ByteBuffer</code> for that auxiliary service    */
+comment|/**    * Set to the list of auxiliary services which have been started on the    *<code>NodeManager</code>. This is done only once when the    *<code>NodeManager</code> starts up    *     * @param allServicesMetaData    *          A map from auxiliary service names to the opaque blob    *<code>ByteBuffer</code> for that auxiliary service    */
 annotation|@
 name|Private
 annotation|@

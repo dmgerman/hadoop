@@ -85,7 +85,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>LocalResource</code> represents a local resource required to  * run a container.</p>  *   *<p>The<code>NodeManager</code> is responsible for localizing the resource   * prior to launching the container.</p>  *   *<p>Applications can specify {@link LocalResourceType} and   * {@link LocalResourceVisibility}.</p>  *   * @see LocalResourceType  * @see LocalResourceVisibility  * @see ContainerLaunchContext  * @see ApplicationSubmissionContext  * @see ContainerManagementProtocol#startContainer(org.apache.hadoop.yarn.api.protocolrecords.StartContainerRequest)  */
+comment|/**  *<p><code>LocalResource</code> represents a local resource required to  * run a container.</p>  *   *<p>The<code>NodeManager</code> is responsible for localizing the resource   * prior to launching the container.</p>  *   *<p>Applications can specify {@link LocalResourceType} and   * {@link LocalResourceVisibility}.</p>  *   * @see LocalResourceType  * @see LocalResourceVisibility  * @see ContainerLaunchContext  * @see ApplicationSubmissionContext  * @see ContainerManagementProtocol#startContainers(org.apache.hadoop.yarn.api.protocolrecords.StartContainersRequest)  */
 end_comment
 
 begin_class

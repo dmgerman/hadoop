@@ -1078,8 +1078,6 @@ parameter_list|,
 name|ContainerTokenIdentifier
 name|containerTokenIdentifier
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|this
 operator|.

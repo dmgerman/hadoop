@@ -48,12 +48,12 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerRequest
+name|StartContainersRequest
 import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown by a NodeManager that is rejecting start-container  * requests via  * {@link ContainerManagementProtocol#startContainer(StartContainerRequest)}  * for containers allocated by a previous instance of the RM.  */
+comment|/**  * This exception is thrown by a NodeManager that is rejecting start-container  * requests via  * {@link ContainerManagementProtocol#startContainers(StartContainersRequest)}  * for containers allocated by a previous instance of the RM.  */
 end_comment
 
 begin_class

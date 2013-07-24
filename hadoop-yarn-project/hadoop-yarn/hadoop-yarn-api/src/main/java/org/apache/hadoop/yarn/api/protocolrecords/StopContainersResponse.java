@@ -22,6 +22,42 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -60,6 +96,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -82,7 +134,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ContainerLaunchContext
+name|ContainerId
 import|;
 end_import
 
@@ -100,25 +152,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NMToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Token
+name|SerializedException
 import|;
 end_import
 
@@ -139,7 +173,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to<em>start</em> a container.</p>  *   *<p>The<code>ApplicationMaster</code> has to provide details such as  * allocated resource capability, security tokens (if enabled), command  * to be executed to start the container, environment for the process,   * necessary binaries/jar/shared-objects etc. via the   * {@link ContainerLaunchContext}.</p>  *  * @see ContainerManagementProtocol#startContainers(StartContainersRequest)  */
+comment|/**  *<p>  * The response sent by the<code>NodeManager</code> to the  *<code>ApplicationMaster</code> when asked to<em>stop</em> allocated  * containers.  *</p>  *   * @see ContainerManagementProtocol#stopContainers(StopContainersRequest)  */
 end_comment
 
 begin_class
@@ -147,110 +181,135 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|class|StartContainerRequest
+DECL|class|StopContainersResponse
 specifier|public
 specifier|abstract
 class|class
-name|StartContainerRequest
+name|StopContainersResponse
 block|{
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Stable
-DECL|method|newInstance ( ContainerLaunchContext context, Token container)
+name|Unstable
+DECL|method|newInstance ( List<ContainerId> succeededRequests, Map<ContainerId, SerializedException> failedRequests)
 specifier|public
 specifier|static
-name|StartContainerRequest
+name|StopContainersResponse
 name|newInstance
 parameter_list|(
-name|ContainerLaunchContext
-name|context
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|succeededRequests
 parameter_list|,
-name|Token
-name|container
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|failedRequests
 parameter_list|)
 block|{
-name|StartContainerRequest
-name|request
+name|StopContainersResponse
+name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|StartContainerRequest
+name|StopContainersResponse
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|request
+name|response
 operator|.
-name|setContainerLaunchContext
+name|setFailedRequests
 argument_list|(
-name|context
+name|failedRequests
 argument_list|)
 expr_stmt|;
-name|request
+name|response
 operator|.
-name|setContainerToken
+name|setSuccessfullyStoppedContainers
 argument_list|(
-name|container
+name|succeededRequests
 argument_list|)
 expr_stmt|;
 return|return
-name|request
+name|response
 return|;
 block|}
-comment|/**    * Get the<code>ContainerLaunchContext</code> for the container to be started    * by the<code>NodeManager</code>.    *     * @return<code>ContainerLaunchContext</code> for the container to be started    *         by the<code>NodeManager</code>    */
+comment|/**    * Get the list of containerIds of successfully stopped containers.    *     * @return the list of containerIds of successfully stopped containers.    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getContainerLaunchContext ()
+DECL|method|getSuccessfullyStoppedContainers ()
 specifier|public
 specifier|abstract
-name|ContainerLaunchContext
-name|getContainerLaunchContext
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|getSuccessfullyStoppedContainers
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ContainerLaunchContext</code> for the container to be started    * by the<code>NodeManager</code>    * @param context<code>ContainerLaunchContext</code> for the container to be     *                started by the<code>NodeManager</code>    */
+comment|/**    * Set the list of containerIds of successfully stopped containers.    */
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Stable
-DECL|method|setContainerLaunchContext (ContainerLaunchContext context)
+name|Unstable
+DECL|method|setSuccessfullyStoppedContainers ( List<ContainerId> succeededRequests)
 specifier|public
 specifier|abstract
 name|void
-name|setContainerLaunchContext
+name|setSuccessfullyStoppedContainers
 parameter_list|(
-name|ContainerLaunchContext
-name|context
+name|List
+argument_list|<
+name|ContainerId
+argument_list|>
+name|succeededRequests
 parameter_list|)
 function_decl|;
-comment|/**    *<p>Get the container token to be used for authorization during starting    * container.</p>    *<p>Note: {@link NMToken} will be used for authenticating communication with</code>    * NodeManager</code>.</p>    * @return the container token to be used for authorization during starting    * container.    * @see NMToken    * @see ContainerManagementProtocol#startContainers(StartContainersRequest)    */
+comment|/**    * Get the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getContainerToken ()
+DECL|method|getFailedRequests ()
 specifier|public
 specifier|abstract
-name|Token
-name|getContainerToken
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|getFailedRequests
 parameter_list|()
 function_decl|;
+comment|/**    * Set the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    */
 annotation|@
-name|Public
+name|Private
 annotation|@
-name|Stable
-DECL|method|setContainerToken (Token container)
+name|Unstable
+DECL|method|setFailedRequests ( Map<ContainerId, SerializedException> failedRequests)
 specifier|public
 specifier|abstract
 name|void
-name|setContainerToken
+name|setFailedRequests
 parameter_list|(
-name|Token
-name|container
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|failedRequests
 parameter_list|)
 function_decl|;
 block|}

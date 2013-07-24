@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -121,7 +131,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to get {@link ContainerStatus} of a container.</p>  *   * @see ContainerManagementProtocol#getContainerStatus(GetContainerStatusRequest)  */
+comment|/**  *<p>  * The request sent by the<code>ApplicationMaster</code> to the  *<code>NodeManager</code> to get {@link ContainerStatus} of requested  * containers.  *</p>  *   * @see ContainerManagementProtocol#getContainerStatuses(GetContainerStatusesRequest)  */
 end_comment
 
 begin_class
@@ -129,74 +139,83 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|class|GetContainerStatusRequest
+DECL|class|GetContainerStatusesRequest
 specifier|public
 specifier|abstract
 class|class
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 block|{
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|newInstance (ContainerId containerId)
+DECL|method|newInstance ( List<ContainerId> containerIds)
 specifier|public
 specifier|static
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 name|newInstance
 parameter_list|(
+name|List
+argument_list|<
 name|ContainerId
-name|containerId
+argument_list|>
+name|containerIds
 parameter_list|)
 block|{
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 name|request
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 name|request
 operator|.
-name|setContainerId
+name|setContainerIds
 argument_list|(
-name|containerId
+name|containerIds
 argument_list|)
 expr_stmt|;
 return|return
 name|request
 return|;
 block|}
-comment|/**    * Get the<code>ContainerId</code> of container for which to obtain the    *<code>ContainerStatus</code>.    * @return<code>ContainerId</code> of container for which to obtain the    *<code>ContainerStatus</code>    */
+comment|/**    * Get the list of<code>ContainerId</code>s of containers for which to obtain    * the<code>ContainerStatus</code>.    *     * @return the list of<code>ContainerId</code>s of containers for which to    *         obtain the<code>ContainerStatus</code>.    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getContainerId ()
+DECL|method|getContainerIds ()
 specifier|public
 specifier|abstract
+name|List
+argument_list|<
 name|ContainerId
-name|getContainerId
+argument_list|>
+name|getContainerIds
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<code>ContainerId</code> of container for which to obtain the    *<code>ContainerStatus</code>    * @param containerId<code>ContainerId</code> of container for which to     *                    obtain the<code>ContainerStatus</code>    */
+comment|/**    * Set a list of<code>ContainerId</code>s of containers for which to obtain    * the<code>ContainerStatus</code>    *     * @param containerIds    *          a list of<code>ContainerId</code>s of containers for which to    *          obtain the<code>ContainerStatus</code>    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|setContainerId (ContainerId containerId)
+DECL|method|setContainerIds (List<ContainerId> containerIds)
 specifier|public
 specifier|abstract
 name|void
-name|setContainerId
+name|setContainerIds
 parameter_list|(
+name|List
+argument_list|<
 name|ContainerId
-name|containerId
+argument_list|>
+name|containerIds
 parameter_list|)
 function_decl|;
 block|}

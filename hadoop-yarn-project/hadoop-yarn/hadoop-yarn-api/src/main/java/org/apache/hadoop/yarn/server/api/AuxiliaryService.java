@@ -106,7 +106,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerRequest
+name|StartContainersRequest
 import|;
 end_import
 
@@ -124,7 +124,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerResponse
+name|StartContainersResponse
 import|;
 end_import
 
@@ -197,7 +197,7 @@ name|ApplicationTerminationContext
 name|stopAppContext
 parameter_list|)
 function_decl|;
-comment|/**    * Retrieve meta-data for this {@link AuxiliaryService}. Applications using    * this {@link AuxiliaryService} SHOULD know the format of the meta-data -    * ideally each service should provide a method to parse out the information    * to the applications. One example of meta-data is contact information so    * that applications can access the service remotely. This will only be called    * after the service's {@link #start()} method has finished. the result may be    * cached.    *     *<p>    * The information is passed along to applications via    * {@link StartContainerResponse#getAllServicesMetaData()} that is returned by    * {@link ContainerManagementProtocol#startContainer(StartContainerRequest)}    *</p>    *     * @return meta-data for this service that should be made available to    *         applications.    */
+comment|/**    * Retrieve meta-data for this {@link AuxiliaryService}. Applications using    * this {@link AuxiliaryService} SHOULD know the format of the meta-data -    * ideally each service should provide a method to parse out the information    * to the applications. One example of meta-data is contact information so    * that applications can access the service remotely. This will only be called    * after the service's {@link #start()} method has finished. the result may be    * cached.    *     *<p>    * The information is passed along to applications via    * {@link StartContainersResponse#getAllServicesMetaData()} that is returned by    * {@link ContainerManagementProtocol#startContainers(StartContainersRequest)}    *</p>    *     * @return meta-data for this service that should be made available to    *         applications.    */
 DECL|method|getMetaData ()
 specifier|public
 specifier|abstract

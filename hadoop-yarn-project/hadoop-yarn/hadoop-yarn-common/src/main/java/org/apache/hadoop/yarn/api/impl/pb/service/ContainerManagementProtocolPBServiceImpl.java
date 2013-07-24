@@ -96,7 +96,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 import|;
 end_import
 
@@ -114,7 +114,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerResponse
+name|StartContainersResponse
 import|;
 end_import
 
@@ -132,29 +132,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StopContainerResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|impl
-operator|.
-name|pb
-operator|.
-name|GetContainerStatusRequestPBImpl
+name|StopContainersResponse
 import|;
 end_import
 
@@ -176,7 +154,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|GetContainerStatusResponsePBImpl
+name|GetContainerStatusesRequestPBImpl
 import|;
 end_import
 
@@ -198,7 +176,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|StartContainerRequestPBImpl
+name|GetContainerStatusesResponsePBImpl
 import|;
 end_import
 
@@ -220,7 +198,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|StartContainerResponsePBImpl
+name|StartContainersRequestPBImpl
 import|;
 end_import
 
@@ -242,7 +220,7 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|StopContainerRequestPBImpl
+name|StartContainersResponsePBImpl
 import|;
 end_import
 
@@ -264,7 +242,29 @@ name|impl
 operator|.
 name|pb
 operator|.
-name|StopContainerResponsePBImpl
+name|StopContainersRequestPBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
+name|impl
+operator|.
+name|pb
+operator|.
+name|StopContainersResponsePBImpl
 import|;
 end_import
 
@@ -298,7 +298,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetContainerStatusRequestProto
+name|GetContainerStatusesRequestProto
 import|;
 end_import
 
@@ -316,7 +316,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|GetContainerStatusResponseProto
+name|GetContainerStatusesResponseProto
 import|;
 end_import
 
@@ -334,7 +334,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|StartContainerRequestProto
+name|StartContainersRequestProto
 import|;
 end_import
 
@@ -352,7 +352,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|StartContainerResponseProto
+name|StartContainersResponseProto
 import|;
 end_import
 
@@ -370,7 +370,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|StopContainerRequestProto
+name|StopContainersRequestProto
 import|;
 end_import
 
@@ -388,7 +388,7 @@ name|proto
 operator|.
 name|YarnServiceProtos
 operator|.
-name|StopContainerResponseProto
+name|StopContainersResponseProto
 import|;
 end_import
 
@@ -448,37 +448,37 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainerStatus (RpcController arg0, GetContainerStatusRequestProto proto)
+DECL|method|startContainers (RpcController arg0, StartContainersRequestProto proto)
 specifier|public
-name|GetContainerStatusResponseProto
-name|getContainerStatus
+name|StartContainersResponseProto
+name|startContainers
 parameter_list|(
 name|RpcController
 name|arg0
 parameter_list|,
-name|GetContainerStatusRequestProto
+name|StartContainersRequestProto
 name|proto
 parameter_list|)
 throws|throws
 name|ServiceException
 block|{
-name|GetContainerStatusRequestPBImpl
+name|StartContainersRequestPBImpl
 name|request
 init|=
 operator|new
-name|GetContainerStatusRequestPBImpl
+name|StartContainersRequestPBImpl
 argument_list|(
 name|proto
 argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|GetContainerStatusResponse
+name|StartContainersResponse
 name|response
 init|=
 name|real
 operator|.
-name|getContainerStatus
+name|startContainers
 argument_list|(
 name|request
 argument_list|)
@@ -486,7 +486,7 @@ decl_stmt|;
 return|return
 operator|(
 operator|(
-name|GetContainerStatusResponsePBImpl
+name|StartContainersResponsePBImpl
 operator|)
 name|response
 operator|)
@@ -526,37 +526,37 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|startContainer (RpcController arg0, StartContainerRequestProto proto)
+DECL|method|stopContainers (RpcController arg0, StopContainersRequestProto proto)
 specifier|public
-name|StartContainerResponseProto
-name|startContainer
+name|StopContainersResponseProto
+name|stopContainers
 parameter_list|(
 name|RpcController
 name|arg0
 parameter_list|,
-name|StartContainerRequestProto
+name|StopContainersRequestProto
 name|proto
 parameter_list|)
 throws|throws
 name|ServiceException
 block|{
-name|StartContainerRequestPBImpl
+name|StopContainersRequestPBImpl
 name|request
 init|=
 operator|new
-name|StartContainerRequestPBImpl
+name|StopContainersRequestPBImpl
 argument_list|(
 name|proto
 argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|StartContainerResponse
+name|StopContainersResponse
 name|response
 init|=
 name|real
 operator|.
-name|startContainer
+name|stopContainers
 argument_list|(
 name|request
 argument_list|)
@@ -564,7 +564,7 @@ decl_stmt|;
 return|return
 operator|(
 operator|(
-name|StartContainerResponsePBImpl
+name|StopContainersResponsePBImpl
 operator|)
 name|response
 operator|)
@@ -604,37 +604,37 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|stopContainer (RpcController arg0, StopContainerRequestProto proto)
+DECL|method|getContainerStatuses ( RpcController arg0, GetContainerStatusesRequestProto proto)
 specifier|public
-name|StopContainerResponseProto
-name|stopContainer
+name|GetContainerStatusesResponseProto
+name|getContainerStatuses
 parameter_list|(
 name|RpcController
 name|arg0
 parameter_list|,
-name|StopContainerRequestProto
+name|GetContainerStatusesRequestProto
 name|proto
 parameter_list|)
 throws|throws
 name|ServiceException
 block|{
-name|StopContainerRequestPBImpl
+name|GetContainerStatusesRequestPBImpl
 name|request
 init|=
 operator|new
-name|StopContainerRequestPBImpl
+name|GetContainerStatusesRequestPBImpl
 argument_list|(
 name|proto
 argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|StopContainerResponse
+name|GetContainerStatusesResponse
 name|response
 init|=
 name|real
 operator|.
-name|stopContainer
+name|getContainerStatuses
 argument_list|(
 name|request
 argument_list|)
@@ -642,7 +642,7 @@ decl_stmt|;
 return|return
 operator|(
 operator|(
-name|StopContainerResponsePBImpl
+name|GetContainerStatusesResponsePBImpl
 operator|)
 name|response
 operator|)

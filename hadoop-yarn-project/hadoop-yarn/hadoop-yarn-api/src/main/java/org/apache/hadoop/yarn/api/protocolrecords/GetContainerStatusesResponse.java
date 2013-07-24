@@ -22,6 +22,26 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -114,7 +134,43 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|SerializedException
 import|;
 end_import
 
@@ -135,7 +191,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>NodeManager</code> to the   *<code>ApplicationMaster</code> when asked to obtain the<em>status</em>   * of a container.</p>  *   * @see ContainerManagementProtocol#getContainerStatus(GetContainerStatusRequest)  */
+comment|/**  *<p>  * The response sent by the<code>NodeManager</code> to the  *<code>ApplicationMaster</code> when asked to obtain the  *<code>ContainerStatus</code> of requested containers.  *</p>  *   * @see ContainerManagementProtocol#getContainerStatuses(GetContainerStatusesRequest)  */
 end_comment
 
 begin_class
@@ -143,73 +199,135 @@ annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|class|GetContainerStatusResponse
+DECL|class|GetContainerStatusesResponse
 specifier|public
 specifier|abstract
 class|class
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 block|{
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( ContainerStatus containerStatus)
+DECL|method|newInstance ( List<ContainerStatus> statuses, Map<ContainerId, SerializedException> failedRequests)
 specifier|public
 specifier|static
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 name|newInstance
 parameter_list|(
+name|List
+argument_list|<
 name|ContainerStatus
-name|containerStatus
+argument_list|>
+name|statuses
+parameter_list|,
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|failedRequests
 parameter_list|)
 block|{
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 name|response
 init|=
 name|Records
 operator|.
 name|newRecord
 argument_list|(
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 name|response
 operator|.
-name|setStatus
+name|setContainerStatuses
 argument_list|(
-name|containerStatus
+name|statuses
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setFailedRequests
+argument_list|(
+name|failedRequests
 argument_list|)
 expr_stmt|;
 return|return
 name|response
 return|;
 block|}
-comment|/**    * Get the<code>ContainerStatus</code> of the container.    * @return<code>ContainerStatus</code> of the container    */
+comment|/**    * Get the<code>ContainerStatus</code>es of the requested containers.    *     * @return<code>ContainerStatus</code>es of the requested containers.    */
 annotation|@
 name|Public
 annotation|@
 name|Stable
-DECL|method|getStatus ()
+DECL|method|getContainerStatuses ()
 specifier|public
 specifier|abstract
+name|List
+argument_list|<
 name|ContainerStatus
-name|getStatus
+argument_list|>
+name|getContainerStatuses
 parameter_list|()
 function_decl|;
+comment|/**    * Set the<code>ContainerStatus</code>es of the requested containers.    */
 annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|setStatus (ContainerStatus containerStatus)
+DECL|method|setContainerStatuses (List<ContainerStatus> statuses)
 specifier|public
 specifier|abstract
 name|void
-name|setStatus
+name|setContainerStatuses
 parameter_list|(
+name|List
+argument_list|<
 name|ContainerStatus
-name|containerStatus
+argument_list|>
+name|statuses
+parameter_list|)
+function_decl|;
+comment|/**    * Get the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getFailedRequests ()
+specifier|public
+specifier|abstract
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|getFailedRequests
+parameter_list|()
+function_decl|;
+comment|/**    * Set the containerId-to-exception map in which the exception indicates error    * from per container for failed requests    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setFailedRequests ( Map<ContainerId, SerializedException> failedContainers)
+specifier|public
+specifier|abstract
+name|void
+name|setFailedRequests
+parameter_list|(
+name|Map
+argument_list|<
+name|ContainerId
+argument_list|,
+name|SerializedException
+argument_list|>
+name|failedContainers
 parameter_list|)
 function_decl|;
 block|}

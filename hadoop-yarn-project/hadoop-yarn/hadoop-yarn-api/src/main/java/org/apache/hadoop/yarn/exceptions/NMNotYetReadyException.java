@@ -48,12 +48,12 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerRequest
+name|StartContainersRequest
 import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown on  * {@link ContainerManagementProtocol#startContainer(StartContainerRequest)} API  * when an NM starts from scratch but has not yet connected with RM.  */
+comment|/**  * This exception is thrown on  * {@link ContainerManagementProtocol#startContainers(StartContainersRequest)} API  * when an NM starts from scratch but has not yet connected with RM.  */
 end_comment
 
 begin_class

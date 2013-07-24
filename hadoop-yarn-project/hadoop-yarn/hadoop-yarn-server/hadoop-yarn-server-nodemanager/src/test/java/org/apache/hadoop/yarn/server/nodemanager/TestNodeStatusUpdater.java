@@ -338,7 +338,9 @@ name|hadoop
 operator|.
 name|service
 operator|.
-name|ServiceOperations
+name|Service
+operator|.
+name|STATE
 import|;
 end_import
 
@@ -352,9 +354,7 @@ name|hadoop
 operator|.
 name|service
 operator|.
-name|Service
-operator|.
-name|STATE
+name|ServiceOperations
 import|;
 end_import
 
@@ -663,24 +663,6 @@ operator|.
 name|api
 operator|.
 name|ResourceTracker
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|ServerRMProxy
 import|;
 end_import
 

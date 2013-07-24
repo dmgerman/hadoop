@@ -244,7 +244,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 import|;
 end_import
 
@@ -262,7 +262,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|GetContainerStatusResponse
+name|GetContainerStatusesResponse
 import|;
 end_import
 
@@ -316,7 +316,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerRequest
+name|StartContainersRequest
 import|;
 end_import
 
@@ -334,7 +334,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerResponse
+name|StartContainersResponse
 import|;
 end_import
 
@@ -352,7 +352,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StopContainerRequest
+name|StopContainersRequest
 import|;
 end_import
 
@@ -370,7 +370,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StopContainerResponse
+name|StopContainersResponse
 import|;
 end_import
 
@@ -778,11 +778,11 @@ block|{     }
 annotation|@
 name|Override
 specifier|public
-name|StartContainerResponse
-DECL|method|startContainer (StartContainerRequest request)
-name|startContainer
+name|StartContainersResponse
+DECL|method|startContainers (StartContainersRequest request)
+name|startContainers
 parameter_list|(
-name|StartContainerRequest
+name|StartContainersRequest
 name|request
 parameter_list|)
 throws|throws
@@ -792,6 +792,14 @@ name|containerTokens
 operator|=
 name|request
 operator|.
+name|getStartContainerRequests
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
 name|getContainerLaunchContext
 argument_list|()
 operator|.
@@ -799,41 +807,64 @@ name|getTokens
 argument_list|()
 expr_stmt|;
 return|return
+name|StartContainersResponse
+operator|.
+name|newInstance
+argument_list|(
 literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|stopContainer (StopContainerRequest request)
+DECL|method|stopContainers (StopContainersRequest request)
 specifier|public
-name|StopContainerResponse
-name|stopContainer
+name|StopContainersResponse
+name|stopContainers
 parameter_list|(
-name|StopContainerRequest
+name|StopContainersRequest
 name|request
 parameter_list|)
 throws|throws
 name|YarnException
 block|{
 return|return
+name|StopContainersResponse
+operator|.
+name|newInstance
+argument_list|(
 literal|null
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getContainerStatus ( GetContainerStatusRequest request)
+DECL|method|getContainerStatuses ( GetContainerStatusesRequest request)
 specifier|public
-name|GetContainerStatusResponse
-name|getContainerStatus
+name|GetContainerStatusesResponse
+name|getContainerStatuses
 parameter_list|(
-name|GetContainerStatusRequest
+name|GetContainerStatusesRequest
 name|request
 parameter_list|)
 throws|throws
 name|YarnException
 block|{
 return|return
+name|GetContainerStatusesResponse
+operator|.
+name|newInstance
+argument_list|(
 literal|null
+argument_list|,
+literal|null
+argument_list|)
 return|;
 block|}
 DECL|method|getContainerCredentials ()

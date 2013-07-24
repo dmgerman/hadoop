@@ -124,7 +124,7 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
-name|StartContainerRequest
+name|StartContainersRequest
 import|;
 end_import
 
@@ -258,7 +258,7 @@ operator|.
 name|applicationId
 return|;
 block|}
-comment|/**    * Get the data sent to the NodeManager via    * {@link ContainerManagementProtocol#startContainer(StartContainerRequest)}    * as part of {@link ContainerLaunchContext#getServiceData()}    *     * @return the servicesData for this application.    */
+comment|/**    * Get the data sent to the NodeManager via    * {@link ContainerManagementProtocol#startContainers(StartContainersRequest)}    * as part of {@link ContainerLaunchContext#getServiceData()}    *     * @return the servicesData for this application.    */
 DECL|method|getApplicationDataForService ()
 specifier|public
 name|ByteBuffer
