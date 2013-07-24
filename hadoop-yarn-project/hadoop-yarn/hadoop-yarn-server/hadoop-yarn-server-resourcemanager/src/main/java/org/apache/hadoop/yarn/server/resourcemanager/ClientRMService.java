@@ -928,6 +928,22 @@ name|yarn
 operator|.
 name|exceptions
 operator|.
+name|ApplicationNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
 name|YarnException
 import|;
 end_import
@@ -1783,7 +1799,7 @@ return|return
 name|response
 return|;
 block|}
-comment|/**    * It gives response which includes application report if the application    * present otherwise gives response with application report as null.    */
+comment|/**    * It gives response which includes application report if the application    * present otherwise throws ApplicationNotFoundException.    */
 annotation|@
 name|Override
 DECL|method|getApplicationReport ( GetApplicationReportRequest request)
@@ -1864,18 +1880,19 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// If the RM doesn't have the application, provide the response with
-comment|// application report as null and let the clients to handle.
-return|return
-name|recordFactory
-operator|.
-name|newRecordInstance
+comment|// If the RM doesn't have the application, throw
+comment|// ApplicationNotFoundException and let client to handle.
+throw|throw
+operator|new
+name|ApplicationNotFoundException
 argument_list|(
-name|GetApplicationReportResponse
-operator|.
-name|class
+literal|"Application with id '"
+operator|+
+name|applicationId
+operator|+
+literal|"' doesn't exist in RM."
 argument_list|)
-return|;
+throw|;
 block|}
 name|boolean
 name|allowAccess
