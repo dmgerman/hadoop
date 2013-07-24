@@ -1014,7 +1014,7 @@ operator|!
 name|keepRunning
 condition|)
 block|{
-break|break;
+return|return;
 block|}
 try|try
 block|{
@@ -1053,7 +1053,7 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-break|break;
+return|return;
 block|}
 catch|catch
 parameter_list|(
@@ -1080,7 +1080,7 @@ operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
-break|break;
+return|return;
 block|}
 block|}
 if|if
@@ -1205,14 +1205,22 @@ parameter_list|()
 block|{
 while|while
 condition|(
+literal|true
+condition|)
+block|{
+if|if
+condition|(
+operator|!
 name|keepRunning
 condition|)
+block|{
+return|return;
+block|}
+try|try
 block|{
 name|AllocateResponse
 name|response
 decl_stmt|;
-try|try
-block|{
 if|if
 condition|(
 name|savedException
@@ -1236,8 +1244,10 @@ argument_list|(
 name|savedException
 argument_list|)
 expr_stmt|;
-break|break;
+return|return;
 block|}
+try|try
+block|{
 name|response
 operator|=
 name|responseQueue
@@ -1304,7 +1314,7 @@ default|default:
 name|String
 name|msg
 init|=
-literal|"Unhandled value of AMCommand: "
+literal|"Unhandled value of RM AMCommand: "
 operator|+
 name|response
 operator|.
@@ -1418,6 +1428,29 @@ operator|.
 name|getProgress
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Throwable
+name|ex
+parameter_list|)
+block|{
+name|handler
+operator|.
+name|onError
+argument_list|(
+name|ex
+argument_list|)
+expr_stmt|;
+comment|// re-throw exception to end the thread
+throw|throw
+operator|new
+name|YarnRuntimeException
+argument_list|(
+name|ex
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 block|}

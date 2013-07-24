@@ -773,12 +773,13 @@ name|float
 name|getProgress
 parameter_list|()
 function_decl|;
-DECL|method|onError (Exception e)
+comment|/**      * Called when error comes from RM communications as well as from errors in      * the callback itself from the app. Calling      * stop() is the recommended action.      *      * @param e      */
+DECL|method|onError (Throwable e)
 specifier|public
 name|void
 name|onError
 parameter_list|(
-name|Exception
+name|Throwable
 name|e
 parameter_list|)
 function_decl|;

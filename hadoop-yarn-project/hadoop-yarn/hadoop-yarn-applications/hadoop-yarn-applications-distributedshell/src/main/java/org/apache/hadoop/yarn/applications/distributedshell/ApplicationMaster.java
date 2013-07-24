@@ -3195,18 +3195,23 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|onError (Exception e)
+DECL|method|onError (Throwable e)
 specifier|public
 name|void
 name|onError
 parameter_list|(
-name|Exception
+name|Throwable
 name|e
 parameter_list|)
 block|{
 name|done
 operator|=
 literal|true
+expr_stmt|;
+name|resourceManager
+operator|.
+name|stop
+argument_list|()
 expr_stmt|;
 block|}
 block|}
