@@ -372,7 +372,7 @@ name|IOException
 function_decl|;
 comment|/**    * blockReceivedAndDeleted() allows the DataNode to tell the NameNode about    * recently-received and -deleted block data.     *     * For the case of received blocks, a hint for preferred replica to be     * deleted when there is any excessive blocks is provided.    * For example, whenever client code    * writes a new Block here, or another DataNode copies a Block to    * this DataNode, it will call blockReceived().    */
 annotation|@
-name|AtMostOnce
+name|Idempotent
 DECL|method|blockReceivedAndDeleted (DatanodeRegistration registration, String poolId, StorageReceivedDeletedBlocks[] rcvdAndDeletedBlocks)
 specifier|public
 name|void

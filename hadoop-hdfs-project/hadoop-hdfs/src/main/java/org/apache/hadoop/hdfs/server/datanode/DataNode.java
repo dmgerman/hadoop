@@ -5741,7 +5741,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * get BP registration by blockPool id    * @param bpid    * @return BP registration object    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getDNRegistrationForBP (String bpid)
+specifier|public
 name|DatanodeRegistration
 name|getDNRegistrationForBP
 parameter_list|(

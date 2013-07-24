@@ -72,6 +72,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -83,6 +93,16 @@ operator|.
 name|util
 operator|.
 name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
 import|;
 end_import
 
@@ -281,16 +301,17 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Add a block to the list of pending Replications    */
-DECL|method|increment (Block block, int numReplicas)
+comment|/**    * Add a block to the list of pending Replications    * @param block The corresponding block    * @param targets The DataNodes where replicas of the block should be placed    */
+DECL|method|increment (Block block, DatanodeDescriptor[] targets)
 name|void
 name|increment
 parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|int
-name|numReplicas
+name|DatanodeDescriptor
+index|[]
+name|targets
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -324,7 +345,7 @@ argument_list|,
 operator|new
 name|PendingBlockInfo
 argument_list|(
-name|numReplicas
+name|targets
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -335,7 +356,7 @@ name|found
 operator|.
 name|incrementReplicas
 argument_list|(
-name|numReplicas
+name|targets
 argument_list|)
 expr_stmt|;
 name|found
@@ -346,13 +367,16 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * One replication request for this block has finished.    * Decrement the number of pending replication requests    * for this block.    */
-DECL|method|decrement (Block block)
+comment|/**    * One replication request for this block has finished.    * Decrement the number of pending replication requests    * for this block.    *     * @param The DataNode that finishes the replication    */
+DECL|method|decrement (Block block, DatanodeDescriptor dn)
 name|void
 name|decrement
 parameter_list|(
 name|Block
 name|block
+parameter_list|,
+name|DatanodeDescriptor
+name|dn
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -398,7 +422,9 @@ block|}
 name|found
 operator|.
 name|decrementReplicas
-argument_list|()
+argument_list|(
+name|dn
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -577,7 +603,7 @@ name|blockList
 return|;
 block|}
 block|}
-comment|/**    * An object that contains information about a block that     * is being replicated. It records the timestamp when the     * system started replicating the most recent copy of this    * block. It also records the number of replication    * requests that are in progress.    */
+comment|/**    * An object that contains information about a block that     * is being replicated. It records the timestamp when the     * system started replicating the most recent copy of this    * block. It also records the list of Datanodes where the     * replication requests are in progress.    */
 DECL|class|PendingBlockInfo
 specifier|static
 class|class
@@ -588,16 +614,21 @@ specifier|private
 name|long
 name|timeStamp
 decl_stmt|;
-DECL|field|numReplicasInProgress
+DECL|field|targets
 specifier|private
-name|int
-name|numReplicasInProgress
+specifier|final
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|targets
 decl_stmt|;
-DECL|method|PendingBlockInfo (int numReplicas)
+DECL|method|PendingBlockInfo (DatanodeDescriptor[] targets)
 name|PendingBlockInfo
 parameter_list|(
-name|int
-name|numReplicas
+name|DatanodeDescriptor
+index|[]
+name|targets
 parameter_list|)
 block|{
 name|this
@@ -609,9 +640,32 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|numReplicasInProgress
+name|targets
 operator|=
-name|numReplicas
+name|targets
+operator|==
+literal|null
+condition|?
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+else|:
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|targets
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getTimeStamp ()
@@ -634,34 +688,55 @@ name|now
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incrementReplicas (int increment)
+DECL|method|incrementReplicas (DatanodeDescriptor... newTargets)
 name|void
 name|incrementReplicas
 parameter_list|(
-name|int
-name|increment
+name|DatanodeDescriptor
+modifier|...
+name|newTargets
 parameter_list|)
 block|{
-name|numReplicasInProgress
-operator|+=
-name|increment
+if|if
+condition|(
+name|newTargets
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|DatanodeDescriptor
+name|dn
+range|:
+name|newTargets
+control|)
+block|{
+name|targets
+operator|.
+name|add
+argument_list|(
+name|dn
+argument_list|)
 expr_stmt|;
 block|}
-DECL|method|decrementReplicas ()
+block|}
+block|}
+DECL|method|decrementReplicas (DatanodeDescriptor dn)
 name|void
 name|decrementReplicas
-parameter_list|()
+parameter_list|(
+name|DatanodeDescriptor
+name|dn
+parameter_list|)
 block|{
-name|numReplicasInProgress
-operator|--
+name|targets
+operator|.
+name|remove
+argument_list|(
+name|dn
+argument_list|)
 expr_stmt|;
-assert|assert
-operator|(
-name|numReplicasInProgress
-operator|>=
-literal|0
-operator|)
-assert|;
 block|}
 DECL|method|getNumReplicas ()
 name|int
@@ -669,7 +744,10 @@ name|getNumReplicas
 parameter_list|()
 block|{
 return|return
-name|numReplicasInProgress
+name|targets
+operator|.
+name|size
+argument_list|()
 return|;
 block|}
 block|}
@@ -1027,7 +1105,8 @@ literal|" NumReplicaInProgress: "
 operator|+
 name|pendingBlock
 operator|.
-name|numReplicasInProgress
+name|getNumReplicas
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

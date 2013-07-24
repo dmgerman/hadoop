@@ -6690,8 +6690,6 @@ argument_list|(
 name|block
 argument_list|,
 name|targets
-operator|.
-name|length
 argument_list|)
 expr_stmt|;
 if|if
@@ -12067,6 +12065,8 @@ throws|throws
 name|IOException
 block|{
 comment|// decrement number of blocks scheduled to this datanode.
+comment|// for a retry request (of DatanodeProtocol#blockReceivedAndDeleted with
+comment|// RECEIVED_BLOCK), we currently also decrease the approximate number.
 name|node
 operator|.
 name|decBlocksScheduled
@@ -12131,6 +12131,8 @@ operator|.
 name|decrement
 argument_list|(
 name|block
+argument_list|,
+name|node
 argument_list|)
 expr_stmt|;
 name|processAndHandleReportedBlock
