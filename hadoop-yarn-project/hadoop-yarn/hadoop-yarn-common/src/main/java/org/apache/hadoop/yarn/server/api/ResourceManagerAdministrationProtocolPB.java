@@ -94,7 +94,7 @@ name|ProtocolInfo
 argument_list|(
 name|protocolName
 operator|=
-literal|"org.apache.hadoop.yarn.api.ResourceManagerAdministrationProtocolPB"
+literal|"org.apache.hadoop.yarn.server.api.ResourceManagerAdministrationProtocolPB"
 argument_list|,
 name|protocolVersion
 operator|=
