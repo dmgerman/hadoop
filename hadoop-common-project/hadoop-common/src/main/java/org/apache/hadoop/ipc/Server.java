@@ -1884,8 +1884,26 @@ name|Call
 argument_list|>
 argument_list|()
 decl_stmt|;
+comment|/** Get the current call */
+annotation|@
+name|VisibleForTesting
+DECL|method|getCurCall ()
+specifier|public
+specifier|static
+name|ThreadLocal
+argument_list|<
+name|Call
+argument_list|>
+name|getCurCall
+parameter_list|()
+block|{
+return|return
+name|CurCall
+return|;
+block|}
 comment|/**    * Returns the currently active RPC call's sequential ID number.  A negative    * call ID indicates an invalid value, such as if there is no currently active    * RPC call.    *     * @return int sequential ID number of currently active RPC call    */
 DECL|method|getCallId ()
+specifier|public
 specifier|static
 name|int
 name|getCallId
@@ -1959,23 +1977,26 @@ operator|.
 name|get
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
+return|return
+operator|(
 name|call
 operator|!=
 literal|null
-condition|)
-block|{
-return|return
+operator|&&
+name|call
+operator|.
+name|connection
+operator|!=
+literal|null
+operator|)
+condition|?
 name|call
 operator|.
 name|connection
 operator|.
 name|getHostInetAddress
 argument_list|()
-return|;
-block|}
-return|return
+else|:
 literal|null
 return|;
 block|}
@@ -2058,6 +2079,12 @@ decl_stmt|;
 return|return
 operator|(
 name|call
+operator|!=
+literal|null
+operator|&&
+name|call
+operator|.
+name|connection
 operator|!=
 literal|null
 operator|)
@@ -2607,7 +2634,7 @@ return|;
 block|}
 comment|/** A call queued for handling. */
 DECL|class|Call
-specifier|private
+specifier|public
 specifier|static
 class|class
 name|Call
@@ -2669,7 +2696,7 @@ index|[]
 name|clientId
 decl_stmt|;
 DECL|method|Call (int id, int retryCount, Writable param, Connection connection)
-specifier|private
+specifier|public
 name|Call
 parameter_list|(
 name|int
@@ -2708,7 +2735,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|Call (int id, int retryCount, Writable param, Connection connection, RPC.RpcKind kind, byte[] clientId)
-specifier|private
+specifier|public
 name|Call
 parameter_list|(
 name|int
