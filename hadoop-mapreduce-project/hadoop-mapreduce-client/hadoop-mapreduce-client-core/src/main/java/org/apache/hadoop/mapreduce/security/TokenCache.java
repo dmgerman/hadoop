@@ -724,11 +724,13 @@ argument_list|(
 literal|"MapReduceShuffleToken"
 argument_list|)
 decl_stmt|;
-comment|/**    * load job token from a file    * @param conf    * @throws IOException    */
+comment|/**    * load job token from a file    * @deprecated Use {@link Credentials#readTokenStorageFile} instead,    * this method is included for compatibility against Hadoop-1.    * @param conf    * @throws IOException    */
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|Deprecated
 DECL|method|loadTokens (String jobTokenFile, JobConf conf)
 specifier|public
 specifier|static
@@ -809,11 +811,13 @@ return|return
 name|ts
 return|;
 block|}
-comment|/**    * load job token from a file    *     * @param conf    * @throws IOException    */
+comment|/**    * load job token from a file    * @deprecated Use {@link Credentials#readTokenStorageFile} instead,    * this method is included for compatibility against Hadoop-1.    * @param conf    * @throws IOException    */
 annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
+annotation|@
+name|Deprecated
 DECL|method|loadTokens (String jobTokenFile, Configuration conf)
 specifier|public
 specifier|static
@@ -965,7 +969,13 @@ name|SHUFFLE_TOKEN
 argument_list|)
 return|;
 block|}
-comment|/**    *     * @param namenode    * @return delegation token    */
+comment|/**    * @deprecated Use {@link Credentials#getToken(org.apache.hadoop.io.Text)}    * instead, this method is included for compatibility against Hadoop-1    * @param namenode    * @return delegation token    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+annotation|@
+name|Deprecated
 specifier|public
 specifier|static
 DECL|method|getDelegationToken ( Credentials credentials, String namenode)

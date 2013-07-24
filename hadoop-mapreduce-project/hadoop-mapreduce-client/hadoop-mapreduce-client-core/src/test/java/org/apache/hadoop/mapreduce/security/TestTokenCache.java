@@ -1194,6 +1194,11 @@ end_function
 
 begin_function
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Test
 DECL|method|testGetTokensForNamenodes ()
 specifier|public
