@@ -16020,8 +16020,6 @@ block|{
 name|BlockInfo
 name|bi
 init|=
-name|blockManager
-operator|.
 name|getStoredBlock
 argument_list|(
 name|b
@@ -17974,6 +17972,25 @@ name|newFile
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getStoredBlock (Block block)
+name|BlockInfo
+name|getStoredBlock
+parameter_list|(
+name|Block
+name|block
+parameter_list|)
+block|{
+return|return
+name|blockManager
+operator|.
+name|getStoredBlock
+argument_list|(
+name|block
+argument_list|)
+return|;
+block|}
 DECL|method|commitBlockSynchronization (ExtendedBlock lastblock, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets, String[] newtargetstorages)
 name|void
 name|commitBlockSynchronization
@@ -18088,8 +18105,6 @@ specifier|final
 name|BlockInfo
 name|storedBlock
 init|=
-name|blockManager
-operator|.
 name|getStoredBlock
 argument_list|(
 name|ExtendedBlock
@@ -18107,6 +18122,37 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|deleteblock
+condition|)
+block|{
+comment|// This may be a retry attempt so ignore the failure
+comment|// to locate the block.
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Block (="
+operator|+
+name|lastblock
+operator|+
+literal|") not found"
+argument_list|)
+expr_stmt|;
+block|}
+return|return;
+block|}
+else|else
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -18118,6 +18164,7 @@ operator|+
 literal|") not found"
 argument_list|)
 throw|;
+block|}
 block|}
 name|INodeFile
 name|iFile
@@ -18149,9 +18196,17 @@ name|isComplete
 argument_list|()
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Unexpected block (="
 operator|+
@@ -18166,7 +18221,9 @@ argument_list|()
 operator|+
 literal|") is not under construction"
 argument_list|)
-throw|;
+expr_stmt|;
+block|}
+return|return;
 block|}
 name|long
 name|recoveryId
@@ -18241,20 +18298,9 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|remove
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Trying to delete non-existant block "
-operator|+
-name|blockToDel
-argument_list|)
-throw|;
-block|}
 name|blockManager
 operator|.
 name|removeBlockFromMap
@@ -18262,6 +18308,7 @@ argument_list|(
 name|storedBlock
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
@@ -18401,55 +18448,28 @@ name|descriptors
 argument_list|)
 expr_stmt|;
 block|}
-name|src
-operator|=
-name|leaseManager
-operator|.
-name|findPath
-argument_list|(
-name|pendingFile
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|closeFile
 condition|)
 block|{
-comment|// commit the last block and complete it if it has minimum replicas
-name|commitOrCompleteLastBlock
+name|src
+operator|=
+name|closeFileCommitBlocks
 argument_list|(
 name|pendingFile
 argument_list|,
 name|storedBlock
 argument_list|)
 expr_stmt|;
-comment|//remove lease, close file
-name|finalizeINodeFileUnderConstruction
-argument_list|(
-name|src
-argument_list|,
-name|pendingFile
-argument_list|,
-name|Snapshot
-operator|.
-name|findLatestSnapshot
-argument_list|(
-name|pendingFile
-argument_list|,
-literal|null
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
 comment|// If this commit does not want to close the file, persist blocks
-name|dir
-operator|.
+name|src
+operator|=
 name|persistBlocks
 argument_list|(
-name|src
-argument_list|,
 name|pendingFile
 argument_list|)
 expr_stmt|;
@@ -18519,6 +18539,97 @@ literal|") successful"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    *    * @param pendingFile    * @param storedBlock    * @return Path of the file that was closed.    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
+DECL|method|closeFileCommitBlocks (INodeFileUnderConstruction pendingFile, BlockInfo storedBlock)
+name|String
+name|closeFileCommitBlocks
+parameter_list|(
+name|INodeFileUnderConstruction
+name|pendingFile
+parameter_list|,
+name|BlockInfo
+name|storedBlock
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|src
+init|=
+name|leaseManager
+operator|.
+name|findPath
+argument_list|(
+name|pendingFile
+argument_list|)
+decl_stmt|;
+comment|// commit the last block and complete it if it has minimum replicas
+name|commitOrCompleteLastBlock
+argument_list|(
+name|pendingFile
+argument_list|,
+name|storedBlock
+argument_list|)
+expr_stmt|;
+comment|//remove lease, close file
+name|finalizeINodeFileUnderConstruction
+argument_list|(
+name|src
+argument_list|,
+name|pendingFile
+argument_list|,
+name|Snapshot
+operator|.
+name|findLatestSnapshot
+argument_list|(
+name|pendingFile
+argument_list|,
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
+return|return
+name|src
+return|;
+block|}
+comment|/**    * Persist the block list for the given file.    *    * @param pendingFile    * @return Path to the given file.    * @throws IOException    */
+annotation|@
+name|VisibleForTesting
+DECL|method|persistBlocks (INodeFileUnderConstruction pendingFile)
+name|String
+name|persistBlocks
+parameter_list|(
+name|INodeFileUnderConstruction
+name|pendingFile
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|String
+name|src
+init|=
+name|leaseManager
+operator|.
+name|findPath
+argument_list|(
+name|pendingFile
+argument_list|)
+decl_stmt|;
+name|dir
+operator|.
+name|persistBlocks
+argument_list|(
+name|src
+argument_list|,
+name|pendingFile
+argument_list|)
+expr_stmt|;
+return|return
+name|src
+return|;
 block|}
 comment|/**    * Renew the lease(s) held by the given client    */
 DECL|method|renewLease (String holder)
@@ -22177,8 +22288,6 @@ return|return;
 name|BlockInfo
 name|storedBlock
 init|=
-name|blockManager
-operator|.
 name|getStoredBlock
 argument_list|(
 name|b
@@ -24319,8 +24428,6 @@ comment|// check stored block state
 name|BlockInfo
 name|storedBlock
 init|=
-name|blockManager
-operator|.
 name|getStoredBlock
 argument_list|(
 name|ExtendedBlock

@@ -438,7 +438,7 @@ name|IOException
 function_decl|;
 comment|/**    * Commit block synchronization in lease recovery    */
 annotation|@
-name|AtMostOnce
+name|Idempotent
 DECL|method|commitBlockSynchronization (ExtendedBlock block, long newgenerationstamp, long newlength, boolean closeFile, boolean deleteblock, DatanodeID[] newtargets, String[] newtargetstorages)
 specifier|public
 name|void
