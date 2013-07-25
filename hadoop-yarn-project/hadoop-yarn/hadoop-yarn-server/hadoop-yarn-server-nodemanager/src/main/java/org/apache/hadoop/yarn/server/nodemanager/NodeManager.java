@@ -1352,6 +1352,37 @@ return|return
 literal|"NodeManager"
 return|;
 block|}
+DECL|method|shutDown ()
+specifier|protected
+name|void
+name|shutDown
+parameter_list|()
+block|{
+operator|new
+name|Thread
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+name|NodeManager
+operator|.
+name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|resyncWithRM ()
 specifier|protected
 name|void
@@ -1542,6 +1573,12 @@ condition|)
 block|{
 try|try
 block|{
+comment|//To remove done containers in NM context
+name|nodeStatusUpdater
+operator|.
+name|getNodeStatusAndUpdateContainersInContext
+argument_list|()
+expr_stmt|;
 name|Thread
 operator|.
 name|sleep
@@ -1589,7 +1626,6 @@ argument_list|(
 literal|1000
 argument_list|)
 expr_stmt|;
-comment|//to remove done containers from the map
 name|nodeStatusUpdater
 operator|.
 name|getNodeStatusAndUpdateContainersInContext
@@ -2110,7 +2146,7 @@ block|{
 case|case
 name|SHUTDOWN
 case|:
-name|stop
+name|shutDown
 argument_list|()
 expr_stmt|;
 break|break;

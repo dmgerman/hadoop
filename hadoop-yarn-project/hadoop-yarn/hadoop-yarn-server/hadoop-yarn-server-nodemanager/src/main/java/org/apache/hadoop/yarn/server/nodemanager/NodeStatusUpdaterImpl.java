@@ -2366,7 +2366,7 @@ name|warn
 argument_list|(
 literal|"Node is out of sync with ResourceManager,"
 operator|+
-literal|" hence rebooting."
+literal|" hence resyncing."
 argument_list|)
 expr_stmt|;
 name|LOG

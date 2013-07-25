@@ -1581,7 +1581,7 @@ comment|/* node does not exist */
 name|String
 name|message
 init|=
-literal|"Node not found rebooting "
+literal|"Node not found resyncing "
 operator|+
 name|remoteNodeStatus
 operator|.
