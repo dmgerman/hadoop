@@ -2131,6 +2131,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Get the location for the map output - either in-memory or on-disk
+try|try
+block|{
 name|mapOutput
 operator|=
 name|merger
@@ -2144,6 +2146,32 @@ argument_list|,
 name|id
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|// kill this reduce attempt
+name|ioErrs
+operator|.
+name|increment
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+name|scheduler
+operator|.
+name|reportLocalError
+argument_list|(
+name|ioe
+argument_list|)
+expr_stmt|;
+return|return
+name|EMPTY_ATTEMPT_ID_ARRAY
+return|;
+block|}
 comment|// Check if we can shuffle *now* ...
 if|if
 condition|(
