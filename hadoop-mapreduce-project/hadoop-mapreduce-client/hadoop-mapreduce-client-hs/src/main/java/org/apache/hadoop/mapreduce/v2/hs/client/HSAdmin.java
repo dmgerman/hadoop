@@ -333,6 +333,27 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"-refreshJobRetentionSettings"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Usage: mapred hsadmin [-refreshJobRetentionSettings]"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"-refreshLogRetentionSettings"
 operator|.
 name|equals
@@ -418,6 +439,15 @@ name|err
 operator|.
 name|println
 argument_list|(
+literal|"           [-refreshJobRetentionSettings]"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
 literal|"           [-refreshLogRetentionSettings]"
 argument_list|)
 expr_stmt|;
@@ -482,6 +512,10 @@ literal|" [-refreshSuperUserGroupsConfiguration]"
 operator|+
 literal|" [-refreshAdminAcls]"
 operator|+
+literal|" [-refreshLogRetentionSettings]"
+operator|+
+literal|" [-refreshJobRetentionSettings]"
+operator|+
 literal|" [-getGroups [username]]"
 operator|+
 literal|" [-help [cmd]]\n"
@@ -502,9 +536,18 @@ init|=
 literal|"-refreshAdminAcls: Refresh acls for administration of Job history server\n"
 decl_stmt|;
 name|String
+name|refreshJobRetentionSettings
+init|=
+literal|"-refreshJobRetentionSettings:"
+operator|+
+literal|"Refresh job history period,job cleaner settings\n"
+decl_stmt|;
+name|String
 name|refreshLogRetentionSettings
 init|=
-literal|"-refreshLogRetentionSettings: Refresh 'log retention time' and 'log retention check interval' \n"
+literal|"-refreshLogRetentionSettings:"
+operator|+
+literal|"Refresh log retention period and log retention check interval\n"
 decl_stmt|;
 name|String
 name|getGroups
@@ -604,6 +647,27 @@ block|}
 elseif|else
 if|if
 condition|(
+literal|"refreshJobRetentionSettings"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|refreshJobRetentionSettings
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 literal|"refreshLogRetentionSettings"
 operator|.
 name|equals
@@ -679,6 +743,15 @@ operator|.
 name|println
 argument_list|(
 name|refreshAdminAcls
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|refreshJobRetentionSettings
 argument_list|)
 expr_stmt|;
 name|System
@@ -1066,10 +1139,74 @@ name|getCurrentUser
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Refresh the user-to-groups mappings
 name|refreshProtocol
 operator|.
 name|refreshAdminAcls
+argument_list|()
+expr_stmt|;
+return|return
+literal|0
+return|;
+block|}
+DECL|method|refreshJobRetentionSettings ()
+specifier|private
+name|int
+name|refreshJobRetentionSettings
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Refresh job retention settings
+name|Configuration
+name|conf
+init|=
+name|getConf
+argument_list|()
+decl_stmt|;
+name|InetSocketAddress
+name|address
+init|=
+name|conf
+operator|.
+name|getSocketAddr
+argument_list|(
+name|JHAdminConfig
+operator|.
+name|JHS_ADMIN_ADDRESS
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_JHS_ADMIN_ADDRESS
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_JHS_ADMIN_PORT
+argument_list|)
+decl_stmt|;
+name|HSAdminRefreshProtocol
+name|refreshProtocol
+init|=
+name|HSProxies
+operator|.
+name|createProxy
+argument_list|(
+name|conf
+argument_list|,
+name|address
+argument_list|,
+name|HSAdminRefreshProtocol
+operator|.
+name|class
+argument_list|,
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|refreshProtocol
+operator|.
+name|refreshJobRetentionSettings
 argument_list|()
 expr_stmt|;
 return|return
@@ -1217,6 +1354,13 @@ argument_list|(
 name|cmd
 argument_list|)
 operator|||
+literal|"-refreshJobRetentionSettings"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+operator|||
 literal|"-refreshLogRetentionSettings"
 operator|.
 name|equals
@@ -1295,6 +1439,23 @@ block|{
 name|exitCode
 operator|=
 name|refreshAdminAcls
+argument_list|()
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+literal|"-refreshJobRetentionSettings"
+operator|.
+name|equals
+argument_list|(
+name|cmd
+argument_list|)
+condition|)
+block|{
+name|exitCode
+operator|=
+name|refreshJobRetentionSettings
 argument_list|()
 expr_stmt|;
 block|}

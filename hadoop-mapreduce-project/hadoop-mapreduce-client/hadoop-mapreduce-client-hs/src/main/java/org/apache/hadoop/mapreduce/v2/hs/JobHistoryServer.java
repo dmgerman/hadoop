@@ -519,6 +519,8 @@ operator|new
 name|HSAdminServer
 argument_list|(
 name|aggLogDelService
+argument_list|,
+name|jobHistoryService
 argument_list|)
 expr_stmt|;
 name|addService

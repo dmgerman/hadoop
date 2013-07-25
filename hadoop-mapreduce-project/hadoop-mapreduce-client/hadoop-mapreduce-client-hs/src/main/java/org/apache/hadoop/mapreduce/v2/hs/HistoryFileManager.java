@@ -430,6 +430,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|UnsupportedFileSystemException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -575,6 +589,20 @@ operator|.
 name|jobhistory
 operator|.
 name|JobIndexInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|AccessControlException
 import|;
 end_import
 
@@ -2224,7 +2252,7 @@ name|historyFile
 return|;
 block|}
 DECL|method|delete ()
-specifier|private
+specifier|protected
 specifier|synchronized
 name|void
 name|delete
@@ -2764,24 +2792,8 @@ argument_list|)
 expr_stmt|;
 name|jobListCache
 operator|=
-operator|new
-name|JobListCache
-argument_list|(
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|JHAdminConfig
-operator|.
-name|MR_HISTORY_JOBLIST_CACHE_SIZE
-argument_list|,
-name|JHAdminConfig
-operator|.
-name|DEFAULT_MR_HISTORY_JOBLIST_CACHE_SIZE
-argument_list|)
-argument_list|,
-name|maxHistoryAge
-argument_list|)
+name|createJobListCache
+argument_list|()
 expr_stmt|;
 name|serialNumberIndex
 operator|=
@@ -2865,6 +2877,33 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|createJobListCache ()
+specifier|protected
+name|JobListCache
+name|createJobListCache
+parameter_list|()
+block|{
+return|return
+operator|new
+name|JobListCache
+argument_list|(
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|JHAdminConfig
+operator|.
+name|MR_HISTORY_JOBLIST_CACHE_SIZE
+argument_list|,
+name|JHAdminConfig
+operator|.
+name|DEFAULT_MR_HISTORY_JOBLIST_CACHE_SIZE
+argument_list|)
+argument_list|,
+name|maxHistoryAge
+argument_list|)
+return|;
 block|}
 DECL|method|mkdir (FileContext fc, Path path, FsPermission fsp)
 specifier|private
@@ -3537,8 +3576,7 @@ name|jhStatusList
 return|;
 block|}
 DECL|method|scanDirectoryForHistoryFiles (Path path, FileContext fc)
-specifier|private
-specifier|static
+specifier|protected
 name|List
 argument_list|<
 name|FileStatus
@@ -3568,9 +3606,9 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Finds all history directories with a timestamp component by scanning the    * filesystem. Used when the JobHistory server is started.    *     * @return    */
+comment|/**    * Finds all history directories with a timestamp component by scanning the    * filesystem. Used when the JobHistory server is started.    *     * @return list of history directories    */
 DECL|method|findTimestampedDirectories ()
-specifier|private
+specifier|protected
 name|List
 argument_list|<
 name|FileStatus
@@ -5009,21 +5047,9 @@ operator|!
 name|halted
 condition|)
 block|{
-name|doneDirFc
-operator|.
-name|delete
-argument_list|(
-name|doneDirFc
-operator|.
-name|makeQualified
+name|deleteDir
 argument_list|(
 name|serialDir
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 name|removeDirectoryFromSerialNumberIndex
@@ -5051,6 +5077,42 @@ break|break;
 comment|// Don't scan any more directories.
 block|}
 block|}
+block|}
+DECL|method|deleteDir (FileStatus serialDir)
+specifier|protected
+name|boolean
+name|deleteDir
+parameter_list|(
+name|FileStatus
+name|serialDir
+parameter_list|)
+throws|throws
+name|AccessControlException
+throws|,
+name|FileNotFoundException
+throws|,
+name|UnsupportedFileSystemException
+throws|,
+name|IOException
+block|{
+return|return
+name|doneDirFc
+operator|.
+name|delete
+argument_list|(
+name|doneDirFc
+operator|.
+name|makeQualified
+argument_list|(
+name|serialDir
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+argument_list|,
+literal|true
+argument_list|)
+return|;
 block|}
 comment|// for test
 annotation|@

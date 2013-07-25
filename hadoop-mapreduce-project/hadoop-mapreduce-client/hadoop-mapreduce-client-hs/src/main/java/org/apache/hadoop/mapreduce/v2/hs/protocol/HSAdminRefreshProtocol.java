@@ -124,6 +124,15 @@ parameter_list|()
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Refresh job retention settings.    *     * @throws IOException    */
+DECL|method|refreshJobRetentionSettings ()
+specifier|public
+name|void
+name|refreshJobRetentionSettings
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Refresh log retention settings.    *     * @throws IOException    */
 DECL|method|refreshLogRetentionSettings ()
 specifier|public
