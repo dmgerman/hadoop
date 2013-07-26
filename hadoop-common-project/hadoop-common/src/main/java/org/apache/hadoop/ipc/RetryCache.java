@@ -194,7 +194,6 @@ literal|2
 decl_stmt|;
 DECL|field|state
 specifier|private
-specifier|volatile
 name|byte
 name|state
 init|=
@@ -248,6 +247,7 @@ name|long
 name|expirationTime
 parameter_list|)
 block|{
+comment|// ClientId must be a UUID - that is 16 octets.
 name|Preconditions
 operator|.
 name|checkArgument
@@ -258,10 +258,10 @@ name|length
 operator|==
 literal|16
 argument_list|,
-literal|"Invalid clientId"
+literal|"Invalid clientId - must be UUID of size 16 octets"
 argument_list|)
 expr_stmt|;
-comment|// Conver UUID bytes to two longs
+comment|// Convert UUID bytes to two longs
 name|long
 name|tmp
 init|=
@@ -530,6 +530,7 @@ expr_stmt|;
 block|}
 DECL|method|isSuccess ()
 specifier|public
+specifier|synchronized
 name|boolean
 name|isSuccess
 parameter_list|()
@@ -965,6 +966,11 @@ operator|.
 name|getCallId
 argument_list|()
 argument_list|,
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+operator|+
 name|expirationTime
 argument_list|)
 return|;
@@ -998,6 +1004,11 @@ argument_list|()
 argument_list|,
 name|payload
 argument_list|,
+name|System
+operator|.
+name|nanoTime
+argument_list|()
+operator|+
 name|expirationTime
 argument_list|)
 return|;
