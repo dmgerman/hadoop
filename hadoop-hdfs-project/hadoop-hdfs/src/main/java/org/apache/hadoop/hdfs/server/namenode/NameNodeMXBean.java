@@ -241,6 +241,13 @@ name|String
 name|getCompileInfo
 parameter_list|()
 function_decl|;
+comment|/**    * Get the list of corrupt files    *    * @return the list of corrupt files, as a JSON string.    */
+DECL|method|getCorruptFiles ()
+specifier|public
+name|String
+name|getCorruptFiles
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
