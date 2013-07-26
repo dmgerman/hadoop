@@ -5435,6 +5435,20 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"got non null result for getFileLinkInfo for "
+operator|+
+name|req
+operator|.
+name|getSrc
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|GetFileLinkInfoResponseProto
 operator|.
@@ -5457,6 +5471,20 @@ return|;
 block|}
 else|else
 block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"got  null result for getFileLinkInfo for "
+operator|+
+name|req
+operator|.
+name|getSrc
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return
 name|VOID_GETFILELINKINFO_RESPONSE
 return|;
