@@ -3828,6 +3828,26 @@ name|DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT
 init|=
 literal|0.03f
 decl_stmt|;
+comment|// Hidden configuration undocumented in hdfs-site. xml
+comment|// Timeout to wait for block receiver and responder thread to stop
+DECL|field|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY
+init|=
+literal|"dfs.datanode.xceiver.stop.timeout.millis"
+decl_stmt|;
+DECL|field|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
+init|=
+literal|60000
+decl_stmt|;
 block|}
 end_class
 

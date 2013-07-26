@@ -12259,6 +12259,7 @@ argument_list|()
 return|;
 block|}
 DECL|method|getDnConf ()
+specifier|public
 name|DNConf
 name|getDnConf
 parameter_list|()

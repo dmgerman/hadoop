@@ -900,20 +900,6 @@ name|hadoop
 operator|.
 name|io
 operator|.
-name|IOUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
 name|nativeio
 operator|.
 name|NativeIO
@@ -3556,7 +3542,15 @@ comment|// kill the previous writer
 name|rbw
 operator|.
 name|stopWriter
+argument_list|(
+name|datanode
+operator|.
+name|getDnConf
 argument_list|()
+operator|.
+name|getXceiverStopTimeout
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|rbw
 operator|.
@@ -4165,7 +4159,15 @@ comment|// Stop the previous writer
 name|rbw
 operator|.
 name|stopWriter
+argument_list|(
+name|datanode
+operator|.
+name|getDnConf
 argument_list|()
+operator|.
+name|getXceiverStopTimeout
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|rbw
 operator|.
@@ -7557,11 +7559,19 @@ name|rBlock
 operator|.
 name|getNewGenerationStamp
 argument_list|()
+argument_list|,
+name|datanode
+operator|.
+name|getDnConf
+argument_list|()
+operator|.
+name|getXceiverStopTimeout
+argument_list|()
 argument_list|)
 return|;
 block|}
 comment|/** static version of {@link #initReplicaRecovery(Block, long)}. */
-DECL|method|initReplicaRecovery (String bpid, ReplicaMap map, Block block, long recoveryId)
+DECL|method|initReplicaRecovery (String bpid, ReplicaMap map, Block block, long recoveryId, long xceiverStopTimeout)
 specifier|static
 name|ReplicaRecoveryInfo
 name|initReplicaRecovery
@@ -7577,6 +7587,9 @@ name|block
 parameter_list|,
 name|long
 name|recoveryId
+parameter_list|,
+name|long
+name|xceiverStopTimeout
 parameter_list|)
 throws|throws
 name|IOException
@@ -7646,7 +7659,9 @@ decl_stmt|;
 name|rip
 operator|.
 name|stopWriter
-argument_list|()
+argument_list|(
+name|xceiverStopTimeout
+argument_list|)
 expr_stmt|;
 comment|//check replica bytes on disk.
 if|if

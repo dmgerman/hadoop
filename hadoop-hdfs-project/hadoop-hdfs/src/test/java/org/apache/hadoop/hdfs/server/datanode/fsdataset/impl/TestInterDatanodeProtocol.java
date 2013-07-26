@@ -1151,9 +1151,6 @@ comment|//create a file
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem
@@ -1551,7 +1548,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Test     * {@link FsDatasetImpl#initReplicaRecovery(String, ReplicaMap, Block, long)}    */
+comment|/** Test     * {@link FsDatasetImpl#initReplicaRecovery(String, ReplicaMap, Block, long, long)}    */
 annotation|@
 name|Test
 DECL|method|testInitReplicaRecovery ()
@@ -1706,6 +1703,10 @@ literal|0
 index|]
 argument_list|,
 name|recoveryid
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1785,6 +1786,10 @@ literal|0
 index|]
 argument_list|,
 name|recoveryid2
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -1851,6 +1856,10 @@ argument_list|,
 name|b
 argument_list|,
 name|recoveryid
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1918,6 +1927,10 @@ argument_list|,
 name|b
 argument_list|,
 name|recoveryid
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1969,6 +1982,10 @@ argument_list|,
 name|b
 argument_list|,
 name|recoveryid
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -2035,6 +2052,10 @@ argument_list|,
 name|b
 argument_list|,
 name|recoveryid
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 expr_stmt|;
 name|fail
@@ -2120,9 +2141,6 @@ comment|//create a file
 name|DistributedFileSystem
 name|dfs
 init|=
-operator|(
-name|DistributedFileSystem
-operator|)
 name|cluster
 operator|.
 name|getFileSystem

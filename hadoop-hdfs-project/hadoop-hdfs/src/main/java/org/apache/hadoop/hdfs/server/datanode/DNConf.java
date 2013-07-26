@@ -21,6 +21,20 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -224,6 +238,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_HEARTBEAT_INTERVAL_DEFAULT
 import|;
 end_import
@@ -375,7 +421,12 @@ comment|/**  * Simple class encapsulating all of the configuration that the Data
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|DNConf
+specifier|public
 class|class
 name|DNConf
 block|{
@@ -468,6 +519,11 @@ DECL|field|encryptionAlgorithm
 specifier|final
 name|String
 name|encryptionAlgorithm
+decl_stmt|;
+DECL|field|xceiverStopTimeout
+specifier|final
+name|long
+name|xceiverStopTimeout
 decl_stmt|;
 DECL|method|DNConf (Configuration conf)
 specifier|public
@@ -744,6 +800,19 @@ argument_list|(
 name|DFS_DATA_ENCRYPTION_ALGORITHM_KEY
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|xceiverStopTimeout
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY
+argument_list|,
+name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 comment|// We get minimumNameNodeVersion via a method so it can be mocked out in tests.
 DECL|method|getMinimumNameNodeVersion ()
@@ -755,6 +824,16 @@ return|return
 name|this
 operator|.
 name|minimumNameNodeVersion
+return|;
+block|}
+DECL|method|getXceiverStopTimeout ()
+specifier|public
+name|long
+name|getXceiverStopTimeout
+parameter_list|()
+block|{
+return|return
+name|xceiverStopTimeout
 return|;
 block|}
 block|}

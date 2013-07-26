@@ -164,6 +164,20 @@ name|DataChecksum
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|StringUtils
+import|;
+end_import
+
 begin_comment
 comment|/**   * This class defines a replica in a pipeline, which  * includes a persistent replica being written to by a dfs client or  * a temporary replica being replicated by a source datanode or  * being copied for the balancing purpose.  *   * The base class implements a temporary replica  */
 end_comment
@@ -537,11 +551,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Interrupt the writing thread and wait until it dies    * @throws IOException the waiting is interrupted    */
-DECL|method|stopWriter ()
+DECL|method|stopWriter (long xceiverStopTimeout)
 specifier|public
 name|void
 name|stopWriter
-parameter_list|()
+parameter_list|(
+name|long
+name|xceiverStopTimeout
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -574,8 +591,54 @@ block|{
 name|writer
 operator|.
 name|join
-argument_list|()
+argument_list|(
+name|xceiverStopTimeout
+argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|writer
+operator|.
+name|isAlive
+argument_list|()
+condition|)
+block|{
+specifier|final
+name|String
+name|msg
+init|=
+literal|"Join on writer thread "
+operator|+
+name|writer
+operator|+
+literal|" timed out"
+decl_stmt|;
+name|DataNode
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|msg
+operator|+
+literal|"\n"
+operator|+
+name|StringUtils
+operator|.
+name|getStackTrace
+argument_list|(
+name|writer
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|msg
+argument_list|)
+throw|;
+block|}
 block|}
 catch|catch
 parameter_list|(
