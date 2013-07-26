@@ -936,6 +936,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|blockLog
+specifier|public
 specifier|static
 specifier|final
 name|Log
@@ -12396,8 +12397,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * The given node is reporting incremental information about some blocks.    * This includes blocks that are starting to be received, completed being    * received, or deleted.    */
-DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final String poolId, final ReceivedDeletedBlockInfo blockInfos[] )
+comment|/**    * The given node is reporting incremental information about some blocks.    * This includes blocks that are starting to be received, completed being    * received, or deleted.    *     * This method must be called with FSNamesystem lock held.    */
+DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final String poolId, final ReceivedDeletedBlockInfo blockInfos[])
 specifier|public
 name|void
 name|processIncrementalBlockReport
@@ -12418,11 +12419,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+assert|assert
 name|namesystem
 operator|.
-name|writeLock
+name|hasWriteLock
 argument_list|()
-expr_stmt|;
+assert|;
 name|int
 name|received
 init|=
@@ -12438,8 +12440,6 @@ name|receiving
 init|=
 literal|0
 decl_stmt|;
-try|try
-block|{
 specifier|final
 name|DatanodeDescriptor
 name|node
@@ -12622,14 +12622,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-block|}
-finally|finally
-block|{
-name|namesystem
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
 name|blockLog
 operator|.
 name|debug
@@ -12657,7 +12649,6 @@ operator|+
 name|deleted
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Return the number of nodes hosting a given block, grouped    * by the state of those replicas.    */
 DECL|method|countNodes (Block b)

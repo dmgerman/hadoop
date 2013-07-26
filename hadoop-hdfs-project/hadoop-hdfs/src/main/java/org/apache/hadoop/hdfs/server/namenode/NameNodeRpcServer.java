@@ -5885,9 +5885,6 @@ expr_stmt|;
 block|}
 name|namesystem
 operator|.
-name|getBlockManager
-argument_list|()
-operator|.
 name|processIncrementalBlockReport
 argument_list|(
 name|nodeReg
