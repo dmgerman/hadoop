@@ -394,7 +394,9 @@ argument_list|,
 literal|"build/test/data/"
 argument_list|)
 decl_stmt|;
-return|return
+name|File
+name|writeDir
+init|=
 operator|new
 name|File
 argument_list|(
@@ -402,6 +404,14 @@ name|writeLoc
 argument_list|,
 literal|"slive"
 argument_list|)
+decl_stmt|;
+name|writeDir
+operator|.
+name|mkdirs
+argument_list|()
+expr_stmt|;
+return|return
+name|writeDir
 return|;
 block|}
 comment|/** gets where the MR job places its data + output + results */
