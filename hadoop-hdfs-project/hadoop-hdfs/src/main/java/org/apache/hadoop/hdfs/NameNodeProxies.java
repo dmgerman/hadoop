@@ -2213,11 +2213,6 @@ block|}
 block|}
 block|}
 comment|/** Creates the Failover proxy provider instance*/
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|method|createFailoverProxyProvider ( Configuration conf, Class<FailoverProxyProvider<T>> failoverProxyProviderClass, Class<T> xface, URI nameNodeUri)
 specifier|private
 specifier|static
@@ -2302,7 +2297,7 @@ argument_list|)
 decl_stmt|;
 name|FailoverProxyProvider
 argument_list|<
-name|?
+name|T
 argument_list|>
 name|provider
 init|=
@@ -2318,12 +2313,6 @@ name|xface
 argument_list|)
 decl_stmt|;
 return|return
-operator|(
-name|FailoverProxyProvider
-argument_list|<
-name|T
-argument_list|>
-operator|)
 name|provider
 return|;
 block|}

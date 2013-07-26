@@ -1333,7 +1333,9 @@ name|void
 name|testSerial
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|testSerial
 argument_list|(
@@ -1383,7 +1385,9 @@ name|int
 name|callCount
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|Server
 name|server
@@ -1578,7 +1582,7 @@ name|void
 name|testStandAloneClient
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|Client
 name|client
@@ -2019,7 +2023,11 @@ argument_list|>
 name|clientResponseClass
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InstantiationException
+throws|,
+name|IllegalAccessException
 block|{
 comment|// start server
 name|Server
@@ -2506,7 +2514,7 @@ name|void
 name|testSocketFactoryException
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|SocketFactory
 name|mockFactory
@@ -2623,7 +2631,7 @@ name|void
 name|testRTEDuringConnectionSetup
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 comment|// Set up a socket factory which returns sockets which
 comment|// throw an RTE when setSoTimeout is called.
@@ -2870,7 +2878,7 @@ name|void
 name|testIpcTimeout
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 comment|// start server
 name|Server
@@ -3002,7 +3010,7 @@ name|void
 name|testIpcConnectTimeout
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 comment|// start server
 name|Server
@@ -3116,7 +3124,7 @@ name|void
 name|testIpcWithServiceClass
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 comment|// start server
 name|Server
@@ -3241,7 +3249,7 @@ name|boolean
 name|noChanged
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|Client
 name|client
@@ -3453,7 +3461,7 @@ name|void
 name|testSocketLeak
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|Assume
 operator|.
@@ -3558,7 +3566,7 @@ name|void
 name|testIpcFromHadoop_0_18_13
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|doIpcVersionTest
 argument_list|(
@@ -3580,7 +3588,7 @@ name|void
 name|testIpcFromHadoop0_20_3
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|doIpcVersionTest
 argument_list|(
@@ -3602,7 +3610,7 @@ name|void
 name|testIpcFromHadoop0_21_0
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|doIpcVersionTest
 argument_list|(
@@ -3624,7 +3632,7 @@ name|void
 name|testHttpGetResponse
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|doIpcVersionTest
 argument_list|(
@@ -3650,7 +3658,7 @@ name|void
 name|testConnectionRetriesOnSocketTimeoutExceptions
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|Configuration
 name|conf
@@ -3730,7 +3738,7 @@ name|void
 name|testCallIdAndRetry
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 specifier|final
 name|CallInfo
@@ -3988,7 +3996,7 @@ name|void
 name|testRetryProxy
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 specifier|final
 name|Client
@@ -4175,7 +4183,7 @@ name|void
 name|testInitialCallRetryCount
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 comment|// Override client to store the call id
 specifier|final
@@ -4304,7 +4312,7 @@ name|void
 name|testCallRetryCount
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
 block|{
 specifier|final
 name|int
@@ -4442,7 +4450,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Tests that client generates a unique sequential call ID for each RPC call,    * even if multiple threads are using the same client.    */
+comment|/**    * Tests that client generates a unique sequential call ID for each RPC call,    * even if multiple threads are using the same client.  * @throws InterruptedException     */
 annotation|@
 name|Test
 DECL|method|testUniqueSequentialCallIds ()
@@ -4451,7 +4459,9 @@ name|void
 name|testUniqueSequentialCallIds
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|int
 name|serverThreads
@@ -4868,7 +4878,7 @@ index|[]
 name|expectedResponse
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
 block|{
 name|Server
 name|server

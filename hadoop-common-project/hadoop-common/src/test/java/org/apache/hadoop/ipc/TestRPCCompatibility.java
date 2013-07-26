@@ -1563,7 +1563,7 @@ operator|==
 name|intEchoHashAlias
 argument_list|)
 expr_stmt|;
-comment|// Make sure that methods with the same returninig type and method name but
+comment|// Make sure that methods with the same returning type and method name but
 comment|// larger number of parameter types have different hash code
 name|int
 name|intEchoHash2

@@ -587,7 +587,9 @@ name|void
 name|testResponseBuffer
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|Server
 operator|.
@@ -633,7 +635,9 @@ name|void
 name|testServerResponder
 parameter_list|()
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|testServerResponder
 argument_list|(
@@ -675,7 +679,9 @@ name|int
 name|callCount
 parameter_list|)
 throws|throws
-name|Exception
+name|IOException
+throws|,
+name|InterruptedException
 block|{
 name|Server
 name|server

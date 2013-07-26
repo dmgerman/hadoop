@@ -8768,6 +8768,9 @@ comment|//ensure properties is set and deprecation is handled
 for|for
 control|(
 name|Enumeration
+argument_list|<
+name|Object
+argument_list|>
 name|e
 init|=
 name|properties

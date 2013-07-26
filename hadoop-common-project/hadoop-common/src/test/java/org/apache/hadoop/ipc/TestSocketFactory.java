@@ -147,8 +147,6 @@ specifier|public
 name|void
 name|testSocketFactoryAsKeyInMap
 parameter_list|()
-throws|throws
-name|Exception
 block|{
 name|Map
 argument_list|<
