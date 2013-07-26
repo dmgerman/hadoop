@@ -88,6 +88,15 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
+DECL|field|seed
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|seed
+init|=
+name|starttime
+decl_stmt|;
 DECL|field|ran
 specifier|private
 specifier|static
@@ -98,7 +107,7 @@ init|=
 operator|new
 name|Random
 argument_list|(
-name|starttime
+name|seed
 argument_list|)
 decl_stmt|;
 static|static
@@ -115,7 +124,7 @@ argument_list|)
 operator|+
 literal|", seed="
 operator|+
-name|starttime
+name|seed
 argument_list|)
 expr_stmt|;
 block|}
@@ -370,6 +379,8 @@ name|nextInt
 argument_list|(
 name|modulus
 argument_list|)
+operator|+
+literal|1
 decl_stmt|;
 name|checkSizeLimit
 argument_list|(
