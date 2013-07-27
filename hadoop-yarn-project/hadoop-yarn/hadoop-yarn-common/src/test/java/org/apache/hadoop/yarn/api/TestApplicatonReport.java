@@ -272,6 +272,16 @@ argument_list|,
 name|appReport3
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|appReport1
+operator|.
+name|getAMRMToken
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|createApplicationReport ( int appIdInt, int appAttemptIdInt, long timestamp)
 specifier|protected
@@ -361,6 +371,8 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_APPLICATION_TYPE
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 return|return

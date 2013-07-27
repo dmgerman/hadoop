@@ -1713,6 +1713,44 @@ name|service
 argument_list|)
 return|;
 block|}
+DECL|method|newAMRMToken (byte[] identifier, String kind, byte[] password, String service)
+specifier|public
+specifier|static
+name|Token
+name|newAMRMToken
+parameter_list|(
+name|byte
+index|[]
+name|identifier
+parameter_list|,
+name|String
+name|kind
+parameter_list|,
+name|byte
+index|[]
+name|password
+parameter_list|,
+name|String
+name|service
+parameter_list|)
+block|{
+return|return
+name|newToken
+argument_list|(
+name|Token
+operator|.
+name|class
+argument_list|,
+name|identifier
+argument_list|,
+name|kind
+argument_list|,
+name|password
+argument_list|,
+name|service
+argument_list|)
+return|;
+block|}
 annotation|@
 name|Private
 annotation|@
@@ -2146,7 +2184,7 @@ return|return
 name|request
 return|;
 block|}
-DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType)
+DECL|method|newApplicationReport ( ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String appType, Token amRmToken)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -2205,6 +2243,9 @@ name|progress
 parameter_list|,
 name|String
 name|appType
+parameter_list|,
+name|Token
+name|amRmToken
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -2343,6 +2384,13 @@ operator|.
 name|setApplicationType
 argument_list|(
 name|appType
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setAMRMToken
+argument_list|(
+name|amRmToken
 argument_list|)
 expr_stmt|;
 return|return

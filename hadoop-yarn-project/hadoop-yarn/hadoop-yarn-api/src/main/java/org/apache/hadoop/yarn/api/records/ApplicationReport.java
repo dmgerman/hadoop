@@ -135,7 +135,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType)
+DECL|method|newInstance (ApplicationId applicationId, ApplicationAttemptId applicationAttemptId, String user, String queue, String name, String host, int rpcPort, Token clientToAMToken, YarnApplicationState state, String diagnostics, String url, long startTime, long finishTime, FinalApplicationStatus finalStatus, ApplicationResourceUsageReport appResources, String origTrackingUrl, float progress, String applicationType, Token amRmToken)
 specifier|public
 specifier|static
 name|ApplicationReport
@@ -194,6 +194,9 @@ name|progress
 parameter_list|,
 name|String
 name|applicationType
+parameter_list|,
+name|Token
+name|amRmToken
 parameter_list|)
 block|{
 name|ApplicationReport
@@ -332,6 +335,13 @@ operator|.
 name|setApplicationType
 argument_list|(
 name|applicationType
+argument_list|)
+expr_stmt|;
+name|report
+operator|.
+name|setAMRMToken
+argument_list|(
+name|amRmToken
 argument_list|)
 expr_stmt|;
 return|return
@@ -806,6 +816,32 @@ parameter_list|(
 name|String
 name|applicationType
 parameter_list|)
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Stable
+DECL|method|setAMRMToken (Token amRmToken)
+specifier|public
+specifier|abstract
+name|void
+name|setAMRMToken
+parameter_list|(
+name|Token
+name|amRmToken
+parameter_list|)
+function_decl|;
+comment|/**    * Get the AMRM token of the application.    *<p/>    * The AMRM token is required for AM to RM scheduling operations. For     * managed Application Masters Yarn takes care of injecting it. For unmanaged    * Applications Masters, the token must be obtained via this method and set    * in the {@link org.apache.hadoop.security.UserGroupInformation} of the    * current user.    *<p/>    * The AMRM token will be returned only if all the following conditions are    * met:    *<li>    *<ul>the requester is the owner of the ApplicationMaster</ul>    *<ul>the application master is an unmanaged ApplicationMaster</ul>    *<ul>the application master is in ACCEPTED state</ul>    *</li>    * Else this method returns NULL.    *     * @return the AM to RM token if available.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getAMRMToken ()
+specifier|public
+specifier|abstract
+name|Token
+name|getAMRMToken
+parameter_list|()
 function_decl|;
 block|}
 end_class

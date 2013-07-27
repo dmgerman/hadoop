@@ -336,6 +336,22 @@ name|YarnException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
+name|AMRMTokenIdentifier
+import|;
+end_import
+
 begin_class
 annotation|@
 name|InterfaceAudience
@@ -438,6 +454,34 @@ specifier|public
 specifier|abstract
 name|ApplicationReport
 name|getApplicationReport
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    * Get the AMRM token of the application.    *<p/>    * The AMRM token is required for AM to RM scheduling operations. For     * managed Application Masters Yarn takes care of injecting it. For unmanaged    * Applications Masters, the token must be obtained via this method and set    * in the {@link org.apache.hadoop.security.UserGroupInformation} of the    * current user.    *<p/>    * The AMRM token will be returned only if all the following conditions are    * met:    *<li>    *<ul>the requester is the owner of the ApplicationMaster</ul>    *<ul>the application master is an unmanaged ApplicationMaster</ul>    *<ul>the application master is in ACCEPTED state</ul>    *</li>    * Else this method returns NULL.    *    * @param appId {@link ApplicationId} of the application to get the AMRM token    * @return the AMRM token if available    * @throws YarnException    * @throws IOException    */
+specifier|public
+specifier|abstract
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+DECL|method|getAMRMToken (ApplicationId appId)
+name|getAMRMToken
 parameter_list|(
 name|ApplicationId
 name|appId
