@@ -1462,15 +1462,6 @@ operator|new
 name|Credentials
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-comment|// TODO: Security enabled/disabled info should come from RM.
 name|DataInputByteBuffer
 name|dibb
 init|=
@@ -1506,7 +1497,6 @@ argument_list|(
 name|dibb
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|// Add AMRMToken
 name|Token
