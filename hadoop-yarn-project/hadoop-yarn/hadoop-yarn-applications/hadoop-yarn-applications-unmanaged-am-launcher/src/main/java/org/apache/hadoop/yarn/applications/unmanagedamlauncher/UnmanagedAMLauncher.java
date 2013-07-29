@@ -332,24 +332,6 @@ name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
-operator|.
-name|GetNewApplicationResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
 name|records
 operator|.
 name|ApplicationAttemptId
@@ -1129,6 +1111,9 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Service will be empty but that's okay, we are just passing down only
+comment|// AMRMToken down to the real AM which eventually sets the correct
+comment|// service-address.
 name|credentials
 operator|.
 name|addToken

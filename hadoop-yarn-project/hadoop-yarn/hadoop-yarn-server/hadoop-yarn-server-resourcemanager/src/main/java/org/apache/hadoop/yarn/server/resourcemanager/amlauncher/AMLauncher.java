@@ -670,6 +670,20 @@ name|ConverterUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * The launch of the AM itself.  */
 end_comment
@@ -1505,8 +1519,6 @@ name|AMRMTokenIdentifier
 argument_list|>
 name|amrmToken
 init|=
-name|application
-operator|.
 name|getAMRMToken
 argument_list|()
 decl_stmt|;
@@ -1566,6 +1578,24 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getAMRMToken ()
+specifier|protected
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|getAMRMToken
+parameter_list|()
+block|{
+return|return
+name|application
+operator|.
+name|getAMRMToken
+argument_list|()
+return|;
 block|}
 annotation|@
 name|SuppressWarnings
