@@ -1572,7 +1572,9 @@ block|{
 comment|// Because there are no tokens, the request should be rejected as the
 comment|// server side will assume we are trying simple auth.
 name|String
-name|availableAuthMethods
+name|expectedMessage
+init|=
+literal|""
 decl_stmt|;
 if|if
 condition|(
@@ -1582,16 +1584,16 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|availableAuthMethods
+name|expectedMessage
 operator|=
-literal|"[TOKEN, KERBEROS]"
+literal|"Client cannot authenticate via:[TOKEN]"
 expr_stmt|;
 block|}
 else|else
 block|{
-name|availableAuthMethods
+name|expectedMessage
 operator|=
-literal|"[TOKEN]"
+literal|"SIMPLE authentication is not enabled.  Available:[TOKEN]"
 expr_stmt|;
 block|}
 name|Assert
@@ -1608,11 +1610,7 @@ argument_list|()
 operator|.
 name|contains
 argument_list|(
-literal|"SIMPLE authentication is not enabled.  "
-operator|+
-literal|"Available:"
-operator|+
-name|availableAuthMethods
+name|expectedMessage
 argument_list|)
 argument_list|)
 expr_stmt|;

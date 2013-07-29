@@ -200,6 +200,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|SaslRpcServer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -1293,15 +1307,6 @@ name|serverConf
 init|=
 name|conf
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
 comment|// If the auth is not-simple, enforce it to be token-based.
 name|serverConf
 operator|=
@@ -1319,9 +1324,9 @@ name|CommonConfigurationKeysPublic
 operator|.
 name|HADOOP_SECURITY_AUTHENTICATION
 argument_list|,
-name|UserGroupInformation
+name|SaslRpcServer
 operator|.
-name|AuthenticationMethod
+name|AuthMethod
 operator|.
 name|TOKEN
 operator|.
@@ -1329,7 +1334,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 name|this
 operator|.
 name|server
