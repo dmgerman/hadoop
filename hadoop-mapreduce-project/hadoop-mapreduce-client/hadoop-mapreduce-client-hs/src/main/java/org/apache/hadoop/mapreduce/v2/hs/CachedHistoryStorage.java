@@ -324,6 +324,20 @@ name|YarnRuntimeException
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Manages an in memory cache of parsed Job History files.  */
 end_comment
@@ -396,11 +410,6 @@ name|hsManager
 expr_stmt|;
 block|}
 annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"serial"
-argument_list|)
-annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
 specifier|public
@@ -427,6 +436,26 @@ argument_list|(
 literal|"CachedHistoryStorage Init"
 argument_list|)
 expr_stmt|;
+name|createLoadedJobCache
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"serial"
+argument_list|)
+DECL|method|createLoadedJobCache (Configuration conf)
+specifier|private
+name|void
+name|createLoadedJobCache
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
 name|loadedJobCacheSize
 operator|=
 name|conf
@@ -495,6 +524,59 @@ block|}
 block|}
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|refreshLoadedJobCache ()
+specifier|public
+name|void
+name|refreshLoadedJobCache
+parameter_list|()
+block|{
+if|if
+condition|(
+name|getServiceState
+argument_list|()
+operator|==
+name|STATE
+operator|.
+name|STARTED
+condition|)
+block|{
+name|setConfig
+argument_list|(
+name|createConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|createLoadedJobCache
+argument_list|(
+name|getConfig
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Failed to execute refreshLoadedJobCache: CachedHistoryStorage is not started"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createConf ()
+name|Configuration
+name|createConf
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Configuration
+argument_list|()
+return|;
 block|}
 DECL|method|CachedHistoryStorage ()
 specifier|public
@@ -594,6 +676,22 @@ name|e
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getLoadedJobCache ()
+name|Map
+argument_list|<
+name|JobId
+argument_list|,
+name|Job
+argument_list|>
+name|getLoadedJobCache
+parameter_list|()
+block|{
+return|return
+name|loadedJobCache
+return|;
 block|}
 annotation|@
 name|Override
