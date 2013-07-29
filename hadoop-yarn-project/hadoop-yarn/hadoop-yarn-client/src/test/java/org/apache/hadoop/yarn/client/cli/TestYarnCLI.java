@@ -2982,14 +2982,28 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\tMemory-Used : 0M"
+literal|"\tMemory-Used : 0MB"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\tMemory-Capacity : 0"
+literal|"\tMemory-Capacity : 0MB"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tCPU-Used : 0 vcores"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\tCPU-Capacity : 0 vcores"
 argument_list|)
 expr_stmt|;
 name|pw

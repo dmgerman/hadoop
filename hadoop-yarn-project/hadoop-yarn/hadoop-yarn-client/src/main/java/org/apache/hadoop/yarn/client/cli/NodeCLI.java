@@ -869,7 +869,7 @@ operator|==
 literal|null
 operator|)
 condition|?
-literal|"0M"
+literal|"0MB"
 else|:
 operator|(
 name|nodeReport
@@ -880,7 +880,7 @@ operator|.
 name|getMemory
 argument_list|()
 operator|+
-literal|"M"
+literal|"MB"
 operator|)
 argument_list|)
 expr_stmt|;
@@ -902,6 +902,65 @@ argument_list|()
 operator|.
 name|getMemory
 argument_list|()
+operator|+
+literal|"MB"
+argument_list|)
+expr_stmt|;
+name|nodeReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tCPU-Used : "
+argument_list|)
+expr_stmt|;
+name|nodeReportStr
+operator|.
+name|println
+argument_list|(
+operator|(
+name|nodeReport
+operator|.
+name|getUsed
+argument_list|()
+operator|==
+literal|null
+operator|)
+condition|?
+literal|"0 vcores"
+else|:
+operator|(
+name|nodeReport
+operator|.
+name|getUsed
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|+
+literal|" vcores"
+operator|)
+argument_list|)
+expr_stmt|;
+name|nodeReportStr
+operator|.
+name|print
+argument_list|(
+literal|"\tCPU-Capacity : "
+argument_list|)
+expr_stmt|;
+name|nodeReportStr
+operator|.
+name|println
+argument_list|(
+name|nodeReport
+operator|.
+name|getCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+operator|+
+literal|" vcores"
 argument_list|)
 expr_stmt|;
 block|}
