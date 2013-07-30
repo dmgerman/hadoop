@@ -1030,6 +1030,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|Server
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -2943,8 +2957,48 @@ name|buf
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Record the RPC IDs if necessary */
+DECL|method|logRpcIds (FSEditLogOp op, boolean toLogRpcIds)
+specifier|private
+name|void
+name|logRpcIds
+parameter_list|(
+name|FSEditLogOp
+name|op
+parameter_list|,
+name|boolean
+name|toLogRpcIds
+parameter_list|)
+block|{
+if|if
+condition|(
+name|toLogRpcIds
+condition|)
+block|{
+name|op
+operator|.
+name|setRpcClientId
+argument_list|(
+name|Server
+operator|.
+name|getClientId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|op
+operator|.
+name|setRpcCallId
+argument_list|(
+name|Server
+operator|.
+name|getCallId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**     * Add open lease record to edit log.     * Records the block locations of the last block.    */
-DECL|method|logOpenFile (String path, INodeFileUnderConstruction newNode)
+DECL|method|logOpenFile (String path, INodeFileUnderConstruction newNode, boolean toLogRpcIds)
 specifier|public
 name|void
 name|logOpenFile
@@ -2954,6 +3008,9 @@ name|path
 parameter_list|,
 name|INodeFileUnderConstruction
 name|newNode
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|AddOp
@@ -3046,6 +3103,13 @@ name|getClientMachine
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
@@ -3137,7 +3201,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logUpdateBlocks (String path, INodeFileUnderConstruction file)
+DECL|method|logUpdateBlocks (String path, INodeFileUnderConstruction file, boolean toLogRpcIds)
 specifier|public
 name|void
 name|logUpdateBlocks
@@ -3147,6 +3211,9 @@ name|path
 parameter_list|,
 name|INodeFileUnderConstruction
 name|file
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|UpdateBlocksOp
@@ -3175,6 +3242,13 @@ name|getBlocks
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
@@ -3243,7 +3317,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Add rename record to edit log    * TODO: use String parameters until just before writing to disk    */
-DECL|method|logRename (String src, String dst, long timestamp)
+DECL|method|logRename (String src, String dst, long timestamp, boolean toLogRpcIds)
 name|void
 name|logRename
 parameter_list|(
@@ -3255,6 +3329,9 @@ name|dst
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|RenameOldOp
@@ -3285,6 +3362,13 @@ argument_list|(
 name|timestamp
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
@@ -3292,7 +3376,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Add rename record to edit log    */
-DECL|method|logRename (String src, String dst, long timestamp, Options.Rename... options)
+DECL|method|logRename (String src, String dst, long timestamp, boolean toLogRpcIds, Options.Rename... options)
 name|void
 name|logRename
 parameter_list|(
@@ -3304,6 +3388,9 @@ name|dst
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|,
 name|Options
 operator|.
@@ -3345,6 +3432,13 @@ argument_list|(
 name|options
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
@@ -3532,7 +3626,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * concat(trg,src..) log    */
-DECL|method|logConcat (String trg, String [] srcs, long timestamp)
+DECL|method|logConcat (String trg, String[] srcs, long timestamp, boolean toLogRpcIds)
 name|void
 name|logConcat
 parameter_list|(
@@ -3545,6 +3639,9 @@ name|srcs
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|ConcatDeleteOp
@@ -3575,6 +3672,13 @@ argument_list|(
 name|timestamp
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
@@ -3582,7 +3686,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Add delete file record to edit log    */
-DECL|method|logDelete (String src, long timestamp)
+DECL|method|logDelete (String src, long timestamp, boolean toLogRpcIds)
 name|void
 name|logDelete
 parameter_list|(
@@ -3591,6 +3695,9 @@ name|src
 parameter_list|,
 name|long
 name|timestamp
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|DeleteOp
@@ -3616,6 +3723,13 @@ argument_list|(
 name|timestamp
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
@@ -3771,7 +3885,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Add a create symlink record.    */
-DECL|method|logSymlink (String path, String value, long mtime, long atime, INodeSymlink node)
+DECL|method|logSymlink (String path, String value, long mtime, long atime, INodeSymlink node, boolean toLogRpcIds)
 name|void
 name|logSymlink
 parameter_list|(
@@ -3789,6 +3903,9 @@ name|atime
 parameter_list|,
 name|INodeSymlink
 name|node
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|SymlinkOp
@@ -3840,6 +3957,13 @@ name|getPermissionStatus
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
@@ -4039,7 +4163,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logCreateSnapshot (String snapRoot, String snapName)
+DECL|method|logCreateSnapshot (String snapRoot, String snapName, boolean toLogRpcIds)
 name|void
 name|logCreateSnapshot
 parameter_list|(
@@ -4048,6 +4172,9 @@ name|snapRoot
 parameter_list|,
 name|String
 name|snapName
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|CreateSnapshotOp
@@ -4073,13 +4200,20 @@ argument_list|(
 name|snapName
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logDeleteSnapshot (String snapRoot, String snapName)
+DECL|method|logDeleteSnapshot (String snapRoot, String snapName, boolean toLogRpcIds)
 name|void
 name|logDeleteSnapshot
 parameter_list|(
@@ -4088,6 +4222,9 @@ name|snapRoot
 parameter_list|,
 name|String
 name|snapName
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|DeleteSnapshotOp
@@ -4113,13 +4250,20 @@ argument_list|(
 name|snapName
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logRenameSnapshot (String path, String snapOldName, String snapNewName)
+DECL|method|logRenameSnapshot (String path, String snapOldName, String snapNewName, boolean toLogRpcIds)
 name|void
 name|logRenameSnapshot
 parameter_list|(
@@ -4131,6 +4275,9 @@ name|snapOldName
 parameter_list|,
 name|String
 name|snapNewName
+parameter_list|,
+name|boolean
+name|toLogRpcIds
 parameter_list|)
 block|{
 name|RenameSnapshotOp
@@ -4161,6 +4308,13 @@ argument_list|(
 name|snapNewName
 argument_list|)
 decl_stmt|;
+name|logRpcIds
+argument_list|(
+name|op
+argument_list|,
+name|toLogRpcIds
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op

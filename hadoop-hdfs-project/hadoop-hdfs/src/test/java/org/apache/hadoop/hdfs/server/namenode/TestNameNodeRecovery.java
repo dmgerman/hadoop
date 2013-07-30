@@ -132,16 +132,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|Assert
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -1381,7 +1371,7 @@ name|getMaxOpSize
 parameter_list|()
 block|{
 return|return
-literal|30
+literal|36
 return|;
 block|}
 block|}

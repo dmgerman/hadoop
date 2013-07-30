@@ -3366,7 +3366,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**     * Create a new DFSClient connected to the given nameNodeUri or rpcNamenode.    * Exactly one of nameNodeUri or rpcNamenode must be null.    */
+annotation|@
+name|VisibleForTesting
 DECL|method|DFSClient (URI nameNodeUri, ClientProtocol rpcNamenode, Configuration conf, FileSystem.Statistics stats)
+specifier|public
 name|DFSClient
 parameter_list|(
 name|URI

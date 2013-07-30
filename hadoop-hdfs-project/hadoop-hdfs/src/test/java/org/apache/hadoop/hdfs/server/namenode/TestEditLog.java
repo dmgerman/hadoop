@@ -1082,6 +1082,8 @@ name|i
 operator|)
 argument_list|,
 name|inode
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|editLog
@@ -4534,6 +4536,8 @@ argument_list|(
 name|oneKB
 argument_list|,
 literal|1L
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -4583,6 +4587,8 @@ argument_list|(
 name|oneKB
 argument_list|,
 literal|1L
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

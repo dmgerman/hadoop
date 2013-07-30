@@ -1685,6 +1685,8 @@ operator|+
 name|i
 argument_list|,
 name|i
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|spyLog

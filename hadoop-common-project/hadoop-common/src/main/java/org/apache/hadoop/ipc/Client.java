@@ -5271,9 +5271,9 @@ name|this
 operator|.
 name|clientId
 operator|=
-name|StringUtils
+name|ClientId
 operator|.
-name|getUuidBytes
+name|getClientId
 argument_list|()
 expr_stmt|;
 name|this

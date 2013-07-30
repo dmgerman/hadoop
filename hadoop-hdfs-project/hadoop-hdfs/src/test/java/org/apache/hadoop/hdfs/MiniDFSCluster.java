@@ -8958,6 +8958,36 @@ name|hard
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setLeasePeriod (long soft, long hard, int nnIndex)
+specifier|public
+name|void
+name|setLeasePeriod
+parameter_list|(
+name|long
+name|soft
+parameter_list|,
+name|long
+name|hard
+parameter_list|,
+name|int
+name|nnIndex
+parameter_list|)
+block|{
+name|NameNodeAdapter
+operator|.
+name|setLeasePeriod
+argument_list|(
+name|getNamesystem
+argument_list|(
+name|nnIndex
+argument_list|)
+argument_list|,
+name|soft
+argument_list|,
+name|hard
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|setWaitSafeMode (boolean wait)
 specifier|public
 name|void

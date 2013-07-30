@@ -4482,6 +4482,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|fsImage
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|StartupOption
@@ -4596,7 +4598,6 @@ return|return
 name|namesystem
 return|;
 block|}
-comment|/**    * Create an FSNamesystem associated with the specified image.    *     * Note that this does not load any data off of disk -- if you would    * like that behavior, use {@link #loadFromDisk(Configuration)}    *    * @param conf configuration    * @param fsImage The FSImage to associate with    * @throws IOException on bad configuration    */
 DECL|method|FSNamesystem (Configuration conf, FSImage fsImage)
 name|FSNamesystem
 parameter_list|(
@@ -4605,6 +4606,32 @@ name|conf
 parameter_list|,
 name|FSImage
 name|fsImage
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|conf
+argument_list|,
+name|fsImage
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create an FSNamesystem associated with the specified image.    *     * Note that this does not load any data off of disk -- if you would    * like that behavior, use {@link #loadFromDisk(Configuration)}    *    * @param conf configuration    * @param fsImage The FSImage to associate with    * @param ignoreRetryCache Whether or not should ignore the retry cache setup    *                         step. For Secondary NN this should be set to true.    * @throws IOException on bad configuration    */
+DECL|method|FSNamesystem (Configuration conf, FSImage fsImage, boolean ignoreRetryCache)
+name|FSNamesystem
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|FSImage
+name|fsImage
+parameter_list|,
+name|boolean
+name|ignoreRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -5181,6 +5208,10 @@ name|this
 operator|.
 name|retryCache
 operator|=
+name|ignoreRetryCache
+condition|?
+literal|null
+else|:
 name|initRetryCache
 argument_list|(
 name|conf
@@ -5242,6 +5273,95 @@ expr_stmt|;
 throw|throw
 name|re
 throw|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getRetryCache ()
+specifier|public
+name|RetryCache
+name|getRetryCache
+parameter_list|()
+block|{
+return|return
+name|retryCache
+return|;
+block|}
+comment|/** Whether or not retry cache is enabled */
+DECL|method|hasRetryCache ()
+name|boolean
+name|hasRetryCache
+parameter_list|()
+block|{
+return|return
+name|retryCache
+operator|!=
+literal|null
+return|;
+block|}
+DECL|method|addCacheEntryWithPayload (byte[] clientId, int callId, Object payload)
+name|void
+name|addCacheEntryWithPayload
+parameter_list|(
+name|byte
+index|[]
+name|clientId
+parameter_list|,
+name|int
+name|callId
+parameter_list|,
+name|Object
+name|payload
+parameter_list|)
+block|{
+if|if
+condition|(
+name|retryCache
+operator|!=
+literal|null
+condition|)
+block|{
+name|retryCache
+operator|.
+name|addCacheEntryWithPayload
+argument_list|(
+name|clientId
+argument_list|,
+name|callId
+argument_list|,
+name|payload
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|addCacheEntry (byte[] clientId, int callId)
+name|void
+name|addCacheEntry
+parameter_list|(
+name|byte
+index|[]
+name|clientId
+parameter_list|,
+name|int
+name|callId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|retryCache
+operator|!=
+literal|null
+condition|)
+block|{
+name|retryCache
+operator|.
+name|addCacheEntry
+argument_list|(
+name|clientId
+argument_list|,
+name|callId
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
@@ -8860,6 +8980,10 @@ argument_list|(
 name|target
 argument_list|,
 name|srcs
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 name|success
@@ -8908,7 +9032,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|concatInt (String target, String [] srcs)
+DECL|method|concatInt (String target, String [] srcs, boolean logRetryCache)
 specifier|private
 name|void
 name|concatInt
@@ -8919,6 +9043,9 @@ parameter_list|,
 name|String
 index|[]
 name|srcs
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -9085,6 +9212,8 @@ argument_list|,
 name|target
 argument_list|,
 name|srcs
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 name|resultingStat
@@ -9129,7 +9258,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** See {@link #concat(String, String[])} */
-DECL|method|concatInternal (FSPermissionChecker pc, String target, String [] srcs)
+DECL|method|concatInternal (FSPermissionChecker pc, String target, String[] srcs, boolean logRetryCache)
 specifier|private
 name|void
 name|concatInternal
@@ -9143,6 +9272,9 @@ parameter_list|,
 name|String
 index|[]
 name|srcs
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -9654,6 +9786,8 @@ argument_list|(
 name|target
 argument_list|,
 name|srcs
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
@@ -10040,6 +10174,10 @@ argument_list|,
 name|dirPerms
 argument_list|,
 name|createParent
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 name|success
@@ -10083,7 +10221,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|createSymlinkInt (String target, String link, PermissionStatus dirPerms, boolean createParent)
+DECL|method|createSymlinkInt (String target, String link, PermissionStatus dirPerms, boolean createParent, boolean logRetryCache)
 specifier|private
 name|void
 name|createSymlinkInt
@@ -10099,6 +10237,9 @@ name|dirPerms
 parameter_list|,
 name|boolean
 name|createParent
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -10272,6 +10413,8 @@ argument_list|,
 name|dirPerms
 argument_list|,
 name|createParent
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 name|resultingStat
@@ -10859,6 +11002,10 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -10901,7 +11048,7 @@ return|return
 name|status
 return|;
 block|}
-DECL|method|startFileInt (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize)
+DECL|method|startFileInt (String src, PermissionStatus permissions, String holder, String clientMachine, EnumSet<CreateFlag> flag, boolean createParent, short replication, long blockSize, boolean logRetryCache)
 specifier|private
 name|HdfsFileStatus
 name|startFileInt
@@ -10932,6 +11079,9 @@ name|replication
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -11175,6 +11325,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|blockSize
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 name|stat
@@ -11242,7 +11394,7 @@ name|stat
 return|;
 block|}
 comment|/**    * Create a new file or overwrite an existing file<br>    *     * Once the file is create the client then allocates a new block with the next    * call using {@link NameNode#addBlock()}.    *<p>    * For description of parameters and exceptions thrown see    * {@link ClientProtocol#create()}    */
-DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, boolean create, boolean overwrite, boolean createParent, short replication, long blockSize)
+DECL|method|startFileInternal (FSPermissionChecker pc, String src, PermissionStatus permissions, String holder, String clientMachine, boolean create, boolean overwrite, boolean createParent, short replication, long blockSize, boolean logRetryEntry)
 specifier|private
 name|void
 name|startFileInternal
@@ -11276,6 +11428,9 @@ name|replication
 parameter_list|,
 name|long
 name|blockSize
+parameter_list|,
+name|boolean
+name|logRetryEntry
 parameter_list|)
 throws|throws
 name|FileAlreadyExistsException
@@ -11451,6 +11606,8 @@ argument_list|(
 name|src
 argument_list|,
 literal|true
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// File exists - delete if overwrite
@@ -11585,6 +11742,8 @@ argument_list|(
 name|src
 argument_list|,
 name|newNode
+argument_list|,
+name|logRetryEntry
 argument_list|)
 expr_stmt|;
 if|if
@@ -11642,7 +11801,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Append to an existing file for append.    *<p>    *     * The method returns the last block of the file if this is a partial block,    * which can still be used for writing more data. The client uses the returned    * block locations to form the data pipeline for this block.<br>    * The method returns null if the last block is full. The client then    * allocates a new block with the next call using {@link NameNode#addBlock()}.    *<p>    *     * For description of parameters and exceptions thrown see    * {@link ClientProtocol#append(String, String)}    *     * @return the last block locations if the block is partial or null otherwise    */
-DECL|method|appendFileInternal (FSPermissionChecker pc, String src, String holder, String clientMachine)
+DECL|method|appendFileInternal (FSPermissionChecker pc, String src, String holder, String clientMachine, boolean logRetryCache)
 specifier|private
 name|LocatedBlock
 name|appendFileInternal
@@ -11658,6 +11817,9 @@ name|holder
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -11819,6 +11981,8 @@ name|iip
 operator|.
 name|getLatestSnapshot
 argument_list|()
+argument_list|,
+name|logRetryCache
 argument_list|)
 return|;
 block|}
@@ -11847,8 +12011,8 @@ name|ie
 throw|;
 block|}
 block|}
-comment|/**    * Replace current node with a INodeUnderConstruction.    * Recreate in-memory lease record.    *     * @param src path to the file    * @param file existing file object    * @param leaseHolder identifier of the lease holder on this file    * @param clientMachine identifier of the client machine    * @param clientNode if the client is collocated with a DN, that DN's descriptor    * @param writeToEditLog whether to persist this change to the edit log    * @return the last block locations if the block is partial or null otherwise    * @throws UnresolvedLinkException    * @throws IOException    */
-DECL|method|prepareFileForWrite (String src, INodeFile file, String leaseHolder, String clientMachine, DatanodeDescriptor clientNode, boolean writeToEditLog, Snapshot latestSnapshot)
+comment|/**    * Replace current node with a INodeUnderConstruction.    * Recreate in-memory lease record.    *     * @param src path to the file    * @param file existing file object    * @param leaseHolder identifier of the lease holder on this file    * @param clientMachine identifier of the client machine    * @param clientNode if the client is collocated with a DN, that DN's descriptor    * @param writeToEditLog whether to persist this change to the edit log    * @param logRetryCache whether to record RPC ids in editlog for retry cache    *                      rebuilding    * @return the last block locations if the block is partial or null otherwise    * @throws UnresolvedLinkException    * @throws IOException    */
+DECL|method|prepareFileForWrite (String src, INodeFile file, String leaseHolder, String clientMachine, DatanodeDescriptor clientNode, boolean writeToEditLog, Snapshot latestSnapshot, boolean logRetryCache)
 name|LocatedBlock
 name|prepareFileForWrite
 parameter_list|(
@@ -11872,6 +12036,9 @@ name|writeToEditLog
 parameter_list|,
 name|Snapshot
 name|latestSnapshot
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -11951,6 +12118,8 @@ argument_list|(
 name|src
 argument_list|,
 name|cons
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
@@ -12642,6 +12811,10 @@ argument_list|,
 name|holder
 argument_list|,
 name|clientMachine
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 name|success
@@ -12686,7 +12859,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|appendFileInt (String src, String holder, String clientMachine)
+DECL|method|appendFileInt (String src, String holder, String clientMachine, boolean logRetryCache)
 specifier|private
 name|LocatedBlock
 name|appendFileInt
@@ -12699,6 +12872,9 @@ name|holder
 parameter_list|,
 name|String
 name|clientMachine
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -12850,6 +13026,8 @@ argument_list|,
 name|holder
 argument_list|,
 name|clientMachine
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
@@ -13413,6 +13591,8 @@ argument_list|(
 name|src
 argument_list|,
 name|pendingFile
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|offset
@@ -14317,6 +14497,8 @@ argument_list|(
 name|src
 argument_list|,
 name|file
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -15261,6 +15443,10 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -15303,7 +15489,7 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|renameToInt (String src, String dst)
+DECL|method|renameToInt (String src, String dst, boolean logRetryCache)
 specifier|private
 name|boolean
 name|renameToInt
@@ -15313,6 +15499,9 @@ name|src
 parameter_list|,
 name|String
 name|dst
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -15485,6 +15674,8 @@ argument_list|,
 name|src
 argument_list|,
 name|dst
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 if|if
@@ -15541,7 +15732,7 @@ block|}
 comment|/** @deprecated See {@link #renameTo(String, String)} */
 annotation|@
 name|Deprecated
-DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst)
+DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst, boolean logRetryCache)
 specifier|private
 name|boolean
 name|renameToInternal
@@ -15554,6 +15745,9 @@ name|src
 parameter_list|,
 name|String
 name|dst
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -15656,6 +15850,8 @@ argument_list|(
 name|src
 argument_list|,
 name|dst
+argument_list|,
+name|logRetryCache
 argument_list|)
 condition|)
 block|{
@@ -15872,6 +16068,10 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
+argument_list|,
 name|options
 argument_list|)
 expr_stmt|;
@@ -15968,7 +16168,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst, Options.Rename... options)
+DECL|method|renameToInternal (FSPermissionChecker pc, String src, String dst, boolean logRetryCache, Options.Rename... options)
 specifier|private
 name|void
 name|renameToInternal
@@ -15981,6 +16181,9 @@ name|src
 parameter_list|,
 name|String
 name|dst
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|,
 name|Options
 operator|.
@@ -16055,6 +16258,8 @@ name|src
 argument_list|,
 name|dst
 argument_list|,
+name|logRetryCache
+argument_list|,
 name|options
 argument_list|)
 expr_stmt|;
@@ -16120,6 +16325,10 @@ argument_list|(
 name|src
 argument_list|,
 name|recursive
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -16158,7 +16367,7 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|deleteInt (String src, boolean recursive)
+DECL|method|deleteInt (String src, boolean recursive, boolean logRetryCache)
 specifier|private
 name|boolean
 name|deleteInt
@@ -16168,6 +16377,9 @@ name|src
 parameter_list|,
 name|boolean
 name|recursive
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -16210,6 +16422,8 @@ argument_list|,
 name|recursive
 argument_list|,
 literal|true
+argument_list|,
+name|logRetryCache
 argument_list|)
 decl_stmt|;
 if|if
@@ -16270,7 +16484,7 @@ throw|;
 block|}
 block|}
 comment|/**    * Remove a file/directory from the namespace.    *<p>    * For large directories, deletion is incremental. The blocks under    * the directory are collected and deleted a small number at a time holding    * the {@link FSNamesystem} lock.    *<p>    * For small directory or file the deletion is done in one shot.    *     * @see ClientProtocol#delete(String, boolean) for description of exceptions    */
-DECL|method|deleteInternal (String src, boolean recursive, boolean enforcePermission)
+DECL|method|deleteInternal (String src, boolean recursive, boolean enforcePermission, boolean logRetryCache)
 specifier|private
 name|boolean
 name|deleteInternal
@@ -16283,6 +16497,9 @@ name|recursive
 parameter_list|,
 name|boolean
 name|enforcePermission
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -16453,6 +16670,8 @@ argument_list|,
 name|collectedBlocks
 argument_list|,
 name|removedINodes
+argument_list|,
+name|logRetryCache
 argument_list|)
 condition|)
 block|{
@@ -17880,6 +18099,8 @@ argument_list|(
 name|src
 argument_list|,
 name|pendingFile
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -19220,6 +19441,8 @@ operator|=
 name|persistBlocks
 argument_list|(
 name|pendingFile
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -19347,12 +19570,15 @@ block|}
 comment|/**    * Persist the block list for the given file.    *    * @param pendingFile    * @return Path to the given file.    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|persistBlocks (INodeFileUnderConstruction pendingFile)
+DECL|method|persistBlocks (INodeFileUnderConstruction pendingFile, boolean logRetryCache)
 name|String
 name|persistBlocks
 parameter_list|(
 name|INodeFileUnderConstruction
 name|pendingFile
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -19374,6 +19600,8 @@ argument_list|(
 name|src
 argument_list|,
 name|pendingFile
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 return|return
@@ -25867,6 +26095,10 @@ argument_list|,
 name|newBlock
 argument_list|,
 name|newNodes
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 name|success
@@ -25910,7 +26142,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** @see #updatePipeline(String, ExtendedBlock, ExtendedBlock, DatanodeID[]) */
-DECL|method|updatePipelineInternal (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
+DECL|method|updatePipelineInternal (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes, boolean logRetryCache)
 specifier|private
 name|void
 name|updatePipelineInternal
@@ -25927,6 +26159,9 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newNodes
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -26140,6 +26375,8 @@ argument_list|(
 name|src
 argument_list|,
 name|pendingFile
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 block|}
@@ -30041,6 +30278,10 @@ argument_list|(
 name|snapshotRoot
 argument_list|,
 name|snapshotName
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -30227,6 +30468,10 @@ argument_list|,
 name|snapshotOldName
 argument_list|,
 name|snapshotNewName
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 name|success
@@ -30773,6 +31018,10 @@ argument_list|(
 name|snapshotRoot
 argument_list|,
 name|snapshotName
+argument_list|,
+name|cacheEntry
+operator|!=
+literal|null
 argument_list|)
 expr_stmt|;
 name|success

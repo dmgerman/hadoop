@@ -740,6 +740,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -2014,8 +2028,10 @@ name|proxy
 return|;
 block|}
 comment|/** Gets the configured Failover proxy provider's class */
+annotation|@
+name|VisibleForTesting
 DECL|method|getFailoverProxyProviderClass ( Configuration conf, URI nameNodeUri, Class<T> xface)
-specifier|private
+specifier|public
 specifier|static
 parameter_list|<
 name|T
@@ -2213,8 +2229,10 @@ block|}
 block|}
 block|}
 comment|/** Creates the Failover proxy provider instance*/
+annotation|@
+name|VisibleForTesting
 DECL|method|createFailoverProxyProvider ( Configuration conf, Class<FailoverProxyProvider<T>> failoverProxyProviderClass, Class<T> xface, URI nameNodeUri)
-specifier|private
+specifier|public
 specifier|static
 parameter_list|<
 name|T

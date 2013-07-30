@@ -424,6 +424,17 @@ literal|"Allocate block IDs sequentially and store "
 operator|+
 literal|"block IDs in the edits log and image files"
 argument_list|)
+block|,
+DECL|enumConstant|EDITLOG_SUPPORT_RETRYCACHE
+name|EDITLOG_SUPPORT_RETRYCACHE
+argument_list|(
+operator|-
+literal|47
+argument_list|,
+literal|"Record ClientId and CallId in editlog to "
+operator|+
+literal|"enable rebuilding retry cache in case of HA failover"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

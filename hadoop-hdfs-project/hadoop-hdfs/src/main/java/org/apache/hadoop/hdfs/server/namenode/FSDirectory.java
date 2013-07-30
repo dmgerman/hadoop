@@ -2015,7 +2015,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Persist the block list for the inode.    */
-DECL|method|persistBlocks (String path, INodeFileUnderConstruction file)
+DECL|method|persistBlocks (String path, INodeFileUnderConstruction file, boolean logRetryCache)
 name|void
 name|persistBlocks
 parameter_list|(
@@ -2024,6 +2024,9 @@ name|path
 parameter_list|,
 name|INodeFileUnderConstruction
 name|file
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 block|{
 name|waitForReady
@@ -2044,6 +2047,8 @@ argument_list|(
 name|path
 argument_list|,
 name|file
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 if|if
@@ -2313,7 +2318,7 @@ block|}
 comment|/**    * @throws SnapshotAccessControlException     * @see #unprotectedRenameTo(String, String, long)    * @deprecated Use {@link #renameTo(String, String, Rename...)} instead.    */
 annotation|@
 name|Deprecated
-DECL|method|renameTo (String src, String dst)
+DECL|method|renameTo (String src, String dst, boolean logRetryCache)
 name|boolean
 name|renameTo
 parameter_list|(
@@ -2322,6 +2327,9 @@ name|src
 parameter_list|,
 name|String
 name|dst
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2408,6 +2416,8 @@ argument_list|,
 name|dst
 argument_list|,
 name|now
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 return|return
@@ -2415,7 +2425,7 @@ literal|true
 return|;
 block|}
 comment|/**    * @see #unprotectedRenameTo(String, String, long, Options.Rename...)    */
-DECL|method|renameTo (String src, String dst, Options.Rename... options)
+DECL|method|renameTo (String src, String dst, boolean logRetryCache, Options.Rename... options)
 name|void
 name|renameTo
 parameter_list|(
@@ -2424,6 +2434,9 @@ name|src
 parameter_list|,
 name|String
 name|dst
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|,
 name|Options
 operator|.
@@ -2523,6 +2536,8 @@ argument_list|,
 name|dst
 argument_list|,
 name|now
+argument_list|,
+name|logRetryCache
 argument_list|,
 name|options
 argument_list|)
@@ -5957,7 +5972,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Concat all the blocks from srcs to trg and delete the srcs files    */
-DECL|method|concat (String target, String [] srcs)
+DECL|method|concat (String target, String [] srcs, boolean supportRetryCache)
 name|void
 name|concat
 parameter_list|(
@@ -5967,6 +5982,9 @@ parameter_list|,
 name|String
 index|[]
 name|srcs
+parameter_list|,
+name|boolean
+name|supportRetryCache
 parameter_list|)
 throws|throws
 name|UnresolvedLinkException
@@ -6014,6 +6032,8 @@ argument_list|,
 name|srcs
 argument_list|,
 name|timestamp
+argument_list|,
+name|supportRetryCache
 argument_list|)
 expr_stmt|;
 block|}
@@ -6385,8 +6405,8 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Delete the target directory and collect the blocks under it    *     * @param src Path of a directory to delete    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from {@link #inodeMap}    * @return true on successful deletion; else false    */
-DECL|method|delete (String src, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes)
+comment|/**    * Delete the target directory and collect the blocks under it    *     * @param src Path of a directory to delete    * @param collectedBlocks Blocks under the deleted directory    * @param removedINodes INodes that should be removed from {@link #inodeMap}    * @param logRetryCache Whether to record RPC IDs in editlog to support retry    *                      cache rebuilding.    * @return true on successful deletion; else false    */
+DECL|method|delete (String src, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, boolean logRetryCache)
 name|boolean
 name|delete
 parameter_list|(
@@ -6401,6 +6421,9 @@ argument_list|<
 name|INode
 argument_list|>
 name|removedINodes
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|IOException
@@ -6574,6 +6597,8 @@ argument_list|(
 name|src
 argument_list|,
 name|now
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 name|incrDeletedFileCount
@@ -12109,7 +12134,6 @@ block|}
 block|}
 comment|/**    * Create FileStatus by file INode     */
 DECL|method|createFileStatus (byte[] path, INode node, Snapshot snapshot)
-specifier|private
 name|HdfsFileStatus
 name|createFileStatus
 parameter_list|(
@@ -12544,7 +12568,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Add the given symbolic link to the fs. Record it in the edits log.    */
-DECL|method|addSymlink (String path, String target, PermissionStatus dirPerms, boolean createParent)
+DECL|method|addSymlink (String path, String target, PermissionStatus dirPerms, boolean createParent, boolean logRetryCache)
 name|INodeSymlink
 name|addSymlink
 parameter_list|(
@@ -12559,6 +12583,9 @@ name|dirPerms
 parameter_list|,
 name|boolean
 name|createParent
+parameter_list|,
+name|boolean
+name|logRetryCache
 parameter_list|)
 throws|throws
 name|UnresolvedLinkException
@@ -12720,6 +12747,8 @@ argument_list|,
 name|modTime
 argument_list|,
 name|newNode
+argument_list|,
+name|logRetryCache
 argument_list|)
 expr_stmt|;
 if|if

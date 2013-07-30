@@ -24,7 +24,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertTrue
+name|assertEquals
 import|;
 end_import
 
@@ -36,7 +36,7 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertEquals
+name|assertTrue
 import|;
 end_import
 
@@ -87,6 +87,20 @@ operator|.
 name|util
 operator|.
 name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|ClientId
 import|;
 end_import
 
@@ -384,9 +398,9 @@ name|byte
 index|[]
 name|uuid
 init|=
-name|StringUtils
+name|ClientId
 operator|.
-name|getUuidBytes
+name|getClientId
 argument_list|()
 decl_stmt|;
 name|RpcRequestHeaderProto

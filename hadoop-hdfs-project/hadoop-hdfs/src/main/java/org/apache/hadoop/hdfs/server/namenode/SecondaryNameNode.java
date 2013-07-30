@@ -1629,6 +1629,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|checkpointImage
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// Initialize other scheduling parameters from the configuration

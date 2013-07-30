@@ -3401,7 +3401,10 @@ argument_list|()
 return|;
 block|}
 comment|/** get FSImage */
+annotation|@
+name|VisibleForTesting
 DECL|method|getFSImage ()
+specifier|public
 name|FSImage
 name|getFSImage
 parameter_list|()

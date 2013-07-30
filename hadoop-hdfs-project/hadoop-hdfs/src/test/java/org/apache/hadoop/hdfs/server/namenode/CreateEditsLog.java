@@ -142,24 +142,6 @@ name|Storage
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|INodeId
-import|;
-end_import
-
 begin_comment
 comment|/**  *   * CreateEditsLog  *   Synopsis: CreateEditsLog -f numFiles StartingBlockId numBlocksPerFile  *        [-r replicafactor] [-d editsLogDirectory]  *             Default replication factor is 1  *             Default edits log directory is /tmp/EditsLogOut  *     *   Create a name node's edits log in /tmp/EditsLogOut.  *   The file /tmp/EditsLogOut/current/edits can be copied to a name node's  *   dfs.namenode.name.dir/current direcotry and the name node can be started as usual.  *     *   The files are created in /createdViaInjectingInEditsLog  *   The file names contain the starting and ending blockIds; hence once can   *   create multiple edits logs using this command using non overlapping   *   block ids and feed the files to a single name node.  *     *   See Also @link #DataNodeCluster for injecting a set of matching  *   blocks created with this command into a set of simulated data nodes.  *  */
 end_comment
@@ -542,6 +524,8 @@ literal|""
 argument_list|,
 literal|null
 argument_list|)
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|editLog
