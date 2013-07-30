@@ -705,7 +705,7 @@ block|{
 return|return
 name|mapContext
 operator|.
-name|getCacheArchives
+name|getCacheFiles
 argument_list|()
 return|;
 block|}
