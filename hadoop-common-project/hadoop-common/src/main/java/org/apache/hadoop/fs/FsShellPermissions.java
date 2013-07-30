@@ -198,6 +198,20 @@ name|PathData
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class is the home for file permissions related commands.  * Moved to this separate class since FsShell is getting too large.  */
 end_comment
@@ -529,6 +543,12 @@ specifier|private
 name|String
 name|allowedChars
 init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"[-_./@a-zA-Z0-9 ]"
+else|:
 literal|"[-_./@a-zA-Z0-9]"
 decl_stmt|;
 comment|/**    * Used to change owner and/or group of files     */
@@ -577,11 +597,13 @@ literal|"\tIf only owner or group is specified then only owner or\n"
 operator|+
 literal|"\tgroup is modified.\n\n"
 operator|+
-literal|"\tThe owner and group names may only cosists of digits, alphabet,\n"
+literal|"\tThe owner and group names may only consist of digits, alphabet,\n"
 operator|+
-literal|"\tand any of '-_.@/' i.e. [-_.@/a-zA-Z0-9]. The names are case\n"
+literal|"\tand any of "
 operator|+
-literal|"\tsensitive.\n\n"
+name|allowedChars
+operator|+
+literal|". The names are case sensitive.\n\n"
 operator|+
 literal|"\tWARNING: Avoid using '.' to separate user name and group though\n"
 operator|+
