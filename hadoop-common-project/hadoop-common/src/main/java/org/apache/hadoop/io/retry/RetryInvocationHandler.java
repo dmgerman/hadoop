@@ -324,6 +324,7 @@ name|Object
 name|currentProxy
 decl_stmt|;
 DECL|method|RetryInvocationHandler (FailoverProxyProvider proxyProvider, RetryPolicy retryPolicy)
+specifier|protected
 name|RetryInvocationHandler
 parameter_list|(
 name|FailoverProxyProvider
@@ -540,7 +541,7 @@ name|e
 parameter_list|)
 block|{
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 init|=
 name|proxyProvider
 operator|.
@@ -567,6 +568,40 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|isIdempotentOrAtMostOnce
+condition|)
+block|{
+name|isIdempotentOrAtMostOnce
+operator|=
+name|proxyProvider
+operator|.
+name|getInterface
+argument_list|()
+operator|.
+name|getMethod
+argument_list|(
+name|method
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|method
+operator|.
+name|getParameterTypes
+argument_list|()
+argument_list|)
+operator|.
+name|isAnnotationPresent
+argument_list|(
+name|AtMostOnce
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+block|}
 name|RetryAction
 name|action
 init|=
@@ -581,7 +616,7 @@ operator|++
 argument_list|,
 name|invocationFailoverCount
 argument_list|,
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 argument_list|)
 decl_stmt|;
 if|if
@@ -918,7 +953,7 @@ return|;
 block|}
 block|}
 DECL|method|invokeMethod (Method method, Object[] args)
-specifier|private
+specifier|protected
 name|Object
 name|invokeMethod
 parameter_list|(

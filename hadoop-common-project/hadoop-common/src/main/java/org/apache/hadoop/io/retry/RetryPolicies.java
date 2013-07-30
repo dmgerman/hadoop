@@ -583,7 +583,7 @@ name|RetryPolicy
 block|{
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -598,7 +598,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 throws|throws
 name|Exception
@@ -619,7 +619,7 @@ name|RetryPolicy
 block|{
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -634,7 +634,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 throws|throws
 name|Exception
@@ -747,7 +747,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -762,7 +762,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 throws|throws
 name|Exception
@@ -1238,7 +1238,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int curRetry, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int curRetry, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -1253,7 +1253,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 throws|throws
 name|Exception
@@ -1885,7 +1885,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -1900,7 +1900,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 throws|throws
 name|Exception
@@ -1941,7 +1941,7 @@ name|retries
 argument_list|,
 name|failovers
 argument_list|,
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 argument_list|)
 return|;
 block|}
@@ -2049,7 +2049,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -2064,7 +2064,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 throws|throws
 name|Exception
@@ -2122,7 +2122,7 @@ name|retries
 argument_list|,
 name|failovers
 argument_list|,
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 argument_list|)
 return|;
 block|}
@@ -2328,7 +2328,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -2343,7 +2343,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 throws|throws
 name|Exception
@@ -2458,7 +2458,7 @@ condition|)
 block|{
 if|if
 condition|(
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 condition|)
 block|{
 return|return
@@ -2501,7 +2501,7 @@ name|retries
 argument_list|,
 name|failovers
 argument_list|,
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 argument_list|)
 return|;
 block|}

@@ -307,7 +307,7 @@ name|RetryPolicy
 block|{
 annotation|@
 name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isMethodIdempotent)
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
 specifier|public
 name|RetryAction
 name|shouldRetry
@@ -322,7 +322,7 @@ name|int
 name|failovers
 parameter_list|,
 name|boolean
-name|isMethodIdempotent
+name|isIdempotentOrAtMostOnce
 parameter_list|)
 block|{
 return|return
