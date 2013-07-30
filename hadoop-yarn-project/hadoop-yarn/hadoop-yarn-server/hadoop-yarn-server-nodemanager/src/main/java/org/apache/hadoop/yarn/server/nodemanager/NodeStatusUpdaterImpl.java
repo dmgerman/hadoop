@@ -2284,34 +2284,6 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
-comment|// Checking if the response id is the same which we just processed
-comment|// If yes then ignore the update.
-if|if
-condition|(
-name|lastHeartBeatID
-operator|!=
-name|response
-operator|.
-name|getResponseId
-argument_list|()
-operator|-
-literal|1
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Discarding the duplicate response "
-operator|+
-name|response
-operator|.
-name|getResponseId
-argument_list|()
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 comment|//get next heartbeat interval from response
 name|nextHeartBeatInterval
 operator|=
