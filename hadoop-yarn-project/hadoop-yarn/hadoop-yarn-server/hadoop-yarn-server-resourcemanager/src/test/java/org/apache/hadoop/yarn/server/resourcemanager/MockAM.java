@@ -893,6 +893,23 @@ return|return
 name|response
 return|;
 block|}
+DECL|method|addContainerToBeReleased (ContainerId containerId)
+specifier|public
+name|void
+name|addContainerToBeReleased
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+name|releases
+operator|.
+name|add
+argument_list|(
+name|containerId
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|allocate ( String host, int memory, int numContainers, List<ContainerId> releases)
 specifier|public
 name|AllocateResponse
