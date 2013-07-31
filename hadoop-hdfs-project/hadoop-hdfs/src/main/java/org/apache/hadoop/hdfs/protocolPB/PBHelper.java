@@ -8239,7 +8239,8 @@ operator|.
 name|getChildrenNum
 argument_list|()
 else|:
-literal|0
+operator|-
+literal|1
 argument_list|)
 return|;
 block|}
