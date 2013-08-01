@@ -8585,7 +8585,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**     * Write out the non-default properties in this configuration to the given    * {@link OutputStream}.    *     * @param out the output stream to write to.    */
+comment|/**     * Write out the non-default properties in this configuration to the given    * {@link OutputStream} using UTF-8 encoding.    *     * @param out the output stream to write to.    */
 DECL|method|writeXml (OutputStream out)
 specifier|public
 name|void
@@ -8603,6 +8603,8 @@ operator|new
 name|OutputStreamWriter
 argument_list|(
 name|out
+argument_list|,
+literal|"UTF-8"
 argument_list|)
 argument_list|)
 expr_stmt|;
