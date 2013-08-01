@@ -146,6 +146,26 @@ name|FS_DU_INTERVAL_DEFAULT
 init|=
 literal|600000
 decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY
+init|=
+literal|"fs.client.resolve.remote.symlinks"
+decl_stmt|;
+comment|/** Default value for FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY */
+DECL|field|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|//Defaults are not specified for following keys
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|NET_TOPOLOGY_SCRIPT_FILE_NAME_KEY

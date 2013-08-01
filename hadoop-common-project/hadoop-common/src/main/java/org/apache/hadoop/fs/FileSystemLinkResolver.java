@@ -190,6 +190,36 @@ parameter_list|)
 block|{
 if|if
 condition|(
+operator|!
+name|filesys
+operator|.
+name|resolveSymlinks
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Path "
+operator|+
+name|path
+operator|+
+literal|" contains a symlink"
+operator|+
+literal|" and symlink resolution is disabled ("
+operator|+
+name|CommonConfigurationKeys
+operator|.
+name|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY
+operator|+
+literal|")."
+argument_list|,
+name|e
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
 name|count
 operator|++
 operator|>

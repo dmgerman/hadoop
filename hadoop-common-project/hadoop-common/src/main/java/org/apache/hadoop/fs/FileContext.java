@@ -660,6 +660,11 @@ specifier|final
 name|UserGroupInformation
 name|ugi
 decl_stmt|;
+DECL|field|resolveSymlinks
+specifier|final
+name|boolean
+name|resolveSymlinks
+decl_stmt|;
 DECL|method|FileContext (final AbstractFileSystem defFs, final FsPermission theUmask, final Configuration aConf)
 specifier|private
 name|FileContext
@@ -754,6 +759,21 @@ name|getHomeDirectory
 argument_list|()
 expr_stmt|;
 block|}
+name|resolveSymlinks
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_KEY
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|FS_CLIENT_RESOLVE_REMOTE_SYMLINKS_DEFAULT
+argument_list|)
+expr_stmt|;
 name|util
 operator|=
 operator|new
