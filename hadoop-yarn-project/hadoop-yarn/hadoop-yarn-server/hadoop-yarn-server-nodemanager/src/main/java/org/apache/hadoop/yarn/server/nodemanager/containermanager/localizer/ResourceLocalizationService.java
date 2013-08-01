@@ -152,6 +152,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|EnumSet
 import|;
 end_import
@@ -4215,6 +4225,7 @@ name|Path
 argument_list|>
 name|queue
 decl_stmt|;
+comment|// Its shared between public localizer and dispatcher thread.
 DECL|field|pending
 specifier|final
 name|Map
@@ -4235,58 +4246,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-name|this
-argument_list|(
-name|conf
-argument_list|,
-name|getLocalFileContext
-argument_list|(
-name|conf
-argument_list|)
-argument_list|,
-name|createLocalizerExecutor
-argument_list|(
-name|conf
-argument_list|)
-argument_list|,
-operator|new
-name|HashMap
-argument_list|<
-name|Future
-argument_list|<
-name|Path
-argument_list|>
-argument_list|,
-name|LocalizerResourceRequestEvent
-argument_list|>
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|PublicLocalizer (Configuration conf, FileContext lfs, ExecutorService threadPool, Map<Future<Path>,LocalizerResourceRequestEvent> pending)
-name|PublicLocalizer
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|FileContext
-name|lfs
-parameter_list|,
-name|ExecutorService
-name|threadPool
-parameter_list|,
-name|Map
-argument_list|<
-name|Future
-argument_list|<
-name|Path
-argument_list|>
-argument_list|,
-name|LocalizerResourceRequestEvent
-argument_list|>
-name|pending
-parameter_list|)
-block|{
 name|super
 argument_list|(
 literal|"Public Localizer"
@@ -4296,7 +4255,10 @@ name|this
 operator|.
 name|lfs
 operator|=
-name|lfs
+name|getLocalFileContext
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -4308,13 +4270,26 @@ name|this
 operator|.
 name|pending
 operator|=
-name|pending
+operator|new
+name|ConcurrentHashMap
+argument_list|<
+name|Future
+argument_list|<
+name|Path
+argument_list|>
+argument_list|,
+name|LocalizerResourceRequestEvent
+argument_list|>
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
 name|threadPool
 operator|=
-name|threadPool
+name|createLocalizerExecutor
+argument_list|(
+name|conf
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -4814,6 +4789,7 @@ name|LocalizerResourceRequestEvent
 argument_list|>
 name|scheduled
 decl_stmt|;
+comment|// Its a shared list between Private Localizer and dispatcher thread.
 DECL|field|pending
 specifier|final
 name|List
@@ -4870,12 +4846,17 @@ name|this
 operator|.
 name|pending
 operator|=
+name|Collections
+operator|.
+name|synchronizedList
+argument_list|(
 operator|new
 name|ArrayList
 argument_list|<
 name|LocalizerResourceRequestEvent
 argument_list|>
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -4900,7 +4881,6 @@ name|LocalizerResourceRequestEvent
 name|request
 parameter_list|)
 block|{
-comment|// TDOO: Synchronization
 name|pending
 operator|.
 name|add
@@ -4916,7 +4896,11 @@ name|LocalResource
 name|findNextResource
 parameter_list|()
 block|{
-comment|// TODO: Synchronization
+synchronized|synchronized
+init|(
+name|pending
+init|)
+block|{
 for|for
 control|(
 name|Iterator
@@ -4978,7 +4962,7 @@ argument_list|()
 expr_stmt|;
 continue|continue;
 block|}
-comment|/*          * Multiple containers will try to download the same resource. So the          * resource download should start only if          * 1) We can acquire a non blocking semaphore lock on resource          * 2) Resource is still in DOWNLOADING state          */
+comment|/*           * Multiple containers will try to download the same resource. So the           * resource download should start only if           * 1) We can acquire a non blocking semaphore lock on resource           * 2) Resource is still in DOWNLOADING state           */
 if|if
 condition|(
 name|nRsrc
@@ -5104,6 +5088,7 @@ block|}
 return|return
 literal|null
 return|;
+block|}
 block|}
 DECL|method|update ( List<LocalResourceStatus> remoteResourceStatuses)
 name|LocalizerHeartbeatResponse
