@@ -56,6 +56,26 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|LinkedHashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -107,6 +127,46 @@ operator|.
 name|util
 operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+operator|.
+name|Entry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
 import|;
 end_import
 
@@ -396,6 +456,34 @@ name|VisibleForTesting
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|HashMultiset
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Multiset
+import|;
+end_import
+
 begin_comment
 comment|/**  * An abstract {@link InputFormat} that returns {@link CombineFileSplit}'s in   * {@link InputFormat#getSplits(JobContext)} method.   *   * Splits are constructed from the files under the input paths.   * A split cannot have files from different pools.  * Each split returned may contain blocks from different files.  * If a maxSplitSize is specified, then blocks on the same node are  * combined to form a single split. Blocks that are left over are  * then combined with other blocks in the same rack.   * If maxSplitSize is not specified, then blocks from the same rack  * are combined in a single split; no attempt is made to create  * node-local splits.  * If the maxSplitSize is equal to the block size, then this class  * is similar to the default splitting behavior in Hadoop: each  * block is a locally processed split.  * Subclasses implement   * {@link InputFormat#createRecordReader(InputSplit, TaskAttemptContext)}  * to construct<code>RecordReader</code>'s for   *<code>CombineFileSplit</code>'s.  *   * @see CombineFileSplit  */
 end_comment
@@ -427,6 +515,22 @@ argument_list|,
 name|V
 argument_list|>
 block|{
+DECL|field|LOG
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|CombineFileInputFormat
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 DECL|field|SPLIT_MINSIZE_PERNODE
 specifier|public
 specifier|static
@@ -801,6 +905,8 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+comment|// If maxSize is not configured, a single split will be generated per
+comment|// node.
 block|}
 if|if
 condition|(
@@ -1146,7 +1252,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
@@ -1158,7 +1264,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
@@ -1273,22 +1379,22 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|createSplits (HashMap<String, List<OneBlockInfo>> nodeToBlocks, HashMap<OneBlockInfo, String[]> blockToNodes, HashMap<String, List<OneBlockInfo>> rackToBlocks, long totLength, long maxSize, long minSizeNode, long minSizeRack, List<InputSplit> splits )
+DECL|method|createSplits (Map<String, Set<OneBlockInfo>> nodeToBlocks, Map<OneBlockInfo, String[]> blockToNodes, Map<String, List<OneBlockInfo>> rackToBlocks, long totLength, long maxSize, long minSizeNode, long minSizeRack, List<InputSplit> splits )
 name|void
 name|createSplits
 parameter_list|(
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
 argument_list|>
 name|nodeToBlocks
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|OneBlockInfo
 argument_list|,
@@ -1297,7 +1403,7 @@ index|[]
 argument_list|>
 name|blockToNodes
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -1340,26 +1446,13 @@ name|OneBlockInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|Set
-argument_list|<
-name|String
-argument_list|>
-name|nodes
-init|=
-operator|new
-name|HashSet
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-decl_stmt|;
 name|long
 name|curSplitSize
 init|=
 literal|0
 decl_stmt|;
 name|int
-name|numNodes
+name|totalNodes
 init|=
 name|nodeToBlocks
 operator|.
@@ -1371,58 +1464,39 @@ name|totalLength
 init|=
 name|totLength
 decl_stmt|;
+name|Multiset
+argument_list|<
+name|String
+argument_list|>
+name|splitsPerNode
+init|=
+name|HashMultiset
+operator|.
+name|create
+argument_list|()
+decl_stmt|;
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|completedNodes
+init|=
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 literal|true
 condition|)
 block|{
 comment|// it is allowed for maxSize to be 0. Disable smoothing load for such cases
-name|int
-name|avgSplitsPerNode
-init|=
-name|maxSize
-operator|>
-literal|0
-operator|&&
-name|numNodes
-operator|>
-literal|0
-condition|?
-operator|(
-call|(
-name|int
-call|)
-argument_list|(
-name|totalLength
-operator|/
-name|maxSize
-argument_list|)
-operator|)
-operator|/
-name|numNodes
-else|:
-name|Integer
-operator|.
-name|MAX_VALUE
-decl_stmt|;
-name|int
-name|maxSplitsByNodeOnly
-init|=
-operator|(
-name|avgSplitsPerNode
-operator|>
-literal|0
-operator|)
-condition|?
-name|avgSplitsPerNode
-else|:
-literal|1
-decl_stmt|;
-name|numNodes
-operator|=
-literal|0
-expr_stmt|;
-comment|// process all nodes and create splits that are local to a node.
+comment|// process all nodes and create splits that are local to a node. Generate
+comment|// one split per node iteration, and walk over nodes multiple times to
+comment|// distribute the splits across nodes.
 for|for
 control|(
 name|Iterator
@@ -1433,7 +1507,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
@@ -1462,7 +1536,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
@@ -1474,21 +1548,32 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|nodes
-operator|.
-name|add
-argument_list|(
+name|String
+name|node
+init|=
 name|one
 operator|.
 name|getKey
 argument_list|()
+decl_stmt|;
+comment|// Skip the node if it has previously been marked as completed.
+if|if
+condition|(
+name|completedNodes
+operator|.
+name|contains
+argument_list|(
+name|node
 argument_list|)
-expr_stmt|;
-name|List
+condition|)
+block|{
+continue|continue;
+block|}
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
-name|blocksInNode
+name|blocksInCurrentNode
 init|=
 name|one
 operator|.
@@ -1498,21 +1583,38 @@ decl_stmt|;
 comment|// for each block, copy it into validBlocks. Delete it from
 comment|// blockToNodes so that the same block does not appear in
 comment|// two different splits.
-name|int
-name|splitsInNode
+name|Iterator
+argument_list|<
+name|OneBlockInfo
+argument_list|>
+name|oneBlockIter
 init|=
-literal|0
+name|blocksInCurrentNode
+operator|.
+name|iterator
+argument_list|()
 decl_stmt|;
-for|for
-control|(
+while|while
+condition|(
+name|oneBlockIter
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
 name|OneBlockInfo
 name|oneblock
-range|:
-name|blocksInNode
-control|)
-block|{
+init|=
+name|oneBlockIter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+comment|// Remove all blocks which may already have been assigned to other
+comment|// splits.
 if|if
 condition|(
+operator|!
 name|blockToNodes
 operator|.
 name|containsKey
@@ -1521,6 +1623,13 @@ name|oneblock
 argument_list|)
 condition|)
 block|{
+name|oneBlockIter
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+continue|continue;
+block|}
 name|validBlocks
 operator|.
 name|add
@@ -1559,7 +1668,12 @@ name|addCreatedSplit
 argument_list|(
 name|splits
 argument_list|,
-name|nodes
+name|Collections
+operator|.
+name|singleton
+argument_list|(
+name|node
+argument_list|)
 argument_list|,
 name|validBlocks
 argument_list|)
@@ -1572,39 +1686,51 @@ name|curSplitSize
 operator|=
 literal|0
 expr_stmt|;
+name|splitsPerNode
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+comment|// Remove entries from blocksInNode so that we don't walk these
+comment|// again.
+name|blocksInCurrentNode
+operator|.
+name|removeAll
+argument_list|(
+name|validBlocks
+argument_list|)
+expr_stmt|;
 name|validBlocks
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|splitsInNode
-operator|++
-expr_stmt|;
-if|if
-condition|(
-name|splitsInNode
-operator|==
-name|maxSplitsByNodeOnly
-condition|)
-block|{
-comment|// stop grouping on a node so as not to create
-comment|// disproportionately more splits on a node because it happens
-comment|// to have many blocks
-comment|// consider only these nodes in next round of grouping because
-comment|// they have leftover blocks that may need to be grouped
-name|numNodes
-operator|++
-expr_stmt|;
+comment|// Done creating a single split for this node. Move on to the next
+comment|// node so that splits are distributed across nodes.
 break|break;
 block|}
 block|}
-block|}
-block|}
+if|if
+condition|(
+name|validBlocks
+operator|.
+name|size
+argument_list|()
+operator|!=
+literal|0
+condition|)
+block|{
+comment|// This implies that the last few blocks (or all in case maxSize=0)
+comment|// were not part of a split. The node is complete.
 comment|// if there were any blocks left over and their combined size is
 comment|// larger than minSplitNode, then combine them into one split.
 comment|// Otherwise add them back to the unprocessed pool. It is likely
 comment|// that they will be combined with other blocks from the
 comment|// same rack later on.
+comment|// This condition also kicks in when max split size is not set. All
+comment|// blocks on a node will be grouped together into a single split.
 if|if
 condition|(
 name|minSizeNode
@@ -1615,21 +1741,30 @@ name|curSplitSize
 operator|>=
 name|minSizeNode
 operator|&&
-name|splitsInNode
+name|splitsPerNode
+operator|.
+name|count
+argument_list|(
+name|node
+argument_list|)
 operator|==
 literal|0
 condition|)
 block|{
 comment|// haven't created any split on this machine. so its ok to add a
-comment|// smaller
-comment|// one for parallelism. Otherwise group it in the rack for balanced
-comment|// size
-comment|// create an input split and add it to the splits array
+comment|// smaller one for parallelism. Otherwise group it in the rack for
+comment|// balanced size create an input split and add it to the splits
+comment|// array
 name|addCreatedSplit
 argument_list|(
 name|splits
 argument_list|,
-name|nodes
+name|Collections
+operator|.
+name|singleton
+argument_list|(
+name|node
+argument_list|)
 argument_list|,
 name|validBlocks
 argument_list|)
@@ -1638,9 +1773,26 @@ name|totalLength
 operator|-=
 name|curSplitSize
 expr_stmt|;
+name|splitsPerNode
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+comment|// Remove entries from blocksInNode so that we don't walk this again.
+name|blocksInCurrentNode
+operator|.
+name|removeAll
+argument_list|(
+name|validBlocks
+argument_list|)
+expr_stmt|;
+comment|// The node is done. This was the last set of blocks for this node.
 block|}
 else|else
 block|{
+comment|// Put the unplaced blocks back into the pool for later rack-allocation.
 for|for
 control|(
 name|OneBlockInfo
@@ -1667,30 +1819,76 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|nodes
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
 name|curSplitSize
 operator|=
 literal|0
 expr_stmt|;
+name|completedNodes
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
 block|}
+else|else
+block|{
+comment|// No in-flight blocks.
 if|if
 condition|(
-operator|!
-operator|(
-name|numNodes
-operator|>
+name|blocksInCurrentNode
+operator|.
+name|size
+argument_list|()
+operator|==
 literal|0
-operator|&&
-name|totalLength
-operator|>
-literal|0
-operator|)
 condition|)
 block|{
+comment|// Node is done. All blocks were fit into node-local splits.
+name|completedNodes
+operator|.
+name|add
+argument_list|(
+name|node
+argument_list|)
+expr_stmt|;
+block|}
+comment|// else Run through the node again.
+block|}
+block|}
+comment|// Check if node-local assignments are complete.
+if|if
+condition|(
+name|completedNodes
+operator|.
+name|size
+argument_list|()
+operator|==
+name|totalNodes
+operator|||
+name|totalLength
+operator|==
+literal|0
+condition|)
+block|{
+comment|// All nodes have been walked over and marked as completed or all blocks
+comment|// have been assigned. The rest should be handled via rackLock assignment.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"DEBUG: Terminated node allocation with : CompletedNodes: "
+operator|+
+name|completedNodes
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|", size left: "
+operator|+
+name|totalLength
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 block|}
@@ -2326,7 +2524,7 @@ index|[]
 name|blocks
 decl_stmt|;
 comment|// all blocks in this file
-DECL|method|OneFileInfo (FileStatus stat, Configuration conf, boolean isSplitable, HashMap<String, List<OneBlockInfo>> rackToBlocks, HashMap<OneBlockInfo, String[]> blockToNodes, HashMap<String, List<OneBlockInfo>> nodeToBlocks, HashMap<String, Set<String>> rackToNodes, long maxSize)
+DECL|method|OneFileInfo (FileStatus stat, Configuration conf, boolean isSplitable, HashMap<String, List<OneBlockInfo>> rackToBlocks, HashMap<OneBlockInfo, String[]> blockToNodes, HashMap<String, Set<OneBlockInfo>> nodeToBlocks, HashMap<String, Set<String>> rackToNodes, long maxSize)
 name|OneFileInfo
 parameter_list|(
 name|FileStatus
@@ -2362,7 +2560,7 @@ name|HashMap
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
@@ -2767,7 +2965,7 @@ block|}
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|populateBlockInfo (OneBlockInfo[] blocks, HashMap<String, List<OneBlockInfo>> rackToBlocks, HashMap<OneBlockInfo, String[]> blockToNodes, HashMap<String, List<OneBlockInfo>> nodeToBlocks, HashMap<String, Set<String>> rackToNodes)
+DECL|method|populateBlockInfo (OneBlockInfo[] blocks, Map<String, List<OneBlockInfo>> rackToBlocks, Map<OneBlockInfo, String[]> blockToNodes, Map<String, Set<OneBlockInfo>> nodeToBlocks, Map<String, Set<String>> rackToNodes)
 specifier|static
 name|void
 name|populateBlockInfo
@@ -2776,7 +2974,7 @@ name|OneBlockInfo
 index|[]
 name|blocks
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -2787,7 +2985,7 @@ argument_list|>
 argument_list|>
 name|rackToBlocks
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|OneBlockInfo
 argument_list|,
@@ -2796,18 +2994,18 @@ index|[]
 argument_list|>
 name|blockToNodes
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
 argument_list|>
 name|nodeToBlocks
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -3017,7 +3215,7 @@ index|[
 name|j
 index|]
 decl_stmt|;
-name|List
+name|Set
 argument_list|<
 name|OneBlockInfo
 argument_list|>
@@ -3040,7 +3238,7 @@ block|{
 name|blklist
 operator|=
 operator|new
-name|ArrayList
+name|LinkedHashSet
 argument_list|<
 name|OneBlockInfo
 argument_list|>
@@ -3351,13 +3549,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|addHostToRack (HashMap<String, Set<String>> rackToNodes, String rack, String host)
+DECL|method|addHostToRack (Map<String, Set<String>> rackToNodes, String rack, String host)
 specifier|private
 specifier|static
 name|void
 name|addHostToRack
 parameter_list|(
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
