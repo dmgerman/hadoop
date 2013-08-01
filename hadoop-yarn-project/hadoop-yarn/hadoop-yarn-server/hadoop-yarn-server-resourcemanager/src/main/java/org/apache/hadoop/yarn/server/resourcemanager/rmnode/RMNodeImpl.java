@@ -2699,6 +2699,25 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+comment|// If the current state is NodeState.UNHEALTHY
+comment|// Then node is already been removed from the
+comment|// Scheduler
+if|if
+condition|(
+operator|!
+name|rmNode
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|NodeState
+operator|.
+name|UNHEALTHY
+argument_list|)
+condition|)
+block|{
 name|rmNode
 operator|.
 name|context
@@ -2718,6 +2737,7 @@ name|rmNode
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|rmNode
 operator|.
 name|context
