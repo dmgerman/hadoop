@@ -3959,6 +3959,11 @@ argument_list|(
 name|jobId
 argument_list|)
 expr_stmt|;
+name|hfm
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 name|Assert
 operator|.
 name|assertNotNull
@@ -3966,6 +3971,20 @@ argument_list|(
 literal|"Unable to locate old job history"
 argument_list|,
 name|fileInfo
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"HistoryFileManager not shutdown properly"
+argument_list|,
+name|hfm
+operator|.
+name|moveToDoneExecutor
+operator|.
+name|isTerminated
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4496,6 +4515,25 @@ name|hfm
 operator|.
 name|clean
 argument_list|()
+expr_stmt|;
+name|hfm
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Thread pool shutdown"
+argument_list|,
+name|hfm
+operator|.
+name|moveToDoneExecutor
+operator|.
+name|isTerminated
+argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// should be deleted !
 name|Assert

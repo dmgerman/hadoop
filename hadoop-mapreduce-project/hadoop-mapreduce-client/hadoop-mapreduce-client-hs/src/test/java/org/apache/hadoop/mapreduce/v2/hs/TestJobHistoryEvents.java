@@ -623,6 +623,18 @@ operator|.
 name|STARTED
 argument_list|)
 expr_stmt|;
+comment|// get job before stopping JobHistory
+name|Job
+name|parsedJob
+init|=
+name|context
+operator|.
+name|getJob
+argument_list|(
+name|jobId
+argument_list|)
+decl_stmt|;
+comment|// stop JobHistory
 operator|(
 operator|(
 name|JobHistory
@@ -654,16 +666,6 @@ operator|.
 name|STOPPED
 argument_list|)
 expr_stmt|;
-name|Job
-name|parsedJob
-init|=
-name|context
-operator|.
-name|getJob
-argument_list|(
-name|jobId
-argument_list|)
-decl_stmt|;
 name|Assert
 operator|.
 name|assertEquals

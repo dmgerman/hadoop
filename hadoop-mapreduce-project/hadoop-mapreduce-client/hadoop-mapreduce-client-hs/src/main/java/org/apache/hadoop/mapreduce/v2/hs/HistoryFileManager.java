@@ -628,6 +628,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|ShutdownThreadsHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|exceptions
@@ -2506,8 +2520,10 @@ name|intermediateDoneDirFc
 decl_stmt|;
 comment|// Intermediate Done Dir
 comment|// FileContext
+annotation|@
+name|VisibleForTesting
 DECL|field|moveToDoneExecutor
-specifier|private
+specifier|protected
 name|ThreadPoolExecutor
 name|moveToDoneExecutor
 init|=
@@ -2876,6 +2892,29 @@ name|serviceInit
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|serviceStop ()
+specifier|public
+name|void
+name|serviceStop
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|ShutdownThreadsHelper
+operator|.
+name|shutdownExecutorService
+argument_list|(
+name|moveToDoneExecutor
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|serviceStop
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|createJobListCache ()
