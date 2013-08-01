@@ -146,6 +146,9 @@ block|}
 operator|,
 operator|new
 name|RetryInvocationHandler
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|proxyProvider
 argument_list|,
@@ -277,6 +280,9 @@ block|}
 operator|,
 operator|new
 name|RetryInvocationHandler
+argument_list|<
+name|T
+argument_list|>
 argument_list|(
 name|proxyProvider
 argument_list|,

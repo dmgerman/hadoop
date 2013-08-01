@@ -283,6 +283,9 @@ DECL|class|RetryInvocationHandler
 specifier|public
 class|class
 name|RetryInvocationHandler
+parameter_list|<
+name|T
+parameter_list|>
 implements|implements
 name|RpcInvocationHandler
 block|{
@@ -306,6 +309,9 @@ DECL|field|proxyProvider
 specifier|private
 specifier|final
 name|FailoverProxyProvider
+argument_list|<
+name|T
+argument_list|>
 name|proxyProvider
 decl_stmt|;
 comment|/**    * The number of times the associated proxyProvider has ever been failed over.    */
@@ -343,14 +349,17 @@ name|methodNameToPolicyMap
 decl_stmt|;
 DECL|field|currentProxy
 specifier|private
-name|Object
+name|T
 name|currentProxy
 decl_stmt|;
-DECL|method|RetryInvocationHandler (FailoverProxyProvider proxyProvider, RetryPolicy retryPolicy)
+DECL|method|RetryInvocationHandler (FailoverProxyProvider<T> proxyProvider, RetryPolicy retryPolicy)
 specifier|protected
 name|RetryInvocationHandler
 parameter_list|(
 name|FailoverProxyProvider
+argument_list|<
+name|T
+argument_list|>
 name|proxyProvider
 parameter_list|,
 name|RetryPolicy
@@ -375,10 +384,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RetryInvocationHandler (FailoverProxyProvider proxyProvider, RetryPolicy defaultPolicy, Map<String, RetryPolicy> methodNameToPolicyMap)
+DECL|method|RetryInvocationHandler (FailoverProxyProvider<T> proxyProvider, RetryPolicy defaultPolicy, Map<String, RetryPolicy> methodNameToPolicyMap)
 name|RetryInvocationHandler
 parameter_list|(
 name|FailoverProxyProvider
+argument_list|<
+name|T
+argument_list|>
 name|proxyProvider
 parameter_list|,
 name|RetryPolicy

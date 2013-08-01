@@ -603,6 +603,9 @@ class|class
 name|DummyRetryInvocationHandler
 extends|extends
 name|RetryInvocationHandler
+argument_list|<
+name|ClientProtocol
+argument_list|>
 block|{
 DECL|field|block
 specifier|static
