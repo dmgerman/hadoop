@@ -142,20 +142,12 @@ name|p
 init|=
 name|path
 decl_stmt|;
+comment|// Assumes path belongs to this FileSystem.
+comment|// Callers validate this by passing paths through FileSystem#checkPath
 name|FileSystem
 name|fs
 init|=
-name|FileSystem
-operator|.
-name|getFSofPath
-argument_list|(
-name|p
-argument_list|,
 name|filesys
-operator|.
-name|getConf
-argument_list|()
-argument_list|)
 decl_stmt|;
 for|for
 control|(
