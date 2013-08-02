@@ -1046,6 +1046,24 @@ name|server
 operator|.
 name|nodemanager
 operator|.
+name|NodeStatusUpdaterImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
 name|containermanager
 operator|.
 name|application
@@ -3915,6 +3933,40 @@ argument_list|,
 name|nmTokenIdentifier
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|container
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|nodeStatusUpdater
+operator|.
+name|isContainerRecentlyStopped
+argument_list|(
+name|containerID
+argument_list|)
+condition|)
+block|{
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+literal|"Container "
+operator|+
+name|containerIDStr
+operator|+
+literal|" is not handled by this NodeManager"
+argument_list|)
+throw|;
+block|}
+block|}
+else|else
+block|{
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -3964,6 +4016,7 @@ operator|.
 name|sendOutofBandHeartBeat
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Get a list of container statuses running on this NodeManager    */
 annotation|@
@@ -4146,6 +4199,52 @@ argument_list|,
 name|nmTokenIdentifier
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|container
+operator|==
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|nodeStatusUpdater
+operator|.
+name|isContainerRecentlyStopped
+argument_list|(
+name|containerID
+argument_list|)
+condition|)
+block|{
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+literal|"Container "
+operator|+
+name|containerIDStr
+operator|+
+literal|" was recently stopped on node manager."
+argument_list|)
+throw|;
+block|}
+else|else
+block|{
+throw|throw
+name|RPCUtil
+operator|.
+name|getRemoteException
+argument_list|(
+literal|"Container "
+operator|+
+name|containerIDStr
+operator|+
+literal|" is not handled by this NodeManager"
+argument_list|)
+throw|;
+block|}
+block|}
 name|ContainerStatus
 name|containerStatus
 init|=
@@ -4299,7 +4398,7 @@ operator|.
 name|getApplicationAttemptId
 argument_list|()
 operator|+
-literal|" attempted to get get status for non-application container : "
+literal|" attempted to get status for non-application container : "
 operator|+
 name|container
 operator|.
@@ -4311,44 +4410,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-literal|"Container "
-operator|+
-name|containerId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" is not started by this application attempt."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|container
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
-argument_list|(
-literal|"Container "
-operator|+
-name|containerId
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|" is not handled by this NodeManager"
-argument_list|)
-throw|;
 block|}
 block|}
 DECL|class|ContainerEventDispatcher
