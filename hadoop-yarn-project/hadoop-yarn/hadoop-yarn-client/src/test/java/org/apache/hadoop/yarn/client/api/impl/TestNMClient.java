@@ -108,6 +108,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Arrays
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -2119,8 +2129,18 @@ name|RUNNING
 argument_list|,
 literal|""
 argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+operator|new
+name|Integer
+index|[]
+block|{
 operator|-
 literal|1000
+block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
 try|try
@@ -2168,6 +2188,9 @@ argument_list|)
 throw|;
 block|}
 comment|// getContainerStatus can be called after stopContainer
+try|try
+block|{
+comment|// O is possible if CLEANUP_CONTAINER is executed too late
 name|testGetContainerStatus
 argument_list|(
 name|container
@@ -2180,9 +2203,65 @@ name|COMPLETE
 argument_list|,
 literal|"Container killed by the ApplicationMaster."
 argument_list|,
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+operator|new
+name|Integer
+index|[]
+block|{
 literal|143
+block|,
+literal|0
+block|}
+argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|YarnException
+name|e
+parameter_list|)
+block|{
+comment|// The exception is possible because, after the container is stopped,
+comment|// it may be removed from NM's context.
+if|if
+condition|(
+operator|!
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"was recently stopped on node manager"
+argument_list|)
+condition|)
+block|{
+throw|throw
+call|(
+name|AssertionError
+call|)
+argument_list|(
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Exception is not expected: "
+operator|+
+name|e
+argument_list|)
+operator|.
+name|initCause
+argument_list|(
+name|e
+argument_list|)
+argument_list|)
+throw|;
+block|}
+block|}
 block|}
 block|}
 block|}
@@ -2218,7 +2297,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|testGetContainerStatus (Container container, int index, ContainerState state, String diagnostics, int exitStatus)
+DECL|method|testGetContainerStatus (Container container, int index, ContainerState state, String diagnostics, List<Integer> exitStatuses)
 specifier|private
 name|void
 name|testGetContainerStatus
@@ -2235,8 +2314,11 @@ parameter_list|,
 name|String
 name|diagnostics
 parameter_list|,
-name|int
-name|exitStatus
+name|List
+argument_list|<
+name|Integer
+argument_list|>
+name|exitStatuses
 parameter_list|)
 throws|throws
 name|YarnException
@@ -2317,14 +2399,17 @@ name|diagnostics
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|assertEquals
+name|assertTrue
 argument_list|(
-name|exitStatus
-argument_list|,
+name|exitStatuses
+operator|.
+name|contains
+argument_list|(
 name|status
 operator|.
 name|getExitStatus
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 break|break;
