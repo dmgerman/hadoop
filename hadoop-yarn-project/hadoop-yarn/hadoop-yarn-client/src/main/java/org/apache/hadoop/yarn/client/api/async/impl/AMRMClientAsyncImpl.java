@@ -538,7 +538,7 @@ decl_stmt|;
 DECL|field|savedException
 specifier|private
 specifier|volatile
-name|Exception
+name|Throwable
 name|savedException
 decl_stmt|;
 DECL|method|AMRMClientAsyncImpl (int intervalMs, CallbackHandler callbackHandler)
@@ -1030,7 +1030,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|YarnException
+name|Throwable
 name|ex
 parameter_list|)
 block|{
@@ -1038,7 +1038,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Yarn exception on heartbeat"
+literal|"Exception on heartbeat"
 argument_list|,
 name|ex
 argument_list|)
@@ -1046,33 +1046,6 @@ expr_stmt|;
 name|savedException
 operator|=
 name|ex
-expr_stmt|;
-comment|// interrupt handler thread in case it waiting on the queue
-name|handlerThread
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-return|return;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"IO exception on heartbeat"
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-name|savedException
-operator|=
-name|e
 expr_stmt|;
 comment|// interrupt handler thread in case it waiting on the queue
 name|handlerThread

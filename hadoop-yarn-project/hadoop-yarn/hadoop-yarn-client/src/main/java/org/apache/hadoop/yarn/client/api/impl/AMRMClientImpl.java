@@ -1669,6 +1669,17 @@ name|YarnException
 throws|,
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|appStatus
+operator|!=
+literal|null
+argument_list|,
+literal|"AppStatus should not be null."
+argument_list|)
+expr_stmt|;
 name|FinishApplicationMasterRequest
 name|request
 init|=
