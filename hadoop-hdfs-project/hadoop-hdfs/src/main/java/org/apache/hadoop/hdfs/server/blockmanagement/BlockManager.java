@@ -6088,13 +6088,6 @@ name|priority
 argument_list|)
 expr_stmt|;
 comment|// remove from neededReplications
-name|neededReplications
-operator|.
-name|decrementReplicationIndex
-argument_list|(
-name|priority
-argument_list|)
-expr_stmt|;
 continue|continue;
 block|}
 name|requiredReplication
@@ -6230,13 +6223,6 @@ name|priority
 argument_list|)
 expr_stmt|;
 comment|// remove from neededReplications
-name|neededReplications
-operator|.
-name|decrementReplicationIndex
-argument_list|(
-name|priority
-argument_list|)
-expr_stmt|;
 name|blockLog
 operator|.
 name|info
@@ -6503,13 +6489,6 @@ name|targets
 operator|=
 literal|null
 expr_stmt|;
-name|neededReplications
-operator|.
-name|decrementReplicationIndex
-argument_list|(
-name|priority
-argument_list|)
-expr_stmt|;
 continue|continue;
 block|}
 name|requiredReplication
@@ -6580,13 +6559,6 @@ name|priority
 argument_list|)
 expr_stmt|;
 comment|// remove from neededReplications
-name|neededReplications
-operator|.
-name|decrementReplicationIndex
-argument_list|(
-name|priority
-argument_list|)
-expr_stmt|;
 name|rw
 operator|.
 name|targets
@@ -6735,13 +6707,6 @@ name|priority
 argument_list|)
 expr_stmt|;
 comment|// remove from neededReplications
-name|neededReplications
-operator|.
-name|decrementReplicationIndex
-argument_list|(
-name|priority
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 block|}
