@@ -5630,7 +5630,12 @@ argument_list|)
 expr_stmt|;
 block|}
 return|return
+name|Collections
+operator|.
+name|unmodifiableList
+argument_list|(
 name|auditLoggers
+argument_list|)
 return|;
 block|}
 DECL|method|loadFSImage (StartupOption startOpt, FSImage fsImage, boolean haEnabled)
