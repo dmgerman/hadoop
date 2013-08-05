@@ -370,6 +370,18 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|security
+operator|.
+name|sasl
+operator|.
+name|Sasl
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -873,6 +885,20 @@ operator|.
 name|util
 operator|.
 name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -3400,6 +3426,23 @@ operator|.
 name|getOutputStream
 argument_list|(
 name|outStream
+argument_list|)
+expr_stmt|;
+comment|// for testing
+name|remoteId
+operator|.
+name|saslQop
+operator|=
+operator|(
+name|String
+operator|)
+name|saslRpcClient
+operator|.
+name|getNegotiatedProperty
+argument_list|(
+name|Sasl
+operator|.
+name|QOP
 argument_list|)
 expr_stmt|;
 block|}
@@ -6340,6 +6383,12 @@ name|int
 name|pingInterval
 decl_stmt|;
 comment|// how often sends ping to the server in msecs
+DECL|field|saslQop
+specifier|private
+name|String
+name|saslQop
+decl_stmt|;
+comment|// here for testing
 DECL|method|ConnectionId (InetSocketAddress address, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, int maxIdleTime, RetryPolicy connectionRetryPolicy, int maxRetriesOnSocketTimeouts, boolean tcpNoDelay, boolean doPing, int pingInterval)
 name|ConnectionId
 parameter_list|(
@@ -6523,6 +6572,17 @@ parameter_list|()
 block|{
 return|return
 name|pingInterval
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getSaslQop ()
+name|String
+name|getSaslQop
+parameter_list|()
+block|{
+return|return
+name|saslQop
 return|;
 block|}
 DECL|method|getConnectionId (InetSocketAddress addr, Class<?> protocol, UserGroupInformation ticket, int rpcTimeout, Configuration conf)
