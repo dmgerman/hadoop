@@ -626,23 +626,7 @@ name|ipc
 operator|.
 name|RpcConstants
 operator|.
-name|CURRENT_VERSION
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|ipc
-operator|.
-name|RpcConstants
-operator|.
-name|CONNECTION_CONTEXT_CALL_ID
+name|*
 import|;
 end_import
 
@@ -5939,16 +5923,6 @@ literal|null
 decl_stmt|;
 comment|// user name before auth
 comment|// Fake 'call' for failed authorization response
-DECL|field|AUTHORIZATION_FAILED_CALLID
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|AUTHORIZATION_FAILED_CALLID
-init|=
-operator|-
-literal|1
-decl_stmt|;
 DECL|field|authFailedCall
 specifier|private
 specifier|final
@@ -5958,7 +5932,7 @@ init|=
 operator|new
 name|Call
 argument_list|(
-name|AUTHORIZATION_FAILED_CALLID
+name|AUTHORIZATION_FAILED_CALL_ID
 argument_list|,
 name|RpcConstants
 operator|.
@@ -7607,33 +7581,6 @@ operator|.
 name|getInt
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-operator|(
-name|dataLength
-operator|==
-name|RpcConstants
-operator|.
-name|PING_CALL_ID
-operator|)
-operator|&&
-operator|(
-operator|!
-name|useWrap
-operator|)
-condition|)
-block|{
-comment|// covers the !useSasl too
-name|dataLengthBuffer
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-return|return
-literal|0
-return|;
-comment|// ping message
-block|}
 name|checkDataLength
 argument_list|(
 name|dataLength
@@ -8594,37 +8541,6 @@ operator|.
 name|getInt
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|unwrappedDataLength
-operator|==
-name|RpcConstants
-operator|.
-name|PING_CALL_ID
-condition|)
-block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"Received ping message"
-argument_list|)
-expr_stmt|;
-name|unwrappedDataLengthBuffer
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-continue|continue;
-comment|// ping message
-block|}
 name|unwrappedData
 operator|=
 name|ByteBuffer
@@ -9332,6 +9248,22 @@ name|dis
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|callId
+operator|==
+name|PING_CALL_ID
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Received ping message"
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 throw|throw
@@ -9360,7 +9292,7 @@ name|WrappedRpcServerException
 block|{
 try|try
 block|{
-comment|// If auth method is DIGEST, the token was obtained by the
+comment|// If auth method is TOKEN, the token was obtained by the
 comment|// real user for the effective user, therefore not required to
 comment|// authorize real user. doAs is allowed only for simple or kerberos
 comment|// authentication

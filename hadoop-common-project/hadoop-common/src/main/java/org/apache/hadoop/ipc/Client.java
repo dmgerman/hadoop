@@ -28,7 +28,7 @@ name|ipc
 operator|.
 name|RpcConstants
 operator|.
-name|CONNECTION_CONTEXT_CALL_ID
+name|*
 import|;
 end_import
 
@@ -49,6 +49,16 @@ operator|.
 name|io
 operator|.
 name|BufferedOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|ByteArrayOutputStream
 import|;
 end_import
 
@@ -1956,6 +1966,12 @@ name|int
 name|pingInterval
 decl_stmt|;
 comment|// how often sends ping to the server in msecs
+DECL|field|pingRequest
+specifier|private
+name|ByteArrayOutputStream
+name|pingRequest
+decl_stmt|;
+comment|// ping message
 comment|// currently active calls
 DECL|field|calls
 specifier|private
@@ -2126,6 +2142,50 @@ operator|.
 name|getDoPing
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|doPing
+condition|)
+block|{
+comment|// construct a RPC header with the callId as the ping callId
+name|pingRequest
+operator|=
+operator|new
+name|ByteArrayOutputStream
+argument_list|()
+expr_stmt|;
+name|RpcRequestHeaderProto
+name|pingHeader
+init|=
+name|ProtoUtil
+operator|.
+name|makeRpcRequestHeader
+argument_list|(
+name|RpcKind
+operator|.
+name|RPC_PROTOCOL_BUFFER
+argument_list|,
+name|OperationProto
+operator|.
+name|RPC_FINAL_PACKET
+argument_list|,
+name|PING_CALL_ID
+argument_list|,
+name|RpcConstants
+operator|.
+name|INVALID_RETRY_COUNT
+argument_list|,
+name|clientId
+argument_list|)
+decl_stmt|;
+name|pingHeader
+operator|.
+name|writeDelimitedTo
+argument_list|(
+name|pingRequest
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|pingInterval
@@ -4216,9 +4276,17 @@ name|out
 operator|.
 name|writeInt
 argument_list|(
-name|RpcConstants
+name|pingRequest
 operator|.
-name|PING_CALL_ID
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|pingRequest
+operator|.
+name|writeTo
+argument_list|(
+name|out
 argument_list|)
 expr_stmt|;
 name|out
