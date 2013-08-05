@@ -315,7 +315,7 @@ literal|256
 operator|*
 literal|1024
 decl_stmt|;
-comment|/** Internal buffer size for Snappy compressor/decompressors */
+comment|/** Internal buffer size for Lz4 compressor/decompressors */
 DECL|field|IO_COMPRESSION_CODEC_LZ4_BUFFERSIZE_KEY
 specifier|public
 specifier|static
@@ -336,6 +336,26 @@ init|=
 literal|256
 operator|*
 literal|1024
+decl_stmt|;
+comment|/** Use lz4hc(slow but with high compression ratio) for lz4 compression */
+DECL|field|IO_COMPRESSION_CODEC_LZ4_USELZ4HC_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IO_COMPRESSION_CODEC_LZ4_USELZ4HC_KEY
+init|=
+literal|"io.compression.codec.lz4.use.lz4hc"
+decl_stmt|;
+comment|/** Default value for IO_COMPRESSION_CODEC_USELZ4HC_KEY */
+DECL|field|IO_COMPRESSION_CODEC_LZ4_USELZ4HC_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|IO_COMPRESSION_CODEC_LZ4_USELZ4HC_DEFAULT
+init|=
+literal|false
 decl_stmt|;
 comment|/**    * Service Authorization    */
 specifier|public
