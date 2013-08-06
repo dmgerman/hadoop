@@ -1184,6 +1184,20 @@ argument_list|,
 name|rsrc
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Removed "
+operator|+
+name|rsrc
+operator|.
+name|getLocalPath
+argument_list|()
+operator|+
+literal|" from localized cache"
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;

@@ -1263,6 +1263,20 @@ literal|"Resource "
 operator|+
 name|resourcePath
 operator|+
+operator|(
+name|localPath
+operator|!=
+literal|null
+condition|?
+literal|"(->"
+operator|+
+name|localPath
+operator|+
+literal|")"
+else|:
+literal|""
+operator|)
+operator|+
 literal|" transitioned from "
 operator|+
 name|oldState
