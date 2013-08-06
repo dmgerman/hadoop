@@ -624,6 +624,51 @@ literal|true
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns the target of the given symlink. Returns the empty string if    * the given path does not refer to a symlink or there is an error    * accessing the symlink.    * @param f File representing the symbolic link.    * @return The target of the symbolic link, empty string on error or if not    *         a symlink.    */
+DECL|method|readLink (File f)
+specifier|public
+specifier|static
+name|String
+name|readLink
+parameter_list|(
+name|File
+name|f
+parameter_list|)
+block|{
+comment|/* NB: Use readSymbolicLink in java.nio.file.Path once available. Could      * use getCanonicalPath in File to get the target of the symlink but that      * does not indicate if the given path refers to a symlink.      */
+try|try
+block|{
+return|return
+name|Shell
+operator|.
+name|execCommand
+argument_list|(
+name|Shell
+operator|.
+name|getReadlinkCommand
+argument_list|(
+name|f
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+argument_list|)
+operator|.
+name|trim
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|x
+parameter_list|)
+block|{
+return|return
+literal|""
+return|;
+block|}
+block|}
 comment|/*    * Pure-Java implementation of "chmod +rwx f".    */
 DECL|method|grantPermissions (final File f)
 specifier|private
@@ -3479,7 +3524,7 @@ comment|// This is a stub to assist with coordinated change between
 comment|// COMMON and HDFS projects.  It will be removed after the
 comment|// corresponding change is committed to HDFS.
 block|}
-comment|/**    * Create a soft link between a src and destination    * only on a local disk. HDFS does not support this.    * On Windows, when symlink creation fails due to security    * setting, we will log a warning. The return code in this    * case is 2.    * @param target the target for symlink     * @param linkname the symlink    * @return value returned by the command    */
+comment|/**    * Create a soft link between a src and destination    * only on a local disk. HDFS does not support this.    * On Windows, when symlink creation fails due to security    * setting, we will log a warning. The return code in this    * case is 2.    *    * @param target the target for symlink     * @param linkname the symlink    * @return 0 on success    */
 DECL|method|symLink (String target, String linkname)
 specifier|public
 specifier|static
@@ -3503,7 +3548,19 @@ init|=
 operator|new
 name|File
 argument_list|(
+name|Path
+operator|.
+name|getPathWithoutSchemeAndAuthority
+argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|target
+argument_list|)
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|File
@@ -3512,7 +3569,19 @@ init|=
 operator|new
 name|File
 argument_list|(
+name|Path
+operator|.
+name|getPathWithoutSchemeAndAuthority
+argument_list|(
+operator|new
+name|Path
+argument_list|(
 name|linkname
+argument_list|)
+argument_list|)
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// If not on Java7+, copy a file instead of creating a symlink since
@@ -3545,17 +3614,51 @@ try|try
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
-literal|"FileUtil#symlink: On Java6, copying file instead "
+literal|"FileUtil#symlink: On Windows+Java6, copying file instead "
 operator|+
-name|linkname
+literal|"of creating a symlink. Copying "
+operator|+
+name|target
 operator|+
 literal|" -> "
 operator|+
-name|target
+name|linkname
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+operator|!
+name|linkFile
+operator|.
+name|getParentFile
+argument_list|()
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Parent directory "
+operator|+
+name|linkFile
+operator|.
+name|getParent
+argument_list|()
+operator|+
+literal|" does not exist."
+argument_list|)
+expr_stmt|;
+return|return
+literal|1
+return|;
+block|}
+else|else
+block|{
 name|org
 operator|.
 name|apache
@@ -3573,6 +3676,7 @@ argument_list|,
 name|linkFile
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -3611,26 +3715,73 @@ name|getSymlinkCommand
 argument_list|(
 name|targetFile
 operator|.
-name|getPath
+name|toString
 argument_list|()
 argument_list|,
 name|linkFile
 operator|.
-name|getPath
+name|toString
 argument_list|()
 argument_list|)
 decl_stmt|;
 name|ShellCommandExecutor
 name|shExec
-init|=
+decl_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|Shell
+operator|.
+name|WINDOWS
+operator|&&
+name|linkFile
+operator|.
+name|getParentFile
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+operator|!
+operator|new
+name|Path
+argument_list|(
+name|target
+argument_list|)
+operator|.
+name|isAbsolute
+argument_list|()
+condition|)
+block|{
+comment|// Relative links on Windows must be resolvable at the time of
+comment|// creation. To ensure this we run the shell command in the directory
+comment|// of the link.
+comment|//
+name|shExec
+operator|=
+operator|new
+name|ShellCommandExecutor
+argument_list|(
+name|cmd
+argument_list|,
+name|linkFile
+operator|.
+name|getParentFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|shExec
+operator|=
 operator|new
 name|ShellCommandExecutor
 argument_list|(
 name|cmd
 argument_list|)
-decl_stmt|;
-try|try
-block|{
+expr_stmt|;
+block|}
 name|shExec
 operator|.
 name|execute

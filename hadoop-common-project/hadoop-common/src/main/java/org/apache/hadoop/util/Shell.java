@@ -663,6 +663,42 @@ name|link
 block|}
 return|;
 block|}
+comment|/** Return a command to read the target of the a symbolic link*/
+DECL|method|getReadlinkCommand (String link)
+specifier|public
+specifier|static
+name|String
+index|[]
+name|getReadlinkCommand
+parameter_list|(
+name|String
+name|link
+parameter_list|)
+block|{
+return|return
+name|WINDOWS
+condition|?
+operator|new
+name|String
+index|[]
+block|{
+name|WINUTILS
+block|,
+literal|"readlink"
+block|,
+name|link
+block|}
+else|:
+operator|new
+name|String
+index|[]
+block|{
+literal|"readlink"
+block|,
+name|link
+block|}
+return|;
+block|}
 comment|/** Return a command for determining if process with specified pid is alive. */
 DECL|method|getCheckProcessIsAliveCommand (String pid)
 specifier|public
