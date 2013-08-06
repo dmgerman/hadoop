@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -356,7 +366,18 @@ specifier|final
 name|MapOutputFile
 name|mapOutputFile
 decl_stmt|;
-DECL|method|Context (org.apache.hadoop.mapreduce.TaskAttemptID reduceId, JobConf jobConf, FileSystem localFS, TaskUmbilicalProtocol umbilical, LocalDirAllocator localDirAllocator, Reporter reporter, CompressionCodec codec, Class<? extends Reducer> combinerClass, CombineOutputCollector<K,V> combineCollector, Counters.Counter spilledRecordsCounter, Counters.Counter reduceCombineInputCounter, Counters.Counter shuffledMapsCounter, Counters.Counter reduceShuffleBytes, Counters.Counter failedShuffleCounter, Counters.Counter mergedMapOutputsCounter, TaskStatus status, Progress copyPhase, Progress mergePhase, Task reduceTask, MapOutputFile mapOutputFile)
+DECL|field|localMapFiles
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|TaskAttemptID
+argument_list|,
+name|MapOutputFile
+argument_list|>
+name|localMapFiles
+decl_stmt|;
+DECL|method|Context (org.apache.hadoop.mapreduce.TaskAttemptID reduceId, JobConf jobConf, FileSystem localFS, TaskUmbilicalProtocol umbilical, LocalDirAllocator localDirAllocator, Reporter reporter, CompressionCodec codec, Class<? extends Reducer> combinerClass, CombineOutputCollector<K,V> combineCollector, Counters.Counter spilledRecordsCounter, Counters.Counter reduceCombineInputCounter, Counters.Counter shuffledMapsCounter, Counters.Counter reduceShuffleBytes, Counters.Counter failedShuffleCounter, Counters.Counter mergedMapOutputsCounter, TaskStatus status, Progress copyPhase, Progress mergePhase, Task reduceTask, MapOutputFile mapOutputFile, Map<TaskAttemptID, MapOutputFile> localMapFiles)
 specifier|public
 name|Context
 parameter_list|(
@@ -449,6 +470,14 @@ name|reduceTask
 parameter_list|,
 name|MapOutputFile
 name|mapOutputFile
+parameter_list|,
+name|Map
+argument_list|<
+name|TaskAttemptID
+argument_list|,
+name|MapOutputFile
+argument_list|>
+name|localMapFiles
 parameter_list|)
 block|{
 name|this
@@ -570,6 +599,12 @@ operator|.
 name|mapOutputFile
 operator|=
 name|mapOutputFile
+expr_stmt|;
+name|this
+operator|.
+name|localMapFiles
+operator|=
+name|localMapFiles
 expr_stmt|;
 block|}
 DECL|method|getReduceId ()
@@ -800,6 +835,21 @@ parameter_list|()
 block|{
 return|return
 name|mapOutputFile
+return|;
+block|}
+DECL|method|getLocalMapFiles ()
+specifier|public
+name|Map
+argument_list|<
+name|TaskAttemptID
+argument_list|,
+name|MapOutputFile
+argument_list|>
+name|getLocalMapFiles
+parameter_list|()
+block|{
+return|return
+name|localMapFiles
 return|;
 block|}
 block|}

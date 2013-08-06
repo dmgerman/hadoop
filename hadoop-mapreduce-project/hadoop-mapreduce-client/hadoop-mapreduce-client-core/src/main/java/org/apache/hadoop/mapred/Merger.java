@@ -304,6 +304,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|TaskType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|PriorityQueue
@@ -485,6 +499,10 @@ argument_list|,
 name|reporter
 argument_list|,
 literal|null
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
 argument_list|)
 operator|.
 name|merge
@@ -608,6 +626,10 @@ argument_list|,
 name|reporter
 argument_list|,
 name|mergedMapOutputsCounter
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
 argument_list|)
 operator|.
 name|merge
@@ -832,6 +854,10 @@ argument_list|,
 name|reporter
 argument_list|,
 name|sortSegments
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
 argument_list|)
 operator|.
 name|merge
@@ -863,7 +889,7 @@ name|V
 extends|extends
 name|Object
 parameter_list|>
-DECL|method|merge (Configuration conf, FileSystem fs, Class<K> keyClass, Class<V> valueClass, CompressionCodec codec, List<Segment<K, V>> segments, int mergeFactor, Path tmpDir, RawComparator<K> comparator, Progressable reporter, boolean sortSegments, Counters.Counter readsCounter, Counters.Counter writesCounter, Progress mergePhase)
+DECL|method|merge (Configuration conf, FileSystem fs, Class<K> keyClass, Class<V> valueClass, CompressionCodec codec, List<Segment<K, V>> segments, int mergeFactor, Path tmpDir, RawComparator<K> comparator, Progressable reporter, boolean sortSegments, Counters.Counter readsCounter, Counters.Counter writesCounter, Progress mergePhase, TaskType taskType)
 name|RawKeyValueIterator
 name|merge
 parameter_list|(
@@ -929,6 +955,9 @@ name|writesCounter
 parameter_list|,
 name|Progress
 name|mergePhase
+parameter_list|,
+name|TaskType
+name|taskType
 parameter_list|)
 throws|throws
 name|IOException
@@ -955,6 +984,8 @@ argument_list|,
 name|sortSegments
 argument_list|,
 name|codec
+argument_list|,
+name|taskType
 argument_list|)
 operator|.
 name|merge
@@ -1076,6 +1107,10 @@ argument_list|,
 name|reporter
 argument_list|,
 name|sortSegments
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
 argument_list|)
 operator|.
 name|merge
@@ -1204,6 +1239,10 @@ argument_list|,
 name|sortSegments
 argument_list|,
 name|codec
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
 argument_list|)
 operator|.
 name|merge
@@ -2161,28 +2200,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// Boolean variable for including/considering final merge as part of sort
-comment|// phase or not. This is true in map task, false in reduce task. It is
-comment|// used in calculating mergeProgress.
-DECL|field|includeFinalMerge
-specifier|static
-name|boolean
-name|includeFinalMerge
-init|=
-literal|false
-decl_stmt|;
-comment|/**    * Sets the boolean variable includeFinalMerge to true. Called from    * map task before calling merge() so that final merge of map task    * is also considered as part of sort phase.    */
-DECL|method|considerFinalMergeForProgress ()
-specifier|static
-name|void
-name|considerFinalMergeForProgress
-parameter_list|()
-block|{
-name|includeFinalMerge
-operator|=
-literal|true
-expr_stmt|;
-block|}
 DECL|class|MergeQueue
 specifier|private
 specifier|static
@@ -2298,6 +2315,28 @@ operator|new
 name|DataInputBuffer
 argument_list|()
 decl_stmt|;
+comment|// Boolean variable for including/considering final merge as part of sort
+comment|// phase or not. This is true in map task, false in reduce task. It is
+comment|// used in calculating mergeProgress.
+DECL|field|includeFinalMerge
+specifier|private
+name|boolean
+name|includeFinalMerge
+init|=
+literal|false
+decl_stmt|;
+comment|/**      * Sets the boolean variable includeFinalMerge to true. Called from      * map task before calling merge() so that final merge of map task      * is also considered as part of sort phase.      */
+DECL|method|considerFinalMergeForProgress ()
+specifier|private
+name|void
+name|considerFinalMergeForProgress
+parameter_list|()
+block|{
+name|includeFinalMerge
+operator|=
+literal|true
+expr_stmt|;
+block|}
 DECL|field|minSegment
 name|Segment
 argument_list|<
@@ -2437,10 +2476,14 @@ argument_list|,
 name|reporter
 argument_list|,
 literal|null
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MergeQueue (Configuration conf, FileSystem fs, Path[] inputs, boolean deleteInputs, CompressionCodec codec, RawComparator<K> comparator, Progressable reporter, Counters.Counter mergedMapOutputsCounter)
+DECL|method|MergeQueue (Configuration conf, FileSystem fs, Path[] inputs, boolean deleteInputs, CompressionCodec codec, RawComparator<K> comparator, Progressable reporter, Counters.Counter mergedMapOutputsCounter, TaskType taskType)
 specifier|public
 name|MergeQueue
 parameter_list|(
@@ -2473,6 +2516,9 @@ name|Counters
 operator|.
 name|Counter
 name|mergedMapOutputsCounter
+parameter_list|,
+name|TaskType
+name|taskType
 parameter_list|)
 throws|throws
 name|IOException
@@ -2507,6 +2553,19 @@ name|reporter
 operator|=
 name|reporter
 expr_stmt|;
+if|if
+condition|(
+name|taskType
+operator|==
+name|TaskType
+operator|.
+name|MAP
+condition|)
+block|{
+name|considerFinalMergeForProgress
+argument_list|()
+expr_stmt|;
+block|}
 for|for
 control|(
 name|Path
@@ -2623,10 +2682,14 @@ argument_list|,
 name|reporter
 argument_list|,
 literal|false
+argument_list|,
+name|TaskType
+operator|.
+name|REDUCE
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MergeQueue (Configuration conf, FileSystem fs, List<Segment<K, V>> segments, RawComparator<K> comparator, Progressable reporter, boolean sortSegments)
+DECL|method|MergeQueue (Configuration conf, FileSystem fs, List<Segment<K, V>> segments, RawComparator<K> comparator, Progressable reporter, boolean sortSegments, TaskType taskType)
 specifier|public
 name|MergeQueue
 parameter_list|(
@@ -2658,6 +2721,9 @@ name|reporter
 parameter_list|,
 name|boolean
 name|sortSegments
+parameter_list|,
+name|TaskType
+name|taskType
 parameter_list|)
 block|{
 name|this
@@ -2692,6 +2758,19 @@ name|reporter
 expr_stmt|;
 if|if
 condition|(
+name|taskType
+operator|==
+name|TaskType
+operator|.
+name|MAP
+condition|)
+block|{
+name|considerFinalMergeForProgress
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|sortSegments
 condition|)
 block|{
@@ -2706,7 +2785,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|MergeQueue (Configuration conf, FileSystem fs, List<Segment<K, V>> segments, RawComparator<K> comparator, Progressable reporter, boolean sortSegments, CompressionCodec codec)
+DECL|method|MergeQueue (Configuration conf, FileSystem fs, List<Segment<K, V>> segments, RawComparator<K> comparator, Progressable reporter, boolean sortSegments, CompressionCodec codec, TaskType taskType)
 specifier|public
 name|MergeQueue
 parameter_list|(
@@ -2741,6 +2820,9 @@ name|sortSegments
 parameter_list|,
 name|CompressionCodec
 name|codec
+parameter_list|,
+name|TaskType
+name|taskType
 parameter_list|)
 block|{
 name|this
@@ -2756,6 +2838,8 @@ argument_list|,
 name|reporter
 argument_list|,
 name|sortSegments
+argument_list|,
+name|taskType
 argument_list|)
 expr_stmt|;
 name|this

@@ -357,7 +357,7 @@ name|outDir
 argument_list|,
 literal|1
 argument_list|,
-literal|2
+literal|1
 argument_list|,
 name|line1
 operator|+

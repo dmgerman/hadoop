@@ -894,6 +894,8 @@ argument_list|,
 name|mockTask
 argument_list|,
 name|mockMapOutputFile
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|shuffleConsumerPlugin
