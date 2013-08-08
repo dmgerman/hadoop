@@ -3430,6 +3430,13 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+name|authMethod
+operator|=
+name|saslRpcClient
+operator|.
+name|getAuthMethod
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|rand

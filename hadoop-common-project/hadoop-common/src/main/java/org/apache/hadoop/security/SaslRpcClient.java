@@ -757,6 +757,11 @@ specifier|private
 name|SaslClient
 name|saslClient
 decl_stmt|;
+DECL|field|authMethod
+specifier|private
+name|AuthMethod
+name|authMethod
+decl_stmt|;
 DECL|field|saslHeader
 specifier|private
 specifier|static
@@ -889,6 +894,26 @@ name|key
 argument_list|)
 else|:
 literal|null
+return|;
+block|}
+comment|// the RPC Client has an inelegant way of handling expiration of TGTs
+comment|// acquired via a keytab.  any connection failure causes a relogin, so
+comment|// the Client needs to know what authMethod was being attempted if an
+comment|// exception occurs.  the SASL prep for a kerberos connection should
+comment|// ideally relogin if necessary instead of exposing this detail to the
+comment|// Client
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|method|getAuthMethod ()
+specifier|public
+name|AuthMethod
+name|getAuthMethod
+parameter_list|()
+block|{
+return|return
+name|authMethod
 return|;
 block|}
 comment|/**    * Instantiate a sasl client for the first supported auth type in the    * given list.  The auth type must be defined, enabled, and the user    * must possess the required credentials, else the next auth is tried.    *     * @param authTypes to attempt in the given order    * @return SaslAuth of instantiated client    * @throws AccessControlException - client doesn't support any of the auths    * @throws IOException - misc errors    */
@@ -1754,14 +1779,14 @@ name|outS
 argument_list|)
 argument_list|)
 decl_stmt|;
-comment|// redefined if/when a SASL negotiation completes
-name|AuthMethod
+comment|// redefined if/when a SASL negotiation starts, can be queried if the
+comment|// negotiation fails
 name|authMethod
-init|=
+operator|=
 name|AuthMethod
 operator|.
 name|SIMPLE
-decl_stmt|;
+expr_stmt|;
 name|sendSaslMessage
 argument_list|(
 name|outStream
@@ -1943,6 +1968,7 @@ name|getAuthsList
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// define auth being attempted, caller can query if connect fails
 name|authMethod
 operator|=
 name|AuthMethod
