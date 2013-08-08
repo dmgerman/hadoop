@@ -518,11 +518,6 @@ argument_list|,
 name|metrics
 argument_list|)
 expr_stmt|;
-name|metrics
-operator|.
-name|initMetrics
-argument_list|()
-expr_stmt|;
 block|}
 name|queueMetrics
 operator|.

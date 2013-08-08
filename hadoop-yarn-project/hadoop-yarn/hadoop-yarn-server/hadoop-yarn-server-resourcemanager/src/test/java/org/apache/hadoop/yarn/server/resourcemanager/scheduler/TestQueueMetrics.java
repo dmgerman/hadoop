@@ -545,6 +545,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -644,6 +646,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -786,6 +790,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|assertNull
@@ -886,6 +892,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -912,6 +920,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -940,6 +950,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// As the application has failed, framework retries the same application
@@ -968,6 +980,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -994,6 +1008,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// Suppose say application has failed this time as well.
@@ -1023,6 +1039,8 @@ argument_list|,
 literal|1
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// As the application has failed, framework retries the same application
@@ -1051,6 +1069,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -1077,6 +1097,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// Suppose say application has finished.
@@ -1106,6 +1128,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|assertNull
@@ -1204,6 +1228,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -1221,6 +1247,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -1373,6 +1401,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -1390,6 +1420,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -1606,6 +1638,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -1623,6 +1657,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -1784,6 +1820,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -1801,6 +1839,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -1818,6 +1858,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -1835,6 +1877,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|parentMetrics
@@ -2089,6 +2133,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -2106,6 +2152,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|metrics
@@ -2516,6 +2564,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -2533,6 +2583,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -2550,6 +2602,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|checkApps
@@ -2567,6 +2621,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -2778,6 +2834,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 name|MetricsAsserts
@@ -2792,7 +2850,138 @@ name|metrics
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|checkApps (MetricsSource source, int submitted, int pending, int running, int completed, int failed, int killed)
+comment|// This is to test all metrics can consistently show up if specified true to
+comment|// collect all metrics, even though they are not modified from last time they
+comment|// are collected. If not collecting all metrics, only modified metrics will show up.
+annotation|@
+name|Test
+DECL|method|testCollectAllMetrics ()
+specifier|public
+name|void
+name|testCollectAllMetrics
+parameter_list|()
+block|{
+name|String
+name|queueName
+init|=
+literal|"single"
+decl_stmt|;
+name|QueueMetrics
+operator|.
+name|forQueue
+argument_list|(
+name|ms
+argument_list|,
+name|queueName
+argument_list|,
+literal|null
+argument_list|,
+literal|false
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+name|MetricsSource
+name|queueSource
+init|=
+name|queueSource
+argument_list|(
+name|ms
+argument_list|,
+name|queueName
+argument_list|)
+decl_stmt|;
+name|checkApps
+argument_list|(
+name|queueSource
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+try|try
+block|{
+comment|// do not collect all metrics
+name|checkApps
+argument_list|(
+name|queueSource
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AssertionError
+name|e
+parameter_list|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+literal|"Expected exactly one metric for name "
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+comment|// collect all metrics
+name|checkApps
+argument_list|(
+name|queueSource
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|checkApps (MetricsSource source, int submitted, int pending, int running, int completed, int failed, int killed, boolean all)
 specifier|public
 specifier|static
 name|void
@@ -2818,6 +3007,9 @@ name|failed
 parameter_list|,
 name|int
 name|killed
+parameter_list|,
+name|boolean
+name|all
 parameter_list|)
 block|{
 name|MetricsRecordBuilder
@@ -2826,6 +3018,8 @@ init|=
 name|getMetrics
 argument_list|(
 name|source
+argument_list|,
+name|all
 argument_list|)
 decl_stmt|;
 name|assertCounter
