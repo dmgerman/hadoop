@@ -432,8 +432,6 @@ name|totalMB
 operator|=
 name|availableMB
 operator|+
-name|reservedMB
-operator|+
 name|allocatedMB
 expr_stmt|;
 name|this
