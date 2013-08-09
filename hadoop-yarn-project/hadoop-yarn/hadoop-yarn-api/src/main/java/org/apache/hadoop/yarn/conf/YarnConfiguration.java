@@ -2631,6 +2631,27 @@ name|DEFAULT_YARN_MINICLUSTER_FIXED_PORTS
 init|=
 literal|false
 decl_stmt|;
+comment|/**    * Whether users are explicitly trying to control resource monitoring    * configuration for the MiniYARNCluster. Disabled by default.    */
+DECL|field|YARN_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"minicluster.control-resource-monitoring"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+DECL|field|DEFAULT_YARN_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+name|DEFAULT_YARN_MINICLUSTER_CONTROL_RESOURCE_MONITORING
+init|=
+literal|false
+decl_stmt|;
 comment|/** The log directory for the containers */
 DECL|field|YARN_APP_CONTAINER_LOG_DIR
 specifier|public
