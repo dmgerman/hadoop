@@ -63,6 +63,10 @@ name|CapacitySchedulerInfo
 operator|.
 name|class
 block|,
+name|FairSchedulerInfo
+operator|.
+name|class
+block|,
 name|FifoSchedulerInfo
 operator|.
 name|class

@@ -155,6 +155,26 @@ return|return
 name|vCores
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"<memory:"
+operator|+
+name|memory
+operator|+
+literal|", vCores:"
+operator|+
+name|vCores
+operator|+
+literal|">"
+return|;
+block|}
 block|}
 end_class
 
