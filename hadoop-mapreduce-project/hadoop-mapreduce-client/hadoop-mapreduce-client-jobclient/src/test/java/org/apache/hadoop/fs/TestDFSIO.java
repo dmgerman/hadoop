@@ -1178,6 +1178,10 @@ argument_list|,
 name|DEFAULT_NR_FILES
 argument_list|)
 expr_stmt|;
+comment|/** Check write here, as it is required for other tests */
+name|testWrite
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|AfterClass
@@ -1218,10 +1222,9 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
-annotation|@
-name|Test
 DECL|method|testWrite ()
 specifier|public
+specifier|static
 name|void
 name|testWrite
 parameter_list|()
@@ -1277,6 +1280,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|3000
+argument_list|)
 DECL|method|testRead ()
 specifier|public
 name|void
@@ -1334,6 +1342,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|3000
+argument_list|)
 DECL|method|testReadRandom ()
 specifier|public
 name|void
@@ -1403,6 +1416,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|3000
+argument_list|)
 DECL|method|testReadBackward ()
 specifier|public
 name|void
@@ -1473,6 +1491,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|3000
+argument_list|)
 DECL|method|testReadSkip ()
 specifier|public
 name|void
@@ -1542,6 +1565,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|3000
+argument_list|)
 DECL|method|testAppend ()
 specifier|public
 name|void
