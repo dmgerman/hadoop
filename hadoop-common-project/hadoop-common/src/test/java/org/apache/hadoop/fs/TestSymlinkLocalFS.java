@@ -146,6 +146,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -243,6 +257,33 @@ return|return
 literal|null
 return|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|emulatingSymlinksOnWindows ()
+specifier|protected
+name|boolean
+name|emulatingSymlinksOnWindows
+parameter_list|()
+block|{
+comment|// Java 6 on Windows has very poor symlink support. Specifically
+comment|// Specifically File#length and File#renameTo do not work as expected.
+comment|// (see HADOOP-9061 for additional details)
+comment|// Hence some symlink tests will be skipped.
+comment|//
+return|return
+operator|(
+name|Shell
+operator|.
+name|WINDOWS
+operator|&&
+operator|!
+name|Shell
+operator|.
+name|isJava7OrAbove
+argument_list|()
+operator|)
+return|;
 block|}
 annotation|@
 name|Override
@@ -768,6 +809,13 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|assumeTrue
+argument_list|(
+operator|!
+name|emulatingSymlinksOnWindows
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Path
 name|fileAbs
 init|=
@@ -986,6 +1034,34 @@ name|x
 parameter_list|)
 block|{
 comment|// Excpected.
+block|}
+block|}
+comment|/** Test create symlink to . */
+annotation|@
+name|Override
+DECL|method|testCreateLinkToDot ()
+specifier|public
+name|void
+name|testCreateLinkToDot
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+try|try
+block|{
+name|super
+operator|.
+name|testCreateLinkToDot
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|iae
+parameter_list|)
+block|{
+comment|// Expected.
 block|}
 block|}
 block|}

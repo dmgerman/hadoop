@@ -86,6 +86,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|DataInputBuffer
@@ -187,7 +201,7 @@ specifier|private
 name|int
 name|length
 decl_stmt|;
-DECL|method|InMemoryReader (MergeManagerImpl<K,V> merger, TaskAttemptID taskAttemptId, byte[] data, int start, int length)
+DECL|method|InMemoryReader (MergeManagerImpl<K,V> merger, TaskAttemptID taskAttemptId, byte[] data, int start, int length, Configuration conf)
 specifier|public
 name|InMemoryReader
 parameter_list|(
@@ -211,13 +225,16 @@ name|start
 parameter_list|,
 name|int
 name|length
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 name|super
 argument_list|(
-literal|null
+name|conf
 argument_list|,
 literal|null
 argument_list|,

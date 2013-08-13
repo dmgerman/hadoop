@@ -4470,10 +4470,7 @@ argument_list|()
 operator|+
 literal|"<td class=\"name\"><a title=\""
 operator|+
-name|d
-operator|.
-name|getXferAddr
-argument_list|()
+name|url
 operator|+
 literal|"\" href=\""
 operator|+
@@ -4511,6 +4508,13 @@ literal|""
 else|:
 literal|"\n"
 operator|)
+operator|+
+literal|"<td class=\"address\">"
+operator|+
+name|d
+operator|.
+name|getXferAddr
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4696,7 +4700,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|/*        * Say the datanode is dn1.hadoop.apache.org with ip 192.168.0.5 we use:        * 1) d.getHostName():d.getPort() to display. Domain and port are stripped        *    if they are common across the nodes. i.e. "dn1"        * 2) d.getHost():d.Port() for "title". i.e. "192.168.0.5:50010"        * 3) d.getHostName():d.getInfoPort() for url.        *    i.e. "http://dn1.hadoop.apache.org:50075/..."        * Note that "d.getHost():d.getPort()" is what DFS clients use to        * interact with datanodes.        */
+comment|/*        * Say the datanode is dn1.hadoop.apache.org with ip 192.168.0.5 we use:        * 1) d.getHostName():d.getPort() to display. Domain and port are stripped        *    if they are common across the nodes. i.e. "dn1"         * 2) d.getHostName():d.getInfoPort() for url and title.        *    i.e. "http://dn1.hadoop.apache.org:50075/..."        * 3) d.getXferAddr() for "Transferring Address". i.e. "192.168.0.5:50010"        * Note that "d.getHost():d.getPort()" is what DFS clients use to        * interact with datanodes.        */
 name|generateNodeDataHeader
 argument_list|(
 name|out
@@ -5409,6 +5413,13 @@ literal|"> Node<th "
 operator|+
 name|nodeHeaderStr
 argument_list|(
+literal|"address"
+argument_list|)
+operator|+
+literal|"> Transferring<br>Address<th "
+operator|+
+name|nodeHeaderStr
+argument_list|(
 literal|"lastcontact"
 argument_list|)
 operator|+
@@ -5511,7 +5522,7 @@ argument_list|)
 operator|+
 literal|"> Block Pool<br>Used (%)"
 operator|+
-literal|"> Blocks<th "
+literal|"<th "
 operator|+
 name|nodeHeaderStr
 argument_list|(
@@ -5631,6 +5642,13 @@ literal|"node"
 argument_list|)
 operator|+
 literal|"> Node<th "
+operator|+
+name|nodeHeaderStr
+argument_list|(
+literal|"address"
+argument_list|)
+operator|+
+literal|"> Transferring<br>Address<th "
 operator|+
 name|nodeHeaderStr
 argument_list|(
@@ -5763,6 +5781,13 @@ literal|"name"
 argument_list|)
 operator|+
 literal|"> Node<th "
+operator|+
+name|nodeHeaderStr
+argument_list|(
+literal|"address"
+argument_list|)
+operator|+
+literal|"> Transferring<br>Address<th "
 operator|+
 name|nodeHeaderStr
 argument_list|(

@@ -533,6 +533,22 @@ name|UnsupportedFileSystemException
 throws|,
 name|IOException
 function_decl|;
+DECL|method|globStatus (Path pathPattern, PathFilter filter)
+specifier|abstract
+specifier|public
+name|FileStatus
+index|[]
+name|globStatus
+parameter_list|(
+name|Path
+name|pathPattern
+parameter_list|,
+name|PathFilter
+name|filter
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

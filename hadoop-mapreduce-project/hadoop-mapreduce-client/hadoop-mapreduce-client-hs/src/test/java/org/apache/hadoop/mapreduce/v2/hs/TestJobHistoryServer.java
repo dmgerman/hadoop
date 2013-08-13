@@ -1381,7 +1381,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// test main method
+comment|// test launch method
 annotation|@
 name|Test
 argument_list|(
@@ -1389,10 +1389,10 @@ name|timeout
 operator|=
 literal|60000
 argument_list|)
-DECL|method|testMainMethod ()
+DECL|method|testLaunch ()
 specifier|public
 name|void
-name|testMainMethod
+name|testLaunch
 parameter_list|()
 throws|throws
 name|Exception
@@ -1404,9 +1404,11 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+name|historyServer
+operator|=
 name|JobHistoryServer
 operator|.
-name|main
+name|launchJobHistoryServer
 argument_list|(
 operator|new
 name|String

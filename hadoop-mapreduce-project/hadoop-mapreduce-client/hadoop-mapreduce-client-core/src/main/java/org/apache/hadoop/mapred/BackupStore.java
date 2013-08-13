@@ -514,6 +514,11 @@ name|lastSegmentEOF
 init|=
 literal|false
 decl_stmt|;
+DECL|field|conf
+specifier|private
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|method|BackupStore (Configuration conf, TaskAttemptID taskid)
 specifier|public
 name|BackupStore
@@ -636,6 +641,12 @@ expr_stmt|;
 name|tid
 operator|=
 name|taskid
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 name|LOG
 operator|.
@@ -2194,6 +2205,8 @@ argument_list|,
 literal|0
 argument_list|,
 name|usedSize
+argument_list|,
+name|conf
 argument_list|)
 decl_stmt|;
 name|Segment

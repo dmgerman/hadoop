@@ -3495,6 +3495,8 @@ operator|(
 name|int
 operator|)
 name|size
+argument_list|,
+name|jobConf
 argument_list|)
 decl_stmt|;
 name|inMemorySegments

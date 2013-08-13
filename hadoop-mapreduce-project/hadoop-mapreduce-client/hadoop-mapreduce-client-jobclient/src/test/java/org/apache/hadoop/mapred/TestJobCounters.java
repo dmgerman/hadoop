@@ -1778,21 +1778,19 @@ comment|// Each map spills twice, emitting 4096 records per spill from the
 comment|// combiner per spill. The merge adds an additional 8192 records, as
 comment|// there are too few spills to combine (2< 3)
 comment|// Each map spills 2^14 records, so maps spill 49152 records, combined.
-comment|// The reduce spill count is composed of the read from one segment and
-comment|// the intermediate merge of the other two. The intermediate merge
+comment|// The combiner has emitted 24576 records to the reducer; these are all
+comment|// fetched straight to memory from the map side. The intermediate merge
 comment|// adds 8192 records per segment read; again, there are too few spills to
-comment|// combine, so all 16834 are written to disk (total 32768 spilled records
-comment|// for the intermediate merge). The merge into the reduce includes only
-comment|// the unmerged segment, size 8192. Total spilled records in the reduce
-comment|// is 32768 from the merge + 8192 unmerged segment = 40960 records
-comment|// Total: map + reduce = 49152 + 40960 = 90112
+comment|// combine, so all Total spilled records in the reduce
+comment|// is 8192 records / map * 3 maps = 24576.
+comment|// Total: map + reduce = 49152 + 24576 = 73728
 comment|// 3 files, 5120 = 5 * 1024 rec/file = 15360 input records
 comment|// 4 records/line = 61440 output records
 name|validateCounters
 argument_list|(
 name|c1
 argument_list|,
-literal|90112
+literal|73728
 argument_list|,
 literal|15360
 argument_list|,
@@ -1972,15 +1970,15 @@ comment|// In the reduce, there are two intermediate merges before the reduce.
 comment|// 1st merge: read + write = 8192 * 4
 comment|// 2nd merge: read + write = 8192 * 4
 comment|// final merge: 0
-comment|// Total reduce: 65536
-comment|// Total: map + reduce = 2^16 + 2^16 = 131072
+comment|// Total reduce: 32768
+comment|// Total: map + reduce = 2^16 + 2^15 = 98304
 comment|// 4 files, 5120 = 5 * 1024 rec/file = 15360 input records
 comment|// 4 records/line = 81920 output records
 name|validateCounters
 argument_list|(
 name|c1
 argument_list|,
-literal|131072
+literal|98304
 argument_list|,
 literal|20480
 argument_list|,
@@ -2162,7 +2160,7 @@ name|validateCounters
 argument_list|(
 name|c1
 argument_list|,
-literal|147456
+literal|122880
 argument_list|,
 literal|25600
 argument_list|,
@@ -2517,7 +2515,7 @@ name|validateCounters
 argument_list|(
 name|c1
 argument_list|,
-literal|90112
+literal|73728
 argument_list|,
 literal|15360
 argument_list|,
@@ -2716,7 +2714,7 @@ name|validateCounters
 argument_list|(
 name|c1
 argument_list|,
-literal|131072
+literal|98304
 argument_list|,
 literal|20480
 argument_list|,
@@ -2925,7 +2923,7 @@ name|validateCounters
 argument_list|(
 name|c1
 argument_list|,
-literal|147456
+literal|122880
 argument_list|,
 literal|25600
 argument_list|,

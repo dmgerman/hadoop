@@ -250,6 +250,12 @@ name|bytesWritten
 init|=
 literal|0L
 decl_stmt|;
+DECL|field|useLz4HC
+specifier|private
+specifier|final
+name|boolean
+name|useLz4HC
+decl_stmt|;
 static|static
 block|{
 if|if
@@ -306,15 +312,24 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Creates a new compressor.    *    * @param directBufferSize size of the direct buffer to be used.    */
-DECL|method|Lz4Compressor (int directBufferSize)
+comment|/**    * Creates a new compressor.    *    * @param directBufferSize size of the direct buffer to be used.    * @param useLz4HC use high compression ratio version of lz4,     *                 which trades CPU for compression ratio.    */
+DECL|method|Lz4Compressor (int directBufferSize, boolean useLz4HC)
 specifier|public
 name|Lz4Compressor
 parameter_list|(
 name|int
 name|directBufferSize
+parameter_list|,
+name|boolean
+name|useLz4HC
 parameter_list|)
 block|{
+name|this
+operator|.
+name|useLz4HC
+operator|=
+name|useLz4HC
+expr_stmt|;
 name|this
 operator|.
 name|directBufferSize
@@ -344,6 +359,23 @@ operator|.
 name|position
 argument_list|(
 name|directBufferSize
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Creates a new compressor.    *    * @param directBufferSize size of the direct buffer to be used.    */
+DECL|method|Lz4Compressor (int directBufferSize)
+specifier|public
+name|Lz4Compressor
+parameter_list|(
+name|int
+name|directBufferSize
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|directBufferSize
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -796,6 +828,11 @@ block|}
 comment|// Compress data
 name|n
 operator|=
+name|useLz4HC
+condition|?
+name|compressBytesDirectHC
+argument_list|()
+else|:
 name|compressBytesDirect
 argument_list|()
 expr_stmt|;
@@ -981,6 +1018,13 @@ specifier|private
 specifier|native
 name|int
 name|compressBytesDirect
+parameter_list|()
+function_decl|;
+DECL|method|compressBytesDirectHC ()
+specifier|private
+specifier|native
+name|int
+name|compressBytesDirectHC
 parameter_list|()
 function_decl|;
 DECL|method|getLibraryName ()

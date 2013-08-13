@@ -44,6 +44,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ContainerId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -75,6 +93,21 @@ function_decl|;
 DECL|method|getRMIdentifier ()
 name|long
 name|getRMIdentifier
+parameter_list|()
+function_decl|;
+DECL|method|isContainerRecentlyStopped (ContainerId containerId)
+specifier|public
+name|boolean
+name|isContainerRecentlyStopped
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+function_decl|;
+DECL|method|clearFinishedContainersFromCache ()
+specifier|public
+name|void
+name|clearFinishedContainersFromCache
 parameter_list|()
 function_decl|;
 block|}

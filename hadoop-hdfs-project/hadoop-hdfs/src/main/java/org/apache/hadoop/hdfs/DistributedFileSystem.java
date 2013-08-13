@@ -1208,7 +1208,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Checks that the passed URI belongs to this filesystem, resolves the path    * component against the current working directory if relative, and finally    * returns the absolute path component.    *     * @param file URI to check and resolve    * @return resolved absolute path component of {file}    * @throws IllegalArgumentException if URI does not belong to this DFS    */
+comment|/**    * Checks that the passed URI belongs to this filesystem and returns    * just the path component. Expects a URI with an absolute path.    *     * @param file URI with absolute path    * @return path component of {file}    * @throws IllegalArgumentException if URI does not belong to this DFS    */
 DECL|method|getPathName (Path file)
 specifier|private
 name|String
@@ -3006,7 +3006,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// Both Paths have to belong to this DFS
 specifier|final
 name|Path
 name|absSrc
@@ -3025,63 +3024,6 @@ argument_list|(
 name|dst
 argument_list|)
 decl_stmt|;
-name|FileSystem
-name|srcFS
-init|=
-name|getFSofPath
-argument_list|(
-name|absSrc
-argument_list|,
-name|getConf
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|FileSystem
-name|dstFS
-init|=
-name|getFSofPath
-argument_list|(
-name|absDst
-argument_list|,
-name|getConf
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|srcFS
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|getUri
-argument_list|()
-argument_list|)
-operator|||
-operator|!
-name|dstFS
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|getUri
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Renames across FileSystems not supported"
-argument_list|)
-throw|;
-block|}
 comment|// Try the rename without resolving first
 try|try
 block|{
@@ -3179,13 +3121,10 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// Should just throw an error in FileSystem#checkPath
 return|return
-name|fs
-operator|.
-name|rename
+name|doCall
 argument_list|(
-name|source
-argument_list|,
 name|p
 argument_list|)
 return|;
@@ -3237,7 +3176,6 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-comment|// Both Paths have to belong to this DFS
 specifier|final
 name|Path
 name|absSrc
@@ -3256,63 +3194,6 @@ argument_list|(
 name|dst
 argument_list|)
 decl_stmt|;
-name|FileSystem
-name|srcFS
-init|=
-name|getFSofPath
-argument_list|(
-name|absSrc
-argument_list|,
-name|getConf
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|FileSystem
-name|dstFS
-init|=
-name|getFSofPath
-argument_list|(
-name|absDst
-argument_list|,
-name|getConf
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|srcFS
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|getUri
-argument_list|()
-argument_list|)
-operator|||
-operator|!
-name|dstFS
-operator|.
-name|getUri
-argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|getUri
-argument_list|()
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Renames across FileSystems not supported"
-argument_list|)
-throw|;
-block|}
 comment|// Try the rename without resolving first
 try|try
 block|{
@@ -3414,7 +3295,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Since we know it's this DFS for both, can just call doCall again
+comment|// Should just throw an error in FileSystem#checkPath
 return|return
 name|doCall
 argument_list|(

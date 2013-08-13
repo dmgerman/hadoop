@@ -426,7 +426,7 @@ name|conf
 operator|.
 name|setNumReduceTasks
 argument_list|(
-literal|2
+literal|1
 argument_list|)
 expr_stmt|;
 name|conf
@@ -716,9 +716,7 @@ name|readLine
 argument_list|()
 decl_stmt|;
 comment|//make sure we get what we expect as the first line, and also
-comment|//that we have two lines (both the lines must end up in the same
-comment|//reducer since the partitioner takes the same key spec for all
-comment|//lines
+comment|//that we have two lines
 if|if
 condition|(
 name|expect

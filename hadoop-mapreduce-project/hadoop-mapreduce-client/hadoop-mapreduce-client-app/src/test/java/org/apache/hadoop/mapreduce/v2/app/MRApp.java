@@ -2999,6 +2999,34 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|finalState
+operator|==
+name|Service
+operator|.
+name|STATE
+operator|.
+name|STOPPED
+condition|)
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+literal|"Timeout while waiting for MRApp to stop"
+argument_list|,
+name|waitForServiceToStop
+argument_list|(
+literal|20
+operator|*
+literal|1000
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|int
 name|timeoutSecs
 init|=
@@ -3069,6 +3097,7 @@ name|getServiceState
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|verifyCompleted ()
 specifier|public

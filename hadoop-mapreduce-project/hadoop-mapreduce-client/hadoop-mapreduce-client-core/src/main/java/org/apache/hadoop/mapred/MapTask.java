@@ -576,6 +576,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|TaskType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|lib
 operator|.
 name|input
@@ -10356,11 +10370,6 @@ name|partitions
 argument_list|)
 expr_stmt|;
 comment|// Divide sort phase into sub-phases
-name|Merger
-operator|.
-name|considerFinalMergeForProgress
-argument_list|()
-expr_stmt|;
 name|IndexRecord
 name|rec
 init|=
@@ -10621,6 +10630,10 @@ name|sortPhase
 operator|.
 name|phase
 argument_list|()
+argument_list|,
+name|TaskType
+operator|.
+name|MAP
 argument_list|)
 decl_stmt|;
 comment|//write merged output to disk

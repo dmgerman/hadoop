@@ -1835,6 +1835,37 @@ name|f
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|globStatus (Path pathPattern, PathFilter filter)
+specifier|public
+name|FileStatus
+index|[]
+name|globStatus
+parameter_list|(
+name|Path
+name|pathPattern
+parameter_list|,
+name|PathFilter
+name|filter
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fc
+operator|.
+name|util
+argument_list|()
+operator|.
+name|globStatus
+argument_list|(
+name|pathPattern
+argument_list|,
+name|filter
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

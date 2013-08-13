@@ -1094,6 +1094,15 @@ argument_list|,
 literal|"/tmp1"
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|unset
+argument_list|(
+name|DistCpConstants
+operator|.
+name|CONF_LABEL_PRESERVE_STATUS
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 annotation|@
