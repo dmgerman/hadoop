@@ -8043,6 +8043,29 @@ literal|" msecs"
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * The given datanode is reporting all of its cached blocks.    * Update the cache state of blocks in the block map.    */
+DECL|method|processCacheReport (final DatanodeID nodeID, final String poolId, final BlockListAsLongs newReport)
+specifier|public
+name|void
+name|processCacheReport
+parameter_list|(
+specifier|final
+name|DatanodeID
+name|nodeID
+parameter_list|,
+specifier|final
+name|String
+name|poolId
+parameter_list|,
+specifier|final
+name|BlockListAsLongs
+name|newReport
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// TODO: Implement me!
+block|}
 comment|/**    * Rescan the list of blocks which were previously postponed.    */
 DECL|method|rescanPostponedMisreplicatedBlocks ()
 specifier|private

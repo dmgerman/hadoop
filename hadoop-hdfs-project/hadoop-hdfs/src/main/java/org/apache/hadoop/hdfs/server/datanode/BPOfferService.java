@@ -1547,6 +1547,31 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+DECL|method|scheduleCacheReport (long delay)
+name|void
+name|scheduleCacheReport
+parameter_list|(
+name|long
+name|delay
+parameter_list|)
+block|{
+for|for
+control|(
+name|BPServiceActor
+name|actor
+range|:
+name|bpServices
+control|)
+block|{
+name|actor
+operator|.
+name|scheduleCacheReport
+argument_list|(
+name|delay
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Ask each of the actors to report a bad block hosted on another DN.    */
 DECL|method|reportRemoteBadBlock (DatanodeInfo dnInfo, ExtendedBlock block)
 name|void

@@ -9848,6 +9848,13 @@ argument_list|(
 name|delay
 argument_list|)
 expr_stmt|;
+name|bpos
+operator|.
+name|scheduleCacheReport
+argument_list|(
+name|delay
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * This method is used for testing.     * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is simulated.    *     * @return the fsdataset that stores the blocks    */

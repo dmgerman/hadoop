@@ -636,6 +636,13 @@ name|resetBlockReportTime
 init|=
 literal|true
 decl_stmt|;
+DECL|field|lastCacheReport
+specifier|volatile
+name|long
+name|lastCacheReport
+init|=
+literal|0
+decl_stmt|;
 DECL|field|bpThread
 name|Thread
 name|bpThread
@@ -1203,6 +1210,62 @@ operator|=
 literal|true
 expr_stmt|;
 comment|// reset future BRs for randomness
+block|}
+DECL|method|scheduleCacheReport (long delay)
+name|void
+name|scheduleCacheReport
+parameter_list|(
+name|long
+name|delay
+parameter_list|)
+block|{
+if|if
+condition|(
+name|delay
+operator|>
+literal|0
+condition|)
+block|{
+comment|// Uniform random jitter by the delay
+name|lastCacheReport
+operator|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+operator|-
+name|dnConf
+operator|.
+name|cacheReportInterval
+operator|+
+name|DFSUtil
+operator|.
+name|getRandom
+argument_list|()
+operator|.
+name|nextInt
+argument_list|(
+operator|(
+operator|(
+name|int
+operator|)
+name|delay
+operator|)
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// send at next heartbeat
+name|lastCacheReport
+operator|=
+name|lastCacheReport
+operator|-
+name|dnConf
+operator|.
+name|cacheReportInterval
+expr_stmt|;
+block|}
 block|}
 DECL|method|reportBadBlocks (ExtendedBlock block)
 name|void
@@ -1908,6 +1971,44 @@ return|return
 name|cmd
 return|;
 block|}
+DECL|method|cacheReport ()
+name|DatanodeCommand
+name|cacheReport
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// send cache report if timer has expired.
+name|DatanodeCommand
+name|cmd
+init|=
+literal|null
+decl_stmt|;
+name|long
+name|startTime
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|startTime
+operator|-
+name|lastCacheReport
+operator|>
+name|dnConf
+operator|.
+name|cacheReportInterval
+condition|)
+block|{
+comment|// TODO: Implement me!
+block|}
+return|return
+name|cmd
+return|;
+block|}
 DECL|method|sendHeartBeat ()
 name|HeartbeatResponse
 name|sendHeartBeat
@@ -2214,7 +2315,9 @@ literal|"For namenode "
 operator|+
 name|nnAddr
 operator|+
-literal|" using DELETEREPORT_INTERVAL of "
+literal|" using"
+operator|+
+literal|" DELETEREPORT_INTERVAL of "
 operator|+
 name|dnConf
 operator|.
@@ -2227,6 +2330,14 @@ operator|+
 name|dnConf
 operator|.
 name|blockReportInterval
+operator|+
+literal|"msec"
+operator|+
+literal|" CACHEREPORT_INTERVAL of "
+operator|+
+name|dnConf
+operator|.
+name|cacheReportInterval
 operator|+
 literal|"msec"
 operator|+
@@ -2429,6 +2540,21 @@ init|=
 name|blockReport
 argument_list|()
 decl_stmt|;
+name|processCommand
+argument_list|(
+operator|new
+name|DatanodeCommand
+index|[]
+block|{
+name|cmd
+block|}
+argument_list|)
+expr_stmt|;
+name|cmd
+operator|=
+name|cacheReport
+argument_list|()
+expr_stmt|;
 name|processCommand
 argument_list|(
 operator|new
