@@ -405,6 +405,23 @@ name|_getSrcChecksum
 argument_list|()
 return|;
 block|}
+DECL|method|_getProtocVersion ()
+specifier|protected
+name|String
+name|_getProtocVersion
+parameter_list|()
+block|{
+return|return
+name|info
+operator|.
+name|getProperty
+argument_list|(
+literal|"protocVersion"
+argument_list|,
+literal|"Unknown"
+argument_list|)
+return|;
+block|}
 DECL|field|COMMON_VERSION_INFO
 specifier|private
 specifier|static
@@ -537,6 +554,21 @@ name|_getBuildVersion
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns the protoc version used for the build.    */
+DECL|method|getProtocVersion ()
+specifier|public
+specifier|static
+name|String
+name|getProtocVersion
+parameter_list|()
+block|{
+return|return
+name|COMMON_VERSION_INFO
+operator|.
+name|_getProtocVersion
+argument_list|()
+return|;
+block|}
 DECL|method|main (String[] args)
 specifier|public
 specifier|static
@@ -601,6 +633,18 @@ operator|+
 literal|" on "
 operator|+
 name|getDate
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Compiled with protoc "
+operator|+
+name|getProtocVersion
 argument_list|()
 argument_list|)
 expr_stmt|;
