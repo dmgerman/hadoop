@@ -179,6 +179,7 @@ init|=
 literal|false
 decl_stmt|;
 DECL|field|mBeanNames
+specifier|transient
 specifier|final
 name|UniqueNames
 name|mBeanNames
@@ -188,6 +189,7 @@ name|UniqueNames
 argument_list|()
 decl_stmt|;
 DECL|field|sourceNames
+specifier|transient
 specifier|final
 name|UniqueNames
 name|sourceNames
