@@ -11924,7 +11924,6 @@ name|clientMachine
 argument_list|)
 throw|;
 block|}
-specifier|final
 name|INodeFile
 name|myFile
 init|=
@@ -11951,6 +11950,27 @@ argument_list|,
 name|clientMachine
 argument_list|,
 literal|false
+argument_list|)
+expr_stmt|;
+comment|// recoverLeaseInternal may create a new InodeFile via
+comment|// finalizeINodeFileUnderConstruction so we need to refresh
+comment|// the referenced file.
+name|myFile
+operator|=
+name|INodeFile
+operator|.
+name|valueOf
+argument_list|(
+name|dir
+operator|.
+name|getINode
+argument_list|(
+name|src
+argument_list|)
+argument_list|,
+name|src
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 specifier|final
