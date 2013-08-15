@@ -2438,6 +2438,8 @@ argument_list|(
 name|fromTxnId
 argument_list|,
 name|forReading
+argument_list|,
+name|inProgressOk
 argument_list|)
 decl_stmt|;
 name|Map
@@ -2604,8 +2606,6 @@ argument_list|,
 name|allStreams
 argument_list|,
 name|fromTxnId
-argument_list|,
-name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
