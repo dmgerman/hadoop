@@ -1085,7 +1085,7 @@ name|FS_RM_STATE_STORE_URI
 init|=
 name|RM_PREFIX
 operator|+
-literal|"fs.rm-state-store.uri"
+literal|"fs.state-store.uri"
 decl_stmt|;
 comment|/** The maximum number of completed applications RM keeps. */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
@@ -2447,49 +2447,53 @@ name|DEFAULT_NM_PROCESS_KILL_WAIT_MS
 init|=
 literal|2000
 decl_stmt|;
-comment|/** Max time to wait to establish a connection to RM    */
-DECL|field|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+comment|/** Max time to wait to establish a connection to RM */
+DECL|field|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+name|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 init|=
 name|RM_PREFIX
 operator|+
-literal|"resourcemanager.connect.max.wait.secs"
+literal|"connect.max-wait.ms"
 decl_stmt|;
-DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+name|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 init|=
 literal|15
 operator|*
 literal|60
+operator|*
+literal|1000
 decl_stmt|;
-comment|/** Time interval between each attempt to connect to RM    */
-DECL|field|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+comment|/** Time interval between each attempt to connect to RM */
+DECL|field|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 init|=
 name|RM_PREFIX
 operator|+
-literal|"resourcemanager.connect.retry_interval.secs"
+literal|"connect.retry-interval.ms"
 decl_stmt|;
-DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+name|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 init|=
 literal|30
+operator|*
+literal|1000
 decl_stmt|;
 comment|/**    * CLASSPATH for YARN applications. A comma-separated list of CLASSPATH    * entries    */
 DECL|field|YARN_APPLICATION_CLASSPATH
