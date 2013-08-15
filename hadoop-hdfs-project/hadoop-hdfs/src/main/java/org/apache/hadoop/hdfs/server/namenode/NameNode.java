@@ -4382,6 +4382,12 @@ name|EditLogInputStream
 argument_list|>
 name|streams
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|streams
+operator|=
 name|sourceEditLog
 operator|.
 name|selectInputStreams
@@ -4392,7 +4398,7 @@ literal|1
 argument_list|,
 literal|0
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// Set the nextTxid to the CheckpointTxId+1
 name|newSharedEditLog
 operator|.
@@ -4559,6 +4565,25 @@ expr_stmt|;
 name|segmentOpen
 operator|=
 literal|false
+expr_stmt|;
+block|}
+block|}
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|streams
+operator|!=
+literal|null
+condition|)
+block|{
+name|FSEditLog
+operator|.
+name|closeAllStreams
+argument_list|(
+name|streams
+argument_list|)
 expr_stmt|;
 block|}
 block|}
