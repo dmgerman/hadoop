@@ -675,7 +675,9 @@ literal|"destination.  When copying multiple files, the destination\n"
 operator|+
 literal|"must be a directory. Passing -p preserves access and\n"
 operator|+
-literal|"modification times, ownership and the mode.\n"
+literal|"modification times, ownership and the mode. Passing -f\n"
+operator|+
+literal|"overwrites the destination if it already exists.\n"
 decl_stmt|;
 annotation|@
 name|Override
@@ -921,7 +923,9 @@ literal|"exists, unless the -f flag is given. Passing\n"
 operator|+
 literal|"-p preserves access and modification times,\n"
 operator|+
-literal|"ownership and the mode.\n"
+literal|"ownership and the mode. Passing -f overwrites\n"
+operator|+
+literal|"the destination if it already exists.\n"
 decl_stmt|;
 annotation|@
 name|Override

@@ -786,7 +786,7 @@ specifier|final
 name|PrintWriter
 name|out
 decl_stmt|;
-comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param nn namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param minReplication minimum replication    * @param remoteAddress source address of the fsck request    * @throws IOException    */
+comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param namenode namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param minReplication minimum replication    * @param remoteAddress source address of the fsck request    * @throws IOException    */
 DECL|method|NamenodeFsck (Configuration conf, NameNode namenode, NetworkTopology networktopology, Map<String,String[]> pmap, PrintWriter out, int totalDatanodes, short minReplication, InetAddress remoteAddress)
 name|NamenodeFsck
 parameter_list|(
@@ -1757,7 +1757,11 @@ comment|// Get block locations without updating the file access time
 comment|// and without block access tokens
 name|LocatedBlocks
 name|blocks
-init|=
+decl_stmt|;
+try|try
+block|{
+name|blocks
+operator|=
 name|namenode
 operator|.
 name|getNamesystem
@@ -1777,7 +1781,19 @@ literal|false
 argument_list|,
 literal|false
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|FileNotFoundException
+name|fnfe
+parameter_list|)
+block|{
+name|blocks
+operator|=
+literal|null
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|blocks

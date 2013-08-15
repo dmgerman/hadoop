@@ -2468,6 +2468,9 @@ argument_list|(
 name|status
 argument_list|)
 expr_stmt|;
+name|cleanupDFS
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|checkStatus (FileStatus[] status, Path ... expectedMatches)
 specifier|private
@@ -5056,10 +5059,8 @@ return|return
 name|globResults
 return|;
 block|}
-annotation|@
-name|After
 DECL|method|cleanupDFS ()
-specifier|public
+specifier|private
 name|void
 name|cleanupDFS
 parameter_list|()

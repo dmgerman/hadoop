@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A helper class for getting build-info of the java-vm.   *   */
+comment|/**  * A helper class for getting build-info of the java-vm.  *  */
 end_comment
 
 begin_class
@@ -67,7 +67,7 @@ specifier|public
 class|class
 name|PlatformName
 block|{
-comment|/**    * The complete platform 'name' to identify the platform as     * per the java-vm.    */
+comment|/**    * The complete platform 'name' to identify the platform as    * per the java-vm.    */
 DECL|field|PLATFORM_NAME
 specifier|public
 specifier|static
@@ -76,9 +76,17 @@ name|String
 name|PLATFORM_NAME
 init|=
 operator|(
-name|Shell
+name|System
 operator|.
-name|WINDOWS
+name|getProperty
+argument_list|(
+literal|"os.name"
+argument_list|)
+operator|.
+name|startsWith
+argument_list|(
+literal|"Windows"
+argument_list|)
 condition|?
 name|System
 operator|.
@@ -113,7 +121,7 @@ argument_list|(
 literal|"sun.arch.data.model"
 argument_list|)
 decl_stmt|;
-comment|/**    * The java vendor name used in this platform.     */
+comment|/**    * The java vendor name used in this platform.    */
 DECL|field|JAVA_VENDOR_NAME
 specifier|public
 specifier|static
@@ -128,7 +136,7 @@ argument_list|(
 literal|"java.vendor"
 argument_list|)
 decl_stmt|;
-comment|/**    * A public static variable to indicate the current java vendor is     * IBM java or not.     */
+comment|/**    * A public static variable to indicate the current java vendor is    * IBM java or not.    */
 DECL|field|IBM_JAVA
 specifier|public
 specifier|static

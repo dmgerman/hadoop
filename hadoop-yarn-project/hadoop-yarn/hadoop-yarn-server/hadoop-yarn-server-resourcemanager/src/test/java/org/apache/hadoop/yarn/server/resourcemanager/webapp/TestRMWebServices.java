@@ -3025,11 +3025,6 @@ name|totalMBExpect
 init|=
 name|metrics
 operator|.
-name|getReservedMB
-argument_list|()
-operator|+
-name|metrics
-operator|.
 name|getAvailableMB
 argument_list|()
 operator|+

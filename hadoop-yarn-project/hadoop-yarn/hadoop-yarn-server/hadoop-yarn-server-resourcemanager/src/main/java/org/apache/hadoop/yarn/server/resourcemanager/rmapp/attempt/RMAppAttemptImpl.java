@@ -4779,6 +4779,12 @@ case|case
 name|KILLED
 case|:
 block|{
+comment|// don't leave the tracking URL pointing to a non-existent AM
+name|appAttempt
+operator|.
+name|setTrackingUrlToRMAppPage
+argument_list|()
+expr_stmt|;
 name|appEvent
 operator|=
 operator|new
@@ -4799,6 +4805,12 @@ case|case
 name|FAILED
 case|:
 block|{
+comment|// don't leave the tracking URL pointing to a non-existent AM
+name|appAttempt
+operator|.
+name|setTrackingUrlToRMAppPage
+argument_list|()
+expr_stmt|;
 name|appEvent
 operator|=
 operator|new
@@ -5509,11 +5521,6 @@ operator|+
 literal|" timed out"
 argument_list|)
 expr_stmt|;
-name|appAttempt
-operator|.
-name|setTrackingUrlToRMAppPage
-argument_list|()
-expr_stmt|;
 name|super
 operator|.
 name|transition
@@ -6012,14 +6019,6 @@ literal|"."
 operator|+
 literal|"Failing this attempt."
 argument_list|)
-expr_stmt|;
-comment|// When the AM dies, the trackingUrl is left pointing to the AM's URL,
-comment|// which shows up in the scheduler UI as a broken link.  Direct the
-comment|// user to the app page on the RM so they can see the status and logs.
-name|appAttempt
-operator|.
-name|setTrackingUrlToRMAppPage
-argument_list|()
 expr_stmt|;
 operator|new
 name|FinalTransition

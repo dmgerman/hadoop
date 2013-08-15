@@ -253,8 +253,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-else|else
-block|{
 name|stdOut
 operator|.
 name|join
@@ -275,7 +273,6 @@ name|getOutput
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
