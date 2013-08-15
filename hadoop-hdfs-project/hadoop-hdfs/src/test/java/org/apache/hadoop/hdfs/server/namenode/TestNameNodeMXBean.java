@@ -828,6 +828,34 @@ argument_list|,
 name|nameJournalStatus
 argument_list|)
 expr_stmt|;
+comment|// get attribute JournalTransactionInfo
+name|String
+name|journalTxnInfo
+init|=
+operator|(
+name|String
+operator|)
+name|mbs
+operator|.
+name|getAttribute
+argument_list|(
+name|mxbeanName
+argument_list|,
+literal|"JournalTransactionInfo"
+argument_list|)
+decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Bad value for NameTxnIds"
+argument_list|,
+name|fsn
+operator|.
+name|getJournalTransactionInfo
+argument_list|()
+argument_list|,
+name|journalTxnInfo
+argument_list|)
+expr_stmt|;
 comment|// get attribute "NNStarted"
 name|String
 name|nnStarted
