@@ -2852,6 +2852,22 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// Skip the test case on Windows because backslash will be treated as a
+comment|// path separator instead of an escaping character on Windows.
+name|org
+operator|.
+name|junit
+operator|.
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+operator|!
+name|Path
+operator|.
+name|WINDOWS
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|String
