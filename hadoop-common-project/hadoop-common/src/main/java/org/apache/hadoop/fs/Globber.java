@@ -461,7 +461,7 @@ block|{
 name|String
 name|scheme
 init|=
-name|pathPattern
+name|path
 operator|.
 name|toUri
 argument_list|()
@@ -500,10 +500,8 @@ name|scheme
 operator|=
 name|fc
 operator|.
-name|getFSofPath
-argument_list|(
-name|path
-argument_list|)
+name|getDefaultFileSystem
+argument_list|()
 operator|.
 name|getUri
 argument_list|()
@@ -531,7 +529,7 @@ block|{
 name|String
 name|authority
 init|=
-name|pathPattern
+name|path
 operator|.
 name|toUri
 argument_list|()
@@ -570,10 +568,8 @@ name|authority
 operator|=
 name|fc
 operator|.
-name|getFSofPath
-argument_list|(
-name|path
-argument_list|)
+name|getDefaultFileSystem
+argument_list|()
 operator|.
 name|getUri
 argument_list|()
