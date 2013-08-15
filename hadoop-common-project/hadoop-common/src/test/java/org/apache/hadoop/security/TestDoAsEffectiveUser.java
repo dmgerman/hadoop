@@ -264,6 +264,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Test
 import|;
 end_import
@@ -433,6 +443,7 @@ decl_stmt|;
 DECL|field|masterConf
 specifier|private
 specifier|static
+specifier|final
 name|Configuration
 name|masterConf
 init|=
@@ -473,6 +484,15 @@ operator|+
 literal|"DEFAULT"
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Before
+DECL|method|setMasterConf ()
+specifier|public
+name|void
+name|setMasterConf
+parameter_list|()
+block|{
 name|UserGroupInformation
 operator|.
 name|setConfiguration
