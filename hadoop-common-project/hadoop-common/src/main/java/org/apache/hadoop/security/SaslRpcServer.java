@@ -750,11 +750,6 @@ case|case
 name|TOKEN
 case|:
 block|{
-name|secretManager
-operator|.
-name|checkAvailableForRead
-argument_list|()
-expr_stmt|;
 name|callback
 operator|=
 operator|new
