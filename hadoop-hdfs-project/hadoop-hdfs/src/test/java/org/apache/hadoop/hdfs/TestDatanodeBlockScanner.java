@@ -2506,7 +2506,16 @@ specifier|final
 name|String
 name|BASE_PATH
 init|=
+operator|(
+operator|new
+name|File
+argument_list|(
 literal|"/data/current/finalized"
+argument_list|)
+operator|)
+operator|.
+name|getAbsolutePath
+argument_list|()
 decl_stmt|;
 annotation|@
 name|Test
