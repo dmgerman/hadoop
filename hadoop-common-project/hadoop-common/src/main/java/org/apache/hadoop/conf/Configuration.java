@@ -805,7 +805,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Provides access to configuration parameters.  *  *<h4 id="Resources">Resources</h4>  *  *<p>Configurations are specified by resources. A resource contains a set of  * name/value pairs as XML data. Each resource is named by either a   *<code>String</code> or by a {@link Path}. If named by a<code>String</code>,   * then the classpath is examined for a file with that name.  If named by a   *<code>Path</code>, then the local filesystem is examined directly, without   * referring to the classpath.  *  *<p>Unless explicitly turned off, Hadoop by default specifies two   * resources, loaded in-order from the classpath:<ol>  *<li><tt><a href="{@docRoot}/../core-default.html">core-default.xml</a>  *</tt>: Read-only defaults for hadoop.</li>  *<li><tt>core-site.xml</tt>: Site-specific configuration for a given hadoop  * installation.</li>  *</ol>  * Applications may add additional resources, which are loaded  * subsequent to these resources in the order they are added.  *   *<h4 id="FinalParams">Final Parameters</h4>  *  *<p>Configuration parameters may be declared<i>final</i>.   * Once a resource declares a value final, no subsequently-loaded   * resource can alter that value.    * For example, one might define a final parameter with:  *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;dfs.hosts.include&lt;/name&gt;  *&lt;value&gt;/etc/hadoop/conf/hosts.include&lt;/value&gt;  *<b>&lt;final&gt;true&lt;/final&gt;</b>  *&lt;/property&gt;</pre></tt>  *  * Administrators typically define parameters as final in   *<tt>core-site.xml</tt> for values that user applications may not alter.  *  *<h4 id="VariableExpansion">Variable Expansion</h4>  *  *<p>Value strings are first processed for<i>variable expansion</i>. The  * available properties are:<ol>  *<li>Other properties defined in this Configuration; and, if a name is  * undefined here,</li>  *<li>Properties in {@link System#getProperties()}.</li>  *</ol>  *  *<p>For example, if a configuration resource contains the following property  * definitions:   *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;basedir&lt;/name&gt;  *&lt;value&gt;/user/${<i>user.name</i>}&lt;/value&gt;  *&lt;/property&gt;  *    *&lt;property&gt;  *&lt;name&gt;tempdir&lt;/name&gt;  *&lt;value&gt;${<i>basedir</i>}/tmp&lt;/value&gt;  *&lt;/property&gt;</pre></tt>  *  * When<tt>conf.get("tempdir")</tt> is called, then<tt>${<i>basedir</i>}</tt>  * will be resolved to another property in this Configuration, while  *<tt>${<i>user.name</i>}</tt> would then ordinarily be resolved to the value  * of the System property with that name.  */
+comment|/**   * Provides access to configuration parameters.  *  *<h4 id="Resources">Resources</h4>  *  *<p>Configurations are specified by resources. A resource contains a set of  * name/value pairs as XML data. Each resource is named by either a   *<code>String</code> or by a {@link Path}. If named by a<code>String</code>,   * then the classpath is examined for a file with that name.  If named by a   *<code>Path</code>, then the local filesystem is examined directly, without   * referring to the classpath.  *  *<p>Unless explicitly turned off, Hadoop by default specifies two   * resources, loaded in-order from the classpath:<ol>  *<li><tt><a href="{@docRoot}/../core-default.html">core-default.xml</a>  *</tt>: Read-only defaults for hadoop.</li>  *<li><tt>core-site.xml</tt>: Site-specific configuration for a given hadoop  * installation.</li>  *</ol>  * Applications may add additional resources, which are loaded  * subsequent to these resources in the order they are added.  *   *<h4 id="FinalParams">Final Parameters</h4>  *  *<p>Configuration parameters may be declared<i>final</i>.   * Once a resource declares a value final, no subsequently-loaded   * resource can alter that value.    * For example, one might define a final parameter with:  *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;dfs.hosts.include&lt;/name&gt;  *&lt;value&gt;/etc/hadoop/conf/hosts.include&lt;/value&gt;  *<b>&lt;final&gt;true&lt;/final&gt;</b>  *&lt;/property&gt;</pre></tt>  *  * Administrators typically define parameters as final in   *<tt>core-site.xml</tt> for values that user applications may not alter.  *  *<h4 id="VariableExpansion">Variable Expansion</h4>  *  *<p>Value strings are first processed for<i>variable expansion</i>. The  * available properties are:<ol>  *<li>Other properties defined in this Configuration; and, if a name is  * undefined here,</li>  *<li>Properties in {@link System#getProperties()}.</li>  *</ol>  *  *<p>For example, if a configuration resource contains the following property  * definitions:   *<tt><pre>  *&lt;property&gt;  *&lt;name&gt;basedir&lt;/name&gt;  *&lt;value&gt;/user/${<i>user.name</i>}&lt;/value&gt;  *&lt;/property&gt;  *    *&lt;property&gt;  *&lt;name&gt;tempdir&lt;/name&gt;  *&lt;value&gt;${<i>basedir</i>}/tmp&lt;/value&gt;  *&lt;/property&gt;</pre></tt>  *  * When<tt>conf.get("tempdir")</tt> is called, then<tt>${<i>basedir</i>}</tt>  * will be resolved to another property in this Configuration, while  *<tt>${<i>user.name</i>}</tt> would then ordinarily be resolved to the value  * of the System property with that name.  * By default, warnings will be given to any deprecated configuration   * parameters and these are suppressible by configuring  *<tt>log4j.logger.org.apache.hadoop.conf.Configuration.deprecation</tt> in  * log4j.properties file.  */
 end_comment
 
 begin_class
@@ -850,6 +850,20 @@ argument_list|(
 name|Configuration
 operator|.
 name|class
+argument_list|)
+decl_stmt|;
+DECL|field|LOG_DEPRECATION
+specifier|private
+specifier|static
+specifier|final
+name|Log
+name|LOG_DEPRECATION
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+literal|"org.apache.hadoop.conf.Configuration.deprecation"
 argument_list|)
 decl_stmt|;
 DECL|field|quietmode
@@ -3173,9 +3187,9 @@ operator|.
 name|accessed
 condition|)
 block|{
-name|LOG
+name|LOG_DEPRECATION
 operator|.
-name|warn
+name|info
 argument_list|(
 name|keyInfo
 operator|.
