@@ -404,7 +404,7 @@ name|shared
 operator|.
 name|keytab
 operator|.
-name|HackedKeytab
+name|Keytab
 import|;
 end_import
 
@@ -3323,11 +3323,11 @@ operator|.
 name|toString
 argument_list|()
 decl_stmt|;
-name|HackedKeytab
+name|Keytab
 name|keytab
 init|=
 operator|new
-name|HackedKeytab
+name|Keytab
 argument_list|()
 decl_stmt|;
 name|List
@@ -3451,10 +3451,6 @@ operator|.
 name|write
 argument_list|(
 name|keytabFile
-argument_list|,
-name|principals
-operator|.
-name|length
 argument_list|)
 expr_stmt|;
 block|}
