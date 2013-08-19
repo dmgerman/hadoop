@@ -158,9 +158,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
+name|hdfs
 operator|.
-name|FSDataOutputStream
+name|client
+operator|.
+name|HdfsDataOutputStream
 import|;
 end_import
 
@@ -4636,7 +4638,7 @@ name|NFS3ERR_INVAL
 argument_list|)
 return|;
 block|}
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|fos
 init|=
 literal|null
@@ -4815,7 +4817,7 @@ decl_stmt|;
 name|fos
 operator|=
 operator|new
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 argument_list|(
 name|dfsClient
 operator|.
