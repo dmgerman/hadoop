@@ -40,11 +40,21 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -53,15 +63,17 @@ DECL|class|TestAuthenticationToken
 specifier|public
 class|class
 name|TestAuthenticationToken
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testAnonymous ()
 specifier|public
 name|void
 name|testAnonymous
 parameter_list|()
 block|{
+name|Assert
+operator|.
 name|assertNotNull
 argument_list|(
 name|AuthenticationToken
@@ -69,6 +81,8 @@ operator|.
 name|ANONYMOUS
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|null
@@ -81,6 +95,8 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|null
@@ -93,6 +109,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|null
@@ -105,6 +123,8 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 operator|-
@@ -118,6 +138,8 @@ name|getExpires
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|AuthenticationToken
@@ -129,6 +151,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testConstructor ()
 specifier|public
 name|void
@@ -149,6 +173,8 @@ argument_list|,
 literal|"t"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -167,6 +193,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -183,6 +211,8 @@ argument_list|,
 literal|"t"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -201,6 +231,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -217,6 +249,8 @@ argument_list|,
 literal|"t"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -235,6 +269,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -251,6 +287,8 @@ argument_list|,
 literal|"t"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -269,6 +307,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -285,6 +325,8 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -303,6 +345,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -319,6 +363,8 @@ argument_list|,
 literal|""
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -337,6 +383,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -352,6 +400,8 @@ literal|"t"
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetters ()
 specifier|public
 name|void
@@ -390,6 +440,8 @@ argument_list|(
 name|expires
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"u"
@@ -400,6 +452,8 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"p"
@@ -410,6 +464,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"t"
@@ -420,6 +476,8 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|expires
@@ -430,6 +488,8 @@ name|getExpires
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|token
@@ -446,6 +506,8 @@ literal|70
 argument_list|)
 expr_stmt|;
 comment|// +20 msec fuzz for timer granularity.
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|token
@@ -455,6 +517,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testToStringAndParse ()
 specifier|public
 name|void
@@ -510,6 +574,8 @@ argument_list|(
 name|str
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"p"
@@ -520,6 +586,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"t"
@@ -530,6 +598,8 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|expires
@@ -540,6 +610,8 @@ name|getExpires
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|token
@@ -556,6 +628,8 @@ literal|70
 argument_list|)
 expr_stmt|;
 comment|// +20 msec fuzz for timer granularity.
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|token
@@ -565,6 +639,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testParseInvalid ()
 specifier|public
 name|void
@@ -636,6 +712,8 @@ argument_list|(
 name|str
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -654,6 +732,8 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;

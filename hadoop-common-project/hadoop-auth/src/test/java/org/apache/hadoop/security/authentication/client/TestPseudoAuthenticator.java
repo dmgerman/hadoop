@@ -58,6 +58,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|net
@@ -91,8 +111,6 @@ DECL|class|TestPseudoAuthenticator
 specifier|public
 class|class
 name|TestPseudoAuthenticator
-extends|extends
-name|AuthenticatorTestCase
 block|{
 DECL|method|getAuthenticationHandlerConfiguration (boolean anonymousAllowed)
 specifier|private
@@ -141,6 +159,8 @@ return|return
 name|props
 return|;
 block|}
+annotation|@
+name|Test
 DECL|method|testGetUserName ()
 specifier|public
 name|void
@@ -156,6 +176,8 @@ operator|new
 name|PseudoAuthenticator
 argument_list|()
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|System
@@ -172,6 +194,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAnonymousAllowed ()
 specifier|public
 name|void
@@ -180,6 +204,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|AuthenticatorTestCase
+name|auth
+init|=
+operator|new
+name|AuthenticatorTestCase
+argument_list|()
+decl_stmt|;
+name|auth
+operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
 name|getAuthenticationHandlerConfiguration
@@ -188,6 +221,8 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|auth
+operator|.
 name|start
 argument_list|()
 expr_stmt|;
@@ -199,6 +234,8 @@ init|=
 operator|new
 name|URL
 argument_list|(
+name|auth
+operator|.
 name|getBaseURL
 argument_list|()
 argument_list|)
@@ -219,6 +256,8 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|HttpURLConnection
@@ -234,11 +273,15 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|auth
+operator|.
 name|stop
 argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testAnonymousDisallowed ()
 specifier|public
 name|void
@@ -247,6 +290,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|AuthenticatorTestCase
+name|auth
+init|=
+operator|new
+name|AuthenticatorTestCase
+argument_list|()
+decl_stmt|;
+name|auth
+operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
 name|getAuthenticationHandlerConfiguration
@@ -255,6 +307,8 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|auth
+operator|.
 name|start
 argument_list|()
 expr_stmt|;
@@ -266,6 +320,8 @@ init|=
 operator|new
 name|URL
 argument_list|(
+name|auth
+operator|.
 name|getBaseURL
 argument_list|()
 argument_list|)
@@ -286,6 +342,8 @@ operator|.
 name|connect
 argument_list|()
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|HttpURLConnection
@@ -301,11 +359,15 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|auth
+operator|.
 name|stop
 argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testAuthenticationAnonymousAllowed ()
 specifier|public
 name|void
@@ -314,6 +376,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|AuthenticatorTestCase
+name|auth
+init|=
+operator|new
+name|AuthenticatorTestCase
+argument_list|()
+decl_stmt|;
+name|auth
+operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
 name|getAuthenticationHandlerConfiguration
@@ -322,6 +393,8 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|auth
+operator|.
 name|_testAuthentication
 argument_list|(
 operator|new
@@ -332,6 +405,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAuthenticationAnonymousDisallowed ()
 specifier|public
 name|void
@@ -340,6 +415,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|AuthenticatorTestCase
+name|auth
+init|=
+operator|new
+name|AuthenticatorTestCase
+argument_list|()
+decl_stmt|;
+name|auth
+operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
 name|getAuthenticationHandlerConfiguration
@@ -348,6 +432,8 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|auth
+operator|.
 name|_testAuthentication
 argument_list|(
 operator|new
@@ -358,6 +444,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAuthenticationAnonymousAllowedWithPost ()
 specifier|public
 name|void
@@ -366,6 +454,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|AuthenticatorTestCase
+name|auth
+init|=
+operator|new
+name|AuthenticatorTestCase
+argument_list|()
+decl_stmt|;
+name|auth
+operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
 name|getAuthenticationHandlerConfiguration
@@ -374,6 +471,8 @@ literal|true
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|auth
+operator|.
 name|_testAuthentication
 argument_list|(
 operator|new
@@ -384,6 +483,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAuthenticationAnonymousDisallowedWithPost ()
 specifier|public
 name|void
@@ -392,6 +493,15 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|AuthenticatorTestCase
+name|auth
+init|=
+operator|new
+name|AuthenticatorTestCase
+argument_list|()
+decl_stmt|;
+name|auth
+operator|.
 name|setAuthenticationHandlerConfig
 argument_list|(
 name|getAuthenticationHandlerConfiguration
@@ -400,6 +510,8 @@ literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|auth
+operator|.
 name|_testAuthentication
 argument_list|(
 operator|new

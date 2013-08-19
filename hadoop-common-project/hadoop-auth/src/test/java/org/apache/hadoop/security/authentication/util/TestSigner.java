@@ -22,11 +22,21 @@ end_package
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -35,9 +45,9 @@ DECL|class|TestSigner
 specifier|public
 class|class
 name|TestSigner
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testNoSecret ()
 specifier|public
 name|void
@@ -54,6 +64,8 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -65,6 +77,8 @@ name|ex
 parameter_list|)
 block|{     }
 block|}
+annotation|@
+name|Test
 DECL|method|testNullAndEmptyString ()
 specifier|public
 name|void
@@ -94,6 +108,8 @@ argument_list|(
 literal|null
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -112,6 +128,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -125,6 +143,8 @@ argument_list|(
 literal|""
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -143,11 +163,15 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testSignature ()
 specifier|public
 name|void
@@ -198,6 +222,8 @@ argument_list|(
 literal|"wrong"
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|s1
@@ -205,6 +231,8 @@ argument_list|,
 name|s2
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNotSame
 argument_list|(
 name|s1
@@ -213,6 +241,8 @@ name|s3
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testVerify ()
 specifier|public
 name|void
@@ -258,6 +288,8 @@ argument_list|(
 name|s
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|t
@@ -266,6 +298,8 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInvalidSignedText ()
 specifier|public
 name|void
@@ -295,6 +329,8 @@ argument_list|(
 literal|"test"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -313,11 +349,15 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testTampering ()
 specifier|public
 name|void
@@ -366,6 +406,8 @@ argument_list|(
 name|s
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -384,6 +426,8 @@ name|Throwable
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;

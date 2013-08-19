@@ -52,6 +52,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|After
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Before
 import|;
 end_import
@@ -67,14 +77,12 @@ import|;
 end_import
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|junit
 operator|.
 name|Assert
-operator|.
-name|*
 import|;
 end_import
 
@@ -94,6 +102,27 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|System
+operator|.
+name|setProperty
+argument_list|(
+literal|"java.security.krb5.realm"
+argument_list|,
+name|KerberosTestUtils
+operator|.
+name|getRealm
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|setProperty
+argument_list|(
+literal|"java.security.krb5.kdc"
+argument_list|,
+literal|"localhost:88"
+argument_list|)
+expr_stmt|;
 name|String
 name|rules
 init|=
@@ -173,6 +202,8 @@ operator|+
 name|simple
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"short name incorrect"
@@ -276,6 +307,8 @@ argument_list|(
 name|name
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|(
 literal|"didn't get exception for "
@@ -329,6 +362,8 @@ operator|.
 name|getShortName
 argument_list|()
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|(
 literal|"didn't get exception for "
@@ -374,6 +409,29 @@ expr_stmt|;
 name|checkBadTranslation
 argument_list|(
 literal|"root/joe@FOO.COM"
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|After
+DECL|method|clear ()
+specifier|public
+name|void
+name|clear
+parameter_list|()
+block|{
+name|System
+operator|.
+name|clearProperty
+argument_list|(
+literal|"java.security.krb5.realm"
+argument_list|)
+expr_stmt|;
+name|System
+operator|.
+name|clearProperty
+argument_list|(
+literal|"java.security.krb5.kdc"
 argument_list|)
 expr_stmt|;
 block|}
