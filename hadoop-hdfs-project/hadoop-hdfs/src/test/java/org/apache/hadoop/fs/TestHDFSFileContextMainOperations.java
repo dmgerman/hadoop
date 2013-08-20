@@ -362,6 +362,18 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// Make defaultWorkingDirectory snapshottable to enable
+comment|// testGlobStatusFilterWithHiddenPathTrivialFilter
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|allowSnapshot
+argument_list|(
+name|defaultWorkingDirectory
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|restartCluster ()
 specifier|private
@@ -469,6 +481,18 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// Make defaultWorkingDirectory snapshottable to enable
+comment|// testGlobStatusFilterWithHiddenPathTrivialFilter
+name|cluster
+operator|.
+name|getFileSystem
+argument_list|()
+operator|.
+name|allowSnapshot
+argument_list|(
+name|defaultWorkingDirectory
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|AfterClass
@@ -522,6 +546,24 @@ operator|.
 name|tearDown
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHiddenPathForTest ()
+specifier|protected
+name|Path
+name|getHiddenPathForTest
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Path
+argument_list|(
+name|defaultWorkingDirectory
+argument_list|,
+literal|".snapshot"
+argument_list|)
+return|;
 block|}
 annotation|@
 name|Override
