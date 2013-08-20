@@ -97,6 +97,8 @@ implements|,
 name|CanSetDropBehind
 implements|,
 name|CanSetReadahead
+implements|,
+name|SupportsZeroCopy
 block|{
 DECL|method|FSDataInputStream (InputStream in)
 specifier|public
@@ -552,6 +554,47 @@ argument_list|(
 literal|"this stream does not "
 operator|+
 literal|"support setting the drop-behind caching setting."
+argument_list|)
+throw|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|createZeroCopyCursor ()
+specifier|public
+name|ZeroCopyCursor
+name|createZeroCopyCursor
+parameter_list|()
+throws|throws
+name|IOException
+throws|,
+name|ZeroCopyUnavailableException
+block|{
+try|try
+block|{
+return|return
+operator|(
+operator|(
+name|SupportsZeroCopy
+operator|)
+name|in
+operator|)
+operator|.
+name|createZeroCopyCursor
+argument_list|()
+return|;
+block|}
+catch|catch
+parameter_list|(
+name|ClassCastException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|ZeroCopyUnavailableException
+argument_list|(
+name|e
 argument_list|)
 throw|;
 block|}
