@@ -6945,6 +6945,27 @@ literal|null
 return|;
 block|}
 block|}
+comment|/**    * Get the set of parameters marked final.    *    * @return final parameter set.    */
+DECL|method|getFinalParameters ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getFinalParameters
+parameter_list|()
+block|{
+return|return
+operator|new
+name|HashSet
+argument_list|<
+name|String
+argument_list|>
+argument_list|(
+name|finalParameters
+argument_list|)
+return|;
+block|}
 DECL|method|getProps ()
 specifier|protected
 specifier|synchronized
