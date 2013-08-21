@@ -56,6 +56,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -116,6 +130,13 @@ specifier|private
 name|DatanodeInfo
 index|[]
 name|locs
+decl_stmt|;
+comment|// Storage type for each replica, if reported.
+DECL|field|storageTypes
+specifier|private
+name|StorageType
+index|[]
+name|storageTypes
 decl_stmt|;
 comment|// corrupt flag is true if all of the replicas of a block are corrupt.
 comment|// else false. If block has few corrupt replicas, they are filtered and
@@ -212,6 +233,42 @@ name|corrupt
 parameter_list|)
 block|{
 name|this
+argument_list|(
+name|b
+argument_list|,
+name|locs
+argument_list|,
+literal|null
+argument_list|,
+name|startOffset
+argument_list|,
+name|corrupt
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|LocatedBlock (ExtendedBlock b, DatanodeInfo[] locs, StorageType[] storageTypes, long startOffset, boolean corrupt)
+specifier|public
+name|LocatedBlock
+parameter_list|(
+name|ExtendedBlock
+name|b
+parameter_list|,
+name|DatanodeInfo
+index|[]
+name|locs
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
+parameter_list|,
+name|long
+name|startOffset
+parameter_list|,
+name|boolean
+name|corrupt
+parameter_list|)
+block|{
+name|this
 operator|.
 name|b
 operator|=
@@ -256,6 +313,12 @@ operator|=
 name|locs
 expr_stmt|;
 block|}
+name|this
+operator|.
+name|storageTypes
+operator|=
+name|storageTypes
+expr_stmt|;
 block|}
 DECL|method|getBlockToken ()
 specifier|public
@@ -308,6 +371,34 @@ parameter_list|()
 block|{
 return|return
 name|locs
+return|;
+block|}
+DECL|method|setStorageTypes (StorageType[] storageTypes)
+specifier|public
+name|void
+name|setStorageTypes
+parameter_list|(
+name|StorageType
+index|[]
+name|storageTypes
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storageTypes
+operator|=
+name|storageTypes
+expr_stmt|;
+block|}
+DECL|method|getStorageTypes ()
+specifier|public
+name|StorageType
+index|[]
+name|getStorageTypes
+parameter_list|()
+block|{
+return|return
+name|storageTypes
 return|;
 block|}
 DECL|method|getStartOffset ()

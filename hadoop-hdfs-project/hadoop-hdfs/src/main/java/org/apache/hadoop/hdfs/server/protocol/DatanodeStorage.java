@@ -20,6 +20,20 @@ name|protocol
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|StorageType
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class captures information of a storage in Datanode.  */
 end_comment
@@ -54,7 +68,13 @@ specifier|final
 name|State
 name|state
 decl_stmt|;
-comment|/**    * Create a storage with {@link State#NORMAL}.    * @param storageID    */
+DECL|field|storageType
+specifier|private
+specifier|final
+name|StorageType
+name|storageType
+decl_stmt|;
+comment|/**    * Create a storage with {@link State#NORMAL} and    * {@link org.apache.hadoop.hdfs.StorageType#DEFAULT}.    *    * @param storageID    */
 DECL|method|DatanodeStorage (String storageID)
 specifier|public
 name|DatanodeStorage
@@ -70,6 +90,10 @@ argument_list|,
 name|State
 operator|.
 name|NORMAL
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -84,13 +108,49 @@ name|State
 name|s
 parameter_list|)
 block|{
+name|this
+argument_list|(
+name|sid
+argument_list|,
+name|s
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|DatanodeStorage (String sid, State s, StorageType sm)
+specifier|public
+name|DatanodeStorage
+parameter_list|(
+name|String
+name|sid
+parameter_list|,
+name|State
+name|s
+parameter_list|,
+name|StorageType
+name|sm
+parameter_list|)
+block|{
+name|this
+operator|.
 name|storageID
 operator|=
 name|sid
 expr_stmt|;
+name|this
+operator|.
 name|state
 operator|=
 name|s
+expr_stmt|;
+name|this
+operator|.
+name|storageType
+operator|=
+name|sm
 expr_stmt|;
 block|}
 DECL|method|getStorageID ()
@@ -111,6 +171,16 @@ parameter_list|()
 block|{
 return|return
 name|state
+return|;
+block|}
+DECL|method|getStorageType ()
+specifier|public
+name|StorageType
+name|getStorageType
+parameter_list|()
+block|{
+return|return
+name|storageType
 return|;
 block|}
 block|}
