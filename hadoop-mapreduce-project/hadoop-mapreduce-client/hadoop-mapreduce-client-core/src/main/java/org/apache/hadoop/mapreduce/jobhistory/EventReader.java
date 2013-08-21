@@ -511,6 +511,16 @@ argument_list|()
 expr_stmt|;
 break|break;
 case|case
+name|JOB_ERROR
+case|:
+name|result
+operator|=
+operator|new
+name|JobUnsuccessfulCompletionEvent
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
 name|JOB_INFO_CHANGED
 case|:
 name|result

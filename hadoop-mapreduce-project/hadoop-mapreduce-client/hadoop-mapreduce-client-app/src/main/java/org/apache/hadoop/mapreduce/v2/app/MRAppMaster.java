@@ -5456,6 +5456,18 @@ return|return
 name|clientToAMTokenSecretManager
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isLastAMRetry ()
+specifier|public
+name|boolean
+name|isLastAMRetry
+parameter_list|()
+block|{
+return|return
+name|isLastAMRetry
+return|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings

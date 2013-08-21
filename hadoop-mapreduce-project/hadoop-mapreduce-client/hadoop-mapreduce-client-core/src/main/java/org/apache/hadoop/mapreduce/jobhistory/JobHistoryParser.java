@@ -766,6 +766,9 @@ case|:
 case|case
 name|JOB_KILLED
 case|:
+case|case
+name|JOB_ERROR
+case|:
 name|handleJobFailedEvent
 argument_list|(
 operator|(

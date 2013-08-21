@@ -270,6 +270,11 @@ name|ClientToAMTokenSecretManager
 name|getClientToAMTokenSecretManager
 parameter_list|()
 function_decl|;
+DECL|method|isLastAMRetry ()
+name|boolean
+name|isLastAMRetry
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
