@@ -5903,15 +5903,15 @@ literal|50000
 decl_stmt|;
 specifier|final
 name|long
-name|connectionWaitSecs
+name|connectionWaitMs
 init|=
-literal|5
+literal|5000
 decl_stmt|;
 specifier|final
 name|long
-name|connectionRetryIntervalSecs
+name|connectionRetryIntervalMs
 init|=
-literal|1
+literal|1000
 decl_stmt|;
 comment|//Waiting for rmStartIntervalMS, RM will be started
 specifier|final
@@ -5928,9 +5928,9 @@ name|setLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+name|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 argument_list|,
-name|connectionWaitSecs
+name|connectionWaitMs
 argument_list|)
 expr_stmt|;
 name|conf
@@ -5939,9 +5939,9 @@ name|setLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 argument_list|,
-name|connectionRetryIntervalSecs
+name|connectionRetryIntervalMs
 argument_list|)
 expr_stmt|;
 comment|//Test NM try to connect to RM Several times, but finally fail
@@ -6054,18 +6054,14 @@ init|=
 operator|(
 name|duration
 operator|>=
-name|connectionWaitSecs
-operator|*
-literal|1000
+name|connectionWaitMs
 operator|)
 operator|&&
 operator|(
 name|duration
 operator|<
 operator|(
-name|connectionWaitSecs
-operator|*
-literal|1000
+name|connectionWaitMs
 operator|+
 name|delta
 operator|)
@@ -6087,21 +6083,19 @@ literal|"NM should have tried re-connecting to RM during "
 operator|+
 literal|"period of at least "
 operator|+
-name|connectionWaitSecs
+name|connectionWaitMs
 operator|+
-literal|" seconds, but "
+literal|" ms, but "
 operator|+
 literal|"stopped retrying within "
 operator|+
 operator|(
-name|connectionWaitSecs
+name|connectionWaitMs
 operator|+
 name|delta
-operator|/
-literal|1000
 operator|)
 operator|+
-literal|" seconds: "
+literal|" ms: "
 operator|+
 name|e
 argument_list|,
@@ -6810,13 +6804,13 @@ specifier|final
 name|long
 name|connectionWaitSecs
 init|=
-literal|1
+literal|1000
 decl_stmt|;
 specifier|final
 name|long
-name|connectionRetryIntervalSecs
+name|connectionRetryIntervalMs
 init|=
-literal|1
+literal|1000
 decl_stmt|;
 name|YarnConfiguration
 name|conf
@@ -6830,7 +6824,7 @@ name|setLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+name|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 argument_list|,
 name|connectionWaitSecs
 argument_list|)
@@ -6841,9 +6835,9 @@ name|setLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 argument_list|,
-name|connectionRetryIntervalSecs
+name|connectionRetryIntervalMs
 argument_list|)
 expr_stmt|;
 name|conf

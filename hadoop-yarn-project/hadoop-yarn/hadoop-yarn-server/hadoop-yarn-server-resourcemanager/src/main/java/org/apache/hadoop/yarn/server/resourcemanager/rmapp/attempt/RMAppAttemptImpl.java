@@ -4324,6 +4324,13 @@ name|message
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|appAttempt
+operator|.
+name|removeTokens
+argument_list|(
+name|appAttempt
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|field|EMPTY_CONTAINER_RELEASE_LIST
@@ -4779,6 +4786,12 @@ case|case
 name|KILLED
 case|:
 block|{
+comment|// don't leave the tracking URL pointing to a non-existent AM
+name|appAttempt
+operator|.
+name|setTrackingUrlToRMAppPage
+argument_list|()
+expr_stmt|;
 name|appEvent
 operator|=
 operator|new
@@ -4799,6 +4812,12 @@ case|case
 name|FAILED
 case|:
 block|{
+comment|// don't leave the tracking URL pointing to a non-existent AM
+name|appAttempt
+operator|.
+name|setTrackingUrlToRMAppPage
+argument_list|()
+expr_stmt|;
 name|appEvent
 operator|=
 operator|new
@@ -4854,17 +4873,11 @@ name|finalAttemptState
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Remove the AppAttempt from the AMRMTokenSecretManager
 name|appAttempt
 operator|.
-name|rmContext
-operator|.
-name|getAMRMTokenSecretManager
-argument_list|()
-operator|.
-name|applicationMasterFinished
+name|removeTokens
 argument_list|(
-name|appAttemptId
+name|appAttempt
 argument_list|)
 expr_stmt|;
 block|}
@@ -5401,31 +5414,6 @@ name|getAppAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Unregister from the ClientToAMTokenSecretManager
-if|if
-condition|(
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
-condition|)
-block|{
-name|appAttempt
-operator|.
-name|rmContext
-operator|.
-name|getClientToAMTokenSecretManager
-argument_list|()
-operator|.
-name|unRegisterApplication
-argument_list|(
-name|appAttempt
-operator|.
-name|getAppAttemptId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 if|if
 condition|(
 operator|!
@@ -5508,11 +5496,6 @@ argument_list|()
 operator|+
 literal|" timed out"
 argument_list|)
-expr_stmt|;
-name|appAttempt
-operator|.
-name|setTrackingUrlToRMAppPage
-argument_list|()
 expr_stmt|;
 name|super
 operator|.
@@ -5691,19 +5674,6 @@ name|getAMLivelinessMonitor
 argument_list|()
 operator|.
 name|unregister
-argument_list|(
-name|appAttemptId
-argument_list|)
-expr_stmt|;
-comment|// Remove the AppAttempt from the AMRMTokenSecretManager
-name|appAttempt
-operator|.
-name|rmContext
-operator|.
-name|getAMRMTokenSecretManager
-argument_list|()
-operator|.
-name|applicationMasterFinished
 argument_list|(
 name|appAttemptId
 argument_list|)
@@ -6012,14 +5982,6 @@ literal|"."
 operator|+
 literal|"Failing this attempt."
 argument_list|)
-expr_stmt|;
-comment|// When the AM dies, the trackingUrl is left pointing to the AM's URL,
-comment|// which shows up in the scheduler UI as a broken link.  Direct the
-comment|// user to the app page on the RM so they can see the status and logs.
-name|appAttempt
-operator|.
-name|setTrackingUrlToRMAppPage
-argument_list|()
 expr_stmt|;
 operator|new
 name|FinalTransition
@@ -6335,6 +6297,57 @@ operator|.
 name|storeApplicationAttempt
 argument_list|(
 name|this
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|removeTokens (RMAppAttemptImpl appAttempt)
+specifier|private
+name|void
+name|removeTokens
+parameter_list|(
+name|RMAppAttemptImpl
+name|appAttempt
+parameter_list|)
+block|{
+comment|// Unregister from the ClientToAMTokenSecretManager
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|appAttempt
+operator|.
+name|rmContext
+operator|.
+name|getClientToAMTokenSecretManager
+argument_list|()
+operator|.
+name|unRegisterApplication
+argument_list|(
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Remove the AppAttempt from the AMRMTokenSecretManager
+name|appAttempt
+operator|.
+name|rmContext
+operator|.
+name|getAMRMTokenSecretManager
+argument_list|()
+operator|.
+name|applicationMasterFinished
+argument_list|(
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

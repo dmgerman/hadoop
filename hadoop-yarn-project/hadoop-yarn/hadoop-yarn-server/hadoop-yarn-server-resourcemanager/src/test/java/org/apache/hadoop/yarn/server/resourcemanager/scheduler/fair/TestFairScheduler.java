@@ -13958,6 +13958,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testNoMoreCpuOnNode ()
 specifier|public
 name|void
@@ -14086,6 +14088,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testBasicDRFAssignment ()
 specifier|public
 name|void

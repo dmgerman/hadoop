@@ -1262,6 +1262,15 @@ name|getAccessTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|outStr
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|outStr
@@ -1272,15 +1281,6 @@ name|NamenodeFsck
 operator|.
 name|HEALTHY_STATUS
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|outStr
 argument_list|)
 expr_stmt|;
 if|if
@@ -1568,10 +1568,16 @@ operator|.
 name|OFF
 argument_list|)
 expr_stmt|;
-comment|// Audit log should contain one getfileinfo and one fsck
 name|BufferedReader
 name|reader
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+comment|// Audit log should contain one getfileinfo and one fsck
+name|reader
+operator|=
 operator|new
 name|BufferedReader
 argument_list|(
@@ -1581,7 +1587,7 @@ argument_list|(
 name|auditLogFile
 argument_list|)
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|String
 name|line
 init|=
@@ -1647,6 +1653,38 @@ name|readLine
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+comment|// Close the reader and remove the appender to release the audit log file
+comment|// handle after verifying the content of the file.
+if|if
+condition|(
+name|reader
+operator|!=
+literal|null
+condition|)
+block|{
+name|reader
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|logger
+operator|!=
+literal|null
+condition|)
+block|{
+name|logger
+operator|.
+name|removeAllAppenders
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 block|}
 annotation|@
 name|Test
@@ -6760,6 +6798,15 @@ name|getAccessTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+name|outStr
+argument_list|)
+expr_stmt|;
 name|assertTrue
 argument_list|(
 name|outStr
@@ -6778,17 +6825,8 @@ name|outStr
 operator|.
 name|contains
 argument_list|(
-literal|"Total symlinks:\t\t1\n"
+literal|"Total symlinks:\t\t1"
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|outStr
 argument_list|)
 expr_stmt|;
 name|util

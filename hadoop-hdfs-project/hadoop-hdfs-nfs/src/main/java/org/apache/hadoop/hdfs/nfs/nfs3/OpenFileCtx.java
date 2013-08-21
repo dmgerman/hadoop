@@ -184,20 +184,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|DFSClient
@@ -533,7 +519,7 @@ decl_stmt|;
 DECL|field|fos
 specifier|private
 specifier|final
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|fos
 decl_stmt|;
 DECL|field|latestAttr
@@ -702,10 +688,10 @@ return|return
 name|nonSequentialWriteInMemory
 return|;
 block|}
-DECL|method|OpenFileCtx (FSDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath)
+DECL|method|OpenFileCtx (HdfsDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath)
 name|OpenFileCtx
 parameter_list|(
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|fos
 parameter_list|,
 name|Nfs3FileAttributes
@@ -2362,12 +2348,7 @@ decl_stmt|;
 try|try
 block|{
 comment|// Sync file data and length to avoid partial read failure
-operator|(
-operator|(
-name|HdfsDataOutputStream
-operator|)
 name|fos
-operator|)
 operator|.
 name|hsync
 argument_list|(
@@ -2828,12 +2809,7 @@ decl_stmt|;
 try|try
 block|{
 comment|// Sync file data and length
-operator|(
-operator|(
-name|HdfsDataOutputStream
-operator|)
 name|fos
-operator|)
 operator|.
 name|hsync
 argument_list|(

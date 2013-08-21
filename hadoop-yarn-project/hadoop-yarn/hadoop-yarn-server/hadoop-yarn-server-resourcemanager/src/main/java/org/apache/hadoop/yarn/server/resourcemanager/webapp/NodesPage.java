@@ -1166,7 +1166,7 @@ name|b
 operator|.
 name|append
 argument_list|(
-literal|"{'bSearchable': false, 'aTargets': [ 7 ]}"
+literal|"{'bSearchable': false, 'aTargets': [ 6 ]}"
 argument_list|)
 expr_stmt|;
 name|b
@@ -1175,14 +1175,14 @@ name|append
 argument_list|(
 literal|", {'sType': 'title-numeric', 'bSearchable': false, "
 operator|+
-literal|"'aTargets': [ 8, 9 ] }"
+literal|"'aTargets': [ 7, 8 ] }"
 argument_list|)
 expr_stmt|;
 name|b
 operator|.
 name|append
 argument_list|(
-literal|", {'sType': 'title-numeric', 'aTargets': [ 5 ]}"
+literal|", {'sType': 'title-numeric', 'aTargets': [ 4 ]}"
 argument_list|)
 expr_stmt|;
 name|b

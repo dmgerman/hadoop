@@ -501,6 +501,71 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|retrievePassword ( DelegationTokenIdentifier identifier)
+specifier|public
+specifier|synchronized
+name|byte
+index|[]
+name|retrievePassword
+parameter_list|(
+name|DelegationTokenIdentifier
+name|identifier
+parameter_list|)
+throws|throws
+name|InvalidToken
+block|{
+try|try
+block|{
+comment|// this check introduces inconsistency in the authentication to a
+comment|// HA standby NN.  non-token auths are allowed into the namespace which
+comment|// decides whether to throw a StandbyException.  tokens are a bit
+comment|// different in that a standby may be behind and thus not yet know
+comment|// of all tokens issued by the active NN.  the following check does
+comment|// not allow ANY token auth, however it should allow known tokens in
+name|checkAvailableForRead
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|StandbyException
+name|se
+parameter_list|)
+block|{
+comment|// FIXME: this is a hack to get around changing method signatures by
+comment|// tunneling a non-InvalidToken exception as the cause which the
+comment|// RPC server will unwrap before returning to the client
+name|InvalidToken
+name|wrappedStandby
+init|=
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"StandbyException"
+argument_list|)
+decl_stmt|;
+name|wrappedStandby
+operator|.
+name|initCause
+argument_list|(
+name|se
+argument_list|)
+expr_stmt|;
+throw|throw
+name|wrappedStandby
+throw|;
+block|}
+return|return
+name|super
+operator|.
+name|retrievePassword
+argument_list|(
+name|identifier
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 comment|//SecretManager
 DECL|method|checkAvailableForRead ()
 specifier|public

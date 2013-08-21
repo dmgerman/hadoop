@@ -788,15 +788,10 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-comment|// randomly choose one node from remote racks
-try|try
-block|{
-name|chooseRandom
-argument_list|(
-name|numOfReplicas
-argument_list|,
-literal|"~"
-operator|+
+specifier|final
+name|String
+name|rackLocation
+init|=
 name|NetworkTopology
 operator|.
 name|getFirstHalf
@@ -806,6 +801,17 @@ operator|.
 name|getNetworkLocation
 argument_list|()
 argument_list|)
+decl_stmt|;
+try|try
+block|{
+comment|// randomly choose from remote racks
+name|chooseRandom
+argument_list|(
+name|numOfReplicas
+argument_list|,
+literal|"~"
+operator|+
+name|rackLocation
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -825,6 +831,7 @@ name|NotEnoughReplicasException
 name|e
 parameter_list|)
 block|{
+comment|// fall back to the local rack
 name|chooseRandom
 argument_list|(
 name|numOfReplicas
@@ -838,10 +845,7 @@ operator|-
 name|oldNumOfReplicas
 operator|)
 argument_list|,
-name|localMachine
-operator|.
-name|getNetworkLocation
-argument_list|()
+name|rackLocation
 argument_list|,
 name|excludedNodes
 argument_list|,

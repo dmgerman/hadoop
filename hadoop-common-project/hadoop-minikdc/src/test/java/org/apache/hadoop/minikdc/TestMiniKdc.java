@@ -849,7 +849,7 @@ argument_list|)
 expr_stmt|;
 name|loginContext
 operator|.
-name|login
+name|logout
 argument_list|()
 expr_stmt|;
 comment|//server login
@@ -978,7 +978,7 @@ argument_list|)
 expr_stmt|;
 name|loginContext
 operator|.
-name|login
+name|logout
 argument_list|()
 expr_stmt|;
 block|}

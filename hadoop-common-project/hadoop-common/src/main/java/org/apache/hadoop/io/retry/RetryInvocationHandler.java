@@ -814,16 +814,6 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 else|else
 block|{

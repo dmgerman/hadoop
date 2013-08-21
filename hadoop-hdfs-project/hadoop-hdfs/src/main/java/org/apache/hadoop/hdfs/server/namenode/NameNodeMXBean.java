@@ -227,6 +227,13 @@ name|String
 name|getNameJournalStatus
 parameter_list|()
 function_decl|;
+comment|/**    * Get information about the transaction ID, including the last applied     * transaction ID and the most recent checkpoint's transaction ID    */
+DECL|method|getJournalTransactionInfo ()
+specifier|public
+name|String
+name|getJournalTransactionInfo
+parameter_list|()
+function_decl|;
 comment|/**    * Gets the NN start time    *    * @return the NN start time    */
 DECL|method|getNNStarted ()
 specifier|public

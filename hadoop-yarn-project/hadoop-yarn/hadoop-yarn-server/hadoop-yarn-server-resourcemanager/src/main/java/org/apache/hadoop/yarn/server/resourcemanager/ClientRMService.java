@@ -2443,11 +2443,12 @@ name|applicationId
 argument_list|)
 expr_stmt|;
 throw|throw
-name|RPCUtil
-operator|.
-name|getRemoteException
+operator|new
+name|ApplicationNotFoundException
 argument_list|(
-literal|"Trying to kill an absent application "
+literal|"Trying to kill an absent"
+operator|+
+literal|" application "
 operator|+
 name|applicationId
 argument_list|)
