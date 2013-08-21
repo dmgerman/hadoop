@@ -276,12 +276,12 @@ name|other
 parameter_list|)
 block|{
 return|return
-name|this
+name|other
 operator|.
 name|getPriority
 argument_list|()
 operator|-
-name|other
+name|this
 operator|.
 name|getPriority
 argument_list|()
