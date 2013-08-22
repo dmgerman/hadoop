@@ -5816,11 +5816,6 @@ decl_stmt|;
 name|boolean
 name|shuffleKeyValidForRecovery
 init|=
-operator|(
-name|numReduceTasks
-operator|>
-literal|0
-operator|&&
 name|TokenCache
 operator|.
 name|getShuffleSecretKey
@@ -5829,7 +5824,6 @@ name|jobCredentials
 argument_list|)
 operator|!=
 literal|null
-operator|)
 decl_stmt|;
 if|if
 condition|(
@@ -5837,7 +5831,13 @@ name|recoveryEnabled
 operator|&&
 name|recoverySupportedByCommitter
 operator|&&
+operator|(
+name|numReduceTasks
+operator|<=
+literal|0
+operator|||
 name|shuffleKeyValidForRecovery
+operator|)
 condition|)
 block|{
 name|LOG
@@ -5894,6 +5894,10 @@ operator|+
 literal|" recoverySupportedByCommitter: "
 operator|+
 name|recoverySupportedByCommitter
+operator|+
+literal|" numReduceTasks: "
+operator|+
+name|numReduceTasks
 operator|+
 literal|" shuffleKeyValidForRecovery: "
 operator|+
