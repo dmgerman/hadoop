@@ -4097,7 +4097,10 @@ operator|.
 name|hdfsTimeout
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getClientName ()
+specifier|public
 name|String
 name|getClientName
 parameter_list|()
