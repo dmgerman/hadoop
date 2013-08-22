@@ -40,6 +40,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -177,6 +187,20 @@ operator|.
 name|fs
 operator|.
 name|ParentNotDirectoryException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|RemoteIterator
 import|;
 end_import
 
@@ -437,6 +461,20 @@ operator|.
 name|token
 operator|.
 name|TokenInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Fallible
 import|;
 end_import
 
@@ -1708,6 +1746,75 @@ name|fromSnapshot
 parameter_list|,
 name|String
 name|toSnapshot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Add some path cache directives to the CacheManager.    *    * @param directives    *          A list of all the path cache directives we want to add.    * @return    *          An list where each element is either a path cache entry that was    *          added, or an IOException exception describing why the directive    *          could not be added.    */
+annotation|@
+name|AtMostOnce
+specifier|public
+name|List
+argument_list|<
+name|Fallible
+argument_list|<
+name|PathCacheEntry
+argument_list|>
+argument_list|>
+DECL|method|addPathCacheDirectives (List<PathCacheDirective> directives)
+name|addPathCacheDirectives
+parameter_list|(
+name|List
+argument_list|<
+name|PathCacheDirective
+argument_list|>
+name|directives
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove some path cache entries from the CacheManager.    *    * @param ids    *          A list of all the IDs we want to remove from the CacheManager.    * @return    *          An list where each element is either an ID that was removed,    *          or an IOException exception describing why the ID could not be    *          removed.    */
+annotation|@
+name|AtMostOnce
+DECL|method|removePathCacheEntries (List<Long> ids)
+specifier|public
+name|List
+argument_list|<
+name|Fallible
+argument_list|<
+name|Long
+argument_list|>
+argument_list|>
+name|removePathCacheEntries
+parameter_list|(
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|ids
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * List cached paths on the server.    *    * @param prevId    *          The previous ID that we listed, or 0 if this is the first call    *          to listPathCacheEntries.    * @param pool    *          The pool ID to list.  If this is the empty string, all pool ids    *          will be listed.    * @param maxRepliesPerRequest    *          The maximum number of replies to make in each request.    * @return    *          A RemoteIterator from which you can get PathCacheEntry objects.    *          Requests will be made as needed.    */
+annotation|@
+name|Idempotent
+DECL|method|listPathCacheEntries (long prevId, String pool, int maxRepliesPerRequest)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|PathCacheEntry
+argument_list|>
+name|listPathCacheEntries
+parameter_list|(
+name|long
+name|prevId
+parameter_list|,
+name|String
+name|pool
+parameter_list|,
+name|int
+name|maxRepliesPerRequest
 parameter_list|)
 throws|throws
 name|IOException
