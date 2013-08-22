@@ -640,6 +640,7 @@ annotation|@
 name|Override
 DECL|method|startInternal ()
 specifier|protected
+specifier|synchronized
 name|void
 name|startInternal
 parameter_list|()
