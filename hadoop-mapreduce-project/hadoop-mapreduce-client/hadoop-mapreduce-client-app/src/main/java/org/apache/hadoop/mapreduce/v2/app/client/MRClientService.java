@@ -142,6 +142,20 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|JobACL
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|MRJobConfig
 import|;
 end_import
@@ -1138,6 +1152,34 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|authorize
 operator|.
 name|PolicyProvider
@@ -1623,7 +1665,7 @@ name|getBindAddress
 argument_list|()
 return|;
 block|}
-DECL|method|verifyAndGetJob (JobId jobID, boolean modifyAccess)
+DECL|method|verifyAndGetJob (JobId jobID, JobACL accessType)
 specifier|private
 name|Job
 name|verifyAndGetJob
@@ -1631,8 +1673,8 @@ parameter_list|(
 name|JobId
 name|jobID
 parameter_list|,
-name|boolean
-name|modifyAccess
+name|JobACL
+name|accessType
 parameter_list|)
 throws|throws
 name|IOException
@@ -1647,11 +1689,56 @@ argument_list|(
 name|jobID
 argument_list|)
 decl_stmt|;
+name|UserGroupInformation
+name|ugi
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|job
+operator|.
+name|checkAccess
+argument_list|(
+name|ugi
+argument_list|,
+name|accessType
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|AccessControlException
+argument_list|(
+literal|"User "
+operator|+
+name|ugi
+operator|.
+name|getShortUserName
+argument_list|()
+operator|+
+literal|" cannot perform operation "
+operator|+
+name|accessType
+operator|.
+name|name
+argument_list|()
+operator|+
+literal|" on "
+operator|+
+name|jobID
+argument_list|)
+throw|;
+block|}
 return|return
 name|job
 return|;
 block|}
-DECL|method|verifyAndGetTask (TaskId taskID, boolean modifyAccess)
+DECL|method|verifyAndGetTask (TaskId taskID, JobACL accessType)
 specifier|private
 name|Task
 name|verifyAndGetTask
@@ -1659,8 +1746,8 @@ parameter_list|(
 name|TaskId
 name|taskID
 parameter_list|,
-name|boolean
-name|modifyAccess
+name|JobACL
+name|accessType
 parameter_list|)
 throws|throws
 name|IOException
@@ -1675,7 +1762,7 @@ operator|.
 name|getJobId
 argument_list|()
 argument_list|,
-name|modifyAccess
+name|accessType
 argument_list|)
 operator|.
 name|getTask
@@ -1704,7 +1791,7 @@ return|return
 name|task
 return|;
 block|}
-DECL|method|verifyAndGetAttempt (TaskAttemptId attemptID, boolean modifyAccess)
+DECL|method|verifyAndGetAttempt (TaskAttemptId attemptID, JobACL accessType)
 specifier|private
 name|TaskAttempt
 name|verifyAndGetAttempt
@@ -1712,8 +1799,8 @@ parameter_list|(
 name|TaskAttemptId
 name|attemptID
 parameter_list|,
-name|boolean
-name|modifyAccess
+name|JobACL
+name|accessType
 parameter_list|)
 throws|throws
 name|IOException
@@ -1728,7 +1815,7 @@ operator|.
 name|getTaskId
 argument_list|()
 argument_list|,
-name|modifyAccess
+name|accessType
 argument_list|)
 operator|.
 name|getAttempt
@@ -1785,7 +1872,9 @@ name|verifyAndGetJob
 argument_list|(
 name|jobId
 argument_list|,
-literal|false
+name|JobACL
+operator|.
+name|VIEW_JOB
 argument_list|)
 decl_stmt|;
 name|GetCountersResponse
@@ -1847,7 +1936,9 @@ name|verifyAndGetJob
 argument_list|(
 name|jobId
 argument_list|,
-literal|false
+name|JobACL
+operator|.
+name|VIEW_JOB
 argument_list|)
 decl_stmt|;
 name|GetJobReportResponse
@@ -1935,7 +2026,9 @@ name|verifyAndGetAttempt
 argument_list|(
 name|taskAttemptId
 argument_list|,
-literal|false
+name|JobACL
+operator|.
+name|VIEW_JOB
 argument_list|)
 operator|.
 name|getReport
@@ -1987,7 +2080,9 @@ name|verifyAndGetTask
 argument_list|(
 name|taskId
 argument_list|,
-literal|false
+name|JobACL
+operator|.
+name|VIEW_JOB
 argument_list|)
 operator|.
 name|getReport
@@ -2042,7 +2137,9 @@ name|verifyAndGetJob
 argument_list|(
 name|jobId
 argument_list|,
-literal|false
+name|JobACL
+operator|.
+name|VIEW_JOB
 argument_list|)
 decl_stmt|;
 name|GetTaskAttemptCompletionEventsResponse
@@ -2106,12 +2203,31 @@ operator|.
 name|getJobId
 argument_list|()
 decl_stmt|;
+name|UserGroupInformation
+name|callerUGI
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
 name|String
 name|message
 init|=
-literal|"Kill Job received from client "
+literal|"Kill job "
 operator|+
 name|jobId
+operator|+
+literal|" received from "
+operator|+
+name|callerUGI
+operator|+
+literal|" at "
+operator|+
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
@@ -2124,7 +2240,9 @@ name|verifyAndGetJob
 argument_list|(
 name|jobId
 argument_list|,
-literal|true
+name|JobACL
+operator|.
+name|MODIFY_JOB
 argument_list|)
 expr_stmt|;
 name|appContext
@@ -2203,12 +2321,31 @@ operator|.
 name|getTaskId
 argument_list|()
 decl_stmt|;
+name|UserGroupInformation
+name|callerUGI
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
 name|String
 name|message
 init|=
-literal|"Kill task received from client "
+literal|"Kill task "
 operator|+
 name|taskId
+operator|+
+literal|" received from "
+operator|+
+name|callerUGI
+operator|+
+literal|" at "
+operator|+
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
@@ -2221,7 +2358,9 @@ name|verifyAndGetTask
 argument_list|(
 name|taskId
 argument_list|,
-literal|true
+name|JobACL
+operator|.
+name|MODIFY_JOB
 argument_list|)
 expr_stmt|;
 name|appContext
@@ -2284,12 +2423,31 @@ operator|.
 name|getTaskAttemptId
 argument_list|()
 decl_stmt|;
+name|UserGroupInformation
+name|callerUGI
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
 name|String
 name|message
 init|=
-literal|"Kill task attempt received from client "
+literal|"Kill task attempt "
 operator|+
 name|taskAttemptId
+operator|+
+literal|" received from "
+operator|+
+name|callerUGI
+operator|+
+literal|" at "
+operator|+
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
@@ -2302,7 +2460,9 @@ name|verifyAndGetAttempt
 argument_list|(
 name|taskAttemptId
 argument_list|,
-literal|true
+name|JobACL
+operator|.
+name|MODIFY_JOB
 argument_list|)
 expr_stmt|;
 name|appContext
@@ -2396,7 +2556,9 @@ name|verifyAndGetAttempt
 argument_list|(
 name|taskAttemptId
 argument_list|,
-literal|false
+name|JobACL
+operator|.
+name|VIEW_JOB
 argument_list|)
 operator|.
 name|getDiagnostics
@@ -2433,12 +2595,31 @@ operator|.
 name|getTaskAttemptId
 argument_list|()
 decl_stmt|;
+name|UserGroupInformation
+name|callerUGI
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+decl_stmt|;
 name|String
 name|message
 init|=
-literal|"Fail task attempt received from client "
+literal|"Fail task attempt "
 operator|+
 name|taskAttemptId
+operator|+
+literal|" received from "
+operator|+
+name|callerUGI
+operator|+
+literal|" at "
+operator|+
+name|Server
+operator|.
+name|getRemoteAddress
+argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
@@ -2451,7 +2632,9 @@ name|verifyAndGetAttempt
 argument_list|(
 name|taskAttemptId
 argument_list|,
-literal|true
+name|JobACL
+operator|.
+name|MODIFY_JOB
 argument_list|)
 expr_stmt|;
 name|appContext
@@ -2562,7 +2745,9 @@ name|verifyAndGetJob
 argument_list|(
 name|jobId
 argument_list|,
-literal|false
+name|JobACL
+operator|.
+name|VIEW_JOB
 argument_list|)
 decl_stmt|;
 name|Collection
