@@ -452,6 +452,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|NamespaceInfo
 import|;
 end_import
@@ -703,15 +721,12 @@ name|newStorageID
 expr_stmt|;
 block|}
 comment|/** Create an ID for this storage. */
-DECL|method|createStorageID (int datanodePort)
+DECL|method|createStorageID ()
 specifier|public
 specifier|synchronized
 name|void
 name|createStorageID
-parameter_list|(
-name|int
-name|datanodePort
-parameter_list|)
+parameter_list|()
 block|{
 if|if
 condition|(
@@ -730,12 +745,10 @@ return|return;
 block|}
 name|storageID
 operator|=
-name|DataNode
+name|DatanodeStorage
 operator|.
-name|createNewStorageId
-argument_list|(
-name|datanodePort
-argument_list|)
+name|newStorageID
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.    *<br>    * This method should be synchronized between multiple DN threads.  Only the     * first DN thread does DN level storage dir recoverTransitionRead.    *     * @param nsInfo namespace information    * @param dataDirs array of data storage directories    * @param startOpt startup option    * @throws IOException    */
@@ -1072,12 +1085,7 @@ assert|;
 block|}
 comment|// make sure we have storage id set - if not - generate new one
 name|createStorageID
-argument_list|(
-name|datanode
-operator|.
-name|getXferPort
 argument_list|()
-argument_list|)
 expr_stmt|;
 comment|// 3. Update all storages. Some of them might have just been formatted.
 name|this

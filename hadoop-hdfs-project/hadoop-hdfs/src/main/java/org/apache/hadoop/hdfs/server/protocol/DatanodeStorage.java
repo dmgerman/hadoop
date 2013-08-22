@@ -34,6 +34,16 @@ name|StorageType
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
 begin_comment
 comment|/**  * Class captures information of a storage in Datanode.  */
 end_comment
@@ -181,6 +191,23 @@ parameter_list|()
 block|{
 return|return
 name|storageType
+return|;
+block|}
+comment|/**    * Generate new storage ID. The format of this string can be changed    * in the future without requiring that old SotrageIDs be updated.    *    * @return unique storage ID    */
+DECL|method|newStorageID ()
+specifier|public
+specifier|static
+name|String
+name|newStorageID
+parameter_list|()
+block|{
+return|return
+literal|"DS-"
+operator|+
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
 return|;
 block|}
 block|}
