@@ -222,6 +222,15 @@ specifier|private
 name|ApplicationAttemptId
 name|applicationAttemptId
 decl_stmt|;
+DECL|field|applicationSubmitter
+specifier|private
+name|Text
+name|applicationSubmitter
+init|=
+operator|new
+name|Text
+argument_list|()
+decl_stmt|;
 comment|// TODO: Add more information in the tokenID such that it is not
 comment|// transferrable, more secure etc.
 DECL|method|ClientToAMTokenIdentifier ()
@@ -229,12 +238,15 @@ specifier|public
 name|ClientToAMTokenIdentifier
 parameter_list|()
 block|{   }
-DECL|method|ClientToAMTokenIdentifier (ApplicationAttemptId id)
+DECL|method|ClientToAMTokenIdentifier (ApplicationAttemptId id, String appSubmitter)
 specifier|public
 name|ClientToAMTokenIdentifier
 parameter_list|(
 name|ApplicationAttemptId
 name|id
+parameter_list|,
+name|String
+name|appSubmitter
 parameter_list|)
 block|{
 name|this
@@ -245,6 +257,16 @@ operator|.
 name|applicationAttemptId
 operator|=
 name|id
+expr_stmt|;
+name|this
+operator|.
+name|applicationSubmitter
+operator|=
+operator|new
+name|Text
+argument_list|(
+name|appSubmitter
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getApplicationAttemptID ()
@@ -257,6 +279,21 @@ return|return
 name|this
 operator|.
 name|applicationAttemptId
+return|;
+block|}
+DECL|method|getApplicationSubmitter ()
+specifier|public
+name|String
+name|getApplicationSubmitter
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationSubmitter
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -314,6 +351,15 @@ name|getAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|applicationSubmitter
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -357,6 +403,15 @@ name|readInt
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|applicationSubmitter
+operator|.
+name|readFields
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -382,7 +437,7 @@ if|if
 condition|(
 name|this
 operator|.
-name|applicationAttemptId
+name|applicationSubmitter
 operator|==
 literal|null
 condition|)
@@ -398,7 +453,7 @@ name|createRemoteUser
 argument_list|(
 name|this
 operator|.
-name|applicationAttemptId
+name|applicationSubmitter
 operator|.
 name|toString
 argument_list|()

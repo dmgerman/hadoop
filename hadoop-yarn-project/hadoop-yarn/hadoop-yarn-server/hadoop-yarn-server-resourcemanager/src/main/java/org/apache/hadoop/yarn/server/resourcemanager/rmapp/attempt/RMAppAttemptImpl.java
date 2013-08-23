@@ -4171,6 +4171,10 @@ argument_list|(
 name|appAttempt
 operator|.
 name|applicationAttemptId
+argument_list|,
+name|appAttempt
+operator|.
+name|user
 argument_list|)
 argument_list|,
 name|appAttempt
