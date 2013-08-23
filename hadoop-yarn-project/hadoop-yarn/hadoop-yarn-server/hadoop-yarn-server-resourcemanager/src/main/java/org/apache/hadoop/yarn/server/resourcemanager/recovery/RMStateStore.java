@@ -230,6 +230,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|service
+operator|.
+name|AbstractService
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -565,6 +579,8 @@ specifier|public
 specifier|abstract
 class|class
 name|RMStateStore
+extends|extends
+name|AbstractService
 block|{
 DECL|field|LOG
 specifier|public
@@ -582,6 +598,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|RMStateStore ()
+specifier|public
+name|RMStateStore
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|RMStateStore
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * State of an application attempt    */
 DECL|class|ApplicationAttemptState
 specifier|public
@@ -964,10 +996,10 @@ name|Dispatcher
 name|rmDispatcher
 decl_stmt|;
 comment|/**    * Dispatcher used to send state operation completion events to     * ResourceManager services    */
-DECL|method|setDispatcher (Dispatcher dispatcher)
+DECL|method|setRMDispatcher (Dispatcher dispatcher)
 specifier|public
 name|void
-name|setDispatcher
+name|setRMDispatcher
 parameter_list|(
 name|Dispatcher
 name|dispatcher
@@ -984,11 +1016,11 @@ DECL|field|dispatcher
 name|AsyncDispatcher
 name|dispatcher
 decl_stmt|;
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 specifier|synchronized
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
@@ -1023,18 +1055,31 @@ name|ForwardingEventHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|dispatcher
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|initInternal
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Derived classes initialize themselves using this method.    * The base class is initialized and the event dispatcher is ready to use at    * this point    */
+DECL|method|serviceStart ()
+specifier|protected
+specifier|synchronized
+name|void
+name|serviceStart
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|dispatcher
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|startInternal
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Derived classes initialize themselves using this method.    */
 DECL|method|initInternal (Configuration conf)
 specifier|protected
 specifier|abstract
@@ -1047,11 +1092,21 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-DECL|method|close ()
+comment|/**    * Derived classes start themselves using this method.    * The base class is started and the event dispatcher is ready to use at    * this point    */
+DECL|method|startInternal ()
+specifier|protected
+specifier|abstract
+name|void
+name|startInternal
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
+DECL|method|serviceStop ()
 specifier|public
 specifier|synchronized
 name|void
-name|close
+name|serviceStop
 parameter_list|()
 throws|throws
 name|Exception

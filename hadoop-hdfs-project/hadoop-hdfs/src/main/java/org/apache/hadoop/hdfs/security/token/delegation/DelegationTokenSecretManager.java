@@ -503,7 +503,6 @@ annotation|@
 name|Override
 DECL|method|retrievePassword ( DelegationTokenIdentifier identifier)
 specifier|public
-specifier|synchronized
 name|byte
 index|[]
 name|retrievePassword
@@ -522,8 +521,14 @@ comment|// decides whether to throw a StandbyException.  tokens are a bit
 comment|// different in that a standby may be behind and thus not yet know
 comment|// of all tokens issued by the active NN.  the following check does
 comment|// not allow ANY token auth, however it should allow known tokens in
-name|checkAvailableForRead
-argument_list|()
+name|namesystem
+operator|.
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|READ
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -563,52 +568,6 @@ argument_list|(
 name|identifier
 argument_list|)
 return|;
-block|}
-annotation|@
-name|Override
-comment|//SecretManager
-DECL|method|checkAvailableForRead ()
-specifier|public
-name|void
-name|checkAvailableForRead
-parameter_list|()
-throws|throws
-name|StandbyException
-block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-name|namesystem
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|namesystem
-operator|.
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Returns expiry time of a token given its identifier.    *     * @param dtId DelegationTokenIdentifier of a token    * @return Expiry time of the token    * @throws IOException    */
 DECL|method|getTokenExpiryTime ( DelegationTokenIdentifier dtId)

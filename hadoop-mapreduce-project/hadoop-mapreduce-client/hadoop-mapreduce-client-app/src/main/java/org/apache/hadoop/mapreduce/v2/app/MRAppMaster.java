@@ -2896,6 +2896,24 @@ name|eater
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|copyHistory
+condition|)
+block|{
+comment|// Now that there's a FINISHING state for application on RM to give AMs
+comment|// plenty of time to clean up after unregister it's safe to clean staging
+comment|// directory after unregistering with RM. So, we start the staging-dir
+comment|// cleaner BEFORE the ContainerAllocator so that on shut-down,
+comment|// ContainerAllocator unregisters first and then the staging-dir cleaner
+comment|// deletes staging directory.
+name|addService
+argument_list|(
+name|createStagingDirCleaningService
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// service to allocate containers from RM (if non-uber) or to fake it (uber)
 name|containerAllocator
 operator|=
@@ -2929,15 +2947,6 @@ condition|(
 name|copyHistory
 condition|)
 block|{
-comment|// Add the staging directory cleaner before the history server but after
-comment|// the container allocator so the staging directory is cleaned after
-comment|// the history has been flushed but before unregistering with the RM.
-name|addService
-argument_list|(
-name|createStagingDirCleaningService
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Add the JobHistoryEventHandler last so that it is properly stopped first.
 comment|// This will guarantee that all history-events are flushed before AM goes
 comment|// ahead with shutdown.
@@ -3191,6 +3200,18 @@ argument_list|,
 name|speculatorEventDispatcher
 argument_list|)
 expr_stmt|;
+comment|// Now that there's a FINISHING state for application on RM to give AMs
+comment|// plenty of time to clean up after unregister it's safe to clean staging
+comment|// directory after unregistering with RM. So, we start the staging-dir
+comment|// cleaner BEFORE the ContainerAllocator so that on shut-down,
+comment|// ContainerAllocator unregisters first and then the staging-dir cleaner
+comment|// deletes staging directory.
+name|addService
+argument_list|(
+name|createStagingDirCleaningService
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// service to allocate containers from RM (if non-uber) or to fake it (uber)
 name|addIfService
 argument_list|(
@@ -3234,15 +3255,6 @@ operator|.
 name|class
 argument_list|,
 name|containerLauncher
-argument_list|)
-expr_stmt|;
-comment|// Add the staging directory cleaner before the history server but after
-comment|// the container allocator so the staging directory is cleaned after
-comment|// the history has been flushed but before unregistering with the RM.
-name|addService
-argument_list|(
-name|createStagingDirCleaningService
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Add the JobHistoryEventHandler last so that it is properly stopped first.
@@ -5456,6 +5468,18 @@ return|return
 name|clientToAMTokenSecretManager
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isLastAMRetry ()
+specifier|public
+name|boolean
+name|isLastAMRetry
+parameter_list|()
+block|{
+return|return
+name|isLastAMRetry
+return|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings
@@ -5804,11 +5828,6 @@ decl_stmt|;
 name|boolean
 name|shuffleKeyValidForRecovery
 init|=
-operator|(
-name|numReduceTasks
-operator|>
-literal|0
-operator|&&
 name|TokenCache
 operator|.
 name|getShuffleSecretKey
@@ -5817,7 +5836,6 @@ name|jobCredentials
 argument_list|)
 operator|!=
 literal|null
-operator|)
 decl_stmt|;
 if|if
 condition|(
@@ -5825,7 +5843,13 @@ name|recoveryEnabled
 operator|&&
 name|recoverySupportedByCommitter
 operator|&&
+operator|(
+name|numReduceTasks
+operator|<=
+literal|0
+operator|||
 name|shuffleKeyValidForRecovery
+operator|)
 condition|)
 block|{
 name|LOG
@@ -5882,6 +5906,10 @@ operator|+
 literal|" recoverySupportedByCommitter: "
 operator|+
 name|recoverySupportedByCommitter
+operator|+
+literal|" numReduceTasks: "
+operator|+
+name|numReduceTasks
 operator|+
 literal|" shuffleKeyValidForRecovery: "
 operator|+

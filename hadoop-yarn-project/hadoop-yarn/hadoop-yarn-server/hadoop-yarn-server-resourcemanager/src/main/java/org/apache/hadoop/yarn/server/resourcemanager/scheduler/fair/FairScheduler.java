@@ -2381,7 +2381,7 @@ block|{
 name|int
 name|ret
 init|=
-name|c2
+name|c1
 operator|.
 name|getContainer
 argument_list|()
@@ -2391,7 +2391,7 @@ argument_list|()
 operator|.
 name|compareTo
 argument_list|(
-name|c1
+name|c2
 operator|.
 name|getContainer
 argument_list|()

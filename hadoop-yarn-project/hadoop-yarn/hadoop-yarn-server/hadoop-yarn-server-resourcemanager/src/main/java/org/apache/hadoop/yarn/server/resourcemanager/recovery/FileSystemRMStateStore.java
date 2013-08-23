@@ -544,7 +544,7 @@ init|=
 literal|"RMDTSequenceNumber_"
 decl_stmt|;
 DECL|field|fs
-specifier|private
+specifier|protected
 name|FileSystem
 name|fs
 decl_stmt|;
@@ -576,6 +576,8 @@ DECL|field|fsWorkingPath
 name|Path
 name|fsWorkingPath
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|initInternal (Configuration conf)
 specifier|public
 specifier|synchronized
@@ -633,14 +635,29 @@ argument_list|,
 name|RM_APP_ROOT
 argument_list|)
 expr_stmt|;
-comment|// create filesystem
+block|}
+annotation|@
+name|Override
+DECL|method|startInternal ()
+specifier|protected
+specifier|synchronized
+name|void
+name|startInternal
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// create filesystem only now, as part of service-start. By this time, RM is
+comment|// authenticated with kerberos so we are good to create a file-system
+comment|// handle.
 name|fs
 operator|=
 name|fsWorkingPath
 operator|.
 name|getFileSystem
 argument_list|(
-name|conf
+name|getConfig
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|fs

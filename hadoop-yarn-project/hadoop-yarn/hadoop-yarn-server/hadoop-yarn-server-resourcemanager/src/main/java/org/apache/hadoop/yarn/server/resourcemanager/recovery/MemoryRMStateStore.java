@@ -406,6 +406,17 @@ parameter_list|)
 block|{   }
 annotation|@
 name|Override
+DECL|method|startInternal ()
+specifier|protected
+specifier|synchronized
+name|void
+name|startInternal
+parameter_list|()
+throws|throws
+name|Exception
+block|{   }
+annotation|@
+name|Override
 DECL|method|closeInternal ()
 specifier|protected
 specifier|synchronized

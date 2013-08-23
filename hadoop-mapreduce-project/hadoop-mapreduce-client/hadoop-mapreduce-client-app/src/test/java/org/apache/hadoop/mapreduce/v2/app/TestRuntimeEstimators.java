@@ -4376,6 +4376,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isLastAMRetry ()
+specifier|public
+name|boolean
+name|isLastAMRetry
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 block|}
 end_class

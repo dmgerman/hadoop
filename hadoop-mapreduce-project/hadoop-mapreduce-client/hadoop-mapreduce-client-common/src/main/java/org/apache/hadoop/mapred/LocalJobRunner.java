@@ -1482,8 +1482,6 @@ argument_list|)
 expr_stmt|;
 name|setupChildMapredLocalDirs
 argument_list|(
-name|localJobDir
-argument_list|,
 name|map
 argument_list|,
 name|localConf
@@ -1860,8 +1858,6 @@ argument_list|)
 expr_stmt|;
 name|setupChildMapredLocalDirs
 argument_list|(
-name|localJobDir
-argument_list|,
 name|reduce
 argument_list|,
 name|localConf
@@ -5001,14 +4997,11 @@ literal|"Not supported"
 argument_list|)
 throw|;
 block|}
-DECL|method|setupChildMapredLocalDirs (Path localJobDir, Task t, JobConf conf)
+DECL|method|setupChildMapredLocalDirs (Task t, JobConf conf)
 specifier|static
 name|void
 name|setupChildMapredLocalDirs
 parameter_list|(
-name|Path
-name|localJobDir
-parameter_list|,
 name|Task
 name|t
 parameter_list|,
@@ -5030,6 +5023,17 @@ name|LOCAL_DIR
 argument_list|)
 decl_stmt|;
 name|String
+name|jobId
+init|=
+name|t
+operator|.
+name|getJobID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
+name|String
 name|taskId
 init|=
 name|t
@@ -5046,6 +5050,14 @@ init|=
 name|t
 operator|.
 name|isTaskCleanupTask
+argument_list|()
+decl_stmt|;
+name|String
+name|user
+init|=
+name|t
+operator|.
+name|getUser
 argument_list|()
 decl_stmt|;
 name|StringBuffer
@@ -5065,7 +5077,9 @@ name|SEPARATOR
 operator|+
 name|getLocalTaskDir
 argument_list|(
-name|localJobDir
+name|user
+argument_list|,
+name|jobId
 argument_list|,
 name|taskId
 argument_list|,
@@ -5107,7 +5121,9 @@ name|SEPARATOR
 operator|+
 name|getLocalTaskDir
 argument_list|(
-name|localJobDir
+name|user
+argument_list|,
+name|jobId
 argument_list|,
 name|taskId
 argument_list|,
@@ -5160,13 +5176,16 @@ name|JOBCACHE
 init|=
 literal|"jobcache"
 decl_stmt|;
-DECL|method|getLocalTaskDir (Path localJobDir, String taskid, boolean isCleanupAttempt)
+DECL|method|getLocalTaskDir (String user, String jobid, String taskid, boolean isCleanupAttempt)
 specifier|static
 name|String
 name|getLocalTaskDir
 parameter_list|(
-name|Path
-name|localJobDir
+name|String
+name|user
+parameter_list|,
+name|String
+name|jobid
 parameter_list|,
 name|String
 name|taskid
@@ -5178,10 +5197,25 @@ block|{
 name|String
 name|taskDir
 init|=
-name|localJobDir
+name|jobDir
+operator|+
+name|Path
 operator|.
-name|toString
-argument_list|()
+name|SEPARATOR
+operator|+
+name|user
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
+name|JOBCACHE
+operator|+
+name|Path
+operator|.
+name|SEPARATOR
+operator|+
+name|jobid
 operator|+
 name|Path
 operator|.

@@ -637,7 +637,7 @@ argument_list|()
 decl_stmt|;
 name|nullStore
 operator|.
-name|setDispatcher
+name|setRMDispatcher
 argument_list|(
 name|rmDispatcher
 argument_list|)
