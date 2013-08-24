@@ -904,6 +904,16 @@ return|return
 name|xceiverStopTimeout
 return|;
 block|}
+DECL|method|getMaxLockedMemory ()
+specifier|public
+name|long
+name|getMaxLockedMemory
+parameter_list|()
+block|{
+return|return
+name|maxLockedMemory
+return|;
+block|}
 block|}
 end_class
 

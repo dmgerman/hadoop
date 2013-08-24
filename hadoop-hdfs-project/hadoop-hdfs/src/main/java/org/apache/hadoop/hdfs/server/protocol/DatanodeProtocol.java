@@ -308,6 +308,24 @@ init|=
 literal|8
 decl_stmt|;
 comment|// update balancer bandwidth
+DECL|field|DNA_CACHE
+specifier|final
+specifier|static
+name|int
+name|DNA_CACHE
+init|=
+literal|9
+decl_stmt|;
+comment|// cache blocks
+DECL|field|DNA_UNCACHE
+specifier|final
+specifier|static
+name|int
+name|DNA_UNCACHE
+init|=
+literal|10
+decl_stmt|;
+comment|// uncache blocks
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
 annotation|@
 name|Idempotent

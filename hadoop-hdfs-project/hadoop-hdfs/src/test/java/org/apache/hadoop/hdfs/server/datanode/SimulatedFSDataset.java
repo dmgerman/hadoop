@@ -2394,6 +2394,24 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// FsDatasetSpi
+DECL|method|getCacheReport (String bpid)
+specifier|public
+name|BlockListAsLongs
+name|getCacheReport
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+return|return
+operator|new
+name|BlockListAsLongs
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 comment|// FSDatasetMBean
 DECL|method|getCapacity ()
 specifier|public
@@ -2477,6 +2495,45 @@ name|storage
 operator|.
 name|getNumFailedVolumes
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getCacheUsed ()
+specifier|public
+name|long
+name|getCacheUsed
+parameter_list|()
+block|{
+return|return
+literal|0l
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getCacheCapacity ()
+specifier|public
+name|long
+name|getCacheCapacity
+parameter_list|()
+block|{
+return|return
+literal|0l
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getCacheRemaining ()
+specifier|public
+name|long
+name|getCacheRemaining
+parameter_list|()
+block|{
+return|return
+literal|0l
 return|;
 block|}
 annotation|@
@@ -2890,6 +2947,54 @@ literal|"Invalidate: Missing blocks."
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetSpi
+DECL|method|cache (String bpid, Block[] cacheBlks)
+specifier|public
+name|void
+name|cache
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|Block
+index|[]
+name|cacheBlks
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"SimulatedFSDataset does not support cache operation!"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetSpi
+DECL|method|uncache (String bpid, Block[] uncacheBlks)
+specifier|public
+name|void
+name|uncache
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|Block
+index|[]
+name|uncacheBlks
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"SimulatedFSDataset does not support uncache operation!"
+argument_list|)
+throw|;
 block|}
 DECL|method|getBInfo (final ExtendedBlock b)
 specifier|private
