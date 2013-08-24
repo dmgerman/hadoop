@@ -2508,8 +2508,6 @@ operator|new
 name|ClientToAMTokenIdentifier
 argument_list|(
 name|attemptId
-argument_list|,
-literal|"user"
 argument_list|)
 decl_stmt|;
 name|clientToAMTokenMgr
