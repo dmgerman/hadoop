@@ -2075,13 +2075,13 @@ parameter_list|()
 block|{
 name|Collection
 argument_list|<
-name|URI
+name|StorageLocation
 argument_list|>
 name|dataDirs
 init|=
 name|DataNode
 operator|.
-name|getStorageDirs
+name|getStorageLocations
 argument_list|(
 name|dn
 operator|.
@@ -2092,21 +2092,10 @@ decl_stmt|;
 return|return
 literal|"DataNode: ["
 operator|+
-name|StringUtils
-operator|.
-name|uriToString
-argument_list|(
 name|dataDirs
 operator|.
-name|toArray
-argument_list|(
-operator|new
-name|URI
-index|[
-literal|0
-index|]
-argument_list|)
-argument_list|)
+name|toString
+argument_list|()
 operator|+
 literal|"] "
 operator|+

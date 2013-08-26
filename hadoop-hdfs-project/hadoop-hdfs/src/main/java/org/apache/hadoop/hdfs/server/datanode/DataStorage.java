@@ -752,7 +752,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.    *<br>    * This method should be synchronized between multiple DN threads.  Only the     * first DN thread does DN level storage dir recoverTransitionRead.    *     * @param nsInfo namespace information    * @param dataDirs array of data storage directories    * @param startOpt startup option    * @throws IOException    */
-DECL|method|recoverTransitionRead (DataNode datanode, NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt)
+DECL|method|recoverTransitionRead (DataNode datanode, NamespaceInfo nsInfo, Collection<StorageLocation> dataDirs, StartupOption startOpt)
 specifier|synchronized
 name|void
 name|recoverTransitionRead
@@ -765,7 +765,7 @@ name|nsInfo
 parameter_list|,
 name|Collection
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|dataDirs
 parameter_list|,
@@ -849,7 +849,7 @@ for|for
 control|(
 name|Iterator
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|it
 init|=
@@ -871,6 +871,9 @@ init|=
 name|it
 operator|.
 name|next
+argument_list|()
+operator|.
+name|getFile
 argument_list|()
 decl_stmt|;
 name|StorageDirectory
@@ -1102,7 +1105,7 @@ literal|true
 expr_stmt|;
 block|}
 comment|/**    * recoverTransitionRead for a specific block pool    *     * @param datanode DataNode    * @param bpID Block pool Id    * @param nsInfo Namespace info of namenode corresponding to the block pool    * @param dataDirs Storage directories    * @param startOpt startup option    * @throws IOException on error    */
-DECL|method|recoverTransitionRead (DataNode datanode, String bpID, NamespaceInfo nsInfo, Collection<File> dataDirs, StartupOption startOpt)
+DECL|method|recoverTransitionRead (DataNode datanode, String bpID, NamespaceInfo nsInfo, Collection<StorageLocation> dataDirs, StartupOption startOpt)
 name|void
 name|recoverTransitionRead
 parameter_list|(
@@ -1117,7 +1120,7 @@ name|nsInfo
 parameter_list|,
 name|Collection
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|dataDirs
 parameter_list|,
@@ -1157,7 +1160,7 @@ for|for
 control|(
 name|Iterator
 argument_list|<
-name|File
+name|StorageLocation
 argument_list|>
 name|it
 init|=
@@ -1179,6 +1182,9 @@ init|=
 name|it
 operator|.
 name|next
+argument_list|()
+operator|.
+name|getFile
 argument_list|()
 decl_stmt|;
 name|File
