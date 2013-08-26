@@ -128,18 +128,6 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|spy
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
 name|when
 import|;
 end_import
@@ -1068,7 +1056,7 @@ literal|" node="
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 expr_stmt|;

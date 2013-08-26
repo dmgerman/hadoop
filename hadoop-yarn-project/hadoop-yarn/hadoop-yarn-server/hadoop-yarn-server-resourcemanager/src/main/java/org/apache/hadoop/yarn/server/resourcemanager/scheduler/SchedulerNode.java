@@ -72,6 +72,22 @@ name|Resource
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
 begin_comment
 comment|/**  * Represents a YARN Cluster Node from the viewpoint of the scheduler.  */
 end_comment
@@ -87,12 +103,12 @@ specifier|abstract
 class|class
 name|SchedulerNode
 block|{
-comment|/**    * Get hostname.    * @return hostname    */
-DECL|method|getHostName ()
+comment|/**    * Get the name of the node for scheduling matching decisions.    *<p/>    * Typically this is the 'hostname' reported by the node, but it could be     * configured to be 'hostname:port' reported by the node via the     * {@link YarnConfiguration#RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME} constant.    * The main usecase of this is Yarn minicluster to be able to differentiate    * node manager instances by their port number.    *     * @return name of the node for scheduling matching decisions.    */
+DECL|method|getNodeName ()
 specifier|public
 specifier|abstract
 name|String
-name|getHostName
+name|getNodeName
 parameter_list|()
 function_decl|;
 comment|/**    * Get rackname.    * @return rackname    */

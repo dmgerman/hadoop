@@ -1038,7 +1038,7 @@ literal|" node="
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -1608,6 +1608,11 @@ specifier|private
 name|ResourceCalculator
 name|calculator
 decl_stmt|;
+DECL|field|usePortForNodeName
+specifier|private
+name|boolean
+name|usePortForNodeName
+decl_stmt|;
 DECL|method|CapacityScheduler ()
 specifier|public
 name|CapacityScheduler
@@ -1843,6 +1848,17 @@ operator|.
 name|conf
 operator|.
 name|getResourceCalculator
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|usePortForNodeName
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getUsePortForNodeName
 argument_list|()
 expr_stmt|;
 name|this
@@ -4224,6 +4240,8 @@ operator|new
 name|FiCaSchedulerNode
 argument_list|(
 name|nodeManager
+argument_list|,
+name|usePortForNodeName
 argument_list|)
 argument_list|)
 expr_stmt|;
