@@ -854,6 +854,7 @@ name|RM_PREFIX
 operator|+
 literal|"keytab"
 decl_stmt|;
+comment|/**The kerberos principal to be used for spnego filter for RM.*/
 DECL|field|RM_WEBAPP_SPNEGO_USER_NAME_KEY
 specifier|public
 specifier|static
@@ -865,16 +866,17 @@ name|RM_PREFIX
 operator|+
 literal|"webapp.spnego-principal"
 decl_stmt|;
-DECL|field|RM_WEBAPP_SPENGO_KEYTAB_FILE_KEY
+comment|/**The kerberos keytab to be used for spnego filter for RM.*/
+DECL|field|RM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RM_WEBAPP_SPENGO_KEYTAB_FILE_KEY
+name|RM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
 init|=
 name|RM_PREFIX
 operator|+
-literal|"webapp.spengo-keytab-file"
+literal|"webapp.spnego-keytab-file"
 decl_stmt|;
 comment|/** How long to wait until a container is considered dead.*/
 DECL|field|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
@@ -2336,6 +2338,7 @@ name|NM_PREFIX
 operator|+
 literal|"user-home-dir"
 decl_stmt|;
+comment|/**The kerberos principal to be used for spnego filter for NM.*/
 DECL|field|NM_WEBAPP_SPNEGO_USER_NAME_KEY
 specifier|public
 specifier|static
@@ -2347,6 +2350,7 @@ name|NM_PREFIX
 operator|+
 literal|"webapp.spnego-principal"
 decl_stmt|;
+comment|/**The kerberos keytab to be used for spnego filter for NM.*/
 DECL|field|NM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
 specifier|public
 specifier|static
@@ -2747,24 +2751,6 @@ decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////
-DECL|field|JHS_WEBAPP_SPNEGO_USER_NAME_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|JHS_WEBAPP_SPNEGO_USER_NAME_KEY
-init|=
-literal|"jobhistoryserver.webapp.spnego-principal"
-decl_stmt|;
-DECL|field|JHS_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|JHS_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
-init|=
-literal|"jobhistoryserver.webapp.spnego-keytab-file"
-decl_stmt|;
 comment|/**    * The interval of the yarn client's querying application state after    * application submission. The unit is millisecond.    */
 DECL|field|YARN_CLIENT_APP_SUBMISSION_POLL_INTERVAL_MS
 specifier|public

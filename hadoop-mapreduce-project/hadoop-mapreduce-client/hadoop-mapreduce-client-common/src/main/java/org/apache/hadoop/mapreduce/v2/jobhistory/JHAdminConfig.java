@@ -444,6 +444,30 @@ literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_MR_HISTORY_WEBAPP_PORT
 decl_stmt|;
+comment|/**The kerberos principal to be used for spnego filter for history server*/
+DECL|field|MR_WEBAPP_SPNEGO_USER_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_WEBAPP_SPNEGO_USER_NAME_KEY
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"webapp.spnego-principal"
+decl_stmt|;
+comment|/** The kerberos keytab to be used for spnego filter for history server*/
+DECL|field|MR_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"webapp.spnego-keytab-file"
+decl_stmt|;
 comment|/*    * HS Service Authorization    */
 DECL|field|MR_HS_SECURITY_SERVICE_AUTHORIZATION
 specifier|public
