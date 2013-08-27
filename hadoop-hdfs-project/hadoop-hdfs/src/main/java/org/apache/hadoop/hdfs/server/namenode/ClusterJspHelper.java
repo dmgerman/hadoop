@@ -2051,6 +2051,20 @@ argument_list|,
 name|nn
 argument_list|)
 expr_stmt|;
+name|nn
+operator|.
+name|softwareVersion
+operator|=
+name|getProperty
+argument_list|(
+name|props
+argument_list|,
+literal|"SoftwareVersion"
+argument_list|)
+operator|.
+name|getTextValue
+argument_list|()
+expr_stmt|;
 return|return
 name|nn
 return|;
@@ -3367,6 +3381,17 @@ argument_list|,
 literal|"Dead Datanode (Decommissioned)"
 argument_list|)
 expr_stmt|;
+name|toXmlItemBlock
+argument_list|(
+name|doc
+argument_list|,
+literal|"Software Version"
+argument_list|,
+name|nn
+operator|.
+name|softwareVersion
+argument_list|)
+expr_stmt|;
 name|doc
 operator|.
 name|endTag
@@ -3486,6 +3511,12 @@ name|String
 name|httpAddress
 init|=
 literal|null
+decl_stmt|;
+DECL|field|softwareVersion
+name|String
+name|softwareVersion
+init|=
+literal|""
 decl_stmt|;
 block|}
 comment|/**    * cluster-wide decommission state of a datanode    */

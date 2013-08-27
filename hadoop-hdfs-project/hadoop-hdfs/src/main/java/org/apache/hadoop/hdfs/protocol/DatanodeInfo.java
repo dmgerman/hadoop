@@ -245,6 +245,11 @@ name|NetworkTopology
 operator|.
 name|DEFAULT_RACK
 decl_stmt|;
+DECL|field|softwareVersion
+specifier|private
+name|String
+name|softwareVersion
+decl_stmt|;
 comment|// Datanode administrative states
 DECL|enum|AdminStates
 specifier|public
@@ -1814,6 +1819,32 @@ argument_list|(
 name|obj
 argument_list|)
 return|;
+block|}
+DECL|method|getSoftwareVersion ()
+specifier|public
+name|String
+name|getSoftwareVersion
+parameter_list|()
+block|{
+return|return
+name|softwareVersion
+return|;
+block|}
+DECL|method|setSoftwareVersion (String softwareVersion)
+specifier|public
+name|void
+name|setSoftwareVersion
+parameter_list|(
+name|String
+name|softwareVersion
+parameter_list|)
+block|{
+name|this
+operator|.
+name|softwareVersion
+operator|=
+name|softwareVersion
+expr_stmt|;
 block|}
 block|}
 end_class

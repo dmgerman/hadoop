@@ -22,6 +22,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -71,6 +81,13 @@ DECL|method|getVersion ()
 specifier|public
 name|String
 name|getVersion
+parameter_list|()
+function_decl|;
+comment|/**    * Get the version of software running on the Namenode    * @return a string representing the version    */
+DECL|method|getSoftwareVersion ()
+specifier|public
+name|String
+name|getSoftwareVersion
 parameter_list|()
 function_decl|;
 comment|/**    * Gets the used space by data nodes.    *     * @return the used space by data nodes    */
@@ -253,6 +270,25 @@ DECL|method|getCorruptFiles ()
 specifier|public
 name|String
 name|getCorruptFiles
+parameter_list|()
+function_decl|;
+comment|/**    * Get the number of distinct versions of live datanodes    *     * @return the number of distinct versions of live datanodes    */
+DECL|method|getDistinctVersionCount ()
+specifier|public
+name|int
+name|getDistinctVersionCount
+parameter_list|()
+function_decl|;
+comment|/**    * Get the number of live datanodes for each distinct versions    *     * @return the number of live datanodes for each distinct versions    */
+DECL|method|getDistinctVersions ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|Integer
+argument_list|>
+name|getDistinctVersions
 parameter_list|()
 function_decl|;
 block|}
