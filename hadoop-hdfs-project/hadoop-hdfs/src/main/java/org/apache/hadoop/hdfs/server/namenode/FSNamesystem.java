@@ -22985,20 +22985,46 @@ block|{
 while|while
 condition|(
 name|fsRunning
-operator|&&
-operator|(
+condition|)
+block|{
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+if|if
+condition|(
 name|safeMode
-operator|!=
+operator|==
 literal|null
-operator|&&
-operator|!
+condition|)
+block|{
+comment|// Not in safe mode.
+break|break;
+block|}
+if|if
+condition|(
 name|safeMode
 operator|.
 name|canLeave
 argument_list|()
-operator|)
 condition|)
 block|{
+comment|// Leave safe mode.
+name|safeMode
+operator|.
+name|leave
+argument_list|()
+expr_stmt|;
+break|break;
+block|}
+block|}
+finally|finally
+block|{
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 try|try
 block|{
 name|Thread
@@ -23030,13 +23056,6 @@ name|info
 argument_list|(
 literal|"NameNode is being shutdown, exit SafeModeMonitor thread"
 argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// leave safe mode and stop the monitor
-name|leaveSafeMode
-argument_list|()
 expr_stmt|;
 block|}
 name|smmthread
