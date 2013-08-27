@@ -671,6 +671,77 @@ name|CREATE_EXCLUSIVE
 init|=
 literal|2
 decl_stmt|;
+DECL|field|EXPORTS_ALLOWED_HOSTS_SEPARATOR
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXPORTS_ALLOWED_HOSTS_SEPARATOR
+init|=
+literal|";"
+decl_stmt|;
+comment|/** Allowed hosts for nfs exports */
+DECL|field|EXPORTS_ALLOWED_HOSTS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXPORTS_ALLOWED_HOSTS_KEY
+init|=
+literal|"hdfs.nfs.exports.allowed.hosts"
+decl_stmt|;
+DECL|field|EXPORTS_ALLOWED_HOSTS_KEY_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXPORTS_ALLOWED_HOSTS_KEY_DEFAULT
+init|=
+literal|"* rw"
+decl_stmt|;
+comment|/** Size for nfs exports cache */
+DECL|field|EXPORTS_CACHE_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXPORTS_CACHE_SIZE_KEY
+init|=
+literal|"hdfs.nfs.exports.cache.size"
+decl_stmt|;
+DECL|field|EXPORTS_CACHE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|EXPORTS_CACHE_SIZE_DEFAULT
+init|=
+literal|512
+decl_stmt|;
+comment|/** Expiration time for nfs exports cache entry */
+DECL|field|EXPORTS_CACHE_EXPIRYTIME_MILLIS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|EXPORTS_CACHE_EXPIRYTIME_MILLIS_KEY
+init|=
+literal|"hdfs.nfs.exports.cache.expirytime.millis"
+decl_stmt|;
+DECL|field|EXPORTS_CACHE_EXPIRYTIME_MILLIS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|EXPORTS_CACHE_EXPIRYTIME_MILLIS_DEFAULT
+init|=
+literal|15
+operator|*
+literal|60
+operator|*
+literal|1000
+decl_stmt|;
+comment|// 15 min
 block|}
 end_class
 

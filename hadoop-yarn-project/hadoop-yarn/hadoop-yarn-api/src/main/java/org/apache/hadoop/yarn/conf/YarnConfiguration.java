@@ -557,6 +557,27 @@ name|DEFAULT_RM_SCHEDULER_CLIENT_THREAD_COUNT
 init|=
 literal|50
 decl_stmt|;
+comment|/** If the port should be included or not in the node name. The node name    * is used by the scheduler for resource requests allocation location     * matching. Typically this is just the hostname, using the port is needed    * when using minicluster and specific NM are required.*/
+DECL|field|RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.include-port-in-node-name"
+decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Enable periodic monitor threads.    * @see #RM_SCHEDULER_MONITOR_POLICIES    */
 DECL|field|RM_SCHEDULER_ENABLE_MONITORS
 specifier|public
@@ -832,6 +853,30 @@ init|=
 name|RM_PREFIX
 operator|+
 literal|"keytab"
+decl_stmt|;
+comment|/**The kerberos principal to be used for spnego filter for RM.*/
+DECL|field|RM_WEBAPP_SPNEGO_USER_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WEBAPP_SPNEGO_USER_NAME_KEY
+init|=
+name|RM_PREFIX
+operator|+
+literal|"webapp.spnego-principal"
+decl_stmt|;
+comment|/**The kerberos keytab to be used for spnego filter for RM.*/
+DECL|field|RM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+init|=
+name|RM_PREFIX
+operator|+
+literal|"webapp.spnego-keytab-file"
 decl_stmt|;
 comment|/** How long to wait until a container is considered dead.*/
 DECL|field|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
@@ -2292,6 +2337,30 @@ init|=
 name|NM_PREFIX
 operator|+
 literal|"user-home-dir"
+decl_stmt|;
+comment|/**The kerberos principal to be used for spnego filter for NM.*/
+DECL|field|NM_WEBAPP_SPNEGO_USER_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_WEBAPP_SPNEGO_USER_NAME_KEY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"webapp.spnego-principal"
+decl_stmt|;
+comment|/**The kerberos keytab to be used for spnego filter for NM.*/
+DECL|field|NM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"webapp.spnego-keytab-file"
 decl_stmt|;
 DECL|field|DEFAULT_NM_USER_HOME_DIR
 specifier|public

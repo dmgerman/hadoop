@@ -89,6 +89,7 @@ annotation|@
 name|Stable
 DECL|method|newInstance (String renewer)
 specifier|public
+specifier|static
 name|GetDelegationTokenRequest
 name|newInstance
 parameter_list|(

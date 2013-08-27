@@ -3982,7 +3982,7 @@ literal|"assignContainers: node="
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 operator|+
 literal|" #applications="
@@ -5218,7 +5218,7 @@ name|priority
 argument_list|,
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5834,7 +5834,7 @@ name|priority
 argument_list|,
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -6063,7 +6063,7 @@ literal|"assignContainers: node="
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 operator|+
 literal|" application="

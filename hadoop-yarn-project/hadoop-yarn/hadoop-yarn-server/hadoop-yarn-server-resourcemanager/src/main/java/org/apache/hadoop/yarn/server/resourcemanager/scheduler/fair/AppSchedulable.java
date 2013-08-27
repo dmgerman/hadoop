@@ -973,7 +973,7 @@ literal|"Making reservation: node="
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 operator|+
 literal|" app_id="
@@ -1568,7 +1568,7 @@ name|priority
 argument_list|,
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -1897,7 +1897,7 @@ name|prio
 argument_list|,
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 decl_stmt|;

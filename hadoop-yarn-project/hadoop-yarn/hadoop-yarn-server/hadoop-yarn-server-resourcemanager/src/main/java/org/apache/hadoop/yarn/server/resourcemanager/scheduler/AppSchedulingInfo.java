@@ -1386,7 +1386,7 @@ name|remove
 argument_list|(
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -466,12 +466,21 @@ specifier|final
 name|RMNode
 name|rmNode
 decl_stmt|;
-DECL|method|FSSchedulerNode (RMNode node)
+DECL|field|nodeName
+specifier|private
+specifier|final
+name|String
+name|nodeName
+decl_stmt|;
+DECL|method|FSSchedulerNode (RMNode node, boolean usePortForNodeName)
 specifier|public
 name|FSSchedulerNode
 parameter_list|(
 name|RMNode
 name|node
+parameter_list|,
+name|boolean
+name|usePortForNodeName
 parameter_list|)
 block|{
 name|this
@@ -494,6 +503,39 @@ name|getTotalCapability
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|usePortForNodeName
+condition|)
+block|{
+name|nodeName
+operator|=
+name|rmNode
+operator|.
+name|getHostName
+argument_list|()
+operator|+
+literal|":"
+operator|+
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+operator|.
+name|getPort
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|nodeName
+operator|=
+name|rmNode
+operator|.
+name|getHostName
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|getRMNode ()
 specifier|public
@@ -533,17 +575,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getHostName ()
+DECL|method|getNodeName ()
 specifier|public
 name|String
-name|getHostName
+name|getNodeName
 parameter_list|()
 block|{
 return|return
-name|rmNode
-operator|.
-name|getHostName
-argument_list|()
+name|nodeName
 return|;
 block|}
 annotation|@

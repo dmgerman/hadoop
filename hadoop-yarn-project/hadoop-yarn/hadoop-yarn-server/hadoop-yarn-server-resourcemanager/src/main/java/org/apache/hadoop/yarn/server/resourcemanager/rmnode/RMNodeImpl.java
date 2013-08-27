@@ -232,6 +232,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -3232,6 +3246,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Update DTRenewer in secure mode to keep these apps alive. Today this is
+comment|// needed for log-aggregation to finish long after the apps are gone.
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
 name|rmNode
 operator|.
 name|context
@@ -3247,6 +3271,7 @@ name|getKeepAliveAppIds
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|NodeState
 operator|.

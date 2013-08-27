@@ -1716,6 +1716,25 @@ name|this
 argument_list|)
 return|;
 block|}
+DECL|method|getUsePortForNodeName ()
+specifier|public
+name|boolean
+name|getUsePortForNodeName
+parameter_list|()
+block|{
+return|return
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
+argument_list|)
+return|;
+block|}
 DECL|method|setResourceComparator ( Class<? extends ResourceCalculator> resourceCalculatorClass)
 specifier|public
 name|void

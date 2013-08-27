@@ -796,6 +796,25 @@ name|DEFAULT_WAIT_TIME_BEFORE_KILL
 argument_list|)
 return|;
 block|}
+DECL|method|getUsePortForNodeName ()
+specifier|public
+name|boolean
+name|getUsePortForNodeName
+parameter_list|()
+block|{
+return|return
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
+argument_list|)
+return|;
+block|}
 comment|/**    * Parses a resource config value of a form like "1024", "1024 mb",    * or "1024 mb, 3 vcores". If no units are given, megabytes are assumed.    *     * @throws AllocationConfigurationException    */
 DECL|method|parseResourceConfigValue (String val)
 specifier|public

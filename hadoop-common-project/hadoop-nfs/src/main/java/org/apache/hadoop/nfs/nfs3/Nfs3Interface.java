@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -96,7 +106,7 @@ name|nullProcedure
 parameter_list|()
 function_decl|;
 comment|/** GETATTR: Get file attributes */
-DECL|method|getattr (XDR xdr, RpcAuthSys authSys)
+DECL|method|getattr (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|getattr
@@ -106,10 +116,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** SETATTR: Set file attributes */
-DECL|method|setattr (XDR xdr, RpcAuthSys authSys)
+DECL|method|setattr (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|setattr
@@ -119,10 +132,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** LOOKUP: Lookup filename */
-DECL|method|lookup (XDR xdr, RpcAuthSys authSys)
+DECL|method|lookup (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|lookup
@@ -132,10 +148,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** ACCESS: Check access permission  */
-DECL|method|access (XDR xdr, RpcAuthSys authSys)
+DECL|method|access (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|access
@@ -145,10 +164,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** READ: Read from file */
-DECL|method|read (XDR xdr, RpcAuthSys authSys)
+DECL|method|read (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|read
@@ -158,10 +180,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** WRITE: Write to file */
-DECL|method|write (XDR xdr, Channel channel, int xid, RpcAuthSys authSys)
+DECL|method|write (XDR xdr, Channel channel, int xid, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|write
@@ -177,10 +202,13 @@ name|xid
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** CREATE: Create a file  */
-DECL|method|create (XDR xdr, RpcAuthSys authSys)
+DECL|method|create (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|create
@@ -190,10 +218,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** MKDIR: Create a directory  */
-DECL|method|mkdir (XDR xdr, RpcAuthSys authSys)
+DECL|method|mkdir (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|mkdir
@@ -203,10 +234,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** REMOVE: Remove a file  */
-DECL|method|remove (XDR xdr, RpcAuthSys authSys)
+DECL|method|remove (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|remove
@@ -216,10 +250,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** RMDIR: Remove a directory  */
-DECL|method|rmdir (XDR xdr, RpcAuthSys authSys)
+DECL|method|rmdir (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|rmdir
@@ -229,10 +266,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** RENAME: Rename a file or directory */
-DECL|method|rename (XDR xdr, RpcAuthSys authSys)
+DECL|method|rename (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|rename
@@ -242,10 +282,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** SYMLINK: Create a symbolic link  */
-DECL|method|symlink (XDR xdr, RpcAuthSys authSys)
+DECL|method|symlink (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|symlink
@@ -255,10 +298,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** READDIR: Read From directory */
-DECL|method|readdir (XDR xdr, RpcAuthSys authSys)
+DECL|method|readdir (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|readdir
@@ -268,10 +314,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** FSSTAT: Get dynamic file system information  */
-DECL|method|fsstat (XDR xdr, RpcAuthSys authSys)
+DECL|method|fsstat (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|fsstat
@@ -281,10 +330,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** FSINFO: Get static file system information */
-DECL|method|fsinfo (XDR xdr, RpcAuthSys authSys)
+DECL|method|fsinfo (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|fsinfo
@@ -294,10 +346,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** PATHCONF: Retrieve POSIX information */
-DECL|method|pathconf (XDR xdr, RpcAuthSys authSys)
+DECL|method|pathconf (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|pathconf
@@ -307,10 +362,13 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 comment|/** COMMIT: Commit cached data on a server to stable storage  */
-DECL|method|commit (XDR xdr, RpcAuthSys authSys)
+DECL|method|commit (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|NFS3Response
 name|commit
@@ -320,6 +378,9 @@ name|xdr
 parameter_list|,
 name|RpcAuthSys
 name|authSys
+parameter_list|,
+name|InetAddress
+name|client
 parameter_list|)
 function_decl|;
 block|}
