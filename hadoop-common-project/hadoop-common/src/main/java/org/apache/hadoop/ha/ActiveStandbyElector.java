@@ -174,9 +174,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|util
 operator|.
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|ZKAuthInfo
 import|;
@@ -363,20 +363,6 @@ operator|.
 name|base
 operator|.
 name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Lists
 import|;
 end_import
 
