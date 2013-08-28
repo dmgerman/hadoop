@@ -7370,6 +7370,8 @@ index|[
 literal|0
 index|]
 argument_list|,
+literal|"STORAGE"
+argument_list|,
 name|ReplicaState
 operator|.
 name|FINALIZED

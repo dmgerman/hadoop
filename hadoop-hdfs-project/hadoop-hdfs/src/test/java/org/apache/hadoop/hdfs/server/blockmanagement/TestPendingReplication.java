@@ -1800,6 +1800,8 @@ index|[
 literal|0
 index|]
 argument_list|,
+literal|"STORAGE_ID"
+argument_list|,
 literal|"TEST"
 argument_list|)
 expr_stmt|;
@@ -1819,6 +1821,8 @@ argument_list|()
 index|[
 literal|1
 index|]
+argument_list|,
+literal|"STORAGE_ID"
 argument_list|,
 literal|"TEST"
 argument_list|)

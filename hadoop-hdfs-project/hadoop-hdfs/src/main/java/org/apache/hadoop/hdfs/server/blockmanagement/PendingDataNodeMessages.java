@@ -164,17 +164,26 @@ specifier|final
 name|DatanodeDescriptor
 name|dn
 decl_stmt|;
+DECL|field|storageID
+specifier|private
+specifier|final
+name|String
+name|storageID
+decl_stmt|;
 DECL|field|reportedState
 specifier|private
 specifier|final
 name|ReplicaState
 name|reportedState
 decl_stmt|;
-DECL|method|ReportedBlockInfo (DatanodeDescriptor dn, Block block, ReplicaState reportedState)
+DECL|method|ReportedBlockInfo (DatanodeDescriptor dn, String storageID, Block block, ReplicaState reportedState)
 name|ReportedBlockInfo
 parameter_list|(
 name|DatanodeDescriptor
 name|dn
+parameter_list|,
+name|String
+name|storageID
 parameter_list|,
 name|Block
 name|block
@@ -188,6 +197,12 @@ operator|.
 name|dn
 operator|=
 name|dn
+expr_stmt|;
+name|this
+operator|.
+name|storageID
+operator|=
+name|storageID
 expr_stmt|;
 name|this
 operator|.
@@ -218,6 +233,15 @@ parameter_list|()
 block|{
 return|return
 name|dn
+return|;
+block|}
+DECL|method|getStorageID ()
+name|String
+name|getStorageID
+parameter_list|()
+block|{
+return|return
+name|storageID
 return|;
 block|}
 DECL|method|getReportedState ()
@@ -254,12 +278,15 @@ literal|"]"
 return|;
 block|}
 block|}
-DECL|method|enqueueReportedBlock (DatanodeDescriptor dn, Block block, ReplicaState reportedState)
+DECL|method|enqueueReportedBlock (DatanodeDescriptor dn, String storageID, Block block, ReplicaState reportedState)
 name|void
 name|enqueueReportedBlock
 parameter_list|(
 name|DatanodeDescriptor
 name|dn
+parameter_list|,
+name|String
+name|storageID
 parameter_list|,
 name|Block
 name|block
@@ -287,6 +314,8 @@ operator|new
 name|ReportedBlockInfo
 argument_list|(
 name|dn
+argument_list|,
+name|storageID
 argument_list|,
 name|block
 argument_list|,

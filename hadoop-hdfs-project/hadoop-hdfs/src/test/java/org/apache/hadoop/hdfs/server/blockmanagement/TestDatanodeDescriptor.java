@@ -325,6 +325,12 @@ argument_list|,
 literal|2
 argument_list|)
 decl_stmt|;
+specifier|final
+name|String
+name|storageID
+init|=
+literal|"STORAGE_ID"
+decl_stmt|;
 comment|// add first block
 name|assertTrue
 argument_list|(
@@ -332,6 +338,8 @@ name|dd
 operator|.
 name|addBlock
 argument_list|(
+name|storageID
+argument_list|,
 name|blk
 argument_list|)
 argument_list|)
@@ -374,6 +382,8 @@ name|dd
 operator|.
 name|addBlock
 argument_list|(
+name|storageID
+argument_list|,
 name|blk
 argument_list|)
 argument_list|)
@@ -395,6 +405,8 @@ name|dd
 operator|.
 name|addBlock
 argument_list|(
+name|storageID
+argument_list|,
 name|blk1
 argument_list|)
 argument_list|)
