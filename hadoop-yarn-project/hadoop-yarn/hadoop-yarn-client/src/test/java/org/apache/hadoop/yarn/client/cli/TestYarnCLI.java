@@ -4284,21 +4284,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t            NEW\t       host1:8888"
+literal|"         host0:0\t            NEW\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -4474,35 +4474,35 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t        RUNNING\t       host1:8888"
+literal|"         host0:0\t        RUNNING\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host1:0\t        RUNNING\t       host1:8888"
+literal|"         host1:0\t        RUNNING\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -4742,21 +4742,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t      UNHEALTHY\t       host1:8888"
+literal|"         host0:0\t      UNHEALTHY\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -4931,21 +4931,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t DECOMMISSIONED\t       host1:8888"
+literal|"         host0:0\t DECOMMISSIONED\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -5120,21 +5120,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t       REBOOTED\t       host1:8888"
+literal|"         host0:0\t       REBOOTED\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -5309,21 +5309,21 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t           LOST\t       host1:8888"
+literal|"         host0:0\t           LOST\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -5525,77 +5525,77 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t            NEW\t       host1:8888"
+literal|"         host0:0\t            NEW\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t        RUNNING\t       host1:8888"
+literal|"         host0:0\t        RUNNING\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host1:0\t        RUNNING\t       host1:8888"
+literal|"         host1:0\t        RUNNING\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t       REBOOTED\t       host1:8888"
+literal|"         host0:0\t       REBOOTED\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t           LOST\t       host1:8888"
+literal|"         host0:0\t           LOST\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
@@ -5778,105 +5778,105 @@ name|pw
 operator|.
 name|println
 argument_list|(
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t            NEW\t       host1:8888"
+literal|"         host0:0\t            NEW\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t        RUNNING\t       host1:8888"
+literal|"         host0:0\t        RUNNING\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host1:0\t        RUNNING\t       host1:8888"
+literal|"         host1:0\t        RUNNING\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t      UNHEALTHY\t       host1:8888"
+literal|"         host0:0\t      UNHEALTHY\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t DECOMMISSIONED\t       host1:8888"
+literal|"         host0:0\t DECOMMISSIONED\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t       REBOOTED\t       host1:8888"
+literal|"         host0:0\t       REBOOTED\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|print
 argument_list|(
-literal|"         host0:0\t           LOST\t       host1:8888"
+literal|"         host0:0\t           LOST\t       host1:8888\t"
 argument_list|)
 expr_stmt|;
 name|pw
 operator|.
 name|println
 argument_list|(
-literal|"\t                 0"
+literal|"                           0"
 argument_list|)
 expr_stmt|;
 name|pw
