@@ -763,6 +763,25 @@ literal|false
 else|:
 literal|true
 expr_stmt|;
+name|nextOffset
+operator|=
+name|latestAttr
+operator|.
+name|getSize
+argument_list|()
+expr_stmt|;
+assert|assert
+operator|(
+name|nextOffset
+operator|==
+name|this
+operator|.
+name|fos
+operator|.
+name|getPos
+argument_list|()
+operator|)
+assert|;
 name|ctxLock
 operator|=
 operator|new
@@ -3510,12 +3529,15 @@ argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
+name|long
+name|flushedOffset
+init|=
+name|getFlushedOffset
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|fos
-operator|.
-name|getPos
-argument_list|()
+name|flushedOffset
 operator|!=
 operator|(
 name|offset
@@ -3530,10 +3552,7 @@ name|IOException
 argument_list|(
 literal|"output stream is out of sync, pos="
 operator|+
-name|fos
-operator|.
-name|getPos
-argument_list|()
+name|flushedOffset
 operator|+
 literal|" and nextOffset should be"
 operator|+
@@ -3547,10 +3566,7 @@ throw|;
 block|}
 name|nextOffset
 operator|=
-name|fos
-operator|.
-name|getPos
-argument_list|()
+name|flushedOffset
 expr_stmt|;
 comment|// Reduce memory occupation size if request was allowed dumped
 if|if
