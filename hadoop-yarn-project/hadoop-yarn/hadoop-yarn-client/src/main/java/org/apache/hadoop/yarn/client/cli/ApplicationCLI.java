@@ -152,6 +152,20 @@ name|commons
 operator|.
 name|cli
 operator|.
+name|MissingArgumentException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|cli
+operator|.
 name|Option
 import|;
 end_import
@@ -481,11 +495,11 @@ literal|false
 argument_list|,
 literal|"List applications from the RM. "
 operator|+
-literal|"Supports optional use of --appTypes to filter applications "
+literal|"Supports optional use of -appTypes to filter applications "
 operator|+
 literal|"based on application type, "
 operator|+
-literal|"and --appStates to filter applications based on application state"
+literal|"and -appStates to filter applications based on application state"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -520,7 +534,11 @@ name|APP_TYPE_CMD
 argument_list|,
 literal|true
 argument_list|,
-literal|"Works with --list to filter applications based on their type."
+literal|"Works with -list to "
+operator|+
+literal|"filter applications based on "
+operator|+
+literal|"input comma-separated list of application types."
 argument_list|)
 decl_stmt|;
 name|appTypeOpt
@@ -543,7 +561,7 @@ name|appTypeOpt
 operator|.
 name|setArgName
 argument_list|(
-literal|"Comma-separated list of application types"
+literal|"Types"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -563,7 +581,11 @@ name|APP_STATE_CMD
 argument_list|,
 literal|true
 argument_list|,
-literal|"Works with --list to filter applications based on their state. "
+literal|"Works with -list "
+operator|+
+literal|"to filter applications based on input comma-separated list of "
+operator|+
+literal|"application states. "
 operator|+
 name|getAllValidApplicationStates
 argument_list|()
@@ -589,7 +611,7 @@ name|appStateOpt
 operator|.
 name|setArgName
 argument_list|(
-literal|"Comma-separated list of application states"
+literal|"States"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -623,9 +645,21 @@ argument_list|(
 literal|"Application ID"
 argument_list|)
 expr_stmt|;
+name|int
+name|exitCode
+init|=
+operator|-
+literal|1
+decl_stmt|;
 name|CommandLine
 name|cliParser
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|cliParser
+operator|=
 operator|new
 name|GnuParser
 argument_list|()
@@ -636,13 +670,30 @@ name|opts
 argument_list|,
 name|args
 argument_list|)
-decl_stmt|;
-name|int
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|MissingArgumentException
+name|ex
+parameter_list|)
+block|{
+name|sysout
+operator|.
+name|println
+argument_list|(
+literal|"Missing argument for options"
+argument_list|)
+expr_stmt|;
+name|printUsage
+argument_list|(
+name|opts
+argument_list|)
+expr_stmt|;
+return|return
 name|exitCode
-init|=
-operator|-
-literal|1
-decl_stmt|;
+return|;
+block|}
 if|if
 condition|(
 name|cliParser

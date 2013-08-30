@@ -1203,6 +1203,10 @@ argument_list|(
 literal|"Invalid ApplicationId prefix: "
 operator|+
 name|appIdStr
+operator|+
+literal|". The valid ApplicationId should start with prefix "
+operator|+
+name|APPLICATION_PREFIX
 argument_list|)
 throw|;
 block|}
