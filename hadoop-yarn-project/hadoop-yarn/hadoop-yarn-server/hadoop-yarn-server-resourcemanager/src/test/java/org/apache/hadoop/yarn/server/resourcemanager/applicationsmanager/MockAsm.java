@@ -641,11 +641,14 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|createAndGetApplicationReport (boolean allowAccess)
+DECL|method|createAndGetApplicationReport ( String clientUserName,boolean allowAccess)
 specifier|public
 name|ApplicationReport
 name|createAndGetApplicationReport
 parameter_list|(
+name|String
+name|clientUserName
+parameter_list|,
 name|boolean
 name|allowAccess
 parameter_list|)

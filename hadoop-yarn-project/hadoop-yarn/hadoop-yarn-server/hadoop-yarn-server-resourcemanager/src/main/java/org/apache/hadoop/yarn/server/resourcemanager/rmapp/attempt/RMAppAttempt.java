@@ -46,6 +46,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|crypto
+operator|.
+name|SecretKey
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -244,24 +254,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|security
-operator|.
-name|client
-operator|.
-name|ClientToAMTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -329,15 +321,6 @@ name|String
 name|getWebProxyBase
 parameter_list|()
 function_decl|;
-comment|/**    * The token required by the clients to talk to the application attempt    * @return the token required by the clients to talk to the application attempt    */
-DECL|method|getClientToAMToken ()
-name|Token
-argument_list|<
-name|ClientToAMTokenIdentifier
-argument_list|>
-name|getClientToAMToken
-parameter_list|()
-function_decl|;
 comment|/**    * Diagnostics information for the application attempt.    * @return diagnostics information for the application attempt.    */
 DECL|method|getDiagnostics ()
 name|String
@@ -402,6 +385,12 @@ argument_list|<
 name|AMRMTokenIdentifier
 argument_list|>
 name|getAMRMToken
+parameter_list|()
+function_decl|;
+comment|/**    * The master key for client-to-AM tokens for this app attempt    * @return The master key for client-to-AM tokens for this app attempt    */
+DECL|method|getClientTokenMasterKey ()
+name|SecretKey
+name|getClientTokenMasterKey
 parameter_list|()
 function_decl|;
 comment|/**    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */

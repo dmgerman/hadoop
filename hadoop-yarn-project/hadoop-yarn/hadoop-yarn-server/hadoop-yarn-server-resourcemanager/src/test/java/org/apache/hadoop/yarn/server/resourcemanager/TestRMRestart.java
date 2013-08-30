@@ -3648,8 +3648,8 @@ name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// the appToken and clientToAMToken that are generated when RMAppAttempt
-comment|// is created,
+comment|// the appToken and clientTokenMasterKey that are generated when
+comment|// RMAppAttempt is created,
 name|HashSet
 argument_list|<
 name|Token
@@ -3679,17 +3679,27 @@ name|getAMRMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|tokenSet
-operator|.
-name|add
-argument_list|(
+name|byte
+index|[]
+name|clientTokenMasterKey
+init|=
 name|attempt1
 operator|.
-name|getClientToAMToken
+name|getClientTokenMasterKey
 argument_list|()
-argument_list|)
-expr_stmt|;
-comment|// assert application Token is saved
+operator|.
+name|getEncoded
+argument_list|()
+decl_stmt|;
+comment|// assert application credentials are saved
+name|Credentials
+name|savedCredentials
+init|=
+name|attemptState
+operator|.
+name|getAppAttemptCredentials
+argument_list|()
+decl_stmt|;
 name|HashSet
 argument_list|<
 name|Token
@@ -3713,10 +3723,7 @@ name|savedTokens
 operator|.
 name|addAll
 argument_list|(
-name|attemptState
-operator|.
-name|getAppAttemptTokens
-argument_list|()
+name|savedCredentials
 operator|.
 name|getAllTokens
 argument_list|()
@@ -3729,6 +3736,24 @@ argument_list|(
 name|tokenSet
 argument_list|,
 name|savedTokens
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertArrayEquals
+argument_list|(
+literal|"client token master key not saved"
+argument_list|,
+name|clientTokenMasterKey
+argument_list|,
+name|savedCredentials
+operator|.
+name|getSecretKey
+argument_list|(
+name|RMStateStore
+operator|.
+name|AM_CLIENT_TOKEN_MASTER_KEY_NAME
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// start new RM
@@ -3800,16 +3825,6 @@ name|getAMRMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|savedTokens
-operator|.
-name|add
-argument_list|(
-name|loadedAttempt1
-operator|.
-name|getClientToAMToken
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -3819,20 +3834,43 @@ argument_list|,
 name|savedTokens
 argument_list|)
 expr_stmt|;
-comment|// assert clientToAMToken is recovered back to api-versioned
-comment|// clientToAMToken
+comment|// assert client token master key is recovered back to api-versioned
+comment|// client token master key
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|"client token master key not restored"
+argument_list|,
 name|attempt1
 operator|.
-name|getClientToAMToken
+name|getClientTokenMasterKey
 argument_list|()
 argument_list|,
 name|loadedAttempt1
 operator|.
-name|getClientToAMToken
+name|getClientTokenMasterKey
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// assert secret manager also knows about the key
+name|Assert
+operator|.
+name|assertArrayEquals
+argument_list|(
+name|clientTokenMasterKey
+argument_list|,
+name|rm2
+operator|.
+name|getClientToAMTokenSecretManager
+argument_list|()
+operator|.
+name|getMasterKey
+argument_list|(
+name|attemptId1
+argument_list|)
+operator|.
+name|getEncoded
 argument_list|()
 argument_list|)
 expr_stmt|;

@@ -74,6 +74,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|crypto
+operator|.
+name|SecretKey
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -408,24 +418,6 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientToAMTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
-name|client
-operator|.
 name|RMDelegationTokenIdentifier
 import|;
 end_import
@@ -631,12 +623,12 @@ specifier|final
 name|Container
 name|masterContainer
 decl_stmt|;
-DECL|field|appAttemptTokens
+DECL|field|appAttemptCredentials
 specifier|final
 name|Credentials
-name|appAttemptTokens
+name|appAttemptCredentials
 decl_stmt|;
-DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptTokens)
+DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials)
 specifier|public
 name|ApplicationAttemptState
 parameter_list|(
@@ -647,7 +639,7 @@ name|Container
 name|masterContainer
 parameter_list|,
 name|Credentials
-name|appAttemptTokens
+name|appAttemptCredentials
 parameter_list|)
 block|{
 name|this
@@ -664,9 +656,9 @@ name|masterContainer
 expr_stmt|;
 name|this
 operator|.
-name|appAttemptTokens
+name|appAttemptCredentials
 operator|=
-name|appAttemptTokens
+name|appAttemptCredentials
 expr_stmt|;
 block|}
 DECL|method|getMasterContainer ()
@@ -689,14 +681,14 @@ return|return
 name|attemptId
 return|;
 block|}
-DECL|method|getAppAttemptTokens ()
+DECL|method|getAppAttemptCredentials ()
 specifier|public
 name|Credentials
-name|getAppAttemptTokens
+name|getAppAttemptCredentials
 parameter_list|()
 block|{
 return|return
-name|appAttemptTokens
+name|appAttemptCredentials
 return|;
 block|}
 block|}
@@ -1238,7 +1230,7 @@ block|{
 name|Credentials
 name|credentials
 init|=
-name|getTokensFromAppAttempt
+name|getCredentialsFromAppAttempt
 argument_list|(
 name|appAttempt
 argument_list|)
@@ -1490,7 +1482,7 @@ block|{
 name|Credentials
 name|credentials
 init|=
-name|getTokensFromAppAttempt
+name|getCredentialsFromAppAttempt
 argument_list|(
 name|appAttempt
 argument_list|)
@@ -1594,10 +1586,23 @@ argument_list|(
 literal|"AM_RM_TOKEN_SERVICE"
 argument_list|)
 decl_stmt|;
-DECL|method|getTokensFromAppAttempt (RMAppAttempt appAttempt)
+DECL|field|AM_CLIENT_TOKEN_MASTER_KEY_NAME
+specifier|public
+specifier|static
+specifier|final
+name|Text
+name|AM_CLIENT_TOKEN_MASTER_KEY_NAME
+init|=
+operator|new
+name|Text
+argument_list|(
+literal|"YARN_CLIENT_TOKEN_MASTER_KEY"
+argument_list|)
+decl_stmt|;
+DECL|method|getCredentialsFromAppAttempt (RMAppAttempt appAttempt)
 specifier|private
 name|Credentials
-name|getTokensFromAppAttempt
+name|getCredentialsFromAppAttempt
 parameter_list|(
 name|RMAppAttempt
 name|appAttempt
@@ -1638,34 +1643,31 @@ name|appToken
 argument_list|)
 expr_stmt|;
 block|}
-name|Token
-argument_list|<
-name|ClientToAMTokenIdentifier
-argument_list|>
-name|clientToAMToken
+name|SecretKey
+name|clientTokenMasterKey
 init|=
 name|appAttempt
 operator|.
-name|getClientToAMToken
+name|getClientTokenMasterKey
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|clientToAMToken
+name|clientTokenMasterKey
 operator|!=
 literal|null
 condition|)
 block|{
 name|credentials
 operator|.
-name|addToken
+name|addSecretKey
 argument_list|(
-name|clientToAMToken
-operator|.
-name|getService
-argument_list|()
+name|AM_CLIENT_TOKEN_MASTER_KEY_NAME
 argument_list|,
-name|clientToAMToken
+name|clientTokenMasterKey
+operator|.
+name|getEncoded
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1845,7 +1847,7 @@ name|credentials
 init|=
 name|attemptState
 operator|.
-name|getAppAttemptTokens
+name|getAppAttemptCredentials
 argument_list|()
 decl_stmt|;
 name|ByteBuffer
