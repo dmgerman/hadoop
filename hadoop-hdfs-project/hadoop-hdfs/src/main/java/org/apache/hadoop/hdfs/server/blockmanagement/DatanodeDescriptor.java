@@ -608,6 +608,10 @@ literal|0L
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -640,14 +644,18 @@ literal|0L
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param capacity capacity of the data node    * @param dfsUsed space used by the data node    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
-DECL|method|DatanodeDescriptor (DatanodeID nodeID, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param capacity capacity of the data node    * @param dfsUsed space used by the data node    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param cacheCapacity cache capacity of the data node    * @param cacheUsed cache used on the data node    * @param xceiverCount # of data transfers at the data node    */
+DECL|method|DatanodeDescriptor (DatanodeID nodeID, long capacity, long dfsUsed, long remaining, long bpused, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeDescriptor
 parameter_list|(
@@ -665,6 +673,12 @@ name|remaining
 parameter_list|,
 name|long
 name|bpused
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -688,14 +702,18 @@ name|remaining
 argument_list|,
 name|bpused
 argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
+argument_list|,
 name|xceiverCount
 argument_list|,
 name|failedVolumes
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param capacity capacity of the data node, including space used by non-dfs    * @param dfsUsed the used space by dfs datanode    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
-DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param capacity capacity of the data node, including space used by non-dfs    * @param dfsUsed the used space by dfs datanode    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param cacheCapacity cache capacity of the data node    * @param cacheUsed cache used on the data node    * @param xceiverCount # of data transfers at the data node    */
+DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, long capacity, long dfsUsed, long remaining, long bpused, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeDescriptor
 parameter_list|(
@@ -717,6 +735,12 @@ parameter_list|,
 name|long
 name|bpused
 parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
+parameter_list|,
 name|int
 name|xceiverCount
 parameter_list|,
@@ -740,6 +764,10 @@ argument_list|,
 name|remaining
 argument_list|,
 name|bpused
+argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
 argument_list|,
 name|xceiverCount
 argument_list|,
@@ -1017,7 +1045,7 @@ name|numBlocks
 return|;
 block|}
 comment|/**    * Updates stats from datanode heartbeat.    */
-DECL|method|updateHeartbeat (long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int volFailures)
+DECL|method|updateHeartbeat (long capacity, long dfsUsed, long remaining, long blockPoolUsed, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures)
 specifier|public
 name|void
 name|updateHeartbeat
@@ -1033,6 +1061,12 @@ name|remaining
 parameter_list|,
 name|long
 name|blockPoolUsed
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -1059,6 +1093,16 @@ expr_stmt|;
 name|setDfsUsed
 argument_list|(
 name|dfsUsed
+argument_list|)
+expr_stmt|;
+name|setCacheCapacity
+argument_list|(
+name|cacheCapacity
+argument_list|)
+expr_stmt|;
+name|setCacheUsed
+argument_list|(
+name|cacheUsed
 argument_list|)
 expr_stmt|;
 name|setXceiverCount

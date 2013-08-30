@@ -1298,6 +1298,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|CacheReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|DatanodeCommand
 import|;
 end_import
@@ -5756,7 +5774,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, int xmitsInProgress, int xceiverCount, int failedVolumes)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, CacheReport[] cacheReport, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -5767,6 +5785,10 @@ parameter_list|,
 name|StorageReport
 index|[]
 name|report
+parameter_list|,
+name|CacheReport
+index|[]
+name|cacheReport
 parameter_list|,
 name|int
 name|xmitsInProgress
@@ -5822,6 +5844,22 @@ literal|0
 index|]
 operator|.
 name|getBlockPoolUsed
+argument_list|()
+argument_list|,
+name|cacheReport
+index|[
+literal|0
+index|]
+operator|.
+name|getCapacity
+argument_list|()
+argument_list|,
+name|cacheReport
+index|[
+literal|0
+index|]
+operator|.
+name|getUsed
 argument_list|()
 argument_list|,
 name|xceiverCount

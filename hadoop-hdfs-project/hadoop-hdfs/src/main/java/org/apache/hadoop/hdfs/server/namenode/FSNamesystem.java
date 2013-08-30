@@ -20019,7 +20019,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * The given node has reported in.  This method should:    * 1) Record the heartbeat, so the datanode isn't timed out    * 2) Adjust usage stats for future block allocation    *     * If a substantial amount of time passed since the last datanode     * heartbeat then request an immediate block report.      *     * @return an array of datanode commands     * @throws IOException    */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int xmitsInProgress, int failedVolumes)
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, long capacity, long dfsUsed, long remaining, long blockPoolUsed, long cacheCapacity, long cacheUsed, int xceiverCount, int xmitsInProgress, int failedVolumes)
 name|HeartbeatResponse
 name|handleHeartbeat
 parameter_list|(
@@ -20037,6 +20037,12 @@ name|remaining
 parameter_list|,
 name|long
 name|blockPoolUsed
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -20088,6 +20094,10 @@ argument_list|,
 name|remaining
 argument_list|,
 name|blockPoolUsed
+argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
 argument_list|,
 name|xceiverCount
 argument_list|,
