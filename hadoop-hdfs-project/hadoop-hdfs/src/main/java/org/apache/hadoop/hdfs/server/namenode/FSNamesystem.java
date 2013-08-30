@@ -3836,6 +3836,7 @@ name|this
 argument_list|)
 decl_stmt|;
 DECL|field|smmthread
+specifier|volatile
 name|Daemon
 name|smmthread
 init|=
@@ -22054,8 +22055,14 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
+comment|// if smmthread is already running, the block threshold must have been
+comment|// reached before, there is no need to enter the safe mode again
 if|if
 condition|(
+name|smmthread
+operator|==
+literal|null
+operator|&&
 name|needEnter
 argument_list|()
 condition|)
@@ -22087,7 +22094,7 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// the threshold is reached
+comment|// the threshold is reached or was reached before
 if|if
 condition|(
 operator|!
@@ -22136,6 +22143,13 @@ operator|=
 name|now
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|smmthread
+operator|==
+literal|null
+condition|)
+block|{
 name|smmthread
 operator|=
 operator|new
@@ -22158,6 +22172,7 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
 comment|// check if we are ready to initialize replication queues
 if|if
 condition|(
@@ -23026,6 +23041,10 @@ operator|.
 name|leave
 argument_list|()
 expr_stmt|;
+name|smmthread
+operator|=
+literal|null
+expr_stmt|;
 break|break;
 block|}
 block|}
@@ -23068,10 +23087,6 @@ literal|"NameNode is being shutdown, exit SafeModeMonitor thread"
 argument_list|)
 expr_stmt|;
 block|}
-name|smmthread
-operator|=
-literal|null
-expr_stmt|;
 block|}
 block|}
 DECL|method|setSafeMode (SafeModeAction action)
