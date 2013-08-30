@@ -24,6 +24,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertTrue
 import|;
 end_import
@@ -537,6 +549,34 @@ parameter_list|)
 block|{
 comment|// expected
 block|}
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|10000
+argument_list|)
+DECL|method|testStatEnvironment ()
+specifier|public
+name|void
+name|testStatEnvironment
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assertEquals
+argument_list|(
+name|stat
+operator|.
+name|getEnvironment
+argument_list|(
+literal|"LANG"
+argument_list|)
+argument_list|,
+literal|"C"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

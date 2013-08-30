@@ -2440,6 +2440,25 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**     * Get the environment variable    */
+DECL|method|getEnvironment (String env)
+specifier|public
+name|String
+name|getEnvironment
+parameter_list|(
+name|String
+name|env
+parameter_list|)
+block|{
+return|return
+name|environment
+operator|.
+name|get
+argument_list|(
+name|env
+argument_list|)
+return|;
+block|}
 comment|/** get the current sub-process executing the given command     * @return process executing the command    */
 DECL|method|getProcess ()
 specifier|public
