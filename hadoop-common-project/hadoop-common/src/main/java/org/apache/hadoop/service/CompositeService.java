@@ -217,6 +217,7 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Add the passed {@link Service} to the list of services managed by this    * {@link CompositeService}    * @param service the {@link Service} to be added    */
 DECL|method|addService (Service service)
 specifier|protected
 name|void
@@ -259,6 +260,42 @@ argument_list|(
 name|service
 argument_list|)
 expr_stmt|;
+block|}
+block|}
+comment|/**    * If the passed object is an instance of {@link Service},    * add it to the list of services managed by this {@link CompositeService}    * @param object    * @return true if a service is added, false otherwise.    */
+DECL|method|addIfService (Object object)
+specifier|protected
+name|boolean
+name|addIfService
+parameter_list|(
+name|Object
+name|object
+parameter_list|)
+block|{
+if|if
+condition|(
+name|object
+operator|instanceof
+name|Service
+condition|)
+block|{
+name|addService
+argument_list|(
+operator|(
+name|Service
+operator|)
+name|object
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+else|else
+block|{
+return|return
+literal|false
+return|;
 block|}
 block|}
 DECL|method|removeService (Service service)

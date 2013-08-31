@@ -4116,32 +4116,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|addIfService (Object object)
-specifier|protected
-name|void
-name|addIfService
-parameter_list|(
-name|Object
-name|object
-parameter_list|)
-block|{
-if|if
-condition|(
-name|object
-operator|instanceof
-name|Service
-condition|)
-block|{
-name|addService
-argument_list|(
-operator|(
-name|Service
-operator|)
-name|object
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 DECL|method|createJobHistoryHandler ( AppContext context)
 specifier|protected
 name|EventHandler
