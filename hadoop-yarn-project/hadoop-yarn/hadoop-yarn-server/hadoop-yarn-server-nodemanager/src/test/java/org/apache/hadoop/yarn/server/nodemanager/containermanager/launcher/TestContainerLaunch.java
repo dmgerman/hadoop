@@ -1842,51 +1842,6 @@ argument_list|,
 literal|"hello"
 argument_list|)
 expr_stmt|;
-name|String
-name|timeoutCommand
-init|=
-name|Shell
-operator|.
-name|WINDOWS
-condition|?
-literal|"@echo \"hello\""
-else|:
-literal|"echo \"hello\""
-decl_stmt|;
-name|PrintWriter
-name|writer
-init|=
-operator|new
-name|PrintWriter
-argument_list|(
-operator|new
-name|FileOutputStream
-argument_list|(
-name|shellFile
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|FileUtil
-operator|.
-name|setExecutable
-argument_list|(
-name|shellFile
-argument_list|,
-literal|true
-argument_list|)
-expr_stmt|;
-name|writer
-operator|.
-name|println
-argument_list|(
-name|timeoutCommand
-argument_list|)
-expr_stmt|;
-name|writer
-operator|.
-name|close
-argument_list|()
-expr_stmt|;
 name|Map
 argument_list|<
 name|Path
@@ -1919,6 +1874,15 @@ argument_list|(
 name|shellFile
 argument_list|)
 decl_stmt|;
+name|FileUtil
+operator|.
+name|setExecutable
+argument_list|(
+name|shellFile
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|Map
 argument_list|<
 name|String
@@ -2051,6 +2015,12 @@ name|diagnostics
 operator|.
 name|contains
 argument_list|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"is not recognized as an internal or external command"
+else|:
 literal|"command not found"
 argument_list|)
 argument_list|)
@@ -2132,7 +2102,7 @@ name|Shell
 operator|.
 name|WINDOWS
 condition|?
-literal|"@echo \"hello\"; @echo \"error\" 1>&2; exit 2;"
+literal|"@echo \"hello\"& @echo \"error\" 1>&2& exit /b 2"
 else|:
 literal|"echo \"hello\"; echo \"error\" 1>&2; exit 2;"
 decl_stmt|;
@@ -2200,6 +2170,8 @@ operator|new
 name|FileOutputStream
 argument_list|(
 name|shellFile
+argument_list|,
+literal|true
 argument_list|)
 decl_stmt|;
 name|Map
