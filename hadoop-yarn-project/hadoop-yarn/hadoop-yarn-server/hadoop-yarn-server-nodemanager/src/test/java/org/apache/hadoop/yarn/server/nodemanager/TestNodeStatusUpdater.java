@@ -7019,6 +7019,10 @@ argument_list|(
 name|containerTokenSecretManager
 argument_list|,
 name|nmTokenSecretManager
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}

@@ -3335,10 +3335,6 @@ name|ApplicationImpl
 argument_list|(
 name|dispatcher
 argument_list|,
-name|this
-operator|.
-name|aclsManager
-argument_list|,
 name|user
 argument_list|,
 name|applicationID
