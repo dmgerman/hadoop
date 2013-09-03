@@ -893,6 +893,14 @@ argument_list|(
 name|this
 argument_list|)
 decl_stmt|;
+comment|// if block exists on this datanode
+if|if
+condition|(
+name|index
+operator|>=
+literal|0
+condition|)
+block|{
 name|DatanodeStorageInfo
 name|s
 init|=
@@ -918,6 +926,7 @@ argument_list|(
 name|b
 argument_list|)
 return|;
+block|}
 block|}
 return|return
 literal|false
