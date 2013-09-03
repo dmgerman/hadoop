@@ -180,6 +180,24 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|DatanodeStorageInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|MutableBlockCollection
 import|;
 end_import
@@ -865,7 +883,7 @@ block|}
 comment|/**    * Convert the last block of the file to an under-construction block.    * Set its locations.    */
 annotation|@
 name|Override
-DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] targets)
+DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoUnderConstruction
 name|setLastBlock
@@ -873,7 +891,7 @@ parameter_list|(
 name|BlockInfo
 name|lastBlock
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)

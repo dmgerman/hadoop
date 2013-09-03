@@ -1527,7 +1527,7 @@ function_decl|;
 comment|/**    * Update a pipeline for a block under construction    *     * @param clientName the name of the client    * @param oldBlock the old block    * @param newBlock the new block containing new generation stamp and length    * @param newNodes datanodes in the pipeline    * @throws IOException if any error occurs    */
 annotation|@
 name|AtMostOnce
-DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
+DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes, String[] newStorageIDs)
 specifier|public
 name|void
 name|updatePipeline
@@ -1544,6 +1544,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newNodes
+parameter_list|,
+name|String
+index|[]
+name|newStorageIDs
 parameter_list|)
 throws|throws
 name|IOException

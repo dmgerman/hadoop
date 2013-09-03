@@ -980,18 +980,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|mortbay
-operator|.
-name|log
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -1964,6 +1952,16 @@ init|=
 literal|null
 decl_stmt|;
 comment|// list of targets for current block
+comment|//TODO: update storage IDs
+DECL|field|storageIDs
+specifier|private
+specifier|volatile
+name|String
+index|[]
+name|storageIDs
+init|=
+literal|null
+decl_stmt|;
 DECL|field|excludedNodes
 specifier|private
 name|LoadingCache
@@ -5164,6 +5162,8 @@ argument_list|,
 name|newBlock
 argument_list|,
 name|nodes
+argument_list|,
+name|storageIDs
 argument_list|)
 expr_stmt|;
 comment|// update client side generation stamp

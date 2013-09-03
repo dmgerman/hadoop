@@ -4130,7 +4130,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
+DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes, String[] newStorageIDs)
 specifier|public
 name|void
 name|updatePipeline
@@ -4147,6 +4147,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newNodes
+parameter_list|,
+name|String
+index|[]
+name|newStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -4162,6 +4166,8 @@ argument_list|,
 name|newBlock
 argument_list|,
 name|newNodes
+argument_list|,
+name|newStorageIDs
 argument_list|)
 expr_stmt|;
 block|}

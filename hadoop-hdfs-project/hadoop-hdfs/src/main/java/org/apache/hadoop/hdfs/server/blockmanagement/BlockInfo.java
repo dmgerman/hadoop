@@ -1535,7 +1535,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
-DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeDescriptor[] targets)
+DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoUnderConstruction
 name|convertToBlockUnderConstruction
@@ -1543,7 +1543,7 @@ parameter_list|(
 name|BlockUCState
 name|s
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)

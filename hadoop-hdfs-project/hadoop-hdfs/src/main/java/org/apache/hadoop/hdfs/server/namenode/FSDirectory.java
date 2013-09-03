@@ -646,6 +646,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|DatanodeStorageInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -1876,7 +1894,7 @@ literal|null
 return|;
 block|}
 comment|/**    * Add a block to the file. Returns a reference to the added block.    */
-DECL|method|addBlock (String path, INodesInPath inodesInPath, Block block, DatanodeDescriptor targets[])
+DECL|method|addBlock (String path, INodesInPath inodesInPath, Block block, DatanodeStorageInfo[] targets)
 name|BlockInfo
 name|addBlock
 parameter_list|(
@@ -1889,9 +1907,9 @@ parameter_list|,
 name|Block
 name|block
 parameter_list|,
-name|DatanodeDescriptor
-name|targets
+name|DatanodeStorageInfo
 index|[]
+name|targets
 parameter_list|)
 throws|throws
 name|IOException
