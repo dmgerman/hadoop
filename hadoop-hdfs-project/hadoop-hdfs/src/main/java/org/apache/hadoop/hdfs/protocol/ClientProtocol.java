@@ -1819,6 +1819,68 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Modify a cache pool.    *    * @param req    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+annotation|@
+name|AtMostOnce
+DECL|method|addCachePool (CachePoolInfo info)
+specifier|public
+name|void
+name|addCachePool
+parameter_list|(
+name|CachePoolInfo
+name|info
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Modify a cache pool.    *    * @param req    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+annotation|@
+name|Idempotent
+DECL|method|modifyCachePool (CachePoolInfo req)
+specifier|public
+name|void
+name|modifyCachePool
+parameter_list|(
+name|CachePoolInfo
+name|req
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove a cache pool.    *    * @param cachePoolName    *          Name of the cache pool to remove.    * @throws IOException     *          if the cache pool did not exist, or could not be removed.    */
+annotation|@
+name|AtMostOnce
+DECL|method|removeCachePool (String cachePoolName)
+specifier|public
+name|void
+name|removeCachePool
+parameter_list|(
+name|String
+name|cachePoolName
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * List some cache pools.    *    * @param prevKey    *          The previous key we listed.  We will list keys greater than this.    * @param maxRepliesPerRequest    *          Maximum number of cache pools to list.    * @return A remote iterator from which you can get CachePool objects.    *          Requests will be made as needed.    * @throws IOException    *          If there was an error listing cache pools.    */
+annotation|@
+name|Idempotent
+DECL|method|listCachePools (String prevKey, int maxRepliesPerRequest)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|CachePoolInfo
+argument_list|>
+name|listCachePools
+parameter_list|(
+name|String
+name|prevKey
+parameter_list|,
+name|int
+name|maxRepliesPerRequest
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 

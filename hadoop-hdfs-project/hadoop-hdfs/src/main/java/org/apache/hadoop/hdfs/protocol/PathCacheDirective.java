@@ -177,8 +177,6 @@ parameter_list|,
 name|String
 name|pool
 parameter_list|)
-throws|throws
-name|IOException
 block|{
 name|Preconditions
 operator|.
@@ -256,6 +254,7 @@ throw|;
 block|}
 if|if
 condition|(
+operator|!
 name|DFSUtil
 operator|.
 name|isValidName
