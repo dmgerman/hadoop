@@ -688,15 +688,12 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ApplicationImpl (Dispatcher dispatcher, ApplicationACLsManager aclsManager, String user, ApplicationId appId, Credentials credentials, Context context)
+DECL|method|ApplicationImpl (Dispatcher dispatcher, String user, ApplicationId appId, Credentials credentials, Context context)
 specifier|public
 name|ApplicationImpl
 parameter_list|(
 name|Dispatcher
 name|dispatcher
-parameter_list|,
-name|ApplicationACLsManager
-name|aclsManager
 parameter_list|,
 name|String
 name|user
@@ -739,7 +736,10 @@ name|this
 operator|.
 name|aclsManager
 operator|=
-name|aclsManager
+name|context
+operator|.
+name|getApplicationACLsManager
+argument_list|()
 expr_stmt|;
 name|this
 operator|.

@@ -1353,15 +1353,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|String
-name|webAppPath
-init|=
-literal|"/"
-operator|+
-name|name
-operator|+
-literal|"/*"
-decl_stmt|;
 name|server
 operator|.
 name|defineFilter
@@ -1386,9 +1377,7 @@ operator|new
 name|String
 index|[]
 block|{
-name|webAppPath
-block|,
-literal|"/"
+literal|"/*"
 block|}
 argument_list|)
 expr_stmt|;

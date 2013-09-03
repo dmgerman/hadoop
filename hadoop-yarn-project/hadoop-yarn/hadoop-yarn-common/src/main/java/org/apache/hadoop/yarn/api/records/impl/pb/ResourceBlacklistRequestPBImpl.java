@@ -558,6 +558,11 @@ condition|(
 name|resourceNames
 operator|==
 literal|null
+operator|||
+name|resourceNames
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 if|if
@@ -638,6 +643,11 @@ condition|(
 name|resourceNames
 operator|==
 literal|null
+operator|||
+name|resourceNames
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 if|if

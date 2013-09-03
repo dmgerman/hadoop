@@ -1974,6 +1974,11 @@ name|application
 operator|.
 name|createAndGetApplicationReport
 argument_list|(
+name|callerUGI
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
 name|allowAccess
 argument_list|)
 decl_stmt|;
@@ -2906,6 +2911,11 @@ name|application
 operator|.
 name|createAndGetApplicationReport
 argument_list|(
+name|callerUGI
+operator|.
+name|getUserName
+argument_list|()
+argument_list|,
 name|allowAccess
 argument_list|)
 argument_list|)
@@ -3185,6 +3195,8 @@ name|app
 operator|.
 name|createAndGetApplicationReport
 argument_list|(
+literal|null
+argument_list|,
 literal|true
 argument_list|)
 argument_list|)

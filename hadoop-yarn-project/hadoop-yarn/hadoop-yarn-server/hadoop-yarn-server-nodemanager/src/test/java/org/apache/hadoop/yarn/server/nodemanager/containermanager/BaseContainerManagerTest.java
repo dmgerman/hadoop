@@ -979,6 +979,14 @@ argument_list|,
 operator|new
 name|NMTokenSecretManagerInNM
 argument_list|()
+argument_list|,
+literal|null
+argument_list|,
+operator|new
+name|ApplicationACLsManager
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 block|{
 specifier|public

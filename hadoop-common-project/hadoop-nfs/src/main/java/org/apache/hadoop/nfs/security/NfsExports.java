@@ -4,15 +4,13 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.nfs.security
+DECL|package|org.apache.hadoop.nfs.security
 package|package
 name|org
 operator|.
 name|apache
 operator|.
 name|hadoop
-operator|.
-name|hdfs
 operator|.
 name|nfs
 operator|.
@@ -747,6 +745,70 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Return the configured group list    */
+DECL|method|getHostGroupList ()
+specifier|public
+name|String
+index|[]
+name|getHostGroupList
+parameter_list|()
+block|{
+name|int
+name|listSize
+init|=
+name|mMatches
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
+name|String
+index|[]
+name|hostGroups
+init|=
+operator|new
+name|String
+index|[
+name|listSize
+index|]
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|mMatches
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+name|hostGroups
+index|[
+name|i
+index|]
+operator|=
+name|mMatches
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getHostGroup
+argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|hostGroups
+return|;
+block|}
 DECL|method|getAccessPrivilege (InetAddress addr)
 specifier|public
 name|AccessPrivilege
@@ -961,6 +1023,13 @@ name|String
 name|hostname
 parameter_list|)
 function_decl|;
+DECL|method|getHostGroup ()
+specifier|public
+specifier|abstract
+name|String
+name|getHostGroup
+parameter_list|()
+function_decl|;
 block|}
 comment|/**    * Matcher covering all client hosts (specified by "*")    */
 DECL|class|AnonymousMatch
@@ -987,13 +1056,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|isIncluded (String ip, String hostname)
+DECL|method|isIncluded (String address, String hostname)
 specifier|public
 name|boolean
 name|isIncluded
 parameter_list|(
 name|String
-name|ip
+name|address
 parameter_list|,
 name|String
 name|hostname
@@ -1001,6 +1070,18 @@ parameter_list|)
 block|{
 return|return
 literal|true
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHostGroup ()
+specifier|public
+name|String
+name|getHostGroup
+parameter_list|()
+block|{
+return|return
+literal|"*"
 return|;
 block|}
 block|}
@@ -1150,6 +1231,28 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getHostGroup ()
+specifier|public
+name|String
+name|getHostGroup
+parameter_list|()
+block|{
+return|return
+name|subnetInfo
+operator|.
+name|getAddress
+argument_list|()
+operator|+
+literal|"/"
+operator|+
+name|subnetInfo
+operator|.
+name|getNetmask
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**    * Matcher requiring exact string match for client host    */
 DECL|class|ExactMatch
@@ -1286,6 +1389,18 @@ expr_stmt|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHostGroup ()
+specifier|public
+name|String
+name|getHostGroup
+parameter_list|()
+block|{
+return|return
+name|ipOrHost
 return|;
 block|}
 block|}
@@ -1441,6 +1556,21 @@ expr_stmt|;
 block|}
 return|return
 literal|false
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getHostGroup ()
+specifier|public
+name|String
+name|getHostGroup
+parameter_list|()
+block|{
+return|return
+name|pattern
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 block|}

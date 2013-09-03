@@ -112,7 +112,7 @@ name|ClientToAMTokenSecretManager
 extends|extends
 name|BaseClientToAMTokenSecretManager
 block|{
-comment|// Only one client-token and one master-key for AM
+comment|// Only one master-key for AM
 DECL|field|masterKey
 specifier|private
 name|SecretKey
@@ -173,7 +173,7 @@ name|ApplicationAttemptId
 name|applicationAttemptID
 parameter_list|)
 block|{
-comment|// Only one client-token and one master-key for AM, just return that.
+comment|// Only one master-key for AM, just return that.
 return|return
 name|this
 operator|.

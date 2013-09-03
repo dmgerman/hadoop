@@ -3092,6 +3092,8 @@ argument_list|,
 literal|"="
 argument_list|,
 name|value
+argument_list|,
+literal|"\nif %errorlevel% neq 0 exit /b %errorlevel%"
 argument_list|)
 expr_stmt|;
 block|}

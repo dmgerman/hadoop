@@ -2052,13 +2052,13 @@ argument_list|)
 block|}
 return|;
 block|}
-name|File
+name|String
 index|[]
 name|names
 init|=
 name|localf
 operator|.
-name|listFiles
+name|list
 argument_list|()
 decl_stmt|;
 if|if
@@ -2106,6 +2106,8 @@ control|)
 block|{
 try|try
 block|{
+comment|// Assemble the path using the Path 3 arg constructor to make sure
+comment|// paths with colon are properly resolved on Linux
 name|results
 index|[
 name|j
@@ -2116,13 +2118,20 @@ argument_list|(
 operator|new
 name|Path
 argument_list|(
+name|f
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+literal|null
+argument_list|,
+literal|null
+argument_list|,
 name|names
 index|[
 name|i
 index|]
-operator|.
-name|getAbsolutePath
-argument_list|()
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

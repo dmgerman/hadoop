@@ -688,7 +688,7 @@ specifier|final
 name|String
 name|EXPORTS_ALLOWED_HOSTS_KEY
 init|=
-literal|"hdfs.nfs.exports.allowed.hosts"
+literal|"dfs.nfs.exports.allowed.hosts"
 decl_stmt|;
 DECL|field|EXPORTS_ALLOWED_HOSTS_KEY_DEFAULT
 specifier|public
@@ -707,7 +707,7 @@ specifier|final
 name|String
 name|EXPORTS_CACHE_SIZE_KEY
 init|=
-literal|"hdfs.nfs.exports.cache.size"
+literal|"dfs.nfs.exports.cache.size"
 decl_stmt|;
 DECL|field|EXPORTS_CACHE_SIZE_DEFAULT
 specifier|public
@@ -726,7 +726,7 @@ specifier|final
 name|String
 name|EXPORTS_CACHE_EXPIRYTIME_MILLIS_KEY
 init|=
-literal|"hdfs.nfs.exports.cache.expirytime.millis"
+literal|"dfs.nfs.exports.cache.expirytime.millis"
 decl_stmt|;
 DECL|field|EXPORTS_CACHE_EXPIRYTIME_MILLIS_DEFAULT
 specifier|public

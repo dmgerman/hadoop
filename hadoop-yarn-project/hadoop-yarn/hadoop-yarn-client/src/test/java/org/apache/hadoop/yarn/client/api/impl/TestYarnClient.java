@@ -781,6 +781,11 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+name|rm
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Test
