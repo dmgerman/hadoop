@@ -128,9 +128,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|util
 operator|.
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|ZKAuthInfo
 import|;

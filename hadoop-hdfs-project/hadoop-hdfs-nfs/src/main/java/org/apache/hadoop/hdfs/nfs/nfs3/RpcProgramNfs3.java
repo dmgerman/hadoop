@@ -166,6 +166,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|FileUtil
 import|;
 end_import
@@ -1590,7 +1604,6 @@ specifier|final
 name|IdUserGroup
 name|iug
 decl_stmt|;
-comment|// = new IdUserGroup();
 DECL|field|clientCache
 specifier|private
 specifier|final
@@ -1787,9 +1800,13 @@ name|config
 operator|.
 name|getInt
 argument_list|(
-literal|"io.file.buffer.size"
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_KEY
 argument_list|,
-literal|4096
+name|CommonConfigurationKeysPublic
+operator|.
+name|IO_FILE_BUFFER_SIZE_DEFAULT
 argument_list|)
 expr_stmt|;
 name|writeDumpDir
@@ -1798,9 +1815,13 @@ name|config
 operator|.
 name|get
 argument_list|(
-literal|"dfs.nfs3.dump.dir"
+name|Nfs3Constant
+operator|.
+name|FILE_DUMP_DIR_KEY
 argument_list|,
-literal|"/tmp/.hdfs-nfs"
+name|Nfs3Constant
+operator|.
+name|FILE_DUMP_DIR_DEFAULT
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -1810,9 +1831,13 @@ name|config
 operator|.
 name|getBoolean
 argument_list|(
-literal|"dfs.nfs3.enableDump"
+name|Nfs3Constant
+operator|.
+name|ENABLE_FILE_DUMP_KEY
 argument_list|,
-literal|true
+name|Nfs3Constant
+operator|.
+name|ENABLE_FILE_DUMP_DEFAULT
 argument_list|)
 decl_stmt|;
 if|if
@@ -7661,6 +7686,8 @@ return|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|symlink (XDR xdr, RpcAuthSys authSys, InetAddress client)
 specifier|public
 name|SYMLINK3Response

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ha
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|util
 package|;
 end_package
 
@@ -177,10 +177,10 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|HAZKUtil
+DECL|class|ZKUtil
 specifier|public
 class|class
-name|HAZKUtil
+name|ZKUtil
 block|{
 comment|/**    * Parse ACL permission string, partially borrowed from    * ZooKeeperMain private method    */
 DECL|method|getPermFromString (String permString)
@@ -313,7 +313,7 @@ return|return
 name|perm
 return|;
 block|}
-comment|/**    * Parse comma separated list of ACL entries to secure generated nodes, e.g.    *<code>sasl:hdfs/host1@MY.DOMAIN:cdrwa,sasl:hdfs/host2@MY.DOMAIN:cdrwa</code>    *    * @return ACL list    * @throws HadoopIllegalArgumentException if an ACL is invalid    */
+comment|/**    * Parse comma separated list of ACL entries to secure generated nodes, e.g.    *<code>sasl:hdfs/host1@MY.DOMAIN:cdrwa,sasl:hdfs/host2@MY.DOMAIN:cdrwa</code>    *    * @return ACL list    * @throws {@link BadAclFormatException} if an ACL is invalid    */
 DECL|method|parseACLs (String aclString)
 specifier|public
 specifier|static
@@ -326,6 +326,8 @@ parameter_list|(
 name|String
 name|aclString
 parameter_list|)
+throws|throws
+name|BadAclFormatException
 block|{
 name|List
 argument_list|<
@@ -501,7 +503,7 @@ return|return
 name|acl
 return|;
 block|}
-comment|/**    * Parse a comma-separated list of authentication mechanisms. Each    * such mechanism should be of the form 'scheme:auth' -- the same    * syntax used for the 'addAuth' command in the ZK CLI.    *     * @param authString the comma-separated auth mechanisms    * @return a list of parsed authentications    */
+comment|/**    * Parse a comma-separated list of authentication mechanisms. Each    * such mechanism should be of the form 'scheme:auth' -- the same    * syntax used for the 'addAuth' command in the ZK CLI.    *     * @param authString the comma-separated auth mechanisms    * @return a list of parsed authentications    * @throws {@link BadAuthFormatException} if the auth format is invalid    */
 DECL|method|parseAuth (String authString)
 specifier|public
 specifier|static
@@ -514,6 +516,8 @@ parameter_list|(
 name|String
 name|authString
 parameter_list|)
+throws|throws
+name|BadAuthFormatException
 block|{
 name|List
 argument_list|<
@@ -710,7 +714,12 @@ argument_list|()
 return|;
 block|}
 comment|/**    * An authentication token passed to ZooKeeper.addAuthInfo    */
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|ZKAuthInfo
+specifier|public
 specifier|static
 class|class
 name|ZKAuthInfo
@@ -757,6 +766,7 @@ name|auth
 expr_stmt|;
 block|}
 DECL|method|getScheme ()
+specifier|public
 name|String
 name|getScheme
 parameter_list|()
@@ -766,6 +776,7 @@ name|scheme
 return|;
 block|}
 DECL|method|getAuth ()
+specifier|public
 name|byte
 index|[]
 name|getAuth
@@ -776,7 +787,12 @@ name|auth
 return|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BadAclFormatException
+specifier|public
 specifier|static
 class|class
 name|BadAclFormatException
@@ -807,7 +823,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|BadAuthFormatException
+specifier|public
 specifier|static
 class|class
 name|BadAuthFormatException

@@ -2343,6 +2343,8 @@ name|ioe
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -2356,6 +2358,26 @@ name|errThread
 operator|.
 name|interrupt
 argument_list|()
+expr_stmt|;
+name|errThread
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted while joining errThread"
+argument_list|)
 expr_stmt|;
 block|}
 try|try

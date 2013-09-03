@@ -6178,7 +6178,6 @@ block|}
 block|}
 DECL|method|getExternalState (JobStateInternal smState)
 specifier|private
-specifier|static
 name|JobState
 name|getExternalState
 parameter_list|(
@@ -6227,11 +6226,30 @@ return|;
 case|case
 name|REBOOT
 case|:
+if|if
+condition|(
+name|appContext
+operator|.
+name|isLastAMRetry
+argument_list|()
+condition|)
+block|{
 return|return
 name|JobState
 operator|.
 name|ERROR
 return|;
+block|}
+else|else
+block|{
+comment|// In case of not last retry, return the external state as RUNNING since
+comment|// otherwise JobClient will exit when it polls the AM for job state
+return|return
+name|JobState
+operator|.
+name|RUNNING
+return|;
+block|}
 default|default:
 return|return
 name|JobState

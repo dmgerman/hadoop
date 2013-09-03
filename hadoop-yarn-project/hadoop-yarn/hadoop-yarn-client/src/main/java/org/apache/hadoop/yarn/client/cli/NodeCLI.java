@@ -327,7 +327,7 @@ specifier|final
 name|String
 name|NODES_PATTERN
 init|=
-literal|"%16s\t%15s\t%17s\t%18s"
+literal|"%16s\t%15s\t%17s\t%28s"
 operator|+
 name|System
 operator|.
@@ -842,7 +842,7 @@ literal|"Node-State"
 argument_list|,
 literal|"Node-Http-Address"
 argument_list|,
-literal|"Running-Containers"
+literal|"Number-of-Running-Containers"
 argument_list|)
 expr_stmt|;
 for|for
