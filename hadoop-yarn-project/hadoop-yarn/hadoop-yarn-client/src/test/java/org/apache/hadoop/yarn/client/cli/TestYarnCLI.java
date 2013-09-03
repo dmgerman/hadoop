@@ -1356,11 +1356,163 @@ argument_list|(
 name|newApplicationReport4
 argument_list|)
 expr_stmt|;
+name|ApplicationId
+name|applicationId5
+init|=
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+literal|1234
+argument_list|,
+literal|9
+argument_list|)
+decl_stmt|;
+name|ApplicationReport
+name|newApplicationReport5
+init|=
+name|ApplicationReport
+operator|.
+name|newInstance
+argument_list|(
+name|applicationId5
+argument_list|,
+name|ApplicationAttemptId
+operator|.
+name|newInstance
+argument_list|(
+name|applicationId5
+argument_list|,
+literal|5
+argument_list|)
+argument_list|,
+literal|"user5"
+argument_list|,
+literal|"queue5"
+argument_list|,
+literal|"appname5"
+argument_list|,
+literal|"host5"
+argument_list|,
+literal|128
+argument_list|,
+literal|null
+argument_list|,
+name|YarnApplicationState
+operator|.
+name|ACCEPTED
+argument_list|,
+literal|"diagnostics5"
+argument_list|,
+literal|"url5"
+argument_list|,
+literal|5
+argument_list|,
+literal|5
+argument_list|,
+name|FinalApplicationStatus
+operator|.
+name|KILLED
+argument_list|,
+literal|null
+argument_list|,
+literal|"N/A"
+argument_list|,
+literal|0.93789f
+argument_list|,
+literal|"HIVE"
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|applicationReports
+operator|.
+name|add
+argument_list|(
+name|newApplicationReport5
+argument_list|)
+expr_stmt|;
+name|ApplicationId
+name|applicationId6
+init|=
+name|ApplicationId
+operator|.
+name|newInstance
+argument_list|(
+literal|1234
+argument_list|,
+literal|10
+argument_list|)
+decl_stmt|;
+name|ApplicationReport
+name|newApplicationReport6
+init|=
+name|ApplicationReport
+operator|.
+name|newInstance
+argument_list|(
+name|applicationId6
+argument_list|,
+name|ApplicationAttemptId
+operator|.
+name|newInstance
+argument_list|(
+name|applicationId6
+argument_list|,
+literal|6
+argument_list|)
+argument_list|,
+literal|"user6"
+argument_list|,
+literal|"queue6"
+argument_list|,
+literal|"appname6"
+argument_list|,
+literal|"host6"
+argument_list|,
+literal|129
+argument_list|,
+literal|null
+argument_list|,
+name|YarnApplicationState
+operator|.
+name|SUBMITTED
+argument_list|,
+literal|"diagnostics6"
+argument_list|,
+literal|"url6"
+argument_list|,
+literal|6
+argument_list|,
+literal|6
+argument_list|,
+name|FinalApplicationStatus
+operator|.
+name|KILLED
+argument_list|,
+literal|null
+argument_list|,
+literal|"N/A"
+argument_list|,
+literal|0.99789f
+argument_list|,
+literal|"PIG"
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|applicationReports
+operator|.
+name|add
+argument_list|(
+name|newApplicationReport6
+argument_list|)
+expr_stmt|;
 comment|// Test command yarn application -list
 comment|// if the set appStates is empty, RUNNING state will be automatically added
 comment|// to the appStates list
 comment|// the output of yarn application -list should be the same as
-comment|// equals to yarn application -list --appStates RUNNING
+comment|// equals to yarn application -list --appStates RUNNING,ACCEPTED,SUBMITTED
 name|Set
 argument_list|<
 name|String
@@ -1396,6 +1548,24 @@ argument_list|(
 name|YarnApplicationState
 operator|.
 name|RUNNING
+argument_list|)
+expr_stmt|;
+name|appState1
+operator|.
+name|add
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|ACCEPTED
+argument_list|)
+expr_stmt|;
+name|appState1
+operator|.
+name|add
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|SUBMITTED
 argument_list|)
 expr_stmt|;
 name|when
@@ -1490,7 +1660,7 @@ literal|")"
 operator|+
 literal|":"
 operator|+
-literal|2
+literal|4
 argument_list|)
 expr_stmt|;
 name|pw
@@ -1600,6 +1770,76 @@ argument_list|)
 expr_stmt|;
 name|pw
 operator|.
+name|print
+argument_list|(
+literal|"         application_1234_0009\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"appname5\t                HIVE\t     user5\t    "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"queue5\t          ACCEPTED\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"KILLED\t         93.79%"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\t                                N/A"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"         application_1234_0010\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"appname6\t                 PIG\t     user6\t    "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"queue6\t         SUBMITTED\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"KILLED\t         99.79%"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\t                                N/A"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
 name|close
 argument_list|()
 expr_stmt|;
@@ -1654,7 +1894,8 @@ argument_list|)
 expr_stmt|;
 comment|//Test command yarn application -list --appTypes apptype1,apptype2
 comment|//the output should be the same as
-comment|//yarn application -list --appTypes apptyp1, apptype2 --appStates RUNNING
+comment|// yarn application -list --appTypes apptyp1, apptype2 --appStates
+comment|// RUNNING,ACCEPTED,SUBMITTED
 name|sysOutStream
 operator|.
 name|reset
@@ -1709,6 +1950,24 @@ argument_list|(
 name|YarnApplicationState
 operator|.
 name|RUNNING
+argument_list|)
+expr_stmt|;
+name|appState2
+operator|.
+name|add
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|ACCEPTED
+argument_list|)
+expr_stmt|;
+name|appState2
+operator|.
+name|add
+argument_list|(
+name|YarnApplicationState
+operator|.
+name|SUBMITTED
 argument_list|)
 expr_stmt|;
 name|when
@@ -2841,7 +3100,7 @@ literal|")"
 operator|+
 literal|":"
 operator|+
-literal|4
+literal|6
 argument_list|)
 expr_stmt|;
 name|pw
@@ -3010,6 +3269,76 @@ operator|.
 name|print
 argument_list|(
 literal|"SUCCEEDED\t         83.79%"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\t                                N/A"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"         application_1234_0009\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"appname5\t                HIVE\t     user5\t    "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"queue5\t          ACCEPTED\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"KILLED\t         93.79%"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|println
+argument_list|(
+literal|"\t                                N/A"
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"         application_1234_0010\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"appname6\t                 PIG\t     user6\t    "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"queue6\t         SUBMITTED\t            "
+argument_list|)
+expr_stmt|;
+name|pw
+operator|.
+name|print
+argument_list|(
+literal|"KILLED\t         99.79%"
 argument_list|)
 expr_stmt|;
 name|pw
