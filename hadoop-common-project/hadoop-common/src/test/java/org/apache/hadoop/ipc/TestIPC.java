@@ -1327,6 +1327,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSerial ()
 specifier|public
 name|void
@@ -1337,7 +1342,7 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
-name|testSerial
+name|internalTestSerial
 argument_list|(
 literal|3
 argument_list|,
@@ -1350,7 +1355,7 @@ argument_list|,
 literal|100
 argument_list|)
 expr_stmt|;
-name|testSerial
+name|internalTestSerial
 argument_list|(
 literal|3
 argument_list|,
@@ -1364,10 +1369,10 @@ literal|10
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|testSerial (int handlerCount, boolean handlerSleep, int clientCount, int callerCount, int callCount)
+DECL|method|internalTestSerial (int handlerCount, boolean handlerSleep, int clientCount, int callerCount, int callCount)
 specifier|public
 name|void
-name|testSerial
+name|internalTestSerial
 parameter_list|(
 name|int
 name|handlerCount
@@ -1576,6 +1581,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testStandAloneClient ()
 specifier|public
 name|void
@@ -2161,6 +2171,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIOEOnClientWriteParam ()
 specifier|public
 name|void
@@ -2191,6 +2206,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRTEOnClientWriteParam ()
 specifier|public
 name|void
@@ -2221,6 +2241,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIOEOnServerReadParam ()
 specifier|public
 name|void
@@ -2251,6 +2276,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRTEOnServerReadParam ()
 specifier|public
 name|void
@@ -2281,6 +2311,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIOEOnServerWriteResponse ()
 specifier|public
 name|void
@@ -2311,6 +2346,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRTEOnServerWriteResponse ()
 specifier|public
 name|void
@@ -2341,6 +2381,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIOEOnClientReadResponse ()
 specifier|public
 name|void
@@ -2371,6 +2416,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRTEOnClientReadResponse ()
 specifier|public
 name|void
@@ -2402,6 +2452,11 @@ block|}
 comment|/**    * Test case that fails a write, but only after taking enough time    * that a ping should have been sent. This is a reproducer for a    * deadlock seen in one iteration of HADOOP-6762.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIOEOnWriteAfterPingClient ()
 specifier|public
 name|void
@@ -2508,6 +2563,11 @@ block|}
 comment|/**    * Test that, if the socket factory throws an IOE, it properly propagates    * to the client.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testSocketFactoryException ()
 specifier|public
 name|void
@@ -2625,6 +2685,11 @@ block|}
 comment|/**    * Test that, if a RuntimeException is thrown after creating a socket    * but before successfully connecting to the IPC server, that the    * failure is handled properly. This is a regression test for    * HADOOP-7428.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRTEDuringConnectionSetup ()
 specifier|public
 name|void
@@ -2872,6 +2937,11 @@ block|}
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIpcTimeout ()
 specifier|public
 name|void
@@ -3004,6 +3074,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIpcConnectTimeout ()
 specifier|public
 name|void
@@ -3560,6 +3635,11 @@ return|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIpcFromHadoop_0_18_13 ()
 specifier|public
 name|void
@@ -3582,6 +3662,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIpcFromHadoop0_20_3 ()
 specifier|public
 name|void
@@ -3604,6 +3689,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testIpcFromHadoop0_21_0 ()
 specifier|public
 name|void
@@ -3626,6 +3716,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testHttpGetResponse ()
 specifier|public
 name|void
@@ -3652,6 +3747,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testConnectionRetriesOnSocketTimeoutExceptions ()
 specifier|public
 name|void
@@ -3732,6 +3832,11 @@ block|}
 comment|/**    * Test if    * (1) the rpc server uses the call id/retry provided by the rpc client, and    * (2) the rpc client receives the same call id/retry from the rpc server.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testCallIdAndRetry ()
 specifier|public
 name|void
@@ -3990,6 +4095,11 @@ block|}
 comment|/**    * Test the retry count while used in a retry proxy.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testRetryProxy ()
 specifier|public
 name|void
@@ -4061,11 +4171,13 @@ expr_stmt|;
 block|}
 block|}
 expr_stmt|;
+comment|// try more times, so it is easier to find race condition bug
+comment|// 10000 times runs about 6s on a core i7 machine
 specifier|final
 name|int
 name|totalRetry
 init|=
-literal|256
+literal|10000
 decl_stmt|;
 name|DummyProtocol
 name|proxy
@@ -4177,6 +4289,11 @@ block|}
 comment|/**    * Test if the rpc server gets the default retry count (0) from client.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testInitialCallRetryCount ()
 specifier|public
 name|void
@@ -4306,6 +4423,11 @@ block|}
 comment|/**    * Test if the rpc server gets the retry count from client.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testCallRetryCount ()
 specifier|public
 name|void
@@ -4453,6 +4575,11 @@ block|}
 comment|/**    * Tests that client generates a unique sequential call ID for each RPC call,    * even if multiple threads are using the same client.  * @throws InterruptedException     */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testUniqueSequentialCallIds ()
 specifier|public
 name|void
