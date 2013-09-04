@@ -2154,6 +2154,8 @@ argument_list|,
 name|exec
 argument_list|,
 name|dirsHandler
+argument_list|,
+name|this
 argument_list|)
 return|;
 block|}
@@ -3090,9 +3092,7 @@ name|StartContainersResponse
 operator|.
 name|newInstance
 argument_list|(
-name|auxiliaryServices
-operator|.
-name|getMetaData
+name|getAuxServiceMetaData
 argument_list|()
 argument_list|,
 name|succeededContainers
@@ -4756,6 +4756,26 @@ return|return
 name|this
 operator|.
 name|context
+return|;
+block|}
+DECL|method|getAuxServiceMetaData ()
+specifier|public
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ByteBuffer
+argument_list|>
+name|getAuxServiceMetaData
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|auxiliaryServices
+operator|.
+name|getMetaData
+argument_list|()
 return|;
 block|}
 block|}

@@ -354,6 +354,26 @@ name|nodemanager
 operator|.
 name|containermanager
 operator|.
+name|ContainerManagerImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|nodemanager
+operator|.
+name|containermanager
+operator|.
 name|application
 operator|.
 name|Application
@@ -551,6 +571,12 @@ specifier|final
 name|Dispatcher
 name|dispatcher
 decl_stmt|;
+DECL|field|containerManager
+specifier|private
+specifier|final
+name|ContainerManagerImpl
+name|containerManager
+decl_stmt|;
 DECL|field|dirsHandler
 specifier|private
 name|LocalDirsHandlerService
@@ -651,7 +677,7 @@ name|ContainerLaunch
 name|launcher
 decl_stmt|;
 block|}
-DECL|method|ContainersLauncher (Context context, Dispatcher dispatcher, ContainerExecutor exec, LocalDirsHandlerService dirsHandler)
+DECL|method|ContainersLauncher (Context context, Dispatcher dispatcher, ContainerExecutor exec, LocalDirsHandlerService dirsHandler, ContainerManagerImpl containerManager)
 specifier|public
 name|ContainersLauncher
 parameter_list|(
@@ -666,6 +692,9 @@ name|exec
 parameter_list|,
 name|LocalDirsHandlerService
 name|dirsHandler
+parameter_list|,
+name|ContainerManagerImpl
+name|containerManager
 parameter_list|)
 block|{
 name|super
@@ -696,6 +725,12 @@ operator|.
 name|dirsHandler
 operator|=
 name|dirsHandler
+expr_stmt|;
+name|this
+operator|.
+name|containerManager
+operator|=
+name|containerManager
 expr_stmt|;
 block|}
 annotation|@
@@ -853,6 +888,8 @@ name|getContainer
 argument_list|()
 argument_list|,
 name|dirsHandler
+argument_list|,
+name|containerManager
 argument_list|)
 decl_stmt|;
 name|running
