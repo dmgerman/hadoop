@@ -118,7 +118,7 @@ name|protocol
 operator|.
 name|AddPathCacheDirectiveException
 operator|.
-name|InvalidPoolNameError
+name|InvalidPoolError
 import|;
 end_import
 
@@ -161,21 +161,21 @@ specifier|final
 name|String
 name|path
 decl_stmt|;
-DECL|field|pool
+DECL|field|poolId
 specifier|private
 specifier|final
-name|String
-name|pool
+name|long
+name|poolId
 decl_stmt|;
-DECL|method|PathCacheDirective (String path, String pool)
+DECL|method|PathCacheDirective (String path, long poolId)
 specifier|public
 name|PathCacheDirective
 parameter_list|(
 name|String
 name|path
 parameter_list|,
-name|String
-name|pool
+name|long
+name|poolId
 parameter_list|)
 block|{
 name|Preconditions
@@ -187,9 +187,11 @@ argument_list|)
 expr_stmt|;
 name|Preconditions
 operator|.
-name|checkNotNull
+name|checkArgument
 argument_list|(
-name|pool
+name|poolId
+operator|>
+literal|0
 argument_list|)
 expr_stmt|;
 name|this
@@ -200,9 +202,9 @@ name|path
 expr_stmt|;
 name|this
 operator|.
-name|pool
+name|poolId
 operator|=
-name|pool
+name|poolId
 expr_stmt|;
 block|}
 comment|/**    * @return The path used in this request.    */
@@ -217,14 +219,14 @@ name|path
 return|;
 block|}
 comment|/**    * @return The pool used in this request.    */
-DECL|method|getPool ()
+DECL|method|getPoolId ()
 specifier|public
-name|String
-name|getPool
+name|long
+name|getPoolId
 parameter_list|()
 block|{
 return|return
-name|pool
+name|poolId
 return|;
 block|}
 comment|/**    * Check if this PathCacheDirective is valid.    *     * @throws IOException    *     If this PathCacheDirective is not valid.    */
@@ -273,15 +275,14 @@ throw|;
 block|}
 if|if
 condition|(
-name|pool
-operator|.
-name|isEmpty
-argument_list|()
+name|poolId
+operator|<=
+literal|0
 condition|)
 block|{
 throw|throw
 operator|new
-name|InvalidPoolNameError
+name|InvalidPoolError
 argument_list|(
 name|this
 argument_list|)
@@ -307,11 +308,11 @@ argument_list|()
 operator|.
 name|compare
 argument_list|(
-name|pool
+name|poolId
 argument_list|,
 name|rhs
 operator|.
-name|getPool
+name|getPoolId
 argument_list|()
 argument_list|)
 operator|.
@@ -349,7 +350,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|pool
+name|poolId
 argument_list|)
 operator|.
 name|hashCode
@@ -428,12 +429,12 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", pool:"
+literal|", poolId:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|pool
+name|poolId
 argument_list|)
 operator|.
 name|append

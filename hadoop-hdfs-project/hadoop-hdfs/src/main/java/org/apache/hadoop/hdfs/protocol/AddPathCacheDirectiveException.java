@@ -165,11 +165,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|class|InvalidPoolNameError
+DECL|class|InvalidPoolError
 specifier|public
 specifier|static
 class|class
-name|InvalidPoolNameError
+name|InvalidPoolError
 extends|extends
 name|AddPathCacheDirectiveException
 block|{
@@ -182,9 +182,9 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|InvalidPoolNameError (PathCacheDirective directive)
+DECL|method|InvalidPoolError (PathCacheDirective directive)
 specifier|public
-name|InvalidPoolNameError
+name|InvalidPoolError
 parameter_list|(
 name|PathCacheDirective
 name|directive
@@ -192,14 +192,12 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"invalid pool name '"
+literal|"invalid pool id "
 operator|+
 name|directive
 operator|.
-name|getPool
+name|getPoolId
 argument_list|()
-operator|+
-literal|"'"
 argument_list|,
 name|directive
 argument_list|)
@@ -233,14 +231,12 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"write permission denied for pool '"
+literal|"write permission denied for pool id "
 operator|+
 name|directive
 operator|.
-name|getPool
+name|getPoolId
 argument_list|()
-operator|+
-literal|"'"
 argument_list|,
 name|directive
 argument_list|)
@@ -276,7 +272,14 @@ name|super
 argument_list|(
 literal|"encountered an unexpected error when trying to "
 operator|+
-literal|"add path cache directive "
+literal|"add path cache directive to pool id "
+operator|+
+name|directive
+operator|.
+name|getPoolId
+argument_list|()
+operator|+
+literal|" "
 operator|+
 name|directive
 argument_list|,

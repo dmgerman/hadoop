@@ -736,6 +736,19 @@ name|Exception
 block|{
 if|if
 condition|(
+name|fs
+operator|!=
+literal|null
+condition|)
+block|{
+name|fs
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|cluster
 operator|!=
 literal|null
@@ -1146,16 +1159,12 @@ return|return
 name|sizes
 return|;
 block|}
-comment|/**    * Blocks until cache usage changes from the current value, then verifies    * against the expected new value.    */
-DECL|method|verifyExpectedCacheUsage (final long current, final long expected)
+comment|/**    * Blocks until cache usage hits the expected new value.    */
+DECL|method|verifyExpectedCacheUsage (final long expected)
 specifier|private
 name|long
 name|verifyExpectedCacheUsage
 parameter_list|(
-specifier|final
-name|long
-name|current
-parameter_list|,
 specifier|final
 name|long
 name|expected
@@ -1174,8 +1183,8 @@ decl_stmt|;
 while|while
 condition|(
 name|cacheUsed
-operator|==
-name|current
+operator|!=
+name|expected
 condition|)
 block|{
 name|cacheUsed
@@ -1405,8 +1414,6 @@ operator|=
 name|verifyExpectedCacheUsage
 argument_list|(
 name|current
-argument_list|,
-name|current
 operator|+
 name|blockSizes
 index|[
@@ -1446,8 +1453,6 @@ name|current
 operator|=
 name|verifyExpectedCacheUsage
 argument_list|(
-name|current
-argument_list|,
 name|current
 operator|-
 name|blockSizes
@@ -1677,8 +1682,6 @@ operator|=
 name|verifyExpectedCacheUsage
 argument_list|(
 name|current
-argument_list|,
-name|current
 operator|+
 name|fileSizes
 index|[
@@ -1829,8 +1832,6 @@ name|current
 operator|=
 name|verifyExpectedCacheUsage
 argument_list|(
-name|current
-argument_list|,
 name|current
 operator|-
 name|fileSizes

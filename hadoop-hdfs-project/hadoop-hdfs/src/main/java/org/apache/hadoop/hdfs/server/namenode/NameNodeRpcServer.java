@@ -192,16 +192,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|NoSuchElementException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -251,22 +241,6 @@ operator|.
 name|fs
 operator|.
 name|BatchedRemoteIterator
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|BatchedRemoteIterator
-operator|.
-name|BatchedEntries
 import|;
 end_import
 
@@ -634,6 +608,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CachePoolInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|PathCacheDirective
 import|;
 end_import
@@ -651,22 +641,6 @@ operator|.
 name|protocol
 operator|.
 name|PathCacheEntry
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|CachePoolInfo
 import|;
 end_import
 
@@ -7291,13 +7265,13 @@ argument_list|,
 name|PathCacheEntry
 argument_list|>
 block|{
-DECL|field|pool
+DECL|field|poolId
 specifier|private
 specifier|final
-name|String
-name|pool
+name|Long
+name|poolId
 decl_stmt|;
-DECL|method|ServerSidePathCacheEntriesIterator (Long firstKey, int maxRepliesPerRequest, String pool)
+DECL|method|ServerSidePathCacheEntriesIterator (Long firstKey, int maxRepliesPerRequest, Long poolId)
 specifier|public
 name|ServerSidePathCacheEntriesIterator
 parameter_list|(
@@ -7307,8 +7281,8 @@ parameter_list|,
 name|int
 name|maxRepliesPerRequest
 parameter_list|,
-name|String
-name|pool
+name|Long
+name|poolId
 parameter_list|)
 block|{
 name|super
@@ -7320,14 +7294,14 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|pool
+name|poolId
 operator|=
-name|pool
+name|poolId
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|makeRequest ( Long nextKey, int maxRepliesPerRequest)
+DECL|method|makeRequest ( Long prevKey, int maxRepliesPerRequest)
 specifier|public
 name|BatchedEntries
 argument_list|<
@@ -7336,7 +7310,7 @@ argument_list|>
 name|makeRequest
 parameter_list|(
 name|Long
-name|nextKey
+name|prevKey
 parameter_list|,
 name|int
 name|maxRepliesPerRequest
@@ -7355,9 +7329,9 @@ name|namesystem
 operator|.
 name|listPathCacheEntries
 argument_list|(
-name|nextKey
+name|prevKey
 argument_list|,
-name|pool
+name|poolId
 argument_list|,
 name|maxRepliesPerRequest
 argument_list|)
@@ -7366,10 +7340,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|elementToNextKey (PathCacheEntry entry)
+DECL|method|elementToPrevKey (PathCacheEntry entry)
 specifier|public
 name|Long
-name|elementToNextKey
+name|elementToPrevKey
 parameter_list|(
 name|PathCacheEntry
 name|entry
@@ -7385,7 +7359,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|listPathCacheEntries (long prevId, String pool, int maxReplies)
+DECL|method|listPathCacheEntries (long prevId, long poolId, int maxReplies)
 specifier|public
 name|RemoteIterator
 argument_list|<
@@ -7396,8 +7370,8 @@ parameter_list|(
 name|long
 name|prevId
 parameter_list|,
-name|String
-name|pool
+name|long
+name|poolId
 parameter_list|,
 name|int
 name|maxReplies
@@ -7413,7 +7387,7 @@ name|prevId
 argument_list|,
 name|maxReplies
 argument_list|,
-name|pool
+name|poolId
 argument_list|)
 return|;
 block|}
@@ -7421,7 +7395,7 @@ annotation|@
 name|Override
 DECL|method|addCachePool (CachePoolInfo info)
 specifier|public
-name|void
+name|CachePool
 name|addCachePool
 parameter_list|(
 name|CachePoolInfo
@@ -7430,21 +7404,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+return|return
 name|namesystem
 operator|.
 name|addCachePool
 argument_list|(
 name|info
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 annotation|@
 name|Override
-DECL|method|modifyCachePool (CachePoolInfo info)
+DECL|method|modifyCachePool (long poolId, CachePoolInfo info)
 specifier|public
 name|void
 name|modifyCachePool
 parameter_list|(
+name|long
+name|poolId
+parameter_list|,
 name|CachePoolInfo
 name|info
 parameter_list|)
@@ -7455,19 +7433,21 @@ name|namesystem
 operator|.
 name|modifyCachePool
 argument_list|(
+name|poolId
+argument_list|,
 name|info
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeCachePool (String cachePoolName)
+DECL|method|removeCachePool (long poolId)
 specifier|public
 name|void
 name|removeCachePool
 parameter_list|(
-name|String
-name|cachePoolName
+name|long
+name|poolId
 parameter_list|)
 throws|throws
 name|IOException
@@ -7476,7 +7456,7 @@ name|namesystem
 operator|.
 name|removeCachePool
 argument_list|(
-name|cachePoolName
+name|poolId
 argument_list|)
 expr_stmt|;
 block|}
@@ -7487,17 +7467,17 @@ name|ServerSideCachePoolIterator
 extends|extends
 name|BatchedRemoteIterator
 argument_list|<
-name|String
+name|Long
 argument_list|,
-name|CachePoolInfo
+name|CachePool
 argument_list|>
 block|{
-DECL|method|ServerSideCachePoolIterator (String prevKey, int maxRepliesPerRequest)
+DECL|method|ServerSideCachePoolIterator (long prevId, int maxRepliesPerRequest)
 specifier|public
 name|ServerSideCachePoolIterator
 parameter_list|(
-name|String
-name|prevKey
+name|long
+name|prevId
 parameter_list|,
 name|int
 name|maxRepliesPerRequest
@@ -7505,7 +7485,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|prevKey
+name|prevId
 argument_list|,
 name|maxRepliesPerRequest
 argument_list|)
@@ -7513,16 +7493,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|makeRequest (String prevKey, int maxRepliesPerRequest)
+DECL|method|makeRequest (Long prevId, int maxRepliesPerRequest)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePool
 argument_list|>
 name|makeRequest
 parameter_list|(
-name|String
-name|prevKey
+name|Long
+name|prevId
 parameter_list|,
 name|int
 name|maxRepliesPerRequest
@@ -7534,14 +7514,14 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePool
 argument_list|>
 argument_list|(
 name|namesystem
 operator|.
 name|listCachePools
 argument_list|(
-name|prevKey
+name|prevId
 argument_list|,
 name|maxRepliesPerRequest
 argument_list|)
@@ -7550,35 +7530,35 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|elementToNextKey (CachePoolInfo element)
+DECL|method|elementToPrevKey (CachePool element)
 specifier|public
-name|String
-name|elementToNextKey
+name|Long
+name|elementToPrevKey
 parameter_list|(
-name|CachePoolInfo
+name|CachePool
 name|element
 parameter_list|)
 block|{
 return|return
 name|element
 operator|.
-name|getPoolName
+name|getId
 argument_list|()
 return|;
 block|}
 block|}
 annotation|@
 name|Override
-DECL|method|listCachePools (String prevKey, int maxRepliesPerRequest)
+DECL|method|listCachePools (long prevPoolId, int maxRepliesPerRequest)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|CachePoolInfo
+name|CachePool
 argument_list|>
 name|listCachePools
 parameter_list|(
-name|String
-name|prevKey
+name|long
+name|prevPoolId
 parameter_list|,
 name|int
 name|maxRepliesPerRequest
@@ -7590,7 +7570,7 @@ return|return
 operator|new
 name|ServerSideCachePoolIterator
 argument_list|(
-name|prevKey
+name|prevPoolId
 argument_list|,
 name|maxRepliesPerRequest
 argument_list|)

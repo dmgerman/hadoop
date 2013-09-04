@@ -164,10 +164,10 @@ argument_list|()
 return|;
 block|}
 block|}
-DECL|field|nextKey
+DECL|field|prevKey
 specifier|private
 name|K
-name|nextKey
+name|prevKey
 decl_stmt|;
 DECL|field|maxRepliesPerRequest
 specifier|private
@@ -188,12 +188,12 @@ specifier|private
 name|int
 name|idx
 decl_stmt|;
-DECL|method|BatchedRemoteIterator (K nextKey, int maxRepliesPerRequest)
+DECL|method|BatchedRemoteIterator (K prevKey, int maxRepliesPerRequest)
 specifier|public
 name|BatchedRemoteIterator
 parameter_list|(
 name|K
-name|nextKey
+name|prevKey
 parameter_list|,
 name|int
 name|maxRepliesPerRequest
@@ -201,9 +201,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|nextKey
+name|prevKey
 operator|=
-name|nextKey
+name|prevKey
 expr_stmt|;
 name|this
 operator|.
@@ -226,7 +226,7 @@ literal|1
 expr_stmt|;
 block|}
 comment|/**    * Perform the actual remote request.    *    * @param key                    The key to send.    * @param maxRepliesPerRequest   The maximum number of replies to allow.    * @return                       A list of replies.    */
-DECL|method|makeRequest (K nextKey, int maxRepliesPerRequest)
+DECL|method|makeRequest (K prevKey, int maxRepliesPerRequest)
 specifier|public
 specifier|abstract
 name|BatchedEntries
@@ -236,7 +236,7 @@ argument_list|>
 name|makeRequest
 parameter_list|(
 name|K
-name|nextKey
+name|prevKey
 parameter_list|,
 name|int
 name|maxRepliesPerRequest
@@ -264,7 +264,7 @@ name|entries
 operator|=
 name|makeRequest
 argument_list|(
-name|nextKey
+name|prevKey
 argument_list|,
 name|maxRepliesPerRequest
 argument_list|)
@@ -400,11 +400,11 @@ operator|)
 return|;
 block|}
 comment|/**    * Return the next list key associated with an element.    */
-DECL|method|elementToNextKey (E element)
+DECL|method|elementToPrevKey (E element)
 specifier|public
 specifier|abstract
 name|K
-name|elementToNextKey
+name|elementToPrevKey
 parameter_list|(
 name|E
 name|element
@@ -447,9 +447,9 @@ name|idx
 operator|++
 argument_list|)
 decl_stmt|;
-name|nextKey
+name|prevKey
 operator|=
-name|elementToNextKey
+name|elementToPrevKey
 argument_list|(
 name|entry
 argument_list|)
