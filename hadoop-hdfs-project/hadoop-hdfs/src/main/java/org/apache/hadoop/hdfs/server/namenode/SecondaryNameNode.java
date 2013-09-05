@@ -2408,11 +2408,6 @@ operator|.
 name|cTime
 expr_stmt|;
 comment|// get fsimage
-name|boolean
-name|downloadImage
-init|=
-literal|true
-decl_stmt|;
 if|if
 condition|(
 name|sig
@@ -2428,10 +2423,6 @@ name|getMostRecentCheckpointTxId
 argument_list|()
 condition|)
 block|{
-name|downloadImage
-operator|=
-literal|false
-expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -2509,13 +2500,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// true if we haven't loaded all the transactions represented by the
+comment|// downloaded fsimage.
 return|return
-name|Boolean
+name|dstImage
 operator|.
-name|valueOf
-argument_list|(
-name|downloadImage
-argument_list|)
+name|getLastAppliedTxId
+argument_list|()
+operator|<
+name|sig
+operator|.
+name|mostRecentCheckpointTxId
 return|;
 block|}
 block|}

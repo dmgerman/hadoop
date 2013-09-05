@@ -4827,18 +4827,18 @@ name|in
 argument_list|)
 expr_stmt|;
 comment|// read value
-name|call
-operator|.
-name|setRpcResponse
-argument_list|(
-name|value
-argument_list|)
-expr_stmt|;
 name|calls
 operator|.
 name|remove
 argument_list|(
 name|callId
+argument_list|)
+expr_stmt|;
+name|call
+operator|.
+name|setRpcResponse
+argument_list|(
+name|value
 argument_list|)
 expr_stmt|;
 comment|// verify that length was correct
@@ -5014,18 +5014,18 @@ operator|.
 name|ERROR
 condition|)
 block|{
-name|call
-operator|.
-name|setException
-argument_list|(
-name|re
-argument_list|)
-expr_stmt|;
 name|calls
 operator|.
 name|remove
 argument_list|(
 name|callId
+argument_list|)
+expr_stmt|;
+name|call
+operator|.
+name|setException
+argument_list|(
+name|re
 argument_list|)
 expr_stmt|;
 block|}
@@ -5300,6 +5300,11 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+name|itor
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
 name|c
 operator|.
 name|setException
@@ -5308,11 +5313,6 @@ name|closeException
 argument_list|)
 expr_stmt|;
 comment|// local exception
-name|itor
-operator|.
-name|remove
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 block|}
