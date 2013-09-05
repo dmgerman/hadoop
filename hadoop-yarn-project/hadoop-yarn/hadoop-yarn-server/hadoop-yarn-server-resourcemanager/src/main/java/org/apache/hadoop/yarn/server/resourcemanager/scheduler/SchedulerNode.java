@@ -143,6 +143,14 @@ name|int
 name|getNumContainers
 parameter_list|()
 function_decl|;
+comment|/**    * Get total resources on the node.    * @return total resources on the node.    */
+DECL|method|getTotalResource ()
+specifier|public
+specifier|abstract
+name|Resource
+name|getTotalResource
+parameter_list|()
+function_decl|;
 block|}
 end_class
 
