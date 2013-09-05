@@ -396,6 +396,10 @@ operator|||
 name|Shell
 operator|.
 name|FREEBSD
+operator|||
+name|Shell
+operator|.
+name|MAC
 condition|)
 block|{
 return|return
@@ -474,6 +478,10 @@ condition|(
 name|Shell
 operator|.
 name|FREEBSD
+operator|||
+name|Shell
+operator|.
+name|MAC
 condition|)
 block|{
 return|return
