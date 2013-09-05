@@ -220,6 +220,21 @@ argument_list|(
 name|versionInfoFile
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|is
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Resource not found"
+argument_list|)
+throw|;
+block|}
 name|info
 operator|.
 name|load
