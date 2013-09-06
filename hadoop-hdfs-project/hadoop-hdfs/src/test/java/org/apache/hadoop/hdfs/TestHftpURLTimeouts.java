@@ -172,17 +172,7 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|URLUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|BeforeClass
+name|URLConnectionFactory
 import|;
 end_import
 
@@ -202,22 +192,6 @@ specifier|public
 class|class
 name|TestHftpURLTimeouts
 block|{
-annotation|@
-name|BeforeClass
-DECL|method|setup ()
-specifier|public
-specifier|static
-name|void
-name|setup
-parameter_list|()
-block|{
-name|URLUtils
-operator|.
-name|SOCKET_TIMEOUT
-operator|=
-literal|5
-expr_stmt|;
-block|}
 annotation|@
 name|Test
 DECL|method|testHftpSocketTimeout ()
@@ -278,11 +252,6 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|boolean
-name|timedout
-init|=
-literal|false
-decl_stmt|;
 name|HftpFileSystem
 name|fs
 init|=
@@ -297,6 +266,21 @@ name|uri
 argument_list|,
 name|conf
 argument_list|)
+decl_stmt|;
+name|fs
+operator|.
+name|connectionFactory
+operator|=
+operator|new
+name|URLConnectionFactory
+argument_list|(
+literal|5
+argument_list|)
+expr_stmt|;
+name|boolean
+name|timedout
+init|=
+literal|false
 decl_stmt|;
 try|try
 block|{
@@ -384,6 +368,14 @@ finally|finally
 block|{
 name|fs
 operator|.
+name|connectionFactory
+operator|=
+name|URLConnectionFactory
+operator|.
+name|DEFAULT_CONNECTION_FACTORY
+expr_stmt|;
+name|fs
+operator|.
 name|close
 argument_list|()
 expr_stmt|;
@@ -469,6 +461,16 @@ argument_list|,
 name|conf
 argument_list|)
 decl_stmt|;
+name|fs
+operator|.
+name|connectionFactory
+operator|=
+operator|new
+name|URLConnectionFactory
+argument_list|(
+literal|5
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|HttpURLConnection
@@ -553,6 +555,14 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|fs
+operator|.
+name|connectionFactory
+operator|=
+name|URLConnectionFactory
+operator|.
+name|DEFAULT_CONNECTION_FACTORY
+expr_stmt|;
 name|fs
 operator|.
 name|close
@@ -660,11 +670,11 @@ operator|!
 operator|(
 name|ignoreReadTimeout
 operator|&&
-name|message
+literal|"Read timed out"
 operator|.
 name|equals
 argument_list|(
-literal|"Read timed out"
+name|message
 argument_list|)
 operator|)
 condition|)

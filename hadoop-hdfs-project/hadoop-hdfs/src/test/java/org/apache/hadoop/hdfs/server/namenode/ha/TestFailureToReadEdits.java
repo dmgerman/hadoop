@@ -608,7 +608,7 @@ argument_list|)
 operator|.
 name|setHttpPort
 argument_list|(
-literal|10001
+literal|10041
 argument_list|)
 argument_list|)
 operator|.
@@ -624,7 +624,7 @@ argument_list|)
 operator|.
 name|setHttpPort
 argument_list|(
-literal|10002
+literal|10042
 argument_list|)
 argument_list|)
 argument_list|)

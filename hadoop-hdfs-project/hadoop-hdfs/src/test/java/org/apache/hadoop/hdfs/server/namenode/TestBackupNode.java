@@ -827,6 +827,17 @@ argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
+name|c
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_BACKUP_HTTP_ADDRESS_KEY
+argument_list|,
+literal|"127.0.0.1:0"
+argument_list|)
+expr_stmt|;
 name|BackupNode
 name|bn
 init|=

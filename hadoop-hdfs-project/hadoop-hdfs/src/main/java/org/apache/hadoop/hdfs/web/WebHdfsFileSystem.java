@@ -1364,10 +1364,18 @@ operator|new
 name|KerberosUgiAuthenticator
 argument_list|()
 decl_stmt|;
+comment|/** Default connection factory may be overriden in tests to use smaller timeout values */
+DECL|field|connectionFactory
+name|URLConnectionFactory
+name|connectionFactory
+init|=
+name|URLConnectionFactory
+operator|.
+name|DEFAULT_CONNECTION_FACTORY
+decl_stmt|;
 comment|/** Configures connections for AuthenticatedURL */
 DECL|field|CONN_CONFIGURATOR
 specifier|private
-specifier|static
 specifier|final
 name|ConnectionConfigurator
 name|CONN_CONFIGURATOR
@@ -1388,7 +1396,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|URLUtils
+name|connectionFactory
 operator|.
 name|setTimeouts
 argument_list|(
@@ -3255,13 +3263,6 @@ argument_list|,
 name|authToken
 argument_list|)
 expr_stmt|;
-name|URLUtils
-operator|.
-name|setTimeouts
-argument_list|(
-name|conn
-argument_list|)
-expr_stmt|;
 block|}
 else|else
 block|{
@@ -3277,7 +3278,7 @@ operator|=
 operator|(
 name|HttpURLConnection
 operator|)
-name|URLUtils
+name|connectionFactory
 operator|.
 name|openConnection
 argument_list|(
@@ -3683,7 +3684,7 @@ operator|=
 operator|(
 name|HttpURLConnection
 operator|)
-name|URLUtils
+name|connectionFactory
 operator|.
 name|openConnection
 argument_list|(
@@ -3831,7 +3832,7 @@ operator|=
 operator|(
 name|HttpURLConnection
 operator|)
-name|URLUtils
+name|connectionFactory
 operator|.
 name|openConnection
 argument_list|(

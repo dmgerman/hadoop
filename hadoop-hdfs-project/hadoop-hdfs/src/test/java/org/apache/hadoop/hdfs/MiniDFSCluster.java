@@ -6265,6 +6265,22 @@ name|void
 name|shutdown
 parameter_list|()
 block|{
+name|shutdown
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Shutdown all the nodes in the cluster.    */
+DECL|method|shutdown (boolean deleteDfsDir)
+specifier|public
+name|void
+name|shutdown
+parameter_list|(
+name|boolean
+name|deleteDfsDir
+parameter_list|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -6358,6 +6374,25 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
+block|}
+if|if
+condition|(
+name|deleteDfsDir
+condition|)
+block|{
+name|base_dir
+operator|.
+name|delete
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|base_dir
+operator|.
+name|deleteOnExit
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Shutdown all DataNodes started by this class.  The NameNode    * is left running so that new DataNodes may be started.    */
@@ -9160,7 +9195,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a storage directory for a datanode. There are two storage directories    * per datanode:    *<ol>    *<li><base directory>/data/data<2*dnIndex + 1></li>    *<li><base directory>/data/data<2*dnIndex + 2></li>    *</ol>    *     * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index (0 or 1). Index 0 provides access to the    *          first storage directory. Index 1 provides access to the second    *          storage directory.    * @return Storage directory    */
+comment|/**    * Get a storage directory for a datanode. There are two storage directories    * per datanode:    *<ol>    *<li><base directory>/data/data<2*dnIndex + 1></li>    *<li><base directory>/data/data<2*dnIndex + 2></li>    *</ol>    *    * @param dnIndex datanode index (starts from 0)    * @param dirIndex directory index (0 or 1). Index 0 provides access to the    *          first storage directory. Index 1 provides access to the second    *          storage directory.    * @return Storage directory    */
 DECL|method|getStorageDir (int dnIndex, int dirIndex)
 specifier|public
 specifier|static
@@ -10071,6 +10106,25 @@ argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFS_DATANODE_ADDRESS_KEY
+argument_list|,
+literal|"127.0.0.1:0"
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|checkDataNodeAddrConfig
+condition|)
+block|{
 name|conf
 operator|.
 name|setIfUnset
@@ -10096,15 +10150,6 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|DFS_DATANODE_ADDRESS_KEY
-argument_list|,
-literal|"127.0.0.1:0"
-argument_list|)
-expr_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
 name|DFS_DATANODE_HTTP_ADDRESS_KEY
 argument_list|,
 literal|"127.0.0.1:0"
@@ -10119,7 +10164,6 @@ argument_list|,
 literal|"127.0.0.1:0"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 DECL|method|addToFile (String p, String address)

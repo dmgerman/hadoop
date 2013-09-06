@@ -354,6 +354,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PathUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|log4j
 operator|.
 name|Level
@@ -454,16 +468,16 @@ specifier|final
 name|String
 name|auditLogFile
 init|=
-name|System
+name|PathUtils
 operator|.
-name|getProperty
+name|getTestDirName
 argument_list|(
-literal|"test.build.dir"
-argument_list|,
-literal|"build/test"
+name|TestAuditLogs
+operator|.
+name|class
 argument_list|)
 operator|+
-literal|"/audit.log"
+literal|"/TestAuditLogs-audit.log"
 decl_stmt|;
 comment|// Pattern for:
 comment|// allowed=(true|false) ugi=name ip=/address cmd={cmd} src={path} dst=null perm=null

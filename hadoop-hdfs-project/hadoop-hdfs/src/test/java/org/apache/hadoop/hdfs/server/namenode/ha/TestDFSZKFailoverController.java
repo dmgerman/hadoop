@@ -501,7 +501,7 @@ name|DFS_HA_ZKFC_PORT_KEY
 operator|+
 literal|".ns1.nn1"
 argument_list|,
-literal|10003
+literal|10023
 argument_list|)
 expr_stmt|;
 name|conf
@@ -514,7 +514,7 @@ name|DFS_HA_ZKFC_PORT_KEY
 operator|+
 literal|".ns1.nn2"
 argument_list|,
-literal|10004
+literal|10024
 argument_list|)
 expr_stmt|;
 name|MiniDFSNNTopology
@@ -546,7 +546,7 @@ argument_list|)
 operator|.
 name|setIpcPort
 argument_list|(
-literal|10001
+literal|10021
 argument_list|)
 argument_list|)
 operator|.
@@ -562,7 +562,7 @@ argument_list|)
 operator|.
 name|setIpcPort
 argument_list|(
-literal|10002
+literal|10022
 argument_list|)
 argument_list|)
 argument_list|)
