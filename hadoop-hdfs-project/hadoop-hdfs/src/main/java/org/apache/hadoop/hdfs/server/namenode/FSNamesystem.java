@@ -31141,6 +31141,13 @@ name|success
 init|=
 literal|false
 decl_stmt|;
+name|checkOperation
+argument_list|(
+name|OperationCategory
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
