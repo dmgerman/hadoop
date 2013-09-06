@@ -322,24 +322,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|CachePool
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|NotReplicatedYetException
 import|;
 end_import
@@ -1771,7 +1753,6 @@ function_decl|;
 comment|/**    * Add some path cache directives to the CacheManager.    *     * @param directives A list of path cache directives to be added.    * @return A Fallible list, where each element is either a successfully addded    *         path cache entry, or an IOException describing why the directive    *         could not be added.    */
 annotation|@
 name|AtMostOnce
-DECL|method|addPathCacheDirectives ( List<PathCacheDirective> directives)
 specifier|public
 name|List
 argument_list|<
@@ -1780,6 +1761,7 @@ argument_list|<
 name|PathCacheEntry
 argument_list|>
 argument_list|>
+DECL|method|addPathCacheDirectives (List<PathCacheDirective> directives)
 name|addPathCacheDirectives
 parameter_list|(
 name|List
@@ -1793,7 +1775,7 @@ name|IOException
 function_decl|;
 comment|/**    * Remove some path cache entries from the CacheManager.    *     * @param ids A list of all the entry IDs to be removed from the CacheManager.    * @return A Fallible list where each element is either a successfully removed    *         ID, or an IOException describing why the ID could not be removed.    */
 annotation|@
-name|Idempotent
+name|AtMostOnce
 DECL|method|removePathCacheEntries (List<Long> ids)
 specifier|public
 name|List
@@ -1814,10 +1796,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathCacheEntries.    * @param pool The cache pool to list, or -1 to list all pools    * @param maxRepliesPerRequest The maximum number of entries to return per    *          request    * @return A RemoteIterator which returns PathCacheEntry objects.    */
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathCacheEntries.    * @param pool The cache pool to list, or the empty string to list all pools    * @return A RemoteIterator which returns PathCacheEntry objects.    */
 annotation|@
 name|Idempotent
-DECL|method|listPathCacheEntries (long prevId, long poolId, int maxRepliesPerRequest)
+DECL|method|listPathCacheEntries (long prevId, String pool)
 specifier|public
 name|RemoteIterator
 argument_list|<
@@ -1828,11 +1810,8 @@ parameter_list|(
 name|long
 name|prevId
 parameter_list|,
-name|long
-name|poolId
-parameter_list|,
-name|int
-name|maxRepliesPerRequest
+name|String
+name|pool
 parameter_list|)
 throws|throws
 name|IOException
@@ -1842,7 +1821,7 @@ annotation|@
 name|AtMostOnce
 DECL|method|addCachePool (CachePoolInfo info)
 specifier|public
-name|CachePool
+name|void
 name|addCachePool
 parameter_list|(
 name|CachePoolInfo
@@ -1851,53 +1830,47 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Modify a cache pool, e.g. pool name, permissions, owner, group.    *     * @param poolId ID of the cache pool to modify    * @param info New metadata for the cache pool    * @throws IOException If the request could not be completed.    */
+comment|/**    * Modify a cache pool.    *    * @param req    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
 annotation|@
 name|AtMostOnce
-DECL|method|modifyCachePool (long poolId, CachePoolInfo info)
+DECL|method|modifyCachePool (CachePoolInfo req)
 specifier|public
 name|void
 name|modifyCachePool
 parameter_list|(
-name|long
-name|poolId
-parameter_list|,
 name|CachePoolInfo
-name|info
+name|req
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove a cache pool.    *     * @param poolId ID of the cache pool to remove.    * @throws IOException if the cache pool did not exist, or could not be    *           removed.    */
+comment|/**    * Remove a cache pool.    *     * @param pool name of the cache pool to remove.    * @throws IOException if the cache pool did not exist, or could not be    *           removed.    */
 annotation|@
-name|Idempotent
-DECL|method|removeCachePool (long poolId)
+name|AtMostOnce
+DECL|method|removeCachePool (String pool)
 specifier|public
 name|void
 name|removeCachePool
 parameter_list|(
-name|long
-name|poolId
+name|String
+name|pool
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cache pools. Incrementally fetches results from the server.    *     * @param prevPoolId ID of the last pool listed, or -1 if this is the first    *          invocation of listCachePools    * @param maxRepliesPerRequest Maximum number of cache pools to return per    *          server request.    * @return A RemoteIterator which returns CachePool objects.    */
+comment|/**    * List the set of cache pools. Incrementally fetches results from the server.    *     * @param prevPool name of the last pool listed, or the empty string if this is    *          the first invocation of listCachePools    * @return A RemoteIterator which returns CachePool objects.    */
 annotation|@
 name|Idempotent
-DECL|method|listCachePools (long prevPoolId, int maxRepliesPerRequest)
+DECL|method|listCachePools (String prevPool)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|CachePool
+name|CachePoolInfo
 argument_list|>
 name|listCachePools
 parameter_list|(
-name|long
-name|prevPoolId
-parameter_list|,
-name|int
-name|maxRepliesPerRequest
+name|String
+name|prevPool
 parameter_list|)
 throws|throws
 name|IOException

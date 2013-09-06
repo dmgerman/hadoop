@@ -90,6 +90,12 @@ name|int
 name|size
 parameter_list|()
 function_decl|;
+DECL|method|hasMore ()
+specifier|public
+name|boolean
+name|hasMore
+parameter_list|()
+function_decl|;
 block|}
 DECL|class|BatchedListEntries
 specifier|public
@@ -114,7 +120,13 @@ name|E
 argument_list|>
 name|entries
 decl_stmt|;
-DECL|method|BatchedListEntries (List<E> entries)
+DECL|field|hasMore
+specifier|private
+specifier|final
+name|boolean
+name|hasMore
+decl_stmt|;
+DECL|method|BatchedListEntries (List<E> entries, boolean hasMore)
 specifier|public
 name|BatchedListEntries
 parameter_list|(
@@ -123,6 +135,9 @@ argument_list|<
 name|E
 argument_list|>
 name|entries
+parameter_list|,
+name|boolean
+name|hasMore
 parameter_list|)
 block|{
 name|this
@@ -130,6 +145,12 @@ operator|.
 name|entries
 operator|=
 name|entries
+expr_stmt|;
+name|this
+operator|.
+name|hasMore
+operator|=
+name|hasMore
 expr_stmt|;
 block|}
 DECL|method|get (int i)
@@ -163,17 +184,21 @@ name|size
 argument_list|()
 return|;
 block|}
+DECL|method|hasMore ()
+specifier|public
+name|boolean
+name|hasMore
+parameter_list|()
+block|{
+return|return
+name|hasMore
+return|;
+block|}
 block|}
 DECL|field|prevKey
 specifier|private
 name|K
 name|prevKey
-decl_stmt|;
-DECL|field|maxRepliesPerRequest
-specifier|private
-specifier|final
-name|int
-name|maxRepliesPerRequest
 decl_stmt|;
 DECL|field|entries
 specifier|private
@@ -188,15 +213,12 @@ specifier|private
 name|int
 name|idx
 decl_stmt|;
-DECL|method|BatchedRemoteIterator (K prevKey, int maxRepliesPerRequest)
+DECL|method|BatchedRemoteIterator (K prevKey)
 specifier|public
 name|BatchedRemoteIterator
 parameter_list|(
 name|K
 name|prevKey
-parameter_list|,
-name|int
-name|maxRepliesPerRequest
 parameter_list|)
 block|{
 name|this
@@ -204,12 +226,6 @@ operator|.
 name|prevKey
 operator|=
 name|prevKey
-expr_stmt|;
-name|this
-operator|.
-name|maxRepliesPerRequest
-operator|=
-name|maxRepliesPerRequest
 expr_stmt|;
 name|this
 operator|.
@@ -225,8 +241,8 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
-comment|/**    * Perform the actual remote request.    *    * @param key                    The key to send.    * @param maxRepliesPerRequest   The maximum number of replies to allow.    * @return                       A list of replies.    */
-DECL|method|makeRequest (K prevKey, int maxRepliesPerRequest)
+comment|/**    * Perform the actual remote request.    *    * @param key                    The key to send.    * @return                       A list of replies.    */
+DECL|method|makeRequest (K prevKey)
 specifier|public
 specifier|abstract
 name|BatchedEntries
@@ -237,9 +253,6 @@ name|makeRequest
 parameter_list|(
 name|K
 name|prevKey
-parameter_list|,
-name|int
-name|maxRepliesPerRequest
 parameter_list|)
 throws|throws
 name|IOException
@@ -265,39 +278,8 @@ operator|=
 name|makeRequest
 argument_list|(
 name|prevKey
-argument_list|,
-name|maxRepliesPerRequest
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|entries
-operator|.
-name|size
-argument_list|()
-operator|>
-name|maxRepliesPerRequest
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"invalid number of replies returned: got "
-operator|+
-name|entries
-operator|.
-name|size
-argument_list|()
-operator|+
-literal|", expected "
-operator|+
-name|maxRepliesPerRequest
-operator|+
-literal|" at most."
-argument_list|)
-throw|;
-block|}
 if|if
 condition|(
 name|entries
@@ -355,12 +337,11 @@ condition|)
 block|{
 if|if
 condition|(
+operator|!
 name|entries
 operator|.
-name|size
+name|hasMore
 argument_list|()
-operator|<
-name|maxRepliesPerRequest
 condition|)
 block|{
 comment|// Last time, we got fewer entries than requested.
