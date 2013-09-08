@@ -380,6 +380,37 @@ name|blockList
 init|=
 literal|null
 decl_stmt|;
+DECL|field|numBlocks
+specifier|private
+name|int
+name|numBlocks
+init|=
+literal|0
+decl_stmt|;
+comment|/** The number of block reports received */
+DECL|field|blockReportCount
+specifier|private
+name|int
+name|blockReportCount
+init|=
+literal|0
+decl_stmt|;
+comment|/**    * Set to false on any NN failover, and reset to true    * whenever a block report is received.    */
+DECL|field|heartbeatedSinceFailover
+specifier|private
+name|boolean
+name|heartbeatedSinceFailover
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * At startup or at failover, the storages in the cluster may have pending    * block deletions from a previous incarnation of the NameNode. The block    * contents are considered as stale until a block report is received. When a    * storage is considered as stale, the replicas on it are also considered as    * stale. If any block has at least one stale replica, then no invalidations    * will be processed for this block. See HDFS-1972.    */
+DECL|field|blockContentsStale
+specifier|private
+name|boolean
+name|blockContentsStale
+init|=
+literal|true
+decl_stmt|;
 DECL|method|DatanodeStorageInfo (DatanodeDescriptor dn, DatanodeStorage s)
 specifier|public
 name|DatanodeStorageInfo
@@ -423,6 +454,86 @@ name|s
 operator|.
 name|getState
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|getBlockReportCount ()
+name|int
+name|getBlockReportCount
+parameter_list|()
+block|{
+return|return
+name|blockReportCount
+return|;
+block|}
+DECL|method|setBlockReportCount (int blockReportCount)
+name|void
+name|setBlockReportCount
+parameter_list|(
+name|int
+name|blockReportCount
+parameter_list|)
+block|{
+name|this
+operator|.
+name|blockReportCount
+operator|=
+name|blockReportCount
+expr_stmt|;
+block|}
+DECL|method|areBlockContentsStale ()
+specifier|public
+name|boolean
+name|areBlockContentsStale
+parameter_list|()
+block|{
+return|return
+name|blockContentsStale
+return|;
+block|}
+DECL|method|markStaleAfterFailover ()
+specifier|public
+name|void
+name|markStaleAfterFailover
+parameter_list|()
+block|{
+name|heartbeatedSinceFailover
+operator|=
+literal|false
+expr_stmt|;
+name|blockContentsStale
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|receivedHeartbeat ()
+specifier|public
+name|void
+name|receivedHeartbeat
+parameter_list|()
+block|{
+name|heartbeatedSinceFailover
+operator|=
+literal|true
+expr_stmt|;
+block|}
+DECL|method|receivedBlockReport ()
+specifier|public
+name|void
+name|receivedBlockReport
+parameter_list|()
+block|{
+if|if
+condition|(
+name|heartbeatedSinceFailover
+condition|)
+block|{
+name|blockContentsStale
+operator|=
+literal|false
+expr_stmt|;
+block|}
+name|blockReportCount
+operator|++
 expr_stmt|;
 block|}
 DECL|method|setUtilization (long capacity, long dfsUsed, long remaining)
@@ -572,6 +683,9 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
+name|numBlocks
+operator|++
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -596,14 +710,29 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
-return|return
+if|if
+condition|(
 name|b
 operator|.
 name|removeStorage
 argument_list|(
 name|this
 argument_list|)
+condition|)
+block|{
+name|numBlocks
+operator|--
+expr_stmt|;
+return|return
+literal|true
 return|;
+block|}
+else|else
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 DECL|method|numBlocks ()
 specifier|public
@@ -612,18 +741,7 @@ name|numBlocks
 parameter_list|()
 block|{
 return|return
-name|blockList
-operator|==
-literal|null
-condition|?
-literal|0
-else|:
-name|blockList
-operator|.
-name|listCount
-argument_list|(
-name|this
-argument_list|)
+name|numBlocks
 return|;
 block|}
 DECL|method|getBlockIterator ()

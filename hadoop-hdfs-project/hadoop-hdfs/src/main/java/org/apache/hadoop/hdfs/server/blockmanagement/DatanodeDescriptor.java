@@ -508,22 +508,6 @@ name|needKeyUpdate
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * Set to false on any NN failover, and reset to true    * whenever a block report is received.    */
-DECL|field|heartbeatedSinceFailover
-specifier|private
-name|boolean
-name|heartbeatedSinceFailover
-init|=
-literal|false
-decl_stmt|;
-comment|/**    * At startup or at any failover, the DNs in the cluster may    * have pending block deletions from a previous incarnation    * of the NameNode. Thus, we consider their block contents    * stale until we have received a block report. When a DN    * is considered stale, any replicas on it are transitively    * considered stale. If any block has at least one stale replica,    * then no invalidations will be processed for this block.    * See HDFS-1972.    */
-DECL|field|blockContentsStale
-specifier|private
-name|boolean
-name|blockContentsStale
-init|=
-literal|true
-decl_stmt|;
 comment|// A system administrator can tune the balancer bandwidth parameter
 comment|// (dfs.balance.bandwidthPerSec) dynamically by calling
 comment|// "dfsadmin -setBalanacerBandwidth<newbandwidth>", at which point the
@@ -623,14 +607,6 @@ name|int
 name|volumeFailures
 init|=
 literal|0
-decl_stmt|;
-comment|/** Set to false after processing first block report */
-DECL|field|firstBlockReport
-specifier|private
-name|boolean
-name|firstBlockReport
-init|=
-literal|true
 decl_stmt|;
 comment|/**     * When set to true, the node is not in include list and is not allowed    * to communicate with the namenode    */
 DECL|field|disallowed
@@ -842,12 +818,18 @@ literal|false
 return|;
 block|}
 DECL|method|getStorageInfo (String storageID)
+specifier|public
 name|DatanodeStorageInfo
 name|getStorageInfo
 parameter_list|(
 name|String
 name|storageID
 parameter_list|)
+block|{
+synchronized|synchronized
+init|(
+name|storageMap
+init|)
 block|{
 return|return
 name|storageMap
@@ -858,6 +840,7 @@ name|storageID
 argument_list|)
 return|;
 block|}
+block|}
 DECL|method|getStorageInfos ()
 specifier|public
 name|Collection
@@ -867,12 +850,25 @@ argument_list|>
 name|getStorageInfos
 parameter_list|()
 block|{
+synchronized|synchronized
+init|(
+name|storageMap
+init|)
+block|{
 return|return
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+argument_list|(
 name|storageMap
 operator|.
 name|values
 argument_list|()
+argument_list|)
 return|;
+block|}
 block|}
 comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
 DECL|method|removeBlock (BlockInfo b)
@@ -1138,7 +1134,6 @@ name|int
 name|numBlocks
 parameter_list|()
 block|{
-comment|// TODO: synchronization
 name|int
 name|blocks
 init|=
@@ -1149,9 +1144,7 @@ control|(
 name|DatanodeStorageInfo
 name|entry
 range|:
-name|storageMap
-operator|.
-name|values
+name|getStorageInfos
 argument_list|()
 control|)
 block|{
@@ -1231,12 +1224,21 @@ name|volumeFailures
 operator|=
 name|volFailures
 expr_stmt|;
-name|this
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|getStorageInfos
+argument_list|()
+control|)
+block|{
+name|storage
 operator|.
-name|heartbeatedSinceFailover
-operator|=
-literal|true
+name|receivedHeartbeat
+argument_list|()
 expr_stmt|;
+block|}
 name|rollBlocksScheduled
 argument_list|(
 name|getLastUpdate
@@ -1463,9 +1465,7 @@ return|return
 operator|new
 name|BlockIterator
 argument_list|(
-name|storageMap
-operator|.
-name|values
+name|getStorageInfos
 argument_list|()
 argument_list|)
 return|;
@@ -1486,9 +1486,7 @@ return|return
 operator|new
 name|BlockIterator
 argument_list|(
-name|storageMap
-operator|.
-name|get
+name|getStorageInfo
 argument_list|(
 name|storageID
 argument_list|)
@@ -2152,11 +2150,24 @@ argument_list|(
 name|nodeReg
 argument_list|)
 expr_stmt|;
-name|firstBlockReport
-operator|=
-literal|true
-expr_stmt|;
 comment|// must re-process IBR after re-registration
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|getStorageInfos
+argument_list|()
+control|)
+block|{
+name|storage
+operator|.
+name|setBlockReportCount
+argument_list|(
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * @return balancer bandwidth in bytes per second for this datanode    */
 DECL|method|getBalancerBandwidth ()
@@ -2187,61 +2198,6 @@ name|bandwidth
 operator|=
 name|bandwidth
 expr_stmt|;
-block|}
-DECL|method|areBlockContentsStale ()
-specifier|public
-name|boolean
-name|areBlockContentsStale
-parameter_list|()
-block|{
-return|return
-name|blockContentsStale
-return|;
-block|}
-DECL|method|markStaleAfterFailover ()
-specifier|public
-name|void
-name|markStaleAfterFailover
-parameter_list|()
-block|{
-name|heartbeatedSinceFailover
-operator|=
-literal|false
-expr_stmt|;
-name|blockContentsStale
-operator|=
-literal|true
-expr_stmt|;
-block|}
-DECL|method|receivedBlockReport ()
-specifier|public
-name|void
-name|receivedBlockReport
-parameter_list|()
-block|{
-if|if
-condition|(
-name|heartbeatedSinceFailover
-condition|)
-block|{
-name|blockContentsStale
-operator|=
-literal|false
-expr_stmt|;
-block|}
-name|firstBlockReport
-operator|=
-literal|false
-expr_stmt|;
-block|}
-DECL|method|isFirstBlockReport ()
-name|boolean
-name|isFirstBlockReport
-parameter_list|()
-block|{
-return|return
-name|firstBlockReport
-return|;
 block|}
 annotation|@
 name|Override
@@ -2377,10 +2333,17 @@ name|DatanodeStorage
 name|s
 parameter_list|)
 block|{
+synchronized|synchronized
+init|(
+name|storageMap
+init|)
+block|{
 name|DatanodeStorageInfo
 name|storage
 init|=
-name|getStorageInfo
+name|storageMap
+operator|.
+name|get
 argument_list|(
 name|s
 operator|.
@@ -2434,6 +2397,7 @@ block|}
 return|return
 name|storage
 return|;
+block|}
 block|}
 block|}
 end_class

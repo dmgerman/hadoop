@@ -3605,6 +3605,17 @@ name|isDecommissioned
 argument_list|()
 condition|)
 block|{
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|node
+operator|.
+name|getStorageInfos
+argument_list|()
+control|)
+block|{
 name|LOG
 operator|.
 name|info
@@ -3613,9 +3624,13 @@ literal|"Start Decommissioning "
 operator|+
 name|node
 operator|+
+literal|" "
+operator|+
+name|storage
+operator|+
 literal|" with "
 operator|+
-name|node
+name|storage
 operator|.
 name|numBlocks
 argument_list|()
@@ -3623,6 +3638,7 @@ operator|+
 literal|" blocks"
 argument_list|)
 expr_stmt|;
+block|}
 name|heartbeatManager
 operator|.
 name|startDecommission
@@ -6148,11 +6164,23 @@ name|values
 argument_list|()
 control|)
 block|{
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
 name|dn
+operator|.
+name|getStorageInfos
+argument_list|()
+control|)
+block|{
+name|storage
 operator|.
 name|markStaleAfterFailover
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

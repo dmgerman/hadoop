@@ -2799,7 +2799,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|node
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
@@ -5178,12 +5178,40 @@ comment|// If the DN hasn't block-reported since the most recent
 comment|// failover, then we may have been holding up on processing
 comment|// over-replicated blocks because of it. But we can now
 comment|// process those blocks.
+name|boolean
+name|stale
+init|=
+literal|false
+decl_stmt|;
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|node
+operator|.
+name|getStorageInfos
+argument_list|()
+control|)
+block|{
 if|if
 condition|(
-name|node
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
+condition|)
+block|{
+name|stale
+operator|=
+literal|true
+expr_stmt|;
+break|break;
+block|}
+block|}
+if|if
+condition|(
+name|stale
 condition|)
 block|{
 name|rescanPostponedMisreplicatedBlocks
@@ -7844,6 +7872,20 @@ throw|;
 block|}
 comment|// To minimize startup time, we discard any second (or later) block reports
 comment|// that we receive while still in startup phase.
+specifier|final
+name|DatanodeStorageInfo
+name|storageInfo
+init|=
+name|node
+operator|.
+name|getStorageInfo
+argument_list|(
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|namesystem
@@ -7851,11 +7893,12 @@ operator|.
 name|isInStartupSafeMode
 argument_list|()
 operator|&&
-operator|!
-name|node
+name|storageInfo
 operator|.
-name|isFirstBlockReport
+name|getBlockReportCount
 argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 name|blockLog
@@ -7875,7 +7918,7 @@ return|return;
 block|}
 if|if
 condition|(
-name|node
+name|storageInfo
 operator|.
 name|numBlocks
 argument_list|()
@@ -7915,12 +7958,12 @@ comment|// deletions from a previous NN iteration have been accounted for.
 name|boolean
 name|staleBefore
 init|=
-name|node
+name|storageInfo
 operator|.
 name|areBlockContentsStale
 argument_list|()
 decl_stmt|;
-name|node
+name|storageInfo
 operator|.
 name|receivedBlockReport
 argument_list|()
@@ -7930,7 +7973,7 @@ condition|(
 name|staleBefore
 operator|&&
 operator|!
-name|node
+name|storageInfo
 operator|.
 name|areBlockContentsStale
 argument_list|()
@@ -8479,6 +8522,11 @@ assert|;
 assert|assert
 operator|(
 name|node
+operator|.
+name|getStorageInfo
+argument_list|(
+name|storageID
+argument_list|)
 operator|.
 name|numBlocks
 argument_list|()
@@ -11246,7 +11294,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|cur
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
@@ -11262,7 +11310,11 @@ literal|"Postponing processing of over-replicated "
 operator|+
 name|block
 operator|+
-literal|" since datanode "
+literal|" since storage + "
+operator|+
+name|storage
+operator|+
+literal|"datanode "
 operator|+
 name|cur
 operator|+
@@ -12824,7 +12876,7 @@ block|}
 block|}
 if|if
 condition|(
-name|node
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
