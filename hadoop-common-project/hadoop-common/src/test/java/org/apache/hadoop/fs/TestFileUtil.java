@@ -3943,6 +3943,8 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+literal|""
+argument_list|,
 literal|"cp1.jar"
 argument_list|,
 literal|"cp2.jar"
@@ -4096,6 +4098,18 @@ range|:
 name|classPaths
 control|)
 block|{
+if|if
+condition|(
+name|classPath
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+continue|continue;
+block|}
 if|if
 condition|(
 name|wildcardPath
