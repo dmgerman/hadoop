@@ -2907,7 +2907,7 @@ expr_stmt|;
 comment|// TODO - need to add more checks relevant to this state
 block|}
 comment|/**    * {@link RMAppAttemptState#RUNNING}    */
-DECL|method|testAppAttemptRunningState (Container container, String host, int rpcPort, String trackingUrl)
+DECL|method|testAppAttemptRunningState (Container container, String host, int rpcPort, String trackingUrl, boolean unmanagedAM)
 specifier|private
 name|void
 name|testAppAttemptRunningState
@@ -2923,6 +2923,9 @@ name|rpcPort
 parameter_list|,
 name|String
 name|trackingUrl
+parameter_list|,
+name|boolean
+name|unmanagedAM
 parameter_list|)
 block|{
 name|assertEquals
@@ -2977,6 +2980,24 @@ name|getOriginalTrackingUrl
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|unmanagedAM
+condition|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"oldtrackingurl"
+argument_list|,
+name|applicationAttempt
+operator|.
+name|getTrackingUrl
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|assertEquals
 argument_list|(
 name|getProxyUrl
@@ -2990,6 +3011,7 @@ name|getTrackingUrl
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 comment|// TODO - need to add more checks relevant to this state
 block|}
 comment|/**    * {@link RMAppAttemptState#FINISHING}    */
@@ -3088,7 +3110,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * {@link RMAppAttemptState#FINISHED}    */
-DECL|method|testAppAttemptFinishedState (Container container, FinalApplicationStatus finalStatus, String trackingUrl, String diagnostics, int finishedContainerCount)
+DECL|method|testAppAttemptFinishedState (Container container, FinalApplicationStatus finalStatus, String trackingUrl, String diagnostics, int finishedContainerCount, boolean unmanagedAM)
 specifier|private
 name|void
 name|testAppAttemptFinishedState
@@ -3107,6 +3129,9 @@ name|diagnostics
 parameter_list|,
 name|int
 name|finishedContainerCount
+parameter_list|,
+name|boolean
+name|unmanagedAM
 parameter_list|)
 block|{
 name|assertEquals
@@ -3141,6 +3166,24 @@ name|getOriginalTrackingUrl
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|unmanagedAM
+condition|)
+block|{
+name|assertEquals
+argument_list|(
+literal|"mytrackingurl"
+argument_list|,
+name|applicationAttempt
+operator|.
+name|getTrackingUrl
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|assertEquals
 argument_list|(
 name|getProxyUrl
@@ -3154,6 +3197,7 @@ name|getTrackingUrl
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|assertEquals
 argument_list|(
 name|finishedContainerCount
@@ -3531,7 +3575,7 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|runApplicationAttempt (Container container, String host, int rpcPort, String trackingUrl)
+DECL|method|runApplicationAttempt (Container container, String host, int rpcPort, String trackingUrl, boolean unmanagedAM)
 specifier|private
 name|void
 name|runApplicationAttempt
@@ -3547,6 +3591,9 @@ name|rpcPort
 parameter_list|,
 name|String
 name|trackingUrl
+parameter_list|,
+name|boolean
+name|unmanagedAM
 parameter_list|)
 block|{
 name|applicationAttempt
@@ -3578,6 +3625,8 @@ argument_list|,
 name|rpcPort
 argument_list|,
 name|trackingUrl
+argument_list|,
+name|unmanagedAM
 argument_list|)
 expr_stmt|;
 block|}
@@ -3693,6 +3742,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// complete a container
@@ -3787,6 +3838,8 @@ argument_list|,
 name|diagnostics
 argument_list|,
 literal|1
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
@@ -4239,6 +4292,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|String
@@ -4410,6 +4465,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|applicationAttempt
@@ -4682,6 +4739,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|applicationAttempt
@@ -4808,6 +4867,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|unregisterApplicationAttempt
@@ -4852,6 +4913,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|""
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -4883,6 +4946,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|unregisterApplicationAttempt
@@ -4927,6 +4992,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|FinalApplicationStatus
@@ -5015,6 +5082,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|FinalApplicationStatus
@@ -5074,6 +5143,8 @@ argument_list|,
 name|diagnostics
 argument_list|,
 literal|0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -5105,6 +5176,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|FinalApplicationStatus
@@ -5215,6 +5288,8 @@ argument_list|,
 literal|8042
 argument_list|,
 literal|"oldtrackingurl"
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 name|FinalApplicationStatus
@@ -5288,6 +5363,8 @@ argument_list|,
 name|diagnostics
 argument_list|,
 literal|0
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

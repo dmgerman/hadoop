@@ -2928,6 +2928,18 @@ expr_stmt|;
 try|try
 block|{
 return|return
+operator|(
+name|getSubmissionContext
+argument_list|()
+operator|.
+name|getUnmanagedAM
+argument_list|()
+operator|)
+condition|?
+name|this
+operator|.
+name|origTrackingUrl
+else|:
 name|this
 operator|.
 name|proxiedTrackingUrl
@@ -5053,7 +5065,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|class|AMRegisteredTransition
-specifier|private
 specifier|static
 specifier|final
 class|class
