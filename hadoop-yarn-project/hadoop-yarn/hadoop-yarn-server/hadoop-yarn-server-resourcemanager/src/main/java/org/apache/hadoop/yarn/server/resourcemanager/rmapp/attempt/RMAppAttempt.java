@@ -254,6 +254,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|client
+operator|.
+name|ClientToAMTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|resourcemanager
@@ -392,6 +410,18 @@ DECL|method|getClientTokenMasterKey ()
 name|SecretKey
 name|getClientTokenMasterKey
 parameter_list|()
+function_decl|;
+comment|/**    * Create a token for authenticating a client connection to the app attempt    * @param clientName the name of the client requesting the token    * @return the token or null if the attempt is not running    */
+DECL|method|createClientToken (String clientName)
+name|Token
+argument_list|<
+name|ClientToAMTokenIdentifier
+argument_list|>
+name|createClientToken
+parameter_list|(
+name|String
+name|clientName
+parameter_list|)
 function_decl|;
 comment|/**    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */
 DECL|method|getApplicationResourceUsageReport ()
