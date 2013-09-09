@@ -2749,7 +2749,7 @@ name|status
 init|=
 name|SchedulerUtils
 operator|.
-name|createAbnormalContainerStatus
+name|createPreemptedContainerStatus
 argument_list|(
 name|container
 operator|.

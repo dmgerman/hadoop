@@ -4963,7 +4963,7 @@ name|cont
 argument_list|,
 name|SchedulerUtils
 operator|.
-name|createAbnormalContainerStatus
+name|createPreemptedContainerStatus
 argument_list|(
 name|cont
 operator|.
