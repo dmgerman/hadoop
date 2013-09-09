@@ -311,10 +311,9 @@ name|enableDebugLogging
 init|=
 literal|"For more information, please enable DEBUG log level on "
 operator|+
-name|LOG
+name|BlockPlacementPolicy
 operator|.
-name|getClass
-argument_list|()
+name|class
 operator|.
 name|getName
 argument_list|()
