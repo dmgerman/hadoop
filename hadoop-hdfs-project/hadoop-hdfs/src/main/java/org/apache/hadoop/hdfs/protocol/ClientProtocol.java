@@ -1830,7 +1830,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Modify a cache pool.    *    * @param req    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+comment|/**    * Modify an existing cache pool.    *    * @param req    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
 annotation|@
 name|AtMostOnce
 DECL|method|modifyCachePool (CachePoolInfo req)

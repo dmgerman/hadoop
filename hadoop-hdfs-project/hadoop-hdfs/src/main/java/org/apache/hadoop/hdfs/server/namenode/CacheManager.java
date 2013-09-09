@@ -1538,22 +1538,13 @@ operator|.
 name|getPoolName
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|poolName
+name|CachePool
 operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
+name|validateName
 argument_list|(
-literal|"invalid empty cache pool name"
+name|poolName
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|CachePool
 name|pool
 init|=

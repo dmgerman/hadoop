@@ -175,6 +175,15 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|DEFAULT_WEIGHT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_WEIGHT
+init|=
+literal|100
+decl_stmt|;
 annotation|@
 name|Nonnull
 DECL|field|poolName
@@ -642,6 +651,38 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+DECL|method|validateName (String name)
+specifier|public
+specifier|static
+name|void
+name|validateName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|name
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// Empty pool names are not allowed because they would be highly
+comment|// confusing.  They would also break the ability to list all pools
+comment|// by starting with prevKey = ""
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"invalid empty cache pool name"
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class
