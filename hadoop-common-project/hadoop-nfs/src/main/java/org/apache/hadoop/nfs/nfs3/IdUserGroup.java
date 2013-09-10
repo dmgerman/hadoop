@@ -804,12 +804,7 @@ name|uidNameMap
 operator|.
 name|get
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 name|uid
-argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -851,12 +846,7 @@ name|gidNameMap
 operator|.
 name|get
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 name|gid
-argument_list|)
 argument_list|)
 decl_stmt|;
 if|if

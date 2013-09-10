@@ -362,6 +362,34 @@ name|hadoop
 operator|.
 name|nfs
 operator|.
+name|AccessPrivilege
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|nfs
+operator|.
+name|NfsExports
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|nfs
+operator|.
 name|NfsTime
 import|;
 end_import
@@ -1324,71 +1352,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|nfs
-operator|.
-name|security
-operator|.
-name|AccessPrivilege
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|nfs
-operator|.
-name|security
-operator|.
-name|NfsExports
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|oncrpc
 operator|.
 name|RpcAcceptedReply
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|oncrpc
-operator|.
-name|RpcAuthInfo
-operator|.
-name|AuthFlavor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|oncrpc
-operator|.
-name|RpcAuthSys
 import|;
 end_import
 
@@ -1459,6 +1425,104 @@ operator|.
 name|oncrpc
 operator|.
 name|XDR
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|CredentialsSys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Credentials
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Verifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|SecurityHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|SysSecurityHandler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|RpcAuthInfo
+operator|.
+name|AuthFlavor
 import|;
 end_import
 
@@ -1983,7 +2047,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getattr (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|getattr (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|GETATTR3Response
 name|getattr
@@ -1991,8 +2055,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -2035,14 +2099,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -2050,7 +2106,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -2371,6 +2430,8 @@ operator|.
 name|getUid
 argument_list|()
 argument_list|,
+name|Nfs3Constant
+operator|.
 name|UNKNOWN_USER
 argument_list|)
 else|:
@@ -2397,6 +2458,8 @@ operator|.
 name|getGid
 argument_list|()
 argument_list|,
+name|Nfs3Constant
+operator|.
 name|UNKNOWN_GROUP
 argument_list|)
 else|:
@@ -2511,7 +2574,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|setattr (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|setattr (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|SETATTR3Response
 name|setattr
@@ -2519,8 +2582,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -2537,14 +2600,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -2552,7 +2607,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -2989,7 +3047,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|lookup (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|lookup (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|LOOKUP3Response
 name|lookup
@@ -2997,8 +3055,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -3041,14 +3099,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -3056,7 +3106,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -3348,7 +3401,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|access (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|access (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|ACCESS3Response
 name|access
@@ -3356,8 +3409,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -3400,14 +3453,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -3415,7 +3460,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -3562,12 +3610,12 @@ name|Nfs3Utils
 operator|.
 name|getAccessRightsForUserGroup
 argument_list|(
-name|authSys
+name|securityHandler
 operator|.
 name|getUid
 argument_list|()
 argument_list|,
-name|authSys
+name|securityHandler
 operator|.
 name|getGid
 argument_list|()
@@ -3615,7 +3663,7 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|method|readlink (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|readlink (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|READLINK3Response
 name|readlink
@@ -3623,8 +3671,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -3642,7 +3690,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|read (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|read (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|READ3Response
 name|read
@@ -3650,8 +3698,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -3694,14 +3742,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -3709,7 +3749,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -3942,12 +3985,12 @@ name|Nfs3Utils
 operator|.
 name|getAccessRightsForUserGroup
 argument_list|(
-name|authSys
+name|securityHandler
 operator|.
 name|getUid
 argument_list|()
 argument_list|,
-name|authSys
+name|securityHandler
 operator|.
 name|getGid
 argument_list|()
@@ -4234,7 +4277,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|write (XDR xdr, Channel channel, int xid, RpcAuthSys authSys, InetAddress client)
+DECL|method|write (XDR xdr, Channel channel, int xid, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|WRITE3Response
 name|write
@@ -4248,8 +4291,8 @@ parameter_list|,
 name|int
 name|xid
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -4266,14 +4309,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -4281,7 +4316,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -4714,7 +4752,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|create (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|create (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|CREATE3Response
 name|create
@@ -4722,8 +4760,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -4740,14 +4778,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -4755,7 +4785,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -5219,7 +5252,7 @@ name|setAttr3
 operator|.
 name|setGid
 argument_list|(
-name|authSys
+name|securityHandler
 operator|.
 name|getGid
 argument_list|()
@@ -5502,7 +5535,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|mkdir (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|mkdir (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|MKDIR3Response
 name|mkdir
@@ -5510,8 +5543,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -5528,14 +5561,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -5543,7 +5568,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -5916,7 +5944,7 @@ name|setAttr3
 operator|.
 name|setGid
 argument_list|(
-name|authSys
+name|securityHandler
 operator|.
 name|getGid
 argument_list|()
@@ -6117,7 +6145,7 @@ return|;
 block|}
 block|}
 block|}
-DECL|method|mknod (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|mknod (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|READDIR3Response
 name|mknod
@@ -6125,8 +6153,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -6144,7 +6172,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|remove (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|remove (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|REMOVE3Response
 name|remove
@@ -6152,8 +6180,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -6170,14 +6198,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -6185,7 +6205,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -6616,7 +6639,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|rmdir (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|rmdir (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|RMDIR3Response
 name|rmdir
@@ -6624,8 +6647,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -6642,14 +6665,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -6657,7 +6672,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -7120,7 +7138,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|rename (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|rename (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|RENAME3Response
 name|rename
@@ -7128,8 +7146,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -7146,14 +7164,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -7161,7 +7171,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -7684,7 +7697,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|symlink (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|symlink (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|SYMLINK3Response
 name|symlink
@@ -7692,8 +7705,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -7709,7 +7722,7 @@ name|NFS3ERR_NOTSUPP
 argument_list|)
 return|;
 block|}
-DECL|method|link (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|link (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|READDIR3Response
 name|link
@@ -7717,8 +7730,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -7736,7 +7749,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|readdir (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|readdir (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|READDIR3Response
 name|readdir
@@ -7744,8 +7757,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -7788,14 +7801,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -7803,7 +7808,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -8555,7 +8563,7 @@ name|dirList
 argument_list|)
 return|;
 block|}
-DECL|method|readdirplus (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|readdirplus (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|READDIRPLUS3Response
 name|readdirplus
@@ -8563,8 +8571,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -8593,14 +8601,6 @@ name|NFS3ERR_ACCES
 argument_list|)
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -8608,7 +8608,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -9498,7 +9501,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|fsstat (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|fsstat (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|FSSTAT3Response
 name|fsstat
@@ -9506,8 +9509,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -9550,14 +9553,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -9565,7 +9560,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -9809,7 +9807,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|fsinfo (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|fsinfo (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|FSINFO3Response
 name|fsinfo
@@ -9817,8 +9815,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -9861,14 +9859,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -9876,7 +9866,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -10109,7 +10102,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|pathconf (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|pathconf (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|PATHCONF3Response
 name|pathconf
@@ -10117,8 +10110,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -10161,14 +10154,6 @@ return|return
 name|response
 return|;
 block|}
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -10176,7 +10161,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -10373,7 +10361,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|commit (XDR xdr, RpcAuthSys authSys, InetAddress client)
+DECL|method|commit (XDR xdr, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|COMMIT3Response
 name|commit
@@ -10381,8 +10369,8 @@ parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
-name|RpcAuthSys
-name|authSys
+name|SecurityHandler
+name|securityHandler
 parameter_list|,
 name|InetAddress
 name|client
@@ -10399,14 +10387,6 @@ operator|.
 name|NFS3_OK
 argument_list|)
 decl_stmt|;
-name|String
-name|uname
-init|=
-name|authSysCheck
-argument_list|(
-name|authSys
-argument_list|)
-decl_stmt|;
 name|DFSClient
 name|dfsClient
 init|=
@@ -10414,7 +10394,10 @@ name|clientCache
 operator|.
 name|get
 argument_list|(
-name|uname
+name|securityHandler
+operator|.
+name|getUser
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -10810,46 +10793,45 @@ argument_list|)
 return|;
 block|}
 block|}
-DECL|field|UNKNOWN_USER
+DECL|method|getSecurityHandler (Credentials credentials, Verifier verifier)
 specifier|private
-specifier|final
-specifier|static
-name|String
-name|UNKNOWN_USER
-init|=
-literal|"nobody"
-decl_stmt|;
-DECL|field|UNKNOWN_GROUP
-specifier|private
-specifier|final
-specifier|static
-name|String
-name|UNKNOWN_GROUP
-init|=
-literal|"nobody"
-decl_stmt|;
-DECL|method|authSysCheck (RpcAuthSys authSys)
-specifier|private
-name|String
-name|authSysCheck
+name|SecurityHandler
+name|getSecurityHandler
 parameter_list|(
-name|RpcAuthSys
-name|authSys
+name|Credentials
+name|credentials
+parameter_list|,
+name|Verifier
+name|verifier
 parameter_list|)
 block|{
+if|if
+condition|(
+name|credentials
+operator|instanceof
+name|CredentialsSys
+condition|)
+block|{
 return|return
-name|iug
-operator|.
-name|getUserName
+operator|new
+name|SysSecurityHandler
 argument_list|(
-name|authSys
-operator|.
-name|getUid
-argument_list|()
+operator|(
+name|CredentialsSys
+operator|)
+name|credentials
 argument_list|,
-name|UNKNOWN_USER
+name|iug
 argument_list|)
 return|;
+block|}
+else|else
+block|{
+comment|// TODO: support GSS and handle other cases
+return|return
+literal|null
+return|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -10897,10 +10879,13 @@ operator|.
 name|getXid
 argument_list|()
 decl_stmt|;
-name|RpcAuthSys
-name|authSys
+name|Credentials
+name|credentials
 init|=
-literal|null
+name|rpcCall
+operator|.
+name|getCredential
+argument_list|()
 decl_stmt|;
 comment|// Ignore auth only for NFSPROC3_NULL, especially for Linux clients.
 if|if
@@ -10925,6 +10910,18 @@ operator|!=
 name|AuthFlavor
 operator|.
 name|AUTH_SYS
+operator|&&
+name|rpcCall
+operator|.
+name|getCredential
+argument_list|()
+operator|.
+name|getFlavor
+argument_list|()
+operator|!=
+name|AuthFlavor
+operator|.
+name|RPCSEC_GSS
 condition|)
 block|{
 name|LOG
@@ -10941,7 +10938,7 @@ operator|.
 name|getFlavor
 argument_list|()
 operator|+
-literal|" is not AUTH_SYS."
+literal|" is not AUTH_SYS or RPCSEC_GSS."
 argument_list|)
 expr_stmt|;
 name|XDR
@@ -10978,22 +10975,20 @@ return|return
 name|reply
 return|;
 block|}
-name|authSys
-operator|=
-name|RpcAuthSys
-operator|.
-name|from
+block|}
+name|SecurityHandler
+name|securityHandler
+init|=
+name|getSecurityHandler
 argument_list|(
+name|credentials
+argument_list|,
 name|rpcCall
 operator|.
-name|getCredential
-argument_list|()
-operator|.
-name|getBody
+name|getVerifier
 argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 name|NFS3Response
 name|response
 init|=
@@ -11030,7 +11025,7 @@ name|getattr
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11052,7 +11047,7 @@ name|setattr
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11074,7 +11069,7 @@ name|lookup
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11096,7 +11091,7 @@ name|access
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11118,7 +11113,7 @@ name|readlink
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11140,7 +11135,7 @@ name|read
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11166,7 +11161,7 @@ name|channel
 argument_list|,
 name|xid
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11188,7 +11183,7 @@ name|create
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11210,7 +11205,7 @@ name|mkdir
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11232,7 +11227,7 @@ name|symlink
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11254,7 +11249,7 @@ name|mknod
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11276,7 +11271,7 @@ name|remove
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11298,7 +11293,7 @@ name|rmdir
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11320,7 +11315,7 @@ name|rename
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11342,7 +11337,7 @@ name|link
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11364,7 +11359,7 @@ name|readdir
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11386,7 +11381,7 @@ name|readdirplus
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11408,7 +11403,7 @@ name|fsstat
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11430,7 +11425,7 @@ name|fsinfo
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11452,7 +11447,7 @@ name|pathconf
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)
@@ -11474,7 +11469,7 @@ name|commit
 argument_list|(
 name|xdr
 argument_list|,
-name|authSys
+name|securityHandler
 argument_list|,
 name|client
 argument_list|)

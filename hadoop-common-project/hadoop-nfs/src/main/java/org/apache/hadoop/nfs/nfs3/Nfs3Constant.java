@@ -778,6 +778,24 @@ name|ENABLE_FILE_DUMP_DEFAULT
 init|=
 literal|true
 decl_stmt|;
+DECL|field|UNKNOWN_USER
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|UNKNOWN_USER
+init|=
+literal|"nobody"
+decl_stmt|;
+DECL|field|UNKNOWN_GROUP
+specifier|public
+specifier|final
+specifier|static
+name|String
+name|UNKNOWN_GROUP
+init|=
+literal|"nobody"
+decl_stmt|;
 block|}
 end_class
 

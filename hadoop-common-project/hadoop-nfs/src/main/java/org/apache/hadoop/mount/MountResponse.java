@@ -36,8 +36,6 @@ name|hadoop
 operator|.
 name|nfs
 operator|.
-name|security
-operator|.
 name|NfsExports
 import|;
 end_import
@@ -79,6 +77,8 @@ operator|.
 name|hadoop
 operator|.
 name|oncrpc
+operator|.
+name|security
 operator|.
 name|RpcAuthInfo
 operator|.
