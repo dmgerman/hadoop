@@ -861,7 +861,7 @@ argument_list|,
 literal|"build/test"
 argument_list|)
 operator|+
-literal|"/audit.log"
+literal|"/TestFsck-audit.log"
 decl_stmt|;
 comment|// Pattern for:
 comment|// allowed=true ugi=name ip=/address cmd=FSCK src=/ dst=null perm=null

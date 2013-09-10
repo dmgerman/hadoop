@@ -244,22 +244,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|api
 operator|.
 name|records
@@ -461,6 +445,22 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -1408,6 +1408,8 @@ name|lastPreemptCheckTime
 decl_stmt|;
 comment|// This stores per-application scheduling information, indexed by
 comment|// attempt ID's for fast lookup.
+annotation|@
+name|VisibleForTesting
 DECL|field|applications
 specifier|protected
 name|Map
@@ -1419,7 +1421,7 @@ argument_list|>
 name|applications
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
@@ -2749,7 +2751,7 @@ name|status
 init|=
 name|SchedulerUtils
 operator|.
-name|createAbnormalContainerStatus
+name|createPreemptedContainerStatus
 argument_list|(
 name|container
 operator|.

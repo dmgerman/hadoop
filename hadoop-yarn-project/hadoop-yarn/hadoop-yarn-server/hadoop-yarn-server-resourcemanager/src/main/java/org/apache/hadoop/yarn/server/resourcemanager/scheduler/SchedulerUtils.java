@@ -392,7 +392,7 @@ name|UNRESERVED_CONTAINER
 init|=
 literal|"Container reservation no longer required."
 decl_stmt|;
-comment|/**    * Utility to create a {@link ContainerStatus} during exceptional    * circumstances.    *     * @param containerId {@link ContainerId} of returned/released/lost container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for an returned/released/lost     *         container    */
+comment|/**    * Utility to create a {@link ContainerStatus} during exceptional    * circumstances.    *    * @param containerId {@link ContainerId} of returned/released/lost container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for an returned/released/lost     *         container    */
 DECL|method|createAbnormalContainerStatus ( ContainerId containerId, String diagnostics)
 specifier|public
 specifier|static
@@ -401,6 +401,63 @@ name|createAbnormalContainerStatus
 parameter_list|(
 name|ContainerId
 name|containerId
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|)
+block|{
+return|return
+name|createAbnormalContainerStatus
+argument_list|(
+name|containerId
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|ABORTED
+argument_list|,
+name|diagnostics
+argument_list|)
+return|;
+block|}
+comment|/**    * Utility to create a {@link ContainerStatus} during exceptional    * circumstances.    *    * @param containerId {@link ContainerId} of returned/released/lost container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for an returned/released/lost    *         container    */
+DECL|method|createPreemptedContainerStatus ( ContainerId containerId, String diagnostics)
+specifier|public
+specifier|static
+name|ContainerStatus
+name|createPreemptedContainerStatus
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|String
+name|diagnostics
+parameter_list|)
+block|{
+return|return
+name|createAbnormalContainerStatus
+argument_list|(
+name|containerId
+argument_list|,
+name|ContainerExitStatus
+operator|.
+name|PREEMPTED
+argument_list|,
+name|diagnostics
+argument_list|)
+return|;
+block|}
+comment|/**    * Utility to create a {@link ContainerStatus} during exceptional    * circumstances.    *     * @param containerId {@link ContainerId} of returned/released/lost container.    * @param diagnostics diagnostic message    * @return<code>ContainerStatus</code> for an returned/released/lost     *         container    */
+DECL|method|createAbnormalContainerStatus ( ContainerId containerId, int exitStatus, String diagnostics)
+specifier|private
+specifier|static
+name|ContainerStatus
+name|createAbnormalContainerStatus
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|,
+name|int
+name|exitStatus
 parameter_list|,
 name|String
 name|diagnostics
@@ -436,9 +493,7 @@ name|containerStatus
 operator|.
 name|setExitStatus
 argument_list|(
-name|ContainerExitStatus
-operator|.
-name|ABORTED
+name|exitStatus
 argument_list|)
 expr_stmt|;
 name|containerStatus

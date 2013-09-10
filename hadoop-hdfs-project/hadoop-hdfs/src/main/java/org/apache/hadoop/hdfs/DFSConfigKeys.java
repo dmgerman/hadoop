@@ -3846,6 +3846,26 @@ name|DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT
 init|=
 literal|0.03f
 decl_stmt|;
+comment|// The number of NN response dropped by client proactively in each RPC call.
+comment|// For testing NN retry cache, we can set this property with positive value.
+DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+init|=
+literal|"dfs.client.test.drop.namenode.response.number"
+decl_stmt|;
+DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
+init|=
+literal|0
+decl_stmt|;
 comment|// Hidden configuration undocumented in hdfs-site. xml
 comment|// Timeout to wait for block receiver and responder thread to stop
 DECL|field|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_KEY

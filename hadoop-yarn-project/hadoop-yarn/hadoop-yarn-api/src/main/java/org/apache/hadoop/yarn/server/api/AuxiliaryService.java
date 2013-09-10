@@ -205,6 +205,26 @@ name|ByteBuffer
 name|getMetaData
 parameter_list|()
 function_decl|;
+comment|/**    * A new container is started on this NodeManager. This is a signal to    * this {@link AuxiliaryService} about the container initialization.    * This method is called when the NodeManager receives the container launch    * command from the ApplicationMaster and before the container process is     * launched.    *    * @param initContainerContext context for the container's initialization    */
+DECL|method|initializeContainer (ContainerInitializationContext initContainerContext)
+specifier|public
+name|void
+name|initializeContainer
+parameter_list|(
+name|ContainerInitializationContext
+name|initContainerContext
+parameter_list|)
+block|{   }
+comment|/**    * A container is finishing on this NodeManager. This is a signal to this    * {@link AuxiliaryService} about the same.    *    * @param stopContainerContext context for the container termination    */
+DECL|method|stopContainer (ContainerTerminationContext stopContainerContext)
+specifier|public
+name|void
+name|stopContainer
+parameter_list|(
+name|ContainerTerminationContext
+name|stopContainerContext
+parameter_list|)
+block|{   }
 block|}
 end_class
 

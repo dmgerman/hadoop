@@ -33,6 +33,12 @@ name|APPLICATION_INIT
 block|,
 DECL|enumConstant|APPLICATION_STOP
 name|APPLICATION_STOP
+block|,
+DECL|enumConstant|CONTAINER_INIT
+name|CONTAINER_INIT
+block|,
+DECL|enumConstant|CONTAINER_STOP
+name|CONTAINER_STOP
 block|}
 end_enum
 

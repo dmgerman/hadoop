@@ -436,7 +436,7 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|URLUtils
+name|URLConnectionFactory
 import|;
 end_import
 
@@ -728,6 +728,14 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+DECL|field|connectionFactory
+name|URLConnectionFactory
+name|connectionFactory
+init|=
+name|URLConnectionFactory
+operator|.
+name|DEFAULT_CONNECTION_FACTORY
+decl_stmt|;
 DECL|field|TOKEN_KIND
 specifier|public
 specifier|static
@@ -1818,17 +1826,19 @@ decl_stmt|;
 specifier|final
 name|HttpURLConnection
 name|connection
-init|=
+decl_stmt|;
+name|connection
+operator|=
 operator|(
 name|HttpURLConnection
 operator|)
-name|URLUtils
+name|connectionFactory
 operator|.
 name|openConnection
 argument_list|(
 name|url
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|connection
 operator|.
 name|setRequestMethod
@@ -1922,6 +1932,14 @@ name|ByteRangeInputStream
 operator|.
 name|URLOpener
 block|{
+DECL|field|connectionFactory
+name|URLConnectionFactory
+name|connectionFactory
+init|=
+name|URLConnectionFactory
+operator|.
+name|DEFAULT_CONNECTION_FACTORY
+decl_stmt|;
 DECL|method|RangeHeaderUrlOpener (final URL url)
 name|RangeHeaderUrlOpener
 parameter_list|(
@@ -1948,7 +1966,7 @@ return|return
 operator|(
 name|HttpURLConnection
 operator|)
-name|URLUtils
+name|connectionFactory
 operator|.
 name|openConnection
 argument_list|(

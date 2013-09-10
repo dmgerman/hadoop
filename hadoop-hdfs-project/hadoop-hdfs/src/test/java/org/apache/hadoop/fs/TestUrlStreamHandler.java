@@ -156,6 +156,20 @@ begin_import
 import|import
 name|org
 operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|test
+operator|.
+name|PathUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|junit
 operator|.
 name|Test
@@ -172,6 +186,21 @@ specifier|public
 class|class
 name|TestUrlStreamHandler
 block|{
+DECL|field|TEST_ROOT_DIR
+specifier|private
+specifier|static
+name|File
+name|TEST_ROOT_DIR
+init|=
+name|PathUtils
+operator|.
+name|getTestDir
+argument_list|(
+name|TestUrlStreamHandler
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 comment|/**    * Test opening and reading from an InputStream through a hdfs:// URL.    *<p>    * First generate a file with some content through the FileSystem API, then    * try to open and read the file through the URL stream API.    *     * @throws IOException    */
 annotation|@
 name|Test
@@ -469,24 +498,10 @@ name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
 comment|// Locate the test temporary directory.
-name|File
-name|tmpDir
-init|=
-operator|new
-name|File
-argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
-literal|"hadoop.tmp.dir"
-argument_list|)
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 operator|!
-name|tmpDir
+name|TEST_ROOT_DIR
 operator|.
 name|exists
 argument_list|()
@@ -495,7 +510,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|tmpDir
+name|TEST_ROOT_DIR
 operator|.
 name|mkdirs
 argument_list|()
@@ -506,7 +521,7 @@ name|IOException
 argument_list|(
 literal|"Cannot create temporary directory: "
 operator|+
-name|tmpDir
+name|TEST_ROOT_DIR
 argument_list|)
 throw|;
 block|}
@@ -516,7 +531,7 @@ init|=
 operator|new
 name|File
 argument_list|(
-name|tmpDir
+name|TEST_ROOT_DIR
 argument_list|,
 literal|"thefile"
 argument_list|)

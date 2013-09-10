@@ -385,6 +385,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|RetryInvocationHandler (FailoverProxyProvider<T> proxyProvider, RetryPolicy defaultPolicy, Map<String, RetryPolicy> methodNameToPolicyMap)
+specifier|protected
 name|RetryInvocationHandler
 parameter_list|(
 name|FailoverProxyProvider

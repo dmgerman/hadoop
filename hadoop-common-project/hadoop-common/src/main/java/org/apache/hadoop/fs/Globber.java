@@ -286,56 +286,6 @@ literal|null
 return|;
 block|}
 block|}
-DECL|method|getFileLinkStatus (Path path)
-specifier|private
-name|FileStatus
-name|getFileLinkStatus
-parameter_list|(
-name|Path
-name|path
-parameter_list|)
-block|{
-try|try
-block|{
-if|if
-condition|(
-name|fs
-operator|!=
-literal|null
-condition|)
-block|{
-return|return
-name|fs
-operator|.
-name|getFileLinkStatus
-argument_list|(
-name|path
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-return|return
-name|fc
-operator|.
-name|getFileLinkStatus
-argument_list|(
-name|path
-argument_list|)
-return|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-return|return
-literal|null
-return|;
-block|}
-block|}
 DECL|method|listStatus (Path path)
 specifier|private
 name|FileStatus
@@ -631,28 +581,6 @@ block|}
 block|}
 return|return
 name|authority
-return|;
-block|}
-comment|/**    * The glob filter builds a regexp per path component.  If the component    * does not contain a shell metachar, then it falls back to appending the    * raw string to the list of built up paths.  This raw path needs to have    * the quoting removed.  Ie. convert all occurrences of "\X" to "X"    * @param name of the path component    * @return the unquoted path component    */
-DECL|method|unquotePathComponent (String name)
-specifier|private
-specifier|static
-name|String
-name|unquotePathComponent
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-block|{
-return|return
-name|name
-operator|.
-name|replaceAll
-argument_list|(
-literal|"\\\\(.)"
-argument_list|,
-literal|"$1"
-argument_list|)
 return|;
 block|}
 DECL|method|glob ()
@@ -1025,21 +953,6 @@ condition|)
 block|{
 continue|continue;
 block|}
-comment|// For components without pattern, we get its FileStatus directly
-comment|// using getFileLinkStatus for two reasons:
-comment|// 1. It should be faster to only get FileStatus needed rather than
-comment|//    get all children.
-comment|// 2. Some special filesystem directories (e.g. HDFS snapshot
-comment|//    directories) are not returned by listStatus, but do exist if
-comment|//    checked explicitly via getFileLinkStatus.
-if|if
-condition|(
-name|globFilter
-operator|.
-name|hasPattern
-argument_list|()
-condition|)
-block|{
 name|FileStatus
 index|[]
 name|children
@@ -1102,57 +1015,6 @@ operator|.
 name|add
 argument_list|(
 name|child
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-block|}
-else|else
-block|{
-name|Path
-name|p
-init|=
-operator|new
-name|Path
-argument_list|(
-name|candidate
-operator|.
-name|getPath
-argument_list|()
-argument_list|,
-name|unquotePathComponent
-argument_list|(
-name|component
-argument_list|)
-argument_list|)
-decl_stmt|;
-name|FileStatus
-name|s
-init|=
-name|getFileLinkStatus
-argument_list|(
-name|p
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|s
-operator|!=
-literal|null
-condition|)
-block|{
-name|s
-operator|.
-name|setPath
-argument_list|(
-name|p
-argument_list|)
-expr_stmt|;
-name|newCandidates
-operator|.
-name|add
-argument_list|(
-name|s
 argument_list|)
 expr_stmt|;
 block|}

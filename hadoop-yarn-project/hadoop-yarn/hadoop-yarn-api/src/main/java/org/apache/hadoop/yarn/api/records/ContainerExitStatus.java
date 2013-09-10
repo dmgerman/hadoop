@@ -107,6 +107,17 @@ init|=
 operator|-
 literal|101
 decl_stmt|;
+comment|/**    * Containers preempted by the framework.    */
+DECL|field|PREEMPTED
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|PREEMPTED
+init|=
+operator|-
+literal|102
+decl_stmt|;
 block|}
 end_class
 

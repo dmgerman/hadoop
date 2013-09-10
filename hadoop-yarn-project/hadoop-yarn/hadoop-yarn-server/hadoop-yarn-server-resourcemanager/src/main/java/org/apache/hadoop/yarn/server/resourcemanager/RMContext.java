@@ -286,6 +286,26 @@ name|NMTokenSecretManagerInRM
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|RMDelegationTokenSecretManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * Context of the ResourceManager.  */
 end_comment
@@ -375,6 +395,32 @@ DECL|method|getClientToAMTokenSecretManager ()
 name|ClientToAMTokenSecretManagerInRM
 name|getClientToAMTokenSecretManager
 parameter_list|()
+function_decl|;
+DECL|method|setClientRMService (ClientRMService clientRMService)
+name|void
+name|setClientRMService
+parameter_list|(
+name|ClientRMService
+name|clientRMService
+parameter_list|)
+function_decl|;
+DECL|method|getClientRMService ()
+name|ClientRMService
+name|getClientRMService
+parameter_list|()
+function_decl|;
+DECL|method|getRMDelegationTokenSecretManager ()
+name|RMDelegationTokenSecretManager
+name|getRMDelegationTokenSecretManager
+parameter_list|()
+function_decl|;
+DECL|method|setRMDelegationTokenSecretManager ( RMDelegationTokenSecretManager delegationTokenSecretManager)
+name|void
+name|setRMDelegationTokenSecretManager
+parameter_list|(
+name|RMDelegationTokenSecretManager
+name|delegationTokenSecretManager
+parameter_list|)
 function_decl|;
 block|}
 end_interface

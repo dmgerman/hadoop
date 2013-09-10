@@ -288,6 +288,8 @@ operator|+
 name|TEST
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -302,11 +304,21 @@ argument_list|(
 literal|"Test webapp dir "
 operator|+
 name|testWebappDir
+operator|.
+name|getCanonicalPath
+argument_list|()
 operator|+
 literal|" missing"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{     }
 block|}
 comment|/**    * Create an HttpServer instance on the given address for the given webapp    * @param host to bind    * @param port to bind    * @return the server    * @throws IOException if it could not be created    */
 DECL|method|createServer (String host, int port)

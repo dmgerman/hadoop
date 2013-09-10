@@ -94,17 +94,18 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|class|URLUtils
+DECL|class|URLConnectionFactory
 specifier|public
 class|class
-name|URLUtils
+name|URLConnectionFactory
 block|{
 comment|/**    * Timeout for socket connects and reads    */
-DECL|field|SOCKET_TIMEOUT
+DECL|field|DEFAULT_SOCKET_TIMEOUT
 specifier|public
+specifier|final
 specifier|static
 name|int
-name|SOCKET_TIMEOUT
+name|DEFAULT_SOCKET_TIMEOUT
 init|=
 literal|1
 operator|*
@@ -113,10 +114,42 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 1 minute
+DECL|field|DEFAULT_CONNECTION_FACTORY
+specifier|public
+specifier|static
+specifier|final
+name|URLConnectionFactory
+name|DEFAULT_CONNECTION_FACTORY
+init|=
+operator|new
+name|URLConnectionFactory
+argument_list|(
+name|DEFAULT_SOCKET_TIMEOUT
+argument_list|)
+decl_stmt|;
+DECL|field|socketTimeout
+specifier|private
+name|int
+name|socketTimeout
+decl_stmt|;
+DECL|method|URLConnectionFactory (int socketTimeout)
+specifier|public
+name|URLConnectionFactory
+parameter_list|(
+name|int
+name|socketTimeout
+parameter_list|)
+block|{
+name|this
+operator|.
+name|socketTimeout
+operator|=
+name|socketTimeout
+expr_stmt|;
+block|}
 comment|/**    * Opens a url with read and connect timeouts    * @param url to open    * @return URLConnection    * @throws IOException    */
 DECL|method|openConnection (URL url)
 specifier|public
-specifier|static
 name|URLConnection
 name|openConnection
 parameter_list|(
@@ -145,7 +178,7 @@ return|;
 block|}
 comment|/**    * Sets timeout parameters on the given URLConnection.    *     * @param connection URLConnection to set    */
 DECL|method|setTimeouts (URLConnection connection)
-specifier|static
+specifier|public
 name|void
 name|setTimeouts
 parameter_list|(
@@ -157,14 +190,14 @@ name|connection
 operator|.
 name|setConnectTimeout
 argument_list|(
-name|SOCKET_TIMEOUT
+name|socketTimeout
 argument_list|)
 expr_stmt|;
 name|connection
 operator|.
 name|setReadTimeout
 argument_list|(
-name|SOCKET_TIMEOUT
+name|socketTimeout
 argument_list|)
 expr_stmt|;
 block|}
