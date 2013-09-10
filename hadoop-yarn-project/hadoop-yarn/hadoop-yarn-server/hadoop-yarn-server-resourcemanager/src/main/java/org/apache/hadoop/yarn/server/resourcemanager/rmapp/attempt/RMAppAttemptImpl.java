@@ -4676,6 +4676,21 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
+comment|// There must be at least one container allocated, because a
+comment|// CONTAINER_ALLOCATED is emitted after an RMContainer is constructed,
+comment|// and is put in SchedulerApplication#newlyAllocatedContainers. Then,
+comment|// YarnScheduler#allocate will fetch it.
+assert|assert
+name|amContainerAllocation
+operator|.
+name|getContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|!=
+literal|0
+assert|;
 comment|// Set the masterContainer
 name|appAttempt
 operator|.
