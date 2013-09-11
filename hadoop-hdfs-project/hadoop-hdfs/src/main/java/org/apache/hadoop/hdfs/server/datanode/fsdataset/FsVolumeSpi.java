@@ -42,6 +42,20 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|StorageType
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is an interface for the underlying volume.  */
 end_comment
@@ -99,6 +113,12 @@ name|bpid
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+DECL|method|getStorageType ()
+specifier|public
+name|StorageType
+name|getStorageType
+parameter_list|()
 function_decl|;
 block|}
 end_interface

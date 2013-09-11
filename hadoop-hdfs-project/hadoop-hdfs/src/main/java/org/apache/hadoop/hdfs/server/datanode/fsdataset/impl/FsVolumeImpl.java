@@ -166,6 +166,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -253,6 +267,12 @@ specifier|final
 name|String
 name|storageID
 decl_stmt|;
+DECL|field|storageType
+specifier|private
+specifier|final
+name|StorageType
+name|storageType
+decl_stmt|;
 DECL|field|bpSlices
 specifier|private
 specifier|final
@@ -292,7 +312,7 @@ specifier|final
 name|long
 name|reserved
 decl_stmt|;
-DECL|method|FsVolumeImpl (FsDatasetImpl dataset, String storageID, File currentDir, Configuration conf)
+DECL|method|FsVolumeImpl (FsDatasetImpl dataset, String storageID, File currentDir, Configuration conf, StorageType storageType)
 name|FsVolumeImpl
 parameter_list|(
 name|FsDatasetImpl
@@ -306,6 +326,9 @@ name|currentDir
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|IOException
@@ -364,6 +387,12 @@ name|parent
 argument_list|,
 name|conf
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|storageType
+operator|=
+name|storageType
 expr_stmt|;
 block|}
 DECL|method|getCurrentDir ()
@@ -1486,6 +1515,18 @@ parameter_list|()
 block|{
 return|return
 name|storageID
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStorageType ()
+specifier|public
+name|StorageType
+name|getStorageType
+parameter_list|()
+block|{
+return|return
+name|storageType
 return|;
 block|}
 block|}

@@ -530,16 +530,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|FileInputStream
 import|;
 end_import
@@ -621,16 +611,6 @@ operator|.
 name|net
 operator|.
 name|SocketTimeoutException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
 import|;
 end_import
 
@@ -1586,24 +1566,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|common
-operator|.
-name|Util
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|datanode
 operator|.
 name|SecureDataNodeStarter
@@ -2181,20 +2143,6 @@ operator|.
 name|util
 operator|.
 name|StringUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|Time
 import|;
 end_import
 
@@ -8792,7 +8740,8 @@ return|return
 name|locations
 return|;
 block|}
-DECL|method|getStorageLocations (Configuration conf)
+DECL|method|getStorageLocations ( Configuration conf)
+specifier|public
 specifier|static
 name|Collection
 argument_list|<
