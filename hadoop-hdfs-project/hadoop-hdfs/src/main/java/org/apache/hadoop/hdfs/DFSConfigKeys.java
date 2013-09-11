@@ -2006,6 +2006,24 @@ name|DFS_NAMENODE_DEFAULT_AUDIT_LOGGER_NAME
 init|=
 literal|"default"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_KEY
+init|=
+literal|"dfs.namenode.audit.log.token.tracking.id"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 comment|// Much code in hdfs is not yet updated to use these keys.
 DECL|field|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
 specifier|public
