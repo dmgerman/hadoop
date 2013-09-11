@@ -1346,7 +1346,12 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"MRClientService"
+name|MRClientService
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
