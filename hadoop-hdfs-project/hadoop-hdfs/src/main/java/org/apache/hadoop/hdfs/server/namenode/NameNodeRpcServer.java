@@ -634,7 +634,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheDirective
+name|PathBasedCacheDirective
 import|;
 end_import
 
@@ -650,7 +650,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheEntry
+name|PathBasedCacheEntry
 import|;
 end_import
 
@@ -7219,20 +7219,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addPathCacheDirectives ( List<PathCacheDirective> paths)
+DECL|method|addPathBasedCacheDirectives ( List<PathBasedCacheDirective> paths)
 specifier|public
 name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
-name|addPathCacheDirectives
+name|addPathBasedCacheDirectives
 parameter_list|(
 name|List
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|>
 name|paths
 parameter_list|)
@@ -7242,7 +7242,7 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|addPathCacheDirectives
+name|addPathBasedCacheDirectives
 argument_list|(
 name|paths
 argument_list|)
@@ -7250,7 +7250,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|removePathCacheEntries (List<Long> ids)
+DECL|method|removePathBasedCacheEntries (List<Long> ids)
 specifier|public
 name|List
 argument_list|<
@@ -7259,7 +7259,7 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-name|removePathCacheEntries
+name|removePathBasedCacheEntries
 parameter_list|(
 name|List
 argument_list|<
@@ -7273,22 +7273,22 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|removePathCacheEntries
+name|removePathBasedCacheEntries
 argument_list|(
 name|ids
 argument_list|)
 return|;
 block|}
-DECL|class|ServerSidePathCacheEntriesIterator
+DECL|class|ServerSidePathBasedCacheEntriesIterator
 specifier|private
 class|class
-name|ServerSidePathCacheEntriesIterator
+name|ServerSidePathBasedCacheEntriesIterator
 extends|extends
 name|BatchedRemoteIterator
 argument_list|<
 name|Long
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 block|{
 DECL|field|pool
@@ -7297,15 +7297,24 @@ specifier|final
 name|String
 name|pool
 decl_stmt|;
-DECL|method|ServerSidePathCacheEntriesIterator (Long firstKey, String pool)
+DECL|field|path
+specifier|private
+specifier|final
+name|String
+name|path
+decl_stmt|;
+DECL|method|ServerSidePathBasedCacheEntriesIterator (Long firstKey, String pool, String path)
 specifier|public
-name|ServerSidePathCacheEntriesIterator
+name|ServerSidePathBasedCacheEntriesIterator
 parameter_list|(
 name|Long
 name|firstKey
 parameter_list|,
 name|String
 name|pool
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 block|{
 name|super
@@ -7319,6 +7328,12 @@ name|pool
 operator|=
 name|pool
 expr_stmt|;
+name|this
+operator|.
+name|path
+operator|=
+name|path
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -7326,7 +7341,7 @@ DECL|method|makeRequest ( Long nextKey)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|makeRequest
 parameter_list|(
@@ -7339,22 +7354,24 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 argument_list|(
 name|nextKey
 argument_list|,
 name|pool
+argument_list|,
+name|path
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|elementToPrevKey (PathCacheEntry entry)
+DECL|method|elementToPrevKey (PathBasedCacheEntry entry)
 specifier|public
 name|Long
 name|elementToPrevKey
 parameter_list|(
-name|PathCacheEntry
+name|PathBasedCacheEntry
 name|entry
 parameter_list|)
 block|{
@@ -7368,30 +7385,35 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|listPathCacheEntries (long prevId, String pool)
+DECL|method|listPathBasedCacheEntries (long prevId, String pool, String path)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 parameter_list|(
 name|long
 name|prevId
 parameter_list|,
 name|String
 name|pool
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 return|return
 operator|new
-name|ServerSidePathCacheEntriesIterator
+name|ServerSidePathBasedCacheEntriesIterator
 argument_list|(
 name|prevId
 argument_list|,
 name|pool
+argument_list|,
+name|path
 argument_list|)
 return|;
 block|}

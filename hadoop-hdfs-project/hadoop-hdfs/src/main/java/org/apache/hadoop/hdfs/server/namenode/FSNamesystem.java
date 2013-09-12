@@ -1766,7 +1766,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheDirective
+name|PathBasedCacheDirective
 import|;
 end_import
 
@@ -1782,7 +1782,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheEntry
+name|PathBasedCacheEntry
 import|;
 end_import
 
@@ -31246,19 +31246,19 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|addPathCacheDirectives ( List<PathCacheDirective> directives)
+DECL|method|addPathBasedCacheDirectives ( List<PathBasedCacheDirective> directives)
 name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
-name|addPathCacheDirectives
+name|addPathBasedCacheDirectives
 parameter_list|(
 name|List
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|>
 name|directives
 parameter_list|)
@@ -31295,7 +31295,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 operator|)
@@ -31325,7 +31325,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|results
@@ -31361,7 +31361,7 @@ throw|throw
 operator|new
 name|SafeModeException
 argument_list|(
-literal|"Cannot add path cache directive"
+literal|"Cannot add PathBasedCache directive"
 argument_list|,
 name|safeMode
 argument_list|)
@@ -31378,7 +31378,7 @@ argument_list|,
 name|pc
 argument_list|)
 expr_stmt|;
-comment|//getEditLog().logAddPathCacheDirectives(results); FIXME: HDFS-5119
+comment|//getEditLog().logAddPathBasedCacheDirectives(results); FIXME: HDFS-5119
 name|success
 operator|=
 literal|true
@@ -31414,7 +31414,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"addPathCacheDirectives"
+literal|"addPathBasedCacheDirectives"
 argument_list|,
 literal|null
 argument_list|,
@@ -31445,7 +31445,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|removePathCacheEntries (List<Long> ids)
+DECL|method|removePathBasedCacheEntries (List<Long> ids)
 name|List
 argument_list|<
 name|Fallible
@@ -31453,7 +31453,7 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-name|removePathCacheEntries
+name|removePathBasedCacheEntries
 parameter_list|(
 name|List
 argument_list|<
@@ -31560,7 +31560,7 @@ throw|throw
 operator|new
 name|SafeModeException
 argument_list|(
-literal|"Cannot remove path cache directives"
+literal|"Cannot remove PathBasedCache directives"
 argument_list|,
 name|safeMode
 argument_list|)
@@ -31577,7 +31577,7 @@ argument_list|,
 name|pc
 argument_list|)
 expr_stmt|;
-comment|//getEditLog().logRemovePathCacheEntries(results); FIXME: HDFS-5119
+comment|//getEditLog().logRemovePathBasedCacheEntries(results); FIXME: HDFS-5119
 name|success
 operator|=
 literal|true
@@ -31601,7 +31601,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"removePathCacheEntries"
+literal|"removePathBasedCacheEntries"
 argument_list|,
 literal|null
 argument_list|,
@@ -31633,18 +31633,21 @@ return|return
 name|results
 return|;
 block|}
-DECL|method|listPathCacheEntries (long startId, String pool)
+DECL|method|listPathBasedCacheEntries (long startId, String pool, String path)
 name|BatchedListEntries
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 parameter_list|(
 name|long
 name|startId
 parameter_list|,
 name|String
 name|pool
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException
@@ -31662,7 +31665,7 @@ literal|null
 decl_stmt|;
 name|BatchedListEntries
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|results
 decl_stmt|;
@@ -31694,11 +31697,13 @@ name|results
 operator|=
 name|cacheManager
 operator|.
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 argument_list|(
 name|startId
 argument_list|,
 name|pool
+argument_list|,
+name|path
 argument_list|,
 name|pc
 argument_list|)
@@ -31726,7 +31731,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"listPathCacheEntries"
+literal|"listPathBasedCacheEntries"
 argument_list|,
 literal|null
 argument_list|,

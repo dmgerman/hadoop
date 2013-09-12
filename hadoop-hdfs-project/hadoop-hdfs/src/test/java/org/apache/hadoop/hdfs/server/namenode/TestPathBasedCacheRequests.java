@@ -208,7 +208,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|EmptyPathError
 import|;
@@ -226,7 +226,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|InvalidPoolNameError
 import|;
@@ -244,7 +244,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|InvalidPathNameError
 import|;
@@ -262,7 +262,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|PoolWritePermissionDeniedError
 import|;
@@ -296,7 +296,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathCacheEntryException
+name|RemovePathBasedCacheEntryException
 operator|.
 name|InvalidIdException
 import|;
@@ -314,7 +314,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheDirective
+name|PathBasedCacheDirective
 import|;
 end_import
 
@@ -330,7 +330,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheEntry
+name|PathBasedCacheEntry
 import|;
 end_import
 
@@ -346,7 +346,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathCacheEntryException
+name|RemovePathBasedCacheEntryException
 operator|.
 name|NoSuchIdException
 import|;
@@ -423,10 +423,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestPathCacheRequests
+DECL|class|TestPathBasedCacheRequests
 specifier|public
 class|class
-name|TestPathCacheRequests
+name|TestPathBasedCacheRequests
 block|{
 DECL|field|LOG
 specifier|static
@@ -438,7 +438,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TestPathCacheRequests
+name|TestPathBasedCacheRequests
 operator|.
 name|class
 argument_list|)
@@ -764,27 +764,6 @@ literal|150
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|proto
-operator|.
-name|modifyCachePool
-argument_list|(
-operator|new
-name|CachePoolInfo
-argument_list|(
-literal|"pool1"
-argument_list|)
-operator|.
-name|setOwnerName
-argument_list|(
-literal|"def"
-argument_list|)
-operator|.
-name|setGroupName
-argument_list|(
-literal|"456"
-argument_list|)
-argument_list|)
-expr_stmt|;
 name|RemoteIterator
 argument_list|<
 name|CachePoolInfo
@@ -806,6 +785,73 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|assertEquals
+argument_list|(
+literal|"pool1"
+argument_list|,
+name|info
+operator|.
+name|getPoolName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"abc"
+argument_list|,
+name|info
+operator|.
+name|getOwnerName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"123"
+argument_list|,
+name|info
+operator|.
+name|getGroupName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|proto
+operator|.
+name|modifyCachePool
+argument_list|(
+operator|new
+name|CachePoolInfo
+argument_list|(
+literal|"pool1"
+argument_list|)
+operator|.
+name|setOwnerName
+argument_list|(
+literal|"def"
+argument_list|)
+operator|.
+name|setGroupName
+argument_list|(
+literal|"456"
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|iter
+operator|=
+name|proto
+operator|.
+name|listCachePools
+argument_list|(
+literal|""
+argument_list|)
+expr_stmt|;
+name|info
+operator|=
+name|iter
+operator|.
+name|next
+argument_list|()
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"pool1"
@@ -926,7 +972,7 @@ name|ioe
 parameter_list|)
 block|{     }
 block|}
-DECL|method|validateListAll ( RemoteIterator<PathCacheEntry> iter, long id0, long id1, long id2)
+DECL|method|validateListAll ( RemoteIterator<PathBasedCacheEntry> iter, long id0, long id1, long id2)
 specifier|private
 specifier|static
 name|void
@@ -934,7 +980,7 @@ name|validateListAll
 parameter_list|(
 name|RemoteIterator
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|iter
 parameter_list|,
@@ -955,12 +1001,12 @@ operator|.
 name|assertEquals
 argument_list|(
 operator|new
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|(
 name|id0
 argument_list|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/alpha"
 argument_list|,
@@ -979,12 +1025,12 @@ operator|.
 name|assertEquals
 argument_list|(
 operator|new
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|(
 name|id1
 argument_list|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/beta"
 argument_list|,
@@ -1003,12 +1049,12 @@ operator|.
 name|assertEquals
 argument_list|(
 operator|new
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|(
 name|id2
 argument_list|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/gamma"
 argument_list|,
@@ -1185,7 +1231,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|addResults1
@@ -1201,7 +1247,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 argument_list|>
@@ -1214,7 +1260,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|run
@@ -1225,18 +1271,18 @@ block|{
 return|return
 name|proto
 operator|.
-name|addPathCacheDirectives
+name|addPathBasedCacheDirectives
 argument_list|(
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 index|[]
 block|{
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/alpha"
 argument_list|,
@@ -1244,7 +1290,7 @@ literal|"pool1"
 argument_list|)
 block|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/beta"
 argument_list|,
@@ -1252,7 +1298,7 @@ literal|"pool2"
 argument_list|)
 block|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|""
 argument_list|,
@@ -1260,7 +1306,7 @@ literal|"pool3"
 argument_list|)
 block|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/zeta"
 argument_list|,
@@ -1268,11 +1314,19 @@ literal|"nonexistent_pool"
 argument_list|)
 block|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/zeta"
 argument_list|,
 literal|"pool4"
+argument_list|)
+block|,
+operator|new
+name|PathBasedCacheDirective
+argument_list|(
+literal|"//illegal/path/"
+argument_list|,
+literal|"pool1"
 argument_list|)
 block|}
 argument_list|)
@@ -1447,29 +1501,60 @@ name|PoolWritePermissionDeniedError
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
+name|addResults1
+operator|.
+name|get
+argument_list|(
+literal|5
+argument_list|)
+operator|.
+name|get
+argument_list|()
+expr_stmt|;
+name|Assert
+operator|.
+name|fail
+argument_list|(
+literal|"expected an error when adding a malformed path "
+operator|+
+literal|"to the cache directives."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+comment|//Assert.assertTrue(ioe.getCause()
+comment|//instanceof PoolWritePermissionDeniedError);
+block|}
 name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|addResults2
 init|=
 name|proto
 operator|.
-name|addPathCacheDirectives
+name|addPathBasedCacheDirectives
 argument_list|(
 name|Arrays
 operator|.
 name|asList
 argument_list|(
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 index|[]
 block|{
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/alpha"
 argument_list|,
@@ -1477,7 +1562,7 @@ literal|"pool1"
 argument_list|)
 block|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/theta"
 argument_list|,
@@ -1485,7 +1570,7 @@ literal|""
 argument_list|)
 block|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"bogus"
 argument_list|,
@@ -1493,7 +1578,7 @@ literal|"pool1"
 argument_list|)
 block|,
 operator|new
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|(
 literal|"/gamma"
 argument_list|,
@@ -1525,7 +1610,7 @@ name|assertEquals
 argument_list|(
 literal|"expected to get back the same ID as last time "
 operator|+
-literal|"when re-adding an existing path cache directive."
+literal|"when re-adding an existing PathBasedCache directive."
 argument_list|,
 name|ids1
 index|[
@@ -1551,7 +1636,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"expected an error when adding a path cache "
+literal|"expected an error when adding a PathBasedCache "
 operator|+
 literal|"directive with an empty pool name."
 argument_list|)
@@ -1592,7 +1677,7 @@ name|Assert
 operator|.
 name|fail
 argument_list|(
-literal|"expected an error when adding a path cache "
+literal|"expected an error when adding a PathBasedCache "
 operator|+
 literal|"directive with a non-absolute path name."
 argument_list|)
@@ -1647,17 +1732,19 @@ argument_list|()
 expr_stmt|;
 name|RemoteIterator
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|iter
 init|=
 name|proto
 operator|.
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 argument_list|(
 literal|0
 argument_list|,
-literal|""
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|validateListAll
@@ -1684,11 +1771,13 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 argument_list|(
 literal|0
 argument_list|,
-literal|""
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|validateListAll
@@ -1715,11 +1804,13 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 argument_list|(
 literal|0
 argument_list|,
 literal|"pool3"
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1736,11 +1827,13 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 argument_list|(
 literal|0
 argument_list|,
 literal|"pool2"
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1784,7 +1877,7 @@ name|removeResults1
 init|=
 name|proto
 operator|.
-name|removePathCacheEntries
+name|removePathBasedCacheEntries
 argument_list|(
 name|Arrays
 operator|.
@@ -1914,11 +2007,13 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 argument_list|(
 literal|0
 argument_list|,
 literal|"pool2"
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|Assert

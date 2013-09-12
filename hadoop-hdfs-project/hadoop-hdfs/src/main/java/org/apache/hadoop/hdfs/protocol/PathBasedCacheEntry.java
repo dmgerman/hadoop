@@ -65,15 +65,15 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An entry in the NameNode's path cache.  */
+comment|/**  * An entry in the NameNode's PathBasedCache.  */
 end_comment
 
 begin_class
-DECL|class|PathCacheEntry
+DECL|class|PathBasedCacheEntry
 specifier|public
 specifier|final
 class|class
-name|PathCacheEntry
+name|PathBasedCacheEntry
 block|{
 DECL|field|entryId
 specifier|private
@@ -84,17 +84,17 @@ decl_stmt|;
 DECL|field|directive
 specifier|private
 specifier|final
-name|PathCacheDirective
+name|PathBasedCacheDirective
 name|directive
 decl_stmt|;
-DECL|method|PathCacheEntry (long entryId, PathCacheDirective directive)
+DECL|method|PathBasedCacheEntry (long entryId, PathBasedCacheDirective directive)
 specifier|public
-name|PathCacheEntry
+name|PathBasedCacheEntry
 parameter_list|(
 name|long
 name|entryId
 parameter_list|,
-name|PathCacheDirective
+name|PathBasedCacheDirective
 name|directive
 parameter_list|)
 block|{
@@ -132,7 +132,7 @@ return|;
 block|}
 DECL|method|getDirective ()
 specifier|public
-name|PathCacheDirective
+name|PathBasedCacheDirective
 name|getDirective
 parameter_list|()
 block|{
@@ -153,11 +153,11 @@ parameter_list|)
 block|{
 try|try
 block|{
-name|PathCacheEntry
+name|PathBasedCacheEntry
 name|other
 init|=
 operator|(
-name|PathCacheEntry
+name|PathBasedCacheEntry
 operator|)
 name|o
 decl_stmt|;

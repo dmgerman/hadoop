@@ -1750,7 +1750,7 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Add some path cache directives to the CacheManager.    *     * @param directives A list of path cache directives to be added.    * @return A Fallible list, where each element is either a successfully addded    *         path cache entry, or an IOException describing why the directive    *         could not be added.    */
+comment|/**    * Add some PathBasedCache directives to the CacheManager.    *     * @param directives A list of PathBasedCache directives to be added.    * @return A Fallible list, where each element is either a successfully addded    *         PathBasedCache entry, or an IOException describing why the directive    *         could not be added.    */
 annotation|@
 name|AtMostOnce
 specifier|public
@@ -1758,25 +1758,25 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
-DECL|method|addPathCacheDirectives (List<PathCacheDirective> directives)
-name|addPathCacheDirectives
+DECL|method|addPathBasedCacheDirectives (List<PathBasedCacheDirective> directives)
+name|addPathBasedCacheDirectives
 parameter_list|(
 name|List
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|>
 name|directives
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove some path cache entries from the CacheManager.    *     * @param ids A list of all the entry IDs to be removed from the CacheManager.    * @return A Fallible list where each element is either a successfully removed    *         ID, or an IOException describing why the ID could not be removed.    */
+comment|/**    * Remove some PathBasedCache entries from the CacheManager.    *     * @param ids A list of all the entry IDs to be removed from the CacheManager.    * @return A Fallible list where each element is either a successfully removed    *         ID, or an IOException describing why the ID could not be removed.    */
 annotation|@
 name|AtMostOnce
-DECL|method|removePathCacheEntries (List<Long> ids)
+DECL|method|removePathBasedCacheEntries (List<Long> ids)
 specifier|public
 name|List
 argument_list|<
@@ -1785,7 +1785,7 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-name|removePathCacheEntries
+name|removePathBasedCacheEntries
 parameter_list|(
 name|List
 argument_list|<
@@ -1796,22 +1796,25 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathCacheEntries.    * @param pool The cache pool to list, or the empty string to list all pools    * @return A RemoteIterator which returns PathCacheEntry objects.    */
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathBasedCacheEntries.    * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheEntry objects.    */
 annotation|@
 name|Idempotent
-DECL|method|listPathCacheEntries (long prevId, String pool)
+DECL|method|listPathBasedCacheEntries (long prevId, String pool, String path)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
-name|listPathCacheEntries
+name|listPathBasedCacheEntries
 parameter_list|(
 name|long
 name|prevId
 parameter_list|,
 name|String
 name|pool
+parameter_list|,
+name|String
+name|path
 parameter_list|)
 throws|throws
 name|IOException

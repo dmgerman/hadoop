@@ -98,7 +98,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|EmptyPathError
 import|;
@@ -116,7 +116,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|InvalidPoolNameError
 import|;
@@ -134,7 +134,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|InvalidPathNameError
 import|;
@@ -145,14 +145,14 @@ comment|/**  * A directive to add a path to a cache pool.  */
 end_comment
 
 begin_class
-DECL|class|PathCacheDirective
+DECL|class|PathBasedCacheDirective
 specifier|public
 class|class
-name|PathCacheDirective
+name|PathBasedCacheDirective
 implements|implements
 name|Comparable
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|>
 block|{
 DECL|field|path
@@ -167,9 +167,9 @@ specifier|final
 name|String
 name|pool
 decl_stmt|;
-DECL|method|PathCacheDirective (String path, String pool)
+DECL|method|PathBasedCacheDirective (String path, String pool)
 specifier|public
-name|PathCacheDirective
+name|PathBasedCacheDirective
 parameter_list|(
 name|String
 name|path
@@ -227,7 +227,7 @@ return|return
 name|pool
 return|;
 block|}
-comment|/**    * Check if this PathCacheDirective is valid.    *     * @throws IOException    *     If this PathCacheDirective is not valid.    */
+comment|/**    * Check if this PathBasedCacheDirective is valid.    *     * @throws IOException    *     If this PathBasedCacheDirective is not valid.    */
 DECL|method|validate ()
 specifier|public
 name|void
@@ -290,12 +290,12 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (PathCacheDirective rhs)
+DECL|method|compareTo (PathBasedCacheDirective rhs)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|PathCacheDirective
+name|PathBasedCacheDirective
 name|rhs
 parameter_list|)
 block|{
@@ -369,11 +369,11 @@ parameter_list|)
 block|{
 try|try
 block|{
-name|PathCacheDirective
+name|PathBasedCacheDirective
 name|other
 init|=
 operator|(
-name|PathCacheDirective
+name|PathBasedCacheDirective
 operator|)
 name|o
 decl_stmt|;

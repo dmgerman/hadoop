@@ -240,6 +240,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|CachePoolInfo
@@ -258,7 +272,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheDirective
+name|PathBasedCacheDirective
 import|;
 end_import
 
@@ -274,7 +288,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathCacheEntry
+name|PathBasedCacheEntry
 import|;
 end_import
 
@@ -290,7 +304,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|InvalidPoolNameError
 import|;
@@ -308,9 +322,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
-name|UnexpectedAddPathCacheDirectiveException
+name|UnexpectedAddPathBasedCacheDirectiveException
 import|;
 end_import
 
@@ -326,7 +340,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|AddPathCacheDirectiveException
+name|AddPathBasedCacheDirectiveException
 operator|.
 name|PoolWritePermissionDeniedError
 import|;
@@ -344,7 +358,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathCacheEntryException
+name|RemovePathBasedCacheEntryException
 operator|.
 name|InvalidIdException
 import|;
@@ -362,7 +376,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathCacheEntryException
+name|RemovePathBasedCacheEntryException
 operator|.
 name|NoSuchIdException
 import|;
@@ -380,9 +394,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathCacheEntryException
+name|RemovePathBasedCacheEntryException
 operator|.
-name|UnexpectedRemovePathCacheEntryException
+name|UnexpectedRemovePathBasedCacheEntryException
 import|;
 end_import
 
@@ -398,7 +412,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathCacheEntryException
+name|RemovePathBasedCacheEntryException
 operator|.
 name|RemovePermissionDeniedException
 import|;
@@ -444,7 +458,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Cache entries, sorted by ID.    *    * listPathCacheEntries relies on the ordering of elements in this map     * to track what has already been listed by the client.    */
+comment|/**    * Cache entries, sorted by ID.    *    * listPathBasedCacheEntries relies on the ordering of elements in this map     * to track what has already been listed by the client.    */
 DECL|field|entriesById
 specifier|private
 specifier|final
@@ -452,7 +466,7 @@ name|TreeMap
 argument_list|<
 name|Long
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|entriesById
 init|=
@@ -461,7 +475,7 @@ name|TreeMap
 argument_list|<
 name|Long
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -471,18 +485,18 @@ specifier|private
 specifier|final
 name|TreeMap
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|entriesByDirective
 init|=
 operator|new
 name|TreeMap
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -620,16 +634,16 @@ name|nextEntryId
 operator|++
 return|;
 block|}
-DECL|method|addDirective ( PathCacheDirective directive, FSPermissionChecker pc)
+DECL|method|addDirective ( PathBasedCacheDirective directive, FSPermissionChecker pc)
 specifier|private
 specifier|synchronized
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|addDirective
 parameter_list|(
-name|PathCacheDirective
+name|PathBasedCacheDirective
 name|directive
 parameter_list|,
 name|FSPermissionChecker
@@ -671,7 +685,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 operator|new
@@ -720,7 +734,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 operator|new
@@ -760,7 +774,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 name|ioe
@@ -768,7 +782,7 @@ argument_list|)
 return|;
 block|}
 comment|// Check if we already have this entry.
-name|PathCacheEntry
+name|PathBasedCacheEntry
 name|existing
 init|=
 name|entriesByDirective
@@ -805,7 +819,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 name|existing
@@ -813,7 +827,7 @@ argument_list|)
 return|;
 block|}
 comment|// Add a new entry with the next available ID.
-name|PathCacheEntry
+name|PathBasedCacheEntry
 name|entry
 decl_stmt|;
 try|try
@@ -821,7 +835,7 @@ block|{
 name|entry
 operator|=
 operator|new
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|(
 name|getNextEntryId
 argument_list|()
@@ -840,11 +854,11 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 operator|new
-name|UnexpectedAddPathCacheDirectiveException
+name|UnexpectedAddPathBasedCacheDirectiveException
 argument_list|(
 name|directive
 argument_list|)
@@ -889,28 +903,28 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 name|entry
 argument_list|)
 return|;
 block|}
-DECL|method|addDirectives ( List<PathCacheDirective> directives, FSPermissionChecker pc)
+DECL|method|addDirectives ( List<PathBasedCacheDirective> directives, FSPermissionChecker pc)
 specifier|public
 specifier|synchronized
 name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|addDirectives
 parameter_list|(
 name|List
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|>
 name|directives
 parameter_list|,
@@ -922,7 +936,7 @@ name|ArrayList
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|results
@@ -932,7 +946,7 @@ name|ArrayList
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 argument_list|(
@@ -944,7 +958,7 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|PathCacheDirective
+name|PathBasedCacheDirective
 name|directive
 range|:
 name|directives
@@ -1018,7 +1032,7 @@ argument_list|)
 return|;
 block|}
 comment|// Find the entry.
-name|PathCacheEntry
+name|PathBasedCacheEntry
 name|existing
 init|=
 name|entriesById
@@ -1108,7 +1122,7 @@ name|Long
 argument_list|>
 argument_list|(
 operator|new
-name|UnexpectedRemovePathCacheEntryException
+name|UnexpectedRemovePathBasedCacheEntryException
 argument_list|(
 name|entryId
 argument_list|)
@@ -1211,7 +1225,7 @@ name|Long
 argument_list|>
 argument_list|(
 operator|new
-name|UnexpectedRemovePathCacheEntryException
+name|UnexpectedRemovePathBasedCacheEntryException
 argument_list|(
 name|entryId
 argument_list|)
@@ -1311,10 +1325,10 @@ specifier|public
 specifier|synchronized
 name|BatchedListEntries
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
-DECL|method|listPathCacheEntries (long prevId, String filterPool, FSPermissionChecker pc)
-name|listPathCacheEntries
+DECL|method|listPathBasedCacheEntries (long prevId, String filterPool, String filterPath, FSPermissionChecker pc)
+name|listPathBasedCacheEntries
 parameter_list|(
 name|long
 name|prevId
@@ -1322,9 +1336,14 @@ parameter_list|,
 name|String
 name|filterPool
 parameter_list|,
+name|String
+name|filterPath
+parameter_list|,
 name|FSPermissionChecker
 name|pc
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 specifier|final
 name|int
@@ -1332,16 +1351,47 @@ name|NUM_PRE_ALLOCATED_ENTRIES
 init|=
 literal|16
 decl_stmt|;
+if|if
+condition|(
+name|filterPath
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|DFSUtil
+operator|.
+name|isValidName
+argument_list|(
+name|filterPath
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"invalid path name '"
+operator|+
+name|filterPath
+operator|+
+literal|"'"
+argument_list|)
+throw|;
+block|}
+block|}
 name|ArrayList
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|replies
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 name|NUM_PRE_ALLOCATED_ENTRIES
@@ -1356,7 +1406,7 @@ name|SortedMap
 argument_list|<
 name|Long
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|tailMap
 init|=
@@ -1375,7 +1425,7 @@ name|Entry
 argument_list|<
 name|Long
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|cur
 range|:
@@ -1396,7 +1446,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 name|replies
@@ -1405,7 +1455,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-name|PathCacheEntry
+name|PathBasedCacheEntry
 name|curEntry
 init|=
 name|cur
@@ -1413,15 +1463,9 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|filterPool
-operator|.
-name|isEmpty
-argument_list|()
-operator|&&
-operator|!
+name|PathBasedCacheDirective
+name|directive
+init|=
 name|cur
 operator|.
 name|getValue
@@ -1429,6 +1473,15 @@ argument_list|()
 operator|.
 name|getDirective
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|filterPool
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|directive
 operator|.
 name|getPool
 argument_list|()
@@ -1436,6 +1489,26 @@ operator|.
 name|equals
 argument_list|(
 name|filterPool
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+if|if
+condition|(
+name|filterPath
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|directive
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|filterPath
 argument_list|)
 condition|)
 block|{
@@ -1468,7 +1541,7 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"invalid pool for PathCacheEntry "
+literal|"invalid pool for PathBasedCacheEntry "
 operator|+
 name|curEntry
 argument_list|)
@@ -1485,7 +1558,7 @@ name|pool
 argument_list|,
 name|FsAction
 operator|.
-name|EXECUTE
+name|READ
 argument_list|)
 condition|)
 block|{
@@ -1508,7 +1581,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|(
 name|replies
@@ -1819,17 +1892,12 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"set mode to 0%3o"
-argument_list|,
+literal|"set mode to "
+operator|+
 name|info
 operator|.
 name|getMode
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|prefix
@@ -1962,9 +2030,9 @@ name|Iterator
 argument_list|<
 name|Entry
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|iter
@@ -1987,9 +2055,9 @@ condition|)
 block|{
 name|Entry
 argument_list|<
-name|PathCacheDirective
+name|PathBasedCacheDirective
 argument_list|,
-name|PathCacheEntry
+name|PathBasedCacheEntry
 argument_list|>
 name|entry
 init|=

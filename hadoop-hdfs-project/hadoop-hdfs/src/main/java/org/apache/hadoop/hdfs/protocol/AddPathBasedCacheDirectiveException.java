@@ -28,30 +28,16 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
 begin_comment
-comment|/**  * An exception which occurred when trying to remove a path cache entry.  */
+comment|/**  * An exception which occurred when trying to add a PathBasedCache directive.  */
 end_comment
 
 begin_class
-DECL|class|RemovePathCacheEntryException
+DECL|class|AddPathBasedCacheDirectiveException
 specifier|public
 specifier|abstract
 class|class
-name|RemovePathCacheEntryException
+name|AddPathBasedCacheDirectiveException
 extends|extends
 name|IOException
 block|{
@@ -64,21 +50,21 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|field|entryId
+DECL|field|directive
 specifier|private
 specifier|final
-name|long
-name|entryId
+name|PathBasedCacheDirective
+name|directive
 decl_stmt|;
-DECL|method|RemovePathCacheEntryException (String description, long entryId)
+DECL|method|AddPathBasedCacheDirectiveException (String description, PathBasedCacheDirective directive)
 specifier|public
-name|RemovePathCacheEntryException
+name|AddPathBasedCacheDirectiveException
 parameter_list|(
 name|String
 name|description
 parameter_list|,
-name|long
-name|entryId
+name|PathBasedCacheDirective
+name|directive
 parameter_list|)
 block|{
 name|super
@@ -88,31 +74,29 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|entryId
+name|directive
 operator|=
-name|entryId
+name|directive
 expr_stmt|;
 block|}
-DECL|method|getEntryId ()
+DECL|method|getDirective ()
 specifier|public
-name|long
-name|getEntryId
+name|PathBasedCacheDirective
+name|getDirective
 parameter_list|()
 block|{
 return|return
-name|this
-operator|.
-name|entryId
+name|directive
 return|;
 block|}
-DECL|class|InvalidIdException
+DECL|class|EmptyPathError
 specifier|public
-specifier|final
 specifier|static
+specifier|final
 class|class
-name|InvalidIdException
+name|EmptyPathError
 extends|extends
-name|RemovePathCacheEntryException
+name|AddPathBasedCacheDirectiveException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -123,33 +107,32 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|InvalidIdException (long entryId)
+DECL|method|EmptyPathError (PathBasedCacheDirective directive)
 specifier|public
-name|InvalidIdException
+name|EmptyPathError
 parameter_list|(
-name|long
-name|entryId
+name|PathBasedCacheDirective
+name|directive
 parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"invalid cache path entry id "
+literal|"empty path in directive "
 operator|+
-name|entryId
+name|directive
 argument_list|,
-name|entryId
+name|directive
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|class|RemovePermissionDeniedException
+DECL|class|InvalidPathNameError
 specifier|public
-specifier|final
 specifier|static
 class|class
-name|RemovePermissionDeniedException
+name|InvalidPathNameError
 extends|extends
-name|RemovePathCacheEntryException
+name|AddPathBasedCacheDirectiveException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -160,33 +143,35 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|RemovePermissionDeniedException (long entryId)
+DECL|method|InvalidPathNameError (PathBasedCacheDirective directive)
 specifier|public
-name|RemovePermissionDeniedException
+name|InvalidPathNameError
 parameter_list|(
-name|long
-name|entryId
+name|PathBasedCacheDirective
+name|directive
 parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"permission denied when trying to remove path cache entry id "
+literal|"can't handle non-absolute path name "
 operator|+
-name|entryId
+name|directive
+operator|.
+name|getPath
+argument_list|()
 argument_list|,
-name|entryId
+name|directive
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|class|NoSuchIdException
+DECL|class|InvalidPoolNameError
 specifier|public
-specifier|final
 specifier|static
 class|class
-name|NoSuchIdException
+name|InvalidPoolNameError
 extends|extends
-name|RemovePathCacheEntryException
+name|AddPathBasedCacheDirectiveException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -197,33 +182,37 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|NoSuchIdException (long entryId)
+DECL|method|InvalidPoolNameError (PathBasedCacheDirective directive)
 specifier|public
-name|NoSuchIdException
+name|InvalidPoolNameError
 parameter_list|(
-name|long
-name|entryId
+name|PathBasedCacheDirective
+name|directive
 parameter_list|)
 block|{
 name|super
 argument_list|(
-literal|"there is no path cache entry with id "
+literal|"invalid pool name '"
 operator|+
-name|entryId
+name|directive
+operator|.
+name|getPool
+argument_list|()
+operator|+
+literal|"'"
 argument_list|,
-name|entryId
+name|directive
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|class|UnexpectedRemovePathCacheEntryException
+DECL|class|PoolWritePermissionDeniedError
 specifier|public
-specifier|final
 specifier|static
 class|class
-name|UnexpectedRemovePathCacheEntryException
+name|PoolWritePermissionDeniedError
 extends|extends
-name|RemovePathCacheEntryException
+name|AddPathBasedCacheDirectiveException
 block|{
 DECL|field|serialVersionUID
 specifier|private
@@ -234,29 +223,74 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|UnexpectedRemovePathCacheEntryException (long id)
+DECL|method|PoolWritePermissionDeniedError (PathBasedCacheDirective directive)
 specifier|public
-name|UnexpectedRemovePathCacheEntryException
+name|PoolWritePermissionDeniedError
 parameter_list|(
+name|PathBasedCacheDirective
+name|directive
+parameter_list|)
+block|{
+name|super
+argument_list|(
+literal|"write permission denied for pool '"
+operator|+
+name|directive
+operator|.
+name|getPool
+argument_list|()
+operator|+
+literal|"'"
+argument_list|,
+name|directive
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|class|UnexpectedAddPathBasedCacheDirectiveException
+specifier|public
+specifier|static
+class|class
+name|UnexpectedAddPathBasedCacheDirectiveException
+extends|extends
+name|AddPathBasedCacheDirectiveException
+block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
 name|long
-name|id
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|method|UnexpectedAddPathBasedCacheDirectiveException ( PathBasedCacheDirective directive)
+specifier|public
+name|UnexpectedAddPathBasedCacheDirectiveException
+parameter_list|(
+name|PathBasedCacheDirective
+name|directive
 parameter_list|)
 block|{
 name|super
 argument_list|(
 literal|"encountered an unexpected error when trying to "
 operator|+
-literal|"remove path cache entry id "
+literal|"add PathBasedCache directive "
 operator|+
-name|id
+name|directive
 argument_list|,
-name|id
+name|directive
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
 end_class
+
+begin_empty_stmt
+empty_stmt|;
+end_empty_stmt
 
 end_unit
 

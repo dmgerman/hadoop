@@ -206,6 +206,7 @@ specifier|private
 name|String
 name|groupName
 decl_stmt|;
+comment|/**    * Cache pool permissions.    *     * READ permission means that you can list the cache directives in this pool.    * WRITE permission means that you can add, remove, or modify cache directives    *       in this pool.    * EXECUTE permission is unused.    */
 annotation|@
 name|Nonnull
 DECL|field|mode
@@ -330,7 +331,7 @@ name|this
 operator|.
 name|groupName
 operator|=
-name|ownerName
+name|groupName
 expr_stmt|;
 block|}
 name|this
