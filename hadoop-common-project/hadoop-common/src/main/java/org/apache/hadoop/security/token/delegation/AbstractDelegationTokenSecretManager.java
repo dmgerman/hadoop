@@ -2048,6 +2048,28 @@ DECL|field|trackingId
 name|String
 name|trackingId
 decl_stmt|;
+DECL|method|DelegationTokenInformation (long renewDate, byte[] password)
+specifier|public
+name|DelegationTokenInformation
+parameter_list|(
+name|long
+name|renewDate
+parameter_list|,
+name|byte
+index|[]
+name|password
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|renewDate
+argument_list|,
+name|password
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|DelegationTokenInformation (long renewDate, byte[] password, String trackingId)
 specifier|public
 name|DelegationTokenInformation
