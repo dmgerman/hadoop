@@ -883,7 +883,11 @@ argument_list|(
 name|size
 argument_list|)
 else|:
-literal|null
+operator|new
+name|byte
+index|[
+literal|0
+index|]
 return|;
 block|}
 DECL|method|skipVariableOpaque ()

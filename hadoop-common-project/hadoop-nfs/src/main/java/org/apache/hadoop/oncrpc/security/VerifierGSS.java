@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.mapreduce.v2.app.client
+DECL|package|org.apache.hadoop.oncrpc.security
 package|package
 name|org
 operator|.
@@ -12,25 +12,11 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapreduce
+name|oncrpc
 operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|client
+name|security
 package|;
 end_package
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
 
 begin_import
 import|import
@@ -40,36 +26,65 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|service
+name|oncrpc
 operator|.
-name|Service
+name|XDR
 import|;
 end_import
 
-begin_interface
-DECL|interface|ClientService
+begin_comment
+comment|/** Verifier mapped to RPCSEC_GSS. */
+end_comment
+
+begin_class
+DECL|class|VerifierGSS
 specifier|public
-interface|interface
-name|ClientService
+class|class
+name|VerifierGSS
 extends|extends
-name|Service
+name|Verifier
 block|{
-DECL|method|getBindAddress ()
+DECL|method|VerifierGSS ()
 specifier|public
-specifier|abstract
-name|InetSocketAddress
-name|getBindAddress
+name|VerifierGSS
 parameter_list|()
-function_decl|;
-DECL|method|getHttpPort ()
-specifier|public
-specifier|abstract
-name|int
-name|getHttpPort
-parameter_list|()
-function_decl|;
+block|{
+name|super
+argument_list|(
+name|AuthFlavor
+operator|.
+name|RPCSEC_GSS
+argument_list|)
+expr_stmt|;
 block|}
-end_interface
+annotation|@
+name|Override
+DECL|method|read (XDR xdr)
+specifier|public
+name|void
+name|read
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|)
+block|{
+comment|// TODO Auto-generated method stub
+block|}
+annotation|@
+name|Override
+DECL|method|write (XDR xdr)
+specifier|public
+name|void
+name|write
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|)
+block|{
+comment|// TODO Auto-generated method stub
+block|}
+block|}
+end_class
 
 end_unit
 

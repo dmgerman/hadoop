@@ -258,6 +258,13 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|objPostOpAttr
 operator|.
 name|serialize
@@ -266,13 +273,6 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-name|out
-operator|.
-name|writeBoolean
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 name|dirWcc
 operator|.
 name|serialize

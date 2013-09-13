@@ -804,12 +804,7 @@ name|uidNameMap
 operator|.
 name|get
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 name|uid
-argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -819,6 +814,19 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Can't find user name for uid "
+operator|+
+name|uid
+operator|+
+literal|". Use default user name "
+operator|+
+name|unknown
+argument_list|)
+expr_stmt|;
 name|uname
 operator|=
 name|unknown
@@ -851,12 +859,7 @@ name|gidNameMap
 operator|.
 name|get
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
 name|gid
-argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -866,6 +869,19 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Can't find group name for gid "
+operator|+
+name|gid
+operator|+
+literal|". Use default group name "
+operator|+
+name|unknown
+argument_list|)
+expr_stmt|;
 name|gname
 operator|=
 name|unknown

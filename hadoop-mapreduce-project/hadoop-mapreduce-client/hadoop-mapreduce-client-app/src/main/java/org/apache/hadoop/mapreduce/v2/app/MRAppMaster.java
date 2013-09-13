@@ -3006,9 +3006,14 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
-name|addIfService
-argument_list|(
+comment|// Init ClientService separately so that we stop it separately, since this
+comment|// service needs to wait some time before it stops so clients can know the
+comment|// final states
 name|clientService
+operator|.
+name|init
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 name|containerAllocator
@@ -3786,30 +3791,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// TODO:currently just wait for some time so clients can know the
-comment|// final states. Will be removed once RM come on.
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|5000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
 try|try
 block|{
 comment|//if isLastAMRetry comes as true, should never set it to false
@@ -3866,6 +3847,35 @@ expr_stmt|;
 name|MRAppMaster
 operator|.
 name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// TODO: Stop ClientService last, since only ClientService should wait for
+comment|// some time so clients can know the final states. Will be removed once RM come on.
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|5000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
+name|clientService
 operator|.
 name|stop
 argument_list|()
@@ -5721,6 +5731,13 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Start ClientService here, since it's not initialized if
+comment|// errorHappenedShutDown is true
+name|clientService
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 comment|//start all the components
 name|super

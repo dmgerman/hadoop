@@ -36,8 +36,6 @@ name|hadoop
 operator|.
 name|nfs
 operator|.
-name|security
-operator|.
 name|NfsExports
 import|;
 end_import
@@ -79,6 +77,8 @@ operator|.
 name|hadoop
 operator|.
 name|oncrpc
+operator|.
+name|security
 operator|.
 name|RpcAuthInfo
 operator|.
@@ -157,16 +157,7 @@ condition|)
 block|{
 name|xdr
 operator|.
-name|writeInt
-argument_list|(
-name|handle
-operator|.
-name|length
-argument_list|)
-expr_stmt|;
-name|xdr
-operator|.
-name|writeFixedOpaque
+name|writeVariableOpaque
 argument_list|(
 name|handle
 argument_list|)

@@ -1680,6 +1680,10 @@ name|K
 index|[]
 name|samples
 init|=
+operator|(
+name|K
+index|[]
+operator|)
 name|sampler
 operator|.
 name|getSample

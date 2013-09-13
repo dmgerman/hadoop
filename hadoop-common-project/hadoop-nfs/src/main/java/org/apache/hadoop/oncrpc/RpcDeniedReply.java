@@ -26,6 +26,8 @@ name|hadoop
 operator|.
 name|oncrpc
 operator|.
+name|security
+operator|.
 name|RpcAuthInfo
 operator|.
 name|AuthFlavor

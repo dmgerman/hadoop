@@ -44,6 +44,38 @@ name|LogFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Credentials
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Verifier
+import|;
+end_import
+
 begin_comment
 comment|/**  * Represents an RPC message of type RPC call as defined in RFC 1831  */
 end_comment
@@ -108,16 +140,16 @@ decl_stmt|;
 DECL|field|credential
 specifier|private
 specifier|final
-name|RpcAuthInfo
+name|Credentials
 name|credential
 decl_stmt|;
 DECL|field|verifier
 specifier|private
 specifier|final
-name|RpcAuthInfo
+name|Verifier
 name|verifier
 decl_stmt|;
-DECL|method|RpcCall (int xid, RpcMessage.Type messageType, int rpcVersion, int program, int version, int procedure, RpcAuthInfo credential, RpcAuthInfo verifier)
+DECL|method|RpcCall (int xid, RpcMessage.Type messageType, int rpcVersion, int program, int version, int procedure, Credentials credential, Verifier verifier)
 specifier|protected
 name|RpcCall
 parameter_list|(
@@ -141,10 +173,10 @@ parameter_list|,
 name|int
 name|procedure
 parameter_list|,
-name|RpcAuthInfo
+name|Credentials
 name|credential
 parameter_list|,
-name|RpcAuthInfo
+name|Verifier
 name|verifier
 parameter_list|)
 block|{
@@ -302,7 +334,7 @@ return|;
 block|}
 DECL|method|getCredential ()
 specifier|public
-name|RpcAuthInfo
+name|Credentials
 name|getCredential
 parameter_list|()
 block|{
@@ -312,7 +344,7 @@ return|;
 block|}
 DECL|method|getVerifier ()
 specifier|public
-name|RpcAuthInfo
+name|Verifier
 name|getVerifier
 parameter_list|()
 block|{
@@ -371,16 +403,16 @@ operator|.
 name|readInt
 argument_list|()
 argument_list|,
-name|RpcAuthInfo
+name|Credentials
 operator|.
-name|read
+name|readFlavorAndCredentials
 argument_list|(
 name|xdr
 argument_list|)
 argument_list|,
-name|RpcAuthInfo
+name|Verifier
 operator|.
-name|read
+name|readFlavorAndVerifier
 argument_list|(
 name|xdr
 argument_list|)

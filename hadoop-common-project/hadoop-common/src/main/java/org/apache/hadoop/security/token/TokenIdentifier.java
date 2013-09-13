@@ -44,6 +44,22 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|codec
+operator|.
+name|digest
+operator|.
+name|DigestUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -150,6 +166,13 @@ name|TokenIdentifier
 implements|implements
 name|Writable
 block|{
+DECL|field|trackingId
+specifier|private
+name|String
+name|trackingId
+init|=
+literal|null
+decl_stmt|;
 comment|/**    * Get the token kind    * @return the kind of the token    */
 DECL|method|getKind ()
 specifier|public
@@ -224,6 +247,35 @@ operator|.
 name|getLength
 argument_list|()
 argument_list|)
+return|;
+block|}
+comment|/**    * Returns a tracking identifier that can be used to associate usages of a    * token across multiple client sessions.    *    * Currently, this function just returns an MD5 of {{@link #getBytes()}.    *    * @return tracking identifier    */
+DECL|method|getTrackingId ()
+specifier|public
+name|String
+name|getTrackingId
+parameter_list|()
+block|{
+if|if
+condition|(
+name|trackingId
+operator|==
+literal|null
+condition|)
+block|{
+name|trackingId
+operator|=
+name|DigestUtils
+operator|.
+name|md5Hex
+argument_list|(
+name|getBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|trackingId
 return|;
 block|}
 block|}

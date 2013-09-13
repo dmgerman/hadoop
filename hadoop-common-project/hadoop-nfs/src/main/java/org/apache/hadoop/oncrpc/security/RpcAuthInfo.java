@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.oncrpc
+DECL|package|org.apache.hadoop.oncrpc.security
 package|package
 name|org
 operator|.
@@ -13,26 +13,33 @@ operator|.
 name|hadoop
 operator|.
 name|oncrpc
+operator|.
+name|security
 package|;
 end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|util
+name|apache
 operator|.
-name|Arrays
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|XDR
 import|;
 end_import
 
 begin_comment
-comment|/**  *  Authentication Info as defined in RFC 1831  */
+comment|/**  *  Authentication Info. Base class of Verifier and Credential.  */
 end_comment
 
 begin_class
 DECL|class|RpcAuthInfo
 specifier|public
+specifier|abstract
 class|class
 name|RpcAuthInfo
 block|{
@@ -150,23 +157,12 @@ specifier|final
 name|AuthFlavor
 name|flavor
 decl_stmt|;
-DECL|field|body
-specifier|private
-specifier|final
-name|byte
-index|[]
-name|body
-decl_stmt|;
-DECL|method|RpcAuthInfo (AuthFlavor flavor, byte[] body)
+DECL|method|RpcAuthInfo (AuthFlavor flavor)
 specifier|protected
 name|RpcAuthInfo
 parameter_list|(
 name|AuthFlavor
 name|flavor
-parameter_list|,
-name|byte
-index|[]
-name|body
 parameter_list|)
 block|{
 name|this
@@ -175,60 +171,29 @@ name|flavor
 operator|=
 name|flavor
 expr_stmt|;
-name|this
-operator|.
-name|body
-operator|=
-name|body
-expr_stmt|;
 block|}
+comment|/** Load auth info */
 DECL|method|read (XDR xdr)
 specifier|public
-specifier|static
-name|RpcAuthInfo
+specifier|abstract
+name|void
 name|read
 parameter_list|(
 name|XDR
 name|xdr
 parameter_list|)
-block|{
-name|int
-name|type
-init|=
+function_decl|;
+comment|/** Write auth info */
+DECL|method|write (XDR xdr)
+specifier|public
+specifier|abstract
+name|void
+name|write
+parameter_list|(
+name|XDR
 name|xdr
-operator|.
-name|readInt
-argument_list|()
-decl_stmt|;
-name|AuthFlavor
-name|flavor
-init|=
-name|AuthFlavor
-operator|.
-name|fromValue
-argument_list|(
-name|type
-argument_list|)
-decl_stmt|;
-name|byte
-index|[]
-name|body
-init|=
-name|xdr
-operator|.
-name|readVariableOpaque
-argument_list|()
-decl_stmt|;
-return|return
-operator|new
-name|RpcAuthInfo
-argument_list|(
-name|flavor
-argument_list|,
-name|body
-argument_list|)
-return|;
-block|}
+parameter_list|)
+function_decl|;
 DECL|method|getFlavor ()
 specifier|public
 name|AuthFlavor
@@ -237,26 +202,6 @@ parameter_list|()
 block|{
 return|return
 name|flavor
-return|;
-block|}
-DECL|method|getBody ()
-specifier|public
-name|byte
-index|[]
-name|getBody
-parameter_list|()
-block|{
-return|return
-name|Arrays
-operator|.
-name|copyOf
-argument_list|(
-name|body
-argument_list|,
-name|body
-operator|.
-name|length
-argument_list|)
 return|;
 block|}
 annotation|@

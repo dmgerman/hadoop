@@ -445,7 +445,6 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
-comment|/**    * Create a secret manager    * @param delegationKeyUpdateInterval the number of seconds for rolling new    *        secret keys.    * @param delegationTokenMaxLifetime the maximum lifetime of the delegation    *        tokens    * @param delegationTokenRenewInterval how often the tokens must be renewed    * @param delegationTokenRemoverScanInterval how often the tokens are scanned    *        for expired tokens    */
 DECL|method|DelegationTokenSecretManager (long delegationKeyUpdateInterval, long delegationTokenMaxLifetime, long delegationTokenRenewInterval, long delegationTokenRemoverScanInterval, FSNamesystem namesystem)
 specifier|public
 name|DelegationTokenSecretManager
@@ -461,6 +460,46 @@ name|delegationTokenRenewInterval
 parameter_list|,
 name|long
 name|delegationTokenRemoverScanInterval
+parameter_list|,
+name|FSNamesystem
+name|namesystem
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|delegationKeyUpdateInterval
+argument_list|,
+name|delegationTokenMaxLifetime
+argument_list|,
+name|delegationTokenRenewInterval
+argument_list|,
+name|delegationTokenRemoverScanInterval
+argument_list|,
+literal|false
+argument_list|,
+name|namesystem
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a secret manager    * @param delegationKeyUpdateInterval the number of seconds for rolling new    *        secret keys.    * @param delegationTokenMaxLifetime the maximum lifetime of the delegation    *        tokens    * @param delegationTokenRenewInterval how often the tokens must be renewed    * @param delegationTokenRemoverScanInterval how often the tokens are scanned    *        for expired tokens    * @param storeTokenTrackingId whether to store the token's tracking id    */
+DECL|method|DelegationTokenSecretManager (long delegationKeyUpdateInterval, long delegationTokenMaxLifetime, long delegationTokenRenewInterval, long delegationTokenRemoverScanInterval, boolean storeTokenTrackingId, FSNamesystem namesystem)
+specifier|public
+name|DelegationTokenSecretManager
+parameter_list|(
+name|long
+name|delegationKeyUpdateInterval
+parameter_list|,
+name|long
+name|delegationTokenMaxLifetime
+parameter_list|,
+name|long
+name|delegationTokenRenewInterval
+parameter_list|,
+name|long
+name|delegationTokenRemoverScanInterval
+parameter_list|,
+name|boolean
+name|storeTokenTrackingId
 parameter_list|,
 name|FSNamesystem
 name|namesystem
@@ -482,6 +521,12 @@ operator|.
 name|namesystem
 operator|=
 name|namesystem
+expr_stmt|;
+name|this
+operator|.
+name|storeTokenTrackingId
+operator|=
+name|storeTokenTrackingId
 expr_stmt|;
 block|}
 annotation|@
@@ -846,6 +891,11 @@ argument_list|(
 name|expiryTime
 argument_list|,
 name|password
+argument_list|,
+name|getTrackingIdIfEnabled
+argument_list|(
+name|identifier
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -973,6 +1023,11 @@ argument_list|(
 name|expiryTime
 argument_list|,
 name|password
+argument_list|,
+name|getTrackingIdIfEnabled
+argument_list|(
+name|identifier
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
