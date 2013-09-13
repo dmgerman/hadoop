@@ -814,6 +814,19 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Can't find user name for uid "
+operator|+
+name|uid
+operator|+
+literal|". Use default user name "
+operator|+
+name|unknown
+argument_list|)
+expr_stmt|;
 name|uname
 operator|=
 name|unknown
@@ -856,6 +869,19 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Can't find group name for gid "
+operator|+
+name|gid
+operator|+
+literal|". Use default group name "
+operator|+
+name|unknown
+argument_list|)
+expr_stmt|;
 name|gname
 operator|=
 name|unknown

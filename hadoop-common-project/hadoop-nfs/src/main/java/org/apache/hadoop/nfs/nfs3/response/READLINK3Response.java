@@ -223,13 +223,9 @@ condition|)
 block|{
 name|out
 operator|.
-name|writeFixedOpaque
+name|writeVariableOpaque
 argument_list|(
 name|path
-argument_list|,
-name|path
-operator|.
-name|length
 argument_list|)
 expr_stmt|;
 block|}

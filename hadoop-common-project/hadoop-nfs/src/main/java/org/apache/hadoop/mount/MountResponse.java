@@ -157,16 +157,7 @@ condition|)
 block|{
 name|xdr
 operator|.
-name|writeInt
-argument_list|(
-name|handle
-operator|.
-name|length
-argument_list|)
-expr_stmt|;
-name|xdr
-operator|.
-name|writeFixedOpaque
+name|writeVariableOpaque
 argument_list|(
 name|handle
 argument_list|)
