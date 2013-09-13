@@ -750,6 +750,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 return|return;
@@ -994,6 +996,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1174,6 +1178,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 block|}
@@ -1206,6 +1212,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 block|}

@@ -1544,6 +1544,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 block|}
@@ -1680,6 +1682,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 block|}
@@ -1970,6 +1974,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 name|writeCtx
@@ -2133,6 +2139,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 name|writeCtx
@@ -2294,6 +2302,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 block|}
@@ -3653,6 +3663,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 block|}
@@ -3723,6 +3735,8 @@ argument_list|()
 argument_list|,
 name|xid
 argument_list|)
+argument_list|,
+name|xid
 argument_list|)
 expr_stmt|;
 comment|// Keep stream open. Either client retries or SteamMonitor closes it.
@@ -3942,6 +3956,11 @@ operator|.
 name|getXid
 argument_list|()
 argument_list|)
+argument_list|,
+name|writeCtx
+operator|.
+name|getXid
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
