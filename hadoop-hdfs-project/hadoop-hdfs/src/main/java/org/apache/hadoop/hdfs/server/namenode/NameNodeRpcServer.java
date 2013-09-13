@@ -6035,9 +6035,38 @@ argument_list|(
 name|blocks
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|blockStateChangeLog
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|blockStateChangeLog
+operator|.
+name|debug
+argument_list|(
+literal|"*BLOCK* NameNode.cacheReport: "
+operator|+
+literal|"from "
+operator|+
+name|nodeReg
+operator|+
+literal|" "
+operator|+
+name|blist
+operator|.
+name|getNumberOfBlocks
+argument_list|()
+operator|+
+literal|" blocks"
+argument_list|)
+expr_stmt|;
+block|}
 name|namesystem
 operator|.
-name|getBlockManager
+name|getCacheReplicationManager
 argument_list|()
 operator|.
 name|processCacheReport

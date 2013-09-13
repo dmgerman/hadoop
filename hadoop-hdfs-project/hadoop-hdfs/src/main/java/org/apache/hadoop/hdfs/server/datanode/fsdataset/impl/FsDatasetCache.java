@@ -646,14 +646,7 @@ name|Block
 argument_list|>
 argument_list|()
 decl_stmt|;
-name|MappableBlock
-name|mapBlock
-init|=
-literal|null
-decl_stmt|;
 comment|// ConcurrentHashMap iteration doesn't see latest updates, which is okay
-for|for
-control|(
 name|Iterator
 argument_list|<
 name|MappableBlock
@@ -667,20 +660,23 @@ argument_list|()
 operator|.
 name|iterator
 argument_list|()
-init|;
+decl_stmt|;
+while|while
+condition|(
 name|it
 operator|.
 name|hasNext
 argument_list|()
-condition|;
+condition|)
+block|{
+name|MappableBlock
 name|mapBlock
-operator|=
+init|=
 name|it
 operator|.
 name|next
 argument_list|()
-control|)
-block|{
+decl_stmt|;
 if|if
 condition|(
 name|mapBlock
@@ -983,7 +979,10 @@ name|cachedBlocks
 operator|.
 name|remove
 argument_list|(
-name|mapBlock
+name|block
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|long
@@ -1025,6 +1024,29 @@ name|get
 argument_list|()
 expr_stmt|;
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully uncached block "
+operator|+
+name|block
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Could not uncache block "
+operator|+
+name|block
+operator|+
+literal|": unknown block."
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Background worker that mmaps, mlocks, and checksums a block    */
@@ -1202,6 +1224,18 @@ block|}
 block|}
 else|else
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully cached block "
+operator|+
+name|block
+operator|.
+name|getBlock
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|cachedBlocks
 operator|.
 name|put
