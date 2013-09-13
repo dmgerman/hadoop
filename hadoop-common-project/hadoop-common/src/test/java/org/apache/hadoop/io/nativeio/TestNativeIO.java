@@ -3141,6 +3141,8 @@ argument_list|(
 name|TEST_FILE
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|fos
 operator|.
 name|write
@@ -3158,11 +3160,15 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
 name|fos
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 name|FileInputStream
 name|fis
 init|=
