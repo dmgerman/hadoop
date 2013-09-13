@@ -1162,7 +1162,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Generate a dummy namenode proxy instance that utilizes our hacked    * {@link LossyRetryInvocationHandler}. Proxy instance generated using this    * method will proactively drop RPC responses. Currently this method only    * support HA setup. IllegalStateException will be thrown if the given    * configuration is not for HA.    *     * @param config the configuration containing the required IPC    *        properties, client failover configurations, etc.    * @param nameNodeUri the URI pointing either to a specific NameNode    *        or to a logical nameservice.    * @param xface the IPC interface which should be created    * @param numResponseToDrop The number of responses to drop for each RPC call    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException if there is an error creating the proxy    */
+comment|/**    * Generate a dummy namenode proxy instance that utilizes our hacked    * {@link LossyRetryInvocationHandler}. Proxy instance generated using this    * method will proactively drop RPC responses. Currently this method only    * support HA setup. null will be returned if the given configuration is not     * for HA.    *     * @param config the configuration containing the required IPC    *        properties, client failover configurations, etc.    * @param nameNodeUri the URI pointing either to a specific NameNode    *        or to a logical nameservice.    * @param xface the IPC interface which should be created    * @param numResponseToDrop The number of responses to drop for each RPC call    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to. Will return null of the    *         given configuration does not support HA.    * @throws IOException if there is an error creating the proxy    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -1377,15 +1377,18 @@ return|;
 block|}
 else|else
 block|{
-throw|throw
-operator|new
-name|IllegalStateException
+name|LOG
+operator|.
+name|warn
 argument_list|(
 literal|"Currently creating proxy using "
 operator|+
 literal|"LossyRetryInvocationHandler requires NN HA setup"
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+literal|null
+return|;
 block|}
 block|}
 comment|/**    * Creates an explicitly non-HA-enabled proxy object. Most of the time you    * don't want to use this, and should instead use {@link NameNodeProxies#createProxy}.    *     * @param conf the configuration object    * @param nnAddr address of the remote NN to connect to    * @param xface the IPC interface which should be created    * @param ugi the user who is making the calls on the proxy object    * @param withRetries certain interfaces have a non-standard retry policy    * @return an object containing both the proxy and the associated    *         delegation token service it corresponds to    * @throws IOException    */

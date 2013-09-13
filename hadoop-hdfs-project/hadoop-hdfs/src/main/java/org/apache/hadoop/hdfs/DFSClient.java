@@ -3565,6 +3565,16 @@ operator|.
 name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
 argument_list|)
 decl_stmt|;
+name|NameNodeProxies
+operator|.
+name|ProxyAndInfo
+argument_list|<
+name|ClientProtocol
+argument_list|>
+name|proxyInfo
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|numResponseToDrop
@@ -3588,14 +3598,8 @@ operator|+
 literal|", this hacked client will proactively drop responses"
 argument_list|)
 expr_stmt|;
-name|NameNodeProxies
-operator|.
-name|ProxyAndInfo
-argument_list|<
-name|ClientProtocol
-argument_list|>
 name|proxyInfo
-init|=
+operator|=
 name|NameNodeProxies
 operator|.
 name|createProxyWithLossyRetryHandler
@@ -3610,7 +3614,15 @@ name|class
 argument_list|,
 name|numResponseToDrop
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|proxyInfo
+operator|!=
+literal|null
+condition|)
+block|{
 name|this
 operator|.
 name|dtService
@@ -3672,14 +3684,8 @@ argument_list|,
 literal|"null URI"
 argument_list|)
 expr_stmt|;
-name|NameNodeProxies
-operator|.
-name|ProxyAndInfo
-argument_list|<
-name|ClientProtocol
-argument_list|>
 name|proxyInfo
-init|=
+operator|=
 name|NameNodeProxies
 operator|.
 name|createProxy
@@ -3692,7 +3698,7 @@ name|ClientProtocol
 operator|.
 name|class
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 name|this
 operator|.
 name|dtService
