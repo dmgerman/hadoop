@@ -1521,6 +1521,63 @@ return|return
 literal|""
 return|;
 block|}
+DECL|method|generateSnapshotReport (JspWriter out, FSNamesystem fsn)
+specifier|static
+name|void
+name|generateSnapshotReport
+parameter_list|(
+name|JspWriter
+name|out
+parameter_list|,
+name|FSNamesystem
+name|fsn
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"<div id=\"snapshotstats\"><div class=\"dfstable\">"
+operator|+
+literal|"<table class=\"storage\" title=\"Snapshot Summary\">\n"
+operator|+
+literal|"<thead><tr><td><b>Snapshottable directories</b></td>"
+operator|+
+literal|"<td><b>Snapshotted directories</b></td></tr></thead>"
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"<td>%d</td><td>%d</td>"
+argument_list|,
+name|fsn
+operator|.
+name|getNumSnapshottableDirs
+argument_list|()
+argument_list|,
+name|fsn
+operator|.
+name|getNumSnapshots
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"</table></div></div>"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|class|HealthJsp
 specifier|static
 class|class

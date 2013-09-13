@@ -155,6 +155,13 @@ name|int
 name|getNumDecomDeadDataNodes
 parameter_list|()
 function_decl|;
+comment|/**    * The statistics of snapshots    */
+DECL|method|getSnapshotStats ()
+specifier|public
+name|String
+name|getSnapshotStats
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
