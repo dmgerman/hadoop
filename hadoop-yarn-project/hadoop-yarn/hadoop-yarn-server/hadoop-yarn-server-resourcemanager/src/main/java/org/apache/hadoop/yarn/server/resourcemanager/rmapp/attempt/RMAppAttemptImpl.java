@@ -46,6 +46,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -3992,6 +4002,8 @@ parameter_list|(
 name|RMState
 name|state
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|ApplicationState
 name|appState
@@ -4092,6 +4104,8 @@ parameter_list|(
 name|Credentials
 name|appAttemptTokens
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -4159,10 +4173,18 @@ operator|.
 name|AM_RM_TOKEN_SERVICE
 argument_list|)
 expr_stmt|;
-comment|// For now, no need to populate tokens back to AMRMTokenSecretManager,
-comment|// because running attempts are rebooted. Later in work-preserve restart,
-comment|// we'll create NEW->RUNNING transition in which the restored tokens will be
-comment|// added to the secret manager
+name|rmContext
+operator|.
+name|getAMRMTokenSecretManager
+argument_list|()
+operator|.
+name|addPersistedPassword
+argument_list|(
+name|this
+operator|.
+name|amrmToken
+argument_list|)
+expr_stmt|;
 block|}
 DECL|class|BaseTransition
 specifier|private

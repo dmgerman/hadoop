@@ -1563,45 +1563,6 @@ return|return;
 block|}
 catch|catch
 parameter_list|(
-name|InvalidToken
-name|e
-parameter_list|)
-block|{
-comment|// This can happen if the RM has been restarted, since currently
-comment|// when RM restarts AMRMToken is not populated back to
-comment|// AMRMTokenSecretManager yet. Once this is fixed, no need
-comment|// to send JOB_AM_REBOOT event in this method any more.
-name|eventHandler
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|JobEvent
-argument_list|(
-name|job
-operator|.
-name|getID
-argument_list|()
-argument_list|,
-name|JobEventType
-operator|.
-name|JOB_AM_REBOOT
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Error in authencating with RM: "
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-catch|catch
-parameter_list|(
 name|Exception
 name|e
 parameter_list|)

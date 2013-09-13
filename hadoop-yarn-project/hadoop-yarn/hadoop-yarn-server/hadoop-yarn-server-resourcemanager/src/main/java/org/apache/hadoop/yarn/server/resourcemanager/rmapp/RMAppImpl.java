@@ -3387,6 +3387,8 @@ parameter_list|(
 name|RMState
 name|state
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|ApplicationState
 name|appState

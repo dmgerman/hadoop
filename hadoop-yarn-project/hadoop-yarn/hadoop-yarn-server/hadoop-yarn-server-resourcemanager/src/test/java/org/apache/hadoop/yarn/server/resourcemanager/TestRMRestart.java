@@ -508,6 +508,22 @@ name|yarn
 operator|.
 name|security
 operator|.
+name|AMRMTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|security
+operator|.
 name|client
 operator|.
 name|RMDelegationTokenIdentifier
@@ -3856,7 +3872,7 @@ name|getClientTokenMasterKey
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// assert secret manager also knows about the key
+comment|// assert ClientTokenSecretManager also knows about the key
 name|Assert
 operator|.
 name|assertArrayEquals
@@ -3877,8 +3893,41 @@ name|getEncoded
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Not testing ApplicationTokenSecretManager has the password populated back,
-comment|// that is needed in work-preserving restart
+comment|// assert AMRMTokenSecretManager also knows about the AMRMToken password
+name|Token
+argument_list|<
+name|AMRMTokenIdentifier
+argument_list|>
+name|amrmToken
+init|=
+name|loadedAttempt1
+operator|.
+name|getAMRMToken
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertArrayEquals
+argument_list|(
+name|amrmToken
+operator|.
+name|getPassword
+argument_list|()
+argument_list|,
+name|rm2
+operator|.
+name|getAMRMTokenSecretManager
+argument_list|()
+operator|.
+name|retrievePassword
+argument_list|(
+name|amrmToken
+operator|.
+name|decodeIdentifier
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|rm1
 operator|.
 name|stop
