@@ -3341,8 +3341,6 @@ argument_list|)
 expr_stmt|;
 name|NativeIO
 operator|.
-name|POSIX
-operator|.
 name|getMemlockLimit
 argument_list|()
 expr_stmt|;

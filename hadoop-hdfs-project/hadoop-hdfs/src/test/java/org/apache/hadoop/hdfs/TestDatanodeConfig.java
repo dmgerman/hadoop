@@ -667,8 +667,6 @@ name|memlockLimit
 init|=
 name|NativeIO
 operator|.
-name|POSIX
-operator|.
 name|getMemlockLimit
 argument_list|()
 decl_stmt|;
@@ -694,6 +692,18 @@ argument_list|,
 name|memlockLimit
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|memlockLimit
+operator|==
+name|Long
+operator|.
+name|MAX_VALUE
+condition|)
+block|{
+comment|// Can't increase the memlock limit past the maximum.
+return|return;
+block|}
 name|DataNode
 name|dn
 init|=
