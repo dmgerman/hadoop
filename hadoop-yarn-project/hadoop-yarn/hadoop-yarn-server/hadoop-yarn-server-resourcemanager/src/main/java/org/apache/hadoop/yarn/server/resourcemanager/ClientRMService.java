@@ -2818,15 +2818,10 @@ name|applicationStates
 operator|.
 name|contains
 argument_list|(
-name|RMServerUtils
-operator|.
-name|createApplicationState
-argument_list|(
 name|application
 operator|.
-name|getState
+name|createApplicationState
 argument_list|()
-argument_list|)
 argument_list|)
 condition|)
 block|{

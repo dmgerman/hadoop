@@ -46,16 +46,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -123,6 +113,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
 import|;
 end_import
 
@@ -299,34 +303,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *     * @param srcPath the file to which this chooseTargets is being invoked.     * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosenNodes datanodes that have been chosen as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target     * and sorted as a pipeline.    */
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, long blocksize)
-specifier|abstract
-name|DatanodeDescriptor
-index|[]
-name|chooseTarget
-parameter_list|(
-name|String
-name|srcPath
-parameter_list|,
-name|int
-name|numOfReplicas
-parameter_list|,
-name|DatanodeDescriptor
-name|writer
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|chosenNodes
-parameter_list|,
-name|long
-name|blocksize
-parameter_list|)
-function_decl|;
 comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *    * @param srcPath the file to which this chooseTargets is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosenNodes datanodes that have been chosen as targets.    * @param returnChosenNodes decide if the chosenNodes are returned.    * @param excludedNodes datanodes that should not be considered as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target    * and sorted as a pipeline.    */
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Map<Node, Node> excludedNodes, long blocksize)
 specifier|public
 specifier|abstract
 name|DatanodeDescriptor
@@ -351,7 +329,7 @@ parameter_list|,
 name|boolean
 name|returnChosenNodes
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|Node
 argument_list|,
@@ -363,63 +341,8 @@ name|long
 name|blocksize
 parameter_list|)
 function_decl|;
-comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>    * If not, return as many as we can.    * The base implemenatation extracts the pathname of the file from the    * specified srcBC, but this could be a costly operation depending on the    * file system implementation. Concrete implementations of this class should    * override this method to avoid this overhead.    *     * @param srcBC block collection of file for which chooseTarget is invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosenNodes datanodes that have been chosen as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target     * and sorted as a pipeline.    */
-DECL|method|chooseTarget (BlockCollection srcBC, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, HashMap<Node, Node> excludedNodes, long blocksize)
-name|DatanodeDescriptor
-index|[]
-name|chooseTarget
-parameter_list|(
-name|BlockCollection
-name|srcBC
-parameter_list|,
-name|int
-name|numOfReplicas
-parameter_list|,
-name|DatanodeDescriptor
-name|writer
-parameter_list|,
-name|List
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|chosenNodes
-parameter_list|,
-name|HashMap
-argument_list|<
-name|Node
-argument_list|,
-name|Node
-argument_list|>
-name|excludedNodes
-parameter_list|,
-name|long
-name|blocksize
-parameter_list|)
-block|{
-return|return
-name|chooseTarget
-argument_list|(
-name|srcBC
-operator|.
-name|getName
-argument_list|()
-argument_list|,
-name|numOfReplicas
-argument_list|,
-name|writer
-argument_list|,
-name|chosenNodes
-argument_list|,
-literal|false
-argument_list|,
-name|excludedNodes
-argument_list|,
-name|blocksize
-argument_list|)
-return|;
-block|}
 comment|/**    * Same as {@link #chooseTarget(String, int, DatanodeDescriptor, List, boolean,     * HashMap, long)} with added parameter {@code favoredDatanodes}    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
-DECL|method|chooseTarget (String src, int numOfReplicas, DatanodeDescriptor writer, HashMap<Node, Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes)
+DECL|method|chooseTarget (String src, int numOfReplicas, DatanodeDescriptor writer, Map<Node, Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes)
 name|DatanodeDescriptor
 index|[]
 name|chooseTarget
@@ -433,7 +356,7 @@ parameter_list|,
 name|DatanodeDescriptor
 name|writer
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|Node
 argument_list|,
@@ -543,7 +466,7 @@ name|NetworkTopology
 name|clusterMap
 parameter_list|)
 function_decl|;
-comment|/**    * Get an instance of the configured Block Placement Policy based on the    * value of the configuration paramater dfs.block.replicator.classname.    *     * @param conf the configuration to be used    * @param stats an object that is used to retrieve the load on the cluster    * @param clusterMap the network topology of the cluster    * @return an instance of BlockPlacementPolicy    */
+comment|/**    * Get an instance of the configured Block Placement Policy based on the    * the configuration property {@link DFS_BLOCK_REPLICATOR_CLASSNAME_KEY}.    *     * @param conf the configuration to be used    * @param stats an object that is used to retrieve the load on the cluster    * @param clusterMap the network topology of the cluster    * @return an instance of BlockPlacementPolicy    */
 DECL|method|getInstance (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
 specifier|public
 specifier|static
@@ -560,6 +483,7 @@ name|NetworkTopology
 name|clusterMap
 parameter_list|)
 block|{
+specifier|final
 name|Class
 argument_list|<
 name|?
@@ -572,23 +496,23 @@ name|conf
 operator|.
 name|getClass
 argument_list|(
-literal|"dfs.block.replicator.classname"
-argument_list|,
-name|BlockPlacementPolicyDefault
+name|DFSConfigKeys
 operator|.
-name|class
+name|DFS_BLOCK_REPLICATOR_CLASSNAME_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_REPLICATOR_CLASSNAME_DEFAULT
 argument_list|,
 name|BlockPlacementPolicy
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
+specifier|final
 name|BlockPlacementPolicy
 name|replicator
 init|=
-operator|(
-name|BlockPlacementPolicy
-operator|)
 name|ReflectionUtils
 operator|.
 name|newInstance

@@ -891,7 +891,9 @@ name|conf
 operator|.
 name|setClass
 argument_list|(
-literal|"dfs.block.replicator.classname"
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_REPLICATOR_CLASSNAME_KEY
 argument_list|,
 name|RandomDeleterPolicy
 operator|.

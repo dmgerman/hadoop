@@ -56,16 +56,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -255,7 +245,7 @@ block|}
 comment|/** choose local node of localMachine as the target.    * if localMachine is not available, choose a node on the same nodegroup or     * rack instead.    * @return the chosen node    */
 annotation|@
 name|Override
-DECL|method|chooseLocalNode (DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalNode (DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalNode
@@ -263,7 +253,7 @@ parameter_list|(
 name|DatanodeDescriptor
 name|localMachine
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|Node
 argument_list|,
@@ -337,9 +327,11 @@ block|{
 comment|// was not in the excluded list
 if|if
 condition|(
-name|isGoodTarget
+name|addIfIsGoodTarget
 argument_list|(
 name|localMachine
+argument_list|,
+name|excludedNodes
 argument_list|,
 name|blocksize
 argument_list|,
@@ -351,26 +343,10 @@ name|results
 argument_list|,
 name|avoidStaleNodes
 argument_list|)
+operator|>=
+literal|0
 condition|)
 block|{
-name|results
-operator|.
-name|add
-argument_list|(
-name|localMachine
-argument_list|)
-expr_stmt|;
-comment|// Nodes under same nodegroup should be excluded.
-name|addNodeGroupToExcludedNodes
-argument_list|(
-name|excludedNodes
-argument_list|,
-name|localMachine
-operator|.
-name|getNetworkLocation
-argument_list|()
-argument_list|)
-expr_stmt|;
 return|return
 name|localMachine
 return|;
@@ -431,89 +407,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|adjustExcludedNodes (HashMap<Node, Node> excludedNodes, Node chosenNode)
-specifier|protected
-name|void
-name|adjustExcludedNodes
-parameter_list|(
-name|HashMap
-argument_list|<
-name|Node
-argument_list|,
-name|Node
-argument_list|>
-name|excludedNodes
-parameter_list|,
-name|Node
-name|chosenNode
-parameter_list|)
-block|{
-comment|// as node-group aware implementation, it should make sure no two replica
-comment|// are placing on the same node group.
-name|addNodeGroupToExcludedNodes
-argument_list|(
-name|excludedNodes
-argument_list|,
-name|chosenNode
-operator|.
-name|getNetworkLocation
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-comment|// add all nodes under specific nodegroup to excludedNodes.
-DECL|method|addNodeGroupToExcludedNodes (HashMap<Node, Node> excludedNodes, String nodeGroup)
-specifier|private
-name|void
-name|addNodeGroupToExcludedNodes
-parameter_list|(
-name|HashMap
-argument_list|<
-name|Node
-argument_list|,
-name|Node
-argument_list|>
-name|excludedNodes
-parameter_list|,
-name|String
-name|nodeGroup
-parameter_list|)
-block|{
-name|List
-argument_list|<
-name|Node
-argument_list|>
-name|leafNodes
-init|=
-name|clusterMap
-operator|.
-name|getLeaves
-argument_list|(
-name|nodeGroup
-argument_list|)
-decl_stmt|;
-for|for
-control|(
-name|Node
-name|node
-range|:
-name|leafNodes
-control|)
-block|{
-name|excludedNodes
-operator|.
-name|put
-argument_list|(
-name|node
-argument_list|,
-name|node
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-annotation|@
-name|Override
-DECL|method|chooseLocalRack (DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalRack (DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalRack
@@ -521,7 +415,7 @@ parameter_list|(
 name|DatanodeDescriptor
 name|localMachine
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|Node
 argument_list|,
@@ -616,32 +510,12 @@ literal|null
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|iter
-init|=
-name|results
-operator|.
-name|iterator
-argument_list|()
-init|;
-name|iter
-operator|.
-name|hasNext
-argument_list|()
-condition|;
-control|)
-block|{
 name|DatanodeDescriptor
 name|nextNode
-init|=
-name|iter
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
+range|:
+name|results
+control|)
+block|{
 if|if
 condition|(
 name|nextNode
@@ -743,7 +617,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|void
 name|chooseRemoteRack
@@ -754,7 +628,7 @@ parameter_list|,
 name|DatanodeDescriptor
 name|localMachine
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|Node
 argument_list|,
@@ -861,7 +735,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/* choose one node from the nodegroup that<i>localMachine</i> is on.    * if no such node is available, choose one node from the nodegroup where    * a second replica is on.    * if still no such node is available, choose a random node in the cluster.    * @return the chosen node    */
-DECL|method|chooseLocalNodeGroup ( NetworkTopologyWithNodeGroup clusterMap, DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalNodeGroup ( NetworkTopologyWithNodeGroup clusterMap, DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|private
 name|DatanodeDescriptor
 name|chooseLocalNodeGroup
@@ -872,7 +746,7 @@ parameter_list|,
 name|DatanodeDescriptor
 name|localMachine
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|Node
 argument_list|,
@@ -967,32 +841,12 @@ literal|null
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|iter
-init|=
-name|results
-operator|.
-name|iterator
-argument_list|()
-init|;
-name|iter
-operator|.
-name|hasNext
-argument_list|()
-condition|;
-control|)
-block|{
 name|DatanodeDescriptor
 name|nextNode
-init|=
-name|iter
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
+range|:
+name|results
+control|)
+block|{
 if|if
 condition|(
 name|nextNode
@@ -1122,15 +976,17 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Find other nodes in the same nodegroup of<i>localMachine</i> and add them    * into<i>excludeNodes</i> as replica should not be duplicated for nodes     * within the same nodegroup    * @return number of new excluded nodes    */
-DECL|method|addToExcludedNodes (DatanodeDescriptor localMachine, HashMap<Node, Node> excludedNodes)
+annotation|@
+name|Override
+DECL|method|addToExcludedNodes (DatanodeDescriptor chosenNode, Map<Node, Node> excludedNodes)
 specifier|protected
 name|int
 name|addToExcludedNodes
 parameter_list|(
 name|DatanodeDescriptor
-name|localMachine
+name|chosenNode
 parameter_list|,
-name|HashMap
+name|Map
 argument_list|<
 name|Node
 argument_list|,
@@ -1147,7 +1003,7 @@ decl_stmt|;
 name|String
 name|nodeGroupScope
 init|=
-name|localMachine
+name|chosenNode
 operator|.
 name|getNetworkLocation
 argument_list|()
@@ -1207,7 +1063,7 @@ annotation|@
 name|Override
 DECL|method|pickupReplicaSet ( Collection<DatanodeDescriptor> first, Collection<DatanodeDescriptor> second)
 specifier|public
-name|Iterator
+name|Collection
 argument_list|<
 name|DatanodeDescriptor
 argument_list|>
@@ -1237,9 +1093,6 @@ condition|)
 block|{
 return|return
 name|second
-operator|.
-name|iterator
-argument_list|()
 return|;
 block|}
 comment|// Split data nodes in the first set into two sets,
@@ -1416,29 +1269,15 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|iter
-init|=
+return|return
 name|moreThanOne
 operator|.
 name|isEmpty
 argument_list|()
 condition|?
 name|exactlyOne
-operator|.
-name|iterator
-argument_list|()
 else|:
 name|moreThanOne
-operator|.
-name|iterator
-argument_list|()
-decl_stmt|;
-return|return
-name|iter
 return|;
 block|}
 block|}

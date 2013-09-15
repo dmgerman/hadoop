@@ -149,7 +149,7 @@ name|versionID
 init|=
 literal|1L
 decl_stmt|;
-comment|/**    * An HA service may be in active or standby state. During    * startup, it is in an unknown INITIALIZING state.    */
+comment|/**    * An HA service may be in active or standby state. During startup, it is in    * an unknown INITIALIZING state. During shutdown, it is in the STOPPING state    * and can no longer return to active/standby states.    */
 DECL|enum|HAServiceState
 specifier|public
 enum|enum
@@ -171,6 +171,12 @@ DECL|enumConstant|STANDBY
 name|STANDBY
 argument_list|(
 literal|"standby"
+argument_list|)
+block|,
+DECL|enumConstant|STOPPING
+name|STOPPING
+argument_list|(
+literal|"stopping"
 argument_list|)
 block|;
 DECL|field|name

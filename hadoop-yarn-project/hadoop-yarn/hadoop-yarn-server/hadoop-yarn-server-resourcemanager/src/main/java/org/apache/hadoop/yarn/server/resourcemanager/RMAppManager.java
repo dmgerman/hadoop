@@ -1291,30 +1291,6 @@ argument_list|(
 name|applicationId
 argument_list|)
 expr_stmt|;
-comment|// application completely done. Remove from state
-name|RMStateStore
-name|store
-init|=
-name|rmContext
-operator|.
-name|getStateStore
-argument_list|()
-decl_stmt|;
-name|store
-operator|.
-name|removeApplication
-argument_list|(
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|get
-argument_list|(
-name|applicationId
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|writeAuditLog (ApplicationId appId)

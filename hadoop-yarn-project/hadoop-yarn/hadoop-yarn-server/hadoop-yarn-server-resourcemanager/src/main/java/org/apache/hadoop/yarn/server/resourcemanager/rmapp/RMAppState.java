@@ -43,6 +43,9 @@ block|,
 DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
+DECL|enumConstant|REMOVING
+name|REMOVING
+block|,
 DECL|enumConstant|FINISHING
 name|FINISHING
 block|,

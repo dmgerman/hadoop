@@ -1138,6 +1138,8 @@ argument_list|(
 name|channel
 argument_list|,
 name|writeReq
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|writeReq
@@ -1162,6 +1164,8 @@ argument_list|(
 name|channel
 argument_list|,
 name|writeReq
+argument_list|,
+literal|2
 argument_list|)
 expr_stmt|;
 name|writeReq
@@ -1186,6 +1190,8 @@ argument_list|(
 name|channel
 argument_list|,
 name|writeReq
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 comment|// TODO: convert to Junit test, and validate result automatically
