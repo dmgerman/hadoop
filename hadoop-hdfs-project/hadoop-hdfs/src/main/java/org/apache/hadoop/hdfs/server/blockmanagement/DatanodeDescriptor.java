@@ -196,6 +196,16 @@ name|DatanodeDescriptor
 extends|extends
 name|DatanodeInfo
 block|{
+DECL|field|EMPTY_ARRAY
+specifier|public
+specifier|static
+specifier|final
+name|DatanodeDescriptor
+index|[]
+name|EMPTY_ARRAY
+init|=
+block|{}
+decl_stmt|;
 comment|// Stores status of decommissioning.
 comment|// If node is not decommissioning, do not use this object for anything.
 DECL|field|decommissioningStatus
