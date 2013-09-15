@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to a   *<code>ApplicationMaster</code> on it's completion.</p>  *   *<p>Currently, this is empty.</p>  *   * @see ApplicationMasterProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
+comment|/**  *<p>  * The response sent by the<code>ResourceManager</code> to a  *<code>ApplicationMaster</code> on it's completion.  *</p>  *   *<p>  * The response, includes:  *<ul>  *<li>A flag which indicates that the application has successfully unregistered  * with the RM and the application can safely stop.</li>  *</ul>  *</p>  * Note: The flag indicates whether the application has successfully  * unregistered and is safe to stop. The application may stop after the flag is  * true. If the application stops before the flag is true then the RM may retry  * the application .  *   * @see ApplicationMasterProtocol#finishApplicationMaster(FinishApplicationMasterRequest)  */
 end_comment
 
 begin_class
@@ -135,12 +135,15 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ()
+DECL|method|newInstance ( boolean isRemovedFromRMStateStore)
 specifier|public
 specifier|static
 name|FinishApplicationMasterResponse
 name|newInstance
-parameter_list|()
+parameter_list|(
+name|boolean
+name|isRemovedFromRMStateStore
+parameter_list|)
 block|{
 name|FinishApplicationMasterResponse
 name|response
@@ -154,10 +157,44 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|response
+operator|.
+name|setIsUnregistered
+argument_list|(
+name|isRemovedFromRMStateStore
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;
 block|}
+comment|/**    * Get the flag which indicates that the application has successfully    * unregistered with the RM and the application can safely stop.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getIsUnregistered ()
+specifier|public
+specifier|abstract
+name|boolean
+name|getIsUnregistered
+parameter_list|()
+function_decl|;
+comment|/**    * Set the flag which indicates that the application has successfully    * unregistered with the RM and the application can safely stop.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setIsUnregistered (boolean isUnregistered)
+specifier|public
+specifier|abstract
+name|void
+name|setIsUnregistered
+parameter_list|(
+name|boolean
+name|isUnregistered
+parameter_list|)
+function_decl|;
 block|}
 end_class
 

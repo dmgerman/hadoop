@@ -5923,7 +5923,7 @@ name|applicationId
 argument_list|,
 name|RMAppEventType
 operator|.
-name|ATTEMPT_FINISHING
+name|ATTEMPT_UNREGISTERED
 argument_list|)
 argument_list|)
 expr_stmt|;
