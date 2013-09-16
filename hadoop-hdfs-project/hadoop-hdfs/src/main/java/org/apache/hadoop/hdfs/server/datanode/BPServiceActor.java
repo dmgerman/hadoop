@@ -1229,62 +1229,6 @@ literal|true
 expr_stmt|;
 comment|// reset future BRs for randomness
 block|}
-DECL|method|scheduleCacheReport (long delay)
-name|void
-name|scheduleCacheReport
-parameter_list|(
-name|long
-name|delay
-parameter_list|)
-block|{
-if|if
-condition|(
-name|delay
-operator|>
-literal|0
-condition|)
-block|{
-comment|// Uniform random jitter by the delay
-name|lastCacheReport
-operator|=
-name|Time
-operator|.
-name|monotonicNow
-argument_list|()
-operator|-
-name|dnConf
-operator|.
-name|cacheReportInterval
-operator|+
-name|DFSUtil
-operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextInt
-argument_list|(
-operator|(
-operator|(
-name|int
-operator|)
-name|delay
-operator|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// send at next heartbeat
-name|lastCacheReport
-operator|=
-name|lastCacheReport
-operator|-
-name|dnConf
-operator|.
-name|cacheReportInterval
-expr_stmt|;
-block|}
-block|}
 DECL|method|reportBadBlocks (ExtendedBlock block)
 name|void
 name|reportBadBlocks
@@ -1996,6 +1940,24 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// If caching is disabled, do not send a cache report
+if|if
+condition|(
+name|dn
+operator|.
+name|getFSDataset
+argument_list|()
+operator|.
+name|getCacheCapacity
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|// send cache report if timer has expired.
 name|DatanodeCommand
 name|cmd

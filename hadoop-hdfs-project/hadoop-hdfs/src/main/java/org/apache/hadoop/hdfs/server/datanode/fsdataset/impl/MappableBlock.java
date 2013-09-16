@@ -990,7 +990,7 @@ name|limit
 argument_list|(
 name|chunks
 operator|*
-name|bytesPerChecksum
+name|checksumSize
 argument_list|)
 expr_stmt|;
 name|fillBuffer

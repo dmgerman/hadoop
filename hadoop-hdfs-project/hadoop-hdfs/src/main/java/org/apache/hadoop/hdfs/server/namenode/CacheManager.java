@@ -1081,6 +1081,23 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Path "
+operator|+
+name|directive
+operator|.
+name|getPath
+argument_list|()
+operator|+
+literal|" is not a file"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

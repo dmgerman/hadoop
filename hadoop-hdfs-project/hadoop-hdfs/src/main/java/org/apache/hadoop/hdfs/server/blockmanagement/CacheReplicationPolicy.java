@@ -153,6 +153,17 @@ specifier|public
 class|class
 name|CacheReplicationPolicy
 block|{
+comment|// Not thread-safe, but only accessed by the CacheReplicationMonitor
+DECL|field|random
+specifier|private
+specifier|static
+name|RandomData
+name|random
+init|=
+operator|new
+name|RandomDataImpl
+argument_list|()
+decl_stmt|;
 comment|/**    * @return List of datanodes with sufficient capacity to cache the block    */
 DECL|method|selectSufficientCapacity (Block block, List<DatanodeDescriptor> targets)
 specifier|private
@@ -230,7 +241,7 @@ return|return
 name|sufficient
 return|;
 block|}
-comment|/**    * Returns a random datanode from targets, weighted by the amount of free    * cache capacity on the datanode. Prunes unsuitable datanodes from the    * targets list.    *     * @param block Block to be cached    * @param targets List of potential cache targets    * @return a random DN, or null if no datanodes are available or have enough    *         cache capacity.    */
+comment|/**    * Returns a random datanode from targets, weighted by the amount of free    * cache capacity on the datanode.    *     * @param block Block to be cached    * @param targets List of potential cache targets    * @return a random DN, or null if no datanodes are available or have enough    *         cache capacity.    */
 DECL|method|randomDatanodeByRemainingCache (Block block, List<DatanodeDescriptor> targets)
 specifier|private
 specifier|static
@@ -309,17 +320,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Pick our lottery winner
-name|RandomData
-name|r
-init|=
-operator|new
-name|RandomDataImpl
-argument_list|()
-decl_stmt|;
 name|long
 name|winningTicket
 init|=
-name|r
+name|random
 operator|.
 name|nextLong
 argument_list|(
@@ -423,16 +427,28 @@ name|i
 operator|++
 control|)
 block|{
-name|chosen
-operator|.
-name|add
-argument_list|(
+name|DatanodeDescriptor
+name|choice
+init|=
 name|randomDatanodeByRemainingCache
 argument_list|(
 name|block
 argument_list|,
 name|sufficient
 argument_list|)
+decl_stmt|;
+name|chosen
+operator|.
+name|add
+argument_list|(
+name|choice
+argument_list|)
+expr_stmt|;
+name|sufficient
+operator|.
+name|remove
+argument_list|(
+name|choice
 argument_list|)
 expr_stmt|;
 block|}

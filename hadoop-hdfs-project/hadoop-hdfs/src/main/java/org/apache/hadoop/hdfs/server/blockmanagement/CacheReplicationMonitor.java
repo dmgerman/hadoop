@@ -736,6 +736,9 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|(
 name|storedNodes
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Only target replicas that aren't already cached.

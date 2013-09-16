@@ -853,6 +853,11 @@ name|void
 name|clearQueues
 parameter_list|()
 block|{
+if|if
+condition|(
+name|isCachingEnabled
+condition|)
+block|{
 name|blocksToUncache
 operator|.
 name|clear
@@ -874,6 +879,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 DECL|method|isCachingEnabled ()
 specifier|public
@@ -2502,7 +2508,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the safely cached replicas of a block in a BlocksMap    */
+comment|/**    * Return the safe replicas (not corrupt or decomissioning/decommissioned) of    * a block in a BlocksMap    */
 DECL|method|getSafeReplicas (BlocksMap map, Block block)
 name|List
 argument_list|<
