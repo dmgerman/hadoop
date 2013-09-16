@@ -633,7 +633,8 @@ name|assertEquals
 argument_list|(
 name|MockRM
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 argument_list|,
 name|tokenId
 operator|.
