@@ -732,7 +732,8 @@ name|clusterId
 operator|=
 name|ResourceManager
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 expr_stmt|;
 if|if
 condition|(

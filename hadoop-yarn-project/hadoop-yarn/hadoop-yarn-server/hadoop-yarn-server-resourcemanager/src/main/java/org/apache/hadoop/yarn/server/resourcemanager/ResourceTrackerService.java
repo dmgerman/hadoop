@@ -1510,7 +1510,8 @@ name|setRMIdentifier
 argument_list|(
 name|ResourceManager
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return

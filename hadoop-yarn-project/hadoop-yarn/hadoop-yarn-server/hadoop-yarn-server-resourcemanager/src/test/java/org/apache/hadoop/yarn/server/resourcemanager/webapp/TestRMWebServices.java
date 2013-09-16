@@ -2167,7 +2167,8 @@ literal|"clusterId doesn't match: "
 argument_list|,
 name|ResourceManager
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 argument_list|,
 name|clusterid
 argument_list|)
@@ -2178,7 +2179,8 @@ literal|"startedOn doesn't match: "
 argument_list|,
 name|ResourceManager
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 argument_list|,
 name|startedon
 argument_list|)

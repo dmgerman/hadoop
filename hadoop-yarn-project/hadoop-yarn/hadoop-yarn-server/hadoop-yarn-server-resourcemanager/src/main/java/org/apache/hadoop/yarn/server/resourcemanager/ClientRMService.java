@@ -1733,7 +1733,8 @@ name|recordFactory
 argument_list|,
 name|ResourceManager
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 argument_list|,
 name|applicationCounter
 operator|.
