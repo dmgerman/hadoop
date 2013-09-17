@@ -62,7 +62,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|HashSet
 import|;
 end_import
 
@@ -73,16 +73,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
 import|;
 end_import
 
@@ -518,7 +508,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Map<Node, Node> excludedNodes, long blocksize)
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize)
 specifier|public
 name|DatanodeDescriptor
 index|[]
@@ -530,7 +520,7 @@ parameter_list|,
 name|int
 name|numOfReplicas
 parameter_list|,
-name|DatanodeDescriptor
+name|Node
 name|writer
 parameter_list|,
 name|List
@@ -542,10 +532,8 @@ parameter_list|,
 name|boolean
 name|returnChosenNodes
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -573,7 +561,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseTarget (String src, int numOfReplicas, DatanodeDescriptor writer, Map<Node, Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes)
+DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes)
 name|DatanodeDescriptor
 index|[]
 name|chooseTarget
@@ -584,13 +572,11 @@ parameter_list|,
 name|int
 name|numOfReplicas
 parameter_list|,
-name|DatanodeDescriptor
+name|Node
 name|writer
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -648,10 +634,8 @@ name|blocksize
 argument_list|)
 return|;
 block|}
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|favoriteAndExcludedNodes
@@ -661,19 +645,15 @@ operator|==
 literal|null
 condition|?
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 argument_list|()
 else|:
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 argument_list|(
@@ -793,10 +773,8 @@ continue|continue;
 block|}
 name|favoriteAndExcludedNodes
 operator|.
-name|put
+name|add
 argument_list|(
-name|target
-argument_list|,
 name|target
 argument_list|)
 expr_stmt|;
@@ -925,7 +903,7 @@ return|;
 block|}
 block|}
 comment|/** This is the implementation. */
-DECL|method|chooseTarget (int numOfReplicas, DatanodeDescriptor writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Map<Node, Node> excludedNodes, long blocksize)
+DECL|method|chooseTarget (int numOfReplicas, Node writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize)
 specifier|private
 name|DatanodeDescriptor
 index|[]
@@ -934,7 +912,7 @@ parameter_list|(
 name|int
 name|numOfReplicas
 parameter_list|,
-name|DatanodeDescriptor
+name|Node
 name|writer
 parameter_list|,
 name|List
@@ -946,10 +924,8 @@ parameter_list|,
 name|boolean
 name|returnChosenNodes
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -988,10 +964,8 @@ block|{
 name|excludedNodes
 operator|=
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 argument_list|()
@@ -1085,7 +1059,7 @@ name|isAvoidingStaleDataNodesForWrite
 argument_list|()
 operator|)
 decl_stmt|;
-name|DatanodeDescriptor
+name|Node
 name|localNode
 init|=
 name|chooseTarget
@@ -1230,22 +1204,20 @@ name|maxNodesPerRack
 block|}
 return|;
 block|}
-comment|/* choose<i>numOfReplicas</i> from all data nodes */
-DECL|method|chooseTarget (int numOfReplicas, DatanodeDescriptor writer, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, final boolean avoidStaleNodes)
+comment|/**    * choose<i>numOfReplicas</i> from all data nodes    * @param numOfReplicas additional number of replicas wanted    * @param writer the writer's machine, could be a non-DatanodeDescriptor node    * @param excludedNodes datanodes that should not be considered as targets    * @param blocksize size of the data to be written    * @param maxNodesPerRack max nodes allowed per rack    * @param results the target nodes already chosen    * @param avoidStaleNodes avoid stale nodes in replica choosing    * @return local node of writer (not chosen node)    */
+DECL|method|chooseTarget (int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, final boolean avoidStaleNodes)
 specifier|private
-name|DatanodeDescriptor
+name|Node
 name|chooseTarget
 parameter_list|(
 name|int
 name|numOfReplicas
 parameter_list|,
-name|DatanodeDescriptor
+name|Node
 name|writer
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -1314,9 +1286,18 @@ operator|)
 decl_stmt|;
 if|if
 condition|(
+operator|(
 name|writer
 operator|==
 literal|null
+operator|||
+operator|!
+operator|(
+name|writer
+operator|instanceof
+name|DatanodeDescriptor
+operator|)
+operator|)
 operator|&&
 operator|!
 name|newBlock
@@ -1334,10 +1315,8 @@ expr_stmt|;
 block|}
 comment|// Keep a copy of original excludedNodes
 specifier|final
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|oldExcludedNodes
@@ -1345,10 +1324,8 @@ init|=
 name|avoidStaleNodes
 condition|?
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 argument_list|(
@@ -1621,10 +1598,8 @@ control|)
 block|{
 name|oldExcludedNodes
 operator|.
-name|put
+name|add
 argument_list|(
-name|node
-argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
@@ -1665,18 +1640,16 @@ name|writer
 return|;
 block|}
 comment|/**    * Choose<i>localMachine</i> as the target.    * if<i>localMachine</i> is not available,     * choose a node on the same rack    * @return the chosen node    */
-DECL|method|chooseLocalNode (DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalNode (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalNode
 parameter_list|(
-name|DatanodeDescriptor
+name|Node
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -1727,26 +1700,29 @@ return|;
 if|if
 condition|(
 name|preferLocalNode
+operator|&&
+name|localMachine
+operator|instanceof
+name|DatanodeDescriptor
 condition|)
 block|{
-comment|// otherwise try local machine first
-name|Node
-name|oldNode
+name|DatanodeDescriptor
+name|localDatanode
 init|=
-name|excludedNodes
-operator|.
-name|put
-argument_list|(
+operator|(
+name|DatanodeDescriptor
+operator|)
 name|localMachine
-argument_list|,
-name|localMachine
-argument_list|)
 decl_stmt|;
+comment|// otherwise try local machine first
 if|if
 condition|(
-name|oldNode
-operator|==
-literal|null
+name|excludedNodes
+operator|.
+name|add
+argument_list|(
+name|localMachine
+argument_list|)
 condition|)
 block|{
 comment|// was not in the excluded list
@@ -1754,7 +1730,7 @@ if|if
 condition|(
 name|addIfIsGoodTarget
 argument_list|(
-name|localMachine
+name|localDatanode
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1773,7 +1749,7 @@ literal|0
 condition|)
 block|{
 return|return
-name|localMachine
+name|localDatanode
 return|;
 block|}
 block|}
@@ -1797,7 +1773,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Add<i>localMachine</i> and related nodes to<i>excludedNodes</i>    * for next replica choosing. In sub class, we can add more nodes within    * the same failure domain of localMachine    * @return number of new excluded nodes    */
-DECL|method|addToExcludedNodes (DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes)
+DECL|method|addToExcludedNodes (DatanodeDescriptor localMachine, Set<Node> excludedNodes)
 specifier|protected
 name|int
 name|addToExcludedNodes
@@ -1805,31 +1781,20 @@ parameter_list|(
 name|DatanodeDescriptor
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
 parameter_list|)
 block|{
-name|Node
-name|node
-init|=
+return|return
 name|excludedNodes
 operator|.
-name|put
+name|add
 argument_list|(
 name|localMachine
-argument_list|,
-name|localMachine
 argument_list|)
-decl_stmt|;
-return|return
-name|node
-operator|==
-literal|null
 condition|?
 literal|1
 else|:
@@ -1837,18 +1802,16 @@ literal|0
 return|;
 block|}
 comment|/**    * Choose one node from the rack that<i>localMachine</i> is on.    * if no such node is available, choose one node from the rack where    * a second replica is on.    * if still no such node is available, choose a random node     * in the cluster.    * @return the chosen node    */
-DECL|method|chooseLocalRack (DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalRack (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalRack
 parameter_list|(
-name|DatanodeDescriptor
+name|Node
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -2036,7 +1999,7 @@ block|}
 block|}
 block|}
 comment|/**     * Choose<i>numOfReplicas</i> nodes from the racks     * that<i>localMachine</i> is NOT on.    * if not enough nodes are available, choose the remaining ones     * from the local rack    */
-DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Set<Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|void
 name|chooseRemoteRack
@@ -2047,10 +2010,8 @@ parameter_list|,
 name|DatanodeDescriptor
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -2145,7 +2106,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Randomly choose one target from the given<i>scope</i>.    * @return the chosen node, if there is any.    */
-DECL|method|chooseRandom (String scope, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseRandom (String scope, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseRandom
@@ -2153,10 +2114,8 @@ parameter_list|(
 name|String
 name|scope
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -2199,7 +2158,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Randomly choose<i>numOfReplicas</i> targets from the given<i>scope</i>.    * @return the first chosen node, if there is any.    */
-DECL|method|chooseRandom (int numOfReplicas, String scope, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseRandom (int numOfReplicas, String scope, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseRandom
@@ -2210,10 +2169,8 @@ parameter_list|,
 name|String
 name|scope
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -2246,9 +2203,6 @@ argument_list|(
 name|scope
 argument_list|,
 name|excludedNodes
-operator|.
-name|keySet
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|StringBuilder
@@ -2320,25 +2274,17 @@ argument_list|(
 name|scope
 argument_list|)
 decl_stmt|;
-name|Node
-name|oldNode
-init|=
-name|excludedNodes
-operator|.
-name|put
-argument_list|(
-name|chosenNode
-argument_list|,
-name|chosenNode
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|oldNode
-operator|==
-literal|null
+name|excludedNodes
+operator|.
+name|add
+argument_list|(
+name|chosenNode
+argument_list|)
 condition|)
 block|{
+comment|//was not in the excluded list
 name|numOfAvailableNodes
 operator|--
 expr_stmt|;
@@ -2465,18 +2411,16 @@ return|return
 name|firstChosen
 return|;
 block|}
-comment|/**    * If the given node is a good target, add it to the result list and    * update the excluded node map.    * @return -1 if the given is not a good target;    *         otherwise, return the number of excluded nodes added to the map.    */
-DECL|method|addIfIsGoodTarget (DatanodeDescriptor node, Map<Node, Node> excludedNodes, long blockSize, int maxNodesPerRack, boolean considerLoad, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+comment|/**    * If the given node is a good target, add it to the result list and    * update the set of excluded nodes.    * @return -1 if the given is not a good target;    *         otherwise, return the number of nodes added to excludedNodes set.    */
+DECL|method|addIfIsGoodTarget (DatanodeDescriptor node, Set<Node> excludedNodes, long blockSize, int maxNodesPerRack, boolean considerLoad, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 name|int
 name|addIfIsGoodTarget
 parameter_list|(
 name|DatanodeDescriptor
 name|node
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -2861,13 +2805,13 @@ literal|true
 return|;
 block|}
 comment|/**    * Return a pipeline of nodes.    * The pipeline is formed finding a shortest path that     * starts from the writer and traverses all<i>nodes</i>    * This is basically a traveling salesman problem.    */
-DECL|method|getPipeline (DatanodeDescriptor writer, DatanodeDescriptor[] nodes)
+DECL|method|getPipeline (Node writer, DatanodeDescriptor[] nodes)
 specifier|private
 name|DatanodeDescriptor
 index|[]
 name|getPipeline
 parameter_list|(
-name|DatanodeDescriptor
+name|Node
 name|writer
 parameter_list|,
 name|DatanodeDescriptor

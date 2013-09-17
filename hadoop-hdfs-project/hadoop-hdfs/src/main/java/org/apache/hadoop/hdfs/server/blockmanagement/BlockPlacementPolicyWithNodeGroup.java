@@ -72,6 +72,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -245,18 +255,16 @@ block|}
 comment|/** choose local node of localMachine as the target.    * if localMachine is not available, choose a node on the same nodegroup or     * rack instead.    * @return the chosen node    */
 annotation|@
 name|Override
-DECL|method|chooseLocalNode (DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalNode (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalNode
 parameter_list|(
-name|DatanodeDescriptor
+name|Node
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -304,24 +312,30 @@ argument_list|,
 name|avoidStaleNodes
 argument_list|)
 return|;
-comment|// otherwise try local machine first
-name|Node
-name|oldNode
-init|=
-name|excludedNodes
-operator|.
-name|put
-argument_list|(
-name|localMachine
-argument_list|,
-name|localMachine
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|oldNode
-operator|==
-literal|null
+name|localMachine
+operator|instanceof
+name|DatanodeDescriptor
+condition|)
+block|{
+name|DatanodeDescriptor
+name|localDataNode
+init|=
+operator|(
+name|DatanodeDescriptor
+operator|)
+name|localMachine
+decl_stmt|;
+comment|// otherwise try local machine first
+if|if
+condition|(
+name|excludedNodes
+operator|.
+name|add
+argument_list|(
+name|localMachine
+argument_list|)
 condition|)
 block|{
 comment|// was not in the excluded list
@@ -329,7 +343,7 @@ if|if
 condition|(
 name|addIfIsGoodTarget
 argument_list|(
-name|localMachine
+name|localDataNode
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -348,8 +362,9 @@ literal|0
 condition|)
 block|{
 return|return
-name|localMachine
+name|localDataNode
 return|;
+block|}
 block|}
 block|}
 comment|// try a node on local node group
@@ -407,18 +422,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseLocalRack (DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalRack (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|DatanodeDescriptor
 name|chooseLocalRack
 parameter_list|(
-name|DatanodeDescriptor
+name|Node
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -617,7 +630,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Set<Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|protected
 name|void
 name|chooseRemoteRack
@@ -628,10 +641,8 @@ parameter_list|,
 name|DatanodeDescriptor
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -735,7 +746,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/* choose one node from the nodegroup that<i>localMachine</i> is on.    * if no such node is available, choose one node from the nodegroup where    * a second replica is on.    * if still no such node is available, choose a random node in the cluster.    * @return the chosen node    */
-DECL|method|chooseLocalNodeGroup ( NetworkTopologyWithNodeGroup clusterMap, DatanodeDescriptor localMachine, Map<Node, Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalNodeGroup ( NetworkTopologyWithNodeGroup clusterMap, Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
 specifier|private
 name|DatanodeDescriptor
 name|chooseLocalNodeGroup
@@ -743,13 +754,11 @@ parameter_list|(
 name|NetworkTopologyWithNodeGroup
 name|clusterMap
 parameter_list|,
-name|DatanodeDescriptor
+name|Node
 name|localMachine
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -978,7 +987,7 @@ block|}
 comment|/**    * Find other nodes in the same nodegroup of<i>localMachine</i> and add them    * into<i>excludeNodes</i> as replica should not be duplicated for nodes     * within the same nodegroup    * @return number of new excluded nodes    */
 annotation|@
 name|Override
-DECL|method|addToExcludedNodes (DatanodeDescriptor chosenNode, Map<Node, Node> excludedNodes)
+DECL|method|addToExcludedNodes (DatanodeDescriptor chosenNode, Set<Node> excludedNodes)
 specifier|protected
 name|int
 name|addToExcludedNodes
@@ -986,10 +995,8 @@ parameter_list|(
 name|DatanodeDescriptor
 name|chosenNode
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -1029,23 +1036,14 @@ range|:
 name|leafNodes
 control|)
 block|{
-name|Node
-name|node
-init|=
-name|excludedNodes
-operator|.
-name|put
-argument_list|(
-name|leafNode
-argument_list|,
-name|leafNode
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
-name|node
-operator|==
-literal|null
+name|excludedNodes
+operator|.
+name|add
+argument_list|(
+name|leafNode
+argument_list|)
 condition|)
 block|{
 comment|// not a existing node in excludedNodes
