@@ -7378,7 +7378,7 @@ name|container
 argument_list|)
 expr_stmt|;
 block|}
-comment|// need to access the list of apps from the preemption monitor
+comment|/**    * Obtain (read-only) collection of active applications.    */
 DECL|method|getApplications ()
 specifier|public
 name|Set
@@ -7388,13 +7388,9 @@ argument_list|>
 name|getApplications
 parameter_list|()
 block|{
+comment|// need to access the list of apps from the preemption monitor
 return|return
-name|Collections
-operator|.
-name|unmodifiableSet
-argument_list|(
 name|activeApplications
-argument_list|)
 return|;
 block|}
 comment|// return a single Resource capturing the overal amount of pending resources
