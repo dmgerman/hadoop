@@ -112,6 +112,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -6342,19 +6352,15 @@ argument_list|()
 expr_stmt|;
 block|}
 specifier|final
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
 init|=
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 argument_list|()
@@ -6386,10 +6392,8 @@ control|)
 block|{
 name|excludedNodes
 operator|.
-name|put
+name|add
 argument_list|(
-name|dn
-argument_list|,
 name|dn
 argument_list|)
 expr_stmt|;
@@ -6877,8 +6881,8 @@ return|return
 name|scheduledWork
 return|;
 block|}
-comment|/**    * Choose target datanodes according to the replication policy.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, DatanodeDescriptor,    *      List, boolean, HashMap, long)    */
-DECL|method|chooseTarget (final String src, final int numOfReplicas, final DatanodeDescriptor client, final HashMap<Node, Node> excludedNodes, final long blocksize, List<String> favoredNodes)
+comment|/**    * Choose target datanodes according to the replication policy.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      List, boolean, Set, long)    */
+DECL|method|chooseTarget (final String src, final int numOfReplicas, final DatanodeDescriptor client, final Set<Node> excludedNodes, final long blocksize, List<String> favoredNodes)
 specifier|public
 name|DatanodeDescriptor
 index|[]
@@ -6897,10 +6901,8 @@ name|DatanodeDescriptor
 name|client
 parameter_list|,
 specifier|final
-name|HashMap
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -14901,7 +14903,7 @@ operator|=
 literal|null
 expr_stmt|;
 block|}
-DECL|method|chooseTargets (BlockPlacementPolicy blockplacement, Map<Node, Node> excludedNodes)
+DECL|method|chooseTargets (BlockPlacementPolicy blockplacement, Set<Node> excludedNodes)
 specifier|private
 name|void
 name|chooseTargets
@@ -14909,10 +14911,8 @@ parameter_list|(
 name|BlockPlacementPolicy
 name|blockplacement
 parameter_list|,
-name|Map
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes

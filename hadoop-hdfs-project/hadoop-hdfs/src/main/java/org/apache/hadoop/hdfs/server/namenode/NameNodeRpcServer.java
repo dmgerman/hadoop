@@ -176,7 +176,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|HashSet
 import|;
 end_import
 
@@ -187,6 +187,16 @@ operator|.
 name|util
 operator|.
 name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -3796,10 +3806,8 @@ name|clientName
 argument_list|)
 expr_stmt|;
 block|}
-name|HashMap
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodesSet
@@ -3816,10 +3824,8 @@ block|{
 name|excludedNodesSet
 operator|=
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 argument_list|(
@@ -3838,10 +3844,8 @@ control|)
 block|{
 name|excludedNodesSet
 operator|.
-name|put
+name|add
 argument_list|(
-name|node
-argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
@@ -3993,10 +3997,8 @@ operator|.
 name|incrGetAdditionalDatanodeOps
 argument_list|()
 expr_stmt|;
-name|HashMap
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludeSet
@@ -4013,10 +4015,8 @@ block|{
 name|excludeSet
 operator|=
 operator|new
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 argument_list|(
@@ -4035,10 +4035,8 @@ control|)
 block|{
 name|excludeSet
 operator|.
-name|put
+name|add
 argument_list|(
-name|node
-argument_list|,
 name|node
 argument_list|)
 expr_stmt|;

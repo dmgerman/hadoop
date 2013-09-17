@@ -3324,24 +3324,6 @@ name|token
 operator|.
 name|delegation
 operator|.
-name|AbstractDelegationTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|token
-operator|.
-name|delegation
-operator|.
 name|DelegationKey
 import|;
 end_import
@@ -13434,7 +13416,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * The client would like to obtain an additional block for the indicated    * filename (which is being written-to).  Return an array that consists    * of the block, plus a set of machines.  The first on this list should    * be where the client writes data.  Subsequent items in the list must    * be provided in the connection to the first datanode.    *    * Make sure the previous blocks have been reported by datanodes and    * are replicated.  Will return an empty 2-elt array if we want the    * client to "try again later".    */
-DECL|method|getAdditionalBlock (String src, long fileId, String clientName, ExtendedBlock previous, HashMap<Node, Node> excludedNodes, List<String> favoredNodes)
+DECL|method|getAdditionalBlock (String src, long fileId, String clientName, ExtendedBlock previous, Set<Node> excludedNodes, List<String> favoredNodes)
 name|LocatedBlock
 name|getAdditionalBlock
 parameter_list|(
@@ -13450,10 +13432,8 @@ parameter_list|,
 name|ExtendedBlock
 name|previous
 parameter_list|,
-name|HashMap
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludedNodes
@@ -14370,7 +14350,7 @@ name|lBlk
 return|;
 block|}
 comment|/** @see NameNode#getAdditionalDatanode(String, ExtendedBlock, DatanodeInfo[], DatanodeInfo[], int, String) */
-DECL|method|getAdditionalDatanode (String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final HashMap<Node, Node> excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final Set<Node> excludes, final int numAdditionalNodes, final String clientName )
 name|LocatedBlock
 name|getAdditionalDatanode
 parameter_list|(
@@ -14387,10 +14367,8 @@ index|[]
 name|existings
 parameter_list|,
 specifier|final
-name|HashMap
+name|Set
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 name|excludes
