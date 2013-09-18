@@ -46,6 +46,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashMap
 import|;
 end_import
@@ -289,17 +299,17 @@ decl_stmt|;
 DECL|field|targets
 specifier|public
 specifier|final
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 decl_stmt|;
-DECL|method|BlockTargetPair (Block block, DatanodeDescriptor[] targets)
+DECL|method|BlockTargetPair (Block block, DatanodeStorageInfo[] targets)
 name|BlockTargetPair
 parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)
@@ -828,7 +838,6 @@ literal|false
 return|;
 block|}
 DECL|method|getStorageInfo (String storageID)
-specifier|public
 name|DatanodeStorageInfo
 name|getStorageInfo
 parameter_list|(
@@ -852,11 +861,8 @@ return|;
 block|}
 block|}
 DECL|method|getStorageInfos ()
-specifier|public
-name|Collection
-argument_list|<
 name|DatanodeStorageInfo
-argument_list|>
+index|[]
 name|getStorageInfos
 parameter_list|()
 block|{
@@ -865,17 +871,31 @@ init|(
 name|storageMap
 init|)
 block|{
-return|return
-operator|new
-name|ArrayList
+specifier|final
+name|Collection
 argument_list|<
 name|DatanodeStorageInfo
 argument_list|>
-argument_list|(
+name|storages
+init|=
 name|storageMap
 operator|.
 name|values
 argument_list|()
+decl_stmt|;
+return|return
+name|storages
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|DatanodeStorageInfo
+index|[
+name|storages
+operator|.
+name|size
+argument_list|()
+index|]
 argument_list|)
 return|;
 block|}
@@ -976,21 +996,6 @@ return|;
 block|}
 return|return
 literal|false
-return|;
-block|}
-comment|/**    * Used for testing only    * @return the head of the blockList    */
-DECL|method|getHead ()
-specifier|protected
-name|BlockInfo
-name|getHead
-parameter_list|()
-block|{
-return|return
-name|getBlockIterator
-argument_list|()
-operator|.
-name|next
-argument_list|()
 return|;
 block|}
 comment|/**    * Replace specified old block with a new one in the DataNodeDescriptor.    *    * @param oldBlock - block to be replaced    * @param newBlock - a replacement block    * @return the new block    */
@@ -1267,12 +1272,6 @@ argument_list|<
 name|BlockInfo
 argument_list|>
 block|{
-DECL|field|maxIndex
-specifier|private
-specifier|final
-name|int
-name|maxIndex
-decl_stmt|;
 DECL|field|index
 specifier|private
 name|int
@@ -1282,6 +1281,26 @@ literal|0
 decl_stmt|;
 DECL|field|iterators
 specifier|private
+specifier|final
+name|List
+argument_list|<
+name|Iterator
+argument_list|<
+name|BlockInfo
+argument_list|>
+argument_list|>
+name|iterators
+decl_stmt|;
+DECL|method|BlockIterator (final DatanodeStorageInfo... storages)
+specifier|private
+name|BlockIterator
+parameter_list|(
+specifier|final
+name|DatanodeStorageInfo
+modifier|...
+name|storages
+parameter_list|)
+block|{
 name|List
 argument_list|<
 name|Iterator
@@ -1301,18 +1320,6 @@ argument_list|>
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|BlockIterator (final Iterable<DatanodeStorageInfo> storages)
-specifier|private
-name|BlockIterator
-parameter_list|(
-specifier|final
-name|Iterable
-argument_list|<
-name|DatanodeStorageInfo
-argument_list|>
-name|storages
-parameter_list|)
-block|{
 for|for
 control|(
 name|DatanodeStorageInfo
@@ -1332,43 +1339,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|maxIndex
+name|this
+operator|.
+name|iterators
 operator|=
-name|iterators
+name|Collections
 operator|.
-name|size
-argument_list|()
-operator|-
-literal|1
-expr_stmt|;
-block|}
-DECL|method|BlockIterator (final DatanodeStorageInfo storage)
-specifier|private
-name|BlockIterator
-parameter_list|(
-specifier|final
-name|DatanodeStorageInfo
-name|storage
-parameter_list|)
-block|{
-name|iterators
-operator|.
-name|add
+name|unmodifiableList
 argument_list|(
-name|storage
-operator|.
-name|getBlockIterator
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|maxIndex
-operator|=
 name|iterators
-operator|.
-name|size
-argument_list|()
-operator|-
-literal|1
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@
@@ -1443,7 +1423,12 @@ while|while
 condition|(
 name|index
 operator|<
-name|maxIndex
+name|iterators
+operator|.
+name|size
+argument_list|()
+operator|-
+literal|1
 operator|&&
 operator|!
 name|iterators
@@ -1504,14 +1489,14 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Store block replication work.    */
-DECL|method|addBlockToBeReplicated (Block block, DatanodeDescriptor[] targets)
+DECL|method|addBlockToBeReplicated (Block block, DatanodeStorageInfo[] targets)
 name|void
 name|addBlockToBeReplicated
 parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)

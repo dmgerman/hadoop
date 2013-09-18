@@ -3910,7 +3910,7 @@ block|}
 annotation|@
 name|Override
 comment|// ClientProtocol
-DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -3927,6 +3927,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|existings
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|existingStorageIDs
 parameter_list|,
 specifier|final
 name|DatanodeInfo
@@ -4052,6 +4057,8 @@ argument_list|,
 name|blk
 argument_list|,
 name|existings
+argument_list|,
+name|existingStorageIDs
 argument_list|,
 name|excludeSet
 argument_list|,

@@ -3072,7 +3072,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getAdditionalDatanode (String src, ExtendedBlock blk, DatanodeInfo[] existings, DatanodeInfo[] excludes, int numAdditionalNodes, String clientName)
+DECL|method|getAdditionalDatanode (String src, ExtendedBlock blk, DatanodeInfo[] existings, String[] existingStorageIDs, DatanodeInfo[] excludes, int numAdditionalNodes, String clientName)
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -3086,6 +3086,10 @@ parameter_list|,
 name|DatanodeInfo
 index|[]
 name|existings
+parameter_list|,
+name|String
+index|[]
+name|existingStorageIDs
 parameter_list|,
 name|DatanodeInfo
 index|[]
@@ -3138,6 +3142,16 @@ operator|.
 name|convert
 argument_list|(
 name|existings
+argument_list|)
+argument_list|)
+operator|.
+name|addAllExistingStorageIDs
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|existingStorageIDs
 argument_list|)
 argument_list|)
 operator|.

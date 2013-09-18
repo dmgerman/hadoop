@@ -1734,6 +1734,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|AlreadyBeingCreatedException
@@ -13672,10 +13686,9 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|// choose targets for the new block to be allocated.
-comment|// TODO: chooseTarget(..) should be changed to return DatanodeStorageInfo's
 specifier|final
-name|DatanodeDescriptor
-name|chosenDatanodes
+name|DatanodeStorageInfo
+name|targets
 index|[]
 init|=
 name|getBlockManager
@@ -13696,62 +13709,6 @@ argument_list|,
 name|favoredNodes
 argument_list|)
 decl_stmt|;
-specifier|final
-name|DatanodeStorageInfo
-index|[]
-name|targets
-init|=
-operator|new
-name|DatanodeStorageInfo
-index|[
-name|chosenDatanodes
-operator|.
-name|length
-index|]
-decl_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|targets
-operator|.
-name|length
-condition|;
-name|i
-operator|++
-control|)
-block|{
-specifier|final
-name|DatanodeDescriptor
-name|dd
-init|=
-name|chosenDatanodes
-index|[
-name|i
-index|]
-decl_stmt|;
-name|targets
-index|[
-name|i
-index|]
-operator|=
-name|dd
-operator|.
-name|getStorageInfos
-argument_list|()
-operator|.
-name|iterator
-argument_list|()
-operator|.
-name|next
-argument_list|()
-expr_stmt|;
-block|}
 comment|// Part II.
 comment|// Allocate a new block, add it to the INode and the BlocksMap.
 name|Block
@@ -14315,9 +14272,8 @@ block|{
 name|LocatedBlock
 name|lBlk
 init|=
+operator|new
 name|LocatedBlock
-operator|.
-name|createLocatedBlock
 argument_list|(
 name|getExtendedBlock
 argument_list|(
@@ -14350,7 +14306,7 @@ name|lBlk
 return|;
 block|}
 comment|/** @see NameNode#getAdditionalDatanode(String, ExtendedBlock, DatanodeInfo[], DatanodeInfo[], int, String) */
-DECL|method|getAdditionalDatanode (String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final Set<Node> excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] storageIDs, final Set<Node> excludes, final int numAdditionalNodes, final String clientName )
 name|LocatedBlock
 name|getAdditionalDatanode
 parameter_list|(
@@ -14365,6 +14321,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|existings
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|storageIDs
 parameter_list|,
 specifier|final
 name|Set
@@ -14401,7 +14362,7 @@ decl_stmt|;
 specifier|final
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|chosen
 decl_stmt|;
@@ -14498,54 +14459,32 @@ operator|.
 name|getPreferredBlockSize
 argument_list|()
 expr_stmt|;
-comment|//find datanode descriptors
-name|chosen
-operator|=
-operator|new
-name|ArrayList
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-argument_list|()
-expr_stmt|;
-for|for
-control|(
-name|DatanodeInfo
-name|d
-range|:
-name|existings
-control|)
-block|{
+comment|//find datanode storages
 specifier|final
-name|DatanodeDescriptor
-name|descriptor
+name|DatanodeManager
+name|dm
 init|=
 name|blockManager
 operator|.
 name|getDatanodeManager
-argument_list|(             )
-operator|.
-name|getDatanode
-argument_list|(
-name|d
-argument_list|)
+argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|descriptor
-operator|!=
-literal|null
-condition|)
-block|{
 name|chosen
+operator|=
+name|Arrays
 operator|.
-name|add
+name|asList
 argument_list|(
-name|descriptor
+name|dm
+operator|.
+name|getDatanodeStorageInfos
+argument_list|(
+name|existings
+argument_list|,
+name|storageIDs
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-block|}
 block|}
 finally|finally
 block|{
@@ -14555,7 +14494,7 @@ expr_stmt|;
 block|}
 comment|// choose new datanodes.
 specifier|final
-name|DatanodeInfo
+name|DatanodeStorageInfo
 index|[]
 name|targets
 init|=
@@ -14576,9 +14515,14 @@ name|chosen
 argument_list|,
 literal|true
 argument_list|,
+comment|// TODO: get storage type from the file
 name|excludes
 argument_list|,
 name|preferredblocksize
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -26300,6 +26244,18 @@ operator|.
 name|getLocations
 argument_list|()
 decl_stmt|;
+name|String
+index|[]
+name|storageIDs
+init|=
+name|blocks
+index|[
+name|i
+index|]
+operator|.
+name|getStorageIDs
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -26317,7 +26273,6 @@ name|j
 operator|++
 control|)
 block|{
-comment|//TODO: add "storageID to LocatedBlock
 name|blockManager
 operator|.
 name|findAndMarkBlockAsCorrupt
@@ -26329,7 +26284,10 @@ index|[
 name|j
 index|]
 argument_list|,
-literal|"STORAGE_ID"
+name|storageIDs
+index|[
+name|j
+index|]
 argument_list|,
 literal|"client machine reported it"
 argument_list|)

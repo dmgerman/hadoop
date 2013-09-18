@@ -330,6 +330,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -2573,14 +2587,14 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|containingLiveReplicasNodes
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -4040,9 +4054,8 @@ name|blk
 argument_list|)
 decl_stmt|;
 return|return
+operator|new
 name|LocatedBlock
-operator|.
-name|createLocatedBlock
 argument_list|(
 name|eb
 argument_list|,
@@ -4135,12 +4148,12 @@ operator|-
 name|numCorruptNodes
 decl_stmt|;
 specifier|final
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|machines
 init|=
 operator|new
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[
 name|numMachines
 index|]
@@ -4210,7 +4223,7 @@ name|j
 operator|++
 index|]
 operator|=
-name|d
+name|storage
 expr_stmt|;
 block|}
 block|}
@@ -6035,8 +6048,6 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|containingNodes
-decl_stmt|,
-name|liveReplicaNodes
 decl_stmt|;
 name|DatanodeDescriptor
 name|srcNode
@@ -6161,15 +6172,19 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|List
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
 name|liveReplicaNodes
-operator|=
+init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|NumberReplicas
 name|numReplicas
 init|=
@@ -6426,7 +6441,8 @@ range|:
 name|work
 control|)
 block|{
-name|DatanodeDescriptor
+specifier|final
+name|DatanodeStorageInfo
 index|[]
 name|targets
 init|=
@@ -6639,6 +6655,9 @@ index|[
 literal|0
 index|]
 operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|.
 name|getNetworkLocation
 argument_list|()
 argument_list|)
@@ -6665,13 +6684,16 @@ operator|++
 expr_stmt|;
 for|for
 control|(
-name|DatanodeDescriptor
-name|dn
+name|DatanodeStorageInfo
+name|storage
 range|:
 name|targets
 control|)
 block|{
-name|dn
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 operator|.
 name|incBlocksScheduled
 argument_list|()
@@ -6760,7 +6782,7 @@ range|:
 name|work
 control|)
 block|{
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 init|=
@@ -6884,7 +6906,7 @@ block|}
 comment|/**    * Choose target datanodes according to the replication policy.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      List, boolean, Set, long)    */
 DECL|method|chooseTarget (final String src, final int numOfReplicas, final DatanodeDescriptor client, final Set<Node> excludedNodes, final long blocksize, List<String> favoredNodes)
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
 parameter_list|(
@@ -6932,9 +6954,9 @@ name|favoredNodes
 argument_list|)
 decl_stmt|;
 specifier|final
-name|DatanodeDescriptor
-name|targets
+name|DatanodeStorageInfo
 index|[]
+name|targets
 init|=
 name|blockplacement
 operator|.
@@ -6950,7 +6972,12 @@ name|excludedNodes
 argument_list|,
 name|blocksize
 argument_list|,
+comment|// TODO: get storage type from file
 name|favoredDatanodeDescriptors
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
 argument_list|)
 decl_stmt|;
 if|if
@@ -7115,7 +7142,7 @@ block|}
 comment|/**    * Parse the data-nodes the block belongs to and choose one,    * which will be the replication source.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we choose a random node among those that did not reach their    * replication limits.  However, if the replication is of the highest priority    * and all nodes have reached their replication limits, we will choose a    * random node despite the replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    *    * @param block Block for which a replication source is needed    * @param containingNodes List to be populated with nodes found to contain the     *                        given block    * @param nodesContainingLiveReplicas List to be populated with nodes found to    *                                    contain live replicas of the given block    * @param numReplicas NumberReplicas instance to be initialized with the     *                                   counts of live, corrupt, excess, and    *                                   decommissioned replicas of the given    *                                   block.    * @param priority integer representing replication priority of the given    *                 block    * @return the DatanodeDescriptor of the chosen node from which to replicate    *         the given block    */
 annotation|@
 name|VisibleForTesting
-DECL|method|chooseSourceDatanode ( Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> nodesContainingLiveReplicas, NumberReplicas numReplicas, int priority)
+DECL|method|chooseSourceDatanode (Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> nodesContainingLiveReplicas, NumberReplicas numReplicas, int priority)
 name|DatanodeDescriptor
 name|chooseSourceDatanode
 parameter_list|(
@@ -7130,7 +7157,7 @@ name|containingNodes
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|nodesContainingLiveReplicas
 parameter_list|,
@@ -7288,7 +7315,7 @@ name|nodesContainingLiveReplicas
 operator|.
 name|add
 argument_list|(
-name|node
+name|storage
 argument_list|)
 expr_stmt|;
 name|live
@@ -7856,14 +7883,24 @@ name|storageInfo
 init|=
 name|node
 operator|.
-name|getStorageInfo
+name|updateStorage
 argument_list|(
 name|storage
-operator|.
-name|getStorageID
-argument_list|()
 argument_list|)
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"XXX storageInfo="
+operator|+
+name|storageInfo
+operator|+
+literal|", storage="
+operator|+
+name|storage
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|namesystem
@@ -12158,6 +12195,8 @@ argument_list|(
 name|block
 argument_list|,
 name|node
+argument_list|,
+name|storageID
 argument_list|)
 expr_stmt|;
 name|processAndHandleReportedBlock
@@ -14798,13 +14837,13 @@ name|DatanodeDescriptor
 argument_list|>
 name|containingNodes
 decl_stmt|;
-DECL|field|liveReplicaNodes
+DECL|field|liveReplicaStorages
 specifier|private
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|liveReplicaNodes
+name|liveReplicaStorages
 decl_stmt|;
 DECL|field|additionalReplRequired
 specifier|private
@@ -14813,7 +14852,7 @@ name|additionalReplRequired
 decl_stmt|;
 DECL|field|targets
 specifier|private
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|targets
 index|[]
 decl_stmt|;
@@ -14822,7 +14861,7 @@ specifier|private
 name|int
 name|priority
 decl_stmt|;
-DECL|method|ReplicationWork (Block block, BlockCollection bc, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> liveReplicaNodes, int additionalReplRequired, int priority)
+DECL|method|ReplicationWork (Block block, BlockCollection bc, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
 specifier|public
 name|ReplicationWork
 parameter_list|(
@@ -14843,9 +14882,9 @@ name|containingNodes
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|liveReplicaNodes
+name|liveReplicaStorages
 parameter_list|,
 name|int
 name|additionalReplRequired
@@ -14880,9 +14919,9 @@ name|containingNodes
 expr_stmt|;
 name|this
 operator|.
-name|liveReplicaNodes
+name|liveReplicaStorages
 operator|=
-name|liveReplicaNodes
+name|liveReplicaStorages
 expr_stmt|;
 name|this
 operator|.
@@ -14933,7 +14972,7 @@ name|additionalReplRequired
 argument_list|,
 name|srcNode
 argument_list|,
-name|liveReplicaNodes
+name|liveReplicaStorages
 argument_list|,
 literal|false
 argument_list|,
@@ -14943,6 +14982,10 @@ name|block
 operator|.
 name|getNumBytes
 argument_list|()
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
