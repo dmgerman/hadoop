@@ -286,7 +286,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -988,7 +988,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|fallibles
@@ -1012,8 +1012,8 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|PathBasedCacheEntry
-name|entry
+name|PathBasedCacheDescriptor
+name|directive
 init|=
 name|fallibles
 operator|.
@@ -1023,14 +1023,6 @@ literal|0
 argument_list|)
 operator|.
 name|get
-argument_list|()
-decl_stmt|;
-name|PathBasedCacheDirective
-name|directive
-init|=
-name|entry
-operator|.
-name|getDirective
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -1075,13 +1067,13 @@ block|}
 comment|// Uncache and check each path in sequence
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|entries
 init|=
 name|nnRpc
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 literal|0
 argument_list|,
@@ -1105,7 +1097,7 @@ name|i
 operator|++
 control|)
 block|{
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 name|entry
 init|=
 name|entries
@@ -1147,7 +1139,7 @@ name|fallibles
 init|=
 name|nnRpc
 operator|.
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 argument_list|(
 name|toRemove
 argument_list|)

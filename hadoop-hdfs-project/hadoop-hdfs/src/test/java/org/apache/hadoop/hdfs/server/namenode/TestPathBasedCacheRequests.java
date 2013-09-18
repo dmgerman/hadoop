@@ -296,7 +296,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|InvalidIdException
 import|;
@@ -330,7 +330,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -346,7 +346,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|NoSuchIdException
 import|;
@@ -690,7 +690,7 @@ name|setInt
 argument_list|(
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES
+name|DFS_NAMENODE_LIST_CACHE_DESCRIPTORS_NUM_RESPONSES
 argument_list|,
 literal|2
 argument_list|)
@@ -972,7 +972,7 @@ name|ioe
 parameter_list|)
 block|{     }
 block|}
-DECL|method|validateListAll ( RemoteIterator<PathBasedCacheEntry> iter, long id0, long id1, long id2)
+DECL|method|validateListAll ( RemoteIterator<PathBasedCacheDescriptor> iter, long id0, long id1, long id2)
 specifier|private
 specifier|static
 name|void
@@ -980,7 +980,7 @@ name|validateListAll
 parameter_list|(
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|iter
 parameter_list|,
@@ -1001,18 +1001,14 @@ operator|.
 name|assertEquals
 argument_list|(
 operator|new
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|(
 name|id0
 argument_list|,
-operator|new
-name|PathBasedCacheDirective
-argument_list|(
 literal|"/alpha"
 argument_list|,
 literal|"pool1"
 argument_list|)
-argument_list|)
 argument_list|,
 name|iter
 operator|.
@@ -1025,18 +1021,14 @@ operator|.
 name|assertEquals
 argument_list|(
 operator|new
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|(
 name|id1
 argument_list|,
-operator|new
-name|PathBasedCacheDirective
-argument_list|(
 literal|"/beta"
 argument_list|,
 literal|"pool2"
 argument_list|)
-argument_list|)
 argument_list|,
 name|iter
 operator|.
@@ -1049,17 +1041,13 @@ operator|.
 name|assertEquals
 argument_list|(
 operator|new
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|(
 name|id2
 argument_list|,
-operator|new
-name|PathBasedCacheDirective
-argument_list|(
 literal|"/gamma"
 argument_list|,
 literal|"pool1"
-argument_list|)
 argument_list|)
 argument_list|,
 name|iter
@@ -1231,7 +1219,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|addResults1
@@ -1247,7 +1235,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 argument_list|>
@@ -1260,7 +1248,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|run
@@ -1536,7 +1524,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|addResults2
@@ -1732,13 +1720,13 @@ argument_list|()
 expr_stmt|;
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|iter
 init|=
 name|proto
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 literal|0
 argument_list|,
@@ -1771,7 +1759,7 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 literal|0
 argument_list|,
@@ -1804,7 +1792,7 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 literal|0
 argument_list|,
@@ -1827,7 +1815,7 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 literal|0
 argument_list|,
@@ -1877,7 +1865,7 @@ name|removeResults1
 init|=
 name|proto
 operator|.
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 argument_list|(
 name|Arrays
 operator|.
@@ -2007,7 +1995,7 @@ name|iter
 operator|=
 name|proto
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 literal|0
 argument_list|,

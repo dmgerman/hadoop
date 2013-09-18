@@ -64,7 +64,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES
+name|DFS_NAMENODE_LIST_CACHE_DESCRIPTORS_NUM_RESPONSES
 import|;
 end_import
 
@@ -80,7 +80,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES_DEFAULT
+name|DFS_NAMENODE_LIST_CACHE_DESCRIPTORS_NUM_RESPONSES_DEFAULT
 import|;
 end_import
 
@@ -288,7 +288,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -358,7 +358,23 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|PathBasedCacheEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|InvalidIdException
 import|;
@@ -376,7 +392,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|NoSuchIdException
 import|;
@@ -394,9 +410,9 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
-name|UnexpectedRemovePathBasedCacheEntryException
+name|UnexpectedRemovePathBasedCacheDescriptorException
 import|;
 end_import
 
@@ -412,7 +428,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|RemovePermissionDeniedException
 import|;
@@ -459,7 +475,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-comment|/**    * Cache entries, sorted by ID.    *    * listPathBasedCacheEntries relies on the ordering of elements in this map     * to track what has already been listed by the client.    */
+comment|/**    * Cache entries, sorted by ID.    *    * listPathBasedCacheDescriptors relies on the ordering of elements in this map     * to track what has already been listed by the client.    */
 DECL|field|entriesById
 specifier|private
 specifier|final
@@ -475,27 +491,6 @@ operator|new
 name|TreeMap
 argument_list|<
 name|Long
-argument_list|,
-name|PathBasedCacheEntry
-argument_list|>
-argument_list|()
-decl_stmt|;
-comment|/**    * Cache entries, sorted by directive.    */
-DECL|field|entriesByDirective
-specifier|private
-specifier|final
-name|TreeMap
-argument_list|<
-name|PathBasedCacheDirective
-argument_list|,
-name|PathBasedCacheEntry
-argument_list|>
-name|entriesByDirective
-init|=
-operator|new
-name|TreeMap
-argument_list|<
-name|PathBasedCacheDirective
 argument_list|,
 name|PathBasedCacheEntry
 argument_list|>
@@ -563,11 +558,11 @@ name|int
 name|maxListCachePoolsResponses
 decl_stmt|;
 comment|/**    * Maximum number of cache pool directives to list in one operation.    */
-DECL|field|maxListCacheDirectivesResponses
+DECL|field|maxListCacheDescriptorsResponses
 specifier|private
 specifier|final
 name|int
-name|maxListCacheDirectivesResponses
+name|maxListCacheDescriptorsResponses
 decl_stmt|;
 DECL|field|namesystem
 specifier|final
@@ -621,15 +616,15 @@ argument_list|,
 name|DFS_NAMENODE_LIST_CACHE_POOLS_NUM_RESPONSES_DEFAULT
 argument_list|)
 expr_stmt|;
-name|maxListCacheDirectivesResponses
+name|maxListCacheDescriptorsResponses
 operator|=
 name|conf
 operator|.
 name|getInt
 argument_list|(
-name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES
+name|DFS_NAMENODE_LIST_CACHE_DESCRIPTORS_NUM_RESPONSES
 argument_list|,
-name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES_DEFAULT
+name|DFS_NAMENODE_LIST_CACHE_DESCRIPTORS_NUM_RESPONSES_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -640,11 +635,6 @@ name|clear
 parameter_list|()
 block|{
 name|entriesById
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
-name|entriesByDirective
 operator|.
 name|clear
 argument_list|()
@@ -694,12 +684,85 @@ name|nextEntryId
 operator|++
 return|;
 block|}
+specifier|private
+specifier|synchronized
+name|PathBasedCacheEntry
+DECL|method|findEntry (PathBasedCacheDirective directive)
+name|findEntry
+parameter_list|(
+name|PathBasedCacheDirective
+name|directive
+parameter_list|)
+block|{
+name|List
+argument_list|<
+name|PathBasedCacheEntry
+argument_list|>
+name|existing
+init|=
+name|entriesByPath
+operator|.
+name|get
+argument_list|(
+name|directive
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|existing
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+for|for
+control|(
+name|PathBasedCacheEntry
+name|entry
+range|:
+name|existing
+control|)
+block|{
+if|if
+condition|(
+name|entry
+operator|.
+name|getPool
+argument_list|()
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|directive
+operator|.
+name|getPool
+argument_list|()
+argument_list|)
+condition|)
+block|{
+return|return
+name|entry
+return|;
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
 DECL|method|addDirective ( PathBasedCacheDirective directive, FSPermissionChecker pc)
 specifier|private
 specifier|synchronized
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|addDirective
 parameter_list|(
@@ -745,7 +808,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 operator|new
@@ -794,7 +857,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 operator|new
@@ -849,7 +912,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 name|ioe
@@ -860,9 +923,7 @@ comment|// Check if we already have this entry.
 name|PathBasedCacheEntry
 name|existing
 init|=
-name|entriesByDirective
-operator|.
-name|get
+name|findEntry
 argument_list|(
 name|directive
 argument_list|)
@@ -874,7 +935,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// Entry already exists: return existing entry.
 name|LOG
 operator|.
 name|info
@@ -888,16 +948,21 @@ operator|+
 literal|"existing directive "
 operator|+
 name|existing
+operator|+
+literal|" in this pool."
 argument_list|)
 expr_stmt|;
 return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 name|existing
+operator|.
+name|getDescriptor
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -916,6 +981,11 @@ name|getNextEntryId
 argument_list|()
 argument_list|,
 name|directive
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|pool
 argument_list|)
 expr_stmt|;
 block|}
@@ -929,7 +999,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 operator|new
@@ -955,15 +1025,6 @@ argument_list|)
 expr_stmt|;
 comment|// Success!
 comment|// First, add it to the various maps
-name|entriesByDirective
-operator|.
-name|put
-argument_list|(
-name|directive
-argument_list|,
-name|entry
-argument_list|)
-expr_stmt|;
 name|entriesById
 operator|.
 name|put
@@ -1051,6 +1112,10 @@ decl_stmt|;
 if|if
 condition|(
 name|node
+operator|!=
+literal|null
+operator|&&
+name|node
 operator|.
 name|isFile
 argument_list|()
@@ -1135,7 +1200,7 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 name|ioe
@@ -1146,10 +1211,13 @@ return|return
 operator|new
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 name|entry
+operator|.
+name|getDescriptor
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -1160,7 +1228,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|addDirectives
@@ -1179,7 +1247,7 @@ name|ArrayList
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|results
@@ -1189,7 +1257,7 @@ name|ArrayList
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 argument_list|(
@@ -1224,17 +1292,17 @@ return|return
 name|results
 return|;
 block|}
-DECL|method|removeEntry (long entryId, FSPermissionChecker pc)
+DECL|method|removeDescriptor (long id, FSPermissionChecker pc)
 specifier|private
 specifier|synchronized
 name|Fallible
 argument_list|<
 name|Long
 argument_list|>
-name|removeEntry
+name|removeDescriptor
 parameter_list|(
 name|long
-name|entryId
+name|id
 parameter_list|,
 name|FSPermissionChecker
 name|pc
@@ -1243,7 +1311,7 @@ block|{
 comment|// Check for invalid IDs.
 if|if
 condition|(
-name|entryId
+name|id
 operator|<=
 literal|0
 condition|)
@@ -1252,11 +1320,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"removeEntry "
+literal|"removeDescriptor "
 operator|+
-name|entryId
+name|id
 operator|+
-literal|": invalid non-positive entry ID."
+literal|": invalid non-positive "
+operator|+
+literal|"descriptor ID."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1269,7 +1339,7 @@ argument_list|(
 operator|new
 name|InvalidIdException
 argument_list|(
-name|entryId
+name|id
 argument_list|)
 argument_list|)
 return|;
@@ -1282,7 +1352,7 @@ name|entriesById
 operator|.
 name|get
 argument_list|(
-name|entryId
+name|id
 argument_list|)
 decl_stmt|;
 if|if
@@ -1296,9 +1366,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"removeEntry "
+literal|"removeDescriptor "
 operator|+
-name|entryId
+name|id
 operator|+
 literal|": entry not found."
 argument_list|)
@@ -1313,7 +1383,7 @@ argument_list|(
 operator|new
 name|NoSuchIdException
 argument_list|(
-name|entryId
+name|id
 argument_list|)
 argument_list|)
 return|;
@@ -1327,7 +1397,7 @@ name|get
 argument_list|(
 name|existing
 operator|.
-name|getDirective
+name|getDescriptor
 argument_list|()
 operator|.
 name|getPool
@@ -1345,15 +1415,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"removeEntry "
+literal|"removeDescriptor "
 operator|+
-name|entryId
+name|id
 operator|+
 literal|": pool not found for directive "
 operator|+
 name|existing
 operator|.
-name|getDirective
+name|getDescriptor
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1365,9 +1435,9 @@ name|Long
 argument_list|>
 argument_list|(
 operator|new
-name|UnexpectedRemovePathBasedCacheEntryException
+name|UnexpectedRemovePathBasedCacheDescriptorException
 argument_list|(
-name|entryId
+name|id
 argument_list|)
 argument_list|)
 return|;
@@ -1399,9 +1469,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"removeEntry "
+literal|"removeDescriptor "
 operator|+
-name|entryId
+name|id
 operator|+
 literal|": write permission denied to "
 operator|+
@@ -1424,53 +1494,7 @@ argument_list|(
 operator|new
 name|RemovePermissionDeniedException
 argument_list|(
-name|entryId
-argument_list|)
-argument_list|)
-return|;
-block|}
-comment|// Remove the corresponding entry in entriesByDirective.
-if|if
-condition|(
-name|entriesByDirective
-operator|.
-name|remove
-argument_list|(
-name|existing
-operator|.
-name|getDirective
-argument_list|()
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"removeEntry "
-operator|+
-name|entryId
-operator|+
-literal|": failed to find existing entry "
-operator|+
-name|existing
-operator|+
-literal|" in entriesByDirective"
-argument_list|)
-expr_stmt|;
-return|return
-operator|new
-name|Fallible
-argument_list|<
-name|Long
-argument_list|>
-argument_list|(
-operator|new
-name|UnexpectedRemovePathBasedCacheEntryException
-argument_list|(
-name|entryId
+name|id
 argument_list|)
 argument_list|)
 return|;
@@ -1481,7 +1505,7 @@ name|path
 init|=
 name|existing
 operator|.
-name|getDirective
+name|getDescriptor
 argument_list|()
 operator|.
 name|getPath
@@ -1523,9 +1547,9 @@ name|Long
 argument_list|>
 argument_list|(
 operator|new
-name|UnexpectedRemovePathBasedCacheEntryException
+name|UnexpectedRemovePathBasedCacheDescriptorException
 argument_list|(
-name|entryId
+name|id
 argument_list|)
 argument_list|)
 return|;
@@ -1552,7 +1576,7 @@ name|entriesById
 operator|.
 name|remove
 argument_list|(
-name|entryId
+name|id
 argument_list|)
 expr_stmt|;
 comment|// Set the path as uncached in the namesystem
@@ -1567,7 +1591,7 @@ name|getINode
 argument_list|(
 name|existing
 operator|.
-name|getDirective
+name|getDescriptor
 argument_list|()
 operator|.
 name|getPath
@@ -1576,6 +1600,10 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|node
+operator|!=
+literal|null
+operator|&&
 name|node
 operator|.
 name|isFile
@@ -1588,7 +1616,7 @@ name|setCacheReplicationInt
 argument_list|(
 name|existing
 operator|.
-name|getDirective
+name|getDescriptor
 argument_list|()
 operator|.
 name|getPath
@@ -1612,9 +1640,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"removeEntry "
+literal|"removeDescriptor "
 operator|+
-name|entryId
+name|id
 operator|+
 literal|": failure while setting cache"
 operator|+
@@ -1638,9 +1666,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"removeEntry successful for PathCacheEntry id "
+literal|"removeDescriptor successful for PathCacheEntry id "
 operator|+
-name|entryId
+name|id
 argument_list|)
 expr_stmt|;
 return|return
@@ -1650,11 +1678,11 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|(
-name|entryId
+name|id
 argument_list|)
 return|;
 block|}
-DECL|method|removeEntries (List<Long> entryIds, FSPermissionChecker pc)
+DECL|method|removeDescriptors (List<Long> ids, FSPermissionChecker pc)
 specifier|public
 specifier|synchronized
 name|List
@@ -1664,13 +1692,13 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-name|removeEntries
+name|removeDescriptors
 parameter_list|(
 name|List
 argument_list|<
 name|Long
 argument_list|>
-name|entryIds
+name|ids
 parameter_list|,
 name|FSPermissionChecker
 name|pc
@@ -1694,7 +1722,7 @@ name|Long
 argument_list|>
 argument_list|>
 argument_list|(
-name|entryIds
+name|ids
 operator|.
 name|size
 argument_list|()
@@ -1703,18 +1731,18 @@ decl_stmt|;
 for|for
 control|(
 name|Long
-name|entryId
+name|id
 range|:
-name|entryIds
+name|ids
 control|)
 block|{
 name|results
 operator|.
 name|add
 argument_list|(
-name|removeEntry
+name|removeDescriptor
 argument_list|(
-name|entryId
+name|id
 argument_list|,
 name|pc
 argument_list|)
@@ -1729,10 +1757,10 @@ specifier|public
 specifier|synchronized
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
-DECL|method|listPathBasedCacheEntries (long prevId, String filterPool, String filterPath, FSPermissionChecker pc)
-name|listPathBasedCacheEntries
+DECL|method|listPathBasedCacheDescriptors (long prevId, String filterPool, String filterPath, FSPermissionChecker pc)
+name|listPathBasedCacheDescriptors
 parameter_list|(
 name|long
 name|prevId
@@ -1788,14 +1816,14 @@ block|}
 block|}
 name|ArrayList
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|replies
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 name|NUM_PRE_ALLOCATED_ENTRIES
@@ -1843,14 +1871,14 @@ if|if
 condition|(
 name|numReplies
 operator|>=
-name|maxListCacheDirectivesResponses
+name|maxListCacheDescriptorsResponses
 condition|)
 block|{
 return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 name|replies
@@ -1875,7 +1903,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|getDirective
+name|getDescriptor
 argument_list|()
 decl_stmt|;
 if|if
@@ -1918,47 +1946,16 @@ condition|)
 block|{
 continue|continue;
 block|}
-name|CachePool
-name|pool
-init|=
-name|cachePools
-operator|.
-name|get
-argument_list|(
-name|curEntry
-operator|.
-name|getDirective
-argument_list|()
-operator|.
-name|getPool
-argument_list|()
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|pool
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"invalid pool for PathBasedCacheEntry "
-operator|+
-name|curEntry
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 if|if
 condition|(
 name|pc
 operator|.
 name|checkPermission
 argument_list|(
-name|pool
+name|curEntry
+operator|.
+name|getPool
+argument_list|()
 argument_list|,
 name|FsAction
 operator|.
@@ -1974,6 +1971,9 @@ name|cur
 operator|.
 name|getValue
 argument_list|()
+operator|.
+name|getDescriptor
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|numReplies
@@ -1985,7 +1985,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|(
 name|replies
@@ -2429,19 +2429,19 @@ throw|;
 block|}
 comment|// Remove entries using this pool
 comment|// TODO: could optimize this somewhat to avoid the need to iterate
-comment|// over all entries in entriesByDirective
+comment|// over all entries in entriesById
 name|Iterator
 argument_list|<
 name|Entry
 argument_list|<
-name|PathBasedCacheDirective
+name|Long
 argument_list|,
 name|PathBasedCacheEntry
 argument_list|>
 argument_list|>
 name|iter
 init|=
-name|entriesByDirective
+name|entriesById
 operator|.
 name|entrySet
 argument_list|()
@@ -2459,7 +2459,7 @@ condition|)
 block|{
 name|Entry
 argument_list|<
-name|PathBasedCacheDirective
+name|Long
 argument_list|,
 name|PathBasedCacheEntry
 argument_list|>
@@ -2474,16 +2474,13 @@ if|if
 condition|(
 name|entry
 operator|.
-name|getKey
+name|getValue
 argument_list|()
 operator|.
 name|getPool
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-name|poolName
-argument_list|)
+operator|==
+name|pool
 condition|)
 block|{
 name|entriesById

@@ -1782,7 +1782,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -31519,7 +31519,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|addPathBasedCacheDirectives
@@ -31563,7 +31563,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 operator|)
@@ -31593,7 +31593,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|results
@@ -31713,7 +31713,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-DECL|method|removePathBasedCacheEntries (List<Long> ids)
+DECL|method|removePathBasedCacheDescriptors (List<Long> ids)
 name|List
 argument_list|<
 name|Fallible
@@ -31721,7 +31721,7 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 parameter_list|(
 name|List
 argument_list|<
@@ -31838,7 +31838,7 @@ name|results
 operator|=
 name|cacheManager
 operator|.
-name|removeEntries
+name|removeDescriptors
 argument_list|(
 name|ids
 argument_list|,
@@ -31869,7 +31869,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"removePathBasedCacheEntries"
+literal|"removePathBasedCacheDescriptors"
 argument_list|,
 literal|null
 argument_list|,
@@ -31901,12 +31901,12 @@ return|return
 name|results
 return|;
 block|}
-DECL|method|listPathBasedCacheEntries (long startId, String pool, String path)
+DECL|method|listPathBasedCacheDescriptors (long startId, String pool, String path)
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 parameter_list|(
 name|long
 name|startId
@@ -31933,7 +31933,7 @@ literal|null
 decl_stmt|;
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|results
 decl_stmt|;
@@ -31965,7 +31965,7 @@ name|results
 operator|=
 name|cacheManager
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 name|startId
 argument_list|,
@@ -31999,7 +31999,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"listPathBasedCacheEntries"
+literal|"listPathBasedCacheDescriptors"
 argument_list|,
 literal|null
 argument_list|,

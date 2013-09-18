@@ -1758,7 +1758,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 DECL|method|addPathBasedCacheDirectives (List<PathBasedCacheDirective> directives)
@@ -1776,7 +1776,7 @@ function_decl|;
 comment|/**    * Remove some PathBasedCache entries from the CacheManager.    *     * @param ids A list of all the entry IDs to be removed from the CacheManager.    * @return A Fallible list where each element is either a successfully removed    *         ID, or an IOException describing why the ID could not be removed.    */
 annotation|@
 name|AtMostOnce
-DECL|method|removePathBasedCacheEntries (List<Long> ids)
+DECL|method|removePathBasedCacheDescriptors (List<Long> ids)
 specifier|public
 name|List
 argument_list|<
@@ -1785,7 +1785,7 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 parameter_list|(
 name|List
 argument_list|<
@@ -1796,16 +1796,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathBasedCacheEntries.    * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheEntry objects.    */
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathBasedCacheDescriptors.    * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheDescriptor objects.    */
 annotation|@
 name|Idempotent
-DECL|method|listPathBasedCacheEntries (long prevId, String pool, String path)
+DECL|method|listPathBasedCacheDescriptors (long prevId, String pool, String path)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 parameter_list|(
 name|long
 name|prevId

@@ -722,7 +722,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -7600,7 +7600,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 DECL|method|addPathBasedCacheDirective (List<PathBasedCacheDirective> directives)
@@ -7635,8 +7635,8 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-DECL|method|removePathBasedCacheEntries (List<Long> ids)
-name|removePathBasedCacheEntries
+DECL|method|removePathBasedCacheDescriptors (List<Long> ids)
+name|removePathBasedCacheDescriptors
 parameter_list|(
 name|List
 argument_list|<
@@ -7652,20 +7652,20 @@ name|dfs
 operator|.
 name|namenode
 operator|.
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 argument_list|(
 name|ids
 argument_list|)
 return|;
 block|}
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheEntry objects.    */
-DECL|method|listPathBasedCacheEntries ( String pool, String path)
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheDescriptor objects.    */
+DECL|method|listPathBasedCacheDescriptors ( String pool, String path)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 parameter_list|(
 name|String
 name|pool
@@ -7681,7 +7681,7 @@ name|dfs
 operator|.
 name|namenode
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 literal|0
 argument_list|,

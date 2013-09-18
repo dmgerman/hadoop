@@ -160,7 +160,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -525,7 +525,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|results
@@ -539,7 +539,7 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 name|entry
 init|=
 name|results
@@ -803,7 +803,7 @@ name|results
 init|=
 name|dfs
 operator|.
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 argument_list|(
 name|ids
 argument_list|)
@@ -1049,13 +1049,13 @@ argument_list|()
 decl_stmt|;
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|iter
 init|=
 name|dfs
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 name|poolFilter
 argument_list|,
@@ -1075,7 +1075,7 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 name|entry
 init|=
 name|iter
@@ -1100,16 +1100,10 @@ argument_list|()
 block|,
 name|entry
 operator|.
-name|getDirective
-argument_list|()
-operator|.
 name|getPool
 argument_list|()
 block|,
 name|entry
-operator|.
-name|getDirective
-argument_list|()
 operator|.
 name|getPath
 argument_list|()

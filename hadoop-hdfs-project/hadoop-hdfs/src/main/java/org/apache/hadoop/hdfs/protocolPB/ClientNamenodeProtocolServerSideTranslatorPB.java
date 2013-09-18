@@ -234,6 +234,24 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|AddPathBasedCacheDirectiveException
+operator|.
+name|PathAlreadyExistsInPoolError
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -362,7 +380,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -378,7 +396,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|InvalidIdException
 import|;
@@ -396,7 +414,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|NoSuchIdException
 import|;
@@ -414,7 +432,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|RemovePathBasedCacheEntryException
+name|RemovePathBasedCacheDescriptorException
 operator|.
 name|RemovePermissionDeniedException
 import|;
@@ -1850,7 +1868,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ListPathBasedCacheEntriesElementProto
+name|ListPathBasedCacheDescriptorsElementProto
 import|;
 end_import
 
@@ -1870,7 +1888,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ListPathBasedCacheEntriesRequestProto
+name|ListPathBasedCacheDescriptorsRequestProto
 import|;
 end_import
 
@@ -1890,7 +1908,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ListPathBasedCacheEntriesResponseProto
+name|ListPathBasedCacheDescriptorsResponseProto
 import|;
 end_import
 
@@ -2170,7 +2188,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|RemovePathBasedCacheEntriesRequestProto
+name|RemovePathBasedCacheDescriptorsRequestProto
 import|;
 end_import
 
@@ -2190,7 +2208,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|RemovePathBasedCacheEntriesResponseProto
+name|RemovePathBasedCacheDescriptorsResponseProto
 import|;
 end_import
 
@@ -2210,7 +2228,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|RemovePathBasedCacheEntryErrorProto
+name|RemovePathBasedCacheDescriptorErrorProto
 import|;
 end_import
 
@@ -7587,7 +7605,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|output
@@ -7629,8 +7647,8 @@ control|)
 block|{
 try|try
 block|{
-name|PathBasedCacheEntry
-name|entry
+name|PathBasedCacheDescriptor
+name|directive
 init|=
 name|output
 operator|.
@@ -7646,7 +7664,7 @@ name|builder
 operator|.
 name|addResults
 argument_list|(
-name|entry
+name|directive
 operator|.
 name|getEntryId
 argument_list|()
@@ -7742,6 +7760,27 @@ name|ADD_PERMISSION_DENIED_ERROR_VALUE
 argument_list|)
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|ioe
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|PathAlreadyExistsInPoolError
+condition|)
+block|{
+name|builder
+operator|.
+name|addResults
+argument_list|(
+name|AddPathBasedCacheDirectiveErrorProto
+operator|.
+name|PATH_ALREADY_EXISTS_IN_POOL_ERROR_VALUE
+argument_list|)
+expr_stmt|;
+block|}
 else|else
 block|{
 name|builder
@@ -7780,15 +7819,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|removePathBasedCacheEntries ( RpcController controller, RemovePathBasedCacheEntriesRequestProto request)
+DECL|method|removePathBasedCacheDescriptors ( RpcController controller, RemovePathBasedCacheDescriptorsRequestProto request)
 specifier|public
-name|RemovePathBasedCacheEntriesResponseProto
-name|removePathBasedCacheEntries
+name|RemovePathBasedCacheDescriptorsResponseProto
+name|removePathBasedCacheDescriptors
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|RemovePathBasedCacheEntriesRequestProto
+name|RemovePathBasedCacheDescriptorsRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -7807,7 +7846,7 @@ name|output
 init|=
 name|server
 operator|.
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 argument_list|(
 name|request
 operator|.
@@ -7815,12 +7854,12 @@ name|getElementsList
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|RemovePathBasedCacheEntriesResponseProto
+name|RemovePathBasedCacheDescriptorsResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|RemovePathBasedCacheEntriesResponseProto
+name|RemovePathBasedCacheDescriptorsResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -7876,7 +7915,7 @@ name|builder
 operator|.
 name|addResults
 argument_list|(
-name|RemovePathBasedCacheEntryErrorProto
+name|RemovePathBasedCacheDescriptorErrorProto
 operator|.
 name|INVALID_CACHED_PATH_ID_ERROR_VALUE
 argument_list|)
@@ -7892,7 +7931,7 @@ name|builder
 operator|.
 name|addResults
 argument_list|(
-name|RemovePathBasedCacheEntryErrorProto
+name|RemovePathBasedCacheDescriptorErrorProto
 operator|.
 name|NO_SUCH_CACHED_PATH_ID_ERROR_VALUE
 argument_list|)
@@ -7908,7 +7947,7 @@ name|builder
 operator|.
 name|addResults
 argument_list|(
-name|RemovePathBasedCacheEntryErrorProto
+name|RemovePathBasedCacheDescriptorErrorProto
 operator|.
 name|REMOVE_PERMISSION_DENIED_ERROR_VALUE
 argument_list|)
@@ -7924,7 +7963,7 @@ name|builder
 operator|.
 name|addResults
 argument_list|(
-name|RemovePathBasedCacheEntryErrorProto
+name|RemovePathBasedCacheDescriptorErrorProto
 operator|.
 name|UNEXPECTED_REMOVE_ERROR_VALUE
 argument_list|)
@@ -7955,15 +7994,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|listPathBasedCacheEntries ( RpcController controller, ListPathBasedCacheEntriesRequestProto request)
+DECL|method|listPathBasedCacheDescriptors ( RpcController controller, ListPathBasedCacheDescriptorsRequestProto request)
 specifier|public
-name|ListPathBasedCacheEntriesResponseProto
-name|listPathBasedCacheEntries
+name|ListPathBasedCacheDescriptorsResponseProto
+name|listPathBasedCacheDescriptors
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|ListPathBasedCacheEntriesRequestProto
+name|ListPathBasedCacheDescriptorsRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -7973,13 +8012,13 @@ try|try
 block|{
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|iter
 init|=
 name|server
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 name|request
 operator|.
@@ -8011,12 +8050,12 @@ else|:
 literal|null
 argument_list|)
 decl_stmt|;
-name|ListPathBasedCacheEntriesResponseProto
+name|ListPathBasedCacheDescriptorsResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|ListPathBasedCacheEntriesResponseProto
+name|ListPathBasedCacheDescriptorsResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -8034,8 +8073,8 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|PathBasedCacheEntry
-name|entry
+name|PathBasedCacheDescriptor
+name|directive
 init|=
 name|iter
 operator|.
@@ -8046,14 +8085,14 @@ name|builder
 operator|.
 name|addElements
 argument_list|(
-name|ListPathBasedCacheEntriesElementProto
+name|ListPathBasedCacheDescriptorsElementProto
 operator|.
 name|newBuilder
 argument_list|()
 operator|.
 name|setId
 argument_list|(
-name|entry
+name|directive
 operator|.
 name|getEntryId
 argument_list|()
@@ -8061,10 +8100,7 @@ argument_list|)
 operator|.
 name|setPath
 argument_list|(
-name|entry
-operator|.
-name|getDirective
-argument_list|()
+name|directive
 operator|.
 name|getPath
 argument_list|()
@@ -8072,10 +8108,7 @@ argument_list|)
 operator|.
 name|setPool
 argument_list|(
-name|entry
-operator|.
-name|getDirective
-argument_list|()
+name|directive
 operator|.
 name|getPool
 argument_list|()
@@ -8084,7 +8117,7 @@ argument_list|)
 expr_stmt|;
 name|prevId
 operator|=
-name|entry
+name|directive
 operator|.
 name|getEntryId
 argument_list|()
@@ -8111,19 +8144,33 @@ name|iter
 operator|=
 name|server
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 name|prevId
 argument_list|,
 name|request
 operator|.
+name|hasPool
+argument_list|()
+condition|?
+name|request
+operator|.
 name|getPool
 argument_list|()
+else|:
+literal|null
 argument_list|,
+name|request
+operator|.
+name|hasPath
+argument_list|()
+condition|?
 name|request
 operator|.
 name|getPath
 argument_list|()
+else|:
+literal|null
 argument_list|)
 expr_stmt|;
 name|builder

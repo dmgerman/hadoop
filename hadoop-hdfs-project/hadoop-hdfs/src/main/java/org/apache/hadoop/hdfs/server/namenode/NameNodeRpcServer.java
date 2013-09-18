@@ -624,7 +624,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 import|;
 end_import
 
@@ -7203,7 +7203,7 @@ name|List
 argument_list|<
 name|Fallible
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 argument_list|>
 name|addPathBasedCacheDirectives
@@ -7228,7 +7228,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|removePathBasedCacheEntries (List<Long> ids)
+DECL|method|removePathBasedCacheDescriptors (List<Long> ids)
 specifier|public
 name|List
 argument_list|<
@@ -7237,7 +7237,7 @@ argument_list|<
 name|Long
 argument_list|>
 argument_list|>
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 parameter_list|(
 name|List
 argument_list|<
@@ -7251,7 +7251,7 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|removePathBasedCacheEntries
+name|removePathBasedCacheDescriptors
 argument_list|(
 name|ids
 argument_list|)
@@ -7266,7 +7266,7 @@ name|BatchedRemoteIterator
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 block|{
 DECL|field|pool
@@ -7319,7 +7319,7 @@ DECL|method|makeRequest ( Long nextKey)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
 name|makeRequest
 parameter_list|(
@@ -7332,7 +7332,7 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 argument_list|(
 name|nextKey
 argument_list|,
@@ -7344,12 +7344,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|elementToPrevKey (PathBasedCacheEntry entry)
+DECL|method|elementToPrevKey (PathBasedCacheDescriptor entry)
 specifier|public
 name|Long
 name|elementToPrevKey
 parameter_list|(
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 name|entry
 parameter_list|)
 block|{
@@ -7363,13 +7363,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|listPathBasedCacheEntries (long prevId, String pool, String path)
+DECL|method|listPathBasedCacheDescriptors (long prevId, String pool, String path)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheEntry
+name|PathBasedCacheDescriptor
 argument_list|>
-name|listPathBasedCacheEntries
+name|listPathBasedCacheDescriptors
 parameter_list|(
 name|long
 name|prevId
