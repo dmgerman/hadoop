@@ -82,6 +82,13 @@ name|boolean
 name|isPrevious
 parameter_list|()
 function_decl|;
+comment|/**      * Is the last read entry from previous? This should be called after      * reading.      */
+DECL|method|isLastReadFromPrevious ()
+specifier|public
+name|boolean
+name|isLastReadFromPrevious
+parameter_list|()
+function_decl|;
 block|}
 comment|/**    * To append text to the logs.    */
 DECL|interface|Appender

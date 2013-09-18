@@ -646,6 +646,11 @@ specifier|private
 name|File
 name|file
 decl_stmt|;
+DECL|field|lastReadFile
+specifier|private
+name|File
+name|lastReadFile
+decl_stmt|;
 DECL|field|reader
 specifier|private
 name|BufferedReader
@@ -699,6 +704,20 @@ parameter_list|()
 block|{
 return|return
 name|file
+operator|==
+name|prev
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isLastReadFromPrevious ()
+specifier|public
+name|boolean
+name|isLastReadFromPrevious
+parameter_list|()
+block|{
+return|return
+name|lastReadFile
 operator|==
 name|prev
 return|;
@@ -910,6 +929,10 @@ name|line
 decl_stmt|;
 try|try
 block|{
+name|lastReadFile
+operator|=
+name|file
+expr_stmt|;
 name|readNext
 argument_list|()
 expr_stmt|;
