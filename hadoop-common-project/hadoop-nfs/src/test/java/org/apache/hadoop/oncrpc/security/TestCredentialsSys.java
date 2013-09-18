@@ -135,6 +135,9 @@ operator|.
 name|read
 argument_list|(
 name|xdr
+operator|.
+name|asReadOnlyWrap
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals

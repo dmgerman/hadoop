@@ -96,6 +96,22 @@ name|XDR
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Verifier
+import|;
+end_import
+
 begin_comment
 comment|/**  * READDIR3 Response  */
 end_comment
@@ -382,25 +398,30 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|send (XDR xdr, int xid)
+DECL|method|writeHeaderAndResponse (XDR xdr, int xid, Verifier verifier)
 specifier|public
 name|XDR
-name|send
+name|writeHeaderAndResponse
 parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
 name|int
 name|xid
+parameter_list|,
+name|Verifier
+name|verifier
 parameter_list|)
 block|{
 name|super
 operator|.
-name|send
+name|writeHeaderAndResponse
 argument_list|(
 name|xdr
 argument_list|,
 name|xid
+argument_list|,
+name|verifier
 argument_list|)
 expr_stmt|;
 name|xdr

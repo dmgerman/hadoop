@@ -69,7 +69,20 @@ argument_list|,
 name|msgType
 argument_list|)
 block|{
-comment|// Anonymous class
+annotation|@
+name|Override
+specifier|public
+name|XDR
+name|write
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 return|;
 block|}

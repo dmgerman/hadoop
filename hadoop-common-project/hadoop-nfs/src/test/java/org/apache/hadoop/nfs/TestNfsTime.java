@@ -153,6 +153,9 @@ operator|.
 name|deserialize
 argument_list|(
 name|xdr
+operator|.
+name|asReadOnlyWrap
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Ensure the NfsTimes are equal
