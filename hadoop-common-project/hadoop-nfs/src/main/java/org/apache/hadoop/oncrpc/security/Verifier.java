@@ -51,7 +51,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**   * Base class for verifier. Currently we only support 3 types of auth flavors:   * {@link AuthFlavor#AUTH_NONE}, {@link AuthFlavor#AUTH_SYS},   * and {@link AuthFlavor#RPCSEC_GSS}.  */
+comment|/**  * Base class for verifier. Currently our authentication only supports 3 types  * of auth flavors: {@link AuthFlavor#AUTH_NONE}, {@link AuthFlavor#AUTH_SYS},  * and {@link AuthFlavor#RPCSEC_GSS}. Thus for verifier we only need to handle  * AUTH_NONE and RPCSEC_GSS  */
 end_comment
 
 begin_class
@@ -77,6 +77,7 @@ name|flavor
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Read both AuthFlavor and the verifier from the XDR */
 DECL|method|readFlavorAndVerifier (XDR xdr)
 specifier|public
 specifier|static
@@ -159,6 +160,79 @@ expr_stmt|;
 return|return
 name|verifer
 return|;
+block|}
+comment|/**    * Write AuthFlavor and the verifier to the XDR    */
+DECL|method|writeFlavorAndVerifier (Verifier verifier, XDR xdr)
+specifier|public
+specifier|static
+name|void
+name|writeFlavorAndVerifier
+parameter_list|(
+name|Verifier
+name|verifier
+parameter_list|,
+name|XDR
+name|xdr
+parameter_list|)
+block|{
+if|if
+condition|(
+name|verifier
+operator|instanceof
+name|VerifierNone
+condition|)
+block|{
+name|xdr
+operator|.
+name|writeInt
+argument_list|(
+name|AuthFlavor
+operator|.
+name|AUTH_NONE
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|verifier
+operator|instanceof
+name|VerifierGSS
+condition|)
+block|{
+name|xdr
+operator|.
+name|writeInt
+argument_list|(
+name|AuthFlavor
+operator|.
+name|RPCSEC_GSS
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Cannot recognize the verifier"
+argument_list|)
+throw|;
+block|}
+name|verifier
+operator|.
+name|write
+argument_list|(
+name|xdr
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -48,13 +48,28 @@ name|XDR
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Verifier
+import|;
+end_import
+
 begin_comment
-comment|/**  * Abstract class for a NFSv3 response  */
+comment|/**  * Base class for a NFSv3 response. This class and its subclasses contain  * the response from NFSv3 handlers.  */
 end_comment
 
 begin_class
 DECL|class|NFS3Response
-specifier|abstract
 specifier|public
 class|class
 name|NFS3Response
@@ -107,25 +122,39 @@ operator|=
 name|status
 expr_stmt|;
 block|}
-DECL|method|send (XDR out, int xid)
+comment|/**    * Write the response, along with the rpc header (including verifier), to the    * XDR.    */
+DECL|method|writeHeaderAndResponse (XDR out, int xid, Verifier verifier)
 specifier|public
 name|XDR
-name|send
+name|writeHeaderAndResponse
 parameter_list|(
 name|XDR
 name|out
 parameter_list|,
 name|int
 name|xid
+parameter_list|,
+name|Verifier
+name|verifier
 parameter_list|)
 block|{
 name|RpcAcceptedReply
+name|reply
+init|=
+name|RpcAcceptedReply
 operator|.
-name|voidReply
+name|getAcceptInstance
+argument_list|(
+name|xid
+argument_list|,
+name|verifier
+argument_list|)
+decl_stmt|;
+name|reply
+operator|.
+name|write
 argument_list|(
 name|out
-argument_list|,
-name|xid
 argument_list|)
 expr_stmt|;
 name|out
