@@ -262,11 +262,6 @@ name|xdr
 init|=
 operator|new
 name|XDR
-argument_list|()
-decl_stmt|;
-name|xdr
-operator|.
-name|writeFixedOpaque
 argument_list|(
 name|Arrays
 operator|.
@@ -282,7 +277,7 @@ name|getLength
 argument_list|()
 argument_list|)
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|RpcReply
 name|reply
 init|=
