@@ -3459,6 +3459,8 @@ name|queueInfo
 operator|.
 name|getMaximumCapacity
 argument_list|()
+operator|*
+literal|100
 operator|)
 operator|+
 literal|", CurrentCapacity: "
