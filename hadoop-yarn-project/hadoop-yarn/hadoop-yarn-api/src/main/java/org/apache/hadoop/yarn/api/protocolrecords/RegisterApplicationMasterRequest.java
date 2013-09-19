@@ -211,7 +211,7 @@ name|int
 name|port
 parameter_list|)
 function_decl|;
-comment|/**    * Get the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * @return<em>tracking URL</em> for the<code>ApplicationMaster</code>    */
+comment|/**    * Get the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * This url if contains scheme then that will be used by resource manager    * web application proxy otherwise it will default to http.    * @return<em>tracking URL</em> for the<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@
@@ -223,7 +223,7 @@ name|String
 name|getTrackingUrl
 parameter_list|()
 function_decl|;
-comment|/**    * Set the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * @param trackingUrl<em>tracking URL</em> for the     *<code>ApplicationMaster</code>    */
+comment|/**    * Set the<em>tracking URL</em> for the<code>ApplicationMaster</code>.    * This url if contains scheme then that will be used by resource manager    * web application proxy otherwise it will default to http.    * @param trackingUrl<em>tracking URL</em> for the     *<code>ApplicationMaster</code>    */
 annotation|@
 name|Public
 annotation|@

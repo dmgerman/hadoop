@@ -316,6 +316,26 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
+name|app
+operator|.
+name|webapp
+operator|.
+name|WebAppUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
 name|util
 operator|.
 name|MRApps
@@ -1107,7 +1127,7 @@ name|append
 argument_list|(
 literal|"<a class='nodelink' href='"
 operator|+
-name|HttpConfig
+name|WebAppUtil
 operator|.
 name|getSchemePrefix
 argument_list|()
