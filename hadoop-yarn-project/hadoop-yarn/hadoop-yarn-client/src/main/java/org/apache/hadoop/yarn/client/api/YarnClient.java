@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -296,6 +306,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|YarnApplicationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|YarnClusterMetrics
 import|;
 end_import
@@ -491,7 +519,7 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
-comment|/**    *<p>    * Get a report (ApplicationReport) of all Applications in the cluster.    *</p>    *     *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *     * @return a list of reports of all running applications    * @throws YarnException    * @throws IOException    */
+comment|/**    *<p>    * Get a report (ApplicationReport) of all Applications in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @return a list of reports of all running applications    * @throws YarnException    * @throws IOException    */
 DECL|method|getApplications ()
 specifier|public
 specifier|abstract
@@ -521,6 +549,54 @@ argument_list|<
 name|String
 argument_list|>
 name|applicationTypes
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * Get a report (ApplicationReport) of Applications matching the given    * application states in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationStates    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+DECL|method|getApplications (EnumSet<YarnApplicationState> applicationStates)
+name|getApplications
+parameter_list|(
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|applicationStates
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
+comment|/**    *<p>    * Get a report (ApplicationReport) of Applications matching the given    * application types and application states in the cluster.    *</p>    *    *<p>    * If the user does not have<code>VIEW_APP</code> access for an application    * then the corresponding report will be filtered as described in    * {@link #getApplicationReport(ApplicationId)}.    *</p>    *    * @param applicationTypes    * @param applicationStates    * @return a list of reports of applications    * @throws YarnException    * @throws IOException    */
+DECL|method|getApplications ( Set<String> applicationTypes, EnumSet<YarnApplicationState> applicationStates)
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|ApplicationReport
+argument_list|>
+name|getApplications
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationTypes
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|YarnApplicationState
+argument_list|>
+name|applicationStates
 parameter_list|)
 throws|throws
 name|YarnException

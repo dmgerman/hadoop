@@ -770,6 +770,15 @@ name|DFS_NAMENODE_RPC_ADDRESS_KEY
 init|=
 literal|"dfs.namenode.rpc-address"
 decl_stmt|;
+DECL|field|DFS_NAMENODE_RPC_BIND_HOST_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_RPC_BIND_HOST_KEY
+init|=
+literal|"dfs.namenode.rpc-bind-host"
+decl_stmt|;
 DECL|field|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 specifier|public
 specifier|static
@@ -778,6 +787,15 @@ name|String
 name|DFS_NAMENODE_SERVICE_RPC_ADDRESS_KEY
 init|=
 literal|"dfs.namenode.servicerpc-address"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_SERVICE_RPC_BIND_HOST_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_SERVICE_RPC_BIND_HOST_KEY
+init|=
+literal|"dfs.namenode.servicerpc-bind-host"
 decl_stmt|;
 DECL|field|DFS_NAMENODE_MAX_OBJECTS_KEY
 specifier|public
@@ -2077,6 +2095,24 @@ name|String
 name|DFS_NAMENODE_DEFAULT_AUDIT_LOGGER_NAME
 init|=
 literal|"default"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_KEY
+init|=
+literal|"dfs.namenode.audit.log.token.tracking.id"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_DEFAULT
+init|=
+literal|false
 decl_stmt|;
 comment|// Much code in hdfs is not yet updated to use these keys.
 DECL|field|DFS_CLIENT_BLOCK_WRITE_LOCATEFOLLOWINGBLOCK_RETRIES_KEY
@@ -3995,6 +4031,26 @@ name|float
 name|DFS_NAMENODE_RETRY_CACHE_HEAP_PERCENT_DEFAULT
 init|=
 literal|0.03f
+decl_stmt|;
+comment|// The number of NN response dropped by client proactively in each RPC call.
+comment|// For testing NN retry cache, we can set this property with positive value.
+DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_KEY
+init|=
+literal|"dfs.client.test.drop.namenode.response.number"
+decl_stmt|;
+DECL|field|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_CLIENT_TEST_DROP_NAMENODE_RESPONSE_NUM_DEFAULT
+init|=
+literal|0
 decl_stmt|;
 comment|// Hidden configuration undocumented in hdfs-site. xml
 comment|// Timeout to wait for block receiver and responder thread to stop

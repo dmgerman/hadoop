@@ -557,6 +557,27 @@ name|DEFAULT_RM_SCHEDULER_CLIENT_THREAD_COUNT
 init|=
 literal|50
 decl_stmt|;
+comment|/** If the port should be included or not in the node name. The node name    * is used by the scheduler for resource requests allocation location     * matching. Typically this is just the hostname, using the port is needed    * when using minicluster and specific NM are required.*/
+DECL|field|RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_SCHEDULER_INCLUDE_PORT_IN_NODE_NAME
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"scheduler.include-port-in-node-name"
+decl_stmt|;
+DECL|field|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_RM_SCHEDULER_USE_PORT_FOR_NODE_NAME
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Enable periodic monitor threads.    * @see #RM_SCHEDULER_MONITOR_POLICIES    */
 DECL|field|RM_SCHEDULER_ENABLE_MONITORS
 specifier|public
@@ -833,6 +854,30 @@ name|RM_PREFIX
 operator|+
 literal|"keytab"
 decl_stmt|;
+comment|/**The kerberos principal to be used for spnego filter for RM.*/
+DECL|field|RM_WEBAPP_SPNEGO_USER_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WEBAPP_SPNEGO_USER_NAME_KEY
+init|=
+name|RM_PREFIX
+operator|+
+literal|"webapp.spnego-principal"
+decl_stmt|;
+comment|/**The kerberos keytab to be used for spnego filter for RM.*/
+DECL|field|RM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+init|=
+name|RM_PREFIX
+operator|+
+literal|"webapp.spnego-keytab-file"
+decl_stmt|;
 comment|/** How long to wait until a container is considered dead.*/
 DECL|field|RM_CONTAINER_ALLOC_EXPIRY_INTERVAL_MS
 specifier|public
@@ -1085,7 +1130,7 @@ name|FS_RM_STATE_STORE_URI
 init|=
 name|RM_PREFIX
 operator|+
-literal|"fs.rm-state-store.uri"
+literal|"fs.state-store.uri"
 decl_stmt|;
 comment|/** The maximum number of completed applications RM keeps. */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
@@ -2293,6 +2338,30 @@ name|NM_PREFIX
 operator|+
 literal|"user-home-dir"
 decl_stmt|;
+comment|/**The kerberos principal to be used for spnego filter for NM.*/
+DECL|field|NM_WEBAPP_SPNEGO_USER_NAME_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_WEBAPP_SPNEGO_USER_NAME_KEY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"webapp.spnego-principal"
+decl_stmt|;
+comment|/**The kerberos keytab to be used for spnego filter for NM.*/
+DECL|field|NM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+init|=
+name|NM_PREFIX
+operator|+
+literal|"webapp.spnego-keytab-file"
+decl_stmt|;
 DECL|field|DEFAULT_NM_USER_HOME_DIR
 specifier|public
 specifier|static
@@ -2447,49 +2516,53 @@ name|DEFAULT_NM_PROCESS_KILL_WAIT_MS
 init|=
 literal|2000
 decl_stmt|;
-comment|/** Max time to wait to establish a connection to RM    */
-DECL|field|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+comment|/** Max time to wait to establish a connection to RM */
+DECL|field|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+name|RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 init|=
 name|RM_PREFIX
 operator|+
-literal|"resourcemanager.connect.max.wait.secs"
+literal|"connect.max-wait.ms"
 decl_stmt|;
-DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_SECS
+name|DEFAULT_RESOURCEMANAGER_CONNECT_MAX_WAIT_MS
 init|=
 literal|15
 operator|*
 literal|60
+operator|*
+literal|1000
 decl_stmt|;
-comment|/** Time interval between each attempt to connect to RM    */
-DECL|field|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+comment|/** Time interval between each attempt to connect to RM */
+DECL|field|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+name|RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 init|=
 name|RM_PREFIX
 operator|+
-literal|"resourcemanager.connect.retry_interval.secs"
+literal|"connect.retry-interval.ms"
 decl_stmt|;
-DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+DECL|field|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 specifier|public
 specifier|static
 specifier|final
 name|long
-name|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_SECS
+name|DEFAULT_RESOURCEMANAGER_CONNECT_RETRY_INTERVAL_MS
 init|=
 literal|30
+operator|*
+literal|1000
 decl_stmt|;
 comment|/**    * CLASSPATH for YARN applications. A comma-separated list of CLASSPATH    * entries    */
 DECL|field|YARN_APPLICATION_CLASSPATH

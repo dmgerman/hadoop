@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.ha
+DECL|package|org.apache.hadoop.util
 package|package
 name|org
 operator|.
@@ -12,7 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|util
 package|;
 end_package
 
@@ -76,9 +76,23 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|util
 operator|.
-name|HAZKUtil
+name|ZKUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ZKUtil
 operator|.
 name|BadAclFormatException
 import|;
@@ -92,9 +106,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|ha
+name|util
 operator|.
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|ZKAuthInfo
 import|;
@@ -167,10 +181,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestHAZKUtil
+DECL|class|TestZKUtil
 specifier|public
 class|class
-name|TestHAZKUtil
+name|TestZKUtil
 block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
@@ -188,7 +202,7 @@ argument_list|,
 literal|"/tmp"
 argument_list|)
 operator|+
-literal|"/TestHAZKUtil"
+literal|"/TestZKUtil"
 decl_stmt|;
 DECL|field|TEST_FILE
 specifier|private
@@ -236,7 +250,7 @@ name|ACL
 argument_list|>
 name|result
 init|=
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|parseACLs
 argument_list|(
@@ -266,7 +280,7 @@ name|ACL
 argument_list|>
 name|result
 init|=
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|parseACLs
 argument_list|(
@@ -329,7 +343,7 @@ parameter_list|)
 block|{
 try|try
 block|{
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|parseACLs
 argument_list|(
@@ -378,7 +392,7 @@ name|ACL
 argument_list|>
 name|result
 init|=
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|parseACLs
 argument_list|(
@@ -516,7 +530,7 @@ name|ZKAuthInfo
 argument_list|>
 name|result
 init|=
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|parseAuth
 argument_list|(
@@ -546,7 +560,7 @@ name|ZKAuthInfo
 argument_list|>
 name|result
 init|=
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|parseAuth
 argument_list|(
@@ -576,7 +590,7 @@ name|ZKAuthInfo
 argument_list|>
 name|result
 init|=
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|parseAuth
 argument_list|(
@@ -674,7 +688,7 @@ name|IOException
 block|{
 name|assertNull
 argument_list|(
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|resolveConfIndirection
 argument_list|(
@@ -686,7 +700,7 @@ name|assertEquals
 argument_list|(
 literal|"x"
 argument_list|,
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|resolveConfIndirection
 argument_list|(
@@ -719,7 +733,7 @@ name|assertEquals
 argument_list|(
 literal|"hello world"
 argument_list|,
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|resolveConfIndirection
 argument_list|(
@@ -734,7 +748,7 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|HAZKUtil
+name|ZKUtil
 operator|.
 name|resolveConfIndirection
 argument_list|(

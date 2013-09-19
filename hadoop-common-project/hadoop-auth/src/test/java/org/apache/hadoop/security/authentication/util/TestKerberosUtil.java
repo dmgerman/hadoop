@@ -21,14 +21,12 @@ package|;
 end_package
 
 begin_import
-import|import static
+import|import
 name|org
 operator|.
 name|junit
 operator|.
 name|Assert
-operator|.
-name|*
 import|;
 end_import
 
@@ -39,24 +37,6 @@ operator|.
 name|io
 operator|.
 name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|authentication
-operator|.
-name|util
-operator|.
-name|KerberosUtil
 import|;
 end_import
 
@@ -105,6 +85,8 @@ init|=
 literal|"FooBar"
 decl_stmt|;
 comment|// send null hostname
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"When no hostname is sent"
@@ -129,6 +111,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// send empty hostname
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"When empty hostname is sent"
@@ -153,6 +137,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// send 0.0.0.0 hostname
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"When 0.0.0.0 hostname is sent"
@@ -177,6 +163,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// send uppercase hostname
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"When uppercase hostname is sent"
@@ -201,6 +189,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// send lowercase hostname
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"When lowercase hostname is sent"

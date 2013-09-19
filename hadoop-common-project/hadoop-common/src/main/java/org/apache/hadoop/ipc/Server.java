@@ -6551,10 +6551,33 @@ operator|instanceof
 name|InvalidToken
 condition|)
 block|{
+comment|// FIXME: hadoop method signatures are restricting the SASL
+comment|// callbacks to only returning InvalidToken, but some services
+comment|// need to throw other exceptions (ex. NN + StandyException),
+comment|// so for now we'll tunnel the real exceptions via an
+comment|// InvalidToken's cause which normally is not set
+if|if
+condition|(
+name|cause
+operator|.
+name|getCause
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|cause
+operator|=
+name|cause
+operator|.
+name|getCause
+argument_list|()
+expr_stmt|;
+block|}
 name|sendToClient
 operator|=
 operator|(
-name|InvalidToken
+name|IOException
 operator|)
 name|cause
 expr_stmt|;

@@ -206,6 +206,24 @@ name|NMTokenSecretManagerInNM
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|security
+operator|.
+name|ApplicationACLsManager
+import|;
+end_import
+
 begin_comment
 comment|/**  * Context interface for sharing information across components in the  * NodeManager.  */
 end_comment
@@ -266,6 +284,16 @@ function_decl|;
 DECL|method|getContainerManager ()
 name|ContainerManagementProtocol
 name|getContainerManager
+parameter_list|()
+function_decl|;
+DECL|method|getLocalDirsHandler ()
+name|LocalDirsHandlerService
+name|getLocalDirsHandler
+parameter_list|()
+function_decl|;
+DECL|method|getApplicationACLsManager ()
+name|ApplicationACLsManager
+name|getApplicationACLsManager
 parameter_list|()
 function_decl|;
 block|}

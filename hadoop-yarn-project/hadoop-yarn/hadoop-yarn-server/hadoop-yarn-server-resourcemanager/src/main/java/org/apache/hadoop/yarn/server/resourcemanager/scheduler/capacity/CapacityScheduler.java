@@ -1104,6 +1104,20 @@ name|Resources
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 annotation|@
 name|LimitedPrivate
@@ -1577,8 +1591,10 @@ specifier|private
 name|Resource
 name|maximumAllocation
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|applications
-specifier|private
+specifier|protected
 name|Map
 argument_list|<
 name|ApplicationAttemptId
@@ -1607,6 +1623,11 @@ DECL|field|calculator
 specifier|private
 name|ResourceCalculator
 name|calculator
+decl_stmt|;
+DECL|field|usePortForNodeName
+specifier|private
+name|boolean
+name|usePortForNodeName
 decl_stmt|;
 DECL|method|CapacityScheduler ()
 specifier|public
@@ -1843,6 +1864,17 @@ operator|.
 name|conf
 operator|.
 name|getResourceCalculator
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|usePortForNodeName
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getUsePortForNodeName
 argument_list|()
 expr_stmt|;
 name|this
@@ -4224,6 +4256,8 @@ operator|new
 name|FiCaSchedulerNode
 argument_list|(
 name|nodeManager
+argument_list|,
+name|usePortForNodeName
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4945,7 +4979,7 @@ name|cont
 argument_list|,
 name|SchedulerUtils
 operator|.
-name|createAbnormalContainerStatus
+name|createPreemptedContainerStatus
 argument_list|(
 name|cont
 operator|.

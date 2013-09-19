@@ -248,11 +248,6 @@ argument_list|(
 literal|1
 argument_list|)
 operator|.
-name|manageNameDfsDirs
-argument_list|(
-literal|false
-argument_list|)
-operator|.
 name|build
 argument_list|()
 decl_stmt|;

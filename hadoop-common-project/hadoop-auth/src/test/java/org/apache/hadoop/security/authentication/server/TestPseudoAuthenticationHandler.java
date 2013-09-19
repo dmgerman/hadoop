@@ -40,16 +40,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -63,6 +53,26 @@ operator|.
 name|client
 operator|.
 name|PseudoAuthenticator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -115,9 +125,9 @@ DECL|class|TestPseudoAuthenticationHandler
 specifier|public
 class|class
 name|TestPseudoAuthenticationHandler
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testInit ()
 specifier|public
 name|void
@@ -160,6 +170,8 @@ argument_list|(
 name|props
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|false
@@ -180,6 +192,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testType ()
 specifier|public
 name|void
@@ -195,6 +209,8 @@ operator|new
 name|PseudoAuthenticationHandler
 argument_list|()
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|PseudoAuthenticationHandler
@@ -208,6 +224,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testAnonymousOn ()
 specifier|public
 name|void
@@ -286,6 +304,8 @@ argument_list|,
 name|response
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|AuthenticationToken
@@ -305,6 +325,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testAnonymousOff ()
 specifier|public
 name|void
@@ -380,6 +402,8 @@ argument_list|,
 name|response
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -398,6 +422,8 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -516,11 +542,15 @@ argument_list|,
 name|response
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertNotNull
 argument_list|(
 name|token
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"user"
@@ -531,6 +561,8 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"user"
@@ -541,6 +573,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|PseudoAuthenticationHandler
@@ -563,6 +597,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testUserNameAnonymousOff ()
 specifier|public
 name|void
@@ -577,6 +613,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testUserNameAnonymousOn ()
 specifier|public
 name|void

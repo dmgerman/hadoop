@@ -336,6 +336,26 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|RMDelegationTokenSecretManager
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -444,11 +464,11 @@ specifier|private
 name|ContainerAllocationExpirer
 name|containerAllocationExpirer
 decl_stmt|;
-DECL|field|tokenRenewer
+DECL|field|delegationTokenRenewer
 specifier|private
 specifier|final
 name|DelegationTokenRenewer
-name|tokenRenewer
+name|delegationTokenRenewer
 decl_stmt|;
 DECL|field|amRMTokenSecretManager
 specifier|private
@@ -474,7 +494,17 @@ specifier|final
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
 decl_stmt|;
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager amRMTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
+DECL|field|clientRMService
+specifier|private
+name|ClientRMService
+name|clientRMService
+decl_stmt|;
+DECL|field|rmDelegationTokenSecretManager
+specifier|private
+name|RMDelegationTokenSecretManager
+name|rmDelegationTokenSecretManager
+decl_stmt|;
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, RMStateStore store, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager amRMTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -494,7 +524,7 @@ name|AMLivelinessMonitor
 name|amFinishingMonitor
 parameter_list|,
 name|DelegationTokenRenewer
-name|tokenRenewer
+name|delegationTokenRenewer
 parameter_list|,
 name|AMRMTokenSecretManager
 name|amRMTokenSecretManager
@@ -541,9 +571,9 @@ name|amFinishingMonitor
 expr_stmt|;
 name|this
 operator|.
-name|tokenRenewer
+name|delegationTokenRenewer
 operator|=
-name|tokenRenewer
+name|delegationTokenRenewer
 expr_stmt|;
 name|this
 operator|.
@@ -573,7 +603,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer tokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -590,7 +620,7 @@ name|AMLivelinessMonitor
 name|amFinishingMonitor
 parameter_list|,
 name|DelegationTokenRenewer
-name|tokenRenewer
+name|delegationTokenRenewer
 parameter_list|,
 name|AMRMTokenSecretManager
 name|appTokenSecretManager
@@ -617,7 +647,7 @@ name|amLivelinessMonitor
 argument_list|,
 name|amFinishingMonitor
 argument_list|,
-name|tokenRenewer
+name|delegationTokenRenewer
 argument_list|,
 name|appTokenSecretManager
 argument_list|,
@@ -637,7 +667,7 @@ argument_list|()
 decl_stmt|;
 name|nullStore
 operator|.
-name|setDispatcher
+name|setRMDispatcher
 argument_list|(
 name|rmDispatcher
 argument_list|)
@@ -804,7 +834,7 @@ name|getDelegationTokenRenewer
 parameter_list|()
 block|{
 return|return
-name|tokenRenewer
+name|delegationTokenRenewer
 return|;
 block|}
 annotation|@
@@ -877,6 +907,70 @@ block|{
 name|stateStore
 operator|=
 name|store
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getClientRMService ()
+specifier|public
+name|ClientRMService
+name|getClientRMService
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|clientRMService
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setClientRMService (ClientRMService clientRMService)
+specifier|public
+name|void
+name|setClientRMService
+parameter_list|(
+name|ClientRMService
+name|clientRMService
+parameter_list|)
+block|{
+name|this
+operator|.
+name|clientRMService
+operator|=
+name|clientRMService
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getRMDelegationTokenSecretManager ()
+specifier|public
+name|RMDelegationTokenSecretManager
+name|getRMDelegationTokenSecretManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rmDelegationTokenSecretManager
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setRMDelegationTokenSecretManager ( RMDelegationTokenSecretManager delegationTokenSecretManager)
+specifier|public
+name|void
+name|setRMDelegationTokenSecretManager
+parameter_list|(
+name|RMDelegationTokenSecretManager
+name|delegationTokenSecretManager
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rmDelegationTokenSecretManager
+operator|=
+name|delegationTokenSecretManager
 expr_stmt|;
 block|}
 block|}

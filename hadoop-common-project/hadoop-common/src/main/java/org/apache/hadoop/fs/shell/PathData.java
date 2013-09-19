@@ -439,11 +439,12 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Validates the given Windows path.    * Throws IOException on failure.    * @param pathString a String of the path suppliued by the user.    */
-DECL|method|ValidateWindowsPath (String pathString)
+comment|/**    * Validates the given Windows path.    * @param pathString a String of the path suppliued by the user.    * @return true if the URI scheme was not present in the pathString but    * inferred; false, otherwise.    * @throws IOException if anything goes wrong    */
+DECL|method|checkIfSchemeInferredFromPath (String pathString)
 specifier|private
-name|void
-name|ValidateWindowsPath
+specifier|static
+name|boolean
+name|checkIfSchemeInferredFromPath
 parameter_list|(
 name|String
 name|pathString
@@ -488,11 +489,9 @@ name|pathString
 argument_list|)
 throw|;
 block|}
-name|inferredSchemeFromPath
-operator|=
+return|return
 literal|true
-expr_stmt|;
-return|return;
+return|;
 block|}
 comment|// Is it a forward slash-separated absolute path?
 if|if
@@ -508,11 +507,9 @@ name|find
 argument_list|()
 condition|)
 block|{
-name|inferredSchemeFromPath
-operator|=
+return|return
 literal|true
-expr_stmt|;
-return|return;
+return|;
 block|}
 comment|// Does it look like a URI? If so then just leave it alone.
 if|if
@@ -528,10 +525,14 @@ name|find
 argument_list|()
 condition|)
 block|{
-return|return;
+return|return
+literal|false
+return|;
 block|}
 comment|// Looks like a relative path on Windows.
-return|return;
+return|return
+literal|false
+return|;
 block|}
 comment|/**    * Creates an object to wrap the given parameters as fields.  The string    * used to create the path will be recorded since the Path object does not    * return exactly the same string used to initialize it.    * @param fs the FileSystem    * @param pathString a String of the path    * @param stat the FileStatus (may be null if the path doesn't exist)    */
 DECL|method|PathData (FileSystem fs, String pathString, FileStatus stat)
@@ -592,7 +593,9 @@ operator|.
 name|WINDOWS
 condition|)
 block|{
-name|ValidateWindowsPath
+name|inferredSchemeFromPath
+operator|=
+name|checkIfSchemeInferredFromPath
 argument_list|(
 name|pathString
 argument_list|)
@@ -1129,7 +1132,12 @@ operator|.
 name|SEPARATOR
 decl_stmt|;
 return|return
+name|uriToString
+argument_list|(
 name|uri
+argument_list|,
+name|inferredSchemeFromPath
+argument_list|)
 operator|+
 name|separator
 operator|+
@@ -1384,10 +1392,12 @@ expr_stmt|;
 block|}
 name|globMatch
 operator|=
+name|uriToString
+argument_list|(
 name|matchUri
-operator|.
-name|toString
-argument_list|()
+argument_list|,
+literal|false
+argument_list|)
 expr_stmt|;
 break|break;
 case|case
@@ -1836,6 +1846,28 @@ specifier|public
 name|String
 name|toString
 parameter_list|()
+block|{
+return|return
+name|uriToString
+argument_list|(
+name|uri
+argument_list|,
+name|inferredSchemeFromPath
+argument_list|)
+return|;
+block|}
+DECL|method|uriToString (URI uri, boolean inferredSchemeFromPath)
+specifier|private
+specifier|static
+name|String
+name|uriToString
+parameter_list|(
+name|URI
+name|uri
+parameter_list|,
+name|boolean
+name|inferredSchemeFromPath
+parameter_list|)
 block|{
 name|String
 name|scheme

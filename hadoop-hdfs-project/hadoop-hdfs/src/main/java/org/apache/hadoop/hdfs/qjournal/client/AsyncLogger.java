@@ -369,7 +369,7 @@ name|epoch
 parameter_list|)
 function_decl|;
 comment|/**    * Fetch the list of edit logs available on the remote node.    */
-DECL|method|getEditLogManifest ( long fromTxnId, boolean forReading)
+DECL|method|getEditLogManifest ( long fromTxnId, boolean forReading, boolean inProgressOk)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -382,6 +382,9 @@ name|fromTxnId
 parameter_list|,
 name|boolean
 name|forReading
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 function_decl|;
 comment|/**    * Prepare recovery. See the HDFS-3077 design document for details.    */

@@ -216,20 +216,6 @@ name|hadoop
 operator|.
 name|conf
 operator|.
-name|Configurable
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
 name|Configuration
 import|;
 end_import
@@ -245,22 +231,6 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|YarnRuntimeException
 import|;
 end_import
 
@@ -475,6 +445,22 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|exceptions
+operator|.
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -1300,6 +1286,11 @@ specifier|private
 name|Clock
 name|clock
 decl_stmt|;
+DECL|field|usePortForNodeName
+specifier|private
+name|boolean
+name|usePortForNodeName
+decl_stmt|;
 DECL|field|LOG
 specifier|private
 specifier|static
@@ -1417,6 +1408,8 @@ name|lastPreemptCheckTime
 decl_stmt|;
 comment|// This stores per-application scheduling information, indexed by
 comment|// attempt ID's for fast lookup.
+annotation|@
+name|VisibleForTesting
 DECL|field|applications
 specifier|protected
 name|Map
@@ -1428,7 +1421,7 @@ argument_list|>
 name|applications
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
@@ -2381,7 +2374,7 @@ block|{
 name|int
 name|ret
 init|=
-name|c2
+name|c1
 operator|.
 name|getContainer
 argument_list|()
@@ -2391,7 +2384,7 @@ argument_list|()
 operator|.
 name|compareTo
 argument_list|(
-name|c1
+name|c2
 operator|.
 name|getContainer
 argument_list|()
@@ -2758,7 +2751,7 @@ name|status
 init|=
 name|SchedulerUtils
 operator|.
-name|createAbnormalContainerStatus
+name|createPreemptedContainerStatus
 argument_list|(
 name|container
 operator|.
@@ -4249,6 +4242,8 @@ operator|new
 name|FSSchedulerNode
 argument_list|(
 name|node
+argument_list|,
+name|usePortForNodeName
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5841,6 +5836,15 @@ operator|.
 name|conf
 operator|.
 name|getWaitTimeBeforeKill
+argument_list|()
+expr_stmt|;
+name|usePortForNodeName
+operator|=
+name|this
+operator|.
+name|conf
+operator|.
+name|getUsePortForNodeName
 argument_list|()
 expr_stmt|;
 if|if

@@ -1176,6 +1176,8 @@ operator|new
 name|FiCaSchedulerNode
 argument_list|(
 name|rmNode
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 decl_stmt|;

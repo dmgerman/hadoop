@@ -124,6 +124,23 @@ name|Nfs3
 extends|extends
 name|Nfs3Base
 block|{
+static|static
+block|{
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"hdfs-default.xml"
+argument_list|)
+expr_stmt|;
+name|Configuration
+operator|.
+name|addDefaultResource
+argument_list|(
+literal|"hdfs-site.xml"
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|Nfs3 (List<String> exports)
 specifier|public
 name|Nfs3
@@ -147,9 +164,7 @@ argument_list|)
 argument_list|,
 operator|new
 name|RpcProgramNfs3
-argument_list|(
-name|exports
-argument_list|)
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -182,8 +197,6 @@ argument_list|,
 operator|new
 name|RpcProgramNfs3
 argument_list|(
-name|exports
-argument_list|,
 name|config
 argument_list|)
 argument_list|)

@@ -424,6 +424,12 @@ specifier|private
 name|long
 name|tokenRenewInterval
 decl_stmt|;
+comment|/**    * Whether to store a token's tracking ID in its TokenInformation.    * Can be overridden by a subclass.    */
+DECL|field|storeTokenTrackingId
+specifier|protected
+name|boolean
+name|storeTokenTrackingId
+decl_stmt|;
 DECL|field|tokenRemoverThread
 specifier|private
 name|Thread
@@ -485,6 +491,12 @@ operator|.
 name|tokenRemoverScanInterval
 operator|=
 name|delegationTokenRemoverScanInterval
+expr_stmt|;
+name|this
+operator|.
+name|storeTokenTrackingId
+operator|=
+literal|false
 expr_stmt|;
 block|}
 comment|/** should be called before this object is used */
@@ -868,6 +880,11 @@ argument_list|(
 name|renewDate
 argument_list|,
 name|password
+argument_list|,
+name|getTrackingIdIfEnabled
+argument_list|(
+name|identifier
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1236,6 +1253,11 @@ operator|+
 name|tokenRenewInterval
 argument_list|,
 name|password
+argument_list|,
+name|getTrackingIdIfEnabled
+argument_list|(
+name|identifier
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1327,6 +1349,69 @@ return|return
 name|info
 operator|.
 name|getPassword
+argument_list|()
+return|;
+block|}
+DECL|method|getTrackingIdIfEnabled (TokenIdent ident)
+specifier|protected
+name|String
+name|getTrackingIdIfEnabled
+parameter_list|(
+name|TokenIdent
+name|ident
+parameter_list|)
+block|{
+if|if
+condition|(
+name|storeTokenTrackingId
+condition|)
+block|{
+return|return
+name|ident
+operator|.
+name|getTrackingId
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
+return|;
+block|}
+DECL|method|getTokenTrackingId (TokenIdent identifier)
+specifier|public
+specifier|synchronized
+name|String
+name|getTokenTrackingId
+parameter_list|(
+name|TokenIdent
+name|identifier
+parameter_list|)
+block|{
+name|DelegationTokenInformation
+name|info
+init|=
+name|currentTokens
+operator|.
+name|get
+argument_list|(
+name|identifier
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|info
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+return|return
+name|info
+operator|.
+name|getTrackingId
 argument_list|()
 return|;
 block|}
@@ -1657,6 +1742,14 @@ operator|+
 name|tokenRenewInterval
 argument_list|)
 decl_stmt|;
+name|String
+name|trackingId
+init|=
+name|getTrackingIdIfEnabled
+argument_list|(
+name|id
+argument_list|)
+decl_stmt|;
 name|DelegationTokenInformation
 name|info
 init|=
@@ -1666,6 +1759,8 @@ argument_list|(
 name|renewTime
 argument_list|,
 name|password
+argument_list|,
+name|trackingId
 argument_list|)
 decl_stmt|;
 if|if
@@ -1949,7 +2044,11 @@ name|byte
 index|[]
 name|password
 decl_stmt|;
-DECL|method|DelegationTokenInformation (long renewDate, byte[] password)
+DECL|field|trackingId
+name|String
+name|trackingId
+decl_stmt|;
+DECL|method|DelegationTokenInformation (long renewDate, byte[] password, String trackingId)
 specifier|public
 name|DelegationTokenInformation
 parameter_list|(
@@ -1959,6 +2058,9 @@ parameter_list|,
 name|byte
 index|[]
 name|password
+parameter_list|,
+name|String
+name|trackingId
 parameter_list|)
 block|{
 name|this
@@ -1972,6 +2074,12 @@ operator|.
 name|password
 operator|=
 name|password
+expr_stmt|;
+name|this
+operator|.
+name|trackingId
+operator|=
+name|trackingId
 expr_stmt|;
 block|}
 comment|/** returns renew date */
@@ -1994,6 +2102,17 @@ parameter_list|()
 block|{
 return|return
 name|password
+return|;
+block|}
+comment|/** returns tracking id */
+DECL|method|getTrackingId ()
+specifier|public
+name|String
+name|getTrackingId
+parameter_list|()
+block|{
+return|return
+name|trackingId
 return|;
 block|}
 block|}

@@ -86,6 +86,26 @@ begin_import
 import|import
 name|org
 operator|.
+name|junit
+operator|.
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
 name|mockito
 operator|.
 name|Mockito
@@ -164,6 +184,13 @@ operator|.
 name|TYPE
 return|;
 block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testAlternateAuthenticationAsBrowser ()
 specifier|public
 name|void
@@ -227,6 +254,8 @@ argument_list|,
 name|response
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"A"
@@ -237,6 +266,8 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"B"
@@ -247,6 +278,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|getExpectedType
@@ -259,6 +292,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testNonDefaultNonBrowserUserAgentAsBrowser ()
 specifier|public
 name|void
@@ -383,6 +423,8 @@ argument_list|,
 name|response
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"A"
@@ -393,6 +435,8 @@ name|getUserName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"B"
@@ -403,6 +447,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|getExpectedType
@@ -415,6 +461,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
 DECL|method|testNonDefaultNonBrowserUserAgentAsNonBrowser ()
 specifier|public
 name|void

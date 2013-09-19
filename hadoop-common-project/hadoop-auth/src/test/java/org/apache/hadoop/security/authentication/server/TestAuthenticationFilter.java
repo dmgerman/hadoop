@@ -76,11 +76,21 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
+name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|TestCase
+name|junit
+operator|.
+name|Test
 import|;
 end_import
 
@@ -249,9 +259,9 @@ DECL|class|TestAuthenticationFilter
 specifier|public
 class|class
 name|TestAuthenticationFilter
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testGetConfiguration ()
 specifier|public
 name|void
@@ -357,6 +367,8 @@ argument_list|,
 name|config
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"A"
@@ -457,6 +469,8 @@ argument_list|,
 name|config
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"A"
@@ -470,6 +484,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInitEmpty ()
 specifier|public
 name|void
@@ -529,6 +545,8 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -547,6 +565,8 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -828,6 +848,8 @@ name|token
 return|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testInit ()
 specifier|public
 name|void
@@ -939,6 +961,8 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|PseudoAuthenticationHandler
@@ -954,6 +978,8 @@ name|getClass
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|filter
@@ -962,6 +988,8 @@ name|isRandomSecret
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNull
 argument_list|(
 name|filter
@@ -970,6 +998,8 @@ name|getCookieDomain
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNull
 argument_list|(
 name|filter
@@ -978,6 +1008,8 @@ name|getCookiePath
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|1000
@@ -1099,6 +1131,8 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|filter
@@ -1241,6 +1275,8 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|".foo.com"
@@ -1251,6 +1287,8 @@ name|getCookieDomain
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"/bar"
@@ -1378,6 +1416,8 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|DummyAuthenticationHandler
@@ -1393,6 +1433,8 @@ operator|.
 name|destroy
 argument_list|()
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|DummyAuthenticationHandler
@@ -1491,6 +1533,8 @@ comment|// Expected
 block|}
 finally|finally
 block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|KerberosAuthenticationHandler
@@ -1513,6 +1557,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetRequestURL ()
 specifier|public
 name|void
@@ -1670,6 +1716,8 @@ argument_list|(
 literal|"a=A&b=B"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"http://foo:8080/bar?a=A&b=B"
@@ -1692,6 +1740,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetToken ()
 specifier|public
 name|void
@@ -1933,6 +1983,8 @@ argument_list|(
 name|request
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|token
@@ -1956,6 +2008,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetTokenExpired ()
 specifier|public
 name|void
@@ -2194,6 +2248,8 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -2212,6 +2268,8 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -2226,6 +2284,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testGetTokenInvalidType ()
 specifier|public
 name|void
@@ -2464,6 +2524,8 @@ argument_list|(
 name|request
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -2482,6 +2544,8 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -2496,6 +2560,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterNotAuthenticated ()
 specifier|public
 name|void
@@ -2685,6 +2751,8 @@ parameter_list|)
 throws|throws
 name|Throwable
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -3353,6 +3421,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|Assert
+operator|.
 name|assertNotNull
 argument_list|(
 name|setCookie
@@ -3361,6 +3431,8 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|AuthenticatedURL
@@ -3376,6 +3448,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|setCookie
@@ -3392,6 +3466,8 @@ literal|"u="
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|setCookie
@@ -3408,6 +3484,8 @@ literal|"p="
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|setCookie
@@ -3424,6 +3502,8 @@ literal|"t="
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|setCookie
@@ -3440,6 +3520,8 @@ literal|"e="
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|setCookie
@@ -3456,6 +3538,8 @@ literal|"s="
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|calledDoFilter
@@ -3502,6 +3586,8 @@ argument_list|(
 name|value
 argument_list|)
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|System
@@ -3526,6 +3612,8 @@ condition|(
 name|withDomainPath
 condition|)
 block|{
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|".foo.com"
@@ -3539,6 +3627,8 @@ name|getDomain
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"/bar"
@@ -3555,6 +3645,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
+name|Assert
+operator|.
 name|assertNull
 argument_list|(
 name|setCookie
@@ -3566,6 +3658,8 @@ name|getDomain
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNull
 argument_list|(
 name|setCookie
@@ -3589,6 +3683,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterAuthentication ()
 specifier|public
 name|void
@@ -3607,6 +3703,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterAuthenticationImmediateExpiration ()
 specifier|public
 name|void
@@ -3625,6 +3723,8 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterAuthenticationWithInvalidToken ()
 specifier|public
 name|void
@@ -3643,6 +3743,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterAuthenticationWithDomainPath ()
 specifier|public
 name|void
@@ -3661,6 +3763,8 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterAuthenticated ()
 specifier|public
 name|void
@@ -3953,6 +4057,8 @@ index|[
 literal|0
 index|]
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"u"
@@ -3963,6 +4069,8 @@ name|getRemoteUser
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"p"
@@ -4028,6 +4136,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterAuthenticatedExpired ()
 specifier|public
 name|void
@@ -4302,6 +4412,8 @@ parameter_list|)
 throws|throws
 name|Throwable
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -4450,6 +4562,8 @@ name|anyString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNotNull
 argument_list|(
 name|setCookie
@@ -4458,6 +4572,8 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|AuthenticatedURL
@@ -4473,6 +4589,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|""
@@ -4496,6 +4614,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testDoFilterAuthenticatedInvalidType ()
 specifier|public
 name|void
@@ -4768,6 +4888,8 @@ parameter_list|)
 throws|throws
 name|Throwable
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -4916,6 +5038,8 @@ name|anyString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNotNull
 argument_list|(
 name|setCookie
@@ -4924,6 +5048,8 @@ literal|0
 index|]
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|AuthenticatedURL
@@ -4939,6 +5065,8 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|""
@@ -4962,6 +5090,8 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testManagementOperation ()
 specifier|public
 name|void

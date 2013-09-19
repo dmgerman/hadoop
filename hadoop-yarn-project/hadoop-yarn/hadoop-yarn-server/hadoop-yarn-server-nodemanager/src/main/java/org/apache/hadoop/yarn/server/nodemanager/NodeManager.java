@@ -918,6 +918,10 @@ argument_list|(
 name|containerTokenSecretManager
 argument_list|,
 name|nmTokenSecretManager
+argument_list|,
+name|dirsHandler
+argument_list|,
+name|aclsManager
 argument_list|)
 return|;
 block|}
@@ -986,17 +990,6 @@ operator|new
 name|NMTokenSecretManagerInNM
 argument_list|()
 decl_stmt|;
-name|this
-operator|.
-name|context
-operator|=
-name|createNMContext
-argument_list|(
-name|containerTokenSecretManager
-argument_list|,
-name|nmTokenSecretManager
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
 name|aclsManager
@@ -1097,6 +1090,17 @@ name|nodeHealthChecker
 operator|.
 name|getDiskHandler
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|context
+operator|=
+name|createNMContext
+argument_list|(
+name|containerTokenSecretManager
+argument_list|,
+name|nmTokenSecretManager
+argument_list|)
 expr_stmt|;
 name|nodeStatusUpdater
 operator|=
@@ -1782,6 +1786,18 @@ specifier|private
 name|ContainerManagementProtocol
 name|containerManager
 decl_stmt|;
+DECL|field|dirsHandler
+specifier|private
+specifier|final
+name|LocalDirsHandlerService
+name|dirsHandler
+decl_stmt|;
+DECL|field|aclsManager
+specifier|private
+specifier|final
+name|ApplicationACLsManager
+name|aclsManager
+decl_stmt|;
 DECL|field|webServer
 specifier|private
 name|WebServer
@@ -1807,7 +1823,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager)
+DECL|method|NMContext (NMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInNM nmTokenSecretManager, LocalDirsHandlerService dirsHandler, ApplicationACLsManager aclsManager)
 specifier|public
 name|NMContext
 parameter_list|(
@@ -1816,6 +1832,12 @@ name|containerTokenSecretManager
 parameter_list|,
 name|NMTokenSecretManagerInNM
 name|nmTokenSecretManager
+parameter_list|,
+name|LocalDirsHandlerService
+name|dirsHandler
+parameter_list|,
+name|ApplicationACLsManager
+name|aclsManager
 parameter_list|)
 block|{
 name|this
@@ -1829,6 +1851,18 @@ operator|.
 name|nmTokenSecretManager
 operator|=
 name|nmTokenSecretManager
+expr_stmt|;
+name|this
+operator|.
+name|dirsHandler
+operator|=
+name|dirsHandler
+expr_stmt|;
+name|this
+operator|.
+name|aclsManager
+operator|=
+name|aclsManager
 expr_stmt|;
 name|this
 operator|.
@@ -2034,6 +2068,30 @@ name|nodeId
 operator|=
 name|nodeId
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getLocalDirsHandler ()
+specifier|public
+name|LocalDirsHandlerService
+name|getLocalDirsHandler
+parameter_list|()
+block|{
+return|return
+name|dirsHandler
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationACLsManager ()
+specifier|public
+name|ApplicationACLsManager
+name|getApplicationACLsManager
+parameter_list|()
+block|{
+return|return
+name|aclsManager
+return|;
 block|}
 block|}
 comment|/**    * @return the node health checker    */

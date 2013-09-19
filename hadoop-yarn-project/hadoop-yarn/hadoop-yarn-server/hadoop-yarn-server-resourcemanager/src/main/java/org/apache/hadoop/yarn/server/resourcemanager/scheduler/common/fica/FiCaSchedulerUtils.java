@@ -70,7 +70,7 @@ name|isBlacklisted
 argument_list|(
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 condition|)
@@ -91,7 +91,7 @@ literal|"Skipping 'host' "
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 operator|+
 literal|" for "

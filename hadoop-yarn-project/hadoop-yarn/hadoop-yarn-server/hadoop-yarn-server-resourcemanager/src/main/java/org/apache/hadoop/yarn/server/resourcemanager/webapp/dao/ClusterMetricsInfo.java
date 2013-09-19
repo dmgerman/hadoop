@@ -490,6 +490,8 @@ operator|+
 name|decommissionedNodes
 operator|+
 name|rebootedNodes
+operator|+
+name|unhealthyNodes
 expr_stmt|;
 block|}
 DECL|method|getAppsSubmitted ()

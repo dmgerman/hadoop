@@ -74,6 +74,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|crypto
+operator|.
+name|SecretKey
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -219,6 +229,20 @@ operator|.
 name|delegation
 operator|.
 name|DelegationKey
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|service
+operator|.
+name|AbstractService
 import|;
 end_import
 
@@ -394,24 +418,6 @@ name|security
 operator|.
 name|client
 operator|.
-name|ClientToAMTokenIdentifier
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|security
-operator|.
-name|client
-operator|.
 name|RMDelegationTokenIdentifier
 import|;
 end_import
@@ -565,6 +571,8 @@ specifier|public
 specifier|abstract
 class|class
 name|RMStateStore
+extends|extends
+name|AbstractService
 block|{
 DECL|field|LOG
 specifier|public
@@ -582,6 +590,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|method|RMStateStore ()
+specifier|public
+name|RMStateStore
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|RMStateStore
+operator|.
+name|class
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * State of an application attempt    */
 DECL|class|ApplicationAttemptState
 specifier|public
@@ -599,12 +623,12 @@ specifier|final
 name|Container
 name|masterContainer
 decl_stmt|;
-DECL|field|appAttemptTokens
+DECL|field|appAttemptCredentials
 specifier|final
 name|Credentials
-name|appAttemptTokens
+name|appAttemptCredentials
 decl_stmt|;
-DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptTokens)
+DECL|method|ApplicationAttemptState (ApplicationAttemptId attemptId, Container masterContainer, Credentials appAttemptCredentials)
 specifier|public
 name|ApplicationAttemptState
 parameter_list|(
@@ -615,7 +639,7 @@ name|Container
 name|masterContainer
 parameter_list|,
 name|Credentials
-name|appAttemptTokens
+name|appAttemptCredentials
 parameter_list|)
 block|{
 name|this
@@ -632,9 +656,9 @@ name|masterContainer
 expr_stmt|;
 name|this
 operator|.
-name|appAttemptTokens
+name|appAttemptCredentials
 operator|=
-name|appAttemptTokens
+name|appAttemptCredentials
 expr_stmt|;
 block|}
 DECL|method|getMasterContainer ()
@@ -657,14 +681,14 @@ return|return
 name|attemptId
 return|;
 block|}
-DECL|method|getAppAttemptTokens ()
+DECL|method|getAppAttemptCredentials ()
 specifier|public
 name|Credentials
-name|getAppAttemptTokens
+name|getAppAttemptCredentials
 parameter_list|()
 block|{
 return|return
-name|appAttemptTokens
+name|appAttemptCredentials
 return|;
 block|}
 block|}
@@ -964,10 +988,10 @@ name|Dispatcher
 name|rmDispatcher
 decl_stmt|;
 comment|/**    * Dispatcher used to send state operation completion events to     * ResourceManager services    */
-DECL|method|setDispatcher (Dispatcher dispatcher)
+DECL|method|setRMDispatcher (Dispatcher dispatcher)
 specifier|public
 name|void
-name|setDispatcher
+name|setRMDispatcher
 parameter_list|(
 name|Dispatcher
 name|dispatcher
@@ -984,11 +1008,11 @@ DECL|field|dispatcher
 name|AsyncDispatcher
 name|dispatcher
 decl_stmt|;
-DECL|method|init (Configuration conf)
+DECL|method|serviceInit (Configuration conf)
 specifier|public
 specifier|synchronized
 name|void
-name|init
+name|serviceInit
 parameter_list|(
 name|Configuration
 name|conf
@@ -1023,18 +1047,31 @@ name|ForwardingEventHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|dispatcher
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
 name|initInternal
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Derived classes initialize themselves using this method.    * The base class is initialized and the event dispatcher is ready to use at    * this point    */
+DECL|method|serviceStart ()
+specifier|protected
+specifier|synchronized
+name|void
+name|serviceStart
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|dispatcher
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|startInternal
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Derived classes initialize themselves using this method.    */
 DECL|method|initInternal (Configuration conf)
 specifier|protected
 specifier|abstract
@@ -1047,11 +1084,21 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-DECL|method|close ()
+comment|/**    * Derived classes start themselves using this method.    * The base class is started and the event dispatcher is ready to use at    * this point    */
+DECL|method|startInternal ()
+specifier|protected
+specifier|abstract
+name|void
+name|startInternal
+parameter_list|()
+throws|throws
+name|Exception
+function_decl|;
+DECL|method|serviceStop ()
 specifier|public
 specifier|synchronized
 name|void
-name|close
+name|serviceStop
 parameter_list|()
 throws|throws
 name|Exception
@@ -1183,7 +1230,7 @@ block|{
 name|Credentials
 name|credentials
 init|=
-name|getTokensFromAppAttempt
+name|getCredentialsFromAppAttempt
 argument_list|(
 name|appAttempt
 argument_list|)
@@ -1435,7 +1482,7 @@ block|{
 name|Credentials
 name|credentials
 init|=
-name|getTokensFromAppAttempt
+name|getCredentialsFromAppAttempt
 argument_list|(
 name|appAttempt
 argument_list|)
@@ -1539,10 +1586,23 @@ argument_list|(
 literal|"AM_RM_TOKEN_SERVICE"
 argument_list|)
 decl_stmt|;
-DECL|method|getTokensFromAppAttempt (RMAppAttempt appAttempt)
+DECL|field|AM_CLIENT_TOKEN_MASTER_KEY_NAME
+specifier|public
+specifier|static
+specifier|final
+name|Text
+name|AM_CLIENT_TOKEN_MASTER_KEY_NAME
+init|=
+operator|new
+name|Text
+argument_list|(
+literal|"YARN_CLIENT_TOKEN_MASTER_KEY"
+argument_list|)
+decl_stmt|;
+DECL|method|getCredentialsFromAppAttempt (RMAppAttempt appAttempt)
 specifier|private
 name|Credentials
-name|getTokensFromAppAttempt
+name|getCredentialsFromAppAttempt
 parameter_list|(
 name|RMAppAttempt
 name|appAttempt
@@ -1583,34 +1643,31 @@ name|appToken
 argument_list|)
 expr_stmt|;
 block|}
-name|Token
-argument_list|<
-name|ClientToAMTokenIdentifier
-argument_list|>
-name|clientToAMToken
+name|SecretKey
+name|clientTokenMasterKey
 init|=
 name|appAttempt
 operator|.
-name|getClientToAMToken
+name|getClientTokenMasterKey
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|clientToAMToken
+name|clientTokenMasterKey
 operator|!=
 literal|null
 condition|)
 block|{
 name|credentials
 operator|.
-name|addToken
+name|addSecretKey
 argument_list|(
-name|clientToAMToken
-operator|.
-name|getService
-argument_list|()
+name|AM_CLIENT_TOKEN_MASTER_KEY_NAME
 argument_list|,
-name|clientToAMToken
+name|clientTokenMasterKey
+operator|.
+name|getEncoded
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1790,7 +1847,7 @@ name|credentials
 init|=
 name|attemptState
 operator|.
-name|getAppAttemptTokens
+name|getAppAttemptCredentials
 argument_list|()
 decl_stmt|;
 name|ByteBuffer

@@ -184,20 +184,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|FSDataOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|DFSClient
@@ -533,7 +519,7 @@ decl_stmt|;
 DECL|field|fos
 specifier|private
 specifier|final
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|fos
 decl_stmt|;
 DECL|field|latestAttr
@@ -702,10 +688,10 @@ return|return
 name|nonSequentialWriteInMemory
 return|;
 block|}
-DECL|method|OpenFileCtx (FSDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath)
+DECL|method|OpenFileCtx (HdfsDataOutputStream fos, Nfs3FileAttributes latestAttr, String dumpFilePath)
 name|OpenFileCtx
 parameter_list|(
-name|FSDataOutputStream
+name|HdfsDataOutputStream
 name|fos
 parameter_list|,
 name|Nfs3FileAttributes
@@ -777,6 +763,25 @@ literal|false
 else|:
 literal|true
 expr_stmt|;
+name|nextOffset
+operator|=
+name|latestAttr
+operator|.
+name|getSize
+argument_list|()
+expr_stmt|;
+assert|assert
+operator|(
+name|nextOffset
+operator|==
+name|this
+operator|.
+name|fos
+operator|.
+name|getPos
+argument_list|()
+operator|)
+assert|;
 name|ctxLock
 operator|=
 operator|new
@@ -2362,12 +2367,7 @@ decl_stmt|;
 try|try
 block|{
 comment|// Sync file data and length to avoid partial read failure
-operator|(
-operator|(
-name|HdfsDataOutputStream
-operator|)
 name|fos
-operator|)
 operator|.
 name|hsync
 argument_list|(
@@ -2828,12 +2828,7 @@ decl_stmt|;
 try|try
 block|{
 comment|// Sync file data and length
-operator|(
-operator|(
-name|HdfsDataOutputStream
-operator|)
 name|fos
-operator|)
 operator|.
 name|hsync
 argument_list|(
@@ -3534,12 +3529,15 @@ argument_list|,
 name|count
 argument_list|)
 expr_stmt|;
+name|long
+name|flushedOffset
+init|=
+name|getFlushedOffset
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|fos
-operator|.
-name|getPos
-argument_list|()
+name|flushedOffset
 operator|!=
 operator|(
 name|offset
@@ -3554,10 +3552,7 @@ name|IOException
 argument_list|(
 literal|"output stream is out of sync, pos="
 operator|+
-name|fos
-operator|.
-name|getPos
-argument_list|()
+name|flushedOffset
 operator|+
 literal|" and nextOffset should be"
 operator|+
@@ -3571,10 +3566,7 @@ throw|;
 block|}
 name|nextOffset
 operator|=
-name|fos
-operator|.
-name|getPos
-argument_list|()
+name|flushedOffset
 expr_stmt|;
 comment|// Reduce memory occupation size if request was allowed dumped
 if|if

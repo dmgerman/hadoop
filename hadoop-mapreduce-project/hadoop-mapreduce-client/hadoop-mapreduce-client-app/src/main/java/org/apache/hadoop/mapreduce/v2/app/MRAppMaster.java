@@ -2896,6 +2896,24 @@ name|eater
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|copyHistory
+condition|)
+block|{
+comment|// Now that there's a FINISHING state for application on RM to give AMs
+comment|// plenty of time to clean up after unregister it's safe to clean staging
+comment|// directory after unregistering with RM. So, we start the staging-dir
+comment|// cleaner BEFORE the ContainerAllocator so that on shut-down,
+comment|// ContainerAllocator unregisters first and then the staging-dir cleaner
+comment|// deletes staging directory.
+name|addService
+argument_list|(
+name|createStagingDirCleaningService
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// service to allocate containers from RM (if non-uber) or to fake it (uber)
 name|containerAllocator
 operator|=
@@ -2929,15 +2947,6 @@ condition|(
 name|copyHistory
 condition|)
 block|{
-comment|// Add the staging directory cleaner before the history server but after
-comment|// the container allocator so the staging directory is cleaned after
-comment|// the history has been flushed but before unregistering with the RM.
-name|addService
-argument_list|(
-name|createStagingDirCleaningService
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// Add the JobHistoryEventHandler last so that it is properly stopped first.
 comment|// This will guarantee that all history-events are flushed before AM goes
 comment|// ahead with shutdown.
@@ -2997,9 +3006,14 @@ argument_list|(
 name|context
 argument_list|)
 expr_stmt|;
-name|addIfService
-argument_list|(
+comment|// Init ClientService separately so that we stop it separately, since this
+comment|// service needs to wait some time before it stops so clients can know the
+comment|// final states
 name|clientService
+operator|.
+name|init
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 name|containerAllocator
@@ -3191,6 +3205,18 @@ argument_list|,
 name|speculatorEventDispatcher
 argument_list|)
 expr_stmt|;
+comment|// Now that there's a FINISHING state for application on RM to give AMs
+comment|// plenty of time to clean up after unregister it's safe to clean staging
+comment|// directory after unregistering with RM. So, we start the staging-dir
+comment|// cleaner BEFORE the ContainerAllocator so that on shut-down,
+comment|// ContainerAllocator unregisters first and then the staging-dir cleaner
+comment|// deletes staging directory.
+name|addService
+argument_list|(
+name|createStagingDirCleaningService
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// service to allocate containers from RM (if non-uber) or to fake it (uber)
 name|addIfService
 argument_list|(
@@ -3234,15 +3260,6 @@ operator|.
 name|class
 argument_list|,
 name|containerLauncher
-argument_list|)
-expr_stmt|;
-comment|// Add the staging directory cleaner before the history server but after
-comment|// the container allocator so the staging directory is cleaned after
-comment|// the history has been flushed but before unregistering with the RM.
-name|addService
-argument_list|(
-name|createStagingDirCleaningService
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Add the JobHistoryEventHandler last so that it is properly stopped first.
@@ -3774,30 +3791,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// TODO:currently just wait for some time so clients can know the
-comment|// final states. Will be removed once RM come on.
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|5000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|e
-operator|.
-name|printStackTrace
-argument_list|()
-expr_stmt|;
-block|}
 try|try
 block|{
 comment|//if isLastAMRetry comes as true, should never set it to false
@@ -3854,6 +3847,35 @@ expr_stmt|;
 name|MRAppMaster
 operator|.
 name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+comment|// TODO: Stop ClientService last, since only ClientService should wait for
+comment|// some time so clients can know the final states. Will be removed once RM come on.
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|5000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|e
+operator|.
+name|printStackTrace
+argument_list|()
+expr_stmt|;
+block|}
+name|clientService
 operator|.
 name|stop
 argument_list|()
@@ -4102,32 +4124,6 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
-block|}
-block|}
-DECL|method|addIfService (Object object)
-specifier|protected
-name|void
-name|addIfService
-parameter_list|(
-name|Object
-name|object
-parameter_list|)
-block|{
-if|if
-condition|(
-name|object
-operator|instanceof
-name|Service
-condition|)
-block|{
-name|addService
-argument_list|(
-operator|(
-name|Service
-operator|)
-name|object
-argument_list|)
-expr_stmt|;
 block|}
 block|}
 DECL|method|createJobHistoryHandler ( AppContext context)
@@ -5456,6 +5452,18 @@ return|return
 name|clientToAMTokenSecretManager
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|isLastAMRetry ()
+specifier|public
+name|boolean
+name|isLastAMRetry
+parameter_list|()
+block|{
+return|return
+name|isLastAMRetry
+return|;
+block|}
 block|}
 annotation|@
 name|SuppressWarnings
@@ -5723,6 +5731,13 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Start ClientService here, since it's not initialized if
+comment|// errorHappenedShutDown is true
+name|clientService
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 comment|//start all the components
 name|super
@@ -5804,11 +5819,6 @@ decl_stmt|;
 name|boolean
 name|shuffleKeyValidForRecovery
 init|=
-operator|(
-name|numReduceTasks
-operator|>
-literal|0
-operator|&&
 name|TokenCache
 operator|.
 name|getShuffleSecretKey
@@ -5817,7 +5827,6 @@ name|jobCredentials
 argument_list|)
 operator|!=
 literal|null
-operator|)
 decl_stmt|;
 if|if
 condition|(
@@ -5825,7 +5834,13 @@ name|recoveryEnabled
 operator|&&
 name|recoverySupportedByCommitter
 operator|&&
+operator|(
+name|numReduceTasks
+operator|<=
+literal|0
+operator|||
 name|shuffleKeyValidForRecovery
+operator|)
 condition|)
 block|{
 name|LOG
@@ -5882,6 +5897,10 @@ operator|+
 literal|" recoverySupportedByCommitter: "
 operator|+
 name|recoverySupportedByCommitter
+operator|+
+literal|" numReduceTasks: "
+operator|+
+name|numReduceTasks
 operator|+
 literal|" shuffleKeyValidForRecovery: "
 operator|+

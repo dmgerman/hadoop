@@ -379,7 +379,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|exitCode
+name|numErrors
 operator|!=
 literal|0
 condition|)
@@ -581,7 +581,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|exitCode
+name|numErrors
 operator|!=
 literal|0
 condition|)
@@ -783,7 +783,7 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|exitCode
+name|numErrors
 operator|!=
 literal|0
 condition|)

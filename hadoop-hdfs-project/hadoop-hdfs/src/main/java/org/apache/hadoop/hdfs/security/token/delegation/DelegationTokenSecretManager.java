@@ -445,7 +445,6 @@ specifier|final
 name|FSNamesystem
 name|namesystem
 decl_stmt|;
-comment|/**    * Create a secret manager    * @param delegationKeyUpdateInterval the number of seconds for rolling new    *        secret keys.    * @param delegationTokenMaxLifetime the maximum lifetime of the delegation    *        tokens    * @param delegationTokenRenewInterval how often the tokens must be renewed    * @param delegationTokenRemoverScanInterval how often the tokens are scanned    *        for expired tokens    */
 DECL|method|DelegationTokenSecretManager (long delegationKeyUpdateInterval, long delegationTokenMaxLifetime, long delegationTokenRenewInterval, long delegationTokenRemoverScanInterval, FSNamesystem namesystem)
 specifier|public
 name|DelegationTokenSecretManager
@@ -461,6 +460,46 @@ name|delegationTokenRenewInterval
 parameter_list|,
 name|long
 name|delegationTokenRemoverScanInterval
+parameter_list|,
+name|FSNamesystem
+name|namesystem
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|delegationKeyUpdateInterval
+argument_list|,
+name|delegationTokenMaxLifetime
+argument_list|,
+name|delegationTokenRenewInterval
+argument_list|,
+name|delegationTokenRemoverScanInterval
+argument_list|,
+literal|false
+argument_list|,
+name|namesystem
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Create a secret manager    * @param delegationKeyUpdateInterval the number of seconds for rolling new    *        secret keys.    * @param delegationTokenMaxLifetime the maximum lifetime of the delegation    *        tokens    * @param delegationTokenRenewInterval how often the tokens must be renewed    * @param delegationTokenRemoverScanInterval how often the tokens are scanned    *        for expired tokens    * @param storeTokenTrackingId whether to store the token's tracking id    */
+DECL|method|DelegationTokenSecretManager (long delegationKeyUpdateInterval, long delegationTokenMaxLifetime, long delegationTokenRenewInterval, long delegationTokenRemoverScanInterval, boolean storeTokenTrackingId, FSNamesystem namesystem)
+specifier|public
+name|DelegationTokenSecretManager
+parameter_list|(
+name|long
+name|delegationKeyUpdateInterval
+parameter_list|,
+name|long
+name|delegationTokenMaxLifetime
+parameter_list|,
+name|long
+name|delegationTokenRenewInterval
+parameter_list|,
+name|long
+name|delegationTokenRemoverScanInterval
+parameter_list|,
+name|boolean
+name|storeTokenTrackingId
 parameter_list|,
 name|FSNamesystem
 name|namesystem
@@ -483,6 +522,12 @@ name|namesystem
 operator|=
 name|namesystem
 expr_stmt|;
+name|this
+operator|.
+name|storeTokenTrackingId
+operator|=
+name|storeTokenTrackingId
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -501,31 +546,26 @@ return|;
 block|}
 annotation|@
 name|Override
-comment|//SecretManager
-DECL|method|checkAvailableForRead ()
+DECL|method|retrievePassword ( DelegationTokenIdentifier identifier)
 specifier|public
-name|void
-name|checkAvailableForRead
-parameter_list|()
+name|byte
+index|[]
+name|retrievePassword
+parameter_list|(
+name|DelegationTokenIdentifier
+name|identifier
+parameter_list|)
 throws|throws
-name|StandbyException
+name|InvalidToken
 block|{
-name|namesystem
-operator|.
-name|checkOperation
-argument_list|(
-name|OperationCategory
-operator|.
-name|READ
-argument_list|)
-expr_stmt|;
-name|namesystem
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
 try|try
 block|{
+comment|// this check introduces inconsistency in the authentication to a
+comment|// HA standby NN.  non-token auths are allowed into the namespace which
+comment|// decides whether to throw a StandbyException.  tokens are a bit
+comment|// different in that a standby may be behind and thus not yet know
+comment|// of all tokens issued by the active NN.  the following check does
+comment|// not allow ANY token auth, however it should allow known tokens in
 name|namesystem
 operator|.
 name|checkOperation
@@ -536,14 +576,43 @@ name|READ
 argument_list|)
 expr_stmt|;
 block|}
-finally|finally
+catch|catch
+parameter_list|(
+name|StandbyException
+name|se
+parameter_list|)
 block|{
-name|namesystem
+comment|// FIXME: this is a hack to get around changing method signatures by
+comment|// tunneling a non-InvalidToken exception as the cause which the
+comment|// RPC server will unwrap before returning to the client
+name|InvalidToken
+name|wrappedStandby
+init|=
+operator|new
+name|InvalidToken
+argument_list|(
+literal|"StandbyException"
+argument_list|)
+decl_stmt|;
+name|wrappedStandby
 operator|.
-name|readUnlock
-argument_list|()
+name|initCause
+argument_list|(
+name|se
+argument_list|)
 expr_stmt|;
+throw|throw
+name|wrappedStandby
+throw|;
 block|}
+return|return
+name|super
+operator|.
+name|retrievePassword
+argument_list|(
+name|identifier
+argument_list|)
+return|;
 block|}
 comment|/**    * Returns expiry time of a token given its identifier.    *     * @param dtId DelegationTokenIdentifier of a token    * @return Expiry time of the token    * @throws IOException    */
 DECL|method|getTokenExpiryTime ( DelegationTokenIdentifier dtId)
@@ -822,6 +891,11 @@ argument_list|(
 name|expiryTime
 argument_list|,
 name|password
+argument_list|,
+name|getTrackingIdIfEnabled
+argument_list|(
+name|identifier
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -949,6 +1023,11 @@ argument_list|(
 name|expiryTime
 argument_list|,
 name|password
+argument_list|,
+name|getTrackingIdIfEnabled
+argument_list|(
+name|identifier
+argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;

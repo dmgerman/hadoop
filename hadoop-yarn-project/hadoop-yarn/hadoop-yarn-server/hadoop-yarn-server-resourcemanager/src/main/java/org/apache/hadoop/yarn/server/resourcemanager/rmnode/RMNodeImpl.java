@@ -232,6 +232,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -2155,11 +2169,14 @@ expr_stmt|;
 break|break;
 block|}
 block|}
-DECL|method|updateMetricsForDeactivatedNode (NodeState finalState)
+DECL|method|updateMetricsForDeactivatedNode (NodeState initialState, NodeState finalState)
 specifier|private
 name|void
 name|updateMetricsForDeactivatedNode
 parameter_list|(
+name|NodeState
+name|initialState
+parameter_list|,
 name|NodeState
 name|finalState
 parameter_list|)
@@ -2172,11 +2189,30 @@ operator|.
 name|getMetrics
 argument_list|()
 decl_stmt|;
+switch|switch
+condition|(
+name|initialState
+condition|)
+block|{
+case|case
+name|RUNNING
+case|:
 name|metrics
 operator|.
 name|decrNumActiveNodes
 argument_list|()
 expr_stmt|;
+break|break;
+case|case
+name|UNHEALTHY
+case|:
+name|metrics
+operator|.
+name|decrNumUnhealthyNMs
+argument_list|()
+expr_stmt|;
+break|break;
+block|}
 switch|switch
 condition|(
 name|finalState
@@ -2702,13 +2738,18 @@ expr_stmt|;
 comment|// If the current state is NodeState.UNHEALTHY
 comment|// Then node is already been removed from the
 comment|// Scheduler
-if|if
-condition|(
-operator|!
+name|NodeState
+name|initialState
+init|=
 name|rmNode
 operator|.
 name|getState
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|initialState
 operator|.
 name|equals
 argument_list|(
@@ -2815,6 +2856,8 @@ name|rmNode
 operator|.
 name|updateMetricsForDeactivatedNode
 argument_list|(
+name|initialState
+argument_list|,
 name|finalState
 argument_list|)
 expr_stmt|;
@@ -2977,6 +3020,11 @@ name|rmNode
 operator|.
 name|updateMetricsForDeactivatedNode
 argument_list|(
+name|rmNode
+operator|.
+name|getState
+argument_list|()
+argument_list|,
 name|NodeState
 operator|.
 name|UNHEALTHY
@@ -3232,6 +3280,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Update DTRenewer in secure mode to keep these apps alive. Today this is
+comment|// needed for log-aggregation to finish long after the apps are gone.
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
 name|rmNode
 operator|.
 name|context
@@ -3247,6 +3305,7 @@ name|getKeepAliveAppIds
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|NodeState
 operator|.

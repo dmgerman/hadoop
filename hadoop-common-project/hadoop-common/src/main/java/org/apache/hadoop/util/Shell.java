@@ -2343,6 +2343,8 @@ name|ioe
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
 if|if
 condition|(
 operator|!
@@ -2356,6 +2358,26 @@ name|errThread
 operator|.
 name|interrupt
 argument_list|()
+expr_stmt|;
+name|errThread
+operator|.
+name|join
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted while joining errThread"
+argument_list|)
 expr_stmt|;
 block|}
 try|try
@@ -2418,6 +2440,25 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**     * Get the environment variable    */
+DECL|method|getEnvironment (String env)
+specifier|public
+name|String
+name|getEnvironment
+parameter_list|(
+name|String
+name|env
+parameter_list|)
+block|{
+return|return
+name|environment
+operator|.
+name|get
+argument_list|(
+name|env
+argument_list|)
+return|;
+block|}
 comment|/** get the current sub-process executing the given command     * @return process executing the command    */
 DECL|method|getProcess ()
 specifier|public

@@ -1170,6 +1170,8 @@ argument_list|,
 name|super
 operator|.
 name|dirsHandler
+argument_list|,
+name|this
 argument_list|)
 block|{
 annotation|@

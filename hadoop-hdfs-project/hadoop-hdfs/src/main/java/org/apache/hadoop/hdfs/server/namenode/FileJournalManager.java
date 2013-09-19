@@ -917,8 +917,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @param forReading whether or not the caller intends to read from the edit    *        logs    * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
-DECL|method|getRemoteEditLogs (long firstTxId, boolean forReading)
+comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @param forReading whether or not the caller intends to read from the edit    *        logs    * @param inProgressOk whether or not to include the in-progress edit log     *        segment           * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
+DECL|method|getRemoteEditLogs (long firstTxId, boolean forReading, boolean inProgressOk)
 specifier|public
 name|List
 argument_list|<
@@ -931,10 +931,27 @@ name|firstTxId
 parameter_list|,
 name|boolean
 name|forReading
+parameter_list|,
+name|boolean
+name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// make sure not reading in-progress edit log, i.e., if forReading is true,
+comment|// we should ignore the in-progress edit log.
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
+operator|(
+name|forReading
+operator|&&
+name|inProgressOk
+operator|)
+argument_list|)
+expr_stmt|;
 name|File
 name|currentDir
 init|=
@@ -985,12 +1002,19 @@ operator|.
 name|hasCorruptHeader
 argument_list|()
 operator|||
+operator|(
+operator|!
+name|inProgressOk
+operator|&&
 name|elf
 operator|.
 name|isInProgress
 argument_list|()
+operator|)
 condition|)
+block|{
 continue|continue;
+block|}
 if|if
 condition|(
 name|elf

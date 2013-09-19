@@ -678,6 +678,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|test
+operator|.
+name|PathUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -837,17 +851,13 @@ specifier|final
 name|File
 name|TEST_DIR
 init|=
-operator|new
-name|File
-argument_list|(
-name|System
+name|PathUtils
 operator|.
-name|getProperty
+name|getTestDir
 argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"build/test/data"
-argument_list|)
+name|TestEditLog
+operator|.
+name|class
 argument_list|)
 decl_stmt|;
 comment|/** An edits log with 3 edits from 0.20 - the result of    * a fresh namesystem followed by hadoop fs -touchz /myfile */
@@ -3131,6 +3141,16 @@ name|e
 parameter_list|)
 block|{
 comment|// expected
+name|assertNotNull
+argument_list|(
+literal|"Cause of exception should be ChecksumException"
+argument_list|,
+name|e
+operator|.
+name|getCause
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|assertEquals
 argument_list|(
 literal|"Cause of exception should be ChecksumException"

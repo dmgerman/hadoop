@@ -172,12 +172,6 @@ comment|/**      * $USER      * Final, non-modifiable.      */
 DECL|enumConstant|USER
 name|USER
 argument_list|(
-name|Shell
-operator|.
-name|WINDOWS
-condition|?
-literal|"USERNAME"
-else|:
 literal|"USER"
 argument_list|)
 block|,

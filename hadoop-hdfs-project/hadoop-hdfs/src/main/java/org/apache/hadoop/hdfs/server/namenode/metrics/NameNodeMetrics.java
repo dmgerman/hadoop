@@ -510,21 +510,21 @@ name|MutableQuantiles
 index|[]
 name|cacheReportQuantiles
 decl_stmt|;
-DECL|field|safeModeTime
 annotation|@
 name|Metric
 argument_list|(
-literal|"Duration in SafeMode at startup"
+literal|"Duration in SafeMode at startup in msec"
 argument_list|)
+DECL|field|safeModeTime
 name|MutableGaugeInt
 name|safeModeTime
 decl_stmt|;
-DECL|field|fsImageLoadTime
 annotation|@
 name|Metric
 argument_list|(
-literal|"Time loading FS Image at startup"
+literal|"Time loading FS Image at startup in msec"
 argument_list|)
+DECL|field|fsImageLoadTime
 name|MutableGaugeInt
 name|fsImageLoadTime
 decl_stmt|;

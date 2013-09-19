@@ -21,6 +21,22 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|ExitUtil
+operator|.
+name|terminate
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -165,22 +181,6 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|ExitUtil
-operator|.
-name|terminate
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -231,20 +231,6 @@ operator|.
 name|protocol
 operator|.
 name|RemoteEditLogManifest
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
 import|;
 end_import
 
@@ -1110,12 +1096,10 @@ argument_list|,
 name|allStreams
 argument_list|,
 name|fromTxId
-argument_list|,
-name|inProgressOk
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|chainAndMakeRedundantStreams ( Collection<EditLogInputStream> outStreams, PriorityQueue<EditLogInputStream> allStreams, long fromTxId, boolean inProgressOk)
+DECL|method|chainAndMakeRedundantStreams ( Collection<EditLogInputStream> outStreams, PriorityQueue<EditLogInputStream> allStreams, long fromTxId)
 specifier|public
 specifier|static
 name|void
@@ -1135,9 +1119,6 @@ name|allStreams
 parameter_list|,
 name|long
 name|fromTxId
-parameter_list|,
-name|boolean
-name|inProgressOk
 parameter_list|)
 block|{
 comment|// We want to group together all the streams that start on the same start
@@ -2519,6 +2500,8 @@ argument_list|(
 name|fromTxId
 argument_list|,
 name|forReading
+argument_list|,
+literal|false
 argument_list|)
 argument_list|)
 expr_stmt|;

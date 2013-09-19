@@ -22,9 +22,9 @@ end_package
 
 begin_import
 import|import
-name|junit
+name|org
 operator|.
-name|framework
+name|junit
 operator|.
 name|Assert
 import|;
@@ -32,11 +32,11 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
 name|junit
 operator|.
-name|framework
-operator|.
-name|TestCase
+name|Test
 import|;
 end_import
 
@@ -115,9 +115,9 @@ DECL|class|TestAuthenticatedURL
 specifier|public
 class|class
 name|TestAuthenticatedURL
-extends|extends
-name|TestCase
 block|{
+annotation|@
+name|Test
 DECL|method|testToken ()
 specifier|public
 name|void
@@ -137,6 +137,8 @@ operator|.
 name|Token
 argument_list|()
 decl_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|token
@@ -155,6 +157,8 @@ argument_list|(
 literal|"foo"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|token
@@ -163,6 +167,8 @@ name|isSet
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 literal|"foo"
@@ -195,6 +201,8 @@ operator|.
 name|Token
 argument_list|()
 decl_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|token1
@@ -208,6 +216,8 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|token1
@@ -236,6 +246,8 @@ argument_list|(
 literal|"foo"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNotSame
 argument_list|(
 name|token1
@@ -249,6 +261,8 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|token1
@@ -277,6 +291,8 @@ operator|.
 name|Token
 argument_list|()
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNotSame
 argument_list|(
 name|token1
@@ -290,6 +306,8 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|token1
@@ -320,6 +338,8 @@ argument_list|(
 literal|"foo"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|token1
@@ -333,6 +353,8 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertTrue
 argument_list|(
 name|token1
@@ -363,6 +385,8 @@ argument_list|(
 literal|"foo"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNotSame
 argument_list|(
 name|token1
@@ -376,6 +400,8 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|token1
@@ -406,6 +432,8 @@ argument_list|(
 literal|"bar"
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertNotSame
 argument_list|(
 name|token1
@@ -419,6 +447,8 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertFalse
 argument_list|(
 name|token1
@@ -430,6 +460,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testInjectToken ()
 specifier|public
 name|void
@@ -500,6 +532,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testExtractTokenOK ()
 specifier|public
 name|void
@@ -635,6 +669,8 @@ argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|assertEquals
 argument_list|(
 name|tokenStr
@@ -646,6 +682,8 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
 DECL|method|testExtractTokenFail ()
 specifier|public
 name|void
@@ -790,6 +828,8 @@ argument_list|,
 name|token
 argument_list|)
 expr_stmt|;
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
@@ -818,11 +858,15 @@ name|Exception
 name|ex
 parameter_list|)
 block|{
+name|Assert
+operator|.
 name|fail
 argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Test
 DECL|method|testConnectionConfigurator ()
 specifier|public
 name|void

@@ -198,6 +198,18 @@ name|GetApplicationsResponseProtoOrBuilder
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|protobuf
+operator|.
+name|TextFormat
+import|;
+end_import
+
 begin_class
 annotation|@
 name|Private
@@ -443,24 +455,12 @@ name|toString
 parameter_list|()
 block|{
 return|return
+name|TextFormat
+operator|.
+name|shortDebugString
+argument_list|(
 name|getProto
 argument_list|()
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|replaceAll
-argument_list|(
-literal|"\\n"
-argument_list|,
-literal|", "
-argument_list|)
-operator|.
-name|replaceAll
-argument_list|(
-literal|"\\s+"
-argument_list|,
-literal|" "
 argument_list|)
 return|;
 block|}

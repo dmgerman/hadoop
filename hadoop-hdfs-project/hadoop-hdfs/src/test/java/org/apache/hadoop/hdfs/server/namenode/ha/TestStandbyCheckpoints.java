@@ -753,7 +753,7 @@ argument_list|)
 operator|.
 name|setHttpPort
 argument_list|(
-literal|10001
+literal|10061
 argument_list|)
 argument_list|)
 operator|.
@@ -769,7 +769,7 @@ argument_list|)
 operator|.
 name|setHttpPort
 argument_list|(
-literal|10002
+literal|10062
 argument_list|)
 argument_list|)
 argument_list|)

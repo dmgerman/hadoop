@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.oncrpc
+DECL|package|org.apache.hadoop.http
 package|package
 name|org
 operator|.
@@ -12,144 +12,144 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|oncrpc
+name|http
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|spi
+operator|.
+name|LoggingEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|AppenderSkeleton
+import|;
+end_import
+
 begin_comment
-comment|/**  * AUTH_SYS as defined in RFC 1831  */
+comment|/**  * Log4j Appender adapter for HttpRequestLog  */
 end_comment
 
 begin_class
-DECL|class|RpcAuthSys
+DECL|class|HttpRequestLogAppender
 specifier|public
 class|class
-name|RpcAuthSys
+name|HttpRequestLogAppender
+extends|extends
+name|AppenderSkeleton
 block|{
-DECL|field|uid
+DECL|field|filename
 specifier|private
-specifier|final
-name|int
-name|uid
+name|String
+name|filename
 decl_stmt|;
-DECL|field|gid
+DECL|field|retainDays
 specifier|private
-specifier|final
 name|int
-name|gid
+name|retainDays
 decl_stmt|;
-DECL|method|RpcAuthSys (int uid, int gid)
+DECL|method|HttpRequestLogAppender ()
 specifier|public
-name|RpcAuthSys
+name|HttpRequestLogAppender
+parameter_list|()
+block|{   }
+DECL|method|setRetainDays (int retainDays)
+specifier|public
+name|void
+name|setRetainDays
 parameter_list|(
 name|int
-name|uid
-parameter_list|,
-name|int
-name|gid
+name|retainDays
 parameter_list|)
 block|{
 name|this
 operator|.
-name|uid
+name|retainDays
 operator|=
-name|uid
-expr_stmt|;
-name|this
-operator|.
-name|gid
-operator|=
-name|gid
+name|retainDays
 expr_stmt|;
 block|}
-DECL|method|from (byte[] credentials)
+DECL|method|getRetainDays ()
 specifier|public
-specifier|static
-name|RpcAuthSys
-name|from
+name|int
+name|getRetainDays
+parameter_list|()
+block|{
+return|return
+name|retainDays
+return|;
+block|}
+DECL|method|setFilename (String filename)
+specifier|public
+name|void
+name|setFilename
 parameter_list|(
-name|byte
-index|[]
-name|credentials
+name|String
+name|filename
 parameter_list|)
 block|{
-name|XDR
-name|sys
-init|=
-operator|new
-name|XDR
-argument_list|(
-name|credentials
-argument_list|)
-decl_stmt|;
-name|sys
+name|this
 operator|.
-name|skip
-argument_list|(
-literal|4
-argument_list|)
+name|filename
+operator|=
+name|filename
 expr_stmt|;
-comment|// Stamp
-name|sys
-operator|.
-name|skipVariableOpaque
-argument_list|()
-expr_stmt|;
-comment|// Machine name
-return|return
-operator|new
-name|RpcAuthSys
-argument_list|(
-name|sys
-operator|.
-name|readInt
-argument_list|()
-argument_list|,
-name|sys
-operator|.
-name|readInt
-argument_list|()
-argument_list|)
-return|;
 block|}
-DECL|method|getUid ()
+DECL|method|getFilename ()
 specifier|public
-name|int
-name|getUid
+name|String
+name|getFilename
 parameter_list|()
 block|{
 return|return
-name|uid
-return|;
-block|}
-DECL|method|getGid ()
-specifier|public
-name|int
-name|getGid
-parameter_list|()
-block|{
-return|return
-name|gid
+name|filename
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|toString ()
+DECL|method|append (LoggingEvent event)
 specifier|public
-name|String
-name|toString
+name|void
+name|append
+parameter_list|(
+name|LoggingEvent
+name|event
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|close ()
+specifier|public
+name|void
+name|close
+parameter_list|()
+block|{   }
+annotation|@
+name|Override
+DECL|method|requiresLayout ()
+specifier|public
+name|boolean
+name|requiresLayout
 parameter_list|()
 block|{
 return|return
-literal|"(AuthSys: uid="
-operator|+
-name|uid
-operator|+
-literal|" gid="
-operator|+
-name|gid
-operator|+
-literal|")"
+literal|false
 return|;
 block|}
 block|}

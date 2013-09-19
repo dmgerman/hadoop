@@ -46,6 +46,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|crypto
+operator|.
+name|SecretKey
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -329,15 +339,6 @@ name|String
 name|getWebProxyBase
 parameter_list|()
 function_decl|;
-comment|/**    * The token required by the clients to talk to the application attempt    * @return the token required by the clients to talk to the application attempt    */
-DECL|method|getClientToAMToken ()
-name|Token
-argument_list|<
-name|ClientToAMTokenIdentifier
-argument_list|>
-name|getClientToAMToken
-parameter_list|()
-function_decl|;
 comment|/**    * Diagnostics information for the application attempt.    * @return diagnostics information for the application attempt.    */
 DECL|method|getDiagnostics ()
 name|String
@@ -403,6 +404,24 @@ name|AMRMTokenIdentifier
 argument_list|>
 name|getAMRMToken
 parameter_list|()
+function_decl|;
+comment|/**    * The master key for client-to-AM tokens for this app attempt    * @return The master key for client-to-AM tokens for this app attempt    */
+DECL|method|getClientTokenMasterKey ()
+name|SecretKey
+name|getClientTokenMasterKey
+parameter_list|()
+function_decl|;
+comment|/**    * Create a token for authenticating a client connection to the app attempt    * @param clientName the name of the client requesting the token    * @return the token or null if the attempt is not running    */
+DECL|method|createClientToken (String clientName)
+name|Token
+argument_list|<
+name|ClientToAMTokenIdentifier
+argument_list|>
+name|createClientToken
+parameter_list|(
+name|String
+name|clientName
+parameter_list|)
 function_decl|;
 comment|/**    * Get application container and resource usage information.    * @return an ApplicationResourceUsageReport object.    */
 DECL|method|getApplicationResourceUsageReport ()

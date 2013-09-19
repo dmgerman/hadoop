@@ -1463,6 +1463,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|job
@@ -1657,6 +1659,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|completeJobTasks
@@ -1803,6 +1807,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|completeJobTasks
@@ -2018,6 +2024,29 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|AppContext
+name|mockContext
+init|=
+name|mock
+argument_list|(
+name|AppContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|mockContext
+operator|.
+name|isLastAMRetry
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 name|JobImpl
 name|job
 init|=
@@ -2028,6 +2057,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+name|mockContext
 argument_list|)
 decl_stmt|;
 name|JobId
@@ -2109,6 +2140,22 @@ operator|.
 name|REBOOT
 argument_list|)
 expr_stmt|;
+comment|// return the external state as RUNNING since otherwise JobClient will
+comment|// exit when it polls the AM for job state
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|JobState
+operator|.
+name|RUNNING
+argument_list|,
+name|job
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|dispatcher
 operator|.
 name|stop
@@ -2151,6 +2198,17 @@ operator|.
 name|MR_AM_STAGING_DIR
 argument_list|,
 name|stagingDir
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|MRJobConfig
+operator|.
+name|MR_AM_MAX_ATTEMPTS
+argument_list|,
+literal|2
 argument_list|)
 expr_stmt|;
 name|AsyncDispatcher
@@ -2214,6 +2272,29 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|AppContext
+name|mockContext
+init|=
+name|mock
+argument_list|(
+name|AppContext
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|mockContext
+operator|.
+name|isLastAMRetry
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|JobImpl
 name|job
 init|=
@@ -2224,6 +2305,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+name|mockContext
 argument_list|)
 decl_stmt|;
 name|completeJobTasks
@@ -2270,6 +2353,21 @@ argument_list|,
 name|JobStateInternal
 operator|.
 name|REBOOT
+argument_list|)
+expr_stmt|;
+comment|// return the external state as FAILED since this is last retry.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|JobState
+operator|.
+name|ERROR
+argument_list|,
+name|job
+operator|.
+name|getState
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|dispatcher
@@ -2412,6 +2510,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|JobId
@@ -2608,6 +2708,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|completeJobTasks
@@ -2769,6 +2871,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|//Fail one task. This should land the JobImpl in the FAIL_WAIT state
@@ -3026,6 +3130,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|1
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 comment|//Fail / finish all the tasks. This should land the JobImpl directly in the
@@ -3323,6 +3429,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|JobId
@@ -3544,6 +3652,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|JobId
@@ -5109,6 +5219,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 literal|2
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|JobId
@@ -5456,7 +5568,7 @@ return|return
 name|handler
 return|;
 block|}
-DECL|method|createStubbedJob (Configuration conf, Dispatcher dispatcher, int numSplits)
+DECL|method|createStubbedJob (Configuration conf, Dispatcher dispatcher, int numSplits, AppContext appContext)
 specifier|private
 specifier|static
 name|StubbedJob
@@ -5470,6 +5582,9 @@ name|dispatcher
 parameter_list|,
 name|int
 name|numSplits
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|JobID
@@ -5528,6 +5643,8 @@ argument_list|,
 literal|"somebody"
 argument_list|,
 name|numSplits
+argument_list|,
+name|appContext
 argument_list|)
 decl_stmt|;
 name|dispatcher
@@ -5600,7 +5717,7 @@ return|return
 name|job
 return|;
 block|}
-DECL|method|createRunningStubbedJob (Configuration conf, Dispatcher dispatcher, int numSplits)
+DECL|method|createRunningStubbedJob (Configuration conf, Dispatcher dispatcher, int numSplits, AppContext appContext)
 specifier|private
 specifier|static
 name|StubbedJob
@@ -5614,6 +5731,9 @@ name|dispatcher
 parameter_list|,
 name|int
 name|numSplits
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|StubbedJob
@@ -5626,6 +5746,8 @@ argument_list|,
 name|dispatcher
 argument_list|,
 name|numSplits
+argument_list|,
+name|appContext
 argument_list|)
 decl_stmt|;
 name|job
@@ -6282,7 +6404,7 @@ return|return
 name|localStateMachine
 return|;
 block|}
-DECL|method|StubbedJob (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, boolean newApiCommitter, String user, int numSplits)
+DECL|method|StubbedJob (JobId jobId, ApplicationAttemptId applicationAttemptId, Configuration conf, EventHandler eventHandler, boolean newApiCommitter, String user, int numSplits, AppContext appContext)
 specifier|public
 name|StubbedJob
 parameter_list|(
@@ -6306,6 +6428,9 @@ name|user
 parameter_list|,
 name|int
 name|numSplits
+parameter_list|,
+name|AppContext
+name|appContext
 parameter_list|)
 block|{
 name|super
@@ -6360,7 +6485,7 @@ argument_list|()
 argument_list|,
 literal|null
 argument_list|,
-literal|null
+name|appContext
 argument_list|,
 literal|null
 argument_list|,

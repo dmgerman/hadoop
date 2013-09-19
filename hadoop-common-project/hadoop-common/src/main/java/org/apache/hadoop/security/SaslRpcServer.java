@@ -658,7 +658,7 @@ name|split
 argument_list|(
 literal|"[/@]"
 argument_list|,
-literal|2
+literal|3
 argument_list|)
 decl_stmt|;
 name|protocol
@@ -750,11 +750,6 @@ case|case
 name|TOKEN
 case|:
 block|{
-name|secretManager
-operator|.
-name|checkAvailableForRead
-argument_list|()
-expr_stmt|;
 name|callback
 operator|=
 operator|new

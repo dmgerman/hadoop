@@ -489,30 +489,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|System
-operator|.
-name|getProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|)
-operator|==
-literal|null
-condition|)
-block|{
-comment|// to allow test to be
-comment|// run outside of Ant
-name|System
-operator|.
-name|setProperty
-argument_list|(
-literal|"test.build.data"
-argument_list|,
-literal|"build/test/data"
-argument_list|)
-expr_stmt|;
-block|}
 comment|// disable block scanner
 name|conf
 operator|.

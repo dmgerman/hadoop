@@ -3982,7 +3982,7 @@ literal|"assignContainers: node="
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 operator|+
 literal|" #applications="
@@ -5218,7 +5218,7 @@ name|priority
 argument_list|,
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -5834,7 +5834,7 @@ name|priority
 argument_list|,
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -6063,7 +6063,7 @@ literal|"assignContainers: node="
 operator|+
 name|node
 operator|.
-name|getHostName
+name|getNodeName
 argument_list|()
 operator|+
 literal|" application="
@@ -6109,6 +6109,57 @@ operator|.
 name|getAvailableResource
 argument_list|()
 decl_stmt|;
+name|Resource
+name|totalResource
+init|=
+name|node
+operator|.
+name|getTotalResource
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|Resources
+operator|.
+name|fitsIn
+argument_list|(
+name|capability
+argument_list|,
+name|totalResource
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Node : "
+operator|+
+name|node
+operator|.
+name|getNodeID
+argument_list|()
+operator|+
+literal|" does not have sufficient resource for request : "
+operator|+
+name|request
+operator|+
+literal|" node total capability : "
+operator|+
+name|node
+operator|.
+name|getTotalResource
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|Resources
+operator|.
+name|none
+argument_list|()
+return|;
+block|}
 assert|assert
 name|Resources
 operator|.

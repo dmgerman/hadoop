@@ -662,13 +662,13 @@ argument_list|)
 expr_stmt|;
 specifier|final
 name|JobConf
-name|defaultConf
+name|job
 init|=
 operator|new
 name|JobConf
 argument_list|()
 decl_stmt|;
-name|defaultConf
+name|job
 operator|.
 name|addResource
 argument_list|(
@@ -681,7 +681,7 @@ name|UserGroupInformation
 operator|.
 name|setConfiguration
 argument_list|(
-name|defaultConf
+name|job
 argument_list|)
 expr_stmt|;
 name|String
@@ -918,7 +918,7 @@ name|versionID
 argument_list|,
 name|address
 argument_list|,
-name|defaultConf
+name|job
 argument_list|)
 return|;
 block|}
@@ -1062,19 +1062,17 @@ name|getTaskID
 argument_list|()
 expr_stmt|;
 comment|// Create the job-conf and set credentials
-specifier|final
-name|JobConf
-name|job
-init|=
 name|configureTask
 argument_list|(
+name|job
+argument_list|,
 name|task
 argument_list|,
 name|credentials
 argument_list|,
 name|jt
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 comment|// log the system properties
 name|String
 name|systemPropsToLog
@@ -1686,12 +1684,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|configureTask (Task task, Credentials credentials, Token<JobTokenIdentifier> jt)
+DECL|method|configureTask (JobConf job, Task task, Credentials credentials, Token<JobTokenIdentifier> jt)
 specifier|private
 specifier|static
-name|JobConf
+name|void
 name|configureTask
 parameter_list|(
+name|JobConf
+name|job
+parameter_list|,
 name|Task
 name|task
 parameter_list|,
@@ -1707,18 +1708,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|JobConf
-name|job
-init|=
-operator|new
-name|JobConf
-argument_list|(
-name|MRJobConfig
-operator|.
-name|JOB_CONF_FILE
-argument_list|)
-decl_stmt|;
 name|job
 operator|.
 name|setCredentials
@@ -1923,9 +1912,6 @@ argument_list|(
 name|job
 argument_list|)
 expr_stmt|;
-return|return
-name|job
-return|;
 block|}
 comment|/**    * Set up the DistributedCache related configs to make    * {@link DistributedCache#getLocalCacheFiles(Configuration)}    * and    * {@link DistributedCache#getLocalCacheArchives(Configuration)}    * working.    * @param job    * @throws IOException    */
 DECL|method|setupDistributedCacheConfig (final JobConf job)

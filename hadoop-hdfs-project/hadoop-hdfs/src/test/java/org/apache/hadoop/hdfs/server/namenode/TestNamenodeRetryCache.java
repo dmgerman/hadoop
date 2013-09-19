@@ -606,14 +606,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|namesystem
+name|cluster
 operator|.
-name|delete
-argument_list|(
-literal|"/"
-argument_list|,
-literal|true
-argument_list|)
+name|shutdown
+argument_list|()
 expr_stmt|;
 block|}
 DECL|method|incrementCallId ()
