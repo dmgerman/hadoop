@@ -1532,7 +1532,7 @@ name|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES
 init|=
 literal|3
 decl_stmt|;
-comment|/**    * The number of client retries to the RM/HS/AM before throwing exception.    */
+comment|/**    * The number of client retries to the RM/HS before throwing exception.    */
 DECL|field|MR_CLIENT_MAX_RETRIES
 specifier|public
 specifier|static
