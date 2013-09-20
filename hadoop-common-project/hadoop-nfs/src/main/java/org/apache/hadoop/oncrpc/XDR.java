@@ -147,7 +147,7 @@ name|ByteBuffer
 name|buf
 decl_stmt|;
 DECL|enum|State
-specifier|private
+specifier|public
 enum|enum
 name|State
 block|{
@@ -199,7 +199,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|XDR (ByteBuffer buf, State state)
-specifier|private
+specifier|public
 name|XDR
 parameter_list|(
 name|ByteBuffer
