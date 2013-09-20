@@ -3145,7 +3145,7 @@ name|existings
 argument_list|)
 argument_list|)
 operator|.
-name|addAllExistingStorageIDs
+name|addAllExistingStorageUuids
 argument_list|(
 name|Arrays
 operator|.

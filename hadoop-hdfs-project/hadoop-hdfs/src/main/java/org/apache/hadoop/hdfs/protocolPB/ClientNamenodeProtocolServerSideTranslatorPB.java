@@ -3870,7 +3870,7 @@ name|existingStorageIDsList
 init|=
 name|req
 operator|.
-name|getExistingStorageIDsList
+name|getExistingStorageUuidsList
 argument_list|()
 decl_stmt|;
 name|List

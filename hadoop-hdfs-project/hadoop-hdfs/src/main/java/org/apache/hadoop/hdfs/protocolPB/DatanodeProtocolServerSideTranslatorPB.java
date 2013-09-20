@@ -932,7 +932,7 @@ name|StorageReport
 argument_list|(
 name|p
 operator|.
-name|getStorageID
+name|getStorageUuid
 argument_list|()
 argument_list|,
 name|p
@@ -1448,7 +1448,7 @@ name|StorageReceivedDeletedBlocks
 argument_list|(
 name|sBlock
 operator|.
-name|getStorageID
+name|getStorageUuid
 argument_list|()
 argument_list|,
 name|rdBlocks
