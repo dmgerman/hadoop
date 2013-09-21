@@ -902,20 +902,6 @@ name|hadoop
 operator|.
 name|util
 operator|.
-name|Fallible
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
 name|Progressable
 import|;
 end_import
@@ -7594,23 +7580,14 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Add some PathBasedCache directives.    *     * @param directives A list of PathBasedCache directives to be added.    * @return A Fallible list, where each element is either a successfully addded    *         PathBasedCache entry, or an IOException describing why the directive    *         could not be added.    */
+comment|/**    * Add a new PathBasedCacheDirective.    *     * @param directive A PathBasedCacheDirectives to add    * @return PathBasedCacheDescriptor associated with the added directive    * @throws IOException if the directive could not be added    */
+DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective directive)
 specifier|public
-name|List
-argument_list|<
-name|Fallible
-argument_list|<
 name|PathBasedCacheDescriptor
-argument_list|>
-argument_list|>
-DECL|method|addPathBasedCacheDirective (List<PathBasedCacheDirective> directives)
 name|addPathBasedCacheDirective
 parameter_list|(
-name|List
-argument_list|<
 name|PathBasedCacheDirective
-argument_list|>
-name|directives
+name|directive
 parameter_list|)
 throws|throws
 name|IOException
@@ -7618,45 +7595,31 @@ block|{
 return|return
 name|dfs
 operator|.
-name|namenode
-operator|.
-name|addPathBasedCacheDirectives
+name|addPathBasedCacheDirective
 argument_list|(
-name|directives
+name|directive
 argument_list|)
 return|;
 block|}
-comment|/**    * Remove some PathBasedCache entries.    *     * @param ids A list of all the entry IDs to be removed.    * @return A Fallible list where each element is either a successfully removed    *         ID, or an IOException describing why the ID could not be removed.    */
+comment|/**    * Remove a PathBasedCacheDescriptor.    *     * @param descriptor PathBasedCacheDescriptor to remove    * @throws IOException if the descriptor could not be removed    */
+DECL|method|removePathBasedCacheDescriptor (PathBasedCacheDescriptor descriptor)
 specifier|public
-name|List
-argument_list|<
-name|Fallible
-argument_list|<
-name|Long
-argument_list|>
-argument_list|>
-DECL|method|removePathBasedCacheDescriptors (List<Long> ids)
-name|removePathBasedCacheDescriptors
+name|void
+name|removePathBasedCacheDescriptor
 parameter_list|(
-name|List
-argument_list|<
-name|Long
-argument_list|>
-name|ids
+name|PathBasedCacheDescriptor
+name|descriptor
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-return|return
 name|dfs
 operator|.
-name|namenode
-operator|.
-name|removePathBasedCacheDescriptors
+name|removePathBasedCacheDescriptor
 argument_list|(
-name|ids
+name|descriptor
 argument_list|)
-return|;
+expr_stmt|;
 block|}
 comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheDescriptor objects.    */
 DECL|method|listPathBasedCacheDescriptors ( String pool, String path)
@@ -7679,19 +7642,15 @@ block|{
 return|return
 name|dfs
 operator|.
-name|namenode
-operator|.
 name|listPathBasedCacheDescriptors
 argument_list|(
-literal|0
-argument_list|,
 name|pool
 argument_list|,
 name|path
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a cache pool.    *    * @param req    *          The request to add a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+comment|/**    * Add a cache pool.    *    * @param info    *          The request to add a cache pool.    * @throws IOException     *          If the request could not be completed.    */
 DECL|method|addCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -7703,9 +7662,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|dfs
+name|CachePoolInfo
 operator|.
-name|namenode
+name|validate
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+name|dfs
 operator|.
 name|addCachePool
 argument_list|(
@@ -7713,7 +7677,7 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify an existing cache pool.    *    * @param req    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+comment|/**    * Modify an existing cache pool.    *    * @param info    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
 DECL|method|modifyCachePool (CachePoolInfo info)
 specifier|public
 name|void
@@ -7725,9 +7689,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|dfs
+name|CachePoolInfo
 operator|.
-name|namenode
+name|validate
+argument_list|(
+name|info
+argument_list|)
+expr_stmt|;
+name|dfs
 operator|.
 name|modifyCachePool
 argument_list|(
@@ -7735,25 +7704,30 @@ name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove a cache pool.    *    * @param cachePoolName    *          Name of the cache pool to remove.    * @throws IOException     *          if the cache pool did not exist, or could not be removed.    */
-DECL|method|removeCachePool (String name)
+comment|/**    * Remove a cache pool.    *    * @param poolName    *          Name of the cache pool to remove.    * @throws IOException     *          if the cache pool did not exist, or could not be removed.    */
+DECL|method|removeCachePool (String poolName)
 specifier|public
 name|void
 name|removeCachePool
 parameter_list|(
 name|String
-name|name
+name|poolName
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|dfs
+name|CachePoolInfo
 operator|.
-name|namenode
+name|validateName
+argument_list|(
+name|poolName
+argument_list|)
+expr_stmt|;
+name|dfs
 operator|.
 name|removeCachePool
 argument_list|(
-name|name
+name|poolName
 argument_list|)
 expr_stmt|;
 block|}
@@ -7772,12 +7746,8 @@ block|{
 return|return
 name|dfs
 operator|.
-name|namenode
-operator|.
 name|listCachePools
-argument_list|(
-literal|""
-argument_list|)
+argument_list|()
 return|;
 block|}
 block|}

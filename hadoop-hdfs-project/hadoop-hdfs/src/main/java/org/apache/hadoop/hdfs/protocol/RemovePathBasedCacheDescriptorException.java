@@ -28,20 +28,6 @@ name|IOException
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
 begin_comment
 comment|/**  * An exception which occurred when trying to remove a PathBasedCache entry.  */
 end_comment
@@ -64,21 +50,12 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|field|entryId
-specifier|private
-specifier|final
-name|long
-name|entryId
-decl_stmt|;
-DECL|method|RemovePathBasedCacheDescriptorException (String description, long entryId)
+DECL|method|RemovePathBasedCacheDescriptorException (String description)
 specifier|public
 name|RemovePathBasedCacheDescriptorException
 parameter_list|(
 name|String
 name|description
-parameter_list|,
-name|long
-name|entryId
 parameter_list|)
 block|{
 name|super
@@ -86,24 +63,6 @@ argument_list|(
 name|description
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|entryId
-operator|=
-name|entryId
-expr_stmt|;
-block|}
-DECL|method|getEntryId ()
-specifier|public
-name|long
-name|getEntryId
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|entryId
-return|;
 block|}
 DECL|class|InvalidIdException
 specifier|public
@@ -123,6 +82,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|InvalidIdException (String msg)
+specifier|public
+name|InvalidIdException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|InvalidIdException (long entryId)
 specifier|public
 name|InvalidIdException
@@ -131,12 +104,10 @@ name|long
 name|entryId
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"invalid PathBasedCacheDescriptor id "
 operator|+
-name|entryId
-argument_list|,
 name|entryId
 argument_list|)
 expr_stmt|;
@@ -160,6 +131,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|RemovePermissionDeniedException (String msg)
+specifier|public
+name|RemovePermissionDeniedException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|RemovePermissionDeniedException (long entryId)
 specifier|public
 name|RemovePermissionDeniedException
@@ -168,14 +153,12 @@ name|long
 name|entryId
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"permission denied when trying to remove "
 operator|+
 literal|"PathBasedCacheDescriptor id "
 operator|+
-name|entryId
-argument_list|,
 name|entryId
 argument_list|)
 expr_stmt|;
@@ -199,6 +182,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|NoSuchIdException (String msg)
+specifier|public
+name|NoSuchIdException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|NoSuchIdException (long entryId)
 specifier|public
 name|NoSuchIdException
@@ -207,12 +204,10 @@ name|long
 name|entryId
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"there is no PathBasedCacheDescriptor with id "
 operator|+
-name|entryId
-argument_list|,
 name|entryId
 argument_list|)
 expr_stmt|;
@@ -236,6 +231,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|UnexpectedRemovePathBasedCacheDescriptorException (String msg)
+specifier|public
+name|UnexpectedRemovePathBasedCacheDescriptorException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|UnexpectedRemovePathBasedCacheDescriptorException (long id)
 specifier|public
 name|UnexpectedRemovePathBasedCacheDescriptorException
@@ -244,14 +253,12 @@ name|long
 name|id
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"encountered an unexpected error when trying to "
 operator|+
 literal|"remove PathBasedCacheDescriptor with id "
 operator|+
-name|id
-argument_list|,
 name|id
 argument_list|)
 expr_stmt|;

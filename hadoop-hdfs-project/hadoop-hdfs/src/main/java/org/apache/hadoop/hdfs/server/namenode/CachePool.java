@@ -90,22 +90,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|CachePoolInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|fs
 operator|.
 name|permission
@@ -127,6 +111,22 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CachePoolInfo
 import|;
 end_import
 
@@ -652,38 +652,6 @@ operator|.
 name|toString
 argument_list|()
 return|;
-block|}
-DECL|method|validateName (String name)
-specifier|public
-specifier|static
-name|void
-name|validateName
-parameter_list|(
-name|String
-name|name
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|name
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|// Empty pool names are not allowed because they would be highly
-comment|// confusing.  They would also break the ability to list all pools
-comment|// by starting with prevKey = ""
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"invalid empty cache pool name"
-argument_list|)
-throw|;
-block|}
 block|}
 block|}
 end_class

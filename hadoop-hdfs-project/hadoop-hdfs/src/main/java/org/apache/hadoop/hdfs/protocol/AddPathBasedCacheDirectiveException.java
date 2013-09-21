@@ -50,21 +50,12 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|field|directive
-specifier|private
-specifier|final
-name|PathBasedCacheDirective
-name|directive
-decl_stmt|;
-DECL|method|AddPathBasedCacheDirectiveException (String description, PathBasedCacheDirective directive)
+DECL|method|AddPathBasedCacheDirectiveException (String description)
 specifier|public
 name|AddPathBasedCacheDirectiveException
 parameter_list|(
 name|String
 name|description
-parameter_list|,
-name|PathBasedCacheDirective
-name|directive
 parameter_list|)
 block|{
 name|super
@@ -72,22 +63,6 @@ argument_list|(
 name|description
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|directive
-operator|=
-name|directive
-expr_stmt|;
-block|}
-DECL|method|getDirective ()
-specifier|public
-name|PathBasedCacheDirective
-name|getDirective
-parameter_list|()
-block|{
-return|return
-name|directive
-return|;
 block|}
 DECL|class|EmptyPathError
 specifier|public
@@ -107,6 +82,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|EmptyPathError (String msg)
+specifier|public
+name|EmptyPathError
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|EmptyPathError (PathBasedCacheDirective directive)
 specifier|public
 name|EmptyPathError
@@ -115,12 +104,10 @@ name|PathBasedCacheDirective
 name|directive
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"empty path in directive "
 operator|+
-name|directive
-argument_list|,
 name|directive
 argument_list|)
 expr_stmt|;
@@ -143,6 +130,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|InvalidPathNameError (String msg)
+specifier|public
+name|InvalidPathNameError
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|InvalidPathNameError (PathBasedCacheDirective directive)
 specifier|public
 name|InvalidPathNameError
@@ -151,16 +152,14 @@ name|PathBasedCacheDirective
 name|directive
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
-literal|"can't handle non-absolute path name "
+literal|"can't handle invalid path name "
 operator|+
 name|directive
 operator|.
 name|getPath
 argument_list|()
-argument_list|,
-name|directive
 argument_list|)
 expr_stmt|;
 block|}
@@ -182,6 +181,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|InvalidPoolNameError (String msg)
+specifier|public
+name|InvalidPoolNameError
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|InvalidPoolNameError (PathBasedCacheDirective directive)
 specifier|public
 name|InvalidPoolNameError
@@ -190,7 +203,7 @@ name|PathBasedCacheDirective
 name|directive
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"invalid pool name '"
 operator|+
@@ -200,8 +213,6 @@ name|getPool
 argument_list|()
 operator|+
 literal|"'"
-argument_list|,
-name|directive
 argument_list|)
 expr_stmt|;
 block|}
@@ -223,6 +234,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|PoolWritePermissionDeniedError (String msg)
+specifier|public
+name|PoolWritePermissionDeniedError
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|PoolWritePermissionDeniedError (PathBasedCacheDirective directive)
 specifier|public
 name|PoolWritePermissionDeniedError
@@ -231,7 +256,7 @@ name|PathBasedCacheDirective
 name|directive
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"write permission denied for pool '"
 operator|+
@@ -241,8 +266,6 @@ name|getPool
 argument_list|()
 operator|+
 literal|"'"
-argument_list|,
-name|directive
 argument_list|)
 expr_stmt|;
 block|}
@@ -264,6 +287,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|PathAlreadyExistsInPoolError (String msg)
+specifier|public
+name|PathAlreadyExistsInPoolError
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|PathAlreadyExistsInPoolError (PathBasedCacheDirective directive)
 specifier|public
 name|PathAlreadyExistsInPoolError
@@ -272,7 +309,7 @@ name|PathBasedCacheDirective
 name|directive
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"path "
 operator|+
@@ -287,8 +324,6 @@ name|directive
 operator|.
 name|getPool
 argument_list|()
-argument_list|,
-name|directive
 argument_list|)
 expr_stmt|;
 block|}
@@ -310,6 +345,20 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|UnexpectedAddPathBasedCacheDirectiveException (String msg)
+specifier|public
+name|UnexpectedAddPathBasedCacheDirectiveException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|UnexpectedAddPathBasedCacheDirectiveException ( PathBasedCacheDirective directive)
 specifier|public
 name|UnexpectedAddPathBasedCacheDirectiveException
@@ -318,14 +367,12 @@ name|PathBasedCacheDirective
 name|directive
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
 literal|"encountered an unexpected error when trying to "
 operator|+
 literal|"add PathBasedCache directive "
 operator|+
-name|directive
-argument_list|,
 name|directive
 argument_list|)
 expr_stmt|;
@@ -333,10 +380,6 @@ block|}
 block|}
 block|}
 end_class
-
-begin_empty_stmt
-empty_stmt|;
-end_empty_stmt
 
 end_unit
 

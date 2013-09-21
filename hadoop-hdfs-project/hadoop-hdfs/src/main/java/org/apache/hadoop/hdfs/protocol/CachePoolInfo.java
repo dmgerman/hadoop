@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|annotation
@@ -509,6 +519,77 @@ operator|.
 name|hashCode
 argument_list|()
 return|;
+block|}
+DECL|method|validate (CachePoolInfo info)
+specifier|public
+specifier|static
+name|void
+name|validate
+parameter_list|(
+name|CachePoolInfo
+name|info
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|info
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"CachePoolInfo is null"
+argument_list|)
+throw|;
+block|}
+name|validateName
+argument_list|(
+name|info
+operator|.
+name|poolName
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|validateName (String poolName)
+specifier|public
+specifier|static
+name|void
+name|validateName
+parameter_list|(
+name|String
+name|poolName
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|poolName
+operator|==
+literal|null
+operator|||
+name|poolName
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// Empty pool names are not allowed because they would be highly
+comment|// confusing.  They would also break the ability to list all pools
+comment|// by starting with prevKey = ""
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"invalid empty cache pool name"
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 end_class
