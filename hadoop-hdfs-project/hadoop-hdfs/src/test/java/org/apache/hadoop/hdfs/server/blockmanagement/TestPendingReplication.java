@@ -1268,7 +1268,7 @@ name|StorageReceivedDeletedBlocks
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 operator|new
@@ -1395,7 +1395,7 @@ name|StorageReceivedDeletedBlocks
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 operator|new

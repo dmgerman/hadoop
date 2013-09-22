@@ -70,16 +70,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Collection
@@ -491,20 +481,6 @@ operator|.
 name|ipc
 operator|.
 name|RemoteException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
 import|;
 end_import
 
@@ -1360,7 +1336,7 @@ name|StorageReceivedDeletedBlocks
 argument_list|(
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|receivedAndDeletedBlockArray
@@ -1765,7 +1741,7 @@ name|DatanodeStorage
 argument_list|(
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -1944,7 +1920,7 @@ name|StorageReport
 argument_list|(
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 literal|false

@@ -5193,7 +5193,7 @@ name|remove
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -7250,7 +7250,7 @@ name|get
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -9108,7 +9108,7 @@ name|contains
 argument_list|(
 name|dn
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|block
@@ -11357,7 +11357,7 @@ name|get
 argument_list|(
 name|cur
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -11732,7 +11732,7 @@ name|get
 argument_list|(
 name|dn
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -11758,7 +11758,7 @@ name|put
 argument_list|(
 name|dn
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|excessBlocks
@@ -11946,7 +11946,7 @@ name|get
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -12008,7 +12008,7 @@ name|remove
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12862,7 +12862,7 @@ name|get
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;

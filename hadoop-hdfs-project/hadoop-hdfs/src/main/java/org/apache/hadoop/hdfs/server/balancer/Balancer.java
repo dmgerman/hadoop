@@ -2516,7 +2516,7 @@ block|{
 return|return
 name|datanode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 return|;
 block|}
@@ -3897,7 +3897,7 @@ name|put
 argument_list|(
 name|datanode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|datanodeS

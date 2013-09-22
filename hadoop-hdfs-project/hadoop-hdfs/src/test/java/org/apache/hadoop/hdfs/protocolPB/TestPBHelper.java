@@ -1417,12 +1417,12 @@ name|assertEquals
 argument_list|(
 name|dn
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|dn2
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;

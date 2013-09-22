@@ -787,38 +787,36 @@ block|{
 comment|// If we haven't yet connected to our NN, we don't yet know our
 comment|// own block pool ID.
 comment|// If _none_ of the block pools have connected yet, we don't even
-comment|// know the storage ID of this DN.
+comment|// know the DatanodeID ID of this DN.
 name|String
-name|storageId
+name|datanodeUuid
 init|=
 name|dn
 operator|.
-name|getStorageId
+name|getDatanodeUuid
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|storageId
+name|datanodeUuid
 operator|==
 literal|null
 operator|||
-literal|""
+name|datanodeUuid
 operator|.
-name|equals
-argument_list|(
-name|storageId
-argument_list|)
+name|isEmpty
+argument_list|()
 condition|)
 block|{
-name|storageId
+name|datanodeUuid
 operator|=
-literal|"unknown"
+literal|"unassigned"
 expr_stmt|;
 block|}
 return|return
-literal|"Block pool<registering> (storage id "
+literal|"Block pool<registering> (Datanode Uuid "
 operator|+
-name|storageId
+name|datanodeUuid
 operator|+
 literal|")"
 return|;
@@ -831,11 +829,11 @@ operator|+
 name|getBlockPoolId
 argument_list|()
 operator|+
-literal|" (storage id "
+literal|" (Datanode Uuid "
 operator|+
 name|dn
 operator|.
-name|getStorageId
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|")"

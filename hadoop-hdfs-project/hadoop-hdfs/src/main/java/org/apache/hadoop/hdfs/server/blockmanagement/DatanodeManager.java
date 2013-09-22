@@ -2339,14 +2339,14 @@ return|return
 name|node
 return|;
 block|}
-comment|/** Get a datanode descriptor given corresponding storageID */
-DECL|method|getDatanode (final String storageID)
+comment|/** Get a datanode descriptor given corresponding DatanodeUUID */
+DECL|method|getDatanode (final String datanodeUuid)
 name|DatanodeDescriptor
 name|getDatanode
 parameter_list|(
 specifier|final
 name|String
-name|storageID
+name|datanodeUuid
 parameter_list|)
 block|{
 return|return
@@ -2354,7 +2354,7 @@ name|datanodeMap
 operator|.
 name|get
 argument_list|(
-name|storageID
+name|datanodeUuid
 argument_list|)
 return|;
 block|}
@@ -2378,7 +2378,7 @@ name|getDatanode
 argument_list|(
 name|nodeID
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -2867,7 +2867,7 @@ name|put
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|node
@@ -2941,7 +2941,7 @@ name|key
 init|=
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 decl_stmt|;
 synchronized|synchronized
@@ -3856,7 +3856,7 @@ literal|" storage "
 operator|+
 name|nodeReg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3869,7 +3869,7 @@ name|get
 argument_list|(
 name|nodeReg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3993,7 +3993,7 @@ literal|" with the same storageID "
 operator|+
 name|nodeReg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4135,7 +4135,7 @@ name|equals
 argument_list|(
 name|nodeReg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 condition|)
@@ -4144,7 +4144,7 @@ comment|// this data storage has never been registered
 comment|// it is either empty or was created by pre-storageID version of DFS
 name|nodeReg
 operator|.
-name|setStorageID
+name|setDatanodeUuid
 argument_list|(
 name|DatanodeStorage
 operator|.
@@ -4170,11 +4170,11 @@ name|debug
 argument_list|(
 literal|"BLOCK* NameSystem.registerDatanode: "
 operator|+
-literal|"new storageID "
+literal|"new Datanode UUID "
 operator|+
 name|nodeReg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|" assigned."

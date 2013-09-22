@@ -1285,7 +1285,7 @@ argument_list|(
 name|mockDnReg
 argument_list|)
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 expr_stmt|;
 name|doReturn
@@ -1551,7 +1551,7 @@ argument_list|(
 name|mockDnReg
 argument_list|)
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 expr_stmt|;
 name|doReturn

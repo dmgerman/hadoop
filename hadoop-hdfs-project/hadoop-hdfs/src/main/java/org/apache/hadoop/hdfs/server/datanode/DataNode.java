@@ -4787,7 +4787,7 @@ argument_list|()
 argument_list|,
 name|hostName
 argument_list|,
-name|getStorageId
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|getXferPort
@@ -4867,7 +4867,7 @@ name|setStorageID
 argument_list|(
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4884,7 +4884,7 @@ literal|"New storage id "
 operator|+
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|" is assigned to data-node "
@@ -4906,7 +4906,7 @@ name|equals
 argument_list|(
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 condition|)
@@ -4919,7 +4919,7 @@ literal|"Inconsistent storage IDs. Name-node returned "
 operator|+
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|". Expecting "
@@ -5500,9 +5500,9 @@ name|getPort
 argument_list|()
 return|;
 block|}
-DECL|method|getStorageId ()
+DECL|method|getDatanodeUuid ()
 name|String
-name|getStorageId
+name|getDatanodeUuid
 parameter_list|()
 block|{
 return|return
@@ -5529,7 +5529,7 @@ name|getXferPort
 argument_list|()
 return|;
 block|}
-comment|/**    * NB: The datanode can perform data transfer on the streaming    * address however clients are given the IPC IP address for data    * transfer, and that may be a different address.    *     * @return socket address for data transfer    */
+comment|/**    * NB: The datanode can perform data transfer on the streaming    * address however clients are given the IPC IP address for data    * transfer, and that may be a   different address.    *     * @return socket address for data transfer    */
 DECL|method|getXferAddress ()
 specifier|public
 name|InetSocketAddress
@@ -5835,7 +5835,7 @@ argument_list|)
 expr_stmt|;
 name|dnId
 operator|.
-name|setStorageID
+name|setDatanodeUuid
 argument_list|(
 name|DatanodeStorage
 operator|.
@@ -9246,7 +9246,7 @@ argument_list|()
 operator|+
 literal|"', storageID='"
 operator|+
-name|getStorageId
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|"', xmitsInProgress="

@@ -987,7 +987,7 @@ name|lastDNid
 init|=
 name|dnReg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 decl_stmt|;
 specifier|final

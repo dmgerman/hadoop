@@ -46,6 +46,16 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|UUID
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class represents the primary identifier for a Datanode.  * Datanodes are identified by how they can be contacted (hostname  * and ports) and their storage ID, a unique number that associates  * the Datanodes blocks with a particular Datanode.  *  * {@link DatanodeInfo#getName()} should be used to get the network  * location (for topology) of a datanode, instead of using  * {@link DatanodeID#getXferAddr()} here. Helpers are defined below  * for each context in which a DatanodeID is used.  */
 end_comment
@@ -97,12 +107,6 @@ name|String
 name|peerHostName
 decl_stmt|;
 comment|// hostname from the actual connection
-DECL|field|storageID
-specifier|private
-name|String
-name|storageID
-decl_stmt|;
-comment|// unique per cluster storageID
 DECL|field|xferPort
 specifier|private
 name|int
@@ -121,6 +125,16 @@ name|int
 name|ipcPort
 decl_stmt|;
 comment|// IPC server port
+comment|// UUID identifying a given datanode. For upgraded Datanodes this is the
+comment|// same as the StorageID that was previously used by this Datanode. For
+comment|// newly formatted Datanodes it is a UUID.
+DECL|field|datanodeUuid
+specifier|private
+name|String
+name|datanodeUuid
+init|=
+literal|null
+decl_stmt|;
 DECL|method|DatanodeID (DatanodeID from)
 specifier|public
 name|DatanodeID
@@ -143,7 +157,7 @@ argument_list|()
 argument_list|,
 name|from
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|from
@@ -172,8 +186,8 @@ name|getPeerHostName
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Create a DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param storageID data storage ID    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
-DECL|method|DatanodeID (String ipAddr, String hostName, String storageID, int xferPort, int infoPort, int ipcPort)
+comment|/**    * Create a DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param datanodeUuid data node ID, UUID for new Datanodes, may be the    *                     storage ID for pre-UUID datanodes. NULL if unknown    *                     e.g. if this is a new datanode. A new UUID will    *                     be assigned by the namenode.    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
+DECL|method|DatanodeID (String ipAddr, String hostName, String datanodeUuid, int xferPort, int infoPort, int ipcPort)
 specifier|public
 name|DatanodeID
 parameter_list|(
@@ -184,7 +198,7 @@ name|String
 name|hostName
 parameter_list|,
 name|String
-name|storageID
+name|datanodeUuid
 parameter_list|,
 name|int
 name|xferPort
@@ -210,9 +224,12 @@ name|hostName
 expr_stmt|;
 name|this
 operator|.
-name|storageID
+name|datanodeUuid
 operator|=
-name|storageID
+name|checkDatanodeUuid
+argument_list|(
+name|datanodeUuid
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -265,21 +282,84 @@ operator|=
 name|peerHostName
 expr_stmt|;
 block|}
-DECL|method|setStorageID (String storageID)
+comment|/**    * @return data node ID.    */
+DECL|method|getDatanodeUuid ()
+specifier|public
+name|String
+name|getDatanodeUuid
+parameter_list|()
+block|{
+return|return
+name|datanodeUuid
+return|;
+block|}
+DECL|method|setDatanodeUuid (String datanodeUuid)
 specifier|public
 name|void
-name|setStorageID
+name|setDatanodeUuid
 parameter_list|(
 name|String
-name|storageID
+name|datanodeUuid
 parameter_list|)
 block|{
 name|this
 operator|.
-name|storageID
+name|datanodeUuid
 operator|=
-name|storageID
+name|datanodeUuid
 expr_stmt|;
+block|}
+DECL|method|checkDatanodeUuid (String uuid)
+specifier|private
+name|String
+name|checkDatanodeUuid
+parameter_list|(
+name|String
+name|uuid
+parameter_list|)
+block|{
+if|if
+condition|(
+name|uuid
+operator|==
+literal|null
+operator|||
+name|uuid
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
+else|else
+block|{
+return|return
+name|uuid
+return|;
+block|}
+block|}
+DECL|method|generateNewDatanodeUuid ()
+specifier|public
+name|String
+name|generateNewDatanodeUuid
+parameter_list|()
+block|{
+name|datanodeUuid
+operator|=
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
+return|return
+name|datanodeUuid
+return|;
 block|}
 comment|/**    * @return ipAddr;    */
 DECL|method|getIpAddr ()
@@ -429,17 +509,6 @@ name|getIpcAddr
 argument_list|()
 return|;
 block|}
-comment|/**    * @return data storage ID.    */
-DECL|method|getStorageID ()
-specifier|public
-name|String
-name|getStorageID
-parameter_list|()
-block|{
-return|return
-name|storageID
-return|;
-block|}
 comment|/**    * @return xferPort (the port for data streaming)    */
 DECL|method|getXferPort ()
 specifier|public
@@ -527,7 +596,7 @@ name|getXferAddr
 argument_list|()
 argument_list|)
 operator|&&
-name|storageID
+name|datanodeUuid
 operator|.
 name|equals
 argument_list|(
@@ -538,7 +607,7 @@ operator|)
 name|to
 operator|)
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 operator|)
@@ -559,7 +628,7 @@ operator|.
 name|hashCode
 argument_list|()
 operator|^
-name|storageID
+name|datanodeUuid
 operator|.
 name|hashCode
 argument_list|()

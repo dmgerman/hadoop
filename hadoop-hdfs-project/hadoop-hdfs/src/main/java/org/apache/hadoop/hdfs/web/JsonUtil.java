@@ -2345,7 +2345,7 @@ literal|"storageID"
 argument_list|,
 name|datanodeinfo
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;

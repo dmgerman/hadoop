@@ -4290,7 +4290,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4356,7 +4356,7 @@ name|StorageReport
 argument_list|(
 name|dnRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 literal|false
@@ -4610,7 +4610,7 @@ name|StorageReport
 argument_list|(
 name|dnRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 literal|false
@@ -4792,7 +4792,7 @@ name|nsInfo
 argument_list|,
 name|dnInfo
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -4839,7 +4839,7 @@ name|StorageReceivedDeletedBlocks
 argument_list|(
 name|receivedDNReg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|rdBlocks
@@ -5691,7 +5691,7 @@ index|]
 operator|.
 name|dnRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|rdBlocks

@@ -36,16 +36,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -1849,11 +1839,11 @@ specifier|final
 name|SimulatedStorage
 name|storage
 decl_stmt|;
-DECL|field|storageId
+DECL|field|datanodeUuid
 specifier|private
 specifier|final
 name|String
-name|storageId
+name|datanodeUuid
 decl_stmt|;
 DECL|method|SimulatedFSDataset (DataStorage storage, Configuration conf)
 specifier|public
@@ -1880,7 +1870,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|storageId
+name|datanodeUuid
 operator|=
 name|storage
 operator|.
@@ -1892,7 +1882,7 @@ else|else
 block|{
 name|this
 operator|.
-name|storageId
+name|datanodeUuid
 operator|=
 literal|"unknownStorageId-"
 operator|+
@@ -1904,7 +1894,7 @@ expr_stmt|;
 block|}
 name|registerMBean
 argument_list|(
-name|storageId
+name|datanodeUuid
 argument_list|)
 expr_stmt|;
 name|this
@@ -4312,7 +4302,7 @@ block|{
 return|return
 literal|"Simulated FSDataset-"
 operator|+
-name|storageId
+name|datanodeUuid
 return|;
 block|}
 annotation|@
@@ -4448,7 +4438,7 @@ name|newlength
 parameter_list|)
 block|{
 return|return
-name|storageId
+name|datanodeUuid
 return|;
 block|}
 annotation|@

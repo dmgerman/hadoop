@@ -711,7 +711,7 @@ name|waitForDatanodeState
 argument_list|(
 name|reg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 literal|true
@@ -729,7 +729,7 @@ name|waitForDatanodeState
 argument_list|(
 name|reg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 literal|false
@@ -779,7 +779,7 @@ name|StorageReceivedDeletedBlocks
 argument_list|(
 name|reg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|blocks
@@ -828,7 +828,7 @@ name|DatanodeStorage
 argument_list|(
 name|reg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -884,7 +884,7 @@ name|StorageReport
 argument_list|(
 name|reg
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 literal|false

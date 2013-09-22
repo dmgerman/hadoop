@@ -1143,7 +1143,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -1636,7 +1636,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -1842,7 +1842,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2053,7 +2053,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2206,7 +2206,7 @@ argument_list|(
 name|DN_N1
 argument_list|)
 operator|.
-name|getStorageId
+name|getDatanodeUuid
 argument_list|()
 decl_stmt|;
 if|if
@@ -2335,7 +2335,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2458,7 +2458,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2705,7 +2705,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,
@@ -2972,7 +2972,7 @@ name|DatanodeStorage
 argument_list|(
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 argument_list|,

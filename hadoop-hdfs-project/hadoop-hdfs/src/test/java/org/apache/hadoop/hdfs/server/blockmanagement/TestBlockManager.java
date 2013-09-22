@@ -3009,7 +3009,7 @@ index|]
 decl_stmt|;
 name|node
 operator|.
-name|setStorageID
+name|setDatanodeUuid
 argument_list|(
 name|ds
 operator|.
@@ -3309,7 +3309,7 @@ index|]
 decl_stmt|;
 name|node
 operator|.
-name|setStorageID
+name|setDatanodeUuid
 argument_list|(
 name|ds
 operator|.

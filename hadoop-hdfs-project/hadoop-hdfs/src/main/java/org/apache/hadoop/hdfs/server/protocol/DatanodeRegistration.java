@@ -314,7 +314,7 @@ argument_list|()
 operator|+
 literal|", storageID="
 operator|+
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|", infoPort="

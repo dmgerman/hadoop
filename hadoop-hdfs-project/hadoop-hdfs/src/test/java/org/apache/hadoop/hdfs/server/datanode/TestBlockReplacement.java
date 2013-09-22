@@ -1768,7 +1768,7 @@ name|DUMMY_TOKEN
 argument_list|,
 name|source
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|sourceProxy
