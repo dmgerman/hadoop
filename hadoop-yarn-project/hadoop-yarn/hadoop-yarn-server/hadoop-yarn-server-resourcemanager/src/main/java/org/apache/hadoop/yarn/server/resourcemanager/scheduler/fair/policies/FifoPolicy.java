@@ -58,6 +58,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -372,6 +382,16 @@ name|Resource
 name|totalResources
 parameter_list|)
 block|{
+if|if
+condition|(
+name|schedulables
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return;
+block|}
 name|Schedulable
 name|earliest
 init|=
