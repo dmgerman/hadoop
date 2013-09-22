@@ -532,7 +532,7 @@ literal|".logslink"
 argument_list|,
 name|url
 argument_list|(
-name|HttpConfig
+name|WebAppUtil
 operator|.
 name|getSchemePrefix
 argument_list|()

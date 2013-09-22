@@ -242,7 +242,7 @@ name|hadoop
 operator|.
 name|oncrpc
 operator|.
-name|RpcFrameDecoder
+name|RpcReply
 import|;
 end_import
 
@@ -256,7 +256,7 @@ name|hadoop
 operator|.
 name|oncrpc
 operator|.
-name|RpcReply
+name|RpcUtil
 import|;
 end_import
 
@@ -974,8 +974,9 @@ name|Channels
 operator|.
 name|pipeline
 argument_list|(
-operator|new
-name|RpcFrameDecoder
+name|RpcUtil
+operator|.
+name|constructRpcFrameDecoder
 argument_list|()
 argument_list|,
 operator|new

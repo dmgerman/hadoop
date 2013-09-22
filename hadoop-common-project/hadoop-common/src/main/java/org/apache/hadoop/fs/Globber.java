@@ -22,6 +22,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -244,6 +254,8 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -277,7 +289,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|FileNotFoundException
 name|e
 parameter_list|)
 block|{
@@ -295,6 +307,8 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 try|try
 block|{
@@ -331,7 +345,7 @@ block|}
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|FileNotFoundException
 name|e
 parameter_list|)
 block|{

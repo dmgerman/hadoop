@@ -400,6 +400,20 @@ name|LoggerFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Copy-paste of ClientBase from ZooKeeper, but without any of the  * JMXEnv verification. There seems to be a bug ZOOKEEPER-1438  * which causes spurious failures in the JMXEnv verification when  * we run these tests with the upstream ClientBase.  */
 end_comment
@@ -627,7 +641,10 @@ return|return
 name|connected
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|waitForConnected (long timeout)
+specifier|public
 specifier|synchronized
 name|void
 name|waitForConnected
@@ -695,7 +712,10 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|waitForDisconnected (long timeout)
+specifier|public
 specifier|synchronized
 name|void
 name|waitForDisconnected

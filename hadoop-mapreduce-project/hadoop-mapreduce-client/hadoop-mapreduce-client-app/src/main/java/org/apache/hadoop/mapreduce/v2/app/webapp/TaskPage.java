@@ -607,7 +607,7 @@ literal|"N/A"
 else|:
 literal|"<a class='nodelink' href='"
 operator|+
-name|HttpConfig
+name|WebAppUtil
 operator|.
 name|getSchemePrefix
 argument_list|()
@@ -641,7 +641,7 @@ literal|"<a class='logslink' href='"
 operator|+
 name|url
 argument_list|(
-name|HttpConfig
+name|WebAppUtil
 operator|.
 name|getSchemePrefix
 argument_list|()

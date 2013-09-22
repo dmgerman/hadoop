@@ -24,6 +24,18 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertFalse
 import|;
 end_import
@@ -57,6 +69,22 @@ operator|.
 name|nio
 operator|.
 name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|RpcUtil
+operator|.
+name|RpcFrameDecoder
 import|;
 end_import
 
@@ -851,16 +879,14 @@ literal|null
 argument_list|)
 expr_stmt|;
 comment|// Complete frame should have to total size 10+10=20
-name|assertTrue
+name|assertEquals
 argument_list|(
+literal|20
+argument_list|,
 name|channelBuffer
 operator|.
-name|array
+name|readableBytes
 argument_list|()
-operator|.
-name|length
-operator|==
-literal|20
 argument_list|)
 expr_stmt|;
 block|}

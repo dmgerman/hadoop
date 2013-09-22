@@ -269,8 +269,9 @@ name|Channels
 operator|.
 name|pipeline
 argument_list|(
-operator|new
-name|RpcFrameDecoder
+name|RpcUtil
+operator|.
+name|constructRpcFrameDecoder
 argument_list|()
 argument_list|,
 operator|new
