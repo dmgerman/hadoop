@@ -126,6 +126,20 @@ name|Channel
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * WriteCtx saves the context of one write request, such as request, channel,  * xid and reply status.  */
 end_comment
@@ -193,6 +207,7 @@ name|stableHow
 decl_stmt|;
 DECL|field|data
 specifier|private
+specifier|volatile
 name|byte
 index|[]
 name|data
@@ -214,8 +229,20 @@ specifier|private
 name|boolean
 name|replied
 decl_stmt|;
+comment|/**     * Data belonging to the same {@link OpenFileCtx} may be dumped to a file.     * After being dumped to the file, the corresponding {@link WriteCtx} records     * the dump file and the offset.      */
+DECL|field|raf
+specifier|private
+name|RandomAccessFile
+name|raf
+decl_stmt|;
+DECL|field|dumpFileOffset
+specifier|private
+name|long
+name|dumpFileOffset
+decl_stmt|;
 DECL|field|dataState
 specifier|private
+specifier|volatile
 name|DataState
 name|dataState
 decl_stmt|;
@@ -245,19 +272,8 @@ operator|=
 name|dataState
 expr_stmt|;
 block|}
-DECL|field|raf
-specifier|private
-name|RandomAccessFile
-name|raf
-decl_stmt|;
-DECL|field|dumpFileOffset
-specifier|private
-name|long
-name|dumpFileOffset
-decl_stmt|;
-comment|// Return the dumped data size
+comment|/**     * Writing the data into a local file. After the writing, if     * {@link #dataState} is still ALLOW_DUMP, set {@link #data} to null and set     * {@link #dataState} to DUMPED.    */
 DECL|method|dumpData (FileOutputStream dumpOut, RandomAccessFile raf)
-specifier|public
 name|long
 name|dumpData
 parameter_list|(
@@ -354,6 +370,33 @@ name|dumpFileOffset
 argument_list|)
 expr_stmt|;
 block|}
+comment|// it is possible that while we dump the data, the data is also being
+comment|// written back to HDFS. After dump, if the writing back has not finished
+comment|// yet, we change its flag to DUMPED and set the data to null. Otherwise
+comment|// this WriteCtx instance should have been removed from the buffer.
+if|if
+condition|(
+name|dataState
+operator|==
+name|DataState
+operator|.
+name|ALLOW_DUMP
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|dataState
+operator|==
+name|DataState
+operator|.
+name|ALLOW_DUMP
+condition|)
+block|{
 name|data
 operator|=
 literal|null
@@ -368,8 +411,13 @@ return|return
 name|count
 return|;
 block|}
+block|}
+block|}
+return|return
+literal|0
+return|;
+block|}
 DECL|method|getHandle ()
-specifier|public
 name|FileHandle
 name|getHandle
 parameter_list|()
@@ -379,7 +427,6 @@ name|handle
 return|;
 block|}
 DECL|method|getOffset ()
-specifier|public
 name|long
 name|getOffset
 parameter_list|()
@@ -389,7 +436,6 @@ name|offset
 return|;
 block|}
 DECL|method|getCount ()
-specifier|public
 name|int
 name|getCount
 parameter_list|()
@@ -399,7 +445,6 @@ name|count
 return|;
 block|}
 DECL|method|getStableHow ()
-specifier|public
 name|WriteStableHow
 name|getStableHow
 parameter_list|()
@@ -409,7 +454,6 @@ name|stableHow
 return|;
 block|}
 DECL|method|getData ()
-specifier|public
 name|byte
 index|[]
 name|getData
@@ -426,42 +470,62 @@ operator|.
 name|DUMPED
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 if|if
 condition|(
-name|data
-operator|==
-literal|null
+name|dataState
+operator|!=
+name|DataState
+operator|.
+name|DUMPED
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|Preconditions
+operator|.
+name|checkState
 argument_list|(
-literal|"Data is not dumpted but has null:"
-operator|+
-name|this
-argument_list|)
-throw|;
-block|}
-block|}
-else|else
-block|{
-comment|// read back
-if|if
-condition|(
 name|data
 operator|!=
 literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Data is dumpted but not null"
 argument_list|)
-throw|;
+expr_stmt|;
+return|return
+name|data
+return|;
 block|}
+block|}
+block|}
+comment|// read back from dumped file
+name|this
+operator|.
+name|loadData
+argument_list|()
+expr_stmt|;
+return|return
+name|data
+return|;
+block|}
+DECL|method|loadData ()
+specifier|private
+name|void
+name|loadData
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|data
+operator|==
+literal|null
+argument_list|)
+expr_stmt|;
 name|data
 operator|=
 operator|new
@@ -514,10 +578,6 @@ literal|"bytes"
 argument_list|)
 throw|;
 block|}
-block|}
-return|return
-name|data
-return|;
 block|}
 DECL|method|getChannel ()
 name|Channel
