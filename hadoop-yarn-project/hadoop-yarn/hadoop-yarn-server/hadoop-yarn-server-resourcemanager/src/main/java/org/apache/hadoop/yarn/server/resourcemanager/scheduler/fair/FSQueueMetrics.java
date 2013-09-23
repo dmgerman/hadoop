@@ -78,6 +78,22 @@ name|hadoop
 operator|.
 name|metrics2
 operator|.
+name|annotation
+operator|.
+name|Metrics
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|metrics2
+operator|.
 name|lib
 operator|.
 name|DefaultMetricsSystem
@@ -159,6 +175,13 @@ import|;
 end_import
 
 begin_class
+annotation|@
+name|Metrics
+argument_list|(
+name|context
+operator|=
+literal|"yarn"
+argument_list|)
 DECL|class|FSQueueMetrics
 specifier|public
 class|class
