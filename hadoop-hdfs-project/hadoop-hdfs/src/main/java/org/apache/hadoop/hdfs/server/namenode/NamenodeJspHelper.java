@@ -879,6 +879,17 @@ name|FSNamesystem
 name|fsn
 parameter_list|)
 block|{
+if|if
+condition|(
+name|fsn
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|""
+return|;
+block|}
 name|DatanodeManager
 name|dm
 init|=
