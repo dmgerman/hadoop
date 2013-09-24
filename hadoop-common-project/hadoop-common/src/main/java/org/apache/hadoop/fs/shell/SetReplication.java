@@ -161,7 +161,7 @@ specifier|final
 name|String
 name|USAGE
 init|=
-literal|"[-R] [-w]<rep><path/file> ..."
+literal|"[-R] [-w]<rep><path> ..."
 decl_stmt|;
 DECL|field|DESCRIPTION
 specifier|public
@@ -170,11 +170,17 @@ specifier|final
 name|String
 name|DESCRIPTION
 init|=
-literal|"Set the replication level of a file.\n"
+literal|"Set the replication level of a file. If<path> is a directory\n"
 operator|+
-literal|"The -R flag requests a recursive change of replication level\n"
+literal|"then the command recursively changes the replication factor of\n"
 operator|+
-literal|"for an entire tree."
+literal|"all files under the directory tree rooted at<path>.\n"
+operator|+
+literal|"The -w flag requests that the command wait for the replication\n"
+operator|+
+literal|"to complete. This can potentially take a very long time.\n"
+operator|+
+literal|"The -R flag is accepted for backwards compatibility. It has no effect."
 decl_stmt|;
 DECL|field|newRep
 specifier|protected
@@ -256,12 +262,7 @@ argument_list|)
 expr_stmt|;
 name|setRecursive
 argument_list|(
-name|cf
-operator|.
-name|getOpt
-argument_list|(
-literal|"R"
-argument_list|)
+literal|true
 argument_list|)
 expr_stmt|;
 try|try

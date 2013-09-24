@@ -475,9 +475,11 @@ name|DEFAULT_STREAM_TIMEOUT
 init|=
 literal|10
 operator|*
+literal|60
+operator|*
 literal|1000
 decl_stmt|;
-comment|// 10 second
+comment|//10 minutes
 DECL|field|MINIMIUM_STREAM_TIMEOUT
 specifier|public
 specifier|static
@@ -485,11 +487,11 @@ specifier|final
 name|long
 name|MINIMIUM_STREAM_TIMEOUT
 init|=
-literal|1
+literal|10
 operator|*
 literal|1000
 decl_stmt|;
-comment|// 1 second
+comment|//10 seconds
 DECL|method|addOpenFileStream (FileHandle h, OpenFileCtx ctx)
 name|void
 name|addOpenFileStream
@@ -1373,6 +1375,36 @@ argument_list|)
 expr_stmt|;
 return|return
 literal|true
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|ret
+operator|==
+name|OpenFileCtx
+operator|.
+name|COMMIT_INACTIVE_WITH_PENDING_WRITE
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Inactive stream with pending writes, fileId="
+operator|+
+name|fileHandle
+operator|.
+name|getFileId
+argument_list|()
+operator|+
+literal|" commitOffset="
+operator|+
+name|commitOffset
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
 return|;
 block|}
 assert|assert
