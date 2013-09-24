@@ -107,8 +107,6 @@ implements|implements
 name|Seekable
 implements|,
 name|PositionedReadable
-implements|,
-name|SupportsZeroCopy
 block|{
 comment|/**    * Seek to the given offset from the start of the file.    * The next read() will be from that location.  Can't    * seek past the end of the file.    */
 annotation|@
@@ -330,28 +328,6 @@ operator|.
 name|length
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|createZeroCopyCursor ()
-specifier|public
-name|ZeroCopyCursor
-name|createZeroCopyCursor
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|ZeroCopyUnavailableException
-block|{
-throw|throw
-operator|new
-name|ZeroCopyUnavailableException
-argument_list|(
-literal|"zero copy is not implemented "
-operator|+
-literal|"for this filesystem type."
-argument_list|)
-throw|;
 block|}
 block|}
 end_class

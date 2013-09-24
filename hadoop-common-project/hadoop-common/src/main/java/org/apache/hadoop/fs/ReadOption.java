@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -55,36 +45,28 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Supports zero-copy reads.  */
+comment|/**  * Options that can be used when reading from a FileSystem.  */
 end_comment
 
-begin_interface
+begin_enum
 annotation|@
 name|InterfaceAudience
 operator|.
-name|Private
+name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
-DECL|interface|SupportsZeroCopy
+name|Stable
+DECL|enum|ReadOption
 specifier|public
-interface|interface
-name|SupportsZeroCopy
+enum|enum
+name|ReadOption
 block|{
-comment|/**    * Get a zero-copy cursor to use for zero-copy reads.    *    * @throws IOException    *     If there was an error creating the ZeroCopyCursor    * @throws UnsupportedOperationException    *     If this stream does not support zero-copy reads.    *     This is used, for example, when one stream wraps another    *     which may or may not support ZCR.    */
-DECL|method|createZeroCopyCursor ()
-specifier|public
-name|ZeroCopyCursor
-name|createZeroCopyCursor
-parameter_list|()
-throws|throws
-name|IOException
-throws|,
-name|ZeroCopyUnavailableException
-function_decl|;
-block|}
-end_interface
+comment|/**    * Skip checksums when reading.  This option may be useful when reading a file    * format that has built-in checksums, or for testing purposes.    */
+DECL|enumConstant|SKIP_CHECKSUMS
+name|SKIP_CHECKSUMS
+block|, }
+end_enum
 
 end_unit
 

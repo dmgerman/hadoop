@@ -52,6 +52,22 @@ name|hdfs
 operator|.
 name|client
 operator|.
+name|ClientMmap
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
 name|ClientMmapManager
 import|;
 end_import
@@ -177,22 +193,13 @@ name|boolean
 name|isShortCircuit
 parameter_list|()
 function_decl|;
-comment|/**    * Do a zero-copy read with the current block reader.    *    * We assume that the calling code has done bounds checking, and won't ask     * us for more bytes than are supposed to be visible (or are in the file).    *    * @param buffers       The zero-copy buffers object.    * @param curBlock      The current block.    * @param blockPos      Position in the current block to start reading at.    * @param toRead        The number of bytes to read from the block.    *     * @return              true if the read was done, false otherwise.    */
-DECL|method|readZeroCopy (HdfsZeroCopyCursor buffers, LocatedBlock curBlock, long blockPos, int toRead, ClientMmapManager mmapManager)
-name|boolean
-name|readZeroCopy
+comment|/**    * Get a ClientMmap object for this BlockReader.    *    * @param curBlock      The current block.    * @return              The ClientMmap object, or null if mmap is not    *                      supported.    */
+DECL|method|getClientMmap (LocatedBlock curBlock, ClientMmapManager mmapManager)
+name|ClientMmap
+name|getClientMmap
 parameter_list|(
-name|HdfsZeroCopyCursor
-name|buffers
-parameter_list|,
 name|LocatedBlock
 name|curBlock
-parameter_list|,
-name|long
-name|blockPos
-parameter_list|,
-name|int
-name|toRead
 parameter_list|,
 name|ClientMmapManager
 name|mmapManager

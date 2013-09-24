@@ -11654,7 +11654,10 @@ return|return
 name|defaultWriteCachingStrategy
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getMmapManager ()
+specifier|public
 name|ClientMmapManager
 name|getMmapManager
 parameter_list|()

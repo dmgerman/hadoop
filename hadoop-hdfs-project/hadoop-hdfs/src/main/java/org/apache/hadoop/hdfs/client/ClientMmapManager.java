@@ -1704,6 +1704,32 @@ name|mmap
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"created a new ClientMmap for block "
+operator|+
+name|key
+operator|.
+name|block
+operator|+
+literal|" on datanode "
+operator|+
+name|key
+operator|.
+name|datanode
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|mmap
 return|;
@@ -1855,6 +1881,14 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -1870,6 +1904,7 @@ operator|+
 name|block
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|mmap
 return|;
