@@ -44,11 +44,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|http
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
+name|HttpConfig
 import|;
 end_import
 
@@ -65,6 +63,24 @@ operator|.
 name|webapp
 operator|.
 name|YarnWebParams
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|util
+operator|.
+name|WebAppUtils
 import|;
 end_import
 
@@ -144,9 +160,9 @@ block|{
 name|String
 name|RMWebAppURL
 init|=
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
-name|getRMWebAppURL
+name|getResolvedRMWebAppURLWithScheme
 argument_list|(
 name|this
 operator|.

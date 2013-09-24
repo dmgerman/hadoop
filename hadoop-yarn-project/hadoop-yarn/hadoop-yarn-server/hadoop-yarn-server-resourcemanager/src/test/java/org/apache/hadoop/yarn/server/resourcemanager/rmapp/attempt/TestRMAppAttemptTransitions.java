@@ -134,6 +134,18 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
+name|spy
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
 name|times
 import|;
 end_import
@@ -159,18 +171,6 @@ operator|.
 name|Mockito
 operator|.
 name|when
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|spy
 import|;
 end_import
 
@@ -473,22 +473,6 @@ operator|.
 name|records
 operator|.
 name|Resource
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
 import|;
 end_import
 
@@ -1148,6 +1132,26 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
+name|NMTokenSecretManagerInRM
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
 name|RMContainerTokenSecretManager
 import|;
 end_import
@@ -1180,13 +1184,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|webapp
 operator|.
-name|resourcemanager
+name|util
 operator|.
-name|security
-operator|.
-name|NMTokenSecretManagerInRM
+name|WebAppUtils
 import|;
 end_import
 
@@ -1291,9 +1293,9 @@ specifier|final
 name|String
 name|RM_WEBAPP_ADDR
 init|=
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
-name|getRMWebAppHostAndPort
+name|getResolvedRMWebAppURLWithoutScheme
 argument_list|(
 operator|new
 name|Configuration
