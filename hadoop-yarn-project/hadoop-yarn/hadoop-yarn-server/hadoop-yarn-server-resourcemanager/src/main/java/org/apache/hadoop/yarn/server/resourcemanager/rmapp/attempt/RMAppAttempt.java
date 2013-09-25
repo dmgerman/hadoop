@@ -62,6 +62,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|LimitedPrivate
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|token
@@ -405,7 +421,12 @@ argument_list|>
 name|getAMRMToken
 parameter_list|()
 function_decl|;
-comment|/**    * The master key for client-to-AM tokens for this app attempt    * @return The master key for client-to-AM tokens for this app attempt    */
+comment|/**    * The master key for client-to-AM tokens for this app attempt. This is only    * used for RMStateStore. Normal operation must invoke the secret manager to    * get the key and not use the local key directly.    * @return The master key for client-to-AM tokens for this app attempt    */
+annotation|@
+name|LimitedPrivate
+argument_list|(
+literal|"RMStateStore"
+argument_list|)
 DECL|method|getClientTokenMasterKey ()
 name|SecretKey
 name|getClientTokenMasterKey

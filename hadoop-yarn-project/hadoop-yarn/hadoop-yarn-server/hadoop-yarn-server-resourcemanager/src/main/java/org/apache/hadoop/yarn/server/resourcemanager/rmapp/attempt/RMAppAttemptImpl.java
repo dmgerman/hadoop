@@ -3252,6 +3252,8 @@ operator|=
 name|origTrackingUrl
 expr_stmt|;
 block|}
+comment|// This is only used for RMStateStore. Normal operation must invoke the secret
+comment|// manager to get the key and not use the local key directly.
 annotation|@
 name|Override
 DECL|method|getClientTokenMasterKey ()
@@ -4279,7 +4281,7 @@ operator|.
 name|getClientToAMTokenSecretManager
 argument_list|()
 operator|.
-name|registerApplication
+name|createMasterKey
 argument_list|(
 name|appAttempt
 operator|.
@@ -5029,6 +5031,28 @@ name|appAttempt
 operator|.
 name|attemptLaunched
 argument_list|()
+expr_stmt|;
+comment|// register the ClientTokenMasterKey after it is saved in the store,
+comment|// otherwise client may hold an invalid ClientToken after RM restarts.
+name|appAttempt
+operator|.
+name|rmContext
+operator|.
+name|getClientToAMTokenSecretManager
+argument_list|()
+operator|.
+name|registerApplication
+argument_list|(
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|appAttempt
+operator|.
+name|getClientTokenMasterKey
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

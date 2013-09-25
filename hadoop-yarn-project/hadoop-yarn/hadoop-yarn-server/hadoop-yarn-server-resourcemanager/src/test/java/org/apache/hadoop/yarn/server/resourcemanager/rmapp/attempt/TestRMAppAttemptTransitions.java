@@ -2350,7 +2350,7 @@ argument_list|(
 name|clientToAMTokenManager
 argument_list|)
 operator|.
-name|registerApplication
+name|createMasterKey
 argument_list|(
 name|applicationAttempt
 operator|.
@@ -2358,7 +2358,9 @@ name|getAppAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|assertNotNull
+comment|// can't create ClientToken as at this time ClientTokenMasterKey has
+comment|// not been registered in the SecretManager
+name|assertNull
 argument_list|(
 name|applicationAttempt
 operator|.
@@ -3104,6 +3106,27 @@ name|getMasterContainer
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+comment|// ClientTokenMasterKey has been registered in SecretManager, it's able to
+comment|// create ClientToken now
+name|assertNotNull
+argument_list|(
+name|applicationAttempt
+operator|.
+name|createClientToken
+argument_list|(
+literal|"some client"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|// TODO - need to add more checks relevant to this state
 block|}
 comment|/**    * {@link RMAppAttemptState#RUNNING}    */
@@ -3751,6 +3774,27 @@ name|Container
 name|container
 parameter_list|)
 block|{
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+comment|// Before LAUNCHED state, can't create ClientToken as at this time
+comment|// ClientTokenMasterKey has not been registered in the SecretManager
+name|assertNull
+argument_list|(
+name|applicationAttempt
+operator|.
+name|createClientToken
+argument_list|(
+literal|"some client"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|applicationAttempt
 operator|.
 name|handle

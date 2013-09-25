@@ -1893,7 +1893,7 @@ name|clientTokenKey1
 init|=
 name|clientToAMTokenMgr
 operator|.
-name|registerApplication
+name|createMasterKey
 argument_list|(
 name|attemptId1
 argument_list|)
@@ -1976,7 +1976,7 @@ name|clientTokenKey2
 init|=
 name|clientToAMTokenMgr
 operator|.
-name|registerApplication
+name|createMasterKey
 argument_list|(
 name|attemptId2
 argument_list|)
