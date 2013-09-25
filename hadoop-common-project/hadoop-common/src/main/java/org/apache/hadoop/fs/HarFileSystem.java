@@ -1151,8 +1151,6 @@ name|underLyingUri
 operator|.
 name|getHost
 argument_list|()
-operator|+
-literal|":"
 expr_stmt|;
 if|if
 condition|(
@@ -1165,6 +1163,10 @@ operator|-
 literal|1
 condition|)
 block|{
+name|auth
+operator|+=
+literal|":"
+expr_stmt|;
 name|auth
 operator|+=
 name|underLyingUri
