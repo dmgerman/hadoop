@@ -275,6 +275,11 @@ name|boolean
 name|isLastAMRetry
 parameter_list|()
 function_decl|;
+DECL|method|safeToReportTerminationToUser ()
+name|boolean
+name|safeToReportTerminationToUser
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

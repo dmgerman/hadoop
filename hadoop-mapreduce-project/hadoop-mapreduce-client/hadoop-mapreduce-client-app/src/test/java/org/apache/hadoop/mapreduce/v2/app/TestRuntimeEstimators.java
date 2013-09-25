@@ -4388,6 +4388,19 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|safeToReportTerminationToUser ()
+specifier|public
+name|boolean
+name|safeToReportTerminationToUser
+parameter_list|()
+block|{
+comment|// bogus - Not Required
+return|return
+literal|true
+return|;
+block|}
 block|}
 block|}
 end_class
