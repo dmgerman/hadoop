@@ -522,7 +522,14 @@ literal|"mountd"
 argument_list|,
 literal|"localhost"
 argument_list|,
+name|config
+operator|.
+name|getInt
+argument_list|(
+literal|"nfs3.mountd.port"
+argument_list|,
 name|PORT
+argument_list|)
 argument_list|,
 name|PROGRAM
 argument_list|,
