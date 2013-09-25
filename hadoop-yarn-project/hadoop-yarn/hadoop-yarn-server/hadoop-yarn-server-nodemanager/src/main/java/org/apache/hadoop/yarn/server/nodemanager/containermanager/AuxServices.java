@@ -86,6 +86,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -304,6 +316,20 @@ name|ContainerTerminationContext
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_class
 DECL|class|AuxServices
 specifier|public
@@ -356,6 +382,19 @@ argument_list|,
 name|ByteBuffer
 argument_list|>
 name|serviceMetaData
+decl_stmt|;
+DECL|field|p
+specifier|private
+specifier|final
+name|Pattern
+name|p
+init|=
+name|Pattern
+operator|.
+name|compile
+argument_list|(
+literal|"^[A-Za-z_]+[A-Za-z0-9_]*$"
+argument_list|)
 decl_stmt|;
 DECL|method|AuxServices ()
 specifier|public
@@ -586,6 +625,32 @@ control|)
 block|{
 try|try
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|validateAuxServiceName
+argument_list|(
+name|sName
+argument_list|)
+argument_list|,
+literal|"The ServiceName: "
+operator|+
+name|sName
+operator|+
+literal|" set in "
+operator|+
+name|YarnConfiguration
+operator|.
+name|NM_AUX_SERVICES
+operator|+
+literal|" is invalid."
+operator|+
+literal|"The valid service name should only contain a-zA-Z0-9_ "
+operator|+
+literal|"and can not start with numbers"
+argument_list|)
+expr_stmt|;
 name|Class
 argument_list|<
 name|?
@@ -1183,6 +1248,46 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|validateAuxServiceName (String name)
+specifier|private
+name|boolean
+name|validateAuxServiceName
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+if|if
+condition|(
+name|name
+operator|==
+literal|null
+operator|||
+name|name
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
+return|return
+name|p
+operator|.
+name|matcher
+argument_list|(
+name|name
+argument_list|)
+operator|.
+name|matches
+argument_list|()
+return|;
 block|}
 block|}
 end_class

@@ -1555,7 +1555,7 @@ specifier|final
 name|String
 name|MAPREDUCE_SHUFFLE_SERVICEID
 init|=
-literal|"mapreduce.shuffle"
+literal|"mapreduce_shuffle"
 decl_stmt|;
 DECL|field|userRsrc
 specifier|private
