@@ -6682,23 +6682,13 @@ expr_stmt|;
 name|scheduledWork
 operator|++
 expr_stmt|;
-for|for
-control|(
 name|DatanodeStorageInfo
-name|storage
-range|:
+operator|.
+name|incrementBlocksScheduled
+argument_list|(
 name|targets
-control|)
-block|{
-name|storage
-operator|.
-name|getDatanodeDescriptor
-argument_list|()
-operator|.
-name|incBlocksScheduled
-argument_list|()
+argument_list|)
 expr_stmt|;
-block|}
 comment|// Move the block-replication into a "pending" state.
 comment|// The reason we use 'pending' is so we can retry
 comment|// replications that fail after an appropriate amount of time.
@@ -12126,12 +12116,17 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// decrement number of blocks scheduled to this datanode.
+comment|// Decrement number of blocks scheduled to this storage.
 comment|// for a retry request (of DatanodeProtocol#blockReceivedAndDeleted with
 comment|// RECEIVED_BLOCK), we currently also decrease the approximate number.
 name|node
 operator|.
-name|decBlocksScheduled
+name|getStorageInfo
+argument_list|(
+name|storageID
+argument_list|)
+operator|.
+name|decrementBlocksScheduled
 argument_list|()
 expr_stmt|;
 comment|// get the deletion hint node

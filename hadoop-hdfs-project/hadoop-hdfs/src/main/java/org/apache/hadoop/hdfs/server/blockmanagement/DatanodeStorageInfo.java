@@ -540,6 +540,40 @@ name|blockContentsStale
 init|=
 literal|true
 decl_stmt|;
+comment|/* Variables for maintaining number of blocks scheduled to be written to    * this storage. This count is approximate and might be slightly bigger    * in case of errors (e.g. datanode does not report if an error occurs    * while writing the block).    */
+DECL|field|currApproxBlocksScheduled
+specifier|private
+name|int
+name|currApproxBlocksScheduled
+init|=
+literal|0
+decl_stmt|;
+DECL|field|prevApproxBlocksScheduled
+specifier|private
+name|int
+name|prevApproxBlocksScheduled
+init|=
+literal|0
+decl_stmt|;
+DECL|field|lastBlocksScheduledRollTime
+specifier|private
+name|long
+name|lastBlocksScheduledRollTime
+init|=
+literal|0
+decl_stmt|;
+DECL|field|BLOCKS_SCHEDULED_ROLL_INTERVAL
+specifier|private
+specifier|static
+specifier|final
+name|int
+name|BLOCKS_SCHEDULED_ROLL_INTERVAL
+init|=
+literal|600
+operator|*
+literal|1000
+decl_stmt|;
+comment|//10min
 DECL|method|DatanodeStorageInfo (DatanodeDescriptor dn, DatanodeStorage s)
 specifier|public
 name|DatanodeStorageInfo
@@ -610,7 +644,6 @@ name|blockReportCount
 expr_stmt|;
 block|}
 DECL|method|areBlockContentsStale ()
-specifier|public
 name|boolean
 name|areBlockContentsStale
 parameter_list|()
@@ -620,7 +653,6 @@ name|blockContentsStale
 return|;
 block|}
 DECL|method|markStaleAfterFailover ()
-specifier|public
 name|void
 name|markStaleAfterFailover
 parameter_list|()
@@ -634,19 +666,26 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|receivedHeartbeat ()
-specifier|public
+DECL|method|receivedHeartbeat (final long lastUpdate)
 name|void
 name|receivedHeartbeat
-parameter_list|()
+parameter_list|(
+specifier|final
+name|long
+name|lastUpdate
+parameter_list|)
 block|{
 name|heartbeatedSinceFailover
 operator|=
 literal|true
 expr_stmt|;
+name|rollBlocksScheduled
+argument_list|(
+name|lastUpdate
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|receivedBlockReport ()
-specifier|public
 name|void
 name|receivedBlockReport
 parameter_list|()
@@ -666,7 +705,6 @@ operator|++
 expr_stmt|;
 block|}
 DECL|method|setUtilization (long capacity, long dfsUsed, long remaining)
-specifier|public
 name|void
 name|setUtilization
 parameter_list|(
@@ -933,6 +971,120 @@ block|{
 return|return
 name|dn
 return|;
+block|}
+comment|/**    * @return Approximate number of blocks currently scheduled to be written    *         to this storage.    */
+DECL|method|getBlocksScheduled ()
+name|int
+name|getBlocksScheduled
+parameter_list|()
+block|{
+return|return
+name|currApproxBlocksScheduled
+operator|+
+name|prevApproxBlocksScheduled
+return|;
+block|}
+comment|/** Increment the number of blocks scheduled for each given storage */
+DECL|method|incrementBlocksScheduled (DatanodeStorageInfo... storages)
+specifier|public
+specifier|static
+name|void
+name|incrementBlocksScheduled
+parameter_list|(
+name|DatanodeStorageInfo
+modifier|...
+name|storages
+parameter_list|)
+block|{
+for|for
+control|(
+name|DatanodeStorageInfo
+name|s
+range|:
+name|storages
+control|)
+block|{
+name|s
+operator|.
+name|incrementBlocksScheduled
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+comment|/** Increment the number of blocks scheduled. */
+DECL|method|incrementBlocksScheduled ()
+specifier|private
+name|void
+name|incrementBlocksScheduled
+parameter_list|()
+block|{
+name|currApproxBlocksScheduled
+operator|++
+expr_stmt|;
+block|}
+comment|/** Decrement the number of blocks scheduled. */
+DECL|method|decrementBlocksScheduled ()
+name|void
+name|decrementBlocksScheduled
+parameter_list|()
+block|{
+if|if
+condition|(
+name|prevApproxBlocksScheduled
+operator|>
+literal|0
+condition|)
+block|{
+name|prevApproxBlocksScheduled
+operator|--
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|currApproxBlocksScheduled
+operator|>
+literal|0
+condition|)
+block|{
+name|currApproxBlocksScheduled
+operator|--
+expr_stmt|;
+block|}
+comment|// its ok if both counters are zero.
+block|}
+comment|/** Adjusts curr and prev number of blocks scheduled every few minutes. */
+DECL|method|rollBlocksScheduled (long now)
+specifier|private
+name|void
+name|rollBlocksScheduled
+parameter_list|(
+name|long
+name|now
+parameter_list|)
+block|{
+if|if
+condition|(
+name|now
+operator|-
+name|lastBlocksScheduledRollTime
+operator|>
+name|BLOCKS_SCHEDULED_ROLL_INTERVAL
+condition|)
+block|{
+name|prevApproxBlocksScheduled
+operator|=
+name|currApproxBlocksScheduled
+expr_stmt|;
+name|currApproxBlocksScheduled
+operator|=
+literal|0
+expr_stmt|;
+name|lastBlocksScheduledRollTime
+operator|=
+name|now
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

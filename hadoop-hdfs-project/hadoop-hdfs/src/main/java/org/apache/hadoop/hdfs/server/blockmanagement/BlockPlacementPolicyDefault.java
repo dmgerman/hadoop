@@ -2967,6 +2967,17 @@ name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
 decl_stmt|;
+specifier|final
+name|long
+name|scheduledSize
+init|=
+name|blockSize
+operator|=
+name|storage
+operator|.
+name|getBlocksScheduled
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|requiredSize
@@ -2975,6 +2986,8 @@ name|storage
 operator|.
 name|getRemaining
 argument_list|()
+operator|-
+name|scheduledSize
 condition|)
 block|{
 name|logNodeIsNotChosen
@@ -2982,43 +2995,6 @@ argument_list|(
 name|storage
 argument_list|,
 literal|"the storage does not have enough space "
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-comment|//TODO: move getBlocksScheduled() to DatanodeStorageInfo.
-name|long
-name|remaining
-init|=
-name|node
-operator|.
-name|getRemaining
-argument_list|()
-operator|-
-operator|(
-name|node
-operator|.
-name|getBlocksScheduled
-argument_list|()
-operator|*
-name|blockSize
-operator|)
-decl_stmt|;
-comment|// check the remaining capacity of the target machine
-if|if
-condition|(
-name|requiredSize
-operator|>
-name|remaining
-condition|)
-block|{
-name|logNodeIsNotChosen
-argument_list|(
-name|storage
-argument_list|,
-literal|"the node does not have enough space "
 argument_list|)
 expr_stmt|;
 return|return
