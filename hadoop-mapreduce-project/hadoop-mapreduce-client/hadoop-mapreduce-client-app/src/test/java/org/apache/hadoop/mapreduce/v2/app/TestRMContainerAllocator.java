@@ -3267,6 +3267,17 @@ name|MyResourceManager
 extends|extends
 name|MockRM
 block|{
+DECL|field|fakeClusterTimeStamp
+specifier|private
+specifier|static
+name|long
+name|fakeClusterTimeStamp
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 DECL|method|MyResourceManager (Configuration conf)
 specifier|public
 name|MyResourceManager
@@ -3278,6 +3289,31 @@ block|{
 name|super
 argument_list|(
 name|conf
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|serviceStart ()
+specifier|public
+name|void
+name|serviceStart
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|super
+operator|.
+name|serviceStart
+argument_list|()
+expr_stmt|;
+comment|// Ensure that the application attempt IDs for all the tests are the same
+comment|// The application attempt IDs will be used as the login user names
+name|MyResourceManager
+operator|.
+name|setClusterTimeStamp
+argument_list|(
+name|fakeClusterTimeStamp
 argument_list|)
 expr_stmt|;
 block|}
