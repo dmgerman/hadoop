@@ -158,6 +158,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Date
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -4931,6 +4941,22 @@ argument_list|,
 name|nnaddr
 argument_list|)
 expr_stmt|;
+name|long
+name|currentTime
+init|=
+name|Time
+operator|.
+name|now
+argument_list|()
+decl_stmt|;
+name|long
+name|timestamp
+init|=
+name|d
+operator|.
+name|getLastUpdate
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -4941,6 +4967,14 @@ name|out
 operator|.
 name|print
 argument_list|(
+literal|"<td class=\"lastcontact\"> "
+operator|+
+operator|new
+name|Date
+argument_list|(
+name|timestamp
+argument_list|)
+operator|+
 literal|"<td class=\"decommissioned\"> "
 operator|+
 name|d
@@ -5022,22 +5056,6 @@ name|getAdminState
 argument_list|()
 operator|.
 name|toString
-argument_list|()
-decl_stmt|;
-name|long
-name|timestamp
-init|=
-name|d
-operator|.
-name|getLastUpdate
-argument_list|()
-decl_stmt|;
-name|long
-name|currentTime
-init|=
-name|Time
-operator|.
-name|now
 argument_list|()
 decl_stmt|;
 name|long
@@ -5878,6 +5896,13 @@ literal|"address"
 argument_list|)
 operator|+
 literal|"> Transferring<br>Address<th "
+operator|+
+name|nodeHeaderStr
+argument_list|(
+literal|"lastcontact"
+argument_list|)
+operator|+
+literal|"> Last<br>Contact<th "
 operator|+
 name|nodeHeaderStr
 argument_list|(

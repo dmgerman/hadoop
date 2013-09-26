@@ -774,6 +774,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|reloadCachedMappings (List<String> names)
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|names
+parameter_list|)
+block|{
+comment|// TableMapping has to reload all mappings at once, so no chance to
+comment|// reload mappings on specific nodes
+name|reloadCachedMappings
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

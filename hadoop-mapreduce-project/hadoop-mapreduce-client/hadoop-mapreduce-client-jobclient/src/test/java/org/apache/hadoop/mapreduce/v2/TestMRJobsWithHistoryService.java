@@ -795,7 +795,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|30000
+literal|90000
 argument_list|)
 DECL|method|testJobHistoryData ()
 specifier|public

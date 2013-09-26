@@ -358,6 +358,7 @@ name|READY
 expr_stmt|;
 block|}
 DECL|method|toList ( LinkedList<ControlledJob> jobs)
+specifier|synchronized
 specifier|private
 specifier|static
 name|List
@@ -386,11 +387,6 @@ name|ControlledJob
 argument_list|>
 argument_list|()
 decl_stmt|;
-synchronized|synchronized
-init|(
-name|jobs
-init|)
-block|{
 for|for
 control|(
 name|ControlledJob
@@ -406,7 +402,6 @@ argument_list|(
 name|job
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|retv

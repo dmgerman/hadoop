@@ -95,6 +95,19 @@ name|void
 name|reloadCachedMappings
 parameter_list|()
 function_decl|;
+comment|/**    * Reload cached mappings on specific nodes.    *    * If there is a cache on these nodes, this method will clear it, so that     * future accesses will see updated data.    */
+DECL|method|reloadCachedMappings (List<String> names)
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|names
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 
