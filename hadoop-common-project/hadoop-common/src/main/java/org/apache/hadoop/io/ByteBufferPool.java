@@ -68,7 +68,7 @@ specifier|public
 interface|interface
 name|ByteBufferPool
 block|{
-comment|/**    * Get a new direct ByteBuffer.  The pool can provide this from    * removing a buffer from its internal cache, or by allocating a     * new buffer.    *    * @param direct     Whether the buffer should be direct.    * @param minLength  The minimum length the buffer will have.    * @return           A new ByteBuffer.  This ByteBuffer must be direct.    *                   Its capacity can be less than what was requested, but    *                   must be at least 1 byte.    */
+comment|/**    * Get a new direct ByteBuffer.  The pool can provide this from    * removing a buffer from its internal cache, or by allocating a     * new buffer.    *    * @param direct     Whether the buffer should be direct.    * @param length     The minimum length the buffer will have.    * @return           A new ByteBuffer.  This ByteBuffer must be direct.    *                   Its capacity can be less than what was requested, but    *                   must be at least 1 byte.    */
 DECL|method|getBuffer (boolean direct, int length)
 name|ByteBuffer
 name|getBuffer
