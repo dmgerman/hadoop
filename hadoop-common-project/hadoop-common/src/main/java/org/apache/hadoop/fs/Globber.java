@@ -395,6 +395,28 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Convert a path component that contains backslash ecape sequences to a    * literal string.  This is necessary when you want to explicitly refer to a    * path that contains globber metacharacters.    */
+DECL|method|unescapePathComponent (String name)
+specifier|private
+specifier|static
+name|String
+name|unescapePathComponent
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+block|{
+return|return
+name|name
+operator|.
+name|replaceAll
+argument_list|(
+literal|"\\\\(.)"
+argument_list|,
+literal|"$1"
+argument_list|)
+return|;
+block|}
 comment|/**    * Translate an absolute path into a list of path components.    * We merge double slashes into a single slash here.    * POSIX root path, i.e. '/', does not get an entry in the list.    */
 DECL|method|getPathComponents (String path)
 specifier|private
@@ -859,10 +881,20 @@ expr_stmt|;
 block|}
 for|for
 control|(
-name|String
-name|component
-range|:
+name|int
+name|componentIdx
+init|=
+literal|0
+init|;
+name|componentIdx
+operator|<
 name|components
+operator|.
+name|size
+argument_list|()
+condition|;
+name|componentIdx
+operator|++
 control|)
 block|{
 name|ArrayList
@@ -889,7 +921,25 @@ init|=
 operator|new
 name|GlobFilter
 argument_list|(
+name|components
+operator|.
+name|get
+argument_list|(
+name|componentIdx
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|String
 name|component
+init|=
+name|unescapePathComponent
+argument_list|(
+name|components
+operator|.
+name|get
+argument_list|(
+name|componentIdx
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
@@ -915,7 +965,64 @@ operator|&&
 name|sawWildcard
 condition|)
 block|{
+comment|// Optimization: if there are no more candidates left, stop examining
+comment|// the path components.  We can only do this if we've already seen
+comment|// a wildcard component-- otherwise, we still need to visit all path
+comment|// components in case one of them is a wildcard.
 break|break;
+block|}
+if|if
+condition|(
+operator|(
+name|componentIdx
+operator|<
+name|components
+operator|.
+name|size
+argument_list|()
+operator|-
+literal|1
+operator|)
+operator|&&
+operator|(
+operator|!
+name|globFilter
+operator|.
+name|hasPattern
+argument_list|()
+operator|)
+condition|)
+block|{
+comment|// Optimization: if this is not the terminal path component, and we
+comment|// are not matching against a glob, assume that it exists.  If it
+comment|// doesn't exist, we'll find out later when resolving a later glob
+comment|// or the terminal path component.
+for|for
+control|(
+name|FileStatus
+name|candidate
+range|:
+name|candidates
+control|)
+block|{
+name|candidate
+operator|.
+name|setPath
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|candidate
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|component
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+continue|continue;
 block|}
 for|for
 control|(
@@ -925,48 +1032,14 @@ range|:
 name|candidates
 control|)
 block|{
-name|FileStatus
-name|resolvedCandidate
-init|=
-name|candidate
-decl_stmt|;
 if|if
 condition|(
-name|candidate
+name|globFilter
 operator|.
-name|isSymlink
+name|hasPattern
 argument_list|()
 condition|)
 block|{
-comment|// We have to resolve symlinks, because otherwise we don't know
-comment|// whether they are directories.
-name|resolvedCandidate
-operator|=
-name|getFileStatus
-argument_list|(
-name|candidate
-operator|.
-name|getPath
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|resolvedCandidate
-operator|==
-literal|null
-operator|||
-name|resolvedCandidate
-operator|.
-name|isDirectory
-argument_list|()
-operator|==
-literal|false
-condition|)
-block|{
-continue|continue;
-block|}
 name|FileStatus
 index|[]
 name|children
@@ -979,6 +1052,44 @@ name|getPath
 argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|children
+operator|.
+name|length
+operator|==
+literal|1
+condition|)
+block|{
+comment|// If we get back only one result, this could be either a listing
+comment|// of a directory with one entry, or it could reflect the fact
+comment|// that what we listed resolved to a file.
+comment|//
+comment|// Unfortunately, we can't just compare the returned paths to
+comment|// figure this out.  Consider the case where you have /a/b, where
+comment|// b is a symlink to "..".  In that case, listing /a/b will give
+comment|// back "/a/b" again.  If we just went by returned pathname, we'd
+comment|// incorrectly conclude that /a/b was a file and should not match
+comment|// /a/*/*.  So we use getFileStatus of the path we just listed to
+comment|// disambiguate.
+if|if
+condition|(
+operator|!
+name|getFileStatus
+argument_list|(
+name|candidate
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+operator|.
+name|isDirectory
+argument_list|()
+condition|)
+block|{
+continue|continue;
+block|}
+block|}
 for|for
 control|(
 name|FileStatus
@@ -988,7 +1099,6 @@ name|children
 control|)
 block|{
 comment|// Set the child path based on the parent path.
-comment|// This keeps the symlinks in our path.
 name|child
 operator|.
 name|setPath
@@ -1029,6 +1139,47 @@ operator|.
 name|add
 argument_list|(
 name|child
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+else|else
+block|{
+comment|// When dealing with non-glob components, use getFileStatus
+comment|// instead of listStatus.  This is an optimization, but it also
+comment|// is necessary for correctness in HDFS, since there are some
+comment|// special HDFS directories like .reserved and .snapshot that are
+comment|// not visible to listStatus, but which do exist.  (See HADOOP-9877)
+name|FileStatus
+name|childStatus
+init|=
+name|getFileStatus
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+name|candidate
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|component
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|childStatus
+operator|!=
+literal|null
+condition|)
+block|{
+name|newCandidates
+operator|.
+name|add
+argument_list|(
+name|childStatus
 argument_list|)
 expr_stmt|;
 block|}

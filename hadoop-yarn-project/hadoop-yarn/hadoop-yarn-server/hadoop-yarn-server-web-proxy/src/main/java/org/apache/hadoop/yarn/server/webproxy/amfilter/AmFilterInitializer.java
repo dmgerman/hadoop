@@ -124,9 +124,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|webapp
 operator|.
-name|YarnConfiguration
+name|util
+operator|.
+name|WebAppUtils
 import|;
 end_import
 
@@ -195,7 +197,7 @@ decl_stmt|;
 name|String
 name|proxy
 init|=
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
 name|getProxyHostAndPort
 argument_list|(

@@ -494,6 +494,24 @@ name|Hamlet
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|util
+operator|.
+name|WebAppUtils
+import|;
+end_import
+
 begin_class
 DECL|class|WebAppProxyServlet
 specifier|public
@@ -697,9 +715,9 @@ name|StringHelper
 operator|.
 name|pjoin
 argument_list|(
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
-name|getRMWebAppURL
+name|getResolvedRMWebAppURLWithScheme
 argument_list|(
 name|conf
 argument_list|)

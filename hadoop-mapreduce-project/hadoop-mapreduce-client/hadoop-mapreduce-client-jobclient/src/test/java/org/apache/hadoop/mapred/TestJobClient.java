@@ -491,7 +491,7 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-name|testJobList
+name|testAllJobList
 argument_list|(
 name|jobId
 argument_list|,

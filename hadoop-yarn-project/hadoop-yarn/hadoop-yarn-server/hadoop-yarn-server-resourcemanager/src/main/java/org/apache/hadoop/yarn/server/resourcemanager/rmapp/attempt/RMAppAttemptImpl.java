@@ -552,22 +552,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
-operator|.
-name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|event
 operator|.
 name|EventHandler
@@ -1391,6 +1375,24 @@ operator|.
 name|resource
 operator|.
 name|Resources
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|util
+operator|.
+name|WebAppUtils
 import|;
 end_import
 
@@ -3132,7 +3134,7 @@ decl_stmt|;
 name|String
 name|proxy
 init|=
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
 name|getProxyHostAndPort
 argument_list|(
@@ -3227,9 +3229,9 @@ name|origTrackingUrl
 operator|=
 name|pjoin
 argument_list|(
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
-name|getRMWebAppHostAndPort
+name|getResolvedRMWebAppURLWithoutScheme
 argument_list|(
 name|conf
 argument_list|)
@@ -3250,6 +3252,8 @@ operator|=
 name|origTrackingUrl
 expr_stmt|;
 block|}
+comment|// This is only used for RMStateStore. Normal operation must invoke the secret
+comment|// manager to get the key and not use the local key directly.
 annotation|@
 name|Override
 DECL|method|getClientTokenMasterKey ()
@@ -4277,7 +4281,7 @@ operator|.
 name|getClientToAMTokenSecretManager
 argument_list|()
 operator|.
-name|registerApplication
+name|createMasterKey
 argument_list|(
 name|appAttempt
 operator|.
@@ -5027,6 +5031,28 @@ name|appAttempt
 operator|.
 name|attemptLaunched
 argument_list|()
+expr_stmt|;
+comment|// register the ClientTokenMasterKey after it is saved in the store,
+comment|// otherwise client may hold an invalid ClientToken after RM restarts.
+name|appAttempt
+operator|.
+name|rmContext
+operator|.
+name|getClientToAMTokenSecretManager
+argument_list|()
+operator|.
+name|registerApplication
+argument_list|(
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|appAttempt
+operator|.
+name|getClientTokenMasterKey
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 block|}

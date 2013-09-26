@@ -199,6 +199,8 @@ name|RpcProgramNfs3
 argument_list|(
 name|config
 argument_list|)
+argument_list|,
+name|config
 argument_list|)
 expr_stmt|;
 block|}

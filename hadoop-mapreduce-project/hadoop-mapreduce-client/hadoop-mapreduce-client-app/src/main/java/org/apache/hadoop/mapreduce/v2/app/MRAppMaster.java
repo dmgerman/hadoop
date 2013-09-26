@@ -160,6 +160,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicBoolean
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -2231,6 +2245,19 @@ name|recoveredJobStartTime
 init|=
 literal|0
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|field|safeToReportTerminationToUser
+specifier|protected
+name|AtomicBoolean
+name|safeToReportTerminationToUser
+init|=
+operator|new
+name|AtomicBoolean
+argument_list|(
+literal|false
+argument_list|)
+decl_stmt|;
 DECL|method|MRAppMaster (ApplicationAttemptId applicationAttemptId, ContainerId containerId, String nmHost, int nmPort, int nmHttpPort, long appSubmitTime, int maxAppAttempts)
 specifier|public
 name|MRAppMaster
@@ -3913,8 +3940,16 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
-comment|// TODO: Stop ClientService last, since only ClientService should wait for
-comment|// some time so clients can know the final states. Will be removed once RM come on.
+comment|// Except ClientService, other services are already stopped, it is safe to
+comment|// let clients know the final states. ClientService should wait for some
+comment|// time so clients have enough time to know the final states.
+name|safeToReportTerminationToUser
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 try|try
 block|{
 name|Thread
@@ -5524,6 +5559,21 @@ parameter_list|()
 block|{
 return|return
 name|isLastAMRetry
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|safeToReportTerminationToUser ()
+specifier|public
+name|boolean
+name|safeToReportTerminationToUser
+parameter_list|()
+block|{
+return|return
+name|safeToReportTerminationToUser
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 block|}

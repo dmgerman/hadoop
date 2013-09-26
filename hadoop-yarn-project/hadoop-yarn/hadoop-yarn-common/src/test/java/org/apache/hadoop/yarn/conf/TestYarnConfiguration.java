@@ -38,9 +38,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|webapp
 operator|.
-name|YarnConfiguration
+name|util
+operator|.
+name|WebAppUtils
 import|;
 end_import
 
@@ -80,9 +82,9 @@ decl_stmt|;
 name|String
 name|rmWebUrl
 init|=
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
-name|getRMWebAppURL
+name|getRMWebAppURLWithScheme
 argument_list|(
 name|conf
 argument_list|)
@@ -146,9 +148,9 @@ expr_stmt|;
 name|String
 name|rmWebUrl
 init|=
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
-name|getRMWebAppURL
+name|getRMWebAppURLWithScheme
 argument_list|(
 name|conf
 argument_list|)
