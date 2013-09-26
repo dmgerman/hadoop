@@ -133,6 +133,19 @@ name|String
 name|diagnosticsMessage
 parameter_list|)
 function_decl|;
+DECL|method|setRMVersion (String version)
+name|void
+name|setRMVersion
+parameter_list|(
+name|String
+name|version
+parameter_list|)
+function_decl|;
+DECL|method|getRMVersion ()
+name|String
+name|getRMVersion
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 
