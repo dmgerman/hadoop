@@ -1448,7 +1448,7 @@ argument_list|)
 decl_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Parent doesn't exist"
+literal|"Parent exists"
 argument_list|,
 name|fs
 operator|.
@@ -1531,7 +1531,9 @@ argument_list|)
 decl_stmt|;
 name|assertFalse
 argument_list|(
-literal|"Doesn't exist"
+literal|"Path exists: "
+operator|+
+name|path
 argument_list|,
 name|fs
 operator|.
