@@ -1522,6 +1522,23 @@ name|clusterTimeStamp
 return|;
 block|}
 annotation|@
+name|VisibleForTesting
+DECL|method|setClusterTimeStamp (long timestamp)
+specifier|protected
+specifier|static
+name|void
+name|setClusterTimeStamp
+parameter_list|(
+name|long
+name|timestamp
+parameter_list|)
+block|{
+name|clusterTimeStamp
+operator|=
+name|timestamp
+expr_stmt|;
+block|}
+annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
 specifier|protected
