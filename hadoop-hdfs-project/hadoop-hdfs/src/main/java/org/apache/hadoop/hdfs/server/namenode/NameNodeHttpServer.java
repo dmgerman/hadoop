@@ -718,11 +718,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_HTTPS_PORT_KEY
 argument_list|,
-name|infoHost
-operator|+
-literal|":"
-operator|+
-literal|0
+literal|"0"
 argument_list|)
 argument_list|)
 decl_stmt|;
