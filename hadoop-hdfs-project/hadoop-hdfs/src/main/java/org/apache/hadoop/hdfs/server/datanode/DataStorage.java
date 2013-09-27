@@ -88,67 +88,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Properties
+name|*
 import|;
 end_import
 
@@ -592,11 +532,13 @@ name|STORAGE_DIR_TMP
 init|=
 literal|"tmp"
 decl_stmt|;
-comment|/** Unique storage ID. {@see DataNode#createNewStorageId(int)} for details */
-DECL|field|storageID
+comment|/**    * Datanode UUID that this storage is currently attached to. This    *  is the same as the legacy StorageID for datanodes that were    *  upgraded from a pre-UUID version. For compatibility with prior    *  versions of Datanodes we cannot make this field a UUID.    */
+DECL|field|datanodeUuid
 specifier|private
 name|String
-name|storageID
+name|datanodeUuid
+init|=
+literal|null
 decl_stmt|;
 comment|// Flag to ensure we only initialize storage once
 DECL|field|initialized
@@ -642,10 +584,6 @@ operator|.
 name|DATA_NODE
 argument_list|)
 expr_stmt|;
-name|storageID
-operator|=
-literal|""
-expr_stmt|;
 block|}
 DECL|method|getBPStorage (String bpid)
 specifier|public
@@ -665,15 +603,12 @@ name|bpid
 argument_list|)
 return|;
 block|}
-DECL|method|DataStorage (StorageInfo storageInfo, String strgID)
+DECL|method|DataStorage (StorageInfo storageInfo)
 specifier|public
 name|DataStorage
 parameter_list|(
 name|StorageInfo
 name|storageInfo
-parameter_list|,
-name|String
-name|strgID
 parameter_list|)
 block|{
 name|super
@@ -685,71 +620,66 @@ argument_list|,
 name|storageInfo
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|storageID
-operator|=
-name|strgID
-expr_stmt|;
 block|}
-comment|/** @return storage ID. */
-DECL|method|getStorageID ()
+DECL|method|getDatanodeUuid ()
 specifier|public
 specifier|synchronized
 name|String
-name|getStorageID
+name|getDatanodeUuid
 parameter_list|()
 block|{
 return|return
-name|storageID
+name|datanodeUuid
 return|;
 block|}
-DECL|method|setStorageID (String newStorageID)
+DECL|method|setDatanodeUuid (String newDatanodeUuid)
 specifier|synchronized
 name|void
-name|setStorageID
+name|setDatanodeUuid
 parameter_list|(
 name|String
-name|newStorageID
+name|newDatanodeUuid
 parameter_list|)
 block|{
 name|this
 operator|.
-name|storageID
+name|datanodeUuid
 operator|=
-name|newStorageID
+name|newDatanodeUuid
 expr_stmt|;
 block|}
 comment|/** Create an ID for this storage. */
-DECL|method|createStorageID ()
+DECL|method|createStorageID (StorageDirectory sd)
 specifier|public
 specifier|synchronized
 name|void
 name|createStorageID
-parameter_list|()
+parameter_list|(
+name|StorageDirectory
+name|sd
+parameter_list|)
 block|{
 if|if
 condition|(
-name|storageID
-operator|!=
-literal|null
-operator|&&
-operator|!
-name|storageID
+name|sd
 operator|.
-name|isEmpty
+name|getStorageUuid
 argument_list|()
+operator|==
+literal|null
 condition|)
 block|{
-return|return;
-block|}
-name|storageID
-operator|=
+name|sd
+operator|.
+name|setStorageUuid
+argument_list|(
 name|DatanodeStorage
 operator|.
 name|newStorageID
 argument_list|()
+argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.    *<br>    * This method should be synchronized between multiple DN threads.  Only the     * first DN thread does DN level storage dir recoverTransitionRead.    *     * @param nsInfo namespace information    * @param dataDirs array of data storage directories    * @param startOpt startup option    * @throws IOException    */
 DECL|method|recoverTransitionRead (DataNode datanode, NamespaceInfo nsInfo, Collection<StorageLocation> dataDirs, StartupOption startOpt)
@@ -959,6 +889,11 @@ argument_list|(
 name|sd
 argument_list|,
 name|nsInfo
+argument_list|,
+name|datanode
+operator|.
+name|getDatanodeUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1085,11 +1020,15 @@ argument_list|()
 operator|:
 literal|"Data-node and name-node layout versions must be the same."
 assert|;
-block|}
-comment|// make sure we have storage id set - if not - generate new one
 name|createStorageID
-argument_list|()
+argument_list|(
+name|getStorageDir
+argument_list|(
+name|idx
+argument_list|)
+argument_list|)
 expr_stmt|;
+block|}
 comment|// 3. Update all storages. Some of them might have just been formatted.
 name|this
 operator|.
@@ -1383,7 +1322,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|format (StorageDirectory sd, NamespaceInfo nsInfo)
+DECL|method|format (StorageDirectory sd, NamespaceInfo nsInfo, String datanodeUuid)
 name|void
 name|format
 parameter_list|(
@@ -1392,6 +1331,9 @@ name|sd
 parameter_list|,
 name|NamespaceInfo
 name|nsInfo
+parameter_list|,
+name|String
+name|datanodeUuid
 parameter_list|)
 throws|throws
 name|IOException
@@ -1434,14 +1376,44 @@ name|cTime
 operator|=
 literal|0
 expr_stmt|;
-comment|// store storageID as it currently is
+name|this
+operator|.
+name|datanodeUuid
+operator|=
+name|datanodeUuid
+expr_stmt|;
+if|if
+condition|(
+name|sd
+operator|.
+name|getStorageUuid
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Assign a new Storage UUID.
+name|sd
+operator|.
+name|setStorageUuid
+argument_list|(
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|writeProperties
 argument_list|(
 name|sd
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*    * Set ClusterID, StorageID, StorageType, CTime into    * DataStorage VERSION file   */
+comment|/*    * Set ClusterID, StorageID, StorageType, CTime into    * DataStorage VERSION file.    * Always called just before writing the properties to    * the VERSION file.   */
 annotation|@
 name|Override
 DECL|method|setPropertiesFromFields (Properties props, StorageDirectory sd )
@@ -1513,10 +1485,40 @@ name|setProperty
 argument_list|(
 literal|"storageID"
 argument_list|,
-name|getStorageID
+name|sd
+operator|.
+name|getStorageUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|DATANODE_ID
+argument_list|,
+name|layoutVersion
+argument_list|)
+operator|&&
+name|datanodeUuid
+operator|!=
+literal|null
+condition|)
+block|{
+name|props
+operator|.
+name|setProperty
+argument_list|(
+literal|"datanodeUuid"
+argument_list|,
+name|datanodeUuid
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Set NamespaceID in version before federation
 if|if
 condition|(
@@ -1549,7 +1551,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/*    * Read ClusterID, StorageID, StorageType, CTime from     * DataStorage VERSION file and verify them.    */
+comment|/*    * Read ClusterID, StorageID, StorageType, CTime from     * DataStorage VERSION file and verify them.    * Always called just after reading the properties from the VERSION    * file.    */
 annotation|@
 name|Override
 DECL|method|setFieldsFromProperties (Properties props, StorageDirectory sd)
@@ -1658,13 +1660,19 @@ block|}
 name|String
 name|sid
 init|=
-name|getStorageID
+name|sd
+operator|.
+name|getStorageUuid
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
 operator|!
 operator|(
+name|sid
+operator|==
+literal|null
+operator|||
 name|sid
 operator|.
 name|equals
@@ -1704,19 +1712,100 @@ block|}
 if|if
 condition|(
 name|sid
-operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+operator|==
+literal|null
 condition|)
 block|{
-comment|// update id only if it was empty
-name|setStorageID
+comment|// update id only if it was null
+name|sd
+operator|.
+name|setStorageUuid
 argument_list|(
 name|ssid
 argument_list|)
 expr_stmt|;
+block|}
+comment|// Update the datanode UUID if present.
+if|if
+condition|(
+name|props
+operator|.
+name|getProperty
+argument_list|(
+literal|"datanodeUuid"
+argument_list|)
+operator|!=
+literal|null
+condition|)
+block|{
+name|String
+name|dnUuid
+init|=
+name|props
+operator|.
+name|getProperty
+argument_list|(
+literal|"datanodeUuid"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|getDatanodeUuid
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+name|setDatanodeUuid
+argument_list|(
+name|dnUuid
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|getDatanodeUuid
+argument_list|()
+operator|.
+name|compareTo
+argument_list|(
+name|dnUuid
+argument_list|)
+operator|!=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|InconsistentFSStateException
+argument_list|(
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+argument_list|,
+literal|"Root "
+operator|+
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+operator|+
+literal|": DatanodeUuid="
+operator|+
+name|dnUuid
+operator|+
+literal|", does not match "
+operator|+
+name|datanodeUuid
+operator|+
+literal|" from other"
+operator|+
+literal|" StorageDirectory."
+argument_list|)
+throw|;
+block|}
 block|}
 block|}
 annotation|@

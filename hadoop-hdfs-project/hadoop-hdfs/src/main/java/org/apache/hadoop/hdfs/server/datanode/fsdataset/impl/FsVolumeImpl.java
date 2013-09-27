@@ -1509,6 +1509,7 @@ block|}
 block|}
 block|}
 DECL|method|getStorageID ()
+specifier|public
 name|String
 name|getStorageID
 parameter_list|()

@@ -3007,6 +3007,7 @@ index|[
 literal|0
 index|]
 decl_stmt|;
+comment|// TODO: Needs to be fixed. DatanodeUuid is not storageID.
 name|node
 operator|.
 name|setDatanodeUuid
@@ -3307,6 +3308,7 @@ index|[
 literal|0
 index|]
 decl_stmt|;
+comment|// TODO: Needs to be fixed. DatanodeUuid is not storageID.
 name|node
 operator|.
 name|setDatanodeUuid

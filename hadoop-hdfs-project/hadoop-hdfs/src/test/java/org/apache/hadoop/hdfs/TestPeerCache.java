@@ -656,7 +656,7 @@ literal|"192.168.0.1"
 argument_list|,
 literal|"fakehostname"
 argument_list|,
-literal|"fake_storage_id"
+literal|"fake_datanode_id"
 argument_list|,
 literal|100
 argument_list|,
@@ -816,7 +816,7 @@ literal|"fakehostname_"
 operator|+
 name|i
 argument_list|,
-literal|"fake_storage_id"
+literal|"fake_datanode_id"
 argument_list|,
 literal|100
 argument_list|,
@@ -1020,7 +1020,7 @@ literal|"fakehostname_"
 operator|+
 name|i
 argument_list|,
-literal|"fake_storage_id_"
+literal|"fake_datanode_id_"
 operator|+
 name|i
 argument_list|,
@@ -1242,7 +1242,7 @@ literal|"192.168.0.1"
 argument_list|,
 literal|"fakehostname"
 argument_list|,
-literal|"fake_storage_id"
+literal|"fake_datanode_id"
 argument_list|,
 literal|100
 argument_list|,
@@ -1416,7 +1416,7 @@ literal|"192.168.0.1"
 argument_list|,
 literal|"fakehostname"
 argument_list|,
-literal|"fake_storage_id"
+literal|"fake_datanode_id"
 argument_list|,
 literal|100
 argument_list|,

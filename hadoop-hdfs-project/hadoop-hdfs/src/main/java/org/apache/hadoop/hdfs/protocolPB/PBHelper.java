@@ -2862,6 +2862,9 @@ name|DatanodeID
 name|dn
 parameter_list|)
 block|{
+comment|// For wire compatibility with older versions we transmit the StorageID
+comment|// which is the same as the DatanodeUuid. Since StorageID is a required
+comment|// field we pass the empty string if the DatanodeUuid is not yet known.
 return|return
 name|DatanodeIDProto
 operator|.
@@ -2884,20 +2887,29 @@ name|getHostName
 argument_list|()
 argument_list|)
 operator|.
-name|setDatanodeUuid
-argument_list|(
-name|dn
-operator|.
-name|getDatanodeUuid
-argument_list|()
-argument_list|)
-operator|.
 name|setXferPort
 argument_list|(
 name|dn
 operator|.
 name|getXferPort
 argument_list|()
+argument_list|)
+operator|.
+name|setDatanodeUuid
+argument_list|(
+name|dn
+operator|.
+name|getDatanodeUuid
+argument_list|()
+operator|!=
+literal|null
+condition|?
+name|dn
+operator|.
+name|getDatanodeUuid
+argument_list|()
+else|:
+literal|""
 argument_list|)
 operator|.
 name|setInfoPort

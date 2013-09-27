@@ -2295,6 +2295,7 @@ return|return
 literal|null
 return|;
 block|}
+comment|// TODO: Fix storageID
 specifier|final
 name|Map
 argument_list|<
@@ -2516,6 +2517,7 @@ return|return
 literal|null
 return|;
 block|}
+comment|// TODO: Fix storageID
 return|return
 operator|new
 name|DatanodeInfo

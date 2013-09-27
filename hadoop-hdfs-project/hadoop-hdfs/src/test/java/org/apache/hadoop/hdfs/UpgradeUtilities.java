@@ -2284,8 +2284,6 @@ operator|new
 name|DataStorage
 argument_list|(
 name|version
-argument_list|,
-literal|"doNotCare"
 argument_list|)
 decl_stmt|;
 name|File

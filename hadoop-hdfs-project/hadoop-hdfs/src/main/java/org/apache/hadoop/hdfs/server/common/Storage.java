@@ -1087,6 +1087,14 @@ name|FileLock
 name|lock
 decl_stmt|;
 comment|// storage lock
+comment|//TODO HDFS-2832: Consider moving this out of StorageDirectory.
+DECL|field|storageUuid
+name|String
+name|storageUuid
+init|=
+literal|null
+decl_stmt|;
+comment|// Storage directory identifier.
 DECL|method|StorageDirectory (File dir)
 specifier|public
 name|StorageDirectory
@@ -1126,6 +1134,32 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|setStorageUuid (String storageUuid)
+specifier|public
+name|void
+name|setStorageUuid
+parameter_list|(
+name|String
+name|storageUuid
+parameter_list|)
+block|{
+name|this
+operator|.
+name|storageUuid
+operator|=
+name|storageUuid
+expr_stmt|;
+block|}
+DECL|method|getStorageUuid ()
+specifier|public
+name|String
+name|getStorageUuid
+parameter_list|()
+block|{
+return|return
+name|storageUuid
+return|;
 block|}
 comment|/**      * Constructor      * @param dir directory corresponding to the storage      * @param dirType storage directory type      * @param useLock true - enables locking on the storage directory and false      *          disables locking      */
 DECL|method|StorageDirectory (File dir, StorageDirType dirType, boolean useLock)

@@ -4251,8 +4251,6 @@ operator|new
 name|DataStorage
 argument_list|(
 name|nsInfo
-argument_list|,
-literal|""
 argument_list|)
 argument_list|,
 operator|new
@@ -4265,13 +4263,7 @@ name|getVersion
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|DataNode
-operator|.
-name|setNewStorageID
-argument_list|(
-name|dnRegistration
-argument_list|)
-expr_stmt|;
+comment|// TODO: Fix NNThroughputBenchmark.
 comment|// register datanode
 name|dnRegistration
 operator|=
@@ -4789,11 +4781,6 @@ operator|new
 name|DataStorage
 argument_list|(
 name|nsInfo
-argument_list|,
-name|dnInfo
-operator|.
-name|getDatanodeUuid
-argument_list|()
 argument_list|)
 argument_list|,
 operator|new

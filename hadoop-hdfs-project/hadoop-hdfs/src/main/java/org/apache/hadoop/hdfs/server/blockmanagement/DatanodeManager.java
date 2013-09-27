@@ -2349,6 +2349,17 @@ name|String
 name|datanodeUuid
 parameter_list|)
 block|{
+if|if
+condition|(
+name|datanodeUuid
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 return|return
 name|datanodeMap
 operator|.
@@ -3863,9 +3874,7 @@ expr_stmt|;
 name|DatanodeDescriptor
 name|nodeS
 init|=
-name|datanodeMap
-operator|.
-name|get
+name|getDatanode
 argument_list|(
 name|nodeReg
 operator|.
@@ -4126,31 +4135,30 @@ block|}
 block|}
 return|return;
 block|}
-comment|// this is a new datanode serving a new data storage
+comment|// This is a new datanode.
 if|if
 condition|(
-literal|""
-operator|.
-name|equals
-argument_list|(
 name|nodeReg
 operator|.
 name|getDatanodeUuid
 argument_list|()
-argument_list|)
-condition|)
-block|{
-comment|// this data storage has never been registered
-comment|// it is either empty or was created by pre-storageID version of DFS
+operator|==
+literal|null
+operator|||
 name|nodeReg
 operator|.
-name|setDatanodeUuid
-argument_list|(
-name|DatanodeStorage
-operator|.
-name|newStorageID
+name|getDatanodeUuid
 argument_list|()
-argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// this data node has never been registered
+name|nodeReg
+operator|.
+name|generateNewDatanodeUuid
+argument_list|()
 expr_stmt|;
 if|if
 condition|(

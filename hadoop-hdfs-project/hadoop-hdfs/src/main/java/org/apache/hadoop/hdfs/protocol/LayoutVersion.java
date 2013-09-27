@@ -435,6 +435,17 @@ literal|"Record ClientId and CallId in editlog to "
 operator|+
 literal|"enable rebuilding retry cache in case of HA failover"
 argument_list|)
+block|,
+DECL|enumConstant|DATANODE_ID
+name|DATANODE_ID
+argument_list|(
+operator|-
+literal|48
+argument_list|,
+literal|"UUID per Datanode and distinct StorageID per storage "
+operator|+
+literal|"directory."
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final

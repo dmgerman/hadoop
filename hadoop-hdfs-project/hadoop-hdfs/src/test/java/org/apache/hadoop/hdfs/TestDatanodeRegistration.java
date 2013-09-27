@@ -929,7 +929,7 @@ name|DN_IP_ADDR
 argument_list|,
 name|DN_HOSTNAME
 argument_list|,
-literal|"fake-storage-id"
+literal|"fake-datanode-id"
 argument_list|,
 name|DN_XFER_PORT
 argument_list|,
@@ -1052,7 +1052,7 @@ name|DN_IP_ADDR
 argument_list|,
 name|DN_HOSTNAME
 argument_list|,
-literal|"changed-fake-storage-id"
+literal|"changed-fake-datanode-id"
 argument_list|,
 name|DN_XFER_PORT
 argument_list|,

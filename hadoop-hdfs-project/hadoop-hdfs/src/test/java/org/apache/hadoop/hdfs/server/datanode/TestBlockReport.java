@@ -2206,6 +2206,9 @@ argument_list|(
 name|DN_N1
 argument_list|)
 operator|.
+name|getDatanodeId
+argument_list|()
+operator|.
 name|getDatanodeUuid
 argument_list|()
 decl_stmt|;

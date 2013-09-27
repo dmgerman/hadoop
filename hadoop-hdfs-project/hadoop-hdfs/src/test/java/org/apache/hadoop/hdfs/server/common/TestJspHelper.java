@@ -2924,7 +2924,7 @@ literal|"127.0.0.1"
 argument_list|,
 literal|"localhost1"
 argument_list|,
-literal|"storage1"
+literal|"datanode1"
 argument_list|,
 literal|1234
 argument_list|,
@@ -2943,7 +2943,7 @@ literal|"127.0.0.2"
 argument_list|,
 literal|"localhost2"
 argument_list|,
-literal|"storage2"
+literal|"datanode2"
 argument_list|,
 literal|1235
 argument_list|,

@@ -4787,6 +4787,8 @@ argument_list|()
 argument_list|,
 name|hostName
 argument_list|,
+name|storage
+operator|.
 name|getDatanodeUuid
 argument_list|()
 argument_list|,
@@ -4851,19 +4853,16 @@ if|if
 condition|(
 name|storage
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
-operator|.
-name|equals
-argument_list|(
-literal|""
-argument_list|)
+operator|==
+literal|null
 condition|)
 block|{
-comment|// This is a fresh datanode, persist the NN-provided storage ID
+comment|// This is a fresh datanode, persist the NN-provided Datanode ID
 name|storage
 operator|.
-name|setStorageID
+name|setDatanodeUuid
 argument_list|(
 name|bpRegistration
 operator|.
@@ -4880,14 +4879,14 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"New storage id "
+literal|"Datanode ID "
 operator|+
 name|bpRegistration
 operator|.
 name|getDatanodeUuid
 argument_list|()
 operator|+
-literal|" is assigned to data-node "
+literal|" is assigned to new storage "
 operator|+
 name|bpRegistration
 argument_list|)
@@ -4899,7 +4898,7 @@ condition|(
 operator|!
 name|storage
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|.
 name|equals
@@ -4915,7 +4914,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Inconsistent storage IDs. Name-node returned "
+literal|"Inconsistent Datanode IDs. Name-node returned "
 operator|+
 name|bpRegistration
 operator|.
@@ -4926,7 +4925,7 @@ literal|". Expecting "
 operator|+
 name|storage
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 throw|;
@@ -5500,18 +5499,6 @@ name|getPort
 argument_list|()
 return|;
 block|}
-DECL|method|getDatanodeUuid ()
-name|String
-name|getDatanodeUuid
-parameter_list|()
-block|{
-return|return
-name|storage
-operator|.
-name|getStorageID
-argument_list|()
-return|;
-block|}
 comment|/**    * @return name useful for logging    */
 DECL|method|getDisplayName ()
 specifier|public
@@ -5813,36 +5800,6 @@ block|{
 return|return
 name|metrics
 return|;
-block|}
-DECL|method|setNewStorageID (DatanodeID dnId)
-specifier|public
-specifier|static
-name|void
-name|setNewStorageID
-parameter_list|(
-name|DatanodeID
-name|dnId
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Datanode is "
-operator|+
-name|dnId
-argument_list|)
-expr_stmt|;
-name|dnId
-operator|.
-name|setDatanodeUuid
-argument_list|(
-name|DatanodeStorage
-operator|.
-name|newStorageID
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 comment|/** Ensure the authentication method is kerberos */
 DECL|method|checkKerberosAuthMethod (String msg)
@@ -9244,8 +9201,10 @@ operator|+
 name|getDisplayName
 argument_list|()
 operator|+
-literal|"', storageID='"
+literal|"', datanodeUuid='"
 operator|+
+name|storage
+operator|.
 name|getDatanodeUuid
 argument_list|()
 operator|+
@@ -9509,7 +9468,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * This method is used for testing.     * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is simulated.    *     * @return the fsdataset that stores the blocks    */
+comment|/**    * Examples are adding and deleting blocks directly.    * The most common usage will be when the data node's storage is simulated.    *     * @return the fsdataset that stores the blocks    */
 DECL|method|getFSDataset ()
 name|FsDatasetSpi
 argument_list|<
@@ -12037,6 +11996,25 @@ parameter_list|()
 block|{
 return|return
 name|dnConf
+return|;
+block|}
+DECL|method|getDatanodeUuid ()
+specifier|public
+name|String
+name|getDatanodeUuid
+parameter_list|()
+block|{
+return|return
+name|id
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|id
+operator|.
+name|getDatanodeUuid
+argument_list|()
 return|;
 block|}
 DECL|method|shouldRun ()
