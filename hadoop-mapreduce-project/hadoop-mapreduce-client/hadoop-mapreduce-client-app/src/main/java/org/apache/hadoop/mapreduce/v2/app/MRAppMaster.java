@@ -3796,7 +3796,83 @@ comment|// job has finished
 comment|// this is the only job, so shut down the Appmaster
 comment|// note in a workflow scenario, this may lead to creation of a new
 comment|// job (FIXME?)
-comment|// Send job-end notification
+try|try
+block|{
+comment|//if isLastAMRetry comes as true, should never set it to false
+if|if
+condition|(
+operator|!
+name|isLastAMRetry
+condition|)
+block|{
+if|if
+condition|(
+operator|(
+operator|(
+name|JobImpl
+operator|)
+name|job
+operator|)
+operator|.
+name|getInternalState
+argument_list|()
+operator|!=
+name|JobStateInternal
+operator|.
+name|REBOOT
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"We are finishing cleanly so this is the last retry"
+argument_list|)
+expr_stmt|;
+name|isLastAMRetry
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+name|notifyIsLastAMRetry
+argument_list|(
+name|isLastAMRetry
+argument_list|)
+expr_stmt|;
+comment|// Stop all services
+comment|// This will also send the final report to the ResourceManager
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Calling stop for all the services"
+argument_list|)
+expr_stmt|;
+name|MRAppMaster
+operator|.
+name|this
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+name|isLastAMRetry
+condition|)
+block|{
+comment|// Except ClientService, other services are already stopped, it is safe to
+comment|// let clients know the final states. ClientService should wait for some
+comment|// time so clients have enough time to know the final states.
+name|safeToReportTerminationToUser
+operator|.
+name|set
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// Send job-end notification when it is safe to report termination to
+comment|// users and it is the last AM retry
 if|if
 condition|(
 name|getConfig
@@ -3880,76 +3956,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-try|try
-block|{
-comment|//if isLastAMRetry comes as true, should never set it to false
-if|if
-condition|(
-operator|!
-name|isLastAMRetry
-condition|)
-block|{
-if|if
-condition|(
-operator|(
-operator|(
-name|JobImpl
-operator|)
-name|job
-operator|)
-operator|.
-name|getInternalState
-argument_list|()
-operator|!=
-name|JobStateInternal
-operator|.
-name|REBOOT
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"We are finishing cleanly so this is the last retry"
-argument_list|)
-expr_stmt|;
-name|isLastAMRetry
-operator|=
-literal|true
-expr_stmt|;
 block|}
-block|}
-name|notifyIsLastAMRetry
-argument_list|(
-name|isLastAMRetry
-argument_list|)
-expr_stmt|;
-comment|// Stop all services
-comment|// This will also send the final report to the ResourceManager
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Calling stop for all the services"
-argument_list|)
-expr_stmt|;
-name|MRAppMaster
-operator|.
-name|this
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-comment|// Except ClientService, other services are already stopped, it is safe to
-comment|// let clients know the final states. ClientService should wait for some
-comment|// time so clients have enough time to know the final states.
-name|safeToReportTerminationToUser
-operator|.
-name|set
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 try|try
 block|{
 name|Thread
