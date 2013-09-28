@@ -1163,6 +1163,16 @@ operator|.
 name|getFinishTime
 argument_list|()
 argument_list|)
+operator|.
+name|add
+argument_list|(
+literal|"finalStatus"
+argument_list|,
+name|app
+operator|.
+name|getFinalApplicationStatus
+argument_list|()
+argument_list|)
 decl_stmt|;
 return|return
 name|summary
