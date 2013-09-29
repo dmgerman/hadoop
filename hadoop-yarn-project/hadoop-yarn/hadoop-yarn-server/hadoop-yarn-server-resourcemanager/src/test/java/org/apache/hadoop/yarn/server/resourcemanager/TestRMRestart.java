@@ -4801,6 +4801,8 @@ name|rmAppManager
 argument_list|,
 name|applicationACLsManager
 argument_list|,
+literal|null
+argument_list|,
 name|rmDTSecretManager
 argument_list|)
 block|{
