@@ -32,26 +32,8 @@ name|XDR
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|oncrpc
-operator|.
-name|security
-operator|.
-name|RpcAuthInfo
-operator|.
-name|AuthFlavor
-import|;
-end_import
-
 begin_comment
-comment|/**  * Base class for verifier. Currently our authentication only supports 3 types  * of auth flavors: {@link AuthFlavor#AUTH_NONE}, {@link AuthFlavor#AUTH_SYS},  * and {@link AuthFlavor#RPCSEC_GSS}. Thus for verifier we only need to handle  * AUTH_NONE and RPCSEC_GSS  */
+comment|/**  * Base class for verifier. Currently our authentication only supports 3 types  * of auth flavors: {@link RpcAuthInfo.AuthFlavor#AUTH_NONE}, {@link RpcAuthInfo.AuthFlavor#AUTH_SYS},  * and {@link RpcAuthInfo.AuthFlavor#RPCSEC_GSS}. Thus for verifier we only need to handle  * AUTH_NONE and RPCSEC_GSS  */
 end_comment
 
 begin_class
@@ -63,6 +45,17 @@ name|Verifier
 extends|extends
 name|RpcAuthInfo
 block|{
+DECL|field|VERIFIER_NONE
+specifier|public
+specifier|static
+specifier|final
+name|Verifier
+name|VERIFIER_NONE
+init|=
+operator|new
+name|VerifierNone
+argument_list|()
+decl_stmt|;
 DECL|method|Verifier (AuthFlavor flavor)
 specifier|protected
 name|Verifier

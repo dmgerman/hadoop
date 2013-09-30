@@ -296,6 +296,19 @@ return|return
 name|n
 return|;
 block|}
+DECL|method|buffer ()
+specifier|public
+name|ByteBuffer
+name|buffer
+parameter_list|()
+block|{
+return|return
+name|buf
+operator|.
+name|duplicate
+argument_list|()
+return|;
+block|}
 DECL|method|size ()
 specifier|public
 name|int
@@ -915,7 +928,6 @@ name|len
 return|;
 block|}
 DECL|method|recordMark (int size, boolean last)
-specifier|private
 specifier|static
 name|byte
 index|[]
@@ -1172,9 +1184,10 @@ block|{
 name|ByteBuffer
 name|d
 init|=
-name|buf
+name|asReadOnlyWrap
+argument_list|()
 operator|.
-name|duplicate
+name|buffer
 argument_list|()
 decl_stmt|;
 name|byte
@@ -1186,15 +1199,10 @@ name|byte
 index|[
 name|d
 operator|.
-name|position
+name|remaining
 argument_list|()
 index|]
 decl_stmt|;
-name|d
-operator|.
-name|flip
-argument_list|()
-expr_stmt|;
 name|d
 operator|.
 name|get
