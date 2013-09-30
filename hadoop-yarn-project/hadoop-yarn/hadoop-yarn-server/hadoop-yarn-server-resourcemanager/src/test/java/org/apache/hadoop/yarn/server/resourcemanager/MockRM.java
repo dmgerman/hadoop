@@ -2332,6 +2332,8 @@ name|rmAppManager
 argument_list|,
 name|applicationACLsManager
 argument_list|,
+name|queueACLsManager
+argument_list|,
 name|rmDTSecretManager
 argument_list|)
 block|{

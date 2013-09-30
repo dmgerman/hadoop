@@ -594,6 +594,51 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"store.class"
 decl_stmt|;
+comment|/**    * Enable the history server to store server state and recover server state    * upon startup.    */
+DECL|field|MR_HS_RECOVERY_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_RECOVERY_ENABLE
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"recovery.enable"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HS_RECOVERY_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_MR_HS_RECOVERY_ENABLE
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * The HistoryServerStateStoreService class to store and recover server state    */
+DECL|field|MR_HS_STATE_STORE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_STATE_STORE
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"recovery.store.class"
+decl_stmt|;
+comment|/**    * The URI where server state will be stored when    * HistoryServerFileSystemStateStoreService is configured as the state store    */
+DECL|field|MR_HS_FS_STATE_STORE_URI
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_FS_STATE_STORE_URI
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"recovery.store.fs.uri"
+decl_stmt|;
 comment|/** Whether to use fixed ports with the minicluster. */
 DECL|field|MR_HISTORY_MINICLUSTER_FIXED_PORTS
 specifier|public

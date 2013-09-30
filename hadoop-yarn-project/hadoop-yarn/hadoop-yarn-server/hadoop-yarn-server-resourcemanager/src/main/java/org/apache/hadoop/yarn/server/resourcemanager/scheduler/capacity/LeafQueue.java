@@ -3236,6 +3236,16 @@ name|SUBMIT_APPLICATIONS
 argument_list|,
 name|userUgi
 argument_list|)
+operator|&&
+operator|!
+name|hasAccess
+argument_list|(
+name|QueueACL
+operator|.
+name|ADMINISTER_QUEUE
+argument_list|,
+name|userUgi
+argument_list|)
 condition|)
 block|{
 throw|throw

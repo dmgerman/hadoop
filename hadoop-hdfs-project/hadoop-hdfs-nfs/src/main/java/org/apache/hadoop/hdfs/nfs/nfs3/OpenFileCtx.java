@@ -2274,7 +2274,9 @@ name|WriteStableHow
 operator|.
 name|UNSTABLE
 argument_list|,
-literal|0
+name|Nfs3Constant
+operator|.
+name|WRITE_COMMIT_VERF
 argument_list|)
 expr_stmt|;
 block|}
@@ -2978,7 +2980,9 @@ literal|0
 argument_list|,
 name|stableHow
 argument_list|,
-literal|0
+name|Nfs3Constant
+operator|.
+name|WRITE_COMMIT_VERF
 argument_list|)
 expr_stmt|;
 block|}
@@ -3062,7 +3066,9 @@ literal|0
 argument_list|,
 name|stableHow
 argument_list|,
-literal|0
+name|Nfs3Constant
+operator|.
+name|WRITE_COMMIT_VERF
 argument_list|)
 return|;
 block|}
@@ -3088,7 +3094,9 @@ name|count
 argument_list|,
 name|stableHow
 argument_list|,
-literal|0
+name|Nfs3Constant
+operator|.
+name|WRITE_COMMIT_VERF
 argument_list|)
 expr_stmt|;
 block|}

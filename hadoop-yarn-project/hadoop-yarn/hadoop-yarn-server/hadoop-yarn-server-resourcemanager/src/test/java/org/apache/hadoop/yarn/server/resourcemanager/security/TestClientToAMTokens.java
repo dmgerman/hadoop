@@ -1228,6 +1228,10 @@ name|applicationACLsManager
 argument_list|,
 name|this
 operator|.
+name|queueACLsManager
+argument_list|,
+name|this
+operator|.
 name|rmDTSecretManager
 argument_list|)
 return|;

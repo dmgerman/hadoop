@@ -320,6 +320,11 @@ throw|;
 block|}
 block|}
 comment|/**    * @param value         json string    * @param typeReference class type reference    * @param<T>           type    * @return deserialized  T object    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|toObject (String value, final TypeReference<T> typeReference)
 specifier|public
 specifier|static
@@ -345,6 +350,9 @@ block|{
 try|try
 block|{
 return|return
+operator|(
+name|T
+operator|)
 name|jsonMapper
 operator|.
 name|readValue
@@ -389,6 +397,11 @@ throw|;
 block|}
 block|}
 comment|/**    * @param value          json string    * @param collectionType class describing how to deserialize collection of objects    * @param<T>            type    * @return deserialized  T object    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|toObject (String value, final CollectionType collectionType)
 specifier|public
 specifier|static
@@ -411,6 +424,9 @@ block|{
 try|try
 block|{
 return|return
+operator|(
+name|T
+operator|)
 name|jsonMapper
 operator|.
 name|readValue

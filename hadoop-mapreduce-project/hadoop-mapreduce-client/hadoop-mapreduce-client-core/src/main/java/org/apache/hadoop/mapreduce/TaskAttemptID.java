@@ -194,6 +194,47 @@ name|id
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Constructs a TaskId object from given parts.    * @param jtIdentifier jobTracker identifier    * @param jobId job number    * @param isMap whether the tip is a map    * @param taskId taskId number    * @param id the task attempt number    */
+annotation|@
+name|Deprecated
+DECL|method|TaskAttemptID (String jtIdentifier, int jobId, boolean isMap, int taskId, int id)
+specifier|public
+name|TaskAttemptID
+parameter_list|(
+name|String
+name|jtIdentifier
+parameter_list|,
+name|int
+name|jobId
+parameter_list|,
+name|boolean
+name|isMap
+parameter_list|,
+name|int
+name|taskId
+parameter_list|,
+name|int
+name|id
+parameter_list|)
+block|{
+name|this
+argument_list|(
+operator|new
+name|TaskID
+argument_list|(
+name|jtIdentifier
+argument_list|,
+name|jobId
+argument_list|,
+name|isMap
+argument_list|,
+name|taskId
+argument_list|)
+argument_list|,
+name|id
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|TaskAttemptID ()
 specifier|public
 name|TaskAttemptID

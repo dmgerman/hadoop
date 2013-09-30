@@ -760,6 +760,7 @@ block|}
 comment|/**    * Print all of the thread's information and stack traces.    *     * @param stream the stream to    * @param title a string title for the stack trace    */
 DECL|method|printThreadInfo (PrintWriter stream, String title)
 specifier|public
+specifier|synchronized
 specifier|static
 name|void
 name|printThreadInfo
