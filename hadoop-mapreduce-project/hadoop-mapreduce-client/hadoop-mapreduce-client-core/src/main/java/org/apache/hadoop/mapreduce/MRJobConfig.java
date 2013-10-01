@@ -2445,6 +2445,16 @@ name|MAPREDUCE_APPLICATION_CLASSPATH
 init|=
 literal|"mapreduce.application.classpath"
 decl_stmt|;
+comment|/**    * Path to MapReduce framework archive    */
+DECL|field|MAPREDUCE_APPLICATION_FRAMEWORK_PATH
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_APPLICATION_FRAMEWORK_PATH
+init|=
+literal|"mapreduce.application.framework.path"
+decl_stmt|;
 comment|/**    * Default CLASSPATH for all YARN MapReduce applications.    */
 DECL|field|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
 specifier|public
