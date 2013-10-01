@@ -40,7 +40,7 @@ name|webapp
 operator|.
 name|AMParams
 operator|.
-name|TASK_TYPE
+name|TASK_ID
 import|;
 end_import
 
@@ -62,7 +62,7 @@ name|webapp
 operator|.
 name|AMParams
 operator|.
-name|TASK_ID
+name|TASK_TYPE
 import|;
 end_import
 
@@ -218,20 +218,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|http
-operator|.
-name|HttpConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|v2
@@ -316,11 +302,9 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|util
 operator|.
-name|webapp
-operator|.
-name|WebAppUtil
+name|MRApps
 import|;
 end_import
 
@@ -338,21 +322,7 @@ name|v2
 operator|.
 name|util
 operator|.
-name|MRApps
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|util
-operator|.
-name|StringUtils
+name|MRWebAppUtil
 import|;
 end_import
 
@@ -443,26 +413,6 @@ operator|.
 name|Hamlet
 operator|.
 name|TBODY
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|webapp
-operator|.
-name|hamlet
-operator|.
-name|Hamlet
-operator|.
-name|TD
 import|;
 end_import
 
@@ -1127,9 +1077,9 @@ name|append
 argument_list|(
 literal|"<a class='nodelink' href='"
 operator|+
-name|WebAppUtil
+name|MRWebAppUtil
 operator|.
-name|getSchemePrefix
+name|getYARNWebappScheme
 argument_list|()
 operator|+
 name|nodeHttpAddr

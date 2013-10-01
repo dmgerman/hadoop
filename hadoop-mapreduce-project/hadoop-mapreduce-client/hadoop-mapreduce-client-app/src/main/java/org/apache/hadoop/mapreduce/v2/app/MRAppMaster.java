@@ -1468,11 +1468,9 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|app
+name|jobhistory
 operator|.
-name|webapp
-operator|.
-name|WebAppUtil
+name|JHAdminConfig
 import|;
 end_import
 
@@ -1527,6 +1525,24 @@ operator|.
 name|util
 operator|.
 name|MRBuilderUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|util
+operator|.
+name|MRWebAppUtil
 import|;
 end_import
 
@@ -7382,40 +7398,21 @@ comment|// Explicitly disabling SSL for map reduce task as we can't allow MR use
 comment|// to gain access to keystore file for opening SSL listener. We can trust
 comment|// RM/NM to issue SSL certificates but definitely not MR-AM as it is
 comment|// running in user-land.
+name|MRWebAppUtil
+operator|.
+name|initialize
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|HttpConfig
 operator|.
 name|setSecure
 argument_list|(
-name|conf
+name|MRWebAppUtil
 operator|.
-name|getBoolean
-argument_list|(
-name|MRConfig
-operator|.
-name|SSL_ENABLED_KEY
-argument_list|,
-name|MRConfig
-operator|.
-name|SSL_ENABLED_KEY_DEFAULT
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|WebAppUtil
-operator|.
-name|setSSLEnabledInYARN
-argument_list|(
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|CommonConfigurationKeysPublic
-operator|.
-name|HADOOP_SSL_ENABLED_KEY
-argument_list|,
-name|CommonConfigurationKeysPublic
-operator|.
-name|HADOOP_SSL_ENABLED_DEFAULT
-argument_list|)
+name|isSSLEnabledInMRAM
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// log the system properties

@@ -330,7 +330,7 @@ specifier|final
 name|String
 name|SSL_ENABLED_KEY
 init|=
-literal|"mapreduce.ssl.enabled"
+literal|"mapreduce.am.ssl.enabled"
 decl_stmt|;
 DECL|field|SSL_ENABLED_KEY_DEFAULT
 specifier|public
