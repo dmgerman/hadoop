@@ -677,6 +677,13 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 block|}
 name|Assert
 operator|.
@@ -1203,6 +1210,13 @@ name|conts
 operator|.
 name|size
 argument_list|()
+expr_stmt|;
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
 expr_stmt|;
 block|}
 name|Assert
