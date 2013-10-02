@@ -1901,6 +1901,17 @@ literal|0
 argument_list|)
 expr_stmt|;
 break|break;
+case|case
+name|SaslAuthenticated
+case|:
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Successfully authenticated to ZooKeeper using SASL."
+argument_list|)
+expr_stmt|;
+break|break;
 default|default:
 name|fatalError
 argument_list|(
