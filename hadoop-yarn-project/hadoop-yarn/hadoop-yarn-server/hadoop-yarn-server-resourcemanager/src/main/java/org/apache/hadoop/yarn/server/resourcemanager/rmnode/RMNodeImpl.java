@@ -2485,6 +2485,19 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rmNode
+operator|.
+name|getState
+argument_list|()
+operator|!=
+name|NodeState
+operator|.
+name|UNHEALTHY
+condition|)
+block|{
+comment|// Only add new node if old state is not UNHEALTHY
 name|rmNode
 operator|.
 name|context
@@ -2504,6 +2517,7 @@ name|rmNode
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{
