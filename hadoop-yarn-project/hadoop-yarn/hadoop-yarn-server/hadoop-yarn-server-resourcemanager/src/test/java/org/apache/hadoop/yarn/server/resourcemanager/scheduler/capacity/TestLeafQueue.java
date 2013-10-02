@@ -2300,10 +2300,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -3008,10 +3004,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -3043,10 +3035,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -4133,10 +4121,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -4168,10 +4152,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|/**      * Start testing...      */
@@ -4686,10 +4666,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -4721,10 +4697,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|/**      * Start testing...      */
@@ -4971,10 +4943,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5129,10 +5097,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -5509,10 +5473,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -5544,10 +5504,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|/**       * Start testing...       */
@@ -5754,10 +5710,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_3
@@ -5789,10 +5741,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Now allocations should goto app_2 since
@@ -6824,10 +6772,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -6859,10 +6803,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -7725,10 +7665,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Setup app_1 to request a 4GB container on host_0 and
@@ -7827,10 +7763,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|appRequests_1
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -8641,10 +8573,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_1
@@ -8676,10 +8604,6 @@ argument_list|,
 name|recordFactory
 argument_list|)
 argument_list|)
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -9701,10 +9625,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -10349,10 +10269,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -10987,10 +10903,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -12049,10 +11961,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// Start testing...
@@ -12094,10 +12002,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// NODE_LOCAL - node_0_1
@@ -12295,10 +12199,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 comment|// No allocation on node_0_1 even though it's node/rack local since
@@ -13799,7 +13699,12 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
+argument_list|)
+expr_stmt|;
+name|app_0
+operator|.
+name|updateBlacklist
+argument_list|(
 name|Collections
 operator|.
 name|singletonList
@@ -13998,7 +13903,12 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
+argument_list|)
+expr_stmt|;
+name|app_0
+operator|.
+name|updateBlacklist
+argument_list|(
 name|Collections
 operator|.
 name|singletonList
@@ -14102,7 +14012,12 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
+argument_list|)
+expr_stmt|;
+name|app_0
+operator|.
+name|updateBlacklist
+argument_list|(
 name|Collections
 operator|.
 name|singletonList
@@ -14211,7 +14126,12 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
+argument_list|)
+expr_stmt|;
+name|app_0
+operator|.
+name|updateBlacklist
+argument_list|(
 literal|null
 argument_list|,
 name|Collections
@@ -14373,10 +14293,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|app_0_requests_0
-argument_list|,
-literal|null
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|app_0_requests_0

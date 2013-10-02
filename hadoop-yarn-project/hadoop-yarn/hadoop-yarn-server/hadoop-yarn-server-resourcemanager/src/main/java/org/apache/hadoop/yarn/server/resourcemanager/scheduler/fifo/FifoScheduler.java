@@ -2295,10 +2295,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|ask
-argument_list|,
-name|blacklistAdditions
-argument_list|,
-name|blacklistRemovals
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2340,6 +2336,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|application
+operator|.
+name|updateBlacklist
+argument_list|(
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|Allocation
@@ -2357,8 +2362,9 @@ argument_list|)
 return|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getApplication ( ApplicationAttemptId applicationAttemptId)
-specifier|private
 name|FiCaSchedulerApp
 name|getApplication
 parameter_list|(
