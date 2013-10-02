@@ -764,11 +764,6 @@ specifier|protected
 name|URI
 name|nnUri
 decl_stmt|;
-DECL|field|nnSecureUri
-specifier|protected
-name|URI
-name|nnSecureUri
-decl_stmt|;
 DECL|field|HFTP_TIMEZONE
 specifier|public
 specifier|static
@@ -944,28 +939,7 @@ name|DFS_NAMENODE_HTTP_PORT_DEFAULT
 argument_list|)
 return|;
 block|}
-DECL|method|getDefaultSecurePort ()
-specifier|protected
-name|int
-name|getDefaultSecurePort
-parameter_list|()
-block|{
-return|return
-name|getConf
-argument_list|()
-operator|.
-name|getInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_HTTPS_PORT_KEY
-argument_list|,
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_HTTPS_PORT_DEFAULT
-argument_list|)
-return|;
-block|}
+comment|/**    *  We generate the address with one of the following ports, in    *  order of preference.    *  1. Port from the hftp URI e.g. hftp://namenode:4000/ will return 4000.    *  2. Port configured via DFS_NAMENODE_HTTP_PORT_KEY    *  3. DFS_NAMENODE_HTTP_PORT_DEFAULT i.e. 50070.    *    * @param uri    * @return    */
 DECL|method|getNamenodeAddr (URI uri)
 specifier|protected
 name|InetSocketAddress
@@ -991,31 +965,6 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|getNamenodeSecureAddr (URI uri)
-specifier|protected
-name|InetSocketAddress
-name|getNamenodeSecureAddr
-parameter_list|(
-name|URI
-name|uri
-parameter_list|)
-block|{
-comment|// must only use the host and the configured https port
-return|return
-name|NetUtils
-operator|.
-name|createSocketAddrForHost
-argument_list|(
-name|uri
-operator|.
-name|getHost
-argument_list|()
-argument_list|,
-name|getDefaultSecurePort
-argument_list|()
-argument_list|)
-return|;
-block|}
 DECL|method|getNamenodeUri (URI uri)
 specifier|protected
 name|URI
@@ -1030,7 +979,8 @@ name|DFSUtil
 operator|.
 name|createUri
 argument_list|(
-literal|"http"
+name|getUnderlyingProtocol
+argument_list|()
 argument_list|,
 name|getNamenodeAddr
 argument_list|(
@@ -1039,29 +989,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getNamenodeSecureUri (URI uri)
-specifier|protected
-name|URI
-name|getNamenodeSecureUri
-parameter_list|(
-name|URI
-name|uri
-parameter_list|)
-block|{
-return|return
-name|DFSUtil
-operator|.
-name|createUri
-argument_list|(
-literal|"http"
-argument_list|,
-name|getNamenodeSecureAddr
-argument_list|(
-name|uri
-argument_list|)
-argument_list|)
-return|;
-block|}
+comment|/**    * See the documentation of {@Link #getNamenodeAddr(URI)} for the logic    * behind selecting the canonical service name.    * @return    */
 annotation|@
 name|Override
 DECL|method|getCanonicalServiceName ()
@@ -1070,14 +998,12 @@ name|String
 name|getCanonicalServiceName
 parameter_list|()
 block|{
-comment|// unlike other filesystems, hftp's service is the secure port, not the
-comment|// actual port in the uri
 return|return
 name|SecurityUtil
 operator|.
 name|buildTokenService
 argument_list|(
-name|nnSecureUri
+name|nnUri
 argument_list|)
 operator|.
 name|toString
@@ -1166,15 +1092,6 @@ operator|.
 name|nnUri
 operator|=
 name|getNamenodeUri
-argument_list|(
-name|name
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|nnSecureUri
-operator|=
-name|getNamenodeSecureUri
 argument_list|(
 name|name
 argument_list|)
@@ -1352,7 +1269,7 @@ name|hftpTokenSelector
 operator|.
 name|selectToken
 argument_list|(
-name|nnSecureUri
+name|nnUri
 argument_list|,
 name|ugi
 operator|.
@@ -1377,6 +1294,17 @@ parameter_list|()
 block|{
 return|return
 name|renewToken
+return|;
+block|}
+comment|/**    * Return the underlying protocol that is used to talk to the namenode.    */
+DECL|method|getUnderlyingProtocol ()
+specifier|protected
+name|String
+name|getUnderlyingProtocol
+parameter_list|()
+block|{
+return|return
+literal|"http"
 return|;
 block|}
 annotation|@
@@ -1488,7 +1416,7 @@ specifier|final
 name|String
 name|nnHttpUrl
 init|=
-name|nnSecureUri
+name|nnUri
 operator|.
 name|toString
 argument_list|()
@@ -1675,7 +1603,8 @@ init|=
 operator|new
 name|URL
 argument_list|(
-literal|"http"
+name|getUnderlyingProtocol
+argument_list|()
 argument_list|,
 name|nnUri
 operator|.
@@ -4051,6 +3980,16 @@ return|return
 literal|true
 return|;
 block|}
+DECL|method|getUnderlyingProtocol ()
+specifier|protected
+name|String
+name|getUnderlyingProtocol
+parameter_list|()
+block|{
+return|return
+literal|"http"
+return|;
+block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -4084,7 +4023,6 @@ operator|.
 name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
-comment|// use http to renew the token
 name|InetSocketAddress
 name|serviceAddr
 init|=
@@ -4104,7 +4042,8 @@ name|DFSUtil
 operator|.
 name|createUri
 argument_list|(
-literal|"http"
+name|getUnderlyingProtocol
+argument_list|()
 argument_list|,
 name|serviceAddr
 argument_list|)
@@ -4155,7 +4094,6 @@ operator|.
 name|checkTGTAndReloginFromKeytab
 argument_list|()
 expr_stmt|;
-comment|// use http to cancel the token
 name|InetSocketAddress
 name|serviceAddr
 init|=
@@ -4174,7 +4112,8 @@ name|DFSUtil
 operator|.
 name|createUri
 argument_list|(
-literal|"http"
+name|getUnderlyingProtocol
+argument_list|()
 argument_list|,
 name|serviceAddr
 argument_list|)
