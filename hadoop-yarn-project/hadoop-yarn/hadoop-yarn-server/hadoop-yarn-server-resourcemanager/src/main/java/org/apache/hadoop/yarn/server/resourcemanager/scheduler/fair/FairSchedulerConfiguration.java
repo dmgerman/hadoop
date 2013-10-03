@@ -326,6 +326,27 @@ name|EVENT_LOG_DIR
 init|=
 literal|"eventlog.dir"
 decl_stmt|;
+comment|/** Whether pools can be created that were not specified in the FS configuration file    */
+DECL|field|ALLOW_UNDECLARED_POOLS
+specifier|protected
+specifier|static
+specifier|final
+name|String
+name|ALLOW_UNDECLARED_POOLS
+init|=
+name|CONF_PREFIX
+operator|+
+literal|"allow-undeclared-pools"
+decl_stmt|;
+DECL|field|DEFAULT_ALLOW_UNDECLARED_POOLS
+specifier|protected
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_ALLOW_UNDECLARED_POOLS
+init|=
+literal|true
+decl_stmt|;
 comment|/** Whether to use the user name as the queue name (instead of "default") if    * the request does not specify a queue. */
 DECL|field|USER_AS_DEFAULT_QUEUE
 specifier|protected
@@ -748,6 +769,21 @@ argument_list|(
 name|incrementMemory
 argument_list|,
 name|incrementCores
+argument_list|)
+return|;
+block|}
+DECL|method|getAllowUndeclaredPools ()
+specifier|public
+name|boolean
+name|getAllowUndeclaredPools
+parameter_list|()
+block|{
+return|return
+name|getBoolean
+argument_list|(
+name|ALLOW_UNDECLARED_POOLS
+argument_list|,
+name|DEFAULT_ALLOW_UNDECLARED_POOLS
 argument_list|)
 return|;
 block|}

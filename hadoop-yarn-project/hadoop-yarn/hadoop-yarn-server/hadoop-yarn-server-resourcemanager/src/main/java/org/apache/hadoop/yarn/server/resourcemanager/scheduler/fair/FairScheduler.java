@@ -3897,6 +3897,11 @@ operator|.
 name|getLeafQueue
 argument_list|(
 name|queueName
+argument_list|,
+name|conf
+operator|.
+name|getAllowUndeclaredPools
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -3916,6 +3921,8 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|DEFAULT_QUEUE_NAME
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -4092,6 +4099,8 @@ argument_list|()
 operator|.
 name|getQueueName
 argument_list|()
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|queue

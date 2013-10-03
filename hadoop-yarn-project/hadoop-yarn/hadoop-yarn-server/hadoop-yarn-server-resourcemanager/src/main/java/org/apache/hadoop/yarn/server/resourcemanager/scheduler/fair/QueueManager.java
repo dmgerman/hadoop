@@ -673,17 +673,22 @@ argument_list|(
 name|YarnConfiguration
 operator|.
 name|DEFAULT_QUEUE_NAME
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get a queue by name, creating it if necessary.  If the queue    * is not or can not be a leaf queue, i.e. it already exists as a parent queue,    * or one of the parents in its name is already a leaf queue, null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
-DECL|method|getLeafQueue (String name)
+comment|/**    * Get a queue by name, creating it if the create param is true and is necessary.    * If the queue is not or can not be a leaf queue, i.e. it already exists as a    * parent queue, or one of the parents in its name is already a leaf queue,    * null is returned.    *     * The root part of the name is optional, so a queue underneath the root     * named "queue1" could be referred to  as just "queue1", and a queue named    * "queue2" underneath a parent named "parent1" that is underneath the root     * could be referred to as just "parent1.queue2".    */
+DECL|method|getLeafQueue (String name, boolean create)
 specifier|public
 name|FSLeafQueue
 name|getLeafQueue
 parameter_list|(
 name|String
 name|name
+parameter_list|,
+name|boolean
+name|create
 parameter_list|)
 block|{
 if|if
@@ -728,6 +733,8 @@ condition|(
 name|queue
 operator|==
 literal|null
+operator|&&
+name|create
 condition|)
 block|{
 name|FSLeafQueue
@@ -1151,29 +1158,6 @@ name|name
 argument_list|)
 return|;
 block|}
-block|}
-comment|/**    * Get the queue for a given AppSchedulable.    */
-DECL|method|getQueueForApp (AppSchedulable app)
-specifier|public
-name|FSLeafQueue
-name|getQueueForApp
-parameter_list|(
-name|AppSchedulable
-name|app
-parameter_list|)
-block|{
-return|return
-name|getLeafQueue
-argument_list|(
-name|app
-operator|.
-name|getApp
-argument_list|()
-operator|.
-name|getQueueName
-argument_list|()
-argument_list|)
-return|;
 block|}
 comment|/**    * Reload allocations file if it hasn't been loaded in a while    */
 DECL|method|reloadAllocsIfNecessary ()
@@ -2227,6 +2211,8 @@ block|{
 name|getLeafQueue
 argument_list|(
 name|name
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 block|}
