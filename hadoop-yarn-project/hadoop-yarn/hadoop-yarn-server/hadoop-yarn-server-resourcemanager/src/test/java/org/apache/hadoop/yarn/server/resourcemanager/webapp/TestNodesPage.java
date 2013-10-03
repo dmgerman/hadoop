@@ -256,7 +256,7 @@ specifier|final
 name|int
 name|numberOfActualTableHeaders
 init|=
-literal|9
+literal|10
 decl_stmt|;
 DECL|field|injector
 specifier|private

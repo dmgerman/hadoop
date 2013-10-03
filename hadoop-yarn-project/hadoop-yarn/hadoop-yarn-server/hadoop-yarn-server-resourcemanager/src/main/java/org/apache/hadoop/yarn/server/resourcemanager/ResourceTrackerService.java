@@ -1503,6 +1503,8 @@ name|host
 argument_list|)
 argument_list|,
 name|capability
+argument_list|,
+name|nodeManagerVersion
 argument_list|)
 decl_stmt|;
 name|RMNode

@@ -607,6 +607,13 @@ argument_list|,
 literal|"Mem Avail"
 argument_list|)
 operator|.
+name|th
+argument_list|(
+literal|".nodeManagerVersion"
+argument_list|,
+literal|"Version"
+argument_list|)
+operator|.
 name|_
 argument_list|()
 operator|.
@@ -1016,6 +1023,14 @@ argument_list|)
 operator|.
 name|_
 argument_list|()
+operator|.
+name|td
+argument_list|(
+name|ni
+operator|.
+name|getNodeManagerVersion
+argument_list|()
+argument_list|)
 operator|.
 name|_
 argument_list|()

@@ -561,6 +561,19 @@ return|return
 name|updates
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNodeManagerVersion ()
+specifier|public
+name|String
+name|getNodeManagerVersion
+parameter_list|()
+block|{
+comment|// TODO Auto-generated method stub
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
