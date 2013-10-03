@@ -3661,6 +3661,9 @@ operator|.
 name|get
 argument_list|(
 name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|FSLeafQueue
@@ -3941,6 +3944,16 @@ name|queue
 operator|.
 name|getName
 argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Couldn't find RM app to set queue name on"
 argument_list|)
 expr_stmt|;
 block|}
