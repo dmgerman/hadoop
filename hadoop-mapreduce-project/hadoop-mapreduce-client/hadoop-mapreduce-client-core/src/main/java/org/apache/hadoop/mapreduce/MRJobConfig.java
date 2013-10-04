@@ -44,6 +44,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_interface
 annotation|@
 name|InterfaceAudience
@@ -2456,19 +2470,23 @@ init|=
 literal|"mapreduce.application.framework.path"
 decl_stmt|;
 comment|/**    * Default CLASSPATH for all YARN MapReduce applications.    */
-DECL|field|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
 specifier|public
-specifier|static
 specifier|final
 name|String
-index|[]
+DECL|field|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
 name|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
 init|=
-block|{
-literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*"
-block|,
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"%HADOOP_MAPRED_HOME%\\share\\hadoop\\mapreduce\\*,"
+operator|+
+literal|"%HADOOP_MAPRED_HOME%\\share\\hadoop\\mapreduce\\lib\\*"
+else|:
+literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*,"
+operator|+
 literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*"
-block|,   }
 decl_stmt|;
 DECL|field|WORKFLOW_ID
 specifier|public

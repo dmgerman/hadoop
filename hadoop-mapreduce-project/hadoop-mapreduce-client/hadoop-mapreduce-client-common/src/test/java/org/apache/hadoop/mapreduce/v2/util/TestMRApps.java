@@ -1550,6 +1550,10 @@ argument_list|(
 name|MRJobConfig
 operator|.
 name|MAPREDUCE_APPLICATION_CLASSPATH
+argument_list|,
+name|MRJobConfig
+operator|.
+name|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
 argument_list|)
 decl_stmt|;
 if|if
