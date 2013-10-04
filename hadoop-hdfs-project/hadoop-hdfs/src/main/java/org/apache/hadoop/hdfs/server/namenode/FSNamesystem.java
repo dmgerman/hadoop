@@ -31349,6 +31349,11 @@ name|safeMode
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|isPermissionEnabled
+condition|)
+block|{
 name|checkOwner
 argument_list|(
 name|pc
@@ -31356,6 +31361,7 @@ argument_list|,
 name|snapshotRoot
 argument_list|)
 expr_stmt|;
+block|}
 name|BlocksMapUpdateInfo
 name|collectedBlocks
 init|=
