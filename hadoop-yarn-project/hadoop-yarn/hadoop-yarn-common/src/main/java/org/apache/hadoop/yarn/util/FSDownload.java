@@ -947,12 +947,12 @@ name|Path
 argument_list|(
 name|dstdir
 argument_list|,
+literal|"tmp_"
+operator|+
 name|sCopy
 operator|.
 name|getName
 argument_list|()
-operator|+
-literal|".tmp"
 argument_list|)
 decl_stmt|;
 name|FileStatus
