@@ -5665,6 +5665,12 @@ name|asList
 argument_list|(
 name|appId
 argument_list|)
+argument_list|,
+name|CMgrCompletedAppsEvent
+operator|.
+name|Reason
+operator|.
+name|ON_SHUTDOWN
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -3965,13 +3965,11 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|ApplicationEvent
+name|ApplicationFinishEvent
 argument_list|(
 name|appId
 argument_list|,
-name|ApplicationEventType
-operator|.
-name|FINISH_APPLICATION
+literal|"Finish Application"
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -101,7 +101,13 @@ name|ApplicationId
 argument_list|>
 name|appsToCleanup
 decl_stmt|;
-DECL|method|CMgrCompletedAppsEvent (List<ApplicationId> appsToCleanup)
+DECL|field|reason
+specifier|private
+specifier|final
+name|Reason
+name|reason
+decl_stmt|;
+DECL|method|CMgrCompletedAppsEvent (List<ApplicationId> appsToCleanup, Reason reason)
 specifier|public
 name|CMgrCompletedAppsEvent
 parameter_list|(
@@ -110,6 +116,9 @@ argument_list|<
 name|ApplicationId
 argument_list|>
 name|appsToCleanup
+parameter_list|,
+name|Reason
+name|reason
 parameter_list|)
 block|{
 name|super
@@ -124,6 +133,12 @@ operator|.
 name|appsToCleanup
 operator|=
 name|appsToCleanup
+expr_stmt|;
+name|this
+operator|.
+name|reason
+operator|=
+name|reason
 expr_stmt|;
 block|}
 DECL|method|getAppsToCleanup ()
@@ -140,6 +155,30 @@ name|this
 operator|.
 name|appsToCleanup
 return|;
+block|}
+DECL|method|getReason ()
+specifier|public
+name|Reason
+name|getReason
+parameter_list|()
+block|{
+return|return
+name|reason
+return|;
+block|}
+DECL|enum|Reason
+specifier|public
+specifier|static
+enum|enum
+name|Reason
+block|{
+comment|/**      * Application is killed as NodeManager is shut down      */
+DECL|enumConstant|ON_SHUTDOWN
+name|ON_SHUTDOWN
+block|,
+comment|/**      * Application is killed by ResourceManager      */
+DECL|enumConstant|BY_RESOURCEMANAGER
+name|BY_RESOURCEMANAGER
 block|}
 block|}
 end_class
