@@ -2412,6 +2412,36 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+comment|//TODO: fix the bug where the speculator gets events with
+comment|//not-fully-constructed objects. For now, disable speculative exec
+return|return
+name|submit
+argument_list|(
+name|conf
+argument_list|,
+literal|false
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+DECL|method|submit (Configuration conf, boolean mapSpeculative, boolean reduceSpeculative)
+specifier|public
+name|Job
+name|submit
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|boolean
+name|mapSpeculative
+parameter_list|,
+name|boolean
+name|reduceSpeculative
+parameter_list|)
+throws|throws
+name|Exception
+block|{
 name|String
 name|user
 init|=
@@ -2468,15 +2498,8 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|//TODO: fix the bug where the speculator gets events with
-comment|//not-fully-constructed objects. For now, disable speculative exec
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"****DISABLING SPECULATIVE EXECUTION*****"
-argument_list|)
-expr_stmt|;
+comment|// TODO: fix the bug where the speculator gets events with
+comment|// not-fully-constructed objects. For now, disable speculative exec
 name|conf
 operator|.
 name|setBoolean
@@ -2485,7 +2508,7 @@ name|MRJobConfig
 operator|.
 name|MAP_SPECULATIVE
 argument_list|,
-literal|false
+name|mapSpeculative
 argument_list|)
 expr_stmt|;
 name|conf
@@ -2496,7 +2519,7 @@ name|MRJobConfig
 operator|.
 name|REDUCE_SPECULATIVE
 argument_list|,
-literal|false
+name|reduceSpeculative
 argument_list|)
 expr_stmt|;
 name|init
