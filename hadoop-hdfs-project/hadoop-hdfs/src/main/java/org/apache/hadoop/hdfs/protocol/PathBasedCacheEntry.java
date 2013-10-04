@@ -258,7 +258,7 @@ name|path
 argument_list|,
 name|pool
 operator|.
-name|getName
+name|getPoolName
 argument_list|()
 argument_list|)
 return|;
