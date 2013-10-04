@@ -4027,6 +4027,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|setConf (Configuration configuration)
+name|void
+name|setConf
+parameter_list|(
+name|Configuration
+name|configuration
+parameter_list|)
+block|{
+name|conf
+operator|=
+name|configuration
+expr_stmt|;
+block|}
 comment|/**    * Helper method to create and init {@link #activeServices}. This creates an    * instance of {@link RMActiveServices} and initializes it.    * @throws Exception    */
 DECL|method|createAndInitActiveServices ()
 name|void

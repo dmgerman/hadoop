@@ -252,7 +252,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|createRMProxy (final Configuration conf, final Class<T> protocol)
+DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol)
 specifier|public
 specifier|static
 parameter_list|<
@@ -263,7 +263,7 @@ name|createRMProxy
 parameter_list|(
 specifier|final
 name|Configuration
-name|conf
+name|configuration
 parameter_list|,
 specifier|final
 name|Class
@@ -275,6 +275,26 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|YarnConfiguration
+name|conf
+init|=
+operator|(
+name|configuration
+operator|instanceof
+name|YarnConfiguration
+operator|)
+condition|?
+operator|(
+name|YarnConfiguration
+operator|)
+name|configuration
+else|:
+operator|new
+name|YarnConfiguration
+argument_list|(
+name|configuration
+argument_list|)
+decl_stmt|;
 name|InetSocketAddress
 name|rmAddress
 init|=
@@ -360,13 +380,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|getRMAddress (Configuration conf, Class<?> protocol)
+DECL|method|getRMAddress (YarnConfiguration conf, Class<?> protocol)
 specifier|private
 specifier|static
 name|InetSocketAddress
 name|getRMAddress
 parameter_list|(
-name|Configuration
+name|YarnConfiguration
 name|conf
 parameter_list|,
 name|Class
