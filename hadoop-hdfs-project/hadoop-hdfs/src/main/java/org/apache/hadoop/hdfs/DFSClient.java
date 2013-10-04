@@ -10580,13 +10580,13 @@ argument_list|()
 throw|;
 block|}
 block|}
-DECL|method|removePathBasedCacheDescriptor (PathBasedCacheDescriptor descriptor)
+DECL|method|removePathBasedCacheDescriptor (long id)
 specifier|public
 name|void
 name|removePathBasedCacheDescriptor
 parameter_list|(
-name|PathBasedCacheDescriptor
-name|descriptor
+name|long
+name|id
 parameter_list|)
 throws|throws
 name|IOException
@@ -10600,10 +10600,7 @@ name|namenode
 operator|.
 name|removePathBasedCacheDescriptor
 argument_list|(
-name|descriptor
-operator|.
-name|getEntryId
-argument_list|()
+name|id
 argument_list|)
 expr_stmt|;
 block|}

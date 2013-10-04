@@ -2458,7 +2458,7 @@ operator|==
 name|pool
 condition|)
 block|{
-name|entriesById
+name|entriesByPath
 operator|.
 name|remove
 argument_list|(
@@ -2467,7 +2467,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|getEntryId
+name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;

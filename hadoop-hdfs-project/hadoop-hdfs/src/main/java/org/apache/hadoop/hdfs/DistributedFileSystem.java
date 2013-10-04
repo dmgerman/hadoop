@@ -7618,6 +7618,9 @@ operator|.
 name|removePathBasedCacheDescriptor
 argument_list|(
 name|descriptor
+operator|.
+name|getEntryId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
