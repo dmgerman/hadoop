@@ -4065,6 +4065,9 @@ operator|.
 name|setTokens
 argument_list|(
 name|allTokens
+operator|.
+name|duplicate
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|containerListener
