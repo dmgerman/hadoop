@@ -16088,6 +16088,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|5000
+argument_list|)
 DECL|method|testContinuousScheduling ()
 specifier|public
 name|void
@@ -16325,9 +16330,8 @@ operator|+
 literal|500
 argument_list|)
 expr_stmt|;
-comment|// check consumption
-name|Resource
-name|consumption
+name|FSSchedulerApp
+name|app
 init|=
 name|fs
 operator|.
@@ -16337,17 +16341,35 @@ name|get
 argument_list|(
 name|appAttemptId
 argument_list|)
+decl_stmt|;
+comment|// Wait until app gets resources.
+while|while
+condition|(
+name|app
 operator|.
 name|getCurrentConsumption
 argument_list|()
-decl_stmt|;
+operator|.
+name|equals
+argument_list|(
+name|Resources
+operator|.
+name|none
+argument_list|()
+argument_list|)
+condition|)
+block|{ }
+comment|// check consumption
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
 literal|1024
 argument_list|,
-name|consumption
+name|app
+operator|.
+name|getCurrentConsumption
+argument_list|()
 operator|.
 name|getMemory
 argument_list|()
@@ -16359,7 +16381,10 @@ name|assertEquals
 argument_list|(
 literal|1
 argument_list|,
-name|consumption
+name|app
+operator|.
+name|getCurrentConsumption
+argument_list|()
 operator|.
 name|getVirtualCores
 argument_list|()
