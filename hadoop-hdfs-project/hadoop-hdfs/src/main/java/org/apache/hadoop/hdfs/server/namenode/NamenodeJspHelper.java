@@ -4624,10 +4624,7 @@ comment|// from nn_browsedfscontent.jsp:
 name|String
 name|url
 init|=
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+literal|"///"
 operator|+
 name|d
 operator|.

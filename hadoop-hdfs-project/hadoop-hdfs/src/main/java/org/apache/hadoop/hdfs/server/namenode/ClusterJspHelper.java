@@ -4425,10 +4425,7 @@ name|attribute
 argument_list|(
 literal|"link"
 argument_list|,
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+literal|"///"
 operator|+
 name|url
 argument_list|)
