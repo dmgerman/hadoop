@@ -923,8 +923,6 @@ specifier|private
 specifier|final
 name|String
 name|appMasterMainClass
-init|=
-literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster"
 decl_stmt|;
 comment|// Shell command to be executed
 DECL|field|shellCommand
@@ -1206,10 +1204,34 @@ throws|throws
 name|Exception
 block|{
 name|this
+argument_list|(
+literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|Client (String appMasterMainClass, Configuration conf)
+name|Client
+parameter_list|(
+name|String
+name|appMasterMainClass
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
 operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|appMasterMainClass
+operator|=
+name|appMasterMainClass
 expr_stmt|;
 name|yarnClient
 operator|=

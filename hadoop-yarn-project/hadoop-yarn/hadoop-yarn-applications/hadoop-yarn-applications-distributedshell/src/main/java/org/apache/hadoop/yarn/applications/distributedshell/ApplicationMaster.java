@@ -180,6 +180,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1580,10 +1594,8 @@ DECL|method|ApplicationMaster ()
 specifier|public
 name|ApplicationMaster
 parameter_list|()
-throws|throws
-name|Exception
 block|{
-comment|// Set up the configuration and RPC
+comment|// Set up the configuration
 name|conf
 operator|=
 operator|new
@@ -2589,8 +2601,7 @@ argument_list|()
 expr_stmt|;
 name|containerListener
 operator|=
-operator|new
-name|NMCallbackHandler
+name|createNMCallbackHandler
 argument_list|()
 expr_stmt|;
 name|nmClientAsync
@@ -2739,6 +2750,15 @@ while|while
 condition|(
 operator|!
 name|done
+operator|&&
+operator|(
+name|numCompletedContainers
+operator|.
+name|get
+argument_list|()
+operator|!=
+name|numTotalContainers
+operator|)
 condition|)
 block|{
 try|try
@@ -2763,6 +2783,21 @@ argument_list|()
 expr_stmt|;
 return|return
 name|success
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createNMCallbackHandler ()
+name|NMCallbackHandler
+name|createNMCallbackHandler
+parameter_list|()
+block|{
+return|return
+operator|new
+name|NMCallbackHandler
+argument_list|(
+name|this
+argument_list|)
 return|;
 block|}
 DECL|method|finish ()
@@ -2963,10 +2998,6 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-name|done
-operator|=
-literal|true
-expr_stmt|;
 name|amRMClient
 operator|.
 name|stop
@@ -3429,8 +3460,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|class|NMCallbackHandler
-specifier|private
+specifier|static
 class|class
 name|NMCallbackHandler
 implements|implements
@@ -3457,6 +3490,27 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|applicationMaster
+specifier|private
+specifier|final
+name|ApplicationMaster
+name|applicationMaster
+decl_stmt|;
+DECL|method|NMCallbackHandler (ApplicationMaster applicationMaster)
+specifier|public
+name|NMCallbackHandler
+parameter_list|(
+name|ApplicationMaster
+name|applicationMaster
+parameter_list|)
+block|{
+name|this
+operator|.
+name|applicationMaster
+operator|=
+name|applicationMaster
+expr_stmt|;
+block|}
 DECL|method|addContainer (ContainerId containerId, Container container)
 specifier|public
 name|void
@@ -3607,6 +3661,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|applicationMaster
+operator|.
 name|nmClientAsync
 operator|.
 name|getContainerStatusAsync
@@ -3650,6 +3706,20 @@ name|remove
 argument_list|(
 name|containerId
 argument_list|)
+expr_stmt|;
+name|applicationMaster
+operator|.
+name|numCompletedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|applicationMaster
+operator|.
+name|numFailedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -4115,7 +4185,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @param numContainers Containers to ask for from RM    * @return the setup ResourceRequest to be sent to RM    */
+comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @return the setup ResourceRequest to be sent to RM    */
 DECL|method|setupContainerAskForRM ()
 specifier|private
 name|ContainerRequest
