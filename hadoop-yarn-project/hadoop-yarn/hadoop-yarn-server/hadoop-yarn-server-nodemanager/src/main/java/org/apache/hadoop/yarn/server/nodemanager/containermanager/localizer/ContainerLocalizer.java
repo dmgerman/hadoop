@@ -706,24 +706,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
-operator|.
-name|utils
-operator|.
-name|YarnServerBuilderUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -1139,12 +1121,9 @@ try|try
 block|{
 comment|// assume credentials in cwd
 comment|// TODO: Fix
-name|credFile
-operator|=
-name|lfs
-operator|.
-name|open
-argument_list|(
+name|Path
+name|tokenPath
+init|=
 operator|new
 name|Path
 argument_list|(
@@ -1157,6 +1136,14 @@ argument_list|,
 name|localizerId
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|credFile
+operator|=
+name|lfs
+operator|.
+name|open
+argument_list|(
+name|tokenPath
 argument_list|)
 expr_stmt|;
 name|creds
@@ -1164,6 +1151,16 @@ operator|.
 name|readTokenStorageStream
 argument_list|(
 name|credFile
+argument_list|)
+expr_stmt|;
+comment|// Explicitly deleting token file.
+name|lfs
+operator|.
+name|delete
+argument_list|(
+name|tokenPath
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
