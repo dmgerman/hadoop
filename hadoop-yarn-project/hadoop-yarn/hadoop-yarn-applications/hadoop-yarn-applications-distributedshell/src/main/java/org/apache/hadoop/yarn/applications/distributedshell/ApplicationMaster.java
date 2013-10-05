@@ -340,6 +340,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|net
+operator|.
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|Credentials
@@ -965,7 +979,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
+comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed. However, in the distributedshell, trackingurl  * and appMasterHost:appMasterRpcPort are not supported.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
 end_comment
 
 begin_class
@@ -1049,7 +1063,8 @@ specifier|private
 name|int
 name|appMasterRpcPort
 init|=
-literal|0
+operator|-
+literal|1
 decl_stmt|;
 comment|// Tracking url to which app master publishes info for clients to monitor
 DECL|field|appMasterTrackingUrl
@@ -2605,6 +2620,13 @@ comment|// TODO use the rpc port info to register with the RM for the client to
 comment|// send requests to this app master
 comment|// Register self with ResourceManager
 comment|// This will start heartbeating to the RM
+name|appMasterHostname
+operator|=
+name|NetUtils
+operator|.
+name|getHostname
+argument_list|()
+expr_stmt|;
 name|RegisterApplicationMasterResponse
 name|response
 init|=

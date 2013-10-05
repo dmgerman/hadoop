@@ -1319,9 +1319,12 @@ name|checkArgument
 argument_list|(
 name|appHostPort
 operator|>=
-literal|0
+operator|-
+literal|1
 argument_list|,
-literal|"Port number of the host should not be negative"
+literal|"Port number of the host"
+operator|+
+literal|" should be any integers larger than or equal to -1"
 argument_list|)
 expr_stmt|;
 comment|// do this only once ???
