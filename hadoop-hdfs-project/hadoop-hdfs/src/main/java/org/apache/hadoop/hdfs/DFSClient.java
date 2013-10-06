@@ -5217,6 +5217,13 @@ argument_list|(
 name|renewer
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|token
+operator|!=
+literal|null
+condition|)
+block|{
 name|token
 operator|.
 name|setService
@@ -5240,6 +5247,19 @@ name|token
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cannot get delegation token from "
+operator|+
+name|renewer
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|token
 return|;
