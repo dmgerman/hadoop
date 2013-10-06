@@ -503,6 +503,11 @@ operator|.
 name|getResolvedRMWebAppURLWithoutScheme
 argument_list|(
 name|conf
+argument_list|,
+name|MRWebAppUtil
+operator|.
+name|getYARNHttpPolicy
+argument_list|()
 argument_list|)
 argument_list|)
 argument_list|)
