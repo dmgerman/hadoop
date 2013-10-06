@@ -120,20 +120,6 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
-name|MRConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
 name|MRJobConfig
 import|;
 end_import
@@ -406,28 +392,6 @@ name|job
 operator|.
 name|event
 operator|.
-name|JobStartEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapreduce
-operator|.
-name|v2
-operator|.
-name|app
-operator|.
-name|job
-operator|.
-name|event
-operator|.
 name|JobUpdatedNodesEvent
 import|;
 end_import
@@ -638,43 +602,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Container
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ContainerId
 import|;
 end_import
 
@@ -763,22 +691,6 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|Clock
 import|;
 end_import
 
@@ -2881,7 +2793,7 @@ expr_stmt|;
 comment|// imitate that AM is unregistered
 name|app
 operator|.
-name|safeToReportTerminationToUser
+name|successfullyUnregistered
 operator|.
 name|set
 argument_list|(
@@ -2902,10 +2814,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testJobRebootNotLastRetry ()
+DECL|method|testJobRebootNotLastRetryOnUnregistrationFailure ()
 specifier|public
 name|void
-name|testJobRebootNotLastRetry
+name|testJobRebootNotLastRetryOnUnregistrationFailure
 parameter_list|()
 throws|throws
 name|Exception
@@ -3050,16 +2962,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Test
-DECL|method|testJobRebootOnLastRetry ()
+DECL|method|testJobRebootOnLastRetryOnUnregistrationFailure ()
 specifier|public
 name|void
-name|testJobRebootOnLastRetry
+name|testJobRebootOnLastRetryOnUnregistrationFailure
 parameter_list|()
 throws|throws
 name|Exception
 block|{
 comment|// make startCount as 2 since this is last retry which equals to
 comment|// DEFAULT_MAX_AM_RETRY
+comment|// The last param mocks the unregistration failure
 name|MRApp
 name|app
 init|=
@@ -3083,6 +2996,8 @@ argument_list|,
 literal|true
 argument_list|,
 literal|2
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|Configuration
@@ -3191,7 +3106,22 @@ name|JOB_AM_REBOOT
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// return exteranl state as ERROR if this is the last retry
+name|app
+operator|.
+name|waitForInternalState
+argument_list|(
+operator|(
+name|JobImpl
+operator|)
+name|job
+argument_list|,
+name|JobStateInternal
+operator|.
+name|REBOOT
+argument_list|)
+expr_stmt|;
+comment|// return exteranl state as RUNNING if this is the last retry while
+comment|// unregistration fails
 name|app
 operator|.
 name|waitForState
@@ -3200,7 +3130,7 @@ name|job
 argument_list|,
 name|JobState
 operator|.
-name|ERROR
+name|RUNNING
 argument_list|)
 expr_stmt|;
 block|}

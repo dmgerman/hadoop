@@ -1546,7 +1546,7 @@ name|clock
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, Clock clock, boolean shutdown)
+DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, Clock clock, boolean unregistered)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -1569,7 +1569,7 @@ name|Clock
 name|clock
 parameter_list|,
 name|boolean
-name|shutdown
+name|unregistered
 parameter_list|)
 block|{
 name|this
@@ -1588,7 +1588,7 @@ literal|1
 argument_list|,
 name|clock
 argument_list|,
-name|shutdown
+name|unregistered
 argument_list|)
 expr_stmt|;
 block|}
@@ -1628,7 +1628,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, boolean shutdown)
+DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, boolean unregistered)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -1648,7 +1648,7 @@ name|boolean
 name|cleanOnStart
 parameter_list|,
 name|boolean
-name|shutdown
+name|unregistered
 parameter_list|)
 block|{
 name|this
@@ -1665,7 +1665,7 @@ name|cleanOnStart
 argument_list|,
 literal|1
 argument_list|,
-name|shutdown
+name|unregistered
 argument_list|)
 expr_stmt|;
 block|}
@@ -1811,7 +1811,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, boolean shutdown)
+DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, boolean unregistered)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -1834,7 +1834,7 @@ name|int
 name|startCount
 parameter_list|,
 name|boolean
-name|shutdown
+name|unregistered
 parameter_list|)
 block|{
 name|this
@@ -1855,11 +1855,11 @@ operator|new
 name|SystemClock
 argument_list|()
 argument_list|,
-name|shutdown
+name|unregistered
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock, boolean shutdown)
+DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock, boolean unregistered)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -1885,7 +1885,7 @@ name|Clock
 name|clock
 parameter_list|,
 name|boolean
-name|shutdown
+name|unregistered
 parameter_list|)
 block|{
 name|this
@@ -1918,7 +1918,7 @@ name|startCount
 argument_list|,
 name|clock
 argument_list|,
-name|shutdown
+name|unregistered
 argument_list|)
 expr_stmt|;
 block|}
@@ -1982,7 +1982,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (ApplicationAttemptId appAttemptId, ContainerId amContainerId, int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, boolean shutdown)
+DECL|method|MRApp (ApplicationAttemptId appAttemptId, ContainerId amContainerId, int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, boolean unregistered)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -2011,7 +2011,7 @@ name|int
 name|startCount
 parameter_list|,
 name|boolean
-name|shutdown
+name|unregistered
 parameter_list|)
 block|{
 name|this
@@ -2036,7 +2036,7 @@ operator|new
 name|SystemClock
 argument_list|()
 argument_list|,
-name|shutdown
+name|unregistered
 argument_list|)
 expr_stmt|;
 block|}
@@ -2095,7 +2095,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (ApplicationAttemptId appAttemptId, ContainerId amContainerId, int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock, boolean shutdown)
+DECL|method|MRApp (ApplicationAttemptId appAttemptId, ContainerId amContainerId, int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock, boolean unregistered)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -2127,7 +2127,7 @@ name|Clock
 name|clock
 parameter_list|,
 name|boolean
-name|shutdown
+name|unregistered
 parameter_list|)
 block|{
 name|super
@@ -2267,11 +2267,11 @@ comment|// If safeToReportTerminationToUser is set to true, we can verify whethe
 comment|// the job can reaches the final state when MRAppMaster shuts down.
 name|this
 operator|.
-name|safeToReportTerminationToUser
+name|successfullyUnregistered
 operator|.
 name|set
 argument_list|(
-name|shutdown
+name|unregistered
 argument_list|)
 expr_stmt|;
 block|}

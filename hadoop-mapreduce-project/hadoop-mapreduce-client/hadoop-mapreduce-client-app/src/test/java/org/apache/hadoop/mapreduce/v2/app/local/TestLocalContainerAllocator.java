@@ -546,6 +546,14 @@ parameter_list|()
 block|{     }
 annotation|@
 name|Override
+DECL|method|unregister ()
+specifier|protected
+name|void
+name|unregister
+parameter_list|()
+block|{     }
+annotation|@
+name|Override
 DECL|method|startAllocatorThread ()
 specifier|protected
 name|void

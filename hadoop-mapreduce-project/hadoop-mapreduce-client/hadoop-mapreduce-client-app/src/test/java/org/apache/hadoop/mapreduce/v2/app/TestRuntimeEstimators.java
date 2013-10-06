@@ -4390,10 +4390,10 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|safeToReportTerminationToUser ()
+DECL|method|hasSuccessfullyUnregistered ()
 specifier|public
 name|boolean
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 parameter_list|()
 block|{
 comment|// bogus - Not Required

@@ -2299,7 +2299,7 @@ name|when
 argument_list|(
 name|mockContext
 operator|.
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 argument_list|()
 argument_list|)
 operator|.
@@ -2387,7 +2387,7 @@ name|when
 argument_list|(
 name|mockContext
 operator|.
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 argument_list|()
 argument_list|)
 operator|.
@@ -4517,7 +4517,7 @@ name|when
 argument_list|(
 name|mockContext
 operator|.
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 argument_list|()
 argument_list|)
 operator|.
@@ -5286,7 +5286,7 @@ name|when
 argument_list|(
 name|mockContext
 operator|.
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 argument_list|()
 argument_list|)
 operator|.
@@ -5475,7 +5475,7 @@ name|when
 argument_list|(
 name|mockContext
 operator|.
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 argument_list|()
 argument_list|)
 operator|.
@@ -5734,7 +5734,7 @@ name|when
 argument_list|(
 name|appContext
 operator|.
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 argument_list|()
 argument_list|)
 operator|.
