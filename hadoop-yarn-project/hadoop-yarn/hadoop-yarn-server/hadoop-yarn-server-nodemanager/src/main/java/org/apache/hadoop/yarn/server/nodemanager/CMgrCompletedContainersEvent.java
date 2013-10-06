@@ -65,7 +65,13 @@ name|ContainerId
 argument_list|>
 name|containerToCleanup
 decl_stmt|;
-DECL|method|CMgrCompletedContainersEvent (List<ContainerId> containersToCleanup)
+DECL|field|reason
+specifier|private
+specifier|final
+name|Reason
+name|reason
+decl_stmt|;
+DECL|method|CMgrCompletedContainersEvent (List<ContainerId> containersToCleanup, Reason reason)
 specifier|public
 name|CMgrCompletedContainersEvent
 parameter_list|(
@@ -74,6 +80,9 @@ argument_list|<
 name|ContainerId
 argument_list|>
 name|containersToCleanup
+parameter_list|,
+name|Reason
+name|reason
 parameter_list|)
 block|{
 name|super
@@ -88,6 +97,12 @@ operator|.
 name|containerToCleanup
 operator|=
 name|containersToCleanup
+expr_stmt|;
+name|this
+operator|.
+name|reason
+operator|=
+name|reason
 expr_stmt|;
 block|}
 DECL|method|getContainersToCleanup ()
@@ -104,6 +119,34 @@ name|this
 operator|.
 name|containerToCleanup
 return|;
+block|}
+DECL|method|getReason ()
+specifier|public
+name|Reason
+name|getReason
+parameter_list|()
+block|{
+return|return
+name|reason
+return|;
+block|}
+DECL|enum|Reason
+specifier|public
+specifier|static
+enum|enum
+name|Reason
+block|{
+comment|/**      * Container is killed as NodeManager is shutting down      */
+DECL|enumConstant|ON_SHUTDOWN
+name|ON_SHUTDOWN
+block|,
+comment|/**      * Container is killed as the Nodemanager is re-syncing with the      * ResourceManager      */
+DECL|enumConstant|ON_NODEMANAGER_RESYNC
+name|ON_NODEMANAGER_RESYNC
+block|,
+comment|/**      * Container is killed on request by the ResourceManager      */
+DECL|enumConstant|BY_RESOURCEMANAGER
+name|BY_RESOURCEMANAGER
 block|}
 block|}
 end_class

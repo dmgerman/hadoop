@@ -1345,14 +1345,17 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Cleaning up running containers on resync"
+argument_list|)
+expr_stmt|;
 name|containerManager
 operator|.
-name|cleanUpApplications
-argument_list|(
-name|NodeManagerEventType
-operator|.
-name|RESYNC
-argument_list|)
+name|cleanupContainersOnNMResync
+argument_list|()
 expr_stmt|;
 operator|(
 operator|(
