@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.ipc
 package|package
 name|org
 operator|.
@@ -12,11 +12,7 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
+name|ipc
 package|;
 end_package
 
@@ -40,41 +36,23 @@ name|hadoop
 operator|.
 name|classification
 operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
 name|InterfaceStability
 import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown when the name node is in safe mode.  * Client cannot modified namespace until the safe mode is off.   *   */
+comment|/**  * Exception thrown by a server typically to indicate that server is in a state  * where request cannot be processed temporarily (such as still starting up).  * Client may retry the request. If the service is up, the server may be able to  * process a retried request.  */
 end_comment
 
 begin_class
 annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
 name|InterfaceStability
 operator|.
 name|Evolving
-DECL|class|SafeModeException
+DECL|class|RetriableException
 specifier|public
 class|class
-name|SafeModeException
+name|RetriableException
 extends|extends
 name|IOException
 block|{
@@ -85,31 +63,33 @@ specifier|final
 name|long
 name|serialVersionUID
 init|=
-literal|1L
+literal|1915561725516487301L
 decl_stmt|;
-DECL|method|SafeModeException (String text, FSNamesystem.SafeModeInfo mode )
+DECL|method|RetriableException (Exception e)
 specifier|public
-name|SafeModeException
+name|RetriableException
 parameter_list|(
-name|String
-name|text
-parameter_list|,
-name|FSNamesystem
-operator|.
-name|SafeModeInfo
-name|mode
+name|Exception
+name|e
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|text
-operator|+
-literal|". Name node is in safe mode.\n"
-operator|+
-name|mode
-operator|.
-name|getTurnOffTip
-argument_list|()
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|RetriableException (String msg)
+specifier|public
+name|RetriableException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
 argument_list|)
 expr_stmt|;
 block|}
