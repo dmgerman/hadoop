@@ -4721,16 +4721,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|/**      * Although the other namenode might support HTTPS, it is fundamentally      * broken to get the JMX via an HTTPS connection inside the namenode,      * because in HTTPS set up the principal of the client and the one of      * the namenode differs. Therefore, there is no guarantees that the      * HTTPS connection can be set up.      *      * As a result, we just hard code the connection as an HTTP connection.      */
 name|URL
 name|url
 init|=
 operator|new
 name|URL
 argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+literal|"http://"
 operator|+
 name|httpAddress
 operator|+

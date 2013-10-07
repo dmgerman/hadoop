@@ -581,6 +581,29 @@ argument_list|,
 literal|"Go Back to File View"
 argument_list|)
 expr_stmt|;
+name|regex
+operator|=
+literal|"<a href=\"///localhost:"
+operator|+
+name|nnHttpAddress
+operator|.
+name|getPort
+argument_list|()
+operator|+
+literal|"/dfshealth.jsp\">Go back to DFS home</a>"
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"page should generate DFS home scheme without explicit scheme"
+argument_list|,
+name|viewFilePage
+operator|.
+name|contains
+argument_list|(
+name|regex
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|assertFileContents (String regex, String text)
 specifier|private
@@ -1103,6 +1126,21 @@ name|reqMock
 argument_list|)
 operator|.
 name|getPathInfo
+argument_list|()
+expr_stmt|;
+name|Mockito
+operator|.
+name|doReturn
+argument_list|(
+literal|"http"
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|reqMock
+argument_list|)
+operator|.
+name|getScheme
 argument_list|()
 expr_stmt|;
 block|}
