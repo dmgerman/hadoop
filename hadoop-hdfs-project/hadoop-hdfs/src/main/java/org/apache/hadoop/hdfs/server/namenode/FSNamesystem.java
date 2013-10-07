@@ -32376,8 +32376,8 @@ name|checkSuperuserPrivilege
 argument_list|()
 expr_stmt|;
 block|}
-name|CachePool
-name|pool
+name|CachePoolInfo
+name|info
 init|=
 name|cacheManager
 operator|.
@@ -32391,7 +32391,7 @@ argument_list|()
 operator|.
 name|logAddCachePool
 argument_list|(
-name|pool
+name|info
 argument_list|,
 name|cacheEntry
 operator|!=

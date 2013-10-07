@@ -4628,11 +4628,11 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logAddCachePool (CachePool pool, boolean toLogRpcIds)
+DECL|method|logAddCachePool (CachePoolInfo pool, boolean toLogRpcIds)
 name|void
 name|logAddCachePool
 parameter_list|(
-name|CachePool
+name|CachePoolInfo
 name|pool
 parameter_list|,
 name|boolean

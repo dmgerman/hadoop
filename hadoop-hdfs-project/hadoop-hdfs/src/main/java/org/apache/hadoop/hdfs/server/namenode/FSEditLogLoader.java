@@ -4213,7 +4213,7 @@ name|unprotectedAddCachePool
 argument_list|(
 name|addOp
 operator|.
-name|pool
+name|info
 argument_list|)
 expr_stmt|;
 if|if

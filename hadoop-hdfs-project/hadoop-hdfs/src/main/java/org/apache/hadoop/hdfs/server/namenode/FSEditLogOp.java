@@ -16458,9 +16458,9 @@ name|AddCachePoolOp
 extends|extends
 name|FSEditLogOp
 block|{
-DECL|field|pool
-name|CachePool
-name|pool
+DECL|field|info
+name|CachePoolInfo
+name|info
 decl_stmt|;
 DECL|method|AddCachePoolOp ()
 specifier|public
@@ -16494,20 +16494,20 @@ name|OP_ADD_CACHE_POOL
 argument_list|)
 return|;
 block|}
-DECL|method|setPool (CachePool pool)
+DECL|method|setPool (CachePoolInfo info)
 specifier|public
 name|AddCachePoolOp
 name|setPool
 parameter_list|(
-name|CachePool
-name|pool
+name|CachePoolInfo
+name|info
 parameter_list|)
 block|{
 name|this
 operator|.
-name|pool
+name|info
 operator|=
-name|pool
+name|info
 expr_stmt|;
 return|return
 name|this
@@ -16528,9 +16528,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|pool
+name|info
 operator|=
-name|CachePool
+name|CachePoolInfo
 operator|.
 name|readFrom
 argument_list|(
@@ -16551,7 +16551,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|pool
+name|info
 operator|.
 name|writeTo
 argument_list|(
@@ -16572,7 +16572,7 @@ parameter_list|)
 throws|throws
 name|SAXException
 block|{
-name|pool
+name|info
 operator|.
 name|writeXmlTo
 argument_list|(
@@ -16594,9 +16594,9 @@ name|InvalidXmlException
 block|{
 name|this
 operator|.
-name|pool
+name|info
 operator|=
-name|CachePool
+name|CachePoolInfo
 operator|.
 name|readXmlFrom
 argument_list|(
@@ -16632,7 +16632,7 @@ name|append
 argument_list|(
 literal|"poolName="
 operator|+
-name|pool
+name|info
 operator|.
 name|getPoolName
 argument_list|()
@@ -16646,7 +16646,7 @@ name|append
 argument_list|(
 literal|"ownerName="
 operator|+
-name|pool
+name|info
 operator|.
 name|getOwnerName
 argument_list|()
@@ -16660,7 +16660,7 @@ name|append
 argument_list|(
 literal|"groupName="
 operator|+
-name|pool
+name|info
 operator|.
 name|getGroupName
 argument_list|()
@@ -16678,7 +16678,7 @@ name|Short
 operator|.
 name|toString
 argument_list|(
-name|pool
+name|info
 operator|.
 name|getMode
 argument_list|()
@@ -16700,7 +16700,7 @@ name|Integer
 operator|.
 name|toString
 argument_list|(
-name|pool
+name|info
 operator|.
 name|getWeight
 argument_list|()
