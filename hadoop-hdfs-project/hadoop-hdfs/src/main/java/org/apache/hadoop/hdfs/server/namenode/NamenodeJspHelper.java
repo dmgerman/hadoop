@@ -88,6 +88,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|InetAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|InetSocketAddress
 import|;
 end_import
@@ -613,6 +623,20 @@ operator|.
 name|protocol
 operator|.
 name|NamenodeProtocols
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|HttpConfig
 import|;
 end_import
 
@@ -4513,7 +4537,7 @@ return|return
 name|ret
 return|;
 block|}
-DECL|method|generateNodeDataHeader (JspWriter out, DatanodeDescriptor d, String suffix, boolean alive, int nnHttpPort, String nnaddr, String scheme)
+DECL|method|generateNodeDataHeader (JspWriter out, DatanodeDescriptor d, String suffix, boolean alive, int nnInfoPort, String nnaddr, String scheme)
 specifier|private
 name|void
 name|generateNodeDataHeader
@@ -4531,7 +4555,7 @@ name|boolean
 name|alive
 parameter_list|,
 name|int
-name|nnHttpPort
+name|nnInfoPort
 parameter_list|,
 name|String
 name|nnaddr
@@ -4561,7 +4585,7 @@ argument_list|)
 operator|+
 literal|"/browseDirectory.jsp?namenodeInfoPort="
 operator|+
-name|nnHttpPort
+name|nnInfoPort
 operator|+
 literal|"&dir="
 operator|+
@@ -4697,7 +4721,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|generateDecommissioningNodeData (JspWriter out, DatanodeDescriptor d, String suffix, boolean alive, int nnHttpPort, String nnaddr, String scheme)
+DECL|method|generateDecommissioningNodeData (JspWriter out, DatanodeDescriptor d, String suffix, boolean alive, int nnInfoPort, String nnaddr, String scheme)
 name|void
 name|generateDecommissioningNodeData
 parameter_list|(
@@ -4714,7 +4738,7 @@ name|boolean
 name|alive
 parameter_list|,
 name|int
-name|nnHttpPort
+name|nnInfoPort
 parameter_list|,
 name|String
 name|nnaddr
@@ -4735,7 +4759,7 @@ name|suffix
 argument_list|,
 name|alive
 argument_list|,
-name|nnHttpPort
+name|nnInfoPort
 argument_list|,
 name|nnaddr
 argument_list|,
@@ -4859,7 +4883,7 @@ literal|"\n"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|generateNodeData (JspWriter out, DatanodeDescriptor d, String suffix, boolean alive, int nnHttpPort, String nnaddr, String scheme)
+DECL|method|generateNodeData (JspWriter out, DatanodeDescriptor d, String suffix, boolean alive, int nnInfoPort, String nnaddr, String scheme)
 name|void
 name|generateNodeData
 parameter_list|(
@@ -4876,7 +4900,7 @@ name|boolean
 name|alive
 parameter_list|,
 name|int
-name|nnHttpPort
+name|nnInfoPort
 parameter_list|,
 name|String
 name|nnaddr
@@ -4898,7 +4922,7 @@ name|suffix
 argument_list|,
 name|alive
 argument_list|,
-name|nnHttpPort
+name|nnInfoPort
 argument_list|,
 name|nnaddr
 argument_list|,
@@ -5264,35 +5288,26 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-name|InetSocketAddress
-name|nnSocketAddress
-init|=
-operator|(
-name|InetSocketAddress
-operator|)
-name|context
-operator|.
-name|getAttribute
-argument_list|(
-name|NameNodeHttpServer
-operator|.
-name|NAMENODE_ADDRESS_ATTRIBUTE_KEY
-argument_list|)
-decl_stmt|;
 name|String
 name|nnaddr
 init|=
-name|nnSocketAddress
+name|nn
+operator|.
+name|getServiceRpcAddress
+argument_list|()
 operator|.
 name|getAddress
 argument_list|()
 operator|.
-name|getHostAddress
+name|getHostName
 argument_list|()
 operator|+
 literal|":"
 operator|+
-name|nnSocketAddress
+name|nn
+operator|.
+name|getServiceRpcAddress
+argument_list|()
 operator|.
 name|getPort
 argument_list|()
@@ -5487,22 +5502,6 @@ block|}
 name|counterReset
 argument_list|()
 expr_stmt|;
-try|try
-block|{
-name|Thread
-operator|.
-name|sleep
-argument_list|(
-literal|1000
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{       }
 if|if
 condition|(
 name|live
@@ -5527,14 +5526,11 @@ block|}
 else|else
 block|{
 name|int
-name|nnHttpPort
+name|nnInfoPort
 init|=
-name|nn
+name|request
 operator|.
-name|getHttpAddress
-argument_list|()
-operator|.
-name|getPort
+name|getServerPort
 argument_list|()
 decl_stmt|;
 name|out
@@ -5796,7 +5792,7 @@ name|port_suffix
 argument_list|,
 literal|true
 argument_list|,
-name|nnHttpPort
+name|nnInfoPort
 argument_list|,
 name|nnaddr
 argument_list|,
@@ -5934,7 +5930,7 @@ name|port_suffix
 argument_list|,
 literal|false
 argument_list|,
-name|nnHttpPort
+name|nnInfoPort
 argument_list|,
 name|nnaddr
 argument_list|,
@@ -6108,7 +6104,7 @@ name|port_suffix
 argument_list|,
 literal|true
 argument_list|,
-name|nnHttpPort
+name|nnInfoPort
 argument_list|,
 name|nnaddr
 argument_list|,
