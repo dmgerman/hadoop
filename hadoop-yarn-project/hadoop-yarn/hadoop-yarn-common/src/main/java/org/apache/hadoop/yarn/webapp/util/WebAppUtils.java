@@ -806,6 +806,46 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * if url has scheme then it will be returned as it is else it will return    * url with scheme.    * @param schemePrefix eg. http:// or https://    * @param url    * @return url with scheme    */
+DECL|method|getURLWithScheme (String schemePrefix, String url)
+specifier|public
+specifier|static
+name|String
+name|getURLWithScheme
+parameter_list|(
+name|String
+name|schemePrefix
+parameter_list|,
+name|String
+name|url
+parameter_list|)
+block|{
+comment|// If scheme is provided then it will be returned as it is
+if|if
+condition|(
+name|url
+operator|.
+name|indexOf
+argument_list|(
+literal|"://"
+argument_list|)
+operator|>
+literal|0
+condition|)
+block|{
+return|return
+name|url
+return|;
+block|}
+else|else
+block|{
+return|return
+name|schemePrefix
+operator|+
+name|url
+return|;
+block|}
+block|}
 block|}
 end_class
 
