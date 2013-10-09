@@ -2547,6 +2547,27 @@ name|NM_PREFIX
 operator|+
 literal|"linux-container-executor.cgroups.mount-path"
 decl_stmt|;
+comment|/**    * Interval of time the linux container executor should try cleaning up    * cgroups entry when cleaning up a container. This is required due to what     * it seems a race condition because the SIGTERM/SIGKILL is asynch.    */
+DECL|field|NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
+init|=
+name|NM_PREFIX
+operator|+
+literal|"linux-container-executor.cgroups.delete-timeout-ms"
+decl_stmt|;
+DECL|field|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_NM_LINUX_CONTAINER_CGROUPS_DELETE_TIMEOUT
+init|=
+literal|1000
+decl_stmt|;
 comment|/** T-file compression types used to compress aggregated logs.*/
 DECL|field|NM_LOG_AGG_COMPRESSION_TYPE
 specifier|public
