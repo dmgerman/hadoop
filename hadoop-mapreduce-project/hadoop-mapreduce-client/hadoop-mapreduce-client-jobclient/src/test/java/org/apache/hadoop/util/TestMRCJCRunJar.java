@@ -129,10 +129,10 @@ comment|/**  * A test to rest the RunJar class.  */
 end_comment
 
 begin_class
-DECL|class|TestRunJar
+DECL|class|TestMRCJCRunJar
 specifier|public
 class|class
-name|TestRunJar
+name|TestMRCJCRunJar
 block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private

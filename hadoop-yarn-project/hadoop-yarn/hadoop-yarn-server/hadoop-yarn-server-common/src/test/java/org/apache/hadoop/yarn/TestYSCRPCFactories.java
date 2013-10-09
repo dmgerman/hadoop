@@ -269,10 +269,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestRPCFactories
+DECL|class|TestYSCRPCFactories
 specifier|public
 class|class
-name|TestRPCFactories
+name|TestYSCRPCFactories
 block|{
 annotation|@
 name|Test

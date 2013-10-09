@@ -226,10 +226,10 @@ name|SuppressWarnings
 argument_list|(
 literal|"deprecation"
 argument_list|)
-DECL|class|TestFileInputFormat
+DECL|class|TestMRCJCFileInputFormat
 specifier|public
 class|class
-name|TestFileInputFormat
+name|TestMRCJCFileInputFormat
 extends|extends
 name|TestCase
 block|{

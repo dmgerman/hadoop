@@ -151,10 +151,10 @@ end_import
 begin_class
 annotation|@
 name|Ignore
-DECL|class|TestJobConf
+DECL|class|TestMRCJCJobConf
 specifier|public
 class|class
-name|TestJobConf
+name|TestMRCJCJobConf
 block|{
 DECL|field|JAR_RELATIVE_PATH
 specifier|private

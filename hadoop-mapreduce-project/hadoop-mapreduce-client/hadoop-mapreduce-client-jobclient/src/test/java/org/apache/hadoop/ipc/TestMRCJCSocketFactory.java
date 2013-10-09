@@ -237,10 +237,10 @@ comment|/**  * This class checks that RPCs can use specialized socket factories.
 end_comment
 
 begin_class
-DECL|class|TestSocketFactory
+DECL|class|TestMRCJCSocketFactory
 specifier|public
 class|class
-name|TestSocketFactory
+name|TestMRCJCSocketFactory
 block|{
 comment|/**    * Check that we can reach a NameNode or Resource Manager using a specific    * socket factory    */
 annotation|@

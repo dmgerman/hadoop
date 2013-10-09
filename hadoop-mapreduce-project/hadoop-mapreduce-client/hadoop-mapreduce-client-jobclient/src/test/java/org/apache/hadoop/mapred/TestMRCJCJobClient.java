@@ -169,10 +169,10 @@ end_import
 begin_class
 annotation|@
 name|Ignore
-DECL|class|TestJobClient
+DECL|class|TestMRCJCJobClient
 specifier|public
 class|class
-name|TestJobClient
+name|TestMRCJCJobClient
 extends|extends
 name|TestMRJobClient
 block|{
@@ -440,11 +440,11 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|TestJobClient
+name|TestMRCJCJobClient
 name|test
 init|=
 operator|new
-name|TestJobClient
+name|TestMRCJCJobClient
 argument_list|()
 decl_stmt|;
 name|test

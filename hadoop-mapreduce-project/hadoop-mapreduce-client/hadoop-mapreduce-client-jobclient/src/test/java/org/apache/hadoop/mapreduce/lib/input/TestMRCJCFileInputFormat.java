@@ -279,10 +279,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestFileInputFormat
+DECL|class|TestMRCJCFileInputFormat
 specifier|public
 class|class
-name|TestFileInputFormat
+name|TestMRCJCFileInputFormat
 block|{
 annotation|@
 name|Test
