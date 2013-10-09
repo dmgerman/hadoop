@@ -8524,6 +8524,26 @@ name|lastBlockList
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Set caching information for the block list
+for|for
+control|(
+name|LocatedBlock
+name|lb
+range|:
+name|blocks
+operator|.
+name|getLocatedBlocks
+argument_list|()
+control|)
+block|{
+name|cacheReplicationManager
+operator|.
+name|setCachedLocations
+argument_list|(
+name|lb
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 return|return
 name|blocks
