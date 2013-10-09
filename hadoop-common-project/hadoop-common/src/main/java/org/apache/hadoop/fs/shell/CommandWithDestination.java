@@ -342,8 +342,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-try|try
-block|{
 name|String
 name|pathString
 init|=
@@ -365,6 +363,8 @@ operator|.
 name|removeLast
 argument_list|()
 decl_stmt|;
+try|try
+block|{
 name|dst
 operator|=
 operator|new
@@ -387,6 +387,28 @@ name|URISyntaxException
 name|e
 parameter_list|)
 block|{
+if|if
+condition|(
+name|Path
+operator|.
+name|WINDOWS
+condition|)
+block|{
+comment|// Unlike URI, PathData knows how to parse Windows drive-letter paths.
+name|dst
+operator|=
+operator|new
+name|PathData
+argument_list|(
+name|pathString
+argument_list|,
+name|getConf
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 throw|throw
 operator|new
 name|IOException
@@ -396,6 +418,7 @@ argument_list|,
 name|e
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 comment|/**    *  The last arg is expected to be a remote path, if only one argument is    *  given then the destination will be the remote user's directory     *  @param args is the list of arguments    *  @throws PathIOException if path doesn't exist or matches too many times     */
