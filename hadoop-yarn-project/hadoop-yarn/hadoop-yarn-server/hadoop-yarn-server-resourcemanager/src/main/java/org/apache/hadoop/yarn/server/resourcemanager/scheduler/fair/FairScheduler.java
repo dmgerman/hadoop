@@ -4401,6 +4401,16 @@ name|getNodeID
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// This can occur when an UNHEALTHY node reconnects
+if|if
+condition|(
+name|node
+operator|==
+literal|null
+condition|)
+block|{
+return|return;
+block|}
 name|Resources
 operator|.
 name|subtractFrom
