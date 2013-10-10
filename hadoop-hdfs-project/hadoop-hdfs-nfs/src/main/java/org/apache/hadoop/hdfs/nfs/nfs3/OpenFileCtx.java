@@ -3721,6 +3721,12 @@ operator|==
 name|COMMIT_STATUS
 operator|.
 name|COMMIT_DO_SYNC
+operator|||
+name|ret
+operator|==
+name|COMMIT_STATUS
+operator|.
+name|COMMIT_FINISHED
 condition|)
 block|{
 try|try
