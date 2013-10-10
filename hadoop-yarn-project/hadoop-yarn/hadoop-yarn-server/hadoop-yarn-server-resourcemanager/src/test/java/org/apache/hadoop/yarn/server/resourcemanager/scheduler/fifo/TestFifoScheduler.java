@@ -979,14 +979,6 @@ argument_list|,
 name|capability
 argument_list|,
 name|resourceManager
-operator|.
-name|getResourceTrackerService
-argument_list|()
-argument_list|,
-name|resourceManager
-operator|.
-name|getRMContext
-argument_list|()
 argument_list|)
 return|;
 block|}
