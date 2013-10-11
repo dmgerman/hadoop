@@ -1381,11 +1381,26 @@ name|addPathBasedCacheDirective
 argument_list|(
 operator|new
 name|PathBasedCacheDirective
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|setPath
+argument_list|(
+operator|new
+name|Path
 argument_list|(
 literal|"/bar"
-argument_list|,
+argument_list|)
+argument_list|)
+operator|.
+name|setPool
+argument_list|(
 name|pool
 argument_list|)
+operator|.
+name|build
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// OP_REMOVE_PATH_BASED_CACHE_DESCRIPTOR 34

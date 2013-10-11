@@ -82,33 +82,14 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|EmptyPathError (String msg)
+DECL|method|EmptyPathError ()
 specifier|public
 name|EmptyPathError
-parameter_list|(
-name|String
-name|msg
-parameter_list|)
+parameter_list|()
 block|{
 name|super
 argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|EmptyPathError (PathBasedCacheDirective directive)
-specifier|public
-name|EmptyPathError
-parameter_list|(
-name|PathBasedCacheDirective
-name|directive
-parameter_list|)
-block|{
-name|this
-argument_list|(
-literal|"empty path in directive "
-operator|+
-name|directive
+literal|"empty path in directive"
 argument_list|)
 expr_stmt|;
 block|}

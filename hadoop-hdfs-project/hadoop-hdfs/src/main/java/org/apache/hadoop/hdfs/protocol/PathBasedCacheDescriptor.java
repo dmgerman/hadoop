@@ -52,6 +52,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|commons
 operator|.
 name|lang
@@ -119,14 +133,14 @@ specifier|final
 name|long
 name|entryId
 decl_stmt|;
-DECL|method|PathBasedCacheDescriptor (long entryId, String path, String pool)
+DECL|method|PathBasedCacheDescriptor (long entryId, Path path, String pool)
 specifier|public
 name|PathBasedCacheDescriptor
 parameter_list|(
 name|long
 name|entryId
 parameter_list|,
-name|String
+name|Path
 name|path
 parameter_list|,
 name|String
