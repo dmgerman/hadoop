@@ -1267,14 +1267,11 @@ return|return
 name|password
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|retrievePassword (TokenIdent identifier)
-specifier|public
-specifier|synchronized
-name|byte
-index|[]
-name|retrievePassword
+comment|/**    * Find the DelegationTokenInformation for the given token id, and verify that    * if the token is expired. Note that this method should be called with     * acquiring the secret manager's monitor.    */
+DECL|method|checkToken (TokenIdent identifier)
+specifier|protected
+name|DelegationTokenInformation
+name|checkToken
 parameter_list|(
 name|TokenIdent
 name|identifier
@@ -1282,6 +1279,14 @@ parameter_list|)
 throws|throws
 name|InvalidToken
 block|{
+assert|assert
+name|Thread
+operator|.
+name|holdsLock
+argument_list|(
+name|this
+argument_list|)
+assert|;
 name|DelegationTokenInformation
 name|info
 init|=
@@ -1314,14 +1319,6 @@ literal|") can't be found in cache"
 argument_list|)
 throw|;
 block|}
-name|long
-name|now
-init|=
-name|Time
-operator|.
-name|now
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|info
@@ -1329,7 +1326,10 @@ operator|.
 name|getRenewDate
 argument_list|()
 operator|<
+name|Time
+operator|.
 name|now
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -1349,6 +1349,28 @@ throw|;
 block|}
 return|return
 name|info
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|retrievePassword (TokenIdent identifier)
+specifier|public
+specifier|synchronized
+name|byte
+index|[]
+name|retrievePassword
+parameter_list|(
+name|TokenIdent
+name|identifier
+parameter_list|)
+throws|throws
+name|InvalidToken
+block|{
+return|return
+name|checkToken
+argument_list|(
+name|identifier
+argument_list|)
 operator|.
 name|getPassword
 argument_list|()

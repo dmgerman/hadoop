@@ -128,6 +128,20 @@ name|hadoop
 operator|.
 name|ipc
 operator|.
+name|RetriableException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
 name|StandbyException
 import|;
 end_import
@@ -222,6 +236,32 @@ parameter_list|)
 throws|throws
 name|InvalidToken
 function_decl|;
+comment|/**    * The same functionality with {@link #retrievePassword}, except that this     * method can throw a {@link RetriableException} or a {@link StandbyException}    * to indicate that client can retry/failover the same operation because of     * temporary issue on the server side.    *     * @param identifier the identifier to validate    * @return the password to use    * @throws InvalidToken the token was invalid    * @throws StandbyException the server is in standby state, the client can    *         try other servers    * @throws RetriableException the token was invalid, and the server thinks     *         this may be a temporary issue and suggests the client to retry    * @throws IOException to allow future exceptions to be added without breaking    *         compatibility            */
+DECL|method|retriableRetrievePassword (T identifier)
+specifier|public
+name|byte
+index|[]
+name|retriableRetrievePassword
+parameter_list|(
+name|T
+name|identifier
+parameter_list|)
+throws|throws
+name|InvalidToken
+throws|,
+name|StandbyException
+throws|,
+name|RetriableException
+throws|,
+name|IOException
+block|{
+return|return
+name|retrievePassword
+argument_list|(
+name|identifier
+argument_list|)
+return|;
+block|}
 comment|/**    * Create an empty token identifier.    * @return the newly created empty token identifier    */
 DECL|method|createIdentifier ()
 specifier|public

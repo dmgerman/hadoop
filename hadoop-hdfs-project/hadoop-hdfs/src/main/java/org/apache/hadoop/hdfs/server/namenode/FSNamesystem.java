@@ -4137,6 +4137,15 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
+comment|/**    * Whether the namenode is in the middle of starting the active service    */
+DECL|field|startingActiveService
+specifier|private
+specifier|volatile
+name|boolean
+name|startingActiveService
+init|=
+literal|false
+decl_stmt|;
 DECL|field|inodeId
 specifier|private
 name|INodeId
@@ -6200,6 +6209,10 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|startingActiveService
+operator|=
+literal|true
+expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -6418,7 +6431,40 @@ block|{
 name|writeUnlock
 argument_list|()
 expr_stmt|;
+name|startingActiveService
+operator|=
+literal|false
+expr_stmt|;
 block|}
+block|}
+comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the {@link #startActiveServices()}    */
+DECL|method|inTransitionToActive ()
+specifier|public
+name|boolean
+name|inTransitionToActive
+parameter_list|()
+block|{
+return|return
+name|haEnabled
+operator|&&
+name|haContext
+operator|!=
+literal|null
+operator|&&
+name|haContext
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|getServiceState
+argument_list|()
+operator|==
+name|HAServiceState
+operator|.
+name|ACTIVE
+operator|&&
+name|startingActiveService
+return|;
 block|}
 DECL|method|shouldUseDelegationTokens ()
 specifier|private
@@ -29897,7 +29943,7 @@ name|getVersion
 argument_list|()
 return|;
 block|}
-comment|/**    * Verifies that the given identifier and password are valid and match.    * @param identifier Token identifier.    * @param password Password in the token.    * @throws InvalidToken    */
+comment|/**    * Verifies that the given identifier and password are valid and match.    * @param identifier Token identifier.    * @param password Password in the token.    */
 DECL|method|verifyToken (DelegationTokenIdentifier identifier, byte[] password)
 specifier|public
 specifier|synchronized
@@ -29913,6 +29959,10 @@ name|password
 parameter_list|)
 throws|throws
 name|InvalidToken
+throws|,
+name|RetriableException
+block|{
+try|try
 block|{
 name|getDelegationTokenSecretManager
 argument_list|()
@@ -29924,6 +29974,31 @@ argument_list|,
 name|password
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InvalidToken
+name|it
+parameter_list|)
+block|{
+if|if
+condition|(
+name|inTransitionToActive
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RetriableException
+argument_list|(
+name|it
+argument_list|)
+throw|;
+block|}
+throw|throw
+name|it
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -29978,6 +30053,24 @@ block|{
 return|return
 name|editLogTailer
 return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|setEditLogTailerForTests (EditLogTailer tailer)
+specifier|public
+name|void
+name|setEditLogTailerForTests
+parameter_list|(
+name|EditLogTailer
+name|tailer
+parameter_list|)
+block|{
+name|this
+operator|.
+name|editLogTailer
+operator|=
+name|tailer
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
