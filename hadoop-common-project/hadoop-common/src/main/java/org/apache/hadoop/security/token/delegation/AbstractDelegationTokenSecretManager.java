@@ -302,6 +302,8 @@ block|{
 literal|"HDFS"
 block|,
 literal|"MapReduce"
+block|,
+literal|"Hive"
 block|}
 argument_list|)
 annotation|@
