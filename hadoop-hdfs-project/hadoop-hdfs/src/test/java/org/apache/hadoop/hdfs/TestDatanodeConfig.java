@@ -670,6 +670,16 @@ operator|.
 name|getMemlockLimit
 argument_list|()
 decl_stmt|;
+comment|// Can't increase the memlock limit past the maximum.
+name|assumeTrue
+argument_list|(
+name|memlockLimit
+operator|!=
+name|Long
+operator|.
+name|MAX_VALUE
+argument_list|)
+expr_stmt|;
 name|Configuration
 name|conf
 init|=
@@ -680,6 +690,24 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+name|long
+name|prevLimit
+init|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT
+argument_list|)
+decl_stmt|;
+try|try
+block|{
 comment|// Try starting the DN with limit configured to the ulimit
 name|conf
 operator|.
@@ -692,18 +720,6 @@ argument_list|,
 name|memlockLimit
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|memlockLimit
-operator|==
-name|Long
-operator|.
-name|MAX_VALUE
-condition|)
-block|{
-comment|// Can't increase the memlock limit past the maximum.
-return|return;
-block|}
 name|DataNode
 name|dn
 init|=
@@ -769,9 +785,24 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"less than the datanode's available RLIMIT_MEMLOCK"
+literal|"more than the datanode's available RLIMIT_MEMLOCK"
 argument_list|,
 name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
+argument_list|,
+name|prevLimit
 argument_list|)
 expr_stmt|;
 block|}

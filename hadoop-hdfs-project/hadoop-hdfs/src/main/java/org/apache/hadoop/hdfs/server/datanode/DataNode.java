@@ -4974,7 +4974,7 @@ name|format
 argument_list|(
 literal|"Cannot start datanode because the configured max locked memory"
 operator|+
-literal|" size (%s) of %d bytes is less than the datanode's available"
+literal|" size (%s) of %d bytes is more than the datanode's available"
 operator|+
 literal|" RLIMIT_MEMLOCK ulimit of %d bytes."
 argument_list|,
