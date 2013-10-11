@@ -304,7 +304,6 @@ decl_stmt|;
 comment|/**    * Modification version for fail-fast.    *    * @see ConcurrentModificationException    */
 DECL|field|modification
 specifier|protected
-specifier|volatile
 name|int
 name|modification
 init|=
