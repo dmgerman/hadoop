@@ -903,7 +903,7 @@ name|escapeHtml
 argument_list|(
 name|lqinfo
 operator|.
-name|getUsedResources
+name|getResourcesUsed
 argument_list|()
 operator|.
 name|toString

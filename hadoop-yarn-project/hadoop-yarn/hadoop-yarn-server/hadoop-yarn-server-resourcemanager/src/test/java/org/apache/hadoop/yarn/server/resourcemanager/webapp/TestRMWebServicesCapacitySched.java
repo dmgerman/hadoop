@@ -649,10 +649,6 @@ DECL|field|numApplications
 name|int
 name|numApplications
 decl_stmt|;
-DECL|field|usedResources
-name|String
-name|usedResources
-decl_stmt|;
 DECL|field|queueName
 name|String
 name|queueName
@@ -2114,19 +2110,6 @@ argument_list|)
 expr_stmt|;
 name|qi
 operator|.
-name|usedResources
-operator|=
-name|WebServicesTestUtils
-operator|.
-name|getXmlString
-argument_list|(
-name|qElem
-argument_list|,
-literal|"usedResources"
-argument_list|)
-expr_stmt|;
-name|qi
-operator|.
 name|queueName
 operator|=
 name|WebServicesTestUtils
@@ -2732,7 +2715,7 @@ block|{
 name|int
 name|numExpectedElements
 init|=
-literal|12
+literal|11
 decl_stmt|;
 name|boolean
 name|isParentQueue
@@ -2752,7 +2735,7 @@ condition|)
 block|{
 name|numExpectedElements
 operator|=
-literal|22
+literal|21
 expr_stmt|;
 name|isParentQueue
 operator|=
@@ -2877,17 +2860,6 @@ operator|.
 name|getInt
 argument_list|(
 literal|"numApplications"
-argument_list|)
-expr_stmt|;
-name|qi
-operator|.
-name|usedResources
-operator|=
-name|info
-operator|.
-name|getString
-argument_list|(
-literal|"usedResources"
 argument_list|)
 expr_stmt|;
 name|qi
@@ -3323,20 +3295,6 @@ argument_list|,
 name|info
 operator|.
 name|numApplications
-argument_list|)
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"usedResources doesn't match "
-argument_list|,
-name|info
-operator|.
-name|usedResources
-operator|.
-name|matches
-argument_list|(
-literal|"<memory:0, vCores:0>"
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|assertTrue
