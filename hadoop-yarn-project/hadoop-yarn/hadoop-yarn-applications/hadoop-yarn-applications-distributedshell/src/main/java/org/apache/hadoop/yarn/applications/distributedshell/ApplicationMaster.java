@@ -1105,6 +1105,14 @@ name|containerMemory
 init|=
 literal|10
 decl_stmt|;
+comment|// VirtualCores to request for the container on which the shell command will run
+DECL|field|containerVirtualCores
+specifier|private
+name|int
+name|containerVirtualCores
+init|=
+literal|1
+decl_stmt|;
 comment|// Priority of the request
 DECL|field|requestPriority
 specifier|private
@@ -1689,6 +1697,17 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"Amount of memory in MB to be requested to run the shell command"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Amount of virtual cores to be requested to run the shell command"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2366,6 +2385,22 @@ literal|"10"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|containerVirtualCores
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|"1"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|numTotalContainers
 operator|=
 name|Integer
@@ -2674,6 +2709,26 @@ operator|+
 name|maxMem
 argument_list|)
 expr_stmt|;
+name|int
+name|maxVCores
+init|=
+name|response
+operator|.
+name|getMaximumResourceCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Max vcores capabililty of resources in this cluster "
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
 comment|// A resource ask cannot exceed the max.
 if|if
 condition|(
@@ -2702,6 +2757,35 @@ expr_stmt|;
 name|containerMemory
 operator|=
 name|maxMem
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|containerVirtualCores
+operator|>
+name|maxVCores
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container virtual cores specified above max threshold of cluster."
+operator|+
+literal|" Using max value."
+operator|+
+literal|", specified="
+operator|+
+name|containerVirtualCores
+operator|+
+literal|", max="
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
+name|containerVirtualCores
+operator|=
+name|maxVCores
 expr_stmt|;
 block|}
 comment|// Setup ask for containers from RM
@@ -3343,6 +3427,16 @@ name|getResource
 argument_list|()
 operator|.
 name|getMemory
+argument_list|()
+operator|+
+literal|", containerResourceVirtualCores"
+operator|+
+name|allocatedContainer
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|getVirtualCores
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4216,7 +4310,7 @@ name|requestPriority
 argument_list|)
 expr_stmt|;
 comment|// Set up resource type requirements
-comment|// For now, only memory is supported so we set memory requirements
+comment|// For now, memory and CPU are supported so we set memory and cpu requirements
 name|Resource
 name|capability
 init|=
@@ -4234,6 +4328,13 @@ operator|.
 name|setMemory
 argument_list|(
 name|containerMemory
+argument_list|)
+expr_stmt|;
+name|capability
+operator|.
+name|setVirtualCores
+argument_list|(
+name|containerVirtualCores
 argument_list|)
 expr_stmt|;
 name|ContainerRequest
