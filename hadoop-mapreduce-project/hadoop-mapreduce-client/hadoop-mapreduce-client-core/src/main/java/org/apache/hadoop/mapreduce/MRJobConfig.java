@@ -538,6 +538,16 @@ name|MAPREDUCE_JOB_CLASSLOADER
 init|=
 literal|"mapreduce.job.classloader"
 decl_stmt|;
+comment|/**    * A comma-separated list of services that function as ShuffleProvider aux-services    * (in addition to the built-in ShuffleHandler).    * These services can serve shuffle requests from reducetasks.    */
+DECL|field|MAPREDUCE_JOB_SHUFFLE_PROVIDER_SERVICES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_JOB_SHUFFLE_PROVIDER_SERVICES
+init|=
+literal|"mapreduce.job.shuffle.provider.services"
+decl_stmt|;
 DECL|field|MAPREDUCE_JOB_CLASSLOADER_SYSTEM_CLASSES
 specifier|public
 specifier|static
