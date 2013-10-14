@@ -574,15 +574,15 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * @return if the block is cached    */
-DECL|method|isCached (String bpid, Block block)
+DECL|method|isCached (String bpid, long blockId)
 name|boolean
 name|isCached
 parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
-name|block
+name|long
+name|blockId
 parameter_list|)
 block|{
 name|MappableBlock
@@ -592,10 +592,7 @@ name|cachedBlocks
 operator|.
 name|get
 argument_list|(
-name|block
-operator|.
-name|getBlockId
-argument_list|()
+name|blockId
 argument_list|)
 decl_stmt|;
 if|if
@@ -734,6 +731,9 @@ argument_list|(
 name|bpid
 argument_list|,
 name|block
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 condition|)
 block|{
@@ -918,16 +918,16 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Uncaches a block if it is cached.    * @param block to uncache    */
-DECL|method|uncacheBlock (String bpid, Block block)
+comment|/**    * Uncaches a block if it is cached.    * @param blockId id to uncache    */
+DECL|method|uncacheBlock (String bpid, long blockId)
 name|void
 name|uncacheBlock
 parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
-name|block
+name|long
+name|blockId
 parameter_list|)
 block|{
 name|MappableBlock
@@ -937,10 +937,7 @@ name|cachedBlocks
 operator|.
 name|get
 argument_list|(
-name|block
-operator|.
-name|getBlockId
-argument_list|()
+name|blockId
 argument_list|)
 decl_stmt|;
 if|if
@@ -964,10 +961,10 @@ operator|.
 name|getBlock
 argument_list|()
 operator|.
-name|equals
-argument_list|(
-name|block
-argument_list|)
+name|getBlockId
+argument_list|()
+operator|==
+name|blockId
 condition|)
 block|{
 name|mapBlock
@@ -979,10 +976,7 @@ name|cachedBlocks
 operator|.
 name|remove
 argument_list|(
-name|block
-operator|.
-name|getBlockId
-argument_list|()
+name|blockId
 argument_list|)
 expr_stmt|;
 name|long
@@ -1030,7 +1024,7 @@ name|info
 argument_list|(
 literal|"Successfully uncached block "
 operator|+
-name|block
+name|blockId
 argument_list|)
 expr_stmt|;
 block|}
@@ -1042,7 +1036,7 @@ name|info
 argument_list|(
 literal|"Could not uncache block "
 operator|+
-name|block
+name|blockId
 operator|+
 literal|": unknown block."
 argument_list|)
@@ -1178,6 +1172,9 @@ argument_list|,
 name|block
 operator|.
 name|getBlock
+argument_list|()
+operator|.
+name|getBlockId
 argument_list|()
 argument_list|)
 condition|)

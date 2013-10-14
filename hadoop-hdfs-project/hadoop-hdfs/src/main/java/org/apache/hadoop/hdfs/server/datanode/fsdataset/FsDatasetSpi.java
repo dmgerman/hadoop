@@ -891,8 +891,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Caches the specified blocks    * @param bpid Block pool id    * @param cacheBlks - block to cache    */
-DECL|method|cache (String bpid, Block[] cacheBlks)
+comment|/**    * Caches the specified blocks    * @param bpid Block pool id    * @param blockIds - block ids to cache    */
+DECL|method|cache (String bpid, long[] blockIds)
 specifier|public
 name|void
 name|cache
@@ -900,13 +900,13 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
+name|long
 index|[]
-name|cacheBlks
+name|blockIds
 parameter_list|)
 function_decl|;
-comment|/**    * Uncaches the specified blocks    * @param bpid Block pool id    * @param uncacheBlks - blocks to uncache    */
-DECL|method|uncache (String bpid, Block[] uncacheBlks)
+comment|/**    * Uncaches the specified blocks    * @param bpid Block pool id    * @param blockIds - blocks ids to uncache    */
+DECL|method|uncache (String bpid, long[] blockIds)
 specifier|public
 name|void
 name|uncache
@@ -914,9 +914,9 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
+name|long
 index|[]
-name|uncacheBlks
+name|blockIds
 parameter_list|)
 function_decl|;
 comment|/**      * Check if all the data directories are healthy      * @throws DiskErrorException      */

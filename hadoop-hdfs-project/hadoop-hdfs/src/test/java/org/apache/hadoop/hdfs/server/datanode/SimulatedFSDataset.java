@@ -2951,7 +2951,7 @@ block|}
 annotation|@
 name|Override
 comment|// FSDatasetSpi
-DECL|method|cache (String bpid, Block[] cacheBlks)
+DECL|method|cache (String bpid, long[] cacheBlks)
 specifier|public
 name|void
 name|cache
@@ -2959,7 +2959,7 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
+name|long
 index|[]
 name|cacheBlks
 parameter_list|)
@@ -2975,7 +2975,7 @@ block|}
 annotation|@
 name|Override
 comment|// FSDatasetSpi
-DECL|method|uncache (String bpid, Block[] uncacheBlks)
+DECL|method|uncache (String bpid, long[] uncacheBlks)
 specifier|public
 name|void
 name|uncache
@@ -2983,7 +2983,7 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
+name|long
 index|[]
 name|uncacheBlks
 parameter_list|)

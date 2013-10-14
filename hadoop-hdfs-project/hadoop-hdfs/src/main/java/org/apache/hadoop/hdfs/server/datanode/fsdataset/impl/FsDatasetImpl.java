@@ -3179,6 +3179,9 @@ argument_list|(
 name|bpid
 argument_list|,
 name|replicaInfo
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// unlink the finalized replica
@@ -6316,6 +6319,9 @@ name|invalidBlks
 index|[
 name|i
 index|]
+operator|.
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Delete the block asynchronously to make sure we can do it fast enough
@@ -6369,7 +6375,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|validToCache (String bpid, Block blk)
+DECL|method|validToCache (String bpid, long blockId)
 specifier|synchronized
 name|boolean
 name|validToCache
@@ -6377,8 +6383,8 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
-name|blk
+name|long
+name|blockId
 parameter_list|)
 block|{
 name|ReplicaInfo
@@ -6390,7 +6396,7 @@ name|get
 argument_list|(
 name|bpid
 argument_list|,
-name|blk
+name|blockId
 argument_list|)
 decl_stmt|;
 if|if
@@ -6404,9 +6410,13 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache replica "
+literal|"Failed to cache replica in block pool "
 operator|+
-name|blk
+name|bpid
+operator|+
+literal|" with block id "
+operator|+
+name|blockId
 operator|+
 literal|": ReplicaInfo not found."
 argument_list|)
@@ -6437,9 +6447,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache replica "
+literal|"Failed to cache block with id "
 operator|+
-name|blk
+name|blockId
 operator|+
 literal|": Volume not found."
 argument_list|)
@@ -6464,13 +6474,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache replica "
+literal|"Failed to block with id "
 operator|+
-name|blk
+name|blockId
 operator|+
-literal|": Replica is not"
-operator|+
-literal|" finalized."
+literal|": Replica is not finalized."
 argument_list|)
 expr_stmt|;
 return|return
@@ -6482,7 +6490,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Asynchronously attempts to cache a single block via {@link FsDatasetCache}.    */
-DECL|method|cacheBlock (String bpid, Block blk)
+DECL|method|cacheBlock (String bpid, long blockId)
 specifier|private
 name|void
 name|cacheBlock
@@ -6490,8 +6498,8 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
-name|blk
+name|long
+name|blockId
 parameter_list|)
 block|{
 name|ReplicaInfo
@@ -6512,7 +6520,7 @@ name|validToCache
 argument_list|(
 name|bpid
 argument_list|,
-name|blk
+name|blockId
 argument_list|)
 condition|)
 block|{
@@ -6526,7 +6534,7 @@ name|get
 argument_list|(
 name|bpid
 argument_list|,
-name|blk
+name|blockId
 argument_list|)
 expr_stmt|;
 name|volume
@@ -6556,8 +6564,6 @@ name|success
 init|=
 literal|false
 decl_stmt|;
-try|try
-block|{
 name|ExtendedBlock
 name|extBlk
 init|=
@@ -6566,9 +6572,21 @@ name|ExtendedBlock
 argument_list|(
 name|bpid
 argument_list|,
-name|blk
+name|blockId
+argument_list|,
+name|info
+operator|.
+name|getBytesOnDisk
+argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getGenerationStamp
+argument_list|()
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|blockIn
 operator|=
 operator|(
@@ -6611,7 +6629,7 @@ name|warn
 argument_list|(
 literal|"Failed to cache replica "
 operator|+
-name|blk
+name|extBlk
 operator|+
 literal|": Underlying blocks"
 operator|+
@@ -6633,7 +6651,7 @@ name|warn
 argument_list|(
 literal|"Failed to cache replica "
 operator|+
-name|blk
+name|extBlk
 operator|+
 literal|": IOException while"
 operator|+
@@ -6671,7 +6689,10 @@ name|cacheBlock
 argument_list|(
 name|bpid
 argument_list|,
-name|blk
+name|extBlk
+operator|.
+name|getLocalBlock
+argument_list|()
 argument_list|,
 name|volume
 argument_list|,
@@ -6684,7 +6705,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|cache (String bpid, Block[] cacheBlks)
+DECL|method|cache (String bpid, long[] blockIds)
 specifier|public
 name|void
 name|cache
@@ -6692,9 +6713,9 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
+name|long
 index|[]
-name|cacheBlks
+name|blockIds
 parameter_list|)
 block|{
 for|for
@@ -6706,7 +6727,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|cacheBlks
+name|blockIds
 operator|.
 name|length
 condition|;
@@ -6718,7 +6739,7 @@ name|cacheBlock
 argument_list|(
 name|bpid
 argument_list|,
-name|cacheBlks
+name|blockIds
 index|[
 name|i
 index|]
@@ -6729,7 +6750,7 @@ block|}
 annotation|@
 name|Override
 comment|// FsDatasetSpi
-DECL|method|uncache (String bpid, Block[] uncacheBlks)
+DECL|method|uncache (String bpid, long[] blockIds)
 specifier|public
 name|void
 name|uncache
@@ -6737,9 +6758,9 @@ parameter_list|(
 name|String
 name|bpid
 parameter_list|,
-name|Block
+name|long
 index|[]
-name|uncacheBlks
+name|blockIds
 parameter_list|)
 block|{
 for|for
@@ -6751,7 +6772,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|uncacheBlks
+name|blockIds
 operator|.
 name|length
 condition|;
@@ -6759,21 +6780,16 @@ name|i
 operator|++
 control|)
 block|{
-name|Block
-name|blk
-init|=
-name|uncacheBlks
-index|[
-name|i
-index|]
-decl_stmt|;
 name|cacheManager
 operator|.
 name|uncacheBlock
 argument_list|(
 name|bpid
 argument_list|,
-name|blk
+name|blockIds
+index|[
+name|i
+index|]
 argument_list|)
 expr_stmt|;
 block|}
