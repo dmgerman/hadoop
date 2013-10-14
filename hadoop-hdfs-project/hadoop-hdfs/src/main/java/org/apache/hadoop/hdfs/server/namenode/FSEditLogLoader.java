@@ -4130,6 +4130,13 @@ name|path
 argument_list|)
 argument_list|)
 operator|.
+name|setReplication
+argument_list|(
+name|addOp
+operator|.
+name|replication
+argument_list|)
+operator|.
 name|setPool
 argument_list|(
 name|addOp

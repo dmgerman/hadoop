@@ -196,6 +196,16 @@ specifier|private
 name|Path
 name|path
 decl_stmt|;
+DECL|field|replication
+specifier|private
+name|short
+name|replication
+init|=
+operator|(
+name|short
+operator|)
+literal|1
+decl_stmt|;
 DECL|field|pool
 specifier|private
 name|String
@@ -213,6 +223,8 @@ operator|new
 name|PathBasedCacheDirective
 argument_list|(
 name|path
+argument_list|,
+name|replication
 argument_list|,
 name|pool
 argument_list|)
@@ -233,6 +245,26 @@ operator|.
 name|path
 operator|=
 name|path
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets the replication used in this request.      *       * @param replication The replication used in this request.      * @return This builder, for call chaining.      */
+DECL|method|setReplication (short replication)
+specifier|public
+name|Builder
+name|setReplication
+parameter_list|(
+name|short
+name|replication
+parameter_list|)
+block|{
+name|this
+operator|.
+name|replication
+operator|=
+name|replication
 expr_stmt|;
 return|return
 name|this
@@ -265,6 +297,12 @@ specifier|final
 name|Path
 name|path
 decl_stmt|;
+DECL|field|replication
+specifier|private
+specifier|final
+name|short
+name|replication
+decl_stmt|;
 DECL|field|pool
 specifier|private
 specifier|final
@@ -280,6 +318,17 @@ parameter_list|()
 block|{
 return|return
 name|path
+return|;
+block|}
+comment|/**    * @return The number of times the block should be cached.    */
+DECL|method|getReplication ()
+specifier|public
+name|short
+name|getReplication
+parameter_list|()
+block|{
+return|return
+name|replication
 return|;
 block|}
 comment|/**    * @return The pool used in this request.    */
@@ -324,6 +373,27 @@ operator|new
 name|InvalidPathNameError
 argument_list|(
 name|this
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|replication
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Tried to request a cache replication "
+operator|+
+literal|"factor of "
+operator|+
+name|replication
+operator|+
+literal|", but that is less than 1."
 argument_list|)
 throw|;
 block|}
@@ -407,6 +477,17 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|getReplication
+argument_list|()
+argument_list|,
+name|other
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|getPool
 argument_list|()
 argument_list|,
@@ -437,6 +518,11 @@ name|append
 argument_list|(
 name|getPath
 argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|replication
 argument_list|)
 operator|.
 name|append
@@ -478,6 +564,16 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+literal|", replication:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|replication
+argument_list|)
+operator|.
+name|append
+argument_list|(
 literal|", pool:"
 argument_list|)
 operator|.
@@ -498,13 +594,16 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * Protected constructor.  Callers use Builder to create new instances.    *     * @param path The path used in this request.    * @param pool The pool used in this request.    */
-DECL|method|PathBasedCacheDirective (Path path, String pool)
+comment|/**    * Protected constructor.  Callers use Builder to create new instances.    *     * @param path The path used in this request.    * @param replication The replication used in this request.    * @param pool The pool used in this request.    */
+DECL|method|PathBasedCacheDirective (Path path, short replication, String pool)
 specifier|protected
 name|PathBasedCacheDirective
 parameter_list|(
 name|Path
 name|path
+parameter_list|,
+name|short
+name|replication
 parameter_list|,
 name|String
 name|pool
@@ -529,6 +628,12 @@ operator|.
 name|path
 operator|=
 name|path
+expr_stmt|;
+name|this
+operator|.
+name|replication
+operator|=
+name|replication
 expr_stmt|;
 name|this
 operator|.

@@ -1343,6 +1343,11 @@ operator|.
 name|getPath
 argument_list|()
 argument_list|,
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+argument_list|,
 name|pool
 argument_list|)
 expr_stmt|;
@@ -3267,6 +3272,14 @@ argument_list|(
 name|in
 argument_list|)
 decl_stmt|;
+name|short
+name|replication
+init|=
+name|in
+operator|.
+name|readShort
+argument_list|()
+decl_stmt|;
 name|String
 name|poolName
 init|=
@@ -3297,6 +3310,8 @@ argument_list|(
 name|entryId
 argument_list|,
 name|path
+argument_list|,
+name|replication
 argument_list|,
 name|pool
 argument_list|)

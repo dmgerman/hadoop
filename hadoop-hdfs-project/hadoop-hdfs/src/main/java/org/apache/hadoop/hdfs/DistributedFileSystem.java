@@ -7635,6 +7635,14 @@ argument_list|(
 name|path
 argument_list|)
 operator|.
+name|setReplication
+argument_list|(
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
+operator|.
 name|setPool
 argument_list|(
 name|directive
@@ -7790,6 +7798,11 @@ name|getEntryId
 argument_list|()
 argument_list|,
 name|qualPath
+argument_list|,
+name|desc
+operator|.
+name|getReplication
+argument_list|()
 argument_list|,
 name|desc
 operator|.

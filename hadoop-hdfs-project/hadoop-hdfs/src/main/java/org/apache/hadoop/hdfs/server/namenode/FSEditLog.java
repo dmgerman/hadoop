@@ -4571,6 +4571,14 @@ name|getPath
 argument_list|()
 argument_list|)
 operator|.
+name|setReplication
+argument_list|(
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
+operator|.
 name|setPool
 argument_list|(
 name|directive

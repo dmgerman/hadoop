@@ -1394,6 +1394,14 @@ literal|"/bar"
 argument_list|)
 argument_list|)
 operator|.
+name|setReplication
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+operator|.
 name|setPool
 argument_list|(
 name|pool

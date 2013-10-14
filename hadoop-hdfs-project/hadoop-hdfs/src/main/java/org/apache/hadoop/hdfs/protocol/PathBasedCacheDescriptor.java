@@ -133,7 +133,7 @@ specifier|final
 name|long
 name|entryId
 decl_stmt|;
-DECL|method|PathBasedCacheDescriptor (long entryId, Path path, String pool)
+DECL|method|PathBasedCacheDescriptor (long entryId, Path path, short replication, String pool)
 specifier|public
 name|PathBasedCacheDescriptor
 parameter_list|(
@@ -143,6 +143,9 @@ parameter_list|,
 name|Path
 name|path
 parameter_list|,
+name|short
+name|replication
+parameter_list|,
 name|String
 name|pool
 parameter_list|)
@@ -150,6 +153,8 @@ block|{
 name|super
 argument_list|(
 name|path
+argument_list|,
+name|replication
 argument_list|,
 name|pool
 argument_list|)
@@ -252,6 +257,17 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
+name|getReplication
+argument_list|()
+argument_list|,
+name|other
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
 name|getPool
 argument_list|()
 argument_list|,
@@ -286,6 +302,12 @@ operator|.
 name|append
 argument_list|(
 name|getPath
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getReplication
 argument_list|()
 argument_list|)
 operator|.
@@ -334,6 +356,17 @@ operator|.
 name|append
 argument_list|(
 name|getPath
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", replication:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getReplication
 argument_list|()
 argument_list|)
 operator|.
