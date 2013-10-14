@@ -241,7 +241,7 @@ name|getNumActiveApplications
 parameter_list|()
 block|{
 return|return
-name|numPendingApps
+name|numActiveApps
 return|;
 block|}
 DECL|method|getNumPendingApplications ()
@@ -251,7 +251,7 @@ name|getNumPendingApplications
 parameter_list|()
 block|{
 return|return
-name|numActiveApps
+name|numPendingApps
 return|;
 block|}
 block|}
