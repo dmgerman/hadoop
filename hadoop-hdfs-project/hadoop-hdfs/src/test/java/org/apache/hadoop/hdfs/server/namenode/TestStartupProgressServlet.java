@@ -472,6 +472,13 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Loading fsimage"
+argument_list|)
+operator|.
+name|put
+argument_list|(
 literal|"status"
 argument_list|,
 literal|"PENDING"
@@ -512,6 +519,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"LoadingEdits"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Loading edits"
 argument_list|)
 operator|.
 name|put
@@ -560,6 +574,13 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Saving checkpoint"
+argument_list|)
+operator|.
+name|put
+argument_list|(
 literal|"status"
 argument_list|,
 literal|"PENDING"
@@ -600,6 +621,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"SafeMode"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Safe mode"
 argument_list|)
 operator|.
 name|put
@@ -731,6 +759,13 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Loading fsimage"
+argument_list|)
+operator|.
+name|put
+argument_list|(
 literal|"status"
 argument_list|,
 literal|"COMPLETE"
@@ -769,6 +804,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"Inodes"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"inodes"
 argument_list|)
 operator|.
 name|put
@@ -815,6 +857,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"LoadingEdits"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Loading edits"
 argument_list|)
 operator|.
 name|put
@@ -914,6 +963,13 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Saving checkpoint"
+argument_list|)
+operator|.
+name|put
+argument_list|(
 literal|"status"
 argument_list|,
 literal|"PENDING"
@@ -954,6 +1010,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"SafeMode"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Safe mode"
 argument_list|)
 operator|.
 name|put
@@ -1085,6 +1148,13 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Loading fsimage"
+argument_list|)
+operator|.
+name|put
+argument_list|(
 literal|"status"
 argument_list|,
 literal|"COMPLETE"
@@ -1123,6 +1193,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"Inodes"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"inodes"
 argument_list|)
 operator|.
 name|put
@@ -1169,6 +1246,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"LoadingEdits"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Loading edits"
 argument_list|)
 operator|.
 name|put
@@ -1268,6 +1352,13 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Saving checkpoint"
+argument_list|)
+operator|.
+name|put
+argument_list|(
 literal|"status"
 argument_list|,
 literal|"COMPLETE"
@@ -1306,6 +1397,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"Inodes"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"inodes"
 argument_list|)
 operator|.
 name|put
@@ -1356,6 +1454,13 @@ argument_list|)
 operator|.
 name|put
 argument_list|(
+literal|"desc"
+argument_list|,
+literal|"Safe mode"
+argument_list|)
+operator|.
+name|put
+argument_list|(
 literal|"status"
 argument_list|,
 literal|"COMPLETE"
@@ -1394,6 +1499,13 @@ argument_list|(
 literal|"name"
 argument_list|,
 literal|"AwaitingReportedBlocks"
+argument_list|)
+operator|.
+name|put
+argument_list|(
+literal|"desc"
+argument_list|,
+literal|"awaiting reported blocks"
 argument_list|)
 operator|.
 name|put
