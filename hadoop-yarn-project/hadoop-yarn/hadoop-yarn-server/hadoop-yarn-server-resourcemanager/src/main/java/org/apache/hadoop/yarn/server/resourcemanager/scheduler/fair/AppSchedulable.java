@@ -1331,9 +1331,17 @@ name|boolean
 name|reserved
 parameter_list|)
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Node offered to app: "
 operator|+
@@ -1345,6 +1353,7 @@ operator|+
 name|reserved
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|reserved
