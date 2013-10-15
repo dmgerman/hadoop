@@ -1184,7 +1184,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"can't read paritions file"
+literal|"can't read partitions file"
 argument_list|,
 name|ie
 argument_list|)
