@@ -1249,6 +1249,9 @@ name|ret
 condition|)
 block|{
 case|case
+name|COMMIT_DO_SYNC
+case|:
+case|case
 name|COMMIT_FINISHED
 case|:
 case|case
@@ -1284,7 +1287,7 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Wring error code:"
+literal|"Should not get commit return code:"
 operator|+
 name|ret
 operator|.

@@ -112,6 +112,20 @@ name|Verifier
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * READDIR3 Response  */
 end_comment
@@ -208,7 +222,10 @@ return|return
 name|fileId
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -280,6 +297,23 @@ name|eof
 operator|=
 name|eof
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getEntries ()
+specifier|public
+name|List
+argument_list|<
+name|Entry3
+argument_list|>
+name|getEntries
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|entries
+return|;
 block|}
 block|}
 DECL|method|READDIR3Response (int status)
