@@ -1906,6 +1906,16 @@ argument_list|(
 name|port
 argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"SSL is enabled on "
+operator|+
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 else|else
 block|{
