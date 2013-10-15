@@ -104,6 +104,29 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
+DECL|method|DisallowedDatanodeException (DatanodeID nodeID, String reason)
+specifier|public
+name|DisallowedDatanodeException
+parameter_list|(
+name|DatanodeID
+name|nodeID
+parameter_list|,
+name|String
+name|reason
+parameter_list|)
+block|{
+name|super
+argument_list|(
+literal|"Datanode denied communication with namenode because "
+operator|+
+name|reason
+operator|+
+literal|": "
+operator|+
+name|nodeID
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|DisallowedDatanodeException (DatanodeID nodeID)
 specifier|public
 name|DisallowedDatanodeException
@@ -112,11 +135,11 @@ name|DatanodeID
 name|nodeID
 parameter_list|)
 block|{
-name|super
+name|this
 argument_list|(
-literal|"Datanode denied communication with namenode: "
-operator|+
 name|nodeID
+argument_list|,
+literal|"the host is not in the include-list"
 argument_list|)
 expr_stmt|;
 block|}

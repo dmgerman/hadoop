@@ -1473,6 +1473,24 @@ name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT
 init|=
 literal|1000
 decl_stmt|;
+DECL|field|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+init|=
+literal|"dfs.namenode.datanode.registration.ip-hostname-check"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_DEFAULT
+init|=
+literal|true
+decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public

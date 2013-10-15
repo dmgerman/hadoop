@@ -754,6 +754,12 @@ name|hasClusterEverBeenMultiRack
 init|=
 literal|false
 decl_stmt|;
+DECL|field|checkIpHostnameInRegistration
+specifier|private
+specifier|final
+name|boolean
+name|checkIpHostnameInRegistration
+decl_stmt|;
 comment|/**    * The number of datanodes for each software version. This list should change    * during rolling upgrades.    * Software version -> Number of datanodes with this version    */
 DECL|field|datanodesSoftwareVersions
 specifier|private
@@ -1174,6 +1180,36 @@ operator|+
 name|this
 operator|.
 name|blockInvalidateLimit
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|checkIpHostnameInRegistration
+operator|=
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_DEFAULT
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_KEY
+operator|+
+literal|"="
+operator|+
+name|checkIpHostnameInRegistration
 argument_list|)
 expr_stmt|;
 name|this
@@ -3368,6 +3404,8 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
+name|checkIpHostnameInRegistration
+operator|&&
 operator|!
 name|isNameResolved
 argument_list|(
@@ -3377,13 +3415,27 @@ condition|)
 block|{
 comment|// Reject registration of unresolved datanode to prevent performance
 comment|// impact of repetitive DNS lookups later.
+specifier|final
+name|String
+name|message
+init|=
+literal|"hostname cannot be resolved (ip="
+operator|+
+name|ip
+operator|+
+literal|", hostname="
+operator|+
+name|hostname
+operator|+
+literal|")"
+decl_stmt|;
 name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unresolved datanode registration from "
+literal|"Unresolved datanode registration: "
 operator|+
-name|ip
+name|message
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3391,6 +3443,8 @@ operator|new
 name|DisallowedDatanodeException
 argument_list|(
 name|nodeReg
+argument_list|,
+name|message
 argument_list|)
 throw|;
 block|}
@@ -5129,7 +5183,7 @@ return|return
 name|nodes
 return|;
 block|}
-comment|/**    * Checks if name resolution was successful for the given address.  If IP    * address and host name are the same, then it means name resolution has    * failed.  As a special case, the loopback address is also considered    * acceptable.  This is particularly important on Windows, where 127.0.0.1 does    * not resolve to "localhost".    *    * @param address InetAddress to check    * @return boolean true if name resolution successful or address is loopback    */
+comment|/**    * Checks if name resolution was successful for the given address.  If IP    * address and host name are the same, then it means name resolution has    * failed.  As a special case, local addresses are also considered    * acceptable.  This is particularly important on Windows, where 127.0.0.1 does    * not resolve to "localhost".    *    * @param address InetAddress to check    * @return boolean true if name resolution successful or address is local    */
 DECL|method|isNameResolved (InetAddress address)
 specifier|private
 specifier|static
@@ -5165,10 +5219,12 @@ argument_list|(
 name|ip
 argument_list|)
 operator|||
-name|address
+name|NetUtils
 operator|.
-name|isLoopbackAddress
-argument_list|()
+name|isLocalAddress
+argument_list|(
+name|address
+argument_list|)
 return|;
 block|}
 DECL|method|setDatanodeDead (DatanodeDescriptor node)
