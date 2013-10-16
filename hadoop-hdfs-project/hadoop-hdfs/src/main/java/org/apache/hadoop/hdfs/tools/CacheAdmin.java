@@ -807,7 +807,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" -path<path> -pool<pool-name>]\n"
+literal|" -path<path> -replication<replication> -pool<pool-name>]\n"
 return|;
 block|}
 annotation|@
