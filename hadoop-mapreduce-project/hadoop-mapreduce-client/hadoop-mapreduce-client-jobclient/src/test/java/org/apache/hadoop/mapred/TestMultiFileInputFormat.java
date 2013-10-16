@@ -526,14 +526,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -586,7 +578,6 @@ operator|+
 name|NUM_FILES_INCR
 argument_list|)
 expr_stmt|;
-block|}
 name|MultiFileInputFormat
 argument_list|<
 name|Text

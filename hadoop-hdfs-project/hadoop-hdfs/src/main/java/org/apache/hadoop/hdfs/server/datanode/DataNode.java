@@ -6514,14 +6514,6 @@ operator|>
 literal|0
 condition|)
 block|{
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|StringBuilder
 name|xfersBuilder
 init|=
@@ -6577,7 +6569,6 @@ operator|+
 name|xfersBuilder
 argument_list|)
 expr_stmt|;
-block|}
 operator|new
 name|Daemon
 argument_list|(
