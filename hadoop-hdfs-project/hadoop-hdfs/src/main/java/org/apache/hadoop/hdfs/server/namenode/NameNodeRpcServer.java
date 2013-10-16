@@ -6191,14 +6191,12 @@ expr_stmt|;
 block|}
 name|namesystem
 operator|.
-name|getCacheReplicationManager
+name|getCacheManager
 argument_list|()
 operator|.
 name|processCacheReport
 argument_list|(
 name|nodeReg
-argument_list|,
-name|poolId
 argument_list|,
 name|blist
 argument_list|)

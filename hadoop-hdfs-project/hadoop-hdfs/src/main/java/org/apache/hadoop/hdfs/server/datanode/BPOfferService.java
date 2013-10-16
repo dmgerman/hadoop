@@ -2689,6 +2689,16 @@ name|DatanodeProtocol
 operator|.
 name|DNA_BALANCERBANDWIDTHUPDATE
 case|:
+case|case
+name|DatanodeProtocol
+operator|.
+name|DNA_CACHE
+case|:
+case|case
+name|DatanodeProtocol
+operator|.
+name|DNA_UNCACHE
+case|:
 name|LOG
 operator|.
 name|warn

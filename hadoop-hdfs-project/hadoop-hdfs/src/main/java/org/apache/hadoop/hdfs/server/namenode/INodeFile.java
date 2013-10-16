@@ -652,13 +652,6 @@ name|BlockInfo
 index|[]
 name|blocks
 decl_stmt|;
-DECL|field|cacheReplication
-specifier|private
-name|short
-name|cacheReplication
-init|=
-literal|0
-decl_stmt|;
 DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize)
 name|INodeFile
 parameter_list|(
@@ -1061,48 +1054,6 @@ argument_list|)
 expr_stmt|;
 return|return
 name|nodeToUpdate
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|setCacheReplication (short cacheReplication)
-specifier|public
-name|void
-name|setCacheReplication
-parameter_list|(
-name|short
-name|cacheReplication
-parameter_list|)
-block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|cacheReplication
-operator|<=
-name|getBlockReplication
-argument_list|()
-argument_list|,
-literal|"Cannot set cache replication higher than block replication factor"
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|cacheReplication
-operator|=
-name|cacheReplication
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getCacheReplication ()
-specifier|public
-name|short
-name|getCacheReplication
-parameter_list|()
-block|{
-return|return
-name|cacheReplication
 return|;
 block|}
 comment|/** @return preferred block size (in bytes) of the file. */

@@ -138,20 +138,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
-operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -175,19 +161,10 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * PendingReplicationBlocks is used in the BlockManager to track blocks that are  * currently being replicated on disk and in the CacheReplicationManager to  * track blocks that are currently being cached.  *   *<p>  * PendingReplicationBlocks performs the following tasks:  *</p>  *   *<ol>  *<li>tracks in-flight replication or caching requests for a block at target  * datanodes.</li>  *<li>identifies requests that have timed out and need to be rescheduled at a  * different datanode.</li>  *</ol>  */
+comment|/***************************************************  * PendingReplicationBlocks does the bookkeeping of all  * blocks that are getting replicated.  *  * It does the following:  * 1)  record blocks that are getting replicated at this instant.  * 2)  a coarse grain timer to track age of replication request  * 3)  a thread that periodically identifies replication-requests  *     that never made it.  *  ***************************************************/
 end_comment
 
 begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|LimitedPrivate
-argument_list|(
-block|{
-literal|"HDFS"
-block|}
-argument_list|)
 DECL|class|PendingReplicationBlocks
 class|class
 name|PendingReplicationBlocks

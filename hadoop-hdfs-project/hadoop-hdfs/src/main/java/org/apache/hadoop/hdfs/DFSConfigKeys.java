@@ -1545,6 +1545,24 @@ name|DFS_NAMENODE_LIST_CACHE_DESCRIPTORS_NUM_RESPONSES_DEFAULT
 init|=
 literal|100
 decl_stmt|;
+DECL|field|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS
+init|=
+literal|"dfs.namenode.path.based.cache.refresh.interval.ms"
+decl_stmt|;
+DECL|field|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS_DEFAULT
+init|=
+literal|300000L
+decl_stmt|;
 comment|// Whether to enable datanode's stale state detection and usage for reads
 DECL|field|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_READ_KEY
 specifier|public

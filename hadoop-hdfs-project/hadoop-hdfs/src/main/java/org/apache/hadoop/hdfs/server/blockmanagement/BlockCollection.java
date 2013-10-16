@@ -117,23 +117,6 @@ name|short
 name|getBlockReplication
 parameter_list|()
 function_decl|;
-comment|/**    * Set cache replication factor for the collection    */
-DECL|method|setCacheReplication (short cacheReplication)
-specifier|public
-name|void
-name|setCacheReplication
-parameter_list|(
-name|short
-name|cacheReplication
-parameter_list|)
-function_decl|;
-comment|/**    * Get cache replication factor for the collection    * @return cache replication value    */
-DECL|method|getCacheReplication ()
-specifier|public
-name|short
-name|getCacheReplication
-parameter_list|()
-function_decl|;
 comment|/**    * Get the name of the collection.    */
 DECL|method|getName ()
 specifier|public

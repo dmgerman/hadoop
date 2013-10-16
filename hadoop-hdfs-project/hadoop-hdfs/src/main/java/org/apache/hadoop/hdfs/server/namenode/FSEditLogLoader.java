@@ -4155,9 +4155,11 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|unprotectedAddDirective
+name|addDirective
 argument_list|(
 name|d
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 if|if
@@ -4200,11 +4202,13 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|unprotectedRemoveDescriptor
+name|removeDescriptor
 argument_list|(
 name|removeOp
 operator|.
 name|id
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 if|if
@@ -4245,7 +4249,7 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|unprotectedAddCachePool
+name|addCachePool
 argument_list|(
 name|addOp
 operator|.
