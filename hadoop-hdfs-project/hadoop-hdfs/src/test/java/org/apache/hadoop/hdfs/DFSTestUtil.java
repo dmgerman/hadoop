@@ -5759,6 +5759,24 @@ argument_list|()
 condition|)
 do|;
 block|}
+DECL|method|abortStream (DFSOutputStream out)
+specifier|public
+specifier|static
+name|void
+name|abortStream
+parameter_list|(
+name|DFSOutputStream
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|out
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

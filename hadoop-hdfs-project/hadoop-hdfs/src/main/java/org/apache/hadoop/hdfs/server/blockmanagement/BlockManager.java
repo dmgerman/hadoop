@@ -8597,6 +8597,43 @@ argument_list|,
 name|reportedState
 argument_list|)
 expr_stmt|;
+comment|// OpenFileBlocks only inside snapshots also will be added to safemode
+comment|// threshold. So we need to update such blocks to safemode
+comment|// refer HDFS-5283
+name|BlockInfoUnderConstruction
+name|blockUC
+init|=
+operator|(
+name|BlockInfoUnderConstruction
+operator|)
+name|storedBlock
+decl_stmt|;
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInSnapshot
+argument_list|(
+name|blockUC
+argument_list|)
+condition|)
+block|{
+name|int
+name|numOfReplicas
+init|=
+name|blockUC
+operator|.
+name|getNumExpectedLocations
+argument_list|()
+decl_stmt|;
+name|namesystem
+operator|.
+name|incrementSafeBlockCount
+argument_list|(
+name|numOfReplicas
+argument_list|)
+expr_stmt|;
+block|}
 comment|//and fall through to next clause
 block|}
 comment|//add replica if appropriate
