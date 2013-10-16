@@ -22491,6 +22491,10 @@ name|blockThreshold
 operator|)
 operator|||
 operator|(
+name|datanodeThreshold
+operator|!=
+literal|0
+operator|&&
 name|getNumLiveDataNodes
 argument_list|()
 operator|<
