@@ -177,6 +177,33 @@ name|String
 name|scheme
 parameter_list|)
 function_decl|;
+comment|/**    * Get the user info of the URL.    * @return user info of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getUserInfo ()
+specifier|public
+specifier|abstract
+name|String
+name|getUserInfo
+parameter_list|()
+function_decl|;
+comment|/**    * Set the user info of the URL.    * @param userInfo user info of the URL    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setUserInfo (String userInfo)
+specifier|public
+specifier|abstract
+name|void
+name|setUserInfo
+parameter_list|(
+name|String
+name|userInfo
+parameter_list|)
+function_decl|;
 comment|/**    * Get the host of the URL.    * @return host of the URL    */
 annotation|@
 name|Public

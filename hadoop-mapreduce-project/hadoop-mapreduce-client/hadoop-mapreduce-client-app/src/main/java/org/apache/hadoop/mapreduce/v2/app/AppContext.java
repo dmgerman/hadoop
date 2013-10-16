@@ -275,9 +275,9 @@ name|boolean
 name|isLastAMRetry
 parameter_list|()
 function_decl|;
-DECL|method|safeToReportTerminationToUser ()
+DECL|method|hasSuccessfullyUnregistered ()
 name|boolean
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 parameter_list|()
 function_decl|;
 block|}

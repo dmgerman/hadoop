@@ -58,6 +58,7 @@ name|ContainerManagerEvent
 block|{
 DECL|field|containerToCleanup
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|ContainerId
@@ -66,6 +67,7 @@ name|containerToCleanup
 decl_stmt|;
 DECL|field|reason
 specifier|private
+specifier|final
 name|Reason
 name|reason
 decl_stmt|;
@@ -134,10 +136,16 @@ specifier|static
 enum|enum
 name|Reason
 block|{
+comment|/**      * Container is killed as NodeManager is shutting down      */
 DECL|enumConstant|ON_SHUTDOWN
-DECL|enumConstant|BY_RESOURCEMANAGER
 name|ON_SHUTDOWN
 block|,
+comment|/**      * Container is killed as the Nodemanager is re-syncing with the      * ResourceManager      */
+DECL|enumConstant|ON_NODEMANAGER_RESYNC
+name|ON_NODEMANAGER_RESYNC
+block|,
+comment|/**      * Container is killed on request by the ResourceManager      */
+DECL|enumConstant|BY_RESOURCEMANAGER
 name|BY_RESOURCEMANAGER
 block|}
 block|}

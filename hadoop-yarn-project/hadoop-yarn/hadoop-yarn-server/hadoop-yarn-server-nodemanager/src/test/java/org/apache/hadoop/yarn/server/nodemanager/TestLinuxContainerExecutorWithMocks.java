@@ -846,6 +846,10 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_NONSECURE_MODE_LOCAL_USER
+argument_list|,
 name|appSubmitter
 argument_list|,
 name|cmd
@@ -1192,7 +1196,7 @@ operator|.
 name|size
 argument_list|()
 argument_list|,
-literal|16
+literal|17
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1206,7 +1210,9 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-literal|"test"
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_NONSECURE_MODE_LOCAL_USER
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1220,7 +1226,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-literal|"0"
+literal|"test"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1234,7 +1240,7 @@ argument_list|(
 literal|2
 argument_list|)
 argument_list|,
-literal|"application_0"
+literal|"0"
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1248,6 +1254,20 @@ argument_list|(
 literal|3
 argument_list|)
 argument_list|,
+literal|"application_0"
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|result
+operator|.
+name|get
+argument_list|(
+literal|4
+argument_list|)
+argument_list|,
 literal|"/bin/nmPrivateCTokensPath"
 argument_list|)
 expr_stmt|;
@@ -1259,7 +1279,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|7
+literal|8
 argument_list|)
 argument_list|,
 literal|"-classpath"
@@ -1273,7 +1293,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|10
+literal|11
 argument_list|)
 argument_list|,
 literal|"org.apache.hadoop.yarn.server.nodemanager.containermanager.localizer.ContainerLocalizer"
@@ -1287,7 +1307,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|11
+literal|12
 argument_list|)
 argument_list|,
 literal|"test"
@@ -1301,7 +1321,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|12
+literal|13
 argument_list|)
 argument_list|,
 literal|"application_0"
@@ -1315,7 +1335,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|13
+literal|14
 argument_list|)
 argument_list|,
 literal|"12345"
@@ -1329,7 +1349,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|14
+literal|15
 argument_list|)
 argument_list|,
 literal|"localhost"
@@ -1343,7 +1363,7 @@ name|result
 operator|.
 name|get
 argument_list|(
-literal|15
+literal|16
 argument_list|)
 argument_list|,
 literal|"8040"
@@ -1715,6 +1735,10 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_NONSECURE_MODE_LOCAL_USER
+argument_list|,
 name|appSubmitter
 argument_list|,
 name|cmd
@@ -1871,6 +1895,10 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_NONSECURE_MODE_LOCAL_USER
+argument_list|,
 name|appSubmitter
 argument_list|,
 name|cmd
@@ -1941,6 +1969,10 @@ name|Arrays
 operator|.
 name|asList
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_NONSECURE_MODE_LOCAL_USER
+argument_list|,
 name|appSubmitter
 argument_list|,
 name|cmd

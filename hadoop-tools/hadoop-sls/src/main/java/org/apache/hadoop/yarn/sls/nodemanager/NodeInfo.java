@@ -729,6 +729,19 @@ return|return
 name|list
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getNodeManagerVersion ()
+specifier|public
+name|String
+name|getNodeManagerVersion
+parameter_list|()
+block|{
+comment|// TODO Auto-generated method stub
+return|return
+literal|null
+return|;
+block|}
 block|}
 DECL|method|newNodeInfo (String rackName, String hostName, final Resource resource, int port)
 specifier|public

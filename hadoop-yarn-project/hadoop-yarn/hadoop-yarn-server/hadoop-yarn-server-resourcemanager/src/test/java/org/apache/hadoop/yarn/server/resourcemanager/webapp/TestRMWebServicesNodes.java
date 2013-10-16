@@ -5362,6 +5362,15 @@ name|element
 argument_list|,
 literal|"availMemoryMB"
 argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
+literal|"version"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -5386,7 +5395,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|10
+literal|11
 argument_list|,
 name|nodeInfo
 operator|.
@@ -5467,10 +5476,17 @@ name|getLong
 argument_list|(
 literal|"availMemoryMB"
 argument_list|)
+argument_list|,
+name|nodeInfo
+operator|.
+name|getString
+argument_list|(
+literal|"version"
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyNodeInfoGeneric (MockNM nm, String state, String rack, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB)
+DECL|method|verifyNodeInfoGeneric (MockNM nm, String state, String rack, String id, String nodeHostName, String nodeHTTPAddress, long lastHealthUpdate, String healthReport, int numContainers, long usedMemoryMB, long availMemoryMB, String version)
 specifier|public
 name|void
 name|verifyNodeInfoGeneric
@@ -5507,6 +5523,9 @@ name|usedMemoryMB
 parameter_list|,
 name|long
 name|availMemoryMB
+parameter_list|,
+name|String
+name|version
 parameter_list|)
 throws|throws
 name|JSONException
@@ -5664,6 +5683,20 @@ argument_list|,
 name|expectedHttpAddress
 argument_list|,
 name|nodeHTTPAddress
+argument_list|)
+expr_stmt|;
+name|WebServicesTestUtils
+operator|.
+name|checkStringMatch
+argument_list|(
+literal|"version"
+argument_list|,
+name|node
+operator|.
+name|getNodeManagerVersion
+argument_list|()
+argument_list|,
+name|version
 argument_list|)
 expr_stmt|;
 name|long

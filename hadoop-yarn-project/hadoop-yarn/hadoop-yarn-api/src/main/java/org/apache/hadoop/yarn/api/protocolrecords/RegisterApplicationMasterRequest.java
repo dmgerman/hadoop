@@ -99,7 +99,7 @@ specifier|abstract
 class|class
 name|RegisterApplicationMasterRequest
 block|{
-comment|/**    * Create a new instance of<code>RegisterApplicationMasterRequest</code>.    * If<em>port, trackingUrl</em> is not used, use the following default value:    *<ul>    *<li>port: -1</li>    *<li>trackingUrl: null</li>    *</ul>    * @return the new instance of<code>RegisterApplicationMasterRequest</code>    */
+comment|/**    * Create a new instance of<code>RegisterApplicationMasterRequest</code>.    * If<em>port, trackingUrl</em> is not used, use the following default value:    *<ul>    *<li>port: -1</li>    *<li>trackingUrl: null</li>    *</ul>    * The port is allowed to be any integer larger than or equal to -1.    * @return the new instance of<code>RegisterApplicationMasterRequest</code>    */
 annotation|@
 name|Public
 annotation|@

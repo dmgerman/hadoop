@@ -476,7 +476,7 @@ name|Double
 operator|.
 name|toString
 argument_list|(
-name|curUpper
+name|curLower
 argument_list|)
 argument_list|,
 name|colName

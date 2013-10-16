@@ -212,6 +212,11 @@ specifier|protected
 name|long
 name|lastHealthUpdate
 decl_stmt|;
+DECL|field|version
+specifier|protected
+name|String
+name|version
+decl_stmt|;
 DECL|field|healthReport
 specifier|protected
 name|String
@@ -394,6 +399,15 @@ name|getHealthReport
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|version
+operator|=
+name|ni
+operator|.
+name|getNodeManagerVersion
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getRack ()
 specifier|public
@@ -474,6 +488,18 @@ return|return
 name|this
 operator|.
 name|lastHealthUpdate
+return|;
+block|}
+DECL|method|getVersion ()
+specifier|public
+name|String
+name|getVersion
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|version
 return|;
 block|}
 DECL|method|getHealthReport ()

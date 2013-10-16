@@ -160,6 +160,18 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * Unit tests for {@link RpcCallCache}  */
 end_comment
@@ -321,12 +333,15 @@ name|e
 argument_list|)
 expr_stmt|;
 comment|// Set call as completed
-name|XDR
+name|RpcResponse
 name|response
 init|=
-operator|new
-name|XDR
-argument_list|()
+name|mock
+argument_list|(
+name|RpcResponse
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 name|cache
 operator|.
@@ -392,7 +407,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|validateCompletedCacheEntry (CacheEntry c, XDR response)
+DECL|method|validateCompletedCacheEntry (CacheEntry c, RpcResponse response)
 specifier|private
 name|void
 name|validateCompletedCacheEntry
@@ -400,7 +415,7 @@ parameter_list|(
 name|CacheEntry
 name|c
 parameter_list|,
-name|XDR
+name|RpcResponse
 name|response
 parameter_list|)
 block|{
@@ -475,12 +490,15 @@ name|getResponse
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|XDR
+name|RpcResponse
 name|response
 init|=
-operator|new
-name|XDR
-argument_list|()
+name|mock
+argument_list|(
+name|RpcResponse
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 name|c
 operator|.

@@ -318,6 +318,19 @@ return|return
 literal|"hsftp"
 return|;
 block|}
+comment|/**    * Return the underlying protocol that is used to talk to the namenode.    */
+annotation|@
+name|Override
+DECL|method|getUnderlyingProtocol ()
+specifier|protected
+name|String
+name|getUnderlyingProtocol
+parameter_list|()
+block|{
+return|return
+literal|"https"
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (URI name, Configuration conf)
@@ -725,43 +738,18 @@ name|getDefaultPort
 parameter_list|()
 block|{
 return|return
-name|getDefaultSecurePort
+name|getConf
 argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getNamenodeSecureAddr (URI uri)
-specifier|protected
-name|InetSocketAddress
-name|getNamenodeSecureAddr
-parameter_list|(
-name|URI
-name|uri
-parameter_list|)
-block|{
-return|return
-name|getNamenodeAddr
+operator|.
+name|getInt
 argument_list|(
-name|uri
-argument_list|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getNamenodeUri (URI uri)
-specifier|protected
-name|URI
-name|getNamenodeUri
-parameter_list|(
-name|URI
-name|uri
-parameter_list|)
-block|{
-return|return
-name|getNamenodeSecureUri
-argument_list|(
-name|uri
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_PORT_DEFAULT
 argument_list|)
 return|;
 block|}
@@ -795,7 +783,8 @@ init|=
 operator|new
 name|URL
 argument_list|(
-literal|"https"
+name|getUnderlyingProtocol
+argument_list|()
 argument_list|,
 name|nnUri
 operator|.

@@ -180,6 +180,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -329,6 +343,20 @@ operator|.
 name|io
 operator|.
 name|DataOutputBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
+name|NetUtils
 import|;
 end_import
 
@@ -965,7 +993,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
+comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed. However, in the distributedshell, trackingurl  * and appMasterHost:appMasterRpcPort are not supported.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
 end_comment
 
 begin_class
@@ -1049,7 +1077,8 @@ specifier|private
 name|int
 name|appMasterRpcPort
 init|=
-literal|0
+operator|-
+literal|1
 decl_stmt|;
 comment|// Tracking url to which app master publishes info for clients to monitor
 DECL|field|appMasterTrackingUrl
@@ -1075,6 +1104,14 @@ name|int
 name|containerMemory
 init|=
 literal|10
+decl_stmt|;
+comment|// VirtualCores to request for the container on which the shell command will run
+DECL|field|containerVirtualCores
+specifier|private
+name|int
+name|containerVirtualCores
+init|=
+literal|1
 decl_stmt|;
 comment|// Priority of the request
 DECL|field|requestPriority
@@ -1565,10 +1602,8 @@ DECL|method|ApplicationMaster ()
 specifier|public
 name|ApplicationMaster
 parameter_list|()
-throws|throws
-name|Exception
 block|{
-comment|// Set up the configuration and RPC
+comment|// Set up the configuration
 name|conf
 operator|=
 operator|new
@@ -1662,6 +1697,17 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"Amount of memory in MB to be requested to run the shell command"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Amount of virtual cores to be requested to run the shell command"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2339,6 +2385,22 @@ literal|"10"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|containerVirtualCores
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|"1"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|numTotalContainers
 operator|=
 name|Integer
@@ -2574,8 +2636,7 @@ argument_list|()
 expr_stmt|;
 name|containerListener
 operator|=
-operator|new
-name|NMCallbackHandler
+name|createNMCallbackHandler
 argument_list|()
 expr_stmt|;
 name|nmClientAsync
@@ -2605,6 +2666,13 @@ comment|// TODO use the rpc port info to register with the RM for the client to
 comment|// send requests to this app master
 comment|// Register self with ResourceManager
 comment|// This will start heartbeating to the RM
+name|appMasterHostname
+operator|=
+name|NetUtils
+operator|.
+name|getHostname
+argument_list|()
+expr_stmt|;
 name|RegisterApplicationMasterResponse
 name|response
 init|=
@@ -2641,6 +2709,26 @@ operator|+
 name|maxMem
 argument_list|)
 expr_stmt|;
+name|int
+name|maxVCores
+init|=
+name|response
+operator|.
+name|getMaximumResourceCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Max vcores capabililty of resources in this cluster "
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
 comment|// A resource ask cannot exceed the max.
 if|if
 condition|(
@@ -2669,6 +2757,35 @@ expr_stmt|;
 name|containerMemory
 operator|=
 name|maxMem
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|containerVirtualCores
+operator|>
+name|maxVCores
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container virtual cores specified above max threshold of cluster."
+operator|+
+literal|" Using max value."
+operator|+
+literal|", specified="
+operator|+
+name|containerVirtualCores
+operator|+
+literal|", max="
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
+name|containerVirtualCores
+operator|=
+name|maxVCores
 expr_stmt|;
 block|}
 comment|// Setup ask for containers from RM
@@ -2717,6 +2834,15 @@ while|while
 condition|(
 operator|!
 name|done
+operator|&&
+operator|(
+name|numCompletedContainers
+operator|.
+name|get
+argument_list|()
+operator|!=
+name|numTotalContainers
+operator|)
 condition|)
 block|{
 try|try
@@ -2741,6 +2867,21 @@ argument_list|()
 expr_stmt|;
 return|return
 name|success
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createNMCallbackHandler ()
+name|NMCallbackHandler
+name|createNMCallbackHandler
+parameter_list|()
+block|{
+return|return
+operator|new
+name|NMCallbackHandler
+argument_list|(
+name|this
+argument_list|)
 return|;
 block|}
 DECL|method|finish ()
@@ -2941,10 +3082,6 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-name|done
-operator|=
-literal|true
-expr_stmt|;
 name|amRMClient
 operator|.
 name|stop
@@ -3291,6 +3428,16 @@ argument_list|()
 operator|.
 name|getMemory
 argument_list|()
+operator|+
+literal|", containerResourceVirtualCores"
+operator|+
+name|allocatedContainer
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// + ", containerToken"
@@ -3407,8 +3554,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|class|NMCallbackHandler
-specifier|private
+specifier|static
 class|class
 name|NMCallbackHandler
 implements|implements
@@ -3435,6 +3584,27 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|applicationMaster
+specifier|private
+specifier|final
+name|ApplicationMaster
+name|applicationMaster
+decl_stmt|;
+DECL|method|NMCallbackHandler (ApplicationMaster applicationMaster)
+specifier|public
+name|NMCallbackHandler
+parameter_list|(
+name|ApplicationMaster
+name|applicationMaster
+parameter_list|)
+block|{
+name|this
+operator|.
+name|applicationMaster
+operator|=
+name|applicationMaster
+expr_stmt|;
+block|}
 DECL|method|addContainer (ContainerId containerId, Container container)
 specifier|public
 name|void
@@ -3585,6 +3755,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|applicationMaster
+operator|.
 name|nmClientAsync
 operator|.
 name|getContainerStatusAsync
@@ -3628,6 +3800,20 @@ name|remove
 argument_list|(
 name|containerId
 argument_list|)
+expr_stmt|;
+name|applicationMaster
+operator|.
+name|numCompletedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|applicationMaster
+operator|.
+name|numFailedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -4065,6 +4251,9 @@ operator|.
 name|setTokens
 argument_list|(
 name|allTokens
+operator|.
+name|duplicate
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|containerListener
@@ -4090,7 +4279,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @param numContainers Containers to ask for from RM    * @return the setup ResourceRequest to be sent to RM    */
+comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @return the setup ResourceRequest to be sent to RM    */
 DECL|method|setupContainerAskForRM ()
 specifier|private
 name|ContainerRequest
@@ -4121,7 +4310,7 @@ name|requestPriority
 argument_list|)
 expr_stmt|;
 comment|// Set up resource type requirements
-comment|// For now, only memory is supported so we set memory requirements
+comment|// For now, memory and CPU are supported so we set memory and cpu requirements
 name|Resource
 name|capability
 init|=
@@ -4139,6 +4328,13 @@ operator|.
 name|setMemory
 argument_list|(
 name|containerMemory
+argument_list|)
+expr_stmt|;
+name|capability
+operator|.
+name|setVirtualCores
+argument_list|(
+name|containerVirtualCores
 argument_list|)
 expr_stmt|;
 name|ContainerRequest

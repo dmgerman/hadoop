@@ -44,6 +44,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
 begin_interface
 annotation|@
 name|InterfaceAudience
@@ -523,6 +537,16 @@ name|String
 name|MAPREDUCE_JOB_CLASSLOADER
 init|=
 literal|"mapreduce.job.classloader"
+decl_stmt|;
+comment|/**    * A comma-separated list of services that function as ShuffleProvider aux-services    * (in addition to the built-in ShuffleHandler).    * These services can serve shuffle requests from reducetasks.    */
+DECL|field|MAPREDUCE_JOB_SHUFFLE_PROVIDER_SERVICES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MAPREDUCE_JOB_SHUFFLE_PROVIDER_SERVICES
+init|=
+literal|"mapreduce.job.shuffle.provider.services"
 decl_stmt|;
 DECL|field|MAPREDUCE_JOB_CLASSLOADER_SYSTEM_CLASSES
 specifier|public
@@ -2445,20 +2469,34 @@ name|MAPREDUCE_APPLICATION_CLASSPATH
 init|=
 literal|"mapreduce.application.classpath"
 decl_stmt|;
-comment|/**    * Default CLASSPATH for all YARN MapReduce applications.    */
-DECL|field|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
+comment|/**    * Path to MapReduce framework archive    */
+DECL|field|MAPREDUCE_APPLICATION_FRAMEWORK_PATH
 specifier|public
 specifier|static
 specifier|final
 name|String
-index|[]
+name|MAPREDUCE_APPLICATION_FRAMEWORK_PATH
+init|=
+literal|"mapreduce.application.framework.path"
+decl_stmt|;
+comment|/**    * Default CLASSPATH for all YARN MapReduce applications.    */
+specifier|public
+specifier|final
+name|String
+DECL|field|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
 name|DEFAULT_MAPREDUCE_APPLICATION_CLASSPATH
 init|=
-block|{
-literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*"
-block|,
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"%HADOOP_MAPRED_HOME%\\share\\hadoop\\mapreduce\\*,"
+operator|+
+literal|"%HADOOP_MAPRED_HOME%\\share\\hadoop\\mapreduce\\lib\\*"
+else|:
+literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/*,"
+operator|+
 literal|"$HADOOP_MAPRED_HOME/share/hadoop/mapreduce/lib/*"
-block|,   }
 decl_stmt|;
 DECL|field|WORKFLOW_ID
 specifier|public

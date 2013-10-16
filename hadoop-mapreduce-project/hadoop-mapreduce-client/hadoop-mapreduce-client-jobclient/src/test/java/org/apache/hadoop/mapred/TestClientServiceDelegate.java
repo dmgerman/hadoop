@@ -3558,7 +3558,7 @@ name|jobReport
 operator|.
 name|setTrackingUrl
 argument_list|(
-literal|"TestTrackingUrl"
+literal|"http://TestTrackingUrl"
 argument_list|)
 expr_stmt|;
 name|jobReportResponse

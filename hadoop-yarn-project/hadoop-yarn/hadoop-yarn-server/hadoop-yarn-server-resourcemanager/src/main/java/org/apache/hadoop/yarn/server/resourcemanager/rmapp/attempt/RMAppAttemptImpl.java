@@ -2772,8 +2772,10 @@ name|this
 operator|.
 name|proxiedTrackingUrl
 operator|=
-name|generateProxyUriWithoutScheme
-argument_list|()
+name|generateProxyUriWithScheme
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -3080,23 +3082,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|generateProxyUriWithoutScheme ()
+DECL|method|generateProxyUriWithScheme ( final String trackingUriWithoutScheme)
 specifier|private
 name|String
-name|generateProxyUriWithoutScheme
-parameter_list|()
-block|{
-return|return
-name|generateProxyUriWithoutScheme
-argument_list|(
-literal|null
-argument_list|)
-return|;
-block|}
-DECL|method|generateProxyUriWithoutScheme ( final String trackingUriWithoutScheme)
-specifier|private
-name|String
-name|generateProxyUriWithoutScheme
+name|generateProxyUriWithScheme
 parameter_list|(
 specifier|final
 name|String
@@ -3168,23 +3157,11 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|//We need to strip off the scheme to have it match what was there before
 return|return
 name|result
 operator|.
 name|toASCIIString
 argument_list|()
-operator|.
-name|substring
-argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
-operator|.
-name|length
-argument_list|()
-argument_list|)
 return|;
 block|}
 catch|catch
@@ -5328,7 +5305,7 @@ name|proxiedTrackingUrl
 operator|=
 name|appAttempt
 operator|.
-name|generateProxyUriWithoutScheme
+name|generateProxyUriWithScheme
 argument_list|(
 name|appAttempt
 operator|.
@@ -5869,7 +5846,7 @@ name|proxiedTrackingUrl
 operator|=
 name|appAttempt
 operator|.
-name|generateProxyUriWithoutScheme
+name|generateProxyUriWithScheme
 argument_list|(
 name|appAttempt
 operator|.

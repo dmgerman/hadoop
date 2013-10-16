@@ -101,7 +101,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p><code>Resource</code> models a set of computer resources in the   * cluster.</p>  *   *<p>Currrently it only models<em>memory</em>.</p>  *   *<p>Typically, applications request<code>Resource</code> of suitable  * capability to run their component tasks.</p>  *   * @see ResourceRequest  * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
+comment|/**  *<p><code>Resource</code> models a set of computer resources in the   * cluster.</p>  *   *<p>Currently it models both<em>memory</em> and<em>CPU</em>.</p>  *   *<p>The unit for memory is megabytes. CPU is modeled with virtual cores  * (vcores), a unit for expressing parallelism. A node's capacity should  * be configured with virtual cores equal to its number of physical cores. A  * container should be requested with the number of cores it can saturate, i.e.  * the average number of threads it expects to have runnable at a time.</p>  *   *<p>Virtual cores take integer values and thus currently CPU-scheduling is  * very coarse.  A complementary axis for CPU requests that represents processing  * power will likely be added in the future to enable finer-grained resource  * configuration.</p>  *   *<p>Typically, applications request<code>Resource</code> of suitable  * capability to run their component tasks.</p>  *   * @see ResourceRequest  * @see ApplicationMasterProtocol#allocate(org.apache.hadoop.yarn.api.protocolrecords.AllocateRequest)  */
 end_comment
 
 begin_class
@@ -194,7 +194,7 @@ name|int
 name|memory
 parameter_list|)
 function_decl|;
-comment|/**    * Get<em>number of virtual cpu cores</em> of the resource.    *     * We refer to<em>virtual cores</em> to clarify that these represent    *<em>normalized</em> cores which may have a m:n relationship w.r.t    * physical cores available on the compute nodes. Furthermore, they also     * represent<em>idealized</em> cores since the cluster might be composed    * of<em>heterogenous</em> nodes.    *       * @return<em>num of virtual cpu cores</em> of the resource    */
+comment|/**    * Get<em>number of virtual cpu cores</em> of the resource.    *     * Virtual cores are a unit for expressing CPU parallelism. A node's capacity    * should be configured with virtual cores equal to its number of physical cores.    * A container should be requested with the number of cores it can saturate, i.e.    * the average number of threads it expects to have runnable at a time.    *       * @return<em>num of virtual cpu cores</em> of the resource    */
 annotation|@
 name|Public
 annotation|@
@@ -206,7 +206,7 @@ name|int
 name|getVirtualCores
 parameter_list|()
 function_decl|;
-comment|/**    * Set<em>number of virtual cpu cores</em> of the resource.    *     * We refer to<em>virtual cores</em> to clarify that these represent    *<em>normalized</em> cores which may have a m:n relationship w.r.t    * physical cores available on the compute nodes. Furthermore, they also     * represent<em>idealized</em> cores since the cluster might be composed    * of<em>heterogenous</em> nodes.    *       * @param vCores<em>number of virtual cpu cores</em> of the resource    */
+comment|/**    * Set<em>number of virtual cpu cores</em> of the resource.    *     * Virtual cores are a unit for expressing CPU parallelism. A node's capacity    * should be configured with virtual cores equal to its number of physical cores.    * A container should be requested with the number of cores it can saturate, i.e.    * the average number of threads it expects to have runnable at a time.    *        * @param vCores<em>number of virtual cpu cores</em> of the resource    */
 annotation|@
 name|Public
 annotation|@

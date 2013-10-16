@@ -170,9 +170,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|conf
+name|exceptions
 operator|.
-name|YarnConfiguration
+name|YarnRuntimeException
 import|;
 end_import
 
@@ -186,9 +186,9 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|exceptions
+name|conf
 operator|.
-name|YarnRuntimeException
+name|HAUtil
 import|;
 end_import
 
@@ -257,6 +257,11 @@ name|HAServiceState
 operator|.
 name|INITIALIZING
 decl_stmt|;
+DECL|field|haEnabled
+specifier|private
+name|boolean
+name|haEnabled
+decl_stmt|;
 DECL|method|RMHAProtocolService (ResourceManager resourceManager)
 specifier|public
 name|RMHAProtocolService
@@ -280,7 +285,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|serviceInit (Configuration conf)
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|serviceInit
@@ -297,6 +302,41 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
+name|haEnabled
+operator|=
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|haEnabled
+condition|)
+block|{
+name|HAUtil
+operator|.
+name|setAllRpcAddresses
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|)
+expr_stmt|;
+name|rm
+operator|.
+name|setConf
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 name|rm
 operator|.
 name|createAndInitActiveServices
@@ -315,7 +355,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|serviceStart ()
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|serviceStart
@@ -323,24 +363,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|boolean
-name|haEnabled
-init|=
-name|this
-operator|.
-name|conf
-operator|.
-name|getBoolean
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_HA_ENABLED
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_HA_ENABLED
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|haEnabled
@@ -367,7 +389,7 @@ block|}
 annotation|@
 name|Override
 DECL|method|serviceStop ()
-specifier|public
+specifier|protected
 specifier|synchronized
 name|void
 name|serviceStop

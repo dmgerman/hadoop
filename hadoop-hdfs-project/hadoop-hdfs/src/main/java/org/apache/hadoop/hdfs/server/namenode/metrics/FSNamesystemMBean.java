@@ -155,11 +155,25 @@ name|int
 name|getNumDecomDeadDataNodes
 parameter_list|()
 function_decl|;
+comment|/**    * Number of data nodes that are in the decommissioning state    */
+DECL|method|getNumDecommissioningDataNodes ()
+specifier|public
+name|int
+name|getNumDecommissioningDataNodes
+parameter_list|()
+function_decl|;
 comment|/**    * The statistics of snapshots    */
 DECL|method|getSnapshotStats ()
 specifier|public
 name|String
 name|getSnapshotStats
+parameter_list|()
+function_decl|;
+comment|/**    * Return the maximum number of inodes in the file system    */
+DECL|method|getMaxObjects ()
+specifier|public
+name|long
+name|getMaxObjects
 parameter_list|()
 function_decl|;
 block|}

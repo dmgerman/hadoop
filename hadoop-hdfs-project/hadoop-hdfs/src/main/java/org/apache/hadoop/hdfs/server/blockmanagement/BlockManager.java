@@ -930,6 +930,20 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|LightWeightGSet
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
 import|;
 end_import
@@ -1015,16 +1029,6 @@ init|=
 name|NameNode
 operator|.
 name|blockStateChangeLog
-decl_stmt|;
-comment|/** Default load factor of map */
-DECL|field|DEFAULT_MAP_LOAD_FACTOR
-specifier|public
-specifier|static
-specifier|final
-name|float
-name|DEFAULT_MAP_LOAD_FACTOR
-init|=
-literal|0.75f
 decl_stmt|;
 DECL|field|QUEUE_REASON_CORRUPT_STATE
 specifier|private
@@ -1482,7 +1486,14 @@ operator|=
 operator|new
 name|BlocksMap
 argument_list|(
-name|DEFAULT_MAP_LOAD_FACTOR
+name|LightWeightGSet
+operator|.
+name|computeCapacity
+argument_list|(
+literal|2.0
+argument_list|,
+literal|"BlocksMap"
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|blockplacement
@@ -8717,6 +8728,43 @@ argument_list|,
 name|reportedState
 argument_list|)
 expr_stmt|;
+comment|// OpenFileBlocks only inside snapshots also will be added to safemode
+comment|// threshold. So we need to update such blocks to safemode
+comment|// refer HDFS-5283
+name|BlockInfoUnderConstruction
+name|blockUC
+init|=
+operator|(
+name|BlockInfoUnderConstruction
+operator|)
+name|storedBlock
+decl_stmt|;
+if|if
+condition|(
+name|namesystem
+operator|.
+name|isInSnapshot
+argument_list|(
+name|blockUC
+argument_list|)
+condition|)
+block|{
+name|int
+name|numOfReplicas
+init|=
+name|blockUC
+operator|.
+name|getNumExpectedLocations
+argument_list|()
+decl_stmt|;
+name|namesystem
+operator|.
+name|incrementSafeBlockCount
+argument_list|(
+name|numOfReplicas
+argument_list|)
+expr_stmt|;
+block|}
 comment|//and fall through to next clause
 block|}
 comment|//add replica if appropriate

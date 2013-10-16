@@ -6170,6 +6170,14 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
+name|credentials
+operator|=
+operator|new
+name|Credentials
+argument_list|(
+name|credentials
+argument_list|)
+expr_stmt|;
 name|LocalizerTokenIdentifier
 name|id
 init|=

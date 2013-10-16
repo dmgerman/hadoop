@@ -629,7 +629,7 @@ DECL|field|activeApplications
 annotation|@
 name|Metric
 argument_list|(
-literal|"# of active users"
+literal|"# of active applications"
 argument_list|)
 name|MutableGaugeInt
 name|activeApplications

@@ -3376,10 +3376,6 @@ operator|.
 name|updateResourceRequests
 argument_list|(
 name|ask
-argument_list|,
-name|blacklistAdditions
-argument_list|,
-name|blacklistRemovals
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -3422,6 +3418,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|application
+operator|.
+name|updateBlacklist
+argument_list|(
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
 return|return
 name|application
 operator|.

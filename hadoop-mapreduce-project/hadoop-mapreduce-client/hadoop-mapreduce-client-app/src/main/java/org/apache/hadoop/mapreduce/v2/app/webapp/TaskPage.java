@@ -172,20 +172,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|http
-operator|.
-name|HttpConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|v2
@@ -228,11 +214,13 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|mapreduce
 operator|.
-name|webapp
+name|v2
 operator|.
-name|SubView
+name|util
+operator|.
+name|MRWebAppUtil
 import|;
 end_import
 
@@ -248,9 +236,7 @@ name|yarn
 operator|.
 name|webapp
 operator|.
-name|view
-operator|.
-name|HtmlBlock
+name|SubView
 import|;
 end_import
 
@@ -309,6 +295,24 @@ operator|.
 name|Hamlet
 operator|.
 name|TBODY
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|view
+operator|.
+name|HtmlBlock
 import|;
 end_import
 
@@ -607,9 +611,9 @@ literal|"N/A"
 else|:
 literal|"<a class='nodelink' href='"
 operator|+
-name|WebAppUtil
+name|MRWebAppUtil
 operator|.
-name|getSchemePrefix
+name|getYARNWebappScheme
 argument_list|()
 operator|+
 name|nodeHttpAddr
@@ -641,9 +645,9 @@ literal|"<a class='logslink' href='"
 operator|+
 name|url
 argument_list|(
-name|WebAppUtil
+name|MRWebAppUtil
 operator|.
-name|getSchemePrefix
+name|getYARNWebappScheme
 argument_list|()
 argument_list|,
 name|nodeHttpAddr

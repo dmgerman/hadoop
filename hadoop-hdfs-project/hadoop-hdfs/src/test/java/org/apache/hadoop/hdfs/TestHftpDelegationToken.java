@@ -598,13 +598,13 @@ name|checkTokenSelection
 argument_list|(
 name|fs
 argument_list|,
-name|httpsPort
+name|httpPort
 argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// should still use secure port
 comment|// test with explicit default port
+comment|// Make sure it uses the port from the hftp URI.
 name|fsUri
 operator|=
 name|URI
@@ -647,13 +647,13 @@ name|checkTokenSelection
 argument_list|(
 name|fs
 argument_list|,
-name|httpsPort
+name|httpPort
 argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// should still use secure port
 comment|// test with non-default port
+comment|// Make sure it uses the port from the hftp URI.
 name|fsUri
 operator|=
 name|URI
@@ -702,12 +702,13 @@ name|checkTokenSelection
 argument_list|(
 name|fs
 argument_list|,
-name|httpsPort
+name|httpPort
+operator|+
+literal|1
 argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
-comment|// should still use secure port
 name|conf
 operator|.
 name|setInt
@@ -1176,7 +1177,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|"Unexpected end of file from server"
+literal|"Remote host closed connection during handshake"
 argument_list|,
 name|ex
 operator|.

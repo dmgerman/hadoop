@@ -210,11 +210,6 @@ specifier|protected
 name|int
 name|numApplications
 decl_stmt|;
-DECL|field|usedResources
-specifier|protected
-name|String
-name|usedResources
-decl_stmt|;
 DECL|field|queueName
 specifier|protected
 name|String
@@ -352,16 +347,6 @@ operator|.
 name|getNumApplications
 argument_list|()
 expr_stmt|;
-name|usedResources
-operator|=
-name|q
-operator|.
-name|getUsedResources
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-expr_stmt|;
 name|queueName
 operator|=
 name|q
@@ -462,16 +447,6 @@ parameter_list|()
 block|{
 return|return
 name|numApplications
-return|;
-block|}
-DECL|method|getUsedResources ()
-specifier|public
-name|String
-name|getUsedResources
-parameter_list|()
-block|{
-return|return
-name|usedResources
 return|;
 block|}
 DECL|method|getQueueName ()

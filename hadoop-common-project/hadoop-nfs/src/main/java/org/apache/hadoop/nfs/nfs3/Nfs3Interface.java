@@ -370,13 +370,19 @@ name|client
 parameter_list|)
 function_decl|;
 comment|/** COMMIT: Commit cached data on a server to stable storage */
-DECL|method|commit (XDR xdr, SecurityHandler securityHandler, InetAddress client)
+DECL|method|commit (XDR xdr, Channel channel, int xid, SecurityHandler securityHandler, InetAddress client)
 specifier|public
 name|NFS3Response
 name|commit
 parameter_list|(
 name|XDR
 name|xdr
+parameter_list|,
+name|Channel
+name|channel
+parameter_list|,
+name|int
+name|xid
 parameter_list|,
 name|SecurityHandler
 name|securityHandler

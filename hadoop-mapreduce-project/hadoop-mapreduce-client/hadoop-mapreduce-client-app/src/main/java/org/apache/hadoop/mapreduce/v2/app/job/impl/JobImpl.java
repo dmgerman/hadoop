@@ -1840,20 +1840,6 @@ name|Clock
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
 comment|/** Implementation of Job interface. Maintains the state machines of Job.  * The read and write calls use ReadWriteLock for concurrency.  */
 end_comment
@@ -5921,7 +5907,7 @@ condition|(
 operator|!
 name|appContext
 operator|.
-name|safeToReportTerminationToUser
+name|hasSuccessfullyUnregistered
 argument_list|()
 operator|&&
 operator|(

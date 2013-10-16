@@ -1097,7 +1097,7 @@ name|getUser
 argument_list|()
 return|;
 block|}
-DECL|method|updateResourceRequests ( List<ResourceRequest> requests, List<String> blacklistAdditions, List<String> blacklistRemovals)
+DECL|method|updateResourceRequests ( List<ResourceRequest> requests)
 specifier|public
 specifier|synchronized
 name|void
@@ -1108,7 +1108,31 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|requests
-parameter_list|,
+parameter_list|)
+block|{
+if|if
+condition|(
+operator|!
+name|isStopped
+condition|)
+block|{
+name|this
+operator|.
+name|appSchedulingInfo
+operator|.
+name|updateResourceRequests
+argument_list|(
+name|requests
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|updateBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
+specifier|public
+specifier|synchronized
+name|void
+name|updateBlacklist
+parameter_list|(
 name|List
 argument_list|<
 name|String
@@ -1132,10 +1156,8 @@ name|this
 operator|.
 name|appSchedulingInfo
 operator|.
-name|updateResourceRequests
+name|updateBlacklist
 argument_list|(
-name|requests
-argument_list|,
 name|blacklistAdditions
 argument_list|,
 name|blacklistRemovals

@@ -102,13 +102,11 @@ name|RequestWithHandle
 block|{
 DECL|field|offset
 specifier|private
-specifier|final
 name|long
 name|offset
 decl_stmt|;
 DECL|field|count
 specifier|private
-specifier|final
 name|int
 name|count
 decl_stmt|;
@@ -249,6 +247,22 @@ operator|.
 name|offset
 return|;
 block|}
+DECL|method|setOffset (long offset)
+specifier|public
+name|void
+name|setOffset
+parameter_list|(
+name|long
+name|offset
+parameter_list|)
+block|{
+name|this
+operator|.
+name|offset
+operator|=
+name|offset
+expr_stmt|;
+block|}
 DECL|method|getCount ()
 specifier|public
 name|int
@@ -260,6 +274,22 @@ name|this
 operator|.
 name|count
 return|;
+block|}
+DECL|method|setCount (int count)
+specifier|public
+name|void
+name|setCount
+parameter_list|(
+name|int
+name|count
+parameter_list|)
+block|{
+name|this
+operator|.
+name|count
+operator|=
+name|count
+expr_stmt|;
 block|}
 DECL|method|getStableHow ()
 specifier|public

@@ -87,11 +87,6 @@ name|serialVersionUID
 init|=
 literal|1L
 decl_stmt|;
-DECL|method|SafeModeException ()
-specifier|public
-name|SafeModeException
-parameter_list|()
-block|{}
 DECL|method|SafeModeException (String text, FSNamesystem.SafeModeInfo mode )
 specifier|public
 name|SafeModeException

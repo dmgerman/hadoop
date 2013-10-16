@@ -103,7 +103,7 @@ literal|"bar"
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster
-name|dfsCluster
+name|cluster
 init|=
 operator|new
 name|MiniDFSCluster
@@ -121,12 +121,7 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|dfsCluster
-operator|.
-name|waitActive
-argument_list|()
-expr_stmt|;
-name|dfsCluster
+name|cluster
 operator|.
 name|shutdown
 argument_list|()

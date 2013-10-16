@@ -508,7 +508,7 @@ name|yarn
 operator|.
 name|logaggregation
 operator|.
-name|LogDumper
+name|LogCLIHelpers
 import|;
 end_import
 
@@ -2428,11 +2428,11 @@ argument_list|,
 name|taskAttemptID
 argument_list|)
 decl_stmt|;
-name|LogDumper
+name|LogCLIHelpers
 name|logDumper
 init|=
 operator|new
-name|LogDumper
+name|LogCLIHelpers
 argument_list|()
 decl_stmt|;
 name|logDumper

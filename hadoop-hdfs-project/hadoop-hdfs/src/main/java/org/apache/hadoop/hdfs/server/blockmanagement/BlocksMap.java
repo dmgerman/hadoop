@@ -194,7 +194,6 @@ name|capacity
 decl_stmt|;
 DECL|field|blocks
 specifier|private
-specifier|volatile
 name|GSet
 argument_list|<
 name|Block
@@ -203,12 +202,11 @@ name|BlockInfo
 argument_list|>
 name|blocks
 decl_stmt|;
-DECL|method|BlocksMap (final float loadFactor)
+DECL|method|BlocksMap (int capacity)
 name|BlocksMap
 parameter_list|(
-specifier|final
-name|float
-name|loadFactor
+name|int
+name|capacity
 parameter_list|)
 block|{
 comment|// Use 2% of total memory to size the GSet capacity
@@ -216,14 +214,7 @@ name|this
 operator|.
 name|capacity
 operator|=
-name|LightWeightGSet
-operator|.
-name|computeCapacity
-argument_list|(
-literal|2.0
-argument_list|,
-literal|"BlocksMap"
-argument_list|)
+name|capacity
 expr_stmt|;
 name|this
 operator|.
