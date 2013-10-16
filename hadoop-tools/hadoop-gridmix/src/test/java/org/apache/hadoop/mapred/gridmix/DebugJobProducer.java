@@ -875,14 +875,6 @@ name|totalbytes
 operator|-
 name|tot_bytes
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -922,7 +914,6 @@ operator|+
 name|totalbytes
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 DECL|field|seq
 specifier|private
