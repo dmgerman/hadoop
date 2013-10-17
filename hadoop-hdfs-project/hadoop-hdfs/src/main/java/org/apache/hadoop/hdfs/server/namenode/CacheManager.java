@@ -3721,12 +3721,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-assert|assert
-name|namesystem
-operator|.
-name|hasWriteLock
-argument_list|()
-assert|;
 name|nextEntryId
 operator|=
 name|in

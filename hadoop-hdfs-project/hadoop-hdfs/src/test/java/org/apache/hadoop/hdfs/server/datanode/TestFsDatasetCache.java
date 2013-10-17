@@ -40,7 +40,19 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
-name|*
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
+name|anyInt
 import|;
 end_import
 
@@ -348,7 +360,7 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|BlockCommand
+name|BlockIdCommand
 import|;
 end_import
 
@@ -973,12 +985,12 @@ operator|.
 name|getBlockPoolId
 argument_list|()
 decl_stmt|;
-name|Block
+name|long
 index|[]
 name|blocks
 init|=
 operator|new
-name|Block
+name|long
 index|[
 name|locs
 operator|.
@@ -1018,13 +1030,13 @@ operator|.
 name|getBlock
 argument_list|()
 operator|.
-name|getLocalBlock
+name|getBlockId
 argument_list|()
 expr_stmt|;
 block|}
 return|return
 operator|new
-name|BlockCommand
+name|BlockIdCommand
 argument_list|(
 name|action
 argument_list|,
