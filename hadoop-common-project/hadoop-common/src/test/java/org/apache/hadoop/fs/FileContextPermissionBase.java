@@ -192,6 +192,18 @@ name|assertEquals
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p>  * A collection of permission tests for the {@link FileContext}.  * This test should be used for testing an instance of FileContext  *  that has been initialized to a specific default FileSystem such a  *  LocalFileSystem, HDFS,S3, etc.  *</p>  *<p>  * To test a given {@link FileSystem} implementation create a subclass of this  * test and override {@link #setUp()} to initialize the<code>fc</code>   * {@link FileContext} instance variable.  *   * Since this a junit 4 you can also do a single setup before   * the start of any tests.  * E.g.  *     @BeforeClass   public static void clusterSetupAtBegining()  *     @AfterClass    public static void ClusterShutdownAtEnd()  *</p>  */
 end_comment
@@ -879,6 +891,33 @@ operator|+
 literal|"belongs to only one group."
 argument_list|)
 expr_stmt|;
+block|}
+try|try
+block|{
+name|fc
+operator|.
+name|setOwner
+argument_list|(
+name|f
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+expr_stmt|;
+name|fail
+argument_list|(
+literal|"Exception expected."
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|IllegalArgumentException
+name|iae
+parameter_list|)
+block|{
+comment|// okay
 block|}
 block|}
 finally|finally
