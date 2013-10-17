@@ -84,7 +84,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|HashSet
 import|;
 end_import
 
@@ -747,10 +747,8 @@ argument_list|,
 name|Mockito
 operator|.
 expr|<
-name|HashMap
+name|HashSet
 argument_list|<
-name|Node
-argument_list|,
 name|Node
 argument_list|>
 operator|>

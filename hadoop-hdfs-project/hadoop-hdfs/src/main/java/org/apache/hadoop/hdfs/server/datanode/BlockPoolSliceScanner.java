@@ -725,6 +725,13 @@ name|totalBytesToScan
 init|=
 literal|0
 decl_stmt|;
+DECL|field|isNewPeriod
+specifier|private
+name|boolean
+name|isNewPeriod
+init|=
+literal|true
+decl_stmt|;
 DECL|field|verificationLog
 specifier|private
 specifier|final
@@ -821,6 +828,9 @@ name|right
 operator|.
 name|lastScanTime
 decl_stmt|;
+comment|// compare blocks itself if scantimes are same to avoid.
+comment|// because TreeMap uses comparator if available to check existence of
+comment|// the object.
 return|return
 name|l
 operator|<
@@ -835,7 +845,12 @@ name|r
 condition|?
 literal|1
 else|:
-literal|0
+name|left
+operator|.
+name|compareTo
+argument_list|(
+name|right
+argument_list|)
 return|;
 block|}
 block|}
@@ -913,25 +928,6 @@ condition|)
 block|{
 return|return
 literal|true
-return|;
-block|}
-elseif|else
-if|if
-condition|(
-name|that
-operator|==
-literal|null
-operator|||
-operator|!
-operator|(
-name|that
-operator|instanceof
-name|BlockScanInfo
-operator|)
-condition|)
-block|{
-return|return
-literal|false
 return|;
 block|}
 return|return
@@ -2731,6 +2727,11 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|isNewPeriod
+condition|)
+block|{
 name|updateBytesLeft
 argument_list|(
 operator|-
@@ -2740,6 +2741,7 @@ name|getNumBytes
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|processedBlocks
 operator|.
 name|put
@@ -2756,7 +2758,7 @@ if|if
 condition|(
 name|logIterator
 operator|.
-name|isPrevious
+name|isLastReadFromPrevious
 argument_list|()
 condition|)
 block|{
@@ -2811,6 +2813,10 @@ name|logIterator
 argument_list|)
 expr_stmt|;
 block|}
+name|isNewPeriod
+operator|=
+literal|false
+expr_stmt|;
 block|}
 comment|/* Before this loop, entries in blockInfoSet that are not      * updated above have lastScanTime of<= 0 . Loop until first entry has      * lastModificationTime> 0.      */
 synchronized|synchronized
@@ -2984,6 +2990,10 @@ name|Time
 operator|.
 name|now
 argument_list|()
+expr_stmt|;
+name|isNewPeriod
+operator|=
+literal|true
 expr_stmt|;
 block|}
 DECL|method|workRemainingInCurrentPeriod ()

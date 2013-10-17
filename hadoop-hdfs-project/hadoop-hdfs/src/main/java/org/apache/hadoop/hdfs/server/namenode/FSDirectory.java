@@ -12627,6 +12627,13 @@ name|childrenNum
 argument_list|)
 decl_stmt|;
 comment|// Set caching information for the located blocks.
+if|if
+condition|(
+name|loc
+operator|!=
+literal|null
+condition|)
+block|{
 name|CacheManager
 name|cacheManager
 init|=
@@ -12653,6 +12660,7 @@ argument_list|(
 name|lb
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 return|return
 name|status

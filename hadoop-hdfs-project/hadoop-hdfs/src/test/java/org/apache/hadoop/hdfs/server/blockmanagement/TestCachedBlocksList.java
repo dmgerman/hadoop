@@ -225,6 +225,8 @@ argument_list|,
 literal|5001
 argument_list|,
 literal|5002
+argument_list|,
+literal|5003
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -976,6 +978,8 @@ argument_list|,
 literal|5001
 argument_list|,
 literal|5002
+argument_list|,
+literal|5003
 argument_list|)
 argument_list|)
 block|,
@@ -996,6 +1000,8 @@ argument_list|,
 literal|6001
 argument_list|,
 literal|6002
+argument_list|,
+literal|6003
 argument_list|)
 argument_list|)
 block|,     }

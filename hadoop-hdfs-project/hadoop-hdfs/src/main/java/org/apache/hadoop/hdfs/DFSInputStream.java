@@ -1984,7 +1984,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"offset< 0 || offset> getFileLength(), offset="
+literal|"offset< 0 || offset>= getFileLength(), offset="
 operator|+
 name|offset
 operator|+

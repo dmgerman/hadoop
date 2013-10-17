@@ -115,6 +115,12 @@ name|int
 name|infoPort
 decl_stmt|;
 comment|// info server port
+DECL|field|infoSecurePort
+specifier|private
+name|int
+name|infoSecurePort
+decl_stmt|;
+comment|// info server port
 DECL|field|ipcPort
 specifier|private
 name|int
@@ -158,6 +164,11 @@ argument_list|()
 argument_list|,
 name|from
 operator|.
+name|getInfoSecurePort
+argument_list|()
+argument_list|,
+name|from
+operator|.
 name|getIpcPort
 argument_list|()
 argument_list|)
@@ -173,7 +184,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Create a DatanodeID    * @param ipAddr IP    * @param hostName hostname    * @param storageID data storage ID    * @param xferPort data transfer port    * @param infoPort info server port     * @param ipcPort ipc server port    */
-DECL|method|DatanodeID (String ipAddr, String hostName, String storageID, int xferPort, int infoPort, int ipcPort)
+DECL|method|DatanodeID (String ipAddr, String hostName, String storageID, int xferPort, int infoPort, int infoSecurePort, int ipcPort)
 specifier|public
 name|DatanodeID
 parameter_list|(
@@ -191,6 +202,9 @@ name|xferPort
 parameter_list|,
 name|int
 name|infoPort
+parameter_list|,
+name|int
+name|infoSecurePort
 parameter_list|,
 name|int
 name|ipcPort
@@ -225,6 +239,12 @@ operator|.
 name|infoPort
 operator|=
 name|infoPort
+expr_stmt|;
+name|this
+operator|.
+name|infoSecurePort
+operator|=
+name|infoSecurePort
 expr_stmt|;
 name|this
 operator|.
@@ -359,6 +379,21 @@ operator|+
 name|infoPort
 return|;
 block|}
+comment|/**    * @return IP:infoPort string    */
+DECL|method|getInfoSecureAddr ()
+specifier|public
+name|String
+name|getInfoSecureAddr
+parameter_list|()
+block|{
+return|return
+name|ipAddr
+operator|+
+literal|":"
+operator|+
+name|infoSecurePort
+return|;
+block|}
 comment|/**    * @return hostname:xferPort    */
 DECL|method|getXferAddrWithHostname ()
 specifier|public
@@ -460,6 +495,17 @@ parameter_list|()
 block|{
 return|return
 name|infoPort
+return|;
+block|}
+comment|/**    * @return infoSecurePort (the port at which the HTTPS server bound to)    */
+DECL|method|getInfoSecurePort ()
+specifier|public
+name|int
+name|getInfoSecurePort
+parameter_list|()
+block|{
+return|return
+name|infoSecurePort
 return|;
 block|}
 comment|/**    * @return ipcPort (the port at which the IPC server bound to)    */
@@ -623,6 +669,13 @@ operator|.
 name|getInfoPort
 argument_list|()
 expr_stmt|;
+name|infoSecurePort
+operator|=
+name|nodeReg
+operator|.
+name|getInfoSecurePort
+argument_list|()
+expr_stmt|;
 name|ipcPort
 operator|=
 name|nodeReg
@@ -631,7 +684,7 @@ name|getIpcPort
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Compare based on data transfer address.    *    * @param that    * @return as specified by Comparable    */
+comment|/**    * Compare based on data transfer address.    *    * @param that datanode to compare with    * @return as specified by Comparable    */
 annotation|@
 name|Override
 DECL|method|compareTo (DatanodeID that)

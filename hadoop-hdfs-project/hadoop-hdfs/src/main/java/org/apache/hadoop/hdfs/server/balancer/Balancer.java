@@ -2297,7 +2297,7 @@ name|long
 name|maxSize2Move
 decl_stmt|;
 DECL|field|scheduledSize
-specifier|protected
+specifier|private
 name|long
 name|scheduledSize
 init|=
@@ -2523,6 +2523,7 @@ block|}
 comment|/** Decide if still need to move more bytes */
 DECL|method|hasSpaceForScheduling ()
 specifier|protected
+specifier|synchronized
 name|boolean
 name|hasSpaceForScheduling
 parameter_list|()
@@ -2536,6 +2537,7 @@ block|}
 comment|/** Return the total number of bytes that need to be moved */
 DECL|method|availableSizeToMove ()
 specifier|protected
+specifier|synchronized
 name|long
 name|availableSizeToMove
 parameter_list|()
@@ -2546,9 +2548,10 @@ operator|-
 name|scheduledSize
 return|;
 block|}
-comment|/* increment scheduled size */
+comment|/** increment scheduled size */
 DECL|method|incScheduledSize (long size)
 specifier|protected
+specifier|synchronized
 name|void
 name|incScheduledSize
 parameter_list|(
@@ -2558,6 +2561,50 @@ parameter_list|)
 block|{
 name|scheduledSize
 operator|+=
+name|size
+expr_stmt|;
+block|}
+comment|/** decrement scheduled size */
+DECL|method|decScheduledSize (long size)
+specifier|protected
+specifier|synchronized
+name|void
+name|decScheduledSize
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+name|scheduledSize
+operator|-=
+name|size
+expr_stmt|;
+block|}
+comment|/** get scheduled size */
+DECL|method|getScheduledSize ()
+specifier|protected
+specifier|synchronized
+name|long
+name|getScheduledSize
+parameter_list|()
+block|{
+return|return
+name|scheduledSize
+return|;
+block|}
+comment|/** get scheduled size */
+DECL|method|setScheduledSize (long size)
+specifier|protected
+specifier|synchronized
+name|void
+name|setScheduledSize
+parameter_list|(
+name|long
+name|size
+parameter_list|)
+block|{
+name|scheduledSize
+operator|=
 name|size
 expr_stmt|;
 block|}
@@ -3131,9 +3178,10 @@ operator|.
 name|getNumBytes
 argument_list|()
 decl_stmt|;
-name|scheduledSize
-operator|-=
+name|decScheduledSize
+argument_list|(
 name|blockSize
+argument_list|)
 expr_stmt|;
 name|task
 operator|.
@@ -3281,6 +3329,12 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
+name|long
+name|scheduledSize
+init|=
+name|getScheduledSize
+argument_list|()
+decl_stmt|;
 name|this
 operator|.
 name|blocksToReceive
@@ -3304,7 +3358,8 @@ condition|(
 operator|!
 name|isTimeUp
 operator|&&
-name|scheduledSize
+name|getScheduledSize
+argument_list|()
 operator|>
 literal|0
 operator|&&
@@ -3396,9 +3451,10 @@ operator|>=
 name|MAX_NO_PENDING_BLOCK_ITERATIONS
 condition|)
 block|{
-name|scheduledSize
-operator|=
+name|setScheduledSize
+argument_list|(
 literal|0
+argument_list|)
 expr_stmt|;
 block|}
 block|}
@@ -4339,7 +4395,8 @@ name|bytesToMove
 operator|+=
 name|src
 operator|.
-name|scheduledSize
+name|getScheduledSize
+argument_list|()
 expr_stmt|;
 block|}
 return|return
@@ -4826,6 +4883,7 @@ expr_stmt|;
 block|}
 DECL|method|get ()
 specifier|private
+specifier|synchronized
 name|long
 name|get
 parameter_list|()

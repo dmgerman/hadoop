@@ -238,6 +238,20 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|atomic
+operator|.
+name|AtomicReference
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -980,18 +994,6 @@ end_import
 
 begin_import
 import|import
-name|org
-operator|.
-name|mortbay
-operator|.
-name|log
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -1240,11 +1242,19 @@ literal|0
 decl_stmt|;
 DECL|field|lastException
 specifier|private
-specifier|volatile
+specifier|final
+name|AtomicReference
+argument_list|<
 name|IOException
+argument_list|>
 name|lastException
 init|=
-literal|null
+operator|new
+name|AtomicReference
+argument_list|<
+name|IOException
+argument_list|>
+argument_list|()
 decl_stmt|;
 DECL|field|artificialSlowdown
 specifier|private
@@ -4027,13 +4037,16 @@ literal|". Already retried 5 times for the same packet."
 argument_list|)
 expr_stmt|;
 name|lastException
-operator|=
+operator|.
+name|set
+argument_list|(
 operator|new
 name|IOException
 argument_list|(
 literal|"Failing write. Tried pipeline "
 operator|+
 literal|"recovery 5 times without success."
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|streamerClosed
@@ -4930,7 +4943,9 @@ literal|1
 condition|)
 block|{
 name|lastException
-operator|=
+operator|.
+name|set
+argument_list|(
 operator|new
 name|IOException
 argument_list|(
@@ -4939,6 +4954,7 @@ operator|+
 name|pipelineMsg
 operator|+
 literal|" are bad. Aborting..."
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|streamerClosed
@@ -5040,8 +5056,11 @@ operator|=
 literal|false
 expr_stmt|;
 name|lastException
-operator|=
+operator|.
+name|set
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 name|errorIndex
 operator|=
@@ -5228,8 +5247,11 @@ operator|=
 literal|false
 expr_stmt|;
 name|lastException
-operator|=
+operator|.
+name|set
+argument_list|(
 literal|null
+argument_list|)
 expr_stmt|;
 name|errorIndex
 operator|=
@@ -6285,18 +6307,15 @@ name|IOException
 name|e
 parameter_list|)
 block|{
-if|if
-condition|(
 name|lastException
-operator|==
+operator|.
+name|compareAndSet
+argument_list|(
 literal|null
-condition|)
-block|{
-name|lastException
-operator|=
+argument_list|,
 name|e
+argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 comment|/**    * Create a socket for a write pipeline    * @param first the first datanode     * @param length the pipeline length    * @param client    * @return the socket connected to the first datanode    */
@@ -6474,6 +6493,9 @@ name|IOException
 name|e
 init|=
 name|lastException
+operator|.
+name|get
+argument_list|()
 decl_stmt|;
 throw|throw
 name|e
@@ -7398,6 +7420,8 @@ init|(
 name|dataQueue
 init|)
 block|{
+try|try
+block|{
 comment|// If queue is full, then wait till we have enough space
 while|while
 condition|(
@@ -7455,6 +7479,13 @@ expr_stmt|;
 name|queueCurrentPacket
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ClosedChannelException
+name|e
+parameter_list|)
+block|{       }
 block|}
 block|}
 comment|// @see FSOutputSummer#writeChunk()
@@ -8330,13 +8361,16 @@ name|closed
 condition|)
 block|{
 name|lastException
-operator|=
+operator|.
+name|set
+argument_list|(
 operator|new
 name|IOException
 argument_list|(
 literal|"IOException flush:"
 operator|+
 name|e
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|closeThreads
@@ -8500,6 +8534,8 @@ name|seqno
 argument_list|)
 expr_stmt|;
 block|}
+try|try
+block|{
 synchronized|synchronized
 init|(
 name|dataQueue
@@ -8532,7 +8568,8 @@ argument_list|(
 literal|1000
 argument_list|)
 expr_stmt|;
-comment|// when we receive an ack, we notify on dataQueue
+comment|// when we receive an ack, we notify on
+comment|// dataQueue
 block|}
 catch|catch
 parameter_list|(
@@ -8553,6 +8590,13 @@ block|}
 name|checkClosed
 argument_list|()
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ClosedChannelException
+name|e
+parameter_list|)
+block|{     }
 block|}
 DECL|method|start ()
 specifier|private
@@ -8710,6 +8754,11 @@ name|IOException
 name|e
 init|=
 name|lastException
+operator|.
+name|getAndSet
+argument_list|(
+literal|null
+argument_list|)
 decl_stmt|;
 if|if
 condition|(
@@ -8814,6 +8863,12 @@ name|src
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|ClosedChannelException
+name|e
+parameter_list|)
+block|{     }
 finally|finally
 block|{
 name|closed

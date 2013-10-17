@@ -4079,6 +4079,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|Path
+name|absF
+init|=
+name|fixRelativePart
+argument_list|(
+name|p
+argument_list|)
+decl_stmt|;
 return|return
 operator|new
 name|RemoteIterator
@@ -4115,7 +4124,7 @@ name|getPathName
 argument_list|(
 name|resolvePath
 argument_list|(
-name|p
+name|absF
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4204,7 +4213,7 @@ argument_list|(
 name|getUri
 argument_list|()
 argument_list|,
-name|p
+name|absF
 argument_list|)
 decl_stmt|;
 if|if

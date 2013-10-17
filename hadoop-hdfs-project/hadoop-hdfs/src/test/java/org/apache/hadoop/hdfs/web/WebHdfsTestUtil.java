@@ -540,7 +540,7 @@ return|return
 name|webhdfs
 operator|.
 expr|new
-name|Runner
+name|ConnRunner
 argument_list|(
 name|op
 argument_list|,

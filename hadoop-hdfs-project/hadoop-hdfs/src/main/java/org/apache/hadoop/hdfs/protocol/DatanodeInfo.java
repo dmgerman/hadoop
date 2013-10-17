@@ -19,32 +19,6 @@ package|;
 end_package
 
 begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSUtil
-operator|.
-name|percent2String
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Date
-import|;
-end_import
-
-begin_import
 import|import
 name|org
 operator|.
@@ -181,6 +155,32 @@ operator|.
 name|util
 operator|.
 name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Date
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+operator|.
+name|percent2String
 import|;
 end_import
 
@@ -634,6 +634,11 @@ argument_list|()
 argument_list|,
 name|nodeID
 operator|.
+name|getInfoSecurePort
+argument_list|()
+argument_list|,
+name|nodeID
+operator|.
 name|getIpcPort
 argument_list|()
 argument_list|,
@@ -660,7 +665,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Constructor */
-DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String storageID, final int xferPort, final int infoPort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
+DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String storageID, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -683,6 +688,10 @@ parameter_list|,
 specifier|final
 name|int
 name|infoPort
+parameter_list|,
+specifier|final
+name|int
+name|infoSecurePort
 parameter_list|,
 specifier|final
 name|int
@@ -740,6 +749,8 @@ argument_list|,
 name|xferPort
 argument_list|,
 name|infoPort
+argument_list|,
+name|infoSecurePort
 argument_list|,
 name|ipcPort
 argument_list|)

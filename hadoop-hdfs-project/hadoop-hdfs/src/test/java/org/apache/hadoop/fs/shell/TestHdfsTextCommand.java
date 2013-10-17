@@ -217,10 +217,10 @@ comment|/**  * This class tests the logic for displaying the binary formats supp
 end_comment
 
 begin_class
-DECL|class|TestTextCommand
+DECL|class|TestHdfsTextCommand
 specifier|public
 class|class
-name|TestTextCommand
+name|TestHdfsTextCommand
 block|{
 DECL|field|TEST_ROOT_DIR
 specifier|private
