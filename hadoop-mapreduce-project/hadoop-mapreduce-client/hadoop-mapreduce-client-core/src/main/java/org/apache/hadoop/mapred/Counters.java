@@ -407,7 +407,8 @@ name|MAX_COUNTER_LIMIT
 init|=
 name|Limits
 operator|.
-name|COUNTERS_MAX
+name|getCountersMax
+argument_list|()
 decl_stmt|;
 DECL|field|MAX_GROUP_LIMIT
 specifier|public
@@ -417,7 +418,8 @@ name|MAX_GROUP_LIMIT
 init|=
 name|Limits
 operator|.
-name|GROUPS_MAX
+name|getGroupsMax
+argument_list|()
 decl_stmt|;
 DECL|field|depricatedCounterMap
 specifier|private

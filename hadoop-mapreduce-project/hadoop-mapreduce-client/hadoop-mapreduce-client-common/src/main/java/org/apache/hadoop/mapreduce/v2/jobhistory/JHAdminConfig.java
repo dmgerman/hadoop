@@ -48,6 +48,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+import|;
+end_import
+
 begin_comment
 comment|/**  * Stores Job History configuration keys that can be set by administrators of  * the Job History server.  */
 end_comment
@@ -412,6 +426,28 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"principal"
 decl_stmt|;
+comment|/** To enable https in MR history server */
+DECL|field|MR_HS_HTTP_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_HTTP_POLICY
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"http.policy"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HS_HTTP_POLICY
+specifier|public
+specifier|static
+name|String
+name|DEFAULT_MR_HS_HTTP_POLICY
+init|=
+name|CommonConfigurationKeysPublic
+operator|.
+name|HTTP_POLICY_HTTP_ONLY
+decl_stmt|;
 comment|/**The address the history server webapp is on.*/
 DECL|field|MR_HISTORY_WEBAPP_ADDRESS
 specifier|public
@@ -443,6 +479,38 @@ init|=
 literal|"0.0.0.0:"
 operator|+
 name|DEFAULT_MR_HISTORY_WEBAPP_PORT
+decl_stmt|;
+comment|/**The https address the history server webapp is on.*/
+DECL|field|MR_HISTORY_WEBAPP_HTTPS_ADDRESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_WEBAPP_HTTPS_ADDRESS
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"webapp.https.address"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_WEBAPP_HTTPS_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_HISTORY_WEBAPP_HTTPS_PORT
+init|=
+literal|19890
+decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_WEBAPP_HTTPS_ADDRESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_MR_HISTORY_WEBAPP_HTTPS_ADDRESS
+init|=
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_MR_HISTORY_WEBAPP_HTTPS_PORT
 decl_stmt|;
 comment|/**The kerberos principal to be used for spnego filter for history server*/
 DECL|field|MR_WEBAPP_SPNEGO_USER_NAME_KEY
@@ -489,6 +557,51 @@ init|=
 name|MR_HISTORY_PREFIX
 operator|+
 literal|"store.class"
+decl_stmt|;
+comment|/**    * Enable the history server to store server state and recover server state    * upon startup.    */
+DECL|field|MR_HS_RECOVERY_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_RECOVERY_ENABLE
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"recovery.enable"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HS_RECOVERY_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|DEFAULT_MR_HS_RECOVERY_ENABLE
+init|=
+literal|false
+decl_stmt|;
+comment|/**    * The HistoryServerStateStoreService class to store and recover server state    */
+DECL|field|MR_HS_STATE_STORE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_STATE_STORE
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"recovery.store.class"
+decl_stmt|;
+comment|/**    * The URI where server state will be stored when    * HistoryServerFileSystemStateStoreService is configured as the state store    */
+DECL|field|MR_HS_FS_STATE_STORE_URI
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HS_FS_STATE_STORE_URI
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"recovery.store.fs.uri"
 decl_stmt|;
 comment|/** Whether to use fixed ports with the minicluster. */
 DECL|field|MR_HISTORY_MINICLUSTER_FIXED_PORTS

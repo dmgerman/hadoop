@@ -18,136 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileNotFoundException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|UnsupportedEncodingException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URISyntaxException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URLDecoder
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|LinkedHashMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|TreeMap
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|HashMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -260,6 +130,76 @@ name|Progressable
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileNotFoundException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|UnsupportedEncodingException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URISyntaxException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URLDecoder
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|*
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is an implementation of the Hadoop Archive   * Filesystem. This archive Filesystem has index files  * of the form _index* and has contents of the form  * part-*. The index files store the indexes of the   * real files. The index files are of the form _masterindex  * and _index. The master index is a level of indirection   * in to the index file to make the look ups faster. the index  * file is sorted with hash code of the paths that it contains   * and the master index contains pointers to the positions in   * index for ranges of hashcodes.  */
 end_comment
@@ -270,7 +210,7 @@ specifier|public
 class|class
 name|HarFileSystem
 extends|extends
-name|FilterFileSystem
+name|FileSystem
 block|{
 DECL|field|LOG
 specifier|private
@@ -351,12 +291,19 @@ specifier|private
 name|HarMetaData
 name|metadata
 decl_stmt|;
-comment|/**    * public construction of harfilesystem    *    */
+DECL|field|fs
+specifier|private
+name|FileSystem
+name|fs
+decl_stmt|;
+comment|/**    * public construction of harfilesystem    */
 DECL|method|HarFileSystem ()
 specifier|public
 name|HarFileSystem
 parameter_list|()
-block|{   }
+block|{
+comment|// Must call #initialize() method to set the underlying file system
+block|}
 comment|/**    * Return the protocol scheme for the FileSystem.    *<p/>    *    * @return<code>har</code>    */
 annotation|@
 name|Override
@@ -370,7 +317,7 @@ return|return
 literal|"har"
 return|;
 block|}
-comment|/**    * Constructor to create a HarFileSystem with an    * underlying filesystem.    * @param fs    */
+comment|/**    * Constructor to create a HarFileSystem with an    * underlying filesystem.    * @param fs underlying file system    */
 DECL|method|HarFileSystem (FileSystem fs)
 specifier|public
 name|HarFileSystem
@@ -379,10 +326,19 @@ name|FileSystem
 name|fs
 parameter_list|)
 block|{
-name|super
-argument_list|(
+name|this
+operator|.
 name|fs
-argument_list|)
+operator|=
+name|fs
+expr_stmt|;
+name|this
+operator|.
+name|statistics
+operator|=
+name|fs
+operator|.
+name|statistics
 expr_stmt|;
 block|}
 DECL|method|initializeMetadataCache (Configuration conf)
@@ -723,6 +679,21 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
+DECL|method|getConf ()
+specifier|public
+name|Configuration
+name|getConf
+parameter_list|()
+block|{
+return|return
+name|fs
+operator|.
+name|getConf
+argument_list|()
+return|;
+block|}
 comment|// get the version of the filesystem from the masterindex file
 comment|// the version is currently not useful since its the first version
 comment|// of archives
@@ -955,8 +926,6 @@ throw|;
 block|}
 name|URI
 name|tmp
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -1115,7 +1084,42 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Create a har specific auth     * har-underlyingfs:port    * @param underLyingURI the uri of underlying    * filesystem    * @return har specific auth    */
+annotation|@
+name|Override
+DECL|method|getInitialWorkingDirectory ()
+specifier|public
+name|Path
+name|getInitialWorkingDirectory
+parameter_list|()
+block|{
+return|return
+name|getWorkingDirectory
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getStatus (Path p)
+specifier|public
+name|FsStatus
+name|getStatus
+parameter_list|(
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getStatus
+argument_list|(
+name|p
+argument_list|)
+return|;
+block|}
+comment|/**    * Create a har specific auth     * har-underlyingfs:port    * @param underLyingUri the uri of underlying    * filesystem    * @return har specific auth    */
 DECL|method|getHarAuth (URI underLyingUri)
 specifier|private
 name|String
@@ -1151,8 +1155,6 @@ name|underLyingUri
 operator|.
 name|getHost
 argument_list|()
-operator|+
-literal|":"
 expr_stmt|;
 if|if
 condition|(
@@ -1165,6 +1167,10 @@ operator|-
 literal|1
 condition|)
 block|{
+name|auth
+operator|+=
+literal|":"
+expr_stmt|;
 name|auth
 operator|+=
 name|underLyingUri
@@ -1185,6 +1191,42 @@ return|return
 name|auth
 return|;
 block|}
+comment|/**    * Used for delegation token related functionality. Must delegate to    * underlying file system.    */
+annotation|@
+name|Override
+DECL|method|getCanonicalUri ()
+specifier|protected
+name|URI
+name|getCanonicalUri
+parameter_list|()
+block|{
+return|return
+name|fs
+operator|.
+name|getCanonicalUri
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|canonicalizeUri (URI uri)
+specifier|protected
+name|URI
+name|canonicalizeUri
+parameter_list|(
+name|URI
+name|uri
+parameter_list|)
+block|{
+return|return
+name|fs
+operator|.
+name|canonicalizeUri
+argument_list|(
+name|uri
+argument_list|)
+return|;
+block|}
 comment|/**    * Returns the uri of this filesystem.    * The uri is of the form     * har://underlyingfsschema-host:port/pathintheunderlyingfs    */
 annotation|@
 name|Override
@@ -1198,6 +1240,47 @@ return|return
 name|this
 operator|.
 name|uri
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|checkPath (Path path)
+specifier|protected
+name|void
+name|checkPath
+parameter_list|(
+name|Path
+name|path
+parameter_list|)
+block|{
+name|fs
+operator|.
+name|checkPath
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|resolvePath (Path p)
+specifier|public
+name|Path
+name|resolvePath
+parameter_list|(
+name|Path
+name|p
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|resolvePath
+argument_list|(
+name|p
+argument_list|)
 return|;
 block|}
 comment|/**    * this method returns the path     * inside the har filesystem.    * this is relative path inside     * the har filesystem.    * @param path the fully qualified path in the har filesystem.    * @return relative path in the filesystem.    */
@@ -1698,7 +1781,7 @@ return|return
 name|locations
 return|;
 block|}
-comment|/**    * Get block locations from the underlying fs and fix their    * offsets and lengths.    * @param file the input filestatus to get block locations    * @param start the start of the desired range in the contained file    * @param len the length of the desired range    * @return block locations for this segment of file    * @throws IOException    */
+comment|/**    * Get block locations from the underlying fs and fix their    * offsets and lengths.    * @param file the input file status to get block locations    * @param start the start of the desired range in the contained file    * @param len the length of the desired range    * @return block locations for this segment of file    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|getFileBlockLocations (FileStatus file, long start, long len)
@@ -1791,7 +1874,7 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * the hash of the path p inside iniside    * the filesystem    * @param p the path in the harfilesystem    * @return the hash code of the path.    */
+comment|/**    * the hash of the path p inside  the filesystem    * @param p the path in the harfilesystem    * @return the hash code of the path.    */
 DECL|method|getHarHash (Path p)
 specifier|public
 specifier|static
@@ -1900,8 +1983,8 @@ name|int
 name|endHash
 decl_stmt|;
 block|}
-comment|/**    * Get filestatuses of all the children of a given directory. This just reads    * through index file and reads line by line to get all statuses for children    * of a directory. Its a brute force way of getting all such filestatuses    *     * @param parent    *          the parent path directory    * @param statuses    *          the list to add the children filestatuses to    * @param children    *          the string list of children for this parent    * @param archiveIndexStat    *          the archive index filestatus    */
-DECL|method|fileStatusesInIndex (HarStatus parent, List<FileStatus> statuses, List<String> children)
+comment|/**    * Get filestatuses of all the children of a given directory. This just reads    * through index file and reads line by line to get all statuses for children    * of a directory. Its a brute force way of getting all such filestatuses    *     * @param parent    *          the parent path directory    * @param statuses    *          the list to add the children filestatuses to    */
+DECL|method|fileStatusesInIndex (HarStatus parent, List<FileStatus> statuses)
 specifier|private
 name|void
 name|fileStatusesInIndex
@@ -1914,12 +1997,6 @@ argument_list|<
 name|FileStatus
 argument_list|>
 name|statuses
-parameter_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|children
 parameter_list|)
 throws|throws
 name|IOException
@@ -2278,7 +2355,7 @@ comment|// a single line parser for hadoop archives status
 comment|// stored in a single line in the index files
 comment|// the format is of the form
 comment|// filename "dir"/"file" partFileName startIndex length
-comment|//<space seperated children>
+comment|//<space separated children>
 DECL|class|HarStatus
 specifier|private
 class|class
@@ -2774,7 +2851,6 @@ argument_list|(
 name|f
 argument_list|)
 decl_stmt|;
-comment|// we got it.. woo hooo!!!
 if|if
 condition|(
 name|hstatus
@@ -2826,6 +2902,25 @@ name|bufferSize
 argument_list|)
 return|;
 block|}
+comment|/**    * Used for delegation token related functionality. Must delegate to    * underlying file system.    */
+annotation|@
+name|Override
+DECL|method|getChildFileSystems ()
+specifier|public
+name|FileSystem
+index|[]
+name|getChildFileSystems
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FileSystem
+index|[]
+block|{
+name|fs
+block|}
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|create (Path f, FsPermission permission, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
@@ -2866,6 +2961,74 @@ argument_list|)
 throw|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|createNonRecursive (Path f, boolean overwrite, int bufferSize, short replication, long blockSize, Progressable progress)
+specifier|public
+name|FSDataOutputStream
+name|createNonRecursive
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|boolean
+name|overwrite
+parameter_list|,
+name|int
+name|bufferSize
+parameter_list|,
+name|short
+name|replication
+parameter_list|,
+name|long
+name|blockSize
+parameter_list|,
+name|Progressable
+name|progress
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Har: create not allowed."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|append (Path f, int bufferSize, Progressable progress)
+specifier|public
+name|FSDataOutputStream
+name|append
+parameter_list|(
+name|Path
+name|f
+parameter_list|,
+name|int
+name|bufferSize
+parameter_list|,
+name|Progressable
+name|progress
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Har: append not allowed."
+argument_list|)
+throw|;
+block|}
+annotation|@
 name|Override
 DECL|method|close ()
 specifier|public
@@ -2875,6 +3038,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|super
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|fs
@@ -2922,7 +3090,52 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Har: setreplication not allowed"
+literal|"Har: setReplication not allowed"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|rename (Path src, Path dst)
+specifier|public
+name|boolean
+name|rename
+parameter_list|(
+name|Path
+name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Har: rename not allowed"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|append (Path f)
+specifier|public
+name|FSDataOutputStream
+name|append
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Har: append not allowed"
 argument_list|)
 throw|;
 block|}
@@ -3045,10 +3258,6 @@ argument_list|(
 name|hstatus
 argument_list|,
 name|statuses
-argument_list|,
-name|hstatus
-operator|.
-name|children
 argument_list|)
 expr_stmt|;
 block|}
@@ -3144,7 +3353,7 @@ block|}
 comment|/**    * not implemented.    */
 annotation|@
 name|Override
-DECL|method|copyFromLocalFile (boolean delSrc, Path src, Path dst)
+DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path src, Path dst)
 specifier|public
 name|void
 name|copyFromLocalFile
@@ -3152,8 +3361,42 @@ parameter_list|(
 name|boolean
 name|delSrc
 parameter_list|,
+name|boolean
+name|overwrite
+parameter_list|,
 name|Path
 name|src
+parameter_list|,
+name|Path
+name|dst
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Har: copyfromlocalfile not allowed"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|copyFromLocalFile (boolean delSrc, boolean overwrite, Path[] srcs, Path dst)
+specifier|public
+name|void
+name|copyFromLocalFile
+parameter_list|(
+name|boolean
+name|delSrc
+parameter_list|,
+name|boolean
+name|overwrite
+parameter_list|,
+name|Path
+index|[]
+name|srcs
 parameter_list|,
 name|Path
 name|dst
@@ -3290,10 +3533,37 @@ literal|"Har: setowner not allowed"
 argument_list|)
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|setTimes (Path p, long mtime, long atime)
+specifier|public
+name|void
+name|setTimes
+parameter_list|(
+name|Path
+name|p
+parameter_list|,
+name|long
+name|mtime
+parameter_list|,
+name|long
+name|atime
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Har: setTimes not allowed"
+argument_list|)
+throw|;
+block|}
 comment|/**    * Not implemented.    */
 annotation|@
 name|Override
-DECL|method|setPermission (Path p, FsPermission permisssion)
+DECL|method|setPermission (Path p, FsPermission permission)
 specifier|public
 name|void
 name|setPermission
@@ -3302,7 +3572,7 @@ name|Path
 name|p
 parameter_list|,
 name|FsPermission
-name|permisssion
+name|permission
 parameter_list|)
 throws|throws
 name|IOException
@@ -3861,7 +4131,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|//do not need to implement this
+comment|// do not need to implement this
 comment|// hdfs in itself does seektonewsource
 comment|// while reading.
 return|return
@@ -4043,8 +4313,6 @@ name|readahead
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnsupportedEncodingException
 block|{
 name|underLyingStream
 operator|.
@@ -4066,8 +4334,6 @@ name|dropBehind
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnsupportedEncodingException
 block|{
 name|underLyingStream
 operator|.
@@ -4115,44 +4381,6 @@ argument_list|,
 name|length
 argument_list|,
 name|bufsize
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**      * constructor for har input stream.      * @param fs the underlying filesystem      * @param p the path in the underlying file system      * @param start the start position in the part file      * @param length the length of valid data in the part file.      * @throws IOException      */
-DECL|method|HarFSDataInputStream (FileSystem fs, Path p, long start, long length)
-specifier|public
-name|HarFSDataInputStream
-parameter_list|(
-name|FileSystem
-name|fs
-parameter_list|,
-name|Path
-name|p
-parameter_list|,
-name|long
-name|start
-parameter_list|,
-name|long
-name|length
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|super
-argument_list|(
-operator|new
-name|HarFsInputStream
-argument_list|(
-name|fs
-argument_list|,
-name|p
-argument_list|,
-name|start
-argument_list|,
-name|length
-argument_list|,
-literal|0
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4372,6 +4600,10 @@ name|IOException
 block|{
 name|Text
 name|line
+init|=
+operator|new
+name|Text
+argument_list|()
 decl_stmt|;
 name|long
 name|read
@@ -4424,12 +4656,6 @@ argument_list|,
 name|getConf
 argument_list|()
 argument_list|)
-expr_stmt|;
-name|line
-operator|=
-operator|new
-name|Text
-argument_list|()
 expr_stmt|;
 name|read
 operator|=
@@ -4506,8 +4732,6 @@ comment|// each line contains a hashcode range and the index file name
 name|String
 index|[]
 name|readStr
-init|=
-literal|null
 decl_stmt|;
 while|while
 condition|(
@@ -4610,6 +4834,25 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Encountered exception "
+argument_list|,
+name|ioe
+argument_list|)
+expr_stmt|;
+throw|throw
+name|ioe
+throw|;
 block|}
 finally|finally
 block|{
@@ -4874,6 +5117,152 @@ operator|>
 name|MAX_ENTRIES
 return|;
 block|}
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|getServerDefaults ()
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getServerDefaults
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getServerDefaults (Path f)
+specifier|public
+name|FsServerDefaults
+name|getServerDefaults
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getServerDefaults
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getUsed ()
+specifier|public
+name|long
+name|getUsed
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+return|return
+name|fs
+operator|.
+name|getUsed
+argument_list|()
+return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|getDefaultBlockSize ()
+specifier|public
+name|long
+name|getDefaultBlockSize
+parameter_list|()
+block|{
+return|return
+name|fs
+operator|.
+name|getDefaultBlockSize
+argument_list|()
+return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|getDefaultBlockSize (Path f)
+specifier|public
+name|long
+name|getDefaultBlockSize
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+name|fs
+operator|.
+name|getDefaultBlockSize
+argument_list|(
+name|f
+argument_list|)
+return|;
+block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
+name|Override
+DECL|method|getDefaultReplication ()
+specifier|public
+name|short
+name|getDefaultReplication
+parameter_list|()
+block|{
+return|return
+name|fs
+operator|.
+name|getDefaultReplication
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getDefaultReplication (Path f)
+specifier|public
+name|short
+name|getDefaultReplication
+parameter_list|(
+name|Path
+name|f
+parameter_list|)
+block|{
+return|return
+name|fs
+operator|.
+name|getDefaultReplication
+argument_list|(
+name|f
+argument_list|)
+return|;
 block|}
 block|}
 end_class

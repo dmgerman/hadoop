@@ -331,7 +331,7 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Too many arguements."
+literal|"Too many arguments."
 argument_list|)
 throw|;
 block|}
@@ -537,14 +537,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|IllegalArgumentException
 argument_list|(
-literal|"args number not 2: "
-operator|+
-name|args
-operator|.
-name|size
-argument_list|()
+literal|"Incorrect number of arguments."
 argument_list|)
 throw|;
 block|}
@@ -732,14 +727,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|IllegalArgumentException
 argument_list|(
-literal|"args number not 3: "
-operator|+
-name|args
-operator|.
-name|size
-argument_list|()
+literal|"Incorrect number of arguments."
 argument_list|)
 throw|;
 block|}

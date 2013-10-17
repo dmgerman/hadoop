@@ -1382,6 +1382,20 @@ name|void
 name|reloadCachedMappings
 parameter_list|()
 block|{}
+annotation|@
+name|Override
+DECL|method|reloadCachedMappings (List<String> names)
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|names
+parameter_list|)
+block|{     }
 block|}
 DECL|method|verifyResourceRequest ( AMRMClientImpl<ContainerRequest> client, ContainerRequest request, String location, boolean expectedRelaxLocality)
 specifier|private

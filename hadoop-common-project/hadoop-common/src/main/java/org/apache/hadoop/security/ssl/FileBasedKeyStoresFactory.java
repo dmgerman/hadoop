@@ -252,6 +252,15 @@ name|SSL_KEYSTORE_PASSWORD_TPL_KEY
 init|=
 literal|"ssl.{0}.keystore.password"
 decl_stmt|;
+DECL|field|SSL_KEYSTORE_KEYPASSWORD_TPL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|SSL_KEYSTORE_KEYPASSWORD_TPL_KEY
+init|=
+literal|"ssl.{0}.keystore.keypassword"
+decl_stmt|;
 DECL|field|SSL_KEYSTORE_TYPE_TPL_KEY
 specifier|public
 specifier|static
@@ -467,7 +476,7 @@ name|keystoreType
 argument_list|)
 decl_stmt|;
 name|String
-name|keystorePassword
+name|keystoreKeyPassword
 init|=
 literal|null
 decl_stmt|;
@@ -536,8 +545,9 @@ argument_list|,
 name|SSL_KEYSTORE_PASSWORD_TPL_KEY
 argument_list|)
 decl_stmt|;
+name|String
 name|keystorePassword
-operator|=
+init|=
 name|conf
 operator|.
 name|get
@@ -546,7 +556,7 @@ name|passwordProperty
 argument_list|,
 literal|""
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|keystorePassword
@@ -567,6 +577,30 @@ literal|"' has not been set in the ssl configuration file."
 argument_list|)
 throw|;
 block|}
+name|String
+name|keyPasswordProperty
+init|=
+name|resolvePropertyName
+argument_list|(
+name|mode
+argument_list|,
+name|SSL_KEYSTORE_KEYPASSWORD_TPL_KEY
+argument_list|)
+decl_stmt|;
+comment|// Key password defaults to the same value as store password for
+comment|// compatibility with legacy configurations that did not use a separate
+comment|// configuration property for key password.
+name|keystoreKeyPassword
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|keyPasswordProperty
+argument_list|,
+name|keystorePassword
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug
@@ -659,12 +693,12 @@ argument_list|(
 name|keystore
 argument_list|,
 operator|(
-name|keystorePassword
+name|keystoreKeyPassword
 operator|!=
 literal|null
 operator|)
 condition|?
-name|keystorePassword
+name|keystoreKeyPassword
 operator|.
 name|toCharArray
 argument_list|()

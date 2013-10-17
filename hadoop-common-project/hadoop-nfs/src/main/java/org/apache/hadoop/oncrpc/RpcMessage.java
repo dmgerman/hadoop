@@ -149,6 +149,16 @@ operator|=
 name|messageType
 expr_stmt|;
 block|}
+DECL|method|write (XDR xdr)
+specifier|public
+specifier|abstract
+name|XDR
+name|write
+parameter_list|(
+name|XDR
+name|xdr
+parameter_list|)
+function_decl|;
 DECL|method|getXid ()
 specifier|public
 name|int

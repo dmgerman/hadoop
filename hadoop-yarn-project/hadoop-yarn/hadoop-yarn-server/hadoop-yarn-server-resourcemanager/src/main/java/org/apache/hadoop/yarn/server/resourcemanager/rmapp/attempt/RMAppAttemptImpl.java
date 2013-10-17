@@ -46,6 +46,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|net
 operator|.
 name|URI
@@ -529,22 +539,6 @@ operator|.
 name|records
 operator|.
 name|ResourceRequest
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|conf
-operator|.
-name|YarnConfiguration
 import|;
 end_import
 
@@ -1381,6 +1375,24 @@ operator|.
 name|resource
 operator|.
 name|Resources
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|util
+operator|.
+name|WebAppUtils
 import|;
 end_import
 
@@ -2760,8 +2772,10 @@ name|this
 operator|.
 name|proxiedTrackingUrl
 operator|=
-name|generateProxyUriWithoutScheme
-argument_list|()
+name|generateProxyUriWithScheme
+argument_list|(
+literal|null
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -3068,23 +3082,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|generateProxyUriWithoutScheme ()
+DECL|method|generateProxyUriWithScheme ( final String trackingUriWithoutScheme)
 specifier|private
 name|String
-name|generateProxyUriWithoutScheme
-parameter_list|()
-block|{
-return|return
-name|generateProxyUriWithoutScheme
-argument_list|(
-literal|null
-argument_list|)
-return|;
-block|}
-DECL|method|generateProxyUriWithoutScheme ( final String trackingUriWithoutScheme)
-specifier|private
-name|String
-name|generateProxyUriWithoutScheme
+name|generateProxyUriWithScheme
 parameter_list|(
 specifier|final
 name|String
@@ -3122,7 +3123,7 @@ decl_stmt|;
 name|String
 name|proxy
 init|=
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
 name|getProxyHostAndPort
 argument_list|(
@@ -3156,23 +3157,11 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|//We need to strip off the scheme to have it match what was there before
 return|return
 name|result
 operator|.
 name|toASCIIString
 argument_list|()
-operator|.
-name|substring
-argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
-operator|.
-name|length
-argument_list|()
-argument_list|)
 return|;
 block|}
 catch|catch
@@ -3217,9 +3206,9 @@ name|origTrackingUrl
 operator|=
 name|pjoin
 argument_list|(
-name|YarnConfiguration
+name|WebAppUtils
 operator|.
-name|getRMWebAppHostAndPort
+name|getResolvedRMWebAppURLWithoutScheme
 argument_list|(
 name|conf
 argument_list|)
@@ -3240,6 +3229,8 @@ operator|=
 name|origTrackingUrl
 expr_stmt|;
 block|}
+comment|// This is only used for RMStateStore. Normal operation must invoke the secret
+comment|// manager to get the key and not use the local key directly.
 annotation|@
 name|Override
 DECL|method|getClientTokenMasterKey ()
@@ -3992,6 +3983,8 @@ parameter_list|(
 name|RMState
 name|state
 parameter_list|)
+throws|throws
+name|Exception
 block|{
 name|ApplicationState
 name|appState
@@ -4092,6 +4085,8 @@ parameter_list|(
 name|Credentials
 name|appAttemptTokens
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 if|if
 condition|(
@@ -4159,10 +4154,18 @@ operator|.
 name|AM_RM_TOKEN_SERVICE
 argument_list|)
 expr_stmt|;
-comment|// For now, no need to populate tokens back to AMRMTokenSecretManager,
-comment|// because running attempts are rebooted. Later in work-preserve restart,
-comment|// we'll create NEW->RUNNING transition in which the restored tokens will be
-comment|// added to the secret manager
+name|rmContext
+operator|.
+name|getAMRMTokenSecretManager
+argument_list|()
+operator|.
+name|addPersistedPassword
+argument_list|(
+name|this
+operator|.
+name|amrmToken
+argument_list|)
+expr_stmt|;
 block|}
 DECL|class|BaseTransition
 specifier|private
@@ -4255,7 +4258,7 @@ operator|.
 name|getClientToAMTokenSecretManager
 argument_list|()
 operator|.
-name|registerApplication
+name|createMasterKey
 argument_list|(
 name|appAttempt
 operator|.
@@ -5006,6 +5009,28 @@ operator|.
 name|attemptLaunched
 argument_list|()
 expr_stmt|;
+comment|// register the ClientTokenMasterKey after it is saved in the store,
+comment|// otherwise client may hold an invalid ClientToken after RM restarts.
+name|appAttempt
+operator|.
+name|rmContext
+operator|.
+name|getClientToAMTokenSecretManager
+argument_list|()
+operator|.
+name|registerApplication
+argument_list|(
+name|appAttempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|appAttempt
+operator|.
+name|getClientTokenMasterKey
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|class|UnmanagedAMAttemptSavedTransition
@@ -5214,6 +5239,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|class|AMRegisteredTransition
+specifier|private
 specifier|static
 specifier|final
 class|class
@@ -5265,10 +5291,13 @@ name|appAttempt
 operator|.
 name|origTrackingUrl
 operator|=
+name|sanitizeTrackingUrl
+argument_list|(
 name|registrationEvent
 operator|.
 name|getTrackingurl
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|appAttempt
 operator|.
@@ -5276,7 +5305,7 @@ name|proxiedTrackingUrl
 operator|=
 name|appAttempt
 operator|.
-name|generateProxyUriWithoutScheme
+name|generateProxyUriWithScheme
 argument_list|(
 name|appAttempt
 operator|.
@@ -5803,10 +5832,13 @@ name|appAttempt
 operator|.
 name|origTrackingUrl
 operator|=
+name|sanitizeTrackingUrl
+argument_list|(
 name|unregisterEvent
 operator|.
 name|getTrackingUrl
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|appAttempt
 operator|.
@@ -5814,7 +5846,7 @@ name|proxiedTrackingUrl
 operator|=
 name|appAttempt
 operator|.
-name|generateProxyUriWithoutScheme
+name|generateProxyUriWithScheme
 argument_list|(
 name|appAttempt
 operator|.
@@ -5901,7 +5933,7 @@ name|applicationId
 argument_list|,
 name|RMAppEventType
 operator|.
-name|ATTEMPT_FINISHING
+name|ATTEMPT_UNREGISTERED
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6445,6 +6477,36 @@ name|getAppAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|sanitizeTrackingUrl (String url)
+specifier|private
+specifier|static
+name|String
+name|sanitizeTrackingUrl
+parameter_list|(
+name|String
+name|url
+parameter_list|)
+block|{
+return|return
+operator|(
+name|url
+operator|==
+literal|null
+operator|||
+name|url
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
+operator|)
+condition|?
+literal|"N/A"
+else|:
+name|url
+return|;
 block|}
 block|}
 end_class

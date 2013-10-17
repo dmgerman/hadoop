@@ -1090,6 +1090,17 @@ argument_list|,
 literal|100
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_LOG_RETAIN_SECONDS
+argument_list|,
+literal|1
+argument_list|)
+expr_stmt|;
 name|yarnCluster
 operator|=
 operator|new

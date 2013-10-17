@@ -209,7 +209,8 @@ name|ts
 init|=
 name|ResourceManager
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 decl_stmt|;
 name|this
 operator|.

@@ -114,6 +114,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -157,6 +171,24 @@ operator|.
 name|records
 operator|.
 name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|QueueACL
 import|;
 end_import
 
@@ -436,6 +468,21 @@ DECL|method|getRootQueueMetrics ()
 name|QueueMetrics
 name|getRootQueueMetrics
 parameter_list|()
+function_decl|;
+comment|/**    * Check if the user has permission to perform the operation.    * If the user has {@link QueueACL#ADMINISTER_QUEUE} permission,    * this user can view/modify the applications in this queue    * @param callerUGI    * @param acl    * @param queueName    * @return<code>true</code> if the user has the permission,    *<code>false</code> otherwise    */
+DECL|method|checkAccess (UserGroupInformation callerUGI, QueueACL acl, String queueName)
+name|boolean
+name|checkAccess
+parameter_list|(
+name|UserGroupInformation
+name|callerUGI
+parameter_list|,
+name|QueueACL
+name|acl
+parameter_list|,
+name|String
+name|queueName
+parameter_list|)
 function_decl|;
 block|}
 end_interface

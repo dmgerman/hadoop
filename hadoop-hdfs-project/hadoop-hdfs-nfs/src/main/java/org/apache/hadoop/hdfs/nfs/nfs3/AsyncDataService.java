@@ -404,7 +404,7 @@ literal|"Scheduling write back task for fileId: "
 operator|+
 name|openFileCtx
 operator|.
-name|copyLatestAttr
+name|getLatestAttr
 argument_list|()
 operator|.
 name|getFileId
@@ -476,7 +476,7 @@ literal|"write back data for fileId"
 operator|+
 name|openFileCtx
 operator|.
-name|copyLatestAttr
+name|getLatestAttr
 argument_list|()
 operator|.
 name|getFileId

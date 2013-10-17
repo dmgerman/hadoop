@@ -1656,7 +1656,7 @@ name|println
 argument_list|(
 name|exec
 operator|+
-literal|" /bin/bash -c \""
+literal|" /bin/bash \""
 operator|+
 name|launchDst
 operator|.

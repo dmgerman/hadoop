@@ -45,14 +45,11 @@ block|,
 DECL|enumConstant|APP_ACCEPTED
 name|APP_ACCEPTED
 block|,
-DECL|enumConstant|APP_SAVED
-name|APP_SAVED
-block|,
 DECL|enumConstant|ATTEMPT_REGISTERED
 name|ATTEMPT_REGISTERED
 block|,
-DECL|enumConstant|ATTEMPT_FINISHING
-name|ATTEMPT_FINISHING
+DECL|enumConstant|ATTEMPT_UNREGISTERED
+name|ATTEMPT_UNREGISTERED
 block|,
 DECL|enumConstant|ATTEMPT_FINISHED
 name|ATTEMPT_FINISHED
@@ -66,6 +63,13 @@ name|ATTEMPT_KILLED
 block|,
 DECL|enumConstant|NODE_UPDATE
 name|NODE_UPDATE
+block|,
+comment|// Source: RMStateStore
+DECL|enumConstant|APP_SAVED
+name|APP_SAVED
+block|,
+DECL|enumConstant|APP_REMOVED
+name|APP_REMOVED
 block|}
 end_enum
 

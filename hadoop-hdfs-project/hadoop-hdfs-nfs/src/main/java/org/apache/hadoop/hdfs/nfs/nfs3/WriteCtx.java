@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -75,6 +85,22 @@ operator|.
 name|logging
 operator|.
 name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|client
+operator|.
+name|HdfsDataOutputStream
 import|;
 end_import
 
@@ -123,6 +149,34 @@ operator|.
 name|channel
 operator|.
 name|Channel
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -185,6 +239,33 @@ specifier|final
 name|int
 name|count
 decl_stmt|;
+comment|//Only needed for overlapped write, referring OpenFileCtx.addWritesToCache()
+DECL|field|originalCount
+specifier|private
+specifier|final
+name|int
+name|originalCount
+decl_stmt|;
+DECL|field|INVALID_ORIGINAL_COUNT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|INVALID_ORIGINAL_COUNT
+init|=
+operator|-
+literal|1
+decl_stmt|;
+DECL|method|getOriginalCount ()
+specifier|public
+name|int
+name|getOriginalCount
+parameter_list|()
+block|{
+return|return
+name|originalCount
+return|;
+block|}
 DECL|field|stableHow
 specifier|private
 specifier|final
@@ -193,8 +274,8 @@ name|stableHow
 decl_stmt|;
 DECL|field|data
 specifier|private
-name|byte
-index|[]
+specifier|volatile
+name|ByteBuffer
 name|data
 decl_stmt|;
 DECL|field|channel
@@ -214,8 +295,20 @@ specifier|private
 name|boolean
 name|replied
 decl_stmt|;
+comment|/**     * Data belonging to the same {@link OpenFileCtx} may be dumped to a file.     * After being dumped to the file, the corresponding {@link WriteCtx} records     * the dump file and the offset.      */
+DECL|field|raf
+specifier|private
+name|RandomAccessFile
+name|raf
+decl_stmt|;
+DECL|field|dumpFileOffset
+specifier|private
+name|long
+name|dumpFileOffset
+decl_stmt|;
 DECL|field|dataState
 specifier|private
+specifier|volatile
 name|DataState
 name|dataState
 decl_stmt|;
@@ -245,19 +338,8 @@ operator|=
 name|dataState
 expr_stmt|;
 block|}
-DECL|field|raf
-specifier|private
-name|RandomAccessFile
-name|raf
-decl_stmt|;
-DECL|field|dumpFileOffset
-specifier|private
-name|long
-name|dumpFileOffset
-decl_stmt|;
-comment|// Return the dumped data size
+comment|/**     * Writing the data into a local file. After the writing, if     * {@link #dataState} is still ALLOW_DUMP, set {@link #data} to null and set     * {@link #dataState} to DUMPED.    */
 DECL|method|dumpData (FileOutputStream dumpOut, RandomAccessFile raf)
-specifier|public
 name|long
 name|dumpData
 parameter_list|(
@@ -309,6 +391,16 @@ return|return
 literal|0
 return|;
 block|}
+comment|// Resized write should not allow dump
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|originalCount
+operator|==
+name|INVALID_ORIGINAL_COUNT
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|raf
@@ -330,6 +422,9 @@ operator|.
 name|write
 argument_list|(
 name|data
+operator|.
+name|array
+argument_list|()
 argument_list|,
 literal|0
 argument_list|,
@@ -354,6 +449,33 @@ name|dumpFileOffset
 argument_list|)
 expr_stmt|;
 block|}
+comment|// it is possible that while we dump the data, the data is also being
+comment|// written back to HDFS. After dump, if the writing back has not finished
+comment|// yet, we change its flag to DUMPED and set the data to null. Otherwise
+comment|// this WriteCtx instance should have been removed from the buffer.
+if|if
+condition|(
+name|dataState
+operator|==
+name|DataState
+operator|.
+name|ALLOW_DUMP
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|dataState
+operator|==
+name|DataState
+operator|.
+name|ALLOW_DUMP
+condition|)
+block|{
 name|data
 operator|=
 literal|null
@@ -368,8 +490,13 @@ return|return
 name|count
 return|;
 block|}
+block|}
+block|}
+return|return
+literal|0
+return|;
+block|}
 DECL|method|getHandle ()
-specifier|public
 name|FileHandle
 name|getHandle
 parameter_list|()
@@ -379,7 +506,6 @@ name|handle
 return|;
 block|}
 DECL|method|getOffset ()
-specifier|public
 name|long
 name|getOffset
 parameter_list|()
@@ -389,7 +515,6 @@ name|offset
 return|;
 block|}
 DECL|method|getCount ()
-specifier|public
 name|int
 name|getCount
 parameter_list|()
@@ -399,7 +524,6 @@ name|count
 return|;
 block|}
 DECL|method|getStableHow ()
-specifier|public
 name|WriteStableHow
 name|getStableHow
 parameter_list|()
@@ -408,10 +532,10 @@ return|return
 name|stableHow
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getData ()
-specifier|public
-name|byte
-index|[]
+name|ByteBuffer
 name|getData
 parameter_list|()
 throws|throws
@@ -426,50 +550,72 @@ operator|.
 name|DUMPED
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 if|if
 condition|(
-name|data
-operator|==
-literal|null
+name|dataState
+operator|!=
+name|DataState
+operator|.
+name|DUMPED
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
+name|Preconditions
+operator|.
+name|checkState
 argument_list|(
-literal|"Data is not dumpted but has null:"
-operator|+
-name|this
-argument_list|)
-throw|;
-block|}
-block|}
-else|else
-block|{
-comment|// read back
-if|if
-condition|(
 name|data
 operator|!=
 literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Data is dumpted but not null"
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
+return|return
 name|data
-operator|=
+return|;
+block|}
+block|}
+block|}
+comment|// read back from dumped file
+name|this
+operator|.
+name|loadData
+argument_list|()
+expr_stmt|;
+return|return
+name|data
+return|;
+block|}
+DECL|method|loadData ()
+specifier|private
+name|void
+name|loadData
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|data
+operator|==
+literal|null
+argument_list|)
+expr_stmt|;
+name|byte
+index|[]
+name|rawData
+init|=
 operator|new
 name|byte
 index|[
 name|count
 index|]
-expr_stmt|;
+decl_stmt|;
 name|raf
 operator|.
 name|seek
@@ -484,7 +630,7 @@ name|raf
 operator|.
 name|read
 argument_list|(
-name|data
+name|rawData
 argument_list|,
 literal|0
 argument_list|,
@@ -514,10 +660,166 @@ literal|"bytes"
 argument_list|)
 throw|;
 block|}
-block|}
-return|return
 name|data
-return|;
+operator|=
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|rawData
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|writeData (HdfsDataOutputStream fos)
+specifier|public
+name|void
+name|writeData
+parameter_list|(
+name|HdfsDataOutputStream
+name|fos
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|fos
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
+name|ByteBuffer
+name|dataBuffer
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|dataBuffer
+operator|=
+name|getData
+argument_list|()
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e1
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Failed to get request data offset:"
+operator|+
+name|offset
+operator|+
+literal|" count:"
+operator|+
+name|count
+operator|+
+literal|" error:"
+operator|+
+name|e1
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can't get WriteCtx.data"
+argument_list|)
+throw|;
+block|}
+name|byte
+index|[]
+name|data
+init|=
+name|dataBuffer
+operator|.
+name|array
+argument_list|()
+decl_stmt|;
+name|int
+name|position
+init|=
+name|dataBuffer
+operator|.
+name|position
+argument_list|()
+decl_stmt|;
+name|int
+name|limit
+init|=
+name|dataBuffer
+operator|.
+name|limit
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|limit
+operator|-
+name|position
+operator|==
+name|count
+argument_list|)
+expr_stmt|;
+comment|// Modified write has a valid original count
+if|if
+condition|(
+name|position
+operator|!=
+literal|0
+condition|)
+block|{
+if|if
+condition|(
+name|limit
+operator|!=
+name|getOriginalCount
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Modified write has differnt original size."
+operator|+
+literal|"buff position:"
+operator|+
+name|position
+operator|+
+literal|" buff limit:"
+operator|+
+name|limit
+operator|+
+literal|". "
+operator|+
+name|toString
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
+comment|// Now write data
+name|fos
+operator|.
+name|write
+argument_list|(
+name|data
+argument_list|,
+name|position
+argument_list|,
+name|count
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|getChannel ()
 name|Channel
@@ -561,7 +863,7 @@ operator|=
 name|replied
 expr_stmt|;
 block|}
-DECL|method|WriteCtx (FileHandle handle, long offset, int count, WriteStableHow stableHow, byte[] data, Channel channel, int xid, boolean replied, DataState dataState)
+DECL|method|WriteCtx (FileHandle handle, long offset, int count, int originalCount, WriteStableHow stableHow, ByteBuffer data, Channel channel, int xid, boolean replied, DataState dataState)
 name|WriteCtx
 parameter_list|(
 name|FileHandle
@@ -573,11 +875,13 @@ parameter_list|,
 name|int
 name|count
 parameter_list|,
+name|int
+name|originalCount
+parameter_list|,
 name|WriteStableHow
 name|stableHow
 parameter_list|,
-name|byte
-index|[]
+name|ByteBuffer
 name|data
 parameter_list|,
 name|Channel
@@ -610,6 +914,12 @@ operator|.
 name|count
 operator|=
 name|count
+expr_stmt|;
+name|this
+operator|.
+name|originalCount
+operator|=
+name|originalCount
 expr_stmt|;
 name|this
 operator|.
@@ -675,6 +985,10 @@ operator|+
 literal|" count:"
 operator|+
 name|count
+operator|+
+literal|" originalCount:"
+operator|+
+name|originalCount
 operator|+
 literal|" stableHow:"
 operator|+

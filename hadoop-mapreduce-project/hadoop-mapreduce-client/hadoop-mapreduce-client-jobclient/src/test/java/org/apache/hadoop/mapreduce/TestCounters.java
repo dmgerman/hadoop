@@ -551,7 +551,8 @@ literal|"counters max="
 operator|+
 name|Limits
 operator|.
-name|COUNTERS_MAX
+name|getCountersMax
+argument_list|()
 argument_list|)
 expr_stmt|;
 for|for
@@ -565,7 +566,8 @@ name|i
 operator|<
 name|Limits
 operator|.
-name|COUNTERS_MAX
+name|getCountersMax
+argument_list|()
 condition|;
 operator|++
 name|i
@@ -640,7 +642,8 @@ literal|"counter groups max="
 operator|+
 name|Limits
 operator|.
-name|GROUPS_MAX
+name|getGroupsMax
+argument_list|()
 argument_list|)
 expr_stmt|;
 for|for
@@ -654,7 +657,8 @@ name|i
 operator|<
 name|Limits
 operator|.
-name|GROUPS_MAX
+name|getGroupsMax
+argument_list|()
 condition|;
 operator|++
 name|i

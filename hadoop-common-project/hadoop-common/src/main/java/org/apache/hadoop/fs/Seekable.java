@@ -55,7 +55,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Stream that permits seeking. */
+comment|/**  *  Stream that permits seeking.  */
 end_comment
 
 begin_interface

@@ -219,6 +219,17 @@ name|UserGroupInformation
 name|user
 parameter_list|)
 function_decl|;
+DECL|method|hasAccess (QueueACL acl, UserGroupInformation user)
+name|boolean
+name|hasAccess
+parameter_list|(
+name|QueueACL
+name|acl
+parameter_list|,
+name|UserGroupInformation
+name|user
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

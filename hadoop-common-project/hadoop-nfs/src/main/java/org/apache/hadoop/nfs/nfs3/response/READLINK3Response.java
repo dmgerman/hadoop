@@ -66,6 +66,22 @@ name|XDR
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Verifier
+import|;
+end_import
+
 begin_comment
 comment|/**  * READLINK3 Response  */
 end_comment
@@ -175,25 +191,30 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|send (XDR out, int xid)
+DECL|method|writeHeaderAndResponse (XDR out, int xid, Verifier verifier)
 specifier|public
 name|XDR
-name|send
+name|writeHeaderAndResponse
 parameter_list|(
 name|XDR
 name|out
 parameter_list|,
 name|int
 name|xid
+parameter_list|,
+name|Verifier
+name|verifier
 parameter_list|)
 block|{
 name|super
 operator|.
-name|send
+name|writeHeaderAndResponse
 argument_list|(
 name|out
 argument_list|,
 name|xid
+argument_list|,
+name|verifier
 argument_list|)
 expr_stmt|;
 name|out
@@ -223,13 +244,9 @@ condition|)
 block|{
 name|out
 operator|.
-name|writeFixedOpaque
+name|writeVariableOpaque
 argument_list|(
 name|path
-argument_list|,
-name|path
-operator|.
-name|length
 argument_list|)
 expr_stmt|;
 block|}

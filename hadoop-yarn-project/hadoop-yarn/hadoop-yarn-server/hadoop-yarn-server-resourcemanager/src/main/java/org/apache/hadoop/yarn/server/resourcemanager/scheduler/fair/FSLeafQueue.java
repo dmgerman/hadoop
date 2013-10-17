@@ -823,7 +823,14 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Node offered to queue: "
+literal|"Node "
+operator|+
+name|node
+operator|.
+name|getNodeName
+argument_list|()
+operator|+
+literal|" offered to queue: "
 operator|+
 name|getName
 argument_list|()

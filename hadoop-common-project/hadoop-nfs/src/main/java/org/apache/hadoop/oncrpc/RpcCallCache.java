@@ -100,7 +100,7 @@ name|CacheEntry
 block|{
 DECL|field|response
 specifier|private
-name|XDR
+name|RpcResponse
 name|response
 decl_stmt|;
 comment|// null if no response has been sent
@@ -140,7 +140,7 @@ return|;
 block|}
 DECL|method|getResponse ()
 specifier|public
-name|XDR
+name|RpcResponse
 name|getResponse
 parameter_list|()
 block|{
@@ -148,12 +148,12 @@ return|return
 name|response
 return|;
 block|}
-DECL|method|setResponse (XDR response)
+DECL|method|setResponse (RpcResponse response)
 specifier|public
 name|void
 name|setResponse
 parameter_list|(
-name|XDR
+name|RpcResponse
 name|response
 parameter_list|)
 block|{
@@ -426,7 +426,7 @@ name|program
 return|;
 block|}
 comment|/** Mark a request as completed and add corresponding response to the cache */
-DECL|method|callCompleted (InetAddress clientId, int xid, XDR response)
+DECL|method|callCompleted (InetAddress clientId, int xid, RpcResponse response)
 specifier|public
 name|void
 name|callCompleted
@@ -437,7 +437,7 @@ parameter_list|,
 name|int
 name|xid
 parameter_list|,
-name|XDR
+name|RpcResponse
 name|response
 parameter_list|)
 block|{
@@ -472,10 +472,9 @@ expr_stmt|;
 block|}
 name|e
 operator|.
-name|setResponse
-argument_list|(
 name|response
-argument_list|)
+operator|=
+name|response
 expr_stmt|;
 block|}
 comment|/**    * Check the cache for an entry. If it does not exist, add the request    * as in progress.    */

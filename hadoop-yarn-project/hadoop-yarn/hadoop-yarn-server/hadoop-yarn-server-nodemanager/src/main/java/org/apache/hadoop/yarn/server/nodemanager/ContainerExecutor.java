@@ -1013,8 +1013,6 @@ name|asList
 argument_list|(
 literal|"bash"
 argument_list|,
-literal|"-c"
-argument_list|,
 name|command
 argument_list|)
 argument_list|)

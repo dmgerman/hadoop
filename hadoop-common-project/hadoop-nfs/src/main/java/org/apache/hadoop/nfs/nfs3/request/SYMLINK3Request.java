@@ -62,6 +62,7 @@ specifier|final
 name|String
 name|name
 decl_stmt|;
+comment|// The name of the link
 DECL|field|symAttr
 specifier|private
 specifier|final
@@ -74,6 +75,7 @@ specifier|final
 name|String
 name|symData
 decl_stmt|;
+comment|// It contains the target
 DECL|method|SYMLINK3Request (XDR xdr)
 specifier|public
 name|SYMLINK3Request

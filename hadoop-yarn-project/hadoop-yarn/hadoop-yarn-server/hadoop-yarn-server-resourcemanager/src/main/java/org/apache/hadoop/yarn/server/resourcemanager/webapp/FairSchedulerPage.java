@@ -56,6 +56,20 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|StringEscapeUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|yarn
@@ -475,6 +489,10 @@ name|_
 argument_list|(
 literal|"Used Resources:"
 argument_list|,
+name|StringEscapeUtils
+operator|.
+name|escapeHtml
+argument_list|(
 name|qinfo
 operator|.
 name|getUsedResources
@@ -482,6 +500,7 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 argument_list|)
 operator|.
 name|_
@@ -508,6 +527,10 @@ name|_
 argument_list|(
 literal|"Min Resources:"
 argument_list|,
+name|StringEscapeUtils
+operator|.
+name|escapeHtml
+argument_list|(
 name|qinfo
 operator|.
 name|getMinResources
@@ -516,11 +539,16 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+argument_list|)
 operator|.
 name|_
 argument_list|(
 literal|"Max Resources:"
 argument_list|,
+name|StringEscapeUtils
+operator|.
+name|escapeHtml
+argument_list|(
 name|qinfo
 operator|.
 name|getMaxResources
@@ -528,6 +556,7 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|int

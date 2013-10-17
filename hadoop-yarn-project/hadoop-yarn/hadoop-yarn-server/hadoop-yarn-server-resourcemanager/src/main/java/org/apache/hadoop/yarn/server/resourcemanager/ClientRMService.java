@@ -860,6 +860,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|QueueACL
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|QueueInfo
 import|;
 end_import
@@ -1206,6 +1224,26 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
+name|QueueACLsManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
 name|RMDelegationTokenSecretManager
 import|;
 end_import
@@ -1394,7 +1432,13 @@ specifier|final
 name|ApplicationACLsManager
 name|applicationsACLsManager
 decl_stmt|;
-DECL|method|ClientRMService (RMContext rmContext, YarnScheduler scheduler, RMAppManager rmAppManager, ApplicationACLsManager applicationACLsManager, RMDelegationTokenSecretManager rmDTSecretManager)
+DECL|field|queueACLsManager
+specifier|private
+specifier|final
+name|QueueACLsManager
+name|queueACLsManager
+decl_stmt|;
+DECL|method|ClientRMService (RMContext rmContext, YarnScheduler scheduler, RMAppManager rmAppManager, ApplicationACLsManager applicationACLsManager, QueueACLsManager queueACLsManager, RMDelegationTokenSecretManager rmDTSecretManager)
 specifier|public
 name|ClientRMService
 parameter_list|(
@@ -1409,6 +1453,9 @@ name|rmAppManager
 parameter_list|,
 name|ApplicationACLsManager
 name|applicationACLsManager
+parameter_list|,
+name|QueueACLsManager
+name|queueACLsManager
 parameter_list|,
 name|RMDelegationTokenSecretManager
 name|rmDTSecretManager
@@ -1447,6 +1494,12 @@ operator|.
 name|applicationsACLsManager
 operator|=
 name|applicationACLsManager
+expr_stmt|;
+name|this
+operator|.
+name|queueACLsManager
+operator|=
+name|queueACLsManager
 expr_stmt|;
 name|this
 operator|.
@@ -1671,8 +1724,8 @@ return|return
 name|clientBindAddress
 return|;
 block|}
-comment|/**    * check if the calling user has the access to application information.    * @param callerUGI    * @param owner    * @param operationPerformed    * @param applicationId    * @return    */
-DECL|method|checkAccess (UserGroupInformation callerUGI, String owner, ApplicationAccessType operationPerformed, ApplicationId applicationId)
+comment|/**    * check if the calling user has the access to application information.    * @param callerUGI    * @param owner    * @param operationPerformed    * @param application    * @return    */
+DECL|method|checkAccess (UserGroupInformation callerUGI, String owner, ApplicationAccessType operationPerformed, RMApp application)
 specifier|private
 name|boolean
 name|checkAccess
@@ -1686,8 +1739,8 @@ parameter_list|,
 name|ApplicationAccessType
 name|operationPerformed
 parameter_list|,
-name|ApplicationId
-name|applicationId
+name|RMApp
+name|application
 parameter_list|)
 block|{
 return|return
@@ -1701,7 +1754,26 @@ name|operationPerformed
 argument_list|,
 name|owner
 argument_list|,
-name|applicationId
+name|application
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+operator|||
+name|queueACLsManager
+operator|.
+name|checkAccess
+argument_list|(
+name|callerUGI
+argument_list|,
+name|QueueACL
+operator|.
+name|ADMINISTER_QUEUE
+argument_list|,
+name|application
+operator|.
+name|getQueue
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -1733,7 +1805,8 @@ name|recordFactory
 argument_list|,
 name|ResourceManager
 operator|.
-name|clusterTimeStamp
+name|getClusterTimeStamp
+argument_list|()
 argument_list|,
 name|applicationCounter
 operator|.
@@ -1916,7 +1989,7 @@ name|ApplicationAccessType
 operator|.
 name|VIEW_APP
 argument_list|,
-name|applicationId
+name|application
 argument_list|)
 decl_stmt|;
 name|ApplicationReport
@@ -2481,7 +2554,7 @@ name|ApplicationAccessType
 operator|.
 name|MODIFY_APP
 argument_list|,
-name|applicationId
+name|application
 argument_list|)
 condition|)
 block|{
@@ -2818,15 +2891,10 @@ name|applicationStates
 operator|.
 name|contains
 argument_list|(
-name|RMServerUtils
-operator|.
-name|createApplicationState
-argument_list|(
 name|application
 operator|.
-name|getState
+name|createApplicationState
 argument_list|()
-argument_list|)
 argument_list|)
 condition|)
 block|{
@@ -2850,9 +2918,6 @@ operator|.
 name|VIEW_APP
 argument_list|,
 name|application
-operator|.
-name|getApplicationId
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|reports

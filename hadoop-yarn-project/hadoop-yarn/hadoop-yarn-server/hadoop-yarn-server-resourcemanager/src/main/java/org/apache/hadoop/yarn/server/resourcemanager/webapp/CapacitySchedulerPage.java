@@ -778,7 +778,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", Active Apps: "
+literal|", Schedulable Apps: "
 operator|+
 name|entry
 operator|.
@@ -788,7 +788,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", Pending Apps: "
+literal|", Non-Schedulable Apps: "
 operator|+
 name|entry
 operator|.
@@ -850,6 +850,21 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Absolute Used Capacity:"
+argument_list|,
+name|percent
+argument_list|(
+name|lqinfo
+operator|.
+name|getAbsoluteUsedCapacity
+argument_list|()
+operator|/
+literal|100
+argument_list|)
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"Absolute Capacity:"
 argument_list|,
 name|percent
@@ -888,7 +903,7 @@ name|escapeHtml
 argument_list|(
 name|lqinfo
 operator|.
-name|getUsedResources
+name|getResourcesUsed
 argument_list|()
 operator|.
 name|toString
@@ -898,7 +913,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Num Active Applications:"
+literal|"Num Schedulable Applications:"
 argument_list|,
 name|Integer
 operator|.
@@ -913,7 +928,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Num Pending Applications:"
+literal|"Num Non-Schedulable Applications:"
 argument_list|,
 name|Integer
 operator|.
@@ -973,7 +988,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Max Active Applications:"
+literal|"Max Schedulable Applications:"
 argument_list|,
 name|Integer
 operator|.
@@ -988,7 +1003,7 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
-literal|"Max Active Applications Per User:"
+literal|"Max Schedulable Applications Per User:"
 argument_list|,
 name|Integer
 operator|.

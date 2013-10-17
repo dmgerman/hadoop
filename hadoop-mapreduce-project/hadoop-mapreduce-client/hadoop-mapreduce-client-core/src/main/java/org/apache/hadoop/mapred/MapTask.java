@@ -5920,14 +5920,6 @@ name|bufferRemaining
 operator|=
 name|softLimit
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -5976,7 +5968,6 @@ operator|+
 name|maxRec
 argument_list|)
 expr_stmt|;
-block|}
 comment|// k/v serialization
 name|comparator
 operator|=
@@ -6973,14 +6964,6 @@ operator|)
 operator|/
 literal|4
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -7004,7 +6987,6 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**      * The spill is complete, so set the buffer and meta indices to be equal to      * the new equator to free space for continuing collection. Note that when      * kvindex == kvend == kvstart, the buffer is empty.      */
 DECL|method|resetSpill ()
@@ -7060,14 +7042,6 @@ operator|)
 operator|/
 literal|4
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -7105,7 +7079,6 @@ operator|+
 literal|")"
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 comment|/**      * Compute the distance in bytes between two indices in the serialization      * buffer.      * @see #distanceTo(int,int,int)      */
 DECL|method|distanceTo (final int i, final int j)
@@ -8174,14 +8147,6 @@ name|bufend
 operator|=
 name|bufmark
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -8257,7 +8222,6 @@ operator|+
 name|maxRec
 argument_list|)
 expr_stmt|;
-block|}
 name|sortAndSpill
 argument_list|()
 expr_stmt|;
@@ -8603,14 +8567,6 @@ name|spillInProgress
 operator|=
 literal|true
 expr_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isInfoEnabled
-argument_list|()
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -8686,7 +8642,6 @@ operator|+
 name|maxRec
 argument_list|)
 expr_stmt|;
-block|}
 name|spillReady
 operator|.
 name|signal

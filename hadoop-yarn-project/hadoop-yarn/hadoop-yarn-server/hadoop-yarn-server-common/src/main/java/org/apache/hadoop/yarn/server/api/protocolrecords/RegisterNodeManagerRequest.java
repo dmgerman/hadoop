@@ -79,6 +79,11 @@ name|Resource
 name|getResource
 parameter_list|()
 function_decl|;
+DECL|method|getNMVersion ()
+name|String
+name|getNMVersion
+parameter_list|()
+function_decl|;
 DECL|method|setNodeId (NodeId nodeId)
 name|void
 name|setNodeId
@@ -101,6 +106,14 @@ name|setResource
 parameter_list|(
 name|Resource
 name|resource
+parameter_list|)
+function_decl|;
+DECL|method|setNMVersion (String version)
+name|void
+name|setNMVersion
+parameter_list|(
+name|String
+name|version
 parameter_list|)
 function_decl|;
 block|}

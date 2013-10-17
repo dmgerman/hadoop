@@ -921,6 +921,25 @@ name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT
 init|=
 literal|60
 decl_stmt|;
+comment|// HTTP policies to be used in configuration
+DECL|field|HTTP_POLICY_HTTP_ONLY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTP_POLICY_HTTP_ONLY
+init|=
+literal|"HTTP_ONLY"
+decl_stmt|;
+DECL|field|HTTP_POLICY_HTTPS_ONLY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HTTP_POLICY_HTTPS_ONLY
+init|=
+literal|"HTTPS_ONLY"
+decl_stmt|;
 block|}
 end_class
 

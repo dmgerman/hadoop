@@ -652,6 +652,19 @@ return|return
 literal|false
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|hasSuccessfullyUnregistered ()
+specifier|public
+name|boolean
+name|hasSuccessfullyUnregistered
+parameter_list|()
+block|{
+comment|// bogus - Not Required
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

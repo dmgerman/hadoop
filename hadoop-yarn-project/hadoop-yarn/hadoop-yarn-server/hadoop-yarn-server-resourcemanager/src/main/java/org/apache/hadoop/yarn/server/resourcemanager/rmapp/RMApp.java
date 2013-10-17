@@ -160,6 +160,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|YarnApplicationState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|EventHandler
@@ -370,6 +388,18 @@ comment|/**    * Returns the application type    * @return the application type.
 DECL|method|getApplicationType ()
 name|String
 name|getApplicationType
+parameter_list|()
+function_decl|;
+comment|/**    * Check whether this application is safe to unregister.    * An application is deemed to be safe to unregister if it is an unmanaged    * AM or its state has been removed from state store.    * @return the flag which indicates whether this application is safe to    *         unregister.    */
+DECL|method|isAppSafeToUnregister ()
+name|boolean
+name|isAppSafeToUnregister
+parameter_list|()
+function_decl|;
+comment|/**    * Create the external user-facing state of ApplicationMaster from the    * current state of the {@link RMApp}.    * @return the external user-facing state of ApplicationMaster.    */
+DECL|method|createApplicationState ()
+name|YarnApplicationState
+name|createApplicationState
 parameter_list|()
 function_decl|;
 block|}

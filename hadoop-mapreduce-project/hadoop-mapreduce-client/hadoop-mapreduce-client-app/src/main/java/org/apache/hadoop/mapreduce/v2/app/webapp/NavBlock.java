@@ -23,28 +23,6 @@ package|;
 end_package
 
 begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|inject
-operator|.
-name|Inject
-import|;
-end_import
-
-begin_import
 import|import static
 name|org
 operator|.
@@ -60,23 +38,19 @@ name|app
 operator|.
 name|webapp
 operator|.
-name|AMWebApp
+name|AMParams
 operator|.
-name|*
+name|RM_WEB
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|hadoop
-operator|.
-name|http
-operator|.
-name|HttpConfig
+name|List
 import|;
 end_import
 
@@ -126,6 +100,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|util
+operator|.
+name|MRWebAppUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|webapp
@@ -152,7 +144,7 @@ name|hamlet
 operator|.
 name|Hamlet
 operator|.
-name|*
+name|DIV
 import|;
 end_import
 
@@ -171,6 +163,18 @@ operator|.
 name|view
 operator|.
 name|HtmlBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|inject
+operator|.
+name|Inject
 import|;
 end_import
 
@@ -532,9 +536,9 @@ literal|".logslink"
 argument_list|,
 name|url
 argument_list|(
-name|HttpConfig
+name|MRWebAppUtil
 operator|.
-name|getSchemePrefix
+name|getYARNWebappScheme
 argument_list|()
 argument_list|,
 name|nodeHttpAddress

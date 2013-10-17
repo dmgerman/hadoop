@@ -856,6 +856,11 @@ specifier|private
 name|long
 name|lastHealthReportTime
 decl_stmt|;
+DECL|field|nodeManagerVersion
+specifier|private
+name|String
+name|nodeManagerVersion
+decl_stmt|;
 comment|/* set of containers that have just launched */
 DECL|field|justLaunchedContainers
 specifier|private
@@ -1309,7 +1314,7 @@ name|RMNodeEvent
 argument_list|>
 name|stateMachine
 decl_stmt|;
-DECL|method|RMNodeImpl (NodeId nodeId, RMContext context, String hostName, int cmPort, int httpPort, Node node, Resource capability)
+DECL|method|RMNodeImpl (NodeId nodeId, RMContext context, String hostName, int cmPort, int httpPort, Node node, Resource capability, String nodeManagerVersion)
 specifier|public
 name|RMNodeImpl
 parameter_list|(
@@ -1333,6 +1338,9 @@ name|node
 parameter_list|,
 name|Resource
 name|capability
+parameter_list|,
+name|String
+name|nodeManagerVersion
 parameter_list|)
 block|{
 name|this
@@ -1411,6 +1419,12 @@ name|System
 operator|.
 name|currentTimeMillis
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|nodeManagerVersion
+operator|=
+name|nodeManagerVersion
 expr_stmt|;
 name|this
 operator|.
@@ -1746,6 +1760,18 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getNodeManagerVersion ()
+specifier|public
+name|String
+name|getNodeManagerVersion
+parameter_list|()
+block|{
+return|return
+name|nodeManagerVersion
+return|;
 block|}
 annotation|@
 name|Override
@@ -2485,6 +2511,19 @@ argument_list|(
 literal|0
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|rmNode
+operator|.
+name|getState
+argument_list|()
+operator|!=
+name|NodeState
+operator|.
+name|UNHEALTHY
+condition|)
+block|{
+comment|// Only add new node if old state is not UNHEALTHY
 name|rmNode
 operator|.
 name|context
@@ -2504,6 +2543,7 @@ name|rmNode
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 else|else
 block|{

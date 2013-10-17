@@ -1529,6 +1529,8 @@ argument_list|(
 name|DEFAULT_LOG4J_PROPERTIES
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|props
 operator|.
 name|load
@@ -1536,6 +1538,15 @@ argument_list|(
 name|is
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|is
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

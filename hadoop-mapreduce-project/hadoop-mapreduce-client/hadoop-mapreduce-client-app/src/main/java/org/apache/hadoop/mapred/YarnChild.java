@@ -294,6 +294,22 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|counters
+operator|.
+name|Limits
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|filecache
 operator|.
 name|DistributedCache
@@ -668,6 +684,14 @@ operator|new
 name|JobConf
 argument_list|()
 decl_stmt|;
+comment|// Initing with our JobConf allows us to avoid loading confs twice
+name|Limits
+operator|.
+name|init
+argument_list|(
+name|job
+argument_list|)
+expr_stmt|;
 name|job
 operator|.
 name|addResource

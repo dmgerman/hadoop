@@ -44,9 +44,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|util
+name|nio
 operator|.
-name|ArrayList
+name|ByteBuffer
 import|;
 end_import
 
@@ -56,7 +56,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
+name|ArrayList
 import|;
 end_import
 
@@ -290,6 +290,80 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|DataOutputBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|Credentials
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationClientProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -313,22 +387,6 @@ operator|.
 name|ApplicationConstants
 operator|.
 name|Environment
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|ApplicationClientProtocol
 import|;
 end_import
 
@@ -851,6 +909,14 @@ name|amMemory
 init|=
 literal|10
 decl_stmt|;
+comment|// Amt. of virtual core resource to request for to run the App Master
+DECL|field|amVCores
+specifier|private
+name|int
+name|amVCores
+init|=
+literal|1
+decl_stmt|;
 comment|// Application master jar file
 DECL|field|appMasterJar
 specifier|private
@@ -865,8 +931,6 @@ specifier|private
 specifier|final
 name|String
 name|appMasterMainClass
-init|=
-literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster"
 decl_stmt|;
 comment|// Shell command to be executed
 DECL|field|shellCommand
@@ -927,6 +991,14 @@ name|int
 name|containerMemory
 init|=
 literal|10
+decl_stmt|;
+comment|// Amt. of virtual cores to request for container in which shell script will be executed
+DECL|field|containerVirtualCores
+specifier|private
+name|int
+name|containerVirtualCores
+init|=
+literal|1
 decl_stmt|;
 comment|// No. of containers in which the shell script needs to be executed
 DECL|field|numContainers
@@ -1148,10 +1220,34 @@ throws|throws
 name|Exception
 block|{
 name|this
+argument_list|(
+literal|"org.apache.hadoop.yarn.applications.distributedshell.ApplicationMaster"
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|Client (String appMasterMainClass, Configuration conf)
+name|Client
+parameter_list|(
+name|String
+name|appMasterMainClass
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|this
 operator|.
 name|conf
 operator|=
 name|conf
+expr_stmt|;
+name|this
+operator|.
+name|appMasterMainClass
+operator|=
+name|appMasterMainClass
 expr_stmt|;
 name|yarnClient
 operator|=
@@ -1232,6 +1328,17 @@ name|opts
 operator|.
 name|addOption
 argument_list|(
+literal|"master_vcores"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Amount of virtual cores to be requested to run the application master"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
 literal|"jar"
 argument_list|,
 literal|true
@@ -1303,6 +1410,17 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"Amount of memory in MB to be requested to run the shell command"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Amount of virtual cores to be requested to run the shell command"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1515,6 +1633,22 @@ literal|"10"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|amVCores
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"master_vcores"
+argument_list|,
+literal|"1"
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|amMemory
@@ -1531,6 +1665,25 @@ operator|+
 literal|" Specified memory="
 operator|+
 name|amMemory
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|amVCores
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Invalid virtual cores specified for application master, exiting."
+operator|+
+literal|" Specified virtual cores="
+operator|+
+name|amVCores
 argument_list|)
 throw|;
 block|}
@@ -1781,6 +1934,22 @@ literal|"10"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|containerVirtualCores
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|"1"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|numContainers
 operator|=
 name|Integer
@@ -1803,6 +1972,10 @@ name|containerMemory
 operator|<
 literal|0
 operator|||
+name|containerVirtualCores
+operator|<
+literal|0
+operator|||
 name|numContainers
 operator|<
 literal|1
@@ -1812,11 +1985,17 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Invalid no. of containers or container memory specified, exiting."
+literal|"Invalid no. of containers or container memory/vcores specified,"
+operator|+
+literal|" exiting."
 operator|+
 literal|" Specified containerMemory="
 operator|+
 name|containerMemory
+operator|+
+literal|", containerVirtualCores="
+operator|+
+name|containerVirtualCores
 operator|+
 literal|", numContainer="
 operator|+
@@ -2147,6 +2326,55 @@ expr_stmt|;
 name|amMemory
 operator|=
 name|maxMem
+expr_stmt|;
+block|}
+name|int
+name|maxVCores
+init|=
+name|appResponse
+operator|.
+name|getMaximumResourceCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Max virtual cores capabililty of resources in this cluster "
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|amVCores
+operator|>
+name|maxVCores
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"AM virtual cores specified above max threshold of cluster. "
+operator|+
+literal|"Using max value."
+operator|+
+literal|", specified="
+operator|+
+name|amVCores
+operator|+
+literal|", max="
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
+name|amVCores
+operator|=
+name|maxVCores
 expr_stmt|;
 block|}
 comment|// set the application name
@@ -2909,6 +3137,20 @@ name|vargs
 operator|.
 name|add
 argument_list|(
+literal|"--container_vcores "
+operator|+
+name|String
+operator|.
+name|valueOf
+argument_list|(
+name|containerVirtualCores
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|vargs
+operator|.
+name|add
+argument_list|(
 literal|"--num_containers "
 operator|+
 name|String
@@ -3124,7 +3366,8 @@ name|commands
 argument_list|)
 expr_stmt|;
 comment|// Set up resource type requirements
-comment|// For now, only memory is supported so we set memory requirements
+comment|// For now, both memory and vcores are supported, so we set memory and
+comment|// vcores requirements
 name|Resource
 name|capability
 init|=
@@ -3144,6 +3387,13 @@ argument_list|(
 name|amMemory
 argument_list|)
 expr_stmt|;
+name|capability
+operator|.
+name|setVirtualCores
+argument_list|(
+name|amVCores
+argument_list|)
+expr_stmt|;
 name|appContext
 operator|.
 name|setResource
@@ -3154,8 +3404,152 @@ expr_stmt|;
 comment|// Service data is a binary blob that can be passed to the application
 comment|// Not needed in this scenario
 comment|// amContainer.setServiceData(serviceData);
-comment|// The following are not required for launching an application master
-comment|// amContainer.setContainerId(containerId);
+comment|// Setup security tokens
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+condition|)
+block|{
+name|Credentials
+name|credentials
+init|=
+operator|new
+name|Credentials
+argument_list|()
+decl_stmt|;
+name|String
+name|tokenRenewer
+init|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_PRINCIPAL
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|tokenRenewer
+operator|==
+literal|null
+operator|||
+name|tokenRenewer
+operator|.
+name|length
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Can't get Master Kerberos principal for the RM to use as renewer"
+argument_list|)
+throw|;
+block|}
+comment|// For now, only getting tokens for the default file-system.
+specifier|final
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|tokens
+index|[]
+init|=
+name|fs
+operator|.
+name|addDelegationTokens
+argument_list|(
+name|tokenRenewer
+argument_list|,
+name|credentials
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|tokens
+operator|!=
+literal|null
+condition|)
+block|{
+for|for
+control|(
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
+range|:
+name|tokens
+control|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got dt for "
+operator|+
+name|fs
+operator|.
+name|getUri
+argument_list|()
+operator|+
+literal|"; "
+operator|+
+name|token
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+name|DataOutputBuffer
+name|dob
+init|=
+operator|new
+name|DataOutputBuffer
+argument_list|()
+decl_stmt|;
+name|credentials
+operator|.
+name|writeTokenStorageToStream
+argument_list|(
+name|dob
+argument_list|)
+expr_stmt|;
+name|ByteBuffer
+name|fsTokens
+init|=
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|dob
+operator|.
+name|getData
+argument_list|()
+argument_list|,
+literal|0
+argument_list|,
+name|dob
+operator|.
+name|getLength
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|amContainer
+operator|.
+name|setTokens
+argument_list|(
+name|fsTokens
+argument_list|)
+expr_stmt|;
+block|}
 name|appContext
 operator|.
 name|setAMContainerSpec

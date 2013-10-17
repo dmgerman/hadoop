@@ -116,22 +116,34 @@ name|SecretKey
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|registerApplication ( ApplicationAttemptId applicationAttemptID)
+DECL|method|createMasterKey ( ApplicationAttemptId applicationAttemptID)
 specifier|public
 specifier|synchronized
 name|SecretKey
-name|registerApplication
+name|createMasterKey
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptID
 parameter_list|)
 block|{
-name|SecretKey
-name|key
-init|=
+return|return
 name|generateSecret
 argument_list|()
-decl_stmt|;
+return|;
+block|}
+DECL|method|registerApplication ( ApplicationAttemptId applicationAttemptID, SecretKey key)
+specifier|public
+specifier|synchronized
+name|void
+name|registerApplication
+parameter_list|(
+name|ApplicationAttemptId
+name|applicationAttemptID
+parameter_list|,
+name|SecretKey
+name|key
+parameter_list|)
+block|{
 name|this
 operator|.
 name|masterKeys
@@ -143,10 +155,8 @@ argument_list|,
 name|key
 argument_list|)
 expr_stmt|;
-return|return
-name|key
-return|;
 block|}
+comment|// Only for RM recovery
 DECL|method|registerMasterKey ( ApplicationAttemptId applicationAttemptID, byte[] keyData)
 specifier|public
 specifier|synchronized
@@ -169,11 +179,7 @@ argument_list|(
 name|keyData
 argument_list|)
 decl_stmt|;
-name|this
-operator|.
-name|masterKeys
-operator|.
-name|put
+name|registerApplication
 argument_list|(
 name|applicationAttemptID
 argument_list|,

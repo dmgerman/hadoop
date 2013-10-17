@@ -242,7 +242,7 @@ name|hadoop
 operator|.
 name|oncrpc
 operator|.
-name|RpcFrameDecoder
+name|RpcReply
 import|;
 end_import
 
@@ -256,7 +256,7 @@ name|hadoop
 operator|.
 name|oncrpc
 operator|.
-name|RpcReply
+name|RpcUtil
 import|;
 end_import
 
@@ -299,6 +299,38 @@ operator|.
 name|oncrpc
 operator|.
 name|XDR
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|CredentialsNone
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|VerifierNone
 import|;
 end_import
 
@@ -485,10 +517,8 @@ argument_list|()
 decl_stmt|;
 name|RpcCall
 operator|.
-name|write
+name|getInstance
 argument_list|(
-name|request
-argument_list|,
 literal|0x8000004c
 argument_list|,
 name|Nfs3Constant
@@ -507,42 +537,21 @@ name|CREATE
 operator|.
 name|getValue
 argument_list|()
+argument_list|,
+operator|new
+name|CredentialsNone
+argument_list|()
+argument_list|,
+operator|new
+name|VerifierNone
+argument_list|()
 argument_list|)
-expr_stmt|;
-comment|// credentials
-name|request
 operator|.
-name|writeInt
+name|write
 argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// auth null
 name|request
-operator|.
-name|writeInt
-argument_list|(
-literal|0
 argument_list|)
 expr_stmt|;
-comment|// length zero
-comment|// verifier
-name|request
-operator|.
-name|writeInt
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// auth null
-name|request
-operator|.
-name|writeInt
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// length zero
 name|SetAttr3
 name|objAttr
 init|=
@@ -618,10 +627,8 @@ argument_list|()
 decl_stmt|;
 name|RpcCall
 operator|.
-name|write
+name|getInstance
 argument_list|(
-name|request
-argument_list|,
 name|xid
 argument_list|,
 name|Nfs3Constant
@@ -636,46 +643,25 @@ name|Nfs3Constant
 operator|.
 name|NFSPROC3
 operator|.
-name|WRITE
+name|CREATE
 operator|.
 name|getValue
 argument_list|()
+argument_list|,
+operator|new
+name|CredentialsNone
+argument_list|()
+argument_list|,
+operator|new
+name|VerifierNone
+argument_list|()
 argument_list|)
-expr_stmt|;
-comment|// credentials
-name|request
 operator|.
-name|writeInt
+name|write
 argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// auth null
 name|request
-operator|.
-name|writeInt
-argument_list|(
-literal|0
 argument_list|)
 expr_stmt|;
-comment|// length zero
-comment|// verifier
-name|request
-operator|.
-name|writeInt
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// auth null
-name|request
-operator|.
-name|writeInt
-argument_list|(
-literal|0
-argument_list|)
-expr_stmt|;
-comment|// length zero
 name|WRITE3Request
 name|write1
 init|=
@@ -988,8 +974,9 @@ name|Channels
 operator|.
 name|pipeline
 argument_list|(
-operator|new
-name|RpcFrameDecoder
+name|RpcUtil
+operator|.
+name|constructRpcFrameDecoder
 argument_list|()
 argument_list|,
 operator|new
@@ -1138,6 +1125,8 @@ argument_list|(
 name|channel
 argument_list|,
 name|writeReq
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 name|writeReq
@@ -1162,6 +1151,8 @@ argument_list|(
 name|channel
 argument_list|,
 name|writeReq
+argument_list|,
+literal|2
 argument_list|)
 expr_stmt|;
 name|writeReq
@@ -1186,6 +1177,8 @@ argument_list|(
 name|channel
 argument_list|,
 name|writeReq
+argument_list|,
+literal|3
 argument_list|)
 expr_stmt|;
 comment|// TODO: convert to Junit test, and validate result automatically

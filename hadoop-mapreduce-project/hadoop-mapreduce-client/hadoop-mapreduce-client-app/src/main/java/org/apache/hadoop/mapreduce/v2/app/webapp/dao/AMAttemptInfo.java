@@ -110,9 +110,15 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|http
+name|mapreduce
 operator|.
-name|HttpConfig
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|AMInfo
 import|;
 end_import
 
@@ -128,11 +134,9 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
-name|api
+name|util
 operator|.
-name|records
-operator|.
-name|AMInfo
+name|MRWebAppUtil
 import|;
 end_import
 
@@ -379,9 +383,9 @@ name|logsLink
 operator|=
 name|join
 argument_list|(
-name|HttpConfig
+name|MRWebAppUtil
 operator|.
-name|getSchemePrefix
+name|getYARNWebappScheme
 argument_list|()
 operator|+
 name|nodeHttpAddress

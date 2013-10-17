@@ -956,7 +956,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Minimum split size per rack"
+literal|"Minimum split size per rack "
 operator|+
 name|minSizeRack
 operator|+
@@ -981,11 +981,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Minimum split size per node"
+literal|"Minimum split size per node "
 operator|+
 name|minSizeNode
 operator|+
-literal|" cannot be smaller than minimum split "
+literal|" cannot be larger than minimum split "
 operator|+
 literal|"size per rack "
 operator|+

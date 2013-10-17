@@ -776,6 +776,33 @@ name|getNMRegistrationCount
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Only containers should be killed on resync, apps should lie around. That
+comment|// way local resources for apps can be used beyond resync without
+comment|// relocalization
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|nm
+operator|.
+name|getNMContext
+argument_list|()
+operator|.
+name|getApplications
+argument_list|()
+operator|.
+name|containsKey
+argument_list|(
+name|cId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertFalse
@@ -1000,6 +1027,17 @@ name|nmLocalDir
 operator|.
 name|getAbsolutePath
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_LOG_RETAIN_SECONDS
+argument_list|,
+literal|1
 argument_list|)
 expr_stmt|;
 return|return
@@ -1600,14 +1638,6 @@ operator|<
 literal|10
 condition|)
 block|{
-name|ContainerId
-name|cId
-init|=
-name|TestNodeManagerShutdown
-operator|.
-name|createContainerId
-argument_list|()
-decl_stmt|;
 name|StartContainerRequest
 name|scRequest
 init|=

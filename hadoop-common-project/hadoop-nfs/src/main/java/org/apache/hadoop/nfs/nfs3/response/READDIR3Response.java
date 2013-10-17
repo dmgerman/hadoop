@@ -96,6 +96,36 @@ name|XDR
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|oncrpc
+operator|.
+name|security
+operator|.
+name|Verifier
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * READDIR3 Response  */
 end_comment
@@ -192,7 +222,10 @@ return|return
 name|fileId
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
@@ -264,6 +297,23 @@ name|eof
 operator|=
 name|eof
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getEntries ()
+specifier|public
+name|List
+argument_list|<
+name|Entry3
+argument_list|>
+name|getEntries
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|entries
+return|;
 block|}
 block|}
 DECL|method|READDIR3Response (int status)
@@ -382,25 +432,30 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|send (XDR xdr, int xid)
+DECL|method|writeHeaderAndResponse (XDR xdr, int xid, Verifier verifier)
 specifier|public
 name|XDR
-name|send
+name|writeHeaderAndResponse
 parameter_list|(
 name|XDR
 name|xdr
 parameter_list|,
 name|int
 name|xid
+parameter_list|,
+name|Verifier
+name|verifier
 parameter_list|)
 block|{
 name|super
 operator|.
-name|send
+name|writeHeaderAndResponse
 argument_list|(
 name|xdr
 argument_list|,
 name|xid
+argument_list|,
+name|verifier
 argument_list|)
 expr_stmt|;
 name|xdr

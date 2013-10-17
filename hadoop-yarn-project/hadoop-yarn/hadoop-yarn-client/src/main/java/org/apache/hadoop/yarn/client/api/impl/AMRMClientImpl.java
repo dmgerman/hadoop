@@ -344,6 +344,24 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|FinishApplicationMasterResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|RegisterApplicationMasterRequest
 import|;
 end_import
@@ -1301,9 +1319,12 @@ name|checkArgument
 argument_list|(
 name|appHostPort
 operator|>=
-literal|0
+operator|-
+literal|1
 argument_list|,
-literal|"Port number of the host should not be negative"
+literal|"Port number of the host"
+operator|+
+literal|" should be any integers larger than or equal to -1"
 argument_list|)
 expr_stmt|;
 comment|// do this only once ???
@@ -1836,13 +1857,65 @@ argument_list|,
 name|appTrackingUrl
 argument_list|)
 decl_stmt|;
+try|try
+block|{
+while|while
+condition|(
+literal|true
+condition|)
+block|{
+name|FinishApplicationMasterResponse
+name|response
+init|=
 name|rmClient
 operator|.
 name|finishApplicationMaster
 argument_list|(
 name|request
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|response
+operator|.
+name|getIsUnregistered
+argument_list|()
+condition|)
+block|{
+break|break;
+block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Waiting for application to be successfully unregistered."
+argument_list|)
 expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|100
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Interrupted while waiting for application"
+operator|+
+literal|" to be removed from RMStateStore"
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 annotation|@
 name|Override

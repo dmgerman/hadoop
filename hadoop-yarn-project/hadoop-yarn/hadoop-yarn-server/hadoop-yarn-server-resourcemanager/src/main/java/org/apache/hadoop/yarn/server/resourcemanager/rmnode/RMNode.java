@@ -138,26 +138,6 @@ name|NodeHeartbeatResponse
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|NodeHealthStatus
-import|;
-end_import
-
 begin_comment
 comment|/**  * Node managers information on available resources   * and other static information.  *  */
 end_comment
@@ -222,6 +202,13 @@ DECL|method|getLastHealthReportTime ()
 specifier|public
 name|long
 name|getLastHealthReportTime
+parameter_list|()
+function_decl|;
+comment|/**    * the node manager version of the node received as part of the    * registration with the resource manager    */
+DECL|method|getNodeManagerVersion ()
+specifier|public
+name|String
+name|getNodeManagerVersion
 parameter_list|()
 function_decl|;
 comment|/**    * the total available resource.    * @return the total available resource.    */

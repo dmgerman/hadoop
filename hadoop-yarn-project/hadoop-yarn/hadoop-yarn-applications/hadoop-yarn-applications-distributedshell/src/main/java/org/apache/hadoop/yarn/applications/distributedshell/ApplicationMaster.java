@@ -106,6 +106,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -165,6 +175,20 @@ operator|.
 name|atomic
 operator|.
 name|AtomicInteger
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -316,11 +340,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|io
 operator|.
-name|api
-operator|.
-name|ContainerManagementProtocol
+name|DataOutputBuffer
 import|;
 end_import
 
@@ -332,11 +354,53 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|net
 operator|.
-name|api
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
 operator|.
-name|ApplicationMasterProtocol
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|Credentials
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|token
+operator|.
+name|Token
 import|;
 end_import
 
@@ -371,6 +435,38 @@ operator|.
 name|ApplicationConstants
 operator|.
 name|Environment
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ApplicationMasterProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ContainerManagementProtocol
 import|;
 end_import
 
@@ -858,6 +954,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|security
+operator|.
+name|AMRMTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|ConverterUtils
@@ -881,7 +993,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
+comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed. However, in the distributedshell, trackingurl  * and appMasterHost:appMasterRpcPort are not supported.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
 end_comment
 
 begin_class
@@ -926,10 +1038,10 @@ name|SuppressWarnings
 argument_list|(
 literal|"rawtypes"
 argument_list|)
-DECL|field|resourceManager
+DECL|field|amRMClient
 specifier|private
 name|AMRMClientAsync
-name|resourceManager
+name|amRMClient
 decl_stmt|;
 comment|// Handle to communicate with the Node Manager
 DECL|field|nmClientAsync
@@ -965,7 +1077,8 @@ specifier|private
 name|int
 name|appMasterRpcPort
 init|=
-literal|0
+operator|-
+literal|1
 decl_stmt|;
 comment|// Tracking url to which app master publishes info for clients to monitor
 DECL|field|appMasterTrackingUrl
@@ -991,6 +1104,14 @@ name|int
 name|containerMemory
 init|=
 literal|10
+decl_stmt|;
+comment|// VirtualCores to request for the container on which the shell command will run
+DECL|field|containerVirtualCores
+specifier|private
+name|int
+name|containerVirtualCores
+init|=
+literal|1
 decl_stmt|;
 comment|// Priority of the request
 DECL|field|requestPriority
@@ -1122,6 +1243,11 @@ specifier|private
 specifier|volatile
 name|boolean
 name|success
+decl_stmt|;
+DECL|field|allTokens
+specifier|private
+name|ByteBuffer
+name|allTokens
 decl_stmt|;
 comment|// Launch threads
 DECL|field|launchThreads
@@ -1476,10 +1602,8 @@ DECL|method|ApplicationMaster ()
 specifier|public
 name|ApplicationMaster
 parameter_list|()
-throws|throws
-name|Exception
 block|{
-comment|// Set up the configuration and RPC
+comment|// Set up the configuration
 name|conf
 operator|=
 operator|new
@@ -1573,6 +1697,17 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"Amount of memory in MB to be requested to run the shell command"
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|true
+argument_list|,
+literal|"Amount of virtual cores to be requested to run the shell command"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2250,6 +2385,22 @@ literal|"10"
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|containerVirtualCores
+operator|=
+name|Integer
+operator|.
+name|parseInt
+argument_list|(
+name|cliParser
+operator|.
+name|getOptionValue
+argument_list|(
+literal|"container_vcores"
+argument_list|,
+literal|"1"
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|numTotalContainers
 operator|=
 name|Integer
@@ -2348,6 +2499,109 @@ argument_list|(
 literal|"Starting ApplicationMaster"
 argument_list|)
 expr_stmt|;
+name|Credentials
+name|credentials
+init|=
+name|UserGroupInformation
+operator|.
+name|getCurrentUser
+argument_list|()
+operator|.
+name|getCredentials
+argument_list|()
+decl_stmt|;
+name|DataOutputBuffer
+name|dob
+init|=
+operator|new
+name|DataOutputBuffer
+argument_list|()
+decl_stmt|;
+name|credentials
+operator|.
+name|writeTokenStorageToStream
+argument_list|(
+name|dob
+argument_list|)
+expr_stmt|;
+comment|// Now remove the AM->RM token so that containers cannot access it.
+name|Iterator
+argument_list|<
+name|Token
+argument_list|<
+name|?
+argument_list|>
+argument_list|>
+name|iter
+init|=
+name|credentials
+operator|.
+name|getAllTokens
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|iter
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|Token
+argument_list|<
+name|?
+argument_list|>
+name|token
+init|=
+name|iter
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|token
+operator|.
+name|getKind
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|AMRMTokenIdentifier
+operator|.
+name|KIND_NAME
+argument_list|)
+condition|)
+block|{
+name|iter
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+name|allTokens
+operator|=
+name|ByteBuffer
+operator|.
+name|wrap
+argument_list|(
+name|dob
+operator|.
+name|getData
+argument_list|()
+argument_list|,
+literal|0
+argument_list|,
+name|dob
+operator|.
+name|getLength
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|AMRMClientAsync
 operator|.
 name|CallbackHandler
@@ -2357,7 +2611,7 @@ operator|new
 name|RMCallbackHandler
 argument_list|()
 decl_stmt|;
-name|resourceManager
+name|amRMClient
 operator|=
 name|AMRMClientAsync
 operator|.
@@ -2368,22 +2622,21 @@ argument_list|,
 name|allocListener
 argument_list|)
 expr_stmt|;
-name|resourceManager
+name|amRMClient
 operator|.
 name|init
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|resourceManager
+name|amRMClient
 operator|.
 name|start
 argument_list|()
 expr_stmt|;
 name|containerListener
 operator|=
-operator|new
-name|NMCallbackHandler
+name|createNMCallbackHandler
 argument_list|()
 expr_stmt|;
 name|nmClientAsync
@@ -2413,10 +2666,17 @@ comment|// TODO use the rpc port info to register with the RM for the client to
 comment|// send requests to this app master
 comment|// Register self with ResourceManager
 comment|// This will start heartbeating to the RM
+name|appMasterHostname
+operator|=
+name|NetUtils
+operator|.
+name|getHostname
+argument_list|()
+expr_stmt|;
 name|RegisterApplicationMasterResponse
 name|response
 init|=
-name|resourceManager
+name|amRMClient
 operator|.
 name|registerApplicationMaster
 argument_list|(
@@ -2449,6 +2709,26 @@ operator|+
 name|maxMem
 argument_list|)
 expr_stmt|;
+name|int
+name|maxVCores
+init|=
+name|response
+operator|.
+name|getMaximumResourceCapability
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Max vcores capabililty of resources in this cluster "
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
 comment|// A resource ask cannot exceed the max.
 if|if
 condition|(
@@ -2479,6 +2759,35 @@ operator|=
 name|maxMem
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|containerVirtualCores
+operator|>
+name|maxVCores
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Container virtual cores specified above max threshold of cluster."
+operator|+
+literal|" Using max value."
+operator|+
+literal|", specified="
+operator|+
+name|containerVirtualCores
+operator|+
+literal|", max="
+operator|+
+name|maxVCores
+argument_list|)
+expr_stmt|;
+name|containerVirtualCores
+operator|=
+name|maxVCores
+expr_stmt|;
+block|}
 comment|// Setup ask for containers from RM
 comment|// Send request for containers to RM
 comment|// Until we get our fully allocated quota, we keep on polling RM for
@@ -2506,7 +2815,7 @@ init|=
 name|setupContainerAskForRM
 argument_list|()
 decl_stmt|;
-name|resourceManager
+name|amRMClient
 operator|.
 name|addContainerRequest
 argument_list|(
@@ -2525,6 +2834,15 @@ while|while
 condition|(
 operator|!
 name|done
+operator|&&
+operator|(
+name|numCompletedContainers
+operator|.
+name|get
+argument_list|()
+operator|!=
+name|numTotalContainers
+operator|)
 condition|)
 block|{
 try|try
@@ -2549,6 +2867,21 @@ argument_list|()
 expr_stmt|;
 return|return
 name|success
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createNMCallbackHandler ()
+name|NMCallbackHandler
+name|createNMCallbackHandler
+parameter_list|()
+block|{
+return|return
+operator|new
+name|NMCallbackHandler
+argument_list|(
+name|this
+argument_list|)
 return|;
 block|}
 DECL|method|finish ()
@@ -2705,7 +3038,7 @@ expr_stmt|;
 block|}
 try|try
 block|{
-name|resourceManager
+name|amRMClient
 operator|.
 name|unregisterApplicationMaster
 argument_list|(
@@ -2749,11 +3082,7 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
-name|done
-operator|=
-literal|true
-expr_stmt|;
-name|resourceManager
+name|amRMClient
 operator|.
 name|stop
 argument_list|()
@@ -2981,7 +3310,7 @@ init|=
 name|setupContainerAskForRM
 argument_list|()
 decl_stmt|;
-name|resourceManager
+name|amRMClient
 operator|.
 name|addContainerRequest
 argument_list|(
@@ -3099,6 +3428,16 @@ argument_list|()
 operator|.
 name|getMemory
 argument_list|()
+operator|+
+literal|", containerResourceVirtualCores"
+operator|+
+name|allocatedContainer
+operator|.
+name|getResource
+argument_list|()
+operator|.
+name|getVirtualCores
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// + ", containerToken"
@@ -3208,15 +3547,17 @@ name|done
 operator|=
 literal|true
 expr_stmt|;
-name|resourceManager
+name|amRMClient
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|class|NMCallbackHandler
-specifier|private
+specifier|static
 class|class
 name|NMCallbackHandler
 implements|implements
@@ -3243,6 +3584,27 @@ name|Container
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|applicationMaster
+specifier|private
+specifier|final
+name|ApplicationMaster
+name|applicationMaster
+decl_stmt|;
+DECL|method|NMCallbackHandler (ApplicationMaster applicationMaster)
+specifier|public
+name|NMCallbackHandler
+parameter_list|(
+name|ApplicationMaster
+name|applicationMaster
+parameter_list|)
+block|{
+name|this
+operator|.
+name|applicationMaster
+operator|=
+name|applicationMaster
+expr_stmt|;
+block|}
 DECL|method|addContainer (ContainerId containerId, Container container)
 specifier|public
 name|void
@@ -3393,6 +3755,8 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|applicationMaster
+operator|.
 name|nmClientAsync
 operator|.
 name|getContainerStatusAsync
@@ -3436,6 +3800,20 @@ name|remove
 argument_list|(
 name|containerId
 argument_list|)
+expr_stmt|;
+name|applicationMaster
+operator|.
+name|numCompletedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+name|applicationMaster
+operator|.
+name|numFailedContainers
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
@@ -3862,6 +4240,22 @@ argument_list|(
 name|commands
 argument_list|)
 expr_stmt|;
+comment|// Set up tokens for the container too. Today, for normal shell commands,
+comment|// the container in distribute-shell doesn't need any tokens. We are
+comment|// populating them mainly for NodeManagers to be able to download any
+comment|// files in the distributed file-system. The tokens are otherwise also
+comment|// useful in cases, for e.g., when one is running a "hadoop dfs" command
+comment|// inside the distributed shell.
+name|ctx
+operator|.
+name|setTokens
+argument_list|(
+name|allTokens
+operator|.
+name|duplicate
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|containerListener
 operator|.
 name|addContainer
@@ -3885,7 +4279,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @param numContainers Containers to ask for from RM    * @return the setup ResourceRequest to be sent to RM    */
+comment|/**    * Setup the request that will be sent to the RM for the container ask.    *    * @return the setup ResourceRequest to be sent to RM    */
 DECL|method|setupContainerAskForRM ()
 specifier|private
 name|ContainerRequest
@@ -3916,7 +4310,7 @@ name|requestPriority
 argument_list|)
 expr_stmt|;
 comment|// Set up resource type requirements
-comment|// For now, only memory is supported so we set memory requirements
+comment|// For now, memory and CPU are supported so we set memory and cpu requirements
 name|Resource
 name|capability
 init|=
@@ -3934,6 +4328,13 @@ operator|.
 name|setMemory
 argument_list|(
 name|containerMemory
+argument_list|)
+expr_stmt|;
+name|capability
+operator|.
+name|setVirtualCores
+argument_list|(
+name|containerVirtualCores
 argument_list|)
 expr_stmt|;
 name|ContainerRequest

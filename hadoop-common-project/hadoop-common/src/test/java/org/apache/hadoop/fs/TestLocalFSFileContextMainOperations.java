@@ -203,6 +203,18 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|Override
+DECL|method|listCorruptedBlocksSupported ()
+specifier|protected
+name|boolean
+name|listCorruptedBlocksSupported
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
+annotation|@
 name|Test
 DECL|method|testDefaultFilePermission ()
 specifier|public

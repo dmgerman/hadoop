@@ -642,8 +642,8 @@ name|incrementAndGet
 argument_list|()
 return|;
 block|}
-comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *     * @param requests resources to be acquired    * @param blacklistAdditions resources to be added to the blacklist    * @param blacklistRemovals resources to be removed from the blacklist    */
-DECL|method|updateResourceRequests ( List<ResourceRequest> requests, List<String> blacklistAdditions, List<String> blacklistRemovals)
+comment|/**    * The ApplicationMaster is updating resource requirements for the    * application, by asking for more resources and releasing resources acquired    * by the application.    *    * @param requests resources to be acquired    */
+DECL|method|updateResourceRequests ( List<ResourceRequest> requests)
 specifier|synchronized
 specifier|public
 name|void
@@ -654,18 +654,6 @@ argument_list|<
 name|ResourceRequest
 argument_list|>
 name|requests
-parameter_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|blacklistAdditions
-parameter_list|,
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|blacklistRemovals
 parameter_list|)
 block|{
 name|QueueMetrics
@@ -963,9 +951,27 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|//
-comment|// Update blacklist
-comment|//
+block|}
+comment|/**    * The ApplicationMaster is updating the blacklist    *    * @param blacklistAdditions resources to be added to the blacklist    * @param blacklistRemovals resources to be removed from the blacklist    */
+DECL|method|updateBlacklist ( List<String> blacklistAdditions, List<String> blacklistRemovals)
+specifier|synchronized
+specifier|public
+name|void
+name|updateBlacklist
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistAdditions
+parameter_list|,
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|blacklistRemovals
+parameter_list|)
+block|{
 comment|// Add to blacklist
 if|if
 condition|(

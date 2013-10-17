@@ -549,6 +549,15 @@ argument_list|,
 literal|"target/tmp"
 argument_list|)
 expr_stmt|;
+name|configuration
+operator|.
+name|set
+argument_list|(
+literal|"dfs.namenode.fs-limits.min-block-size"
+argument_list|,
+literal|"0"
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|debug

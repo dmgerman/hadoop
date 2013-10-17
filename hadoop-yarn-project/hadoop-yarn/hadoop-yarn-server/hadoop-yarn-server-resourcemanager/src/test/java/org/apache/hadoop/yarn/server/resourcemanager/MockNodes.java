@@ -958,6 +958,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getNodeManagerVersion ()
+specifier|public
+name|String
+name|getNodeManagerVersion
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|pullContainerUpdates ()
 specifier|public
 name|List

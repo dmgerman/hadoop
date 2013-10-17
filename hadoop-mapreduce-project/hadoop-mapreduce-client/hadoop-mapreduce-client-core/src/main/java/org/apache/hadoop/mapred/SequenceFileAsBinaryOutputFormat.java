@@ -261,7 +261,31 @@ operator|.
 name|SequenceFileAsBinaryOutputFormat
 operator|.
 name|WritableValueBytes
-block|{   }
+block|{
+DECL|method|WritableValueBytes ()
+specifier|public
+name|WritableValueBytes
+parameter_list|()
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|WritableValueBytes (BytesWritable value)
+specifier|public
+name|WritableValueBytes
+parameter_list|(
+name|BytesWritable
+name|value
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|value
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Set the key class for the {@link SequenceFile}    *<p>This allows the user to specify the key class to be different     * from the actual class ({@link BytesWritable}) used for writing</p>    *     * @param conf the {@link JobConf} to modify    * @param theClass the SequenceFile output key class.    */
 DECL|method|setSequenceFileOutputKeyClass (JobConf conf, Class<?> theClass)
 specifier|static

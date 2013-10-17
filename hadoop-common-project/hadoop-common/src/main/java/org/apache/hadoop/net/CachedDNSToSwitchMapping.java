@@ -551,6 +551,37 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|reloadCachedMappings (List<String> names)
+specifier|public
+name|void
+name|reloadCachedMappings
+parameter_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|names
+parameter_list|)
+block|{
+for|for
+control|(
+name|String
+name|name
+range|:
+name|names
+control|)
+block|{
+name|cache
+operator|.
+name|remove
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 end_class
 
