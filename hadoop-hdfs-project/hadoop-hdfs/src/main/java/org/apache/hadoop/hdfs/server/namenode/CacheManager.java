@@ -4293,7 +4293,7 @@ decl_stmt|;
 if|if
 condition|(
 name|pool
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
