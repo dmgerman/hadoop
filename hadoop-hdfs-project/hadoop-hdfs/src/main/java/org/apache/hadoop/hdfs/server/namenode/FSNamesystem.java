@@ -32354,7 +32354,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"removePathBasedCacheDescriptors"
+literal|"removePathBasedCacheDescriptor"
 argument_list|,
 literal|null
 argument_list|,

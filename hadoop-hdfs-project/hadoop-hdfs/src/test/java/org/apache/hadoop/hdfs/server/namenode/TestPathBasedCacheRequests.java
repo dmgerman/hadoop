@@ -2200,15 +2200,21 @@ argument_list|(
 name|alpha
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertFalse
 argument_list|(
-literal|"Expected to get the same descriptor when re-adding"
+literal|"Expected to get unique descriptors when re-adding an "
 operator|+
-literal|"an existing PathBasedCacheDirective"
+literal|"existing PathBasedCacheDirective"
 argument_list|,
 name|alphaD
-argument_list|,
+operator|.
+name|getEntryId
+argument_list|()
+operator|==
 name|alphaD2
+operator|.
+name|getEntryId
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|PathBasedCacheDescriptor
@@ -2485,6 +2491,8 @@ name|iter
 argument_list|,
 name|alphaD
 argument_list|,
+name|alphaD2
+argument_list|,
 name|betaD
 argument_list|,
 name|deltaD
@@ -2529,6 +2537,8 @@ argument_list|(
 name|iter
 argument_list|,
 name|alphaD
+argument_list|,
+name|alphaD2
 argument_list|,
 name|deltaD
 argument_list|,
@@ -2686,6 +2696,13 @@ operator|.
 name|removePathBasedCacheDescriptor
 argument_list|(
 name|alphaD
+argument_list|)
+expr_stmt|;
+name|dfs
+operator|.
+name|removePathBasedCacheDescriptor
+argument_list|(
+name|alphaD2
 argument_list|)
 expr_stmt|;
 name|dfs
@@ -4050,6 +4067,14 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|Assume
+operator|.
+name|assumeTrue
+argument_list|(
+name|canTestDatanodeCaching
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|HdfsConfiguration
 name|conf
 init|=
