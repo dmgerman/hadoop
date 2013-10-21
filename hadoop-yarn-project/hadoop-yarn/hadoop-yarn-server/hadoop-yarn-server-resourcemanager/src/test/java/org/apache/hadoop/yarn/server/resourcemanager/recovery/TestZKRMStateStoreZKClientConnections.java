@@ -124,7 +124,7 @@ name|resourcemanager
 operator|.
 name|recovery
 operator|.
-name|TestRMStateStore
+name|RMStateStoreTestBase
 operator|.
 name|TestDispatcher
 import|;
