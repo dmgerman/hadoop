@@ -3342,9 +3342,9 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|verifyBlockPlacement (String srcPath, LocatedBlock lBlk, int minRacks)
+DECL|method|verifyBlockPlacement (String srcPath, LocatedBlock lBlk, int numberOfReplicas)
 specifier|public
-name|int
+name|BlockPlacementStatus
 name|verifyBlockPlacement
 parameter_list|(
 name|String
@@ -3354,7 +3354,7 @@ name|LocatedBlock
 name|lBlk
 parameter_list|,
 name|int
-name|minRacks
+name|numberOfReplicas
 parameter_list|)
 block|{
 name|DatanodeInfo
@@ -3394,19 +3394,33 @@ literal|1
 condition|)
 comment|// only one rack
 return|return
-literal|0
-return|;
-name|minRacks
-operator|=
+operator|new
+name|BlockPlacementStatusDefault
+argument_list|(
 name|Math
 operator|.
 name|min
 argument_list|(
-name|minRacks
+name|numRacks
+argument_list|,
+name|numberOfReplicas
+argument_list|)
 argument_list|,
 name|numRacks
 argument_list|)
-expr_stmt|;
+return|;
+name|int
+name|minRacks
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+literal|2
+argument_list|,
+name|numberOfReplicas
+argument_list|)
+decl_stmt|;
 comment|// 1. Check that all locations are different.
 comment|// 2. Count locations on different racks.
 name|Set
@@ -3440,12 +3454,16 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|minRacks
-operator|-
+operator|new
+name|BlockPlacementStatusDefault
+argument_list|(
 name|racks
 operator|.
 name|size
 argument_list|()
+argument_list|,
+name|minRacks
+argument_list|)
 return|;
 block|}
 annotation|@
