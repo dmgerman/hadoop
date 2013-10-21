@@ -34,6 +34,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -75,6 +85,22 @@ operator|.
 name|security
 operator|.
 name|UserGroupInformation
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|authorize
+operator|.
+name|AccessControlList
 import|;
 end_import
 
@@ -155,6 +181,18 @@ comment|/**    * Get the queue metrics    * @return the queue metrics    */
 DECL|method|getMetrics ()
 name|QueueMetrics
 name|getMetrics
+parameter_list|()
+function_decl|;
+comment|/**    * Get ACLs for the queue.    * @return ACLs for the queue    */
+DECL|method|getQueueAcls ()
+specifier|public
+name|Map
+argument_list|<
+name|QueueACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getQueueAcls
 parameter_list|()
 function_decl|;
 comment|/**    * Get queue information    * @param includeChildQueues include child queues?    * @param recursive recursively get child queue information?    * @return queue information    */

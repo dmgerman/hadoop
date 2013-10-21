@@ -1694,6 +1694,33 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getQueueAcls ()
+specifier|public
+specifier|synchronized
+name|Map
+argument_list|<
+name|QueueACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+name|getQueueAcls
+parameter_list|()
+block|{
+return|return
+operator|new
+name|HashMap
+argument_list|<
+name|QueueACL
+argument_list|,
+name|AccessControlList
+argument_list|>
+argument_list|(
+name|acls
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getQueueInfo ( boolean includeChildQueues, boolean recursive)
 specifier|public
 specifier|synchronized
