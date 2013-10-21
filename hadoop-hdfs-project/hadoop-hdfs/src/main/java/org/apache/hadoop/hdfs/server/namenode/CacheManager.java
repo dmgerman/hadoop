@@ -3095,7 +3095,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|processCacheReport (final DatanodeID datanodeID, final BlockListAsLongs report)
+DECL|method|processCacheReport (final DatanodeID datanodeID, final List<Long> blockIds)
 specifier|public
 specifier|final
 name|void
@@ -3106,8 +3106,11 @@ name|DatanodeID
 name|datanodeID
 parameter_list|,
 specifier|final
-name|BlockListAsLongs
-name|report
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|blockIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -3134,9 +3137,9 @@ literal|" = false. "
 operator|+
 literal|"number of blocks: "
 operator|+
-name|report
+name|blockIds
 operator|.
-name|getNumberOfBlocks
+name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3202,7 +3205,7 @@ name|processCacheReportImpl
 argument_list|(
 name|datanode
 argument_list|,
-name|report
+name|blockIds
 argument_list|)
 expr_stmt|;
 block|}
@@ -3263,9 +3266,9 @@ name|datanodeID
 operator|+
 literal|", blocks: "
 operator|+
-name|report
+name|blockIds
 operator|.
-name|getNumberOfBlocks
+name|size
 argument_list|()
 operator|+
 literal|", processing time: "
@@ -3280,7 +3283,7 @@ literal|" msecs"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|processCacheReportImpl (final DatanodeDescriptor datanode, final BlockListAsLongs report)
+DECL|method|processCacheReportImpl (final DatanodeDescriptor datanode, final List<Long> blockIds)
 specifier|private
 name|void
 name|processCacheReportImpl
@@ -3290,8 +3293,11 @@ name|DatanodeDescriptor
 name|datanode
 parameter_list|,
 specifier|final
-name|BlockListAsLongs
-name|report
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|blockIds
 parameter_list|)
 block|{
 name|CachedBlocksList
@@ -3307,58 +3313,38 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|BlockReportIterator
-name|itBR
+for|for
+control|(
+name|Iterator
+argument_list|<
+name|Long
+argument_list|>
+name|iter
 init|=
-name|report
+name|blockIds
 operator|.
-name|getBlockReportIterator
+name|iterator
 argument_list|()
-decl_stmt|;
-while|while
-condition|(
-name|itBR
+init|;
+name|iter
 operator|.
 name|hasNext
 argument_list|()
-condition|)
+condition|;
+control|)
 block|{
 name|Block
 name|block
 init|=
-name|itBR
+operator|new
+name|Block
+argument_list|(
+name|iter
 operator|.
 name|next
 argument_list|()
-decl_stmt|;
-name|ReplicaState
-name|iState
-init|=
-name|itBR
-operator|.
-name|getCurrentReplicaState
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|iState
-operator|!=
-name|ReplicaState
-operator|.
-name|FINALIZED
-condition|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Cached block report contained unfinalized block "
-operator|+
-name|block
 argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
+decl_stmt|;
 name|BlockInfo
 name|blockInfo
 init|=
@@ -3397,6 +3383,38 @@ operator|+
 name|blockInfo
 operator|.
 name|getGenerationStamp
+argument_list|()
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
+if|if
+condition|(
+operator|!
+name|blockInfo
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Ignoring block id "
+operator|+
+name|block
+operator|.
+name|getBlockId
+argument_list|()
+operator|+
+literal|", because "
+operator|+
+literal|"it is in not complete yet.  It is in state "
+operator|+
+name|blockInfo
+operator|.
+name|getBlockUCState
 argument_list|()
 argument_list|)
 expr_stmt|;

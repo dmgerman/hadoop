@@ -1328,24 +1328,6 @@ name|server
 operator|.
 name|protocol
 operator|.
-name|CacheReport
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|protocol
-operator|.
 name|DatanodeCommand
 import|;
 end_import
@@ -5917,7 +5899,7 @@ block|}
 annotation|@
 name|Override
 comment|// DatanodeProtocol
-DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, CacheReport[] cacheReport, int xmitsInProgress, int xceiverCount, int failedVolumes)
+DECL|method|sendHeartbeat (DatanodeRegistration nodeReg, StorageReport[] report, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -5929,9 +5911,11 @@ name|StorageReport
 index|[]
 name|report
 parameter_list|,
-name|CacheReport
-index|[]
-name|cacheReport
+name|long
+name|dnCacheCapacity
+parameter_list|,
+name|long
+name|dnCacheUsed
 parameter_list|,
 name|int
 name|xmitsInProgress
@@ -5989,21 +5973,9 @@ operator|.
 name|getBlockPoolUsed
 argument_list|()
 argument_list|,
-name|cacheReport
-index|[
-literal|0
-index|]
-operator|.
-name|getCapacity
-argument_list|()
+name|dnCacheCapacity
 argument_list|,
-name|cacheReport
-index|[
-literal|0
-index|]
-operator|.
-name|getUsed
-argument_list|()
+name|dnCacheUsed
 argument_list|,
 name|xceiverCount
 argument_list|,
@@ -6126,7 +6098,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cacheReport (DatanodeRegistration nodeReg, String poolId, long[] blocks)
+DECL|method|cacheReport (DatanodeRegistration nodeReg, String poolId, List<Long> blockIds)
 specifier|public
 name|DatanodeCommand
 name|cacheReport
@@ -6137,9 +6109,11 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|long
-index|[]
-name|blocks
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|blockIds
 parameter_list|)
 throws|throws
 name|IOException
@@ -6149,15 +6123,6 @@ argument_list|(
 name|nodeReg
 argument_list|)
 expr_stmt|;
-name|BlockListAsLongs
-name|blist
-init|=
-operator|new
-name|BlockListAsLongs
-argument_list|(
-name|blocks
-argument_list|)
-decl_stmt|;
 if|if
 condition|(
 name|blockStateChangeLog
@@ -6178,9 +6143,9 @@ name|nodeReg
 operator|+
 literal|" "
 operator|+
-name|blist
+name|blockIds
 operator|.
-name|getNumberOfBlocks
+name|size
 argument_list|()
 operator|+
 literal|" blocks"
@@ -6196,7 +6161,7 @@ name|processCacheReport
 argument_list|(
 name|nodeReg
 argument_list|,
-name|blist
+name|blockIds
 argument_list|)
 expr_stmt|;
 return|return

@@ -1973,16 +1973,16 @@ comment|/**    * Returns the total cache used by the datanode (in bytes).    */
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getCacheUsed ()
+DECL|method|getDnCacheUsed ()
 specifier|public
 name|long
-name|getCacheUsed
+name|getDnCacheUsed
 parameter_list|()
 block|{
 return|return
 name|cacheManager
 operator|.
-name|getCacheUsed
+name|getDnCacheUsed
 argument_list|()
 return|;
 block|}
@@ -1990,33 +1990,16 @@ comment|/**    * Returns the total cache capacity of the datanode (in bytes).   
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getCacheCapacity ()
+DECL|method|getDnCacheCapacity ()
 specifier|public
 name|long
-name|getCacheCapacity
+name|getDnCacheCapacity
 parameter_list|()
 block|{
 return|return
 name|cacheManager
 operator|.
-name|getCacheCapacity
-argument_list|()
-return|;
-block|}
-comment|/**    * Returns the total amount of cache remaining (in bytes).    */
-annotation|@
-name|Override
-comment|// FSDatasetMBean
-DECL|method|getCacheRemaining ()
-specifier|public
-name|long
-name|getCacheRemaining
-parameter_list|()
-block|{
-return|return
-name|cacheManager
-operator|.
-name|getCacheRemaining
+name|getDnCacheCapacity
 argument_list|()
 return|;
 block|}
@@ -5551,7 +5534,10 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|getCacheReport (String bpid)
 specifier|public
-name|BlockListAsLongs
+name|List
+argument_list|<
+name|Long
+argument_list|>
 name|getCacheReport
 parameter_list|(
 name|String
@@ -5559,17 +5545,11 @@ name|bpid
 parameter_list|)
 block|{
 return|return
-operator|new
-name|BlockListAsLongs
-argument_list|(
 name|cacheManager
 operator|.
 name|getCachedBlocks
 argument_list|(
 name|bpid
-argument_list|)
-argument_list|,
-literal|null
 argument_list|)
 return|;
 block|}

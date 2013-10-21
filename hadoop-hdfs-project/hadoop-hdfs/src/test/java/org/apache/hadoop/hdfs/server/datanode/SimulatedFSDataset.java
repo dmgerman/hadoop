@@ -96,6 +96,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|LinkedList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -2397,7 +2407,10 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|getCacheReport (String bpid)
 specifier|public
-name|BlockListAsLongs
+name|List
+argument_list|<
+name|Long
+argument_list|>
 name|getCacheReport
 parameter_list|(
 name|String
@@ -2406,7 +2419,10 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|BlockListAsLongs
+name|LinkedList
+argument_list|<
+name|Long
+argument_list|>
 argument_list|()
 return|;
 block|}
@@ -2500,10 +2516,10 @@ block|}
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getCacheUsed ()
+DECL|method|getDnCacheUsed ()
 specifier|public
 name|long
-name|getCacheUsed
+name|getDnCacheUsed
 parameter_list|()
 block|{
 return|return
@@ -2513,23 +2529,10 @@ block|}
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getCacheCapacity ()
+DECL|method|getDnCacheCapacity ()
 specifier|public
 name|long
-name|getCacheCapacity
-parameter_list|()
-block|{
-return|return
-literal|0l
-return|;
-block|}
-annotation|@
-name|Override
-comment|// FSDatasetMBean
-DECL|method|getCacheRemaining ()
-specifier|public
-name|long
-name|getCacheRemaining
+name|getDnCacheCapacity
 parameter_list|()
 block|{
 return|return

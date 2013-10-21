@@ -114,24 +114,17 @@ name|getNumFailedVolumes
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the total cache used by the datanode (in bytes).    */
-DECL|method|getCacheUsed ()
+DECL|method|getDnCacheUsed ()
 specifier|public
 name|long
-name|getCacheUsed
+name|getDnCacheUsed
 parameter_list|()
 function_decl|;
 comment|/**    * Returns the total cache capacity of the datanode (in bytes).    */
-DECL|method|getCacheCapacity ()
+DECL|method|getDnCacheCapacity ()
 specifier|public
 name|long
-name|getCacheCapacity
-parameter_list|()
-function_decl|;
-comment|/**    * Returns the total amount of cache remaining (in bytes).    */
-DECL|method|getCacheRemaining ()
-specifier|public
-name|long
-name|getCacheRemaining
+name|getDnCacheCapacity
 parameter_list|()
 function_decl|;
 block|}

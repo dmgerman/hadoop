@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -343,7 +353,7 @@ function_decl|;
 comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
 annotation|@
 name|Idempotent
-DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, CacheReport[] cacheReports, int xmitsInProgress, int xceiverCount, int failedVolumes)
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -355,9 +365,11 @@ name|StorageReport
 index|[]
 name|reports
 parameter_list|,
-name|CacheReport
-index|[]
-name|cacheReports
+name|long
+name|dnCacheCapacity
+parameter_list|,
+name|long
+name|dnCacheUsed
 parameter_list|,
 name|int
 name|xmitsInProgress
@@ -392,10 +404,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Communicates the complete list of locally cached blocks to the NameNode.    *     * This method is similar to    * {@link #blockReport(DatanodeRegistration, String, StorageBlockReport[])},    * which is used to communicated blocks stored on disk.    *    * @param registration    * @param poolId block pool ID for the blocks    * @param blocks a Long[] array from {@link BlockListAsLongs} that describes     * the list of cached blocks. This is more memory-efficient than a Block[].    * @return    * @throws IOException    */
+comment|/**    * Communicates the complete list of locally cached blocks to the NameNode.    *     * This method is similar to    * {@link #blockReport(DatanodeRegistration, String, StorageBlockReport[])},    * which is used to communicated blocks stored on disk.    *    * @param            The datanode registration.    * @param poolId     The block pool ID for the blocks.    * @param blockIds   A list of block IDs.    * @return           The DatanodeCommand.    * @throws IOException    */
 annotation|@
 name|Idempotent
-DECL|method|cacheReport (DatanodeRegistration registration, String poolId, long[] blocks)
+DECL|method|cacheReport (DatanodeRegistration registration, String poolId, List<Long> blockIds)
 specifier|public
 name|DatanodeCommand
 name|cacheReport
@@ -406,9 +418,11 @@ parameter_list|,
 name|String
 name|poolId
 parameter_list|,
-name|long
-index|[]
-name|blocks
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|blockIds
 parameter_list|)
 throws|throws
 name|IOException

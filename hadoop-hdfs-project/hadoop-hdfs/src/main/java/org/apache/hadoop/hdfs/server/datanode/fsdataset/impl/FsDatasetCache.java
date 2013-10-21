@@ -408,7 +408,7 @@ comment|/**    * @return List of cached blocks suitable for translation into a  
 DECL|method|getCachedBlocks (String bpid)
 name|List
 argument_list|<
-name|Block
+name|Long
 argument_list|>
 name|getCachedBlocks
 parameter_list|(
@@ -418,14 +418,14 @@ parameter_list|)
 block|{
 name|List
 argument_list|<
-name|Block
+name|Long
 argument_list|>
 name|blocks
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|Block
+name|Long
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -480,6 +480,9 @@ argument_list|(
 name|mapBlock
 operator|.
 name|getBlock
+argument_list|()
+operator|.
+name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1038,10 +1041,10 @@ block|}
 block|}
 block|}
 comment|// Stats related methods for FsDatasetMBean
-DECL|method|getCacheUsed ()
+DECL|method|getDnCacheUsed ()
 specifier|public
 name|long
-name|getCacheUsed
+name|getDnCacheUsed
 parameter_list|()
 block|{
 return|return
@@ -1051,29 +1054,14 @@ name|get
 argument_list|()
 return|;
 block|}
-DECL|method|getCacheCapacity ()
+DECL|method|getDnCacheCapacity ()
 specifier|public
 name|long
-name|getCacheCapacity
+name|getDnCacheCapacity
 parameter_list|()
 block|{
 return|return
 name|maxBytes
-return|;
-block|}
-DECL|method|getCacheRemaining ()
-specifier|public
-name|long
-name|getCacheRemaining
-parameter_list|()
-block|{
-return|return
-name|maxBytes
-operator|-
-name|usedBytes
-operator|.
-name|get
-argument_list|()
 return|;
 block|}
 block|}

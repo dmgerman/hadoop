@@ -835,10 +835,13 @@ name|String
 name|bpid
 parameter_list|)
 function_decl|;
-comment|/**    * Returns the cache report - the full list of cached blocks of a    * block pool    * @param bpid Block Pool Id    * @return - the cache report - the full list of cached blocks    */
+comment|/**    * Returns the cache report - the full list of cached block IDs of a    * block pool.    * @param   bpid Block Pool Id    * @return  the cache report - the full list of cached block IDs.    */
 DECL|method|getCacheReport (String bpid)
 specifier|public
-name|BlockListAsLongs
+name|List
+argument_list|<
+name|Long
+argument_list|>
 name|getCacheReport
 parameter_list|(
 name|String
