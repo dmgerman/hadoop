@@ -3040,7 +3040,7 @@ specifier|final
 name|String
 name|DFS_CLIENT_MMAP_CACHE_THREAD_RUNS_PER_TIMEOUT
 init|=
-literal|"dfs.client.mmap.cache.timeout.ms"
+literal|"dfs.client.mmap.cache.thread.runs.per.timeout"
 decl_stmt|;
 DECL|field|DFS_CLIENT_MMAP_CACHE_THREAD_RUNS_PER_TIMEOUT_DEFAULT
 specifier|public

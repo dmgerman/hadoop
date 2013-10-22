@@ -654,13 +654,16 @@ block|}
 comment|// Reject if no match in whitelist only mode
 if|if
 condition|(
-name|ipat
-operator|!=
-literal|null
+operator|!
+name|includeTagPatterns
+operator|.
+name|isEmpty
+argument_list|()
 operator|&&
-name|epat
-operator|==
-literal|null
+name|excludeTagPatterns
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 return|return
