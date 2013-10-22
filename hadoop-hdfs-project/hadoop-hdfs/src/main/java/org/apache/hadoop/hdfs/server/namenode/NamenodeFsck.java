@@ -442,24 +442,6 @@ name|hdfs
 operator|.
 name|server
 operator|.
-name|blockmanagement
-operator|.
-name|BlockPlacementStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -2228,8 +2210,8 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// verify block placement policy
-name|BlockPlacementStatus
-name|blockPlacementStatus
+name|int
+name|missingRacks
 init|=
 name|BlockPlacementPolicy
 operator|.
@@ -2248,16 +2230,21 @@ name|path
 argument_list|,
 name|lBlk
 argument_list|,
+name|Math
+operator|.
+name|min
+argument_list|(
+literal|2
+argument_list|,
 name|targetFileReplication
+argument_list|)
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
-name|blockPlacementStatus
-operator|.
-name|isPlacementPolicySatisfied
-argument_list|()
+name|missingRacks
+operator|>
+literal|0
 condition|)
 block|{
 name|res
@@ -2303,12 +2290,11 @@ literal|" Replica placement policy is violated for "
 operator|+
 name|block
 operator|+
-literal|". "
+literal|". Block should be additionally replicated on "
 operator|+
-name|blockPlacementStatus
-operator|.
-name|getErrorDescription
-argument_list|()
+name|missingRacks
+operator|+
+literal|" more rack(s)."
 argument_list|)
 expr_stmt|;
 block|}

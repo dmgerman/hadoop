@@ -431,11 +431,11 @@ name|storageType
 argument_list|)
 return|;
 block|}
-comment|/**    * Verify if the block's placement meets requirement of placement policy,    * i.e. replicas are placed on no less than minRacks racks in the system.    *     * @param srcPath the full pathname of the file to be verified    * @param lBlk block with locations    * @param numOfReplicas replica number of file to be verified    * @return the result of verification    */
-DECL|method|verifyBlockPlacement (String srcPath, LocatedBlock lBlk, int numOfReplicas)
+comment|/**    * Verify that the block is replicated on at least minRacks different racks    * if there is more than minRacks rack in the system.    *     * @param srcPath the full pathname of the file to be verified    * @param lBlk block with locations    * @param minRacks number of racks the block should be replicated to    * @return the difference between the required and the actual number of racks    * the block is replicated to.    */
+DECL|method|verifyBlockPlacement (String srcPath, LocatedBlock lBlk, int minRacks)
 specifier|abstract
 specifier|public
-name|BlockPlacementStatus
+name|int
 name|verifyBlockPlacement
 parameter_list|(
 name|String
@@ -445,7 +445,7 @@ name|LocatedBlock
 name|lBlk
 parameter_list|,
 name|int
-name|numOfReplicas
+name|minRacks
 parameter_list|)
 function_decl|;
 comment|/**    * Decide whether deleting the specified replica of the block still makes     * the block conform to the configured block placement policy.    *     * @param srcBC block collection of file to which block-to-be-deleted belongs    * @param block The block to be deleted    * @param replicationFactor The required number of replicas for this block    * @param existingReplicas The replica locations of this block that are present                   on at least two unique racks.     * @param moreExistingReplicas Replica locations of this block that are not                    listed in the previous parameter.    * @return the replica that is the best candidate for deletion    */
