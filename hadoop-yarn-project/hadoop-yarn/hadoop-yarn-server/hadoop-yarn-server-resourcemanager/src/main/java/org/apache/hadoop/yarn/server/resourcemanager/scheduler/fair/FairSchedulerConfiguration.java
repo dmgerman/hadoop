@@ -298,7 +298,7 @@ init|=
 literal|"yarn.scheduler.fair."
 decl_stmt|;
 DECL|field|ALLOCATION_FILE
-specifier|protected
+specifier|public
 specifier|static
 specifier|final
 name|String
@@ -631,6 +631,15 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+DECL|method|FairSchedulerConfiguration ()
+specifier|public
+name|FairSchedulerConfiguration
+parameter_list|()
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|FairSchedulerConfiguration (Configuration conf)
 specifier|public
 name|FairSchedulerConfiguration
