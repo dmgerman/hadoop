@@ -354,6 +354,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|StorageReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|DiskChecker
@@ -524,6 +542,19 @@ name|V
 argument_list|>
 name|getVolumes
 parameter_list|()
+function_decl|;
+comment|/** @return one or more storage reports for attached volumes. */
+DECL|method|getStorageReports (String bpid)
+specifier|public
+name|StorageReport
+index|[]
+name|getStorageReports
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 comment|/** @return the volume that contains a replica of the block. */
 DECL|method|getVolume (ExtendedBlock b)
