@@ -52,6 +52,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -501,6 +515,11 @@ specifier|private
 name|long
 name|remaining
 decl_stmt|;
+DECL|field|blockPoolUsed
+specifier|private
+name|long
+name|blockPoolUsed
+decl_stmt|;
 DECL|field|blockList
 specifier|private
 specifier|volatile
@@ -666,15 +685,23 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-DECL|method|receivedHeartbeat (final long lastUpdate)
+DECL|method|receivedHeartbeat (StorageReport report, final long lastUpdate)
 name|void
 name|receivedHeartbeat
 parameter_list|(
+name|StorageReport
+name|report
+parameter_list|,
 specifier|final
 name|long
 name|lastUpdate
 parameter_list|)
 block|{
+name|updateState
+argument_list|(
+name|report
+argument_list|)
+expr_stmt|;
 name|heartbeatedSinceFailover
 operator|=
 literal|true
@@ -704,7 +731,10 @@ name|blockReportCount
 operator|++
 expr_stmt|;
 block|}
-DECL|method|setUtilization (long capacity, long dfsUsed, long remaining)
+annotation|@
+name|VisibleForTesting
+DECL|method|setUtilization (long capacity, long dfsUsed, long remaining, long blockPoolUsed)
+specifier|public
 name|void
 name|setUtilization
 parameter_list|(
@@ -716,6 +746,9 @@ name|dfsUsed
 parameter_list|,
 name|long
 name|remaining
+parameter_list|,
+name|long
+name|blockPoolUsed
 parameter_list|)
 block|{
 name|this
@@ -735,6 +768,12 @@ operator|.
 name|remaining
 operator|=
 name|remaining
+expr_stmt|;
+name|this
+operator|.
+name|blockPoolUsed
+operator|=
+name|blockPoolUsed
 expr_stmt|;
 block|}
 DECL|method|setState (State s)
@@ -814,6 +853,16 @@ parameter_list|()
 block|{
 return|return
 name|remaining
+return|;
+block|}
+DECL|method|getBlockPoolUsed ()
+specifier|public
+name|long
+name|getBlockPoolUsed
+parameter_list|()
+block|{
+return|return
+name|blockPoolUsed
 return|;
 block|}
 DECL|method|addBlock (BlockInfo b)
@@ -959,6 +1008,13 @@ operator|=
 name|r
 operator|.
 name|getRemaining
+argument_list|()
+expr_stmt|;
+name|blockPoolUsed
+operator|=
+name|r
+operator|.
+name|getBlockPoolUsed
 argument_list|()
 expr_stmt|;
 block|}

@@ -5307,7 +5307,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Handle heartbeat from datanodes. */
-DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, final String blockPoolId, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int maxTransfers, int failedVolumes )
+DECL|method|handleHeartbeat (DatanodeRegistration nodeReg, StorageReport[] reports, final String blockPoolId, int xceiverCount, int maxTransfers, int failedVolumes )
 specifier|public
 name|DatanodeCommand
 index|[]
@@ -5316,21 +5316,13 @@ parameter_list|(
 name|DatanodeRegistration
 name|nodeReg
 parameter_list|,
+name|StorageReport
+index|[]
+name|reports
+parameter_list|,
 specifier|final
 name|String
 name|blockPoolId
-parameter_list|,
-name|long
-name|capacity
-parameter_list|,
-name|long
-name|dfsUsed
-parameter_list|,
-name|long
-name|remaining
-parameter_list|,
-name|long
-name|blockPoolUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -5441,13 +5433,7 @@ name|updateHeartbeat
 argument_list|(
 name|nodeinfo
 argument_list|,
-name|capacity
-argument_list|,
-name|dfsUsed
-argument_list|,
-name|remaining
-argument_list|,
-name|blockPoolUsed
+name|reports
 argument_list|,
 name|xceiverCount
 argument_list|,
