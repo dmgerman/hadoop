@@ -1050,7 +1050,7 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|createAdminProtocol ()
-specifier|private
+specifier|protected
 name|ResourceManagerAdministrationProtocol
 name|createAdminProtocol
 parameter_list|()
