@@ -2329,7 +2329,6 @@ return|;
 block|}
 comment|/** Convert a Json map to an DatanodeInfo object. */
 DECL|method|toDatanodeInfo (final Map<?, ?> m)
-specifier|private
 specifier|static
 name|DatanodeInfo
 name|toDatanodeInfo
@@ -2354,6 +2353,29 @@ block|{
 return|return
 literal|null
 return|;
+block|}
+name|Object
+name|infoSecurePort
+init|=
+name|m
+operator|.
+name|get
+argument_list|(
+literal|"infoSecurePort"
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|infoSecurePort
+operator|==
+literal|null
+condition|)
+block|{
+name|infoSecurePort
+operator|=
+literal|0l
+expr_stmt|;
+comment|// same as the default value in hdfs.proto
 block|}
 comment|// TODO: Fix storageID
 return|return
@@ -2431,12 +2453,7 @@ argument_list|)
 operator|(
 name|Long
 operator|)
-name|m
-operator|.
-name|get
-argument_list|(
-literal|"infoSecurePort"
-argument_list|)
+name|infoSecurePort
 argument_list|,
 call|(
 name|int
