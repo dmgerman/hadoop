@@ -2586,6 +2586,18 @@ operator|.
 name|DEFAULT
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getStorageID ()
+specifier|public
+name|String
+name|getStorageID
+parameter_list|()
+block|{
+return|return
+literal|""
+return|;
+block|}
 block|}
 DECL|field|TEST_VOLUME
 specifier|private

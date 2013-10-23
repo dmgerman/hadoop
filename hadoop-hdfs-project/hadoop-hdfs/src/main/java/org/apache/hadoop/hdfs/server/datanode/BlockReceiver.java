@@ -1003,6 +1003,11 @@ operator|.
 name|notifyNamenodeReceivingBlock
 argument_list|(
 name|block
+argument_list|,
+name|replicaInfo
+operator|.
+name|getStorageUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1092,6 +1097,11 @@ operator|.
 name|notifyNamenodeReceivingBlock
 argument_list|(
 name|block
+argument_list|,
+name|replicaInfo
+operator|.
+name|getStorageUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1153,6 +1163,11 @@ operator|.
 name|notifyNamenodeReceivingBlock
 argument_list|(
 name|block
+argument_list|,
+name|replicaInfo
+operator|.
+name|getStorageUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -1491,6 +1506,16 @@ parameter_list|()
 block|{
 return|return
 name|datanode
+return|;
+block|}
+DECL|method|getReplicaInfo ()
+specifier|public
+name|Replica
+name|getReplicaInfo
+parameter_list|()
+block|{
+return|return
+name|replicaInfo
 return|;
 block|}
 comment|/**    * close files.    */
@@ -5154,6 +5179,11 @@ argument_list|,
 name|DataNode
 operator|.
 name|EMPTY_DEL_HINT
+argument_list|,
+name|replicaInfo
+operator|.
+name|getStorageUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if

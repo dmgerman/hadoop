@@ -867,6 +867,21 @@ block|}
 block|}
 annotation|@
 name|Override
+DECL|method|getStorageUuid ()
+specifier|public
+name|String
+name|getStorageUuid
+parameter_list|()
+block|{
+return|return
+name|storage
+operator|.
+name|getStorageUuid
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getGenerationStamp ()
 specifier|synchronized
 specifier|public
@@ -1549,6 +1564,14 @@ name|SimulatedBPStorage
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|storageUuid
+specifier|private
+specifier|final
+name|String
+name|storageUuid
+init|=
+literal|"SimulatedStorage-UUID"
+decl_stmt|;
 DECL|field|capacity
 specifier|private
 name|long
@@ -1818,6 +1841,16 @@ throw|;
 block|}
 return|return
 name|bpStorage
+return|;
+block|}
+DECL|method|getStorageUuid ()
+specifier|public
+name|String
+name|getStorageUuid
+parameter_list|()
+block|{
+return|return
+name|storageUuid
 return|;
 block|}
 block|}
@@ -3276,7 +3309,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|void
+name|Replica
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -3395,6 +3428,9 @@ argument_list|,
 name|binfo
 argument_list|)
 expr_stmt|;
+return|return
+name|binfo
+return|;
 block|}
 annotation|@
 name|Override

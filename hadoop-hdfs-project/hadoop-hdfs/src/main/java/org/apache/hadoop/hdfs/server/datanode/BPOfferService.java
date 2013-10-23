@@ -871,7 +871,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/*    * Informing the name node could take a long long time! Should we wait    * till namenode is informed before responding with success to the    * client? For now we don't.    */
-DECL|method|notifyNamenodeReceivedBlock (ExtendedBlock block, String delHint)
+DECL|method|notifyNamenodeReceivedBlock ( ExtendedBlock block, String delHint, String storageUuid)
 name|void
 name|notifyNamenodeReceivedBlock
 parameter_list|(
@@ -880,6 +880,9 @@ name|block
 parameter_list|,
 name|String
 name|delHint
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|checkBlock
@@ -925,6 +928,8 @@ operator|.
 name|notifyNamenodeBlockImmediately
 argument_list|(
 name|bInfo
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
@@ -997,12 +1002,15 @@ literal|"delHint is null"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block)
+DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block, String storageUuid)
 name|void
 name|notifyNamenodeDeletedBlock
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|checkBlock
@@ -1041,16 +1049,21 @@ operator|.
 name|notifyNamenodeDeletedBlock
 argument_list|(
 name|bInfo
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|notifyNamenodeReceivingBlock (ExtendedBlock block)
+DECL|method|notifyNamenodeReceivingBlock (ExtendedBlock block, String storageUuid)
 name|void
 name|notifyNamenodeReceivingBlock
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|checkBlock
@@ -1089,6 +1102,8 @@ operator|.
 name|notifyNamenodeBlockImmediately
 argument_list|(
 name|bInfo
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}

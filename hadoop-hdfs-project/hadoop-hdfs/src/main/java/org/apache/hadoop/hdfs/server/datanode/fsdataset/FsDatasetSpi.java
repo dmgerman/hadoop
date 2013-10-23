@@ -809,7 +809,7 @@ function_decl|;
 comment|/**    * Recover a failed pipeline close    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @throws IOException    */
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen )
 specifier|public
-name|void
+name|Replica
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock

@@ -3160,7 +3160,7 @@ name|domainPeerServer
 return|;
 block|}
 comment|// calls specific to BP
-DECL|method|notifyNamenodeReceivedBlock (ExtendedBlock block, String delHint)
+DECL|method|notifyNamenodeReceivedBlock ( ExtendedBlock block, String delHint, String storageUuid)
 specifier|protected
 name|void
 name|notifyNamenodeReceivedBlock
@@ -3170,6 +3170,9 @@ name|block
 parameter_list|,
 name|String
 name|delHint
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|BPOfferService
@@ -3199,6 +3202,8 @@ argument_list|(
 name|block
 argument_list|,
 name|delHint
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
@@ -3219,13 +3224,16 @@ expr_stmt|;
 block|}
 block|}
 comment|// calls specific to BP
-DECL|method|notifyNamenodeReceivingBlock (ExtendedBlock block)
+DECL|method|notifyNamenodeReceivingBlock ( ExtendedBlock block, String storageUuid)
 specifier|protected
 name|void
 name|notifyNamenodeReceivingBlock
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|BPOfferService
@@ -3253,6 +3261,8 @@ operator|.
 name|notifyNamenodeReceivingBlock
 argument_list|(
 name|block
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
@@ -3273,13 +3283,16 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Notify the corresponding namenode to delete the block. */
-DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block)
+DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block, String storageUuid)
 specifier|public
 name|void
 name|notifyNamenodeDeletedBlock
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|BPOfferService
@@ -3307,6 +3320,8 @@ operator|.
 name|notifyNamenodeDeletedBlock
 argument_list|(
 name|block
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
@@ -7242,7 +7257,7 @@ block|}
 block|}
 block|}
 comment|/**    * After a block becomes finalized, a datanode increases metric counter,    * notifies namenode, and adds it to the block scanner    * @param block    * @param delHint    */
-DECL|method|closeBlock (ExtendedBlock block, String delHint)
+DECL|method|closeBlock (ExtendedBlock block, String delHint, String storageUuid)
 name|void
 name|closeBlock
 parameter_list|(
@@ -7251,6 +7266,9 @@ name|block
 parameter_list|,
 name|String
 name|delHint
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|metrics
@@ -7285,6 +7303,8 @@ argument_list|(
 name|block
 argument_list|,
 name|delHint
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
@@ -8815,6 +8835,8 @@ argument_list|(
 name|newBlock
 argument_list|,
 literal|""
+argument_list|,
+name|storageID
 argument_list|)
 expr_stmt|;
 return|return

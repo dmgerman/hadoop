@@ -66,6 +66,13 @@ specifier|public
 interface|interface
 name|FsVolumeSpi
 block|{
+comment|/** @return the StorageUuid of the volume */
+DECL|method|getStorageID ()
+specifier|public
+name|String
+name|getStorageID
+parameter_list|()
+function_decl|;
 comment|/** @return a list of block pools. */
 DECL|method|getBlockPoolList ()
 specifier|public

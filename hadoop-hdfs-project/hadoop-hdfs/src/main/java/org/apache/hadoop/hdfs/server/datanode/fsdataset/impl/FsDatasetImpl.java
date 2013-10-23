@@ -4005,7 +4005,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|void
+name|Replica
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -4074,6 +4074,9 @@ name|replicaInfo
 argument_list|)
 expr_stmt|;
 block|}
+return|return
+name|replicaInfo
+return|;
 block|}
 comment|/**    * Bump a replica's generation stamp to a new one.    * Its on-disk meta file name is renamed to be the new one too.    *     * @param replicaInfo a replica    * @param newGS new generation stamp    * @throws IOException if rename fails    */
 DECL|method|bumpReplicaGS (ReplicaInfo replicaInfo, long newGS)
