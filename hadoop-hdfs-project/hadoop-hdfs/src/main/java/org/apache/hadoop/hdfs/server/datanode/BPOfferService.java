@@ -136,6 +136,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -840,12 +854,18 @@ literal|")"
 return|;
 block|}
 block|}
-DECL|method|reportBadBlocks (ExtendedBlock block)
+DECL|method|reportBadBlocks (ExtendedBlock block, String storageUuid, StorageType storageType)
 name|void
 name|reportBadBlocks
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 name|checkBlock
@@ -866,6 +886,10 @@ operator|.
 name|reportBadBlocks
 argument_list|(
 name|block
+argument_list|,
+name|storageUuid
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}

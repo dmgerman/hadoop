@@ -138,6 +138,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|BlockListAsLongs
@@ -1180,12 +1194,18 @@ literal|true
 expr_stmt|;
 comment|// reset future BRs for randomness
 block|}
-DECL|method|reportBadBlocks (ExtendedBlock block)
+DECL|method|reportBadBlocks (ExtendedBlock block, String storageUuid, StorageType storageType)
 name|void
 name|reportBadBlocks
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 if|if
@@ -1209,6 +1229,24 @@ name|bpRegistration
 argument_list|)
 block|}
 decl_stmt|;
+name|String
+index|[]
+name|uuids
+init|=
+block|{
+name|storageUuid
+block|}
+decl_stmt|;
+name|StorageType
+index|[]
+name|types
+init|=
+block|{
+name|storageType
+block|}
+decl_stmt|;
+comment|// TODO: Corrupt flag is set to false for compatibility. We can probably
+comment|// set it to true here.
 name|LocatedBlock
 index|[]
 name|blocks
@@ -1220,6 +1258,15 @@ argument_list|(
 name|block
 argument_list|,
 name|dnArr
+argument_list|,
+name|uuids
+argument_list|,
+name|types
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+literal|false
 argument_list|)
 block|}
 decl_stmt|;

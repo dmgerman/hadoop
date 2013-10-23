@@ -352,13 +352,13 @@ return|return
 name|remaining
 return|;
 block|}
-DECL|method|initializeReplicaMaps (Map<FsVolumeImpl, ReplicaMap> perVolumeReplicaMap, ReplicaMap globalReplicaMap, Object mutex)
+DECL|method|initializeReplicaMaps (Map<String, ReplicaMap> perVolumeReplicaMap, ReplicaMap globalReplicaMap, Object mutex)
 name|void
 name|initializeReplicaMaps
 parameter_list|(
 name|Map
 argument_list|<
-name|FsVolumeImpl
+name|String
 argument_list|,
 name|ReplicaMap
 argument_list|>
@@ -402,6 +402,9 @@ operator|.
 name|put
 argument_list|(
 name|v
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|,
 name|rMap
 argument_list|)
