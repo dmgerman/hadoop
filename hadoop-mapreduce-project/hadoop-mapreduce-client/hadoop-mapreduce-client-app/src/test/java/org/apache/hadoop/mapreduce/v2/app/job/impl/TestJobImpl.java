@@ -3249,15 +3249,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|assertJobState
-argument_list|(
-name|job
-argument_list|,
-name|JobStateInternal
-operator|.
-name|FAIL_ABORT
-argument_list|)
-expr_stmt|;
 name|dispatcher
 operator|.
 name|await
