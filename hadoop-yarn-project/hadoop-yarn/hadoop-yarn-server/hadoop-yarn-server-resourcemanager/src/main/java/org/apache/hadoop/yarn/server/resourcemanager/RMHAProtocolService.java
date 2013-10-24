@@ -320,10 +320,8 @@ condition|)
 block|{
 name|HAUtil
 operator|.
-name|setAllRpcAddresses
+name|verifyAndSetConfiguration
 argument_list|(
-name|this
-operator|.
 name|conf
 argument_list|)
 expr_stmt|;

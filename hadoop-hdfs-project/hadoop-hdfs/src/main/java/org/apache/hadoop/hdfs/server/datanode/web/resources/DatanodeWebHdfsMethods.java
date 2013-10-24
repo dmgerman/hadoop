@@ -3079,6 +3079,7 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
+comment|/**        * Allow the Web UI to perform an AJAX request to get the data.        */
 return|return
 name|Response
 operator|.
@@ -3100,6 +3101,20 @@ argument_list|(
 name|MediaType
 operator|.
 name|APPLICATION_OCTET_STREAM
+argument_list|)
+operator|.
+name|header
+argument_list|(
+literal|"Access-Control-Allow-Methods"
+argument_list|,
+literal|"GET"
+argument_list|)
+operator|.
+name|header
+argument_list|(
+literal|"Access-Control-Allow-Origin"
+argument_list|,
+literal|"*"
 argument_list|)
 operator|.
 name|build

@@ -3622,12 +3622,14 @@ comment|//The underlying data input stream that the
 comment|// underlying filesystem will return.
 DECL|field|underLyingStream
 specifier|private
+specifier|final
 name|FSDataInputStream
 name|underLyingStream
 decl_stmt|;
 comment|//one byte buffer
 DECL|field|oneBytebuff
 specifier|private
+specifier|final
 name|byte
 index|[]
 name|oneBytebuff
@@ -3659,6 +3661,25 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+if|if
+condition|(
+name|length
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Negative length ["
+operator|+
+name|length
+operator|+
+literal|"]"
+argument_list|)
+throw|;
+block|}
 name|underLyingStream
 operator|=
 name|fs
@@ -3726,9 +3747,6 @@ if|if
 condition|(
 name|remaining
 operator|>
-operator|(
-name|long
-operator|)
 name|Integer
 operator|.
 name|MAX_VALUE
@@ -3845,6 +3863,10 @@ literal|0xff
 operator|)
 return|;
 block|}
+comment|// NB: currently this method actually never executed becusae
+comment|// java.io.DataInputStream.read(byte[]) directly delegates to
+comment|// method java.io.InputStream.read(byte[], int, int).
+comment|// However, potentially it can be invoked, so leave it intact for now.
 annotation|@
 name|Override
 DECL|method|read (byte[] b)
@@ -3860,6 +3882,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|int
 name|ret
 init|=
@@ -3877,9 +3900,8 @@ decl_stmt|;
 if|if
 condition|(
 name|ret
-operator|!=
-operator|-
-literal|1
+operator|>
+literal|0
 condition|)
 block|{
 name|position
@@ -4002,20 +4024,24 @@ operator|>
 literal|0
 condition|)
 block|{
+specifier|final
+name|long
+name|actualRemaining
+init|=
+name|end
+operator|-
+name|position
+decl_stmt|;
 if|if
 condition|(
-name|position
-operator|+
 name|tmpN
 operator|>
-name|end
+name|actualRemaining
 condition|)
 block|{
 name|tmpN
 operator|=
-name|end
-operator|-
-name|position
+name|actualRemaining
 expr_stmt|;
 block|}
 name|underLyingStream
@@ -4035,16 +4061,10 @@ return|return
 name|tmpN
 return|;
 block|}
+comment|// NB: the contract is described in java.io.InputStream.skip(long):
+comment|// this method returns the number of bytes actually skipped, so,
+comment|// the return value should never be negative.
 return|return
-operator|(
-name|tmpN
-operator|<
-literal|0
-operator|)
-condition|?
-operator|-
-literal|1
-else|:
 literal|0
 return|;
 block|}
@@ -4069,41 +4089,24 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|seek (long pos)
+DECL|method|seek (final long pos)
 specifier|public
 specifier|synchronized
 name|void
 name|seek
 parameter_list|(
+specifier|final
 name|long
 name|pos
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|pos
-operator|<
-literal|0
-operator|||
-operator|(
-name|start
-operator|+
-name|pos
-operator|>
-name|end
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
+name|validatePosition
 argument_list|(
-literal|"Failed to seek: EOF"
+name|pos
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|position
 operator|=
 name|start
@@ -4117,6 +4120,67 @@ argument_list|(
 name|position
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|validatePosition (final long pos)
+specifier|private
+name|void
+name|validatePosition
+parameter_list|(
+specifier|final
+name|long
+name|pos
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|pos
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Negative position: "
+operator|+
+name|pos
+argument_list|)
+throw|;
+block|}
+specifier|final
+name|long
+name|length
+init|=
+name|end
+operator|-
+name|start
+decl_stmt|;
+if|if
+condition|(
+name|pos
+operator|>
+name|length
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Position behind the end "
+operator|+
+literal|"of the stream (length = "
+operator|+
+name|length
+operator|+
+literal|"): "
+operator|+
+name|pos
+argument_list|)
+throw|;
+block|}
 block|}
 annotation|@
 name|Override
@@ -4178,6 +4242,7 @@ operator|>
 name|end
 condition|)
 block|{
+comment|// length corrected to the real remaining length:
 name|nlength
 operator|=
 call|(
@@ -4186,13 +4251,24 @@ call|)
 argument_list|(
 name|end
 operator|-
-operator|(
 name|start
-operator|+
+operator|-
 name|pos
-operator|)
 argument_list|)
 expr_stmt|;
+block|}
+if|if
+condition|(
+name|nlength
+operator|<=
+literal|0
+condition|)
+block|{
+comment|// EOS:
+return|return
+operator|-
+literal|1
+return|;
 block|}
 return|return
 name|underLyingStream

@@ -358,20 +358,6 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|UnresolvedLinkException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
 name|permission
 operator|.
 name|FsPermission
@@ -1224,7 +1210,7 @@ name|bytesCurBlock
 init|=
 literal|0
 decl_stmt|;
-comment|// bytes writen in current block
+comment|// bytes written in current block
 DECL|field|packetSize
 specifier|private
 name|int
@@ -2578,8 +2564,6 @@ block|}
 block|}
 name|Packet
 name|one
-init|=
-literal|null
 decl_stmt|;
 try|try
 block|{
@@ -2837,9 +2821,7 @@ block|}
 name|nodes
 operator|=
 name|nextBlockOutputStream
-argument_list|(
-name|src
-argument_list|)
+argument_list|()
 expr_stmt|;
 name|initDataStreaming
 argument_list|()
@@ -3104,16 +3086,6 @@ operator|.
 name|now
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|one
-operator|.
-name|isHeartbeatPacket
-argument_list|()
-condition|)
-block|{
-comment|//heartbeat packet
-block|}
 comment|// update bytesSent
 name|long
 name|tmpBytesSent
@@ -3537,7 +3509,7 @@ block|}
 block|}
 block|}
 comment|//
-comment|// Processes reponses from the datanodes.  A packet is removed
+comment|// Processes responses from the datanodes.  A packet is removed
 comment|// from the ackQueue when its response arrives.
 comment|//
 DECL|class|ResponseProcessor
@@ -3738,7 +3710,7 @@ name|PipelineAck
 operator|.
 name|UNKOWN_SEQNO
 operator|:
-literal|"Ack for unkown seqno should be a failed ack: "
+literal|"Ack for unknown seqno should be a failed ack: "
 operator|+
 name|ack
 assert|;
@@ -3757,8 +3729,6 @@ block|}
 comment|// a success ack for a data packet
 name|Packet
 name|one
-init|=
-literal|null
 decl_stmt|;
 synchronized|synchronized
 init|(
@@ -3786,7 +3756,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Responseprocessor: Expecting seqno "
+literal|"ResponseProcessor: Expecting seqno "
 operator|+
 literal|" for block "
 operator|+
@@ -5197,15 +5167,12 @@ return|;
 comment|// do not sleep, continue processing
 block|}
 comment|/**      * Open a DataOutputStream to a DataNode so that it can be written to.      * This happens when a file is created and each time a new block is allocated.      * Must get block ID and the IDs of the destinations from the namenode.      * Returns the list of target datanodes.      */
-DECL|method|nextBlockOutputStream (String client)
+DECL|method|nextBlockOutputStream ()
 specifier|private
 name|DatanodeInfo
 index|[]
 name|nextBlockOutputStream
-parameter_list|(
-name|String
-name|client
-parameter_list|)
+parameter_list|()
 throws|throws
 name|IOException
 block|{
@@ -6021,8 +5988,6 @@ name|excludedNodes
 parameter_list|)
 throws|throws
 name|IOException
-throws|,
-name|UnresolvedLinkException
 block|{
 name|int
 name|retries
@@ -6318,7 +6283,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Create a socket for a write pipeline    * @param first the first datanode     * @param length the pipeline length    * @param client    * @return the socket connected to the first datanode    */
+comment|/**    * Create a socket for a write pipeline    * @param first the first datanode     * @param length the pipeline length    * @param client client    * @return the socket connected to the first datanode    */
 DECL|method|createSocketForPipeline (final DatanodeInfo first, final int length, final DFSClient client)
 specifier|static
 name|Socket
@@ -7461,7 +7426,7 @@ comment|// currentPacket gets full, it will get queued before the next writeChun
 comment|//
 comment|// Rather than wait around for space in the queue, we should instead try to
 comment|// return to the caller as soon as possible, even though we slightly overrun
-comment|// the MAX_PACKETS iength.
+comment|// the MAX_PACKETS length.
 name|Thread
 operator|.
 name|currentThread
@@ -8235,7 +8200,7 @@ block|}
 block|}
 block|}
 comment|// If 1) any new blocks were allocated since the last flush, or 2) to
-comment|// update length in NN is requried, then persist block locations on
+comment|// update length in NN is required, then persist block locations on
 comment|// namenode.
 if|if
 condition|(

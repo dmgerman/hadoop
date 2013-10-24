@@ -1622,16 +1622,6 @@ operator|new
 name|StartupProgress
 argument_list|()
 decl_stmt|;
-static|static
-block|{
-name|StartupProgressMetrics
-operator|.
-name|register
-argument_list|(
-name|startupProgress
-argument_list|)
-expr_stmt|;
-block|}
 comment|/** Return the {@link FSNamesystem} object.    * @return {@link FSNamesystem} object.    */
 DECL|method|getNamesystem ()
 specifier|public
@@ -2442,6 +2432,13 @@ name|this
 operator|.
 name|getRole
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|StartupProgressMetrics
+operator|.
+name|register
+argument_list|(
+name|startupProgress
 argument_list|)
 expr_stmt|;
 if|if

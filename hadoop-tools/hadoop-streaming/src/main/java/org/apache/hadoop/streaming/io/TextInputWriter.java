@@ -98,7 +98,7 @@ name|Object
 argument_list|>
 block|{
 DECL|field|clientOut
-specifier|private
+specifier|protected
 name|DataOutput
 name|clientOut
 decl_stmt|;
@@ -197,7 +197,7 @@ expr_stmt|;
 block|}
 comment|// Write an object to the output stream using UTF-8 encoding
 DECL|method|writeUTF8 (Object object)
-specifier|private
+specifier|protected
 name|void
 name|writeUTF8
 parameter_list|(
