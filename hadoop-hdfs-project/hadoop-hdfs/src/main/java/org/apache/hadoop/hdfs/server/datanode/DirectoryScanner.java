@@ -917,6 +917,13 @@ specifier|final
 name|FsVolumeSpi
 name|volume
 decl_stmt|;
+comment|/**      * Get the file's length in async block scan      */
+DECL|field|blockFileLength
+specifier|private
+specifier|final
+name|long
+name|blockFileLength
+decl_stmt|;
 DECL|field|CONDENSED_PATH_REGEX
 specifier|private
 specifier|final
@@ -1106,6 +1113,23 @@ argument_list|,
 name|condensedVolPath
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|blockFileLength
+operator|=
+operator|(
+name|blockFile
+operator|!=
+literal|null
+operator|)
+condition|?
+name|blockFile
+operator|.
+name|length
+argument_list|()
+else|:
+literal|0
+expr_stmt|;
 if|if
 condition|(
 name|metaFile
@@ -1187,6 +1211,15 @@ argument_list|()
 argument_list|,
 name|blockSuffix
 argument_list|)
+return|;
+block|}
+DECL|method|getBlockFileLength ()
+name|long
+name|getBlockFileLength
+parameter_list|()
+block|{
+return|return
+name|blockFileLength
 return|;
 block|}
 DECL|method|getMetaFile ()
@@ -2219,10 +2252,7 @@ argument_list|()
 operator|||
 name|info
 operator|.
-name|getBlockFile
-argument_list|()
-operator|.
-name|length
+name|getBlockFileLength
 argument_list|()
 operator|!=
 name|memBlock
