@@ -68,6 +68,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|NodeId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -149,6 +167,14 @@ specifier|public
 specifier|abstract
 name|Resource
 name|getTotalResource
+parameter_list|()
+function_decl|;
+comment|/**    * Get the ID of the node which contains both its hostname and port.    * @return the ID of the node    */
+DECL|method|getNodeID ()
+specifier|public
+specifier|abstract
+name|NodeId
+name|getNodeID
 parameter_list|()
 function_decl|;
 block|}

@@ -175,7 +175,7 @@ name|c1
 init|=
 name|cache
 operator|.
-name|get
+name|getDfsClient
 argument_list|(
 literal|"test1"
 argument_list|)
@@ -184,7 +184,7 @@ name|assertTrue
 argument_list|(
 name|cache
 operator|.
-name|get
+name|getDfsClient
 argument_list|(
 literal|"test1"
 argument_list|)
@@ -204,7 +204,7 @@ name|c1
 argument_list|,
 name|cache
 operator|.
-name|get
+name|getDfsClient
 argument_list|(
 literal|"test1"
 argument_list|)
@@ -220,7 +220,7 @@ argument_list|)
 expr_stmt|;
 name|cache
 operator|.
-name|get
+name|getDfsClient
 argument_list|(
 literal|"test2"
 argument_list|)
