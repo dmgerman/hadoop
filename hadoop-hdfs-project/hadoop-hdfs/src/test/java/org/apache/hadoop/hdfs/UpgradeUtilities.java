@@ -2346,6 +2346,13 @@ argument_list|)
 decl_stmt|;
 name|storage
 operator|.
+name|createStorageID
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
+name|storage
+operator|.
 name|writeProperties
 argument_list|(
 name|versionFile
