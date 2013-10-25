@@ -520,7 +520,6 @@ specifier|public
 name|Builder
 parameter_list|()
 block|{     }
-comment|/**      * See {@link #addField(String, Justification, boolean)      */
 DECL|method|addField (String title)
 specifier|public
 name|Builder
@@ -543,7 +542,6 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**      * See {@link #addField(String, Justification, boolean)      */
 DECL|method|addField (String title, Justification justification)
 specifier|public
 name|Builder
@@ -567,7 +565,6 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**      * See {@link #addField(String, Justification, boolean)      */
 DECL|method|addField (String title, boolean wrap)
 specifier|public
 name|Builder
@@ -593,7 +590,7 @@ name|wrap
 argument_list|)
 return|;
 block|}
-comment|/**      * Add a new field to the Table under construction.      *       * @param title Field title.      * @param justification Right or left justification. Defaults to left.      * @Param wrapWidth Width at which to auto-wrap the content of the cell.      *        Defaults to Integer.MAX_VALUE.      * @return This Builder object      */
+comment|/**      * Add a new field to the Table under construction.      *       * @param title Field title.      * @param justification Right or left justification. Defaults to left.      * @param wrap Width at which to auto-wrap the content of the cell.      *        Defaults to Integer.MAX_VALUE.      * @return This Builder object      */
 DECL|method|addField (String title, Justification justification, boolean wrap)
 specifier|public
 name|Builder

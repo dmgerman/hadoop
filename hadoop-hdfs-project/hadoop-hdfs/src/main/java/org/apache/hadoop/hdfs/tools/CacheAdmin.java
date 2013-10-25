@@ -3957,6 +3957,8 @@ literal|0
 argument_list|)
 decl_stmt|;
 name|commandName
+operator|=
+name|commandName
 operator|.
 name|replaceAll
 argument_list|(

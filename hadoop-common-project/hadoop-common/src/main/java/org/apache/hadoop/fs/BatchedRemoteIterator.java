@@ -241,7 +241,7 @@ operator|-
 literal|1
 expr_stmt|;
 block|}
-comment|/**    * Perform the actual remote request.    *    * @param key                    The key to send.    * @return                       A list of replies.    */
+comment|/**    * Perform the actual remote request.    *     * @param prevKey The key to send.    * @return A list of replies.    */
 DECL|method|makeRequest (K prevKey)
 specifier|public
 specifier|abstract
