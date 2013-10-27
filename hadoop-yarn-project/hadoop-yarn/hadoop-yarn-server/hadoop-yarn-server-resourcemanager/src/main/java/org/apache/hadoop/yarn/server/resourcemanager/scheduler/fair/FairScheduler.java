@@ -4844,6 +4844,15 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|application
+operator|.
+name|updateBlacklist
+argument_list|(
+name|blacklistAdditions
+argument_list|,
+name|blacklistRemovals
+argument_list|)
+expr_stmt|;
 return|return
 operator|new
 name|Allocation
