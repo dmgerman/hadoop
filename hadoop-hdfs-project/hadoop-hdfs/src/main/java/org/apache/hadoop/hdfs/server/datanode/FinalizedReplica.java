@@ -188,6 +188,20 @@ name|isUnlinked
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|FinalizedReplica (ReplicaInfo replicaInfo)
+specifier|public
+name|FinalizedReplica
+parameter_list|(
+name|ReplicaInfo
+name|replicaInfo
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|replicaInfo
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 comment|// ReplicaInfo

@@ -5940,7 +5940,7 @@ specifier|public
 specifier|synchronized
 name|List
 argument_list|<
-name|Block
+name|FinalizedReplica
 argument_list|>
 name|getFinalizedBlocks
 parameter_list|(
@@ -5950,14 +5950,14 @@ parameter_list|)
 block|{
 name|ArrayList
 argument_list|<
-name|Block
+name|FinalizedReplica
 argument_list|>
 name|finalized
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|Block
+name|FinalizedReplica
 argument_list|>
 argument_list|(
 name|volumeMap
@@ -5998,7 +5998,7 @@ operator|.
 name|add
 argument_list|(
 operator|new
-name|Block
+name|FinalizedReplica
 argument_list|(
 name|b
 argument_list|)

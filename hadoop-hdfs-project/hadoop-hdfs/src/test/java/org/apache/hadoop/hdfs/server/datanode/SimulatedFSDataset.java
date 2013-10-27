@@ -4900,7 +4900,7 @@ DECL|method|getFinalizedBlocks (String bpid)
 specifier|public
 name|List
 argument_list|<
-name|Block
+name|FinalizedReplica
 argument_list|>
 name|getFinalizedBlocks
 parameter_list|(

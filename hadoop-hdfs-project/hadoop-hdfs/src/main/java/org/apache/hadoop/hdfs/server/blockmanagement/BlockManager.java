@@ -8953,6 +8953,13 @@ argument_list|,
 name|toUC
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|storedBlock
+operator|!=
+literal|null
+condition|)
+block|{
 name|toRemove
 operator|.
 name|remove
@@ -8960,6 +8967,7 @@ argument_list|(
 name|storedBlock
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param dn descriptor for the datanode that made the report    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return the up-to-date stored block, if it should be kept.    *         Otherwise, null.    */

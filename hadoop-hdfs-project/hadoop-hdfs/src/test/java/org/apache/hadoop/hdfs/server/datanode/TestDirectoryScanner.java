@@ -2775,6 +2775,12 @@ operator|.
 name|ScanInfo
 argument_list|(
 name|blockId
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|assertEquals
