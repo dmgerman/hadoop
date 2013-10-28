@@ -4882,6 +4882,32 @@ name|delete
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|getHistoryDirsForCleaning (long cutoff)
+name|List
+argument_list|<
+name|FileStatus
+argument_list|>
+name|getHistoryDirsForCleaning
+parameter_list|(
+name|long
+name|cutoff
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|JobHistoryUtils
+operator|.
+name|getHistoryDirsForCleaning
+argument_list|(
+name|doneDirFc
+argument_list|,
+name|doneDirPrefixPath
+argument_list|,
+name|cutoff
+argument_list|)
+return|;
+block|}
 comment|/**    * Clean up older history files.    *     * @throws IOException    *           on any error trying to remove the entries.    */
 annotation|@
 name|SuppressWarnings
@@ -4895,8 +4921,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// TODO this should be replaced by something that knows about the directory
-comment|// structure and will put less of a load on HDFS.
 name|long
 name|cutoff
 init|=
@@ -4912,15 +4936,16 @@ name|halted
 init|=
 literal|false
 decl_stmt|;
-comment|// TODO Delete YYYY/MM/DD directories.
 name|List
 argument_list|<
 name|FileStatus
 argument_list|>
 name|serialDirList
 init|=
-name|findTimestampedDirectories
-argument_list|()
+name|getHistoryDirsForCleaning
+argument_list|(
+name|cutoff
+argument_list|)
 decl_stmt|;
 comment|// Sort in ascending order. Relies on YYYY/MM/DD/Serial
 name|Collections

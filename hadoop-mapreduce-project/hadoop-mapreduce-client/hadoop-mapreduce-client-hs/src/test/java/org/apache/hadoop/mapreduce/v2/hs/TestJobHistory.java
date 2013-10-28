@@ -275,6 +275,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1207,8 +1217,13 @@ argument_list|(
 name|historyManager
 argument_list|)
 operator|.
-name|findTimestampedDirectories
+name|getHistoryDirsForCleaning
+argument_list|(
+name|Mockito
+operator|.
+name|anyLong
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|doReturn
 argument_list|(
