@@ -1110,7 +1110,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Interrupted while waiting to put on response queue"
 argument_list|,
@@ -1141,7 +1141,7 @@ parameter_list|)
 block|{
 name|LOG
 operator|.
-name|info
+name|debug
 argument_list|(
 literal|"Heartbeater interrupted"
 argument_list|,
