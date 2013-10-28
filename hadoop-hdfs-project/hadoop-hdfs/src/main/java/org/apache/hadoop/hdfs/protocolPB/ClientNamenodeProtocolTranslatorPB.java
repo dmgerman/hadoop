@@ -5509,6 +5509,12 @@ argument_list|)
 operator|.
 name|addAllStorageIDs
 argument_list|(
+name|storageIDs
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|Arrays
 operator|.
 name|asList

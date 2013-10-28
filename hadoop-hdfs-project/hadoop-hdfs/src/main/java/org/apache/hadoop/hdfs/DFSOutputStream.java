@@ -1960,7 +1960,6 @@ init|=
 literal|null
 decl_stmt|;
 comment|// list of targets for current block
-comment|//TODO: update storage IDs
 DECL|field|storageIDs
 specifier|private
 specifier|volatile
@@ -2354,6 +2353,13 @@ operator|=
 name|lastBlock
 operator|.
 name|getLocations
+argument_list|()
+expr_stmt|;
+name|storageIDs
+operator|=
+name|lastBlock
+operator|.
+name|getStorageIDs
 argument_list|()
 expr_stmt|;
 name|errorIndex
