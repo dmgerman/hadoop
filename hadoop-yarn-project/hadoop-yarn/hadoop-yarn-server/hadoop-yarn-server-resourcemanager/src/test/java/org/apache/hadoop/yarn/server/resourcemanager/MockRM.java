@@ -2312,6 +2312,33 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|createRMHAProtocolService ()
+specifier|protected
+name|RMHAProtocolService
+name|createRMHAProtocolService
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RMHAProtocolService
+argument_list|(
+name|this
+argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|startHAAdminServer
+parameter_list|()
+block|{
+comment|// do nothing
+block|}
+block|}
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|createClientRMService ()
 specifier|protected
 name|ClientRMService

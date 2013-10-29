@@ -383,14 +383,104 @@ name|String
 name|toString
 parameter_list|()
 block|{
-return|return
-name|TextFormat
+name|StringBuilder
+name|sb
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|sb
 operator|.
-name|shortDebugString
+name|append
 argument_list|(
-name|getProto
+literal|"ContainerStatus: ["
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"ContainerId: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getContainerId
 argument_list|()
 argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"State: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getState
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"Diagnostics: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getDiagnostics
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"ExitStatus: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getExitStatus
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"]"
+argument_list|)
+expr_stmt|;
+return|return
+name|sb
+operator|.
+name|toString
+argument_list|()
 return|;
 block|}
 DECL|method|mergeLocalToBuilder ()

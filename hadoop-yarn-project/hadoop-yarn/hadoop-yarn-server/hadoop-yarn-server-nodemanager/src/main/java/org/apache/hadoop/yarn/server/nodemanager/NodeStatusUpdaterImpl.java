@@ -2171,15 +2171,24 @@ expr_stmt|;
 operator|++
 name|numActiveContainers
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Sending out status for container: "
 operator|+
 name|containerStatus
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|containerStatus
