@@ -257,7 +257,7 @@ import|;
 end_import
 
 begin_comment
-comment|/** Redirect queries about the hosted filesystem to an appropriate datanode.  * @see org.apache.hadoop.hdfs.HftpFileSystem  */
+comment|/** Redirect queries about the hosted filesystem to an appropriate datanode.  * @see org.apache.hadoop.hdfs.web.HftpFileSystem  */
 end_comment
 
 begin_class

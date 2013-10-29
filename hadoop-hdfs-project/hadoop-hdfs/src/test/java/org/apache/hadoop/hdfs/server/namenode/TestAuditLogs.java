@@ -270,7 +270,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HftpFileSystem
+name|MiniDFSCluster
 import|;
 end_import
 
@@ -284,7 +284,9 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSCluster
+name|web
+operator|.
+name|HftpFileSystem
 import|;
 end_import
 

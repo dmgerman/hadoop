@@ -72,20 +72,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|HftpFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|ClientProtocol
@@ -139,6 +125,22 @@ operator|.
 name|common
 operator|.
 name|JspHelper
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|HftpFileSystem
 import|;
 end_import
 
@@ -309,7 +311,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Obtain meta-information about a filesystem.  * @see org.apache.hadoop.hdfs.HftpFileSystem  */
+comment|/**  * Obtain meta-information about a filesystem.  * @see org.apache.hadoop.hdfs.web.HftpFileSystem  */
 end_comment
 
 begin_class

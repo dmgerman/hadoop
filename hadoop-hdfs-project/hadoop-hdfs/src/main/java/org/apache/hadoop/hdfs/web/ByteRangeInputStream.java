@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.web
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|web
 package|;
 end_package
 
@@ -145,7 +147,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * To support HTTP byte streams, a new connection to an HTTP server needs to be  * created each time. This class hides the complexity of those multiple   * connections from the client. Whenever seek() is called, a new connection  * is made on the successive read(). The normal input stream functions are   * connected to the currently active input stream.   */
+comment|/**  * To support HTTP byte streams, a new connection to an HTTP server needs to be  * created each time. This class hides the complexity of those multiple  * connections from the client. Whenever seek() is called, a new connection  * is made on the successive read(). The normal input stream functions are  * connected to the currently active input stream.  */
 end_comment
 
 begin_class
@@ -283,7 +285,7 @@ name|StreamStatus
 operator|.
 name|SEEK
 decl_stmt|;
-comment|/**    * Create with the specified URLOpeners. Original url is used to open the     * stream for the first time. Resolved url is used in subsequent requests.    * @param o Original url    * @param r Resolved url    */
+comment|/**    * Create with the specified URLOpeners. Original url is used to open the    * stream for the first time. Resolved url is used in subsequent requests.    * @param o Original url    * @param r Resolved url    */
 DECL|method|ByteRangeInputStream (URLOpener o, URLOpener r)
 specifier|public
 name|ByteRangeInputStream
