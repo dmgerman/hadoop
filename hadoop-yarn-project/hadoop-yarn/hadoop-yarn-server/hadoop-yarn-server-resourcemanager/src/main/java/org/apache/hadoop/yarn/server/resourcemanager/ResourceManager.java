@@ -1605,11 +1605,8 @@ name|conf
 expr_stmt|;
 name|haService
 operator|=
-operator|new
-name|RMHAProtocolService
-argument_list|(
-name|this
-argument_list|)
+name|createRMHAProtocolService
+argument_list|()
 expr_stmt|;
 name|addService
 argument_list|(
@@ -1676,6 +1673,20 @@ argument_list|(
 name|rmStore
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|createRMHAProtocolService ()
+specifier|protected
+name|RMHAProtocolService
+name|createRMHAProtocolService
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RMHAProtocolService
+argument_list|(
+name|this
+argument_list|)
+return|;
 block|}
 DECL|method|createContainerTokenSecretManager ( Configuration conf)
 specifier|protected

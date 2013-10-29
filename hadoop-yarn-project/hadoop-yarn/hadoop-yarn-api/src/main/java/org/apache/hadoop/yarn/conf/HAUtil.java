@@ -220,6 +220,11 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|RM_WEBAPP_ADDRESS
+argument_list|,
+comment|// TODO Remove after YARN-1318
+name|YarnConfiguration
+operator|.
+name|RM_HA_ADMIN_ADDRESS
 argument_list|)
 argument_list|)
 decl_stmt|;

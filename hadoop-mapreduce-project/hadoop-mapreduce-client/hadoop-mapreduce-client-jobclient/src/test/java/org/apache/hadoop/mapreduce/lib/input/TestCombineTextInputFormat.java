@@ -525,11 +525,7 @@ argument_list|)
 decl_stmt|;
 annotation|@
 name|Test
-argument_list|(
-name|timeout
-operator|=
-literal|10000
-argument_list|)
+comment|//(timeout=10000)
 DECL|method|testFormat ()
 specifier|public
 name|void

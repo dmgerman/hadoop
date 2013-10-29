@@ -384,6 +384,8 @@ specifier|private
 name|void
 name|checkMonitorHealth
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 try|try
 block|{

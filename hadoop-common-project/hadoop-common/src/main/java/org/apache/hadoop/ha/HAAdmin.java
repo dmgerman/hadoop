@@ -356,7 +356,8 @@ operator|-
 literal|1
 decl_stmt|;
 DECL|field|USAGE
-specifier|private
+specifier|protected
+specifier|final
 specifier|static
 name|Map
 argument_list|<
@@ -509,6 +510,29 @@ name|RequestSource
 operator|.
 name|REQUEST_BY_USER
 decl_stmt|;
+DECL|method|HAAdmin ()
+specifier|protected
+name|HAAdmin
+parameter_list|()
+block|{
+name|super
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|HAAdmin (Configuration conf)
+specifier|protected
+name|HAAdmin
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|resolveTarget (String string)
 specifier|protected
 specifier|abstract
@@ -2294,19 +2318,19 @@ literal|0
 return|;
 block|}
 DECL|class|UsageInfo
-specifier|private
+specifier|protected
 specifier|static
 class|class
 name|UsageInfo
 block|{
 DECL|field|args
-specifier|private
+specifier|public
 specifier|final
 name|String
 name|args
 decl_stmt|;
 DECL|field|help
-specifier|private
+specifier|public
 specifier|final
 name|String
 name|help
