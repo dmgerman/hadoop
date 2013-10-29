@@ -190,6 +190,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|RemoteIterator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|UnresolvedLinkException
 import|;
 end_import
@@ -1708,6 +1722,116 @@ name|fromSnapshot
 parameter_list|,
 name|String
 name|toSnapshot
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Add a PathBasedCache entry to the CacheManager.    *     * @param directive A PathBasedCacheDirective to be added    * @return A PathBasedCacheDescriptor associated with the added directive    * @throws IOException if the directive could not be added    */
+annotation|@
+name|AtMostOnce
+DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective directive)
+specifier|public
+name|PathBasedCacheDescriptor
+name|addPathBasedCacheDirective
+parameter_list|(
+name|PathBasedCacheDirective
+name|directive
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove a PathBasedCacheDescriptor from the CacheManager.    *     * @param id of a PathBasedCacheDescriptor    * @throws IOException if the cache descriptor could not be removed    */
+annotation|@
+name|AtMostOnce
+DECL|method|removePathBasedCacheDescriptor (Long id)
+specifier|public
+name|void
+name|removePathBasedCacheDescriptor
+parameter_list|(
+name|Long
+name|id
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathBasedCacheDescriptors.    * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheDescriptor objects.    */
+annotation|@
+name|Idempotent
+DECL|method|listPathBasedCacheDescriptors ( long prevId, String pool, String path)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|PathBasedCacheDescriptor
+argument_list|>
+name|listPathBasedCacheDescriptors
+parameter_list|(
+name|long
+name|prevId
+parameter_list|,
+name|String
+name|pool
+parameter_list|,
+name|String
+name|path
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Add a new cache pool.    *     * @param info Description of the new cache pool    * @throws IOException If the request could not be completed.    */
+annotation|@
+name|AtMostOnce
+DECL|method|addCachePool (CachePoolInfo info)
+specifier|public
+name|void
+name|addCachePool
+parameter_list|(
+name|CachePoolInfo
+name|info
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Modify an existing cache pool.    *    * @param req    *          The request to modify a cache pool.    * @throws IOException     *          If the request could not be completed.    */
+annotation|@
+name|AtMostOnce
+DECL|method|modifyCachePool (CachePoolInfo req)
+specifier|public
+name|void
+name|modifyCachePool
+parameter_list|(
+name|CachePoolInfo
+name|req
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove a cache pool.    *     * @param pool name of the cache pool to remove.    * @throws IOException if the cache pool did not exist, or could not be    *           removed.    */
+annotation|@
+name|AtMostOnce
+DECL|method|removeCachePool (String pool)
+specifier|public
+name|void
+name|removeCachePool
+parameter_list|(
+name|String
+name|pool
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * List the set of cache pools. Incrementally fetches results from the server.    *     * @param prevPool name of the last pool listed, or the empty string if this is    *          the first invocation of listCachePools    * @return A RemoteIterator which returns CachePool objects.    */
+annotation|@
+name|Idempotent
+DECL|method|listCachePools (String prevPool)
+specifier|public
+name|RemoteIterator
+argument_list|<
+name|CachePoolInfo
+argument_list|>
+name|listCachePools
+parameter_list|(
+name|String
+name|prevPool
 parameter_list|)
 throws|throws
 name|IOException

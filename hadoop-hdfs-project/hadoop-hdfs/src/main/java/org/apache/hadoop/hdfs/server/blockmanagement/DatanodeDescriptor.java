@@ -156,6 +156,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|CachedBlock
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|util
 operator|.
 name|LightWeightHashSet
@@ -172,7 +190,49 @@ name|hadoop
 operator|.
 name|util
 operator|.
+name|IntrusiveCollection
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
 name|Time
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
 import|;
 end_import
 
@@ -434,6 +494,176 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * A list of CachedBlock objects on this datanode.    */
+DECL|class|CachedBlocksList
+specifier|public
+specifier|static
+class|class
+name|CachedBlocksList
+extends|extends
+name|IntrusiveCollection
+argument_list|<
+name|CachedBlock
+argument_list|>
+block|{
+DECL|enum|Type
+specifier|public
+enum|enum
+name|Type
+block|{
+DECL|enumConstant|PENDING_CACHED
+name|PENDING_CACHED
+block|,
+DECL|enumConstant|CACHED
+name|CACHED
+block|,
+DECL|enumConstant|PENDING_UNCACHED
+name|PENDING_UNCACHED
+block|}
+DECL|field|datanode
+specifier|private
+specifier|final
+name|DatanodeDescriptor
+name|datanode
+decl_stmt|;
+DECL|field|type
+specifier|private
+specifier|final
+name|Type
+name|type
+decl_stmt|;
+DECL|method|CachedBlocksList (DatanodeDescriptor datanode, Type type)
+name|CachedBlocksList
+parameter_list|(
+name|DatanodeDescriptor
+name|datanode
+parameter_list|,
+name|Type
+name|type
+parameter_list|)
+block|{
+name|this
+operator|.
+name|datanode
+operator|=
+name|datanode
+expr_stmt|;
+name|this
+operator|.
+name|type
+operator|=
+name|type
+expr_stmt|;
+block|}
+DECL|method|getDatanode ()
+specifier|public
+name|DatanodeDescriptor
+name|getDatanode
+parameter_list|()
+block|{
+return|return
+name|datanode
+return|;
+block|}
+DECL|method|getType ()
+specifier|public
+name|Type
+name|getType
+parameter_list|()
+block|{
+return|return
+name|type
+return|;
+block|}
+block|}
+comment|/**    * The blocks which we want to cache on this DataNode.    */
+DECL|field|pendingCached
+specifier|private
+specifier|final
+name|CachedBlocksList
+name|pendingCached
+init|=
+operator|new
+name|CachedBlocksList
+argument_list|(
+name|this
+argument_list|,
+name|CachedBlocksList
+operator|.
+name|Type
+operator|.
+name|PENDING_CACHED
+argument_list|)
+decl_stmt|;
+comment|/**    * The blocks which we know are cached on this datanode.    * This list is updated by periodic cache reports.    */
+DECL|field|cached
+specifier|private
+specifier|final
+name|CachedBlocksList
+name|cached
+init|=
+operator|new
+name|CachedBlocksList
+argument_list|(
+name|this
+argument_list|,
+name|CachedBlocksList
+operator|.
+name|Type
+operator|.
+name|CACHED
+argument_list|)
+decl_stmt|;
+comment|/**    * The blocks which we want to uncache on this DataNode.    */
+DECL|field|pendingUncached
+specifier|private
+specifier|final
+name|CachedBlocksList
+name|pendingUncached
+init|=
+operator|new
+name|CachedBlocksList
+argument_list|(
+name|this
+argument_list|,
+name|CachedBlocksList
+operator|.
+name|Type
+operator|.
+name|PENDING_UNCACHED
+argument_list|)
+decl_stmt|;
+DECL|method|getPendingCached ()
+specifier|public
+name|CachedBlocksList
+name|getPendingCached
+parameter_list|()
+block|{
+return|return
+name|pendingCached
+return|;
+block|}
+DECL|method|getCached ()
+specifier|public
+name|CachedBlocksList
+name|getCached
+parameter_list|()
+block|{
+return|return
+name|cached
+return|;
+block|}
+DECL|method|getPendingUncached ()
+specifier|public
+name|CachedBlocksList
+name|getPendingUncached
+parameter_list|()
+block|{
+return|return
+name|pendingUncached
+return|;
+block|}
+comment|/**    * Head of the list of blocks on the datanode    */
 DECL|field|blockList
 specifier|private
 specifier|volatile
@@ -442,6 +672,7 @@ name|blockList
 init|=
 literal|null
 decl_stmt|;
+comment|/**    * Number of blocks on the datanode    */
 DECL|field|numBlocks
 specifier|private
 name|int
@@ -618,6 +849,10 @@ literal|0L
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -650,14 +885,18 @@ literal|0L
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param capacity capacity of the data node    * @param dfsUsed space used by the data node    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
-DECL|method|DatanodeDescriptor (DatanodeID nodeID, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param capacity capacity of the data node    * @param dfsUsed space used by the data node    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param cacheCapacity cache capacity of the data node    * @param cacheUsed cache used on the data node    * @param xceiverCount # of data transfers at the data node    */
+DECL|method|DatanodeDescriptor (DatanodeID nodeID, long capacity, long dfsUsed, long remaining, long bpused, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeDescriptor
 parameter_list|(
@@ -675,6 +914,12 @@ name|remaining
 parameter_list|,
 name|long
 name|bpused
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -698,14 +943,18 @@ name|remaining
 argument_list|,
 name|bpused
 argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
+argument_list|,
 name|xceiverCount
 argument_list|,
 name|failedVolumes
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param capacity capacity of the data node, including space used by non-dfs    * @param dfsUsed the used space by dfs datanode    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param xceiverCount # of data transfers at the data node    */
-DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, long capacity, long dfsUsed, long remaining, long bpused, int xceiverCount, int failedVolumes)
+comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param networkLocation location of the data node in network    * @param capacity capacity of the data node, including space used by non-dfs    * @param dfsUsed the used space by dfs datanode    * @param remaining remaining capacity of the data node    * @param bpused space used by the block pool corresponding to this namenode    * @param cacheCapacity cache capacity of the data node    * @param cacheUsed cache used on the data node    * @param xceiverCount # of data transfers at the data node    */
+DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation, long capacity, long dfsUsed, long remaining, long bpused, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes)
 specifier|public
 name|DatanodeDescriptor
 parameter_list|(
@@ -727,6 +976,12 @@ parameter_list|,
 name|long
 name|bpused
 parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
+parameter_list|,
 name|int
 name|xceiverCount
 parameter_list|,
@@ -750,6 +1005,10 @@ argument_list|,
 name|remaining
 argument_list|,
 name|bpused
+argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
 argument_list|,
 name|xceiverCount
 argument_list|,
@@ -879,6 +1138,8 @@ name|curIndex
 return|;
 block|}
 comment|/**    * Used for testing only    * @return the head of the blockList    */
+annotation|@
+name|VisibleForTesting
 DECL|method|getHead ()
 specifier|protected
 name|BlockInfo
@@ -981,6 +1242,29 @@ name|volumeFailures
 operator|=
 literal|0
 expr_stmt|;
+comment|// pendingCached, cached, and pendingUncached are protected by the
+comment|// FSN lock.
+name|this
+operator|.
+name|pendingCached
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|cached
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|pendingUncached
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|clearBlockQueues ()
 specifier|public
@@ -1015,6 +1299,29 @@ name|clear
 argument_list|()
 expr_stmt|;
 block|}
+comment|// pendingCached, cached, and pendingUncached are protected by the
+comment|// FSN lock.
+name|this
+operator|.
+name|pendingCached
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|cached
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|pendingUncached
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|numBlocks ()
 specifier|public
@@ -1027,7 +1334,7 @@ name|numBlocks
 return|;
 block|}
 comment|/**    * Updates stats from datanode heartbeat.    */
-DECL|method|updateHeartbeat (long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int volFailures)
+DECL|method|updateHeartbeat (long capacity, long dfsUsed, long remaining, long blockPoolUsed, long cacheCapacity, long cacheUsed, int xceiverCount, int volFailures)
 specifier|public
 name|void
 name|updateHeartbeat
@@ -1043,6 +1350,12 @@ name|remaining
 parameter_list|,
 name|long
 name|blockPoolUsed
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -1069,6 +1382,16 @@ expr_stmt|;
 name|setDfsUsed
 argument_list|(
 name|dfsUsed
+argument_list|)
+expr_stmt|;
+name|setCacheCapacity
+argument_list|(
+name|cacheCapacity
+argument_list|)
+expr_stmt|;
+name|setCacheUsed
+argument_list|(
+name|cacheUsed
 argument_list|)
 expr_stmt|;
 name|setXceiverCount

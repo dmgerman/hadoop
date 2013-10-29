@@ -85,6 +85,24 @@ literal|"Inodes"
 argument_list|,
 literal|"inodes"
 argument_list|)
+block|,
+comment|/**    * The namenode is performing an operation related to cache pools.    */
+DECL|enumConstant|CACHE_POOLS
+name|CACHE_POOLS
+argument_list|(
+literal|"CachePools"
+argument_list|,
+literal|"cache pools"
+argument_list|)
+block|,
+comment|/**    * The namenode is performing an operation related to cache entries.    */
+DECL|enumConstant|CACHE_ENTRIES
+name|CACHE_ENTRIES
+argument_list|(
+literal|"CacheEntries"
+argument_list|,
+literal|"cache entries"
+argument_list|)
 block|;
 DECL|field|name
 DECL|field|description

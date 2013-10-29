@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -55,6 +65,22 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|BlockListAsLongs
 import|;
 end_import
 
@@ -103,22 +129,6 @@ operator|.
 name|protocol
 operator|.
 name|LocatedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|io
-operator|.
-name|retry
-operator|.
-name|AtMostOnce
 import|;
 end_import
 
@@ -308,6 +318,24 @@ init|=
 literal|8
 decl_stmt|;
 comment|// update balancer bandwidth
+DECL|field|DNA_CACHE
+specifier|final
+specifier|static
+name|int
+name|DNA_CACHE
+init|=
+literal|9
+decl_stmt|;
+comment|// cache blocks
+DECL|field|DNA_UNCACHE
+specifier|final
+specifier|static
+name|int
+name|DNA_UNCACHE
+init|=
+literal|10
+decl_stmt|;
+comment|// uncache blocks
 comment|/**     * Register Datanode.    *    * @see org.apache.hadoop.hdfs.server.namenode.FSNamesystem#registerDatanode(DatanodeRegistration)    * @param registration datanode registration information    * @return the given {@link org.apache.hadoop.hdfs.server.protocol.DatanodeRegistration} with    *  updated registration information    */
 annotation|@
 name|Idempotent
@@ -325,7 +353,7 @@ function_decl|;
 comment|/**    * sendHeartbeat() tells the NameNode that the DataNode is still    * alive and well.  Includes some status info, too.     * It also gives the NameNode a chance to return     * an array of "DatanodeCommand" objects in HeartbeatResponse.    * A DatanodeCommand tells the DataNode to invalidate local block(s),     * or to copy them to other DataNodes, etc.    * @param registration datanode registration information    * @param reports utilization report per storage    * @param xmitsInProgress number of transfers from this datanode to others    * @param xceiverCount number of active transceiver threads    * @param failedVolumes number of failed volumes    * @throws IOException on error    */
 annotation|@
 name|Idempotent
-DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, int xmitsInProgress, int xceiverCount, int failedVolumes)
+DECL|method|sendHeartbeat (DatanodeRegistration registration, StorageReport[] reports, long dnCacheCapacity, long dnCacheUsed, int xmitsInProgress, int xceiverCount, int failedVolumes)
 specifier|public
 name|HeartbeatResponse
 name|sendHeartbeat
@@ -336,6 +364,12 @@ parameter_list|,
 name|StorageReport
 index|[]
 name|reports
+parameter_list|,
+name|long
+name|dnCacheCapacity
+parameter_list|,
+name|long
+name|dnCacheUsed
 parameter_list|,
 name|int
 name|xmitsInProgress
@@ -366,6 +400,29 @@ parameter_list|,
 name|StorageBlockReport
 index|[]
 name|reports
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Communicates the complete list of locally cached blocks to the NameNode.    *     * This method is similar to    * {@link #blockReport(DatanodeRegistration, String, StorageBlockReport[])},    * which is used to communicated blocks stored on disk.    *    * @param            The datanode registration.    * @param poolId     The block pool ID for the blocks.    * @param blockIds   A list of block IDs.    * @return           The DatanodeCommand.    * @throws IOException    */
+annotation|@
+name|Idempotent
+DECL|method|cacheReport (DatanodeRegistration registration, String poolId, List<Long> blockIds)
+specifier|public
+name|DatanodeCommand
+name|cacheReport
+parameter_list|(
+name|DatanodeRegistration
+name|registration
+parameter_list|,
+name|String
+name|poolId
+parameter_list|,
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|blockIds
 parameter_list|)
 throws|throws
 name|IOException

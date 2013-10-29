@@ -311,6 +311,18 @@ name|Metric
 name|MutableCounterLong
 name|blockVerificationFailures
 decl_stmt|;
+DECL|field|blocksCached
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|blocksCached
+decl_stmt|;
+DECL|field|blocksUncached
+annotation|@
+name|Metric
+name|MutableCounterLong
+name|blocksUncached
+decl_stmt|;
 DECL|field|readsFromLocalClient
 annotation|@
 name|Metric
@@ -394,6 +406,12 @@ annotation|@
 name|Metric
 name|MutableRate
 name|blockReports
+decl_stmt|;
+DECL|field|cacheReports
+annotation|@
+name|Metric
+name|MutableRate
+name|cacheReports
 decl_stmt|;
 DECL|field|packetAckRoundTripTimeNanos
 annotation|@
@@ -845,6 +863,23 @@ name|latency
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|addCacheReport (long latency)
+specifier|public
+name|void
+name|addCacheReport
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|cacheReports
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|incrBlocksReplicated (int delta)
 specifier|public
 name|void
@@ -930,6 +965,40 @@ name|blocksVerified
 operator|.
 name|incr
 argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrBlocksCached (int delta)
+specifier|public
+name|void
+name|incrBlocksCached
+parameter_list|(
+name|int
+name|delta
+parameter_list|)
+block|{
+name|blocksCached
+operator|.
+name|incr
+argument_list|(
+name|delta
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|incrBlocksUncached (int delta)
+specifier|public
+name|void
+name|incrBlocksUncached
+parameter_list|(
+name|int
+name|delta
+parameter_list|)
+block|{
+name|blocksUncached
+operator|.
+name|incr
+argument_list|(
+name|delta
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addReadBlockOp (long latency)

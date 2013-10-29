@@ -835,6 +835,19 @@ name|String
 name|bpid
 parameter_list|)
 function_decl|;
+comment|/**    * Returns the cache report - the full list of cached block IDs of a    * block pool.    * @param   bpid Block Pool Id    * @return  the cache report - the full list of cached block IDs.    */
+DECL|method|getCacheReport (String bpid)
+specifier|public
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|getCacheReport
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+function_decl|;
 comment|/** Does the dataset contain the block? */
 DECL|method|contains (ExtendedBlock block)
 specifier|public
@@ -880,6 +893,34 @@ index|[]
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Caches the specified blocks    * @param bpid Block pool id    * @param blockIds - block ids to cache    */
+DECL|method|cache (String bpid, long[] blockIds)
+specifier|public
+name|void
+name|cache
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+index|[]
+name|blockIds
+parameter_list|)
+function_decl|;
+comment|/**    * Uncaches the specified blocks    * @param bpid Block pool id    * @param blockIds - blocks ids to uncache    */
+DECL|method|uncache (String bpid, long[] blockIds)
+specifier|public
+name|void
+name|uncache
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+index|[]
+name|blockIds
+parameter_list|)
 function_decl|;
 comment|/**      * Check if all the data directories are healthy      * @throws DiskErrorException      */
 DECL|method|checkDataDir ()

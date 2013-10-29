@@ -264,6 +264,7 @@ name|bc
 expr_stmt|;
 block|}
 DECL|method|getDatanode (int index)
+specifier|public
 name|DatanodeDescriptor
 name|getDatanode
 parameter_list|(
@@ -686,6 +687,7 @@ name|info
 return|;
 block|}
 DECL|method|getCapacity ()
+specifier|public
 name|int
 name|getCapacity
 parameter_list|()

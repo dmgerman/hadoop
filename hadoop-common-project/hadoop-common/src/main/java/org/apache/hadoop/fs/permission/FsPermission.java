@@ -1245,6 +1245,25 @@ literal|00666
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the default permission for cache pools.    */
+DECL|method|getCachePoolDefault ()
+specifier|public
+specifier|static
+name|FsPermission
+name|getCachePoolDefault
+parameter_list|()
+block|{
+return|return
+operator|new
+name|FsPermission
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|00755
+argument_list|)
+return|;
+block|}
 comment|/**    * Create a FsPermission from a Unix symbolic permission string    * @param unixSymbolicPermission e.g. "-rw-rw-rw-"    */
 DECL|method|valueOf (String unixSymbolicPermission)
 specifier|public

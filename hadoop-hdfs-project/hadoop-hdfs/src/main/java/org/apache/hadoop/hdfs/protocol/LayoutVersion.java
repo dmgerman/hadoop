@@ -435,6 +435,15 @@ literal|"Record ClientId and CallId in editlog to "
 operator|+
 literal|"enable rebuilding retry cache in case of HA failover"
 argument_list|)
+block|,
+DECL|enumConstant|CACHING
+name|CACHING
+argument_list|(
+operator|-
+literal|48
+argument_list|,
+literal|"Support for cache pools and path-based caching"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final
