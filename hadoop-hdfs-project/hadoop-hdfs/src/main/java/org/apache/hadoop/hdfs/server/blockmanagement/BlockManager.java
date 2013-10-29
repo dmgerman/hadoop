@@ -14609,6 +14609,28 @@ name|QUEUE_WITH_CORRUPT_BLOCKS
 argument_list|)
 return|;
 block|}
+comment|/**    * Get the replicas which are corrupt for a given block.    */
+DECL|method|getCorruptReplicas (Block block)
+specifier|public
+name|Collection
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|getCorruptReplicas
+parameter_list|(
+name|Block
+name|block
+parameter_list|)
+block|{
+return|return
+name|corruptReplicas
+operator|.
+name|getNodes
+argument_list|(
+name|block
+argument_list|)
+return|;
+block|}
 comment|/** @return the size of UnderReplicatedBlocks */
 DECL|method|numOfUnderReplicatedBlocks ()
 specifier|public

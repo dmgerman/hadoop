@@ -110,6 +110,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_CACHEREPORT_INTERVAL_MSEC_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CACHEREPORT_INTERVAL_MSEC_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_CLIENT_SOCKET_TIMEOUT_KEY
 import|;
 end_import
@@ -143,6 +175,38 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_CLIENT_WRITE_PACKET_SIZE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
 import|;
 end_import
 
@@ -505,6 +569,11 @@ specifier|final
 name|long
 name|initialBlockReportDelay
 decl_stmt|;
+DECL|field|cacheReportInterval
+specifier|final
+name|long
+name|cacheReportInterval
+decl_stmt|;
 DECL|field|writePacketSize
 specifier|final
 name|int
@@ -524,6 +593,11 @@ DECL|field|xceiverStopTimeout
 specifier|final
 name|long
 name|xceiverStopTimeout
+decl_stmt|;
+DECL|field|maxLockedMemory
+specifier|final
+name|long
+name|maxLockedMemory
 decl_stmt|;
 DECL|method|DNConf (Configuration conf)
 specifier|public
@@ -685,6 +759,19 @@ argument_list|,
 name|DFS_BLOCKREPORT_INTERVAL_MSEC_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|cacheReportInterval
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_CACHEREPORT_INTERVAL_MSEC_KEY
+argument_list|,
+name|DFS_CACHEREPORT_INTERVAL_MSEC_DEFAULT
+argument_list|)
+expr_stmt|;
 name|long
 name|initBRDelay
 init|=
@@ -813,6 +900,19 @@ argument_list|,
 name|DFS_DATANODE_XCEIVER_STOP_TIMEOUT_MILLIS_DEFAULT
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|maxLockedMemory
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
+argument_list|,
+name|DFS_DATANODE_MAX_LOCKED_MEMORY_DEFAULT
+argument_list|)
+expr_stmt|;
 block|}
 comment|// We get minimumNameNodeVersion via a method so it can be mocked out in tests.
 DECL|method|getMinimumNameNodeVersion ()
@@ -834,6 +934,16 @@ parameter_list|()
 block|{
 return|return
 name|xceiverStopTimeout
+return|;
+block|}
+DECL|method|getMaxLockedMemory ()
+specifier|public
+name|long
+name|getMaxLockedMemory
+parameter_list|()
+block|{
+return|return
+name|maxLockedMemory
 return|;
 block|}
 block|}

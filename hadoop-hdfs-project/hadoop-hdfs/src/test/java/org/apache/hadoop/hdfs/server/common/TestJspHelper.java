@@ -3016,6 +3016,10 @@ name|dnId1
 argument_list|,
 literal|"rack1"
 argument_list|,
+literal|5l
+argument_list|,
+literal|3l
+argument_list|,
 literal|10
 argument_list|,
 literal|2
@@ -3030,6 +3034,10 @@ argument_list|(
 name|dnId2
 argument_list|,
 literal|"rack2"
+argument_list|,
+literal|10l
+argument_list|,
+literal|2l
 argument_list|,
 literal|20
 argument_list|,

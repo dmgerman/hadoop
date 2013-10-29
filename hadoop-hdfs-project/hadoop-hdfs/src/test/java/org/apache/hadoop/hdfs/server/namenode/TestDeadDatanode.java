@@ -911,6 +911,10 @@ name|reg
 argument_list|,
 name|rep
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0

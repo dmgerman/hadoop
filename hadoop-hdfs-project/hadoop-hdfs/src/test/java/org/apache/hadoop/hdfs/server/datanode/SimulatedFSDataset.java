@@ -2459,6 +2459,30 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// FsDatasetSpi
+DECL|method|getCacheReport (String bpid)
+specifier|public
+name|List
+argument_list|<
+name|Long
+argument_list|>
+name|getCacheReport
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+return|return
+operator|new
+name|LinkedList
+argument_list|<
+name|Long
+argument_list|>
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 comment|// FSDatasetMBean
 DECL|method|getCapacity ()
 specifier|public
@@ -2542,6 +2566,32 @@ name|storage
 operator|.
 name|getNumFailedVolumes
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getDnCacheUsed ()
+specifier|public
+name|long
+name|getDnCacheUsed
+parameter_list|()
+block|{
+return|return
+literal|0l
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getDnCacheCapacity ()
+specifier|public
+name|long
+name|getDnCacheCapacity
+parameter_list|()
+block|{
+return|return
+literal|0l
 return|;
 block|}
 annotation|@
@@ -2955,6 +3005,54 @@ literal|"Invalidate: Missing blocks."
 argument_list|)
 throw|;
 block|}
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetSpi
+DECL|method|cache (String bpid, long[] cacheBlks)
+specifier|public
+name|void
+name|cache
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+index|[]
+name|cacheBlks
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"SimulatedFSDataset does not support cache operation!"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetSpi
+DECL|method|uncache (String bpid, long[] uncacheBlks)
+specifier|public
+name|void
+name|uncache
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|long
+index|[]
+name|uncacheBlks
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"SimulatedFSDataset does not support uncache operation!"
+argument_list|)
+throw|;
 block|}
 DECL|method|getBInfo (final ExtendedBlock b)
 specifier|private

@@ -795,7 +795,7 @@ operator|.
 name|none
 argument_list|()
 decl_stmt|;
-DECL|method|updateHeartbeatWithUsage (DatanodeDescriptor dn, long capacity, long dfsUsed, long remaining, long blockPoolUsed, int xceiverCount, int volFailures)
+DECL|method|updateHeartbeatWithUsage (DatanodeDescriptor dn, long capacity, long dfsUsed, long remaining, long blockPoolUsed, long dnCacheCapacity, long dnCacheUsed, int xceiverCount, int volFailures)
 specifier|private
 specifier|static
 name|void
@@ -815,6 +815,12 @@ name|remaining
 parameter_list|,
 name|long
 name|blockPoolUsed
+parameter_list|,
+name|long
+name|dnCacheCapacity
+parameter_list|,
+name|long
+name|dnCacheUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -852,6 +858,10 @@ name|getStorageReportsForDatanode
 argument_list|(
 name|dn
 argument_list|)
+argument_list|,
+name|dnCacheCapacity
+argument_list|,
+name|dnCacheUsed
 argument_list|,
 name|xceiverCount
 argument_list|,
@@ -1117,6 +1127,10 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -1209,6 +1223,10 @@ operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
 name|BLOCK_SIZE
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|,
 literal|0L
 argument_list|,
@@ -1469,6 +1487,10 @@ operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
 name|BLOCK_SIZE
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|,
 literal|0L
 argument_list|,
@@ -2262,6 +2284,10 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -2554,6 +2580,10 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -2613,6 +2643,10 @@ literal|1
 operator|)
 operator|*
 name|BLOCK_SIZE
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|,
 literal|0L
 argument_list|,
@@ -2852,6 +2886,10 @@ operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
 name|BLOCK_SIZE
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|,
 literal|0L
 argument_list|,
@@ -3119,6 +3157,10 @@ name|BLOCK_SIZE
 argument_list|,
 literal|0L
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -3283,6 +3325,10 @@ operator|.
 name|MIN_BLOCKS_FOR_WRITE
 operator|*
 name|BLOCK_SIZE
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
 argument_list|,
 literal|0L
 argument_list|,

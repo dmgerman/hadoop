@@ -82,6 +82,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Map
@@ -683,6 +693,31 @@ operator|&&
 name|nativeLoaded
 return|;
 block|}
+DECL|method|assertCodeLoaded ()
+specifier|private
+specifier|static
+name|void
+name|assertCodeLoaded
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+operator|!
+name|isAvailable
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"NativeIO was not loaded"
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/** Wrapper around open(2) */
 DECL|method|open (String path, int flags, int mode)
 specifier|public
@@ -1045,6 +1080,124 @@ literal|false
 expr_stmt|;
 block|}
 block|}
+block|}
+DECL|method|mlock_native ( ByteBuffer buffer, long len)
+specifier|static
+specifier|native
+name|void
+name|mlock_native
+parameter_list|(
+name|ByteBuffer
+name|buffer
+parameter_list|,
+name|long
+name|len
+parameter_list|)
+throws|throws
+name|NativeIOException
+function_decl|;
+DECL|method|munlock_native ( ByteBuffer buffer, long len)
+specifier|static
+specifier|native
+name|void
+name|munlock_native
+parameter_list|(
+name|ByteBuffer
+name|buffer
+parameter_list|,
+name|long
+name|len
+parameter_list|)
+throws|throws
+name|NativeIOException
+function_decl|;
+comment|/**      * Locks the provided direct ByteBuffer into memory, preventing it from      * swapping out. After a buffer is locked, future accesses will not incur      * a page fault.      *       * See the mlock(2) man page for more information.      *       * @throws NativeIOException      */
+DECL|method|mlock (ByteBuffer buffer, long len)
+specifier|public
+specifier|static
+name|void
+name|mlock
+parameter_list|(
+name|ByteBuffer
+name|buffer
+parameter_list|,
+name|long
+name|len
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|assertCodeLoaded
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|buffer
+operator|.
+name|isDirect
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot mlock a non-direct ByteBuffer"
+argument_list|)
+throw|;
+block|}
+name|mlock_native
+argument_list|(
+name|buffer
+argument_list|,
+name|len
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Unlocks a locked direct ByteBuffer, allowing it to swap out of memory.      * This is a no-op if the ByteBuffer was not previously locked.      *       * See the munlock(2) man page for more information.      *       * @throws NativeIOException      */
+DECL|method|munlock (ByteBuffer buffer, long len)
+specifier|public
+specifier|static
+name|void
+name|munlock
+parameter_list|(
+name|ByteBuffer
+name|buffer
+parameter_list|,
+name|long
+name|len
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|assertCodeLoaded
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
+operator|!
+name|buffer
+operator|.
+name|isDirect
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Cannot munlock a non-direct ByteBuffer"
+argument_list|)
+throw|;
+block|}
+name|munlock_native
+argument_list|(
+name|buffer
+argument_list|,
+name|len
+argument_list|)
+expr_stmt|;
 block|}
 comment|/** Linux only methods used for getOwner() implementation */
 DECL|method|getUIDforFDOwnerforOwner (FileDescriptor fd)
@@ -2270,6 +2423,32 @@ specifier|static
 specifier|native
 name|void
 name|initNative
+parameter_list|()
+function_decl|;
+comment|/**    * Get the maximum number of bytes that can be locked into memory at any    * given point.    *    * @return 0 if no bytes can be locked into memory;    *         Long.MAX_VALUE if there is no limit;    *         The number of bytes that can be locked into memory otherwise.    */
+DECL|method|getMemlockLimit ()
+specifier|public
+specifier|static
+name|long
+name|getMemlockLimit
+parameter_list|()
+block|{
+return|return
+name|isAvailable
+argument_list|()
+condition|?
+name|getMemlockLimit0
+argument_list|()
+else|:
+literal|0
+return|;
+block|}
+DECL|method|getMemlockLimit0 ()
+specifier|private
+specifier|static
+specifier|native
+name|long
+name|getMemlockLimit0
 parameter_list|()
 function_decl|;
 DECL|class|CachedUid

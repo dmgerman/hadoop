@@ -226,6 +226,16 @@ specifier|private
 name|long
 name|blockPoolUsed
 decl_stmt|;
+DECL|field|cacheCapacity
+specifier|private
+name|long
+name|cacheCapacity
+decl_stmt|;
+DECL|field|cacheUsed
+specifier|private
+name|long
+name|cacheUsed
+decl_stmt|;
 DECL|field|lastUpdate
 specifier|private
 name|long
@@ -404,6 +414,24 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
+name|cacheCapacity
+operator|=
+name|from
+operator|.
+name|getCacheCapacity
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|cacheUsed
+operator|=
+name|from
+operator|.
+name|getCacheUsed
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
 name|lastUpdate
 operator|=
 name|from
@@ -478,6 +506,18 @@ literal|0L
 expr_stmt|;
 name|this
 operator|.
+name|cacheCapacity
+operator|=
+literal|0L
+expr_stmt|;
+name|this
+operator|.
+name|cacheUsed
+operator|=
+literal|0L
+expr_stmt|;
+name|this
+operator|.
 name|lastUpdate
 operator|=
 literal|0L
@@ -518,7 +558,7 @@ operator|=
 name|location
 expr_stmt|;
 block|}
-DECL|method|DatanodeInfo (DatanodeID nodeID, String location, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final AdminStates adminState)
+DECL|method|DatanodeInfo (DatanodeID nodeID, String location, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final int xceiverCount, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -543,6 +583,14 @@ parameter_list|,
 specifier|final
 name|long
 name|blockPoolUsed
+parameter_list|,
+specifier|final
+name|long
+name|cacheCapacity
+parameter_list|,
+specifier|final
+name|long
+name|cacheUsed
 parameter_list|,
 specifier|final
 name|long
@@ -602,6 +650,10 @@ name|remaining
 argument_list|,
 name|blockPoolUsed
 argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
+argument_list|,
 name|lastUpdate
 argument_list|,
 name|xceiverCount
@@ -613,7 +665,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Constructor */
-DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String DatanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
+DECL|method|DatanodeInfo (final String ipAddr, final String hostName, final String DatanodeUuid, final int xferPort, final int infoPort, final int infoSecurePort, final int ipcPort, final long capacity, final long dfsUsed, final long remaining, final long blockPoolUsed, final long cacheCapacity, final long cacheUsed, final long lastUpdate, final int xceiverCount, final String networkLocation, final AdminStates adminState)
 specifier|public
 name|DatanodeInfo
 parameter_list|(
@@ -660,6 +712,14 @@ parameter_list|,
 specifier|final
 name|long
 name|blockPoolUsed
+parameter_list|,
+specifier|final
+name|long
+name|cacheCapacity
+parameter_list|,
+specifier|final
+name|long
+name|cacheUsed
 parameter_list|,
 specifier|final
 name|long
@@ -718,6 +778,18 @@ operator|.
 name|blockPoolUsed
 operator|=
 name|blockPoolUsed
+expr_stmt|;
+name|this
+operator|.
+name|cacheCapacity
+operator|=
+name|cacheCapacity
+expr_stmt|;
+name|this
+operator|.
+name|cacheUsed
+operator|=
+name|cacheUsed
 expr_stmt|;
 name|this
 operator|.
@@ -882,6 +954,78 @@ name|capacity
 argument_list|)
 return|;
 block|}
+comment|/**    * @return Amount of cache capacity in bytes    */
+DECL|method|getCacheCapacity ()
+specifier|public
+name|long
+name|getCacheCapacity
+parameter_list|()
+block|{
+return|return
+name|cacheCapacity
+return|;
+block|}
+comment|/**    * @return Amount of cache used in bytes    */
+DECL|method|getCacheUsed ()
+specifier|public
+name|long
+name|getCacheUsed
+parameter_list|()
+block|{
+return|return
+name|cacheUsed
+return|;
+block|}
+comment|/**    * @return Cache used as a percentage of the datanode's total cache capacity    */
+DECL|method|getCacheUsedPercent ()
+specifier|public
+name|float
+name|getCacheUsedPercent
+parameter_list|()
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|getPercentUsed
+argument_list|(
+name|cacheUsed
+argument_list|,
+name|cacheCapacity
+argument_list|)
+return|;
+block|}
+comment|/**    * @return Amount of cache remaining in bytes    */
+DECL|method|getCacheRemaining ()
+specifier|public
+name|long
+name|getCacheRemaining
+parameter_list|()
+block|{
+return|return
+name|cacheCapacity
+operator|-
+name|cacheUsed
+return|;
+block|}
+comment|/**    * @return Cache remaining as a percentage of the datanode's total cache    * capacity    */
+DECL|method|getCacheRemainingPercent ()
+specifier|public
+name|float
+name|getCacheRemainingPercent
+parameter_list|()
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|getPercentRemaining
+argument_list|(
+name|getCacheRemaining
+argument_list|()
+argument_list|,
+name|cacheCapacity
+argument_list|)
+return|;
+block|}
 comment|/** The time when this information was accurate. */
 DECL|method|getLastUpdate ()
 specifier|public
@@ -970,6 +1114,40 @@ operator|.
 name|blockPoolUsed
 operator|=
 name|bpUsed
+expr_stmt|;
+block|}
+comment|/** Sets cache capacity. */
+DECL|method|setCacheCapacity (long cacheCapacity)
+specifier|public
+name|void
+name|setCacheCapacity
+parameter_list|(
+name|long
+name|cacheCapacity
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cacheCapacity
+operator|=
+name|cacheCapacity
+expr_stmt|;
+block|}
+comment|/** Sets cache used. */
+DECL|method|setCacheUsed (long cacheUsed)
+specifier|public
+name|void
+name|setCacheUsed
+parameter_list|(
+name|long
+name|cacheUsed
+parameter_list|)
+block|{
+name|this
+operator|.
+name|cacheUsed
+operator|=
+name|cacheUsed
 expr_stmt|;
 block|}
 comment|/** Sets time when this information was accurate. */
@@ -1093,6 +1271,36 @@ name|float
 name|remainingPercent
 init|=
 name|getRemainingPercent
+argument_list|()
+decl_stmt|;
+name|long
+name|cc
+init|=
+name|getCacheCapacity
+argument_list|()
+decl_stmt|;
+name|long
+name|cr
+init|=
+name|getCacheRemaining
+argument_list|()
+decl_stmt|;
+name|long
+name|cu
+init|=
+name|getCacheUsed
+argument_list|()
+decl_stmt|;
+name|float
+name|cacheUsedPercent
+init|=
+name|getCacheUsedPercent
+argument_list|()
+decl_stmt|;
+name|float
+name|cacheRemainingPercent
+init|=
+name|getCacheRemainingPercent
 argument_list|()
 decl_stmt|;
 name|String
@@ -1345,6 +1553,100 @@ name|buffer
 operator|.
 name|append
 argument_list|(
+literal|"Configured Cache Capacity: "
+operator|+
+name|c
+operator|+
+literal|" ("
+operator|+
+name|StringUtils
+operator|.
+name|byteDesc
+argument_list|(
+name|cc
+argument_list|)
+operator|+
+literal|")"
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"Cache Used: "
+operator|+
+name|cu
+operator|+
+literal|" ("
+operator|+
+name|StringUtils
+operator|.
+name|byteDesc
+argument_list|(
+name|u
+argument_list|)
+operator|+
+literal|")"
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"Cache Remaining: "
+operator|+
+name|cr
+operator|+
+literal|" ("
+operator|+
+name|StringUtils
+operator|.
+name|byteDesc
+argument_list|(
+name|r
+argument_list|)
+operator|+
+literal|")"
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"Cache Used%: "
+operator|+
+name|percent2String
+argument_list|(
+name|cacheUsedPercent
+argument_list|)
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|"Cache Remaining%: "
+operator|+
+name|percent2String
+argument_list|(
+name|cacheRemainingPercent
+argument_list|)
+operator|+
+literal|"\n"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
 literal|"Last contact: "
 operator|+
 operator|new
@@ -1393,6 +1695,24 @@ name|long
 name|u
 init|=
 name|getDfsUsed
+argument_list|()
+decl_stmt|;
+name|long
+name|cc
+init|=
+name|getCacheCapacity
+argument_list|()
+decl_stmt|;
+name|long
+name|cr
+init|=
+name|getCacheRemaining
+argument_list|()
+decl_stmt|;
+name|long
+name|cu
+init|=
+name|getCacheUsed
 argument_list|()
 decl_stmt|;
 name|buffer
@@ -1537,6 +1857,83 @@ operator|.
 name|byteDesc
 argument_list|(
 name|r
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|" "
+operator|+
+name|cc
+operator|+
+literal|"("
+operator|+
+name|StringUtils
+operator|.
+name|byteDesc
+argument_list|(
+name|cc
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|" "
+operator|+
+name|cu
+operator|+
+literal|"("
+operator|+
+name|StringUtils
+operator|.
+name|byteDesc
+argument_list|(
+name|cu
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|" "
+operator|+
+name|percent2String
+argument_list|(
+name|cu
+operator|/
+operator|(
+name|double
+operator|)
+name|cc
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|buffer
+operator|.
+name|append
+argument_list|(
+literal|" "
+operator|+
+name|cr
+operator|+
+literal|"("
+operator|+
+name|StringUtils
+operator|.
+name|byteDesc
+argument_list|(
+name|cr
 argument_list|)
 operator|+
 literal|")"

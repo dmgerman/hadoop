@@ -726,6 +726,10 @@ name|StorageReport
 operator|.
 name|EMPTY_ARRAY
 argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
 literal|0
 argument_list|,
 literal|0
@@ -818,7 +822,7 @@ literal|false
 expr_stmt|;
 block|}
 block|}
-DECL|method|updateHeartbeat (final DatanodeDescriptor node, StorageReport[] reports, int xceiverCount, int failedVolumes)
+DECL|method|updateHeartbeat (final DatanodeDescriptor node, StorageReport[] reports, long cacheCapacity, long cacheUsed, int xceiverCount, int failedVolumes)
 specifier|synchronized
 name|void
 name|updateHeartbeat
@@ -830,6 +834,12 @@ parameter_list|,
 name|StorageReport
 index|[]
 name|reports
+parameter_list|,
+name|long
+name|cacheCapacity
+parameter_list|,
+name|long
+name|cacheUsed
 parameter_list|,
 name|int
 name|xceiverCount
@@ -850,6 +860,10 @@ operator|.
 name|updateHeartbeat
 argument_list|(
 name|reports
+argument_list|,
+name|cacheCapacity
+argument_list|,
+name|cacheUsed
 argument_list|,
 name|xceiverCount
 argument_list|,

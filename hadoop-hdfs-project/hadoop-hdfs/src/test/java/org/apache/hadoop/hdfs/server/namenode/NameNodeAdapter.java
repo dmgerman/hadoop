@@ -727,6 +727,16 @@ argument_list|(
 name|dd
 argument_list|)
 argument_list|,
+name|dd
+operator|.
+name|getCacheCapacity
+argument_list|()
+argument_list|,
+name|dd
+operator|.
+name|getCacheRemaining
+argument_list|()
+argument_list|,
 literal|0
 argument_list|,
 literal|0

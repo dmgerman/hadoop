@@ -1076,6 +1076,16 @@ argument_list|)
 argument_list|,
 name|Mockito
 operator|.
+name|anyLong
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
+name|anyLong
+argument_list|()
+argument_list|,
+name|Mockito
+operator|.
 name|anyInt
 argument_list|()
 argument_list|,

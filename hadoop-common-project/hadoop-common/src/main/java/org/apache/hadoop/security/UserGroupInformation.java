@@ -5691,6 +5691,50 @@ return|;
 block|}
 end_function
 
+begin_function
+DECL|method|getPrimaryGroupName ()
+specifier|public
+name|String
+name|getPrimaryGroupName
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|String
+index|[]
+name|groups
+init|=
+name|getGroupNames
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|groups
+operator|.
+name|length
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"There is no primary group for UGI "
+operator|+
+name|this
+argument_list|)
+throw|;
+block|}
+return|return
+name|groups
+index|[
+literal|0
+index|]
+return|;
+block|}
+end_function
+
 begin_comment
 comment|/**    * Get the user's full principal name.    * @return the user's full principal name.    */
 end_comment
