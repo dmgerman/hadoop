@@ -590,7 +590,14 @@ argument_list|)
 expr_stmt|;
 name|regex
 operator|=
-literal|"<a href=\"///localhost:"
+literal|"<a href=\"///"
+operator|+
+name|nnHttpAddress
+operator|.
+name|getHostName
+argument_list|()
+operator|+
+literal|":"
 operator|+
 name|nnHttpAddress
 operator|.
