@@ -1524,6 +1524,18 @@ name|to
 argument_list|)
 return|;
 block|}
+DECL|method|clearSnapshottableDirs ()
+specifier|public
+name|void
+name|clearSnapshottableDirs
+parameter_list|()
+block|{
+name|snapshottables
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+block|}
 comment|/**    * Returns the maximum allowable snapshot ID based on the bit width of the    * snapshot ID.    *    * @return maximum allowable snapshot ID.    */
 DECL|method|getMaxSnapshotID ()
 specifier|public
