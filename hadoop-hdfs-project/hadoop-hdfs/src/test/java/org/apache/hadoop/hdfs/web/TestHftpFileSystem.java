@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.web
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|web
 package|;
 end_package
 
@@ -246,6 +248,50 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|MiniDFSCluster
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|MiniDFSCluster
+operator|.
+name|Builder
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|datanode
@@ -287,6 +333,38 @@ operator|.
 name|protocol
 operator|.
 name|DatanodeRegistration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|HftpFileSystem
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|HsftpFileSystem
 import|;
 end_import
 
@@ -730,7 +808,7 @@ name|closeAll
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Test file creation and access with file names that need encoding.     */
+comment|/**    * Test file creation and access with file names that need encoding.    */
 annotation|@
 name|Test
 DECL|method|testFileNameEncoding ()

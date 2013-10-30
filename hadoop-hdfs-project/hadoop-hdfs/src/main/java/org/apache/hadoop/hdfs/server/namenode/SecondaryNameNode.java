@@ -1217,6 +1217,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|getFSNamesystem ()
+specifier|public
 name|FSNamesystem
 name|getFSNamesystem
 parameter_list|()
@@ -2650,7 +2651,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create a new checkpoint    * @return if the image is fetched from primary or not    */
+annotation|@
+name|VisibleForTesting
 DECL|method|doCheckpoint ()
+specifier|public
 name|boolean
 name|doCheckpoint
 parameter_list|()

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.web
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|web
 package|;
 end_package
 
@@ -360,6 +362,34 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -436,7 +466,9 @@ name|hdfs
 operator|.
 name|web
 operator|.
-name|URLConnectionFactory
+name|ByteRangeInputStream
+operator|.
+name|URLOpener
 import|;
 end_import
 
@@ -1648,7 +1680,7 @@ block|}
 end_function
 
 begin_comment
-comment|/**    * Get encoded UGI parameter string for a URL.    *     * @return user_shortname,group1,group2...    */
+comment|/**    * Get encoded UGI parameter string for a URL.    *    * @return user_shortname,group1,group2...    */
 end_comment
 
 begin_function
@@ -3506,7 +3538,7 @@ name|attrs
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Connect to the name node and get content summary.        * @param path The path      * @return The content summary for the path.      * @throws IOException      */
+comment|/**      * Connect to the name node and get content summary.      * @param path The path      * @return The content summary for the path.      * @throws IOException      */
 DECL|method|getContentSummary (String path)
 specifier|private
 name|ContentSummary

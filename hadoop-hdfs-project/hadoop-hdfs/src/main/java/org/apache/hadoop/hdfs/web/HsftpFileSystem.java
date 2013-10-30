@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs
+DECL|package|org.apache.hadoop.hdfs.web
 package|package
 name|org
 operator|.
@@ -13,6 +13,8 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
+operator|.
+name|web
 package|;
 end_package
 
@@ -256,6 +258,34 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|HdfsConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|Time
@@ -263,7 +293,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * An implementation of a protocol for accessing filesystems over HTTPS. The  * following implementation provides a limited, read-only interface to a  * filesystem over HTTPS.  *   * @see org.apache.hadoop.hdfs.server.namenode.ListPathsServlet  * @see org.apache.hadoop.hdfs.server.namenode.FileDataServlet  */
+comment|/**  * An implementation of a protocol for accessing filesystems over HTTPS. The  * following implementation provides a limited, read-only interface to a  * filesystem over HTTPS.  *  * @see org.apache.hadoop.hdfs.server.namenode.ListPathsServlet  * @see org.apache.hadoop.hdfs.server.namenode.FileDataServlet  */
 end_comment
 
 begin_class
@@ -373,7 +403,7 @@ literal|30
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set up SSL resources    *     * @throws IOException    */
+comment|/**    * Set up SSL resources    *    * @throws IOException    */
 DECL|method|setupSsl (Configuration conf)
 specifier|private
 specifier|static
