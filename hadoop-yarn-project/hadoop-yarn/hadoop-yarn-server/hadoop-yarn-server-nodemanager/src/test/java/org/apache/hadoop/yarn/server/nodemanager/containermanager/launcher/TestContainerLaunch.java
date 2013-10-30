@@ -2879,7 +2879,7 @@ name|fileWriter
 operator|.
 name|println
 argument_list|(
-literal|"@echo"
+literal|"@echo %"
 operator|+
 name|AuxiliaryServiceHelper
 operator|.
@@ -2887,7 +2887,7 @@ name|NM_AUX_SERVICE
 operator|+
 name|serviceName
 operator|+
-literal|">> "
+literal|"%>> "
 operator|+
 name|processStartFile
 argument_list|)
