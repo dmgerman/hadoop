@@ -355,6 +355,11 @@ return|return
 name|client
 return|;
 block|}
+DECL|field|nmTokenCache
+specifier|private
+name|NMTokenCache
+name|nmTokenCache
+decl_stmt|;
 annotation|@
 name|Private
 DECL|method|AMRMClient (String name)
@@ -369,6 +374,13 @@ name|super
 argument_list|(
 name|name
 argument_list|)
+expr_stmt|;
+name|nmTokenCache
+operator|=
+name|NMTokenCache
+operator|.
+name|getSingleton
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Object to represent a single container request for resources. Scheduler    * documentation should be consulted for the specifics of how the parameters    * are honored.    *     * By default, YARN schedulers try to allocate containers at the requested    * locations but they may relax the constraints in order to expedite meeting    * allocations limits. They first relax the constraint to the same rack as the    * requested node and then to anywhere in the cluster. The relaxLocality flag    * may be used to disable locality relaxation and request containers at only     * specific locations. The following conditions apply.    *<ul>    *<li>Within a priority, all container requests must have the same value for    * locality relaxation. Either enabled or disabled.</li>    *<li>If locality relaxation is disabled, then across requests, locations at    * different network levels may not be specified. E.g. its invalid to make a    * request for a specific node and another request for a specific rack.</li>    *<li>If locality relaxation is disabled, then only within the same request,      * a node and its rack may be specified together. This allows for a specific       * rack with a preference for a specific node within that rack.</li>    *<li></li>    *</ul>    * To re-enable locality relaxation at a given priority, all pending requests     * with locality relaxation disabled must be first removed. Then they can be     * added back with locality relaxation enabled.    *     * All getters return immutable values.    */
@@ -849,6 +861,34 @@ argument_list|>
 name|blacklistRemovals
 parameter_list|)
 function_decl|;
+comment|/**    * Set the NM token cache for the<code>AMRMClient</code>. This cache must    * be shared with the {@link NMClient} used to manage containers for the    *<code>AMRMClient</code>    *<p/>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @param nmTokenCache the NM token cache to use.    */
+DECL|method|setNMTokenCache (NMTokenCache nmTokenCache)
+specifier|public
+name|void
+name|setNMTokenCache
+parameter_list|(
+name|NMTokenCache
+name|nmTokenCache
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nmTokenCache
+operator|=
+name|nmTokenCache
+expr_stmt|;
+block|}
+comment|/**    * Get the NM token cache of the<code>AMRMClient</code>. This cache must be    * shared with the {@link NMClient} used to manage containers for the    *<code>AMRMClient</code>.    *<p/>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @return the NM token cache.    */
+DECL|method|getNMTokenCache ()
+specifier|public
+name|NMTokenCache
+name|getNMTokenCache
+parameter_list|()
+block|{
+return|return
+name|nmTokenCache
+return|;
+block|}
 block|}
 end_class
 

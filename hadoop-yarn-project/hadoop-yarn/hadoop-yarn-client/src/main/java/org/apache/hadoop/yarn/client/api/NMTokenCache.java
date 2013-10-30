@@ -92,9 +92,81 @@ name|yarn
 operator|.
 name|api
 operator|.
+name|ApplicationMasterProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|ContainerManagementProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
 name|records
 operator|.
 name|Token
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|async
+operator|.
+name|AMRMClientAsync
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|client
+operator|.
+name|api
+operator|.
+name|async
+operator|.
+name|NMClientAsync
 import|;
 end_import
 
@@ -113,7 +185,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * It manages NMTokens required for communicating with Node manager. Its a  * static token cache.  */
+comment|/**  * NMTokenCache manages NMTokens required for an Application Master  * communicating with individual NodeManagers.  *<p/>  * By default Yarn client libraries {@link AMRMClient} and {@link NMClient} use  * {@link #getSingleton()} instance of the cache.  *<ul>  *<li>Using the singleton instance of the cache is appropriate when running a  * single ApplicationMaster in the same JVM.</li>  *<li>When using the singleton, users don't need to do anything special,  * {@link AMRMClient} and {@link NMClient} are already set up to use the default  * singleton {@link NMTokenCache}</li>  *</ul>  *<p/>  * If running multiple Application Masters in the same JVM, a different cache  * instance should be used for each Application Master.  *<p/>  *<ul>  *<li>  * If using the {@link AMRMClient} and the {@link NMClient}, setting up and using  * an instance cache is as follows:  *<p/>  *   *<pre>  *   NMTokenCache nmTokenCache = new NMTokenCache();  *   AMRMClient rmClient = AMRMClient.createAMRMClient();  *   NMClient nmClient = NMClient.createNMClient();  *   nmClient.setNMTokenCache(nmTokenCache);  *   ...  *</pre>  *</li>  *<li>  * If using the {@link AMRMClientAsync} and the {@link NMClientAsync}, setting up  * and using an instance cache is as follows:  *<p/>  *   *<pre>  *   NMTokenCache nmTokenCache = new NMTokenCache();  *   AMRMClient rmClient = AMRMClient.createAMRMClient();  *   NMClient nmClient = NMClient.createNMClient();  *   nmClient.setNMTokenCache(nmTokenCache);  *   AMRMClientAsync rmClientAsync = new AMRMClientAsync(rmClient, 1000, [AMRM_CALLBACK]);  *   NMClientAsync nmClientAsync = new NMClientAsync("nmClient", nmClient, [NM_CALLBACK]);  *   ...  *</pre>  *</li>  *<li>  * If using {@link ApplicationMasterProtocol} and  * {@link ContainerManagementProtocol} directly, setting up and using an  * instance cache is as follows:  *<p/>  *   *<pre>  *   NMTokenCache nmTokenCache = new NMTokenCache();  *   ...  *   ApplicationMasterProtocol amPro = ClientRMProxy.createRMProxy(conf, ApplicationMasterProtocol.class);  *   ...  *   AllocateRequest allocateRequest = ...  *   ...  *   AllocateResponse allocateResponse = rmClient.allocate(allocateRequest);  *   for (NMToken token : allocateResponse.getNMTokens()) {  *     nmTokenCache.setToken(token.getNodeId().toString(), token.getToken());  *   }  *   ...  *   ContainerManagementProtocolProxy nmPro = ContainerManagementProtocolProxy(conf, nmTokenCache);  *   ...  *   nmPro.startContainer(container, containerContext);  *   ...  *</pre>  *</li>  *</ul>  * It is also possible to mix the usage of a client (<code>AMRMClient</code> or  *<code>NMClient</code>, or the async versions of them) with a protocol proxy (  *<code>ContainerManagementProtocolProxy</code> or  *<code>ApplicationMasterProtocol</code>).  */
 end_comment
 
 begin_class
@@ -126,9 +198,79 @@ specifier|public
 class|class
 name|NMTokenCache
 block|{
-DECL|field|nmTokens
+DECL|field|NM_TOKEN_CACHE
 specifier|private
 specifier|static
+specifier|final
+name|NMTokenCache
+name|NM_TOKEN_CACHE
+init|=
+operator|new
+name|NMTokenCache
+argument_list|()
+decl_stmt|;
+comment|/**    * Returns the singleton NM token cache.    *    * @return the singleton NM token cache.    */
+DECL|method|getSingleton ()
+specifier|public
+specifier|static
+name|NMTokenCache
+name|getSingleton
+parameter_list|()
+block|{
+return|return
+name|NM_TOKEN_CACHE
+return|;
+block|}
+comment|/**    * Returns NMToken, null if absent. Only the singleton obtained from    * {@link #getSingleton()} is looked at for the tokens. If you are using your    * own NMTokenCache that is different from the singleton, use    * {@link #getToken(String) }    *     * @param nodeAddr    * @return {@link Token} NMToken required for communicating with node manager    */
+annotation|@
+name|Public
+DECL|method|getNMToken (String nodeAddr)
+specifier|public
+specifier|static
+name|Token
+name|getNMToken
+parameter_list|(
+name|String
+name|nodeAddr
+parameter_list|)
+block|{
+return|return
+name|NM_TOKEN_CACHE
+operator|.
+name|getToken
+argument_list|(
+name|nodeAddr
+argument_list|)
+return|;
+block|}
+comment|/**    * Sets the NMToken for node address only in the singleton obtained from    * {@link #getSingleton()}. If you are using your own NMTokenCache that is    * different from the singleton, use {@link #setToken(String, Token) }    *     * @param nodeAddr    *          node address (host:port)    * @param token    *          NMToken    */
+annotation|@
+name|Public
+DECL|method|setNMToken (String nodeAddr, Token token)
+specifier|public
+specifier|static
+name|void
+name|setNMToken
+parameter_list|(
+name|String
+name|nodeAddr
+parameter_list|,
+name|Token
+name|token
+parameter_list|)
+block|{
+name|NM_TOKEN_CACHE
+operator|.
+name|setToken
+argument_list|(
+name|nodeAddr
+argument_list|,
+name|token
+argument_list|)
+expr_stmt|;
+block|}
+DECL|field|nmTokens
+specifier|private
 name|ConcurrentHashMap
 argument_list|<
 name|String
@@ -137,7 +279,11 @@ name|Token
 argument_list|>
 name|nmTokens
 decl_stmt|;
-static|static
+comment|/**    * Creates a NM token cache instance.    */
+DECL|method|NMTokenCache ()
+specifier|public
+name|NMTokenCache
+parameter_list|()
 block|{
 name|nmTokens
 operator|=
@@ -151,16 +297,15 @@ argument_list|>
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Returns NMToken, null if absent    * @param nodeAddr    * @return {@link Token} NMToken required for communicating with node    * manager    */
+comment|/**    * Returns NMToken, null if absent    * @param nodeAddr    * @return {@link Token} NMToken required for communicating with node    *         manager    */
 annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|getNMToken (String nodeAddr)
+DECL|method|getToken (String nodeAddr)
 specifier|public
-specifier|static
 name|Token
-name|getNMToken
+name|getToken
 parameter_list|(
 name|String
 name|nodeAddr
@@ -180,11 +325,10 @@ annotation|@
 name|Public
 annotation|@
 name|Evolving
-DECL|method|setNMToken (String nodeAddr, Token token)
+DECL|method|setToken (String nodeAddr, Token token)
 specifier|public
-specifier|static
 name|void
-name|setNMToken
+name|setToken
 parameter_list|(
 name|String
 name|nodeAddr
@@ -208,11 +352,10 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|containsNMToken (String nodeAddr)
+DECL|method|containsToken (String nodeAddr)
 specifier|public
-specifier|static
 name|boolean
-name|containsNMToken
+name|containsToken
 parameter_list|(
 name|String
 name|nodeAddr
@@ -232,11 +375,10 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|numberOfNMTokensInCache ()
+DECL|method|numberOfTokensInCache ()
 specifier|public
-specifier|static
 name|int
-name|numberOfNMTokensInCache
+name|numberOfTokensInCache
 parameter_list|()
 block|{
 return|return
@@ -251,11 +393,10 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|removeNMToken (String nodeAddr)
+DECL|method|removeToken (String nodeAddr)
 specifier|public
-specifier|static
 name|void
-name|removeNMToken
+name|removeToken
 parameter_list|(
 name|String
 name|nodeAddr
@@ -276,7 +417,6 @@ annotation|@
 name|VisibleForTesting
 DECL|method|clearCache ()
 specifier|public
-specifier|static
 name|void
 name|clearCache
 parameter_list|()

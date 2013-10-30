@@ -828,6 +828,12 @@ name|nodeCount
 init|=
 literal|3
 decl_stmt|;
+DECL|field|nmTokenCache
+name|NMTokenCache
+name|nmTokenCache
+init|=
+literal|null
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -1205,6 +1211,13 @@ name|getAMRMToken
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|//creating an instance NMTokenCase
+name|nmTokenCache
+operator|=
+operator|new
+name|NMTokenCache
+argument_list|()
+expr_stmt|;
 comment|// start am rm client
 name|rmClient
 operator|=
@@ -1221,6 +1234,14 @@ name|ContainerRequest
 operator|>
 name|createAMRMClient
 argument_list|()
+expr_stmt|;
+comment|//setting an instance NMTokenCase
+name|rmClient
+operator|.
+name|setNMTokenCache
+argument_list|(
+name|nmTokenCache
+argument_list|)
 expr_stmt|;
 name|rmClient
 operator|.
@@ -1261,6 +1282,17 @@ name|NMClient
 operator|.
 name|createNMClient
 argument_list|()
+expr_stmt|;
+comment|//propagating the AMRMClient NMTokenCache instance
+name|nmClient
+operator|.
+name|setNMTokenCache
+argument_list|(
+name|rmClient
+operator|.
+name|getNMTokenCache
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|nmClient
 operator|.
@@ -1814,9 +1846,12 @@ name|getNMTokens
 argument_list|()
 control|)
 block|{
-name|NMTokenCache
+name|rmClient
 operator|.
-name|setNMToken
+name|getNMTokenCache
+argument_list|()
+operator|.
+name|setToken
 argument_list|(
 name|token
 operator|.
