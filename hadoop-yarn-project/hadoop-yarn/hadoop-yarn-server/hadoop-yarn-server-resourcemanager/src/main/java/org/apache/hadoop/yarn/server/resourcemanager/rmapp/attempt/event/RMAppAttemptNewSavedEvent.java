@@ -89,10 +89,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|RMAppAttemptStoredEvent
+DECL|class|RMAppAttemptNewSavedEvent
 specifier|public
 class|class
-name|RMAppAttemptStoredEvent
+name|RMAppAttemptNewSavedEvent
 extends|extends
 name|RMAppAttemptEvent
 block|{
@@ -101,9 +101,9 @@ specifier|final
 name|Exception
 name|storedException
 decl_stmt|;
-DECL|method|RMAppAttemptStoredEvent (ApplicationAttemptId appAttemptId, Exception storedException)
+DECL|method|RMAppAttemptNewSavedEvent (ApplicationAttemptId appAttemptId, Exception storedException)
 specifier|public
-name|RMAppAttemptStoredEvent
+name|RMAppAttemptNewSavedEvent
 parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
@@ -118,7 +118,7 @@ name|appAttemptId
 argument_list|,
 name|RMAppAttemptEventType
 operator|.
-name|ATTEMPT_SAVED
+name|ATTEMPT_NEW_SAVED
 argument_list|)
 expr_stmt|;
 name|this

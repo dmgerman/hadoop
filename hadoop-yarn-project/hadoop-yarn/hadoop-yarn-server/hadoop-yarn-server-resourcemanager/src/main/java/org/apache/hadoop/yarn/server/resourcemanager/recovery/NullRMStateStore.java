@@ -209,10 +209,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationState (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|storeApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
 specifier|protected
 name|void
-name|storeApplicationState
+name|storeApplicationStateInternal
 parameter_list|(
 name|String
 name|appId
@@ -227,10 +227,10 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationAttemptState (String attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|storeApplicationAttemptStateInternal (String attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 specifier|protected
 name|void
-name|storeApplicationAttemptState
+name|storeApplicationAttemptStateInternal
 parameter_list|(
 name|String
 name|attemptId
@@ -318,6 +318,42 @@ name|removeRMDTMasterKeyState
 parameter_list|(
 name|DelegationKey
 name|delegationKey
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|updateApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+specifier|protected
+name|void
+name|updateApplicationStateInternal
+parameter_list|(
+name|String
+name|appId
+parameter_list|,
+name|ApplicationStateDataPBImpl
+name|appStateData
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+comment|// Do nothing
+block|}
+annotation|@
+name|Override
+DECL|method|updateApplicationAttemptStateInternal (String attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+specifier|protected
+name|void
+name|updateApplicationAttemptStateInternal
+parameter_list|(
+name|String
+name|attemptId
+parameter_list|,
+name|ApplicationAttemptStateDataPBImpl
+name|attemptStateData
 parameter_list|)
 throws|throws
 name|Exception

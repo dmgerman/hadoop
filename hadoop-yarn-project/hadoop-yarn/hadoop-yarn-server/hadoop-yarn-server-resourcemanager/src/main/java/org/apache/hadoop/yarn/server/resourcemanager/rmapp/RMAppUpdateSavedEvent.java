@@ -41,28 +41,28 @@ import|;
 end_import
 
 begin_class
-DECL|class|RMAppStoredEvent
+DECL|class|RMAppUpdateSavedEvent
 specifier|public
 class|class
-name|RMAppStoredEvent
+name|RMAppUpdateSavedEvent
 extends|extends
 name|RMAppEvent
 block|{
-DECL|field|storedException
+DECL|field|updatedException
 specifier|private
 specifier|final
 name|Exception
-name|storedException
+name|updatedException
 decl_stmt|;
-DECL|method|RMAppStoredEvent (ApplicationId appId, Exception storedException)
+DECL|method|RMAppUpdateSavedEvent (ApplicationId appId, Exception updatedException)
 specifier|public
-name|RMAppStoredEvent
+name|RMAppUpdateSavedEvent
 parameter_list|(
 name|ApplicationId
 name|appId
 parameter_list|,
 name|Exception
-name|storedException
+name|updatedException
 parameter_list|)
 block|{
 name|super
@@ -71,24 +71,24 @@ name|appId
 argument_list|,
 name|RMAppEventType
 operator|.
-name|APP_SAVED
+name|APP_UPDATE_SAVED
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|storedException
+name|updatedException
 operator|=
-name|storedException
+name|updatedException
 expr_stmt|;
 block|}
-DECL|method|getStoredException ()
+DECL|method|getUpdatedException ()
 specifier|public
 name|Exception
-name|getStoredException
+name|getUpdatedException
 parameter_list|()
 block|{
 return|return
-name|storedException
+name|updatedException
 return|;
 block|}
 block|}

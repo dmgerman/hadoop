@@ -906,6 +906,7 @@ argument_list|(
 name|eventNode
 argument_list|)
 expr_stmt|;
+block|}
 for|for
 control|(
 name|RMApp
@@ -946,19 +947,6 @@ name|RMAppNodeUpdateType
 operator|.
 name|NODE_USABLE
 argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|eventNode
-operator|+
-literal|" reported usable without first reporting unusable"
 argument_list|)
 expr_stmt|;
 block|}

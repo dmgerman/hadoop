@@ -69,8 +69,11 @@ DECL|enumConstant|CONTAINER_FINISHED
 name|CONTAINER_FINISHED
 block|,
 comment|// Source: RMStateStore
-DECL|enumConstant|ATTEMPT_SAVED
-name|ATTEMPT_SAVED
+DECL|enumConstant|ATTEMPT_NEW_SAVED
+name|ATTEMPT_NEW_SAVED
+block|,
+DECL|enumConstant|ATTEMPT_UPDATE_SAVED
+name|ATTEMPT_UPDATE_SAVED
 block|,
 comment|// Source: Scheduler
 DECL|enumConstant|APP_REJECTED

@@ -43,8 +43,8 @@ block|,
 DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
-DECL|enumConstant|REMOVING
-name|REMOVING
+DECL|enumConstant|FINAL_SAVING
+name|FINAL_SAVING
 block|,
 DECL|enumConstant|FINISHING
 name|FINISHING

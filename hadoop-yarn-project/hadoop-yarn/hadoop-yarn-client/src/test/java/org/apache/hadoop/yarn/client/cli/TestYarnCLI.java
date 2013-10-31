@@ -6949,10 +6949,15 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Missing argument for options\n"
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Missing argument for options%n%1s"
+argument_list|,
 name|createApplicationCLIHelpMessage
 argument_list|()
+argument_list|)
 argument_list|,
 name|sysOutStream
 operator|.
@@ -7021,10 +7026,15 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Missing argument for options\n"
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Missing argument for options%n%1s"
+argument_list|,
 name|createNodeCLIHelpMessage
 argument_list|()
+argument_list|)
 argument_list|,
 name|sysOutStream
 operator|.

@@ -34,6 +34,12 @@ block|,
 DECL|enumConstant|STORE_APP
 name|STORE_APP
 block|,
+DECL|enumConstant|UPDATE_APP
+name|UPDATE_APP
+block|,
+DECL|enumConstant|UPDATE_APP_ATTEMPT
+name|UPDATE_APP_ATTEMPT
+block|,
 DECL|enumConstant|REMOVE_APP
 name|REMOVE_APP
 block|}

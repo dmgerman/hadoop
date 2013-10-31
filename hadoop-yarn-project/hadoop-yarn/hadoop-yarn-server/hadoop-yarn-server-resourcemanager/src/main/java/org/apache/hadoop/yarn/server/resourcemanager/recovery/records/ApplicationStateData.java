@@ -36,7 +36,39 @@ name|classification
 operator|.
 name|InterfaceAudience
 operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
 name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Stable
 import|;
 end_import
 
@@ -92,6 +124,26 @@ name|ApplicationSubmissionContext
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|RMAppState
+import|;
+end_import
+
 begin_comment
 comment|/**  * Contains all the state data that needs to be stored persistently   * for an Application  */
 end_comment
@@ -128,6 +180,32 @@ name|setSubmitTime
 parameter_list|(
 name|long
 name|submitTime
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>start time</em> of the application.    * @return<em>start time</em> of the application    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getStartTime ()
+specifier|public
+specifier|abstract
+name|long
+name|getStartTime
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setStartTime (long startTime)
+specifier|public
+specifier|abstract
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|startTime
 parameter_list|)
 function_decl|;
 comment|/**    * The application submitter    */
@@ -176,6 +254,54 @@ name|setApplicationSubmissionContext
 parameter_list|(
 name|ApplicationSubmissionContext
 name|context
+parameter_list|)
+function_decl|;
+comment|/**    * Get the final state of the application.    * @return the final state of the application.    */
+DECL|method|getState ()
+specifier|public
+name|RMAppState
+name|getState
+parameter_list|()
+function_decl|;
+DECL|method|setState (RMAppState state)
+specifier|public
+name|void
+name|setState
+parameter_list|(
+name|RMAppState
+name|state
+parameter_list|)
+function_decl|;
+comment|/**    * Get the diagnostics information for the application master.    * @return the diagnostics information for the application master.    */
+DECL|method|getDiagnostics ()
+specifier|public
+name|String
+name|getDiagnostics
+parameter_list|()
+function_decl|;
+DECL|method|setDiagnostics (String diagnostics)
+specifier|public
+name|void
+name|setDiagnostics
+parameter_list|(
+name|String
+name|diagnostics
+parameter_list|)
+function_decl|;
+comment|/**    * The finish time of the application.    * @return the finish time of the application.,    */
+DECL|method|getFinishTime ()
+specifier|public
+name|long
+name|getFinishTime
+parameter_list|()
+function_decl|;
+DECL|method|setFinishTime (long finishTime)
+specifier|public
+name|void
+name|setFinishTime
+parameter_list|(
+name|long
+name|finishTime
 parameter_list|)
 function_decl|;
 block|}

@@ -314,6 +314,16 @@ return|return
 name|client
 return|;
 block|}
+DECL|field|nmTokenCache
+specifier|private
+name|NMTokenCache
+name|nmTokenCache
+init|=
+name|NMTokenCache
+operator|.
+name|getSingleton
+argument_list|()
+decl_stmt|;
 annotation|@
 name|Private
 DECL|method|NMClient (String name)
@@ -400,6 +410,34 @@ name|boolean
 name|enabled
 parameter_list|)
 function_decl|;
+comment|/**    * Set the NM Token cache of the<code>NMClient</code>. This cache must be    * shared with the {@link AMRMClient} that requested the containers managed    * by this<code>NMClient</code>    *<p/>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @param nmTokenCache the NM token cache to use.    */
+DECL|method|setNMTokenCache (NMTokenCache nmTokenCache)
+specifier|public
+name|void
+name|setNMTokenCache
+parameter_list|(
+name|NMTokenCache
+name|nmTokenCache
+parameter_list|)
+block|{
+name|this
+operator|.
+name|nmTokenCache
+operator|=
+name|nmTokenCache
+expr_stmt|;
+block|}
+comment|/**    * Get the NM token cache of the<code>NMClient</code>. This cache must be    * shared with the {@link AMRMClient} that requested the containers managed    * by this<code>NMClient</code>    *<p/>    * If a NM token cache is not set, the {@link NMTokenCache#getSingleton()}    * singleton instance will be used.    *    * @return the NM token cache    */
+DECL|method|getNMTokenCache ()
+specifier|public
+name|NMTokenCache
+name|getNMTokenCache
+parameter_list|()
+block|{
+return|return
+name|nmTokenCache
+return|;
+block|}
 block|}
 end_class
 

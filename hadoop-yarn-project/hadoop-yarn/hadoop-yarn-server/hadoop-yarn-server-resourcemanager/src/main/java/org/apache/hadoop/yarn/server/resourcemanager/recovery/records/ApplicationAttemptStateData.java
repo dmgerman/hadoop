@@ -102,6 +102,46 @@ name|Container
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|FinalApplicationStatus
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|attempt
+operator|.
+name|RMAppAttemptState
+import|;
+end_import
+
 begin_comment
 comment|/*  * Contains the state data that needs to be persisted for an ApplicationAttempt  */
 end_comment
@@ -174,6 +214,87 @@ name|setAppAttemptTokens
 parameter_list|(
 name|ByteBuffer
 name|attemptTokens
+parameter_list|)
+function_decl|;
+comment|/**    * Get the final state of the application attempt.    * @return the final state of the application attempt.    */
+DECL|method|getState ()
+specifier|public
+name|RMAppAttemptState
+name|getState
+parameter_list|()
+function_decl|;
+DECL|method|setState (RMAppAttemptState state)
+specifier|public
+name|void
+name|setState
+parameter_list|(
+name|RMAppAttemptState
+name|state
+parameter_list|)
+function_decl|;
+comment|/**    * Get the original not-proxied<em>final tracking url</em> for the    * application. This is intended to only be used by the proxy itself.    *     * @return the original not-proxied<em>final tracking url</em> for the    *         application    */
+DECL|method|getFinalTrackingUrl ()
+specifier|public
+name|String
+name|getFinalTrackingUrl
+parameter_list|()
+function_decl|;
+comment|/**    * Set the final tracking Url of the AM.    * @param url    */
+DECL|method|setFinalTrackingUrl (String url)
+specifier|public
+name|void
+name|setFinalTrackingUrl
+parameter_list|(
+name|String
+name|url
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>diagnositic information</em> of the attempt     * @return<em>diagnositic information</em> of the attempt    */
+DECL|method|getDiagnostics ()
+specifier|public
+name|String
+name|getDiagnostics
+parameter_list|()
+function_decl|;
+DECL|method|setDiagnostics (String diagnostics)
+specifier|public
+name|void
+name|setDiagnostics
+parameter_list|(
+name|String
+name|diagnostics
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>start time</em> of the application.    * @return<em>start time</em> of the application    */
+DECL|method|getStartTime ()
+specifier|public
+name|long
+name|getStartTime
+parameter_list|()
+function_decl|;
+DECL|method|setStartTime (long startTime)
+specifier|public
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+function_decl|;
+comment|/**    * Get the<em>final finish status</em> of the application.    * @return<em>final finish status</em> of the application    */
+DECL|method|getFinalApplicationStatus ()
+specifier|public
+name|FinalApplicationStatus
+name|getFinalApplicationStatus
+parameter_list|()
+function_decl|;
+DECL|method|setFinalApplicationStatus (FinalApplicationStatus finishState)
+specifier|public
+name|void
+name|setFinalApplicationStatus
+parameter_list|(
+name|FinalApplicationStatus
+name|finishState
 parameter_list|)
 function_decl|;
 block|}

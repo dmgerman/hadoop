@@ -658,11 +658,6 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
 decl_stmt|;
-DECL|field|globalMaxAppAttempts
-specifier|private
-name|int
-name|globalMaxAppAttempts
-decl_stmt|;
 DECL|field|completedApps
 specifier|private
 name|LinkedList
@@ -771,21 +766,6 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|globalMaxAppAttempts
-operator|=
-name|conf
-operator|.
-name|getInt
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_AM_MAX_ATTEMPTS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_AM_MAX_ATTEMPTS
 argument_list|)
 expr_stmt|;
 block|}
@@ -1822,6 +1802,12 @@ name|ie
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+operator|!
+name|isRecovered
+condition|)
+block|{
 comment|// All done, start the RMApp
 name|this
 operator|.
@@ -1840,18 +1826,13 @@ name|RMAppEvent
 argument_list|(
 name|applicationId
 argument_list|,
-name|isRecovered
-condition|?
-name|RMAppEventType
-operator|.
-name|RECOVER
-else|:
 name|RMAppEventType
 operator|.
 name|START
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|parseCredentials (ApplicationSubmissionContext application)
 specifier|private
@@ -1985,142 +1966,6 @@ name|values
 argument_list|()
 control|)
 block|{
-name|boolean
-name|shouldRecover
-init|=
-literal|true
-decl_stmt|;
-if|if
-condition|(
-name|appState
-operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getUnmanagedAM
-argument_list|()
-condition|)
-block|{
-comment|// do not recover unmanaged applications since current recovery
-comment|// mechanism of restarting attempts does not work for them.
-comment|// This will need to be changed in work preserving recovery in which
-comment|// RM will re-connect with the running AM's instead of restarting them
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Not recovering unmanaged application "
-operator|+
-name|appState
-operator|.
-name|getAppId
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|shouldRecover
-operator|=
-literal|false
-expr_stmt|;
-block|}
-name|int
-name|individualMaxAppAttempts
-init|=
-name|appState
-operator|.
-name|getApplicationSubmissionContext
-argument_list|()
-operator|.
-name|getMaxAppAttempts
-argument_list|()
-decl_stmt|;
-name|int
-name|maxAppAttempts
-decl_stmt|;
-if|if
-condition|(
-name|individualMaxAppAttempts
-operator|<=
-literal|0
-operator|||
-name|individualMaxAppAttempts
-operator|>
-name|globalMaxAppAttempts
-condition|)
-block|{
-name|maxAppAttempts
-operator|=
-name|globalMaxAppAttempts
-expr_stmt|;
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"The specific max attempts: "
-operator|+
-name|individualMaxAppAttempts
-operator|+
-literal|" for application: "
-operator|+
-name|appState
-operator|.
-name|getAppId
-argument_list|()
-operator|+
-literal|" is invalid, because it is out of the range [1, "
-operator|+
-name|globalMaxAppAttempts
-operator|+
-literal|"]. Use the global max attempts instead."
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|maxAppAttempts
-operator|=
-name|individualMaxAppAttempts
-expr_stmt|;
-block|}
-comment|// In work-preserve restart, if attemptCount == maxAttempts, the job still
-comment|// needs to be recovered because the last attempt may still be running.
-if|if
-condition|(
-name|appState
-operator|.
-name|getAttemptCount
-argument_list|()
-operator|>=
-name|maxAppAttempts
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Not recovering application "
-operator|+
-name|appState
-operator|.
-name|getAppId
-argument_list|()
-operator|+
-literal|" due to recovering attempt is beyond maxAppAttempt limit"
-argument_list|)
-expr_stmt|;
-name|shouldRecover
-operator|=
-literal|false
-expr_stmt|;
-block|}
-comment|// re-submit the application
-comment|// this is going to send an app start event but since the async dispatcher
-comment|// has not started that event will be queued until we have completed re
-comment|// populating the state
-if|if
-condition|(
-name|shouldRecover
-condition|)
-block|{
 name|LOG
 operator|.
 name|info
@@ -2180,17 +2025,27 @@ argument_list|(
 name|state
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|store
+comment|// Recover the app synchronously, as otherwise client is possible to see
+comment|// the application not recovered before it is actually recovered because
+comment|// ClientRMService is already started at this point of time.
+name|appImpl
 operator|.
-name|removeApplication
+name|handle
 argument_list|(
-name|appState
+operator|new
+name|RMAppEvent
+argument_list|(
+name|appImpl
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|RMAppEventType
+operator|.
+name|RECOVER
+argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 annotation|@

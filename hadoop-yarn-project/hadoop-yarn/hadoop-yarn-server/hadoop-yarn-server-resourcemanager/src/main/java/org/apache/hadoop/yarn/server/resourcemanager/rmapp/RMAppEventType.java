@@ -65,8 +65,11 @@ DECL|enumConstant|NODE_UPDATE
 name|NODE_UPDATE
 block|,
 comment|// Source: RMStateStore
-DECL|enumConstant|APP_SAVED
-name|APP_SAVED
+DECL|enumConstant|APP_NEW_SAVED
+name|APP_NEW_SAVED
+block|,
+DECL|enumConstant|APP_UPDATE_SAVED
+name|APP_UPDATE_SAVED
 block|,
 DECL|enumConstant|APP_REMOVED
 name|APP_REMOVED
