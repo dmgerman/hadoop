@@ -2814,6 +2814,15 @@ argument_list|(
 name|tcpNoDelay
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|socket
+operator|.
+name|setKeepAlive
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 comment|/*            * Bind the socket to the host specified in the principal name of the            * client, to ensure Server matching address of the client connection            * to host name in principal passed.            */
 name|UserGroupInformation
 name|ticket
