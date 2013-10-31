@@ -4986,11 +4986,13 @@ name|String
 name|bpid
 parameter_list|)
 block|{
-throw|throw
+return|return
 operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
+name|StorageReport
+index|[
+literal|0
+index|]
+return|;
 block|}
 annotation|@
 name|Override

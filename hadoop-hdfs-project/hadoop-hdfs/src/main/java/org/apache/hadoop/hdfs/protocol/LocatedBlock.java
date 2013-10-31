@@ -266,36 +266,11 @@ name|locs
 argument_list|,
 operator|-
 literal|1
-argument_list|)
-expr_stmt|;
-comment|// startOffset is unknown
-block|}
-DECL|method|LocatedBlock (ExtendedBlock b, DatanodeInfo[] locs, long startOffset)
-specifier|public
-name|LocatedBlock
-parameter_list|(
-name|ExtendedBlock
-name|b
-parameter_list|,
-name|DatanodeInfo
-index|[]
-name|locs
-parameter_list|,
-name|long
-name|startOffset
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|b
-argument_list|,
-name|locs
-argument_list|,
-name|startOffset
 argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+comment|// startOffset is unknown
 block|}
 DECL|method|LocatedBlock (ExtendedBlock b, DatanodeInfo[] locs, long startOffset, boolean corrupt)
 specifier|public
@@ -358,6 +333,45 @@ literal|false
 argument_list|)
 expr_stmt|;
 comment|// startOffset is unknown
+block|}
+DECL|method|LocatedBlock (ExtendedBlock b, DatanodeInfo[] locs, String[] storageIDs, StorageType[] storageTypes)
+specifier|public
+name|LocatedBlock
+parameter_list|(
+name|ExtendedBlock
+name|b
+parameter_list|,
+name|DatanodeInfo
+index|[]
+name|locs
+parameter_list|,
+name|String
+index|[]
+name|storageIDs
+parameter_list|,
+name|StorageType
+index|[]
+name|storageTypes
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|b
+argument_list|,
+name|locs
+argument_list|,
+name|storageIDs
+argument_list|,
+name|storageTypes
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+literal|false
+argument_list|,
+name|EMPTY_LOCS
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|LocatedBlock (ExtendedBlock b, DatanodeStorageInfo[] storages, long startOffset, boolean corrupt)
 specifier|public
