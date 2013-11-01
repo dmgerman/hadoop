@@ -415,7 +415,7 @@ argument_list|(
 name|getClass
 argument_list|()
 operator|.
-name|getName
+name|getSimpleName
 argument_list|()
 argument_list|)
 expr_stmt|;
