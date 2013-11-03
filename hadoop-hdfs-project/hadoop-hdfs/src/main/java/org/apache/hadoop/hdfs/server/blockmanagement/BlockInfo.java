@@ -341,9 +341,7 @@ name|length
 operator|:
 literal|"Index is out of bound"
 assert|;
-name|DatanodeStorageInfo
-name|storage
-init|=
+return|return
 operator|(
 name|DatanodeStorageInfo
 operator|)
@@ -353,9 +351,6 @@ name|index
 operator|*
 literal|3
 index|]
-decl_stmt|;
-return|return
-name|storage
 return|;
 block|}
 DECL|method|getPrevious (int index)
@@ -524,6 +519,7 @@ name|info
 return|;
 block|}
 DECL|method|setStorageInfo (int index, DatanodeStorageInfo storage)
+specifier|private
 name|void
 name|setStorageInfo
 parameter_list|(

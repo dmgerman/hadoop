@@ -2972,8 +2972,8 @@ name|long
 name|scheduledSize
 init|=
 name|blockSize
-operator|=
-name|storage
+operator|*
+name|node
 operator|.
 name|getBlocksScheduled
 argument_list|()
@@ -2982,7 +2982,7 @@ if|if
 condition|(
 name|requiredSize
 operator|>
-name|storage
+name|node
 operator|.
 name|getRemaining
 argument_list|()
@@ -2994,7 +2994,7 @@ name|logNodeIsNotChosen
 argument_list|(
 name|storage
 argument_list|,
-literal|"the storage does not have enough space "
+literal|"the node does not have enough space "
 argument_list|)
 expr_stmt|;
 return|return

@@ -12172,53 +12172,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Decrement number of blocks scheduled to this storage.
+comment|// Decrement number of blocks scheduled to this datanode.
 comment|// for a retry request (of DatanodeProtocol#blockReceivedAndDeleted with
 comment|// RECEIVED_BLOCK), we currently also decrease the approximate number.
-name|DatanodeStorageInfo
-name|storageInfo
-init|=
 name|node
-operator|.
-name|getStorageInfo
-argument_list|(
-name|storageID
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|storageInfo
-operator|!=
-literal|null
-condition|)
-block|{
-name|storageInfo
 operator|.
 name|decrementBlocksScheduled
 argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-throw|throw
-operator|new
-name|IllegalArgumentException
-argument_list|(
-literal|"Unrecognized storageID "
-operator|+
-name|storageID
-operator|+
-literal|" in block report "
-operator|+
-literal|"from Datanode "
-operator|+
-name|node
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-throw|;
-block|}
 comment|// get the deletion hint node
 name|DatanodeDescriptor
 name|delHintNode

@@ -3256,16 +3256,19 @@ operator|-
 literal|1
 argument_list|)
 decl_stmt|;
-name|assertEquals
+name|assertTrue
+argument_list|(
+name|Level
+operator|.
+name|WARN
+operator|.
+name|isGreaterOrEqual
 argument_list|(
 name|lastLogEntry
 operator|.
 name|getLevel
 argument_list|()
-argument_list|,
-name|Level
-operator|.
-name|WARN
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// Suppose to place replicas on each node but two data nodes are not
