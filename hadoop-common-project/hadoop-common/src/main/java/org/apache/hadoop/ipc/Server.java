@@ -4079,6 +4079,16 @@ argument_list|(
 name|tcpNoDelay
 argument_list|)
 expr_stmt|;
+name|channel
+operator|.
+name|socket
+argument_list|()
+operator|.
+name|setKeepAlive
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|Reader
 name|reader
 init|=

@@ -158,7 +158,7 @@ name|op
 parameter_list|)
 block|{
 return|return;
-comment|// Other than journal all operations are allowed in active state
+comment|// All operations are allowed in active state
 block|}
 annotation|@
 name|Override

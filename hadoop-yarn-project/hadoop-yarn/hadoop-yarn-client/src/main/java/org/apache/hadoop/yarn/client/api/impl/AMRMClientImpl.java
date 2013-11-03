@@ -2902,7 +2902,11 @@ name|reqs
 operator|.
 name|isEmpty
 argument_list|()
-operator|&&
+condition|)
+block|{
+name|boolean
+name|existingRelaxLocality
+init|=
 name|reqs
 operator|.
 name|values
@@ -2918,8 +2922,12 @@ name|remoteRequest
 operator|.
 name|getRelaxLocality
 argument_list|()
-operator|!=
+decl_stmt|;
+if|if
+condition|(
 name|relaxLocality
+operator|!=
+name|existingRelaxLocality
 condition|)
 block|{
 throw|throw
@@ -2940,9 +2948,10 @@ literal|" when it has "
 operator|+
 literal|"already been requested with locality relaxation "
 operator|+
-name|relaxLocality
+name|existingRelaxLocality
 argument_list|)
 throw|;
+block|}
 block|}
 block|}
 block|}

@@ -363,6 +363,19 @@ name|cancel
 argument_list|()
 expr_stmt|;
 block|}
+name|super
+operator|.
+name|releaseExternalResources
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * Call when the transfer completes successfully so we can advise the OS that    * we don't need the region to be cached anymore.    */
+DECL|method|transferSuccessful ()
+specifier|public
+name|void
+name|transferSuccessful
+parameter_list|()
+block|{
 if|if
 condition|(
 name|manageOsCache
@@ -418,11 +431,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|super
-operator|.
-name|releaseExternalResources
-argument_list|()
-expr_stmt|;
 block|}
 block|}
 end_class

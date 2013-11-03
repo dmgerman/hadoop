@@ -243,6 +243,12 @@ specifier|final
 name|long
 name|cacheTimeout
 decl_stmt|;
+DECL|field|warningDeltaMs
+specifier|private
+specifier|final
+name|long
+name|warningDeltaMs
+decl_stmt|;
 DECL|method|Groups (Configuration conf)
 specifier|public
 name|Groups
@@ -287,12 +293,27 @@ name|CommonConfigurationKeys
 operator|.
 name|HADOOP_SECURITY_GROUPS_CACHE_SECS
 argument_list|,
-literal|5
-operator|*
-literal|60
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_GROUPS_CACHE_SECS_DEFAULT
 argument_list|)
 operator|*
 literal|1000
+expr_stmt|;
+name|warningDeltaMs
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS
+argument_list|,
+name|CommonConfigurationKeys
+operator|.
+name|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS_DEFAULT
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -318,6 +339,10 @@ operator|+
 literal|"; cacheTimeout="
 operator|+
 name|cacheTimeout
+operator|+
+literal|"; warningDeltaMs="
+operator|+
+name|warningDeltaMs
 argument_list|)
 expr_stmt|;
 block|}
@@ -348,11 +373,11 @@ name|user
 argument_list|)
 decl_stmt|;
 name|long
-name|now
+name|startMs
 init|=
 name|Time
 operator|.
-name|now
+name|monotonicNow
 argument_list|()
 decl_stmt|;
 comment|// if cache has a value and it hasn't expired
@@ -370,7 +395,7 @@ argument_list|()
 operator|+
 name|cacheTimeout
 operator|>
-name|now
+name|startMs
 operator|)
 condition|)
 block|{
@@ -402,17 +427,67 @@ argument_list|()
 return|;
 block|}
 comment|// Create and cache user's groups
-name|groups
-operator|=
-operator|new
-name|CachedGroups
-argument_list|(
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|groupList
+init|=
 name|impl
 operator|.
 name|getGroups
 argument_list|(
 name|user
 argument_list|)
+decl_stmt|;
+name|long
+name|endMs
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+name|long
+name|deltaMs
+init|=
+name|endMs
+operator|-
+name|startMs
+decl_stmt|;
+if|if
+condition|(
+name|deltaMs
+operator|>
+name|warningDeltaMs
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Potential performance problem: getGroups(user="
+operator|+
+name|user
+operator|+
+literal|") "
+operator|+
+literal|"took "
+operator|+
+name|deltaMs
+operator|+
+literal|" milliseconds."
+argument_list|)
+expr_stmt|;
+block|}
+name|groups
+operator|=
+operator|new
+name|CachedGroups
+argument_list|(
+name|groupList
+argument_list|,
+name|endMs
 argument_list|)
 expr_stmt|;
 if|if
@@ -577,7 +652,7 @@ argument_list|>
 name|groups
 decl_stmt|;
 comment|/**      * Create and initialize group cache      */
-DECL|method|CachedGroups (List<String> groups)
+DECL|method|CachedGroups (List<String> groups, long timestamp)
 name|CachedGroups
 parameter_list|(
 name|List
@@ -585,6 +660,9 @@ argument_list|<
 name|String
 argument_list|>
 name|groups
+parameter_list|,
+name|long
+name|timestamp
 parameter_list|)
 block|{
 name|this
@@ -597,10 +675,7 @@ name|this
 operator|.
 name|timestamp
 operator|=
-name|Time
-operator|.
-name|now
-argument_list|()
+name|timestamp
 expr_stmt|;
 block|}
 comment|/**      * Returns time of last cache update      *      * @return time of last cache update      */

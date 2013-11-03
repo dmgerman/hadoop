@@ -152,6 +152,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationResourceUsageReport
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|ContainerId
 import|;
 end_import
@@ -451,6 +469,22 @@ name|Stable
 DECL|method|getSchedulerAppInfo (ApplicationAttemptId appAttemptId)
 name|SchedulerAppReport
 name|getSchedulerAppInfo
+parameter_list|(
+name|ApplicationAttemptId
+name|appAttemptId
+parameter_list|)
+function_decl|;
+comment|/**    * Get a resource usage report from a given app attempt ID.    * @param appAttemptId the id of the application attempt    * @return resource usage report for this given attempt    */
+annotation|@
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
+annotation|@
+name|Evolving
+DECL|method|getAppResourceUsageReport ( ApplicationAttemptId appAttemptId)
+name|ApplicationResourceUsageReport
+name|getAppResourceUsageReport
 parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId

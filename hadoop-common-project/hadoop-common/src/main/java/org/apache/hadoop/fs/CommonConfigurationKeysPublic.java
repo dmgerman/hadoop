@@ -834,6 +834,35 @@ init|=
 literal|"hadoop.security.groups.cache.secs"
 decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_SECS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|HADOOP_SECURITY_GROUPS_CACHE_SECS_DEFAULT
+init|=
+literal|300
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS
+init|=
+literal|"hadoop.security.groups.cache.warn.after.ms"
+decl_stmt|;
+DECL|field|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|HADOOP_SECURITY_GROUPS_CACHE_WARN_AFTER_MS_DEFAULT
+init|=
+literal|5000
+decl_stmt|;
+comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_SECURITY_AUTHENTICATION
 specifier|public
 specifier|static
