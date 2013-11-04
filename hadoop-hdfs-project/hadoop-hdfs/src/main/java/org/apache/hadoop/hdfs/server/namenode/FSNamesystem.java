@@ -26952,6 +26952,12 @@ name|j
 index|]
 argument_list|,
 name|storageIDs
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|storageIDs
 index|[
 name|j
 index|]

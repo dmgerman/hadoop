@@ -1656,6 +1656,12 @@ name|update
 argument_list|()
 expr_stmt|;
 return|return
+operator|!
+name|iterators
+operator|.
+name|isEmpty
+argument_list|()
+operator|&&
 name|iterators
 operator|.
 name|get
