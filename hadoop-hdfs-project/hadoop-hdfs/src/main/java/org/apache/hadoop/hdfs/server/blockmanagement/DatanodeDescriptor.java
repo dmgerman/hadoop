@@ -1469,10 +1469,27 @@ decl_stmt|;
 if|if
 condition|(
 name|storage
-operator|!=
+operator|==
 literal|null
 condition|)
 block|{
+comment|// This is seen during cluster initialization when the heartbeat
+comment|// is received before the initial block reports from each storage.
+name|storage
+operator|=
+name|updateStorage
+argument_list|(
+operator|new
+name|DatanodeStorage
+argument_list|(
+name|report
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 name|storage
 operator|.
 name|receivedHeartbeat
@@ -1508,25 +1525,6 @@ operator|.
 name|getDfsUsed
 argument_list|()
 expr_stmt|;
-block|}
-else|else
-block|{
-comment|// This warning is generally benign during cluster initialization
-comment|// when the heartbeat is received before the initial block reports
-comment|// from each storage.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Unrecognized storage ID "
-operator|+
-name|report
-operator|.
-name|getStorageID
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 name|rollBlocksScheduled
 argument_list|(
@@ -2648,6 +2646,23 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Adding new storage ID "
+operator|+
+name|s
+operator|.
+name|getStorageID
+argument_list|()
+operator|+
+literal|" for DN "
+operator|+
+name|getXferAddr
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|storage
 operator|=
 operator|new
