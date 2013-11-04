@@ -3902,61 +3902,6 @@ block|}
 block|}
 return|return;
 block|}
-comment|// This is a new datanode.
-if|if
-condition|(
-name|nodeReg
-operator|.
-name|getDatanodeUuid
-argument_list|()
-operator|==
-literal|null
-operator|||
-name|nodeReg
-operator|.
-name|getDatanodeUuid
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|// this data node has never been registered
-name|nodeReg
-operator|.
-name|generateNewDatanodeUuid
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|debug
-argument_list|(
-literal|"BLOCK* NameSystem.registerDatanode: "
-operator|+
-literal|"new Datanode UUID "
-operator|+
-name|nodeReg
-operator|.
-name|getDatanodeUuid
-argument_list|()
-operator|+
-literal|" assigned."
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 name|DatanodeDescriptor
 name|nodeDescr
 init|=

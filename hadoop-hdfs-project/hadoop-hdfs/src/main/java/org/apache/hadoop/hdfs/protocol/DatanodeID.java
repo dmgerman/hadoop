@@ -361,26 +361,6 @@ name|uuid
 return|;
 block|}
 block|}
-DECL|method|generateNewDatanodeUuid ()
-specifier|public
-name|String
-name|generateNewDatanodeUuid
-parameter_list|()
-block|{
-name|datanodeUuid
-operator|=
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-expr_stmt|;
-return|return
-name|datanodeUuid
-return|;
-block|}
 comment|/**    * @return ipAddr;    */
 DECL|method|getIpAddr ()
 specifier|public
