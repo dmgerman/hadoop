@@ -128,6 +128,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|Resource
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|server
 operator|.
 name|api
@@ -148,6 +184,17 @@ specifier|public
 interface|interface
 name|RMNode
 block|{
+comment|/** negative value means no timeout */
+DECL|field|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * the node id of of this node.    * @return the node id of this node.    */
 DECL|method|getNodeID ()
 specifier|public
@@ -214,20 +261,25 @@ function_decl|;
 comment|/**    * the total available resource.    * @return the total available resource.    */
 DECL|method|getTotalCapability ()
 specifier|public
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Resource
 name|getTotalCapability
+parameter_list|()
+function_decl|;
+comment|/**    * Set resource option with total available resource and overCommitTimoutMillis    * @param resourceOption    */
+DECL|method|setResourceOption (ResourceOption resourceOption)
+specifier|public
+name|void
+name|setResourceOption
+parameter_list|(
+name|ResourceOption
+name|resourceOption
+parameter_list|)
+function_decl|;
+comment|/**    * resource option with total available resource and overCommitTimoutMillis    * @return ResourceOption    */
+DECL|method|getResourceOption ()
+specifier|public
+name|ResourceOption
+name|getResourceOption
 parameter_list|()
 function_decl|;
 comment|/**    * The rack name for this node manager.    * @return the rack name.    */

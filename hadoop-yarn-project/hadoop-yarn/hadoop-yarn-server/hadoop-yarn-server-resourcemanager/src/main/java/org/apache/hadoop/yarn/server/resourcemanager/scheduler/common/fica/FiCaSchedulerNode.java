@@ -1422,6 +1422,31 @@ return|return
 name|reservedContainer
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|applyDeltaOnAvailableResource (Resource deltaResource)
+specifier|public
+specifier|synchronized
+name|void
+name|applyDeltaOnAvailableResource
+parameter_list|(
+name|Resource
+name|deltaResource
+parameter_list|)
+block|{
+comment|// we can only adjust available resource if total resource is changed.
+name|Resources
+operator|.
+name|addTo
+argument_list|(
+name|this
+operator|.
+name|availableResource
+argument_list|,
+name|deltaResource
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 
