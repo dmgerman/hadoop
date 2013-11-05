@@ -8324,9 +8324,9 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|dir
+name|dirURI
 operator|.
-name|getCanonicalPath
+name|getPath
 argument_list|()
 argument_list|)
 operator|.
