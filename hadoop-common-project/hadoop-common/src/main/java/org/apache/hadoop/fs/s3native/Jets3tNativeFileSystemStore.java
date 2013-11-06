@@ -122,6 +122,34 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|Log
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|logging
+operator|.
+name|LogFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -198,18 +226,6 @@ name|jets3t
 operator|.
 name|service
 operator|.
-name|S3ObjectsChunk
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|jets3t
-operator|.
-name|service
-operator|.
 name|S3Service
 import|;
 end_import
@@ -223,6 +239,30 @@ operator|.
 name|service
 operator|.
 name|S3ServiceException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|jets3t
+operator|.
+name|service
+operator|.
+name|ServiceException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|jets3t
+operator|.
+name|service
+operator|.
+name|StorageObjectsChunk
 import|;
 end_import
 
@@ -280,6 +320,20 @@ name|jets3t
 operator|.
 name|service
 operator|.
+name|model
+operator|.
+name|StorageObject
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|jets3t
+operator|.
+name|service
+operator|.
 name|security
 operator|.
 name|AWSCredentials
@@ -310,6 +364,22 @@ DECL|field|bucket
 specifier|private
 name|S3Bucket
 name|bucket
+decl_stmt|;
+DECL|field|LOG
+specifier|public
+specifier|static
+specifier|final
+name|Log
+name|LOG
+init|=
+name|LogFactory
+operator|.
+name|getLog
+argument_list|(
+name|Jets3tNativeFileSystemStore
+operator|.
+name|class
+argument_list|)
 decl_stmt|;
 annotation|@
 name|Override
@@ -379,7 +449,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -500,7 +570,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -603,7 +673,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -625,14 +695,42 @@ name|IOException
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting metadata for key: "
+operator|+
+name|key
+operator|+
+literal|" from bucket:"
+operator|+
+name|bucket
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|S3Object
 name|object
 init|=
 name|s3Service
 operator|.
-name|getObjectDetails
+name|getObject
 argument_list|(
 name|bucket
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|key
 argument_list|)
@@ -669,20 +767,21 @@ if|if
 condition|(
 name|e
 operator|.
-name|getMessage
+name|getS3ErrorCode
 argument_list|()
 operator|.
-name|contains
+name|matches
 argument_list|(
-literal|"ResponseCode=404"
+literal|"NoSuchKey"
 argument_list|)
 condition|)
 block|{
 return|return
 literal|null
 return|;
+comment|//return null if key not found
 block|}
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -693,6 +792,7 @@ return|;
 comment|//never returned - keep compiler happy
 block|}
 block|}
+comment|/**    * @param key    * The key is the object name that is being retrieved from the S3 bucket    * @return    * This method returns null if the key is not found    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|retrieve (String key)
@@ -708,6 +808,31 @@ name|IOException
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting key: "
+operator|+
+name|key
+operator|+
+literal|" from bucket:"
+operator|+
+name|bucket
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|S3Object
 name|object
 init|=
@@ -716,6 +841,9 @@ operator|.
 name|getObject
 argument_list|(
 name|bucket
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|key
 argument_list|)
@@ -733,7 +861,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|key
 argument_list|,
@@ -745,7 +873,24 @@ literal|null
 return|;
 comment|//never returned - keep compiler happy
 block|}
+catch|catch
+parameter_list|(
+name|ServiceException
+name|e
+parameter_list|)
+block|{
+name|handleServiceException
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+comment|//return null if key not found
 block|}
+block|}
+comment|/**    *    * @param key    * The key is the object name that is being retrieved from the S3 bucket    * @return    * This method returns null if the key is not found    * @throws IOException    */
 annotation|@
 name|Override
 DECL|method|retrieve (String key, long byteRangeStart)
@@ -764,6 +909,35 @@ name|IOException
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Getting key: "
+operator|+
+name|key
+operator|+
+literal|" from bucket:"
+operator|+
+name|bucket
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|" with byteRangeStart: "
+operator|+
+name|byteRangeStart
+argument_list|)
+expr_stmt|;
+block|}
 name|S3Object
 name|object
 init|=
@@ -801,7 +975,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|key
 argument_list|,
@@ -812,6 +986,22 @@ return|return
 literal|null
 return|;
 comment|//never returned - keep compiler happy
+block|}
+catch|catch
+parameter_list|(
+name|ServiceException
+name|e
+parameter_list|)
+block|{
+name|handleServiceException
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+comment|//return null if key not found
 block|}
 block|}
 annotation|@
@@ -882,6 +1072,7 @@ name|priorLastKey
 argument_list|)
 return|;
 block|}
+comment|/**    *    * @return    * This method returns null if the list could not be populated    * due to S3 giving ServiceException    * @throws IOException    */
 DECL|method|list (String prefix, String delimiter, int maxListingLength, String priorLastKey)
 specifier|private
 name|PartialListing
@@ -927,7 +1118,7 @@ operator|+=
 name|PATH_DELIMITER
 expr_stmt|;
 block|}
-name|S3ObjectsChunk
+name|StorageObjectsChunk
 name|chunk
 init|=
 name|s3Service
@@ -980,7 +1171,7 @@ name|i
 operator|++
 control|)
 block|{
-name|S3Object
+name|StorageObject
 name|object
 init|=
 name|chunk
@@ -1043,7 +1234,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -1052,6 +1243,22 @@ return|return
 literal|null
 return|;
 comment|//never returned - keep compiler happy
+block|}
+catch|catch
+parameter_list|(
+name|ServiceException
+name|e
+parameter_list|)
+block|{
+name|handleServiceException
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+comment|//return null if list could not be populated
 block|}
 block|}
 annotation|@
@@ -1069,6 +1276,31 @@ name|IOException
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Deleting key:"
+operator|+
+name|key
+operator|+
+literal|"from bucket"
+operator|+
+name|bucket
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|s3Service
 operator|.
 name|deleteObject
@@ -1085,7 +1317,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|key
 argument_list|,
@@ -1112,6 +1344,35 @@ name|IOException
 block|{
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Copying srcKey: "
+operator|+
+name|srcKey
+operator|+
+literal|"to dstKey: "
+operator|+
+name|dstKey
+operator|+
+literal|"in bucket: "
+operator|+
+name|bucket
+operator|.
+name|getName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|s3Service
 operator|.
 name|copyObject
@@ -1144,10 +1405,22 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|srcKey
 argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|ServiceException
+name|e
+parameter_list|)
+block|{
+name|handleServiceException
+argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
@@ -1177,6 +1450,9 @@ operator|.
 name|listObjects
 argument_list|(
 name|bucket
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|prefix
 argument_list|,
@@ -1211,7 +1487,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -1263,6 +1539,9 @@ operator|.
 name|listObjects
 argument_list|(
 name|bucket
+operator|.
+name|getName
+argument_list|()
 argument_list|)
 decl_stmt|;
 for|for
@@ -1296,7 +1575,7 @@ name|S3ServiceException
 name|e
 parameter_list|)
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -1312,10 +1591,10 @@ name|sb
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|handleServiceException (String key, S3ServiceException e)
+DECL|method|handleS3ServiceException (String key, S3ServiceException e)
 specifier|private
 name|void
-name|handleServiceException
+name|handleS3ServiceException
 parameter_list|(
 name|String
 name|key
@@ -1353,17 +1632,17 @@ throw|;
 block|}
 else|else
 block|{
-name|handleServiceException
+name|handleS3ServiceException
 argument_list|(
 name|e
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|handleServiceException (S3ServiceException e)
+DECL|method|handleS3ServiceException (S3ServiceException e)
 specifier|private
 name|void
-name|handleServiceException
+name|handleS3ServiceException
 parameter_list|(
 name|S3ServiceException
 name|e
@@ -1393,6 +1672,34 @@ throw|;
 block|}
 else|else
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"S3 Error code: "
+operator|+
+name|e
+operator|.
+name|getS3ErrorCode
+argument_list|()
+operator|+
+literal|"; S3 Error message: "
+operator|+
+name|e
+operator|.
+name|getS3ErrorMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|S3Exception
@@ -1400,6 +1707,69 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
+block|}
+DECL|method|handleServiceException (ServiceException e)
+specifier|private
+name|void
+name|handleServiceException
+parameter_list|(
+name|ServiceException
+name|e
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|e
+operator|.
+name|getCause
+argument_list|()
+operator|instanceof
+name|IOException
+condition|)
+block|{
+throw|throw
+operator|(
+name|IOException
+operator|)
+name|e
+operator|.
+name|getCause
+argument_list|()
+throw|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Got ServiceException with Error code: "
+operator|+
+name|e
+operator|.
+name|getErrorCode
+argument_list|()
+operator|+
+literal|";and Error message: "
+operator|+
+name|e
+operator|.
+name|getErrorMessage
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
