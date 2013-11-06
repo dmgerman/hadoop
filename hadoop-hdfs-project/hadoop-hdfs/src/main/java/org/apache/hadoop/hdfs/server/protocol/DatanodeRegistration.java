@@ -312,7 +312,7 @@ operator|+
 name|getIpAddr
 argument_list|()
 operator|+
-literal|", storageID="
+literal|", datanodeUuid="
 operator|+
 name|getDatanodeUuid
 argument_list|()

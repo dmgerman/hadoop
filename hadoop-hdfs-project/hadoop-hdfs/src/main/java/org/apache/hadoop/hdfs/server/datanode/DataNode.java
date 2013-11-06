@@ -4513,6 +4513,13 @@ operator|+
 literal|";nsInfo="
 operator|+
 name|nsInfo
+operator|+
+literal|";dnuuid="
+operator|+
+name|storage
+operator|.
+name|getDatanodeUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

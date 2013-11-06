@@ -1316,7 +1316,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Report received blocks and delete hints to the Namenode    * TODO: Fix reportReceivedDeletedBlocks to send reports per-volume.    *     * @throws IOException    */
+comment|/**    * Report received blocks and delete hints to the Namenode    * @throws IOException    */
 DECL|method|reportReceivedDeletedBlocks ()
 specifier|private
 name|void

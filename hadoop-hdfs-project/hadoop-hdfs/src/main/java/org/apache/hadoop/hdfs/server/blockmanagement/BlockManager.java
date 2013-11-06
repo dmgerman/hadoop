@@ -6709,7 +6709,12 @@ name|increment
 argument_list|(
 name|block
 argument_list|,
+name|DatanodeStorageInfo
+operator|.
+name|toDatanodeDescriptors
+argument_list|(
 name|targets
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -6845,6 +6850,9 @@ name|targets
 index|[
 name|k
 index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -12228,8 +12236,6 @@ argument_list|(
 name|block
 argument_list|,
 name|node
-argument_list|,
-name|storageID
 argument_list|)
 expr_stmt|;
 name|processAndHandleReportedBlock

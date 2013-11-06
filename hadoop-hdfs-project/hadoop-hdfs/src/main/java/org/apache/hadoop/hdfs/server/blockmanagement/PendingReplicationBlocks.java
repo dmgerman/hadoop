@@ -302,14 +302,14 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Add a block to the list of pending Replications    * @param block The corresponding block    * @param targets The DataNodes where replicas of the block should be placed    */
-DECL|method|increment (Block block, DatanodeStorageInfo[] targets)
+DECL|method|increment (Block block, DatanodeDescriptor[] targets)
 name|void
 name|increment
 parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|DatanodeStorageInfo
+name|DatanodeDescriptor
 index|[]
 name|targets
 parameter_list|)
@@ -368,7 +368,7 @@ block|}
 block|}
 block|}
 comment|/**    * One replication request for this block has finished.    * Decrement the number of pending replication requests    * for this block.    *     * @param The DataNode that finishes the replication    */
-DECL|method|decrement (Block block, DatanodeDescriptor dn, String storageID)
+DECL|method|decrement (Block block, DatanodeDescriptor dn)
 name|void
 name|decrement
 parameter_list|(
@@ -377,9 +377,6 @@ name|block
 parameter_list|,
 name|DatanodeDescriptor
 name|dn
-parameter_list|,
-name|String
-name|storageID
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -427,11 +424,6 @@ operator|.
 name|decrementReplicas
 argument_list|(
 name|dn
-operator|.
-name|getStorageInfo
-argument_list|(
-name|storageID
-argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -627,14 +619,14 @@ specifier|private
 specifier|final
 name|List
 argument_list|<
-name|DatanodeStorageInfo
+name|DatanodeDescriptor
 argument_list|>
 name|targets
 decl_stmt|;
-DECL|method|PendingBlockInfo (DatanodeStorageInfo[] targets)
+DECL|method|PendingBlockInfo (DatanodeDescriptor[] targets)
 name|PendingBlockInfo
 parameter_list|(
-name|DatanodeStorageInfo
+name|DatanodeDescriptor
 index|[]
 name|targets
 parameter_list|)
@@ -657,14 +649,14 @@ condition|?
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeStorageInfo
+name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 else|:
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeStorageInfo
+name|DatanodeDescriptor
 argument_list|>
 argument_list|(
 name|Arrays
@@ -696,11 +688,11 @@ name|now
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|incrementReplicas (DatanodeStorageInfo... newTargets)
+DECL|method|incrementReplicas (DatanodeDescriptor... newTargets)
 name|void
 name|incrementReplicas
 parameter_list|(
-name|DatanodeStorageInfo
+name|DatanodeDescriptor
 modifier|...
 name|newTargets
 parameter_list|)
@@ -714,7 +706,7 @@ condition|)
 block|{
 for|for
 control|(
-name|DatanodeStorageInfo
+name|DatanodeDescriptor
 name|dn
 range|:
 name|newTargets
@@ -730,19 +722,19 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|decrementReplicas (DatanodeStorageInfo storage)
+DECL|method|decrementReplicas (DatanodeDescriptor target)
 name|void
 name|decrementReplicas
 parameter_list|(
-name|DatanodeStorageInfo
-name|storage
+name|DatanodeDescriptor
+name|target
 parameter_list|)
 block|{
 name|targets
 operator|.
 name|remove
 argument_list|(
-name|storage
+name|target
 argument_list|)
 expr_stmt|;
 block|}
