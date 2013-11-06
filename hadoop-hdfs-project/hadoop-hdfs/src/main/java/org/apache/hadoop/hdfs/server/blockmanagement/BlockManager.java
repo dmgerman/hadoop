@@ -7889,19 +7889,6 @@ argument_list|(
 name|storage
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"XXX storageInfo="
-operator|+
-name|storageInfo
-operator|+
-literal|", storage="
-operator|+
-name|storage
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|namesystem
