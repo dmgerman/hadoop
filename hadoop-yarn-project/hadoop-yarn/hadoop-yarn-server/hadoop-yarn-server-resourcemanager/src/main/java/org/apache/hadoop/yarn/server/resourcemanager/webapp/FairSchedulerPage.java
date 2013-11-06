@@ -595,6 +595,10 @@ name|_
 argument_list|(
 literal|"Fair Share:"
 argument_list|,
+name|StringEscapeUtils
+operator|.
+name|escapeHtml
+argument_list|(
 name|qinfo
 operator|.
 name|getFairShare
@@ -602,6 +606,7 @@ argument_list|()
 operator|.
 name|toString
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|html

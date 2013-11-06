@@ -8263,10 +8263,10 @@ name|append
 argument_list|(
 name|location
 operator|.
-name|getFile
+name|getUri
 argument_list|()
 operator|.
-name|getCanonicalPath
+name|getPath
 argument_list|()
 argument_list|)
 operator|.

@@ -2465,16 +2465,26 @@ name|isFile
 argument_list|()
 condition|)
 block|{
-comment|// Add file->block mapping
-specifier|final
-name|INodeFile
-name|file
-init|=
+name|updateBlocksMap
+argument_list|(
 name|child
 operator|.
 name|asFile
 argument_list|()
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|updateBlocksMap (INodeFile file)
+specifier|public
+name|void
+name|updateBlocksMap
+parameter_list|(
+name|INodeFile
+name|file
+parameter_list|)
+block|{
+comment|// Add file->block mapping
 specifier|final
 name|BlockInfo
 index|[]
@@ -2537,7 +2547,6 @@ name|file
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

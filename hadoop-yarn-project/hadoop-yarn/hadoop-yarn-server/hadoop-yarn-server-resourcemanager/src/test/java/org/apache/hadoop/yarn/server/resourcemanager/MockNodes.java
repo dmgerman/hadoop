@@ -154,6 +154,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ResourceOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -644,7 +662,7 @@ name|cmdPort
 decl_stmt|;
 DECL|field|perNode
 specifier|private
-name|Resource
+name|ResourceOption
 name|perNode
 decl_stmt|;
 DECL|field|rackName
@@ -667,7 +685,7 @@ specifier|private
 name|NodeState
 name|state
 decl_stmt|;
-DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, Resource perNode, String rackName, String healthReport, long lastHealthReportTime, int cmdPort, String hostName, NodeState state)
+DECL|method|MockRMNodeImpl (NodeId nodeId, String nodeAddr, String httpAddress, ResourceOption perNode, String rackName, String healthReport, long lastHealthReportTime, int cmdPort, String hostName, NodeState state)
 specifier|public
 name|MockRMNodeImpl
 parameter_list|(
@@ -680,7 +698,7 @@ parameter_list|,
 name|String
 name|httpAddress
 parameter_list|,
-name|Resource
+name|ResourceOption
 name|perNode
 parameter_list|,
 name|String
@@ -857,6 +875,9 @@ return|return
 name|this
 operator|.
 name|perNode
+operator|.
+name|getResource
+argument_list|()
 return|;
 block|}
 annotation|@
@@ -1012,6 +1033,38 @@ return|return
 name|lastHealthReportTime
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setResourceOption (ResourceOption resourceOption)
+specifier|public
+name|void
+name|setResourceOption
+parameter_list|(
+name|ResourceOption
+name|resourceOption
+parameter_list|)
+block|{
+name|this
+operator|.
+name|perNode
+operator|=
+name|resourceOption
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getResourceOption ()
+specifier|public
+name|ResourceOption
+name|getResourceOption
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|perNode
+return|;
+block|}
 block|}
 empty_stmt|;
 DECL|method|buildRMNode (int rack, final Resource perNode, NodeState state, String httpAddr)
@@ -1165,7 +1218,16 @@ name|nodeAddr
 argument_list|,
 name|httpAddress
 argument_list|,
+name|ResourceOption
+operator|.
+name|newInstance
+argument_list|(
 name|perNode
+argument_list|,
+name|RMNode
+operator|.
+name|OVER_COMMIT_TIMEOUT_MILLIS_DEFAULT
+argument_list|)
 argument_list|,
 name|rackName
 argument_list|,

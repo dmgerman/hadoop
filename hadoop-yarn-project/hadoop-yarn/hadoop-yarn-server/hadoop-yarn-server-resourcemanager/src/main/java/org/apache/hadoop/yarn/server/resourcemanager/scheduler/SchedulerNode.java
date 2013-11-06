@@ -161,6 +161,17 @@ name|int
 name|getNumContainers
 parameter_list|()
 function_decl|;
+comment|/**    * Apply delta resource on node's available resource.    * @param deltaResource the delta of resource need to apply to node    */
+DECL|method|applyDeltaOnAvailableResource (Resource deltaResource)
+specifier|public
+specifier|abstract
+name|void
+name|applyDeltaOnAvailableResource
+parameter_list|(
+name|Resource
+name|deltaResource
+parameter_list|)
+function_decl|;
 comment|/**    * Get total resources on the node.    * @return total resources on the node.    */
 DECL|method|getTotalResource ()
 specifier|public

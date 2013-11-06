@@ -3642,6 +3642,20 @@ name|getNodeID
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Update resource if any change
+name|SchedulerUtils
+operator|.
+name|updateResourceIfChanged
+argument_list|(
+name|node
+argument_list|,
+name|nm
+argument_list|,
+name|clusterResource
+argument_list|,
+name|LOG
+argument_list|)
+expr_stmt|;
 name|List
 argument_list|<
 name|UpdatedContainerInfo

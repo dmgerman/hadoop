@@ -384,6 +384,13 @@ name|Step
 name|step
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|isComplete
+argument_list|()
+condition|)
+block|{
 specifier|final
 name|StepTracking
 name|tracking
@@ -395,13 +402,6 @@ argument_list|,
 name|step
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|isComplete
-argument_list|()
-condition|)
-block|{
 return|return
 operator|new
 name|Counter
