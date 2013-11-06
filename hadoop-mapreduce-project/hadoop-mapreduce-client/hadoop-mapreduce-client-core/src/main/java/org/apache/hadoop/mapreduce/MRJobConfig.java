@@ -2235,11 +2235,16 @@ literal|"mapreduce.admin.user.env"
 decl_stmt|;
 DECL|field|DEFAULT_MAPRED_ADMIN_USER_ENV
 specifier|public
-specifier|static
 specifier|final
 name|String
 name|DEFAULT_MAPRED_ADMIN_USER_ENV
 init|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+literal|"PATH=%PATH%;%HADOOP_COMMON_HOME%\\bin"
+else|:
 literal|"LD_LIBRARY_PATH=$HADOOP_COMMON_HOME/lib/native"
 decl_stmt|;
 DECL|field|WORKDIR
