@@ -96,16 +96,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|security
-operator|.
-name|InvalidParameterException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|EnumSet
@@ -939,6 +929,15 @@ operator|>
 name|streamTimeout
 return|;
 block|}
+DECL|method|getLastAccessTime ()
+name|long
+name|getLastAccessTime
+parameter_list|()
+block|{
+return|return
+name|lastAccessTime
+return|;
+block|}
 DECL|method|getNextOffset ()
 specifier|public
 name|long
@@ -950,6 +949,40 @@ name|nextOffset
 operator|.
 name|get
 argument_list|()
+return|;
+block|}
+DECL|method|getActiveState ()
+name|boolean
+name|getActiveState
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|activeState
+return|;
+block|}
+DECL|method|hasPendingWork ()
+name|boolean
+name|hasPendingWork
+parameter_list|()
+block|{
+return|return
+operator|(
+name|pendingWrites
+operator|.
+name|size
+argument_list|()
+operator|!=
+literal|0
+operator|||
+name|pendingCommits
+operator|.
+name|size
+argument_list|()
+operator|!=
+literal|0
+operator|)
 return|;
 block|}
 comment|// Increase or decrease the memory occupation of non-sequential writes
@@ -4083,32 +4116,26 @@ name|long
 name|streamTimeout
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|streamTimeout
+operator|>=
+name|Nfs3Constant
+operator|.
+name|OUTPUT_STREAM_TIMEOUT_MIN_DEFAULT
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
-name|streamTimeout
-operator|<
-name|WriteManager
-operator|.
-name|MINIMIUM_STREAM_TIMEOUT
+operator|!
+name|activeState
 condition|)
 block|{
-throw|throw
-operator|new
-name|InvalidParameterException
-argument_list|(
-literal|"StreamTimeout"
-operator|+
-name|streamTimeout
-operator|+
-literal|"ms is less than MINIMIUM_STREAM_TIMEOUT "
-operator|+
-name|WriteManager
-operator|.
-name|MINIMIUM_STREAM_TIMEOUT
-operator|+
-literal|"ms"
-argument_list|)
-throw|;
+return|return
+literal|true
+return|;
 block|}
 name|boolean
 name|flag
@@ -4136,15 +4163,12 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"closing stream for fileId:"
+literal|"stream can be closed for fileId:"
 operator|+
 name|fileId
 argument_list|)
 expr_stmt|;
 block|}
-name|cleanup
-argument_list|()
-expr_stmt|;
 name|flag
 operator|=
 literal|true
@@ -5012,7 +5036,7 @@ literal|" stableHow:"
 operator|+
 name|stableHow
 operator|.
-name|getValue
+name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5459,7 +5483,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|cleanup ()
-specifier|private
 specifier|synchronized
 name|void
 name|cleanup
@@ -5490,6 +5513,11 @@ condition|(
 name|dumpThread
 operator|!=
 literal|null
+operator|&&
+name|dumpThread
+operator|.
+name|isAlive
+argument_list|()
 condition|)
 block|{
 name|dumpThread
@@ -5880,6 +5908,32 @@ name|activeState
 operator|=
 name|activeState
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"activeState: %b asyncStatus: %b nextOffset: %d"
+argument_list|,
+name|activeState
+argument_list|,
+name|asyncStatus
+argument_list|,
+name|nextOffset
+operator|.
+name|get
+argument_list|()
+argument_list|)
+return|;
 block|}
 block|}
 end_class

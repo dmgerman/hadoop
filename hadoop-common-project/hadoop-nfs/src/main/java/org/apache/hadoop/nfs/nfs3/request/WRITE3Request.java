@@ -377,6 +377,37 @@ name|count
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"fileId: %d offset: %d count: %d stableHow: %s"
+argument_list|,
+name|handle
+operator|.
+name|getFileId
+argument_list|()
+argument_list|,
+name|offset
+argument_list|,
+name|count
+argument_list|,
+name|stableHow
+operator|.
+name|name
+argument_list|()
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

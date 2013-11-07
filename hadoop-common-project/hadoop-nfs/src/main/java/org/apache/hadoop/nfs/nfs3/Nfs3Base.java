@@ -68,20 +68,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mount
-operator|.
-name|MountdBase
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|oncrpc
 operator|.
 name|RpcProgram
@@ -143,12 +129,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|mountd
-specifier|private
-specifier|final
-name|MountdBase
-name|mountd
-decl_stmt|;
 DECL|field|rpcProgram
 specifier|private
 specifier|final
@@ -161,16 +141,6 @@ specifier|final
 name|int
 name|nfsPort
 decl_stmt|;
-DECL|method|getMountBase ()
-specifier|public
-name|MountdBase
-name|getMountBase
-parameter_list|()
-block|{
-return|return
-name|mountd
-return|;
-block|}
 DECL|method|getRpcProgram ()
 specifier|public
 name|RpcProgram
@@ -181,15 +151,12 @@ return|return
 name|rpcProgram
 return|;
 block|}
-DECL|method|Nfs3Base (MountdBase mountd, RpcProgram program, Configuration conf)
+DECL|method|Nfs3Base (RpcProgram rpcProgram, Configuration conf)
 specifier|protected
 name|Nfs3Base
 parameter_list|(
-name|MountdBase
-name|mountd
-parameter_list|,
 name|RpcProgram
-name|program
+name|rpcProgram
 parameter_list|,
 name|Configuration
 name|conf
@@ -197,15 +164,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|mountd
-operator|=
-name|mountd
-expr_stmt|;
-name|this
-operator|.
 name|rpcProgram
 operator|=
-name|program
+name|rpcProgram
 expr_stmt|;
 name|this
 operator|.
@@ -232,28 +193,19 @@ name|nfsPort
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|Nfs3Base (MountdBase mountd, RpcProgram program)
+DECL|method|Nfs3Base (RpcProgram rpcProgram)
 specifier|protected
 name|Nfs3Base
 parameter_list|(
-name|MountdBase
-name|mountd
-parameter_list|,
 name|RpcProgram
-name|program
+name|rpcProgram
 parameter_list|)
 block|{
 name|this
 operator|.
-name|mountd
-operator|=
-name|mountd
-expr_stmt|;
-name|this
-operator|.
 name|rpcProgram
 operator|=
-name|program
+name|rpcProgram
 expr_stmt|;
 name|this
 operator|.
@@ -273,14 +225,6 @@ name|boolean
 name|register
 parameter_list|)
 block|{
-name|mountd
-operator|.
-name|start
-argument_list|(
-name|register
-argument_list|)
-expr_stmt|;
-comment|// Start mountd
 name|startTCPServer
 argument_list|()
 expr_stmt|;
@@ -320,6 +264,11 @@ argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
+name|rpcProgram
+operator|.
+name|startDaemons
+argument_list|()
+expr_stmt|;
 name|tcpServer
 operator|.
 name|run

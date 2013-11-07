@@ -303,7 +303,7 @@ name|RpcProgramMountd
 operator|)
 name|nfs3
 operator|.
-name|getMountBase
+name|getMountd
 argument_list|()
 operator|.
 name|getRpcProgram
