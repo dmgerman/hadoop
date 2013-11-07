@@ -1441,7 +1441,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|"<path>]\n"
+literal|" -path<path>]\n"
 return|;
 block|}
 annotation|@
@@ -1462,7 +1462,7 @@ name|listing
 operator|.
 name|addRow
 argument_list|(
-literal|"<path>"
+literal|"-path<path>"
 argument_list|,
 literal|"The path of the cache directives to remove.  "
 operator|+
@@ -3956,17 +3956,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|commandName
-operator|=
-name|commandName
-operator|.
-name|replaceAll
-argument_list|(
-literal|"^[-]*"
-argument_list|,
-literal|""
-argument_list|)
-expr_stmt|;
 name|Command
 name|command
 init|=
