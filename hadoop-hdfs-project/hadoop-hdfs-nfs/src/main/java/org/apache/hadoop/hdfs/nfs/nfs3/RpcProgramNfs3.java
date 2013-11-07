@@ -1734,6 +1734,20 @@ name|ChannelHandlerContext
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * RPC program corresponding to nfs daemon. See {@link Nfs3}.  */
 end_comment
@@ -12963,6 +12977,19 @@ return|;
 block|}
 return|return
 literal|true
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getWriteManager ()
+name|WriteManager
+name|getWriteManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|writeManager
 return|;
 block|}
 block|}

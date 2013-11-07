@@ -420,6 +420,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|Maps
@@ -1613,6 +1627,24 @@ block|}
 block|}
 return|return
 name|attr
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getOpenFileMap ()
+name|ConcurrentMap
+argument_list|<
+name|FileHandle
+argument_list|,
+name|OpenFileCtx
+argument_list|>
+name|getOpenFileMap
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|openFileMap
 return|;
 block|}
 comment|/**    * StreamMonitor wakes up periodically to find and closes idle streams.    */
