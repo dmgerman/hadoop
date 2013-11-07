@@ -3822,6 +3822,23 @@ name|getInstance
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|generateUuid ()
+specifier|public
+specifier|static
+name|String
+name|generateUuid
+parameter_list|()
+block|{
+return|return
+name|UUID
+operator|.
+name|randomUUID
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
 comment|/**    * Verify that the DatanodeUuid has been initialized. If this is a new    * datanode then we generate a new Datanode Uuid and persist it to disk.    *    * @throws IOException    */
 DECL|method|checkDatanodeUuid ()
 specifier|private
@@ -3846,12 +3863,7 @@ name|storage
 operator|.
 name|setDatanodeUuid
 argument_list|(
-name|UUID
-operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
+name|generateUuid
 argument_list|()
 argument_list|)
 expr_stmt|;

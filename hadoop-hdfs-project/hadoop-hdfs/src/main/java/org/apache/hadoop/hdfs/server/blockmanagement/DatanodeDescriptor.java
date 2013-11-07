@@ -927,6 +927,21 @@ argument_list|(
 name|nodeID
 argument_list|)
 expr_stmt|;
+name|updateHeartbeat
+argument_list|(
+name|StorageReport
+operator|.
+name|EMPTY_ARRAY
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
+literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * DatanodeDescriptor constructor    * @param nodeID id of the data node    * @param networkLocation location of the data node in network    */
 DECL|method|DatanodeDescriptor (DatanodeID nodeID, String networkLocation)
@@ -945,6 +960,21 @@ argument_list|(
 name|nodeID
 argument_list|,
 name|networkLocation
+argument_list|)
+expr_stmt|;
+name|updateHeartbeat
+argument_list|(
+name|StorageReport
+operator|.
+name|EMPTY_ARRAY
+argument_list|,
+literal|0L
+argument_list|,
+literal|0L
+argument_list|,
+literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 block|}
