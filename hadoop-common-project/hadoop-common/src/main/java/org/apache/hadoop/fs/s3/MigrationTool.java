@@ -214,6 +214,18 @@ name|jets3t
 operator|.
 name|service
 operator|.
+name|ServiceException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|jets3t
+operator|.
+name|service
+operator|.
 name|impl
 operator|.
 name|rest
@@ -952,6 +964,9 @@ operator|.
 name|getObject
 argument_list|(
 name|bucket
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|key
 argument_list|)
@@ -1060,6 +1075,9 @@ operator|.
 name|listObjects
 argument_list|(
 name|bucket
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|prefix
 argument_list|,
@@ -1281,6 +1299,9 @@ operator|.
 name|getObject
 argument_list|(
 name|bucket
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|key
 argument_list|)
@@ -1342,6 +1363,16 @@ argument_list|(
 name|e
 argument_list|)
 throw|;
+block|}
+catch|catch
+parameter_list|(
+name|ServiceException
+name|e
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
 block|}
 block|}
 DECL|method|pathToKey (Path path)
