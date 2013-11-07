@@ -437,7 +437,6 @@ return|;
 block|}
 comment|/**    * Iterates over the list of blocks belonging to the data-node.    */
 DECL|class|BlockIterator
-specifier|static
 class|class
 name|BlockIterator
 implements|implements
@@ -451,19 +450,11 @@ specifier|private
 name|BlockInfo
 name|current
 decl_stmt|;
-DECL|field|node
-specifier|private
-name|DatanodeStorageInfo
-name|node
-decl_stmt|;
-DECL|method|BlockIterator (BlockInfo head, DatanodeStorageInfo dn)
+DECL|method|BlockIterator (BlockInfo head)
 name|BlockIterator
 parameter_list|(
 name|BlockInfo
 name|head
-parameter_list|,
-name|DatanodeStorageInfo
-name|dn
 parameter_list|)
 block|{
 name|this
@@ -471,12 +462,6 @@ operator|.
 name|current
 operator|=
 name|head
-expr_stmt|;
-name|this
-operator|.
-name|node
-operator|=
-name|dn
 expr_stmt|;
 block|}
 DECL|method|hasNext ()
@@ -512,7 +497,9 @@ name|current
 operator|.
 name|findStorageInfo
 argument_list|(
-name|node
+name|DatanodeStorageInfo
+operator|.
+name|this
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -987,12 +974,55 @@ return|return
 operator|new
 name|BlockIterator
 argument_list|(
-name|this
+name|blockList
+argument_list|)
+return|;
+block|}
+comment|/**    * Move block to the head of the list of blocks belonging to the data-node.    * @return the index of the head of the blockList    */
+DECL|method|moveBlockToHead (BlockInfo b, int curIndex, int headIndex)
+name|int
+name|moveBlockToHead
+parameter_list|(
+name|BlockInfo
+name|b
+parameter_list|,
+name|int
+name|curIndex
+parameter_list|,
+name|int
+name|headIndex
+parameter_list|)
+block|{
+name|blockList
+operator|=
+name|b
 operator|.
+name|moveBlockToHead
+argument_list|(
 name|blockList
 argument_list|,
 name|this
+argument_list|,
+name|curIndex
+argument_list|,
+name|headIndex
 argument_list|)
+expr_stmt|;
+return|return
+name|curIndex
+return|;
+block|}
+comment|/**    * Used for testing only    * @return the head of the blockList    */
+annotation|@
+name|VisibleForTesting
+DECL|method|getHead ()
+specifier|protected
+name|BlockInfo
+name|getHead
+parameter_list|()
+block|{
+return|return
+name|blockList
 return|;
 block|}
 DECL|method|updateState (StorageReport r)
