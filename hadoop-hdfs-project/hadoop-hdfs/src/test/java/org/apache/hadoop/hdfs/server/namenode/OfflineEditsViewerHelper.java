@@ -348,22 +348,6 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDescriptor
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
 name|PathBasedCacheDirective
 import|;
 end_import
@@ -1372,8 +1356,8 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// OP_ADD_PATH_BASED_CACHE_DIRECTIVE 33
-name|PathBasedCacheDescriptor
-name|descriptor
+name|long
+name|id
 init|=
 name|dfs
 operator|.
@@ -1411,12 +1395,41 @@ name|build
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// OP_REMOVE_PATH_BASED_CACHE_DESCRIPTOR 34
+comment|// OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE 38
 name|dfs
 operator|.
-name|removePathBasedCacheDescriptor
+name|modifyPathBasedCacheDirective
 argument_list|(
-name|descriptor
+operator|new
+name|PathBasedCacheDirective
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|setId
+argument_list|(
+name|id
+argument_list|)
+operator|.
+name|setPath
+argument_list|(
+operator|new
+name|Path
+argument_list|(
+literal|"/bar2"
+argument_list|)
+argument_list|)
+operator|.
+name|build
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE 34
+name|dfs
+operator|.
+name|removePathBasedCacheDirective
+argument_list|(
+name|id
 argument_list|)
 expr_stmt|;
 comment|// OP_REMOVE_CACHE_POOL 37

@@ -5762,7 +5762,7 @@ name|isUnderConstruction
 argument_list|()
 condition|)
 do|;
-comment|// OP_ADD_CACHE_POOL 35
+comment|// OP_ADD_CACHE_POOL
 name|filesystem
 operator|.
 name|addCachePool
@@ -5774,7 +5774,7 @@ literal|"pool1"
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// OP_MODIFY_CACHE_POOL 36
+comment|// OP_MODIFY_CACHE_POOL
 name|filesystem
 operator|.
 name|modifyCachePool
@@ -5791,9 +5791,9 @@ literal|99
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// OP_ADD_PATH_BASED_CACHE_DIRECTIVE 33
-name|PathBasedCacheDescriptor
-name|pbcd
+comment|// OP_ADD_PATH_BASED_CACHE_DIRECTIVE
+name|long
+name|id
 init|=
 name|filesystem
 operator|.
@@ -5814,6 +5814,14 @@ literal|"/path"
 argument_list|)
 argument_list|)
 operator|.
+name|setReplication
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|1
+argument_list|)
+operator|.
 name|setPool
 argument_list|(
 literal|"pool1"
@@ -5823,15 +5831,43 @@ name|build
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// OP_REMOVE_PATH_BASED_CACHE_DESCRIPTOR 34
+comment|// OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
 name|filesystem
 operator|.
-name|removePathBasedCacheDescriptor
+name|modifyPathBasedCacheDirective
 argument_list|(
-name|pbcd
+operator|new
+name|PathBasedCacheDirective
+operator|.
+name|Builder
+argument_list|()
+operator|.
+name|setId
+argument_list|(
+name|id
+argument_list|)
+operator|.
+name|setReplication
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|2
+argument_list|)
+operator|.
+name|build
+argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// OP_REMOVE_CACHE_POOL 37
+comment|// OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
+name|filesystem
+operator|.
+name|removePathBasedCacheDirective
+argument_list|(
+name|id
+argument_list|)
+expr_stmt|;
+comment|// OP_REMOVE_CACHE_POOL
 name|filesystem
 operator|.
 name|removeCachePool

@@ -417,8 +417,8 @@ operator|)
 literal|33
 argument_list|)
 block|,
-DECL|enumConstant|OP_REMOVE_PATH_BASED_CACHE_DESCRIPTOR
-name|OP_REMOVE_PATH_BASED_CACHE_DESCRIPTOR
+DECL|enumConstant|OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
+name|OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
 argument_list|(
 operator|(
 name|byte
@@ -451,6 +451,15 @@ operator|(
 name|byte
 operator|)
 literal|37
+argument_list|)
+block|,
+DECL|enumConstant|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
+name|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|38
 argument_list|)
 block|;
 DECL|field|opCode
