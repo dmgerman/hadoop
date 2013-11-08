@@ -40,16 +40,6 @@ name|java
 operator|.
 name|io
 operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
 name|IOException
 import|;
 end_import
@@ -980,9 +970,9 @@ name|f
 argument_list|)
 return|;
 block|}
-DECL|method|getExecutor ()
+DECL|method|getCacheExecutor ()
 name|Executor
-name|getExecutor
+name|getCacheExecutor
 parameter_list|()
 block|{
 return|return
