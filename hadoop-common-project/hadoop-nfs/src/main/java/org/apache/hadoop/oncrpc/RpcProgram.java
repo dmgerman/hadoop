@@ -461,6 +461,13 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|// Start extra daemons
+DECL|method|startDaemons ()
+specifier|public
+name|void
+name|startDaemons
+parameter_list|()
+block|{}
 annotation|@
 name|Override
 DECL|method|messageReceived (ChannelHandlerContext ctx, MessageEvent e)

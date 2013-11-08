@@ -677,6 +677,24 @@ parameter_list|)
 block|{
 if|if
 condition|(
+name|channel
+operator|==
+literal|null
+condition|)
+block|{
+name|RpcProgramNfs3
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Null channel should only happen in tests. Do nothing."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+if|if
+condition|(
 name|RpcProgramNfs3
 operator|.
 name|LOG

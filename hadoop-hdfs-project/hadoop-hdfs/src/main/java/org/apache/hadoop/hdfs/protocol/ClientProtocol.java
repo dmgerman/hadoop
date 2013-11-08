@@ -1735,12 +1735,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Add a PathBasedCache entry to the CacheManager.    *     * @param directive A PathBasedCacheDirective to be added    * @return A PathBasedCacheDescriptor associated with the added directive    * @throws IOException if the directive could not be added    */
+comment|/**    * Add a PathBasedCache entry to the CacheManager.    *     * @param directive A PathBasedCacheDirective to be added    * @return A PathBasedCacheDirective associated with the added directive    * @throws IOException if the directive could not be added    */
 annotation|@
 name|AtMostOnce
 DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective directive)
 specifier|public
-name|PathBasedCacheDescriptor
+name|long
 name|addPathBasedCacheDirective
 parameter_list|(
 name|PathBasedCacheDirective
@@ -1749,39 +1749,50 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove a PathBasedCacheDescriptor from the CacheManager.    *     * @param id of a PathBasedCacheDescriptor    * @throws IOException if the cache descriptor could not be removed    */
+comment|/**    * Modify a PathBasedCache entry in the CacheManager.    *     * @return directive The directive to modify.  Must contain     *                   a directive ID.    * @throws IOException if the directive could not be modified    */
 annotation|@
 name|AtMostOnce
-DECL|method|removePathBasedCacheDescriptor (Long id)
+DECL|method|modifyPathBasedCacheDirective ( PathBasedCacheDirective directive)
 specifier|public
 name|void
-name|removePathBasedCacheDescriptor
+name|modifyPathBasedCacheDirective
 parameter_list|(
-name|Long
+name|PathBasedCacheDirective
+name|directive
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Remove a PathBasedCacheDirective from the CacheManager.    *     * @param id of a PathBasedCacheDirective    * @throws IOException if the cache directive could not be removed    */
+annotation|@
+name|AtMostOnce
+DECL|method|removePathBasedCacheDirective (long id)
+specifier|public
+name|void
+name|removePathBasedCacheDirective
+parameter_list|(
+name|long
 name|id
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *          listPathBasedCacheDescriptors.    * @param pool The cache pool to list, or null to list all pools.    * @param path The path name to list, or null to list all paths.    * @return A RemoteIterator which returns PathBasedCacheDescriptor objects.    */
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *               listPathBasedCacheDirectives.    * @param filter Parameters to use to filter the list results,     *               or null to display all directives visible to us.    * @return A RemoteIterator which returns PathBasedCacheDirective objects.    */
 annotation|@
 name|Idempotent
-DECL|method|listPathBasedCacheDescriptors ( long prevId, String pool, String path)
+DECL|method|listPathBasedCacheDirectives ( long prevId, PathBasedCacheDirective filter)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDescriptor
+name|PathBasedCacheDirective
 argument_list|>
-name|listPathBasedCacheDescriptors
+name|listPathBasedCacheDirectives
 parameter_list|(
 name|long
 name|prevId
 parameter_list|,
-name|String
-name|pool
-parameter_list|,
-name|String
-name|path
+name|PathBasedCacheDirective
+name|filter
 parameter_list|)
 throws|throws
 name|IOException

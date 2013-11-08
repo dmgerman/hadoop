@@ -164,6 +164,11 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
+name|rpcProgram
+operator|.
+name|startDaemons
+argument_list|()
+expr_stmt|;
 name|udpServer
 operator|.
 name|run
@@ -193,6 +198,11 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
+name|rpcProgram
+operator|.
+name|startDaemons
+argument_list|()
+expr_stmt|;
 name|tcpServer
 operator|.
 name|run
