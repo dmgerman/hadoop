@@ -893,19 +893,60 @@ name|DatanodeStorageInfo
 name|storage
 parameter_list|)
 block|{
-if|if
-condition|(
-name|findStorageInfo
+name|boolean
+name|added
+init|=
+literal|true
+decl_stmt|;
+name|int
+name|idx
+init|=
+name|findDatanode
 argument_list|(
 name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idx
 operator|>=
 literal|0
 condition|)
-comment|// the node is already there
+block|{
+if|if
+condition|(
+name|getStorageInfo
+argument_list|(
+name|idx
+argument_list|)
+operator|==
+name|storage
+condition|)
+block|{
+comment|// the storage is already there
 return|return
 literal|false
 return|;
+block|}
+else|else
+block|{
+comment|// The block is on the DN but belongs to a different storage.
+comment|// Update our state.
+name|removeStorage
+argument_list|(
+name|storage
+argument_list|)
+expr_stmt|;
+name|added
+operator|=
+literal|false
+expr_stmt|;
+comment|// Just updating storage. Return false.
+block|}
+block|}
 comment|// find the last null node
 name|int
 name|lastNode
@@ -937,7 +978,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 return|return
-literal|true
+name|added
 return|;
 block|}
 comment|/**    * Remove {@link DatanodeStorageInfo} location for a block    */
