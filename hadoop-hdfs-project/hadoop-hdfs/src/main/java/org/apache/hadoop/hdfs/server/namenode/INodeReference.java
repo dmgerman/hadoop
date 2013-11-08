@@ -2759,13 +2759,6 @@ operator|.
 name|deleteCurrentFile
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|snapshot
-operator|!=
-literal|null
-condition|)
-block|{
 try|try
 block|{
 comment|// when calling cleanSubtree of the referred node, since we
@@ -2802,7 +2795,6 @@ argument_list|,
 name|e
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 elseif|else
