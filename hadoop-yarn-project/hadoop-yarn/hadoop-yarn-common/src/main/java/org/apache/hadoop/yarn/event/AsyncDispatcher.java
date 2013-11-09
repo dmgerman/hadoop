@@ -256,6 +256,43 @@ name|stopped
 init|=
 literal|false
 decl_stmt|;
+comment|// Configuration flag for enabling/disabling draining dispatcher's events on
+comment|// stop functionality.
+DECL|field|drainEventsOnStop
+specifier|private
+specifier|volatile
+name|boolean
+name|drainEventsOnStop
+init|=
+literal|false
+decl_stmt|;
+comment|// Indicates all the remaining dispatcher's events on stop have been drained
+comment|// and processed.
+DECL|field|drained
+specifier|private
+specifier|volatile
+name|boolean
+name|drained
+init|=
+literal|true
+decl_stmt|;
+comment|// For drainEventsOnStop enabled only, block newly coming events into the
+comment|// queue while stopping.
+DECL|field|blockNewEvents
+specifier|private
+specifier|volatile
+name|boolean
+name|blockNewEvents
+init|=
+literal|false
+decl_stmt|;
+DECL|field|handlerInstance
+specifier|private
+name|EventHandler
+name|handlerInstance
+init|=
+literal|null
+decl_stmt|;
 DECL|field|eventHandlingThread
 specifier|private
 name|Thread
@@ -371,6 +408,13 @@ name|isInterrupted
 argument_list|()
 condition|)
 block|{
+name|drained
+operator|=
+name|eventQueue
+operator|.
+name|isEmpty
+argument_list|()
+expr_stmt|;
 name|Event
 name|event
 decl_stmt|;
@@ -502,6 +546,17 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|setDrainEventsOnStop ()
+specifier|public
+name|void
+name|setDrainEventsOnStop
+parameter_list|()
+block|{
+name|drainEventsOnStop
+operator|=
+literal|true
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|serviceStop ()
@@ -512,6 +567,35 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+if|if
+condition|(
+name|drainEventsOnStop
+condition|)
+block|{
+name|blockNewEvents
+operator|=
+literal|true
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"AsyncDispatcher is draining to stop, igonring any new events."
+argument_list|)
+expr_stmt|;
+while|while
+condition|(
+operator|!
+name|drained
+condition|)
+block|{
+name|Thread
+operator|.
+name|yield
+argument_list|()
+expr_stmt|;
+block|}
+block|}
 name|stopped
 operator|=
 literal|true
@@ -861,10 +945,22 @@ name|EventHandler
 name|getEventHandler
 parameter_list|()
 block|{
-return|return
+if|if
+condition|(
+name|handlerInstance
+operator|==
+literal|null
+condition|)
+block|{
+name|handlerInstance
+operator|=
 operator|new
 name|GenericEventHandler
 argument_list|()
+expr_stmt|;
+block|}
+return|return
+name|handlerInstance
 return|;
 block|}
 DECL|class|GenericEventHandler
@@ -885,6 +981,17 @@ name|Event
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|blockNewEvents
+condition|)
+block|{
+return|return;
+block|}
+name|drained
+operator|=
+literal|false
+expr_stmt|;
 comment|/* all this method does is enqueue all the events onto the queue */
 name|int
 name|qSize
