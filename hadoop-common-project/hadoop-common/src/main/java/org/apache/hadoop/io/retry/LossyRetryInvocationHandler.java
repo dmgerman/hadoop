@@ -32,11 +32,15 @@ end_import
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|net
+name|apache
 operator|.
-name|UnknownHostException
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
 import|;
 end_import
 
@@ -48,9 +52,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|classification
+name|ipc
 operator|.
-name|InterfaceAudience
+name|RetriableException
 import|;
 end_import
 
@@ -235,7 +239,7 @@ argument_list|)
 expr_stmt|;
 throw|throw
 operator|new
-name|UnknownHostException
+name|RetriableException
 argument_list|(
 literal|"Fake Exception"
 argument_list|)

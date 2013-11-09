@@ -519,6 +519,13 @@ literal|null
 condition|)
 block|{
 comment|// delete the current file
+if|if
+condition|(
+operator|!
+name|isCurrentFileDeleted
+argument_list|()
+condition|)
+block|{
 name|recordModification
 argument_list|(
 name|prior
@@ -526,10 +533,10 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-name|isCurrentFileDeleted
-operator|=
-literal|true
+name|deleteCurrentFile
+argument_list|()
 expr_stmt|;
+block|}
 name|Util
 operator|.
 name|collectBlocksAndClear

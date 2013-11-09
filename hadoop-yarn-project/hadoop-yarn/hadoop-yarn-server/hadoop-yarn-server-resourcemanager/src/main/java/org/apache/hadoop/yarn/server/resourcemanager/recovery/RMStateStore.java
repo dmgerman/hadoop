@@ -1477,9 +1477,10 @@ DECL|field|dispatcher
 name|AsyncDispatcher
 name|dispatcher
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|serviceInit (Configuration conf)
-specifier|public
-specifier|synchronized
+specifier|protected
 name|void
 name|serviceInit
 parameter_list|(
@@ -1516,15 +1517,21 @@ name|ForwardingEventHandler
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|dispatcher
+operator|.
+name|setDrainEventsOnStop
+argument_list|()
+expr_stmt|;
 name|initInternal
 argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|serviceStart ()
 specifier|protected
-specifier|synchronized
 name|void
 name|serviceStart
 parameter_list|()
@@ -1563,9 +1570,10 @@ parameter_list|()
 throws|throws
 name|Exception
 function_decl|;
+annotation|@
+name|Override
 DECL|method|serviceStop ()
-specifier|public
-specifier|synchronized
+specifier|protected
 name|void
 name|serviceStop
 parameter_list|()
@@ -2256,8 +2264,7 @@ return|;
 block|}
 comment|// Dispatcher related code
 DECL|method|handleStoreEvent (RMStateStoreEvent event)
-specifier|private
-specifier|synchronized
+specifier|protected
 name|void
 name|handleStoreEvent
 parameter_list|(

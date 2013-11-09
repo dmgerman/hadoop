@@ -178,6 +178,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|Executor
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|management
@@ -203,20 +215,6 @@ operator|.
 name|management
 operator|.
 name|StandardMBean
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|io
-operator|.
-name|IOUtils
 import|;
 end_import
 
@@ -3402,7 +3400,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// uncache the block
+comment|// If the block is cached, start uncaching it.
 name|cacheManager
 operator|.
 name|uncacheBlock
@@ -6785,7 +6783,7 @@ index|]
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Uncache the block synchronously
+comment|// If the block is cached, start uncaching it.
 name|cacheManager
 operator|.
 name|uncacheBlock
@@ -6801,7 +6799,9 @@ name|getBlockId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Delete the block asynchronously to make sure we can do it fast enough
+comment|// Delete the block asynchronously to make sure we can do it fast enough.
+comment|// It's ok to unlink the block file before the uncache operation
+comment|// finishes.
 name|asyncDiskService
 operator|.
 name|deleteAsync
@@ -6852,10 +6852,11 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|validToCache (String bpid, long blockId)
-specifier|synchronized
-name|boolean
-name|validToCache
+comment|/**    * Asynchronously attempts to cache a single block via {@link FsDatasetCache}.    */
+DECL|method|cacheBlock (String bpid, long blockId)
+specifier|private
+name|void
+name|cacheBlock
 parameter_list|(
 name|String
 name|bpid
@@ -6863,6 +6864,25 @@ parameter_list|,
 name|long
 name|blockId
 parameter_list|)
+block|{
+name|FsVolumeImpl
+name|volume
+decl_stmt|;
+name|String
+name|blockFileName
+decl_stmt|;
+name|long
+name|length
+decl_stmt|,
+name|genstamp
+decl_stmt|;
+name|Executor
+name|volumeExecutor
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
 block|{
 name|ReplicaInfo
 name|info
@@ -6887,53 +6907,18 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache replica in block pool "
-operator|+
-name|bpid
-operator|+
-literal|" with block id "
-operator|+
-name|blockId
-operator|+
-literal|": ReplicaInfo not found."
-argument_list|)
-expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-name|FsVolumeImpl
-name|volume
-init|=
-operator|(
-name|FsVolumeImpl
-operator|)
-name|info
-operator|.
-name|getVolume
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|volume
-operator|==
-literal|null
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
 literal|"Failed to cache block with id "
 operator|+
 name|blockId
 operator|+
-literal|": Volume not found."
+literal|", pool "
+operator|+
+name|bpid
+operator|+
+literal|": ReplicaInfo not found."
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
+return|return;
 block|}
 if|if
 condition|(
@@ -6951,69 +6936,26 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to block with id "
+literal|"Failed to cache block with id "
 operator|+
 name|blockId
 operator|+
-literal|": Replica is not finalized."
+literal|", pool "
+operator|+
+name|bpid
+operator|+
+literal|": replica is not finalized; it is in state "
+operator|+
+name|info
+operator|.
+name|getState
+argument_list|()
 argument_list|)
 expr_stmt|;
-return|return
-literal|false
-return|;
-block|}
-return|return
-literal|true
-return|;
-block|}
-comment|/**    * Asynchronously attempts to cache a single block via {@link FsDatasetCache}.    */
-DECL|method|cacheBlock (String bpid, long blockId)
-specifier|private
-name|void
-name|cacheBlock
-parameter_list|(
-name|String
-name|bpid
-parameter_list|,
-name|long
-name|blockId
-parameter_list|)
-block|{
-name|ReplicaInfo
-name|info
-decl_stmt|;
-name|FsVolumeImpl
-name|volume
-decl_stmt|;
-synchronized|synchronized
-init|(
-name|this
-init|)
-block|{
-if|if
-condition|(
-operator|!
-name|validToCache
-argument_list|(
-name|bpid
-argument_list|,
-name|blockId
-argument_list|)
-condition|)
-block|{
 return|return;
 block|}
-name|info
-operator|=
-name|volumeMap
-operator|.
-name|get
-argument_list|(
-name|bpid
-argument_list|,
-name|blockId
-argument_list|)
-expr_stmt|;
+try|try
+block|{
 name|volume
 operator|=
 operator|(
@@ -7024,75 +6966,30 @@ operator|.
 name|getVolume
 argument_list|()
 expr_stmt|;
-block|}
-comment|// Try to open block and meta streams
-name|FileInputStream
-name|blockIn
-init|=
+if|if
+condition|(
+name|volume
+operator|==
 literal|null
-decl_stmt|;
-name|FileInputStream
-name|metaIn
-init|=
-literal|null
-decl_stmt|;
-name|boolean
-name|success
-init|=
-literal|false
-decl_stmt|;
-name|ExtendedBlock
-name|extBlk
-init|=
-operator|new
-name|ExtendedBlock
-argument_list|(
-name|bpid
-argument_list|,
-name|blockId
-argument_list|,
-name|info
-operator|.
-name|getBytesOnDisk
-argument_list|()
-argument_list|,
-name|info
-operator|.
-name|getGenerationStamp
-argument_list|()
-argument_list|)
-decl_stmt|;
-try|try
+condition|)
 block|{
-name|blockIn
-operator|=
-operator|(
-name|FileInputStream
-operator|)
-name|getBlockInputStream
-argument_list|(
-name|extBlk
-argument_list|,
-literal|0
-argument_list|)
-expr_stmt|;
-name|metaIn
-operator|=
-operator|(
-name|FileInputStream
-operator|)
-name|getMetaDataInputStream
-argument_list|(
-name|extBlk
-argument_list|)
+name|LOG
 operator|.
-name|getWrappedStream
-argument_list|()
+name|warn
+argument_list|(
+literal|"Failed to cache block with id "
+operator|+
+name|blockId
+operator|+
+literal|", pool "
+operator|+
+name|bpid
+operator|+
+literal|": volume not found."
+argument_list|)
 expr_stmt|;
-name|success
-operator|=
-literal|true
-expr_stmt|;
+return|return;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -7104,78 +7001,62 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache replica "
+literal|"Failed to cache block with id "
 operator|+
-name|extBlk
+name|blockId
 operator|+
-literal|": Underlying blocks"
-operator|+
-literal|" are not backed by files."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Failed to cache replica "
-operator|+
-name|extBlk
-operator|+
-literal|": IOException while"
-operator|+
-literal|" trying to open block or meta files."
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|success
-condition|)
-block|{
-name|IOUtils
-operator|.
-name|closeQuietly
-argument_list|(
-name|blockIn
-argument_list|)
-expr_stmt|;
-name|IOUtils
-operator|.
-name|closeQuietly
-argument_list|(
-name|metaIn
+literal|": volume was not an instance of FsVolumeImpl."
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
+name|blockFileName
+operator|=
+name|info
+operator|.
+name|getBlockFile
+argument_list|()
+operator|.
+name|getAbsolutePath
+argument_list|()
+expr_stmt|;
+name|length
+operator|=
+name|info
+operator|.
+name|getVisibleLength
+argument_list|()
+expr_stmt|;
+name|genstamp
+operator|=
+name|info
+operator|.
+name|getGenerationStamp
+argument_list|()
+expr_stmt|;
+name|volumeExecutor
+operator|=
+name|volume
+operator|.
+name|getCacheExecutor
+argument_list|()
+expr_stmt|;
 block|}
 name|cacheManager
 operator|.
 name|cacheBlock
 argument_list|(
+name|blockId
+argument_list|,
 name|bpid
 argument_list|,
-name|extBlk
-operator|.
-name|getLocalBlock
-argument_list|()
+name|blockFileName
 argument_list|,
-name|volume
+name|length
 argument_list|,
-name|blockIn
+name|genstamp
 argument_list|,
-name|metaIn
+name|volumeExecutor
 argument_list|)
 expr_stmt|;
 block|}
