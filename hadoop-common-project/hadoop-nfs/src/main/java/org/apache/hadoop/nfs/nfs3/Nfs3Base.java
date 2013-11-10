@@ -141,6 +141,12 @@ specifier|final
 name|int
 name|nfsPort
 decl_stmt|;
+DECL|field|nfsBoundPort
+specifier|private
+name|int
+name|nfsBoundPort
+decl_stmt|;
+comment|// Will set after server starts
 DECL|method|getRpcProgram ()
 specifier|public
 name|RpcProgram
@@ -176,11 +182,13 @@ name|conf
 operator|.
 name|getInt
 argument_list|(
-literal|"nfs3.server.port"
+name|Nfs3Constant
+operator|.
+name|NFS3_SERVER_PORT
 argument_list|,
 name|Nfs3Constant
 operator|.
-name|PORT
+name|NFS3_SERVER_PORT_DEFAULT
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -191,29 +199,6 @@ literal|"NFS server port set to: "
 operator|+
 name|nfsPort
 argument_list|)
-expr_stmt|;
-block|}
-DECL|method|Nfs3Base (RpcProgram rpcProgram)
-specifier|protected
-name|Nfs3Base
-parameter_list|(
-name|RpcProgram
-name|rpcProgram
-parameter_list|)
-block|{
-name|this
-operator|.
-name|rpcProgram
-operator|=
-name|rpcProgram
-expr_stmt|;
-name|this
-operator|.
-name|nfsPort
-operator|=
-name|Nfs3Constant
-operator|.
-name|PORT
 expr_stmt|;
 block|}
 DECL|method|start (boolean register)
@@ -241,6 +226,8 @@ argument_list|(
 name|PortmapMapping
 operator|.
 name|TRANSPORT_TCP
+argument_list|,
+name|nfsBoundPort
 argument_list|)
 expr_stmt|;
 block|}
@@ -272,6 +259,13 @@ expr_stmt|;
 name|tcpServer
 operator|.
 name|run
+argument_list|()
+expr_stmt|;
+name|nfsBoundPort
+operator|=
+name|tcpServer
+operator|.
+name|getBoundPort
 argument_list|()
 expr_stmt|;
 block|}

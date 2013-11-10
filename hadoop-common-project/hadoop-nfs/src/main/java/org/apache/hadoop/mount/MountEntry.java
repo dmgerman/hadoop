@@ -26,14 +26,14 @@ specifier|public
 class|class
 name|MountEntry
 block|{
-comment|/** Host correspoinding to the mount entry */
+comment|/** Host corresponding to the mount entry */
 DECL|field|host
 specifier|private
 specifier|final
 name|String
 name|host
 decl_stmt|;
-comment|/** Path correspoinding to the mount entry */
+comment|/** Path corresponding to the mount entry */
 DECL|field|path
 specifier|private
 specifier|final
@@ -64,10 +64,10 @@ operator|=
 name|path
 expr_stmt|;
 block|}
-DECL|method|host ()
+DECL|method|getHost ()
 specifier|public
 name|String
-name|host
+name|getHost
 parameter_list|()
 block|{
 return|return
@@ -76,10 +76,10 @@ operator|.
 name|host
 return|;
 block|}
-DECL|method|path ()
+DECL|method|getPath ()
 specifier|public
 name|String
-name|path
+name|getPath
 parameter_list|()
 block|{
 return|return
@@ -131,25 +131,25 @@ operator|)
 name|o
 decl_stmt|;
 return|return
-name|host
+name|getHost
 argument_list|()
 operator|.
 name|equals
 argument_list|(
 name|m
 operator|.
-name|host
+name|getHost
 argument_list|()
 argument_list|)
 operator|&&
-name|path
+name|getPath
 argument_list|()
 operator|.
 name|equals
 argument_list|(
 name|m
 operator|.
-name|path
+name|getPath
 argument_list|()
 argument_list|)
 return|;

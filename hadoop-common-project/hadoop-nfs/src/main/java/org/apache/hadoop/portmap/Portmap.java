@@ -143,6 +143,10 @@ argument_list|(
 name|PortmapMapping
 operator|.
 name|TRANSPORT_UDP
+argument_list|,
+name|RpcProgram
+operator|.
+name|RPCB_PORT
 argument_list|)
 expr_stmt|;
 name|SimpleUdpServer
@@ -184,6 +188,10 @@ argument_list|(
 name|PortmapMapping
 operator|.
 name|TRANSPORT_TCP
+argument_list|,
+name|RpcProgram
+operator|.
+name|RPCB_PORT
 argument_list|)
 expr_stmt|;
 name|SimpleTcpServer

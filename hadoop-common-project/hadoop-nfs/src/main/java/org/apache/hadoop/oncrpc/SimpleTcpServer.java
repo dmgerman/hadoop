@@ -90,6 +90,20 @@ name|netty
 operator|.
 name|channel
 operator|.
+name|Channel
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|jboss
+operator|.
+name|netty
+operator|.
+name|channel
+operator|.
 name|ChannelFactory
 import|;
 end_import
@@ -200,6 +214,15 @@ specifier|final
 name|int
 name|port
 decl_stmt|;
+DECL|field|boundPort
+specifier|protected
+name|int
+name|boundPort
+init|=
+operator|-
+literal|1
+decl_stmt|;
+comment|// Will be set after server starts
 DECL|field|rpcProgram
 specifier|protected
 specifier|final
@@ -373,6 +396,9 @@ literal|true
 argument_list|)
 expr_stmt|;
 comment|// Listen to TCP port
+name|Channel
+name|ch
+init|=
 name|bootstrap
 operator|.
 name|bind
@@ -383,6 +409,24 @@ argument_list|(
 name|port
 argument_list|)
 argument_list|)
+decl_stmt|;
+name|InetSocketAddress
+name|socketAddr
+init|=
+operator|(
+name|InetSocketAddress
+operator|)
+name|ch
+operator|.
+name|getLocalAddress
+argument_list|()
+decl_stmt|;
+name|boundPort
+operator|=
+name|socketAddr
+operator|.
+name|getPort
+argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
@@ -390,7 +434,7 @@ name|info
 argument_list|(
 literal|"Started listening to TCP requests at port "
 operator|+
-name|port
+name|boundPort
 operator|+
 literal|" for "
 operator|+
@@ -401,6 +445,19 @@ operator|+
 name|workerCount
 argument_list|)
 expr_stmt|;
+block|}
+comment|// boundPort will be set only after server starts
+DECL|method|getBoundPort ()
+specifier|public
+name|int
+name|getBoundPort
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|boundPort
+return|;
 block|}
 block|}
 end_class

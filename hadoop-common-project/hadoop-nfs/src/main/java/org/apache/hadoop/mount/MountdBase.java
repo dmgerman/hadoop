@@ -28,16 +28,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -109,6 +99,18 @@ specifier|final
 name|RpcProgram
 name|rpcProgram
 decl_stmt|;
+DECL|field|udpBoundPort
+specifier|private
+name|int
+name|udpBoundPort
+decl_stmt|;
+comment|// Will set after server starts
+DECL|field|tcpBoundPort
+specifier|private
+name|int
+name|tcpBoundPort
+decl_stmt|;
+comment|// Will set after server starts
 DECL|method|getRpcProgram ()
 specifier|public
 name|RpcProgram
@@ -119,17 +121,11 @@ return|return
 name|rpcProgram
 return|;
 block|}
-comment|/**    * Constructor    * @param exports    * @throws IOException     */
-DECL|method|MountdBase (List<String> exports, RpcProgram program)
+comment|/**    * Constructor    * @param program    * @throws IOException     */
+DECL|method|MountdBase (RpcProgram program)
 specifier|public
 name|MountdBase
 parameter_list|(
-name|List
-argument_list|<
-name|String
-argument_list|>
-name|exports
-parameter_list|,
 name|RpcProgram
 name|program
 parameter_list|)
@@ -174,6 +170,13 @@ operator|.
 name|run
 argument_list|()
 expr_stmt|;
+name|udpBoundPort
+operator|=
+name|udpServer
+operator|.
+name|getBoundPort
+argument_list|()
+expr_stmt|;
 block|}
 comment|/* Start TCP server */
 DECL|method|startTCPServer ()
@@ -208,6 +211,13 @@ operator|.
 name|run
 argument_list|()
 expr_stmt|;
+name|tcpBoundPort
+operator|=
+name|tcpServer
+operator|.
+name|getBoundPort
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|start (boolean register)
 specifier|public
@@ -236,6 +246,8 @@ argument_list|(
 name|PortmapMapping
 operator|.
 name|TRANSPORT_UDP
+argument_list|,
+name|udpBoundPort
 argument_list|)
 expr_stmt|;
 name|rpcProgram
@@ -245,6 +257,8 @@ argument_list|(
 name|PortmapMapping
 operator|.
 name|TRANSPORT_TCP
+argument_list|,
+name|tcpBoundPort
 argument_list|)
 expr_stmt|;
 block|}
