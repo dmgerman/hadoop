@@ -1911,21 +1911,6 @@ specifier|final
 name|RpcCallCache
 name|rpcCallCache
 decl_stmt|;
-DECL|method|RpcProgramNfs3 ()
-specifier|public
-name|RpcProgramNfs3
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|this
-argument_list|(
-operator|new
-name|Configuration
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|RpcProgramNfs3 (Configuration config)
 specifier|public
 name|RpcProgramNfs3
@@ -1942,9 +1927,18 @@ literal|"NFS3"
 argument_list|,
 literal|"localhost"
 argument_list|,
+name|config
+operator|.
+name|getInt
+argument_list|(
 name|Nfs3Constant
 operator|.
-name|PORT
+name|NFS3_SERVER_PORT
+argument_list|,
+name|Nfs3Constant
+operator|.
+name|NFS3_SERVER_PORT_DEFAULT
+argument_list|)
 argument_list|,
 name|Nfs3Constant
 operator|.

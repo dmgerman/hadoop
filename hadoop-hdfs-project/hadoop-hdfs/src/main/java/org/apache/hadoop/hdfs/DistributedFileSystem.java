@@ -7805,20 +7805,19 @@ argument_list|)
 operator|.
 name|setPath
 argument_list|(
-name|filter
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|makeQualified
+operator|new
+name|Path
 argument_list|(
-name|getUri
-argument_list|()
-argument_list|,
+name|getPathName
+argument_list|(
+name|fixRelativePart
+argument_list|(
 name|filter
 operator|.
 name|getPath
 argument_list|()
+argument_list|)
+argument_list|)
 argument_list|)
 argument_list|)
 operator|.
@@ -7873,6 +7872,9 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+comment|// Although the paths we get back from the NameNode should always be
+comment|// absolute, we call makeQualified to add the scheme and authority of
+comment|// this DistributedFilesystem.
 name|PathBasedCacheDirective
 name|desc
 init|=
@@ -7894,9 +7896,7 @@ argument_list|(
 name|getUri
 argument_list|()
 argument_list|,
-name|desc
-operator|.
-name|getPath
+name|getWorkingDirectory
 argument_list|()
 argument_list|)
 decl_stmt|;

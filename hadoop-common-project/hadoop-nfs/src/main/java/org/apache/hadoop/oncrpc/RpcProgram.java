@@ -236,10 +236,10 @@ name|host
 decl_stmt|;
 DECL|field|port
 specifier|private
-specifier|final
 name|int
 name|port
 decl_stmt|;
+comment|// Ephemeral port is chosen later
 DECL|field|progNumber
 specifier|private
 specifier|final
@@ -320,15 +320,43 @@ name|highProgVersion
 expr_stmt|;
 block|}
 comment|/**    * Register this program with the local portmapper.    */
-DECL|method|register (int transport)
+DECL|method|register (int transport, int boundPort)
 specifier|public
 name|void
 name|register
 parameter_list|(
 name|int
 name|transport
+parameter_list|,
+name|int
+name|boundPort
 parameter_list|)
 block|{
+if|if
+condition|(
+name|boundPort
+operator|!=
+name|port
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The bound port is "
+operator|+
+name|boundPort
+operator|+
+literal|", different with configured port "
+operator|+
+name|port
+argument_list|)
+expr_stmt|;
+name|port
+operator|=
+name|boundPort
+expr_stmt|;
+block|}
 comment|// Register all the program versions with portmapper for a given transport
 for|for
 control|(
@@ -345,28 +373,6 @@ name|vers
 operator|++
 control|)
 block|{
-name|register
-argument_list|(
-name|vers
-argument_list|,
-name|transport
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Register this program with the local portmapper.    */
-DECL|method|register (int progVersion, int transport)
-specifier|private
-name|void
-name|register
-parameter_list|(
-name|int
-name|progVersion
-parameter_list|,
-name|int
-name|transport
-parameter_list|)
-block|{
 name|PortmapMapping
 name|mapEntry
 init|=
@@ -375,7 +381,7 @@ name|PortmapMapping
 argument_list|(
 name|progNumber
 argument_list|,
-name|progVersion
+name|vers
 argument_list|,
 name|transport
 argument_list|,
@@ -387,6 +393,7 @@ argument_list|(
 name|mapEntry
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Register the program with Portmap or Rpcbind    */
 DECL|method|register (PortmapMapping mapEntry)

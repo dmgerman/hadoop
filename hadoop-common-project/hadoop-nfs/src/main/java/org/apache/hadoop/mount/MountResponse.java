@@ -268,7 +268,7 @@ name|writeString
 argument_list|(
 name|mountEntry
 operator|.
-name|host
+name|getHost
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -278,7 +278,7 @@ name|writeString
 argument_list|(
 name|mountEntry
 operator|.
-name|path
+name|getPath
 argument_list|()
 argument_list|)
 expr_stmt|;
