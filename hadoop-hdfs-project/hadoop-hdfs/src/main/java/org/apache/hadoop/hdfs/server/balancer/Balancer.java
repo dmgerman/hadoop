@@ -1112,16 +1112,17 @@ operator|new
 name|MovedBlocks
 argument_list|()
 decl_stmt|;
-comment|// Map storage IDs to BalancerDatanodes
-DECL|field|datanodes
+comment|/** Map (datanodeUuid -> BalancerDatanodes) */
+DECL|field|datanodeMap
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|BalancerDatanode
 argument_list|>
-name|datanodes
+name|datanodeMap
 init|=
 operator|new
 name|HashMap
@@ -1181,6 +1182,55 @@ specifier|private
 name|PendingBlockMove
 parameter_list|()
 block|{     }
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+specifier|final
+name|Block
+name|b
+init|=
+name|block
+operator|.
+name|getBlock
+argument_list|()
+decl_stmt|;
+return|return
+name|b
+operator|+
+literal|" with size="
+operator|+
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+name|source
+operator|.
+name|getDisplayName
+argument_list|()
+operator|+
+literal|" to "
+operator|+
+name|target
+operator|.
+name|getDisplayName
+argument_list|()
+operator|+
+literal|" through "
+operator|+
+name|proxySource
+operator|.
+name|getDisplayName
+argument_list|()
+return|;
+block|}
 comment|/* choose a block& a proxy source for this pendingMove       * whose source& target have already been chosen.      *       * Return true if a block and its proxy are chosen; false otherwise      */
 DECL|method|chooseBlockAndProxy ()
 specifier|private
@@ -1297,45 +1347,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Decided to move block "
+literal|"Decided to move "
 operator|+
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" with a length of "
-operator|+
-name|StringUtils
-operator|.
-name|byteDesc
-argument_list|(
-name|block
-operator|.
-name|getNumBytes
-argument_list|()
-argument_list|)
-operator|+
-literal|" bytes from "
-operator|+
-name|source
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" using proxy source "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -1653,38 +1667,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Moving block "
+literal|"Successfully moved "
 operator|+
-name|block
-operator|.
-name|getBlock
-argument_list|()
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|source
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" through "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" is succeeded."
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -1698,33 +1683,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error moving block "
+literal|"Failed to move "
 operator|+
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|source
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" through "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
+name|this
 operator|+
 literal|": "
 operator|+
@@ -1992,26 +1953,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Starting moving "
+literal|"Start moving "
 operator|+
-name|block
+name|PendingBlockMove
 operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -2160,20 +2106,6 @@ parameter_list|()
 block|{
 return|return
 name|block
-return|;
-block|}
-comment|/* Return the block id */
-DECL|method|getBlockId ()
-specifier|private
-name|long
-name|getBlockId
-parameter_list|()
-block|{
-return|return
-name|block
-operator|.
-name|getBlockId
-argument_list|()
 return|;
 block|}
 comment|/* Return the length of the block */
@@ -2975,22 +2907,23 @@ comment|// update locations
 for|for
 control|(
 name|String
-name|storageID
+name|datanodeUuid
 range|:
 name|blk
 operator|.
-name|getStorageIDs
+name|getDatanodeUuids
 argument_list|()
 control|)
 block|{
+specifier|final
 name|BalancerDatanode
-name|datanode
+name|d
 init|=
-name|datanodes
+name|datanodeMap
 operator|.
 name|get
 argument_list|(
-name|storageID
+name|datanodeUuid
 argument_list|)
 decl_stmt|;
 if|if
@@ -3005,7 +2938,7 @@ name|block
 operator|.
 name|addLocation
 argument_list|(
-name|datanode
+name|d
 argument_list|)
 expr_stmt|;
 block|}
@@ -3945,9 +3878,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|this
-operator|.
-name|datanodes
+name|datanodeMap
 operator|.
 name|put
 argument_list|(
@@ -3968,7 +3899,7 @@ assert|assert
 operator|(
 name|this
 operator|.
-name|datanodes
+name|datanodeMap
 operator|.
 name|size
 argument_list|()
@@ -4266,7 +4197,7 @@ argument_list|)
 expr_stmt|;
 assert|assert
 operator|(
-name|datanodes
+name|datanodeMap
 operator|.
 name|size
 argument_list|()
@@ -4284,7 +4215,7 @@ operator|)
 operator|:
 literal|"Mismatched number of datanodes ("
 operator|+
-name|datanodes
+name|datanodeMap
 operator|.
 name|size
 argument_list|()
@@ -5606,7 +5537,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|datanodes
+name|datanodeMap
 operator|.
 name|clear
 argument_list|()

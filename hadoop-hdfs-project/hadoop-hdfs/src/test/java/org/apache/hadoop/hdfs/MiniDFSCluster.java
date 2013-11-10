@@ -1993,20 +1993,30 @@ name|nameNodeHttpPort
 argument_list|)
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"starting cluster with "
-operator|+
+specifier|final
+name|int
+name|numNameNodes
+init|=
 name|builder
 operator|.
 name|nnTopology
 operator|.
 name|countNameNodes
 argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"starting cluster: numNameNodes="
 operator|+
-literal|" namenodes."
+name|numNameNodes
+operator|+
+literal|", numDataNodes="
+operator|+
+name|builder
+operator|.
+name|numDataNodes
 argument_list|)
 expr_stmt|;
 name|nameNodes
@@ -2014,12 +2024,7 @@ operator|=
 operator|new
 name|NameNodeInfo
 index|[
-name|builder
-operator|.
-name|nnTopology
-operator|.
-name|countNameNodes
-argument_list|()
+name|numNameNodes
 index|]
 expr_stmt|;
 name|initMiniDFSCluster
@@ -8397,6 +8402,13 @@ operator|!=
 name|numDataNodes
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"dnInfo.length != numDataNodes"
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -8421,6 +8433,13 @@ name|isDatanodeFullyStarted
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"!dn.datanode.isDatanodeFullyStarted()"
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -8446,6 +8465,13 @@ operator|==
 literal|0
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"dn.getCapacity() == 0"
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
@@ -8474,6 +8500,13 @@ operator|==
 literal|null
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"DataNodeTestUtils.getFSDataset(dn.datanode) == null"
+argument_list|)
+expr_stmt|;
 return|return
 literal|true
 return|;
