@@ -1967,14 +1967,13 @@ name|numberOfFailedVolumes
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the total cache used by the datanode (in bytes).    */
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getDnCacheUsed ()
+DECL|method|getCacheUsed ()
 specifier|public
 name|long
-name|getDnCacheUsed
+name|getCacheUsed
 parameter_list|()
 block|{
 return|return
@@ -1984,20 +1983,51 @@ name|getDnCacheUsed
 argument_list|()
 return|;
 block|}
-comment|/**    * Returns the total cache capacity of the datanode (in bytes).    */
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getDnCacheCapacity ()
+DECL|method|getCacheCapacity ()
 specifier|public
 name|long
-name|getDnCacheCapacity
+name|getCacheCapacity
 parameter_list|()
 block|{
 return|return
 name|cacheManager
 operator|.
 name|getDnCacheCapacity
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getNumBlocksFailedToCache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToCache
+parameter_list|()
+block|{
+return|return
+name|cacheManager
+operator|.
+name|getNumBlocksFailedToCache
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getNumBlocksFailedToUncache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToUncache
+parameter_list|()
+block|{
+return|return
+name|cacheManager
+operator|.
+name|getNumBlocksFailedToUncache
 argument_list|()
 return|;
 block|}
@@ -6399,6 +6429,13 @@ argument_list|,
 name|blockId
 argument_list|)
 decl_stmt|;
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
+try|try
+block|{
 if|if
 condition|(
 name|info
@@ -6512,6 +6549,28 @@ literal|": volume was not an instance of FsVolumeImpl."
 argument_list|)
 expr_stmt|;
 return|return;
+block|}
+name|success
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|success
+condition|)
+block|{
+name|cacheManager
+operator|.
+name|numBlocksFailedToCache
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 name|blockFileName
 operator|=
