@@ -2541,6 +2541,10 @@ operator|(
 name|long
 operator|)
 name|DATANODE_COUNT
+operator|*
+name|MiniDFSCluster
+operator|.
+name|DIRS_PER_DATANODE
 argument_list|,
 name|rb
 argument_list|)
