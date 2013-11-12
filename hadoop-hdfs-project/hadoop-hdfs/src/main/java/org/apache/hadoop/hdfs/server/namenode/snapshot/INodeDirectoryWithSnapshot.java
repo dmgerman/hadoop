@@ -3364,6 +3364,30 @@ argument_list|,
 name|inodeMap
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|oldChild
+operator|.
+name|getParentReference
+argument_list|()
+operator|!=
+literal|null
+operator|&&
+operator|!
+name|newChild
+operator|.
+name|isReference
+argument_list|()
+condition|)
+block|{
+comment|// oldChild is referred by a Reference node. Thus we are replacing the
+comment|// referred inode, e.g.,
+comment|// INodeFileWithSnapshot -> INodeFileUnderConstructionWithSnapshot
+comment|// in this case, we do not need to update the diff list
+return|return;
+block|}
+else|else
+block|{
 name|diffs
 operator|.
 name|replaceChild
@@ -3377,6 +3401,7 @@ argument_list|,
 name|newChild
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * This method is usually called by the undo section of rename.    *     * Before calling this function, in the rename operation, we replace the    * original src node (of the rename operation) with a reference node (WithName    * instance) in both the children list and a created list, delete the    * reference node from the children list, and add it to the corresponding    * deleted list.    *     * To undo the above operations, we have the following steps in particular:    *     *<pre>    * 1) remove the WithName node from the deleted list (if it exists)     * 2) replace the WithName node in the created list with srcChild     * 3) add srcChild back as a child of srcParent. Note that we already add     * the node into the created list of a snapshot diff in step 2, we do not need    * to add srcChild to the created list of the latest snapshot.    *</pre>    *     * We do not need to update quota usage because the old child is in the     * deleted list before.     *     * @param oldChild    *          The reference node to be removed/replaced    * @param newChild    *          The node to be added back    * @param latestSnapshot    *          The latest snapshot. Note this may not be the last snapshot in the    *          {@link #diffs}, since the src tree of the current rename operation    *          may be the dst tree of a previous rename.    * @throws QuotaExceededException should not throw this exception    */
 DECL|method|undoRename4ScrParent (final INodeReference oldChild, final INode newChild, Snapshot latestSnapshot)

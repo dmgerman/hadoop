@@ -14050,6 +14050,9 @@ name|length
 operator|-
 literal|1
 index|]
+operator|.
+name|asFile
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -14253,6 +14256,9 @@ name|length
 operator|-
 literal|1
 index|]
+operator|.
+name|asFile
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
