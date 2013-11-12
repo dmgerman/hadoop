@@ -46,6 +46,38 @@ name|org
 operator|.
 name|apache
 operator|.
+name|commons
+operator|.
+name|collections
+operator|.
+name|buffer
+operator|.
+name|UnboundedFifoBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|commons
+operator|.
+name|lang
+operator|.
+name|math
+operator|.
+name|LongRange
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
 name|hadoop
 operator|.
 name|classification
@@ -396,6 +428,179 @@ argument_list|<
 name|YarnApplicationState
 argument_list|>
 name|applicationStates
+parameter_list|)
+function_decl|;
+comment|/**    * Set the application states to filter applications on    *    * @param applicationStates all lower-case string representation of the    *                          application states to filter on    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setApplicationStates (Set<String> applicationStates)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationStates
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationStates
+parameter_list|)
+function_decl|;
+comment|/**    * Get the users to filter applications on    *    * @return set of users to filter applications on    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getUsers ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getUsers
+parameter_list|()
+function_decl|;
+comment|/**    * Set the users to filter applications on    *    * @param users set of users to filter applications on    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setUsers (Set<String> users)
+specifier|public
+specifier|abstract
+name|void
+name|setUsers
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|users
+parameter_list|)
+function_decl|;
+comment|/**    * Get the queues to filter applications on    *    * @return set of queues to filter applications on    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getQueues ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getQueues
+parameter_list|()
+function_decl|;
+comment|/**    * Set the queue to filter applications on    *    * @param queue user to filter applications on    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setQueues (Set<String> queue)
+specifier|public
+specifier|abstract
+name|void
+name|setQueues
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|queue
+parameter_list|)
+function_decl|;
+comment|/**    * Get the limit on the number applications to return    *    * @return number of applications to limit to    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getLimit ()
+specifier|public
+specifier|abstract
+name|long
+name|getLimit
+parameter_list|()
+function_decl|;
+comment|/**    * Limit the number applications to return    *    * @param limit number of applications to limit to    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setLimit (long limit)
+specifier|public
+specifier|abstract
+name|void
+name|setLimit
+parameter_list|(
+name|long
+name|limit
+parameter_list|)
+function_decl|;
+comment|/**    * Get the range of start times to filter applications on    *    * @return {@link LongRange} of start times to filter applications on    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getStartRange ()
+specifier|public
+specifier|abstract
+name|LongRange
+name|getStartRange
+parameter_list|()
+function_decl|;
+comment|/**    * Set the range of start times to filter applications on    *    * @param begin beginning of the range    * @param end end of the range    * @throws IllegalArgumentException    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setStartRange (long begin, long end)
+specifier|public
+specifier|abstract
+name|void
+name|setStartRange
+parameter_list|(
+name|long
+name|begin
+parameter_list|,
+name|long
+name|end
+parameter_list|)
+throws|throws
+name|IllegalArgumentException
+function_decl|;
+comment|/**    * Get the range of finish times to filter applications on    *    * @return {@link LongRange} of finish times to filter applications on    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|getFinishRange ()
+specifier|public
+specifier|abstract
+name|LongRange
+name|getFinishRange
+parameter_list|()
+function_decl|;
+comment|/**    * Set the range of finish times to filter applications on    *    * @param begin beginning of the range    * @param end end of the range    * @throws IllegalArgumentException    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setFinishRange (long begin, long end)
+specifier|public
+specifier|abstract
+name|void
+name|setFinishRange
+parameter_list|(
+name|long
+name|begin
+parameter_list|,
+name|long
+name|end
 parameter_list|)
 function_decl|;
 block|}

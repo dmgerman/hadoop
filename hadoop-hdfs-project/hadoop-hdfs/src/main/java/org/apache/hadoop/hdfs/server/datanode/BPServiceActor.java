@@ -2061,7 +2061,7 @@ operator|.
 name|getFSDataset
 argument_list|()
 operator|.
-name|getDnCacheCapacity
+name|getCacheCapacity
 argument_list|()
 operator|==
 literal|0
@@ -2284,7 +2284,7 @@ operator|.
 name|getFSDataset
 argument_list|()
 operator|.
-name|getDnCacheCapacity
+name|getCacheCapacity
 argument_list|()
 argument_list|,
 name|dn
@@ -2292,7 +2292,7 @@ operator|.
 name|getFSDataset
 argument_list|()
 operator|.
-name|getDnCacheUsed
+name|getCacheUsed
 argument_list|()
 argument_list|,
 name|dn

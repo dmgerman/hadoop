@@ -2674,10 +2674,10 @@ block|}
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getDnCacheUsed ()
+DECL|method|getCacheUsed ()
 specifier|public
 name|long
-name|getDnCacheUsed
+name|getCacheUsed
 parameter_list|()
 block|{
 return|return
@@ -2687,10 +2687,34 @@ block|}
 annotation|@
 name|Override
 comment|// FSDatasetMBean
-DECL|method|getDnCacheCapacity ()
+DECL|method|getCacheCapacity ()
 specifier|public
 name|long
-name|getDnCacheCapacity
+name|getCacheCapacity
+parameter_list|()
+block|{
+return|return
+literal|0l
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumBlocksFailedToCache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToCache
+parameter_list|()
+block|{
+return|return
+literal|0l
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumBlocksFailedToUncache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToUncache
 parameter_list|()
 block|{
 return|return

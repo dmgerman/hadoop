@@ -863,6 +863,28 @@ specifier|final
 name|long
 name|maxBytes
 decl_stmt|;
+comment|/**    * Number of cache commands that could not be completed successfully    */
+DECL|field|numBlocksFailedToCache
+name|AtomicLong
+name|numBlocksFailedToCache
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
+comment|/**    * Number of uncache commands that could not be completed successfully    */
+DECL|field|numBlocksFailedToUncache
+name|AtomicLong
+name|numBlocksFailedToUncache
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|method|FsDatasetCache (FsDatasetImpl dataset)
 specifier|public
 name|FsDatasetCache
@@ -1156,6 +1178,11 @@ name|state
 argument_list|)
 expr_stmt|;
 block|}
+name|numBlocksFailedToCache
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 name|mappableBlockMap
@@ -1261,6 +1288,11 @@ literal|"in the mappableBlockMap."
 argument_list|)
 expr_stmt|;
 block|}
+name|numBlocksFailedToUncache
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
 return|return;
 block|}
 switch|switch
@@ -1412,6 +1444,11 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
+name|numBlocksFailedToUncache
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
 break|break;
 block|}
 block|}
@@ -1585,6 +1622,11 @@ name|maxBytes
 operator|+
 literal|" exceeded."
 argument_list|)
+expr_stmt|;
+name|numBlocksFailedToCache
+operator|.
+name|incrementAndGet
+argument_list|()
 expr_stmt|;
 return|return;
 block|}
@@ -1997,6 +2039,11 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+name|numBlocksFailedToCache
+operator|.
+name|incrementAndGet
+argument_list|()
+expr_stmt|;
 block|}
 block|}
 block|}
@@ -2149,7 +2196,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|// Stats related methods for FsDatasetMBean
+comment|// Stats related methods for FSDatasetMBean
 comment|/**    * Get the approximate amount of cache space used.    */
 DECL|method|getDnCacheUsed ()
 specifier|public
@@ -2173,6 +2220,32 @@ parameter_list|()
 block|{
 return|return
 name|maxBytes
+return|;
+block|}
+DECL|method|getNumBlocksFailedToCache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToCache
+parameter_list|()
+block|{
+return|return
+name|numBlocksFailedToCache
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getNumBlocksFailedToUncache ()
+specifier|public
+name|long
+name|getNumBlocksFailedToUncache
+parameter_list|()
+block|{
+return|return
+name|numBlocksFailedToUncache
+operator|.
+name|get
+argument_list|()
 return|;
 block|}
 block|}

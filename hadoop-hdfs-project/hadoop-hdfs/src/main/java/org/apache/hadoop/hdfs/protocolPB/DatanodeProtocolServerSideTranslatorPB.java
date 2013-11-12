@@ -939,12 +939,12 @@ name|report
 argument_list|,
 name|request
 operator|.
-name|getDnCacheCapacity
+name|getCacheCapacity
 argument_list|()
 argument_list|,
 name|request
 operator|.
-name|getDnCacheUsed
+name|getCacheUsed
 argument_list|()
 argument_list|,
 name|request
