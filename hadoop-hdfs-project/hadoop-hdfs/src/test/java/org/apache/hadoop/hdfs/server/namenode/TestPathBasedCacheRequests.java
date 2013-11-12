@@ -32,6 +32,38 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
+name|DFS_BLOCK_SIZE_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CACHEREPORT_INTERVAL_MSEC_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
 name|DFS_DATANODE_MAX_LOCKED_MEMORY_KEY
 import|;
 end_import
@@ -64,39 +96,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_BLOCK_SIZE_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_CACHING_ENABLED_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_CACHEREPORT_INTERVAL_MSEC_KEY
 import|;
 end_import
 
@@ -137,6 +137,30 @@ operator|.
 name|Assert
 operator|.
 name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNull
 import|;
 end_import
 
@@ -304,7 +328,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|IdNotFoundException
+name|InvalidRequestException
 import|;
 end_import
 
@@ -363,6 +387,20 @@ operator|.
 name|hdfs
 operator|.
 name|DFSConfigKeys
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSTestUtil
 import|;
 end_import
 
@@ -559,16 +597,6 @@ operator|.
 name|junit
 operator|.
 name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
 import|;
 end_import
 
@@ -1246,7 +1274,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"can't remove "
+literal|"Cannot remove "
 operator|+
 literal|"non-existent cache pool"
 argument_list|,
@@ -1263,8 +1291,6 @@ argument_list|(
 name|poolName
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"expected to get an exception when "
@@ -1283,7 +1309,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"can't remove "
+literal|"Cannot remove "
 operator|+
 literal|"non-existent cache pool"
 argument_list|,
@@ -1721,8 +1747,6 @@ argument_list|(
 literal|"pool99"
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"expected to get an exception when "
@@ -1741,7 +1765,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"can't remove non-existent"
+literal|"Cannot remove non-existent"
 argument_list|,
 name|ioe
 argument_list|)
@@ -1756,8 +1780,6 @@ argument_list|(
 name|poolName
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"expected to get an exception when "
@@ -1776,7 +1798,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"can't remove non-existent"
+literal|"Cannot remove non-existent"
 argument_list|,
 name|ioe
 argument_list|)
@@ -2180,7 +2202,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IdNotFoundException
+name|InvalidRequestException
 name|ioe
 parameter_list|)
 block|{
@@ -2188,7 +2210,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"no such pool as"
+literal|"Unknown pool"
 argument_list|,
 name|ioe
 argument_list|)
@@ -2240,7 +2262,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"permission denied for pool"
+literal|"Permission denied while accessing pool"
 argument_list|,
 name|e
 argument_list|)
@@ -2334,8 +2356,6 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"expected an error when adding a PathBasedCache "
@@ -2346,7 +2366,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IdNotFoundException
+name|InvalidRequestException
 name|e
 parameter_list|)
 block|{
@@ -2354,7 +2374,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"pool name was empty"
+literal|"Invalid empty pool name"
 argument_list|,
 name|e
 argument_list|)
@@ -2450,8 +2470,6 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|iter
@@ -2550,8 +2568,6 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|assertFalse
 argument_list|(
 name|iter
@@ -2569,8 +2585,6 @@ argument_list|(
 name|betaId
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"expected an error when removing a non-existent ID"
@@ -2579,7 +2593,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IdNotFoundException
+name|InvalidRequestException
 name|e
 parameter_list|)
 block|{
@@ -2587,7 +2601,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"id not found"
+literal|"No directive with ID"
 argument_list|,
 name|e
 argument_list|)
@@ -2603,8 +2617,6 @@ operator|-
 literal|42l
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"expected an error when removing a negative ID"
@@ -2613,7 +2625,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IdNotFoundException
+name|InvalidRequestException
 name|e
 parameter_list|)
 block|{
@@ -2621,7 +2633,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"invalid non-positive directive ID"
+literal|"Invalid negative ID"
 argument_list|,
 name|e
 argument_list|)
@@ -2636,8 +2648,6 @@ argument_list|(
 literal|43l
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
 name|fail
 argument_list|(
 literal|"expected an error when removing a non-existent ID"
@@ -2646,7 +2656,7 @@ expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IdNotFoundException
+name|InvalidRequestException
 name|e
 parameter_list|)
 block|{
@@ -2654,7 +2664,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"id not found"
+literal|"No directive with ID"
 argument_list|,
 name|e
 argument_list|)
@@ -4653,6 +4663,276 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|60000
+argument_list|)
+DECL|method|testListCachePoolPermissions ()
+specifier|public
+name|void
+name|testListCachePoolPermissions
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+specifier|final
+name|UserGroupInformation
+name|myUser
+init|=
+name|UserGroupInformation
+operator|.
+name|createRemoteUser
+argument_list|(
+literal|"myuser"
+argument_list|)
+decl_stmt|;
+specifier|final
+name|DistributedFileSystem
+name|myDfs
+init|=
+operator|(
+name|DistributedFileSystem
+operator|)
+name|DFSTestUtil
+operator|.
+name|getFileSystemAs
+argument_list|(
+name|myUser
+argument_list|,
+name|conf
+argument_list|)
+decl_stmt|;
+specifier|final
+name|String
+name|poolName
+init|=
+literal|"poolparty"
+decl_stmt|;
+name|dfs
+operator|.
+name|addCachePool
+argument_list|(
+operator|new
+name|CachePoolInfo
+argument_list|(
+name|poolName
+argument_list|)
+operator|.
+name|setMode
+argument_list|(
+operator|new
+name|FsPermission
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0700
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Should only see partial info
+name|RemoteIterator
+argument_list|<
+name|CachePoolInfo
+argument_list|>
+name|it
+init|=
+name|myDfs
+operator|.
+name|listCachePools
+argument_list|()
+decl_stmt|;
+name|CachePoolInfo
+name|info
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+name|assertFalse
+argument_list|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Expected pool name"
+argument_list|,
+name|poolName
+argument_list|,
+name|info
+operator|.
+name|getPoolName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Unexpected owner name"
+argument_list|,
+name|info
+operator|.
+name|getOwnerName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Unexpected group name"
+argument_list|,
+name|info
+operator|.
+name|getGroupName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Unexpected mode"
+argument_list|,
+name|info
+operator|.
+name|getMode
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNull
+argument_list|(
+literal|"Unexpected weight"
+argument_list|,
+name|info
+operator|.
+name|getWeight
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Modify the pool so myuser is now the owner
+name|dfs
+operator|.
+name|modifyCachePool
+argument_list|(
+operator|new
+name|CachePoolInfo
+argument_list|(
+name|poolName
+argument_list|)
+operator|.
+name|setOwnerName
+argument_list|(
+name|myUser
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|)
+operator|.
+name|setWeight
+argument_list|(
+literal|99
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Should see full info
+name|it
+operator|=
+name|myDfs
+operator|.
+name|listCachePools
+argument_list|()
+expr_stmt|;
+name|info
+operator|=
+name|it
+operator|.
+name|next
+argument_list|()
+expr_stmt|;
+name|assertFalse
+argument_list|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Expected pool name"
+argument_list|,
+name|poolName
+argument_list|,
+name|info
+operator|.
+name|getPoolName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Mismatched owner name"
+argument_list|,
+name|myUser
+operator|.
+name|getShortUserName
+argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getOwnerName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertNotNull
+argument_list|(
+literal|"Expected group name"
+argument_list|,
+name|info
+operator|.
+name|getGroupName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Mismatched mode"
+argument_list|,
+operator|(
+name|short
+operator|)
+literal|0700
+argument_list|,
+name|info
+operator|.
+name|getMode
+argument_list|()
+operator|.
+name|toShort
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"Mismatched weight"
+argument_list|,
+literal|99
+argument_list|,
+operator|(
+name|int
+operator|)
+name|info
+operator|.
+name|getWeight
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

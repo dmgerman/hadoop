@@ -140,6 +140,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|AccessControlException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|UserGroupInformation
 import|;
 end_import
@@ -639,9 +653,9 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * Get information about this cache pool.    *    * @param fullInfo    *          If true, only the name will be returned (i.e., what you     *          would get if you didn't have read permission for this pool.)    * @return    *          Cache pool information.    */
+comment|/**    * Get either full or partial information about this CachePool.    *    * @param fullInfo    *          If true, only the name will be returned (i.e., what you     *          would get if you didn't have read permission for this pool.)    * @return    *          Cache pool information.    */
 DECL|method|getInfo (boolean fullInfo)
-specifier|public
+specifier|private
 name|CachePoolInfo
 name|getInfo
 parameter_list|(
@@ -696,6 +710,7 @@ name|weight
 argument_list|)
 return|;
 block|}
+comment|/**    * Returns a CachePoolInfo describing this CachePool based on the permissions    * of the calling user. Unprivileged users will see only minimal descriptive    * information about the pool.    *     * @param pc Permission checker to be used to validate the user's permissions,    *          or null    * @return CachePoolInfo describing this CachePool    */
 DECL|method|getInfo (FSPermissionChecker pc)
 specifier|public
 name|CachePoolInfo
@@ -705,9 +720,20 @@ name|FSPermissionChecker
 name|pc
 parameter_list|)
 block|{
-return|return
-name|getInfo
-argument_list|(
+name|boolean
+name|hasPermission
+init|=
+literal|true
+decl_stmt|;
+if|if
+condition|(
+name|pc
+operator|!=
+literal|null
+condition|)
+block|{
+try|try
+block|{
 name|pc
 operator|.
 name|checkPermission
@@ -718,6 +744,24 @@ name|FsAction
 operator|.
 name|READ
 argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+name|hasPermission
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+return|return
+name|getInfo
+argument_list|(
+name|hasPermission
 argument_list|)
 return|;
 block|}

@@ -340,7 +340,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|IdNotFoundException
+name|InvalidRequestException
 import|;
 end_import
 
@@ -1283,7 +1283,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"No more available IDs"
+literal|"No more available IDs."
 argument_list|)
 throw|;
 block|}
@@ -1292,6 +1292,333 @@ name|nextEntryId
 operator|++
 return|;
 block|}
+comment|// Helper getter / validation methods
+DECL|method|checkWritePermission (FSPermissionChecker pc, CachePool pool)
+specifier|private
+specifier|static
+name|void
+name|checkWritePermission
+parameter_list|(
+name|FSPermissionChecker
+name|pc
+parameter_list|,
+name|CachePool
+name|pool
+parameter_list|)
+throws|throws
+name|AccessControlException
+block|{
+if|if
+condition|(
+operator|(
+name|pc
+operator|!=
+literal|null
+operator|)
+condition|)
+block|{
+name|pc
+operator|.
+name|checkPermission
+argument_list|(
+name|pool
+argument_list|,
+name|FsAction
+operator|.
+name|WRITE
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|method|validatePoolName (PathBasedCacheDirective directive)
+specifier|private
+specifier|static
+name|String
+name|validatePoolName
+parameter_list|(
+name|PathBasedCacheDirective
+name|directive
+parameter_list|)
+throws|throws
+name|InvalidRequestException
+block|{
+name|String
+name|pool
+init|=
+name|directive
+operator|.
+name|getPool
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|pool
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"No pool specified."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|pool
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Invalid empty pool name."
+argument_list|)
+throw|;
+block|}
+return|return
+name|pool
+return|;
+block|}
+DECL|method|validatePath (PathBasedCacheDirective directive)
+specifier|private
+specifier|static
+name|String
+name|validatePath
+parameter_list|(
+name|PathBasedCacheDirective
+name|directive
+parameter_list|)
+throws|throws
+name|InvalidRequestException
+block|{
+if|if
+condition|(
+name|directive
+operator|.
+name|getPath
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"No path specified."
+argument_list|)
+throw|;
+block|}
+name|String
+name|path
+init|=
+name|directive
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|DFSUtil
+operator|.
+name|isValidName
+argument_list|(
+name|path
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Invalid path '"
+operator|+
+name|path
+operator|+
+literal|"'."
+argument_list|)
+throw|;
+block|}
+return|return
+name|path
+return|;
+block|}
+DECL|method|validateReplication (PathBasedCacheDirective directive, short defaultValue)
+specifier|private
+specifier|static
+name|short
+name|validateReplication
+parameter_list|(
+name|PathBasedCacheDirective
+name|directive
+parameter_list|,
+name|short
+name|defaultValue
+parameter_list|)
+throws|throws
+name|InvalidRequestException
+block|{
+name|short
+name|repl
+init|=
+operator|(
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+operator|!=
+literal|null
+operator|)
+condition|?
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+else|:
+name|defaultValue
+decl_stmt|;
+if|if
+condition|(
+name|repl
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Invalid replication factor "
+operator|+
+name|repl
+operator|+
+literal|"<= 0"
+argument_list|)
+throw|;
+block|}
+return|return
+name|repl
+return|;
+block|}
+comment|/**    * Get a PathBasedCacheEntry by ID, validating the ID and that the entry    * exists.    */
+DECL|method|getById (long id)
+specifier|private
+name|PathBasedCacheEntry
+name|getById
+parameter_list|(
+name|long
+name|id
+parameter_list|)
+throws|throws
+name|InvalidRequestException
+block|{
+comment|// Check for invalid IDs.
+if|if
+condition|(
+name|id
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Invalid negative ID."
+argument_list|)
+throw|;
+block|}
+comment|// Find the entry.
+name|PathBasedCacheEntry
+name|entry
+init|=
+name|entriesById
+operator|.
+name|get
+argument_list|(
+name|id
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|entry
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"No directive with ID "
+operator|+
+name|id
+operator|+
+literal|" found."
+argument_list|)
+throw|;
+block|}
+return|return
+name|entry
+return|;
+block|}
+comment|/**    * Get a CachePool by name, validating that it exists.    */
+DECL|method|getCachePool (String poolName)
+specifier|private
+name|CachePool
+name|getCachePool
+parameter_list|(
+name|String
+name|poolName
+parameter_list|)
+throws|throws
+name|InvalidRequestException
+block|{
+name|CachePool
+name|pool
+init|=
+name|cachePools
+operator|.
+name|get
+argument_list|(
+name|poolName
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|pool
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Unknown pool "
+operator|+
+name|poolName
+argument_list|)
+throw|;
+block|}
+return|return
+name|pool
+return|;
+block|}
+comment|// RPC handlers
 DECL|method|addInternal (PathBasedCacheEntry entry)
 specifier|private
 name|void
@@ -1395,208 +1722,45 @@ name|entry
 decl_stmt|;
 try|try
 block|{
-if|if
-condition|(
-name|directive
-operator|.
-name|getPool
-argument_list|()
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
-argument_list|(
-literal|"addDirective: no pool was specified."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|directive
-operator|.
-name|getPool
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
-argument_list|(
-literal|"addDirective: pool name was empty."
-argument_list|)
-throw|;
-block|}
 name|CachePool
 name|pool
 init|=
-name|cachePools
-operator|.
-name|get
+name|getCachePool
+argument_list|(
+name|validatePoolName
 argument_list|(
 name|directive
-operator|.
-name|getPool
-argument_list|()
+argument_list|)
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|pool
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
+name|checkWritePermission
 argument_list|(
-literal|"addDirective: no such pool as "
-operator|+
-name|directive
-operator|.
-name|getPool
-argument_list|()
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|(
 name|pc
-operator|!=
-literal|null
-operator|)
-operator|&&
-operator|(
-operator|!
-name|pc
-operator|.
-name|checkPermission
-argument_list|(
-name|pool
 argument_list|,
-name|FsAction
-operator|.
-name|WRITE
+name|pool
 argument_list|)
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"addDirective: write "
-operator|+
-literal|"permission denied for pool "
-operator|+
-name|directive
-operator|.
-name|getPool
-argument_list|()
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|directive
-operator|.
-name|getPath
-argument_list|()
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"addDirective: no path was specified."
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|String
 name|path
 init|=
+name|validatePath
+argument_list|(
 name|directive
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
+argument_list|)
 decl_stmt|;
-if|if
-condition|(
-operator|!
-name|DFSUtil
-operator|.
-name|isValidName
-argument_list|(
-name|path
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"addDirective: path '"
-operator|+
-name|path
-operator|+
-literal|"' is invalid."
-argument_list|)
-throw|;
-block|}
 name|short
 name|replication
 init|=
+name|validateReplication
+argument_list|(
 name|directive
-operator|.
-name|getReplication
-argument_list|()
-operator|==
-literal|null
-condition|?
+argument_list|,
 operator|(
 name|short
 operator|)
 literal|1
-else|:
-name|directive
-operator|.
-name|getReplication
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|replication
-operator|<=
-literal|0
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"addDirective: replication "
-operator|+
-name|replication
-operator|+
-literal|" is invalid."
 argument_list|)
-throw|;
-block|}
+decl_stmt|;
 name|long
 name|id
 decl_stmt|;
@@ -1659,11 +1823,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"addDirective "
+literal|"addDirective of "
 operator|+
 name|directive
 operator|+
-literal|": failed."
+literal|" failed: "
 argument_list|,
 name|e
 argument_list|)
@@ -1676,11 +1840,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"addDirective "
+literal|"addDirective of "
 operator|+
 name|directive
 operator|+
-literal|": succeeded."
+literal|" successful."
 argument_list|)
 expr_stmt|;
 if|if
@@ -1765,106 +1929,30 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IdNotFoundException
+name|InvalidRequestException
 argument_list|(
-literal|"modifyDirective: "
-operator|+
-literal|"no ID to modify was supplied."
+literal|"Must supply an ID."
 argument_list|)
 throw|;
 block|}
-if|if
-condition|(
-name|id
-operator|<=
-literal|0
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
-argument_list|(
-literal|"modifyDirective "
-operator|+
-name|id
-operator|+
-literal|": invalid non-positive directive ID."
-argument_list|)
-throw|;
-block|}
-comment|// Find the entry.
 name|PathBasedCacheEntry
 name|prevEntry
 init|=
-name|entriesById
-operator|.
-name|get
+name|getById
 argument_list|(
 name|id
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|prevEntry
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
+name|checkWritePermission
 argument_list|(
-literal|"modifyDirective "
-operator|+
-name|id
-operator|+
-literal|": id not found."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|(
 name|pc
-operator|!=
-literal|null
-operator|)
-operator|&&
-operator|(
-operator|!
-name|pc
-operator|.
-name|checkPermission
-argument_list|(
-name|prevEntry
-operator|.
-name|getPool
-argument_list|()
 argument_list|,
-name|FsAction
-operator|.
-name|WRITE
-argument_list|)
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"modifyDirective "
-operator|+
-name|id
-operator|+
-literal|": permission denied for initial pool "
-operator|+
 name|prevEntry
 operator|.
 name|getPool
 argument_list|()
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|String
 name|path
 init|=
@@ -1885,62 +1973,15 @@ condition|)
 block|{
 name|path
 operator|=
+name|validatePath
+argument_list|(
 name|directive
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
+argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|DFSUtil
-operator|.
-name|isValidName
-argument_list|(
-name|path
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"modifyDirective "
-operator|+
-name|id
-operator|+
-literal|": new path "
-operator|+
-name|path
-operator|+
-literal|" is not valid."
-argument_list|)
-throw|;
-block|}
 block|}
 name|short
 name|replication
 init|=
-operator|(
-name|directive
-operator|.
-name|getReplication
-argument_list|()
-operator|!=
-literal|null
-operator|)
-condition|?
-name|directive
-operator|.
-name|getReplication
-argument_list|()
-else|:
 name|prevEntry
 operator|.
 name|getReplication
@@ -1948,22 +1989,23 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|replication
-operator|<=
-literal|0
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+operator|!=
+literal|null
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"modifyDirective: replication "
-operator|+
 name|replication
-operator|+
-literal|" is invalid."
+operator|=
+name|validateReplication
+argument_list|(
+name|directive
+argument_list|,
+name|replication
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 name|CachePool
 name|pool
@@ -1985,100 +2027,21 @@ condition|)
 block|{
 name|pool
 operator|=
-name|cachePools
-operator|.
-name|get
+name|getCachePool
+argument_list|(
+name|validatePoolName
 argument_list|(
 name|directive
-operator|.
-name|getPool
-argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|pool
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
+name|checkWritePermission
 argument_list|(
-literal|"modifyDirective "
-operator|+
-name|id
-operator|+
-literal|": pool "
-operator|+
-name|directive
-operator|.
-name|getPool
-argument_list|()
-operator|+
-literal|" not found."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|directive
-operator|.
-name|getPool
-argument_list|()
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
-argument_list|(
-literal|"modifyDirective: pool name was "
-operator|+
-literal|"empty."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|(
 name|pc
-operator|!=
-literal|null
-operator|)
-operator|&&
-operator|(
-operator|!
-name|pc
-operator|.
-name|checkPermission
-argument_list|(
-name|pool
 argument_list|,
-name|FsAction
-operator|.
-name|WRITE
-argument_list|)
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"modifyDirective "
-operator|+
-name|id
-operator|+
-literal|": permission denied for target pool "
-operator|+
 name|pool
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 name|removeInternal
 argument_list|(
@@ -2116,11 +2079,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"modifyDirective "
+literal|"modifyDirective of "
 operator|+
 name|idString
 operator|+
-literal|": failed."
+literal|" failed: "
 argument_list|,
 name|e
 argument_list|)
@@ -2133,13 +2096,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"modifyDirective "
+literal|"modifyDirective of "
 operator|+
 name|idString
 operator|+
-literal|": successfully applied "
+literal|" successfully applied "
 operator|+
 name|directive
+operator|+
+literal|"."
 argument_list|)
 expr_stmt|;
 block|}
@@ -2152,7 +2117,7 @@ name|PathBasedCacheEntry
 name|existing
 parameter_list|)
 throws|throws
-name|IOException
+name|InvalidRequestException
 block|{
 assert|assert
 name|namesystem
@@ -2199,9 +2164,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IdNotFoundException
+name|InvalidRequestException
 argument_list|(
-literal|"removeInternal: failed to locate entry "
+literal|"Failed to locate entry "
 operator|+
 name|existing
 operator|.
@@ -2268,104 +2233,24 @@ argument_list|()
 assert|;
 try|try
 block|{
-comment|// Check for invalid IDs.
-if|if
-condition|(
-name|id
-operator|<=
-literal|0
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
-argument_list|(
-literal|"removeDirective "
-operator|+
-name|id
-operator|+
-literal|": invalid "
-operator|+
-literal|"non-positive directive ID."
-argument_list|)
-throw|;
-block|}
-comment|// Find the entry.
 name|PathBasedCacheEntry
 name|existing
 init|=
-name|entriesById
-operator|.
-name|get
+name|getById
 argument_list|(
 name|id
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|existing
-operator|==
-literal|null
-condition|)
-block|{
-throw|throw
-operator|new
-name|IdNotFoundException
+name|checkWritePermission
 argument_list|(
-literal|"removeDirective "
-operator|+
-name|id
-operator|+
-literal|": id not found."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-operator|(
 name|pc
-operator|!=
-literal|null
-operator|)
-operator|&&
-operator|(
-operator|!
-name|pc
-operator|.
-name|checkPermission
-argument_list|(
-name|existing
-operator|.
-name|getPool
-argument_list|()
 argument_list|,
-name|FsAction
-operator|.
-name|WRITE
-argument_list|)
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|AccessControlException
-argument_list|(
-literal|"removeDirective "
-operator|+
-name|id
-operator|+
-literal|": write permission denied on pool "
-operator|+
 name|existing
 operator|.
 name|getPool
 argument_list|()
-operator|.
-name|getPoolName
-argument_list|()
 argument_list|)
-throw|;
-block|}
+expr_stmt|;
 name|removeInternal
 argument_list|(
 name|existing
@@ -2382,11 +2267,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"removeDirective "
+literal|"removeDirective of "
 operator|+
 name|id
 operator|+
-literal|" failed."
+literal|" failed: "
 argument_list|,
 name|e
 argument_list|)
@@ -2412,11 +2297,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"removeDirective "
+literal|"removeDirective of "
 operator|+
 name|id
 operator|+
-literal|": succeeded."
+literal|" successful."
 argument_list|)
 expr_stmt|;
 block|}
@@ -2471,7 +2356,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"we currently don't support filtering by ID"
+literal|"Filtering by ID is unsupported."
 argument_list|)
 throw|;
 block|}
@@ -2487,42 +2372,11 @@ condition|)
 block|{
 name|filterPath
 operator|=
+name|validatePath
+argument_list|(
 name|filter
-operator|.
-name|getPath
-argument_list|()
-operator|.
-name|toUri
-argument_list|()
-operator|.
-name|getPath
-argument_list|()
+argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|DFSUtil
-operator|.
-name|isValidName
-argument_list|(
-name|filterPath
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"listPathBasedCacheDirectives: invalid "
-operator|+
-literal|"path name '"
-operator|+
-name|filterPath
-operator|+
-literal|"'"
-argument_list|)
-throw|;
-block|}
 block|}
 if|if
 condition|(
@@ -2538,9 +2392,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"we currently don't support filtering "
-operator|+
-literal|"by replication"
+literal|"Filtering by replication is unsupported."
 argument_list|)
 throw|;
 block|}
@@ -2688,15 +2540,20 @@ condition|)
 block|{
 continue|continue;
 block|}
+name|boolean
+name|hasPermission
+init|=
+literal|true
+decl_stmt|;
 if|if
 condition|(
-operator|(
 name|pc
-operator|==
+operator|!=
 literal|null
-operator|)
-operator|||
-operator|(
+condition|)
+block|{
+try|try
+block|{
 name|pc
 operator|.
 name|checkPermission
@@ -2710,7 +2567,23 @@ name|FsAction
 operator|.
 name|READ
 argument_list|)
-operator|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AccessControlException
+name|e
+parameter_list|)
+block|{
+name|hasPermission
+operator|=
+literal|false
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|hasPermission
 condition|)
 block|{
 name|replies
@@ -2796,9 +2669,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InvalidRequestException
 argument_list|(
-literal|"cache pool "
+literal|"Cache pool "
 operator|+
 name|poolName
 operator|+
@@ -2831,7 +2704,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"created new cache pool "
+literal|"Created new cache pool "
 operator|+
 name|pool
 argument_list|)
@@ -2841,7 +2714,7 @@ name|pool
 operator|.
 name|getInfo
 argument_list|(
-literal|true
+literal|null
 argument_list|)
 return|;
 block|}
@@ -2897,9 +2770,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InvalidRequestException
 argument_list|(
-literal|"cache pool "
+literal|"Cache pool "
 operator|+
 name|poolName
 operator|+
@@ -3173,9 +3046,9 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|IOException
+name|InvalidRequestException
 argument_list|(
-literal|"can't remove non-existent cache pool "
+literal|"Cannot remove non-existent cache pool "
 operator|+
 name|poolName
 argument_list|)
@@ -3372,31 +3245,6 @@ literal|true
 argument_list|)
 return|;
 block|}
-if|if
-condition|(
-name|pc
-operator|==
-literal|null
-condition|)
-block|{
-name|results
-operator|.
-name|add
-argument_list|(
-name|cur
-operator|.
-name|getValue
-argument_list|()
-operator|.
-name|getInfo
-argument_list|(
-literal|true
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 name|results
 operator|.
 name|add
@@ -3412,7 +3260,6 @@ name|pc
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 operator|new
@@ -4163,7 +4010,7 @@ name|pool
 operator|.
 name|getInfo
 argument_list|(
-literal|true
+literal|null
 argument_list|)
 operator|.
 name|writeTo
