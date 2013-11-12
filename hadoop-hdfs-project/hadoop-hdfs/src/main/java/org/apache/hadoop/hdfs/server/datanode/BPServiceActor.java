@@ -681,7 +681,7 @@ name|pendingIncrementalBRperStorage
 init|=
 name|Maps
 operator|.
-name|newConcurrentMap
+name|newHashMap
 argument_list|()
 decl_stmt|;
 DECL|field|pendingReceivedRequests
@@ -1316,7 +1316,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Report received blocks and delete hints to the Namenode    * @throws IOException    */
+comment|/**    * Report received blocks and delete hints to the Namenode for each    * storage.    *    * @throws IOException    */
 DECL|method|reportReceivedDeletedBlocks ()
 specifier|private
 name|void
@@ -1325,8 +1325,26 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-comment|// For each storage, check if there are newly received blocks and if
-comment|// so then send an incremental report to the NameNode.
+comment|// Generate a list of the pending reports for each storage under the lock
+name|Map
+argument_list|<
+name|String
+argument_list|,
+name|ReceivedDeletedBlockInfo
+index|[]
+argument_list|>
+name|blockArrays
+init|=
+name|Maps
+operator|.
+name|newHashMap
+argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|pendingIncrementalBRperStorage
+init|)
+block|{
 for|for
 control|(
 name|Map
@@ -1369,12 +1387,6 @@ name|receivedAndDeletedBlockArray
 init|=
 literal|null
 decl_stmt|;
-comment|// TODO: We can probably use finer-grained synchronization now.
-synchronized|synchronized
-init|(
-name|pendingIncrementalBRperStorage
-init|)
-block|{
 if|if
 condition|(
 name|perStorageMap
@@ -1399,15 +1411,57 @@ name|receivedAndDeletedBlockArray
 operator|.
 name|length
 expr_stmt|;
-block|}
-block|}
-if|if
-condition|(
+name|blockArrays
+operator|.
+name|put
+argument_list|(
+name|storageUuid
+argument_list|,
 name|receivedAndDeletedBlockArray
-operator|!=
-literal|null
-condition|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|// Send incremental block reports to the Namenode outside the lock
+for|for
+control|(
+name|Map
+operator|.
+name|Entry
+argument_list|<
+name|String
+argument_list|,
+name|ReceivedDeletedBlockInfo
+index|[]
+argument_list|>
+name|entry
+range|:
+name|blockArrays
+operator|.
+name|entrySet
+argument_list|()
+control|)
 block|{
+specifier|final
+name|String
+name|storageUuid
+init|=
+name|entry
+operator|.
+name|getKey
+argument_list|()
+decl_stmt|;
+specifier|final
+name|ReceivedDeletedBlockInfo
+index|[]
+name|rdbi
+init|=
+name|entry
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
 name|StorageReceivedDeletedBlocks
 index|[]
 name|report
@@ -1418,7 +1472,7 @@ name|StorageReceivedDeletedBlocks
 argument_list|(
 name|storageUuid
 argument_list|,
-name|receivedAndDeletedBlockArray
+name|rdbi
 argument_list|)
 block|}
 decl_stmt|;
@@ -1450,25 +1504,35 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-synchronized|synchronized
-init|(
-name|pendingIncrementalBRperStorage
-init|)
-block|{
 if|if
 condition|(
 operator|!
 name|success
 condition|)
 block|{
+synchronized|synchronized
+init|(
+name|pendingIncrementalBRperStorage
+init|)
+block|{
 comment|// If we didn't succeed in sending the report, put all of the
 comment|// blocks back onto our queue, but only in the case where we
 comment|// didn't put something newer in the meantime.
+name|PerStoragePendingIncrementalBR
+name|perStorageMap
+init|=
+name|pendingIncrementalBRperStorage
+operator|.
+name|get
+argument_list|(
+name|storageUuid
+argument_list|)
+decl_stmt|;
 name|perStorageMap
 operator|.
 name|putMissingBlockInfos
 argument_list|(
-name|receivedAndDeletedBlockArray
+name|rdbi
 argument_list|)
 expr_stmt|;
 name|pendingReceivedRequests
@@ -1478,7 +1542,6 @@ operator|.
 name|getBlockInfoCount
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}

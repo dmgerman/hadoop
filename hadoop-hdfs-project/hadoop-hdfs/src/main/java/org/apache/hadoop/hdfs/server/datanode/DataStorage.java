@@ -1515,7 +1515,8 @@ name|setProperty
 argument_list|(
 literal|"datanodeUuid"
 argument_list|,
-name|datanodeUuid
+name|getDatanodeUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1798,7 +1799,8 @@ name|dnUuid
 operator|+
 literal|", does not match "
 operator|+
-name|datanodeUuid
+name|getDatanodeUuid
+argument_list|()
 operator|+
 literal|" from other"
 operator|+
