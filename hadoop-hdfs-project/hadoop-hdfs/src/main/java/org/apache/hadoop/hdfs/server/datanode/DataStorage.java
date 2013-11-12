@@ -1499,7 +1499,7 @@ name|supports
 argument_list|(
 name|Feature
 operator|.
-name|DATANODE_ID
+name|ADD_DATANODE_AND_STORAGE_UUIDS
 argument_list|,
 name|layoutVersion
 argument_list|)

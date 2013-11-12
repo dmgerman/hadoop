@@ -445,15 +445,15 @@ argument_list|,
 literal|"Support for cache pools and path-based caching"
 argument_list|)
 block|,
-DECL|enumConstant|DATANODE_ID
-name|DATANODE_ID
+DECL|enumConstant|ADD_DATANODE_AND_STORAGE_UUIDS
+name|ADD_DATANODE_AND_STORAGE_UUIDS
 argument_list|(
 operator|-
 literal|49
 argument_list|,
-literal|"UUID per Datanode and distinct StorageID per storage "
+literal|"Replace StorageID with DatanodeUuid."
 operator|+
-literal|"directory."
+literal|" Use distinct StorageUuid per storage directory."
 argument_list|)
 block|;
 DECL|field|lv
