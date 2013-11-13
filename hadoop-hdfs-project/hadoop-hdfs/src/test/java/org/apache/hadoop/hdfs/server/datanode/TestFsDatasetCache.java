@@ -458,6 +458,30 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|datanode
+operator|.
+name|fsdataset
+operator|.
+name|impl
+operator|.
+name|MappableBlock
+operator|.
+name|Mlocker
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|namenode
 operator|.
 name|FSImage
@@ -838,6 +862,11 @@ operator|new
 name|PageRounder
 argument_list|()
 decl_stmt|;
+DECL|field|mlocker
+specifier|private
+name|Mlocker
+name|mlocker
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setUp ()
@@ -1001,6 +1030,13 @@ argument_list|,
 name|nn
 argument_list|)
 expr_stmt|;
+comment|// Save the current mlocker and replace it at the end of the test
+name|mlocker
+operator|=
+name|MappableBlock
+operator|.
+name|mlocker
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -1038,6 +1074,13 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Restore the original mlocker
+name|MappableBlock
+operator|.
+name|mlocker
+operator|=
+name|mlocker
+expr_stmt|;
 block|}
 DECL|method|setHeartbeatResponse (DatanodeCommand[] cmds)
 specifier|private
