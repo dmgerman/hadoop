@@ -1231,10 +1231,10 @@ name|inode
 argument_list|)
 throw|;
 block|}
-comment|/**    * Whether a cache pool can be accessed by the current context    *    * @param pool CachePool being accessed    * @param access type of action being performed on the cache pool    * @return if the pool can be accessed    */
+comment|/**    * Whether a cache pool can be accessed by the current context    *    * @param pool CachePool being accessed    * @param access type of action being performed on the cache pool    * @throws AccessControlException if pool cannot be accessed    */
 DECL|method|checkPermission (CachePool pool, FsAction access)
 specifier|public
-name|boolean
+name|void
 name|checkPermission
 parameter_list|(
 name|CachePool
@@ -1243,6 +1243,8 @@ parameter_list|,
 name|FsAction
 name|access
 parameter_list|)
+throws|throws
+name|AccessControlException
 block|{
 name|FsPermission
 name|mode
@@ -1258,9 +1260,7 @@ name|isSuperUser
 argument_list|()
 condition|)
 block|{
-return|return
-literal|true
-return|;
+return|return;
 block|}
 if|if
 condition|(
@@ -1285,9 +1285,7 @@ name|access
 argument_list|)
 condition|)
 block|{
-return|return
-literal|true
-return|;
+return|return;
 block|}
 if|if
 condition|(
@@ -1312,9 +1310,7 @@ name|access
 argument_list|)
 condition|)
 block|{
-return|return
-literal|true
-return|;
+return|return;
 block|}
 if|if
 condition|(
@@ -1329,13 +1325,33 @@ name|access
 argument_list|)
 condition|)
 block|{
-return|return
-literal|true
-return|;
+return|return;
 block|}
-return|return
-literal|false
-return|;
+throw|throw
+operator|new
+name|AccessControlException
+argument_list|(
+literal|"Permission denied while accessing pool "
+operator|+
+name|pool
+operator|.
+name|getPoolName
+argument_list|()
+operator|+
+literal|": user "
+operator|+
+name|user
+operator|+
+literal|" does not have "
+operator|+
+name|access
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" permissions."
+argument_list|)
+throw|;
 block|}
 block|}
 end_class

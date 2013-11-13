@@ -27,14 +27,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Exception corresponding to ID not found - EINVAL  */
+comment|/**  * Thrown when the user makes a malformed request, for example missing required  * parameters or parameters that are not valid.  */
 end_comment
 
 begin_class
-DECL|class|IdNotFoundException
+DECL|class|InvalidRequestException
 specifier|public
 class|class
-name|IdNotFoundException
+name|InvalidRequestException
 extends|extends
 name|IOException
 block|{
@@ -46,9 +46,9 @@ name|serialVersionUID
 init|=
 literal|0L
 decl_stmt|;
-DECL|method|IdNotFoundException (String str)
+DECL|method|InvalidRequestException (String str)
 specifier|public
-name|IdNotFoundException
+name|InvalidRequestException
 parameter_list|(
 name|String
 name|str
