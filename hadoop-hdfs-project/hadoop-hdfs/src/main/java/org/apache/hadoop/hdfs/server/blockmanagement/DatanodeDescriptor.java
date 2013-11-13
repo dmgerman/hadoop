@@ -222,20 +222,6 @@ name|VisibleForTesting
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class extends the DatanodeInfo class with ephemeral information (eg  * health, capacity, what blocks are associated with the Datanode) that is  * private to the Namenode, ie this class is not exposed to clients.  */
 end_comment
@@ -663,6 +649,12 @@ return|return
 name|pendingUncached
 return|;
 block|}
+comment|/**    * The time when the last batch of caching directives was sent, in    * monotonic milliseconds.    */
+DECL|field|lastCachingDirectiveSentTimeMs
+specifier|private
+name|long
+name|lastCachingDirectiveSentTimeMs
+decl_stmt|;
 comment|/**    * Head of the list of blocks on the datanode    */
 DECL|field|blockList
 specifier|private
@@ -2427,6 +2419,36 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+comment|/**    * @return   The time at which we last sent caching directives to this     *           DataNode, in monotonic milliseconds.    */
+DECL|method|getLastCachingDirectiveSentTimeMs ()
+specifier|public
+name|long
+name|getLastCachingDirectiveSentTimeMs
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|lastCachingDirectiveSentTimeMs
+return|;
+block|}
+comment|/**    * @param time  The time at which we last sent caching directives to this     *              DataNode, in monotonic milliseconds.    */
+DECL|method|setLastCachingDirectiveSentTimeMs (long time)
+specifier|public
+name|void
+name|setLastCachingDirectiveSentTimeMs
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastCachingDirectiveSentTimeMs
+operator|=
+name|time
+expr_stmt|;
 block|}
 block|}
 end_class

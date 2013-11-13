@@ -6856,7 +6856,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|setSendCachingCommands
+name|setShouldSendCachingCommands
 argument_list|(
 literal|true
 argument_list|)
@@ -7057,7 +7057,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|setSendCachingCommands
+name|setShouldSendCachingCommands
 argument_list|(
 literal|false
 argument_list|)

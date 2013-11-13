@@ -222,6 +222,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|nio
+operator|.
+name|ByteBuffer
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -602,6 +612,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|CacheManipulator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|AccessControlException
@@ -763,38 +793,12 @@ specifier|private
 name|NamenodeProtocols
 name|proto
 decl_stmt|;
-static|static
-block|{
-name|MappableBlock
-operator|.
-name|mlocker
-operator|=
-operator|new
-name|MappableBlock
-operator|.
-name|Mlocker
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|mlock
-parameter_list|(
-name|MappedByteBuffer
-name|mmap
-parameter_list|,
-name|long
-name|length
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|// Stubbed out for testing
-block|}
-block|}
-expr_stmt|;
-block|}
+DECL|field|prevCacheManipulator
+specifier|static
+specifier|private
+name|CacheManipulator
+name|prevCacheManipulator
+decl_stmt|;
 annotation|@
 name|Before
 DECL|method|setup ()
@@ -871,6 +875,57 @@ operator|.
 name|getNameNodeRpc
 argument_list|()
 expr_stmt|;
+name|prevCacheManipulator
+operator|=
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|cacheManipulator
+expr_stmt|;
+comment|// Save the current CacheManipulator and replace it at the end of the test
+comment|// Stub out mlock calls to avoid failing when not enough memory is lockable
+comment|// by the operating system.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|cacheManipulator
+operator|=
+operator|new
+name|CacheManipulator
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|mlock
+parameter_list|(
+name|String
+name|identifier
+parameter_list|,
+name|ByteBuffer
+name|mmap
+parameter_list|,
+name|long
+name|length
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"mlocking "
+operator|+
+name|identifier
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+expr_stmt|;
 block|}
 annotation|@
 name|After
@@ -895,6 +950,15 @@ name|shutdown
 argument_list|()
 expr_stmt|;
 block|}
+comment|// Restore the original CacheManipulator
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|cacheManipulator
+operator|=
+name|prevCacheManipulator
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -3440,7 +3504,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Wait for the NameNode to have an expected number of cached blocks    * and replicas.    * @param nn NameNode    * @param expectedCachedBlocks    * @param expectedCachedReplicas    * @throws Exception    */
-DECL|method|waitForCachedBlocks (NameNode nn, final int expectedCachedBlocks, final int expectedCachedReplicas)
+DECL|method|waitForCachedBlocks (NameNode nn, final int expectedCachedBlocks, final int expectedCachedReplicas, final String logString)
 specifier|private
 specifier|static
 name|void
@@ -3456,6 +3520,10 @@ parameter_list|,
 specifier|final
 name|int
 name|expectedCachedReplicas
+parameter_list|,
+specifier|final
+name|String
+name|logString
 parameter_list|)
 throws|throws
 name|Exception
@@ -3628,19 +3696,18 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"cached blocks: have "
+name|logString
+operator|+
+literal|" cached blocks: have "
 operator|+
 name|numCachedBlocks
 operator|+
 literal|" / "
 operator|+
 name|expectedCachedBlocks
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
+operator|+
+literal|".  "
+operator|+
 literal|"cached replicas: have "
 operator|+
 name|numCachedReplicas
@@ -4218,6 +4285,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|"testWaitForCachedReplicas:0"
 argument_list|)
 expr_stmt|;
 comment|// Cache and check each path in sequence
@@ -4290,6 +4359,8 @@ argument_list|,
 name|expected
 argument_list|,
 name|expected
+argument_list|,
+literal|"testWaitForCachedReplicas:1"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4353,6 +4424,8 @@ argument_list|,
 name|expected
 argument_list|,
 name|expected
+argument_list|,
+literal|"testWaitForCachedReplicas:2"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4559,6 +4632,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|"testAddingPathBasedCacheDirectivesWhenCachingIsDisabled:0"
 argument_list|)
 expr_stmt|;
 comment|// Cache and check each path in sequence
@@ -4627,6 +4702,8 @@ argument_list|,
 name|expected
 argument_list|,
 literal|0
+argument_list|,
+literal|"testAddingPathBasedCacheDirectivesWhenCachingIsDisabled:1"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4644,6 +4721,8 @@ argument_list|,
 name|expected
 argument_list|,
 literal|0
+argument_list|,
+literal|"testAddingPathBasedCacheDirectivesWhenCachingIsDisabled:2"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4881,6 +4960,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|"testWaitForCachedReplicasInDirectory:0"
 argument_list|)
 expr_stmt|;
 comment|// cache entire directory
@@ -4930,6 +5011,8 @@ argument_list|,
 literal|4
 argument_list|,
 literal|8
+argument_list|,
+literal|"testWaitForCachedReplicasInDirectory:1"
 argument_list|)
 expr_stmt|;
 comment|// remove and watch numCached go to 0
@@ -4947,6 +5030,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|"testWaitForCachedReplicasInDirectory:2"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5185,6 +5270,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|"testReplicationFactor:0"
 argument_list|)
 expr_stmt|;
 name|checkNumCachedReplicas
@@ -5245,6 +5332,8 @@ argument_list|,
 literal|4
 argument_list|,
 literal|4
+argument_list|,
+literal|"testReplicationFactor:1"
 argument_list|)
 expr_stmt|;
 name|checkNumCachedReplicas
@@ -5310,6 +5399,8 @@ argument_list|,
 literal|4
 operator|*
 name|i
+argument_list|,
+literal|"testReplicationFactor:2"
 argument_list|)
 expr_stmt|;
 name|checkNumCachedReplicas
@@ -5378,6 +5469,8 @@ argument_list|,
 literal|4
 operator|*
 name|i
+argument_list|,
+literal|"testReplicationFactor:3"
 argument_list|)
 expr_stmt|;
 name|checkNumCachedReplicas
@@ -5409,6 +5502,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|0
+argument_list|,
+literal|"testReplicationFactor:4"
 argument_list|)
 expr_stmt|;
 name|checkNumCachedReplicas
