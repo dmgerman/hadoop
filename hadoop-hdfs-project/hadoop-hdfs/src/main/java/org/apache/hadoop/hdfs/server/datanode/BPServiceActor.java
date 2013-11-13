@@ -1381,12 +1381,6 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|ReceivedDeletedBlockInfo
-index|[]
-name|receivedAndDeletedBlockArray
-init|=
-literal|null
-decl_stmt|;
 if|if
 condition|(
 name|perStorageMap
@@ -1398,18 +1392,34 @@ literal|0
 condition|)
 block|{
 comment|// Send newly-received and deleted blockids to namenode
-name|receivedAndDeletedBlockArray
-operator|=
+name|ReceivedDeletedBlockInfo
+index|[]
+name|rdbi
+init|=
 name|perStorageMap
 operator|.
 name|dequeueBlockInfos
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|pendingReceivedRequests
-operator|-=
-name|receivedAndDeletedBlockArray
+operator|=
+operator|(
+name|pendingReceivedRequests
+operator|>
+name|rdbi
 operator|.
 name|length
+condition|?
+operator|(
+name|pendingReceivedRequests
+operator|-
+name|rdbi
+operator|.
+name|length
+operator|)
+else|:
+literal|0
+operator|)
 expr_stmt|;
 name|blockArrays
 operator|.
@@ -1417,7 +1427,7 @@ name|put
 argument_list|(
 name|storageUuid
 argument_list|,
-name|receivedAndDeletedBlockArray
+name|rdbi
 argument_list|)
 expr_stmt|;
 block|}
@@ -1528,19 +1538,14 @@ argument_list|(
 name|storageUuid
 argument_list|)
 decl_stmt|;
+name|pendingReceivedRequests
+operator|+=
 name|perStorageMap
 operator|.
 name|putMissingBlockInfos
 argument_list|(
 name|rdbi
 argument_list|)
-expr_stmt|;
-name|pendingReceivedRequests
-operator|+=
-name|perStorageMap
-operator|.
-name|getBlockInfoCount
-argument_list|()
 expr_stmt|;
 block|}
 block|}
@@ -3578,9 +3583,9 @@ return|return
 name|blockInfos
 return|;
 block|}
-comment|/**      * Add blocks from blockArray to pendingIncrementalBR, unless the      * block already exists in pendingIncrementalBR.      * @param blockArray list of blocks to add.      */
+comment|/**      * Add blocks from blockArray to pendingIncrementalBR, unless the      * block already exists in pendingIncrementalBR.      * @param blockArray list of blocks to add.      * @return the number of missing blocks that we added.      */
 DECL|method|putMissingBlockInfos (ReceivedDeletedBlockInfo[] blockArray)
-name|void
+name|int
 name|putMissingBlockInfos
 parameter_list|(
 name|ReceivedDeletedBlockInfo
@@ -3588,6 +3593,11 @@ index|[]
 name|blockArray
 parameter_list|)
 block|{
+name|int
+name|blocksPut
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|ReceivedDeletedBlockInfo
@@ -3628,8 +3638,14 @@ argument_list|,
 name|rdbi
 argument_list|)
 expr_stmt|;
+operator|++
+name|blocksPut
+expr_stmt|;
 block|}
 block|}
+return|return
+name|blocksPut
+return|;
 block|}
 comment|/**      * Add pending incremental block report for a single block.      * @param blockID      * @param blockInfo      */
 DECL|method|putBlockInfo (ReceivedDeletedBlockInfo blockInfo)
