@@ -3179,6 +3179,10 @@ name|b
 argument_list|,
 name|locations
 argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
 name|startOffset
 argument_list|,
 name|isCorrupt
