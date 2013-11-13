@@ -240,11 +240,11 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|math
+name|math3
 operator|.
 name|util
 operator|.
-name|MathUtils
+name|ArithmeticUtils
 import|;
 end_import
 
@@ -2757,7 +2757,7 @@ literal|0
 condition|?
 name|sinkPeriod
 else|:
-name|MathUtils
+name|ArithmeticUtils
 operator|.
 name|gcd
 argument_list|(
