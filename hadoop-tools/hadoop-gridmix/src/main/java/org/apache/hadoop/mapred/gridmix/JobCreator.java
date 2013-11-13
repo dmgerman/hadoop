@@ -346,17 +346,9 @@ literal|0
 expr_stmt|;
 if|if
 condition|(
-operator|(
-name|numLocations
-operator|>
-literal|0
-operator|)
-operator|&&
-operator|(
 name|hosts
 operator|==
 literal|null
-operator|)
 condition|)
 block|{
 specifier|final
