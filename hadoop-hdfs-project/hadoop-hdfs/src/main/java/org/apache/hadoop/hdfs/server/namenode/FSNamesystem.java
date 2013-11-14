@@ -17609,6 +17609,25 @@ condition|)
 block|{
 return|return;
 block|}
+name|removeBlocksAndUpdateSafemodeTotal
+argument_list|(
+name|blocks
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Removes the blocks from blocksmap and updates the safemode blocks total    *     * @param blocks    *          An instance of {@link BlocksMapUpdateInfo} which contains a list    *          of blocks that need to be removed from blocksMap    */
+DECL|method|removeBlocksAndUpdateSafemodeTotal (BlocksMapUpdateInfo blocks)
+name|void
+name|removeBlocksAndUpdateSafemodeTotal
+parameter_list|(
+name|BlocksMapUpdateInfo
+name|blocks
+parameter_list|)
+block|{
+assert|assert
+name|hasWriteLock
+argument_list|()
+assert|;
 comment|// In the case that we are a Standby tailing edits from the
 comment|// active while in safe-mode, we need to track the total number
 comment|// of blocks and safe blocks in the system.
@@ -17705,11 +17724,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adjusting safe-mode totals for deletion of "
-operator|+
-name|src
-operator|+
-literal|":"
+literal|"Adjusting safe-mode totals for deletion."
 operator|+
 literal|"decreasing safeBlocks by "
 operator|+

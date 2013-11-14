@@ -3872,7 +3872,7 @@ argument_list|)
 expr_stmt|;
 name|fsNamesys
 operator|.
-name|removeBlocks
+name|removeBlocksAndUpdateSafemodeTotal
 argument_list|(
 name|collectedBlocks
 argument_list|)
