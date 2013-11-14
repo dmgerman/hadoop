@@ -1491,6 +1491,12 @@ name|getStorageUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|String
+name|datanodeUuid
+init|=
+name|getDatanodeUuid
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|LayoutVersion
@@ -1515,8 +1521,7 @@ name|setProperty
 argument_list|(
 literal|"datanodeUuid"
 argument_list|,
-name|getDatanodeUuid
-argument_list|()
+name|datanodeUuid
 argument_list|)
 expr_stmt|;
 block|}
