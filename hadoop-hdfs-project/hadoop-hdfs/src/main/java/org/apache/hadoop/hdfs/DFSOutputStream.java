@@ -1312,6 +1312,13 @@ specifier|private
 name|CachingStrategy
 name|cachingStrategy
 decl_stmt|;
+DECL|field|failPacket
+specifier|private
+name|boolean
+name|failPacket
+init|=
+literal|false
+decl_stmt|;
 DECL|class|Packet
 specifier|private
 specifier|static
@@ -3778,6 +3785,33 @@ name|one
 operator|.
 name|lastPacketInBlock
 expr_stmt|;
+comment|// Fail the packet write for testing in order to force a
+comment|// pipeline recovery.
+if|if
+condition|(
+name|DFSClientFaultInjector
+operator|.
+name|get
+argument_list|()
+operator|.
+name|failPacket
+argument_list|()
+operator|&&
+name|isLastPacketInBlock
+condition|)
+block|{
+name|failPacket
+operator|=
+literal|true
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Failing the last packet for testing."
+argument_list|)
+throw|;
+block|}
 comment|// update bytesAcked
 name|block
 operator|.
@@ -5096,6 +5130,51 @@ name|getBlockToken
 argument_list|()
 expr_stmt|;
 comment|// set up the pipeline again with the remaining nodes
+if|if
+condition|(
+name|failPacket
+condition|)
+block|{
+comment|// for testing
+name|success
+operator|=
+name|createBlockOutputStream
+argument_list|(
+name|nodes
+argument_list|,
+name|newGS
+operator|-
+literal|1
+argument_list|,
+name|isRecovery
+argument_list|)
+expr_stmt|;
+name|failPacket
+operator|=
+literal|false
+expr_stmt|;
+try|try
+block|{
+comment|// Give DNs time to send in bad reports. In real situations,
+comment|// good reports should follow bad ones, if client committed
+comment|// with those nodes.
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|2000
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{}
+block|}
+else|else
+block|{
 name|success
 operator|=
 name|createBlockOutputStream
@@ -5107,6 +5186,7 @@ argument_list|,
 name|isRecovery
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 if|if
 condition|(
@@ -8887,10 +8967,25 @@ operator|.
 name|now
 argument_list|()
 decl_stmt|;
+name|long
+name|localTimeout
+init|=
+literal|400
+decl_stmt|;
 name|boolean
 name|fileComplete
 init|=
 literal|false
+decl_stmt|;
+name|int
+name|retries
+init|=
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|nBlockWriteLocateFollowingRetry
 decl_stmt|;
 while|while
 condition|(
@@ -8995,8 +9090,32 @@ name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|400
+name|localTimeout
 argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|retries
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"Unable to close file because the last block"
+operator|+
+literal|" does not have enough number of replicas."
+argument_list|)
+throw|;
+block|}
+name|retries
+operator|--
+expr_stmt|;
+name|localTimeout
+operator|*=
+literal|2
 expr_stmt|;
 if|if
 condition|(

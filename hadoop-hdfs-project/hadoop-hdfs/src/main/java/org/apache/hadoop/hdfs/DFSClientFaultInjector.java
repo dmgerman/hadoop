@@ -111,6 +111,16 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|failPacket ()
+specifier|public
+name|boolean
+name|failPacket
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 
