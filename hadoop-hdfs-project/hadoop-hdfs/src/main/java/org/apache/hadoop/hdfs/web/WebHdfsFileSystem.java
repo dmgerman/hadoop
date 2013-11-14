@@ -3177,9 +3177,12 @@ name|connectionFactory
 operator|.
 name|openConnection
 argument_list|(
-name|op
-argument_list|,
 name|url
+argument_list|,
+name|op
+operator|.
+name|getRequireAuth
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
