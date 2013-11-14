@@ -479,6 +479,19 @@ argument_list|,
 name|DEFAULT_BLOCK_SIZE
 argument_list|)
 expr_stmt|;
+comment|// Make it relinquish locks. When run serially, the result should
+comment|// be identical.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_LIMIT_KEY
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
 specifier|final
 name|MiniDFSCluster
 name|cluster
@@ -2217,6 +2230,22 @@ argument_list|(
 name|hasException
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|4
+argument_list|,
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|getYieldCount
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -2246,6 +2275,19 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
+comment|// Make it relinquish locks. When run serially, the result should
+comment|// be identical.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_LIMIT_KEY
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
 specifier|final
 name|MiniDFSCluster
 name|cluster
@@ -3330,6 +3372,22 @@ argument_list|,
 literal|6
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|14
+argument_list|,
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|getYieldCount
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -3370,6 +3428,19 @@ operator|.
 name|DFS_BLOCK_SIZE_KEY
 argument_list|,
 literal|"512"
+argument_list|)
+expr_stmt|;
+comment|// Make it relinquish locks. When run serially, the result should
+comment|// be identical.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_LIMIT_KEY
+argument_list|,
+literal|2
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -4758,6 +4829,22 @@ operator|*
 name|fileSpace
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|20
+argument_list|,
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|getYieldCount
+argument_list|()
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -5516,6 +5603,19 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// Make it relinquish locks. When run serially, the result should
+comment|// be identical.
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_LIMIT_KEY
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
 name|MiniDFSCluster
 name|cluster
 init|=
@@ -5930,6 +6030,22 @@ argument_list|(
 literal|"Quota not exceeded"
 argument_list|,
 name|exceededQuota
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+argument_list|,
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getFSDirectory
+argument_list|()
+operator|.
+name|getYieldCount
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

@@ -446,21 +446,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary (final Content.Counts counts)
+DECL|method|computeContentSummary ( final ContentSummaryComputationContext summary)
 specifier|public
-name|Content
-operator|.
-name|Counts
+name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
 specifier|final
-name|Content
-operator|.
-name|Counts
-name|counts
+name|ContentSummaryComputationContext
+name|summary
 parameter_list|)
 block|{
-name|counts
+name|summary
+operator|.
+name|getCounts
+argument_list|()
 operator|.
 name|add
 argument_list|(
@@ -472,7 +471,7 @@ literal|1
 argument_list|)
 expr_stmt|;
 return|return
-name|counts
+name|summary
 return|;
 block|}
 annotation|@

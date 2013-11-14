@@ -206,6 +206,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|ContentSummaryComputationContext
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|FSImageSerialization
 import|;
 end_import
@@ -4763,34 +4781,35 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary (final Content.Counts counts)
+DECL|method|computeContentSummary ( final ContentSummaryComputationContext summary)
 specifier|public
-name|Content
-operator|.
-name|Counts
+name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
 specifier|final
-name|Content
-operator|.
-name|Counts
-name|counts
+name|ContentSummaryComputationContext
+name|summary
 parameter_list|)
 block|{
+comment|// Snapshot summary calc won't be relinquishing locks in the middle.
+comment|// Do this first and handover to parent.
+name|computeContentSummary4Snapshot
+argument_list|(
+name|summary
+operator|.
+name|getCounts
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|super
 operator|.
 name|computeContentSummary
 argument_list|(
-name|counts
-argument_list|)
-expr_stmt|;
-name|computeContentSummary4Snapshot
-argument_list|(
-name|counts
+name|summary
 argument_list|)
 expr_stmt|;
 return|return
-name|counts
+name|summary
 return|;
 block|}
 DECL|method|computeContentSummary4Snapshot (final Content.Counts counts)
@@ -4805,6 +4824,14 @@ name|Counts
 name|counts
 parameter_list|)
 block|{
+comment|// Create a new blank summary context for blocking processing of subtree.
+name|ContentSummaryComputationContext
+name|summary
+init|=
+operator|new
+name|ContentSummaryComputationContext
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|DirectoryDiff
@@ -4835,11 +4862,23 @@ name|deleted
 operator|.
 name|computeContentSummary
 argument_list|(
-name|counts
+name|summary
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+comment|// Add the counts from deleted trees.
+name|counts
+operator|.
+name|add
+argument_list|(
+name|summary
+operator|.
+name|getCounts
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Add the deleted directory count.
 name|counts
 operator|.
 name|add

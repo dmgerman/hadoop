@@ -1071,17 +1071,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary (Content.Counts counts)
+DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
 specifier|public
-name|Content
-operator|.
-name|Counts
+name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
-name|Content
-operator|.
-name|Counts
-name|counts
+name|ContentSummaryComputationContext
+name|summary
 parameter_list|)
 block|{
 return|return
@@ -1089,7 +1085,7 @@ name|referred
 operator|.
 name|computeContentSummary
 argument_list|(
-name|counts
+name|summary
 argument_list|)
 return|;
 block|}
@@ -1846,18 +1842,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary (Content.Counts counts)
+DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
 specifier|public
 specifier|final
-name|Content
-operator|.
-name|Counts
+name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
-name|Content
-operator|.
-name|Counts
-name|counts
+name|ContentSummaryComputationContext
+name|summary
 parameter_list|)
 block|{
 comment|//only count diskspace for WithName
@@ -1883,7 +1875,10 @@ argument_list|,
 name|lastSnapshotId
 argument_list|)
 expr_stmt|;
-name|counts
+name|summary
+operator|.
+name|getCounts
+argument_list|()
 operator|.
 name|add
 argument_list|(
@@ -1902,7 +1897,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|counts
+name|summary
 return|;
 block|}
 annotation|@

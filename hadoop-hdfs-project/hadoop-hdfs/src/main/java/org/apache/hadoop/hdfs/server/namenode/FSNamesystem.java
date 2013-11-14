@@ -7991,6 +7991,36 @@ name|hasWriteLock
 argument_list|()
 return|;
 block|}
+DECL|method|getReadHoldCount ()
+specifier|public
+name|int
+name|getReadHoldCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|fsLock
+operator|.
+name|getReadHoldCount
+argument_list|()
+return|;
+block|}
+DECL|method|getWriteHoldCount ()
+specifier|public
+name|int
+name|getWriteHoldCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|fsLock
+operator|.
+name|getWriteHoldCount
+argument_list|()
+return|;
+block|}
 DECL|method|getNamespaceInfo ()
 name|NamespaceInfo
 name|getNamespaceInfo

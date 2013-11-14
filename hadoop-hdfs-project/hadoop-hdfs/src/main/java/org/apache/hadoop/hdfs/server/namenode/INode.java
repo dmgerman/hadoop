@@ -1191,7 +1191,7 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 function_decl|;
-comment|/** Compute {@link ContentSummary}. */
+comment|/** Compute {@link ContentSummary}. Blocking call */
 DECL|method|computeContentSummary ()
 specifier|public
 specifier|final
@@ -1199,7 +1199,26 @@ name|ContentSummary
 name|computeContentSummary
 parameter_list|()
 block|{
+return|return
+name|computeAndConvertContentSummary
+argument_list|(
+operator|new
+name|ContentSummaryComputationContext
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * Compute {@link ContentSummary}.     */
+DECL|method|computeAndConvertContentSummary ( ContentSummaryComputationContext summary)
+specifier|public
 specifier|final
+name|ContentSummary
+name|computeAndConvertContentSummary
+parameter_list|(
+name|ContentSummaryComputationContext
+name|summary
+parameter_list|)
+block|{
 name|Content
 operator|.
 name|Counts
@@ -1207,13 +1226,11 @@ name|counts
 init|=
 name|computeContentSummary
 argument_list|(
-name|Content
-operator|.
-name|Counts
-operator|.
-name|newInstance
-argument_list|()
+name|summary
 argument_list|)
+operator|.
+name|getCounts
+argument_list|()
 decl_stmt|;
 return|return
 operator|new
@@ -1272,19 +1289,15 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-comment|/**    * Count subtree content summary with a {@link Content.Counts}.    *    * @param counts The subtree counts for returning.    * @return The same objects as the counts parameter.    */
-DECL|method|computeContentSummary (Content.Counts counts)
+comment|/**    * Count subtree content summary with a {@link Content.Counts}.    *    * @param summary the context object holding counts for the subtree.    * @return The same objects as summary.    */
+DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
 specifier|public
 specifier|abstract
-name|Content
-operator|.
-name|Counts
+name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
-name|Content
-operator|.
-name|Counts
-name|counts
+name|ContentSummaryComputationContext
+name|summary
 parameter_list|)
 function_decl|;
 comment|/**    * Check and add namespace/diskspace consumed to itself and the ancestors.    * @throws QuotaExceededException if quote is violated.    */
