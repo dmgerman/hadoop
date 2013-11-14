@@ -1046,17 +1046,6 @@ operator|.
 name|class
 argument_list|)
 expr_stmt|;
-name|conf
-operator|.
-name|setLong
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|NM_SLEEP_DELAY_BEFORE_SIGKILL_MS
-argument_list|,
-literal|1000
-argument_list|)
-expr_stmt|;
 name|super
 operator|.
 name|setup
@@ -4376,16 +4365,32 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-annotation|@
-name|Test
-DECL|method|testDelayedKill ()
-specifier|public
+DECL|method|internalKillTest (boolean delayed)
+specifier|private
 name|void
-name|testDelayedKill
-parameter_list|()
+name|internalKillTest
+parameter_list|(
+name|boolean
+name|delayed
+parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|conf
+operator|.
+name|setLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_SLEEP_DELAY_BEFORE_SIGKILL_MS
+argument_list|,
+name|delayed
+condition|?
+literal|1000
+else|:
+literal|0
+argument_list|)
+expr_stmt|;
 name|containerManager
 operator|.
 name|start
@@ -4897,7 +4902,8 @@ operator|.
 name|COMPLETE
 argument_list|)
 expr_stmt|;
-comment|// container stop sends a sigterm followed by a sigkill
+comment|// if delayed container stop sends a sigterm followed by a sigkill
+comment|// otherwise sigkill is sent immediately
 name|GetContainerStatusesRequest
 name|gcsRequest
 init|=
@@ -4953,6 +4959,9 @@ condition|(
 name|Shell
 operator|.
 name|WINDOWS
+operator|||
+operator|!
+name|delayed
 condition|)
 block|{
 name|Assert
@@ -5047,6 +5056,38 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testDelayedKill ()
+specifier|public
+name|void
+name|testDelayedKill
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|internalKillTest
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Test
+DECL|method|testImmediateKill ()
+specifier|public
+name|void
+name|testImmediateKill
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|internalKillTest
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|SuppressWarnings
