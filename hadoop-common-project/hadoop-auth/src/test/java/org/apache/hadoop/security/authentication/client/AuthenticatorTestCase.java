@@ -795,16 +795,6 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|token
-operator|.
-name|isSet
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
 name|connConf
 operator|.
 name|invoked

@@ -6762,7 +6762,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|setSendCachingCommands
+name|setShouldSendCachingCommands
 argument_list|(
 literal|true
 argument_list|)
@@ -6963,7 +6963,7 @@ operator|.
 name|getDatanodeManager
 argument_list|()
 operator|.
-name|setSendCachingCommands
+name|setShouldSendCachingCommands
 argument_list|(
 literal|false
 argument_list|)
@@ -7894,6 +7894,36 @@ name|hasReadLock
 argument_list|()
 operator|||
 name|hasWriteLock
+argument_list|()
+return|;
+block|}
+DECL|method|getReadHoldCount ()
+specifier|public
+name|int
+name|getReadHoldCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|fsLock
+operator|.
+name|getReadHoldCount
+argument_list|()
+return|;
+block|}
+DECL|method|getWriteHoldCount ()
+specifier|public
+name|int
+name|getWriteHoldCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|fsLock
+operator|.
+name|getWriteHoldCount
 argument_list|()
 return|;
 block|}
@@ -17498,6 +17528,25 @@ condition|)
 block|{
 return|return;
 block|}
+name|removeBlocksAndUpdateSafemodeTotal
+argument_list|(
+name|blocks
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Removes the blocks from blocksmap and updates the safemode blocks total    *     * @param blocks    *          An instance of {@link BlocksMapUpdateInfo} which contains a list    *          of blocks that need to be removed from blocksMap    */
+DECL|method|removeBlocksAndUpdateSafemodeTotal (BlocksMapUpdateInfo blocks)
+name|void
+name|removeBlocksAndUpdateSafemodeTotal
+parameter_list|(
+name|BlocksMapUpdateInfo
+name|blocks
+parameter_list|)
+block|{
+assert|assert
+name|hasWriteLock
+argument_list|()
+assert|;
 comment|// In the case that we are a Standby tailing edits from the
 comment|// active while in safe-mode, we need to track the total number
 comment|// of blocks and safe blocks in the system.
@@ -17594,11 +17643,7 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Adjusting safe-mode totals for deletion of "
-operator|+
-name|src
-operator|+
-literal|":"
+literal|"Adjusting safe-mode totals for deletion."
 operator|+
 literal|"decreasing safeBlocks by "
 operator|+
@@ -27388,21 +27433,21 @@ block|}
 comment|// Update old block with the new generation stamp and new length
 name|blockinfo
 operator|.
-name|setGenerationStamp
-argument_list|(
-name|newBlock
-operator|.
-name|getGenerationStamp
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|blockinfo
-operator|.
 name|setNumBytes
 argument_list|(
 name|newBlock
 operator|.
 name|getNumBytes
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|blockinfo
+operator|.
+name|setGenerationStampAndVerifyReplicas
+argument_list|(
+name|newBlock
+operator|.
+name|getGenerationStamp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -32229,6 +32274,13 @@ name|success
 init|=
 literal|false
 decl_stmt|;
+name|BlocksMapUpdateInfo
+name|collectedBlocks
+init|=
+operator|new
+name|BlocksMapUpdateInfo
+argument_list|()
+decl_stmt|;
 name|writeLock
 argument_list|()
 expr_stmt|;
@@ -32261,13 +32313,6 @@ name|snapshotRoot
 argument_list|)
 expr_stmt|;
 block|}
-name|BlocksMapUpdateInfo
-name|collectedBlocks
-init|=
-operator|new
-name|BlocksMapUpdateInfo
-argument_list|()
-decl_stmt|;
 name|List
 argument_list|<
 name|INode
@@ -32322,18 +32367,6 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-name|this
-operator|.
-name|removeBlocks
-argument_list|(
-name|collectedBlocks
-argument_list|)
-expr_stmt|;
-name|collectedBlocks
-operator|.
-name|clear
-argument_list|()
-expr_stmt|;
 name|getEditLog
 argument_list|()
 operator|.
@@ -32372,6 +32405,16 @@ name|getEditLog
 argument_list|()
 operator|.
 name|logSync
+argument_list|()
+expr_stmt|;
+name|removeBlocks
+argument_list|(
+name|collectedBlocks
+argument_list|)
+expr_stmt|;
+name|collectedBlocks
+operator|.
+name|clear
 argument_list|()
 expr_stmt|;
 if|if

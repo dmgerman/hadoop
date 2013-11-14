@@ -219,6 +219,26 @@ name|IPC_SERVER_RPC_READ_THREADS_DEFAULT
 init|=
 literal|1
 decl_stmt|;
+comment|/** Number of pending connections that may be queued per socket reader */
+DECL|field|IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE_KEY
+init|=
+literal|"ipc.server.read.connection-queue.size"
+decl_stmt|;
+comment|/** Default value for IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE */
+DECL|field|IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_SERVER_RPC_READ_CONNECTION_QUEUE_SIZE_DEFAULT
+init|=
+literal|100
+decl_stmt|;
 DECL|field|IPC_MAXIMUM_DATA_LENGTH
 specifier|public
 specifier|static
@@ -716,6 +736,26 @@ name|boolean
 name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_DEFAULT
 init|=
 literal|false
+decl_stmt|;
+comment|/** How often the server scans for idle connections */
+DECL|field|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_KEY
+init|=
+literal|"ipc.client.connection.idle-scan-interval.ms"
+decl_stmt|;
+comment|/** Default value for IPC_SERVER_CONNECTION_IDLE_SCAN_INTERVAL_KEY */
+DECL|field|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_DEFAULT
+init|=
+literal|10000
 decl_stmt|;
 block|}
 end_class

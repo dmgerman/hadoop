@@ -2409,13 +2409,22 @@ operator|+
 name|containerIdStr
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
+specifier|final
+name|Signal
+name|signal
+init|=
 name|sleepDelayBeforeSigKill
 operator|>
 literal|0
-condition|)
-block|{
+condition|?
+name|Signal
+operator|.
+name|TERM
+else|:
+name|Signal
+operator|.
+name|KILL
+decl_stmt|;
 name|boolean
 name|result
 init|=
@@ -2427,16 +2436,18 @@ name|user
 argument_list|,
 name|processId
 argument_list|,
-name|Signal
-operator|.
-name|TERM
+name|signal
 argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Sent signal to pid "
+literal|"Sent signal "
+operator|+
+name|signal
+operator|+
+literal|" to pid "
 operator|+
 name|processId
 operator|+
@@ -2459,6 +2470,13 @@ literal|"failed"
 operator|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|sleepDelayBeforeSigKill
+operator|>
+literal|0
+condition|)
+block|{
 operator|new
 name|DelayedProcessKiller
 argument_list|(

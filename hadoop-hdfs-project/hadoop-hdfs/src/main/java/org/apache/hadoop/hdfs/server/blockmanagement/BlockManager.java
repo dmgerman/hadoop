@@ -576,6 +576,26 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
+name|CorruptReplicasMap
+operator|.
+name|Reason
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
 name|PendingDataNodeMessages
 operator|.
 name|ReportedBlockInfo
@@ -5441,6 +5461,10 @@ argument_list|(
 name|storedBlock
 argument_list|,
 name|reason
+argument_list|,
+name|Reason
+operator|.
+name|CORRUPTION_REPORTED
 argument_list|)
 argument_list|,
 name|dn
@@ -5565,6 +5589,10 @@ argument_list|,
 name|b
 operator|.
 name|reason
+argument_list|,
+name|b
+operator|.
+name|reasonCode
 argument_list|)
 expr_stmt|;
 if|if
@@ -7672,7 +7700,13 @@ specifier|final
 name|String
 name|reason
 decl_stmt|;
-DECL|method|BlockToMarkCorrupt (BlockInfo corrupted, BlockInfo stored, String reason)
+comment|/** The reason code to be stored */
+DECL|field|reasonCode
+specifier|final
+name|Reason
+name|reasonCode
+decl_stmt|;
+DECL|method|BlockToMarkCorrupt (BlockInfo corrupted, BlockInfo stored, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
 name|BlockInfo
@@ -7683,6 +7717,9 @@ name|stored
 parameter_list|,
 name|String
 name|reason
+parameter_list|,
+name|Reason
+name|reasonCode
 parameter_list|)
 block|{
 name|Preconditions
@@ -7721,8 +7758,14 @@ name|reason
 operator|=
 name|reason
 expr_stmt|;
+name|this
+operator|.
+name|reasonCode
+operator|=
+name|reasonCode
+expr_stmt|;
 block|}
-DECL|method|BlockToMarkCorrupt (BlockInfo stored, String reason)
+DECL|method|BlockToMarkCorrupt (BlockInfo stored, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
 name|BlockInfo
@@ -7730,6 +7773,9 @@ name|stored
 parameter_list|,
 name|String
 name|reason
+parameter_list|,
+name|Reason
+name|reasonCode
 parameter_list|)
 block|{
 name|this
@@ -7739,10 +7785,12 @@ argument_list|,
 name|stored
 argument_list|,
 name|reason
+argument_list|,
+name|reasonCode
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|BlockToMarkCorrupt (BlockInfo stored, long gs, String reason)
+DECL|method|BlockToMarkCorrupt (BlockInfo stored, long gs, String reason, Reason reasonCode)
 name|BlockToMarkCorrupt
 parameter_list|(
 name|BlockInfo
@@ -7753,6 +7801,9 @@ name|gs
 parameter_list|,
 name|String
 name|reason
+parameter_list|,
+name|Reason
+name|reasonCode
 parameter_list|)
 block|{
 name|this
@@ -7766,6 +7817,8 @@ argument_list|,
 name|stored
 argument_list|,
 name|reason
+argument_list|,
+name|reasonCode
 argument_list|)
 expr_stmt|;
 comment|//the corrupted block in datanode has a different generation stamp
@@ -9324,7 +9377,8 @@ return|return
 name|storedBlock
 return|;
 block|}
-comment|//add replica if appropriate
+comment|// Add replica if appropriate. If the replica was previously corrupt
+comment|// but now okay, it might need to be updated.
 if|if
 condition|(
 name|reportedState
@@ -9333,6 +9387,7 @@ name|ReplicaState
 operator|.
 name|FINALIZED
 operator|&&
+operator|(
 name|storedBlock
 operator|.
 name|findDatanode
@@ -9341,6 +9396,16 @@ name|dn
 argument_list|)
 operator|<
 literal|0
+operator|||
+name|corruptReplicas
+operator|.
+name|isReplicaCorrupt
+argument_list|(
+name|storedBlock
+argument_list|,
+name|dn
+argument_list|)
+operator|)
 condition|)
 block|{
 name|toAdd
@@ -9684,6 +9749,10 @@ name|storedBlock
 operator|.
 name|getGenerationStamp
 argument_list|()
+argument_list|,
+name|Reason
+operator|.
+name|GENSTAMP_MISMATCH
 argument_list|)
 return|;
 block|}
@@ -9726,6 +9795,10 @@ name|storedBlock
 operator|.
 name|getNumBytes
 argument_list|()
+argument_list|,
+name|Reason
+operator|.
+name|SIZE_MISMATCH
 argument_list|)
 return|;
 block|}
@@ -9806,6 +9879,10 @@ name|storedBlock
 operator|.
 name|getGenerationStamp
 argument_list|()
+argument_list|,
+name|Reason
+operator|.
+name|GENSTAMP_MISMATCH
 argument_list|)
 return|;
 block|}
@@ -9857,6 +9934,10 @@ argument_list|,
 literal|"reported replica has invalid state "
 operator|+
 name|reportedState
+argument_list|,
+name|Reason
+operator|.
+name|INVALID_STATE
 argument_list|)
 return|;
 block|}
@@ -9907,6 +9988,10 @@ argument_list|(
 name|storedBlock
 argument_list|,
 name|msg
+argument_list|,
+name|Reason
+operator|.
+name|INVALID_STATE
 argument_list|)
 return|;
 block|}
@@ -10351,6 +10436,22 @@ block|}
 block|}
 else|else
 block|{
+comment|// if the same block is added again and the replica was corrupt
+comment|// previously because of a wrong gen stamp, remove it from the
+comment|// corrupt block list.
+name|corruptReplicas
+operator|.
+name|removeFromCorruptReplicasMap
+argument_list|(
+name|block
+argument_list|,
+name|node
+argument_list|,
+name|Reason
+operator|.
+name|GENSTAMP_MISMATCH
+argument_list|)
+expr_stmt|;
 name|curReplicaDelta
 operator|=
 literal|0
@@ -10776,6 +10877,10 @@ argument_list|(
 name|blk
 argument_list|,
 literal|null
+argument_list|,
+name|Reason
+operator|.
+name|ANY
 argument_list|)
 argument_list|,
 name|node

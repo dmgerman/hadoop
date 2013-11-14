@@ -870,7 +870,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getConfValueForRMInstance (String prefix, Configuration conf)
-specifier|private
+specifier|public
 specifier|static
 name|String
 name|getConfValueForRMInstance
@@ -932,7 +932,8 @@ return|return
 name|retVal
 return|;
 block|}
-DECL|method|getConfValueForRMInstance (String prefix, String defaultValue, Configuration conf)
+DECL|method|getConfValueForRMInstance ( String prefix, String defaultValue, Configuration conf)
+specifier|public
 specifier|static
 name|String
 name|getConfValueForRMInstance

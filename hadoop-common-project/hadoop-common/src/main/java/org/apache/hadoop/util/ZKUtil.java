@@ -313,6 +313,26 @@ return|return
 name|perm
 return|;
 block|}
+comment|/**    * Helper method to remove a subset of permissions (remove) from a    * given set (perms).    * @param perms The permissions flag to remove from. Should be an OR of a    *              some combination of {@link ZooDefs.Perms}    * @param remove The permissions to be removed. Should be an OR of a    *              some combination of {@link ZooDefs.Perms}    * @return A permissions flag that is an OR of {@link ZooDefs.Perms}    * present in perms and not present in remove    */
+DECL|method|removeSpecificPerms (int perms, int remove)
+specifier|public
+specifier|static
+name|int
+name|removeSpecificPerms
+parameter_list|(
+name|int
+name|perms
+parameter_list|,
+name|int
+name|remove
+parameter_list|)
+block|{
+return|return
+name|perms
+operator|^
+name|remove
+return|;
+block|}
 comment|/**    * Parse comma separated list of ACL entries to secure generated nodes, e.g.    *<code>sasl:hdfs/host1@MY.DOMAIN:cdrwa,sasl:hdfs/host2@MY.DOMAIN:cdrwa</code>    *    * @return ACL list    * @throws {@link BadAclFormatException} if an ACL is invalid    */
 DECL|method|parseACLs (String aclString)
 specifier|public

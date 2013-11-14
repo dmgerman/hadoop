@@ -1750,33 +1750,35 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary ( final Content.Counts counts)
+DECL|method|computeContentSummary ( final ContentSummaryComputationContext summary)
 specifier|public
 specifier|final
-name|Content
-operator|.
-name|Counts
+name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
 specifier|final
-name|Content
-operator|.
-name|Counts
-name|counts
+name|ContentSummaryComputationContext
+name|summary
 parameter_list|)
 block|{
 name|computeContentSummary4Snapshot
 argument_list|(
-name|counts
+name|summary
+operator|.
+name|getCounts
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|computeContentSummary4Current
 argument_list|(
-name|counts
+name|summary
+operator|.
+name|getCounts
+argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|counts
+name|summary
 return|;
 block|}
 DECL|method|computeContentSummary4Snapshot (final Content.Counts counts)

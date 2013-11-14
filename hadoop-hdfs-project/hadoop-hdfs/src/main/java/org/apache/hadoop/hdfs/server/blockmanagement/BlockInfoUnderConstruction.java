@@ -724,6 +724,75 @@ return|return
 name|blockRecoveryId
 return|;
 block|}
+comment|/**    * Process the recorded replicas. When about to commit or finish the    * pipeline recovery sort out bad replicas.    * @param genStamp  The final generation stamp for the block.    */
+DECL|method|setGenerationStampAndVerifyReplicas (long genStamp)
+specifier|public
+name|void
+name|setGenerationStampAndVerifyReplicas
+parameter_list|(
+name|long
+name|genStamp
+parameter_list|)
+block|{
+if|if
+condition|(
+name|replicas
+operator|==
+literal|null
+condition|)
+return|return;
+comment|// Remove the replicas with wrong gen stamp.
+comment|// The replica list is unchanged.
+for|for
+control|(
+name|ReplicaUnderConstruction
+name|r
+range|:
+name|replicas
+control|)
+block|{
+if|if
+condition|(
+name|genStamp
+operator|!=
+name|r
+operator|.
+name|getGenerationStamp
+argument_list|()
+condition|)
+block|{
+name|r
+operator|.
+name|getExpectedStorageLocation
+argument_list|()
+operator|.
+name|removeBlock
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|blockStateChangeLog
+operator|.
+name|info
+argument_list|(
+literal|"BLOCK* Removing stale replica "
+operator|+
+literal|"from location: "
+operator|+
+name|r
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// Set the generation stamp for the block.
+name|setGenerationStamp
+argument_list|(
+name|genStamp
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation     * @throws IOException if block ids are inconsistent.    */
 DECL|method|commitBlock (Block block)
 name|void
@@ -1130,6 +1199,17 @@ operator|==
 name|storage
 condition|)
 block|{
+comment|// Record the gen stamp from the report
+name|r
+operator|.
+name|setGenerationStamp
+argument_list|(
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 elseif|else

@@ -1813,6 +1813,32 @@ name|remainingArgs
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Test passing null as args. Some classes still call    * Tool interface from java passing null.    */
+DECL|method|testNullArgs ()
+specifier|public
+name|void
+name|testNullArgs
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|GenericOptionsParser
+name|parser
+init|=
+operator|new
+name|GenericOptionsParser
+argument_list|(
+name|conf
+argument_list|,
+literal|null
+argument_list|)
+decl_stmt|;
+name|parser
+operator|.
+name|getRemainingArgs
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

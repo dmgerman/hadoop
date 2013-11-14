@@ -799,10 +799,10 @@ name|boolean
 name|checkIpHostnameInRegistration
 decl_stmt|;
 comment|/**    * Whether we should tell datanodes what to cache in replies to    * heartbeat messages.    */
-DECL|field|sendCachingCommands
+DECL|field|shouldSendCachingCommands
 specifier|private
 name|boolean
-name|sendCachingCommands
+name|shouldSendCachingCommands
 init|=
 literal|false
 decl_stmt|;
@@ -829,6 +829,13 @@ literal|4
 argument_list|,
 literal|0.75f
 argument_list|)
+decl_stmt|;
+comment|/**    * The minimum time between resending caching directives to Datanodes,    * in milliseconds.    *    * Note that when a rescan happens, we will send the new directives    * as soon as possible.  This timeout only applies to resending     * directives that we've already sent.    */
+DECL|field|timeBetweenResendingCachingDirectivesMs
+specifier|private
+specifier|final
+name|long
+name|timeBetweenResendingCachingDirectivesMs
 decl_stmt|;
 DECL|method|DatanodeManager (final BlockManager blockManager, final Namesystem namesystem, final Configuration conf)
 name|DatanodeManager
@@ -1345,6 +1352,23 @@ operator|+
 literal|"' is invalid. "
 operator|+
 literal|"It should be a positive non-zero float value, not greater than 1.0f."
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|timeBetweenResendingCachingDirectivesMs
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_PATH_BASED_CACHE_RETRY_INTERVAL_MS
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_PATH_BASED_CACHE_RETRY_INTERVAL_MS_DEFAULT
 argument_list|)
 expr_stmt|;
 block|}
@@ -5781,6 +5805,37 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|sendingCachingCommands
+init|=
+literal|false
+decl_stmt|;
+name|long
+name|nowMs
+init|=
+name|Time
+operator|.
+name|monotonicNow
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|shouldSendCachingCommands
+operator|&&
+operator|(
+operator|(
+name|nowMs
+operator|-
+name|nodeinfo
+operator|.
+name|getLastCachingDirectiveSentTimeMs
+argument_list|()
+operator|)
+operator|>=
+name|timeBetweenResendingCachingDirectivesMs
+operator|)
+condition|)
+block|{
 name|DatanodeCommand
 name|pendingCacheCommand
 init|=
@@ -5813,6 +5868,10 @@ name|add
 argument_list|(
 name|pendingCacheCommand
 argument_list|)
+expr_stmt|;
+name|sendingCachingCommands
+operator|=
+literal|true
 expr_stmt|;
 block|}
 name|DatanodeCommand
@@ -5848,6 +5907,24 @@ argument_list|(
 name|pendingUncacheCommand
 argument_list|)
 expr_stmt|;
+name|sendingCachingCommands
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|sendingCachingCommands
+condition|)
+block|{
+name|nodeinfo
+operator|.
+name|setLastCachingDirectiveSentTimeMs
+argument_list|(
+name|nowMs
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 name|blockManager
 operator|.
@@ -5965,7 +6042,7 @@ return|return
 literal|null
 return|;
 block|}
-comment|// Read and clear the existing cache commands.
+comment|// Read the existing cache commands.
 name|long
 index|[]
 name|blockIds
@@ -6020,23 +6097,6 @@ operator|.
 name|getBlockId
 argument_list|()
 expr_stmt|;
-name|iter
-operator|.
-name|remove
-argument_list|()
-expr_stmt|;
-block|}
-if|if
-condition|(
-operator|!
-name|sendCachingCommands
-condition|)
-block|{
-comment|// Do not send caching commands unless the FSNamesystem told us we
-comment|// should.
-return|return
-literal|null
-return|;
 block|}
 return|return
 operator|new
@@ -6168,6 +6228,39 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|/**    * Reset the lastCachingDirectiveSentTimeMs field of all the DataNodes we    * know about.    */
+DECL|method|resetLastCachingDirectiveSentTime ()
+specifier|public
+name|void
+name|resetLastCachingDirectiveSentTime
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|datanodeMap
+init|)
+block|{
+for|for
+control|(
+name|DatanodeDescriptor
+name|dn
+range|:
+name|datanodeMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|dn
+operator|.
+name|setLastCachingDirectiveSentTimeMs
+argument_list|(
+literal|0L
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()
@@ -6188,20 +6281,20 @@ operator|+
 name|host2DatanodeMap
 return|;
 block|}
-DECL|method|setSendCachingCommands (boolean sendCachingCommands)
+DECL|method|setShouldSendCachingCommands (boolean shouldSendCachingCommands)
 specifier|public
 name|void
-name|setSendCachingCommands
+name|setShouldSendCachingCommands
 parameter_list|(
 name|boolean
-name|sendCachingCommands
+name|shouldSendCachingCommands
 parameter_list|)
 block|{
 name|this
 operator|.
-name|sendCachingCommands
+name|shouldSendCachingCommands
 operator|=
-name|sendCachingCommands
+name|shouldSendCachingCommands
 expr_stmt|;
 block|}
 block|}

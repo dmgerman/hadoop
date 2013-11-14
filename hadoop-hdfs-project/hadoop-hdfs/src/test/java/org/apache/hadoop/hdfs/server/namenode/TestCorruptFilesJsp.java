@@ -563,6 +563,23 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+comment|// Wait for block reports. They shouldn't matter.
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|ie
+parameter_list|)
+block|{}
 comment|// verify if all corrupt files were reported to NN
 name|badFiles
 operator|=

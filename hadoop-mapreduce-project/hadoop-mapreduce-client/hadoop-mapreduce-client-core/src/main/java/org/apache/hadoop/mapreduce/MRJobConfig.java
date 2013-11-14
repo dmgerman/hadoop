@@ -1535,7 +1535,7 @@ name|MR_PREFIX
 operator|+
 literal|"am."
 decl_stmt|;
-comment|/** The number of client retires to the AM - before reconnecting to the RM    * to fetch Application State.     */
+comment|/** The number of client retries to the AM - before reconnecting to the RM    * to fetch Application State.     */
 DECL|field|MR_CLIENT_TO_AM_IPC_MAX_RETRIES
 specifier|public
 specifier|static
@@ -1553,6 +1553,27 @@ specifier|static
 specifier|final
 name|int
 name|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES
+init|=
+literal|3
+decl_stmt|;
+comment|/** The number of client retries on socket timeouts to the AM - before    * reconnecting to the RM to fetch Application Status.    */
+DECL|field|MR_CLIENT_TO_AM_IPC_MAX_RETRIES_ON_TIMEOUTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_CLIENT_TO_AM_IPC_MAX_RETRIES_ON_TIMEOUTS
+init|=
+name|MR_PREFIX
+operator|+
+literal|"yarn.app.mapreduce.client-am.ipc.max-retries-on-timeouts"
+decl_stmt|;
+specifier|public
+specifier|static
+specifier|final
+name|int
+DECL|field|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES_ON_TIMEOUTS
+name|DEFAULT_MR_CLIENT_TO_AM_IPC_MAX_RETRIES_ON_TIMEOUTS
 init|=
 literal|3
 decl_stmt|;

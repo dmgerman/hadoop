@@ -1070,6 +1070,13 @@ name|int
 name|lsLimit
 decl_stmt|;
 comment|// max list limit
+DECL|field|contentCountLimit
+specifier|private
+specifier|final
+name|int
+name|contentCountLimit
+decl_stmt|;
+comment|// max content summary counts per run
 DECL|field|inodeMap
 specifier|private
 specifier|final
@@ -1077,6 +1084,14 @@ name|INodeMap
 name|inodeMap
 decl_stmt|;
 comment|// Synchronized by dirLock
+DECL|field|yieldCount
+specifier|private
+name|long
+name|yieldCount
+init|=
+literal|0
+decl_stmt|;
+comment|// keep track of lock yield count.
 comment|// lock to protect the directory and BlockMap
 DECL|field|dirLock
 specifier|private
@@ -1183,6 +1198,36 @@ operator|>
 literal|0
 return|;
 block|}
+DECL|method|getReadHoldCount ()
+specifier|public
+name|int
+name|getReadHoldCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|dirLock
+operator|.
+name|getReadHoldCount
+argument_list|()
+return|;
+block|}
+DECL|method|getWriteHoldCount ()
+specifier|public
+name|int
+name|getWriteHoldCount
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|dirLock
+operator|.
+name|getWriteHoldCount
+argument_list|()
+return|;
+block|}
 comment|/**    * Caches frequently used file names used in {@link INode} to reuse     * byte[] objects and reduce heap usage.    */
 DECL|field|nameCache
 specifier|private
@@ -1280,6 +1325,23 @@ else|:
 name|DFSConfigKeys
 operator|.
 name|DFS_LIST_LIMIT_DEFAULT
+expr_stmt|;
+name|this
+operator|.
+name|contentCountLimit
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_LIMIT_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_CONTENT_SUMMARY_LIMIT_DEFAULT
+argument_list|)
 expr_stmt|;
 comment|// filesystem limits
 name|this
@@ -11238,11 +11300,41 @@ throw|;
 block|}
 else|else
 block|{
-return|return
+comment|// Make it relinquish locks everytime contentCountLimit entries are
+comment|// processed. 0 means disabled. I.e. blocking for the entire duration.
+name|ContentSummaryComputationContext
+name|cscc
+init|=
+operator|new
+name|ContentSummaryComputationContext
+argument_list|(
+name|this
+argument_list|,
+name|getFSNamesystem
+argument_list|()
+argument_list|,
+name|contentCountLimit
+argument_list|)
+decl_stmt|;
+name|ContentSummary
+name|cs
+init|=
 name|targetNode
 operator|.
-name|computeContentSummary
+name|computeAndConvertContentSummary
+argument_list|(
+name|cscc
+argument_list|)
+decl_stmt|;
+name|yieldCount
+operator|+=
+name|cscc
+operator|.
+name|getYieldCount
 argument_list|()
+expr_stmt|;
+return|return
+name|cs
 return|;
 block|}
 block|}
@@ -11252,6 +11344,18 @@ name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getYieldCount ()
+specifier|public
+name|long
+name|getYieldCount
+parameter_list|()
+block|{
+return|return
+name|yieldCount
+return|;
 block|}
 DECL|method|getINodeMap ()
 specifier|public

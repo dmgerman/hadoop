@@ -826,15 +826,6 @@ if|if
 condition|(
 name|conn
 operator|.
-name|getRequestProperty
-argument_list|(
-name|AUTHORIZATION
-argument_list|)
-operator|!=
-literal|null
-operator|&&
-name|conn
-operator|.
 name|getResponseCode
 argument_list|()
 operator|==

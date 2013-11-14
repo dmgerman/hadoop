@@ -2273,40 +2273,134 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|computeContentSummary (final Content.Counts counts)
+DECL|method|computeContentSummary ( ContentSummaryComputationContext summary)
 specifier|public
-name|Content
-operator|.
-name|Counts
+name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
-specifier|final
-name|Content
-operator|.
-name|Counts
-name|counts
+name|ContentSummaryComputationContext
+name|summary
 parameter_list|)
 block|{
-for|for
-control|(
+name|ReadOnlyList
+argument_list|<
 name|INode
-name|child
-range|:
+argument_list|>
+name|childrenList
+init|=
 name|getChildrenList
 argument_list|(
 literal|null
 argument_list|)
+decl_stmt|;
+comment|// Explicit traversing is done to enable repositioning after relinquishing
+comment|// and reacquiring locks.
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|childrenList
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
 control|)
 block|{
+name|INode
+name|child
+init|=
+name|childrenList
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+decl_stmt|;
+name|byte
+index|[]
+name|childName
+init|=
+name|child
+operator|.
+name|getLocalNameBytes
+argument_list|()
+decl_stmt|;
+name|long
+name|lastYieldCount
+init|=
+name|summary
+operator|.
+name|getYieldCount
+argument_list|()
+decl_stmt|;
 name|child
 operator|.
 name|computeContentSummary
 argument_list|(
-name|counts
+name|summary
 argument_list|)
 expr_stmt|;
+comment|// Check whether the computation was paused in the subtree.
+comment|// The counts may be off, but traversing the rest of children
+comment|// should be made safe.
+if|if
+condition|(
+name|lastYieldCount
+operator|==
+name|summary
+operator|.
+name|getYieldCount
+argument_list|()
+condition|)
+block|{
+continue|continue;
 block|}
-name|counts
+comment|// The locks were released and reacquired. Check parent first.
+if|if
+condition|(
+name|getParent
+argument_list|()
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Stop further counting and return whatever we have so far.
+break|break;
+block|}
+comment|// Obtain the children list again since it may have been modified.
+name|childrenList
+operator|=
+name|getChildrenList
+argument_list|(
+literal|null
+argument_list|)
+expr_stmt|;
+comment|// Reposition in case the children list is changed. Decrement by 1
+comment|// since it will be incremented when loops.
+name|i
+operator|=
+name|nextChild
+argument_list|(
+name|childrenList
+argument_list|,
+name|childName
+argument_list|)
+operator|-
+literal|1
+expr_stmt|;
+block|}
+comment|// Increment the directory count for this directory.
+name|summary
+operator|.
+name|getCounts
+argument_list|()
 operator|.
 name|add
 argument_list|(
@@ -2317,8 +2411,14 @@ argument_list|,
 literal|1
 argument_list|)
 expr_stmt|;
+comment|// Relinquish and reacquire locks if necessary.
+name|summary
+operator|.
+name|yield
+argument_list|()
+expr_stmt|;
 return|return
-name|counts
+name|summary
 return|;
 block|}
 comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current directory.    * @return the current children list if the specified snapshot is null;    *         otherwise, return the children list corresponding to the snapshot.    *         Note that the returned list is never null.    */

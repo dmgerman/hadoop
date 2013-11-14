@@ -6882,8 +6882,6 @@ argument_list|,
 literal|9
 argument_list|)
 decl_stmt|;
-comment|//FIXME: handling multiple reduces within a single AM does not seem to
-comment|//work.
 name|int
 name|sysMaxReduces
 init|=
@@ -6897,21 +6895,6 @@ name|JOB_UBERTASK_MAXREDUCES
 argument_list|,
 literal|1
 argument_list|)
-decl_stmt|;
-name|boolean
-name|isValidUberMaxReduces
-init|=
-operator|(
-name|sysMaxReduces
-operator|==
-literal|0
-operator|)
-operator|||
-operator|(
-name|sysMaxReduces
-operator|==
-literal|1
-operator|)
 decl_stmt|;
 name|long
 name|sysMaxBytes
@@ -7124,8 +7107,6 @@ operator|&&
 name|smallCpu
 operator|&&
 name|notChainJob
-operator|&&
-name|isValidUberMaxReduces
 expr_stmt|;
 if|if
 condition|(
@@ -7312,18 +7293,6 @@ operator|.
 name|append
 argument_list|(
 literal|" chainjob;"
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|isValidUberMaxReduces
-condition|)
-name|msg
-operator|.
-name|append
-argument_list|(
-literal|" not supported uber max reduces"
 argument_list|)
 expr_stmt|;
 name|LOG

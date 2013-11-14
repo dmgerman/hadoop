@@ -1219,6 +1219,28 @@ name|genstamp
 argument_list|)
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Initiating caching for Block with id "
+operator|+
+name|blockId
+operator|+
+literal|", pool "
+operator|+
+name|bpid
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 DECL|method|uncacheBlock (String bpid, long blockId)
 specifier|synchronized
@@ -2044,6 +2066,21 @@ operator|.
 name|incrementAndGet
 argument_list|()
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|FsDatasetCache
+operator|.
+name|this
+init|)
+block|{
+name|mappableBlockMap
+operator|.
+name|remove
+argument_list|(
+name|key
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}

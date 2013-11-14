@@ -789,6 +789,29 @@ return|return
 name|pendingUncached
 return|;
 block|}
+comment|/**    * The time when the last batch of caching directives was sent, in    * monotonic milliseconds.    */
+DECL|field|lastCachingDirectiveSentTimeMs
+specifier|private
+name|long
+name|lastCachingDirectiveSentTimeMs
+decl_stmt|;
+comment|/**    * Head of the list of blocks on the datanode    */
+DECL|field|blockList
+specifier|private
+specifier|volatile
+name|BlockInfo
+name|blockList
+init|=
+literal|null
+decl_stmt|;
+comment|/**    * Number of blocks on the datanode    */
+DECL|field|numBlocks
+specifier|private
+name|int
+name|numBlocks
+init|=
+literal|0
+decl_stmt|;
 comment|// isAlive == heartbeats.contains(this)
 comment|// This is an optimization, because contains takes O(n) time on Arraylist
 DECL|field|isAlive
@@ -2739,6 +2762,36 @@ return|return
 name|storage
 return|;
 block|}
+block|}
+comment|/**    * @return   The time at which we last sent caching directives to this     *           DataNode, in monotonic milliseconds.    */
+DECL|method|getLastCachingDirectiveSentTimeMs ()
+specifier|public
+name|long
+name|getLastCachingDirectiveSentTimeMs
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|lastCachingDirectiveSentTimeMs
+return|;
+block|}
+comment|/**    * @param time  The time at which we last sent caching directives to this     *              DataNode, in monotonic milliseconds.    */
+DECL|method|setLastCachingDirectiveSentTimeMs (long time)
+specifier|public
+name|void
+name|setLastCachingDirectiveSentTimeMs
+parameter_list|(
+name|long
+name|time
+parameter_list|)
+block|{
+name|this
+operator|.
+name|lastCachingDirectiveSentTimeMs
+operator|=
+name|time
+expr_stmt|;
 block|}
 block|}
 end_class
