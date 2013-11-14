@@ -737,6 +737,26 @@ name|IPC_CLIENT_FALLBACK_TO_SIMPLE_AUTH_ALLOWED_DEFAULT
 init|=
 literal|false
 decl_stmt|;
+comment|/** How often the server scans for idle connections */
+DECL|field|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_KEY
+init|=
+literal|"ipc.client.connection.idle-scan-interval.ms"
+decl_stmt|;
+comment|/** Default value for IPC_SERVER_CONNECTION_IDLE_SCAN_INTERVAL_KEY */
+DECL|field|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
 block|}
 end_class
 
