@@ -1730,6 +1730,17 @@ return|return
 name|args
 return|;
 block|}
+if|if
+condition|(
+name|args
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 name|List
 argument_list|<
 name|String
