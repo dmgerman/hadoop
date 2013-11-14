@@ -1371,6 +1371,17 @@ name|DEFAULT_ZK_RM_STATE_STORE_ACL
 init|=
 literal|"world:anyone:rwcda"
 decl_stmt|;
+DECL|field|ZK_RM_STATE_STORE_ROOT_NODE_ACL
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ZK_RM_STATE_STORE_ROOT_NODE_ACL
+init|=
+name|ZK_STATE_STORE_PREFIX
+operator|+
+literal|"root-node.acl"
+decl_stmt|;
 comment|/** The maximum number of completed applications RM keeps. */
 DECL|field|RM_MAX_COMPLETED_APPLICATIONS
 specifier|public

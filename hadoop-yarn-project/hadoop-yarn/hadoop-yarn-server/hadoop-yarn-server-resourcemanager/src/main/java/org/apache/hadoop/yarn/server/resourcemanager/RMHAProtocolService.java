@@ -477,8 +477,11 @@ specifier|private
 name|Server
 name|haAdminServer
 decl_stmt|;
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|field|haEnabled
-specifier|private
 name|boolean
 name|haEnabled
 decl_stmt|;
@@ -922,8 +925,11 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|transitionToActive ()
-specifier|private
 specifier|synchronized
 name|void
 name|transitionToActive
@@ -1057,8 +1063,11 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|transitionToStandby (boolean initialize)
-specifier|private
 specifier|synchronized
 name|void
 name|transitionToStandby
