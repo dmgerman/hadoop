@@ -885,6 +885,18 @@ literal|true
 expr_stmt|;
 block|}
 block|}
+DECL|method|reset ()
+specifier|public
+specifier|synchronized
+name|void
+name|reset
+parameter_list|()
+block|{
+name|hasInitedToken
+operator|=
+literal|false
+expr_stmt|;
+block|}
 DECL|method|initDelegationToken (UserGroupInformation ugi)
 specifier|synchronized
 name|void
