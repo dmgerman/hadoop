@@ -633,6 +633,7 @@ name|datanodeUuid
 return|;
 block|}
 DECL|method|setDatanodeUuid (String newDatanodeUuid)
+specifier|public
 specifier|synchronized
 name|void
 name|setDatanodeUuid
@@ -1499,17 +1500,6 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|LayoutVersion
-operator|.
-name|supports
-argument_list|(
-name|Feature
-operator|.
-name|ADD_DATANODE_AND_STORAGE_UUIDS
-argument_list|,
-name|layoutVersion
-argument_list|)
-operator|&&
 name|datanodeUuid
 operator|!=
 literal|null

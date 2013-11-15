@@ -2286,6 +2286,13 @@ argument_list|(
 name|version
 argument_list|)
 decl_stmt|;
+name|storage
+operator|.
+name|setDatanodeUuid
+argument_list|(
+literal|"FixedDatanodeUuid"
+argument_list|)
+expr_stmt|;
 name|File
 index|[]
 name|versionFiles
