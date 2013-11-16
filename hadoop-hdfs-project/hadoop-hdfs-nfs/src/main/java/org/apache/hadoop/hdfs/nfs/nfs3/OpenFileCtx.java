@@ -3779,6 +3779,13 @@ name|UPDATE_LENGTH
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|ret
+operator|=
+name|COMMIT_STATUS
+operator|.
+name|COMMIT_FINISHED
+expr_stmt|;
+comment|// Remove COMMIT_DO_SYNC status
 comment|// Nothing to do for metadata since attr related change is pass-through
 block|}
 catch|catch
@@ -3842,8 +3849,9 @@ name|ret
 return|;
 block|}
 comment|/**    * return one commit status: COMMIT_FINISHED, COMMIT_WAIT,    * COMMIT_INACTIVE_CTX, COMMIT_INACTIVE_WITH_PENDING_WRITE, COMMIT_ERROR    */
+annotation|@
+name|VisibleForTesting
 DECL|method|checkCommitInternal (long commitOffset, Channel channel, int xid, Nfs3FileAttributes preOpAttr)
-specifier|private
 specifier|synchronized
 name|COMMIT_STATUS
 name|checkCommitInternal
