@@ -3592,6 +3592,19 @@ name|getHttpAddress
 argument_list|()
 return|;
 block|}
+DECL|method|getHttpsAddress ()
+specifier|public
+name|InetSocketAddress
+name|getHttpsAddress
+parameter_list|()
+block|{
+return|return
+name|httpServer
+operator|.
+name|getHttpsAddress
+argument_list|()
+return|;
+block|}
 comment|/**    * Verify that configured directories exist, then    * Interactively confirm that formatting is desired     * for each existing directory and format them.    *     * @param conf    * @param force    * @return true if formatting was aborted, false otherwise    * @throws IOException    */
 DECL|method|format (Configuration conf, boolean force, boolean isInteractive)
 specifier|private

@@ -78,13 +78,6 @@ name|boolean
 name|hasWriteLock
 parameter_list|()
 function_decl|;
-comment|/** Check if the current thread holds read or write lock. */
-DECL|method|hasReadOrWriteLock ()
-specifier|public
-name|boolean
-name|hasReadOrWriteLock
-parameter_list|()
-function_decl|;
 block|}
 end_interface
 

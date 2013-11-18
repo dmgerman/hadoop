@@ -112,7 +112,31 @@ name|junit
 operator|.
 name|Assert
 operator|.
+name|assertFalse
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
 name|assertNull
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
 import|;
 end_import
 
@@ -284,9 +308,9 @@ control|(
 name|String
 name|confKey
 range|:
-name|HAUtil
+name|YarnConfiguration
 operator|.
-name|RPC_ADDRESS_CONF_KEYS
+name|RM_RPC_ADDRESS_CONF_KEYS
 control|)
 block|{
 comment|// configuration key itself cannot contains space/tab/return chars.
@@ -541,9 +565,9 @@ control|(
 name|String
 name|confKey
 range|:
-name|HAUtil
+name|YarnConfiguration
 operator|.
-name|RPC_ADDRESS_CONF_KEYS
+name|RM_RPC_ADDRESS_CONF_KEYS
 control|)
 block|{
 name|assertEquals
@@ -651,9 +675,9 @@ control|(
 name|String
 name|confKey
 range|:
-name|HAUtil
+name|YarnConfiguration
 operator|.
-name|RPC_ADDRESS_CONF_KEYS
+name|RM_RPC_ADDRESS_CONF_KEYS
 control|)
 block|{
 comment|// simulate xml with invalid node id
@@ -716,7 +740,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
-comment|// simulate the case HAUtil.RPC_ADDRESS_CONF_KEYS are not set
+comment|// simulate the case HAUtil.RM_RPC_ADDRESS_CONF_KEYS are not set
 name|conf
 operator|.
 name|set
@@ -834,9 +858,9 @@ control|(
 name|String
 name|confKey
 range|:
-name|HAUtil
+name|YarnConfiguration
 operator|.
-name|RPC_ADDRESS_CONF_KEYS
+name|RM_RPC_ADDRESS_CONF_KEYS
 control|)
 block|{
 name|conf
@@ -912,6 +936,67 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Test
+DECL|method|testGetConfKeyForRMInstance ()
+specifier|public
+name|void
+name|testGetConfKeyForRMInstance
+parameter_list|()
+block|{
+name|assertTrue
+argument_list|(
+literal|"RM instance id is not suffixed"
+argument_list|,
+name|HAUtil
+operator|.
+name|getConfKeyForRMInstance
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_ADDRESS
+argument_list|,
+name|conf
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|HAUtil
+operator|.
+name|getRMHAId
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertFalse
+argument_list|(
+literal|"RM instance id is suffixed"
+argument_list|,
+name|HAUtil
+operator|.
+name|getConfKeyForRMInstance
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|NM_ADDRESS
+argument_list|,
+name|conf
+argument_list|)
+operator|.
+name|contains
+argument_list|(
+name|HAUtil
+operator|.
+name|getRMHAId
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 end_class

@@ -712,10 +712,6 @@ block|}
 DECL|field|connectionFactory
 name|URLConnectionFactory
 name|connectionFactory
-init|=
-name|URLConnectionFactory
-operator|.
-name|DEFAULT_CONNECTION_FACTORY
 decl_stmt|;
 DECL|field|TOKEN_KIND
 specifier|public
@@ -764,23 +760,12 @@ init|=
 literal|"yyyy-MM-dd'T'HH:mm:ssZ"
 decl_stmt|;
 DECL|field|tokenAspect
-specifier|private
+specifier|protected
 name|TokenAspect
 argument_list|<
 name|HftpFileSystem
 argument_list|>
 name|tokenAspect
-init|=
-operator|new
-name|TokenAspect
-argument_list|<
-name|HftpFileSystem
-argument_list|>
-argument_list|(
-name|this
-argument_list|,
-name|TOKEN_KIND
-argument_list|)
 decl_stmt|;
 DECL|field|delegationToken
 specifier|private
@@ -1009,6 +994,38 @@ return|return
 name|SCHEME
 return|;
 block|}
+comment|/**    * Initialize connectionFactory and tokenAspect. This function is intended to    * be overridden by HsFtpFileSystem.    */
+DECL|method|initConnectionFactoryAndTokenAspect (Configuration conf)
+specifier|protected
+name|void
+name|initConnectionFactoryAndTokenAspect
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|tokenAspect
+operator|=
+operator|new
+name|TokenAspect
+argument_list|<
+name|HftpFileSystem
+argument_list|>
+argument_list|(
+name|this
+argument_list|,
+name|TOKEN_KIND
+argument_list|)
+expr_stmt|;
+name|connectionFactory
+operator|=
+name|URLConnectionFactory
+operator|.
+name|DEFAULT_CONNECTION_FACTORY
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|initialize (final URI name, final Configuration conf)
@@ -1100,6 +1117,11 @@ name|e
 argument_list|)
 throw|;
 block|}
+name|initConnectionFactoryAndTokenAspect
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|UserGroupInformation
@@ -1163,7 +1185,7 @@ argument_list|>
 name|token
 parameter_list|)
 block|{
-comment|/**      * XXX The kind of the token has been changed by DelegationTokenFetcher. We      * use the token for renewal, since the reflection utilities needs the value      * of the kind field to correctly renew the token.      *      * For other operations, however, the client has to send a      * HDFS_DELEGATION_KIND token over the wire so that it can talk to Hadoop      * 0.20.3 clusters. Later releases fix this problem. See HDFS-5440 for more      * details.      */
+comment|/**      * XXX The kind of the token has been changed by DelegationTokenFetcher. We      * use the token for renewal, since the reflection utilities needs the value      * of the kind field to correctly renew the token.      *      * For other operations, however, the client has to send a      * HDFS_DELEGATION_KIND token over the wire so that it can talk to Hadoop      * 0.20.203 clusters. Later releases fix this problem. See HDFS-5440 for      * more details.      */
 name|renewToken
 operator|=
 name|token
@@ -1242,15 +1264,6 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-specifier|final
-name|String
-name|nnHttpUrl
-init|=
-name|nnUri
-operator|.
-name|toString
-argument_list|()
-decl_stmt|;
 name|Credentials
 name|c
 decl_stmt|;
@@ -1292,7 +1305,7 @@ name|warn
 argument_list|(
 literal|"Couldn't connect to "
 operator|+
-name|nnHttpUrl
+name|nnUri
 operator|+
 literal|", assuming security is disabled"
 argument_list|)

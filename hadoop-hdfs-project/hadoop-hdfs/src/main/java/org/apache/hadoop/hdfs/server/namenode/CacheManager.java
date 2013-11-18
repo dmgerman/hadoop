@@ -1226,7 +1226,7 @@ block|{
 assert|assert
 name|namesystem
 operator|.
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 return|return
@@ -1249,7 +1249,7 @@ block|{
 assert|assert
 name|namesystem
 operator|.
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 return|return
@@ -2328,7 +2328,7 @@ block|{
 assert|assert
 name|namesystem
 operator|.
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 specifier|final
@@ -3162,7 +3162,7 @@ block|{
 assert|assert
 name|namesystem
 operator|.
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 specifier|final

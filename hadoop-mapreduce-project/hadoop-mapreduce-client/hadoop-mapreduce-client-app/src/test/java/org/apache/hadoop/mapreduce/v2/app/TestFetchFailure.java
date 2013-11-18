@@ -2296,16 +2296,7 @@ operator|.
 name|SHUFFLE
 argument_list|)
 expr_stmt|;
-comment|//send 3 fetch failures from reduce to trigger map re execution
-name|sendFetchFailure
-argument_list|(
-name|app
-argument_list|,
-name|reduceAttempt
-argument_list|,
-name|mapAttempt1
-argument_list|)
-expr_stmt|;
+comment|//send 2 fetch failures from reduce to prepare for map re execution
 name|sendFetchFailure
 argument_list|(
 name|app
@@ -2359,6 +2350,7 @@ operator|.
 name|REDUCE
 argument_list|)
 expr_stmt|;
+comment|//send 3rd fetch failures from reduce to trigger map re execution
 name|sendFetchFailure
 argument_list|(
 name|app

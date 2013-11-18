@@ -713,9 +713,9 @@ control|(
 name|String
 name|rpcAddress
 range|:
-name|HAUtil
+name|YarnConfiguration
 operator|.
-name|RPC_ADDRESS_CONF_KEYS
+name|RM_RPC_ADDRESS_CONF_KEYS
 control|)
 block|{
 name|conf
