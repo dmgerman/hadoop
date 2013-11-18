@@ -4328,7 +4328,7 @@ block|{
 assert|assert
 name|namesystem
 operator|.
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 if|if

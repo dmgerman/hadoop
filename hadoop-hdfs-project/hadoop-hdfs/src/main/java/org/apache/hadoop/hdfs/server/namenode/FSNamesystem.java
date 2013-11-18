@@ -7973,19 +7973,6 @@ name|getReadHoldCount
 argument_list|()
 operator|>
 literal|0
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|hasReadOrWriteLock ()
-specifier|public
-name|boolean
-name|hasReadOrWriteLock
-parameter_list|()
-block|{
-return|return
-name|hasReadLock
-argument_list|()
 operator|||
 name|hasWriteLock
 argument_list|()
@@ -11565,7 +11552,7 @@ throws|,
 name|UnresolvedLinkException
 block|{
 assert|assert
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 name|Path
@@ -14468,7 +14455,7 @@ throws|throws
 name|IOException
 block|{
 assert|assert
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 name|checkBlock
@@ -15362,7 +15349,7 @@ throws|,
 name|FileNotFoundException
 block|{
 assert|assert
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 if|if
@@ -19687,7 +19674,7 @@ name|blockUC
 parameter_list|)
 block|{
 assert|assert
-name|hasReadOrWriteLock
+name|hasReadLock
 argument_list|()
 assert|;
 specifier|final
