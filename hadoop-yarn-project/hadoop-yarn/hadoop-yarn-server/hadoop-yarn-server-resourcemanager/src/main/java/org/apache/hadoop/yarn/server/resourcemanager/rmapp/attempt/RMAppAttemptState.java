@@ -58,7 +58,7 @@ DECL|enumConstant|FINISHED
 DECL|enumConstant|KILLED
 DECL|enumConstant|ALLOCATED_SAVING
 DECL|enumConstant|LAUNCHED_UNMANAGED_SAVING
-DECL|enumConstant|RECOVERED
+DECL|enumConstant|FINAL_SAVING
 name|FINISHED
 block|,
 name|KILLED
@@ -67,9 +67,6 @@ name|ALLOCATED_SAVING
 block|,
 name|LAUNCHED_UNMANAGED_SAVING
 block|,
-name|RECOVERED
-block|,
-DECL|enumConstant|FINAL_SAVING
 name|FINAL_SAVING
 block|}
 end_enum

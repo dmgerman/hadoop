@@ -1273,10 +1273,12 @@ assert|;
 if|if
 condition|(
 name|nextEntryId
-operator|==
+operator|>=
 name|Long
 operator|.
 name|MAX_VALUE
+operator|-
+literal|1
 condition|)
 block|{
 throw|throw
@@ -1783,6 +1785,64 @@ operator|.
 name|getId
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|id
+operator|<=
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"can't add an ID "
+operator|+
+literal|"of "
+operator|+
+name|id
+operator|+
+literal|": it is not positive."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|id
+operator|>=
+name|Long
+operator|.
+name|MAX_VALUE
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"can't add an ID "
+operator|+
+literal|"of "
+operator|+
+name|id
+operator|+
+literal|": it is too big."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|nextEntryId
+operator|<=
+name|id
+condition|)
+block|{
+name|nextEntryId
+operator|=
+name|id
+operator|+
+literal|1
+expr_stmt|;
+block|}
 block|}
 else|else
 block|{

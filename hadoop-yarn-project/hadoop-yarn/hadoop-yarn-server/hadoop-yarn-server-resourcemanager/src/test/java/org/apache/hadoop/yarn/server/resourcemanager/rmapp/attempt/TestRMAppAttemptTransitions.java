@@ -2857,7 +2857,7 @@ name|verifyAttemptFinalStateSaved
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * {@link RMAppAttemptState#RECOVERED}    */
+comment|/**    * {@link RMAppAttemptState#LAUNCHED}    */
 DECL|method|testAppAttemptRecoveredState ()
 specifier|private
 name|void
@@ -2868,7 +2868,7 @@ name|assertEquals
 argument_list|(
 name|RMAppAttemptState
 operator|.
-name|RECOVERED
+name|LAUNCHED
 argument_list|,
 name|applicationAttempt
 operator|.

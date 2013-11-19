@@ -1064,6 +1064,75 @@ return|return
 name|newDir
 return|;
 block|}
+comment|/**    * Used when load fileUC from fsimage. The file to be replaced is actually     * only in snapshot, thus may not be contained in the children list.     * See HDFS-5428 for details.    */
+DECL|method|replaceChildFileInSnapshot (INodeFile oldChild, final INodeFile newChild)
+specifier|public
+name|void
+name|replaceChildFileInSnapshot
+parameter_list|(
+name|INodeFile
+name|oldChild
+parameter_list|,
+specifier|final
+name|INodeFile
+name|newChild
+parameter_list|)
+block|{
+if|if
+condition|(
+name|children
+operator|!=
+literal|null
+condition|)
+block|{
+specifier|final
+name|int
+name|i
+init|=
+name|searchChildren
+argument_list|(
+name|newChild
+operator|.
+name|getLocalNameBytes
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|i
+operator|>=
+literal|0
+operator|&&
+name|children
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+operator|.
+name|getId
+argument_list|()
+operator|==
+name|oldChild
+operator|.
+name|getId
+argument_list|()
+condition|)
+block|{
+comment|// no need to consider reference node here, since we already do the
+comment|// replacement in FSImageFormat.Loader#loadFilesUnderConstruction
+name|children
+operator|.
+name|set
+argument_list|(
+name|i
+argument_list|,
+name|newChild
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|/** Replace the given child with a new child. */
 DECL|method|replaceChild (INode oldChild, final INode newChild, final INodeMap inodeMap)
 specifier|public

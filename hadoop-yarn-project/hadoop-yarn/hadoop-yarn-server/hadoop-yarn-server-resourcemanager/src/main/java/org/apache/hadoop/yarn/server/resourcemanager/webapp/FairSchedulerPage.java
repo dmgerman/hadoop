@@ -1436,7 +1436,9 @@ literal|"  $('#cs a span').addClass('ui-corner-all').css('position', 'absolute')
 argument_list|,
 literal|"  $('#cs').bind('loaded.jstree', function (e, data) {"
 argument_list|,
-literal|"    data.inst.open_node('#pq', true);"
+literal|"    var callback = { call:reopenQueryNodes }"
+argument_list|,
+literal|"    data.inst.open_node('#pq', callback);"
 argument_list|,
 literal|"   })."
 argument_list|,
@@ -1473,6 +1475,15 @@ argument_list|)
 operator|.
 name|_
 argument_list|()
+operator|.
+name|_
+argument_list|(
+name|SchedulerPageUtil
+operator|.
+name|QueueBlockUtil
+operator|.
+name|class
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|content ()
