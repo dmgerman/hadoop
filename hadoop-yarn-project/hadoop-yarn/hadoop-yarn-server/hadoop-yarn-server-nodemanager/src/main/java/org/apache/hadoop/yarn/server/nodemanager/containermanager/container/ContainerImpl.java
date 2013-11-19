@@ -2045,7 +2045,7 @@ DECL|field|stateMachine
 name|stateMachine
 decl_stmt|;
 DECL|method|getCurrentState ()
-specifier|private
+specifier|public
 name|org
 operator|.
 name|apache

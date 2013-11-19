@@ -85,10 +85,13 @@ name|void
 name|sendOutofBandHeartBeat
 parameter_list|()
 function_decl|;
-DECL|method|getNodeStatusAndUpdateContainersInContext ()
+DECL|method|getNodeStatusAndUpdateContainersInContext (int responseId)
 name|NodeStatus
 name|getNodeStatusAndUpdateContainersInContext
-parameter_list|()
+parameter_list|(
+name|int
+name|responseId
+parameter_list|)
 function_decl|;
 DECL|method|getRMIdentifier ()
 name|long

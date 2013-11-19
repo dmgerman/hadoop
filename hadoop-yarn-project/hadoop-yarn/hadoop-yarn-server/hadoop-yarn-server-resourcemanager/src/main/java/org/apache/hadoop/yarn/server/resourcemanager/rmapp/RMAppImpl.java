@@ -1268,6 +1268,10 @@ name|SUBMITTED
 argument_list|,
 name|RMAppState
 operator|.
+name|RUNNING
+argument_list|,
+name|RMAppState
+operator|.
 name|FINISHED
 argument_list|,
 name|RMAppState
@@ -3661,11 +3665,12 @@ argument_list|(
 literal|false
 argument_list|)
 expr_stmt|;
-comment|// recover attempt
 operator|(
 operator|(
 name|RMAppAttemptImpl
 operator|)
+name|this
+operator|.
 name|currentAttempt
 operator|)
 operator|.
@@ -3882,6 +3887,11 @@ expr_stmt|;
 block|}
 empty_stmt|;
 block|}
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|class|RMAppRecoveredTransition
 specifier|private
 specifier|static
@@ -3916,6 +3926,71 @@ if|if
 condition|(
 name|app
 operator|.
+name|attempts
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+comment|// Saved application was not running any attempts.
+name|app
+operator|.
+name|createNewAttempt
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+return|return
+name|RMAppState
+operator|.
+name|SUBMITTED
+return|;
+block|}
+else|else
+block|{
+comment|/*          * If last attempt recovered final state is null .. it means attempt          * was started but AM container may or may not have started / finished.          * Therefore we should wait for it to finish.          */
+for|for
+control|(
+name|RMAppAttempt
+name|attempt
+range|:
+name|app
+operator|.
+name|getAppAttempts
+argument_list|()
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+name|app
+operator|.
+name|dispatcher
+operator|.
+name|getEventHandler
+argument_list|()
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppAttemptEvent
+argument_list|(
+name|attempt
+operator|.
+name|getAppAttemptId
+argument_list|()
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|RECOVER
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|app
+operator|.
 name|recoveredFinalState
 operator|!=
 literal|null
@@ -3936,32 +4011,15 @@ operator|.
 name|recoveredFinalState
 return|;
 block|}
-comment|// Directly call AttemptFailedTransition, since now we deem that an
-comment|// application fails because of RM restart as a normal AM failure.
-comment|// Do not recover unmanaged applications since current recovery
-comment|// mechanism of restarting attempts does not work for them.
-comment|// This will need to be changed in work preserving recovery in which
-comment|// RM will re-connect with the running AM's instead of restarting them
-comment|// In work-preserve restart, if attemptCount == maxAttempts, the job still
-comment|// needs to be recovered because the last attempt may still be running.
-comment|// As part of YARN-1210, we may return ACCECPTED state waiting for AM to
-comment|// reregister or fail and remove the following code.
+else|else
+block|{
 return|return
-operator|new
-name|AttemptFailedTransition
-argument_list|(
 name|RMAppState
 operator|.
-name|SUBMITTED
-argument_list|)
-operator|.
-name|transition
-argument_list|(
-name|app
-argument_list|,
-name|event
-argument_list|)
+name|RUNNING
 return|;
+block|}
+block|}
 block|}
 block|}
 DECL|class|StartAppAttemptTransition
@@ -5594,6 +5652,44 @@ literal|"Unknown state passed!"
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|isAppInFinalState (RMApp rmApp)
+specifier|public
+specifier|static
+name|boolean
+name|isAppInFinalState
+parameter_list|(
+name|RMApp
+name|rmApp
+parameter_list|)
+block|{
+name|RMAppState
+name|appState
+init|=
+name|rmApp
+operator|.
+name|getState
+argument_list|()
+decl_stmt|;
+return|return
+name|appState
+operator|==
+name|RMAppState
+operator|.
+name|FAILED
+operator|||
+name|appState
+operator|==
+name|RMAppState
+operator|.
+name|FINISHED
+operator|||
+name|appState
+operator|==
+name|RMAppState
+operator|.
+name|KILLED
+return|;
 block|}
 block|}
 end_class
