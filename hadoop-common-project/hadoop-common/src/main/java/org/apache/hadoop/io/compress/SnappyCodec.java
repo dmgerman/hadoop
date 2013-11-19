@@ -120,6 +120,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|compress
+operator|.
+name|snappy
+operator|.
+name|SnappyDecompressor
+operator|.
+name|SnappyDirectDecompressor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|fs
 operator|.
 name|CommonConfigurationKeys
@@ -153,6 +173,8 @@ implements|implements
 name|Configurable
 implements|,
 name|CompressionCodec
+implements|,
+name|DirectDecompressionCodec
 block|{
 DECL|field|conf
 name|Configuration
@@ -559,6 +581,26 @@ name|SnappyDecompressor
 argument_list|(
 name|bufferSize
 argument_list|)
+return|;
+block|}
+comment|/**    * {@inheritDoc}    */
+annotation|@
+name|Override
+DECL|method|createDirectDecompressor ()
+specifier|public
+name|DirectDecompressor
+name|createDirectDecompressor
+parameter_list|()
+block|{
+return|return
+name|isNativeCodeLoaded
+argument_list|()
+condition|?
+operator|new
+name|SnappyDirectDecompressor
+argument_list|()
+else|:
+literal|null
 return|;
 block|}
 comment|/**    * Get the default filename extension for this kind of compression.    *    * @return<code>.snappy</code>.    */
