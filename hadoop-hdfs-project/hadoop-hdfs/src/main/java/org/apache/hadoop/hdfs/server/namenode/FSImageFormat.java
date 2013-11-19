@@ -172,6 +172,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|HashMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -377,6 +387,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|BlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|BlockInfoUnderConstruction
 import|;
 end_import
 
@@ -2968,6 +2996,50 @@ argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
+comment|// convert the last block to BlockUC
+if|if
+condition|(
+name|blocks
+operator|!=
+literal|null
+operator|&&
+name|blocks
+operator|.
+name|length
+operator|>
+literal|0
+condition|)
+block|{
+name|BlockInfo
+name|lastBlk
+init|=
+name|blocks
+index|[
+name|blocks
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+decl_stmt|;
+name|blocks
+index|[
+name|blocks
+operator|.
+name|length
+operator|-
+literal|1
+index|]
+operator|=
+operator|new
+name|BlockInfoUnderConstruction
+argument_list|(
+name|lastBlk
+argument_list|,
+name|replication
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 block|}
@@ -3020,21 +3092,14 @@ argument_list|,
 name|blockSize
 argument_list|)
 decl_stmt|;
-return|return
-name|fileDiffs
-operator|!=
-literal|null
-condition|?
-operator|new
-name|INodeFileWithSnapshot
-argument_list|(
-name|file
-argument_list|,
-name|fileDiffs
-argument_list|)
-else|:
+if|if
+condition|(
 name|underConstruction
-condition|?
+condition|)
+block|{
+name|INodeFileUnderConstruction
+name|fileUC
+init|=
 operator|new
 name|INodeFileUnderConstruction
 argument_list|(
@@ -3046,9 +3111,41 @@ name|clientMachine
 argument_list|,
 literal|null
 argument_list|)
+decl_stmt|;
+return|return
+name|fileDiffs
+operator|==
+literal|null
+condition|?
+name|fileUC
 else|:
-name|file
+operator|new
+name|INodeFileUnderConstructionWithSnapshot
+argument_list|(
+name|fileUC
+argument_list|,
+name|fileDiffs
+argument_list|)
 return|;
+block|}
+else|else
+block|{
+return|return
+name|fileDiffs
+operator|==
+literal|null
+condition|?
+name|file
+else|:
+operator|new
+name|INodeFileWithSnapshot
+argument_list|(
+name|file
+argument_list|,
+name|fileDiffs
+argument_list|)
+return|;
+block|}
 block|}
 elseif|else
 if|if
@@ -3753,6 +3850,69 @@ operator|.
 name|getLocalName
 argument_list|()
 decl_stmt|;
+name|INodeFile
+name|oldnode
+init|=
+literal|null
+decl_stmt|;
+name|boolean
+name|inSnapshot
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|path
+operator|!=
+literal|null
+operator|&&
+name|FSDirectory
+operator|.
+name|isReservedName
+argument_list|(
+name|path
+argument_list|)
+operator|&&
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|ADD_INODE_ID
+argument_list|,
+name|getLayoutVersion
+argument_list|()
+argument_list|)
+condition|)
+block|{
+comment|// TODO: for HDFS-5428, we use reserved path for those INodeFileUC in
+comment|// snapshot. If we support INode ID in the layout version, we can use
+comment|// the inode id to find the oldnode.
+name|oldnode
+operator|=
+name|namesystem
+operator|.
+name|dir
+operator|.
+name|getInode
+argument_list|(
+name|cons
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+operator|.
+name|asFile
+argument_list|()
+expr_stmt|;
+name|inSnapshot
+operator|=
+literal|true
+expr_stmt|;
+block|}
+else|else
+block|{
 specifier|final
 name|INodesInPath
 name|iip
@@ -3764,9 +3924,8 @@ argument_list|(
 name|path
 argument_list|)
 decl_stmt|;
-name|INodeFile
 name|oldnode
-init|=
+operator|=
 name|INodeFile
 operator|.
 name|valueOf
@@ -3780,7 +3939,8 @@ argument_list|)
 argument_list|,
 name|path
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
 name|cons
 operator|.
 name|setLocalName
@@ -3853,6 +4013,12 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+operator|!
+name|inSnapshot
+condition|)
+block|{
 name|fsDir
 operator|.
 name|replaceINodeFile
@@ -3878,6 +4044,56 @@ argument_list|,
 name|path
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+if|if
+condition|(
+name|parentRef
+operator|!=
+literal|null
+condition|)
+block|{
+comment|// replace oldnode with cons
+name|parentRef
+operator|.
+name|setReferredINode
+argument_list|(
+name|cons
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+comment|// replace old node in its parent's children list and deleted list
+name|oldnode
+operator|.
+name|getParent
+argument_list|()
+operator|.
+name|replaceChildFileInSnapshot
+argument_list|(
+name|oldnode
+argument_list|,
+name|cons
+argument_list|)
+expr_stmt|;
+name|namesystem
+operator|.
+name|dir
+operator|.
+name|addToInodeMap
+argument_list|(
+name|cons
+argument_list|)
+expr_stmt|;
+name|updateBlocksMap
+argument_list|(
+name|cons
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 DECL|method|loadSecretManagerState (DataInput in)
@@ -4289,6 +4505,26 @@ operator|new
 name|ReferenceMap
 argument_list|()
 decl_stmt|;
+DECL|field|snapshotUCMap
+specifier|private
+specifier|final
+name|Map
+argument_list|<
+name|Long
+argument_list|,
+name|INodeFileUnderConstruction
+argument_list|>
+name|snapshotUCMap
+init|=
+operator|new
+name|HashMap
+argument_list|<
+name|Long
+argument_list|,
+name|INodeFileUnderConstruction
+argument_list|>
+argument_list|()
+decl_stmt|;
 comment|/** @throws IllegalStateException if the instance has not yet saved an image */
 DECL|method|checkSaved ()
 specifier|private
@@ -4676,6 +4912,8 @@ name|out
 argument_list|,
 literal|true
 argument_list|,
+literal|false
+argument_list|,
 name|counter
 argument_list|)
 expr_stmt|;
@@ -4711,11 +4949,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// save files under construction
+comment|// TODO: for HDFS-5428, since we cannot break the compatibility of
+comment|// fsimage, we store part of the under-construction files that are only
+comment|// in snapshots in this "under-construction-file" section. As a
+comment|// temporary solution, we use "/.reserved/.inodes/<inodeid>" as their
+comment|// paths, so that when loading fsimage we do not put them into the lease
+comment|// map. In the future, we can remove this hack when we can bump the
+comment|// layout version.
 name|sourceNamesystem
 operator|.
 name|saveFilesUnderConstruction
 argument_list|(
 name|out
+argument_list|,
+name|snapshotUCMap
 argument_list|)
 expr_stmt|;
 name|context
@@ -4829,8 +5076,8 @@ literal|" seconds."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**      * Save children INodes.      * @param children The list of children INodes      * @param out The DataOutputStream to write      * @param counter Counter to increment for namenode startup progress      * @return Number of children that are directory      */
-DECL|method|saveChildren (ReadOnlyList<INode> children, DataOutputStream out, Counter counter)
+comment|/**      * Save children INodes.      * @param children The list of children INodes      * @param out The DataOutputStream to write      * @param inSnapshot Whether the parent directory or its ancestor is in       *                   the deleted list of some snapshot (caused by rename or       *                   deletion)      * @param counter Counter to increment for namenode startup progress      * @return Number of children that are directory      */
+DECL|method|saveChildren (ReadOnlyList<INode> children, DataOutputStream out, boolean inSnapshot, Counter counter)
 specifier|private
 name|int
 name|saveChildren
@@ -4843,6 +5090,9 @@ name|children
 parameter_list|,
 name|DataOutputStream
 name|out
+parameter_list|,
+name|boolean
+name|inSnapshot
 parameter_list|,
 name|Counter
 name|counter
@@ -4880,6 +5130,9 @@ name|children
 control|)
 block|{
 comment|// print all children first
+comment|// TODO: for HDFS-5428, we cannot change the format/content of fsimage
+comment|// here, thus even if the parent directory is in snapshot, we still
+comment|// do not handle INodeUC as those stored in deleted list
 name|saveINode2Image
 argument_list|(
 name|child
@@ -4905,6 +5158,46 @@ name|dirNum
 operator|++
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|inSnapshot
+operator|&&
+name|child
+operator|.
+name|isFile
+argument_list|()
+operator|&&
+name|child
+operator|.
+name|asFile
+argument_list|()
+operator|.
+name|isUnderConstruction
+argument_list|()
+condition|)
+block|{
+name|this
+operator|.
+name|snapshotUCMap
+operator|.
+name|put
+argument_list|(
+name|child
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+operator|(
+name|INodeFileUnderConstruction
+operator|)
+name|child
+operator|.
+name|asFile
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|i
@@ -4926,8 +5219,8 @@ return|return
 name|dirNum
 return|;
 block|}
-comment|/**      * Save file tree image starting from the given root.      * This is a recursive procedure, which first saves all children and       * snapshot diffs of a current directory and then moves inside the       * sub-directories.      *       * @param current The current node      * @param out The DataoutputStream to write the image      * @param snapshot The possible snapshot associated with the current node      * @param toSaveSubtree Whether or not to save the subtree to fsimage. For      *                      reference node, its subtree may already have been      *                      saved before.      * @param counter Counter to increment for namenode startup progress      */
-DECL|method|saveImage (INodeDirectory current, DataOutputStream out, boolean toSaveSubtree, Counter counter)
+comment|/**      * Save file tree image starting from the given root.      * This is a recursive procedure, which first saves all children and       * snapshot diffs of a current directory and then moves inside the       * sub-directories.      *       * @param current The current node      * @param out The DataoutputStream to write the image      * @param toSaveSubtree Whether or not to save the subtree to fsimage. For      *                      reference node, its subtree may already have been      *                      saved before.      * @param inSnapshot Whether the current directory is in snapshot      * @param counter Counter to increment for namenode startup progress      */
+DECL|method|saveImage (INodeDirectory current, DataOutputStream out, boolean toSaveSubtree, boolean inSnapshot, Counter counter)
 specifier|private
 name|void
 name|saveImage
@@ -4940,6 +5233,9 @@ name|out
 parameter_list|,
 name|boolean
 name|toSaveSubtree
+parameter_list|,
+name|boolean
+name|inSnapshot
 parameter_list|,
 name|Counter
 name|counter
@@ -5077,6 +5373,8 @@ name|children
 argument_list|,
 name|out
 argument_list|,
+name|inSnapshot
+argument_list|,
 name|counter
 argument_list|)
 expr_stmt|;
@@ -5153,6 +5451,8 @@ name|out
 argument_list|,
 name|toSave
 argument_list|,
+name|inSnapshot
+argument_list|,
 name|counter
 argument_list|)
 expr_stmt|;
@@ -5202,6 +5502,8 @@ argument_list|,
 name|out
 argument_list|,
 name|toSave
+argument_list|,
+literal|true
 argument_list|,
 name|counter
 argument_list|)
