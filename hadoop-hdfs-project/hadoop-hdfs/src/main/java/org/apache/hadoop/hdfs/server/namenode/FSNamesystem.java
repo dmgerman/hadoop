@@ -26030,6 +26030,11 @@ specifier|private
 name|ObjectName
 name|mbeanName
 decl_stmt|;
+DECL|field|mxbeanName
+specifier|private
+name|ObjectName
+name|mxbeanName
+decl_stmt|;
 comment|/**    * Register the FSNamesystem MBean using the name    *        "hadoop:service=NameNode,name=FSNamesystemState"    */
 DECL|method|registerMBean ()
 specifier|private
@@ -26110,6 +26115,29 @@ name|unregister
 argument_list|(
 name|mbeanName
 argument_list|)
+expr_stmt|;
+name|mbeanName
+operator|=
+literal|null
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|mxbeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|mxbeanName
+argument_list|)
+expr_stmt|;
+name|mxbeanName
+operator|=
+literal|null
 expr_stmt|;
 block|}
 if|if
@@ -29225,6 +29253,8 @@ name|void
 name|registerMXBean
 parameter_list|()
 block|{
+name|mxbeanName
+operator|=
 name|MBeans
 operator|.
 name|register

@@ -1219,6 +1219,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|javax
+operator|.
+name|management
+operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1606,6 +1616,11 @@ specifier|private
 specifier|final
 name|boolean
 name|getHdfsBlockLocationsEnabled
+decl_stmt|;
+DECL|field|dataNodeInfoBeanName
+specifier|private
+name|ObjectName
+name|dataNodeInfoBeanName
 decl_stmt|;
 comment|/**    * Create the DataNode given a configuration and an array of dataDirs.    * 'dataDirs' is where the blocks are stored.    */
 DECL|method|DataNode (final Configuration conf, final AbstractList<File> dataDirs)
@@ -4575,6 +4590,8 @@ name|void
 name|registerMXBean
 parameter_list|()
 block|{
+name|dataNodeInfoBeanName
+operator|=
 name|MBeans
 operator|.
 name|register
@@ -6183,6 +6200,25 @@ name|metrics
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|dataNodeInfoBeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|dataNodeInfoBeanName
+argument_list|)
+expr_stmt|;
+name|dataNodeInfoBeanName
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}
