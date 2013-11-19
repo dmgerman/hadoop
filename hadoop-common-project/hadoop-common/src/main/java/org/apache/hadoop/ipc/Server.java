@@ -10338,6 +10338,12 @@ operator|.
 name|getPort
 argument_list|()
 expr_stmt|;
+name|connectionManager
+operator|=
+operator|new
+name|ConnectionManager
+argument_list|()
+expr_stmt|;
 name|this
 operator|.
 name|rpcMetrics
@@ -10384,12 +10390,6 @@ name|responder
 operator|=
 operator|new
 name|Responder
-argument_list|()
-expr_stmt|;
-name|connectionManager
-operator|=
-operator|new
-name|ConnectionManager
 argument_list|()
 expr_stmt|;
 if|if
