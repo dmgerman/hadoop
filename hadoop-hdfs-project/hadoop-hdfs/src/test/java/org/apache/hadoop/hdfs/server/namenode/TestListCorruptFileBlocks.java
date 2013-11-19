@@ -2691,7 +2691,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Test if NN.listCorruptFiles() returns the right number of results.    * Also, test that DFS.listCorruptFileBlocks can make multiple successive    * calls.    */
+comment|/**    * Test if NN.listCorruptFiles() returns the right number of results.    * The corrupt blocks are detected by the BlockPoolSliceScanner.    * Also, test that DFS.listCorruptFileBlocks can make multiple successive    * calls.    */
 annotation|@
 name|Test
 DECL|method|testMaxCorruptFiles ()
@@ -2716,18 +2716,6 @@ operator|new
 name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
-name|conf
-operator|.
-name|setInt
-argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_DATANODE_DIRECTORYSCAN_INTERVAL_KEY
-argument_list|,
-literal|15
-argument_list|)
-expr_stmt|;
-comment|// datanode scans directories
 name|conf
 operator|.
 name|setInt
@@ -3027,6 +3015,26 @@ expr_stmt|;
 block|}
 block|}
 block|}
+comment|// Occasionally the BlockPoolSliceScanner can run before we have removed
+comment|// the blocks. Restart the Datanode to trigger the scanner into running
+comment|// once more.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Restarting Datanode to trigger BlockPoolSliceScanner"
+argument_list|)
+expr_stmt|;
+name|cluster
+operator|.
+name|restartDataNodes
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|waitActive
+argument_list|()
+expr_stmt|;
 name|badFiles
 operator|=
 name|namenode
