@@ -616,6 +616,20 @@ name|BuilderUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class manages the list of applications for the resource manager.   */
 end_comment
@@ -1188,6 +1202,33 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|logApplicationSummary (ApplicationId appId)
+specifier|public
+name|void
+name|logApplicationSummary
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|)
+block|{
+name|ApplicationSummary
+operator|.
+name|logAppSummary
+argument_list|(
+name|rmContext
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|appId
+argument_list|)
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|setCompletedAppsMax (int max)
 specifier|protected
@@ -2100,19 +2141,9 @@ argument_list|(
 name|applicationId
 argument_list|)
 expr_stmt|;
-name|ApplicationSummary
-operator|.
-name|logAppSummary
-argument_list|(
-name|rmContext
-operator|.
-name|getRMApps
-argument_list|()
-operator|.
-name|get
+name|logApplicationSummary
 argument_list|(
 name|applicationId
-argument_list|)
 argument_list|)
 expr_stmt|;
 name|checkAppNumCompletedLimit

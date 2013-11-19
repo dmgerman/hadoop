@@ -2708,6 +2708,18 @@ operator|.
 name|clientToAMSecretManager
 return|;
 block|}
+DECL|method|getRMAppManager ()
+specifier|public
+name|RMAppManager
+name|getRMAppManager
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|rmAppManager
+return|;
+block|}
 annotation|@
 name|Override
 DECL|method|startWepApp ()
