@@ -2067,6 +2067,27 @@ name|DEFAULT_RM_DELAYED_DELEGATION_TOKEN_REMOVAL_INTERVAL_MS
 init|=
 literal|30000l
 decl_stmt|;
+comment|/** Delegation Token renewer thread count */
+DECL|field|RM_DELEGATION_TOKEN_RENEWER_THREAD_COUNT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_DELEGATION_TOKEN_RENEWER_THREAD_COUNT
+init|=
+name|RM_PREFIX
+operator|+
+literal|"delegation-token-renewer.thread-count"
+decl_stmt|;
+DECL|field|DEFAULT_RM_DELEGATION_TOKEN_RENEWER_THREAD_COUNT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_DELEGATION_TOKEN_RENEWER_THREAD_COUNT
+init|=
+literal|50
+decl_stmt|;
 comment|/** Whether to enable log aggregation */
 DECL|field|LOG_AGGREGATION_ENABLED
 specifier|public
