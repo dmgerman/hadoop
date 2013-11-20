@@ -19275,6 +19275,61 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|uc
+operator|.
+name|getNumExpectedLocations
+argument_list|()
+operator|==
+literal|0
+operator|&&
+name|uc
+operator|.
+name|getNumBytes
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+comment|// There is no datanode reported to this block.
+comment|// may be client have crashed before writing data to pipeline.
+comment|// This blocks doesn't need any recovery.
+comment|// We can remove this block and close the file.
+name|pendingFile
+operator|.
+name|removeLastBlock
+argument_list|(
+name|lastBlock
+argument_list|)
+expr_stmt|;
+name|finalizeINodeFileUnderConstruction
+argument_list|(
+name|src
+argument_list|,
+name|pendingFile
+argument_list|,
+name|iip
+operator|.
+name|getLatestSnapshot
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|NameNode
+operator|.
+name|stateChangeLog
+operator|.
+name|warn
+argument_list|(
+literal|"BLOCK* internalReleaseLease: "
+operator|+
+literal|"Removed empty last block and closed file."
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
 comment|// start recovery of the last block for this file
 name|long
 name|blockRecoveryId

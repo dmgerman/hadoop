@@ -1592,6 +1592,22 @@ operator|==
 literal|0
 condition|)
 block|{
+if|if
+condition|(
+name|last
+operator|.
+name|getBlockSize
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+comment|// if the length is zero, then no data has been written to
+comment|// datanode. So no need to wait for the locations.
+return|return
+literal|0
+return|;
+block|}
 return|return
 operator|-
 literal|1

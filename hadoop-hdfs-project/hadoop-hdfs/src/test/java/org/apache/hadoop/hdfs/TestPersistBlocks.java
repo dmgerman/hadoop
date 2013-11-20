@@ -1129,7 +1129,7 @@ name|status
 operator|.
 name|getLen
 argument_list|()
-operator|!=
+operator|==
 name|len
 operator|-
 name|BLOCK_SIZE
