@@ -112,6 +112,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|management
+operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1582,6 +1592,11 @@ DECL|field|pauseMonitor
 specifier|private
 name|JvmPauseMonitor
 name|pauseMonitor
+decl_stmt|;
+DECL|field|nameNodeStatusBeanName
+specifier|private
+name|ObjectName
+name|nameNodeStatusBeanName
 decl_stmt|;
 comment|/** Format a new filesystem.  Destroys any filesystem that may already    * exist at this location.  **/
 DECL|method|format (Configuration conf)
@@ -3471,6 +3486,25 @@ name|namesystem
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|nameNodeStatusBeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|nameNodeStatusBeanName
+argument_list|)
+expr_stmt|;
+name|nameNodeStatusBeanName
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}
@@ -6817,6 +6851,8 @@ name|void
 name|registerNNSMXBean
 parameter_list|()
 block|{
+name|nameNodeStatusBeanName
+operator|=
 name|MBeans
 operator|.
 name|register

@@ -383,7 +383,8 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|cacheManipulator
+name|getCacheManipulator
+argument_list|()
 operator|.
 name|mlock
 argument_list|(

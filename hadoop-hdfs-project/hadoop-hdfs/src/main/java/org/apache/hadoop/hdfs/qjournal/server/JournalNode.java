@@ -82,6 +82,16 @@ end_import
 
 begin_import
 import|import
+name|javax
+operator|.
+name|management
+operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -453,6 +463,11 @@ name|Maps
 operator|.
 name|newHashMap
 argument_list|()
+decl_stmt|;
+DECL|field|journalNodeInfoBeanName
+specifier|private
+name|ObjectName
+name|journalNodeInfoBeanName
 decl_stmt|;
 DECL|field|localDir
 specifier|private
@@ -914,6 +929,25 @@ name|j
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|journalNodeInfoBeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|journalNodeInfoBeanName
+argument_list|)
+expr_stmt|;
+name|journalNodeInfoBeanName
+operator|=
+literal|null
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Wait for the daemon to exit.    * @return the result code (non-zero if error)    */
 DECL|method|join ()
@@ -1250,6 +1284,8 @@ name|void
 name|registerJNMXBean
 parameter_list|()
 block|{
+name|journalNodeInfoBeanName
+operator|=
 name|MBeans
 operator|.
 name|register

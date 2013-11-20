@@ -667,6 +667,11 @@ name|memlockLimit
 init|=
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
 name|getMemlockLimit
 argument_list|()
 decl_stmt|;

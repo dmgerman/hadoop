@@ -1575,6 +1575,9 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|block
@@ -2748,6 +2751,9 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
 name|posixFadviseIfPossible
 argument_list|(
 name|block
@@ -3164,6 +3170,9 @@ decl_stmt|;
 name|NativeIO
 operator|.
 name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
 operator|.
 name|posixFadviseIfPossible
 argument_list|(

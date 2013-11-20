@@ -1,6 +1,6 @@
 begin_unit|revision:0.9.5;language:Java;cregit-version:0.0.1
 begin_comment
-comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
+comment|/*  * Licensed to the Apache Software Foundation (ASF) under one  * or more contributor license agreements.  See the NOTICE file  * distributed with this work for additional information  * regarding copyright ownership.  The ASF licenses this file  * to you under the Apache License, Version 2.0 (the  * "License"); you may not use this file except in compliance  * with the License.  You may obtain a copy of the License at  *  *     http://www.apache.org/licenses/LICENSE-2.0  *  * Unless required by applicable law or agreed to in writing, software  * distributed under the License is distributed on an "AS IS" BASIS,  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  * See the License for the specific language governing permissions and  * limitations under the License.  */
 end_comment
 
 begin_package
@@ -66,6 +66,10 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_comment
+comment|/**  * Specification of a direct ByteBuffer 'de-compressor'.   */
+end_comment
+
 begin_interface
 annotation|@
 name|InterfaceAudience
@@ -79,20 +83,18 @@ DECL|interface|DirectDecompressor
 specifier|public
 interface|interface
 name|DirectDecompressor
-extends|extends
-name|Decompressor
 block|{
-comment|/**    * Example usage    *     *<pre>{@code    * private void decompress(DirectDecompressor decomp, ByteBufferProducer in, ByteBufferConsumer out) throws IOException {    *    ByteBuffer outBB = ByteBuffer.allocate(64*1024);    *    outBB.clear();    *    // returns inBB.remaining()&gt; 0 || inBB == null     *    // if you do a inBB.put(), remember to do a inBB.flip()    *    ByteBuffer inBB = in.get();    *    if(inBB == null) {    *      // no data at all?    *    }    *    while(!decomp.finished()) {    *      decomp.decompress(outBB, inBB);    *      if(outBB.remaining() == 0) {    *        // flush when the buffer is full    *        outBB.flip();    *        // has to consume the buffer, because it is reused    *        out.put(outBB);    *        outBB.clear();    *      }    *      if(inBB != null&amp;&amp; inBB.remaining() == 0) {    *        // inBB = null for EOF    *        inBB = in.get();    *      }    *    }    *        *    if(outBB.position()&gt; 0) {    *      outBB.flip();    *      out.put(outBB);    *      outBB.clear();    *    }    *  }    * }</pre>    * @param dst Destination {@link ByteBuffer} for storing the results into. Requires dst.remaining() to be> 0    * @param src Source {@link ByteBuffer} for reading from. This can be null or src.remaining()> 0    * @return bytes stored into dst (dst.postion += more)    * @throws IOException if compression fails       */
-DECL|method|decompress (ByteBuffer dst, ByteBuffer src)
+comment|/*    * This exposes a direct interface for record decompression with direct byte    * buffers.    *     * The decompress() function need not always consume the buffers provided,    * it will need to be called multiple times to decompress an entire buffer     * and the object will hold the compression context internally.    *     * Codecs such as {@link SnappyCodec} may or may not support partial    * decompression of buffers and will need enough space in the destination    * buffer to decompress an entire block.    *     * The operation is modelled around dst.put(src);    *     * The end result will move src.position() by the bytes-read and    * dst.position() by the bytes-written. It should not modify the src.limit()    * or dst.limit() to maintain consistency of operation between codecs.    *     * @param src Source direct {@link ByteBuffer} for reading from. Requires src    * != null and src.remaining()> 0    *     * @param dst Destination direct {@link ByteBuffer} for storing the results    * into. Requires dst != null and dst.remaining() to be> 0    *     * @throws IOException if compression fails    */
+DECL|method|decompress (ByteBuffer src, ByteBuffer dst)
 specifier|public
-name|int
+name|void
 name|decompress
 parameter_list|(
 name|ByteBuffer
-name|dst
+name|src
 parameter_list|,
 name|ByteBuffer
-name|src
+name|dst
 parameter_list|)
 throws|throws
 name|IOException

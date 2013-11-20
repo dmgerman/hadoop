@@ -32,13 +32,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|server
+name|api
 operator|.
-name|resourcemanager
+name|records
 operator|.
-name|rmapp
-operator|.
-name|RMAppState
+name|YarnApplicationState
 import|;
 end_import
 
@@ -256,10 +254,10 @@ argument_list|()
 expr_stmt|;
 for|for
 control|(
-name|RMAppState
+name|YarnApplicationState
 name|state
 range|:
-name|RMAppState
+name|YarnApplicationState
 operator|.
 name|values
 argument_list|()

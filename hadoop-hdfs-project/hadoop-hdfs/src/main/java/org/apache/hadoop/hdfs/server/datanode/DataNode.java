@@ -1201,6 +1201,16 @@ import|;
 end_import
 
 begin_import
+import|import
+name|javax
+operator|.
+name|management
+operator|.
+name|ObjectName
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -1588,6 +1598,11 @@ specifier|private
 specifier|final
 name|boolean
 name|getHdfsBlockLocationsEnabled
+decl_stmt|;
+DECL|field|dataNodeInfoBeanName
+specifier|private
+name|ObjectName
+name|dataNodeInfoBeanName
 decl_stmt|;
 comment|/**    * Create the DataNode given a configuration, an array of dataDirs,    * and a namenode proxy    */
 DECL|method|DataNode (final Configuration conf, final AbstractList<StorageLocation> dataDirs, final SecureResources resources)
@@ -3700,6 +3715,11 @@ name|ulimit
 init|=
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
 name|getMemlockLimit
 argument_list|()
 decl_stmt|;
@@ -4596,6 +4616,8 @@ name|void
 name|registerMXBean
 parameter_list|()
 block|{
+name|dataNodeInfoBeanName
+operator|=
 name|MBeans
 operator|.
 name|register
@@ -6073,6 +6095,25 @@ name|metrics
 operator|.
 name|shutdown
 argument_list|()
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|dataNodeInfoBeanName
+operator|!=
+literal|null
+condition|)
+block|{
+name|MBeans
+operator|.
+name|unregister
+argument_list|(
+name|dataNodeInfoBeanName
+argument_list|)
+expr_stmt|;
+name|dataNodeInfoBeanName
+operator|=
+literal|null
 expr_stmt|;
 block|}
 block|}

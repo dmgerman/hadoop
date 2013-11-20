@@ -106,6 +106,22 @@ name|io
 operator|.
 name|compress
 operator|.
+name|DirectDecompressor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|compress
+operator|.
 name|zlib
 operator|.
 name|ZlibCompressor
@@ -417,6 +433,34 @@ else|:
 operator|new
 name|BuiltInZlibInflater
 argument_list|()
+return|;
+block|}
+comment|/**    * Return the appropriate implementation of the zlib direct decompressor.     *     * @param conf configuration    * @return the appropriate implementation of the zlib decompressor.    */
+DECL|method|getZlibDirectDecompressor (Configuration conf)
+specifier|public
+specifier|static
+name|DirectDecompressor
+name|getZlibDirectDecompressor
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+operator|(
+name|isNativeZlibLoaded
+argument_list|(
+name|conf
+argument_list|)
+operator|)
+condition|?
+operator|new
+name|ZlibDecompressor
+operator|.
+name|ZlibDirectDecompressor
+argument_list|()
+else|:
+literal|null
 return|;
 block|}
 DECL|method|setCompressionStrategy (Configuration conf, CompressionStrategy strategy)
