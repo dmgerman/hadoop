@@ -690,6 +690,26 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|NoMlockCacheManipulator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|metrics2
 operator|.
 name|MetricsRecordBuilder
@@ -930,16 +950,6 @@ operator|.
 name|WINDOWS
 argument_list|)
 expr_stmt|;
-name|assumeTrue
-argument_list|(
-name|NativeIO
-operator|.
-name|getMemlockLimit
-argument_list|()
-operator|>=
-name|CACHE_CAPACITY
-argument_list|)
-expr_stmt|;
 name|conf
 operator|=
 operator|new
@@ -1092,50 +1102,19 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|cacheManipulator
+name|getCacheManipulator
+argument_list|()
 expr_stmt|;
-comment|// Save the current CacheManipulator and replace it at the end of the test
-comment|// Stub out mlock calls to avoid failing when not enough memory is lockable
-comment|// by the operating system.
 name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|cacheManipulator
-operator|=
-operator|new
-name|CacheManipulator
-argument_list|()
-block|{
-annotation|@
-name|Override
-specifier|public
-name|void
-name|mlock
-parameter_list|(
-name|String
-name|identifier
-parameter_list|,
-name|ByteBuffer
-name|mmap
-parameter_list|,
-name|long
-name|length
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|LOG
-operator|.
-name|info
+name|setCacheManipulator
 argument_list|(
-literal|"mlocking "
-operator|+
-name|identifier
+operator|new
+name|NoMlockCacheManipulator
+argument_list|()
 argument_list|)
-expr_stmt|;
-block|}
-block|}
 expr_stmt|;
 block|}
 annotation|@
@@ -1179,9 +1158,10 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|cacheManipulator
-operator|=
+name|setCacheManipulator
+argument_list|(
 name|prevCacheManipulator
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|setHeartbeatResponse (DatanodeCommand[] cmds)
@@ -1659,6 +1639,11 @@ literal|"memlock limit = "
 operator|+
 name|NativeIO
 operator|.
+name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
 name|getMemlockLimit
 argument_list|()
 operator|+
@@ -2050,25 +2035,16 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|CacheManipulator
-name|prevCacheManipulator
-init|=
+comment|// We don't have to save the previous cacheManipulator
+comment|// because it will be reinstalled by the @After function.
 name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|cacheManipulator
-decl_stmt|;
-try|try
-block|{
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|cacheManipulator
-operator|=
+name|setCacheManipulator
+argument_list|(
 operator|new
-name|CacheManipulator
+name|NoMlockCacheManipulator
 argument_list|()
 block|{
 specifier|private
@@ -2144,22 +2120,11 @@ argument_list|)
 throw|;
 block|}
 block|}
+argument_list|)
 expr_stmt|;
 name|testCacheAndUncacheBlock
 argument_list|()
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|cacheManipulator
-operator|=
-name|prevCacheManipulator
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
@@ -2181,23 +2146,6 @@ operator|.
 name|info
 argument_list|(
 literal|"beginning testFilesExceedMaxLockedMemory"
-argument_list|)
-expr_stmt|;
-comment|// We don't want to deal with page rounding issues, so skip this
-comment|// test if page size is weird
-name|long
-name|osPageSize
-init|=
-name|NativeIO
-operator|.
-name|getOperatingSystemPageSize
-argument_list|()
-decl_stmt|;
-name|assumeTrue
-argument_list|(
-name|osPageSize
-operator|==
-literal|4096
 argument_list|)
 expr_stmt|;
 comment|// Create some test files that will exceed total cache capacity
@@ -2726,14 +2674,10 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|cacheManipulator
-operator|=
+name|setCacheManipulator
+argument_list|(
 operator|new
-name|NativeIO
-operator|.
-name|POSIX
-operator|.
-name|CacheManipulator
+name|NoMlockCacheManipulator
 argument_list|()
 block|{
 annotation|@
@@ -2787,6 +2731,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
+argument_list|)
 expr_stmt|;
 comment|// Starting caching each block in succession.  The usedBytes amount
 comment|// should increase, even though caching doesn't complete on any of them.

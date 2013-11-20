@@ -26,6 +26,16 @@ name|java
 operator|.
 name|io
 operator|.
+name|FileDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
 name|IOException
 import|;
 end_import
@@ -280,7 +290,23 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|CacheTracker
+name|CacheManipulator
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|nativeio
+operator|.
+name|NativeIOException
 import|;
 end_import
 
@@ -388,9 +414,10 @@ name|NativeIO
 operator|.
 name|POSIX
 operator|.
-name|cacheTracker
-operator|=
+name|setCacheManipulator
+argument_list|(
 name|tracker
+argument_list|)
 expr_stmt|;
 comment|// Normally, we wait for a few megabytes of data to be read or written
 comment|// before dropping the cache.  This is to avoid an excessive number of
@@ -658,8 +685,8 @@ specifier|private
 specifier|static
 class|class
 name|TestRecordingCacheTracker
-implements|implements
-name|CacheTracker
+extends|extends
+name|CacheManipulator
 block|{
 DECL|field|map
 specifier|private
@@ -683,14 +710,16 @@ argument_list|()
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|fadvise (String name, long offset, long len, int flags)
-specifier|synchronized
+DECL|method|posixFadviseIfPossible (String name, FileDescriptor fd, long offset, long len, int flags)
 specifier|public
 name|void
-name|fadvise
+name|posixFadviseIfPossible
 parameter_list|(
 name|String
 name|name
+parameter_list|,
+name|FileDescriptor
+name|fd
 parameter_list|,
 name|long
 name|offset
@@ -701,6 +730,8 @@ parameter_list|,
 name|int
 name|flags
 parameter_list|)
+throws|throws
+name|NativeIOException
 block|{
 if|if
 condition|(
@@ -807,6 +838,21 @@ argument_list|,
 operator|(
 name|int
 operator|)
+name|len
+argument_list|,
+name|flags
+argument_list|)
+expr_stmt|;
+name|super
+operator|.
+name|posixFadviseIfPossible
+argument_list|(
+name|name
+argument_list|,
+name|fd
+argument_list|,
+name|offset
+argument_list|,
 name|len
 argument_list|,
 name|flags
