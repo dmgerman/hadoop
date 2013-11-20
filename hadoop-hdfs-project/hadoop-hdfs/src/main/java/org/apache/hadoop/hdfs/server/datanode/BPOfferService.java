@@ -512,6 +512,7 @@ name|bpNSInfo
 decl_stmt|;
 comment|/**    * The registration information for this block pool.    * This is assigned after the second phase of the    * handshake.    */
 DECL|field|bpRegistration
+specifier|volatile
 name|DatanodeRegistration
 name|bpRegistration
 decl_stmt|;
@@ -1275,6 +1276,7 @@ block|}
 block|}
 comment|/**    * After one of the BPServiceActors registers successfully with the    * NN, it calls this function to verify that the NN it connected to    * is consistent with other NNs serving the block-pool.    */
 DECL|method|registrationSucceeded (BPServiceActor bpServiceActor, DatanodeRegistration reg)
+specifier|synchronized
 name|void
 name|registrationSucceeded
 parameter_list|(
@@ -1993,7 +1995,6 @@ expr_stmt|;
 block|}
 block|}
 DECL|method|processCommandFromActor (DatanodeCommand cmd, BPServiceActor actor)
-specifier|synchronized
 name|boolean
 name|processCommandFromActor
 parameter_list|(
@@ -2014,6 +2015,66 @@ argument_list|(
 name|actor
 argument_list|)
 assert|;
+if|if
+condition|(
+name|cmd
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+comment|/*      * Datanode Registration can be done asynchronously here. No need to hold      * the lock. for more info refer HDFS-5014      */
+if|if
+condition|(
+name|DatanodeProtocol
+operator|.
+name|DNA_REGISTER
+operator|==
+name|cmd
+operator|.
+name|getAction
+argument_list|()
+condition|)
+block|{
+comment|// namenode requested a registration - at start or if NN lost contact
+comment|// Just logging the claiming state is OK here instead of checking the
+comment|// actor state by obtaining the lock
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"DatanodeCommand action : DNA_REGISTER from "
+operator|+
+name|actor
+operator|.
+name|nnAddr
+operator|+
+literal|" with "
+operator|+
+name|actor
+operator|.
+name|state
+operator|+
+literal|" state"
+argument_list|)
+expr_stmt|;
+name|actor
+operator|.
+name|reRegister
+argument_list|()
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 if|if
 condition|(
 name|actor
@@ -2042,7 +2103,8 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    *     * @param cmd    * @return true if further processing may be required or false otherwise.     * @throws IOException    */
+block|}
+comment|/**    * This method should handle all commands from Active namenode except    * DNA_REGISTER which should be handled earlier itself.    *     * @param cmd    * @return true if further processing may be required or false otherwise.     * @throws IOException    */
 DECL|method|processCommandFromActive (DatanodeCommand cmd, BPServiceActor actor)
 specifier|private
 name|boolean
@@ -2057,15 +2119,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|cmd
-operator|==
-literal|null
-condition|)
-return|return
-literal|true
-return|;
 specifier|final
 name|BlockCommand
 name|bcmd
@@ -2336,25 +2389,6 @@ throw|;
 case|case
 name|DatanodeProtocol
 operator|.
-name|DNA_REGISTER
-case|:
-comment|// namenode requested a registration - at start or if NN lost contact
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"DatanodeCommand action: DNA_REGISTER"
-argument_list|)
-expr_stmt|;
-name|actor
-operator|.
-name|reRegister
-argument_list|()
-expr_stmt|;
-break|break;
-case|case
-name|DatanodeProtocol
-operator|.
 name|DNA_FINALIZE
 case|:
 name|String
@@ -2568,6 +2602,7 @@ return|return
 literal|true
 return|;
 block|}
+comment|/**    * This method should handle commands from Standby namenode except    * DNA_REGISTER which should be handled earlier itself.    */
 DECL|method|processCommandFromStandby (DatanodeCommand cmd, BPServiceActor actor)
 specifier|private
 name|boolean
@@ -2582,15 +2617,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-name|cmd
-operator|==
-literal|null
-condition|)
-return|return
-literal|true
-return|;
 switch|switch
 condition|(
 name|cmd
@@ -2599,25 +2625,6 @@ name|getAction
 argument_list|()
 condition|)
 block|{
-case|case
-name|DatanodeProtocol
-operator|.
-name|DNA_REGISTER
-case|:
-comment|// namenode requested a registration - at start or if NN lost contact
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"DatanodeCommand action from standby: DNA_REGISTER"
-argument_list|)
-expr_stmt|;
-name|actor
-operator|.
-name|reRegister
-argument_list|()
-expr_stmt|;
-break|break;
 case|case
 name|DatanodeProtocol
 operator|.
