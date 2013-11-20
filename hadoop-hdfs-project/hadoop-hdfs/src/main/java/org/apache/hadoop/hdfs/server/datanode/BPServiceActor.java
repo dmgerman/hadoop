@@ -2105,7 +2105,7 @@ operator|.
 name|size
 argument_list|()
 operator|+
-literal|" blocks took "
+literal|" block(s) took "
 operator|+
 name|createCost
 operator|+

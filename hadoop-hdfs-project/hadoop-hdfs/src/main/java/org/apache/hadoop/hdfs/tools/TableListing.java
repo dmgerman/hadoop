@@ -81,7 +81,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This class implements a "table listing" with column headers.  *   * Example:  *   * NAME   OWNER   GROUP   MODE       WEIGHT  * pool1  andrew  andrew  rwxr-xr-x  100  * pool2  andrew  andrew  rwxr-xr-x  100  * pool3  andrew  andrew  rwxr-xr-x  100  *   */
+comment|/**  * This class implements a "table listing" with column headers.  *   * Example:  *   * NAME   OWNER   GROUP   MODE       WEIGHT  * pool1  andrew  andrew  rwxr-xr-x     100  * pool2  andrew  andrew  rwxr-xr-x     100  * pool3  andrew  andrew  rwxr-xr-x     100  *   */
 end_comment
 
 begin_class
