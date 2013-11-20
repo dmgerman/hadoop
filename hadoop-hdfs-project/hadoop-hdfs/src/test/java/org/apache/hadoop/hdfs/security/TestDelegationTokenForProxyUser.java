@@ -1059,6 +1059,10 @@ argument_list|(
 name|ugi
 argument_list|,
 name|config
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 decl_stmt|;
 specifier|final

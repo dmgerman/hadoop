@@ -709,6 +709,10 @@ operator|.
 name|getWebHdfsFileSystem
 argument_list|(
 name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1659,6 +1663,10 @@ operator|.
 name|getWebHdfsFileSystem
 argument_list|(
 name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 operator|.
 name|setPermission
@@ -1749,6 +1757,10 @@ operator|.
 name|getWebHdfsFileSystem
 argument_list|(
 name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 decl_stmt|;
 name|Path
