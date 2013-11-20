@@ -8382,9 +8382,15 @@ argument_list|(
 name|toWaitFor
 argument_list|)
 expr_stmt|;
+comment|// update the block length first time irrespective of flag
 if|if
 condition|(
 name|updateLength
+operator|||
+name|persistBlocks
+operator|.
+name|get
+argument_list|()
 condition|)
 block|{
 synchronized|synchronized
@@ -9398,6 +9404,31 @@ argument_list|(
 name|dropBehind
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBlock ()
+name|ExtendedBlock
+name|getBlock
+parameter_list|()
+block|{
+return|return
+name|streamer
+operator|.
+name|getBlock
+argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getFileId ()
+name|long
+name|getFileId
+parameter_list|()
+block|{
+return|return
+name|fileId
+return|;
 block|}
 block|}
 end_class

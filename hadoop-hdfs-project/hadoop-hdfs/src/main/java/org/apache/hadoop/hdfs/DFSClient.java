@@ -10936,6 +10936,28 @@ argument_list|)
 throw|;
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getPreviousBlock (String file)
+name|ExtendedBlock
+name|getPreviousBlock
+parameter_list|(
+name|String
+name|file
+parameter_list|)
+block|{
+return|return
+name|filesBeingWritten
+operator|.
+name|get
+argument_list|(
+name|file
+argument_list|)
+operator|.
+name|getBlock
+argument_list|()
+return|;
+block|}
 comment|/**    * enable/disable restore failed storage.    *     * @see ClientProtocol#restoreFailedStorage(String arg)    */
 DECL|method|restoreFailedStorage (String arg)
 name|boolean
