@@ -164,7 +164,6 @@ literal|0L
 decl_stmt|;
 comment|/** Convert an existing directory inode to one with the given quota    *     * @param nsQuota Namespace quota to be assigned to this inode    * @param dsQuota Diskspace quota to be assigned to this indoe    * @param other The other inode from which all other properties are copied    */
 DECL|method|INodeDirectoryWithQuota (INodeDirectory other, boolean adopt, long nsQuota, long dsQuota)
-specifier|public
 name|INodeDirectoryWithQuota
 parameter_list|(
 name|INodeDirectory
@@ -235,6 +234,48 @@ operator|.
 name|dsQuota
 operator|=
 name|dsQuota
+expr_stmt|;
+block|}
+DECL|method|INodeDirectoryWithQuota (INodeDirectory other, boolean adopt, Quota.Counts quota)
+specifier|public
+name|INodeDirectoryWithQuota
+parameter_list|(
+name|INodeDirectory
+name|other
+parameter_list|,
+name|boolean
+name|adopt
+parameter_list|,
+name|Quota
+operator|.
+name|Counts
+name|quota
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|other
+argument_list|,
+name|adopt
+argument_list|,
+name|quota
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
+argument_list|,
+name|quota
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|DISKSPACE
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 comment|/** constructor with no quota verification */
@@ -312,30 +353,27 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Get this directory's namespace quota    * @return this directory's namespace quota    */
 annotation|@
 name|Override
-DECL|method|getNsQuota ()
+DECL|method|getQuotaCounts ()
 specifier|public
-name|long
-name|getNsQuota
+name|Quota
+operator|.
+name|Counts
+name|getQuotaCounts
 parameter_list|()
 block|{
 return|return
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|(
 name|nsQuota
-return|;
-block|}
-comment|/** Get this directory's diskspace quota    * @return this directory's diskspace quota    */
-annotation|@
-name|Override
-DECL|method|getDsQuota ()
-specifier|public
-name|long
-name|getDsQuota
-parameter_list|()
-block|{
-return|return
+argument_list|,
 name|dsQuota
+argument_list|)
 return|;
 block|}
 comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param dsQuota diskspace quota to be set    */
@@ -526,8 +564,15 @@ condition|(
 operator|-
 literal|1
 operator|!=
-name|getDsQuota
+name|getQuotaCounts
 argument_list|()
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|DISKSPACE
+argument_list|)
 operator|&&
 name|diskspace
 operator|!=

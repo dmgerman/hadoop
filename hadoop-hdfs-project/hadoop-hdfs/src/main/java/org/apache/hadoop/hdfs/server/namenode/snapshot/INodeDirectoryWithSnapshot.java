@@ -2914,12 +2914,7 @@ name|adopt
 argument_list|,
 name|that
 operator|.
-name|getNsQuota
-argument_list|()
-argument_list|,
-name|that
-operator|.
-name|getDsQuota
+name|getQuotaCounts
 argument_list|()
 argument_list|)
 expr_stmt|;

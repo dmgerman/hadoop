@@ -134,8 +134,7 @@ name|super
 argument_list|(
 name|Quota
 operator|.
-name|values
-argument_list|()
+name|class
 argument_list|)
 expr_stmt|;
 block|}

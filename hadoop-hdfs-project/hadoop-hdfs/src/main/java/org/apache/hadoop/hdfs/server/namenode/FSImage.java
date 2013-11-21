@@ -4082,6 +4082,17 @@ condition|)
 block|{
 comment|// check if quota is violated. It indicates a software bug.
 specifier|final
+name|Quota
+operator|.
+name|Counts
+name|q
+init|=
+name|dir
+operator|.
+name|getQuotaCounts
+argument_list|()
+decl_stmt|;
+specifier|final
 name|long
 name|namespace
 init|=
@@ -4096,16 +4107,26 @@ argument_list|)
 operator|-
 name|parentNamespace
 decl_stmt|;
+specifier|final
+name|long
+name|nsQuota
+init|=
+name|q
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|Quota
 operator|.
 name|isViolated
 argument_list|(
-name|dir
-operator|.
-name|getNsQuota
-argument_list|()
+name|nsQuota
 argument_list|,
 name|namespace
 argument_list|)
@@ -4124,10 +4145,7 @@ argument_list|()
 operator|+
 literal|" quota = "
 operator|+
-name|dir
-operator|.
-name|getNsQuota
-argument_list|()
+name|nsQuota
 operator|+
 literal|"< consumed = "
 operator|+
@@ -4150,16 +4168,26 @@ argument_list|)
 operator|-
 name|parentDiskspace
 decl_stmt|;
+specifier|final
+name|long
+name|dsQuota
+init|=
+name|q
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|DISKSPACE
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|Quota
 operator|.
 name|isViolated
 argument_list|(
-name|dir
-operator|.
-name|getDsQuota
-argument_list|()
+name|dsQuota
 argument_list|,
 name|diskspace
 argument_list|)
@@ -4178,10 +4206,7 @@ argument_list|()
 operator|+
 literal|" quota = "
 operator|+
-name|dir
-operator|.
-name|getDsQuota
-argument_list|()
+name|dsQuota
 operator|+
 literal|"< consumed = "
 operator|+
