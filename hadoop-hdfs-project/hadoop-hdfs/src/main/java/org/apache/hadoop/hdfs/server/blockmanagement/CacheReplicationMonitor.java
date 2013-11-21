@@ -190,7 +190,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|CacheDirective
 import|;
 end_import
 
@@ -895,7 +895,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|rescanPathBasedCacheEntries
+name|rescanCacheDirectives
 argument_list|()
 expr_stmt|;
 name|rescanCachedBlockMap
@@ -919,11 +919,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Scan all PathBasedCacheEntries.  Use the information to figure out    * what cache replication factor each block should have.    *    * @param mark       Whether the current scan is setting or clearing the mark    */
-DECL|method|rescanPathBasedCacheEntries ()
+comment|/**    * Scan all CacheDirectives.  Use the information to figure out    * what cache replication factor each block should have.    *    * @param mark       Whether the current scan is setting or clearing the mark    */
+DECL|method|rescanCacheDirectives ()
 specifier|private
 name|void
-name|rescanPathBasedCacheEntries
+name|rescanCacheDirectives
 parameter_list|()
 block|{
 name|FSDirectory
@@ -936,7 +936,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|PathBasedCacheEntry
+name|CacheDirective
 name|pce
 range|:
 name|cacheManager
@@ -1130,13 +1130,13 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Apply a PathBasedCacheEntry to a file.    *    * @param pce       The PathBasedCacheEntry to apply.    * @param file      The file.    */
-DECL|method|rescanFile (PathBasedCacheEntry pce, INodeFile file)
+comment|/**    * Apply a CacheDirective to a file.    *    * @param pce       The CacheDirective to apply.    * @param file      The file.    */
+DECL|method|rescanFile (CacheDirective pce, INodeFile file)
 specifier|private
 name|void
 name|rescanFile
 parameter_list|(
-name|PathBasedCacheEntry
+name|CacheDirective
 name|pce
 parameter_list|,
 name|INodeFile
@@ -1344,7 +1344,7 @@ block|}
 else|else
 block|{
 comment|// Mark already set in this scan.  Set replication to highest value in
-comment|// any PathBasedCacheEntry that covers this file.
+comment|// any CacheDirective that covers this file.
 name|ocblock
 operator|.
 name|setReplicationAndMark

@@ -542,6 +542,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -706,7 +722,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -7587,14 +7603,14 @@ name|absF
 argument_list|)
 return|;
 block|}
-comment|/**    * Add a new PathBasedCacheDirective.    *     * @param directive A directive to add.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
-DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective directive)
+comment|/**    * Add a new CacheDirective.    *     * @param info Information about a directive to add.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
+DECL|method|addCacheDirective ( CacheDirectiveInfo info)
 specifier|public
 name|long
-name|addPathBasedCacheDirective
+name|addCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveInfo
+name|info
 parameter_list|)
 throws|throws
 name|IOException
@@ -7603,7 +7619,7 @@ name|Preconditions
 operator|.
 name|checkNotNull
 argument_list|(
-name|directive
+name|info
 operator|.
 name|getPath
 argument_list|()
@@ -7619,7 +7635,7 @@ name|getPathName
 argument_list|(
 name|fixRelativePart
 argument_list|(
-name|directive
+name|info
 operator|.
 name|getPath
 argument_list|()
@@ -7639,14 +7655,14 @@ decl_stmt|;
 return|return
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|(
-name|directive
+name|info
 argument_list|)
 operator|.
 name|setPath
@@ -7659,20 +7675,21 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|modifyPathBasedCacheDirective ( PathBasedCacheDirective directive)
+comment|/**    * Modify a CacheDirective.    *     * @param info Information about the directive to modify.    *             You must set the ID to indicate which CacheDirective you want    *             to modify.    * @throws IOException if the directive could not be modified    */
+DECL|method|modifyCacheDirective ( CacheDirectiveInfo info)
 specifier|public
 name|void
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveInfo
+name|info
 parameter_list|)
 throws|throws
 name|IOException
 block|{
 if|if
 condition|(
-name|directive
+name|info
 operator|.
 name|getPath
 argument_list|()
@@ -7680,14 +7697,14 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|directive
+name|info
 operator|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|(
-name|directive
+name|info
 argument_list|)
 operator|.
 name|setPath
@@ -7699,7 +7716,7 @@ name|getPathName
 argument_list|(
 name|fixRelativePart
 argument_list|(
-name|directive
+name|info
 operator|.
 name|getPath
 argument_list|()
@@ -7723,17 +7740,17 @@ expr_stmt|;
 block|}
 name|dfs
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
-name|directive
+name|info
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Remove a PathBasedCacheDirective.    *     * @param id identifier of the PathBasedCacheDirective to remove    * @throws IOException if the directive could not be removed    */
-DECL|method|removePathBasedCacheDirective (long id)
+comment|/**    * Remove a CacheDirectiveInfo.    *     * @param id identifier of the CacheDirectiveInfo to remove    * @throws IOException if the directive could not be removed    */
+DECL|method|removeCacheDirective (long id)
 specifier|public
 name|void
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 parameter_list|(
 name|long
 name|id
@@ -7743,22 +7760,22 @@ name|IOException
 block|{
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param filter Filter parameters to use when listing the directives, null to    *               list all directives visible to us.    * @return A RemoteIterator which returns PathBasedCacheDirective objects.    */
-DECL|method|listPathBasedCacheDirectives ( PathBasedCacheDirective filter)
+comment|/**    * List cache directives.  Incrementally fetches results from the server.    *     * @param filter Filter parameters to use when listing the directives, null to    *               list all directives visible to us.    * @return A RemoteIterator which returns CacheDirectiveInfo objects.    */
+DECL|method|listCacheDirectives ( CacheDirectiveInfo filter)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 parameter_list|)
 throws|throws
@@ -7774,7 +7791,7 @@ block|{
 name|filter
 operator|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -7796,7 +7813,7 @@ block|{
 name|filter
 operator|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|(
@@ -7828,13 +7845,13 @@ block|}
 specifier|final
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|iter
 init|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 name|filter
 argument_list|)
@@ -7843,7 +7860,7 @@ return|return
 operator|new
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 argument_list|()
 block|{
@@ -7866,7 +7883,7 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 name|next
 parameter_list|()
 throws|throws
@@ -7875,7 +7892,7 @@ block|{
 comment|// Although the paths we get back from the NameNode should always be
 comment|// absolute, we call makeQualified to add the scheme and authority of
 comment|// this DistributedFilesystem.
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 name|desc
 init|=
 name|iter
@@ -7883,10 +7900,18 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|CacheDirectiveInfo
+name|info
+init|=
+name|desc
+operator|.
+name|getInfo
+argument_list|()
+decl_stmt|;
 name|Path
 name|p
 init|=
-name|desc
+name|info
 operator|.
 name|getPath
 argument_list|()
@@ -7902,11 +7927,14 @@ argument_list|)
 decl_stmt|;
 return|return
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
+argument_list|(
+operator|new
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|(
-name|desc
+name|info
 argument_list|)
 operator|.
 name|setPath
@@ -7916,6 +7944,12 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|desc
+operator|.
+name|getStats
+argument_list|()
+argument_list|)
 return|;
 block|}
 block|}

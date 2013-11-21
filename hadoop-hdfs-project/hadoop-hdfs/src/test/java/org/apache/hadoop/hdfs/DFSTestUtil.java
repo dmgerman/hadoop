@@ -5797,10 +5797,10 @@ name|id
 init|=
 name|filesystem
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5834,10 +5834,10 @@ decl_stmt|;
 comment|// OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
 name|filesystem
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5862,7 +5862,7 @@ expr_stmt|;
 comment|// OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
 name|filesystem
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)

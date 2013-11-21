@@ -202,16 +202,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|nio
-operator|.
-name|ByteBuffer
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|security
 operator|.
 name|PrivilegedExceptionAction
@@ -496,6 +486,38 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CacheDirectiveStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -512,7 +534,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -783,10 +805,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestPathBasedCacheRequests
+DECL|class|TestCacheDirectives
 specifier|public
 class|class
-name|TestPathBasedCacheRequests
+name|TestCacheDirectives
 block|{
 DECL|field|LOG
 specifier|static
@@ -798,7 +820,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|TestPathBasedCacheRequests
+name|TestCacheDirectives
 operator|.
 name|class
 argument_list|)
@@ -2022,7 +2044,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|validateListAll ( RemoteIterator<PathBasedCacheDirective> iter, Long... ids)
+DECL|method|validateListAll ( RemoteIterator<CacheDirectiveEntry> iter, Long... ids)
 specifier|private
 specifier|static
 name|void
@@ -2030,7 +2052,7 @@ name|validateListAll
 parameter_list|(
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|iter
 parameter_list|,
@@ -2070,6 +2092,9 @@ operator|.
 name|next
 argument_list|()
 operator|.
+name|getInfo
+argument_list|()
+operator|.
 name|getId
 argument_list|()
 argument_list|)
@@ -2086,14 +2111,14 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addAsUnprivileged ( final PathBasedCacheDirective directive)
+DECL|method|addAsUnprivileged ( final CacheDirectiveInfo directive)
 specifier|private
 specifier|static
 name|long
 name|addAsUnprivileged
 parameter_list|(
 specifier|final
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
@@ -2136,7 +2161,7 @@ decl_stmt|;
 return|return
 name|myDfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 name|directive
 argument_list|)
@@ -2253,11 +2278,11 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|alpha
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2279,11 +2304,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|beta
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2305,11 +2330,11 @@ operator|.
 name|build
 argument_list|()
 decl_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|delta
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2351,7 +2376,7 @@ name|assertFalse
 argument_list|(
 literal|"Expected to get unique directives when re-adding an "
 operator|+
-literal|"existing PathBasedCacheDirective"
+literal|"existing CacheDirectiveInfo"
 argument_list|,
 name|alphaId
 operator|==
@@ -2371,7 +2396,7 @@ block|{
 name|addAsUnprivileged
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2421,7 +2446,7 @@ block|{
 name|addAsUnprivileged
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2473,7 +2498,7 @@ block|{
 name|addAsUnprivileged
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2525,7 +2550,7 @@ block|{
 name|addAsUnprivileged
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2558,7 +2583,7 @@ argument_list|)
 expr_stmt|;
 name|fail
 argument_list|(
-literal|"expected an error when adding a PathBasedCache "
+literal|"expected an error when adding a cache "
 operator|+
 literal|"directive with an empty pool name."
 argument_list|)
@@ -2596,7 +2621,7 @@ init|=
 name|addAsUnprivileged
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2621,7 +2646,7 @@ argument_list|)
 decl_stmt|;
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|iter
 decl_stmt|;
@@ -2629,7 +2654,7 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 literal|null
 argument_list|)
@@ -2653,10 +2678,10 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2682,10 +2707,10 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2716,10 +2741,10 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2742,7 +2767,7 @@ argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|betaId
 argument_list|)
@@ -2751,10 +2776,10 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2780,7 +2805,7 @@ try|try
 block|{
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|betaId
 argument_list|)
@@ -2811,7 +2836,7 @@ try|try
 block|{
 name|proto
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 operator|-
 literal|42l
@@ -2843,7 +2868,7 @@ try|try
 block|{
 name|proto
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 literal|43l
 argument_list|)
@@ -2872,31 +2897,31 @@ expr_stmt|;
 block|}
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|alphaId
 argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|alphaId2
 argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|deltaId
 argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2922,7 +2947,7 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 literal|null
 argument_list|)
@@ -2935,12 +2960,15 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|modified
 init|=
 name|iter
 operator|.
 name|next
+argument_list|()
+operator|.
+name|getInfo
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -2974,7 +3002,7 @@ argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|relativeId
 argument_list|)
@@ -2983,7 +3011,7 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 literal|null
 argument_list|)
@@ -2997,11 +3025,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Verify that PBCDs with path "." work correctly
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -3028,17 +3056,17 @@ name|id
 init|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 name|directive
 argument_list|)
 decl_stmt|;
 name|dfs
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|(
@@ -3064,7 +3092,7 @@ argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)
@@ -3304,10 +3332,10 @@ name|prevId
 operator|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -3335,13 +3363,13 @@ expr_stmt|;
 block|}
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|dit
 init|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 literal|null
 argument_list|)
@@ -3373,12 +3401,15 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|cd
 init|=
 name|dit
 operator|.
 name|next
+argument_list|()
+operator|.
+name|getInfo
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -3533,7 +3564,7 @@ name|dit
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 literal|null
 argument_list|)
@@ -3565,12 +3596,15 @@ name|hasNext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|cd
 init|=
 name|dit
 operator|.
 name|next
+argument_list|()
+operator|.
+name|getInfo
 argument_list|()
 decl_stmt|;
 name|assertEquals
@@ -3632,10 +3666,10 @@ name|nextId
 init|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -4427,11 +4461,11 @@ name|i
 operator|++
 control|)
 block|{
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -4460,7 +4494,7 @@ argument_list|()
 decl_stmt|;
 name|nnRpc
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 name|directive
 argument_list|)
@@ -4484,13 +4518,13 @@ block|}
 comment|// Uncache and check each path in sequence
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|entries
 init|=
 name|nnRpc
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 literal|0
 argument_list|,
@@ -4512,8 +4546,8 @@ name|i
 operator|++
 control|)
 block|{
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveEntry
+name|entry
 init|=
 name|entries
 operator|.
@@ -4522,9 +4556,12 @@ argument_list|()
 decl_stmt|;
 name|nnRpc
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
-name|directive
+name|entry
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getId
 argument_list|()
@@ -4563,10 +4600,10 @@ name|timeout
 operator|=
 literal|120000
 argument_list|)
-DECL|method|testAddingPathBasedCacheDirectivesWhenCachingIsDisabled ()
+DECL|method|testAddingCacheDirectiveInfosWhenCachingIsDisabled ()
 specifier|public
 name|void
-name|testAddingPathBasedCacheDirectivesWhenCachingIsDisabled
+name|testAddingCacheDirectiveInfosWhenCachingIsDisabled
 parameter_list|()
 throws|throws
 name|Exception
@@ -4742,7 +4779,7 @@ literal|0
 argument_list|,
 literal|0
 argument_list|,
-literal|"testAddingPathBasedCacheDirectivesWhenCachingIsDisabled:0"
+literal|"testAddingCacheDirectiveInfosWhenCachingIsDisabled:0"
 argument_list|)
 expr_stmt|;
 comment|// Cache and check each path in sequence
@@ -4766,11 +4803,11 @@ name|i
 operator|++
 control|)
 block|{
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -4799,7 +4836,7 @@ argument_list|()
 decl_stmt|;
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 name|directive
 argument_list|)
@@ -4812,7 +4849,7 @@ name|expected
 argument_list|,
 literal|0
 argument_list|,
-literal|"testAddingPathBasedCacheDirectivesWhenCachingIsDisabled:1"
+literal|"testAddingCacheDirectiveInfosWhenCachingIsDisabled:1"
 argument_list|)
 expr_stmt|;
 block|}
@@ -4831,7 +4868,7 @@ name|expected
 argument_list|,
 literal|0
 argument_list|,
-literal|"testAddingPathBasedCacheDirectivesWhenCachingIsDisabled:2"
+literal|"testAddingCacheDirectiveInfosWhenCachingIsDisabled:2"
 argument_list|)
 expr_stmt|;
 block|}
@@ -5071,10 +5108,10 @@ name|id
 init|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5119,16 +5156,16 @@ expr_stmt|;
 comment|// Verify that listDirectives gives the stats we want.
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|iter
 init|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5146,12 +5183,20 @@ name|build
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveEntry
+name|entry
 init|=
 name|iter
 operator|.
 name|next
+argument_list|()
+decl_stmt|;
+name|CacheDirectiveStats
+name|stats
+init|=
+name|entry
+operator|.
+name|getStats
 argument_list|()
 decl_stmt|;
 name|Assert
@@ -5165,7 +5210,7 @@ argument_list|(
 literal|2
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getFilesAffected
 argument_list|()
@@ -5188,7 +5233,7 @@ operator|*
 literal|2
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getBytesNeeded
 argument_list|()
@@ -5211,7 +5256,7 @@ operator|*
 literal|2
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getBytesCached
 argument_list|()
@@ -5222,10 +5267,10 @@ name|id2
 init|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5273,10 +5318,10 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5294,11 +5339,18 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|directive
+name|entry
 operator|=
 name|iter
 operator|.
 name|next
+argument_list|()
+expr_stmt|;
+name|stats
+operator|=
+name|entry
+operator|.
+name|getStats
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -5312,7 +5364,7 @@ argument_list|(
 literal|2
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getFilesAffected
 argument_list|()
@@ -5335,7 +5387,7 @@ operator|*
 literal|2
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getBytesNeeded
 argument_list|()
@@ -5358,7 +5410,7 @@ operator|*
 literal|2
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getBytesCached
 argument_list|()
@@ -5369,10 +5421,10 @@ name|iter
 operator|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5390,11 +5442,18 @@ name|build
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|directive
+name|entry
 operator|=
 name|iter
 operator|.
 name|next
+argument_list|()
+expr_stmt|;
+name|stats
+operator|=
+name|entry
+operator|.
+name|getStats
 argument_list|()
 expr_stmt|;
 name|Assert
@@ -5408,7 +5467,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getFilesAffected
 argument_list|()
@@ -5429,7 +5488,7 @@ operator|*
 name|BLOCK_SIZE
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getBytesNeeded
 argument_list|()
@@ -5451,7 +5510,7 @@ operator|*
 name|BLOCK_SIZE
 argument_list|)
 argument_list|,
-name|directive
+name|stats
 operator|.
 name|getBytesCached
 argument_list|()
@@ -5460,14 +5519,14 @@ expr_stmt|;
 comment|// remove and watch numCached go to 0
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id2
 argument_list|)
@@ -5732,10 +5791,10 @@ name|id
 init|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5806,10 +5865,10 @@ control|)
 block|{
 name|dfs
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5876,10 +5935,10 @@ control|)
 block|{
 name|dfs
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -5931,7 +5990,7 @@ block|}
 comment|// remove and watch numCached go to 0
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)

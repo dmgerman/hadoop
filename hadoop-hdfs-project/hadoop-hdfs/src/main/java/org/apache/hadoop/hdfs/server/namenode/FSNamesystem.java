@@ -1894,7 +1894,23 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -32752,11 +32768,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective directive)
+DECL|method|addCacheDirective ( CacheDirectiveInfo directive)
 name|long
-name|addPathBasedCacheDirective
+name|addCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
@@ -32846,7 +32862,7 @@ throw|throw
 operator|new
 name|SafeModeException
 argument_list|(
-literal|"Cannot add PathBasedCache directive"
+literal|"Cannot add cache directive"
 argument_list|,
 name|safeMode
 argument_list|)
@@ -32872,7 +32888,7 @@ literal|"for this operation."
 argument_list|)
 throw|;
 block|}
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|effectiveDirective
 init|=
 name|cacheManager
@@ -32887,7 +32903,7 @@ decl_stmt|;
 name|getEditLog
 argument_list|()
 operator|.
-name|logAddPathBasedCacheDirective
+name|logAddCacheDirectiveInfo
 argument_list|(
 name|effectiveDirective
 argument_list|,
@@ -32938,7 +32954,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"addPathBasedCacheDirective"
+literal|"addCacheDirective"
 argument_list|,
 literal|null
 argument_list|,
@@ -32964,11 +32980,11 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|modifyPathBasedCacheDirective ( PathBasedCacheDirective directive)
+DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive)
 name|void
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
@@ -33043,7 +33059,7 @@ throw|throw
 operator|new
 name|SafeModeException
 argument_list|(
-literal|"Cannot add PathBasedCache directive"
+literal|"Cannot add cache directive"
 argument_list|,
 name|safeMode
 argument_list|)
@@ -33061,7 +33077,7 @@ expr_stmt|;
 name|getEditLog
 argument_list|()
 operator|.
-name|logModifyPathBasedCacheDirective
+name|logModifyCacheDirectiveInfo
 argument_list|(
 name|directive
 argument_list|,
@@ -33105,7 +33121,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"addPathBasedCacheDirective"
+literal|"addCacheDirective"
 argument_list|,
 literal|null
 argument_list|,
@@ -33126,9 +33142,9 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|removePathBasedCacheDirective (Long id)
+DECL|method|removeCacheDirective (Long id)
 name|void
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 parameter_list|(
 name|Long
 name|id
@@ -33205,7 +33221,7 @@ throw|throw
 operator|new
 name|SafeModeException
 argument_list|(
-literal|"Cannot remove PathBasedCache directives"
+literal|"Cannot remove cache directives"
 argument_list|,
 name|safeMode
 argument_list|)
@@ -33223,7 +33239,7 @@ expr_stmt|;
 name|getEditLog
 argument_list|()
 operator|.
-name|logRemovePathBasedCacheDirective
+name|logRemoveCacheDirectiveInfo
 argument_list|(
 name|id
 argument_list|,
@@ -33255,7 +33271,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"removePathBasedCacheDirective"
+literal|"removeCacheDirective"
 argument_list|,
 literal|null
 argument_list|,
@@ -33282,17 +33298,17 @@ name|logSync
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|listPathBasedCacheDirectives ( long startId, PathBasedCacheDirective filter)
+DECL|method|listCacheDirectives ( long startId, CacheDirectiveInfo filter)
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 parameter_list|(
 name|long
 name|startId
 parameter_list|,
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 parameter_list|)
 throws|throws
@@ -33318,7 +33334,7 @@ literal|null
 decl_stmt|;
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|results
 decl_stmt|;
@@ -33343,7 +33359,7 @@ name|results
 operator|=
 name|cacheManager
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 name|startId
 argument_list|,
@@ -33375,7 +33391,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"listPathBasedCacheDirectives"
+literal|"listCacheDirectives"
 argument_list|,
 literal|null
 argument_list|,

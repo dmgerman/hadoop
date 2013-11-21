@@ -282,7 +282,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -422,7 +422,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 import|;
 end_import
 
@@ -442,7 +442,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 import|;
 end_import
 
@@ -782,7 +782,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 import|;
 end_import
 
@@ -4537,21 +4537,21 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logAddPathBasedCacheDirective (PathBasedCacheDirective directive, boolean toLogRpcIds)
+DECL|method|logAddCacheDirectiveInfo (CacheDirectiveInfo directive, boolean toLogRpcIds)
 name|void
-name|logAddPathBasedCacheDirective
+name|logAddCacheDirectiveInfo
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|,
 name|boolean
 name|toLogRpcIds
 parameter_list|)
 block|{
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 name|op
 init|=
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 operator|.
 name|getInstance
 argument_list|(
@@ -4579,21 +4579,21 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logModifyPathBasedCacheDirective ( PathBasedCacheDirective directive, boolean toLogRpcIds)
+DECL|method|logModifyCacheDirectiveInfo ( CacheDirectiveInfo directive, boolean toLogRpcIds)
 name|void
-name|logModifyPathBasedCacheDirective
+name|logModifyCacheDirectiveInfo
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|,
 name|boolean
 name|toLogRpcIds
 parameter_list|)
 block|{
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 name|op
 init|=
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 operator|.
 name|getInstance
 argument_list|(
@@ -4621,9 +4621,9 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logRemovePathBasedCacheDirective (Long id, boolean toLogRpcIds)
+DECL|method|logRemoveCacheDirectiveInfo (Long id, boolean toLogRpcIds)
 name|void
-name|logRemovePathBasedCacheDirective
+name|logRemoveCacheDirectiveInfo
 parameter_list|(
 name|Long
 name|id
@@ -4632,10 +4632,10 @@ name|boolean
 name|toLogRpcIds
 parameter_list|)
 block|{
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 name|op
 init|=
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 operator|.
 name|getInstance
 argument_list|(

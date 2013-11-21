@@ -103,11 +103,11 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Private
-DECL|class|PathBasedCacheEntry
+DECL|class|CacheDirective
 specifier|public
 specifier|final
 class|class
-name|PathBasedCacheEntry
+name|CacheDirective
 block|{
 DECL|field|entryId
 specifier|private
@@ -148,9 +148,9 @@ specifier|private
 name|long
 name|filesAffected
 decl_stmt|;
-DECL|method|PathBasedCacheEntry (long entryId, String path, short replication, CachePool pool)
+DECL|method|CacheDirective (long entryId, String path, short replication, CachePool pool)
 specifier|public
-name|PathBasedCacheEntry
+name|CacheDirective
 parameter_list|(
 name|long
 name|entryId
@@ -282,13 +282,13 @@ return|;
 block|}
 DECL|method|toDirective ()
 specifier|public
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|toDirective
 parameter_list|()
 block|{
 return|return
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -320,6 +320,23 @@ name|getPoolName
 argument_list|()
 argument_list|)
 operator|.
+name|build
+argument_list|()
+return|;
+block|}
+DECL|method|toStats ()
+specifier|public
+name|CacheDirectiveStats
+name|toStats
+parameter_list|()
+block|{
+return|return
+operator|new
+name|CacheDirectiveStats
+operator|.
+name|Builder
+argument_list|()
+operator|.
 name|setBytesNeeded
 argument_list|(
 name|bytesNeeded
@@ -337,6 +354,24 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+return|;
+block|}
+DECL|method|toEntry ()
+specifier|public
+name|CacheDirectiveEntry
+name|toEntry
+parameter_list|()
+block|{
+return|return
+operator|new
+name|CacheDirectiveEntry
+argument_list|(
+name|toDirective
+argument_list|()
+argument_list|,
+name|toStats
+argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@
@@ -488,11 +523,11 @@ return|return
 literal|false
 return|;
 block|}
-name|PathBasedCacheEntry
+name|CacheDirective
 name|other
 init|=
 operator|(
-name|PathBasedCacheEntry
+name|CacheDirective
 operator|)
 name|o
 decl_stmt|;

@@ -105,12 +105,12 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Public
-DECL|class|PathBasedCacheDirective
+DECL|class|CacheDirectiveInfo
 specifier|public
 class|class
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 block|{
-comment|/**    * A builder for creating new PathBasedCacheDirective instances.    */
+comment|/**    * A builder for creating new CacheDirectiveInfo instances.    */
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -137,31 +137,16 @@ specifier|private
 name|String
 name|pool
 decl_stmt|;
-DECL|field|bytesNeeded
-specifier|private
-name|Long
-name|bytesNeeded
-decl_stmt|;
-DECL|field|bytesCached
-specifier|private
-name|Long
-name|bytesCached
-decl_stmt|;
-DECL|field|filesAffected
-specifier|private
-name|Long
-name|filesAffected
-decl_stmt|;
-comment|/**      * Builds a new PathBasedCacheDirective populated with the set properties.      *       * @return New PathBasedCacheDirective.      */
+comment|/**      * Builds a new CacheDirectiveInfo populated with the set properties.      *       * @return New CacheDirectiveInfo.      */
 DECL|method|build ()
 specifier|public
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|build
 parameter_list|()
 block|{
 return|return
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 argument_list|(
 name|id
 argument_list|,
@@ -170,12 +155,6 @@ argument_list|,
 name|replication
 argument_list|,
 name|pool
-argument_list|,
-name|bytesNeeded
-argument_list|,
-name|bytesCached
-argument_list|,
-name|filesAffected
 argument_list|)
 return|;
 block|}
@@ -185,12 +164,12 @@ specifier|public
 name|Builder
 parameter_list|()
 block|{     }
-comment|/**      * Creates a builder with all elements set to the same values as the      * given PathBasedCacheDirective.      */
-DECL|method|Builder (PathBasedCacheDirective directive)
+comment|/**      * Creates a builder with all elements set to the same values as the      * given CacheDirectiveInfo.      */
+DECL|method|Builder (CacheDirectiveInfo directive)
 specifier|public
 name|Builder
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 block|{
@@ -229,30 +208,6 @@ name|directive
 operator|.
 name|getPool
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|bytesNeeded
-operator|=
-name|directive
-operator|.
-name|bytesNeeded
-expr_stmt|;
-name|this
-operator|.
-name|bytesCached
-operator|=
-name|directive
-operator|.
-name|bytesCached
-expr_stmt|;
-name|this
-operator|.
-name|filesAffected
-operator|=
-name|directive
-operator|.
-name|filesAffected
 expr_stmt|;
 block|}
 comment|/**      * Sets the id used in this request.      *       * @param id The id used in this request.      * @return This builder, for call chaining.      */
@@ -315,66 +270,6 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the bytes needed by this directive.      *       * @param bytesNeeded The bytes needed.      * @return This builder, for call chaining.      */
-DECL|method|setBytesNeeded (Long bytesNeeded)
-specifier|public
-name|Builder
-name|setBytesNeeded
-parameter_list|(
-name|Long
-name|bytesNeeded
-parameter_list|)
-block|{
-name|this
-operator|.
-name|bytesNeeded
-operator|=
-name|bytesNeeded
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-comment|/**      * Sets the bytes cached by this directive.      *       * @param bytesCached The bytes cached.      * @return This builder, for call chaining.      */
-DECL|method|setBytesCached (Long bytesCached)
-specifier|public
-name|Builder
-name|setBytesCached
-parameter_list|(
-name|Long
-name|bytesCached
-parameter_list|)
-block|{
-name|this
-operator|.
-name|bytesCached
-operator|=
-name|bytesCached
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-comment|/**      * Sets the files affected by this directive.      *       * @param filesAffected The files affected.      * @return This builder, for call chaining.      */
-DECL|method|setFilesAffected (Long filesAffected)
-specifier|public
-name|Builder
-name|setFilesAffected
-parameter_list|(
-name|Long
-name|filesAffected
-parameter_list|)
-block|{
-name|this
-operator|.
-name|filesAffected
-operator|=
-name|filesAffected
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
 comment|/**      * Sets the pool used in this request.      *       * @param pool The pool used in this request.      * @return This builder, for call chaining.      */
 DECL|method|setPool (String pool)
 specifier|public
@@ -420,26 +315,8 @@ specifier|final
 name|String
 name|pool
 decl_stmt|;
-DECL|field|bytesNeeded
-specifier|private
-specifier|final
-name|Long
-name|bytesNeeded
-decl_stmt|;
-DECL|field|bytesCached
-specifier|private
-specifier|final
-name|Long
-name|bytesCached
-decl_stmt|;
-DECL|field|filesAffected
-specifier|private
-specifier|final
-name|Long
-name|filesAffected
-decl_stmt|;
-DECL|method|PathBasedCacheDirective (Long id, Path path, Short replication, String pool, Long bytesNeeded, Long bytesCached, Long filesAffected)
-name|PathBasedCacheDirective
+DECL|method|CacheDirectiveInfo (Long id, Path path, Short replication, String pool)
+name|CacheDirectiveInfo
 parameter_list|(
 name|Long
 name|id
@@ -452,15 +329,6 @@ name|replication
 parameter_list|,
 name|String
 name|pool
-parameter_list|,
-name|Long
-name|bytesNeeded
-parameter_list|,
-name|Long
-name|bytesCached
-parameter_list|,
-name|Long
-name|filesAffected
 parameter_list|)
 block|{
 name|this
@@ -486,24 +354,6 @@ operator|.
 name|pool
 operator|=
 name|pool
-expr_stmt|;
-name|this
-operator|.
-name|bytesNeeded
-operator|=
-name|bytesNeeded
-expr_stmt|;
-name|this
-operator|.
-name|bytesCached
-operator|=
-name|bytesCached
-expr_stmt|;
-name|this
-operator|.
-name|filesAffected
-operator|=
-name|filesAffected
 expr_stmt|;
 block|}
 comment|/**    * @return The ID of this directive.    */
@@ -550,39 +400,6 @@ return|return
 name|pool
 return|;
 block|}
-comment|/**    * @return The bytes needed.    */
-DECL|method|getBytesNeeded ()
-specifier|public
-name|Long
-name|getBytesNeeded
-parameter_list|()
-block|{
-return|return
-name|bytesNeeded
-return|;
-block|}
-comment|/**    * @return The bytes cached.    */
-DECL|method|getBytesCached ()
-specifier|public
-name|Long
-name|getBytesCached
-parameter_list|()
-block|{
-return|return
-name|bytesCached
-return|;
-block|}
-comment|/**    * @return The files affected.    */
-DECL|method|getFilesAffected ()
-specifier|public
-name|Long
-name|getFilesAffected
-parameter_list|()
-block|{
-return|return
-name|filesAffected
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|equals (Object o)
@@ -620,11 +437,11 @@ return|return
 literal|false
 return|;
 block|}
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|other
 init|=
 operator|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|)
 name|o
 decl_stmt|;
@@ -854,93 +671,6 @@ operator|.
 name|append
 argument_list|(
 name|pool
-argument_list|)
-expr_stmt|;
-name|prefix
-operator|=
-literal|","
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|bytesNeeded
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|append
-argument_list|(
-name|prefix
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"bytesNeeded: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|bytesNeeded
-argument_list|)
-expr_stmt|;
-name|prefix
-operator|=
-literal|","
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|bytesCached
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|append
-argument_list|(
-name|prefix
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"bytesCached: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|bytesCached
-argument_list|)
-expr_stmt|;
-name|prefix
-operator|=
-literal|","
-expr_stmt|;
-block|}
-if|if
-condition|(
-name|filesAffected
-operator|!=
-literal|null
-condition|)
-block|{
-name|builder
-operator|.
-name|append
-argument_list|(
-name|prefix
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"filesAffected: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|filesAffected
 argument_list|)
 expr_stmt|;
 name|prefix
