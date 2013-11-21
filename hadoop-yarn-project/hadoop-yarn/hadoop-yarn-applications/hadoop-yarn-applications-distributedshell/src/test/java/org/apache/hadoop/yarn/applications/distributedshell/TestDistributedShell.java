@@ -1104,7 +1104,7 @@ literal|"2"
 block|,
 literal|"--shell_command"
 block|,
-literal|"echo HADOOP YARN MAPREDUCE|wc -w"
+literal|"\"echo output_ignored;echo output_expected\""
 block|,
 literal|"--master_memory"
 block|,
@@ -1205,7 +1205,7 @@ name|expectedContent
 operator|.
 name|add
 argument_list|(
-literal|"3"
+literal|"output_expected"
 argument_list|)
 expr_stmt|;
 name|verifyContainerLog
@@ -1213,6 +1213,10 @@ argument_list|(
 literal|2
 argument_list|,
 name|expectedContent
+argument_list|,
+literal|false
+argument_list|,
+literal|""
 argument_list|)
 expr_stmt|;
 block|}
@@ -1904,9 +1908,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|verifyContainerLog (int containerNum, List<String> expectedContent, boolean count, String expectedWord)
 specifier|private
-name|void
-DECL|method|verifyContainerLog (int containerNum, List<String> expectedContent)
+name|int
 name|verifyContainerLog
 parameter_list|(
 name|int
@@ -1917,6 +1921,12 @@ argument_list|<
 name|String
 argument_list|>
 name|expectedContent
+parameter_list|,
+name|boolean
+name|count
+parameter_list|,
+name|String
+name|expectedWord
 parameter_list|)
 block|{
 name|File
@@ -2027,6 +2037,11 @@ operator|.
 name|listFiles
 argument_list|()
 decl_stmt|;
+name|int
+name|numOfWords
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -2068,7 +2083,7 @@ operator|.
 name|trim
 argument_list|()
 operator|.
-name|equalsIgnoreCase
+name|contains
 argument_list|(
 literal|"stdout"
 argument_list|)
@@ -2115,6 +2130,43 @@ operator|!=
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|count
+condition|)
+block|{
+if|if
+condition|(
+name|sCurrentLine
+operator|.
+name|contains
+argument_list|(
+name|expectedWord
+argument_list|)
+condition|)
+block|{
+name|numOfWords
+operator|++
+expr_stmt|;
+block|}
+block|}
+elseif|else
+if|if
+condition|(
+name|output
+operator|.
+name|getName
+argument_list|()
+operator|.
+name|trim
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+literal|"stdout"
+argument_list|)
+condition|)
+block|{
 name|Assert
 operator|.
 name|assertEquals
@@ -2139,6 +2191,7 @@ expr_stmt|;
 name|numOfline
 operator|++
 expr_stmt|;
+block|}
 block|}
 block|}
 catch|catch
@@ -2185,6 +2238,9 @@ block|}
 block|}
 block|}
 block|}
+return|return
+name|numOfWords
+return|;
 block|}
 block|}
 end_class
