@@ -642,6 +642,10 @@ argument_list|(
 name|ugi
 argument_list|,
 name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 expr_stmt|;
 name|defaultWorkingDirectory

@@ -1146,33 +1146,18 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getNsQuota ()
+DECL|method|getQuotaCounts ()
 specifier|public
-specifier|final
-name|long
-name|getNsQuota
+name|Quota
+operator|.
+name|Counts
+name|getQuotaCounts
 parameter_list|()
 block|{
 return|return
 name|referred
 operator|.
-name|getNsQuota
-argument_list|()
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|getDsQuota ()
-specifier|public
-specifier|final
-name|long
-name|getDsQuota
-parameter_list|()
-block|{
-return|return
-name|referred
-operator|.
-name|getDsQuota
+name|getQuotaCounts
 argument_list|()
 return|;
 block|}

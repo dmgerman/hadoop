@@ -1226,7 +1226,7 @@ specifier|final
 name|boolean
 name|DFS_WEBHDFS_ENABLED_DEFAULT
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|DFS_PERMISSIONS_ENABLED_KEY
 specifier|public

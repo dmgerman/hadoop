@@ -166,6 +166,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -278,7 +294,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -450,7 +466,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|AddPathBasedCacheDirectiveRequestProto
+name|AddCacheDirectiveRequestProto
 import|;
 end_import
 
@@ -470,7 +486,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|AddPathBasedCacheDirectiveResponseProto
+name|AddCacheDirectiveResponseProto
 import|;
 end_import
 
@@ -1692,7 +1708,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ListPathBasedCacheDirectivesElementProto
+name|CacheDirectiveEntryProto
 import|;
 end_import
 
@@ -1712,7 +1728,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ListPathBasedCacheDirectivesRequestProto
+name|ListCacheDirectivesRequestProto
 import|;
 end_import
 
@@ -1732,7 +1748,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ListPathBasedCacheDirectivesResponseProto
+name|ListCacheDirectivesResponseProto
 import|;
 end_import
 
@@ -1872,7 +1888,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ModifyPathBasedCacheDirectiveRequestProto
+name|ModifyCacheDirectiveRequestProto
 import|;
 end_import
 
@@ -1892,7 +1908,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|ModifyPathBasedCacheDirectiveResponseProto
+name|ModifyCacheDirectiveResponseProto
 import|;
 end_import
 
@@ -2032,7 +2048,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|RemovePathBasedCacheDirectiveRequestProto
+name|RemoveCacheDirectiveRequestProto
 import|;
 end_import
 
@@ -2052,7 +2068,7 @@ name|proto
 operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
-name|RemovePathBasedCacheDirectiveResponseProto
+name|RemoveCacheDirectiveResponseProto
 import|;
 end_import
 
@@ -7389,15 +7405,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|addPathBasedCacheDirective ( RpcController controller, AddPathBasedCacheDirectiveRequestProto request)
+DECL|method|addCacheDirective ( RpcController controller, AddCacheDirectiveRequestProto request)
 specifier|public
-name|AddPathBasedCacheDirectiveResponseProto
-name|addPathBasedCacheDirective
+name|AddCacheDirectiveResponseProto
+name|addCacheDirective
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|AddPathBasedCacheDirectiveRequestProto
+name|AddCacheDirectiveRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -7406,7 +7422,7 @@ block|{
 try|try
 block|{
 return|return
-name|AddPathBasedCacheDirectiveResponseProto
+name|AddCacheDirectiveResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -7415,7 +7431,7 @@ name|setId
 argument_list|(
 name|server
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 name|PBHelper
 operator|.
@@ -7450,15 +7466,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|modifyPathBasedCacheDirective ( RpcController controller, ModifyPathBasedCacheDirectiveRequestProto request)
+DECL|method|modifyCacheDirective ( RpcController controller, ModifyCacheDirectiveRequestProto request)
 specifier|public
-name|ModifyPathBasedCacheDirectiveResponseProto
-name|modifyPathBasedCacheDirective
+name|ModifyCacheDirectiveResponseProto
+name|modifyCacheDirective
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|ModifyPathBasedCacheDirectiveRequestProto
+name|ModifyCacheDirectiveRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -7468,7 +7484,7 @@ try|try
 block|{
 name|server
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 name|PBHelper
 operator|.
@@ -7482,7 +7498,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|ModifyPathBasedCacheDirectiveResponseProto
+name|ModifyCacheDirectiveResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -7509,14 +7525,14 @@ block|}
 annotation|@
 name|Override
 specifier|public
-name|RemovePathBasedCacheDirectiveResponseProto
-DECL|method|removePathBasedCacheDirective (RpcController controller, RemovePathBasedCacheDirectiveRequestProto request)
-name|removePathBasedCacheDirective
+name|RemoveCacheDirectiveResponseProto
+DECL|method|removeCacheDirective (RpcController controller, RemoveCacheDirectiveRequestProto request)
+name|removeCacheDirective
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|RemovePathBasedCacheDirectiveRequestProto
+name|RemoveCacheDirectiveRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -7526,7 +7542,7 @@ try|try
 block|{
 name|server
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|request
 operator|.
@@ -7535,7 +7551,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 return|return
-name|RemovePathBasedCacheDirectiveResponseProto
+name|RemoveCacheDirectiveResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -7561,15 +7577,15 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|listPathBasedCacheDirectives ( RpcController controller, ListPathBasedCacheDirectivesRequestProto request)
+DECL|method|listCacheDirectives ( RpcController controller, ListCacheDirectivesRequestProto request)
 specifier|public
-name|ListPathBasedCacheDirectivesResponseProto
-name|listPathBasedCacheDirectives
+name|ListCacheDirectivesResponseProto
+name|listCacheDirectives
 parameter_list|(
 name|RpcController
 name|controller
 parameter_list|,
-name|ListPathBasedCacheDirectivesRequestProto
+name|ListCacheDirectivesRequestProto
 name|request
 parameter_list|)
 throws|throws
@@ -7577,7 +7593,7 @@ name|ServiceException
 block|{
 try|try
 block|{
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 init|=
 name|PBHelper
@@ -7592,13 +7608,13 @@ argument_list|)
 decl_stmt|;
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|iter
 init|=
 name|server
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 name|request
 operator|.
@@ -7608,12 +7624,12 @@ argument_list|,
 name|filter
 argument_list|)
 decl_stmt|;
-name|ListPathBasedCacheDirectivesResponseProto
+name|ListCacheDirectivesResponseProto
 operator|.
 name|Builder
 name|builder
 init|=
-name|ListPathBasedCacheDirectivesResponseProto
+name|ListCacheDirectivesResponseProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -7631,8 +7647,8 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveEntry
+name|entry
 init|=
 name|iter
 operator|.
@@ -7643,25 +7659,20 @@ name|builder
 operator|.
 name|addElements
 argument_list|(
-name|ListPathBasedCacheDirectivesElementProto
-operator|.
-name|newBuilder
-argument_list|()
-operator|.
-name|setInfo
-argument_list|(
 name|PBHelper
 operator|.
 name|convert
 argument_list|(
-name|directive
-argument_list|)
+name|entry
 argument_list|)
 argument_list|)
 expr_stmt|;
 name|prevId
 operator|=
-name|directive
+name|entry
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getId
 argument_list|()
@@ -7688,7 +7699,7 @@ name|iter
 operator|=
 name|server
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 name|prevId
 argument_list|,

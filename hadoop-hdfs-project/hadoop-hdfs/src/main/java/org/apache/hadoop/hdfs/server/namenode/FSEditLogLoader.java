@@ -262,7 +262,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -376,7 +376,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 import|;
 end_import
 
@@ -656,7 +656,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 import|;
 end_import
 
@@ -716,7 +716,7 @@ name|namenode
 operator|.
 name|FSEditLogOp
 operator|.
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 import|;
 end_import
 
@@ -4074,15 +4074,15 @@ case|case
 name|OP_ADD_PATH_BASED_CACHE_DIRECTIVE
 case|:
 block|{
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 name|addOp
 init|=
 operator|(
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 operator|)
 name|op
 decl_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|result
 init|=
 name|fsNamesys
@@ -4134,11 +4134,11 @@ case|case
 name|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
 case|:
 block|{
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 name|modifyOp
 init|=
 operator|(
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 operator|)
 name|op
 decl_stmt|;
@@ -4181,11 +4181,11 @@ case|case
 name|OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
 case|:
 block|{
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 name|removeOp
 init|=
 operator|(
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 operator|)
 name|op
 decl_stmt|;

@@ -1057,6 +1057,10 @@ argument_list|(
 name|userGroupInfo
 argument_list|,
 name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 decl_stmt|;
 name|InputStream
@@ -1163,6 +1167,10 @@ argument_list|(
 name|userGroupInfo
 argument_list|,
 name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 decl_stmt|;
 name|FileStatus
@@ -1370,6 +1378,10 @@ argument_list|(
 name|userGroupInfo
 argument_list|,
 name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
 argument_list|)
 decl_stmt|;
 name|InputStream

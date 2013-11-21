@@ -1256,6 +1256,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -1400,7 +1416,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -10551,13 +10567,13 @@ argument_list|()
 throw|;
 block|}
 block|}
-DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective directive)
+DECL|method|addCacheDirective ( CacheDirectiveInfo info)
 specifier|public
 name|long
-name|addPathBasedCacheDirective
+name|addCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveInfo
+name|info
 parameter_list|)
 throws|throws
 name|IOException
@@ -10570,9 +10586,9 @@ block|{
 return|return
 name|namenode
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
-name|directive
+name|info
 argument_list|)
 return|;
 block|}
@@ -10590,13 +10606,13 @@ argument_list|()
 throw|;
 block|}
 block|}
-DECL|method|modifyPathBasedCacheDirective ( PathBasedCacheDirective directive)
+DECL|method|modifyCacheDirective ( CacheDirectiveInfo info)
 specifier|public
 name|void
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveInfo
+name|info
 parameter_list|)
 throws|throws
 name|IOException
@@ -10608,9 +10624,9 @@ try|try
 block|{
 name|namenode
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
-name|directive
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -10628,10 +10644,10 @@ argument_list|()
 throw|;
 block|}
 block|}
-DECL|method|removePathBasedCacheDirective (long id)
+DECL|method|removeCacheDirective (long id)
 specifier|public
 name|void
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 parameter_list|(
 name|long
 name|id
@@ -10646,7 +10662,7 @@ try|try
 block|{
 name|namenode
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)
@@ -10666,15 +10682,15 @@ argument_list|()
 throw|;
 block|}
 block|}
-DECL|method|listPathBasedCacheDirectives ( PathBasedCacheDirective filter)
+DECL|method|listCacheDirectives ( CacheDirectiveInfo filter)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 parameter_list|)
 throws|throws
@@ -10688,7 +10704,7 @@ block|{
 return|return
 name|namenode
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 literal|0
 argument_list|,

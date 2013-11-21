@@ -1059,8 +1059,10 @@ name|attempt
 init|=
 name|app
 operator|.
-name|getCurrentAppAttempt
-argument_list|()
+name|getRMAppAttempt
+argument_list|(
+name|attemptId
+argument_list|)
 decl_stmt|;
 name|int
 name|timeoutSecs

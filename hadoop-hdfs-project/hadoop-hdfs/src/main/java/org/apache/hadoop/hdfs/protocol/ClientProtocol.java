@@ -1735,41 +1735,41 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Add a PathBasedCache entry to the CacheManager.    *     * @param directive A PathBasedCacheDirective to be added    * @return A PathBasedCacheDirective associated with the added directive    * @throws IOException if the directive could not be added    */
+comment|/**    * Add a CacheDirective to the CacheManager.    *     * @param directive A CacheDirectiveInfo to be added    * @return A CacheDirectiveInfo associated with the added directive    * @throws IOException if the directive could not be added    */
 annotation|@
 name|AtMostOnce
-DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective directive)
+DECL|method|addCacheDirective ( CacheDirectiveInfo directive)
 specifier|public
 name|long
-name|addPathBasedCacheDirective
+name|addCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Modify a PathBasedCache entry in the CacheManager.    *     * @return directive The directive to modify.  Must contain     *                   a directive ID.    * @throws IOException if the directive could not be modified    */
+comment|/**    * Modify a CacheDirective in the CacheManager.    *     * @return directive The directive to modify.  Must contain     *                   a directive ID.    * @throws IOException if the directive could not be modified    */
 annotation|@
 name|AtMostOnce
-DECL|method|modifyPathBasedCacheDirective ( PathBasedCacheDirective directive)
+DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive)
 specifier|public
 name|void
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Remove a PathBasedCacheDirective from the CacheManager.    *     * @param id of a PathBasedCacheDirective    * @throws IOException if the cache directive could not be removed    */
+comment|/**    * Remove a CacheDirectiveInfo from the CacheManager.    *     * @param id of a CacheDirectiveInfo    * @throws IOException if the cache directive could not be removed    */
 annotation|@
 name|AtMostOnce
-DECL|method|removePathBasedCacheDirective (long id)
+DECL|method|removeCacheDirective (long id)
 specifier|public
 name|void
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 parameter_list|(
 name|long
 name|id
@@ -1777,21 +1777,21 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *               listPathBasedCacheDirectives.    * @param filter Parameters to use to filter the list results,     *               or null to display all directives visible to us.    * @return A RemoteIterator which returns PathBasedCacheDirective objects.    */
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *               listCacheDirectives.    * @param filter Parameters to use to filter the list results,     *               or null to display all directives visible to us.    * @return A RemoteIterator which returns CacheDirectiveInfo objects.    */
 annotation|@
 name|Idempotent
-DECL|method|listPathBasedCacheDirectives ( long prevId, PathBasedCacheDirective filter)
+DECL|method|listCacheDirectives ( long prevId, CacheDirectiveInfo filter)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 parameter_list|(
 name|long
 name|prevId
 parameter_list|,
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 parameter_list|)
 throws|throws

@@ -1176,7 +1176,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -1942,7 +1942,7 @@ argument_list|(
 name|OP_ADD_PATH_BASED_CACHE_DIRECTIVE
 argument_list|,
 operator|new
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1953,7 +1953,7 @@ argument_list|(
 name|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
 argument_list|,
 operator|new
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1964,7 +1964,7 @@ argument_list|(
 name|OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
 argument_list|,
 operator|new
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -16021,21 +16021,21 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * {@literal @AtMostOnce} for    * {@link ClientProtocol#addPathBasedCacheDirective}    */
-DECL|class|AddPathBasedCacheDirectiveOp
+comment|/**    * {@literal @AtMostOnce} for    * {@link ClientProtocol#addCacheDirective}    */
+DECL|class|AddCacheDirectiveInfoOp
 specifier|static
 class|class
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 extends|extends
 name|FSEditLogOp
 block|{
 DECL|field|directive
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 decl_stmt|;
-DECL|method|AddPathBasedCacheDirectiveOp ()
+DECL|method|AddCacheDirectiveInfoOp ()
 specifier|public
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 parameter_list|()
 block|{
 name|super
@@ -16046,7 +16046,7 @@ expr_stmt|;
 block|}
 DECL|method|getInstance (OpInstanceCache cache)
 specifier|static
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 name|getInstance
 parameter_list|(
 name|OpInstanceCache
@@ -16055,7 +16055,7 @@ parameter_list|)
 block|{
 return|return
 operator|(
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 operator|)
 name|cache
 operator|.
@@ -16065,12 +16065,12 @@ name|OP_ADD_PATH_BASED_CACHE_DIRECTIVE
 argument_list|)
 return|;
 block|}
-DECL|method|setDirective ( PathBasedCacheDirective directive)
+DECL|method|setDirective ( CacheDirectiveInfo directive)
 specifier|public
-name|AddPathBasedCacheDirectiveOp
+name|AddCacheDirectiveInfoOp
 name|setDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 block|{
@@ -16182,7 +16182,7 @@ decl_stmt|;
 name|directive
 operator|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -16407,7 +16407,7 @@ block|{
 name|directive
 operator|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -16494,7 +16494,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"AddPathBasedCacheDirective ["
+literal|"AddCacheDirectiveInfo ["
 argument_list|)
 expr_stmt|;
 name|builder
@@ -16581,21 +16581,21 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * {@literal @AtMostOnce} for    * {@link ClientProtocol#modifyPathBasedCacheDirective}    */
-DECL|class|ModifyPathBasedCacheDirectiveOp
+comment|/**    * {@literal @AtMostOnce} for    * {@link ClientProtocol#modifyCacheDirective}    */
+DECL|class|ModifyCacheDirectiveInfoOp
 specifier|static
 class|class
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 extends|extends
 name|FSEditLogOp
 block|{
 DECL|field|directive
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 decl_stmt|;
-DECL|method|ModifyPathBasedCacheDirectiveOp ()
+DECL|method|ModifyCacheDirectiveInfoOp ()
 specifier|public
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 parameter_list|()
 block|{
 name|super
@@ -16606,7 +16606,7 @@ expr_stmt|;
 block|}
 DECL|method|getInstance (OpInstanceCache cache)
 specifier|static
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 name|getInstance
 parameter_list|(
 name|OpInstanceCache
@@ -16615,7 +16615,7 @@ parameter_list|)
 block|{
 return|return
 operator|(
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 operator|)
 name|cache
 operator|.
@@ -16625,12 +16625,12 @@ name|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
 argument_list|)
 return|;
 block|}
-DECL|method|setDirective ( PathBasedCacheDirective directive)
+DECL|method|setDirective ( CacheDirectiveInfo directive)
 specifier|public
-name|ModifyPathBasedCacheDirectiveOp
+name|ModifyCacheDirectiveInfoOp
 name|setDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 block|{
@@ -16669,13 +16669,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 name|builder
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -16794,7 +16794,7 @@ name|IOException
 argument_list|(
 literal|"unknown flags set in "
 operator|+
-literal|"ModifyPathBasedCacheDirectiveOp: "
+literal|"ModifyCacheDirectiveInfoOp: "
 operator|+
 name|flags
 argument_list|)
@@ -17127,13 +17127,13 @@ parameter_list|)
 throws|throws
 name|InvalidXmlException
 block|{
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 name|builder
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -17273,7 +17273,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"ModifyPathBasedCacheDirectiveOp["
+literal|"ModifyCacheDirectiveInfoOp["
 argument_list|)
 expr_stmt|;
 name|builder
@@ -17408,11 +17408,11 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * {@literal @AtMostOnce} for    * {@link ClientProtocol#removePathBasedCacheDirective}    */
-DECL|class|RemovePathBasedCacheDirectiveOp
+comment|/**    * {@literal @AtMostOnce} for    * {@link ClientProtocol#removeCacheDirective}    */
+DECL|class|RemoveCacheDirectiveInfoOp
 specifier|static
 class|class
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 extends|extends
 name|FSEditLogOp
 block|{
@@ -17420,9 +17420,9 @@ DECL|field|id
 name|long
 name|id
 decl_stmt|;
-DECL|method|RemovePathBasedCacheDirectiveOp ()
+DECL|method|RemoveCacheDirectiveInfoOp ()
 specifier|public
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 parameter_list|()
 block|{
 name|super
@@ -17433,7 +17433,7 @@ expr_stmt|;
 block|}
 DECL|method|getInstance (OpInstanceCache cache)
 specifier|static
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 name|getInstance
 parameter_list|(
 name|OpInstanceCache
@@ -17442,7 +17442,7 @@ parameter_list|)
 block|{
 return|return
 operator|(
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 operator|)
 name|cache
 operator|.
@@ -17454,7 +17454,7 @@ return|;
 block|}
 DECL|method|setId (long id)
 specifier|public
-name|RemovePathBasedCacheDirectiveOp
+name|RemoveCacheDirectiveInfoOp
 name|setId
 parameter_list|(
 name|long
@@ -17629,7 +17629,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"RemovePathBasedCacheDirective ["
+literal|"RemoveCacheDirectiveInfo ["
 argument_list|)
 expr_stmt|;
 name|builder

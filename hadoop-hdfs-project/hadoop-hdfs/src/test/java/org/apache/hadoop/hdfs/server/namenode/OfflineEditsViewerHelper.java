@@ -348,7 +348,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -1361,10 +1361,10 @@ name|id
 init|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -1398,10 +1398,10 @@ decl_stmt|;
 comment|// OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE 38
 name|dfs
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -1427,7 +1427,7 @@ expr_stmt|;
 comment|// OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE 34
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)

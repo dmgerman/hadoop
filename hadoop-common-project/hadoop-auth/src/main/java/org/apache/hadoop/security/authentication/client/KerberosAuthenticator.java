@@ -883,8 +883,24 @@ argument_list|(
 literal|"Using fallback authenticator sequence."
 argument_list|)
 expr_stmt|;
+name|Authenticator
+name|auth
+init|=
 name|getFallBackAuthenticator
 argument_list|()
+decl_stmt|;
+comment|// Make sure that the fall back authenticator have the same
+comment|// ConnectionConfigurator, since the method might be overridden.
+comment|// Otherwise the fall back authenticator might not have the information
+comment|// to make the connection (e.g., SSL certificates)
+name|auth
+operator|.
+name|setConnectionConfigurator
+argument_list|(
+name|connConfigurator
+argument_list|)
+expr_stmt|;
+name|auth
 operator|.
 name|authenticate
 argument_list|(

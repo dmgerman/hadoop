@@ -210,6 +210,34 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|this
+argument_list|(
+name|path
+argument_list|,
+name|interval
+argument_list|,
+operator|-
+literal|1L
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Keeps track of disk usage.    * @param path the path to check disk usage in    * @param interval refresh the disk usage at this interval    * @param initialUsed use this value until next refresh    * @throws IOException if we fail to refresh the disk usage    */
+DECL|method|DU (File path, long interval, long initialUsed)
+specifier|public
+name|DU
+parameter_list|(
+name|File
+name|path
+parameter_list|,
+name|long
+name|interval
+parameter_list|,
+name|long
+name|initialUsed
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|super
 argument_list|(
 literal|0
@@ -232,10 +260,30 @@ operator|.
 name|getCanonicalPath
 argument_list|()
 expr_stmt|;
-comment|//populate the used variable
+comment|//populate the used variable if the initial value is not specified.
+if|if
+condition|(
+name|initialUsed
+operator|<
+literal|0
+condition|)
+block|{
 name|run
 argument_list|()
 expr_stmt|;
+block|}
+else|else
+block|{
+name|this
+operator|.
+name|used
+operator|.
+name|set
+argument_list|(
+name|initialUsed
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Keeps track of disk usage.    * @param path the path to check disk usage in    * @param conf configuration object    * @throws IOException if we fail to refresh the disk usage    */
 DECL|method|DU (File path, Configuration conf)
@@ -256,6 +304,34 @@ argument_list|(
 name|path
 argument_list|,
 name|conf
+argument_list|,
+operator|-
+literal|1L
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Keeps track of disk usage.    * @param path the path to check disk usage in    * @param conf configuration object    * @param initialUsed use it until the next refresh.    * @throws IOException if we fail to refresh the disk usage    */
+DECL|method|DU (File path, Configuration conf, long initialUsed)
+specifier|public
+name|DU
+parameter_list|(
+name|File
+name|path
+parameter_list|,
+name|Configuration
+name|conf
+parameter_list|,
+name|long
+name|initialUsed
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|this
+argument_list|(
+name|path
+argument_list|,
+name|conf
 operator|.
 name|getLong
 argument_list|(
@@ -267,6 +343,8 @@ name|CommonConfigurationKeys
 operator|.
 name|FS_DU_INTERVAL_DEFAULT
 argument_list|)
+argument_list|,
+name|initialUsed
 argument_list|)
 expr_stmt|;
 block|}

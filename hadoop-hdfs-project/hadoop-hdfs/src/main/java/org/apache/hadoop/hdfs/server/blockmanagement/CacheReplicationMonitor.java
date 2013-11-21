@@ -190,7 +190,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|CacheDirective
 import|;
 end_import
 
@@ -895,25 +895,9 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
-name|rescanPathBasedCacheEntries
+name|rescanCacheDirectives
 argument_list|()
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|namesystem
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
-name|namesystem
-operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|rescanCachedBlockMap
 argument_list|()
 expr_stmt|;
@@ -935,11 +919,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Scan all PathBasedCacheEntries.  Use the information to figure out    * what cache replication factor each block should have.    *    * @param mark       Whether the current scan is setting or clearing the mark    */
-DECL|method|rescanPathBasedCacheEntries ()
+comment|/**    * Scan all CacheDirectives.  Use the information to figure out    * what cache replication factor each block should have.    *    * @param mark       Whether the current scan is setting or clearing the mark    */
+DECL|method|rescanCacheDirectives ()
 specifier|private
 name|void
-name|rescanPathBasedCacheEntries
+name|rescanCacheDirectives
 parameter_list|()
 block|{
 name|FSDirectory
@@ -952,7 +936,7 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|PathBasedCacheEntry
+name|CacheDirective
 name|pce
 range|:
 name|cacheManager
@@ -966,6 +950,21 @@ control|)
 block|{
 name|scannedDirectives
 operator|++
+expr_stmt|;
+name|pce
+operator|.
+name|clearBytesNeeded
+argument_list|()
+expr_stmt|;
+name|pce
+operator|.
+name|clearBytesCached
+argument_list|()
+expr_stmt|;
+name|pce
+operator|.
+name|clearFilesAffected
+argument_list|()
 expr_stmt|;
 name|String
 name|path
@@ -1131,19 +1130,24 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Apply a PathBasedCacheEntry to a file.    *    * @param pce       The PathBasedCacheEntry to apply.    * @param file      The file.    */
-DECL|method|rescanFile (PathBasedCacheEntry pce, INodeFile file)
+comment|/**    * Apply a CacheDirective to a file.    *    * @param pce       The CacheDirective to apply.    * @param file      The file.    */
+DECL|method|rescanFile (CacheDirective pce, INodeFile file)
 specifier|private
 name|void
 name|rescanFile
 parameter_list|(
-name|PathBasedCacheEntry
+name|CacheDirective
 name|pce
 parameter_list|,
 name|INodeFile
 name|file
 parameter_list|)
 block|{
+name|pce
+operator|.
+name|incrementFilesAffected
+argument_list|()
+expr_stmt|;
 name|BlockInfo
 index|[]
 name|blockInfos
@@ -1152,6 +1156,16 @@ name|file
 operator|.
 name|getBlocks
 argument_list|()
+decl_stmt|;
+name|long
+name|cachedTotal
+init|=
+literal|0
+decl_stmt|;
+name|long
+name|neededTotal
+init|=
+literal|0
 decl_stmt|;
 for|for
 control|(
@@ -1180,6 +1194,23 @@ block|{
 comment|// We don't try to cache blocks that are under construction.
 continue|continue;
 block|}
+name|long
+name|neededByBlock
+init|=
+name|pce
+operator|.
+name|getReplication
+argument_list|()
+operator|*
+name|blockInfo
+operator|.
+name|getNumBytes
+argument_list|()
+decl_stmt|;
+name|neededTotal
+operator|+=
+name|neededByBlock
+expr_stmt|;
 name|Block
 name|block
 init|=
@@ -1238,6 +1269,54 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// Update bytesUsed using the current replication levels.
+comment|// Assumptions: we assume that all the blocks are the same length
+comment|// on each datanode.  We can assume this because we're only caching
+comment|// blocks in state COMMITTED.
+comment|// Note that if two directives are caching the same block(s), they will
+comment|// both get them added to their bytesCached.
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|cachedOn
+init|=
+name|ocblock
+operator|.
+name|getDatanodes
+argument_list|(
+name|Type
+operator|.
+name|CACHED
+argument_list|)
+decl_stmt|;
+name|long
+name|cachedByBlock
+init|=
+name|Math
+operator|.
+name|min
+argument_list|(
+name|cachedOn
+operator|.
+name|size
+argument_list|()
+argument_list|,
+name|pce
+operator|.
+name|getReplication
+argument_list|()
+argument_list|)
+operator|*
+name|blockInfo
+operator|.
+name|getNumBytes
+argument_list|()
+decl_stmt|;
+name|cachedTotal
+operator|+=
+name|cachedByBlock
+expr_stmt|;
 if|if
 condition|(
 name|mark
@@ -1265,7 +1344,7 @@ block|}
 else|else
 block|{
 comment|// Mark already set in this scan.  Set replication to highest value in
-comment|// any PathBasedCacheEntry that covers this file.
+comment|// any CacheDirective that covers this file.
 name|ocblock
 operator|.
 name|setReplicationAndMark
@@ -1293,6 +1372,56 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+block|}
+name|pce
+operator|.
+name|addBytesNeeded
+argument_list|(
+name|neededTotal
+argument_list|)
+expr_stmt|;
+name|pce
+operator|.
+name|addBytesCached
+argument_list|(
+name|cachedTotal
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Directive "
+operator|+
+name|pce
+operator|.
+name|getEntryId
+argument_list|()
+operator|+
+literal|" is caching "
+operator|+
+name|file
+operator|.
+name|getFullPathName
+argument_list|()
+operator|+
+literal|": "
+operator|+
+name|cachedTotal
+operator|+
+literal|"/"
+operator|+
+name|neededTotal
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 comment|/**    * Scan through the cached block map.    * Any blocks which are under-replicated should be assigned new Datanodes.    * Blocks that are over-replicated should be removed from Datanodes.    */

@@ -418,6 +418,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -466,7 +482,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -482,7 +498,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheEntry
+name|CacheDirective
 import|;
 end_import
 
@@ -857,7 +873,7 @@ specifier|final
 name|BlockManager
 name|blockManager
 decl_stmt|;
-comment|/**    * Cache entries, sorted by ID.    *    * listPathBasedCacheDirectives relies on the ordering of elements in this map    * to track what has already been listed by the client.    */
+comment|/**    * Cache entries, sorted by ID.    *    * listCacheDirectives relies on the ordering of elements in this map    * to track what has already been listed by the client.    */
 DECL|field|entriesById
 specifier|private
 specifier|final
@@ -865,7 +881,7 @@ name|TreeMap
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|entriesById
 init|=
@@ -874,7 +890,7 @@ name|TreeMap
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -894,7 +910,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 argument_list|>
 name|entriesByPath
@@ -906,7 +922,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 argument_list|>
 argument_list|()
@@ -1218,7 +1234,7 @@ name|TreeMap
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|getEntriesById
 parameter_list|()
@@ -1332,13 +1348,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|validatePoolName (PathBasedCacheDirective directive)
+DECL|method|validatePoolName (CacheDirectiveInfo directive)
 specifier|private
 specifier|static
 name|String
 name|validatePoolName
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
@@ -1387,13 +1403,13 @@ return|return
 name|pool
 return|;
 block|}
-DECL|method|validatePath (PathBasedCacheDirective directive)
+DECL|method|validatePath (CacheDirectiveInfo directive)
 specifier|private
 specifier|static
 name|String
 name|validatePath
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
@@ -1458,13 +1474,13 @@ return|return
 name|path
 return|;
 block|}
-DECL|method|validateReplication (PathBasedCacheDirective directive, short defaultValue)
+DECL|method|validateReplication (CacheDirectiveInfo directive, short defaultValue)
 specifier|private
 specifier|static
 name|short
 name|validateReplication
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|,
 name|short
@@ -1515,10 +1531,10 @@ return|return
 name|repl
 return|;
 block|}
-comment|/**    * Get a PathBasedCacheEntry by ID, validating the ID and that the entry    * exists.    */
+comment|/**    * Get a CacheDirective by ID, validating the ID and that the entry    * exists.    */
 DECL|method|getById (long id)
 specifier|private
-name|PathBasedCacheEntry
+name|CacheDirective
 name|getById
 parameter_list|(
 name|long
@@ -1544,7 +1560,7 @@ argument_list|)
 throw|;
 block|}
 comment|// Find the entry.
-name|PathBasedCacheEntry
+name|CacheDirective
 name|entry
 init|=
 name|entriesById
@@ -1621,12 +1637,12 @@ name|pool
 return|;
 block|}
 comment|// RPC handlers
-DECL|method|addInternal (PathBasedCacheEntry entry)
+DECL|method|addInternal (CacheDirective entry)
 specifier|private
 name|void
 name|addInternal
 parameter_list|(
-name|PathBasedCacheEntry
+name|CacheDirective
 name|entry
 parameter_list|)
 block|{
@@ -1652,7 +1668,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|entryList
 init|=
@@ -1675,7 +1691,7 @@ operator|=
 operator|new
 name|ArrayList
 argument_list|<
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 argument_list|(
 literal|1
@@ -1699,12 +1715,12 @@ name|entry
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addDirective ( PathBasedCacheDirective directive, FSPermissionChecker pc)
+DECL|method|addDirective ( CacheDirectiveInfo directive, FSPermissionChecker pc)
 specifier|public
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|addDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|,
 name|FSPermissionChecker
@@ -1719,7 +1735,7 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-name|PathBasedCacheEntry
+name|CacheDirective
 name|entry
 decl_stmt|;
 try|try
@@ -1856,7 +1872,7 @@ block|}
 name|entry
 operator|=
 operator|new
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|(
 name|id
 argument_list|,
@@ -1927,12 +1943,12 @@ name|toDirective
 argument_list|()
 return|;
 block|}
-DECL|method|modifyDirective (PathBasedCacheDirective directive, FSPermissionChecker pc)
+DECL|method|modifyDirective (CacheDirectiveInfo directive, FSPermissionChecker pc)
 specifier|public
 name|void
 name|modifyDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|,
 name|FSPermissionChecker
@@ -1995,7 +2011,7 @@ literal|"Must supply an ID."
 argument_list|)
 throw|;
 block|}
-name|PathBasedCacheEntry
+name|CacheDirective
 name|prevEntry
 init|=
 name|getById
@@ -2108,11 +2124,11 @@ argument_list|(
 name|prevEntry
 argument_list|)
 expr_stmt|;
-name|PathBasedCacheEntry
+name|CacheDirective
 name|newEntry
 init|=
 operator|new
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|(
 name|id
 argument_list|,
@@ -2168,12 +2184,12 @@ literal|"."
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeInternal (PathBasedCacheEntry existing)
+DECL|method|removeInternal (CacheDirective existing)
 specifier|public
 name|void
 name|removeInternal
 parameter_list|(
-name|PathBasedCacheEntry
+name|CacheDirective
 name|existing
 parameter_list|)
 throws|throws
@@ -2196,7 +2212,7 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|entries
 init|=
@@ -2293,7 +2309,7 @@ argument_list|()
 assert|;
 try|try
 block|{
-name|PathBasedCacheEntry
+name|CacheDirective
 name|existing
 init|=
 name|getById
@@ -2368,15 +2384,15 @@ block|}
 specifier|public
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
-DECL|method|listPathBasedCacheDirectives (long prevId, PathBasedCacheDirective filter, FSPermissionChecker pc)
-name|listPathBasedCacheDirectives
+DECL|method|listCacheDirectives (long prevId, CacheDirectiveInfo filter, FSPermissionChecker pc)
+name|listCacheDirectives
 parameter_list|(
 name|long
 name|prevId
 parameter_list|,
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 parameter_list|,
 name|FSPermissionChecker
@@ -2458,14 +2474,14 @@ throw|;
 block|}
 name|ArrayList
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|replies
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 argument_list|(
 name|NUM_PRE_ALLOCATED_ENTRIES
@@ -2480,7 +2496,7 @@ name|SortedMap
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|tailMap
 init|=
@@ -2499,7 +2515,7 @@ name|Entry
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|cur
 range|:
@@ -2520,7 +2536,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 argument_list|(
 name|replies
@@ -2529,7 +2545,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-name|PathBasedCacheEntry
+name|CacheDirective
 name|curEntry
 init|=
 name|cur
@@ -2537,8 +2553,8 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveInfo
+name|info
 init|=
 name|cur
 operator|.
@@ -2558,7 +2574,7 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|directive
+name|info
 operator|.
 name|getPool
 argument_list|()
@@ -2581,7 +2597,7 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|directive
+name|info
 operator|.
 name|getPath
 argument_list|()
@@ -2650,13 +2666,19 @@ name|replies
 operator|.
 name|add
 argument_list|(
+operator|new
+name|CacheDirectiveEntry
+argument_list|(
+name|info
+argument_list|,
 name|cur
 operator|.
 name|getValue
 argument_list|()
 operator|.
-name|toDirective
+name|toStats
 argument_list|()
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|numReplies
@@ -2668,7 +2690,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 argument_list|(
 name|replies
@@ -3123,7 +3145,7 @@ name|Entry
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 argument_list|>
 name|iter
@@ -3148,7 +3170,7 @@ name|Entry
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|entry
 init|=
@@ -4185,7 +4207,7 @@ argument_list|)
 expr_stmt|;
 for|for
 control|(
-name|PathBasedCacheEntry
+name|CacheDirective
 name|entry
 range|:
 name|entriesById
@@ -4537,11 +4559,11 @@ literal|", which does not exist."
 argument_list|)
 throw|;
 block|}
-name|PathBasedCacheEntry
+name|CacheDirective
 name|entry
 init|=
 operator|new
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|(
 name|entryId
 argument_list|,
@@ -4586,7 +4608,7 @@ throw|;
 block|}
 name|List
 argument_list|<
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 name|entries
 init|=
@@ -4612,7 +4634,7 @@ operator|=
 operator|new
 name|LinkedList
 argument_list|<
-name|PathBasedCacheEntry
+name|CacheDirective
 argument_list|>
 argument_list|()
 expr_stmt|;

@@ -105,12 +105,12 @@ annotation|@
 name|InterfaceAudience
 operator|.
 name|Public
-DECL|class|PathBasedCacheDirective
+DECL|class|CacheDirectiveInfo
 specifier|public
 class|class
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 block|{
-comment|/**    * A builder for creating new PathBasedCacheDirective instances.    */
+comment|/**    * A builder for creating new CacheDirectiveInfo instances.    */
 DECL|class|Builder
 specifier|public
 specifier|static
@@ -137,16 +137,16 @@ specifier|private
 name|String
 name|pool
 decl_stmt|;
-comment|/**      * Builds a new PathBasedCacheDirective populated with the set properties.      *       * @return New PathBasedCacheDirective.      */
+comment|/**      * Builds a new CacheDirectiveInfo populated with the set properties.      *       * @return New CacheDirectiveInfo.      */
 DECL|method|build ()
 specifier|public
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|build
 parameter_list|()
 block|{
 return|return
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 argument_list|(
 name|id
 argument_list|,
@@ -164,12 +164,12 @@ specifier|public
 name|Builder
 parameter_list|()
 block|{     }
-comment|/**      * Creates a builder with all elements set to the same values as the      * given PathBasedCacheDirective.      */
-DECL|method|Builder (PathBasedCacheDirective directive)
+comment|/**      * Creates a builder with all elements set to the same values as the      * given CacheDirectiveInfo.      */
+DECL|method|Builder (CacheDirectiveInfo directive)
 specifier|public
 name|Builder
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 block|{
@@ -315,8 +315,8 @@ specifier|final
 name|String
 name|pool
 decl_stmt|;
-DECL|method|PathBasedCacheDirective (Long id, Path path, Short replication, String pool)
-name|PathBasedCacheDirective
+DECL|method|CacheDirectiveInfo (Long id, Path path, Short replication, String pool)
+name|CacheDirectiveInfo
 parameter_list|(
 name|Long
 name|id
@@ -437,11 +437,11 @@ return|return
 literal|false
 return|;
 block|}
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|other
 init|=
 operator|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|)
 name|o
 decl_stmt|;

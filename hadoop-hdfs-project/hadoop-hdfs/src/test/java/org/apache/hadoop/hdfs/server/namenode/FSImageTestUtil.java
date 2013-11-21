@@ -3126,8 +3126,15 @@ name|dir
 operator|.
 name|rootDir
 operator|.
-name|getNsQuota
+name|getQuotaCounts
 argument_list|()
+operator|.
+name|get
+argument_list|(
+name|Quota
+operator|.
+name|NAMESPACE
+argument_list|)
 return|;
 block|}
 DECL|method|assertNNFilesMatch (MiniDFSCluster cluster)

@@ -3230,9 +3230,11 @@ name|map
 init|=
 name|DFSUtil
 operator|.
-name|getHaNnHttpAddresses
+name|getHaNnWebHdfsAddresses
 argument_list|(
 name|conf
+argument_list|,
+literal|"webhdfs"
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -3365,11 +3367,9 @@ name|addrs
 init|=
 name|DFSUtil
 operator|.
-name|resolve
+name|resolveWebHdfsUri
 argument_list|(
 name|uri
-argument_list|,
-name|DEFAULT_PORT
 argument_list|,
 name|conf
 argument_list|)

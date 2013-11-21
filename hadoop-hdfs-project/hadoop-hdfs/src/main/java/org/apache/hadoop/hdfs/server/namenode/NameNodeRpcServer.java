@@ -618,7 +618,23 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -7268,12 +7284,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addPathBasedCacheDirective ( PathBasedCacheDirective path)
+DECL|method|addCacheDirective ( CacheDirectiveInfo path)
 specifier|public
 name|long
-name|addPathBasedCacheDirective
+name|addCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|path
 parameter_list|)
 throws|throws
@@ -7282,7 +7298,7 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 name|path
 argument_list|)
@@ -7290,12 +7306,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|modifyPathBasedCacheDirective ( PathBasedCacheDirective directive)
+DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive)
 specifier|public
 name|void
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 parameter_list|)
 throws|throws
@@ -7303,7 +7319,7 @@ name|IOException
 block|{
 name|namesystem
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 name|directive
 argument_list|)
@@ -7311,10 +7327,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removePathBasedCacheDirective (long id)
+DECL|method|removeCacheDirective (long id)
 specifier|public
 name|void
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 parameter_list|(
 name|long
 name|id
@@ -7324,38 +7340,38 @@ name|IOException
 block|{
 name|namesystem
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)
 expr_stmt|;
 block|}
-DECL|class|ServerSidePathBasedCacheEntriesIterator
+DECL|class|ServerSideCacheEntriesIterator
 specifier|private
 class|class
-name|ServerSidePathBasedCacheEntriesIterator
+name|ServerSideCacheEntriesIterator
 extends|extends
 name|BatchedRemoteIterator
 argument_list|<
 name|Long
 argument_list|,
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 block|{
 DECL|field|filter
 specifier|private
 specifier|final
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 decl_stmt|;
-DECL|method|ServerSidePathBasedCacheEntriesIterator (Long firstKey, PathBasedCacheDirective filter)
+DECL|method|ServerSideCacheEntriesIterator (Long firstKey, CacheDirectiveInfo filter)
 specifier|public
-name|ServerSidePathBasedCacheEntriesIterator
+name|ServerSideCacheEntriesIterator
 parameter_list|(
 name|Long
 name|firstKey
 parameter_list|,
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 parameter_list|)
 block|{
@@ -7377,7 +7393,7 @@ DECL|method|makeRequest ( Long nextKey)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|makeRequest
 parameter_list|(
@@ -7390,7 +7406,7 @@ block|{
 return|return
 name|namesystem
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 name|nextKey
 argument_list|,
@@ -7400,17 +7416,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|elementToPrevKey (PathBasedCacheDirective entry)
+DECL|method|elementToPrevKey (CacheDirectiveEntry entry)
 specifier|public
 name|Long
 name|elementToPrevKey
 parameter_list|(
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 name|entry
 parameter_list|)
 block|{
 return|return
 name|entry
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getId
 argument_list|()
@@ -7419,18 +7438,18 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|listPathBasedCacheDirectives (long prevId, PathBasedCacheDirective filter)
+DECL|method|listCacheDirectives (long prevId, CacheDirectiveInfo filter)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 parameter_list|(
 name|long
 name|prevId
 parameter_list|,
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|filter
 parameter_list|)
 throws|throws
@@ -7446,7 +7465,7 @@ block|{
 name|filter
 operator|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -7457,7 +7476,7 @@ expr_stmt|;
 block|}
 return|return
 operator|new
-name|ServerSidePathBasedCacheEntriesIterator
+name|ServerSideCacheEntriesIterator
 argument_list|(
 name|prevId
 argument_list|,

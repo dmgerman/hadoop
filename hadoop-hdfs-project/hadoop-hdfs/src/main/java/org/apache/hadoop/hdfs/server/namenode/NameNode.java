@@ -3626,6 +3626,7 @@ name|getHttpAddress
 argument_list|()
 return|;
 block|}
+comment|/**    * @return NameNode HTTPS address, used by the Web UI, image transfer,    *    and HTTP-based file system clients like Hftp and WebHDFS    */
 DECL|method|getHttpsAddress ()
 specifier|public
 name|InetSocketAddress

@@ -188,6 +188,38 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CacheDirectiveStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -204,7 +236,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 import|;
 end_import
 
@@ -725,11 +757,11 @@ throws|throws
 name|IOException
 function_decl|;
 block|}
-DECL|class|AddPathBasedCacheDirectiveCommand
+DECL|class|AddCacheDirectiveInfoCommand
 specifier|private
 specifier|static
 class|class
-name|AddPathBasedCacheDirectiveCommand
+name|AddCacheDirectiveInfoCommand
 implements|implements
 name|Command
 block|{
@@ -817,7 +849,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Add a new PathBasedCache directive.\n\n"
+literal|"Add a new cache directive.\n\n"
 operator|+
 name|listing
 operator|.
@@ -979,11 +1011,11 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 name|directive
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -1017,7 +1049,7 @@ name|id
 init|=
 name|dfs
 operator|.
-name|addPathBasedCacheDirective
+name|addCacheDirective
 argument_list|(
 name|directive
 argument_list|)
@@ -1028,7 +1060,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Added PathBasedCache entry "
+literal|"Added cache directive "
 operator|+
 name|id
 argument_list|)
@@ -1061,11 +1093,11 @@ literal|0
 return|;
 block|}
 block|}
-DECL|class|RemovePathBasedCacheDirectiveCommand
+DECL|class|RemoveCacheDirectiveInfoCommand
 specifier|private
 specifier|static
 class|class
-name|RemovePathBasedCacheDirectiveCommand
+name|RemoveCacheDirectiveInfoCommand
 implements|implements
 name|Command
 block|{
@@ -1124,7 +1156,7 @@ literal|"You must have write permission on the pool of the "
 operator|+
 literal|"directive in order to remove it.  To see a list "
 operator|+
-literal|"of PathBasedCache directive IDs, use the -listDirectives command."
+literal|"of cache directive IDs, use the -listDirectives command."
 argument_list|)
 expr_stmt|;
 return|return
@@ -1312,7 +1344,7 @@ operator|.
 name|getClient
 argument_list|()
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
 name|id
 argument_list|)
@@ -1323,7 +1355,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Removed PathBasedCache directive "
+literal|"Removed cached directive "
 operator|+
 name|id
 argument_list|)
@@ -1356,11 +1388,11 @@ literal|0
 return|;
 block|}
 block|}
-DECL|class|ModifyPathBasedCacheDirectiveCommand
+DECL|class|ModifyCacheDirectiveInfoCommand
 specifier|private
 specifier|static
 class|class
-name|ModifyPathBasedCacheDirectiveCommand
+name|ModifyCacheDirectiveInfoCommand
 implements|implements
 name|Command
 block|{
@@ -1459,7 +1491,7 @@ argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"Modify a PathBasedCache directive.\n\n"
+literal|"Modify a cache directive.\n\n"
 operator|+
 name|listing
 operator|.
@@ -1486,13 +1518,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 name|builder
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -1720,7 +1752,7 @@ try|try
 block|{
 name|dfs
 operator|.
-name|modifyPathBasedCacheDirective
+name|modifyCacheDirective
 argument_list|(
 name|builder
 operator|.
@@ -1734,7 +1766,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Modified PathBasedCache entry "
+literal|"Modified cache directive "
 operator|+
 name|idString
 argument_list|)
@@ -1767,11 +1799,11 @@ literal|0
 return|;
 block|}
 block|}
-DECL|class|RemovePathBasedCacheDirectivesCommand
+DECL|class|RemoveCacheDirectiveInfosCommand
 specifier|private
 specifier|static
 class|class
-name|RemovePathBasedCacheDirectivesCommand
+name|RemoveCacheDirectiveInfosCommand
 implements|implements
 name|Command
 block|{
@@ -1949,16 +1981,16 @@ argument_list|)
 decl_stmt|;
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|iter
 init|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -1989,8 +2021,8 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveEntry
+name|entry
 init|=
 name|iter
 operator|.
@@ -2001,9 +2033,12 @@ try|try
 block|{
 name|dfs
 operator|.
-name|removePathBasedCacheDirective
+name|removeCacheDirective
 argument_list|(
-name|directive
+name|entry
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getId
 argument_list|()
@@ -2015,9 +2050,12 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Removed PathBasedCache directive "
+literal|"Removed cache directive "
 operator|+
-name|directive
+name|entry
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getId
 argument_list|()
@@ -2061,7 +2099,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"Removed every PathBasedCache directive with path "
+literal|"Removed every cache directive with path "
 operator|+
 name|path
 argument_list|)
@@ -2072,11 +2110,11 @@ name|exitCode
 return|;
 block|}
 block|}
-DECL|class|ListPathBasedCacheDirectiveCommand
+DECL|class|ListCacheDirectiveInfoCommand
 specifier|private
 specifier|static
 class|class
-name|ListPathBasedCacheDirectiveCommand
+name|ListCacheDirectiveInfoCommand
 implements|implements
 name|Command
 block|{
@@ -2106,7 +2144,7 @@ operator|+
 name|getName
 argument_list|()
 operator|+
-literal|" [-path<path>] [-pool<pool>]]\n"
+literal|" [-stats] [-path<path>] [-pool<pool>]]\n"
 return|;
 block|}
 annotation|@
@@ -2131,9 +2169,9 @@ literal|"<path>"
 argument_list|,
 literal|"List only "
 operator|+
-literal|"PathBasedCache directives with this path. "
+literal|"cache directives with this path. "
 operator|+
-literal|"Note that if there is a PathBasedCache directive for<path> "
+literal|"Note that if there is a cache directive for<path> "
 operator|+
 literal|"in a cache pool that we don't have read access for, it "
 operator|+
@@ -2149,13 +2187,22 @@ argument_list|,
 literal|"List only path cache directives in that pool."
 argument_list|)
 expr_stmt|;
+name|listing
+operator|.
+name|addRow
+argument_list|(
+literal|"-stats"
+argument_list|,
+literal|"List path-based cache directive statistics."
+argument_list|)
+expr_stmt|;
 return|return
 name|getShortUsage
 argument_list|()
 operator|+
 literal|"\n"
 operator|+
-literal|"List PathBasedCache directives.\n\n"
+literal|"List cache directives.\n\n"
 operator|+
 name|listing
 operator|.
@@ -2182,13 +2229,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 name|builder
 init|=
 operator|new
-name|PathBasedCacheDirective
+name|CacheDirectiveInfo
 operator|.
 name|Builder
 argument_list|()
@@ -2251,6 +2298,18 @@ name|poolFilter
 argument_list|)
 expr_stmt|;
 block|}
+name|boolean
+name|printStats
+init|=
+name|StringUtils
+operator|.
+name|popOption
+argument_list|(
+literal|"-stats"
+argument_list|,
+name|args
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 operator|!
@@ -2281,7 +2340,9 @@ literal|1
 return|;
 block|}
 name|TableListing
-name|tableListing
+operator|.
+name|Builder
+name|tableBuilder
 init|=
 operator|new
 name|TableListing
@@ -2295,7 +2356,7 @@ literal|"ID"
 argument_list|,
 name|Justification
 operator|.
-name|LEFT
+name|RIGHT
 argument_list|)
 operator|.
 name|addField
@@ -2313,7 +2374,7 @@ literal|"REPLICATION"
 argument_list|,
 name|Justification
 operator|.
-name|LEFT
+name|RIGHT
 argument_list|)
 operator|.
 name|addField
@@ -2324,6 +2385,46 @@ name|Justification
 operator|.
 name|LEFT
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|printStats
+condition|)
+block|{
+name|tableBuilder
+operator|.
+name|addField
+argument_list|(
+literal|"NEEDED"
+argument_list|,
+name|Justification
+operator|.
+name|RIGHT
+argument_list|)
+operator|.
+name|addField
+argument_list|(
+literal|"CACHED"
+argument_list|,
+name|Justification
+operator|.
+name|RIGHT
+argument_list|)
+operator|.
+name|addField
+argument_list|(
+literal|"FILES"
+argument_list|,
+name|Justification
+operator|.
+name|RIGHT
+argument_list|)
+expr_stmt|;
+block|}
+name|TableListing
+name|tableListing
+init|=
+name|tableBuilder
 operator|.
 name|build
 argument_list|()
@@ -2338,13 +2439,13 @@ argument_list|)
 decl_stmt|;
 name|RemoteIterator
 argument_list|<
-name|PathBasedCacheDirective
+name|CacheDirectiveEntry
 argument_list|>
 name|iter
 init|=
 name|dfs
 operator|.
-name|listPathBasedCacheDirectives
+name|listCacheDirectives
 argument_list|(
 name|builder
 operator|.
@@ -2365,41 +2466,81 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|PathBasedCacheDirective
-name|directive
+name|CacheDirectiveEntry
+name|entry
 init|=
 name|iter
 operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|CacheDirectiveInfo
+name|directive
+init|=
+name|entry
+operator|.
+name|getInfo
+argument_list|()
+decl_stmt|;
+name|CacheDirectiveStats
+name|stats
+init|=
+name|entry
+operator|.
+name|getStats
+argument_list|()
+decl_stmt|;
+name|List
+argument_list|<
 name|String
+argument_list|>
 name|row
-index|[]
 init|=
 operator|new
+name|LinkedList
+argument_list|<
 name|String
-index|[]
-block|{
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|row
+operator|.
+name|add
+argument_list|(
 literal|""
 operator|+
 name|directive
 operator|.
 name|getId
 argument_list|()
-block|,
+argument_list|)
+expr_stmt|;
+name|row
+operator|.
+name|add
+argument_list|(
 name|directive
 operator|.
 name|getPool
 argument_list|()
-block|,
+argument_list|)
+expr_stmt|;
+name|row
+operator|.
+name|add
+argument_list|(
 literal|""
 operator|+
 name|directive
 operator|.
 name|getReplication
 argument_list|()
-block|,
+argument_list|)
+expr_stmt|;
+name|row
+operator|.
+name|add
+argument_list|(
 name|directive
 operator|.
 name|getPath
@@ -2410,13 +2551,64 @@ argument_list|()
 operator|.
 name|getPath
 argument_list|()
-block|,         }
-decl_stmt|;
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|printStats
+condition|)
+block|{
+name|row
+operator|.
+name|add
+argument_list|(
+literal|""
+operator|+
+name|stats
+operator|.
+name|getBytesNeeded
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|row
+operator|.
+name|add
+argument_list|(
+literal|""
+operator|+
+name|stats
+operator|.
+name|getBytesCached
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|row
+operator|.
+name|add
+argument_list|(
+literal|""
+operator|+
+name|stats
+operator|.
+name|getFilesAffected
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 name|tableListing
 operator|.
 name|addRow
 argument_list|(
 name|row
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|String
+index|[
+literal|0
+index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|numEntries
@@ -4025,7 +4217,7 @@ literal|"WEIGHT"
 argument_list|,
 name|Justification
 operator|.
-name|LEFT
+name|RIGHT
 argument_list|)
 operator|.
 name|build
@@ -4539,23 +4731,23 @@ name|COMMANDS
 init|=
 block|{
 operator|new
-name|AddPathBasedCacheDirectiveCommand
+name|AddCacheDirectiveInfoCommand
 argument_list|()
 block|,
 operator|new
-name|ModifyPathBasedCacheDirectiveCommand
+name|ModifyCacheDirectiveInfoCommand
 argument_list|()
 block|,
 operator|new
-name|ListPathBasedCacheDirectiveCommand
+name|ListCacheDirectiveInfoCommand
 argument_list|()
 block|,
 operator|new
-name|RemovePathBasedCacheDirectiveCommand
+name|RemoveCacheDirectiveInfoCommand
 argument_list|()
 block|,
 operator|new
-name|RemovePathBasedCacheDirectivesCommand
+name|RemoveCacheDirectiveInfosCommand
 argument_list|()
 block|,
 operator|new
