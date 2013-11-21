@@ -664,6 +664,15 @@ index|[]
 name|bytes
 parameter_list|)
 block|{
+if|if
+condition|(
+name|bytes
+operator|.
+name|length
+operator|!=
+literal|0
+condition|)
+block|{
 name|bytes
 index|[
 literal|0
@@ -736,6 +745,10 @@ operator|&
 literal|0xFF
 argument_list|)
 expr_stmt|;
+return|return
+name|bytes
+return|;
+block|}
 return|return
 name|bytes
 return|;
