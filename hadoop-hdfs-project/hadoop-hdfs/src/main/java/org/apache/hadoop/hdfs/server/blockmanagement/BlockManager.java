@@ -2939,12 +2939,12 @@ literal|true
 return|;
 block|}
 comment|/**    * Commit the last block of the file and mark it as complete if it has    * meets the minimum replication requirement    *     * @param bc block collection    * @param commitBlock - contains client reported block length and generation    * @return true if the last block is changed to committed state.    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|commitOrCompleteLastBlock (MutableBlockCollection bc, Block commitBlock)
+DECL|method|commitOrCompleteLastBlock (BlockCollection bc, Block commitBlock)
 specifier|public
 name|boolean
 name|commitOrCompleteLastBlock
 parameter_list|(
-name|MutableBlockCollection
+name|BlockCollection
 name|bc
 parameter_list|,
 name|Block
@@ -3037,13 +3037,13 @@ name|b
 return|;
 block|}
 comment|/**    * Convert a specified block of the file to a complete block.    * @param bc file    * @param blkIndex  block index in the file    * @throws IOException if the block does not have at least a minimal number    * of replicas reported from data-nodes.    */
-DECL|method|completeBlock (final MutableBlockCollection bc, final int blkIndex, boolean force)
+DECL|method|completeBlock (final BlockCollection bc, final int blkIndex, boolean force)
 specifier|private
 name|BlockInfo
 name|completeBlock
 parameter_list|(
 specifier|final
-name|MutableBlockCollection
+name|BlockCollection
 name|bc
 parameter_list|,
 specifier|final
@@ -3198,13 +3198,13 @@ name|completeBlock
 argument_list|)
 return|;
 block|}
-DECL|method|completeBlock (final MutableBlockCollection bc, final BlockInfo block, boolean force)
+DECL|method|completeBlock (final BlockCollection bc, final BlockInfo block, boolean force)
 specifier|private
 name|BlockInfo
 name|completeBlock
 parameter_list|(
 specifier|final
-name|MutableBlockCollection
+name|BlockCollection
 name|bc
 parameter_list|,
 specifier|final
@@ -3268,13 +3268,13 @@ name|block
 return|;
 block|}
 comment|/**    * Force the given block in the given file to be marked as complete,    * regardless of whether enough replicas are present. This is necessary    * when tailing edit logs as a Standby.    */
-DECL|method|forceCompleteBlock (final MutableBlockCollection bc, final BlockInfoUnderConstruction block)
+DECL|method|forceCompleteBlock (final BlockCollection bc, final BlockInfoUnderConstruction block)
 specifier|public
 name|BlockInfo
 name|forceCompleteBlock
 parameter_list|(
 specifier|final
-name|MutableBlockCollection
+name|BlockCollection
 name|bc
 parameter_list|,
 specifier|final
@@ -3303,12 +3303,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Convert the last block of the file to an under construction block.<p>    * The block is converted only if the file has blocks and the last one    * is a partial block (its size is less than the preferred block size).    * The converted block is returned to the client.    * The client uses the returned block locations to form the data pipeline    * for this block.<br>    * The methods returns null if there is no partial block at the end.    * The client is supposed to allocate a new block with the next call.    *    * @param bc file    * @return the last block locations if the block is partial or null otherwise    */
-DECL|method|convertLastBlockToUnderConstruction ( MutableBlockCollection bc)
+DECL|method|convertLastBlockToUnderConstruction ( BlockCollection bc)
 specifier|public
 name|LocatedBlock
 name|convertLastBlockToUnderConstruction
 parameter_list|(
-name|MutableBlockCollection
+name|BlockCollection
 name|bc
 parameter_list|)
 throws|throws
@@ -6123,8 +6123,9 @@ operator|==
 literal|null
 operator|||
 name|bc
-operator|instanceof
-name|MutableBlockCollection
+operator|.
+name|isUnderConstruction
+argument_list|()
 condition|)
 block|{
 name|neededReplications
@@ -6488,8 +6489,9 @@ operator|==
 literal|null
 operator|||
 name|bc
-operator|instanceof
-name|MutableBlockCollection
+operator|.
+name|isUnderConstruction
+argument_list|()
 condition|)
 block|{
 name|neededReplications
@@ -10052,9 +10054,6 @@ condition|)
 block|{
 name|completeBlock
 argument_list|(
-operator|(
-name|MutableBlockCollection
-operator|)
 name|storedBlock
 operator|.
 name|getBlockCollection
@@ -10344,9 +10343,6 @@ name|storedBlock
 operator|=
 name|completeBlock
 argument_list|(
-operator|(
-name|MutableBlockCollection
-operator|)
 name|bc
 argument_list|,
 name|storedBlock
@@ -10381,8 +10377,9 @@ comment|// if file is under construction, then done for now
 if|if
 condition|(
 name|bc
-operator|instanceof
-name|MutableBlockCollection
+operator|.
+name|isUnderConstruction
+argument_list|()
 condition|)
 block|{
 return|return
@@ -13168,11 +13165,10 @@ argument_list|()
 operator|+
 literal|", Is Open File: "
 operator|+
-operator|(
 name|bc
-operator|instanceof
-name|MutableBlockCollection
-operator|)
+operator|.
+name|isUnderConstruction
+argument_list|()
 operator|+
 literal|", Datanodes having this block: "
 operator|+
@@ -13480,8 +13476,9 @@ block|}
 if|if
 condition|(
 name|bc
-operator|instanceof
-name|MutableBlockCollection
+operator|.
+name|isUnderConstruction
+argument_list|()
 condition|)
 block|{
 name|underReplicatedInOpenFiles

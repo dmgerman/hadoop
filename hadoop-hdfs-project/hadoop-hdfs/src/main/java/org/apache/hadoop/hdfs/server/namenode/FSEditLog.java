@@ -3150,7 +3150,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**     * Add open lease record to edit log.     * Records the block locations of the last block.    */
-DECL|method|logOpenFile (String path, INodeFileUnderConstruction newNode, boolean toLogRpcIds)
+DECL|method|logOpenFile (String path, INodeFile newNode, boolean toLogRpcIds)
 specifier|public
 name|void
 name|logOpenFile
@@ -3158,13 +3158,23 @@ parameter_list|(
 name|String
 name|path
 parameter_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 name|newNode
 parameter_list|,
 name|boolean
 name|toLogRpcIds
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|newNode
+operator|.
+name|isUnderConstruction
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|AddOp
 name|op
 init|=
@@ -3243,6 +3253,9 @@ name|setClientName
 argument_list|(
 name|newNode
 operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
+operator|.
 name|getClientName
 argument_list|()
 argument_list|)
@@ -3250,6 +3263,9 @@ operator|.
 name|setClientMachine
 argument_list|(
 name|newNode
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 operator|.
 name|getClientMachine
 argument_list|()
@@ -3353,7 +3369,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logUpdateBlocks (String path, INodeFileUnderConstruction file, boolean toLogRpcIds)
+DECL|method|logUpdateBlocks (String path, INodeFile file, boolean toLogRpcIds)
 specifier|public
 name|void
 name|logUpdateBlocks
@@ -3361,13 +3377,23 @@ parameter_list|(
 name|String
 name|path
 parameter_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 name|file
 parameter_list|,
 name|boolean
 name|toLogRpcIds
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|file
+operator|.
+name|isUnderConstruction
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|UpdateBlocksOp
 name|op
 init|=

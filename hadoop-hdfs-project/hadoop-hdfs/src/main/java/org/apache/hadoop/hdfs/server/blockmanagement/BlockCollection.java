@@ -124,6 +124,42 @@ name|String
 name|getName
 parameter_list|()
 function_decl|;
+comment|/**    * Set the block at the given index.    */
+DECL|method|setBlock (int index, BlockInfo blk)
+specifier|public
+name|void
+name|setBlock
+parameter_list|(
+name|int
+name|index
+parameter_list|,
+name|BlockInfo
+name|blk
+parameter_list|)
+function_decl|;
+comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
+DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] locations)
+specifier|public
+name|BlockInfoUnderConstruction
+name|setLastBlock
+parameter_list|(
+name|BlockInfo
+name|lastBlock
+parameter_list|,
+name|DatanodeDescriptor
+index|[]
+name|locations
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * @return whether the block collection is under construction.    */
+DECL|method|isUnderConstruction ()
+specifier|public
+name|boolean
+name|isUnderConstruction
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

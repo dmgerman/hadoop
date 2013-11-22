@@ -2131,7 +2131,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/** Make sure we delete 0-sized block when deleting an INodeFileUC */
+comment|/**    * Make sure we delete 0-sized block when deleting an under-construction file    */
 annotation|@
 name|Test
 DECL|method|testDeletionWithZeroSizeBlock2 ()
