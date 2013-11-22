@@ -673,7 +673,7 @@ comment|// from the input stream
 comment|//
 DECL|method|readINodeUnderConstruction ( DataInput in, FSNamesystem fsNamesys, int imgVersion)
 specifier|static
-name|INodeFileUnderConstruction
+name|INodeFile
 name|readINodeUnderConstruction
 parameter_list|(
 name|DataInput
@@ -887,36 +887,48 @@ literal|0
 operator|:
 literal|"Unexpected block locations"
 assert|;
-return|return
+name|INodeFile
+name|file
+init|=
 operator|new
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|(
 name|inodeId
 argument_list|,
 name|name
 argument_list|,
-name|blockReplication
+name|perm
 argument_list|,
 name|modificationTime
 argument_list|,
-name|preferredBlockSize
+name|modificationTime
 argument_list|,
 name|blocks
 argument_list|,
-name|perm
+name|blockReplication
 argument_list|,
+name|preferredBlockSize
+argument_list|)
+decl_stmt|;
+name|file
+operator|.
+name|toUnderConstruction
+argument_list|(
 name|clientName
 argument_list|,
 name|clientMachine
 argument_list|,
 literal|null
 argument_list|)
+expr_stmt|;
+return|return
+name|file
 return|;
 block|}
 comment|// Helper function that writes an INodeUnderConstruction
 comment|// into the input stream
 comment|//
-DECL|method|writeINodeUnderConstruction (DataOutputStream out, INodeFileUnderConstruction cons, String path)
+DECL|method|writeINodeUnderConstruction (DataOutputStream out, INodeFile cons, String path)
 specifier|static
 name|void
 name|writeINodeUnderConstruction
@@ -924,7 +936,7 @@ parameter_list|(
 name|DataOutputStream
 name|out
 parameter_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 name|cons
 parameter_list|,
 name|String
@@ -1000,9 +1012,17 @@ argument_list|(
 name|out
 argument_list|)
 expr_stmt|;
+name|FileUnderConstructionFeature
+name|uc
+init|=
+name|cons
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
+decl_stmt|;
 name|writeString
 argument_list|(
-name|cons
+name|uc
 operator|.
 name|getClientName
 argument_list|()
@@ -1012,7 +1032,7 @@ argument_list|)
 expr_stmt|;
 name|writeString
 argument_list|(
-name|cons
+name|uc
 operator|.
 name|getClientMachine
 argument_list|()
@@ -1132,8 +1152,9 @@ block|{
 if|if
 condition|(
 name|file
-operator|instanceof
-name|INodeFileUnderConstruction
+operator|.
+name|isUnderConstruction
+argument_list|()
 condition|)
 block|{
 name|out
@@ -1144,13 +1165,13 @@ literal|true
 argument_list|)
 expr_stmt|;
 specifier|final
-name|INodeFileUnderConstruction
+name|FileUnderConstructionFeature
 name|uc
 init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
 name|file
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 decl_stmt|;
 name|writeString
 argument_list|(

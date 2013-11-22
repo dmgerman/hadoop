@@ -824,24 +824,41 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Finds the pathname for the specified pendingFile    */
-DECL|method|findPath (INodeFileUnderConstruction pendingFile)
+DECL|method|findPath (INodeFile pendingFile)
 specifier|public
 specifier|synchronized
 name|String
 name|findPath
 parameter_list|(
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|FileUnderConstructionFeature
+name|uc
+init|=
+name|pendingFile
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|uc
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 name|Lease
 name|lease
 init|=
 name|getLease
 argument_list|(
-name|pendingFile
+name|uc
 operator|.
 name|getClientName
 argument_list|()
@@ -1079,12 +1096,12 @@ name|softLimit
 return|;
 block|}
 comment|/**      * @return the path associated with the pendingFile and null if not found.      */
-DECL|method|findPath (INodeFileUnderConstruction pendingFile)
+DECL|method|findPath (INodeFile pendingFile)
 specifier|private
 name|String
 name|findPath
 parameter_list|(
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 parameter_list|)
 block|{
@@ -1971,7 +1988,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 name|getINodesUnderConstruction
 parameter_list|()
@@ -1980,7 +1997,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 name|inodes
 init|=
@@ -1989,7 +2006,7 @@ name|TreeMap
 argument_list|<
 name|String
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2007,9 +2024,13 @@ block|{
 comment|// verify that path exists in namespace
 try|try
 block|{
-name|INode
+name|INodeFile
 name|node
 init|=
+name|INodeFile
+operator|.
+name|valueOf
+argument_list|(
 name|fsnamesystem
 operator|.
 name|dir
@@ -2018,21 +2039,27 @@ name|getINode
 argument_list|(
 name|p
 argument_list|)
+argument_list|,
+name|p
+argument_list|)
 decl_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|node
+operator|.
+name|isUnderConstruction
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|inodes
 operator|.
 name|put
 argument_list|(
 name|p
 argument_list|,
-name|INodeFileUnderConstruction
-operator|.
-name|valueOf
-argument_list|(
 name|node
-argument_list|,
-name|p
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

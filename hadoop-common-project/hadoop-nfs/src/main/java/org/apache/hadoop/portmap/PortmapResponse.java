@@ -18,26 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Arrays
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -209,7 +189,7 @@ return|return
 name|xdr
 return|;
 block|}
-DECL|method|pmapList (XDR xdr, int xid, Collection<PortmapMapping> list)
+DECL|method|pmapList (XDR xdr, int xid, PortmapMapping[] list)
 specifier|public
 specifier|static
 name|XDR
@@ -221,10 +201,8 @@ parameter_list|,
 name|int
 name|xid
 parameter_list|,
-name|Collection
-argument_list|<
 name|PortmapMapping
-argument_list|>
+index|[]
 name|list
 parameter_list|)
 block|{
@@ -252,15 +230,6 @@ range|:
 name|list
 control|)
 block|{
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-name|mapping
-argument_list|)
-expr_stmt|;
 name|xdr
 operator|.
 name|writeBoolean
@@ -287,39 +256,6 @@ expr_stmt|;
 comment|// No value follows
 return|return
 name|xdr
-return|;
-block|}
-DECL|method|pmapList (XDR xdr, int xid, PortmapMapping[] list)
-specifier|public
-specifier|static
-name|XDR
-name|pmapList
-parameter_list|(
-name|XDR
-name|xdr
-parameter_list|,
-name|int
-name|xid
-parameter_list|,
-name|PortmapMapping
-index|[]
-name|list
-parameter_list|)
-block|{
-return|return
-name|pmapList
-argument_list|(
-name|xdr
-argument_list|,
-name|xid
-argument_list|,
-name|Arrays
-operator|.
-name|asList
-argument_list|(
-name|list
-argument_list|)
-argument_list|)
 return|;
 block|}
 block|}

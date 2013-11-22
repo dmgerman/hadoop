@@ -520,7 +520,7 @@ argument_list|)
 operator|.
 name|removalListener
 argument_list|(
-name|clientRemovealListener
+name|clientRemovalListener
 argument_list|()
 argument_list|)
 operator|.
@@ -653,7 +653,7 @@ block|}
 block|}
 return|;
 block|}
-DECL|method|clientRemovealListener ()
+DECL|method|clientRemovalListener ()
 specifier|private
 name|RemovalListener
 argument_list|<
@@ -661,7 +661,7 @@ name|String
 argument_list|,
 name|DFSClient
 argument_list|>
-name|clientRemovealListener
+name|clientRemovalListener
 parameter_list|()
 block|{
 return|return

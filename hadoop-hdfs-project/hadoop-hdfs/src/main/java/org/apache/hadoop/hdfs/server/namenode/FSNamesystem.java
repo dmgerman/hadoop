@@ -12331,7 +12331,7 @@ argument_list|(
 name|clientMachine
 argument_list|)
 decl_stmt|;
-name|INodeFileUnderConstruction
+name|INodeFile
 name|newNode
 init|=
 name|dir
@@ -12375,6 +12375,9 @@ operator|.
 name|addLease
 argument_list|(
 name|newNode
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 operator|.
 name|getClientName
 argument_list|()
@@ -12727,7 +12730,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|cons
 init|=
 name|file
@@ -12741,22 +12744,14 @@ argument_list|,
 name|clientNode
 argument_list|)
 decl_stmt|;
-name|dir
-operator|.
-name|replaceINodeFile
-argument_list|(
-name|src
-argument_list|,
-name|file
-argument_list|,
-name|cons
-argument_list|)
-expr_stmt|;
 name|leaseManager
 operator|.
 name|addLease
 argument_list|(
 name|cons
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 operator|.
 name|getClientName
 argument_list|()
@@ -13036,14 +13031,6 @@ name|isUnderConstruction
 argument_list|()
 condition|)
 block|{
-name|INodeFileUnderConstruction
-name|pendingFile
-init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
-name|fileInode
-decl_stmt|;
 comment|//
 comment|// If the file is under construction , then it must be in our
 comment|// leases. Find the appropriate lease record.
@@ -13132,16 +13119,29 @@ block|}
 comment|//
 comment|// Find the original holder.
 comment|//
+name|FileUnderConstructionFeature
+name|uc
+init|=
+name|fileInode
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
+decl_stmt|;
+name|String
+name|clientName
+init|=
+name|uc
+operator|.
+name|getClientName
+argument_list|()
+decl_stmt|;
 name|lease
 operator|=
 name|leaseManager
 operator|.
 name|getLease
 argument_list|(
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 argument_list|)
 expr_stmt|;
 if|if
@@ -13192,10 +13192,7 @@ name|src
 operator|+
 literal|" from client "
 operator|+
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 argument_list|)
 expr_stmt|;
 name|internalReleaseLease
@@ -13218,10 +13215,7 @@ argument_list|()
 operator|.
 name|equals
 argument_list|(
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 argument_list|)
 operator|:
 literal|"Current lease holder "
@@ -13233,10 +13227,7 @@ argument_list|()
 operator|+
 literal|" does not match file creator "
 operator|+
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 assert|;
 comment|//
 comment|// If the original holder has not renewed in the last SOFTLIMIT
@@ -13264,10 +13255,7 @@ name|src
 operator|+
 literal|" client "
 operator|+
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 argument_list|)
 expr_stmt|;
 name|boolean
@@ -13305,7 +13293,7 @@ specifier|final
 name|BlockInfo
 name|lastBlock
 init|=
-name|pendingFile
+name|fileInode
 operator|.
 name|getLastBlock
 argument_list|()
@@ -13367,14 +13355,11 @@ name|clientMachine
 operator|+
 literal|"], because this file is already being created by ["
 operator|+
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 operator|+
 literal|"] on ["
 operator|+
-name|pendingFile
+name|uc
 operator|.
 name|getClientMachine
 argument_list|()
@@ -13975,12 +13960,9 @@ name|getINodes
 argument_list|()
 decl_stmt|;
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
 name|inodes
 index|[
 name|inodes
@@ -14072,6 +14054,9 @@ expr_stmt|;
 name|clientNode
 operator|=
 name|pendingFile
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 operator|.
 name|getClientNode
 argument_list|()
@@ -14181,12 +14166,9 @@ name|getINodes
 argument_list|()
 decl_stmt|;
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
 name|inodes
 index|[
 name|inodes
@@ -14432,7 +14414,7 @@ name|src
 argument_list|)
 decl_stmt|;
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 init|=
 name|checkLease
@@ -14878,7 +14860,7 @@ argument_list|)
 expr_stmt|;
 comment|//check lease
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|file
 init|=
 name|checkLease
@@ -14891,6 +14873,9 @@ decl_stmt|;
 name|clientnode
 operator|=
 name|file
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 operator|.
 name|getClientNode
 argument_list|()
@@ -15102,7 +15087,7 @@ expr_stmt|;
 comment|//
 comment|// Remove the block from the pending creates list
 comment|//
-name|INodeFileUnderConstruction
+name|INodeFile
 name|file
 init|=
 name|checkLease
@@ -15202,7 +15187,7 @@ block|}
 comment|/** make sure that we still have the lease on this file. */
 DECL|method|checkLease (String src, String holder)
 specifier|private
-name|INodeFileUnderConstruction
+name|INodeFile
 name|checkLease
 parameter_list|(
 name|String
@@ -15240,7 +15225,7 @@ return|;
 block|}
 DECL|method|checkLease (String src, long fileId, String holder, INode inode)
 specifier|private
-name|INodeFileUnderConstruction
+name|INodeFile
 name|checkLease
 parameter_list|(
 name|String
@@ -15373,13 +15358,16 @@ operator|)
 argument_list|)
 throw|;
 block|}
-name|INodeFileUnderConstruction
-name|pendingFile
+name|String
+name|clientName
 init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
 name|file
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
+operator|.
+name|getClientName
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -15388,10 +15376,7 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 operator|.
 name|equals
 argument_list|(
@@ -15409,10 +15394,7 @@ name|src
 operator|+
 literal|" owned by "
 operator|+
-name|pendingFile
-operator|.
-name|getClientName
-argument_list|()
+name|clientName
 operator|+
 literal|" but is accessed by "
 operator|+
@@ -15426,11 +15408,11 @@ name|checkId
 argument_list|(
 name|fileId
 argument_list|,
-name|pendingFile
+name|file
 argument_list|)
 expr_stmt|;
 return|return
-name|pendingFile
+name|file
 return|;
 block|}
 comment|/**    * Complete in-progress write to the given file.    * @return true if successful, false if the client should continue to retry    *         (e.g if not all blocks have reached minimum replication yet)    * @throws IOException on error (eg lease mismatch, file not open, file deleted)    */
@@ -15634,7 +15616,7 @@ name|src
 argument_list|)
 decl_stmt|;
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 decl_stmt|;
 try|try
@@ -18673,7 +18655,7 @@ argument_list|,
 name|dir
 argument_list|)
 expr_stmt|;
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 init|=
 name|checkLease
@@ -18692,8 +18674,13 @@ condition|)
 block|{
 name|pendingFile
 operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
+operator|.
 name|updateLengthOfLastBlock
 argument_list|(
+name|pendingFile
+argument_list|,
 name|lastBlockLength
 argument_list|)
 expr_stmt|;
@@ -18778,22 +18765,18 @@ name|src
 argument_list|)
 decl_stmt|;
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 init|=
-name|INodeFileUnderConstruction
-operator|.
-name|valueOf
-argument_list|(
 name|iip
 operator|.
 name|getINode
 argument_list|(
 literal|0
 argument_list|)
-argument_list|,
-name|src
-argument_list|)
+operator|.
+name|asFile
+argument_list|()
 decl_stmt|;
 name|int
 name|nrBlocks
@@ -19308,7 +19291,7 @@ return|return
 literal|false
 return|;
 block|}
-DECL|method|reassignLease (Lease lease, String src, String newHolder, INodeFileUnderConstruction pendingFile)
+DECL|method|reassignLease (Lease lease, String src, String newHolder, INodeFile pendingFile)
 specifier|private
 name|Lease
 name|reassignLease
@@ -19322,7 +19305,7 @@ parameter_list|,
 name|String
 name|newHolder
 parameter_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 parameter_list|)
 block|{
@@ -19365,7 +19348,7 @@ name|pendingFile
 argument_list|)
 return|;
 block|}
-DECL|method|reassignLeaseInternal (Lease lease, String src, String newHolder, INodeFileUnderConstruction pendingFile)
+DECL|method|reassignLeaseInternal (Lease lease, String src, String newHolder, INodeFile pendingFile)
 name|Lease
 name|reassignLeaseInternal
 parameter_list|(
@@ -19378,7 +19361,7 @@ parameter_list|,
 name|String
 name|newHolder
 parameter_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 parameter_list|)
 block|{
@@ -19387,6 +19370,9 @@ name|hasWriteLock
 argument_list|()
 assert|;
 name|pendingFile
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 operator|.
 name|setClientName
 argument_list|(
@@ -19406,13 +19392,13 @@ name|newHolder
 argument_list|)
 return|;
 block|}
-DECL|method|commitOrCompleteLastBlock (final INodeFileUnderConstruction fileINode, final Block commitBlock)
+DECL|method|commitOrCompleteLastBlock (final INodeFile fileINode, final Block commitBlock)
 specifier|private
 name|void
 name|commitOrCompleteLastBlock
 parameter_list|(
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|fileINode
 parameter_list|,
 specifier|final
@@ -19426,6 +19412,16 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|fileINode
+operator|.
+name|isUnderConstruction
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -19511,7 +19507,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|finalizeINodeFileUnderConstruction (String src, INodeFileUnderConstruction pendingFile, Snapshot latestSnapshot)
+DECL|method|finalizeINodeFileUnderConstruction (String src, INodeFile pendingFile, Snapshot latestSnapshot)
 specifier|private
 name|void
 name|finalizeINodeFileUnderConstruction
@@ -19519,7 +19515,7 @@ parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 parameter_list|,
 name|Snapshot
@@ -19534,11 +19530,28 @@ assert|assert
 name|hasWriteLock
 argument_list|()
 assert|;
+name|FileUnderConstructionFeature
+name|uc
+init|=
+name|pendingFile
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
+decl_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|uc
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 name|leaseManager
 operator|.
 name|removeLease
 argument_list|(
-name|pendingFile
+name|uc
 operator|.
 name|getClientName
 argument_list|()
@@ -19561,30 +19574,20 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// The file is no longer pending.
-comment|// Create permanent INode, update blocks
+comment|// Create permanent INode, update blocks. No need to replace the inode here
+comment|// since we just remove the uc feature from pendingFile
 specifier|final
 name|INodeFile
 name|newFile
 init|=
 name|pendingFile
 operator|.
-name|toINodeFile
+name|toCompleteFile
 argument_list|(
 name|now
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|dir
-operator|.
-name|replaceINodeFile
-argument_list|(
-name|src
-argument_list|,
-name|pendingFile
-argument_list|,
-name|newFile
-argument_list|)
-expr_stmt|;
 comment|// close file and persist block allocations for this file
 name|dir
 operator|.
@@ -19656,24 +19659,32 @@ operator|!
 operator|(
 name|bc
 operator|instanceof
-name|INodeFileUnderConstruction
+name|INodeFile
 operator|)
+operator|||
+operator|!
+operator|(
+operator|(
+name|INodeFile
+operator|)
+name|bc
+operator|)
+operator|.
+name|isUnderConstruction
+argument_list|()
 condition|)
 block|{
 return|return
 literal|false
 return|;
 block|}
-name|INodeFileUnderConstruction
+name|INodeFile
 name|inodeUC
 init|=
 operator|(
-name|INodeFileUnderConstruction
+name|INodeFile
 operator|)
-name|blockUC
-operator|.
-name|getBlockCollection
-argument_list|()
+name|bc
 decl_stmt|;
 name|String
 name|fullName
@@ -20003,14 +20014,6 @@ name|lastblock
 argument_list|)
 throw|;
 block|}
-name|INodeFileUnderConstruction
-name|pendingFile
-init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
-name|iFile
-decl_stmt|;
 if|if
 condition|(
 name|deleteblock
@@ -20029,7 +20032,7 @@ decl_stmt|;
 name|boolean
 name|remove
 init|=
-name|pendingFile
+name|iFile
 operator|.
 name|removeLastBlock
 argument_list|(
@@ -20294,7 +20297,7 @@ index|]
 argument_list|)
 argument_list|)
 decl_stmt|;
-name|pendingFile
+name|iFile
 operator|.
 name|setLastBlock
 argument_list|(
@@ -20313,7 +20316,7 @@ name|src
 operator|=
 name|closeFileCommitBlocks
 argument_list|(
-name|pendingFile
+name|iFile
 argument_list|,
 name|storedBlock
 argument_list|)
@@ -20326,7 +20329,7 @@ name|src
 operator|=
 name|persistBlocks
 argument_list|(
-name|pendingFile
+name|iFile
 argument_list|,
 literal|false
 argument_list|)
@@ -20401,11 +20404,11 @@ block|}
 comment|/**    *    * @param pendingFile    * @param storedBlock    * @return Path of the file that was closed.    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|closeFileCommitBlocks (INodeFileUnderConstruction pendingFile, BlockInfo storedBlock)
+DECL|method|closeFileCommitBlocks (INodeFile pendingFile, BlockInfo storedBlock)
 name|String
 name|closeFileCommitBlocks
 parameter_list|(
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 parameter_list|,
 name|BlockInfo
@@ -20456,11 +20459,11 @@ block|}
 comment|/**    * Persist the block list for the given file.    *    * @param pendingFile    * @return Path to the given file.    * @throws IOException    */
 annotation|@
 name|VisibleForTesting
-DECL|method|persistBlocks (INodeFileUnderConstruction pendingFile, boolean logRetryCache)
+DECL|method|persistBlocks (INodeFile pendingFile, boolean logRetryCache)
 name|String
 name|persistBlocks
 parameter_list|(
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 parameter_list|,
 name|boolean
@@ -24719,25 +24722,31 @@ argument_list|()
 control|)
 block|{
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|cons
 decl_stmt|;
 try|try
 block|{
 name|cons
 operator|=
-name|INodeFileUnderConstruction
-operator|.
-name|valueOf
-argument_list|(
 name|dir
 operator|.
 name|getINode
 argument_list|(
 name|path
 argument_list|)
-argument_list|,
-name|path
+operator|.
+name|asFile
+argument_list|()
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|cons
+operator|.
+name|isUnderConstruction
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -24752,20 +24761,6 @@ operator|new
 name|AssertionError
 argument_list|(
 literal|"Lease files should reside on this FS"
-argument_list|)
-throw|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-throw|throw
-operator|new
-name|RuntimeException
-argument_list|(
-name|e
 argument_list|)
 throw|;
 block|}
@@ -26797,7 +26792,7 @@ return|;
 block|}
 DECL|method|checkUCBlock (ExtendedBlock block, String clientName)
 specifier|private
-name|INodeFileUnderConstruction
+name|INodeFile
 name|checkUCBlock
 parameter_list|(
 name|ExtendedBlock
@@ -26908,14 +26903,6 @@ argument_list|)
 throw|;
 block|}
 comment|// check lease
-name|INodeFileUnderConstruction
-name|pendingFile
-init|=
-operator|(
-name|INodeFileUnderConstruction
-operator|)
-name|file
-decl_stmt|;
 if|if
 condition|(
 name|clientName
@@ -26927,7 +26914,10 @@ name|clientName
 operator|.
 name|equals
 argument_list|(
-name|pendingFile
+name|file
+operator|.
+name|getFileUnderConstructionFeature
+argument_list|()
 operator|.
 name|getClientName
 argument_list|()
@@ -26949,7 +26939,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|pendingFile
+name|file
 return|;
 block|}
 comment|/**    * Client is reporting some bad block locations.    */
@@ -27428,7 +27418,7 @@ argument_list|()
 assert|;
 comment|// check the vadility of the block and lease holder name
 specifier|final
-name|INodeFileUnderConstruction
+name|INodeFile
 name|pendingFile
 init|=
 name|checkUCBlock
@@ -27612,7 +27602,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Serializes leases.     */
-DECL|method|saveFilesUnderConstruction (DataOutputStream out, Map<Long, INodeFileUnderConstruction> snapshotUCMap)
+DECL|method|saveFilesUnderConstruction (DataOutputStream out, Map<Long, INodeFile> snapshotUCMap)
 name|void
 name|saveFilesUnderConstruction
 parameter_list|(
@@ -27623,7 +27613,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 name|snapshotUCMap
 parameter_list|)
@@ -27642,7 +27632,7 @@ name|Map
 argument_list|<
 name|String
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 name|nodes
 init|=
@@ -27659,7 +27649,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 name|entry
 range|:
@@ -27711,7 +27701,7 @@ name|Entry
 argument_list|<
 name|String
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 name|entry
 range|:
@@ -27747,7 +27737,7 @@ name|Entry
 argument_list|<
 name|Long
 argument_list|,
-name|INodeFileUnderConstruction
+name|INodeFile
 argument_list|>
 name|entry
 range|:
