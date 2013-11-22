@@ -598,23 +598,6 @@ return|return
 name|locs
 return|;
 block|}
-DECL|method|setStorageTypes (StorageType[] storageTypes)
-specifier|public
-name|void
-name|setStorageTypes
-parameter_list|(
-name|StorageType
-index|[]
-name|storageTypes
-parameter_list|)
-block|{
-name|this
-operator|.
-name|storageTypes
-operator|=
-name|storageTypes
-expr_stmt|;
-block|}
 DECL|method|getStorageTypes ()
 specifier|public
 name|StorageType

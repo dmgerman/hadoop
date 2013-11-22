@@ -409,7 +409,7 @@ name|headIndex
 operator|=
 name|dd
 operator|.
-name|getHead
+name|getBlockListHeadForTesting
 argument_list|()
 operator|.
 name|findStorageInfo
@@ -485,7 +485,7 @@ argument_list|)
 argument_list|,
 name|dd
 operator|.
-name|getHead
+name|getBlockListHeadForTesting
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -503,7 +503,7 @@ name|temp
 init|=
 name|dd
 operator|.
-name|getHead
+name|getBlockListHeadForTesting
 argument_list|()
 decl_stmt|;
 name|curIndex
@@ -533,7 +533,7 @@ name|temp
 argument_list|,
 name|dd
 operator|.
-name|getHead
+name|getBlockListHeadForTesting
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -549,7 +549,7 @@ name|temp
 operator|=
 name|dd
 operator|.
-name|getHead
+name|getBlockListHeadForTesting
 argument_list|()
 expr_stmt|;
 name|assertNotNull
@@ -609,7 +609,7 @@ name|headIndex
 operator|=
 name|dd
 operator|.
-name|getHead
+name|getBlockListHeadForTesting
 argument_list|()
 operator|.
 name|findStorageInfo
@@ -695,7 +695,7 @@ argument_list|)
 argument_list|,
 name|dd
 operator|.
-name|getHead
+name|getBlockListHeadForTesting
 argument_list|()
 argument_list|)
 expr_stmt|;

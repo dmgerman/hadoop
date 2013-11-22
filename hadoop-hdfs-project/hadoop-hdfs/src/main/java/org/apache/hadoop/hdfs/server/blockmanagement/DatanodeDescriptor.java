@@ -312,20 +312,6 @@ name|Time
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
 comment|/**  * This class extends the DatanodeInfo class with ephemeral information (eg  * health, capacity, what blocks are associated with the Datanode) that is  * private to the Namenode, ie this class is not exposed to clients.  */
 end_comment
@@ -794,23 +780,6 @@ DECL|field|lastCachingDirectiveSentTimeMs
 specifier|private
 name|long
 name|lastCachingDirectiveSentTimeMs
-decl_stmt|;
-comment|/**    * Head of the list of blocks on the datanode    */
-DECL|field|blockList
-specifier|private
-specifier|volatile
-name|BlockInfo
-name|blockList
-init|=
-literal|null
-decl_stmt|;
-comment|/**    * Number of blocks on the datanode    */
-DECL|field|numBlocks
-specifier|private
-name|int
-name|numBlocks
-init|=
-literal|0
 decl_stmt|;
 comment|// isAlive == heartbeats.contains(this)
 comment|// This is an optimization, because contains takes O(n) time on Arraylist
@@ -2669,10 +2638,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-annotation|@
-name|VisibleForTesting
 DECL|method|updateStorage (DatanodeStorage s)
-specifier|public
 name|DatanodeStorageInfo
 name|updateStorage
 parameter_list|(
@@ -2742,19 +2708,6 @@ name|getStorageID
 argument_list|()
 argument_list|,
 name|storage
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|storage
-operator|.
-name|setState
-argument_list|(
-name|s
-operator|.
-name|getState
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

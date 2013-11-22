@@ -542,6 +542,7 @@ name|storageType
 decl_stmt|;
 DECL|field|state
 specifier|private
+specifier|final
 name|State
 name|state
 decl_stmt|;
@@ -605,7 +606,6 @@ init|=
 literal|true
 decl_stmt|;
 DECL|method|DatanodeStorageInfo (DatanodeDescriptor dn, DatanodeStorage s)
-specifier|public
 name|DatanodeStorageInfo
 parameter_list|(
 name|DatanodeDescriptor
@@ -735,10 +735,10 @@ expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting
-DECL|method|setUtilization (long capacity, long dfsUsed, long remaining, long blockPoolUsed)
+DECL|method|setUtilizationForTesting (long capacity, long dfsUsed, long remaining, long blockPoolUsed)
 specifier|public
 name|void
-name|setUtilization
+name|setUtilizationForTesting
 parameter_list|(
 name|long
 name|capacity
@@ -777,26 +777,8 @@ name|blockPoolUsed
 operator|=
 name|blockPoolUsed
 expr_stmt|;
-block|}
-DECL|method|setState (State s)
-specifier|public
-name|void
-name|setState
-parameter_list|(
-name|State
-name|s
-parameter_list|)
-block|{
-name|this
-operator|.
-name|state
-operator|=
-name|s
-expr_stmt|;
-comment|// TODO: if goes to failed state cleanup the block list
 block|}
 DECL|method|getState ()
-specifier|public
 name|State
 name|getState
 parameter_list|()
@@ -808,7 +790,6 @@ name|state
 return|;
 block|}
 DECL|method|getStorageID ()
-specifier|public
 name|String
 name|getStorageID
 parameter_list|()
@@ -818,7 +799,6 @@ name|storageID
 return|;
 block|}
 DECL|method|getStorageType ()
-specifier|public
 name|StorageType
 name|getStorageType
 parameter_list|()
@@ -828,7 +808,6 @@ name|storageType
 return|;
 block|}
 DECL|method|getCapacity ()
-specifier|public
 name|long
 name|getCapacity
 parameter_list|()
@@ -838,7 +817,6 @@ name|capacity
 return|;
 block|}
 DECL|method|getDfsUsed ()
-specifier|public
 name|long
 name|getDfsUsed
 parameter_list|()
@@ -848,7 +826,6 @@ name|dfsUsed
 return|;
 block|}
 DECL|method|getRemaining ()
-specifier|public
 name|long
 name|getRemaining
 parameter_list|()
@@ -858,7 +835,6 @@ name|remaining
 return|;
 block|}
 DECL|method|getBlockPoolUsed ()
-specifier|public
 name|long
 name|getBlockPoolUsed
 parameter_list|()
@@ -868,7 +844,6 @@ name|blockPoolUsed
 return|;
 block|}
 DECL|method|addBlock (BlockInfo b)
-specifier|public
 name|boolean
 name|addBlock
 parameter_list|(
@@ -909,7 +884,6 @@ literal|true
 return|;
 block|}
 DECL|method|removeBlock (BlockInfo b)
-specifier|public
 name|boolean
 name|removeBlock
 parameter_list|(
@@ -953,7 +927,6 @@ return|;
 block|}
 block|}
 DECL|method|numBlocks ()
-specifier|public
 name|int
 name|numBlocks
 parameter_list|()
@@ -1015,10 +988,9 @@ block|}
 comment|/**    * Used for testing only    * @return the head of the blockList    */
 annotation|@
 name|VisibleForTesting
-DECL|method|getHead ()
-specifier|protected
+DECL|method|getBlockListHeadForTesting ()
 name|BlockInfo
-name|getHead
+name|getBlockListHeadForTesting
 parameter_list|()
 block|{
 return|return
@@ -1026,7 +998,6 @@ name|blockList
 return|;
 block|}
 DECL|method|updateState (StorageReport r)
-specifier|public
 name|void
 name|updateState
 parameter_list|(

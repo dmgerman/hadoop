@@ -1632,7 +1632,7 @@ literal|"SimulatedStroage-"
 operator|+
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 decl_stmt|;
 DECL|field|capacity
@@ -2418,10 +2418,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|Override
 DECL|method|getBlockReport (String bpid)
-specifier|public
 specifier|synchronized
 name|BlockListAsLongs
 name|getBlockReport
@@ -3534,7 +3531,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|Replica
+name|String
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -3655,6 +3652,9 @@ argument_list|)
 expr_stmt|;
 return|return
 name|binfo
+operator|.
+name|getStorageUuid
+argument_list|()
 return|;
 block|}
 annotation|@

@@ -464,7 +464,7 @@ name|storageID
 init|=
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 decl_stmt|;
 name|dd
@@ -1122,7 +1122,7 @@ name|DatanodeStorage
 argument_list|(
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1170,7 +1170,7 @@ name|DatanodeStorage
 argument_list|(
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 argument_list|)
 argument_list|)
@@ -1218,7 +1218,7 @@ name|DatanodeStorage
 argument_list|(
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 argument_list|)
 argument_list|)

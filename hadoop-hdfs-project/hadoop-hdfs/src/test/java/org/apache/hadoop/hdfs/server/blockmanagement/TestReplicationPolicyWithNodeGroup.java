@@ -863,7 +863,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|setUtilization
+name|setUtilizationForTesting
 argument_list|(
 name|capacity
 argument_list|,

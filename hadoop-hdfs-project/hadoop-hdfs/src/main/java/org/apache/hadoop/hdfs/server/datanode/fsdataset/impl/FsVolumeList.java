@@ -198,7 +198,7 @@ name|numFailedVolumes
 return|;
 block|}
 comment|/**     * Get next volume. Synchronized to ensure {@link #curVolume} is updated    * by a single thread and next volume is chosen with no concurrent    * update to {@link #volumes}.    * @param blockSize free space needed on the volume    * @return next volume to store the block in.    */
-comment|// TODO this will be replaced by getting volume from StorageID directly later.
+comment|// TODO should choose volume with storage type
 DECL|method|getNextVolume (long blockSize)
 specifier|synchronized
 name|FsVolumeImpl

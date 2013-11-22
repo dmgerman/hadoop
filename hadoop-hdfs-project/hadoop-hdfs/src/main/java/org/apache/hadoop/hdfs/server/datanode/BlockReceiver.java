@@ -1508,14 +1508,16 @@ return|return
 name|datanode
 return|;
 block|}
-DECL|method|getReplicaInfo ()
-specifier|public
-name|Replica
-name|getReplicaInfo
+DECL|method|getStorageUuid ()
+name|String
+name|getStorageUuid
 parameter_list|()
 block|{
 return|return
 name|replicaInfo
+operator|.
+name|getStorageUuid
+argument_list|()
 return|;
 block|}
 comment|/**    * close files.    */

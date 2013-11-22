@@ -22,29 +22,55 @@ end_package
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|util
 operator|.
-name|commons
+name|regex
 operator|.
-name|logging
-operator|.
-name|Log
+name|Pattern
 import|;
 end_import
 
 begin_import
 import|import
-name|org
+name|java
 operator|.
-name|apache
+name|io
 operator|.
-name|commons
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|logging
+name|io
 operator|.
-name|LogFactory
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Matcher
 import|;
 end_import
 
@@ -94,62 +120,6 @@ name|Util
 import|;
 end_import
 
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|net
-operator|.
-name|URI
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Matcher
-import|;
-end_import
-
-begin_import
-import|import static
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Pattern
-operator|.
-name|compile
-import|;
-end_import
-
 begin_comment
 comment|/**  * Encapsulates the URI and storage medium that together describe a  * storage directory.  * The default storage medium is assumed to be DISK, if none is specified.  *  */
 end_comment
@@ -164,22 +134,6 @@ specifier|public
 class|class
 name|StorageLocation
 block|{
-DECL|field|LOG
-specifier|public
-specifier|static
-specifier|final
-name|Log
-name|LOG
-init|=
-name|LogFactory
-operator|.
-name|getLog
-argument_list|(
-name|StorageLocation
-operator|.
-name|class
-argument_list|)
-decl_stmt|;
 DECL|field|storageType
 specifier|final
 name|StorageType
@@ -190,35 +144,23 @@ specifier|final
 name|File
 name|file
 decl_stmt|;
-comment|// Regular expression that describes a storage uri with a storage type.
-comment|// e.g. [Disk]/storages/storage1/
-DECL|field|rawStringRegex
+comment|/** Regular expression that describes a storage uri with a storage type.    *  e.g. [Disk]/storages/storage1/    */
+DECL|field|regex
 specifier|private
 specifier|static
 specifier|final
-name|String
-name|rawStringRegex
+name|Pattern
+name|regex
 init|=
-literal|"^\\[(\\w*)\\](.+)$"
-decl_stmt|;
-DECL|method|StorageLocation (URI uri)
-name|StorageLocation
-parameter_list|(
-name|URI
-name|uri
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|StorageType
+name|Pattern
 operator|.
-name|DISK
-argument_list|,
-name|uri
+name|compile
+argument_list|(
+literal|"^\\[(\\w*)\\](.+)$"
 argument_list|)
-expr_stmt|;
-block|}
+decl_stmt|;
 DECL|method|StorageLocation (StorageType storageType, URI uri)
+specifier|private
 name|StorageLocation
 parameter_list|(
 name|StorageType
@@ -275,11 +217,9 @@ throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"Got an Unsupported URI schema in "
+literal|"Unsupported URI schema in "
 operator|+
 name|uri
-operator|+
-literal|". Ignoring ..."
 argument_list|)
 throw|;
 block|}
@@ -297,7 +237,6 @@ name|storageType
 return|;
 block|}
 DECL|method|getUri ()
-specifier|public
 name|URI
 name|getUri
 parameter_list|()
@@ -323,7 +262,6 @@ return|;
 block|}
 comment|/**    * Attempt to parse a storage uri with storage class and URI. The storage    * class component of the uri is case-insensitive.    *    * @param rawLocation Location string of the format [type]uri, where [type] is    *                    optional.    * @return A StorageLocation object if successfully parsed, null otherwise.    *         Does not throw any exceptions.    */
 DECL|method|parse (String rawLocation)
-specifier|public
 specifier|static
 name|StorageLocation
 name|parse
@@ -337,10 +275,7 @@ block|{
 name|Matcher
 name|matcher
 init|=
-name|compile
-argument_list|(
-name|rawStringRegex
-argument_list|)
+name|regex
 operator|.
 name|matcher
 argument_list|(
@@ -352,7 +287,7 @@ name|storageType
 init|=
 name|StorageType
 operator|.
-name|DISK
+name|DEFAULT
 decl_stmt|;
 name|String
 name|location
@@ -395,8 +330,6 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-try|try
-block|{
 name|storageType
 operator|=
 name|StorageType
@@ -409,30 +342,6 @@ name|toUpperCase
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|RuntimeException
-name|re
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Unable to parse storage type: "
-operator|+
-name|re
-operator|.
-name|toString
-argument_list|()
-operator|+
-literal|". Using the default storage type for directory "
-operator|+
-name|location
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 block|}
 return|return
@@ -450,6 +359,8 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|toString ()
 specifier|public
 name|String
@@ -460,18 +371,12 @@ return|return
 literal|"["
 operator|+
 name|storageType
-operator|.
-name|toString
-argument_list|()
 operator|+
 literal|"]"
 operator|+
 name|file
 operator|.
 name|toURI
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 return|;
 block|}

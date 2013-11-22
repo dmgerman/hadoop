@@ -717,7 +717,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|setUtilization
+name|setUtilizationForTesting
 argument_list|(
 literal|2
 operator|*
@@ -1721,7 +1721,7 @@ name|DatanodeStorage
 argument_list|(
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 argument_list|)
 argument_list|)
@@ -3032,7 +3032,7 @@ decl_stmt|;
 comment|// TODO: Needs to be fixed. DatanodeUuid is not storageID.
 name|node
 operator|.
-name|setDatanodeUuid
+name|setDatanodeUuidForTesting
 argument_list|(
 name|ds
 operator|.
@@ -3333,7 +3333,7 @@ decl_stmt|;
 comment|// TODO: Needs to be fixed. DatanodeUuid is not storageID.
 name|node
 operator|.
-name|setDatanodeUuid
+name|setDatanodeUuidForTesting
 argument_list|(
 name|ds
 operator|.

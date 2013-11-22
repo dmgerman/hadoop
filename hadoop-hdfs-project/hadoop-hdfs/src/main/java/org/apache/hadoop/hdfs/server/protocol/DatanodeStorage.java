@@ -84,7 +84,7 @@ specifier|final
 name|StorageType
 name|storageType
 decl_stmt|;
-comment|/**    * Create a storage with {@link State#NORMAL} and    * {@link org.apache.hadoop.hdfs.StorageType#DEFAULT}.    *    * @param storageID    */
+comment|/**    * Create a storage with {@link State#NORMAL} and {@link StorageType#DEFAULT}.    *    * @param storageID    */
 DECL|method|DatanodeStorage (String storageID)
 specifier|public
 name|DatanodeStorage
@@ -100,29 +100,6 @@ argument_list|,
 name|State
 operator|.
 name|NORMAL
-argument_list|,
-name|StorageType
-operator|.
-name|DEFAULT
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|DatanodeStorage (String sid, State s)
-specifier|public
-name|DatanodeStorage
-parameter_list|(
-name|String
-name|sid
-parameter_list|,
-name|State
-name|s
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|sid
-argument_list|,
-name|s
 argument_list|,
 name|StorageType
 operator|.
@@ -193,12 +170,12 @@ return|return
 name|storageType
 return|;
 block|}
-comment|/**    * Generate new storage ID. The format of this string can be changed    * in the future without requiring that old SotrageIDs be updated.    *    * @return unique storage ID    */
-DECL|method|newStorageID ()
+comment|/**    * Generate new storage ID. The format of this string can be changed    * in the future without requiring that old storage IDs be updated.    *    * @return unique storage ID    */
+DECL|method|generateUuid ()
 specifier|public
 specifier|static
 name|String
-name|newStorageID
+name|generateUuid
 parameter_list|()
 block|{
 return|return

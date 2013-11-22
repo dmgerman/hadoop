@@ -762,7 +762,7 @@ index|[
 literal|0
 index|]
 operator|.
-name|setUtilization
+name|setUtilizationForTesting
 argument_list|(
 literal|100L
 argument_list|,

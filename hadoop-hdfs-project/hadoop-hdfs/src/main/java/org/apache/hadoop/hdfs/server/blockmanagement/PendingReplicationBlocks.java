@@ -722,19 +722,19 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|decrementReplicas (DatanodeDescriptor target)
+DECL|method|decrementReplicas (DatanodeDescriptor dn)
 name|void
 name|decrementReplicas
 parameter_list|(
 name|DatanodeDescriptor
-name|target
+name|dn
 parameter_list|)
 block|{
 name|targets
 operator|.
 name|remove
 argument_list|(
-name|target
+name|dn
 argument_list|)
 expr_stmt|;
 block|}

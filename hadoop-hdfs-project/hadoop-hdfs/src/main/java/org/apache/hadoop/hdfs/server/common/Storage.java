@@ -1087,8 +1087,8 @@ name|FileLock
 name|lock
 decl_stmt|;
 comment|// storage lock
-comment|//TODO HDFS-2832: Consider moving this out of StorageDirectory.
 DECL|field|storageUuid
+specifier|private
 name|String
 name|storageUuid
 init|=

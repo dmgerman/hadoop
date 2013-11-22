@@ -1600,8 +1600,8 @@ name|int
 name|validVolsRequired
 decl_stmt|;
 comment|// TODO HDFS-2832: Consider removing duplicated block info from these
-comment|//                 two maps. This might require some refactoring
-comment|//                 rewrite of FsDatasetImpl.
+comment|// two maps and move the perVolumeReplicaMap to FsVolumeImpl.
+comment|// This might require some refactoring.
 DECL|field|volumeMap
 specifier|final
 name|ReplicaMap
@@ -4111,7 +4111,7 @@ name|Override
 comment|// FsDatasetSpi
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen)
 specifier|public
-name|Replica
+name|String
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -4182,6 +4182,9 @@ expr_stmt|;
 block|}
 return|return
 name|replicaInfo
+operator|.
+name|getStorageUuid
+argument_list|()
 return|;
 block|}
 comment|/**    * Bump a replica's generation stamp to a new one.    * Its on-disk meta file name is renamed to be the new one too.    *     * @param replicaInfo a replica    * @param newGS new generation stamp    * @throws IOException if rename fails    */
@@ -5954,28 +5957,6 @@ name|bpid
 argument_list|)
 return|;
 block|}
-comment|/**    * Generates a block report from the in-memory block map.    */
-annotation|@
-name|Override
-comment|// FsDatasetSpi
-DECL|method|getBlockReport (String bpid)
-specifier|public
-name|BlockListAsLongs
-name|getBlockReport
-parameter_list|(
-name|String
-name|bpid
-parameter_list|)
-block|{
-return|return
-name|getBlockReportWithReplicaMap
-argument_list|(
-name|bpid
-argument_list|,
-name|volumeMap
-argument_list|)
-return|;
-block|}
 annotation|@
 name|Override
 DECL|method|getBlockReports (String bpid)
@@ -6126,6 +6107,9 @@ argument_list|(
 operator|new
 name|FinalizedReplica
 argument_list|(
+operator|(
+name|FinalizedReplica
+operator|)
 name|b
 argument_list|)
 argument_list|)

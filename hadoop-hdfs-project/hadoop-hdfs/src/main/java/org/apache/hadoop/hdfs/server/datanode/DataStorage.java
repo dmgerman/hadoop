@@ -676,7 +676,7 @@ name|setStorageUuid
 argument_list|(
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1098,31 +1098,16 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
 name|StorageLocation
-argument_list|>
-name|it
-init|=
+name|dir
+range|:
 name|dataDirs
-operator|.
-name|iterator
-argument_list|()
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
 name|File
 name|dnRoot
 init|=
-name|it
-operator|.
-name|next
-argument_list|()
+name|dir
 operator|.
 name|getFile
 argument_list|()
@@ -1398,12 +1383,9 @@ name|sd
 operator|.
 name|setStorageUuid
 argument_list|(
-name|UUID
+name|DatanodeStorage
 operator|.
-name|randomUUID
-argument_list|()
-operator|.
-name|toString
+name|generateUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1547,7 +1529,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/*    * Read ClusterID, StorageID, StorageType, CTime from     * DataStorage VERSION file and verify them.    * Always called just after reading the properties from the VERSION    * file.    */
+comment|/*    * Read ClusterID, StorageID, StorageType, CTime from     * DataStorage VERSION file and verify them.    * Always called just after reading the properties from the VERSION file.    */
 annotation|@
 name|Override
 DECL|method|setFieldsFromProperties (Properties props, StorageDirectory sd)

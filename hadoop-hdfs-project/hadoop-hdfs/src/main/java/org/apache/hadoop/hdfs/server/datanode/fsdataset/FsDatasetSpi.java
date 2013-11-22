@@ -824,10 +824,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover a failed pipeline close    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @throws IOException    */
+comment|/**    * Recover a failed pipeline close    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the storage uuid of the replica.    * @throws IOException    */
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen )
 specifier|public
-name|Replica
+name|String
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -865,16 +865,6 @@ name|b
 parameter_list|)
 throws|throws
 name|IOException
-function_decl|;
-comment|/**    * TODO HDFS-2832: Deprecate this when we fix tests.    * Returns the block report - the full list of blocks stored under a     * block pool    * @param bpid Block Pool Id    * @return - the block report - the full list of blocks stored    */
-DECL|method|getBlockReport (String bpid)
-specifier|public
-name|BlockListAsLongs
-name|getBlockReport
-parameter_list|(
-name|String
-name|bpid
-parameter_list|)
 function_decl|;
 comment|/**    * Returns one block report per volume.    * @param bpid Block Pool Id    * @return - a map of StorageID to block report for the volume.    */
 DECL|method|getBlockReports (String bpid)

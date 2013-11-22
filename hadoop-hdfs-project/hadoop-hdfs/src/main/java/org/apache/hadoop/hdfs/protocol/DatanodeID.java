@@ -46,6 +46,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class represents the primary identifier for a Datanode.  * Datanodes are identified by how they can be contacted (hostname  * and ports) and their storage ID, a unique number that associates  * the Datanodes blocks with a particular Datanode.  *  * {@link DatanodeInfo#getName()} should be used to get the network  * location (for topology) of a datanode, instead of using  * {@link DatanodeID#getXferAddr()} here. Helpers are defined below  * for each context in which a DatanodeID is used.  */
 end_comment
@@ -121,9 +135,7 @@ name|int
 name|ipcPort
 decl_stmt|;
 comment|// IPC server port
-comment|// UUID identifying a given datanode. For upgraded Datanodes this is the
-comment|// same as the StorageID that was previously used by this Datanode. For
-comment|// newly formatted Datanodes it is a UUID.
+comment|/**    * UUID identifying a given datanode. For upgraded Datanodes this is the    * same as the StorageID that was previously used by this Datanode.     * For newly formatted Datanodes it is a UUID.    */
 DECL|field|datanodeUuid
 specifier|private
 name|String
@@ -303,10 +315,12 @@ return|return
 name|datanodeUuid
 return|;
 block|}
-DECL|method|setDatanodeUuid (String datanodeUuid)
+annotation|@
+name|VisibleForTesting
+DECL|method|setDatanodeUuidForTesting (String datanodeUuid)
 specifier|public
 name|void
-name|setDatanodeUuid
+name|setDatanodeUuidForTesting
 parameter_list|(
 name|String
 name|datanodeUuid

@@ -45,7 +45,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Defines the types of supported storage media. The default storage  * medium is assumed to be DISK.  *  */
+comment|/**  * Defines the types of supported storage media. The default storage  * medium is assumed to be DISK.  */
 end_comment
 
 begin_enum
@@ -56,7 +56,7 @@ name|Public
 annotation|@
 name|InterfaceStability
 operator|.
-name|Evolving
+name|Unstable
 DECL|enum|StorageType
 specifier|public
 enum|enum
@@ -64,15 +64,9 @@ name|StorageType
 block|{
 DECL|enumConstant|DISK
 name|DISK
-argument_list|(
-literal|1
-argument_list|)
 block|,
 DECL|enumConstant|SSD
 name|SSD
-argument_list|(
-literal|2
-argument_list|)
 block|;
 DECL|field|DEFAULT
 specifier|public
@@ -82,36 +76,6 @@ name|DEFAULT
 init|=
 name|DISK
 decl_stmt|;
-DECL|field|storageType
-specifier|private
-specifier|final
-name|int
-name|storageType
-decl_stmt|;
-DECL|method|StorageType (int medium)
-name|StorageType
-parameter_list|(
-name|int
-name|medium
-parameter_list|)
-block|{
-name|storageType
-operator|=
-name|medium
-expr_stmt|;
-block|}
-DECL|method|getStorageType ()
-specifier|public
-name|int
-name|getStorageType
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|storageType
-return|;
-block|}
 block|}
 end_enum
 

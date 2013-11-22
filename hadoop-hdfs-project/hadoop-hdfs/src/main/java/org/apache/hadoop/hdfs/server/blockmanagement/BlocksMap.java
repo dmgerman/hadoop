@@ -431,7 +431,7 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|/**    * Searches for the block in the BlocksMap and     * returns {@link Iterable} that iterates through the nodes the block belongs to.    */
+comment|/**    * Searches for the block in the BlocksMap and     * returns {@link Iterable} of the storages the block belongs to.    */
 DECL|method|getStorages (Block b)
 name|Iterable
 argument_list|<
@@ -455,7 +455,7 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * For a block that has already been retrieved from the BlocksMap    * returns {@link Iterable} that iterates through the nodes the block belongs to.    */
+comment|/**    * For a block that has already been retrieved from the BlocksMap    * returns {@link Iterable} of the storages the block belongs to.    */
 DECL|method|getStorages (final BlockInfo storedBlock)
 name|Iterable
 argument_list|<

@@ -1282,8 +1282,6 @@ block|{
 name|storageType
 block|}
 decl_stmt|;
-comment|// TODO: Corrupt flag is set to false for compatibility. We can probably
-comment|// set it to true here.
 name|LocatedBlock
 index|[]
 name|blocks

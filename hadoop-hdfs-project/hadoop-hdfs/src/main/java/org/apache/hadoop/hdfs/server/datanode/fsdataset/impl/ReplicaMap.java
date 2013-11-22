@@ -458,7 +458,7 @@ argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Add all entries from the given replica map into the local replica    * map.    * @param    */
+comment|/**    * Add all entries from the given replica map into the local replica map.    */
 DECL|method|addAll (ReplicaMap other)
 name|void
 name|addAll

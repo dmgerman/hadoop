@@ -72,20 +72,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -917,6 +903,28 @@ name|heartbeatCheck
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|updateStorage (DatanodeDescriptor dn, DatanodeStorage s)
+specifier|public
+specifier|static
+name|DatanodeStorageInfo
+name|updateStorage
+parameter_list|(
+name|DatanodeDescriptor
+name|dn
+parameter_list|,
+name|DatanodeStorage
+name|s
+parameter_list|)
+block|{
+return|return
+name|dn
+operator|.
+name|updateStorage
+argument_list|(
+name|s
+argument_list|)
+return|;
+block|}
 DECL|method|getLocalDatanodeDescriptor ( boolean initializeStorage)
 specifier|public
 specifier|static
@@ -953,7 +961,7 @@ name|DatanodeStorage
 argument_list|(
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 argument_list|)
 argument_list|)
@@ -993,7 +1001,7 @@ name|DatanodeStorage
 argument_list|(
 name|DatanodeStorage
 operator|.
-name|newStorageID
+name|generateUuid
 argument_list|()
 argument_list|)
 else|:
@@ -1050,6 +1058,29 @@ expr_stmt|;
 block|}
 return|return
 name|dn
+return|;
+block|}
+DECL|method|newDatanodeStorageInfo ( DatanodeDescriptor dn, DatanodeStorage s)
+specifier|public
+specifier|static
+name|DatanodeStorageInfo
+name|newDatanodeStorageInfo
+parameter_list|(
+name|DatanodeDescriptor
+name|dn
+parameter_list|,
+name|DatanodeStorage
+name|s
+parameter_list|)
+block|{
+return|return
+operator|new
+name|DatanodeStorageInfo
+argument_list|(
+name|dn
+argument_list|,
+name|s
+argument_list|)
 return|;
 block|}
 DECL|method|getStorageReportsForDatanode ( DatanodeDescriptor dnd)
