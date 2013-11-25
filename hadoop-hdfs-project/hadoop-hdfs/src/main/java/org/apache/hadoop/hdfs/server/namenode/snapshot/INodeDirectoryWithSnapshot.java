@@ -1270,37 +1270,6 @@ operator|.
 name|getLocalNameBytes
 argument_list|()
 expr_stmt|;
-if|if
-condition|(
-name|cnode
-operator|.
-name|isSymlink
-argument_list|()
-operator|&&
-name|dnode
-operator|.
-name|isSymlink
-argument_list|()
-condition|)
-block|{
-name|dList
-operator|.
-name|add
-argument_list|(
-operator|new
-name|DiffReportEntry
-argument_list|(
-name|DiffType
-operator|.
-name|MODIFY
-argument_list|,
-name|fullPath
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
 comment|// must be the case: delete first and then create an inode with the
 comment|// same name
 name|cList
@@ -1333,7 +1302,6 @@ name|fullPath
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|c
 operator|++
 expr_stmt|;
