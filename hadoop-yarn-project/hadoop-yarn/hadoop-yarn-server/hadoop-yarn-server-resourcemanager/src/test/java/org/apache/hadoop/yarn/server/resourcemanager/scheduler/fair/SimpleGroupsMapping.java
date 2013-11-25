@@ -98,6 +98,14 @@ argument_list|(
 name|user
 operator|+
 literal|"group"
+argument_list|,
+name|user
+operator|+
+literal|"subgroup1"
+argument_list|,
+name|user
+operator|+
+literal|"subgroup2"
 argument_list|)
 return|;
 block|}
