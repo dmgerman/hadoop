@@ -2650,6 +2650,10 @@ name|CONTAINER_ACQUIRED
 argument_list|,
 name|RMAppAttemptEventType
 operator|.
+name|ATTEMPT_NEW_SAVED
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
 name|KILL
 argument_list|)
 argument_list|)

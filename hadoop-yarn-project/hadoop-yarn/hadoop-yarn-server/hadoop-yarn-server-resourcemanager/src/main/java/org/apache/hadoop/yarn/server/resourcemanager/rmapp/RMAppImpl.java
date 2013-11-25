@@ -1248,7 +1248,7 @@ operator|.
 name|START
 argument_list|,
 operator|new
-name|RMAppSavingTransition
+name|RMAppNewlySavingTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -1832,6 +1832,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_NEW_SAVED
 argument_list|)
 argument_list|)
 comment|// Transitions from FINISHING state
@@ -4424,12 +4428,12 @@ return|return
 name|msg
 return|;
 block|}
-DECL|class|RMAppSavingTransition
+DECL|class|RMAppNewlySavingTransition
 specifier|private
 specifier|static
 specifier|final
 class|class
-name|RMAppSavingTransition
+name|RMAppNewlySavingTransition
 extends|extends
 name|RMAppTransition
 block|{
