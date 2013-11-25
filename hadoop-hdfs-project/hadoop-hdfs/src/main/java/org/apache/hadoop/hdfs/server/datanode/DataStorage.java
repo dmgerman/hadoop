@@ -1552,6 +1552,52 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|setFieldsFromProperties
+argument_list|(
+name|props
+argument_list|,
+name|sd
+argument_list|,
+literal|false
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|setFieldsFromProperties (Properties props, StorageDirectory sd, boolean overrideLayoutVersion, int toLayoutVersion)
+specifier|private
+name|void
+name|setFieldsFromProperties
+parameter_list|(
+name|Properties
+name|props
+parameter_list|,
+name|StorageDirectory
+name|sd
+parameter_list|,
+name|boolean
+name|overrideLayoutVersion
+parameter_list|,
+name|int
+name|toLayoutVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|overrideLayoutVersion
+condition|)
+block|{
+name|this
+operator|.
+name|layoutVersion
+operator|=
+name|toLayoutVersion
+expr_stmt|;
+block|}
+else|else
+block|{
 name|setLayoutVersion
 argument_list|(
 name|props
@@ -1559,6 +1605,7 @@ argument_list|,
 name|sd
 argument_list|)
 expr_stmt|;
+block|}
 name|setcTime
 argument_list|(
 name|props
@@ -1811,7 +1858,44 @@ return|return
 literal|true
 return|;
 block|}
-comment|/**    * Analize which and whether a transition of the fs state is required    * and perform it if necessary.    *     * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime    * Regular startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param datanode Datanode to which this storage belongs to    * @param sd  storage directory    * @param nsInfo  namespace info    * @param startOpt  startup option    * @throws IOException    */
+comment|/** Read VERSION file for rollback */
+DECL|method|readProperties (StorageDirectory sd, int rollbackLayoutVersion)
+name|void
+name|readProperties
+parameter_list|(
+name|StorageDirectory
+name|sd
+parameter_list|,
+name|int
+name|rollbackLayoutVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|Properties
+name|props
+init|=
+name|readPropertiesFile
+argument_list|(
+name|sd
+operator|.
+name|getVersionFile
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|setFieldsFromProperties
+argument_list|(
+name|props
+argument_list|,
+name|sd
+argument_list|,
+literal|true
+argument_list|,
+name|rollbackLayoutVersion
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Analize which and whether a transition of the fs state is required    * and perform it if necessary.    *     * Rollback if the rollback startup option was specified.    * Upgrade if this.LV> LAYOUT_VERSION    * Regular startup if this.LV = LAYOUT_VERSION    *     * @param datanode Datanode to which this storage belongs to    * @param sd  storage directory    * @param nsInfo  namespace info    * @param startOpt  startup option    * @throws IOException    */
 DECL|method|doTransition ( DataNode datanode, StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt )
 specifier|private
 name|void
@@ -1976,7 +2060,9 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|// regular start up
+comment|// After addition of the federation feature, ctime check is only
+comment|// meaningful at BlockPoolSliceStorage level.
+comment|// regular start up.
 if|if
 condition|(
 name|this
@@ -1986,15 +2072,6 @@ operator|==
 name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
-operator|&&
-name|this
-operator|.
-name|cTime
-operator|==
-name|nsInfo
-operator|.
-name|getCTime
-argument_list|()
 condition|)
 return|return;
 comment|// regular startup
@@ -2008,15 +2085,6 @@ operator|>
 name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
-operator|||
-name|this
-operator|.
-name|cTime
-operator|<
-name|nsInfo
-operator|.
-name|getCTime
-argument_list|()
 condition|)
 block|{
 name|doUpgrade
@@ -2029,38 +2097,32 @@ expr_stmt|;
 comment|// upgrade
 return|return;
 block|}
-comment|// layoutVersion == LAYOUT_VERSION&& this.cTime> nsInfo.cTime
-comment|// must shutdown
+comment|// layoutVersion< LAYOUT_VERSION. I.e. stored layout version is newer
+comment|// than the version supported by datanode. This should have been caught
+comment|// in readProperties(), even if rollback was not carried out or somehow
+comment|// failed.
 throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Datanode state: LV = "
+literal|"BUG: The stored LV = "
 operator|+
 name|this
 operator|.
 name|getLayoutVersion
 argument_list|()
 operator|+
-literal|" CTime = "
+literal|" is newer than the supported LV = "
 operator|+
-name|this
+name|HdfsConstants
 operator|.
-name|getCTime
-argument_list|()
+name|LAYOUT_VERSION
 operator|+
-literal|" is newer than the namespace state: LV = "
+literal|" or name node LV = "
 operator|+
 name|nsInfo
 operator|.
 name|getLayoutVersion
-argument_list|()
-operator|+
-literal|" CTime = "
-operator|+
-name|nsInfo
-operator|.
-name|getCTime
 argument_list|()
 argument_list|)
 throw|;
@@ -2079,6 +2141,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+comment|// If the existing on-disk layout version supportes federation, simply
+comment|// update its layout version.
 if|if
 condition|(
 name|LayoutVersion
@@ -2093,12 +2157,30 @@ name|layoutVersion
 argument_list|)
 condition|)
 block|{
-name|clusterID
-operator|=
+comment|// The VERSION file is already read in. Override the layoutVersion
+comment|// field and overwrite the file.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Updating layout version from "
+operator|+
+name|layoutVersion
+operator|+
+literal|" to "
+operator|+
 name|nsInfo
 operator|.
-name|getClusterID
+name|getLayoutVersion
 argument_list|()
+operator|+
+literal|" for storage "
+operator|+
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+argument_list|)
 expr_stmt|;
 name|layoutVersion
 operator|=
@@ -2453,7 +2535,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**     * Rolling back to a snapshot in previous directory by moving it to current    * directory.    * Rollback procedure:    *<br>    * If previous directory exists:    *<ol>    *<li> Rename current to removed.tmp</li>    *<li> Rename previous to current</li>    *<li> Remove removed.tmp</li>    *</ol>    *     * Do nothing, if previous directory does not exist.    */
+comment|/**     * Rolling back to a snapshot in previous directory by moving it to current    * directory.    * Rollback procedure:    *<br>    * If previous directory exists:    *<ol>    *<li> Rename current to removed.tmp</li>    *<li> Rename previous to current</li>    *<li> Remove removed.tmp</li>    *</ol>    *     * If previous directory does not exist and the current version supports    * federation, perform a simple rollback of layout version. This does not    * involve saving/restoration of actual data.    */
 DECL|method|doRollback ( StorageDirectory sd, NamespaceInfo nsInfo )
 name|void
 name|doRollback
@@ -2475,7 +2557,7 @@ operator|.
 name|getPreviousDir
 argument_list|()
 decl_stmt|;
-comment|// regular startup if previous dir does not exist
+comment|// This is a regular startup or a post-federation rollback
 if|if
 condition|(
 operator|!
@@ -2484,7 +2566,75 @@ operator|.
 name|exists
 argument_list|()
 condition|)
+block|{
+comment|// The current datanode version supports federation and the layout
+comment|// version from namenode matches what the datanode supports. An invalid
+comment|// rollback may happen if namenode didn't rollback and datanode is
+comment|// running a wrong version.  But this will be detected in block pool
+comment|// level and the invalid VERSION content will be overwritten when
+comment|// the error is corrected and rollback is retried.
+if|if
+condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|FEDERATION
+argument_list|,
+name|HdfsConstants
+operator|.
+name|LAYOUT_VERSION
+argument_list|)
+operator|&&
+name|HdfsConstants
+operator|.
+name|LAYOUT_VERSION
+operator|==
+name|nsInfo
+operator|.
+name|getLayoutVersion
+argument_list|()
+condition|)
+block|{
+name|readProperties
+argument_list|(
+name|sd
+argument_list|,
+name|nsInfo
+operator|.
+name|getLayoutVersion
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|writeProperties
+argument_list|(
+name|sd
+argument_list|)
+expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Layout version rolled back to "
+operator|+
+name|nsInfo
+operator|.
+name|getLayoutVersion
+argument_list|()
+operator|+
+literal|" for storage "
+operator|+
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 return|return;
+block|}
 name|DataStorage
 name|prevInfo
 init|=

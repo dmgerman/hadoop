@@ -1103,7 +1103,7 @@ name|cluster
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Older LayoutVersion to make it rollback
+comment|// Put newer layout version in current.
 name|storageInfo
 operator|=
 operator|new
@@ -1113,7 +1113,7 @@ name|UpgradeUtilities
 operator|.
 name|getCurrentLayoutVersion
 argument_list|()
-operator|+
+operator|-
 literal|1
 argument_list|,
 name|UpgradeUtilities
@@ -1138,7 +1138,21 @@ name|cluster
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Create old VERSION file for each data dir
+comment|// Overwrite VERSION file in the current directory of
+comment|// volume directories and block pool slice directories
+comment|// with a layout version from future.
+name|File
+index|[]
+name|dataCurrentDirs
+init|=
+operator|new
+name|File
+index|[
+name|dataNodeDirs
+operator|.
+name|length
+index|]
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -1156,9 +1170,15 @@ name|i
 operator|++
 control|)
 block|{
-name|Path
-name|bpPrevPath
-init|=
+name|dataCurrentDirs
+index|[
+name|i
+index|]
+operator|=
+operator|new
+name|File
+argument_list|(
+operator|(
 operator|new
 name|Path
 argument_list|(
@@ -1167,28 +1187,20 @@ index|[
 name|i
 index|]
 operator|+
-literal|"/current/"
-operator|+
-name|UpgradeUtilities
-operator|.
-name|getCurrentBlockPoolID
-argument_list|(
-name|cluster
+literal|"/current"
 argument_list|)
-argument_list|)
-decl_stmt|;
-name|UpgradeUtilities
-operator|.
-name|createBlockPoolVersionFile
-argument_list|(
-operator|new
-name|File
-argument_list|(
-name|bpPrevPath
+operator|)
 operator|.
 name|toString
 argument_list|()
 argument_list|)
+expr_stmt|;
+block|}
+name|UpgradeUtilities
+operator|.
+name|createDataNodeVersionFile
+argument_list|(
+name|dataCurrentDirs
 argument_list|,
 name|storageInfo
 argument_list|,
@@ -1200,7 +1212,6 @@ name|cluster
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 name|cluster
 operator|.
 name|startDataNodes
