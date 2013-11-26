@@ -683,6 +683,8 @@ argument_list|(
 name|other
 argument_list|,
 literal|false
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}

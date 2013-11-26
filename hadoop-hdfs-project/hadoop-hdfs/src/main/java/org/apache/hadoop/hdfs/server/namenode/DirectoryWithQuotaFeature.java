@@ -28,22 +28,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|PermissionStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|hdfs
 operator|.
 name|protocol
@@ -100,41 +84,50 @@ name|QuotaExceededException
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
 begin_comment
-comment|/**  * Directory INode class that has a quota restriction  */
+comment|/**  * Quota feature for {@link INodeDirectory}.   */
 end_comment
 
 begin_class
-DECL|class|INodeDirectoryWithQuota
+DECL|class|DirectoryWithQuotaFeature
 specifier|public
+specifier|final
 class|class
-name|INodeDirectoryWithQuota
+name|DirectoryWithQuotaFeature
 extends|extends
 name|INodeDirectory
+operator|.
+name|Feature
 block|{
+DECL|field|DEFAULT_NAMESPACE_QUOTA
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_NAMESPACE_QUOTA
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
+DECL|field|DEFAULT_DISKSPACE_QUOTA
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_DISKSPACE_QUOTA
+init|=
+name|HdfsConstants
+operator|.
+name|QUOTA_RESET
+decl_stmt|;
 comment|/** Name space quota */
 DECL|field|nsQuota
 specifier|private
 name|long
 name|nsQuota
 init|=
-name|Long
-operator|.
-name|MAX_VALUE
+name|DEFAULT_NAMESPACE_QUOTA
 decl_stmt|;
 comment|/** Name space count */
 DECL|field|namespace
@@ -150,9 +143,7 @@ specifier|private
 name|long
 name|dsQuota
 init|=
-name|HdfsConstants
-operator|.
-name|QUOTA_RESET
+name|DEFAULT_DISKSPACE_QUOTA
 decl_stmt|;
 comment|/** Disk space count */
 DECL|field|diskspace
@@ -162,16 +153,9 @@ name|diskspace
 init|=
 literal|0L
 decl_stmt|;
-comment|/** Convert an existing directory inode to one with the given quota    *     * @param nsQuota Namespace quota to be assigned to this inode    * @param dsQuota Diskspace quota to be assigned to this indoe    * @param other The other inode from which all other properties are copied    */
-DECL|method|INodeDirectoryWithQuota (INodeDirectory other, boolean adopt, long nsQuota, long dsQuota)
-name|INodeDirectoryWithQuota
+DECL|method|DirectoryWithQuotaFeature (long nsQuota, long dsQuota)
+name|DirectoryWithQuotaFeature
 parameter_list|(
-name|INodeDirectory
-name|other
-parameter_list|,
-name|boolean
-name|adopt
-parameter_list|,
 name|long
 name|nsQuota
 parameter_list|,
@@ -179,188 +163,25 @@ name|long
 name|dsQuota
 parameter_list|)
 block|{
-name|super
-argument_list|(
-name|other
-argument_list|,
-name|adopt
-argument_list|)
+name|this
+operator|.
+name|nsQuota
+operator|=
+name|nsQuota
 expr_stmt|;
-specifier|final
+name|this
+operator|.
+name|dsQuota
+operator|=
+name|dsQuota
+expr_stmt|;
+block|}
+comment|/** @return the quota set or -1 if it is not set. */
+DECL|method|getQuota ()
 name|Quota
 operator|.
 name|Counts
-name|counts
-init|=
-name|other
-operator|.
-name|computeQuotaUsage
-argument_list|()
-decl_stmt|;
-name|this
-operator|.
-name|namespace
-operator|=
-name|counts
-operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|diskspace
-operator|=
-name|counts
-operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|DISKSPACE
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|nsQuota
-operator|=
-name|nsQuota
-expr_stmt|;
-name|this
-operator|.
-name|dsQuota
-operator|=
-name|dsQuota
-expr_stmt|;
-block|}
-DECL|method|INodeDirectoryWithQuota (INodeDirectory other, boolean adopt, Quota.Counts quota)
-specifier|public
-name|INodeDirectoryWithQuota
-parameter_list|(
-name|INodeDirectory
-name|other
-parameter_list|,
-name|boolean
-name|adopt
-parameter_list|,
-name|Quota
-operator|.
-name|Counts
-name|quota
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|other
-argument_list|,
-name|adopt
-argument_list|,
-name|quota
-operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|NAMESPACE
-argument_list|)
-argument_list|,
-name|quota
-operator|.
-name|get
-argument_list|(
-name|Quota
-operator|.
-name|DISKSPACE
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota (long id, byte[] name, PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
-name|INodeDirectoryWithQuota
-parameter_list|(
-name|long
-name|id
-parameter_list|,
-name|byte
-index|[]
-name|name
-parameter_list|,
-name|PermissionStatus
-name|permissions
-parameter_list|,
-name|long
-name|modificationTime
-parameter_list|,
-name|long
-name|nsQuota
-parameter_list|,
-name|long
-name|dsQuota
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|id
-argument_list|,
-name|name
-argument_list|,
-name|permissions
-argument_list|,
-name|modificationTime
-argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|nsQuota
-operator|=
-name|nsQuota
-expr_stmt|;
-name|this
-operator|.
-name|dsQuota
-operator|=
-name|dsQuota
-expr_stmt|;
-block|}
-comment|/** constructor with no quota verification */
-DECL|method|INodeDirectoryWithQuota (long id, byte[] name, PermissionStatus permissions)
-name|INodeDirectoryWithQuota
-parameter_list|(
-name|long
-name|id
-parameter_list|,
-name|byte
-index|[]
-name|name
-parameter_list|,
-name|PermissionStatus
-name|permissions
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|id
-argument_list|,
-name|name
-argument_list|,
-name|permissions
-argument_list|,
-literal|0L
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|getQuotaCounts ()
-specifier|public
-name|Quota
-operator|.
-name|Counts
-name|getQuotaCounts
+name|getQuota
 parameter_list|()
 block|{
 return|return
@@ -376,9 +197,8 @@ name|dsQuota
 argument_list|)
 return|;
 block|}
-comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param dsQuota diskspace quota to be set    */
+comment|/** Set this directory's quota    *     * @param nsQuota Namespace quota to be set    * @param dsQuota Diskspace quota to be set    */
 DECL|method|setQuota (long nsQuota, long dsQuota)
-specifier|public
 name|void
 name|setQuota
 parameter_list|(
@@ -402,36 +222,18 @@ operator|=
 name|dsQuota
 expr_stmt|;
 block|}
-annotation|@
-name|Override
-DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache, int lastSnapshotId)
-specifier|public
+DECL|method|addNamespaceDiskspace (Quota.Counts counts)
 name|Quota
 operator|.
 name|Counts
-name|computeQuotaUsage
+name|addNamespaceDiskspace
 parameter_list|(
 name|Quota
 operator|.
 name|Counts
 name|counts
-parameter_list|,
-name|boolean
-name|useCache
-parameter_list|,
-name|int
-name|lastSnapshotId
 parameter_list|)
 block|{
-if|if
-condition|(
-name|useCache
-operator|&&
-name|isQuotaSet
-argument_list|()
-condition|)
-block|{
-comment|// use cache value
 name|counts
 operator|.
 name|add
@@ -454,32 +256,18 @@ argument_list|,
 name|diskspace
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-name|super
-operator|.
-name|computeQuotaUsage
-argument_list|(
-name|counts
-argument_list|,
-literal|false
-argument_list|,
-name|lastSnapshotId
-argument_list|)
-expr_stmt|;
-block|}
 return|return
 name|counts
 return|;
 block|}
-annotation|@
-name|Override
-DECL|method|computeContentSummary ( final ContentSummaryComputationContext summary)
-specifier|public
+DECL|method|computeContentSummary (final INodeDirectory dir, final ContentSummaryComputationContext summary)
 name|ContentSummaryComputationContext
 name|computeContentSummary
 parameter_list|(
+specifier|final
+name|INodeDirectory
+name|dir
+parameter_list|,
 specifier|final
 name|ContentSummaryComputationContext
 name|summary
@@ -509,9 +297,9 @@ operator|.
 name|getYieldCount
 argument_list|()
 decl_stmt|;
-name|super
+name|dir
 operator|.
-name|computeContentSummary
+name|computeDirectoryContentSummary
 argument_list|(
 name|summary
 argument_list|)
@@ -529,6 +317,8 @@ condition|)
 block|{
 name|checkDiskspace
 argument_list|(
+name|dir
+argument_list|,
 name|summary
 operator|.
 name|getCounts
@@ -549,11 +339,15 @@ return|return
 name|summary
 return|;
 block|}
-DECL|method|checkDiskspace (final long computed)
+DECL|method|checkDiskspace (final INodeDirectory dir, final long computed)
 specifier|private
 name|void
 name|checkDiskspace
 parameter_list|(
+specifier|final
+name|INodeDirectory
+name|dir
+parameter_list|,
 specifier|final
 name|long
 name|computed
@@ -564,7 +358,7 @@ condition|(
 operator|-
 literal|1
 operator|!=
-name|getQuotaCounts
+name|getQuota
 argument_list|()
 operator|.
 name|get
@@ -587,6 +381,8 @@ name|error
 argument_list|(
 literal|"BUG: Inconsistent diskspace for directory "
 operator|+
+name|dir
+operator|.
 name|getFullPathName
 argument_list|()
 operator|+
@@ -601,24 +397,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/** Get the number of names in the subtree rooted at this directory    * @return the size of the subtree rooted at this directory    */
-DECL|method|numItemsInTree ()
-name|long
-name|numItemsInTree
-parameter_list|()
-block|{
-return|return
-name|namespace
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|addSpaceConsumed (final long nsDelta, final long dsDelta, boolean verify)
-specifier|public
-specifier|final
+DECL|method|addSpaceConsumed (final INodeDirectory dir, final long nsDelta, final long dsDelta, boolean verify)
 name|void
 name|addSpaceConsumed
 parameter_list|(
+specifier|final
+name|INodeDirectory
+name|dir
+parameter_list|,
 specifier|final
 name|long
 name|nsDelta
@@ -635,6 +421,8 @@ name|QuotaExceededException
 block|{
 if|if
 condition|(
+name|dir
+operator|.
 name|isQuotaSet
 argument_list|()
 condition|)
@@ -657,9 +445,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// (2) verify quota and then add count in ancestors
-name|super
+name|dir
 operator|.
-name|addSpaceConsumed
+name|addSpaceConsumed2Parent
 argument_list|(
 name|nsDelta
 argument_list|,
@@ -679,9 +467,9 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|super
+name|dir
 operator|.
-name|addSpaceConsumed
+name|addSpaceConsumed2Parent
 argument_list|(
 name|nsDelta
 argument_list|,
@@ -694,7 +482,7 @@ block|}
 block|}
 comment|/** Update the size of the tree    *     * @param nsDelta the change of the tree size    * @param dsDelta change to disk space occupied    */
 DECL|method|addSpaceConsumed2Cache (long nsDelta, long dsDelta)
-specifier|protected
+specifier|public
 name|void
 name|addSpaceConsumed2Cache
 parameter_list|(
@@ -739,8 +527,31 @@ operator|=
 name|diskspace
 expr_stmt|;
 block|}
+comment|/** @return the namespace and diskspace consumed. */
+DECL|method|getSpaceConsumed ()
+specifier|public
+name|Quota
+operator|.
+name|Counts
+name|getSpaceConsumed
+parameter_list|()
+block|{
+return|return
+name|Quota
+operator|.
+name|Counts
+operator|.
+name|newInstance
+argument_list|(
+name|namespace
+argument_list|,
+name|diskspace
+argument_list|)
+return|;
+block|}
 comment|/** Verify if the namespace quota is violated after applying delta. */
 DECL|method|verifyNamespaceQuota (long delta)
+specifier|private
 name|void
 name|verifyNamespaceQuota
 parameter_list|(
@@ -777,7 +588,46 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/** Verify if the namespace count disk space satisfies the quota restriction     * @throws QuotaExceededException if the given quota is less than the count    */
+comment|/** Verify if the diskspace quota is violated after applying delta. */
+DECL|method|verifyDiskspaceQuota (long delta)
+specifier|private
+name|void
+name|verifyDiskspaceQuota
+parameter_list|(
+name|long
+name|delta
+parameter_list|)
+throws|throws
+name|DSQuotaExceededException
+block|{
+if|if
+condition|(
+name|Quota
+operator|.
+name|isViolated
+argument_list|(
+name|dsQuota
+argument_list|,
+name|diskspace
+argument_list|,
+name|delta
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|DSQuotaExceededException
+argument_list|(
+name|dsQuota
+argument_list|,
+name|diskspace
+operator|+
+name|delta
+argument_list|)
+throw|;
+block|}
+block|}
+comment|/**    * @throws QuotaExceededException if namespace or diskspace quotas is    *         violated after applying the deltas.    */
 DECL|method|verifyQuota (long nsDelta, long dsDelta)
 name|void
 name|verifyQuota
@@ -796,34 +646,14 @@ argument_list|(
 name|nsDelta
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|Quota
-operator|.
-name|isViolated
+name|verifyDiskspaceQuota
 argument_list|(
-name|dsQuota
-argument_list|,
-name|diskspace
-argument_list|,
 name|dsDelta
 argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|DSQuotaExceededException
-argument_list|(
-name|dsQuota
-argument_list|,
-name|diskspace
-operator|+
-name|dsDelta
-argument_list|)
-throw|;
-block|}
+expr_stmt|;
 block|}
 DECL|method|namespaceString ()
+specifier|private
 name|String
 name|namespaceString
 parameter_list|()
@@ -847,6 +677,7 @@ operator|)
 return|;
 block|}
 DECL|method|diskspaceString ()
+specifier|private
 name|String
 name|diskspaceString
 parameter_list|()
@@ -869,13 +700,16 @@ name|dsQuota
 operator|)
 return|;
 block|}
-DECL|method|quotaString ()
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
 name|String
-name|quotaString
+name|toString
 parameter_list|()
 block|{
 return|return
-literal|", Quota["
+literal|"Quota["
 operator|+
 name|namespaceString
 argument_list|()
@@ -886,34 +720,6 @@ name|diskspaceString
 argument_list|()
 operator|+
 literal|"]"
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getNamespace ()
-specifier|public
-name|long
-name|getNamespace
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|namespace
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|getDiskspace ()
-specifier|public
-name|long
-name|getDiskspace
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|diskspace
 return|;
 block|}
 block|}

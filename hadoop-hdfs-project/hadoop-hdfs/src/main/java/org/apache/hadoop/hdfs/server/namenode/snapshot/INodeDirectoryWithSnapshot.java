@@ -296,24 +296,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INodeDirectoryWithQuota
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|INodeMap
 import|;
 end_import
@@ -486,7 +468,7 @@ specifier|public
 class|class
 name|INodeDirectoryWithSnapshot
 extends|extends
-name|INodeDirectoryWithQuota
+name|INodeDirectory
 block|{
 comment|/**    * The difference between the current state and a previous snapshot    * of the children list of an INodeDirectory.    */
 DECL|class|ChildrenDiff
@@ -2862,10 +2844,7 @@ name|that
 argument_list|,
 name|adopt
 argument_list|,
-name|that
-operator|.
-name|getQuotaCounts
-argument_list|()
+literal|true
 argument_list|)
 expr_stmt|;
 name|this
@@ -4139,7 +4118,8 @@ name|isQuotaSet
 argument_list|()
 condition|)
 block|{
-name|this
+name|getDirectoryWithQuotaFeature
+argument_list|()
 operator|.
 name|addSpaceConsumed2Cache
 argument_list|(
