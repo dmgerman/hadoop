@@ -474,10 +474,10 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|generateHtmlReport ()
+DECL|method|generateReport ()
 specifier|public
 name|String
-name|generateHtmlReport
+name|generateReport
 parameter_list|()
 block|{
 name|StringBuilder
@@ -495,12 +495,12 @@ literal|"Writing segment beginning at txid "
 operator|+
 name|segmentTxId
 operator|+
-literal|"<br/>\n"
+literal|". \n"
 argument_list|)
 expr_stmt|;
 name|loggers
 operator|.
-name|appendHtmlReport
+name|appendReport
 argument_list|(
 name|sb
 argument_list|)

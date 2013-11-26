@@ -100,6 +100,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|util
 operator|.
 name|StringUtils
@@ -123,6 +137,16 @@ operator|.
 name|junit
 operator|.
 name|Before
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|BeforeClass
 import|;
 end_import
 
@@ -192,7 +216,14 @@ specifier|private
 name|Configuration
 name|conf
 decl_stmt|;
-static|static
+annotation|@
+name|BeforeClass
+DECL|method|disableFsync ()
+specifier|public
+specifier|static
+name|void
+name|disableFsync
+parameter_list|()
 block|{
 comment|// No need to fsync for the purposes of tests. This makes
 comment|// the tests run much faster.
@@ -282,7 +313,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Tests writing to the EditLogFileOutputStream.  Due to preallocation, the    * length of the edit log will usually be longer than its valid contents.    */
+comment|/**    * Tests writing to the EditLogFileOutputStream. Due to preallocation, the    * length of the edit log will usually be longer than its valid contents.    */
 annotation|@
 name|Test
 DECL|method|testRawWrites ()
@@ -614,6 +645,12 @@ comment|// abort after a close should just ignore
 name|EditLogFileOutputStream
 name|editLogStream
 init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|editLogStream
+operator|=
 operator|new
 name|EditLogFileOutputStream
 argument_list|(
@@ -623,17 +660,30 @@ name|TEST_EDITS
 argument_list|,
 literal|0
 argument_list|)
-decl_stmt|;
-name|editLogStream
-operator|.
-name|abort
-argument_list|()
 expr_stmt|;
 name|editLogStream
 operator|.
 name|abort
 argument_list|()
 expr_stmt|;
+name|editLogStream
+operator|.
+name|abort
+argument_list|()
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|IOUtils
+operator|.
+name|cleanup
+argument_list|(
+literal|null
+argument_list|,
+name|editLogStream
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class
