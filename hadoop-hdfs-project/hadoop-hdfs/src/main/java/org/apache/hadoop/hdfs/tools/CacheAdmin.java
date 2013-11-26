@@ -4623,11 +4623,14 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+comment|// prepend a dash to match against the command names
 name|Command
 name|command
 init|=
 name|determineCommand
 argument_list|(
+literal|"-"
+operator|+
 name|commandName
 argument_list|)
 decl_stmt|;
@@ -4657,7 +4660,7 @@ name|err
 operator|.
 name|print
 argument_list|(
-literal|"Valid command names are:\n"
+literal|"Valid help command names are:\n"
 argument_list|)
 expr_stmt|;
 name|String
@@ -4685,6 +4688,11 @@ name|c
 operator|.
 name|getName
 argument_list|()
+operator|.
+name|substring
+argument_list|(
+literal|1
+argument_list|)
 argument_list|)
 expr_stmt|;
 name|separator
