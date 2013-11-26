@@ -1260,12 +1260,9 @@ name|VERSION
 decl_stmt|;
 comment|/** Default connection factory may be overridden in tests to use smaller timeout values */
 DECL|field|connectionFactory
+specifier|protected
 name|URLConnectionFactory
 name|connectionFactory
-init|=
-name|URLConnectionFactory
-operator|.
-name|DEFAULT_CONNECTION_FACTORY
 decl_stmt|;
 comment|/** Delegation token kind */
 DECL|field|TOKEN_KIND
@@ -1376,25 +1373,6 @@ name|TOKEN_KIND
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Initialize connectionFactory. This function is intended to    * be overridden by SWebHdfsFileSystem.    */
-DECL|method|initializeConnectionFactory (Configuration conf)
-specifier|protected
-name|void
-name|initializeConnectionFactory
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|connectionFactory
-operator|=
-name|URLConnectionFactory
-operator|.
-name|DEFAULT_CONNECTION_FACTORY
-expr_stmt|;
-block|}
 annotation|@
 name|Override
 DECL|method|initialize (URI uri, Configuration conf )
@@ -1426,13 +1404,17 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|initializeTokenAspect
-argument_list|()
-expr_stmt|;
-name|initializeConnectionFactory
+name|connectionFactory
+operator|=
+name|URLConnectionFactory
+operator|.
+name|newDefaultURLConnectionFactory
 argument_list|(
 name|conf
 argument_list|)
+expr_stmt|;
+name|initializeTokenAspect
+argument_list|()
 expr_stmt|;
 name|ugi
 operator|=

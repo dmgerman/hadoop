@@ -1143,7 +1143,7 @@ name|connectionFactory
 init|=
 name|URLConnectionFactory
 operator|.
-name|DEFAULT_CONNECTION_FACTORY
+name|DEFAULT_SYSTEM_CONNECTION_FACTORY
 decl_stmt|;
 comment|// Login the current user
 name|UserGroupInformation

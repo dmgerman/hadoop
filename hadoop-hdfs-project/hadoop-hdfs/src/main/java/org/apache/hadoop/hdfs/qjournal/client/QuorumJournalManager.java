@@ -436,6 +436,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|URLConnectionFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|net
 operator|.
 name|NetUtils
@@ -663,6 +679,12 @@ literal|512
 operator|*
 literal|1024
 decl_stmt|;
+DECL|field|connectionFactory
+specifier|private
+specifier|final
+name|URLConnectionFactory
+name|connectionFactory
+decl_stmt|;
 DECL|method|QuorumJournalManager (Configuration conf, URI uri, NamespaceInfo nsInfo)
 specifier|public
 name|QuorumJournalManager
@@ -753,6 +775,17 @@ name|createLoggers
 argument_list|(
 name|loggerFactory
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|connectionFactory
+operator|=
+name|URLConnectionFactory
+operator|.
+name|newDefaultURLConnectionFactory
+argument_list|(
+name|conf
 argument_list|)
 expr_stmt|;
 comment|// Configure timeouts.
@@ -2570,6 +2603,8 @@ name|EditLogFileInputStream
 operator|.
 name|fromUrl
 argument_list|(
+name|connectionFactory
+argument_list|,
 name|url
 argument_list|,
 name|remoteLog

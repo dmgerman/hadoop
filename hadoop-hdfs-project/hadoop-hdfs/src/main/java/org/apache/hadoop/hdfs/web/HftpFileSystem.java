@@ -995,10 +995,10 @@ name|SCHEME
 return|;
 block|}
 comment|/**    * Initialize connectionFactory and tokenAspect. This function is intended to    * be overridden by HsFtpFileSystem.    */
-DECL|method|initConnectionFactoryAndTokenAspect (Configuration conf)
+DECL|method|initTokenAspect (Configuration conf)
 specifier|protected
 name|void
-name|initConnectionFactoryAndTokenAspect
+name|initTokenAspect
 parameter_list|(
 name|Configuration
 name|conf
@@ -1018,12 +1018,6 @@ name|this
 argument_list|,
 name|TOKEN_KIND
 argument_list|)
-expr_stmt|;
-name|connectionFactory
-operator|=
-name|URLConnectionFactory
-operator|.
-name|DEFAULT_CONNECTION_FACTORY
 expr_stmt|;
 block|}
 annotation|@
@@ -1054,6 +1048,17 @@ name|conf
 argument_list|)
 expr_stmt|;
 name|setConf
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|connectionFactory
+operator|=
+name|URLConnectionFactory
+operator|.
+name|newDefaultURLConnectionFactory
 argument_list|(
 name|conf
 argument_list|)
@@ -1117,7 +1122,7 @@ name|e
 argument_list|)
 throw|;
 block|}
-name|initConnectionFactoryAndTokenAspect
+name|initTokenAspect
 argument_list|(
 name|conf
 argument_list|)
@@ -1717,7 +1722,7 @@ name|connectionFactory
 init|=
 name|URLConnectionFactory
 operator|.
-name|DEFAULT_CONNECTION_FACTORY
+name|DEFAULT_SYSTEM_CONNECTION_FACTORY
 decl_stmt|;
 DECL|method|RangeHeaderUrlOpener (final URL url)
 name|RangeHeaderUrlOpener

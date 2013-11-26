@@ -155,15 +155,6 @@ init|=
 operator|new
 name|URLConnectionFactory
 argument_list|(
-name|URLConnectionFactory
-operator|.
-name|DEFAULT_SOCKET_TIMEOUT
-argument_list|)
-decl_stmt|;
-name|fc
-operator|.
-name|setConnConfigurator
-argument_list|(
 operator|new
 name|ConnectionConfigurator
 argument_list|()
@@ -205,7 +196,7 @@ return|;
 block|}
 block|}
 argument_list|)
-expr_stmt|;
+decl_stmt|;
 name|fc
 operator|.
 name|openConnection
