@@ -95,6 +95,20 @@ name|float
 name|getPercentBlockPoolUsed
 parameter_list|()
 function_decl|;
+comment|/** @return the total cache capacity of all DataNodes */
+DECL|method|getCacheCapacity ()
+specifier|public
+name|long
+name|getCacheCapacity
+parameter_list|()
+function_decl|;
+comment|/** @return the total cache used by all DataNodes */
+DECL|method|getCacheUsed ()
+specifier|public
+name|long
+name|getCacheUsed
+parameter_list|()
+function_decl|;
 comment|/** @return the xceiver count */
 DECL|method|getXceiverCount ()
 specifier|public

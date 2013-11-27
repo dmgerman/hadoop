@@ -306,6 +306,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CachePoolEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|ClientProtocol
 import|;
 end_import
@@ -691,6 +707,26 @@ operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
 name|AppendResponseProto
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|proto
+operator|.
+name|ClientNamenodeProtocolProtos
+operator|.
+name|CachePoolEntryProto
 import|;
 end_import
 
@@ -1391,26 +1427,6 @@ operator|.
 name|ClientNamenodeProtocolProtos
 operator|.
 name|ListCachePoolsRequestProto
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|proto
-operator|.
-name|ClientNamenodeProtocolProtos
-operator|.
-name|ListCachePoolsResponseElementProto
 import|;
 end_import
 
@@ -7419,15 +7435,15 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|class|BatchedCachePoolInfo
+DECL|class|BatchedCachePoolEntries
 specifier|private
 specifier|static
 class|class
-name|BatchedCachePoolInfo
+name|BatchedCachePoolEntries
 implements|implements
 name|BatchedEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 block|{
 DECL|field|proto
@@ -7436,9 +7452,9 @@ specifier|final
 name|ListCachePoolsResponseProto
 name|proto
 decl_stmt|;
-DECL|method|BatchedCachePoolInfo (ListCachePoolsResponseProto proto)
+DECL|method|BatchedCachePoolEntries (ListCachePoolsResponseProto proto)
 specifier|public
-name|BatchedCachePoolInfo
+name|BatchedCachePoolEntries
 parameter_list|(
 name|ListCachePoolsResponseProto
 name|proto
@@ -7455,19 +7471,19 @@ annotation|@
 name|Override
 DECL|method|get (int i)
 specifier|public
-name|CachePoolInfo
+name|CachePoolEntry
 name|get
 parameter_list|(
 name|int
 name|i
 parameter_list|)
 block|{
-name|ListCachePoolsResponseElementProto
+name|CachePoolEntryProto
 name|elem
 init|=
 name|proto
 operator|.
-name|getElements
+name|getEntries
 argument_list|(
 name|i
 argument_list|)
@@ -7478,9 +7494,6 @@ operator|.
 name|convert
 argument_list|(
 name|elem
-operator|.
-name|getInfo
-argument_list|()
 argument_list|)
 return|;
 block|}
@@ -7495,7 +7508,7 @@ block|{
 return|return
 name|proto
 operator|.
-name|getElementsCount
+name|getEntriesCount
 argument_list|()
 return|;
 block|}
@@ -7524,7 +7537,7 @@ name|BatchedRemoteIterator
 argument_list|<
 name|String
 argument_list|,
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 block|{
 DECL|method|CachePoolIterator (String prevKey)
@@ -7547,7 +7560,7 @@ DECL|method|makeRequest (String prevKey)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|makeRequest
 parameter_list|(
@@ -7561,7 +7574,7 @@ try|try
 block|{
 return|return
 operator|new
-name|BatchedCachePoolInfo
+name|BatchedCachePoolEntries
 argument_list|(
 name|rpcProxy
 operator|.
@@ -7603,17 +7616,20 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|elementToPrevKey (CachePoolInfo element)
+DECL|method|elementToPrevKey (CachePoolEntry entry)
 specifier|public
 name|String
 name|elementToPrevKey
 parameter_list|(
-name|CachePoolInfo
-name|element
+name|CachePoolEntry
+name|entry
 parameter_list|)
 block|{
 return|return
-name|element
+name|entry
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getPoolName
 argument_list|()
@@ -7626,7 +7642,7 @@ DECL|method|listCachePools (String prevKey)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|listCachePools
 parameter_list|(

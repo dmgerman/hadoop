@@ -919,7 +919,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Scan all CacheDirectives.  Use the information to figure out    * what cache replication factor each block should have.    *    * @param mark       Whether the current scan is setting or clearing the mark    */
+comment|/**    * Scan all CacheDirectives.  Use the information to figure out    * what cache replication factor each block should have.    */
 DECL|method|rescanCacheDirectives ()
 specifier|private
 name|void
@@ -1403,7 +1403,7 @@ literal|"Directive "
 operator|+
 name|pce
 operator|.
-name|getEntryId
+name|getId
 argument_list|()
 operator|+
 literal|" is caching "

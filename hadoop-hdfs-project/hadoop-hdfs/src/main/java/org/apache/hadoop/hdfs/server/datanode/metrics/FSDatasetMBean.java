@@ -127,6 +127,13 @@ name|long
 name|getCacheCapacity
 parameter_list|()
 function_decl|;
+comment|/**    * Returns the number of blocks cached.    */
+DECL|method|getNumBlocksCached ()
+specifier|public
+name|long
+name|getNumBlocksCached
+parameter_list|()
+function_decl|;
 comment|/**    * Returns the number of blocks that the datanode was unable to cache    */
 DECL|method|getNumBlocksFailedToCache ()
 specifier|public

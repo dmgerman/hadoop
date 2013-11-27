@@ -653,6 +653,18 @@ name|Value
 argument_list|>
 argument_list|()
 decl_stmt|;
+DECL|field|numBlocksCached
+specifier|private
+specifier|final
+name|AtomicLong
+name|numBlocksCached
+init|=
+operator|new
+name|AtomicLong
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|field|dataset
 specifier|private
 specifier|final
@@ -1985,6 +1997,13 @@ literal|" bytes in total."
 argument_list|)
 expr_stmt|;
 block|}
+name|numBlocksCached
+operator|.
+name|addAndGet
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 name|success
 operator|=
 literal|true
@@ -2206,6 +2225,14 @@ name|getLength
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|numBlocksCached
+operator|.
+name|addAndGet
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -2240,10 +2267,10 @@ block|}
 block|}
 comment|// Stats related methods for FSDatasetMBean
 comment|/**    * Get the approximate amount of cache space used.    */
-DECL|method|getDnCacheUsed ()
+DECL|method|getCacheUsed ()
 specifier|public
 name|long
-name|getDnCacheUsed
+name|getCacheUsed
 parameter_list|()
 block|{
 return|return
@@ -2254,10 +2281,10 @@ argument_list|()
 return|;
 block|}
 comment|/**    * Get the maximum amount of bytes we can cache.  This is a constant.    */
-DECL|method|getDnCacheCapacity ()
+DECL|method|getCacheCapacity ()
 specifier|public
 name|long
-name|getDnCacheCapacity
+name|getCacheCapacity
 parameter_list|()
 block|{
 return|return
@@ -2285,6 +2312,19 @@ parameter_list|()
 block|{
 return|return
 name|numBlocksFailedToUncache
+operator|.
+name|get
+argument_list|()
+return|;
+block|}
+DECL|method|getNumBlocksCached ()
+specifier|public
+name|long
+name|getNumBlocksCached
+parameter_list|()
+block|{
+return|return
+name|numBlocksCached
 operator|.
 name|get
 argument_list|()

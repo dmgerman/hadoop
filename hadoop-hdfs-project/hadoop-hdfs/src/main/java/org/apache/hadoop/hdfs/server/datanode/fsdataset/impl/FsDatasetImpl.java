@@ -1979,7 +1979,7 @@ block|{
 return|return
 name|cacheManager
 operator|.
-name|getDnCacheUsed
+name|getCacheUsed
 argument_list|()
 return|;
 block|}
@@ -1995,7 +1995,7 @@ block|{
 return|return
 name|cacheManager
 operator|.
-name|getDnCacheCapacity
+name|getCacheCapacity
 argument_list|()
 return|;
 block|}
@@ -2028,6 +2028,22 @@ return|return
 name|cacheManager
 operator|.
 name|getNumBlocksFailedToUncache
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// FSDatasetMBean
+DECL|method|getNumBlocksCached ()
+specifier|public
+name|long
+name|getNumBlocksCached
+parameter_list|()
+block|{
+return|return
+name|cacheManager
+operator|.
+name|getNumBlocksCached
 argument_list|()
 return|;
 block|}

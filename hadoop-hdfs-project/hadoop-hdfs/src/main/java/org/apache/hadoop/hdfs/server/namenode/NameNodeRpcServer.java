@@ -666,6 +666,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CachePoolEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CorruptFileBlocks
 import|;
 end_import
@@ -7555,7 +7571,7 @@ name|BatchedRemoteIterator
 argument_list|<
 name|String
 argument_list|,
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 block|{
 DECL|method|ServerSideCachePoolIterator (String prevKey)
@@ -7578,7 +7594,7 @@ DECL|method|makeRequest (String prevKey)
 specifier|public
 name|BatchedEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|makeRequest
 parameter_list|(
@@ -7599,17 +7615,20 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|elementToPrevKey (CachePoolInfo element)
+DECL|method|elementToPrevKey (CachePoolEntry entry)
 specifier|public
 name|String
 name|elementToPrevKey
 parameter_list|(
-name|CachePoolInfo
-name|element
+name|CachePoolEntry
+name|entry
 parameter_list|)
 block|{
 return|return
-name|element
+name|entry
+operator|.
+name|getInfo
+argument_list|()
 operator|.
 name|getPoolName
 argument_list|()
@@ -7622,7 +7641,7 @@ DECL|method|listCachePools (String prevKey)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|listCachePools
 parameter_list|(

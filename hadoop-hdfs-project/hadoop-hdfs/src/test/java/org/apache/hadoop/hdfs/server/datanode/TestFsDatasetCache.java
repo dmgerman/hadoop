@@ -439,8 +439,6 @@ operator|.
 name|impl
 operator|.
 name|FsDatasetCache
-operator|.
-name|PageRounder
 import|;
 end_import
 
@@ -462,7 +460,9 @@ name|fsdataset
 operator|.
 name|impl
 operator|.
-name|MappableBlock
+name|FsDatasetCache
+operator|.
+name|PageRounder
 import|;
 end_import
 
@@ -798,6 +798,30 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|Level
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|LogManager
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -929,6 +953,22 @@ operator|.
 name|setShouldSkipFsyncForTesting
 argument_list|(
 literal|false
+argument_list|)
+expr_stmt|;
+name|LogManager
+operator|.
+name|getLogger
+argument_list|(
+name|FsDatasetCache
+operator|.
+name|class
+argument_list|)
+operator|.
+name|setLevel
+argument_list|(
+name|Level
+operator|.
+name|DEBUG
 argument_list|)
 expr_stmt|;
 block|}
@@ -1562,14 +1602,18 @@ name|sizes
 return|;
 block|}
 comment|/**    * Blocks until cache usage hits the expected new value.    */
-DECL|method|verifyExpectedCacheUsage (final long expected)
+DECL|method|verifyExpectedCacheUsage (final long expectedCacheUsed, final long expectedBlocks)
 specifier|private
 name|long
 name|verifyExpectedCacheUsage
 parameter_list|(
 specifier|final
 name|long
-name|expected
+name|expectedCacheUsed
+parameter_list|,
+specifier|final
+name|long
+name|expectedBlocks
 parameter_list|)
 throws|throws
 name|Exception
@@ -1599,18 +1643,34 @@ name|get
 parameter_list|()
 block|{
 name|long
-name|curDnCacheUsed
+name|curCacheUsed
 init|=
 name|fsd
 operator|.
 name|getCacheUsed
 argument_list|()
 decl_stmt|;
+name|long
+name|curBlocks
+init|=
+name|fsd
+operator|.
+name|getNumBlocksCached
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
-name|curDnCacheUsed
+operator|(
+name|curCacheUsed
 operator|!=
-name|expected
+name|expectedCacheUsed
+operator|)
+operator|||
+operator|(
+name|curBlocks
+operator|!=
+name|expectedBlocks
+operator|)
 condition|)
 block|{
 if|if
@@ -1625,15 +1685,23 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"verifyExpectedCacheUsage: expected "
+literal|"verifyExpectedCacheUsage: have "
 operator|+
-name|expected
+name|curCacheUsed
 operator|+
-literal|", got "
+literal|"/"
 operator|+
-name|curDnCacheUsed
+name|expectedCacheUsed
 operator|+
-literal|"; "
+literal|" bytes cached; "
+operator|+
+name|curBlocks
+operator|+
+literal|"/"
+operator|+
+name|expectedBlocks
+operator|+
+literal|" blocks cached. "
 operator|+
 literal|"memlock limit = "
 operator|+
@@ -1667,7 +1735,7 @@ literal|60000
 argument_list|)
 expr_stmt|;
 return|return
-name|expected
+name|expectedCacheUsed
 return|;
 block|}
 DECL|method|testCacheAndUncacheBlock ()
@@ -1694,6 +1762,18 @@ decl_stmt|;
 name|verifyExpectedCacheUsage
 argument_list|(
 literal|0
+argument_list|,
+literal|0
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|0
+argument_list|,
+name|fsd
+operator|.
+name|getNumBlocksCached
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Write a test file
@@ -1865,6 +1945,10 @@ name|blockSizes
 index|[
 name|i
 index|]
+argument_list|,
+name|i
+operator|+
+literal|1
 argument_list|)
 expr_stmt|;
 name|dnMetrics
@@ -1951,6 +2035,12 @@ name|blockSizes
 index|[
 name|i
 index|]
+argument_list|,
+name|NUM_BLOCKS
+operator|-
+literal|1
+operator|-
+name|i
 argument_list|)
 expr_stmt|;
 name|dnMetrics
@@ -2319,6 +2409,8 @@ decl_stmt|;
 name|verifyExpectedCacheUsage
 argument_list|(
 literal|0
+argument_list|,
+literal|0
 argument_list|)
 expr_stmt|;
 for|for
@@ -2364,6 +2456,14 @@ index|[
 name|i
 index|]
 argument_list|)
+argument_list|,
+literal|4
+operator|*
+operator|(
+name|i
+operator|+
+literal|1
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2507,6 +2607,16 @@ expr_stmt|;
 name|verifyExpectedCacheUsage
 argument_list|(
 name|total
+argument_list|,
+literal|4
+operator|*
+operator|(
+name|numFiles
+operator|-
+literal|2
+operator|-
+name|i
+operator|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2548,6 +2658,8 @@ literal|5
 decl_stmt|;
 name|verifyExpectedCacheUsage
 argument_list|(
+literal|0
+argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
@@ -2771,6 +2883,10 @@ name|blockSizes
 index|[
 name|i
 index|]
+argument_list|,
+name|i
+operator|+
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -2796,6 +2912,8 @@ name|current
 operator|=
 name|verifyExpectedCacheUsage
 argument_list|(
+literal|0
+argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;

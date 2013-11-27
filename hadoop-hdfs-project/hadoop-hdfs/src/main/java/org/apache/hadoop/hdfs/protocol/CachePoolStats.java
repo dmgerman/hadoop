@@ -47,22 +47,22 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Describes a path-based cache directive.  */
+comment|/**  * CachePoolStats describes cache pool statistics.  */
 end_comment
 
 begin_class
 annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
-annotation|@
 name|InterfaceAudience
 operator|.
 name|Public
-DECL|class|CacheDirectiveStats
+annotation|@
+name|InterfaceStability
+operator|.
+name|Evolving
+DECL|class|CachePoolStats
 specifier|public
 class|class
-name|CacheDirectiveStats
+name|CachePoolStats
 block|{
 DECL|class|Builder
 specifier|public
@@ -85,16 +85,77 @@ specifier|private
 name|long
 name|filesAffected
 decl_stmt|;
-comment|/**      * Builds a new CacheDirectiveStats populated with the set properties.      *       * @return New CacheDirectiveStats.      */
+DECL|method|Builder ()
+specifier|public
+name|Builder
+parameter_list|()
+block|{     }
+DECL|method|setBytesNeeded (long bytesNeeded)
+specifier|public
+name|Builder
+name|setBytesNeeded
+parameter_list|(
+name|long
+name|bytesNeeded
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bytesNeeded
+operator|=
+name|bytesNeeded
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setBytesCached (long bytesCached)
+specifier|public
+name|Builder
+name|setBytesCached
+parameter_list|(
+name|long
+name|bytesCached
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bytesCached
+operator|=
+name|bytesCached
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setFilesAffected (long filesAffected)
+specifier|public
+name|Builder
+name|setFilesAffected
+parameter_list|(
+name|long
+name|filesAffected
+parameter_list|)
+block|{
+name|this
+operator|.
+name|filesAffected
+operator|=
+name|filesAffected
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 DECL|method|build ()
 specifier|public
-name|CacheDirectiveStats
+name|CachePoolStats
 name|build
 parameter_list|()
 block|{
 return|return
 operator|new
-name|CacheDirectiveStats
+name|CachePoolStats
 argument_list|(
 name|bytesNeeded
 argument_list|,
@@ -104,73 +165,8 @@ name|filesAffected
 argument_list|)
 return|;
 block|}
-comment|/**      * Creates an empty builder.      */
-DECL|method|Builder ()
-specifier|public
-name|Builder
-parameter_list|()
-block|{     }
-comment|/**      * Sets the bytes needed by this directive.      *       * @param bytesNeeded The bytes needed.      * @return This builder, for call chaining.      */
-DECL|method|setBytesNeeded (Long bytesNeeded)
-specifier|public
-name|Builder
-name|setBytesNeeded
-parameter_list|(
-name|Long
-name|bytesNeeded
-parameter_list|)
-block|{
-name|this
-operator|.
-name|bytesNeeded
-operator|=
-name|bytesNeeded
-expr_stmt|;
-return|return
-name|this
-return|;
 block|}
-comment|/**      * Sets the bytes cached by this directive.      *       * @param bytesCached The bytes cached.      * @return This builder, for call chaining.      */
-DECL|method|setBytesCached (Long bytesCached)
-specifier|public
-name|Builder
-name|setBytesCached
-parameter_list|(
-name|Long
-name|bytesCached
-parameter_list|)
-block|{
-name|this
-operator|.
-name|bytesCached
-operator|=
-name|bytesCached
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-comment|/**      * Sets the files affected by this directive.      *       * @param filesAffected The files affected.      * @return This builder, for call chaining.      */
-DECL|method|setFilesAffected (Long filesAffected)
-specifier|public
-name|Builder
-name|setFilesAffected
-parameter_list|(
-name|Long
-name|filesAffected
-parameter_list|)
-block|{
-name|this
-operator|.
-name|filesAffected
-operator|=
-name|filesAffected
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
-block|}
+empty_stmt|;
 DECL|field|bytesNeeded
 specifier|private
 specifier|final
@@ -189,9 +185,9 @@ specifier|final
 name|long
 name|filesAffected
 decl_stmt|;
-DECL|method|CacheDirectiveStats (long bytesNeeded, long bytesCached, long filesAffected)
+DECL|method|CachePoolStats (long bytesNeeded, long bytesCached, long filesAffected)
 specifier|private
-name|CacheDirectiveStats
+name|CachePoolStats
 parameter_list|(
 name|long
 name|bytesNeeded
@@ -222,7 +218,6 @@ operator|=
 name|filesAffected
 expr_stmt|;
 block|}
-comment|/**    * @return The bytes needed.    */
 DECL|method|getBytesNeeded ()
 specifier|public
 name|long
@@ -233,7 +228,6 @@ return|return
 name|bytesNeeded
 return|;
 block|}
-comment|/**    * @return The bytes cached.    */
 DECL|method|getBytesCached ()
 specifier|public
 name|long
@@ -241,10 +235,9 @@ name|getBytesCached
 parameter_list|()
 block|{
 return|return
-name|bytesCached
+name|bytesNeeded
 return|;
 block|}
-comment|/**    * @return The files affected.    */
 DECL|method|getFilesAffected ()
 specifier|public
 name|long
@@ -255,83 +248,56 @@ return|return
 name|filesAffected
 return|;
 block|}
-annotation|@
-name|Override
 DECL|method|toString ()
 specifier|public
 name|String
 name|toString
 parameter_list|()
 block|{
-name|StringBuilder
-name|builder
-init|=
+return|return
 operator|new
 name|StringBuilder
 argument_list|()
-decl_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
 literal|"{"
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
-literal|"bytesNeeded: "
+literal|"bytesNeeded:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|bytesNeeded
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
-literal|", "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"bytesCached: "
+literal|", bytesCached:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|bytesCached
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
-literal|", "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|"filesAffected: "
+literal|", filesAffected:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
 name|filesAffected
 argument_list|)
-expr_stmt|;
-name|builder
 operator|.
 name|append
 argument_list|(
 literal|"}"
 argument_list|)
-expr_stmt|;
-return|return
-name|builder
 operator|.
 name|toString
 argument_list|()
@@ -339,10 +305,6 @@ return|;
 block|}
 block|}
 end_class
-
-begin_empty_stmt
-empty_stmt|;
-end_empty_stmt
 
 end_unit
 

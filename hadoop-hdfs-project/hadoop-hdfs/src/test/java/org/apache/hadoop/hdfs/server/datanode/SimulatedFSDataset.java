@@ -2531,6 +2531,19 @@ return|;
 block|}
 annotation|@
 name|Override
+comment|// FSDatasetMBean
+DECL|method|getNumBlocksCached ()
+specifier|public
+name|long
+name|getNumBlocksCached
+parameter_list|()
+block|{
+return|return
+literal|0l
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getNumBlocksFailedToCache ()
 specifier|public
 name|long
