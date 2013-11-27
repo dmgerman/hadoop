@@ -232,6 +232,28 @@ name|recovery
 operator|.
 name|records
 operator|.
+name|RMStateVersion
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|recovery
+operator|.
+name|records
+operator|.
 name|impl
 operator|.
 name|pb
@@ -328,6 +350,16 @@ return|return
 name|state
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|checkVersion ()
+specifier|public
+name|void
+name|checkVersion
+parameter_list|()
+throws|throws
+name|Exception
+block|{   }
 annotation|@
 name|Override
 DECL|method|loadState ()
@@ -1262,6 +1294,42 @@ argument_list|(
 name|delegationKey
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|loadVersion ()
+specifier|protected
+name|RMStateVersion
+name|loadVersion
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|storeVersion ()
+specifier|protected
+name|void
+name|storeVersion
+parameter_list|()
+throws|throws
+name|Exception
+block|{   }
+annotation|@
+name|Override
+DECL|method|getCurrentVersion ()
+specifier|protected
+name|RMStateVersion
+name|getCurrentVersion
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
 block|}
 block|}
 end_class

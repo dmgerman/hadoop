@@ -2792,6 +2792,11 @@ condition|)
 block|{
 try|try
 block|{
+name|rmStore
+operator|.
+name|checkVersion
+argument_list|()
+expr_stmt|;
 name|RMState
 name|state
 init|=
