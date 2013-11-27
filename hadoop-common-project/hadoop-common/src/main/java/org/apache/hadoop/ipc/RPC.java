@@ -2338,7 +2338,15 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"RPC.stopProxy called on non proxy."
+literal|"RPC.stopProxy called on non proxy: class="
+operator|+
+name|proxy
+operator|.
+name|getClass
+argument_list|()
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
