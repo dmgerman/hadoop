@@ -240,28 +240,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|FileWithSnapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|FileWithSnapshot
-operator|.
 name|FileDiff
 import|;
 end_import
@@ -282,31 +260,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|FileWithSnapshot
-operator|.
 name|FileDiffList
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|FileWithSnapshot
-operator|.
-name|Util
 import|;
 end_import
 
@@ -1030,7 +984,7 @@ operator|!
 name|isUnderConstruction
 argument_list|()
 argument_list|,
-literal|"file is already an INodeFileUnderConstruction"
+literal|"file is already under construction"
 argument_list|)
 expr_stmt|;
 name|FileUnderConstructionFeature
@@ -1065,6 +1019,16 @@ name|long
 name|mtime
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|isUnderConstruction
+argument_list|()
+argument_list|,
+literal|"file is no longer under construction"
+argument_list|)
+expr_stmt|;
 name|FileUnderConstructionFeature
 name|uc
 init|=
@@ -1169,7 +1133,7 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|//BlockCollection
+comment|// BlockCollection
 DECL|method|setBlock (int index, BlockInfo blk)
 specifier|public
 name|void
@@ -1194,7 +1158,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// BlockCollection
+comment|// BlockCollection, the file should be under construction
 DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] locations)
 specifier|public
 name|BlockInfoUnderConstruction
@@ -1216,6 +1180,8 @@ name|checkState
 argument_list|(
 name|isUnderConstruction
 argument_list|()
+argument_list|,
+literal|"file is no longer under construction"
 argument_list|)
 expr_stmt|;
 if|if
@@ -1278,6 +1244,16 @@ name|Block
 name|oldblock
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|isUnderConstruction
+argument_list|()
+argument_list|,
+literal|"file is no longer under construction"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|blocks
@@ -1489,26 +1465,11 @@ annotation|@
 name|Override
 DECL|method|getBlockReplication ()
 specifier|public
-specifier|final
 name|short
 name|getBlockReplication
 parameter_list|()
 block|{
 return|return
-name|this
-operator|instanceof
-name|FileWithSnapshot
-condition|?
-name|Util
-operator|.
-name|getBlockReplication
-argument_list|(
-operator|(
-name|FileWithSnapshot
-operator|)
-name|this
-argument_list|)
-else|:
 name|getFileReplication
 argument_list|(
 literal|null
@@ -2078,12 +2039,12 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)
@@ -2145,7 +2106,7 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 name|FileDiffList
@@ -2153,7 +2114,7 @@ name|fileDiffList
 init|=
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)
@@ -2336,15 +2297,15 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 specifier|final
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 name|withSnapshot
 init|=
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 decl_stmt|;
@@ -2463,11 +2424,11 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|&&
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)
@@ -2548,7 +2509,7 @@ literal|null
 operator|&&
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 specifier|final
@@ -2557,7 +2518,7 @@ name|d
 init|=
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)

@@ -2386,17 +2386,8 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|fileNode
-operator|.
-name|isUnderConstruction
-argument_list|()
-argument_list|)
-expr_stmt|;
 comment|// modify file-> block and blocksMap
+comment|// fileNode should be under construction
 name|boolean
 name|removed
 init|=
