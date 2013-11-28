@@ -19,6 +19,32 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+operator|.
+name|checkNotNull
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Date
+import|;
+end_import
+
+begin_import
 import|import
 name|org
 operator|.
@@ -59,6 +85,20 @@ operator|.
 name|fs
 operator|.
 name|Path
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
 import|;
 end_import
 
@@ -125,7 +165,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Represents an entry in the PathBasedCache on the NameNode.  *  * This is an implementation class, not part of the public API.  */
+comment|/**  * Namenode class that tracks state related to a cached path.  *  * This is an implementation class, not part of the public API.  */
 end_comment
 
 begin_class
@@ -166,6 +206,12 @@ specifier|private
 name|CachePool
 name|pool
 decl_stmt|;
+DECL|field|expiryTime
+specifier|private
+specifier|final
+name|long
+name|expiryTime
+decl_stmt|;
 DECL|field|bytesNeeded
 specifier|private
 name|long
@@ -191,7 +237,7 @@ specifier|private
 name|Element
 name|next
 decl_stmt|;
-DECL|method|CacheDirective (long id, String path, short replication)
+DECL|method|CacheDirective (long id, String path, short replication, long expiryTime)
 specifier|public
 name|CacheDirective
 parameter_list|(
@@ -203,6 +249,9 @@ name|path
 parameter_list|,
 name|short
 name|replication
+parameter_list|,
+name|long
+name|expiryTime
 parameter_list|)
 block|{
 name|Preconditions
@@ -220,6 +269,15 @@ name|id
 operator|=
 name|id
 expr_stmt|;
+name|this
+operator|.
+name|path
+operator|=
+name|checkNotNull
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
 name|Preconditions
 operator|.
 name|checkArgument
@@ -231,22 +289,15 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|path
+name|replication
 operator|=
-name|path
+name|replication
 expr_stmt|;
 name|this
 operator|.
-name|replication
+name|expiryTime
 operator|=
-name|replication
-expr_stmt|;
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|path
-argument_list|)
+name|expiryTime
 expr_stmt|;
 name|this
 operator|.
@@ -287,16 +338,6 @@ return|return
 name|path
 return|;
 block|}
-DECL|method|getPool ()
-specifier|public
-name|CachePool
-name|getPool
-parameter_list|()
-block|{
-return|return
-name|pool
-return|;
-block|}
 DECL|method|getReplication ()
 specifier|public
 name|short
@@ -307,6 +348,48 @@ return|return
 name|replication
 return|;
 block|}
+DECL|method|getPool ()
+specifier|public
+name|CachePool
+name|getPool
+parameter_list|()
+block|{
+return|return
+name|pool
+return|;
+block|}
+comment|/**    * @return When this directive expires, in milliseconds since Unix epoch    */
+DECL|method|getExpiryTime ()
+specifier|public
+name|long
+name|getExpiryTime
+parameter_list|()
+block|{
+return|return
+name|expiryTime
+return|;
+block|}
+comment|/**    * @return When this directive expires, as an ISO-8601 formatted string.    */
+DECL|method|getExpiryTimeString ()
+specifier|public
+name|String
+name|getExpiryTimeString
+parameter_list|()
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|dateToIso8601String
+argument_list|(
+operator|new
+name|Date
+argument_list|(
+name|expiryTime
+argument_list|)
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns a {@link CacheDirectiveInfo} based on this CacheDirective.    *<p>    * This always sets an absolute expiry time, never a relative TTL.    */
 DECL|method|toInfo ()
 specifier|public
 name|CacheDirectiveInfo
@@ -347,6 +430,18 @@ name|getPoolName
 argument_list|()
 argument_list|)
 operator|.
+name|setExpiration
+argument_list|(
+name|CacheDirectiveInfo
+operator|.
+name|Expiration
+operator|.
+name|newAbsolute
+argument_list|(
+name|expiryTime
+argument_list|)
+argument_list|)
+operator|.
 name|build
 argument_list|()
 return|;
@@ -377,6 +472,18 @@ operator|.
 name|setFilesAffected
 argument_list|(
 name|filesAffected
+argument_list|)
+operator|.
+name|setHasExpired
+argument_list|(
+operator|new
+name|Date
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+operator|>
+name|expiryTime
 argument_list|)
 operator|.
 name|build
@@ -456,6 +563,17 @@ operator|.
 name|append
 argument_list|(
 name|pool
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", expiryTime: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|getExpiryTimeString
+argument_list|()
 argument_list|)
 operator|.
 name|append

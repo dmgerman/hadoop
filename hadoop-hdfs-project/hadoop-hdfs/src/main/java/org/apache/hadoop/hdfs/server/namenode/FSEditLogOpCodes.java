@@ -408,8 +408,8 @@ operator|)
 literal|32
 argument_list|)
 block|,
-DECL|enumConstant|OP_ADD_PATH_BASED_CACHE_DIRECTIVE
-name|OP_ADD_PATH_BASED_CACHE_DIRECTIVE
+DECL|enumConstant|OP_ADD_CACHE_DIRECTIVE
+name|OP_ADD_CACHE_DIRECTIVE
 argument_list|(
 operator|(
 name|byte
@@ -417,8 +417,8 @@ operator|)
 literal|33
 argument_list|)
 block|,
-DECL|enumConstant|OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
-name|OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
+DECL|enumConstant|OP_REMOVE_CACHE_DIRECTIVE
+name|OP_REMOVE_CACHE_DIRECTIVE
 argument_list|(
 operator|(
 name|byte
@@ -453,8 +453,8 @@ operator|)
 literal|37
 argument_list|)
 block|,
-DECL|enumConstant|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
-name|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
+DECL|enumConstant|OP_MODIFY_CACHE_DIRECTIVE
+name|OP_MODIFY_CACHE_DIRECTIVE
 argument_list|(
 operator|(
 name|byte
