@@ -3771,7 +3771,12 @@ condition|(
 operator|!
 name|NativeIO
 operator|.
-name|isAvailable
+name|POSIX
+operator|.
+name|getCacheManipulator
+argument_list|()
+operator|.
+name|verifyCanMlock
 argument_list|()
 condition|)
 block|{
