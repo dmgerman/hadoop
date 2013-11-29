@@ -583,8 +583,9 @@ specifier|private
 name|FSParentQueue
 name|rootQueue
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|info
-specifier|private
 specifier|volatile
 name|QueueManagerInfo
 name|info

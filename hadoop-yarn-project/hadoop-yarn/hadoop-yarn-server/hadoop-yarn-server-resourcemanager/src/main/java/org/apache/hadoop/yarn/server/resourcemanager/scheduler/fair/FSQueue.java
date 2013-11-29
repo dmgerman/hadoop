@@ -451,6 +451,16 @@ return|return
 name|policy
 return|;
 block|}
+DECL|method|getParent ()
+specifier|public
+name|FSParentQueue
+name|getParent
+parameter_list|()
+block|{
+return|return
+name|parent
+return|;
+block|}
 DECL|method|throwPolicyDoesnotApplyException (SchedulingPolicy policy)
 specifier|protected
 name|void
@@ -843,6 +853,14 @@ argument_list|<
 name|FSQueue
 argument_list|>
 name|getChildQueues
+parameter_list|()
+function_decl|;
+comment|/**    * Return the number of apps for which containers can be allocated.    * Includes apps in subqueues.    */
+DECL|method|getNumRunnableApps ()
+specifier|public
+specifier|abstract
+name|int
+name|getNumRunnableApps
 parameter_list|()
 function_decl|;
 comment|/**    * Helper method to check if the queue should attempt assigning resources    *     * @return true if check passes (can assign) or false otherwise    */

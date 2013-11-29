@@ -275,6 +275,11 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
+DECL|field|runnableApps
+specifier|private
+name|int
+name|runnableApps
+decl_stmt|;
 DECL|method|FSParentQueue (String name, QueueManager queueMgr, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSParentQueue
@@ -885,6 +890,38 @@ name|policy
 operator|=
 name|policy
 expr_stmt|;
+block|}
+DECL|method|incrementRunnableApps ()
+specifier|public
+name|void
+name|incrementRunnableApps
+parameter_list|()
+block|{
+name|runnableApps
+operator|++
+expr_stmt|;
+block|}
+DECL|method|decrementRunnableApps ()
+specifier|public
+name|void
+name|decrementRunnableApps
+parameter_list|()
+block|{
+name|runnableApps
+operator|--
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|getNumRunnableApps ()
+specifier|public
+name|int
+name|getNumRunnableApps
+parameter_list|()
+block|{
+return|return
+name|runnableApps
+return|;
 block|}
 block|}
 end_class

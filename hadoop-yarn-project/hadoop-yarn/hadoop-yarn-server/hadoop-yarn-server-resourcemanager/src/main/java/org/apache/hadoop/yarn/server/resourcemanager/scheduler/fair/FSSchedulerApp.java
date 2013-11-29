@@ -470,26 +470,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|Queue
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|SchedulerApplication
 import|;
 end_import
@@ -568,7 +548,7 @@ name|Long
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|FSSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, Queue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
+DECL|method|FSSchedulerApp (ApplicationAttemptId applicationAttemptId, String user, FSLeafQueue queue, ActiveUsersManager activeUsersManager, RMContext rmContext)
 specifier|public
 name|FSSchedulerApp
 parameter_list|(
@@ -578,7 +558,7 @@ parameter_list|,
 name|String
 name|user
 parameter_list|,
-name|Queue
+name|FSLeafQueue
 name|queue
 parameter_list|,
 name|ActiveUsersManager
@@ -1834,6 +1814,24 @@ return|return
 name|preemptionMap
 operator|.
 name|keySet
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getQueue ()
+specifier|public
+name|FSLeafQueue
+name|getQueue
+parameter_list|()
+block|{
+return|return
+operator|(
+name|FSLeafQueue
+operator|)
+name|super
+operator|.
+name|getQueue
 argument_list|()
 return|;
 block|}

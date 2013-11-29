@@ -200,7 +200,7 @@ name|apps
 init|=
 name|queue
 operator|.
-name|getAppSchedulables
+name|getRunnableAppSchedulables
 argument_list|()
 decl_stmt|;
 for|for
@@ -233,6 +233,16 @@ operator|++
 expr_stmt|;
 block|}
 block|}
+name|numPendingApps
+operator|+=
+name|queue
+operator|.
+name|getNonRunnableAppSchedulables
+argument_list|()
+operator|.
+name|size
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|getNumActiveApplications ()
 specifier|public
