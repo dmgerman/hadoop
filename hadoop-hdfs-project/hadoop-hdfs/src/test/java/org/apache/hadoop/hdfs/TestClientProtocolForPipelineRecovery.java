@@ -770,8 +770,6 @@ argument_list|(
 literal|true
 argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -780,7 +778,7 @@ name|fileSys
 argument_list|,
 name|file
 argument_list|,
-literal|1L
+literal|68000000L
 argument_list|,
 operator|(
 name|short
@@ -790,33 +788,8 @@ argument_list|,
 literal|0L
 argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// completeFile() should fail.
-name|Assert
-operator|.
-name|assertTrue
-argument_list|(
-name|e
-operator|.
-name|getMessage
-argument_list|()
-operator|.
-name|startsWith
-argument_list|(
-literal|"Unable to close file"
-argument_list|)
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-comment|// At this point, NN let data corruption to happen.
-comment|// Before failing test, try reading the file. It should fail.
+comment|// At this point, NN should have accepted only valid replicas.
+comment|// Read should succeed.
 name|FSDataInputStream
 name|in
 init|=
@@ -864,15 +837,6 @@ literal|" corrupt replicas."
 argument_list|)
 expr_stmt|;
 block|}
-name|Assert
-operator|.
-name|fail
-argument_list|(
-literal|"The file was closed with corrupt replicas, but read still"
-operator|+
-literal|" works!"
-argument_list|)
-expr_stmt|;
 block|}
 finally|finally
 block|{
