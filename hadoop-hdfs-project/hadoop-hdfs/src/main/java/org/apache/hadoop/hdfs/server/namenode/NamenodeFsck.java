@@ -860,6 +860,11 @@ name|snapshottableDirs
 init|=
 literal|null
 decl_stmt|;
+DECL|field|bpPolicy
+specifier|private
+name|BlockPlacementPolicy
+name|bpPolicy
+decl_stmt|;
 comment|/**    * Filesystem checker.    * @param conf configuration (namenode config)    * @param namenode namenode that this fsck is going to use    * @param pmap key=value[] map passed to the http servlet as url parameters    * @param out output stream to write the fsck output    * @param totalDatanodes number of live datanodes    * @param minReplication minimum replication    * @param remoteAddress source address of the fsck request    * @throws IOException    */
 DECL|method|NamenodeFsck (Configuration conf, NameNode namenode, NetworkTopology networktopology, Map<String,String[]> pmap, PrintWriter out, int totalDatanodes, short minReplication, InetAddress remoteAddress)
 name|NamenodeFsck
@@ -936,6 +941,21 @@ operator|.
 name|remoteAddress
 operator|=
 name|remoteAddress
+expr_stmt|;
+name|this
+operator|.
+name|bpPolicy
+operator|=
+name|BlockPlacementPolicy
+operator|.
+name|getInstance
+argument_list|(
+name|conf
+argument_list|,
+literal|null
+argument_list|,
+name|networktopology
+argument_list|)
 expr_stmt|;
 for|for
 control|(
@@ -2423,16 +2443,7 @@ comment|// verify block placement policy
 name|BlockPlacementStatus
 name|blockPlacementStatus
 init|=
-name|BlockPlacementPolicy
-operator|.
-name|getInstance
-argument_list|(
-name|conf
-argument_list|,
-literal|null
-argument_list|,
-name|networktopology
-argument_list|)
+name|bpPolicy
 operator|.
 name|verifyBlockPlacement
 argument_list|(
