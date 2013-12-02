@@ -119,7 +119,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * I-node for file being written.  */
+comment|/**  * Feature for under-construction file.  */
 end_comment
 
 begin_class

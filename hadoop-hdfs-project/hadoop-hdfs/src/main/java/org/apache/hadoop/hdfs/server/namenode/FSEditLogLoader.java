@@ -4065,7 +4065,7 @@ expr_stmt|;
 break|break;
 block|}
 case|case
-name|OP_ADD_PATH_BASED_CACHE_DIRECTIVE
+name|OP_ADD_CACHE_DIRECTIVE
 case|:
 block|{
 name|AddCacheDirectiveInfoOp
@@ -4084,13 +4084,11 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|addDirective
+name|addDirectiveFromEditLog
 argument_list|(
 name|addOp
 operator|.
 name|directive
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 if|if
@@ -4125,7 +4123,7 @@ block|}
 break|break;
 block|}
 case|case
-name|OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
+name|OP_MODIFY_CACHE_DIRECTIVE
 case|:
 block|{
 name|ModifyCacheDirectiveInfoOp
@@ -4172,7 +4170,7 @@ block|}
 break|break;
 block|}
 case|case
-name|OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
+name|OP_REMOVE_CACHE_DIRECTIVE
 case|:
 block|{
 name|RemoveCacheDirectiveInfoOp

@@ -4563,6 +4563,7 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Log a CacheDirectiveInfo returned from    * {@link CacheManager#addDirective(CacheDirectiveInfo, FSPermissionChecker)}    */
 DECL|method|logAddCacheDirectiveInfo (CacheDirectiveInfo directive, boolean toLogRpcIds)
 name|void
 name|logAddCacheDirectiveInfo

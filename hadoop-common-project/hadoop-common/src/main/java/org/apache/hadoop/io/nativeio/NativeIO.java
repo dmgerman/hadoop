@@ -723,6 +723,19 @@ name|flags
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|verifyCanMlock ()
+specifier|public
+name|boolean
+name|verifyCanMlock
+parameter_list|()
+block|{
+return|return
+name|NativeIO
+operator|.
+name|isAvailable
+argument_list|()
+return|;
+block|}
 block|}
 comment|/**      * A CacheManipulator used for testing which does not actually call mlock.      * This allows many tests to be run even when the operating system does not      * allow mlock, or only allows limited mlocking.      */
 annotation|@
@@ -780,6 +793,16 @@ parameter_list|()
 block|{
 return|return
 literal|4096
+return|;
+block|}
+DECL|method|verifyCanMlock ()
+specifier|public
+name|boolean
+name|verifyCanMlock
+parameter_list|()
+block|{
+return|return
+literal|true
 return|;
 block|}
 block|}

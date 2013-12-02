@@ -4317,6 +4317,10 @@ argument_list|,
 name|FiCaSchedulerApp
 operator|.
 name|class
+argument_list|,
+name|Queue
+operator|.
+name|class
 argument_list|)
 expr_stmt|;
 block|}
@@ -4326,8 +4330,12 @@ parameter_list|<
 name|T
 extends|extends
 name|SchedulerApplication
+parameter_list|,
+name|Q
+extends|extends
+name|Queue
 parameter_list|>
-DECL|method|verifyConcurrentAccessOnApplications ( final Map<ApplicationAttemptId, T> applications, Class<T> clazz)
+DECL|method|verifyConcurrentAccessOnApplications ( final Map<ApplicationAttemptId, T> applications, Class<T> appClazz, final Class<Q> queueClazz)
 name|void
 name|verifyConcurrentAccessOnApplications
 parameter_list|(
@@ -4344,7 +4352,14 @@ name|Class
 argument_list|<
 name|T
 argument_list|>
-name|clazz
+name|appClazz
+parameter_list|,
+specifier|final
+name|Class
+argument_list|<
+name|Q
+argument_list|>
+name|queueClazz
 parameter_list|)
 throws|throws
 name|Exception
@@ -4375,7 +4390,7 @@ name|T
 argument_list|>
 name|ctor
 init|=
-name|clazz
+name|appClazz
 operator|.
 name|getDeclaredConstructor
 argument_list|(
@@ -4387,9 +4402,7 @@ name|String
 operator|.
 name|class
 argument_list|,
-name|Queue
-operator|.
-name|class
+name|queueClazz
 argument_list|,
 name|ActiveUsersManager
 operator|.
@@ -4428,9 +4441,7 @@ literal|null
 argument_list|,
 name|mock
 argument_list|(
-name|Queue
-operator|.
-name|class
+name|queueClazz
 argument_list|)
 argument_list|,
 literal|null
@@ -4529,9 +4540,7 @@ literal|null
 argument_list|,
 name|mock
 argument_list|(
-name|Queue
-operator|.
-name|class
+name|queueClazz
 argument_list|)
 argument_list|,
 literal|null

@@ -640,6 +640,36 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getCacheCapacity ()
+specifier|public
+specifier|synchronized
+name|long
+name|getCacheCapacity
+parameter_list|()
+block|{
+return|return
+name|stats
+operator|.
+name|cacheCapacity
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCacheUsed ()
+specifier|public
+specifier|synchronized
+name|long
+name|getCacheUsed
+parameter_list|()
+block|{
+return|return
+name|stats
+operator|.
+name|cacheUsed
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getStats ()
 specifier|public
 specifier|synchronized
@@ -1288,6 +1318,20 @@ name|xceiverCount
 init|=
 literal|0
 decl_stmt|;
+DECL|field|cacheCapacity
+specifier|private
+name|long
+name|cacheCapacity
+init|=
+literal|0L
+decl_stmt|;
+DECL|field|cacheUsed
+specifier|private
+name|long
+name|cacheUsed
+init|=
+literal|0L
+decl_stmt|;
 DECL|field|expiredHeartbeats
 specifier|private
 name|int
@@ -1367,6 +1411,20 @@ name|getDfsUsed
 argument_list|()
 expr_stmt|;
 block|}
+name|cacheCapacity
+operator|+=
+name|node
+operator|.
+name|getCacheCapacity
+argument_list|()
+expr_stmt|;
+name|cacheUsed
+operator|+=
+name|node
+operator|.
+name|getCacheUsed
+argument_list|()
+expr_stmt|;
 block|}
 DECL|method|subtract (final DatanodeDescriptor node)
 specifier|private
@@ -1440,6 +1498,20 @@ name|getDfsUsed
 argument_list|()
 expr_stmt|;
 block|}
+name|cacheCapacity
+operator|-=
+name|node
+operator|.
+name|getCacheCapacity
+argument_list|()
+expr_stmt|;
+name|cacheUsed
+operator|-=
+name|node
+operator|.
+name|getCacheUsed
+argument_list|()
+expr_stmt|;
 block|}
 comment|/** Increment expired heartbeat counter. */
 DECL|method|incrExpiredHeartbeats ()

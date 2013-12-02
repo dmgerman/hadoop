@@ -2195,14 +2195,14 @@ operator|.
 name|asFile
 argument_list|()
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 name|file
 init|=
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|node
 operator|.
@@ -2266,9 +2266,6 @@ operator|.
 name|addFileDiff
 argument_list|(
 name|file
-operator|.
-name|asINodeFile
-argument_list|()
 argument_list|,
 name|relativePath
 argument_list|)

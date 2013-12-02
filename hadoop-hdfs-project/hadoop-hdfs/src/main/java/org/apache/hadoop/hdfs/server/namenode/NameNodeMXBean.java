@@ -146,6 +146,20 @@ name|float
 name|getPercentRemaining
 parameter_list|()
 function_decl|;
+comment|/**    * Returns the amount of cache used by the datanode (in bytes).    */
+DECL|method|getCacheUsed ()
+specifier|public
+name|long
+name|getCacheUsed
+parameter_list|()
+function_decl|;
+comment|/**    * Returns the total cache capacity of the datanode (in bytes).    */
+DECL|method|getCacheCapacity ()
+specifier|public
+name|long
+name|getCacheCapacity
+parameter_list|()
+function_decl|;
 comment|/**    * Get the total space used by the block pools of this namenode    */
 DECL|method|getBlockPoolUsedSpace ()
 specifier|public

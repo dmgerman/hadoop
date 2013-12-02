@@ -861,7 +861,7 @@ name|connectionFactory
 init|=
 name|URLConnectionFactory
 operator|.
-name|DEFAULT_CONNECTION_FACTORY
+name|DEFAULT_SYSTEM_CONNECTION_FACTORY
 decl_stmt|;
 DECL|field|httpPort
 specifier|private

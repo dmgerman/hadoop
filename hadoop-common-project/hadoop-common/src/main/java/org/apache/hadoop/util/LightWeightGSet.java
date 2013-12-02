@@ -1511,7 +1511,7 @@ name|info
 argument_list|(
 name|percentage
 operator|+
-literal|"% max memory = "
+literal|"% max memory "
 operator|+
 name|StringUtils
 operator|.
@@ -1520,6 +1520,24 @@ operator|.
 name|long2String
 argument_list|(
 name|maxMemory
+argument_list|,
+literal|"B"
+argument_list|,
+literal|1
+argument_list|)
+operator|+
+literal|" = "
+operator|+
+name|StringUtils
+operator|.
+name|TraditionalBinaryPrefix
+operator|.
+name|long2String
+argument_list|(
+operator|(
+name|long
+operator|)
+name|percentMemory
 argument_list|,
 literal|"B"
 argument_list|,

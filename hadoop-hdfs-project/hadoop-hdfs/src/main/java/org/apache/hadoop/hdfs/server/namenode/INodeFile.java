@@ -186,28 +186,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|FileWithSnapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|FileWithSnapshot
-operator|.
 name|FileDiff
 import|;
 end_import
@@ -228,31 +206,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|FileWithSnapshot
-operator|.
 name|FileDiffList
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|FileWithSnapshot
-operator|.
-name|Util
 import|;
 end_import
 
@@ -351,12 +305,21 @@ specifier|static
 specifier|abstract
 class|class
 name|Feature
+implements|implements
+name|INode
+operator|.
+name|Feature
+argument_list|<
+name|Feature
+argument_list|>
 block|{
 DECL|field|nextFeature
 specifier|private
 name|Feature
 name|nextFeature
 decl_stmt|;
+annotation|@
+name|Override
 DECL|method|getNextFeature ()
 specifier|public
 name|Feature
@@ -367,6 +330,8 @@ return|return
 name|nextFeature
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|setNextFeature (Feature next)
 specifier|public
 name|void
@@ -864,6 +829,7 @@ literal|null
 return|;
 block|}
 DECL|method|addFeature (Feature f)
+specifier|private
 name|void
 name|addFeature
 parameter_list|(
@@ -871,18 +837,24 @@ name|Feature
 name|f
 parameter_list|)
 block|{
-name|f
+name|headFeature
+operator|=
+name|INode
 operator|.
-name|nextFeature
-operator|=
-name|headFeature
-expr_stmt|;
-name|headFeature
-operator|=
+name|Feature
+operator|.
+name|Util
+operator|.
+name|addFeature
+argument_list|(
 name|f
+argument_list|,
+name|headFeature
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|removeFeature (Feature f)
+specifier|private
 name|void
 name|removeFeature
 parameter_list|(
@@ -890,92 +862,21 @@ name|Feature
 name|f
 parameter_list|)
 block|{
-if|if
-condition|(
-name|f
-operator|==
-name|headFeature
-condition|)
-block|{
 name|headFeature
 operator|=
-name|headFeature
+name|INode
 operator|.
-name|nextFeature
-expr_stmt|;
-return|return;
-block|}
-elseif|else
-if|if
-condition|(
-name|headFeature
-operator|!=
-literal|null
-condition|)
-block|{
 name|Feature
-name|prev
-init|=
-name|headFeature
-decl_stmt|;
-name|Feature
-name|curr
-init|=
-name|headFeature
 operator|.
-name|nextFeature
-decl_stmt|;
-for|for
-control|(
-init|;
-name|curr
-operator|!=
-literal|null
-operator|&&
-name|curr
-operator|!=
-name|f
-condition|;
-name|prev
-operator|=
-name|curr
-operator|,
-name|curr
-operator|=
-name|curr
+name|Util
 operator|.
-name|nextFeature
-control|)
-empty_stmt|;
-if|if
-condition|(
-name|curr
-operator|!=
-literal|null
-condition|)
-block|{
-name|prev
-operator|.
-name|nextFeature
-operator|=
-name|curr
-operator|.
-name|nextFeature
-expr_stmt|;
-return|return;
-block|}
-block|}
-throw|throw
-operator|new
-name|IllegalStateException
+name|removeFeature
 argument_list|(
-literal|"Feature "
-operator|+
 name|f
-operator|+
-literal|" not found."
+argument_list|,
+name|headFeature
 argument_list|)
-throw|;
+expr_stmt|;
 block|}
 comment|/** @return true unconditionally. */
 annotation|@
@@ -1008,7 +909,6 @@ block|}
 comment|/* Start of Under-Construction Feature */
 comment|/** Convert this file to an {@link INodeFileUnderConstruction}. */
 DECL|method|toUnderConstruction (String clientName, String clientMachine, DatanodeDescriptor clientNode)
-specifier|public
 name|INodeFile
 name|toUnderConstruction
 parameter_list|(
@@ -1030,7 +930,7 @@ operator|!
 name|isUnderConstruction
 argument_list|()
 argument_list|,
-literal|"file is already an INodeFileUnderConstruction"
+literal|"file is already under construction"
 argument_list|)
 expr_stmt|;
 name|FileUnderConstructionFeature
@@ -1065,6 +965,16 @@ name|long
 name|mtime
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|isUnderConstruction
+argument_list|()
+argument_list|,
+literal|"file is no longer under construction"
+argument_list|)
+expr_stmt|;
 name|FileUnderConstructionFeature
 name|uc
 init|=
@@ -1169,7 +1079,7 @@ block|}
 block|}
 annotation|@
 name|Override
-comment|//BlockCollection
+comment|// BlockCollection
 DECL|method|setBlock (int index, BlockInfo blk)
 specifier|public
 name|void
@@ -1194,7 +1104,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-comment|// BlockCollection
+comment|// BlockCollection, the file should be under construction
 DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeStorageInfo[] locations)
 specifier|public
 name|BlockInfoUnderConstruction
@@ -1216,6 +1126,8 @@ name|checkState
 argument_list|(
 name|isUnderConstruction
 argument_list|()
+argument_list|,
+literal|"file is no longer under construction"
 argument_list|)
 expr_stmt|;
 if|if
@@ -1278,6 +1190,16 @@ name|Block
 name|oldblock
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|isUnderConstruction
+argument_list|()
+argument_list|,
+literal|"file is no longer under construction"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|blocks
@@ -1489,26 +1411,11 @@ annotation|@
 name|Override
 DECL|method|getBlockReplication ()
 specifier|public
-specifier|final
 name|short
 name|getBlockReplication
 parameter_list|()
 block|{
 return|return
-name|this
-operator|instanceof
-name|FileWithSnapshot
-condition|?
-name|Util
-operator|.
-name|getBlockReplication
-argument_list|(
-operator|(
-name|FileWithSnapshot
-operator|)
-name|this
-argument_list|)
-else|:
 name|getFileReplication
 argument_list|(
 literal|null
@@ -2078,12 +1985,12 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)
@@ -2145,7 +2052,7 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 name|FileDiffList
@@ -2153,7 +2060,7 @@ name|fileDiffList
 init|=
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)
@@ -2336,15 +2243,15 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 specifier|final
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 name|withSnapshot
 init|=
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 decl_stmt|;
@@ -2463,11 +2370,11 @@ if|if
 condition|(
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|&&
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)
@@ -2548,7 +2455,7 @@ literal|null
 operator|&&
 name|this
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 specifier|final
@@ -2557,7 +2464,7 @@ name|d
 init|=
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|this
 operator|)

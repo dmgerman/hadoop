@@ -2196,7 +2196,7 @@ name|println
 argument_list|(
 name|elos
 operator|.
-name|generateHtmlReport
+name|generateReport
 argument_list|()
 argument_list|)
 expr_stmt|;

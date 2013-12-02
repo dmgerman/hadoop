@@ -4653,6 +4653,45 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|// In case there is buffered data for the same file, flush it. This can be
+comment|// optimized later by reading from the cache.
+name|int
+name|ret
+init|=
+name|writeManager
+operator|.
+name|commitBeforeRead
+argument_list|(
+name|dfsClient
+argument_list|,
+name|handle
+argument_list|,
+name|offset
+operator|+
+name|count
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|ret
+operator|!=
+name|Nfs3Status
+operator|.
+name|NFS3_OK
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"commitBeforeRead didn't succeed with ret="
+operator|+
+name|ret
+operator|+
+literal|". Read may not get most recent data."
+argument_list|)
+expr_stmt|;
+block|}
 try|try
 block|{
 name|int

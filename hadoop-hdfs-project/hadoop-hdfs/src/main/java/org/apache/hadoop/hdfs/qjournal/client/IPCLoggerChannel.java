@@ -2690,11 +2690,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|appendHtmlReport (StringBuilder sb)
+DECL|method|appendReport (StringBuilder sb)
 specifier|public
 specifier|synchronized
 name|void
-name|appendHtmlReport
+name|appendReport
 parameter_list|(
 name|StringBuilder
 name|sb

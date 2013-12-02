@@ -3956,12 +3956,12 @@ name|prevLastAppliedTxId
 return|;
 block|}
 comment|/**    * Update the count of each directory with quota in the namespace.    * A directory's count is defined as the total number inodes in the tree    * rooted at the directory.    *     * This is an update of existing state of the filesystem and does not    * throw QuotaExceededException.    */
-DECL|method|updateCountForQuota (INodeDirectoryWithQuota root)
+DECL|method|updateCountForQuota (INodeDirectory root)
 specifier|static
 name|void
 name|updateCountForQuota
 parameter_list|(
-name|INodeDirectoryWithQuota
+name|INodeDirectory
 name|root
 parameter_list|)
 block|{
@@ -4214,12 +4214,10 @@ name|diskspace
 argument_list|)
 expr_stmt|;
 block|}
-operator|(
-operator|(
-name|INodeDirectoryWithQuota
-operator|)
 name|dir
-operator|)
+operator|.
+name|getDirectoryWithQuotaFeature
+argument_list|()
 operator|.
 name|setSpaceConsumed
 argument_list|(

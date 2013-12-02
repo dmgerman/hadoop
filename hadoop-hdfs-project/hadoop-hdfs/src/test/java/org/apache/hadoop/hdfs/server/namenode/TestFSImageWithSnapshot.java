@@ -945,9 +945,10 @@ name|FSImage
 operator|.
 name|updateCountForQuota
 argument_list|(
-operator|(
-name|INodeDirectoryWithQuota
-operator|)
+name|INodeDirectory
+operator|.
+name|valueOf
+argument_list|(
 name|fsn
 operator|.
 name|getFSDirectory
@@ -955,6 +956,9 @@ argument_list|()
 operator|.
 name|getINode
 argument_list|(
+literal|"/"
+argument_list|)
+argument_list|,
 literal|"/"
 argument_list|)
 argument_list|)

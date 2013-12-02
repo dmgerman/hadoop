@@ -72,7 +72,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Map
 import|;
 end_import
 
@@ -432,14 +432,9 @@ name|RpcProgramPortmap
 operator|.
 name|VERSION
 argument_list|,
-name|PortmapInterface
-operator|.
-name|Procedure
+name|RpcProgramPortmap
 operator|.
 name|PMAPPROC_SET
-operator|.
-name|getValue
-argument_list|()
 argument_list|,
 operator|new
 name|CredentialsNone
@@ -549,7 +544,7 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,
@@ -558,7 +553,7 @@ argument_list|>
 name|map
 init|=
 operator|(
-name|HashMap
+name|Map
 argument_list|<
 name|String
 argument_list|,

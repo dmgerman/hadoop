@@ -558,6 +558,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CachePoolEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -8036,12 +8052,12 @@ name|poolName
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * List all cache pools.    *    * @return A remote iterator from which you can get CachePoolInfo objects.    *          Requests will be made as needed.    * @throws IOException    *          If there was an error listing cache pools.    */
+comment|/**    * List all cache pools.    *    * @return A remote iterator from which you can get CachePoolEntry objects.    *          Requests will be made as needed.    * @throws IOException    *          If there was an error listing cache pools.    */
 DECL|method|listCachePools ()
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|listCachePools
 parameter_list|()

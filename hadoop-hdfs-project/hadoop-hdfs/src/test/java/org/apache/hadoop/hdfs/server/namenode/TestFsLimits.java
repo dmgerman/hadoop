@@ -327,7 +327,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|rootInode
 specifier|static
-name|INodeDirectoryWithQuota
+name|INodeDirectory
 name|rootInode
 decl_stmt|;
 DECL|method|getMockNamesystem ()
@@ -462,7 +462,7 @@ expr_stmt|;
 name|rootInode
 operator|=
 operator|new
-name|INodeDirectoryWithQuota
+name|INodeDirectory
 argument_list|(
 name|getMockNamesystem
 argument_list|()
@@ -475,6 +475,8 @@ operator|.
 name|ROOT_NAME
 argument_list|,
 name|perms
+argument_list|,
+literal|0L
 argument_list|)
 expr_stmt|;
 name|inodes

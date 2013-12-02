@@ -246,6 +246,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|URLConnectionFactory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|http
 operator|.
 name|HttpConfig
@@ -262,7 +278,7 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|SecurityUtil
+name|UserGroupInformation
 import|;
 end_import
 
@@ -276,7 +292,11 @@ name|hadoop
 operator|.
 name|security
 operator|.
-name|UserGroupInformation
+name|authentication
+operator|.
+name|client
+operator|.
+name|AuthenticationException
 import|;
 end_import
 
@@ -373,6 +393,12 @@ literal|"\t-files\tprint out files being checked\n"
 operator|+
 literal|"\t-openforwrite\tprint out files opened for write\n"
 operator|+
+literal|"\t-includeSnapshots\tinclude snapshot data if the given path"
+operator|+
+literal|" indicates a snapshottable directory or there are "
+operator|+
+literal|"snapshottable directories under it\n"
+operator|+
 literal|"\t-list-corruptfileblocks\tprint out list of missing "
 operator|+
 literal|"blocks and files they belong to\n"
@@ -381,15 +407,25 @@ literal|"\t-blocks\tprint out block report\n"
 operator|+
 literal|"\t-locations\tprint out locations for every block\n"
 operator|+
-literal|"\t-racks\tprint out network topology for data-node locations\n"
+literal|"\t-racks\tprint out network topology for data-node locations\n\n"
 operator|+
-literal|"\t\tBy default fsck ignores files opened for write, "
+literal|"Please Note:\n"
+operator|+
+literal|"\t1. By default fsck ignores files opened for write, "
 operator|+
 literal|"use -openforwrite to report such files. They are usually "
 operator|+
 literal|" tagged CORRUPT or HEALTHY depending on their block "
 operator|+
-literal|"allocation status"
+literal|"allocation status\n"
+operator|+
+literal|"\t2. Option -includeSnapshots should not be used for comparing stats,"
+operator|+
+literal|" should be used only for HEALTH check, as this may contain duplicates"
+operator|+
+literal|" if the same file present in both original fs tree "
+operator|+
+literal|"and inside snapshots."
 decl_stmt|;
 DECL|field|ugi
 specifier|private
@@ -402,6 +438,18 @@ specifier|private
 specifier|final
 name|PrintStream
 name|out
+decl_stmt|;
+DECL|field|connectionFactory
+specifier|private
+specifier|final
+name|URLConnectionFactory
+name|connectionFactory
+decl_stmt|;
+DECL|field|isSpnegoEnabled
+specifier|private
+specifier|final
+name|boolean
+name|isSpnegoEnabled
 decl_stmt|;
 comment|/**    * Filesystem checker.    * @param conf current Configuration    */
 DECL|method|DFSck (Configuration conf)
@@ -456,6 +504,26 @@ operator|.
 name|out
 operator|=
 name|out
+expr_stmt|;
+name|this
+operator|.
+name|connectionFactory
+operator|=
+name|URLConnectionFactory
+operator|.
+name|newDefaultURLConnectionFactory
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isSpnegoEnabled
+operator|=
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Print fsck usage information    */
@@ -683,14 +751,35 @@ argument_list|)
 decl_stmt|;
 name|URLConnection
 name|connection
-init|=
-name|SecurityUtil
+decl_stmt|;
+try|try
+block|{
+name|connection
+operator|=
+name|connectionFactory
 operator|.
-name|openSecureHttpConnection
+name|openConnection
 argument_list|(
 name|path
+argument_list|,
+name|isSpnegoEnabled
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AuthenticationException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|InputStream
 name|stream
 init|=
@@ -1316,6 +1405,28 @@ block|}
 elseif|else
 if|if
 condition|(
+name|args
+index|[
+name|idx
+index|]
+operator|.
+name|equals
+argument_list|(
+literal|"-includeSnapshots"
+argument_list|)
+condition|)
+block|{
+name|url
+operator|.
+name|append
+argument_list|(
+literal|"&includeSnapshots=1"
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
 operator|!
 name|args
 index|[
@@ -1467,14 +1578,35 @@ argument_list|)
 decl_stmt|;
 name|URLConnection
 name|connection
-init|=
-name|SecurityUtil
+decl_stmt|;
+try|try
+block|{
+name|connection
+operator|=
+name|connectionFactory
 operator|.
-name|openSecureHttpConnection
+name|openConnection
 argument_list|(
 name|path
+argument_list|,
+name|isSpnegoEnabled
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|AuthenticationException
+name|e
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|e
+argument_list|)
+throw|;
+block|}
 name|InputStream
 name|stream
 init|=

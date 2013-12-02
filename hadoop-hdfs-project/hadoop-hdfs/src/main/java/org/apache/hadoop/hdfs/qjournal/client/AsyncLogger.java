@@ -454,10 +454,10 @@ name|close
 parameter_list|()
 function_decl|;
 comment|/**    * Append an HTML-formatted report for this logger's status to the provided    * StringBuilder. This is displayed on the NN web UI.    */
-DECL|method|appendHtmlReport (StringBuilder sb)
+DECL|method|appendReport (StringBuilder sb)
 specifier|public
 name|void
-name|appendHtmlReport
+name|appendReport
 parameter_list|(
 name|StringBuilder
 name|sb

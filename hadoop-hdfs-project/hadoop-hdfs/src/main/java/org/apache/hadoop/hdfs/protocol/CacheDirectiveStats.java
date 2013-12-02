@@ -85,6 +85,11 @@ specifier|private
 name|long
 name|filesAffected
 decl_stmt|;
+DECL|field|hasExpired
+specifier|private
+name|boolean
+name|hasExpired
+decl_stmt|;
 comment|/**      * Builds a new CacheDirectiveStats populated with the set properties.      *       * @return New CacheDirectiveStats.      */
 DECL|method|build ()
 specifier|public
@@ -101,6 +106,8 @@ argument_list|,
 name|bytesCached
 argument_list|,
 name|filesAffected
+argument_list|,
+name|hasExpired
 argument_list|)
 return|;
 block|}
@@ -111,12 +118,12 @@ name|Builder
 parameter_list|()
 block|{     }
 comment|/**      * Sets the bytes needed by this directive.      *       * @param bytesNeeded The bytes needed.      * @return This builder, for call chaining.      */
-DECL|method|setBytesNeeded (Long bytesNeeded)
+DECL|method|setBytesNeeded (long bytesNeeded)
 specifier|public
 name|Builder
 name|setBytesNeeded
 parameter_list|(
-name|Long
+name|long
 name|bytesNeeded
 parameter_list|)
 block|{
@@ -131,12 +138,12 @@ name|this
 return|;
 block|}
 comment|/**      * Sets the bytes cached by this directive.      *       * @param bytesCached The bytes cached.      * @return This builder, for call chaining.      */
-DECL|method|setBytesCached (Long bytesCached)
+DECL|method|setBytesCached (long bytesCached)
 specifier|public
 name|Builder
 name|setBytesCached
 parameter_list|(
-name|Long
+name|long
 name|bytesCached
 parameter_list|)
 block|{
@@ -151,12 +158,12 @@ name|this
 return|;
 block|}
 comment|/**      * Sets the files affected by this directive.      *       * @param filesAffected The files affected.      * @return This builder, for call chaining.      */
-DECL|method|setFilesAffected (Long filesAffected)
+DECL|method|setFilesAffected (long filesAffected)
 specifier|public
 name|Builder
 name|setFilesAffected
 parameter_list|(
-name|Long
+name|long
 name|filesAffected
 parameter_list|)
 block|{
@@ -165,6 +172,26 @@ operator|.
 name|filesAffected
 operator|=
 name|filesAffected
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets whether this directive has expired.      *       * @param hasExpired if this directive has expired      * @return This builder, for call chaining.      */
+DECL|method|setHasExpired (boolean hasExpired)
+specifier|public
+name|Builder
+name|setHasExpired
+parameter_list|(
+name|boolean
+name|hasExpired
+parameter_list|)
+block|{
+name|this
+operator|.
+name|hasExpired
+operator|=
+name|hasExpired
 expr_stmt|;
 return|return
 name|this
@@ -189,7 +216,13 @@ specifier|final
 name|long
 name|filesAffected
 decl_stmt|;
-DECL|method|CacheDirectiveStats (long bytesNeeded, long bytesCached, long filesAffected)
+DECL|field|hasExpired
+specifier|private
+specifier|final
+name|boolean
+name|hasExpired
+decl_stmt|;
+DECL|method|CacheDirectiveStats (long bytesNeeded, long bytesCached, long filesAffected, boolean hasExpired)
 specifier|private
 name|CacheDirectiveStats
 parameter_list|(
@@ -201,6 +234,9 @@ name|bytesCached
 parameter_list|,
 name|long
 name|filesAffected
+parameter_list|,
+name|boolean
+name|hasExpired
 parameter_list|)
 block|{
 name|this
@@ -221,11 +257,17 @@ name|filesAffected
 operator|=
 name|filesAffected
 expr_stmt|;
+name|this
+operator|.
+name|hasExpired
+operator|=
+name|hasExpired
+expr_stmt|;
 block|}
 comment|/**    * @return The bytes needed.    */
 DECL|method|getBytesNeeded ()
 specifier|public
-name|Long
+name|long
 name|getBytesNeeded
 parameter_list|()
 block|{
@@ -236,7 +278,7 @@ block|}
 comment|/**    * @return The bytes cached.    */
 DECL|method|getBytesCached ()
 specifier|public
-name|Long
+name|long
 name|getBytesCached
 parameter_list|()
 block|{
@@ -247,12 +289,23 @@ block|}
 comment|/**    * @return The files affected.    */
 DECL|method|getFilesAffected ()
 specifier|public
-name|Long
+name|long
 name|getFilesAffected
 parameter_list|()
 block|{
 return|return
 name|filesAffected
+return|;
+block|}
+comment|/**    * @return Whether this directive has expired.    */
+DECL|method|hasExpired ()
+specifier|public
+name|boolean
+name|hasExpired
+parameter_list|()
+block|{
+return|return
+name|hasExpired
 return|;
 block|}
 annotation|@
@@ -321,6 +374,23 @@ operator|.
 name|append
 argument_list|(
 name|filesAffected
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"hasExpired: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|hasExpired
 argument_list|)
 expr_stmt|;
 name|builder

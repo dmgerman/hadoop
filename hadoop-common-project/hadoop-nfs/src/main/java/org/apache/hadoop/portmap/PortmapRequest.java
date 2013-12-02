@@ -90,22 +90,6 @@ name|VerifierNone
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|portmap
-operator|.
-name|PortmapInterface
-operator|.
-name|Procedure
-import|;
-end_import
-
 begin_comment
 comment|/**  * Helper utility for building portmap request  */
 end_comment
@@ -181,12 +165,9 @@ name|RpcProgramPortmap
 operator|.
 name|VERSION
 argument_list|,
-name|Procedure
+name|RpcProgramPortmap
 operator|.
 name|PMAPPROC_SET
-operator|.
-name|getValue
-argument_list|()
 argument_list|,
 operator|new
 name|CredentialsNone

@@ -60,6 +60,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -204,6 +214,8 @@ argument_list|,
 name|user
 argument_list|,
 name|groups
+argument_list|,
+name|configuredQueues
 argument_list|)
 decl_stmt|;
 if|if
@@ -362,7 +374,7 @@ name|isTerminal
 parameter_list|()
 function_decl|;
 comment|/**    * Applies this rule to an app with the given requested queue and user/group    * information.    *     * @param requestedQueue    *    The queue specified in the ApplicationSubmissionContext    * @param user    *    The user submitting the app.    * @param groups    *    The groups of the user submitting the app.    * @return    *    The name of the queue to assign the app to, or null to empty string    *    continue to the next rule.    */
-DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups)
+DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups, Collection<String> configuredQueues)
 specifier|protected
 specifier|abstract
 name|String
@@ -376,6 +388,12 @@ name|user
 parameter_list|,
 name|Groups
 name|groups
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|configuredQueues
 parameter_list|)
 throws|throws
 name|IOException
@@ -391,7 +409,7 @@ name|QueuePlacementRule
 block|{
 annotation|@
 name|Override
-DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups)
+DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups, Collection<String> configuredQueues)
 specifier|protected
 name|String
 name|getQueueForApp
@@ -404,6 +422,12 @@ name|user
 parameter_list|,
 name|Groups
 name|groups
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|configuredQueues
 parameter_list|)
 block|{
 return|return
@@ -436,7 +460,7 @@ name|QueuePlacementRule
 block|{
 annotation|@
 name|Override
-DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups)
+DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups, Collection<String> configuredQueues)
 specifier|protected
 name|String
 name|getQueueForApp
@@ -449,6 +473,12 @@ name|user
 parameter_list|,
 name|Groups
 name|groups
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|configuredQueues
 parameter_list|)
 throws|throws
 name|IOException
@@ -482,18 +512,18 @@ name|create
 return|;
 block|}
 block|}
-comment|/**    * Places apps in queues by requested queue of the submitter    */
-DECL|class|Specified
+comment|/**    * Places apps in queues by secondary group of the submitter    *     * Match will be made on first secondary group that exist in    * queues    */
+DECL|class|SecondaryGroupExistingQueue
 specifier|public
 specifier|static
 class|class
-name|Specified
+name|SecondaryGroupExistingQueue
 extends|extends
 name|QueuePlacementRule
 block|{
 annotation|@
 name|Override
-DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups)
+DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups, Collection<String> configuredQueues)
 specifier|protected
 name|String
 name|getQueueForApp
@@ -506,6 +536,123 @@ name|user
 parameter_list|,
 name|Groups
 name|groups
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|configuredQueues
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|groupNames
+init|=
+name|groups
+operator|.
+name|getGroups
+argument_list|(
+name|user
+argument_list|)
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|1
+init|;
+name|i
+operator|<
+name|groupNames
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+if|if
+condition|(
+name|configuredQueues
+operator|.
+name|contains
+argument_list|(
+literal|"root."
+operator|+
+name|groupNames
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+argument_list|)
+condition|)
+block|{
+return|return
+literal|"root."
+operator|+
+name|groupNames
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+return|;
+block|}
+block|}
+return|return
+literal|""
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|isTerminal ()
+specifier|public
+name|boolean
+name|isTerminal
+parameter_list|()
+block|{
+return|return
+name|create
+return|;
+block|}
+block|}
+comment|/**    * Places apps in queues by requested queue of the submitter    */
+DECL|class|Specified
+specifier|public
+specifier|static
+class|class
+name|Specified
+extends|extends
+name|QueuePlacementRule
+block|{
+annotation|@
+name|Override
+DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups, Collection<String> configuredQueues)
+specifier|protected
+name|String
+name|getQueueForApp
+parameter_list|(
+name|String
+name|requestedQueue
+parameter_list|,
+name|String
+name|user
+parameter_list|,
+name|Groups
+name|groups
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|configuredQueues
 parameter_list|)
 block|{
 if|if
@@ -573,7 +720,7 @@ name|QueuePlacementRule
 block|{
 annotation|@
 name|Override
-DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups)
+DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups, Collection<String> configuredQueues)
 specifier|protected
 name|String
 name|getQueueForApp
@@ -586,6 +733,12 @@ name|user
 parameter_list|,
 name|Groups
 name|groups
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|configuredQueues
 parameter_list|)
 block|{
 return|return
@@ -647,7 +800,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups)
+DECL|method|getQueueForApp (String requestedQueue, String user, Groups groups, Collection<String> configuredQueues)
 specifier|protected
 name|String
 name|getQueueForApp
@@ -660,6 +813,12 @@ name|user
 parameter_list|,
 name|Groups
 name|groups
+parameter_list|,
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|configuredQueues
 parameter_list|)
 block|{
 throw|throw

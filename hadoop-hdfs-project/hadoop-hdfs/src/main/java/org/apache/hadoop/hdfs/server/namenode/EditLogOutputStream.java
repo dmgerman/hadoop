@@ -84,20 +84,6 @@ name|InterfaceStability
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|jasper
-operator|.
-name|compiler
-operator|.
-name|JspUtil
-import|;
-end_import
-
 begin_comment
 comment|/**  * A generic abstract class to support journaling of edits logs into   * a persistent storage.  */
 end_comment
@@ -321,23 +307,16 @@ return|return
 name|numSync
 return|;
 block|}
-comment|/**    * @return a short HTML snippet suitable for describing the current    * status of the stream    */
-DECL|method|generateHtmlReport ()
+comment|/**    * @return a short text snippet suitable for describing the current    * status of the stream    */
+DECL|method|generateReport ()
 specifier|public
 name|String
-name|generateHtmlReport
+name|generateReport
 parameter_list|()
 block|{
 return|return
-name|JspUtil
-operator|.
-name|escapeXml
-argument_list|(
-name|this
-operator|.
 name|toString
 argument_list|()
-argument_list|)
 return|;
 block|}
 block|}

@@ -258,6 +258,20 @@ name|SSLFactory
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * Utilities for handling URLs  */
 end_comment
@@ -324,29 +338,18 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// 1 minute
-DECL|field|DEFAULT_CONNECTION_FACTORY
-specifier|public
-specifier|static
-specifier|final
-name|URLConnectionFactory
-name|DEFAULT_CONNECTION_FACTORY
-init|=
-operator|new
-name|URLConnectionFactory
-argument_list|(
-name|DEFAULT_SOCKET_TIMEOUT
-argument_list|)
-decl_stmt|;
-DECL|field|socketTimeout
-specifier|private
-name|int
-name|socketTimeout
-decl_stmt|;
-comment|/** Configure connections for AuthenticatedURL */
 DECL|field|connConfigurator
 specifier|private
+specifier|final
 name|ConnectionConfigurator
 name|connConfigurator
+decl_stmt|;
+DECL|field|DEFAULT_TIMEOUT_CONN_CONFIGURATOR
+specifier|private
+specifier|static
+specifier|final
+name|ConnectionConfigurator
+name|DEFAULT_TIMEOUT_CONN_CONFIGURATOR
 init|=
 operator|new
 name|ConnectionConfigurator
@@ -370,7 +373,7 @@ name|setTimeouts
 argument_list|(
 name|conn
 argument_list|,
-name|socketTimeout
+name|DEFAULT_SOCKET_TIMEOUT
 argument_list|)
 expr_stmt|;
 return|return
@@ -379,8 +382,95 @@ return|;
 block|}
 block|}
 decl_stmt|;
+comment|/**    * The URLConnectionFactory that sets the default timeout and it only trusts    * Java's SSL certificates.    */
+DECL|field|DEFAULT_SYSTEM_CONNECTION_FACTORY
+specifier|public
+specifier|static
+specifier|final
+name|URLConnectionFactory
+name|DEFAULT_SYSTEM_CONNECTION_FACTORY
+init|=
+operator|new
+name|URLConnectionFactory
+argument_list|(
+name|DEFAULT_TIMEOUT_CONN_CONFIGURATOR
+argument_list|)
+decl_stmt|;
+comment|/**    * Construct a new URLConnectionFactory based on the configuration. It will    * try to load SSL certificates when it is specified.    */
+DECL|method|newDefaultURLConnectionFactory (Configuration conf)
+specifier|public
+specifier|static
+name|URLConnectionFactory
+name|newDefaultURLConnectionFactory
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|ConnectionConfigurator
+name|conn
+init|=
+literal|null
+decl_stmt|;
+try|try
+block|{
+name|conn
+operator|=
+name|newSslConnConfigurator
+argument_list|(
+name|DEFAULT_SOCKET_TIMEOUT
+argument_list|,
+name|conf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Cannot load customized ssl related configuration. Fallback to system-generic settings."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+name|conn
+operator|=
+name|DEFAULT_TIMEOUT_CONN_CONFIGURATOR
+expr_stmt|;
+block|}
+return|return
+operator|new
+name|URLConnectionFactory
+argument_list|(
+name|conn
+argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|URLConnectionFactory (ConnectionConfigurator connConfigurator)
+name|URLConnectionFactory
+parameter_list|(
+name|ConnectionConfigurator
+name|connConfigurator
+parameter_list|)
+block|{
+name|this
+operator|.
+name|connConfigurator
+operator|=
+name|connConfigurator
+expr_stmt|;
+block|}
 comment|/**    * Create a new ConnectionConfigurator for SSL connections    */
 DECL|method|newSslConnConfigurator (final int timeout, Configuration conf)
+specifier|private
 specifier|static
 name|ConnectionConfigurator
 name|newSslConnConfigurator
@@ -504,21 +594,6 @@ return|;
 block|}
 block|}
 return|;
-block|}
-DECL|method|URLConnectionFactory (int socketTimeout)
-specifier|public
-name|URLConnectionFactory
-parameter_list|(
-name|int
-name|socketTimeout
-parameter_list|)
-block|{
-name|this
-operator|.
-name|socketTimeout
-operator|=
-name|socketTimeout
-expr_stmt|;
 block|}
 comment|/**    * Opens a url with read and connect timeouts    *    * @param url    *          to open    * @return URLConnection    * @throws IOException    */
 DECL|method|openConnection (URL url)
@@ -681,34 +756,9 @@ name|connection
 return|;
 block|}
 block|}
-DECL|method|getConnConfigurator ()
-specifier|public
-name|ConnectionConfigurator
-name|getConnConfigurator
-parameter_list|()
-block|{
-return|return
-name|connConfigurator
-return|;
-block|}
-DECL|method|setConnConfigurator (ConnectionConfigurator connConfigurator)
-specifier|public
-name|void
-name|setConnConfigurator
-parameter_list|(
-name|ConnectionConfigurator
-name|connConfigurator
-parameter_list|)
-block|{
-name|this
-operator|.
-name|connConfigurator
-operator|=
-name|connConfigurator
-expr_stmt|;
-block|}
 comment|/**    * Sets timeout parameters on the given URLConnection.    *     * @param connection    *          URLConnection to set    * @param socketTimeout    *          the connection and read timeout of the connection.    */
 DECL|method|setTimeouts (URLConnection connection, int socketTimeout)
+specifier|private
 specifier|static
 name|void
 name|setTimeouts

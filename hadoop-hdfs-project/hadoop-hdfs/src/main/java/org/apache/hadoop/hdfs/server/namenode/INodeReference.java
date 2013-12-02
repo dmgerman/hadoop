@@ -134,7 +134,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|FileWithSnapshot
+name|INodeDirectoryWithSnapshot
 import|;
 end_import
 
@@ -154,7 +154,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
+name|INodeFileWithSnapshot
 import|;
 end_import
 
@@ -378,13 +378,13 @@ if|if
 condition|(
 name|referred
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 return|return
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|referred
 operator|)
@@ -2368,14 +2368,14 @@ if|if
 condition|(
 name|referred
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 name|snapshot
 operator|=
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|referred
 operator|)
@@ -2720,16 +2720,16 @@ if|if
 condition|(
 name|referred
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 comment|// if referred is a file, it must be a FileWithSnapshot since we did
 comment|// recordModification before the rename
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 name|sfile
 init|=
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|referred
 decl_stmt|;
@@ -2871,14 +2871,14 @@ if|if
 condition|(
 name|referred
 operator|instanceof
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 condition|)
 block|{
 name|lastSnapshot
 operator|=
 operator|(
 operator|(
-name|FileWithSnapshot
+name|INodeFileWithSnapshot
 operator|)
 name|referred
 operator|)

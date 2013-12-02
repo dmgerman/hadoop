@@ -1846,7 +1846,7 @@ DECL|method|listCachePools (String prevPool)
 specifier|public
 name|RemoteIterator
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|listCachePools
 parameter_list|(

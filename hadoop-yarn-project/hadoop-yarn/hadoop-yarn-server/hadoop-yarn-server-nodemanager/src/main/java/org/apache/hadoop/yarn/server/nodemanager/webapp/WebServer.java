@@ -472,6 +472,11 @@ operator|.
 name|httpServer
 argument_list|()
 operator|.
+name|getConnectorAddress
+argument_list|(
+literal|0
+argument_list|)
+operator|.
 name|getPort
 argument_list|()
 expr_stmt|;

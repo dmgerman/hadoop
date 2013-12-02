@@ -32,39 +32,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_LIST_CACHE_POOLS_NUM_RESPONSES
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_LIST_CACHE_POOLS_NUM_RESPONSES_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES
+name|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
 import|;
 end_import
 
@@ -96,7 +64,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
+name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES
 import|;
 end_import
 
@@ -113,6 +81,38 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_LIST_CACHE_DIRECTIVES_NUM_RESPONSES_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_LIST_CACHE_POOLS_NUM_RESPONSES
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_LIST_CACHE_POOLS_NUM_RESPONSES_DEFAULT
 import|;
 end_import
 
@@ -340,7 +340,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|InvalidRequestException
+name|BatchedRemoteIterator
+operator|.
+name|BatchedListEntries
 import|;
 end_import
 
@@ -354,9 +356,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|BatchedRemoteIterator
-operator|.
-name|BatchedListEntries
+name|InvalidRequestException
 import|;
 end_import
 
@@ -418,7 +418,55 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirective
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CacheDirectiveEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CacheDirectiveInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CachePoolEntry
 import|;
 end_import
 
@@ -467,38 +515,6 @@ operator|.
 name|protocol
 operator|.
 name|LocatedBlock
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|CacheDirectiveInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|protocol
-operator|.
-name|CacheDirective
 import|;
 end_import
 
@@ -873,8 +889,8 @@ specifier|final
 name|BlockManager
 name|blockManager
 decl_stmt|;
-comment|/**    * Cache entries, sorted by ID.    *    * listCacheDirectives relies on the ordering of elements in this map    * to track what has already been listed by the client.    */
-DECL|field|entriesById
+comment|/**    * Cache directives, sorted by ID.    *    * listCacheDirectives relies on the ordering of elements in this map    * to track what has already been listed by the client.    */
+DECL|field|directivesById
 specifier|private
 specifier|final
 name|TreeMap
@@ -883,7 +899,7 @@ name|Long
 argument_list|,
 name|CacheDirective
 argument_list|>
-name|entriesById
+name|directivesById
 init|=
 operator|new
 name|TreeMap
@@ -894,14 +910,14 @@ name|CacheDirective
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|/**    * The entry ID to use for a new entry.  Entry IDs always increase, and are    * never reused.    */
-DECL|field|nextEntryId
+comment|/**    * The directive ID to use for a new directive.  IDs always increase, and are    * never reused.    */
+DECL|field|nextDirectiveId
 specifier|private
 name|long
-name|nextEntryId
+name|nextDirectiveId
 decl_stmt|;
-comment|/**    * Cache entries, sorted by path    */
-DECL|field|entriesByPath
+comment|/**    * Cache directives, sorted by path    */
+DECL|field|directivesByPath
 specifier|private
 specifier|final
 name|TreeMap
@@ -913,7 +929,7 @@ argument_list|<
 name|CacheDirective
 argument_list|>
 argument_list|>
-name|entriesByPath
+name|directivesByPath
 init|=
 operator|new
 name|TreeMap
@@ -1029,7 +1045,7 @@ name|blockManager
 expr_stmt|;
 name|this
 operator|.
-name|nextEntryId
+name|nextDirectiveId
 operator|=
 literal|1
 expr_stmt|;
@@ -1246,7 +1262,7 @@ name|hasReadLock
 argument_list|()
 assert|;
 return|return
-name|entriesById
+name|directivesById
 return|;
 block|}
 annotation|@
@@ -1272,10 +1288,10 @@ return|return
 name|cachedBlocks
 return|;
 block|}
-DECL|method|getNextEntryId ()
+DECL|method|getNextDirectiveId ()
 specifier|private
 name|long
-name|getNextEntryId
+name|getNextDirectiveId
 parameter_list|()
 throws|throws
 name|IOException
@@ -1288,7 +1304,7 @@ argument_list|()
 assert|;
 if|if
 condition|(
-name|nextEntryId
+name|nextDirectiveId
 operator|>=
 name|Long
 operator|.
@@ -1306,7 +1322,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|nextEntryId
+name|nextDirectiveId
 operator|++
 return|;
 block|}
@@ -1531,7 +1547,87 @@ return|return
 name|repl
 return|;
 block|}
-comment|/**    * Get a CacheDirective by ID, validating the ID and that the entry    * exists.    */
+comment|/**    * Calculates the absolute expiry time of the directive from the    * {@link CacheDirectiveInfo.Expiration}. This converts a relative Expiration    * into an absolute time based on the local clock.    *     * @param directive from which to get the expiry time    * @param defaultValue to use if Expiration is not set    * @return Absolute expiry time in milliseconds since Unix epoch    * @throws InvalidRequestException if the Expiration is invalid    */
+DECL|method|validateExpiryTime (CacheDirectiveInfo directive, long defaultValue)
+specifier|private
+specifier|static
+name|long
+name|validateExpiryTime
+parameter_list|(
+name|CacheDirectiveInfo
+name|directive
+parameter_list|,
+name|long
+name|defaultValue
+parameter_list|)
+throws|throws
+name|InvalidRequestException
+block|{
+name|long
+name|expiryTime
+decl_stmt|;
+name|CacheDirectiveInfo
+operator|.
+name|Expiration
+name|expiration
+init|=
+name|directive
+operator|.
+name|getExpiration
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|expiration
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|expiration
+operator|.
+name|getMillis
+argument_list|()
+operator|<
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Cannot set a negative expiration: "
+operator|+
+name|expiration
+operator|.
+name|getMillis
+argument_list|()
+argument_list|)
+throw|;
+block|}
+comment|// Converts a relative duration into an absolute time based on the local
+comment|// clock
+name|expiryTime
+operator|=
+name|expiration
+operator|.
+name|getAbsoluteMillis
+argument_list|()
+expr_stmt|;
+block|}
+else|else
+block|{
+name|expiryTime
+operator|=
+name|defaultValue
+expr_stmt|;
+block|}
+return|return
+name|expiryTime
+return|;
+block|}
+comment|/**    * Get a CacheDirective by ID, validating the ID and that the directive    * exists.    */
 DECL|method|getById (long id)
 specifier|private
 name|CacheDirective
@@ -1559,11 +1655,11 @@ literal|"Invalid negative ID."
 argument_list|)
 throw|;
 block|}
-comment|// Find the entry.
+comment|// Find the directive.
 name|CacheDirective
-name|entry
+name|directive
 init|=
-name|entriesById
+name|directivesById
 operator|.
 name|get
 argument_list|(
@@ -1572,7 +1668,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|entry
+name|directive
 operator|==
 literal|null
 condition|)
@@ -1590,7 +1686,7 @@ argument_list|)
 throw|;
 block|}
 return|return
-name|entry
+name|directive
 return|;
 block|}
 comment|/**    * Get a CachePool by name, validating that it exists.    */
@@ -1637,31 +1733,50 @@ name|pool
 return|;
 block|}
 comment|// RPC handlers
-DECL|method|addInternal (CacheDirective entry)
+DECL|method|addInternal (CacheDirective directive, CachePool pool)
 specifier|private
 name|void
 name|addInternal
 parameter_list|(
 name|CacheDirective
-name|entry
+name|directive
+parameter_list|,
+name|CachePool
+name|pool
 parameter_list|)
 block|{
-name|entriesById
+name|boolean
+name|addedDirective
+init|=
+name|pool
+operator|.
+name|getDirectiveList
+argument_list|()
+operator|.
+name|add
+argument_list|(
+name|directive
+argument_list|)
+decl_stmt|;
+assert|assert
+name|addedDirective
+assert|;
+name|directivesById
 operator|.
 name|put
 argument_list|(
-name|entry
+name|directive
 operator|.
-name|getEntryId
+name|getId
 argument_list|()
 argument_list|,
-name|entry
+name|directive
 argument_list|)
 expr_stmt|;
 name|String
 name|path
 init|=
-name|entry
+name|directive
 operator|.
 name|getPath
 argument_list|()
@@ -1670,9 +1785,9 @@ name|List
 argument_list|<
 name|CacheDirective
 argument_list|>
-name|entryList
+name|directives
 init|=
-name|entriesByPath
+name|directivesByPath
 operator|.
 name|get
 argument_list|(
@@ -1681,12 +1796,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|entryList
+name|directives
 operator|==
 literal|null
 condition|)
 block|{
-name|entryList
+name|directives
 operator|=
 operator|new
 name|ArrayList
@@ -1697,31 +1812,127 @@ argument_list|(
 literal|1
 argument_list|)
 expr_stmt|;
-name|entriesByPath
+name|directivesByPath
 operator|.
 name|put
 argument_list|(
 name|path
 argument_list|,
-name|entryList
+name|directives
 argument_list|)
 expr_stmt|;
 block|}
-name|entryList
+name|directives
 operator|.
 name|add
 argument_list|(
-name|entry
+name|directive
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addDirective ( CacheDirectiveInfo directive, FSPermissionChecker pc)
+comment|/**    * To be called only from the edit log loading code    */
+DECL|method|addDirectiveFromEditLog (CacheDirectiveInfo directive)
+name|CacheDirectiveInfo
+name|addDirectiveFromEditLog
+parameter_list|(
+name|CacheDirectiveInfo
+name|directive
+parameter_list|)
+throws|throws
+name|InvalidRequestException
+block|{
+name|long
+name|id
+init|=
+name|directive
+operator|.
+name|getId
+argument_list|()
+decl_stmt|;
+name|CacheDirective
+name|entry
+init|=
+operator|new
+name|CacheDirective
+argument_list|(
+name|directive
+operator|.
+name|getId
+argument_list|()
+argument_list|,
+name|directive
+operator|.
+name|getPath
+argument_list|()
+operator|.
+name|toUri
+argument_list|()
+operator|.
+name|getPath
+argument_list|()
+argument_list|,
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+argument_list|,
+name|directive
+operator|.
+name|getExpiration
+argument_list|()
+operator|.
+name|getAbsoluteMillis
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|CachePool
+name|pool
+init|=
+name|cachePools
+operator|.
+name|get
+argument_list|(
+name|directive
+operator|.
+name|getPool
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|addInternal
+argument_list|(
+name|entry
+argument_list|,
+name|pool
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|nextDirectiveId
+operator|<=
+name|id
+condition|)
+block|{
+name|nextDirectiveId
+operator|=
+name|id
+operator|+
+literal|1
+expr_stmt|;
+block|}
+return|return
+name|entry
+operator|.
+name|toInfo
+argument_list|()
+return|;
+block|}
+DECL|method|addDirective ( CacheDirectiveInfo info, FSPermissionChecker pc)
 specifier|public
 name|CacheDirectiveInfo
 name|addDirective
 parameter_list|(
 name|CacheDirectiveInfo
-name|directive
+name|info
 parameter_list|,
 name|FSPermissionChecker
 name|pc
@@ -1736,7 +1947,7 @@ name|hasWriteLock
 argument_list|()
 assert|;
 name|CacheDirective
-name|entry
+name|directive
 decl_stmt|;
 try|try
 block|{
@@ -1747,7 +1958,7 @@ name|getCachePool
 argument_list|(
 name|validatePoolName
 argument_list|(
-name|directive
+name|info
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -1763,7 +1974,7 @@ name|path
 init|=
 name|validatePath
 argument_list|(
-name|directive
+name|info
 argument_list|)
 decl_stmt|;
 name|short
@@ -1771,7 +1982,7 @@ name|replication
 init|=
 name|validateReplication
 argument_list|(
-name|directive
+name|info
 argument_list|,
 operator|(
 name|short
@@ -1780,96 +1991,28 @@ literal|1
 argument_list|)
 decl_stmt|;
 name|long
-name|id
+name|expiryTime
+init|=
+name|validateExpiryTime
+argument_list|(
+name|info
+argument_list|,
+name|CacheDirectiveInfo
+operator|.
+name|Expiration
+operator|.
+name|EXPIRY_NEVER
+argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|directive
-operator|.
-name|getId
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// We are loading an entry from the edit log.
-comment|// Use the ID from the edit log.
-name|id
-operator|=
-name|directive
-operator|.
-name|getId
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-name|id
-operator|<=
-literal|0
-condition|)
-block|{
-throw|throw
-operator|new
-name|InvalidRequestException
-argument_list|(
-literal|"can't add an ID "
-operator|+
-literal|"of "
-operator|+
-name|id
-operator|+
-literal|": it is not positive."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|id
-operator|>=
-name|Long
-operator|.
-name|MAX_VALUE
-condition|)
-block|{
-throw|throw
-operator|new
-name|InvalidRequestException
-argument_list|(
-literal|"can't add an ID "
-operator|+
-literal|"of "
-operator|+
-name|id
-operator|+
-literal|": it is too big."
-argument_list|)
-throw|;
-block|}
-if|if
-condition|(
-name|nextEntryId
-operator|<=
-name|id
-condition|)
-block|{
-name|nextEntryId
-operator|=
-name|id
-operator|+
-literal|1
-expr_stmt|;
-block|}
-block|}
-else|else
-block|{
+comment|// All validation passed
 comment|// Add a new entry with the next available ID.
+name|long
 name|id
-operator|=
-name|getNextEntryId
+init|=
+name|getNextDirectiveId
 argument_list|()
-expr_stmt|;
-block|}
-name|entry
+decl_stmt|;
+name|directive
 operator|=
 operator|new
 name|CacheDirective
@@ -1880,12 +2023,14 @@ name|path
 argument_list|,
 name|replication
 argument_list|,
-name|pool
+name|expiryTime
 argument_list|)
 expr_stmt|;
 name|addInternal
 argument_list|(
-name|entry
+name|directive
+argument_list|,
+name|pool
 argument_list|)
 expr_stmt|;
 block|}
@@ -1901,7 +2046,7 @@ name|warn
 argument_list|(
 literal|"addDirective of "
 operator|+
-name|directive
+name|info
 operator|+
 literal|" failed: "
 argument_list|,
@@ -1918,7 +2063,7 @@ name|info
 argument_list|(
 literal|"addDirective of "
 operator|+
-name|directive
+name|info
 operator|+
 literal|" successful."
 argument_list|)
@@ -1937,19 +2082,19 @@ argument_list|()
 expr_stmt|;
 block|}
 return|return
-name|entry
+name|directive
 operator|.
-name|toDirective
+name|toInfo
 argument_list|()
 return|;
 block|}
-DECL|method|modifyDirective (CacheDirectiveInfo directive, FSPermissionChecker pc)
+DECL|method|modifyDirective (CacheDirectiveInfo info, FSPermissionChecker pc)
 specifier|public
 name|void
 name|modifyDirective
 parameter_list|(
 name|CacheDirectiveInfo
-name|directive
+name|info
 parameter_list|,
 name|FSPermissionChecker
 name|pc
@@ -1967,7 +2112,7 @@ name|String
 name|idString
 init|=
 operator|(
-name|directive
+name|info
 operator|.
 name|getId
 argument_list|()
@@ -1977,7 +2122,7 @@ operator|)
 condition|?
 literal|"(null)"
 else|:
-name|directive
+name|info
 operator|.
 name|getId
 argument_list|()
@@ -1991,7 +2136,7 @@ comment|// Check for invalid IDs.
 name|Long
 name|id
 init|=
-name|directive
+name|info
 operator|.
 name|getId
 argument_list|()
@@ -2039,7 +2184,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|directive
+name|info
 operator|.
 name|getPath
 argument_list|()
@@ -2051,7 +2196,7 @@ name|path
 operator|=
 name|validatePath
 argument_list|(
-name|directive
+name|info
 argument_list|)
 expr_stmt|;
 block|}
@@ -2063,26 +2208,32 @@ operator|.
 name|getReplication
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|directive
-operator|.
-name|getReplication
-argument_list|()
-operator|!=
-literal|null
-condition|)
-block|{
 name|replication
 operator|=
 name|validateReplication
 argument_list|(
-name|directive
+name|info
 argument_list|,
 name|replication
 argument_list|)
 expr_stmt|;
-block|}
+name|long
+name|expiryTime
+init|=
+name|prevEntry
+operator|.
+name|getExpiryTime
+argument_list|()
+decl_stmt|;
+name|expiryTime
+operator|=
+name|validateExpiryTime
+argument_list|(
+name|info
+argument_list|,
+name|expiryTime
+argument_list|)
+expr_stmt|;
 name|CachePool
 name|pool
 init|=
@@ -2093,7 +2244,7 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|directive
+name|info
 operator|.
 name|getPool
 argument_list|()
@@ -2107,7 +2258,7 @@ name|getCachePool
 argument_list|(
 name|validatePoolName
 argument_list|(
-name|directive
+name|info
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -2136,12 +2287,14 @@ name|path
 argument_list|,
 name|replication
 argument_list|,
-name|pool
+name|expiryTime
 argument_list|)
 decl_stmt|;
 name|addInternal
 argument_list|(
 name|newEntry
+argument_list|,
+name|pool
 argument_list|)
 expr_stmt|;
 block|}
@@ -2178,19 +2331,19 @@ name|idString
 operator|+
 literal|" successfully applied "
 operator|+
-name|directive
+name|info
 operator|+
 literal|"."
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeInternal (CacheDirective existing)
+DECL|method|removeInternal (CacheDirective directive)
 specifier|public
 name|void
 name|removeInternal
 parameter_list|(
 name|CacheDirective
-name|existing
+name|directive
 parameter_list|)
 throws|throws
 name|InvalidRequestException
@@ -2201,11 +2354,11 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-comment|// Remove the corresponding entry in entriesByPath.
+comment|// Remove the corresponding entry in directivesByPath.
 name|String
 name|path
 init|=
-name|existing
+name|directive
 operator|.
 name|getPath
 argument_list|()
@@ -2214,9 +2367,9 @@ name|List
 argument_list|<
 name|CacheDirective
 argument_list|>
-name|entries
+name|directives
 init|=
-name|entriesByPath
+name|directivesByPath
 operator|.
 name|get
 argument_list|(
@@ -2225,16 +2378,16 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|entries
+name|directives
 operator|==
 literal|null
 operator|||
 operator|!
-name|entries
+name|directives
 operator|.
 name|remove
 argument_list|(
-name|existing
+name|directive
 argument_list|)
 condition|)
 block|{
@@ -2244,14 +2397,14 @@ name|InvalidRequestException
 argument_list|(
 literal|"Failed to locate entry "
 operator|+
-name|existing
+name|directive
 operator|.
-name|getEntryId
+name|getId
 argument_list|()
 operator|+
 literal|" by path "
 operator|+
-name|existing
+name|directive
 operator|.
 name|getPath
 argument_list|()
@@ -2260,7 +2413,7 @@ throw|;
 block|}
 if|if
 condition|(
-name|entries
+name|directives
 operator|.
 name|size
 argument_list|()
@@ -2268,7 +2421,7 @@ operator|==
 literal|0
 condition|)
 block|{
-name|entriesByPath
+name|directivesByPath
 operator|.
 name|remove
 argument_list|(
@@ -2276,16 +2429,37 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-name|entriesById
+name|directivesById
 operator|.
 name|remove
 argument_list|(
-name|existing
+name|directive
 operator|.
-name|getEntryId
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|directive
+operator|.
+name|getPool
+argument_list|()
+operator|.
+name|getDirectiveList
+argument_list|()
+operator|.
+name|remove
+argument_list|(
+name|directive
+argument_list|)
+expr_stmt|;
+assert|assert
+name|directive
+operator|.
+name|getPool
+argument_list|()
+operator|==
+literal|null
+assert|;
 block|}
 DECL|method|removeDirective (long id, FSPermissionChecker pc)
 specifier|public
@@ -2310,7 +2484,7 @@ assert|;
 try|try
 block|{
 name|CacheDirective
-name|existing
+name|directive
 init|=
 name|getById
 argument_list|(
@@ -2321,7 +2495,7 @@ name|checkWritePermission
 argument_list|(
 name|pc
 argument_list|,
-name|existing
+name|directive
 operator|.
 name|getPool
 argument_list|()
@@ -2329,7 +2503,7 @@ argument_list|)
 expr_stmt|;
 name|removeInternal
 argument_list|(
-name|existing
+name|directive
 argument_list|)
 expr_stmt|;
 block|}
@@ -2500,7 +2674,7 @@ name|CacheDirective
 argument_list|>
 name|tailMap
 init|=
-name|entriesById
+name|directivesById
 operator|.
 name|tailMap
 argument_list|(
@@ -2546,7 +2720,7 @@ argument_list|)
 return|;
 block|}
 name|CacheDirective
-name|curEntry
+name|curDirective
 init|=
 name|cur
 operator|.
@@ -2561,7 +2735,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|toDirective
+name|toInfo
 argument_list|()
 decl_stmt|;
 if|if
@@ -2634,7 +2808,7 @@ name|pc
 operator|.
 name|checkPermission
 argument_list|(
-name|curEntry
+name|curDirective
 operator|.
 name|getPool
 argument_list|()
@@ -2796,7 +2970,7 @@ name|pool
 operator|.
 name|getInfo
 argument_list|(
-literal|null
+literal|true
 argument_list|)
 return|;
 block|}
@@ -3136,23 +3310,16 @@ name|poolName
 argument_list|)
 throw|;
 block|}
-comment|// Remove entries using this pool
-comment|// TODO: could optimize this somewhat to avoid the need to iterate
-comment|// over all entries in entriesById
+comment|// Remove all directives in this pool.
 name|Iterator
 argument_list|<
-name|Entry
-argument_list|<
-name|Long
-argument_list|,
 name|CacheDirective
-argument_list|>
 argument_list|>
 name|iter
 init|=
-name|entriesById
+name|pool
 operator|.
-name|entrySet
+name|getDirectiveList
 argument_list|()
 operator|.
 name|iterator
@@ -3166,42 +3333,31 @@ name|hasNext
 argument_list|()
 condition|)
 block|{
-name|Entry
-argument_list|<
-name|Long
-argument_list|,
 name|CacheDirective
-argument_list|>
-name|entry
+name|directive
 init|=
 name|iter
 operator|.
 name|next
 argument_list|()
 decl_stmt|;
-if|if
-condition|(
-name|entry
-operator|.
-name|getValue
-argument_list|()
-operator|.
-name|getPool
-argument_list|()
-operator|==
-name|pool
-condition|)
-block|{
-name|entriesByPath
+name|directivesByPath
 operator|.
 name|remove
 argument_list|(
-name|entry
-operator|.
-name|getValue
-argument_list|()
+name|directive
 operator|.
 name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|directivesById
+operator|.
+name|remove
+argument_list|(
+name|directive
+operator|.
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3210,7 +3366,6 @@ operator|.
 name|remove
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -3229,7 +3384,7 @@ block|}
 specifier|public
 name|BatchedListEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 DECL|method|listCachePools (FSPermissionChecker pc, String prevKey)
 name|listCachePools
@@ -3255,14 +3410,14 @@ literal|16
 decl_stmt|;
 name|ArrayList
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|results
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 argument_list|(
 name|NUM_PRE_ALLOCATED_ENTRIES
@@ -3318,7 +3473,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 argument_list|(
 name|results
@@ -3336,7 +3491,7 @@ operator|.
 name|getValue
 argument_list|()
 operator|.
-name|getInfo
+name|getEntry
 argument_list|(
 name|pc
 argument_list|)
@@ -3347,7 +3502,7 @@ return|return
 operator|new
 name|BatchedListEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 argument_list|(
 name|results
@@ -3707,39 +3862,6 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|blockInfo
-operator|.
-name|getGenerationStamp
-argument_list|()
-operator|<
-name|block
-operator|.
-name|getGenerationStamp
-argument_list|()
-condition|)
-block|{
-comment|// The NameNode will eventually remove or update the out-of-date block.
-comment|// Until then, we pretend that it isn't cached.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Genstamp in cache report disagrees with our genstamp for "
-operator|+
-name|block
-operator|+
-literal|": expected genstamp "
-operator|+
-name|blockInfo
-operator|.
-name|getGenerationStamp
-argument_list|()
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
-if|if
-condition|(
 operator|!
 name|blockInfo
 operator|.
@@ -3941,7 +4063,7 @@ name|out
 operator|.
 name|writeLong
 argument_list|(
-name|nextEntryId
+name|nextDirectiveId
 argument_list|)
 expr_stmt|;
 name|savePools
@@ -3951,7 +4073,7 @@ argument_list|,
 name|sdPath
 argument_list|)
 expr_stmt|;
-name|saveEntries
+name|saveDirectives
 argument_list|(
 name|out
 argument_list|,
@@ -3971,20 +4093,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|nextEntryId
+name|nextDirectiveId
 operator|=
 name|in
 operator|.
 name|readLong
 argument_list|()
 expr_stmt|;
-comment|// pools need to be loaded first since entries point to their parent pool
+comment|// pools need to be loaded first since directives point to their parent pool
 name|loadPools
 argument_list|(
 name|in
 argument_list|)
 expr_stmt|;
-name|loadEntries
+name|loadDirectives
 argument_list|(
 name|in
 argument_list|)
@@ -4092,7 +4214,7 @@ name|pool
 operator|.
 name|getInfo
 argument_list|(
-literal|null
+literal|true
 argument_list|)
 operator|.
 name|writeTo
@@ -4119,10 +4241,10 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/*    * Save cache entries to fsimage    */
-DECL|method|saveEntries (DataOutput out, String sdPath)
+DECL|method|saveDirectives (DataOutput out, String sdPath)
 specifier|private
 name|void
-name|saveEntries
+name|saveDirectives
 parameter_list|(
 name|DataOutput
 name|out
@@ -4175,7 +4297,7 @@ name|SAVING_CHECKPOINT
 argument_list|,
 name|step
 argument_list|,
-name|entriesById
+name|directivesById
 operator|.
 name|size
 argument_list|()
@@ -4199,7 +4321,7 @@ name|out
 operator|.
 name|writeInt
 argument_list|(
-name|entriesById
+name|directivesById
 operator|.
 name|size
 argument_list|()
@@ -4208,9 +4330,9 @@ expr_stmt|;
 for|for
 control|(
 name|CacheDirective
-name|entry
+name|directive
 range|:
-name|entriesById
+name|directivesById
 operator|.
 name|values
 argument_list|()
@@ -4220,9 +4342,9 @@ name|out
 operator|.
 name|writeLong
 argument_list|(
-name|entry
+name|directive
 operator|.
-name|getEntryId
+name|getId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4232,7 +4354,7 @@ name|writeString
 argument_list|(
 name|out
 argument_list|,
-name|entry
+name|directive
 operator|.
 name|getPath
 argument_list|()
@@ -4242,7 +4364,7 @@ name|out
 operator|.
 name|writeShort
 argument_list|(
-name|entry
+name|directive
 operator|.
 name|getReplication
 argument_list|()
@@ -4254,12 +4376,22 @@ name|writeString
 argument_list|(
 name|out
 argument_list|,
-name|entry
+name|directive
 operator|.
 name|getPool
 argument_list|()
 operator|.
 name|getPoolName
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|writeLong
+argument_list|(
+name|directive
+operator|.
+name|getExpiryTime
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4401,11 +4533,11 @@ name|step
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load cache entries from the fsimage    */
-DECL|method|loadEntries (DataInput in)
+comment|/**    * Load cache directives from the fsimage    */
+DECL|method|loadDirectives (DataInput in)
 specifier|private
 name|void
-name|loadEntries
+name|loadDirectives
 parameter_list|(
 name|DataInput
 name|in
@@ -4444,7 +4576,7 @@ name|step
 argument_list|)
 expr_stmt|;
 name|int
-name|numberOfEntries
+name|numDirectives
 init|=
 name|in
 operator|.
@@ -4461,7 +4593,7 @@ name|LOADING_FSIMAGE
 argument_list|,
 name|step
 argument_list|,
-name|numberOfEntries
+name|numDirectives
 argument_list|)
 expr_stmt|;
 name|Counter
@@ -4487,14 +4619,14 @@ literal|0
 init|;
 name|i
 operator|<
-name|numberOfEntries
+name|numDirectives
 condition|;
 name|i
 operator|++
 control|)
 block|{
 name|long
-name|entryId
+name|directiveId
 init|=
 name|in
 operator|.
@@ -4529,6 +4661,14 @@ argument_list|(
 name|in
 argument_list|)
 decl_stmt|;
+name|long
+name|expiryTime
+init|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+decl_stmt|;
 comment|// Get pool reference by looking it up in the map
 name|CachePool
 name|pool
@@ -4551,7 +4691,7 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"Entry refers to pool "
+literal|"Directive refers to pool "
 operator|+
 name|poolName
 operator|+
@@ -4560,32 +4700,48 @@ argument_list|)
 throw|;
 block|}
 name|CacheDirective
-name|entry
+name|directive
 init|=
 operator|new
 name|CacheDirective
 argument_list|(
-name|entryId
+name|directiveId
 argument_list|,
 name|path
 argument_list|,
 name|replication
 argument_list|,
-name|pool
+name|expiryTime
 argument_list|)
 decl_stmt|;
+name|boolean
+name|addedDirective
+init|=
+name|pool
+operator|.
+name|getDirectiveList
+argument_list|()
+operator|.
+name|add
+argument_list|(
+name|directive
+argument_list|)
+decl_stmt|;
+assert|assert
+name|addedDirective
+assert|;
 if|if
 condition|(
-name|entriesById
+name|directivesById
 operator|.
 name|put
 argument_list|(
-name|entry
+name|directive
 operator|.
-name|getEntryId
+name|getId
 argument_list|()
 argument_list|,
-name|entry
+name|directive
 argument_list|)
 operator|!=
 literal|null
@@ -4595,11 +4751,11 @@ throw|throw
 operator|new
 name|IOException
 argument_list|(
-literal|"An entry with ID "
+literal|"A directive with ID "
 operator|+
-name|entry
+name|directive
 operator|.
-name|getEntryId
+name|getId
 argument_list|()
 operator|+
 literal|" already exists"
@@ -4610,13 +4766,13 @@ name|List
 argument_list|<
 name|CacheDirective
 argument_list|>
-name|entries
+name|directives
 init|=
-name|entriesByPath
+name|directivesByPath
 operator|.
 name|get
 argument_list|(
-name|entry
+name|directive
 operator|.
 name|getPath
 argument_list|()
@@ -4624,12 +4780,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|entries
+name|directives
 operator|==
 literal|null
 condition|)
 block|{
-name|entries
+name|directives
 operator|=
 operator|new
 name|LinkedList
@@ -4638,24 +4794,24 @@ name|CacheDirective
 argument_list|>
 argument_list|()
 expr_stmt|;
-name|entriesByPath
+name|directivesByPath
 operator|.
 name|put
 argument_list|(
-name|entry
+name|directive
 operator|.
 name|getPath
 argument_list|()
 argument_list|,
-name|entries
+name|directives
 argument_list|)
 expr_stmt|;
 block|}
-name|entries
+name|directives
 operator|.
 name|add
 argument_list|(
-name|entry
+name|directive
 argument_list|)
 expr_stmt|;
 name|counter

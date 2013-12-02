@@ -445,14 +445,6 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-DECL|field|runnable
-specifier|private
-name|boolean
-name|runnable
-init|=
-literal|false
-decl_stmt|;
-comment|// everyone starts as not runnable
 DECL|field|startTime
 specifier|private
 name|long
@@ -527,9 +519,12 @@ name|this
 operator|.
 name|startTime
 operator|=
-name|System
+name|scheduler
 operator|.
-name|currentTimeMillis
+name|getClock
+argument_list|()
+operator|.
+name|getTime
 argument_list|()
 expr_stmt|;
 name|this
@@ -796,33 +791,6 @@ expr_stmt|;
 return|return
 name|p
 return|;
-block|}
-comment|/**    * Is this application runnable? Runnable means that the user and queue    * application counts are within configured quotas.    */
-DECL|method|getRunnable ()
-specifier|public
-name|boolean
-name|getRunnable
-parameter_list|()
-block|{
-return|return
-name|runnable
-return|;
-block|}
-DECL|method|setRunnable (boolean runnable)
-specifier|public
-name|void
-name|setRunnable
-parameter_list|(
-name|boolean
-name|runnable
-parameter_list|)
-block|{
-name|this
-operator|.
-name|runnable
-operator|=
-name|runnable
-expr_stmt|;
 block|}
 comment|/**    * Create and return a container object reflecting an allocation for the    * given appliction on the given node with the given capability and    * priority.    */
 DECL|method|createContainer ( FSSchedulerApp application, FSSchedulerNode node, Resource capability, Priority priority)
@@ -1395,26 +1363,6 @@ argument_list|,
 name|node
 argument_list|)
 expr_stmt|;
-return|return
-name|Resources
-operator|.
-name|none
-argument_list|()
-return|;
-block|}
-block|}
-else|else
-block|{
-comment|// If this app is over quota, don't schedule anything
-if|if
-condition|(
-operator|!
-operator|(
-name|getRunnable
-argument_list|()
-operator|)
-condition|)
-block|{
 return|return
 name|Resources
 operator|.

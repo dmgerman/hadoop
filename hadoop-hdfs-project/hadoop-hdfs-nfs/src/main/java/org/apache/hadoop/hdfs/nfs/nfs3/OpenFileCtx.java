@@ -3677,7 +3677,8 @@ return|return
 name|response
 return|;
 block|}
-DECL|method|checkCommit (DFSClient dfsClient, long commitOffset, Channel channel, int xid, Nfs3FileAttributes preOpAttr)
+comment|/**    * Check the commit status with the given offset    * @param commitOffset the offset to commit    * @param channel the channel to return response    * @param xid the xid of the commit request    * @param preOpAttr the preOp attribute    * @param fromRead whether the commit is triggered from read request    * @return one commit status: COMMIT_FINISHED, COMMIT_WAIT,    * COMMIT_INACTIVE_CTX, COMMIT_INACTIVE_WITH_PENDING_WRITE, COMMIT_ERROR    */
+DECL|method|checkCommit (DFSClient dfsClient, long commitOffset, Channel channel, int xid, Nfs3FileAttributes preOpAttr, boolean fromRead)
 specifier|public
 name|COMMIT_STATUS
 name|checkCommit
@@ -3696,12 +3697,35 @@ name|xid
 parameter_list|,
 name|Nfs3FileAttributes
 name|preOpAttr
+parameter_list|,
+name|boolean
+name|fromRead
 parameter_list|)
 block|{
+if|if
+condition|(
+operator|!
+name|fromRead
+condition|)
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|channel
+operator|!=
+literal|null
+operator|&&
+name|preOpAttr
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
 comment|// Keep stream active
 name|updateLastAccessTime
 argument_list|()
 expr_stmt|;
+block|}
 name|Preconditions
 operator|.
 name|checkState
@@ -3723,6 +3747,8 @@ argument_list|,
 name|xid
 argument_list|,
 name|preOpAttr
+argument_list|,
+name|fromRead
 argument_list|)
 decl_stmt|;
 if|if
@@ -3848,10 +3874,9 @@ return|return
 name|ret
 return|;
 block|}
-comment|/**    * return one commit status: COMMIT_FINISHED, COMMIT_WAIT,    * COMMIT_INACTIVE_CTX, COMMIT_INACTIVE_WITH_PENDING_WRITE, COMMIT_ERROR    */
 annotation|@
 name|VisibleForTesting
-DECL|method|checkCommitInternal (long commitOffset, Channel channel, int xid, Nfs3FileAttributes preOpAttr)
+DECL|method|checkCommitInternal (long commitOffset, Channel channel, int xid, Nfs3FileAttributes preOpAttr, boolean fromRead)
 specifier|synchronized
 name|COMMIT_STATUS
 name|checkCommitInternal
@@ -3867,6 +3892,9 @@ name|xid
 parameter_list|,
 name|Nfs3FileAttributes
 name|preOpAttr
+parameter_list|,
+name|boolean
+name|fromRead
 parameter_list|)
 block|{
 if|if
@@ -3941,6 +3969,12 @@ operator|>
 name|flushed
 condition|)
 block|{
+if|if
+condition|(
+operator|!
+name|fromRead
+condition|)
+block|{
 name|CommitCtx
 name|commitCtx
 init|=
@@ -3965,6 +3999,7 @@ argument_list|,
 name|commitCtx
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|COMMIT_STATUS
 operator|.
@@ -4011,6 +4046,12 @@ name|COMMIT_FINISHED
 return|;
 block|}
 else|else
+block|{
+if|if
+condition|(
+operator|!
+name|fromRead
+condition|)
 block|{
 comment|// Insert commit
 name|long
@@ -4059,6 +4100,7 @@ argument_list|,
 name|commitCtx
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|COMMIT_STATUS
 operator|.

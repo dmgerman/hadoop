@@ -20,6 +20,16 @@ end_package
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Date
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -92,6 +102,20 @@ name|Path
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSUtil
+import|;
+end_import
+
 begin_comment
 comment|/**  * Describes a path-based cache directive.  */
 end_comment
@@ -137,6 +161,11 @@ specifier|private
 name|String
 name|pool
 decl_stmt|;
+DECL|field|expiration
+specifier|private
+name|Expiration
+name|expiration
+decl_stmt|;
 comment|/**      * Builds a new CacheDirectiveInfo populated with the set properties.      *       * @return New CacheDirectiveInfo.      */
 DECL|method|build ()
 specifier|public
@@ -155,6 +184,8 @@ argument_list|,
 name|replication
 argument_list|,
 name|pool
+argument_list|,
+name|expiration
 argument_list|)
 return|;
 block|}
@@ -207,6 +238,15 @@ operator|=
 name|directive
 operator|.
 name|getPool
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|expiration
+operator|=
+name|directive
+operator|.
+name|getExpiration
 argument_list|()
 expr_stmt|;
 block|}
@@ -290,6 +330,251 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Sets when the CacheDirective should expire. A      * {@link CacheDirectiveInfo.Expiration} can specify either an absolute or      * relative expiration time.      *       * @param expiration when this CacheDirective should expire      * @return This builder, for call chaining      */
+DECL|method|setExpiration (Expiration expiration)
+specifier|public
+name|Builder
+name|setExpiration
+parameter_list|(
+name|Expiration
+name|expiration
+parameter_list|)
+block|{
+name|this
+operator|.
+name|expiration
+operator|=
+name|expiration
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+block|}
+comment|/**    * Denotes a relative or absolute expiration time for a CacheDirective. Use    * factory methods {@link CacheDirectiveInfo.Expiration#newAbsolute(Date)} and    * {@link CacheDirectiveInfo.Expiration#newRelative(long)} to create an    * Expiration.    *<p>    * In either case, the server-side clock is used to determine when a    * CacheDirective expires.    */
+DECL|class|Expiration
+specifier|public
+specifier|static
+class|class
+name|Expiration
+block|{
+comment|/** Denotes a CacheDirectiveInfo that never expires **/
+DECL|field|EXPIRY_NEVER
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|EXPIRY_NEVER
+init|=
+operator|-
+literal|1
+decl_stmt|;
+comment|/**      * Create a new relative Expiration.      *       * @param ms how long until the CacheDirective expires, in milliseconds      * @return A relative Expiration      */
+DECL|method|newRelative (long ms)
+specifier|public
+specifier|static
+name|Expiration
+name|newRelative
+parameter_list|(
+name|long
+name|ms
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Expiration
+argument_list|(
+name|ms
+argument_list|,
+literal|true
+argument_list|)
+return|;
+block|}
+comment|/**      * Create a new absolute Expiration.      *       * @param date when the CacheDirective expires      * @return An absolute Expiration      */
+DECL|method|newAbsolute (Date date)
+specifier|public
+specifier|static
+name|Expiration
+name|newAbsolute
+parameter_list|(
+name|Date
+name|date
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Expiration
+argument_list|(
+name|date
+operator|.
+name|getTime
+argument_list|()
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+comment|/**      * Create a new absolute Expiration.      *       * @param ms when the CacheDirective expires, in milliseconds since the Unix      *          epoch.      * @return An absolute Expiration      */
+DECL|method|newAbsolute (long ms)
+specifier|public
+specifier|static
+name|Expiration
+name|newAbsolute
+parameter_list|(
+name|long
+name|ms
+parameter_list|)
+block|{
+return|return
+operator|new
+name|Expiration
+argument_list|(
+name|ms
+argument_list|,
+literal|false
+argument_list|)
+return|;
+block|}
+DECL|field|ms
+specifier|private
+specifier|final
+name|long
+name|ms
+decl_stmt|;
+DECL|field|isRelative
+specifier|private
+specifier|final
+name|boolean
+name|isRelative
+decl_stmt|;
+DECL|method|Expiration (long ms, boolean isRelative)
+specifier|private
+name|Expiration
+parameter_list|(
+name|long
+name|ms
+parameter_list|,
+name|boolean
+name|isRelative
+parameter_list|)
+block|{
+name|this
+operator|.
+name|ms
+operator|=
+name|ms
+expr_stmt|;
+name|this
+operator|.
+name|isRelative
+operator|=
+name|isRelative
+expr_stmt|;
+block|}
+comment|/**      * @return true if Expiration was specified as a relative duration, false if      *         specified as an absolute time.      */
+DECL|method|isRelative ()
+specifier|public
+name|boolean
+name|isRelative
+parameter_list|()
+block|{
+return|return
+name|isRelative
+return|;
+block|}
+comment|/**      * @return The raw underlying millisecond value, either a relative duration      *         or an absolute time as milliseconds since the Unix epoch.      */
+DECL|method|getMillis ()
+specifier|public
+name|long
+name|getMillis
+parameter_list|()
+block|{
+return|return
+name|ms
+return|;
+block|}
+comment|/**      * @return Expiration time as a {@link Date} object. This converts a      *         relative Expiration into an absolute Date based on the local      *         clock.      */
+DECL|method|getAbsoluteDate ()
+specifier|public
+name|Date
+name|getAbsoluteDate
+parameter_list|()
+block|{
+return|return
+operator|new
+name|Date
+argument_list|(
+name|getAbsoluteMillis
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**      * @return Expiration time in milliseconds from the Unix epoch. This      *         converts a relative Expiration into an absolute time based on the      *         local clock.      */
+DECL|method|getAbsoluteMillis ()
+specifier|public
+name|long
+name|getAbsoluteMillis
+parameter_list|()
+block|{
+if|if
+condition|(
+operator|!
+name|isRelative
+condition|)
+block|{
+return|return
+name|ms
+return|;
+block|}
+else|else
+block|{
+return|return
+operator|new
+name|Date
+argument_list|()
+operator|.
+name|getTime
+argument_list|()
+operator|+
+name|ms
+return|;
+block|}
+block|}
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+if|if
+condition|(
+name|isRelative
+condition|)
+block|{
+return|return
+name|DFSUtil
+operator|.
+name|durationToString
+argument_list|(
+name|ms
+argument_list|)
+return|;
+block|}
+return|return
+name|DFSUtil
+operator|.
+name|dateToIso8601String
+argument_list|(
+operator|new
+name|Date
+argument_list|(
+name|ms
+argument_list|)
+argument_list|)
+return|;
+block|}
 block|}
 DECL|field|id
 specifier|private
@@ -315,7 +600,13 @@ specifier|final
 name|String
 name|pool
 decl_stmt|;
-DECL|method|CacheDirectiveInfo (Long id, Path path, Short replication, String pool)
+DECL|field|expiration
+specifier|private
+specifier|final
+name|Expiration
+name|expiration
+decl_stmt|;
+DECL|method|CacheDirectiveInfo (Long id, Path path, Short replication, String pool, Expiration expiration)
 name|CacheDirectiveInfo
 parameter_list|(
 name|Long
@@ -329,6 +620,9 @@ name|replication
 parameter_list|,
 name|String
 name|pool
+parameter_list|,
+name|Expiration
+name|expiration
 parameter_list|)
 block|{
 name|this
@@ -354,6 +648,12 @@ operator|.
 name|pool
 operator|=
 name|pool
+expr_stmt|;
+name|this
+operator|.
+name|expiration
+operator|=
+name|expiration
 expr_stmt|;
 block|}
 comment|/**    * @return The ID of this directive.    */
@@ -398,6 +698,17 @@ parameter_list|()
 block|{
 return|return
 name|pool
+return|;
+block|}
+comment|/**    * @return When this directive expires.    */
+DECL|method|getExpiration ()
+specifier|public
+name|Expiration
+name|getExpiration
+parameter_list|()
+block|{
+return|return
+name|expiration
 return|;
 block|}
 annotation|@
@@ -494,6 +805,17 @@ name|getPool
 argument_list|()
 argument_list|)
 operator|.
+name|append
+argument_list|(
+name|getExpiration
+argument_list|()
+argument_list|,
+name|other
+operator|.
+name|getExpiration
+argument_list|()
+argument_list|)
+operator|.
 name|isEquals
 argument_list|()
 return|;
@@ -529,6 +851,11 @@ operator|.
 name|append
 argument_list|(
 name|pool
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|expiration
 argument_list|)
 operator|.
 name|hashCode
@@ -588,7 +915,7 @@ argument_list|)
 expr_stmt|;
 name|prefix
 operator|=
-literal|","
+literal|", "
 expr_stmt|;
 block|}
 if|if
@@ -617,7 +944,7 @@ argument_list|)
 expr_stmt|;
 name|prefix
 operator|=
-literal|","
+literal|", "
 expr_stmt|;
 block|}
 if|if
@@ -646,7 +973,7 @@ argument_list|)
 expr_stmt|;
 name|prefix
 operator|=
-literal|","
+literal|", "
 expr_stmt|;
 block|}
 if|if
@@ -675,7 +1002,36 @@ argument_list|)
 expr_stmt|;
 name|prefix
 operator|=
-literal|","
+literal|", "
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|expiration
+operator|!=
+literal|null
+condition|)
+block|{
+name|builder
+operator|.
+name|append
+argument_list|(
+name|prefix
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"expiration: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|expiration
+argument_list|)
+expr_stmt|;
+name|prefix
+operator|=
+literal|", "
 expr_stmt|;
 block|}
 name|builder

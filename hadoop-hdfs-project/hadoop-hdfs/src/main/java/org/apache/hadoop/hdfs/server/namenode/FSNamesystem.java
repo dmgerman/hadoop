@@ -2120,6 +2120,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CachePoolEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolInfo
 import|;
 end_import
@@ -29469,6 +29485,38 @@ block|}
 annotation|@
 name|Override
 comment|// NameNodeMXBean
+DECL|method|getCacheCapacity ()
+specifier|public
+name|long
+name|getCacheCapacity
+parameter_list|()
+block|{
+return|return
+name|datanodeStatistics
+operator|.
+name|getCacheCapacity
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// NameNodeMXBean
+DECL|method|getCacheUsed ()
+specifier|public
+name|long
+name|getCacheUsed
+parameter_list|()
+block|{
+return|return
+name|datanodeStatistics
+operator|.
+name|getCacheUsed
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+comment|// NameNodeMXBean
 DECL|method|getTotalBlocks ()
 specifier|public
 name|long
@@ -30895,7 +30943,7 @@ literal|"stream"
 argument_list|,
 name|elos
 operator|.
-name|generateHtmlReport
+name|generateReport
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -33866,7 +33914,7 @@ DECL|method|listCachePools (String prevKey)
 specifier|public
 name|BatchedListEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|listCachePools
 parameter_list|(
@@ -33889,7 +33937,7 @@ literal|null
 decl_stmt|;
 name|BatchedListEntries
 argument_list|<
-name|CachePoolInfo
+name|CachePoolEntry
 argument_list|>
 name|results
 decl_stmt|;
