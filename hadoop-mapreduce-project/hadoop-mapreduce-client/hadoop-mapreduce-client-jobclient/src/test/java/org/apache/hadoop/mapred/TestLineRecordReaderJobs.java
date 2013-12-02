@@ -17,6 +17,18 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -43,16 +55,6 @@ operator|.
 name|io
 operator|.
 name|Writer
-import|;
-end_import
-
-begin_import
-import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
 import|;
 end_import
 
@@ -108,34 +110,6 @@ name|hadoop
 operator|.
 name|mapred
 operator|.
-name|Mapper
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|Reducer
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
 name|lib
 operator|.
 name|IdentityMapper
@@ -169,12 +143,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestLineRecordReader
+DECL|class|TestLineRecordReaderJobs
 specifier|public
 class|class
-name|TestLineRecordReader
-extends|extends
-name|TestCase
+name|TestLineRecordReaderJobs
 block|{
 DECL|field|workDir
 specifier|private
@@ -364,7 +336,7 @@ name|job
 operator|.
 name|setJarByClass
 argument_list|(
-name|TestLineRecordReader
+name|TestLineRecordReaderJobs
 operator|.
 name|class
 argument_list|)
@@ -489,8 +461,6 @@ name|expected
 init|=
 literal|"0\tabc\ndef\n9\tghi\njkl\n"
 decl_stmt|;
-name|this
-operator|.
 name|assertEquals
 argument_list|(
 name|expected
@@ -560,8 +530,6 @@ name|expected
 init|=
 literal|"0\tabc\n4\tdef\t\n9\tghi\n13\tjkl\n"
 decl_stmt|;
-name|this
-operator|.
 name|assertEquals
 argument_list|(
 name|expected
