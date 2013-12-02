@@ -168,10 +168,13 @@ name|Statistics
 name|stats
 parameter_list|)
 block|{
+comment|// one blockSize for read, one for pread
 name|Assert
 operator|.
 name|assertEquals
 argument_list|(
+literal|2
+operator|*
 name|blockSize
 argument_list|,
 name|stats
