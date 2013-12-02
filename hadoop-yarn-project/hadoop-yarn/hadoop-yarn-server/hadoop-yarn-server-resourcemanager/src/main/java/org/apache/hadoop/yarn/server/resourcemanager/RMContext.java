@@ -200,6 +200,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|scheduler
+operator|.
+name|ResourceScheduler
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|security
 operator|.
 name|AMRMTokenSecretManager
@@ -391,9 +411,39 @@ name|NMTokenSecretManagerInRM
 name|getNMTokenSecretManager
 parameter_list|()
 function_decl|;
+DECL|method|getScheduler ()
+name|ResourceScheduler
+name|getScheduler
+parameter_list|()
+function_decl|;
+DECL|method|getNodesListManager ()
+name|NodesListManager
+name|getNodesListManager
+parameter_list|()
+function_decl|;
 DECL|method|getClientToAMTokenSecretManager ()
 name|ClientToAMTokenSecretManagerInRM
 name|getClientToAMTokenSecretManager
+parameter_list|()
+function_decl|;
+DECL|method|getRMAdminService ()
+name|AdminService
+name|getRMAdminService
+parameter_list|()
+function_decl|;
+DECL|method|getClientRMService ()
+name|ClientRMService
+name|getClientRMService
+parameter_list|()
+function_decl|;
+DECL|method|getApplicationMasterService ()
+name|ApplicationMasterService
+name|getApplicationMasterService
+parameter_list|()
+function_decl|;
+DECL|method|getResourceTrackerService ()
+name|ResourceTrackerService
+name|getResourceTrackerService
 parameter_list|()
 function_decl|;
 DECL|method|setClientRMService (ClientRMService clientRMService)
@@ -403,11 +453,6 @@ parameter_list|(
 name|ClientRMService
 name|clientRMService
 parameter_list|)
-function_decl|;
-DECL|method|getClientRMService ()
-name|ClientRMService
-name|getClientRMService
-parameter_list|()
 function_decl|;
 DECL|method|getRMDelegationTokenSecretManager ()
 name|RMDelegationTokenSecretManager

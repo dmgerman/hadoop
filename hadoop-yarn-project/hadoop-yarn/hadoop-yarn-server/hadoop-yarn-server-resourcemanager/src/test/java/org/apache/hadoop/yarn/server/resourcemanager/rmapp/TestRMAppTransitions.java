@@ -1352,8 +1352,6 @@ name|RMContextImpl
 argument_list|(
 name|rmDispatcher
 argument_list|,
-name|store
-argument_list|,
 name|containerAllocationExpirer
 argument_list|,
 name|amLivelinessMonitor
@@ -1383,6 +1381,18 @@ argument_list|,
 operator|new
 name|ClientToAMTokenSecretManagerInRM
 argument_list|()
+argument_list|)
+expr_stmt|;
+operator|(
+operator|(
+name|RMContextImpl
+operator|)
+name|rmContext
+operator|)
+operator|.
+name|setStateStore
+argument_list|(
+name|store
 argument_list|)
 expr_stmt|;
 name|rmDispatcher
