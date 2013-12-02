@@ -149,6 +149,21 @@ name|String
 name|object
 parameter_list|)
 block|{
+if|if
+condition|(
+name|object
+operator|==
+literal|null
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"object name can't be null"
+argument_list|)
+throw|;
+block|}
 name|this
 operator|.
 name|container
@@ -159,7 +174,15 @@ name|this
 operator|.
 name|object
 operator|=
+name|URI
+operator|.
+name|create
+argument_list|(
 name|object
+argument_list|)
+operator|.
+name|getPath
+argument_list|()
 expr_stmt|;
 name|uriPath
 operator|=
