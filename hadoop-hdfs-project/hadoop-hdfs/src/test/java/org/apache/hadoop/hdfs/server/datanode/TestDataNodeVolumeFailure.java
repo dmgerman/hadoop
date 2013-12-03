@@ -1037,7 +1037,7 @@ argument_list|)
 decl_stmt|;
 name|Map
 argument_list|<
-name|String
+name|DatanodeStorage
 argument_list|,
 name|BlockListAsLongs
 argument_list|>
@@ -1078,7 +1078,7 @@ name|Map
 operator|.
 name|Entry
 argument_list|<
-name|String
+name|DatanodeStorage
 argument_list|,
 name|BlockListAsLongs
 argument_list|>
@@ -1090,8 +1090,8 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|String
-name|storageID
+name|DatanodeStorage
+name|dnStorage
 init|=
 name|kvPair
 operator|.
@@ -1105,15 +1105,6 @@ name|kvPair
 operator|.
 name|getValue
 argument_list|()
-decl_stmt|;
-name|DatanodeStorage
-name|dnStorage
-init|=
-operator|new
-name|DatanodeStorage
-argument_list|(
-name|storageID
-argument_list|)
 decl_stmt|;
 name|reports
 index|[

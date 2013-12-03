@@ -360,6 +360,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|ReplicaRecoveryInfo
 import|;
 end_import
@@ -866,12 +884,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns one block report per volume.    * @param bpid Block Pool Id    * @return - a map of StorageID to block report for the volume.    */
+comment|/**    * Returns one block report per volume.    * @param bpid Block Pool Id    * @return - a map of DatanodeStorage to block report for the volume.    */
 DECL|method|getBlockReports (String bpid)
 specifier|public
 name|Map
 argument_list|<
-name|String
+name|DatanodeStorage
 argument_list|,
 name|BlockListAsLongs
 argument_list|>
