@@ -15754,6 +15754,23 @@ throw|throw
 name|lee
 throw|;
 block|}
+comment|// Check the state of the penultimate block. It should be completed
+comment|// before attempting to complete the last one.
+if|if
+condition|(
+operator|!
+name|checkFileProgress
+argument_list|(
+name|pendingFile
+argument_list|,
+literal|false
+argument_list|)
+condition|)
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|// commit the last block and complete it if it has minimum replicas
 name|commitOrCompleteLastBlock
 argument_list|(
@@ -16000,7 +16017,7 @@ condition|)
 block|{
 name|LOG
 operator|.
-name|info
+name|warn
 argument_list|(
 literal|"BLOCK* checkFileProgress: "
 operator|+

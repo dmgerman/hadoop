@@ -2388,33 +2388,6 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|createRMHAProtocolService ()
-specifier|protected
-name|RMHAProtocolService
-name|createRMHAProtocolService
-parameter_list|()
-block|{
-return|return
-operator|new
-name|RMHAProtocolService
-argument_list|(
-name|this
-argument_list|)
-block|{
-annotation|@
-name|Override
-specifier|protected
-name|void
-name|startHAAdminServer
-parameter_list|()
-block|{
-comment|// do nothing
-block|}
-block|}
-return|;
-block|}
-annotation|@
-name|Override
 DECL|method|createClientRMService ()
 specifier|protected
 name|ClientRMService
@@ -2615,49 +2588,27 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createAdminService (ClientRMService clientRMService, ApplicationMasterService applicationMasterService, ResourceTrackerService resourceTrackerService)
+DECL|method|createAdminService ()
 specifier|protected
 name|AdminService
 name|createAdminService
-parameter_list|(
-name|ClientRMService
-name|clientRMService
-parameter_list|,
-name|ApplicationMasterService
-name|applicationMasterService
-parameter_list|,
-name|ResourceTrackerService
-name|resourceTrackerService
-parameter_list|)
+parameter_list|()
 block|{
 return|return
 operator|new
 name|AdminService
 argument_list|(
-name|getConfig
-argument_list|()
-argument_list|,
-name|scheduler
+name|this
 argument_list|,
 name|getRMContext
 argument_list|()
-argument_list|,
-name|this
-operator|.
-name|nodesListManager
-argument_list|,
-name|clientRMService
-argument_list|,
-name|applicationMasterService
-argument_list|,
-name|resourceTrackerService
 argument_list|)
 block|{
 annotation|@
 name|Override
 specifier|protected
 name|void
-name|serviceStart
+name|startServer
 parameter_list|()
 block|{
 comment|// override to not start rpc handler
@@ -2666,7 +2617,7 @@ annotation|@
 name|Override
 specifier|protected
 name|void
-name|serviceStop
+name|stopServer
 parameter_list|()
 block|{
 comment|// don't do anything

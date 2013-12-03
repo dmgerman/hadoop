@@ -391,7 +391,7 @@ try|try
 block|{
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|monitorHealth
 argument_list|()
@@ -430,7 +430,7 @@ name|STANDBY
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()
@@ -455,7 +455,7 @@ literal|"RM is not ready to become active"
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()
@@ -483,7 +483,7 @@ name|ACTIVE
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()
@@ -508,7 +508,7 @@ literal|"RM is not ready to become active"
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()
@@ -602,7 +602,7 @@ name|INITIALIZING
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()
@@ -617,7 +617,7 @@ literal|"RM is ready to become active before being started"
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()
@@ -643,7 +643,7 @@ expr_stmt|;
 comment|// 1. Transition to Standby - must be a no-op
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|transitionToStandby
 argument_list|(
@@ -659,7 +659,7 @@ expr_stmt|;
 comment|// 2. Transition to active
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|transitionToActive
 argument_list|(
@@ -675,7 +675,7 @@ expr_stmt|;
 comment|// 3. Transition to active - no-op
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|transitionToActive
 argument_list|(
@@ -691,7 +691,7 @@ expr_stmt|;
 comment|// 4. Transition to standby
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|transitionToStandby
 argument_list|(
@@ -707,7 +707,7 @@ expr_stmt|;
 comment|// 5. Transition to active to check Active->Standby->Active works
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|transitionToActive
 argument_list|(
@@ -737,7 +737,7 @@ name|STOPPING
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()
@@ -752,7 +752,7 @@ literal|"RM is ready to become active even after it is stopped"
 argument_list|,
 name|rm
 operator|.
-name|haService
+name|adminService
 operator|.
 name|getServiceStatus
 argument_list|()

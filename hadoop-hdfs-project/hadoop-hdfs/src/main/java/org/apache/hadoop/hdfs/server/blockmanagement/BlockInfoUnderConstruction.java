@@ -734,6 +734,12 @@ name|long
 name|genStamp
 parameter_list|)
 block|{
+comment|// Set the generation stamp for the block.
+name|setGenerationStamp
+argument_list|(
+name|genStamp
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|replicas
@@ -782,16 +788,13 @@ operator|+
 literal|"from location: "
 operator|+
 name|r
+operator|.
+name|getExpectedStorageLocation
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|// Set the generation stamp for the block.
-name|setGenerationStamp
-argument_list|(
-name|genStamp
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Commit block's length and generation stamp as reported by the client.    * Set block state to {@link BlockUCState#COMMITTED}.    * @param block - contains client reported block length and generation     * @throws IOException if block ids are inconsistent.    */
 DECL|method|commitBlock (Block block)
@@ -849,6 +852,15 @@ operator|.
 name|getNumBytes
 argument_list|()
 argument_list|,
+name|block
+operator|.
+name|getGenerationStamp
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// Sort out invalid replicas.
+name|setGenerationStampAndVerifyReplicas
+argument_list|(
 name|block
 operator|.
 name|getGenerationStamp

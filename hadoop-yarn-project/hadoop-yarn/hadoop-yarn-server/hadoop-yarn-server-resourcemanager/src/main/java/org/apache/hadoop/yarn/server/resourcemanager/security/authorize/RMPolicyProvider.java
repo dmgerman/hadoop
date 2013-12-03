@@ -289,18 +289,6 @@ name|ContainerManagementProtocolPB
 operator|.
 name|class
 argument_list|)
-block|,
-operator|new
-name|Service
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_SECURITY_SERVICE_AUTHORIZATION_HA_SERVICE_PROTOCOL
-argument_list|,
-name|HAServiceProtocol
-operator|.
-name|class
-argument_list|)
 block|,   }
 decl_stmt|;
 annotation|@

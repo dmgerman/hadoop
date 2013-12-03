@@ -4161,14 +4161,6 @@ init|(
 name|dataQueue
 init|)
 block|{
-assert|assert
-name|dataQueue
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|1
-assert|;
 name|Packet
 name|endOfBlockPacket
 init|=
@@ -5256,8 +5248,6 @@ argument_list|(
 name|nodes
 argument_list|,
 name|newGS
-operator|-
-literal|1
 argument_list|,
 name|isRecovery
 argument_list|)
