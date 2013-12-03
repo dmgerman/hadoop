@@ -543,15 +543,23 @@ name|info
 argument_list|(
 literal|"Namenode trash configuration: Deletion interval = "
 operator|+
+operator|(
 name|this
 operator|.
 name|deletionInterval
+operator|/
+name|MSECS_PER_MINUTE
+operator|)
 operator|+
 literal|" minutes, Emptier interval = "
 operator|+
+operator|(
 name|this
 operator|.
 name|emptierInterval
+operator|/
+name|MSECS_PER_MINUTE
+operator|)
 operator|+
 literal|" minutes."
 argument_list|)
