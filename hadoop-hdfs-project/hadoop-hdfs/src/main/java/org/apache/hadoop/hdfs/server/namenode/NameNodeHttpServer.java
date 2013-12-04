@@ -302,6 +302,24 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|hdfs
+operator|.
+name|web
+operator|.
+name|resources
+operator|.
+name|UserParam
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|http
 operator|.
 name|HttpConfig
@@ -519,7 +537,15 @@ name|LOG
 argument_list|)
 condition|)
 block|{
-comment|//add SPNEGO authentication filter for webhdfs
+comment|// set user pattern based on configuration file
+name|UserParam
+operator|.
+name|setUserPattern
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+comment|// add SPNEGO authentication filter for webhdfs
 specifier|final
 name|String
 name|name

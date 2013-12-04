@@ -1404,6 +1404,14 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|/** set user pattern based on configuration file */
+name|UserParam
+operator|.
+name|setUserPattern
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|connectionFactory
 operator|=
 name|URLConnectionFactory
