@@ -21,6 +21,54 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_DEFAULT_NAME_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_TRASH_INTERVAL_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CommonConfigurationKeysPublic
+operator|.
+name|FS_TRASH_INTERVAL_KEY
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -2204,7 +2252,7 @@ name|conf
 argument_list|)
 return|;
 block|}
-comment|/** @return the NameNode HTTP address set in the conf. */
+comment|/** @return the NameNode HTTP address. */
 DECL|method|getHttpAddress (Configuration conf)
 specifier|public
 specifier|static
@@ -2230,45 +2278,6 @@ name|DFS_NAMENODE_HTTP_ADDRESS_DEFAULT
 argument_list|)
 argument_list|)
 return|;
-block|}
-DECL|method|setHttpServerAddress (Configuration conf)
-specifier|protected
-name|void
-name|setHttpServerAddress
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|String
-name|hostPort
-init|=
-name|NetUtils
-operator|.
-name|getHostPortString
-argument_list|(
-name|getHttpAddress
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|conf
-operator|.
-name|set
-argument_list|(
-name|DFS_NAMENODE_HTTP_ADDRESS_KEY
-argument_list|,
-name|hostPort
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Web-server up at: "
-operator|+
-name|hostPort
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|loadNamesystem (Configuration conf)
 specifier|protected
@@ -2470,11 +2479,6 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|validateConfigurationSettingsOrAbort
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 name|loadNamesystem
 argument_list|(
@@ -2511,14 +2515,6 @@ name|setFSImage
 argument_list|(
 name|getFSImage
 argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|validateConfigurationSettingsOrAbort
-argument_list|(
-name|conf
 argument_list|)
 expr_stmt|;
 block|}
@@ -2562,124 +2558,6 @@ argument_list|,
 name|this
 argument_list|)
 return|;
-block|}
-comment|/**    * Verifies that the final Configuration Settings look ok for the NameNode to    * properly start up    * Things to check for include:    * - HTTP Server Port does not equal the RPC Server Port    * @param conf    * @throws IOException    */
-DECL|method|validateConfigurationSettings (final Configuration conf)
-specifier|protected
-name|void
-name|validateConfigurationSettings
-parameter_list|(
-specifier|final
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-comment|// check to make sure the web port and rpc port do not match
-if|if
-condition|(
-name|getHttpServerAddress
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|getPort
-argument_list|()
-operator|==
-name|getRpcServerAddress
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|getPort
-argument_list|()
-condition|)
-block|{
-name|String
-name|errMsg
-init|=
-literal|"dfs.namenode.rpc-address "
-operator|+
-literal|"("
-operator|+
-name|getRpcServerAddress
-argument_list|(
-name|conf
-argument_list|)
-operator|+
-literal|") and "
-operator|+
-literal|"dfs.namenode.http-address ("
-operator|+
-name|getHttpServerAddress
-argument_list|(
-name|conf
-argument_list|)
-operator|+
-literal|") "
-operator|+
-literal|"configuration keys are bound to the same port, unable to start "
-operator|+
-literal|"NameNode. Port: "
-operator|+
-name|getRpcServerAddress
-argument_list|(
-name|conf
-argument_list|)
-operator|.
-name|getPort
-argument_list|()
-decl_stmt|;
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-name|errMsg
-argument_list|)
-throw|;
-block|}
-block|}
-comment|/**    * Validate NameNode configuration.  Log a fatal error and abort if    * configuration is invalid.    *     * @param conf Configuration to validate    * @throws IOException thrown if conf is invalid    */
-DECL|method|validateConfigurationSettingsOrAbort (Configuration conf)
-specifier|private
-name|void
-name|validateConfigurationSettingsOrAbort
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-try|try
-block|{
-name|validateConfigurationSettings
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|fatal
-argument_list|(
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-throw|throw
-name|e
-throw|;
-block|}
 block|}
 comment|/** Start the services common to active and standby states */
 DECL|method|startCommonServices (Configuration conf)
@@ -3119,11 +2997,6 @@ argument_list|(
 name|startupProgress
 argument_list|)
 expr_stmt|;
-name|setHttpServerAddress
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|stopHttpServer ()
 specifier|private
@@ -3162,7 +3035,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Start NameNode.    *<p>    * The name-node can be started with one of the following startup options:    *<ul>     *<li>{@link StartupOption#REGULAR REGULAR} - normal name node startup</li>    *<li>{@link StartupOption#FORMAT FORMAT} - format name node</li>    *<li>{@link StartupOption#BACKUP BACKUP} - start backup node</li>    *<li>{@link StartupOption#CHECKPOINT CHECKPOINT} - start checkpoint node</li>    *<li>{@link StartupOption#UPGRADE UPGRADE} - start the cluster      * upgrade and create a snapshot of the current file system state</li>     *<li>{@link StartupOption#RECOVERY RECOVERY} - recover name node    * metadata</li>    *<li>{@link StartupOption#ROLLBACK ROLLBACK} - roll the      *            cluster back to the previous state</li>    *<li>{@link StartupOption#FINALIZE FINALIZE} - finalize     *            previous upgrade</li>    *<li>{@link StartupOption#IMPORT IMPORT} - import checkpoint</li>    *</ul>    * The option is passed via configuration field:     *<tt>dfs.namenode.startup</tt>    *     * The conf will be modified to reflect the actual ports on which     * the NameNode is up and running if the user passes the port as    *<code>zero</code> in the conf.    *     * @param conf  confirguration    * @throws IOException    */
+comment|/**    * Start NameNode.    *<p>    * The name-node can be started with one of the following startup options:    *<ul>     *<li>{@link StartupOption#REGULAR REGULAR} - normal name node startup</li>    *<li>{@link StartupOption#FORMAT FORMAT} - format name node</li>    *<li>{@link StartupOption#BACKUP BACKUP} - start backup node</li>    *<li>{@link StartupOption#CHECKPOINT CHECKPOINT} - start checkpoint node</li>    *<li>{@link StartupOption#UPGRADE UPGRADE} - start the cluster      * upgrade and create a snapshot of the current file system state</li>     *<li>{@link StartupOption#RECOVER RECOVERY} - recover name node    * metadata</li>    *<li>{@link StartupOption#ROLLBACK ROLLBACK} - roll the      *            cluster back to the previous state</li>    *<li>{@link StartupOption#FINALIZE FINALIZE} - finalize     *            previous upgrade</li>    *<li>{@link StartupOption#IMPORT IMPORT} - import checkpoint</li>    *</ul>    * The option is passed via configuration field:     *<tt>dfs.namenode.startup</tt>    *     * The conf will be modified to reflect the actual ports on which     * the NameNode is up and running if the user passes the port as    *<code>zero</code> in the conf.    *     * @param conf  confirguration    * @throws IOException    */
 DECL|method|NameNode (Configuration conf)
 specifier|public
 name|NameNode
