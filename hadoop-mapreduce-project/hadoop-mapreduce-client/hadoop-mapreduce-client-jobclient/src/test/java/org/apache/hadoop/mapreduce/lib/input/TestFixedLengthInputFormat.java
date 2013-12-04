@@ -1334,41 +1334,6 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// Create files with fixed length records with 5 byte long records.
-name|writeFile
-argument_list|(
-name|localFs
-argument_list|,
-operator|new
-name|Path
-argument_list|(
-name|workDir
-argument_list|,
-literal|"part1.txt.gz"
-argument_list|)
-argument_list|,
-name|gzip
-argument_list|,
-literal|"one  two  threefour five six  seveneightnine ten  "
-argument_list|)
-expr_stmt|;
-name|writeFile
-argument_list|(
-name|localFs
-argument_list|,
-operator|new
-name|Path
-argument_list|(
-name|workDir
-argument_list|,
-literal|"part2.txt.gz"
-argument_list|)
-argument_list|,
-name|gzip
-argument_list|,
-literal|"ten  nine eightsevensix  five four threetwo  one  "
-argument_list|)
-expr_stmt|;
 name|Job
 name|job
 init|=
@@ -1417,6 +1382,41 @@ argument_list|(
 name|job
 argument_list|,
 name|workDir
+argument_list|)
+expr_stmt|;
+comment|// Create files with fixed length records with 5 byte long records.
+name|writeFile
+argument_list|(
+name|localFs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|workDir
+argument_list|,
+literal|"part1.txt.gz"
+argument_list|)
+argument_list|,
+name|gzip
+argument_list|,
+literal|"one  two  threefour five six  seveneightnine ten  "
+argument_list|)
+expr_stmt|;
+name|writeFile
+argument_list|(
+name|localFs
+argument_list|,
+operator|new
+name|Path
+argument_list|(
+name|workDir
+argument_list|,
+literal|"part2.txt.gz"
+argument_list|)
+argument_list|,
+name|gzip
+argument_list|,
+literal|"ten  nine eightsevensix  five four threetwo  one  "
 argument_list|)
 expr_stmt|;
 name|List
@@ -1971,6 +1971,37 @@ operator|+
 name|recordLength
 argument_list|)
 expr_stmt|;
+comment|// Create the job
+name|Job
+name|job
+init|=
+name|Job
+operator|.
+name|getInstance
+argument_list|(
+name|defaultConf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|codec
+operator|!=
+literal|null
+condition|)
+block|{
+name|ReflectionUtils
+operator|.
+name|setConf
+argument_list|(
+name|codec
+argument_list|,
+name|job
+operator|.
+name|getConfiguration
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Create the test file
 name|ArrayList
 argument_list|<
@@ -1999,17 +2030,7 @@ name|file
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Create the job and set the fixed length record length config property
-name|Job
-name|job
-init|=
-name|Job
-operator|.
-name|getInstance
-argument_list|(
-name|defaultConf
-argument_list|)
-decl_stmt|;
+comment|//set the fixed length record length config property for the job
 name|FixedLengthInputFormat
 operator|.
 name|setRecordLength

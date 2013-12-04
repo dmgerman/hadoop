@@ -804,6 +804,11 @@ specifier|private
 name|int
 name|zkSessionTimeout
 decl_stmt|;
+DECL|field|zkRetryInterval
+specifier|private
+name|long
+name|zkRetryInterval
+decl_stmt|;
 DECL|field|zkAcl
 specifier|private
 name|List
@@ -1168,6 +1173,21 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_ZK_RM_STATE_STORE_TIMEOUT_MS
+argument_list|)
+expr_stmt|;
+name|zkRetryInterval
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|ZK_RM_STATE_STORE_RETRY_INTERVAL_MS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_ZK_RM_STATE_STORE_RETRY_INTERVAL_MS
 argument_list|)
 expr_stmt|;
 comment|// Parse authentication from configuration.
@@ -4439,6 +4459,22 @@ operator|<
 name|numRetries
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Waiting for zookeeper to be connected, retry no. + "
+operator|+
+name|retry
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+name|zkRetryInterval
+argument_list|)
+expr_stmt|;
 continue|continue;
 block|}
 throw|throw
