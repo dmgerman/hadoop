@@ -80,10 +80,15 @@ specifier|private
 name|long
 name|bytesCached
 decl_stmt|;
-DECL|field|filesAffected
+DECL|field|filesNeeded
 specifier|private
 name|long
-name|filesAffected
+name|filesNeeded
+decl_stmt|;
+DECL|field|filesCached
+specifier|private
+name|long
+name|filesCached
 decl_stmt|;
 DECL|field|hasExpired
 specifier|private
@@ -105,7 +110,9 @@ name|bytesNeeded
 argument_list|,
 name|bytesCached
 argument_list|,
-name|filesAffected
+name|filesNeeded
+argument_list|,
+name|filesCached
 argument_list|,
 name|hasExpired
 argument_list|)
@@ -157,21 +164,41 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the files affected by this directive.      *       * @param filesAffected The files affected.      * @return This builder, for call chaining.      */
-DECL|method|setFilesAffected (long filesAffected)
+comment|/**      * Sets the files needed by this directive.      * @param filesNeeded The number of files needed      * @return This builder, for call chaining.      */
+DECL|method|setFilesNeeded (long filesNeeded)
 specifier|public
 name|Builder
-name|setFilesAffected
+name|setFilesNeeded
 parameter_list|(
 name|long
-name|filesAffected
+name|filesNeeded
 parameter_list|)
 block|{
 name|this
 operator|.
-name|filesAffected
+name|filesNeeded
 operator|=
-name|filesAffected
+name|filesNeeded
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets the files cached by this directive.      *       * @param filesCached The number of files cached.      * @return This builder, for call chaining.      */
+DECL|method|setFilesCached (long filesCached)
+specifier|public
+name|Builder
+name|setFilesCached
+parameter_list|(
+name|long
+name|filesCached
+parameter_list|)
+block|{
+name|this
+operator|.
+name|filesCached
+operator|=
+name|filesCached
 expr_stmt|;
 return|return
 name|this
@@ -210,11 +237,17 @@ specifier|final
 name|long
 name|bytesCached
 decl_stmt|;
-DECL|field|filesAffected
+DECL|field|filesNeeded
 specifier|private
 specifier|final
 name|long
-name|filesAffected
+name|filesNeeded
+decl_stmt|;
+DECL|field|filesCached
+specifier|private
+specifier|final
+name|long
+name|filesCached
 decl_stmt|;
 DECL|field|hasExpired
 specifier|private
@@ -222,7 +255,7 @@ specifier|final
 name|boolean
 name|hasExpired
 decl_stmt|;
-DECL|method|CacheDirectiveStats (long bytesNeeded, long bytesCached, long filesAffected, boolean hasExpired)
+DECL|method|CacheDirectiveStats (long bytesNeeded, long bytesCached, long filesNeeded, long filesCached, boolean hasExpired)
 specifier|private
 name|CacheDirectiveStats
 parameter_list|(
@@ -233,7 +266,10 @@ name|long
 name|bytesCached
 parameter_list|,
 name|long
-name|filesAffected
+name|filesNeeded
+parameter_list|,
+name|long
+name|filesCached
 parameter_list|,
 name|boolean
 name|hasExpired
@@ -253,9 +289,15 @@ name|bytesCached
 expr_stmt|;
 name|this
 operator|.
-name|filesAffected
+name|filesNeeded
 operator|=
-name|filesAffected
+name|filesNeeded
+expr_stmt|;
+name|this
+operator|.
+name|filesCached
+operator|=
+name|filesCached
 expr_stmt|;
 name|this
 operator|.
@@ -286,15 +328,26 @@ return|return
 name|bytesCached
 return|;
 block|}
-comment|/**    * @return The files affected.    */
-DECL|method|getFilesAffected ()
+comment|/**    * @return The number of files needed.    */
+DECL|method|getFilesNeeded ()
 specifier|public
 name|long
-name|getFilesAffected
+name|getFilesNeeded
 parameter_list|()
 block|{
 return|return
-name|filesAffected
+name|filesNeeded
+return|;
+block|}
+comment|/**    * @return The number of files cached.    */
+DECL|method|getFilesCached ()
+specifier|public
+name|long
+name|getFilesCached
+parameter_list|()
+block|{
+return|return
+name|filesCached
 return|;
 block|}
 comment|/**    * @return Whether this directive has expired.    */
@@ -368,12 +421,29 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"filesAffected: "
+literal|"filesNeeded: "
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|filesAffected
+name|filesNeeded
+argument_list|)
+expr_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|", "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"filesCached: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|filesCached
 argument_list|)
 expr_stmt|;
 name|builder
