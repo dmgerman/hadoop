@@ -160,6 +160,22 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|BatchedRemoteIterator
+operator|.
+name|BatchedEntries
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|Options
 operator|.
 name|Rename
@@ -177,20 +193,6 @@ operator|.
 name|fs
 operator|.
 name|ParentNotDirectoryException
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|RemoteIterator
 import|;
 end_import
 
@@ -1777,12 +1779,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *               listCacheDirectives.    * @param filter Parameters to use to filter the list results,     *               or null to display all directives visible to us.    * @return A RemoteIterator which returns CacheDirectiveInfo objects.    */
+comment|/**    * List the set of cached paths of a cache pool. Incrementally fetches results    * from the server.    *     * @param prevId The last listed entry ID, or -1 if this is the first call to    *               listCacheDirectives.    * @param filter Parameters to use to filter the list results,     *               or null to display all directives visible to us.    * @return A batch of CacheDirectiveEntry objects.    */
 annotation|@
 name|Idempotent
 DECL|method|listCacheDirectives ( long prevId, CacheDirectiveInfo filter)
 specifier|public
-name|RemoteIterator
+name|BatchedEntries
 argument_list|<
 name|CacheDirectiveEntry
 argument_list|>
@@ -1839,12 +1841,12 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * List the set of cache pools. Incrementally fetches results from the server.    *     * @param prevPool name of the last pool listed, or the empty string if this is    *          the first invocation of listCachePools    * @return A RemoteIterator which returns CachePool objects.    */
+comment|/**    * List the set of cache pools. Incrementally fetches results from the server.    *     * @param prevPool name of the last pool listed, or the empty string if this is    *          the first invocation of listCachePools    * @return A batch of CachePoolEntry objects.    */
 annotation|@
 name|Idempotent
 DECL|method|listCachePools (String prevPool)
 specifier|public
-name|RemoteIterator
+name|BatchedEntries
 argument_list|<
 name|CachePoolEntry
 argument_list|>

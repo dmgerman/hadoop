@@ -204,6 +204,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Iterator
 import|;
 end_import
@@ -1244,15 +1254,14 @@ return|return
 name|active
 return|;
 block|}
-DECL|method|getEntriesById ()
+comment|/**    * @return Unmodifiable view of the collection of CachePools.    */
+DECL|method|getCachePools ()
 specifier|public
-name|TreeMap
+name|Collection
 argument_list|<
-name|Long
-argument_list|,
-name|CacheDirective
+name|CachePool
 argument_list|>
-name|getEntriesById
+name|getCachePools
 parameter_list|()
 block|{
 assert|assert
@@ -1262,7 +1271,43 @@ name|hasReadLock
 argument_list|()
 assert|;
 return|return
+name|Collections
+operator|.
+name|unmodifiableCollection
+argument_list|(
+name|cachePools
+operator|.
+name|values
+argument_list|()
+argument_list|)
+return|;
+block|}
+comment|/**    * @return Unmodifiable view of the collection of CacheDirectives.    */
+DECL|method|getCacheDirectives ()
+specifier|public
+name|Collection
+argument_list|<
+name|CacheDirective
+argument_list|>
+name|getCacheDirectives
+parameter_list|()
+block|{
+assert|assert
+name|namesystem
+operator|.
+name|hasReadLock
+argument_list|()
+assert|;
+return|return
+name|Collections
+operator|.
+name|unmodifiableCollection
+argument_list|(
 name|directivesById
+operator|.
+name|values
+argument_list|()
+argument_list|)
 return|;
 block|}
 annotation|@

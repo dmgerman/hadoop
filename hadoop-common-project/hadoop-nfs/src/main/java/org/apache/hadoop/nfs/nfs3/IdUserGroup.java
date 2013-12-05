@@ -84,6 +84,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|collect
 operator|.
 name|BiMap
@@ -190,7 +204,7 @@ operator|*
 literal|1000
 decl_stmt|;
 comment|// ms
-comment|// Maps for id to name map. Guarded by this object monitor lock */
+comment|// Maps for id to name map. Guarded by this object monitor lock
 DECL|field|uidNameMap
 specifier|private
 name|BiMap
@@ -229,10 +243,44 @@ init|=
 literal|0
 decl_stmt|;
 comment|// Last time maps were updated
+DECL|class|DuplicateNameOrIdException
+specifier|static
+specifier|public
+class|class
+name|DuplicateNameOrIdException
+extends|extends
+name|IOException
+block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
+DECL|method|DuplicateNameOrIdException (String msg)
+specifier|public
+name|DuplicateNameOrIdException
+parameter_list|(
+name|String
+name|msg
+parameter_list|)
+block|{
+name|super
+argument_list|(
+name|msg
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|IdUserGroup ()
 specifier|public
 name|IdUserGroup
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|updateMaps
 argument_list|()
@@ -255,6 +303,7 @@ operator|>
 name|TIMEOUT
 return|;
 block|}
+comment|// If can't update the maps, will keep using the old ones
 DECL|method|checkAndUpdateMaps ()
 specifier|private
 name|void
@@ -274,14 +323,59 @@ argument_list|(
 literal|"Update cache now"
 argument_list|)
 expr_stmt|;
+try|try
+block|{
 name|updateMaps
 argument_list|()
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Can't update the maps. Will use the old ones,"
+operator|+
+literal|" which can potentially cause problem."
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
 block|}
-comment|/**    * Get the whole list of users and groups and save them in the maps.    */
-DECL|method|updateMapInternal (BiMap<Integer, String> map, String name, String command, String regex)
+block|}
+block|}
+DECL|field|DUPLICATE_NAME_ID_DEBUG_INFO
 specifier|private
+specifier|static
+specifier|final
+name|String
+name|DUPLICATE_NAME_ID_DEBUG_INFO
+init|=
+literal|"NFS gateway can't start with duplicate name or id on the host system.\n"
+operator|+
+literal|"This is because HDFS (non-kerberos cluster) uses name as the only way to identify a user or group.\n"
+operator|+
+literal|"The host system with duplicated user/group name or id might work fine most of the time by itself.\n"
+operator|+
+literal|"However when NFS gateway talks to HDFS, HDFS accepts only user and group name.\n"
+operator|+
+literal|"Therefore, same name means the same user or same group. To find the duplicated names/ids, one can do:\n"
+operator|+
+literal|"<getent passwd | cut -d: -f1,3> and<getent group | cut -d: -f1,3> on Linux systms,\n"
+operator|+
+literal|"<dscl . -list /Users UniqueID> and<dscl . -list /Groups PrimaryGroupID> on MacOS."
+decl_stmt|;
+comment|/**    * Get the whole list of users and groups and save them in the maps.    * @throws IOException     */
+annotation|@
+name|VisibleForTesting
+DECL|method|updateMapInternal (BiMap<Integer, String> map, String mapName, String command, String regex)
+specifier|public
+specifier|static
 name|void
 name|updateMapInternal
 parameter_list|(
@@ -294,7 +388,7 @@ argument_list|>
 name|map
 parameter_list|,
 name|String
-name|name
+name|mapName
 parameter_list|,
 name|String
 name|command
@@ -402,7 +496,7 @@ name|IOException
 argument_list|(
 literal|"Can't parse "
 operator|+
-name|name
+name|mapName
 operator|+
 literal|" list entry:"
 operator|+
@@ -414,11 +508,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"add "
+literal|"add to "
 operator|+
-name|name
+name|mapName
 operator|+
-literal|":"
+literal|"map:"
 operator|+
 name|nameId
 index|[
@@ -433,6 +527,124 @@ literal|1
 index|]
 argument_list|)
 expr_stmt|;
+comment|// HDFS can't differentiate duplicate names with simple authentication
+name|Integer
+name|key
+init|=
+name|Integer
+operator|.
+name|valueOf
+argument_list|(
+name|nameId
+index|[
+literal|1
+index|]
+argument_list|)
+decl_stmt|;
+name|String
+name|value
+init|=
+name|nameId
+index|[
+literal|0
+index|]
+decl_stmt|;
+if|if
+condition|(
+name|map
+operator|.
+name|containsKey
+argument_list|(
+name|key
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Got duplicate id:(%d, %s), existing entry: (%d, %s).\n%s"
+argument_list|,
+name|key
+argument_list|,
+name|value
+argument_list|,
+name|key
+argument_list|,
+name|map
+operator|.
+name|get
+argument_list|(
+name|key
+argument_list|)
+argument_list|,
+name|DUPLICATE_NAME_ID_DEBUG_INFO
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|DuplicateNameOrIdException
+argument_list|(
+literal|"Got duplicate id."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|map
+operator|.
+name|containsValue
+argument_list|(
+name|nameId
+index|[
+literal|0
+index|]
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"Got duplicate name:(%d, %s), existing entry: (%d, %s) \n%s"
+argument_list|,
+name|key
+argument_list|,
+name|value
+argument_list|,
+name|map
+operator|.
+name|inverse
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|value
+argument_list|)
+argument_list|,
+name|value
+argument_list|,
+name|DUPLICATE_NAME_ID_DEBUG_INFO
+argument_list|)
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|DuplicateNameOrIdException
+argument_list|(
+literal|"Got duplicate name"
+argument_list|)
+throw|;
+block|}
 name|map
 operator|.
 name|put
@@ -460,7 +672,7 @@ name|info
 argument_list|(
 literal|"Updated "
 operator|+
-name|name
+name|mapName
 operator|+
 literal|" map size:"
 operator|+
@@ -481,9 +693,11 @@ name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Can't update map "
+literal|"Can't update "
 operator|+
-name|name
+name|mapName
+operator|+
+literal|" map"
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -535,6 +749,8 @@ specifier|public
 name|void
 name|updateMaps
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|BiMap
 argument_list|<
@@ -562,8 +778,40 @@ operator|.
 name|create
 argument_list|()
 decl_stmt|;
-try|try
+if|if
+condition|(
+operator|!
+name|OS
+operator|.
+name|startsWith
+argument_list|(
+literal|"Linux"
+argument_list|)
+operator|&&
+operator|!
+name|OS
+operator|.
+name|startsWith
+argument_list|(
+literal|"Mac"
+argument_list|)
+condition|)
 block|{
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Platform is not supported:"
+operator|+
+name|OS
+operator|+
+literal|". Can't update user map and group map and"
+operator|+
+literal|" 'nobody' will be used for any user and group."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 if|if
 condition|(
 name|OS
@@ -597,17 +845,9 @@ literal|":"
 argument_list|)
 expr_stmt|;
 block|}
-elseif|else
-if|if
-condition|(
-name|OS
-operator|.
-name|startsWith
-argument_list|(
-literal|"Mac"
-argument_list|)
-condition|)
+else|else
 block|{
+comment|// Mac
 name|updateMapInternal
 argument_list|(
 name|uMap
@@ -630,36 +870,6 @@ argument_list|,
 literal|"\\s+"
 argument_list|)
 expr_stmt|;
-block|}
-else|else
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Platform is not supported:"
-operator|+
-name|OS
-argument_list|)
-throw|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Can't update maps:"
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
-return|return;
 block|}
 name|uidNameMap
 operator|=

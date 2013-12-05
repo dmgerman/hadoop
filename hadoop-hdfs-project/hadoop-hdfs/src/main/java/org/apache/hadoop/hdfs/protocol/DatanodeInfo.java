@@ -1555,7 +1555,7 @@ name|append
 argument_list|(
 literal|"Configured Cache Capacity: "
 operator|+
-name|c
+name|cc
 operator|+
 literal|" ("
 operator|+
@@ -1585,7 +1585,7 @@ name|StringUtils
 operator|.
 name|byteDesc
 argument_list|(
-name|u
+name|cu
 argument_list|)
 operator|+
 literal|")"
@@ -1607,7 +1607,7 @@ name|StringUtils
 operator|.
 name|byteDesc
 argument_list|(
-name|r
+name|cr
 argument_list|)
 operator|+
 literal|")"

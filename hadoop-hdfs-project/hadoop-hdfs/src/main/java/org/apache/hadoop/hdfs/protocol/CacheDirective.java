@@ -222,10 +222,15 @@ specifier|private
 name|long
 name|bytesCached
 decl_stmt|;
-DECL|field|filesAffected
+DECL|field|filesNeeded
 specifier|private
 name|long
-name|filesAffected
+name|filesNeeded
+decl_stmt|;
+DECL|field|filesCached
+specifier|private
+name|long
+name|filesCached
 decl_stmt|;
 DECL|field|prev
 specifier|private
@@ -298,24 +303,6 @@ operator|.
 name|expiryTime
 operator|=
 name|expiryTime
-expr_stmt|;
-name|this
-operator|.
-name|bytesNeeded
-operator|=
-literal|0
-expr_stmt|;
-name|this
-operator|.
-name|bytesCached
-operator|=
-literal|0
-expr_stmt|;
-name|this
-operator|.
-name|filesAffected
-operator|=
-literal|0
 expr_stmt|;
 block|}
 DECL|method|getId ()
@@ -469,9 +456,14 @@ argument_list|(
 name|bytesCached
 argument_list|)
 operator|.
-name|setFilesAffected
+name|setFilesNeeded
 argument_list|(
-name|filesAffected
+name|filesNeeded
+argument_list|)
+operator|.
+name|setFilesCached
+argument_list|(
+name|filesCached
 argument_list|)
 operator|.
 name|setHasExpired
@@ -598,12 +590,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", filesAffected:"
+literal|", filesNeeded:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|filesAffected
+name|filesNeeded
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", filesCached:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|filesCached
 argument_list|)
 operator|.
 name|append
@@ -706,6 +708,33 @@ name|toHashCode
 argument_list|()
 return|;
 block|}
+comment|//
+comment|// Stats related getters and setters
+comment|//
+comment|/**    * Resets the byte and file statistics being tracked by this CacheDirective.    */
+DECL|method|resetStatistics ()
+specifier|public
+name|void
+name|resetStatistics
+parameter_list|()
+block|{
+name|bytesNeeded
+operator|=
+literal|0
+expr_stmt|;
+name|bytesCached
+operator|=
+literal|0
+expr_stmt|;
+name|filesNeeded
+operator|=
+literal|0
+expr_stmt|;
+name|filesCached
+operator|=
+literal|0
+expr_stmt|;
+block|}
 DECL|method|getBytesNeeded ()
 specifier|public
 name|long
@@ -716,33 +745,27 @@ return|return
 name|bytesNeeded
 return|;
 block|}
-DECL|method|clearBytesNeeded ()
-specifier|public
-name|void
-name|clearBytesNeeded
-parameter_list|()
-block|{
-name|this
-operator|.
-name|bytesNeeded
-operator|=
-literal|0
-expr_stmt|;
-block|}
-DECL|method|addBytesNeeded (long toAdd)
+DECL|method|addBytesNeeded (long bytes)
 specifier|public
 name|void
 name|addBytesNeeded
 parameter_list|(
 name|long
-name|toAdd
+name|bytes
 parameter_list|)
 block|{
 name|this
 operator|.
 name|bytesNeeded
 operator|+=
-name|toAdd
+name|bytes
+expr_stmt|;
+name|pool
+operator|.
+name|addBytesNeeded
+argument_list|(
+name|bytes
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|getBytesCached ()
@@ -755,70 +778,98 @@ return|return
 name|bytesCached
 return|;
 block|}
-DECL|method|clearBytesCached ()
-specifier|public
-name|void
-name|clearBytesCached
-parameter_list|()
-block|{
-name|this
-operator|.
-name|bytesCached
-operator|=
-literal|0
-expr_stmt|;
-block|}
-DECL|method|addBytesCached (long toAdd)
+DECL|method|addBytesCached (long bytes)
 specifier|public
 name|void
 name|addBytesCached
 parameter_list|(
 name|long
-name|toAdd
+name|bytes
 parameter_list|)
 block|{
 name|this
 operator|.
 name|bytesCached
 operator|+=
-name|toAdd
+name|bytes
+expr_stmt|;
+name|pool
+operator|.
+name|addBytesCached
+argument_list|(
+name|bytes
+argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getFilesAffected ()
+DECL|method|getFilesNeeded ()
 specifier|public
 name|long
-name|getFilesAffected
+name|getFilesNeeded
 parameter_list|()
 block|{
 return|return
-name|filesAffected
+name|filesNeeded
 return|;
 block|}
-DECL|method|clearFilesAffected ()
+DECL|method|addFilesNeeded (long files)
 specifier|public
 name|void
-name|clearFilesAffected
-parameter_list|()
+name|addFilesNeeded
+parameter_list|(
+name|long
+name|files
+parameter_list|)
 block|{
 name|this
 operator|.
-name|filesAffected
-operator|=
-literal|0
+name|filesNeeded
+operator|+=
+name|files
+expr_stmt|;
+name|pool
+operator|.
+name|addFilesNeeded
+argument_list|(
+name|files
+argument_list|)
 expr_stmt|;
 block|}
-DECL|method|incrementFilesAffected ()
+DECL|method|getFilesCached ()
+specifier|public
+name|long
+name|getFilesCached
+parameter_list|()
+block|{
+return|return
+name|filesCached
+return|;
+block|}
+DECL|method|addFilesCached (long files)
 specifier|public
 name|void
-name|incrementFilesAffected
-parameter_list|()
+name|addFilesCached
+parameter_list|(
+name|long
+name|files
+parameter_list|)
 block|{
 name|this
 operator|.
-name|filesAffected
-operator|++
+name|filesCached
+operator|+=
+name|files
+expr_stmt|;
+name|pool
+operator|.
+name|addFilesCached
+argument_list|(
+name|files
+argument_list|)
 expr_stmt|;
 block|}
+comment|//
+comment|// IntrusiveCollection.Element implementation
+comment|//
 annotation|@
 name|SuppressWarnings
 argument_list|(

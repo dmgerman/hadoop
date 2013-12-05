@@ -598,6 +598,11 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+name|DefaultMetricsSystem
+operator|.
+name|shutdown
+argument_list|()
+expr_stmt|;
 operator|new
 name|ConfigBuilder
 argument_list|()

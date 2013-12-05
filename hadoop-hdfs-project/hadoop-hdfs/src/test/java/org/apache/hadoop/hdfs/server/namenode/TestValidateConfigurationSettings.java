@@ -66,6 +66,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|BindException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -232,6 +242,13 @@ block|}
 comment|/**    * Tests setting the rpc port to the same as the web port to test that     * an exception    * is thrown when trying to re-use the same port    */
 annotation|@
 name|Test
+argument_list|(
+name|expected
+operator|=
+name|BindException
+operator|.
+name|class
+argument_list|)
 DECL|method|testThatMatchingRPCandHttpPortsThrowException ()
 specifier|public
 name|void
@@ -303,58 +320,12 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-try|try
-block|{
-name|NameNode
-name|nameNode
-init|=
 operator|new
 name|NameNode
 argument_list|(
 name|conf
 argument_list|)
-decl_stmt|;
-name|fail
-argument_list|(
-literal|"Should have throw the exception since the ports match"
-argument_list|)
 expr_stmt|;
-block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
-block|{
-comment|// verify we're getting the right IOException
-name|assertTrue
-argument_list|(
-name|e
-operator|.
-name|toString
-argument_list|()
-operator|.
-name|contains
-argument_list|(
-literal|"dfs.namenode.rpc-address ("
-argument_list|)
-argument_list|)
-expr_stmt|;
-name|System
-operator|.
-name|out
-operator|.
-name|println
-argument_list|(
-literal|"Got expected exception: "
-operator|+
-name|e
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 comment|/**    * Tests setting the rpc port to a different as the web port that an     * exception is NOT thrown     */
 annotation|@

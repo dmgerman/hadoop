@@ -80,10 +80,15 @@ specifier|private
 name|long
 name|bytesCached
 decl_stmt|;
-DECL|field|filesAffected
+DECL|field|filesNeeded
 specifier|private
 name|long
-name|filesAffected
+name|filesNeeded
+decl_stmt|;
+DECL|field|filesCached
+specifier|private
+name|long
+name|filesCached
 decl_stmt|;
 DECL|method|Builder ()
 specifier|public
@@ -128,20 +133,39 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|setFilesAffected (long filesAffected)
+DECL|method|setFilesNeeded (long filesNeeded)
 specifier|public
 name|Builder
-name|setFilesAffected
+name|setFilesNeeded
 parameter_list|(
 name|long
-name|filesAffected
+name|filesNeeded
 parameter_list|)
 block|{
 name|this
 operator|.
-name|filesAffected
+name|filesNeeded
 operator|=
-name|filesAffected
+name|filesNeeded
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setFilesCached (long filesCached)
+specifier|public
+name|Builder
+name|setFilesCached
+parameter_list|(
+name|long
+name|filesCached
+parameter_list|)
+block|{
+name|this
+operator|.
+name|filesCached
+operator|=
+name|filesCached
 expr_stmt|;
 return|return
 name|this
@@ -161,7 +185,9 @@ name|bytesNeeded
 argument_list|,
 name|bytesCached
 argument_list|,
-name|filesAffected
+name|filesNeeded
+argument_list|,
+name|filesCached
 argument_list|)
 return|;
 block|}
@@ -179,13 +205,19 @@ specifier|final
 name|long
 name|bytesCached
 decl_stmt|;
-DECL|field|filesAffected
+DECL|field|filesNeeded
 specifier|private
 specifier|final
 name|long
-name|filesAffected
+name|filesNeeded
 decl_stmt|;
-DECL|method|CachePoolStats (long bytesNeeded, long bytesCached, long filesAffected)
+DECL|field|filesCached
+specifier|private
+specifier|final
+name|long
+name|filesCached
+decl_stmt|;
+DECL|method|CachePoolStats (long bytesNeeded, long bytesCached, long filesNeeded, long filesCached)
 specifier|private
 name|CachePoolStats
 parameter_list|(
@@ -196,7 +228,10 @@ name|long
 name|bytesCached
 parameter_list|,
 name|long
-name|filesAffected
+name|filesNeeded
+parameter_list|,
+name|long
+name|filesCached
 parameter_list|)
 block|{
 name|this
@@ -213,9 +248,15 @@ name|bytesCached
 expr_stmt|;
 name|this
 operator|.
-name|filesAffected
+name|filesNeeded
 operator|=
-name|filesAffected
+name|filesNeeded
+expr_stmt|;
+name|this
+operator|.
+name|filesCached
+operator|=
+name|filesCached
 expr_stmt|;
 block|}
 DECL|method|getBytesNeeded ()
@@ -235,17 +276,27 @@ name|getBytesCached
 parameter_list|()
 block|{
 return|return
-name|bytesNeeded
+name|bytesCached
 return|;
 block|}
-DECL|method|getFilesAffected ()
+DECL|method|getFilesNeeded ()
 specifier|public
 name|long
-name|getFilesAffected
+name|getFilesNeeded
 parameter_list|()
 block|{
 return|return
-name|filesAffected
+name|filesNeeded
+return|;
+block|}
+DECL|method|getFilesCached ()
+specifier|public
+name|long
+name|getFilesCached
+parameter_list|()
+block|{
+return|return
+name|filesCached
 return|;
 block|}
 DECL|method|toString ()
@@ -286,12 +337,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", filesAffected:"
+literal|", filesNeeded:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|filesAffected
+name|filesNeeded
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", filesCached:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|filesCached
 argument_list|)
 operator|.
 name|append

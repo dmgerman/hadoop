@@ -182,6 +182,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -1039,8 +1053,9 @@ argument_list|()
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|copyBytes (FileStatus sourceFileStatus, OutputStream outStream, int bufferSize, Mapper.Context context)
-specifier|private
 name|long
 name|copyBytes
 parameter_list|(
@@ -1154,6 +1169,15 @@ name|buf
 argument_list|)
 expr_stmt|;
 block|}
+name|outStream
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|outStream
+operator|=
+literal|null
+expr_stmt|;
 block|}
 finally|finally
 block|{
