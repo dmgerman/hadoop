@@ -3901,6 +3901,17 @@ argument_list|)
 throw|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Starting DataNode with maxLockedMemory = "
+operator|+
+name|dnConf
+operator|.
+name|maxLockedMemory
+argument_list|)
+expr_stmt|;
 name|storage
 operator|=
 operator|new
