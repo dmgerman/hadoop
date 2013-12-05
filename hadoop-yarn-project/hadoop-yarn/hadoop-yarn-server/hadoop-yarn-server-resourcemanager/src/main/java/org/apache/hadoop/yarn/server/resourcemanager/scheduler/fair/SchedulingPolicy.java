@@ -235,8 +235,9 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|DEFAULT_POLICY
-specifier|private
+specifier|public
 specifier|static
+specifier|final
 name|SchedulingPolicy
 name|DEFAULT_POLICY
 init|=
@@ -308,37 +309,6 @@ name|byte
 operator|)
 literal|7
 decl_stmt|;
-DECL|method|getDefault ()
-specifier|public
-specifier|static
-name|SchedulingPolicy
-name|getDefault
-parameter_list|()
-block|{
-return|return
-name|DEFAULT_POLICY
-return|;
-block|}
-DECL|method|setDefault (String className)
-specifier|public
-specifier|static
-name|void
-name|setDefault
-parameter_list|(
-name|String
-name|className
-parameter_list|)
-throws|throws
-name|AllocationConfigurationException
-block|{
-name|DEFAULT_POLICY
-operator|=
-name|parse
-argument_list|(
-name|className
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Returns a {@link SchedulingPolicy} instance corresponding to the passed clazz    */
 DECL|method|getInstance (Class<? extends SchedulingPolicy> clazz)
 specifier|public

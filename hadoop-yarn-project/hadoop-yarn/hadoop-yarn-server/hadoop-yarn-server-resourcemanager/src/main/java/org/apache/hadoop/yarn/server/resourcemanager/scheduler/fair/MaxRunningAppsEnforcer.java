@@ -136,11 +136,11 @@ specifier|public
 class|class
 name|MaxRunningAppsEnforcer
 block|{
-DECL|field|queueMgr
+DECL|field|scheduler
 specifier|private
 specifier|final
-name|QueueManager
-name|queueMgr
+name|FairScheduler
+name|scheduler
 decl_stmt|;
 comment|// Tracks the number of running applications by user.
 DECL|field|usersNumRunnableApps
@@ -166,19 +166,19 @@ name|AppSchedulable
 argument_list|>
 name|usersNonRunnableApps
 decl_stmt|;
-DECL|method|MaxRunningAppsEnforcer (QueueManager queueMgr)
+DECL|method|MaxRunningAppsEnforcer (FairScheduler scheduler)
 specifier|public
 name|MaxRunningAppsEnforcer
 parameter_list|(
-name|QueueManager
-name|queueMgr
+name|FairScheduler
+name|scheduler
 parameter_list|)
 block|{
 name|this
 operator|.
-name|queueMgr
+name|scheduler
 operator|=
-name|queueMgr
+name|scheduler
 expr_stmt|;
 name|this
 operator|.
@@ -216,6 +216,14 @@ name|String
 name|user
 parameter_list|)
 block|{
+name|AllocationConfiguration
+name|allocConf
+init|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+decl_stmt|;
 name|Integer
 name|userNumRunnable
 init|=
@@ -242,7 +250,7 @@ if|if
 condition|(
 name|userNumRunnable
 operator|>=
-name|queueMgr
+name|allocConf
 operator|.
 name|getUserMaxApps
 argument_list|(
@@ -265,7 +273,7 @@ block|{
 name|int
 name|queueMaxApps
 init|=
-name|queueMgr
+name|allocConf
 operator|.
 name|getQueueMaxApps
 argument_list|(
@@ -427,6 +435,14 @@ name|FSSchedulerApp
 name|app
 parameter_list|)
 block|{
+name|AllocationConfiguration
+name|allocConf
+init|=
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
+decl_stmt|;
 comment|// Update usersRunnableApps
 name|String
 name|user
@@ -501,7 +517,7 @@ operator|.
 name|getNumRunnableApps
 argument_list|()
 operator|==
-name|queueMgr
+name|allocConf
 operator|.
 name|getQueueMaxApps
 argument_list|(
@@ -540,7 +556,7 @@ operator|.
 name|getNumRunnableApps
 argument_list|()
 operator|==
-name|queueMgr
+name|allocConf
 operator|.
 name|getQueueMaxApps
 argument_list|(
@@ -611,7 +627,7 @@ if|if
 condition|(
 name|newUserNumRunning
 operator|==
-name|queueMgr
+name|allocConf
 operator|.
 name|getUserMaxApps
 argument_list|(
@@ -838,7 +854,10 @@ operator|.
 name|getNumRunnableApps
 argument_list|()
 operator|<
-name|queueMgr
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
 operator|.
 name|getQueueMaxApps
 argument_list|(
