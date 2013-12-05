@@ -4465,7 +4465,7 @@ decl_stmt|;
 comment|/** Lock to protect FSNamesystem. */
 DECL|field|fsLock
 specifier|private
-name|ReentrantReadWriteLock
+name|FSNamesystemLock
 name|fsLock
 decl_stmt|;
 comment|/**    * Used when this NN is in standby state to read from the shared edit log.    */
@@ -5131,7 +5131,7 @@ expr_stmt|;
 name|fsLock
 operator|=
 operator|new
-name|ReentrantReadWriteLock
+name|FSNamesystemLock
 argument_list|(
 name|fair
 argument_list|)
@@ -31536,6 +31536,8 @@ block|{
 name|this
 operator|.
 name|fsLock
+operator|.
+name|coarseLock
 operator|=
 name|lock
 expr_stmt|;
@@ -31549,6 +31551,8 @@ parameter_list|()
 block|{
 return|return
 name|fsLock
+operator|.
+name|coarseLock
 return|;
 block|}
 annotation|@
