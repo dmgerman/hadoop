@@ -66,6 +66,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URL
 import|;
 end_import
@@ -277,20 +287,6 @@ operator|.
 name|DatanodeInfo
 operator|.
 name|AdminStates
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|http
-operator|.
-name|HttpConfig
 import|;
 end_import
 
@@ -1489,7 +1485,7 @@ decl_stmt|;
 DECL|field|httpAddress
 specifier|private
 specifier|final
-name|String
+name|URI
 name|httpAddress
 decl_stmt|;
 DECL|method|NamenodeMXBeanHelper (InetSocketAddress addr, Configuration conf)
@@ -1527,7 +1523,12 @@ name|addr
 argument_list|,
 name|conf
 argument_list|,
-literal|false
+name|DFSUtil
+operator|.
+name|getHttpClientScheme
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -2020,6 +2021,9 @@ operator|.
 name|httpAddress
 operator|=
 name|httpAddress
+operator|.
+name|toURL
+argument_list|()
 expr_stmt|;
 name|getLiveNodeCount
 argument_list|(
@@ -3347,11 +3351,15 @@ name|liveDecomCount
 operator|+
 literal|")"
 argument_list|,
+operator|new
+name|URL
+argument_list|(
 name|nn
 operator|.
 name|httpAddress
-operator|+
+argument_list|,
 literal|"/dfsnodelist.jsp?whatNodes=LIVE"
+argument_list|)
 argument_list|,
 literal|"Live Datanode (Decommissioned)"
 argument_list|)
@@ -3372,11 +3380,15 @@ name|deadDecomCount
 operator|+
 literal|")"
 argument_list|,
+operator|new
+name|URL
+argument_list|(
 name|nn
 operator|.
 name|httpAddress
-operator|+
+argument_list|,
 literal|"/dfsnodelist.jsp?whatNodes=DEAD"
+argument_list|)
 argument_list|,
 literal|"Dead Datanode (Decommissioned)"
 argument_list|)
@@ -3507,7 +3519,7 @@ init|=
 literal|0
 decl_stmt|;
 DECL|field|httpAddress
-name|String
+name|URL
 name|httpAddress
 init|=
 literal|null
@@ -4113,13 +4125,17 @@ name|doc
 argument_list|,
 name|dnhost
 argument_list|,
-operator|(
+operator|new
+name|URL
+argument_list|(
+literal|"http"
+argument_list|,
 name|dnhost
-operator|+
-literal|":"
-operator|+
+argument_list|,
 name|httpPort
-operator|)
+argument_list|,
+literal|""
+argument_list|)
 argument_list|,
 literal|"DataNode"
 argument_list|)
@@ -4373,7 +4389,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Generate a XML block as such,<item label="Node" value="hostname"    * link="http://hostname:50070" />    */
-DECL|method|toXmlItemBlockWithLink (XMLOutputter doc, String value, String url, String label)
+DECL|method|toXmlItemBlockWithLink (XMLOutputter doc, String value, URL url, String label)
 specifier|private
 specifier|static
 name|void
@@ -4385,7 +4401,7 @@ parameter_list|,
 name|String
 name|value
 parameter_list|,
-name|String
+name|URL
 name|url
 parameter_list|,
 name|String
@@ -4425,9 +4441,10 @@ name|attribute
 argument_list|(
 literal|"link"
 argument_list|,
-literal|"///"
-operator|+
 name|url
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|doc
@@ -4706,13 +4723,13 @@ name|toString
 argument_list|()
 return|;
 block|}
-DECL|method|queryMbean (String httpAddress, Configuration conf)
+DECL|method|queryMbean (URI httpAddress, Configuration conf)
 specifier|private
 specifier|static
 name|String
 name|queryMbean
 parameter_list|(
-name|String
+name|URI
 name|httpAddress
 parameter_list|,
 name|Configuration
@@ -4728,10 +4745,11 @@ init|=
 operator|new
 name|URL
 argument_list|(
-literal|"http://"
-operator|+
 name|httpAddress
-operator|+
+operator|.
+name|toURL
+argument_list|()
+argument_list|,
 name|JMX_QRY
 argument_list|)
 decl_stmt|;

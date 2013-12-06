@@ -26,7 +26,47 @@ name|java
 operator|.
 name|io
 operator|.
-name|*
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileInputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FileOutputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
 import|;
 end_import
 
@@ -36,7 +76,27 @@ name|java
 operator|.
 name|net
 operator|.
-name|*
+name|HttpURLConnection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URL
 import|;
 end_import
 
@@ -77,16 +137,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|lang
-operator|.
-name|Math
 import|;
 end_import
 
@@ -310,24 +360,6 @@ name|server
 operator|.
 name|common
 operator|.
-name|StorageErrorReporter
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
 name|Storage
 import|;
 end_import
@@ -349,6 +381,24 @@ operator|.
 name|Storage
 operator|.
 name|StorageDirectory
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|StorageErrorReporter
 import|;
 end_import
 
@@ -433,6 +483,34 @@ operator|.
 name|io
 operator|.
 name|MD5Hash
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
+name|SecurityUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
 import|;
 end_import
 
@@ -559,14 +637,14 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|downloadMostRecentImageToDirectory (String fsName, File dir)
+DECL|method|downloadMostRecentImageToDirectory (URL infoServer, File dir)
 specifier|public
 specifier|static
 name|void
 name|downloadMostRecentImageToDirectory
 parameter_list|(
-name|String
-name|fsName
+name|URL
+name|infoServer
 parameter_list|,
 name|File
 name|dir
@@ -584,7 +662,7 @@ argument_list|()
 decl_stmt|;
 name|getFileClient
 argument_list|(
-name|fsName
+name|infoServer
 argument_list|,
 name|fileId
 argument_list|,
@@ -601,13 +679,13 @@ literal|false
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|downloadImageToStorage ( String fsName, long imageTxId, Storage dstStorage, boolean needDigest)
+DECL|method|downloadImageToStorage ( URL fsName, long imageTxId, Storage dstStorage, boolean needDigest)
 specifier|public
 specifier|static
 name|MD5Hash
 name|downloadImageToStorage
 parameter_list|(
-name|String
+name|URL
 name|fsName
 parameter_list|,
 name|long
@@ -728,12 +806,12 @@ return|return
 name|hash
 return|;
 block|}
-DECL|method|downloadEditsToStorage (String fsName, RemoteEditLog log, NNStorage dstStorage)
+DECL|method|downloadEditsToStorage (URL fsName, RemoteEditLog log, NNStorage dstStorage)
 specifier|static
 name|void
 name|downloadEditsToStorage
 parameter_list|(
-name|String
+name|URL
 name|fsName
 parameter_list|,
 name|RemoteEditLog
@@ -1087,18 +1165,18 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Requests that the NameNode download an image from this node.    *    * @param fsName the http address for the remote NN    * @param imageListenAddress the host/port where the local node is running an    *                           HTTPServer hosting GetImageServlet    * @param storage the storage directory to transfer the image from    * @param txid the transaction ID of the image to be uploaded    */
-DECL|method|uploadImageFromStorage (String fsName, InetSocketAddress imageListenAddress, Storage storage, long txid)
+comment|/**    * Requests that the NameNode download an image from this node.    *    * @param fsName the http address for the remote NN    * @param myNNAddress the host/port where the local node is running an    *                           HTTPServer hosting GetImageServlet    * @param storage the storage directory to transfer the image from    * @param txid the transaction ID of the image to be uploaded    */
+DECL|method|uploadImageFromStorage (URL fsName, URL myNNAddress, Storage storage, long txid)
 specifier|public
 specifier|static
 name|void
 name|uploadImageFromStorage
 parameter_list|(
-name|String
+name|URL
 name|fsName
 parameter_list|,
-name|InetSocketAddress
-name|imageListenAddress
+name|URL
+name|myNNAddress
 parameter_list|,
 name|Storage
 name|storage
@@ -1118,7 +1196,7 @@ name|getParamStringToPutImage
 argument_list|(
 name|txid
 argument_list|,
-name|imageListenAddress
+name|myNNAddress
 argument_list|,
 name|storage
 argument_list|)
@@ -1417,13 +1495,13 @@ block|}
 block|}
 block|}
 comment|/**    * Client-side Method to fetch file from a server    * Copies the response from the URL to a list of local files.    * @param dstStorage if an error occurs writing to one of the files,    *                   this storage object will be notified.     * @Return a digest of the received file if getChecksum is true    */
-DECL|method|getFileClient (String nnHostPort, String queryString, List<File> localPaths, Storage dstStorage, boolean getChecksum)
+DECL|method|getFileClient (URL infoServer, String queryString, List<File> localPaths, Storage dstStorage, boolean getChecksum)
 specifier|static
 name|MD5Hash
 name|getFileClient
 parameter_list|(
-name|String
-name|nnHostPort
+name|URL
+name|infoServer
 parameter_list|,
 name|String
 name|queryString
@@ -1443,19 +1521,18 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|String
-name|str
+name|URL
+name|url
 init|=
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
-operator|+
-name|nnHostPort
-operator|+
+operator|new
+name|URL
+argument_list|(
+name|infoServer
+argument_list|,
 literal|"/getimage?"
 operator|+
 name|queryString
+argument_list|)
 decl_stmt|;
 name|LOG
 operator|.
@@ -1463,21 +1540,9 @@ name|info
 argument_list|(
 literal|"Opening connection to "
 operator|+
-name|str
+name|url
 argument_list|)
 expr_stmt|;
-comment|//
-comment|// open connection to remote server
-comment|//
-name|URL
-name|url
-init|=
-operator|new
-name|URL
-argument_list|(
-name|str
-argument_list|)
-decl_stmt|;
 return|return
 name|doGetUrl
 argument_list|(
