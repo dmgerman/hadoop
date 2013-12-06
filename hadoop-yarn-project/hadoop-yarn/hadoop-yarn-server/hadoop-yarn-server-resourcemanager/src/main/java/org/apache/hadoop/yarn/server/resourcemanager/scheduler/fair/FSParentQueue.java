@@ -257,12 +257,6 @@ name|FSQueue
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|field|queueMgr
-specifier|private
-specifier|final
-name|QueueManager
-name|queueMgr
-decl_stmt|;
 DECL|field|demand
 specifier|private
 name|Resource
@@ -280,15 +274,12 @@ specifier|private
 name|int
 name|runnableApps
 decl_stmt|;
-DECL|method|FSParentQueue (String name, QueueManager queueMgr, FairScheduler scheduler, FSParentQueue parent)
+DECL|method|FSParentQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSParentQueue
 parameter_list|(
 name|String
 name|name
-parameter_list|,
-name|QueueManager
-name|queueMgr
 parameter_list|,
 name|FairScheduler
 name|scheduler
@@ -301,18 +292,10 @@ name|super
 argument_list|(
 name|name
 argument_list|,
-name|queueMgr
-argument_list|,
 name|scheduler
 argument_list|,
 name|parent
 argument_list|)
-expr_stmt|;
-name|this
-operator|.
-name|queueMgr
-operator|=
-name|queueMgr
 expr_stmt|;
 block|}
 DECL|method|addChildQueue (FSQueue child)
@@ -446,7 +429,10 @@ comment|// Limit demand to maxResources
 name|Resource
 name|maxRes
 init|=
-name|queueMgr
+name|scheduler
+operator|.
+name|getAllocationConfiguration
+argument_list|()
 operator|.
 name|getMaxResources
 argument_list|(
@@ -855,12 +841,9 @@ argument_list|(
 name|policy
 argument_list|,
 operator|(
-name|this
+name|parent
 operator|==
-name|queueMgr
-operator|.
-name|getRootQueue
-argument_list|()
+literal|null
 operator|)
 condition|?
 name|SchedulingPolicy

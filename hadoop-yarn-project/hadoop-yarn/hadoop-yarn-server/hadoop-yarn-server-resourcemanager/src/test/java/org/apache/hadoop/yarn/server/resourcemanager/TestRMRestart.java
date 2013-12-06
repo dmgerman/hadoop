@@ -8339,6 +8339,14 @@ argument_list|)
 decl_stmt|;
 try|try
 block|{
+comment|// Sleep for one millisecond to make sure renewDataAfterRenew is greater
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
 comment|// renew recovered token
 name|rm2
 operator|.

@@ -309,6 +309,50 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|output
+argument_list|()
+expr_stmt|;
+name|super
+operator|.
+name|finish
+argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|finishAbnormally ()
+name|void
+name|finishAbnormally
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"*** Image processing finished abnormally.  Ending ***"
+argument_list|)
+expr_stmt|;
+name|output
+argument_list|()
+expr_stmt|;
+name|super
+operator|.
+name|finishAbnormally
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|output ()
+specifier|private
+name|void
+name|output
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 comment|// write the distribution into the output file
 name|write
 argument_list|(
@@ -406,11 +450,6 @@ literal|"maxFileSize = "
 operator|+
 name|maxFileSize
 argument_list|)
-expr_stmt|;
-name|super
-operator|.
-name|finish
-argument_list|()
 expr_stmt|;
 block|}
 annotation|@

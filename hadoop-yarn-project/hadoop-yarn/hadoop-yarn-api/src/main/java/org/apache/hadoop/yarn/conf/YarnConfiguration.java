@@ -1253,6 +1253,26 @@ name|RM_PREFIX
 operator|+
 literal|"fs.state-store.uri"
 decl_stmt|;
+DECL|field|FS_RM_STATE_STORE_RETRY_POLICY_SPEC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|FS_RM_STATE_STORE_RETRY_POLICY_SPEC
+init|=
+name|RM_PREFIX
+operator|+
+literal|"fs.state-store.retry-policy-spec"
+decl_stmt|;
+DECL|field|DEFAULT_FS_RM_STATE_STORE_RETRY_POLICY_SPEC
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_FS_RM_STATE_STORE_RETRY_POLICY_SPEC
+init|=
+literal|"2000, 500"
+decl_stmt|;
 comment|/**    * Comma separated host:port pairs, each corresponding to a ZK server for    * ZKRMStateStore    */
 DECL|field|ZK_STATE_STORE_PREFIX
 specifier|public
@@ -1263,7 +1283,7 @@ name|ZK_STATE_STORE_PREFIX
 init|=
 name|RM_PREFIX
 operator|+
-literal|"zk.state-store."
+literal|"zk-state-store."
 decl_stmt|;
 DECL|field|ZK_RM_STATE_STORE_NUM_RETRIES
 specifier|public
@@ -1283,7 +1303,28 @@ specifier|final
 name|int
 name|DEFAULT_ZK_RM_STATE_STORE_NUM_RETRIES
 init|=
-literal|3
+literal|500
+decl_stmt|;
+comment|/** retry interval when connecting to zookeeper*/
+DECL|field|ZK_RM_STATE_STORE_RETRY_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ZK_RM_STATE_STORE_RETRY_INTERVAL_MS
+init|=
+name|ZK_STATE_STORE_PREFIX
+operator|+
+literal|"retry-interval-ms"
+decl_stmt|;
+DECL|field|DEFAULT_ZK_RM_STATE_STORE_RETRY_INTERVAL_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_ZK_RM_STATE_STORE_RETRY_INTERVAL_MS
+init|=
+literal|2000
 decl_stmt|;
 DECL|field|ZK_RM_STATE_STORE_ADDRESS
 specifier|public
@@ -1306,7 +1347,7 @@ name|ZK_RM_STATE_STORE_TIMEOUT_MS
 init|=
 name|ZK_STATE_STORE_PREFIX
 operator|+
-literal|"timeout.ms"
+literal|"timeout-ms"
 decl_stmt|;
 DECL|field|DEFAULT_ZK_RM_STATE_STORE_TIMEOUT_MS
 specifier|public
