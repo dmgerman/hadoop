@@ -1352,7 +1352,11 @@ expr_stmt|;
 name|String
 name|diagnostics
 init|=
-literal|"Exception from container-launch: \n"
+literal|"Exception from container-launch: "
+operator|+
+name|e
+operator|+
+literal|"\n"
 operator|+
 name|StringUtils
 operator|.
