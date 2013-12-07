@@ -667,6 +667,25 @@ name|DEFAULT_HADOOP_HTTP_STATIC_USER
 init|=
 literal|"dr.who"
 decl_stmt|;
+comment|/**    * User->groups static mapping to override the groups lookup    */
+DECL|field|HADOOP_USER_GROUP_STATIC_OVERRIDES
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_USER_GROUP_STATIC_OVERRIDES
+init|=
+literal|"hadoop.user.group.static.mapping.overrides"
+decl_stmt|;
+DECL|field|HADOOP_USER_GROUP_STATIC_OVERRIDES_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_USER_GROUP_STATIC_OVERRIDES_DEFAULT
+init|=
+literal|"dr.who=;"
+decl_stmt|;
 comment|/** Enable/Disable aliases serving from jetty */
 DECL|field|HADOOP_JETTY_LOGS_SERVE_ALIASES
 specifier|public
