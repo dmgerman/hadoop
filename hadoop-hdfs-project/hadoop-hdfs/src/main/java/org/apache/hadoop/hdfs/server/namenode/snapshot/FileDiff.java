@@ -196,7 +196,7 @@ name|FileDiff
 extends|extends
 name|AbstractINodeDiff
 argument_list|<
-name|INodeFileWithSnapshot
+name|INodeFile
 argument_list|,
 name|INodeFileAttributes
 argument_list|,
@@ -283,13 +283,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|combinePosteriorAndCollectBlocks ( INodeFileWithSnapshot currentINode, FileDiff posterior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|combinePosteriorAndCollectBlocks (INodeFile currentINode, FileDiff posterior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 name|Quota
 operator|.
 name|Counts
 name|combinePosteriorAndCollectBlocks
 parameter_list|(
-name|INodeFileWithSnapshot
+name|INodeFile
 name|currentINode
 parameter_list|,
 name|FileDiff
@@ -309,8 +309,13 @@ block|{
 return|return
 name|currentINode
 operator|.
+name|getFileWithSnapshotFeature
+argument_list|()
+operator|.
 name|updateQuotaAndCollectBlocks
 argument_list|(
+name|currentINode
+argument_list|,
 name|posterior
 argument_list|,
 name|collectedBlocks
@@ -418,13 +423,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|destroyDiffAndCollectBlocks (INodeFileWithSnapshot currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyDiffAndCollectBlocks (INodeFile currentINode, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 name|Quota
 operator|.
 name|Counts
 name|destroyDiffAndCollectBlocks
 parameter_list|(
-name|INodeFileWithSnapshot
+name|INodeFile
 name|currentINode
 parameter_list|,
 name|BlocksMapUpdateInfo
@@ -441,8 +446,13 @@ block|{
 return|return
 name|currentINode
 operator|.
+name|getFileWithSnapshotFeature
+argument_list|()
+operator|.
 name|updateQuotaAndCollectBlocks
 argument_list|(
+name|currentINode
+argument_list|,
 name|this
 argument_list|,
 name|collectedBlocks
