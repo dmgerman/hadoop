@@ -267,10 +267,10 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|removeApplicationState (ApplicationState appState)
+DECL|method|removeApplicationStateInternal (ApplicationState appState)
 specifier|protected
 name|void
-name|removeApplicationState
+name|removeApplicationStateInternal
 parameter_list|(
 name|ApplicationState
 name|appState

@@ -987,11 +987,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeApplicationState (ApplicationState appState)
+DECL|method|removeApplicationStateInternal ( ApplicationState appState)
 specifier|public
 specifier|synchronized
 name|void
-name|removeApplicationState
+name|removeApplicationStateInternal
 parameter_list|(
 name|ApplicationState
 name|appState
