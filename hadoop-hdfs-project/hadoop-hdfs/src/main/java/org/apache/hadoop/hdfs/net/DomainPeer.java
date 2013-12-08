@@ -401,6 +401,28 @@ return|return
 name|socket
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|hasSecureChannel ()
+specifier|public
+name|boolean
+name|hasSecureChannel
+parameter_list|()
+block|{
+comment|//
+comment|// Communication over domain sockets is assumed to be secure, since it
+comment|// doesn't pass over any network.  We also carefully control the privileges
+comment|// that can be used on the domain socket inode and its parent directories.
+comment|// See #{java.org.apache.hadoop.net.unix.DomainSocket#validateSocketPathSecurity0}
+comment|// for details.
+comment|//
+comment|// So unless you are running as root or the hdfs superuser, you cannot
+comment|// launch a man-in-the-middle attach on UNIX domain socket traffic.
+comment|//
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 
