@@ -1280,6 +1280,14 @@ name|socketIn
 decl_stmt|;
 if|if
 condition|(
+operator|(
+operator|!
+name|peer
+operator|.
+name|hasSecureChannel
+argument_list|()
+operator|)
+operator|&&
 name|dnConf
 operator|.
 name|encryptDataTransfer

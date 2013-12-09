@@ -196,6 +196,30 @@ argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
+comment|// Enabling data transfer encryption should have no effect when using
+comment|// short-circuit local reads.  This is a regression test for HDFS-5353.
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_ENCRYPT_DATA_TRANSFER_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_BLOCK_ACCESS_TOKEN_ENABLE_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|conf
 operator|.
 name|setBoolean

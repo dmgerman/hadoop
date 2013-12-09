@@ -52,6 +52,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URL
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -601,7 +611,7 @@ name|nnRpcAddress
 decl_stmt|;
 comment|/** Name-node HTTP address */
 DECL|field|nnHttpAddress
-name|String
+name|URL
 name|nnHttpAddress
 decl_stmt|;
 comment|/** Checkpoint manager */
@@ -1678,17 +1688,24 @@ name|this
 operator|.
 name|nnHttpAddress
 operator|=
-name|NetUtils
+name|DFSUtil
 operator|.
-name|getHostPortString
+name|getInfoServer
 argument_list|(
-name|super
+name|nnAddress
+argument_list|,
+name|conf
+argument_list|,
+name|DFSUtil
 operator|.
-name|getHttpServerAddress
+name|getHttpClientScheme
 argument_list|(
 name|conf
 argument_list|)
 argument_list|)
+operator|.
+name|toURL
+argument_list|()
 expr_stmt|;
 comment|// get version and id info from the name-node
 name|NamespaceInfo

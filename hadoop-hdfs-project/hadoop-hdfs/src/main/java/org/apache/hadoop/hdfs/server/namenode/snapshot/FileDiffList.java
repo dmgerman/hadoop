@@ -36,6 +36,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|INodeFile
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|INodeFileAttributes
 import|;
 end_import
@@ -52,7 +70,7 @@ name|FileDiffList
 extends|extends
 name|AbstractINodeDiffList
 argument_list|<
-name|INodeFileWithSnapshot
+name|INodeFile
 argument_list|,
 name|INodeFileAttributes
 argument_list|,
@@ -61,14 +79,14 @@ argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|createDiff (Snapshot snapshot, INodeFileWithSnapshot file)
+DECL|method|createDiff (Snapshot snapshot, INodeFile file)
 name|FileDiff
 name|createDiff
 parameter_list|(
 name|Snapshot
 name|snapshot
 parameter_list|,
-name|INodeFileWithSnapshot
+name|INodeFile
 name|file
 parameter_list|)
 block|{
@@ -84,11 +102,11 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createSnapshotCopy (INodeFileWithSnapshot currentINode)
+DECL|method|createSnapshotCopy (INodeFile currentINode)
 name|INodeFileAttributes
 name|createSnapshotCopy
 parameter_list|(
-name|INodeFileWithSnapshot
+name|INodeFile
 name|currentINode
 parameter_list|)
 block|{

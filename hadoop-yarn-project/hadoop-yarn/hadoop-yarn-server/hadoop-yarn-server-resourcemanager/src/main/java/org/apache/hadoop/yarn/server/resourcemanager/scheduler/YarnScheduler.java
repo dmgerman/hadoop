@@ -38,6 +38,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -514,6 +524,26 @@ parameter_list|,
 name|QueueACL
 name|acl
 parameter_list|,
+name|String
+name|queueName
+parameter_list|)
+function_decl|;
+comment|/**    * Gets the apps under a given queue    * @param queueName the name of the queue.    * @return a collection of app attempt ids in the given queue.    */
+annotation|@
+name|LimitedPrivate
+argument_list|(
+literal|"yarn"
+argument_list|)
+annotation|@
+name|Stable
+DECL|method|getAppsInQueue (String queueName)
+specifier|public
+name|List
+argument_list|<
+name|ApplicationAttemptId
+argument_list|>
+name|getAppsInQueue
+parameter_list|(
 name|String
 name|queueName
 parameter_list|)

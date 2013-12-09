@@ -570,26 +570,6 @@ name|resourcemanager
 operator|.
 name|rmapp
 operator|.
-name|RMAppRemovedEvent
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|rmapp
-operator|.
 name|RMAppState
 import|;
 end_import
@@ -2225,6 +2205,11 @@ throws|throws
 name|Exception
 function_decl|;
 comment|/**    * Non-blocking API    * ResourceManager services call this to remove an application from the state    * store    * This does not block the dispatcher threads    * There is no notification of completion for this operation.    */
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 DECL|method|removeApplication (RMApp app)
 specifier|public
 specifier|synchronized
@@ -2323,28 +2308,6 @@ name|attemptState
 argument_list|)
 expr_stmt|;
 block|}
-name|removeApplication
-argument_list|(
-name|appState
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|/**    * Non-Blocking API    */
-DECL|method|removeApplication (ApplicationState appState)
-specifier|public
-specifier|synchronized
-name|void
-name|removeApplication
-parameter_list|(
-name|ApplicationState
-name|appState
-parameter_list|)
-block|{
 name|dispatcher
 operator|.
 name|getEventHandler
@@ -2361,11 +2324,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Blocking API    * Derived classes must implement this method to remove the state of an     * application and its attempts    */
-DECL|method|removeApplicationState (ApplicationState appState)
+DECL|method|removeApplicationStateInternal ( ApplicationState appState)
 specifier|protected
 specifier|abstract
 name|void
-name|removeApplicationState
+name|removeApplicationStateInternal
 parameter_list|(
 name|ApplicationState
 name|appState
@@ -3101,11 +3064,6 @@ operator|.
 name|getAppId
 argument_list|()
 decl_stmt|;
-name|Exception
-name|removedException
-init|=
-literal|null
-decl_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3117,16 +3075,9 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
-name|removeApplicationState
+name|removeApplicationStateInternal
 argument_list|(
 name|appState
-argument_list|)
-expr_stmt|;
-name|notifyDoneRemovingApplcation
-argument_list|(
-name|appId
-argument_list|,
-name|removedException
 argument_list|)
 expr_stmt|;
 block|}
@@ -3362,41 +3313,6 @@ argument_list|(
 name|attemptId
 argument_list|,
 name|updatedException
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
-comment|/**    * This is to notify RMApp that this application has been removed from    * RMStateStore    */
-DECL|method|notifyDoneRemovingApplcation (ApplicationId appId, Exception removedException)
-specifier|private
-name|void
-name|notifyDoneRemovingApplcation
-parameter_list|(
-name|ApplicationId
-name|appId
-parameter_list|,
-name|Exception
-name|removedException
-parameter_list|)
-block|{
-name|rmDispatcher
-operator|.
-name|getEventHandler
-argument_list|()
-operator|.
-name|handle
-argument_list|(
-operator|new
-name|RMAppRemovedEvent
-argument_list|(
-name|appId
-argument_list|,
-name|removedException
 argument_list|)
 argument_list|)
 expr_stmt|;

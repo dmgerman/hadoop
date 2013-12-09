@@ -62,6 +62,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|URL
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|servlet
@@ -659,8 +669,7 @@ init|=
 operator|(
 name|Configuration
 operator|)
-name|getServletContext
-argument_list|()
+name|context
 operator|.
 name|getAttribute
 argument_list|(
@@ -1071,7 +1080,9 @@ argument_list|(
 name|parsedParams
 operator|.
 name|getInfoServer
-argument_list|()
+argument_list|(
+name|conf
+argument_list|)
 argument_list|,
 name|txid
 argument_list|,
@@ -1755,7 +1766,7 @@ name|toColonSeparatedString
 argument_list|()
 return|;
 block|}
-DECL|method|getParamStringToPutImage (long txid, InetSocketAddress imageListenAddress, Storage storage)
+DECL|method|getParamStringToPutImage (long txid, URL url, Storage storage)
 specifier|static
 name|String
 name|getParamStringToPutImage
@@ -1763,13 +1774,26 @@ parameter_list|(
 name|long
 name|txid
 parameter_list|,
-name|InetSocketAddress
-name|imageListenAddress
+name|URL
+name|url
 parameter_list|,
 name|Storage
 name|storage
 parameter_list|)
 block|{
+name|InetSocketAddress
+name|imageListenAddress
+init|=
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|url
+operator|.
+name|getAuthority
+argument_list|()
+argument_list|)
+decl_stmt|;
 name|String
 name|machine
 init|=
@@ -2333,10 +2357,13 @@ return|return
 name|isPutImage
 return|;
 block|}
-DECL|method|getInfoServer ()
-name|String
+DECL|method|getInfoServer (Configuration conf)
+name|URL
 name|getInfoServer
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -2360,11 +2387,22 @@ argument_list|)
 throw|;
 block|}
 return|return
+operator|new
+name|URL
+argument_list|(
+name|DFSUtil
+operator|.
+name|getHttpClientScheme
+argument_list|(
+name|conf
+argument_list|)
+argument_list|,
 name|machineName
-operator|+
-literal|":"
-operator|+
+argument_list|,
 name|remoteport
+argument_list|,
+literal|""
+argument_list|)
 return|;
 block|}
 DECL|method|shouldFetchLatest ()

@@ -1432,6 +1432,27 @@ name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
 init|=
 literal|10000
 decl_stmt|;
+comment|/**    * The maximum number of completed applications RM state store keeps, by    * default equals to DEFAULT_RM_MAX_COMPLETED_APPLICATIONS    */
+DECL|field|RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
+init|=
+name|RM_PREFIX
+operator|+
+literal|"state-store.max-completed-applications"
+decl_stmt|;
+DECL|field|DEFAULT_RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
+init|=
+name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
+decl_stmt|;
 comment|/** Default application name */
 DECL|field|DEFAULT_APPLICATION_NAME
 specifier|public

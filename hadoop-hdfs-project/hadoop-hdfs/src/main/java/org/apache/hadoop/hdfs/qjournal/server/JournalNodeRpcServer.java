@@ -742,6 +742,11 @@ argument_list|()
 return|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|getJournalState (String journalId)
 specifier|public
@@ -786,6 +791,14 @@ name|getBoundHttpAddress
 argument_list|()
 operator|.
 name|getPort
+argument_list|()
+argument_list|)
+operator|.
+name|setFromURL
+argument_list|(
+name|jn
+operator|.
+name|getHttpServerURI
 argument_list|()
 argument_list|)
 operator|.
@@ -1044,6 +1057,11 @@ argument_list|)
 expr_stmt|;
 block|}
 annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"deprecation"
+argument_list|)
+annotation|@
 name|Override
 DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean forReading, boolean inProgressOk)
 specifier|public
@@ -1108,6 +1126,14 @@ name|getBoundHttpAddress
 argument_list|()
 operator|.
 name|getPort
+argument_list|()
+argument_list|)
+operator|.
+name|setFromURL
+argument_list|(
+name|jn
+operator|.
+name|getHttpServerURI
 argument_list|()
 argument_list|)
 operator|.

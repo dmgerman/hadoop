@@ -1358,6 +1358,37 @@ name|String
 name|str
 parameter_list|)
 block|{
+name|String
+name|delim
+init|=
+literal|","
+decl_stmt|;
+return|return
+name|getStringCollection
+argument_list|(
+name|str
+argument_list|,
+name|delim
+argument_list|)
+return|;
+block|}
+comment|/**    * Returns a collection of strings.    *     * @param str    *          String to parse    * @param delim    *          delimiter to separate the values    * @return Collection of parsed elements.    */
+DECL|method|getStringCollection (String str, String delim)
+specifier|public
+specifier|static
+name|Collection
+argument_list|<
+name|String
+argument_list|>
+name|getStringCollection
+parameter_list|(
+name|String
+name|str
+parameter_list|,
+name|String
+name|delim
+parameter_list|)
+block|{
 name|List
 argument_list|<
 name|String
@@ -1388,7 +1419,7 @@ name|StringTokenizer
 argument_list|(
 name|str
 argument_list|,
-literal|","
+name|delim
 argument_list|)
 decl_stmt|;
 name|values
