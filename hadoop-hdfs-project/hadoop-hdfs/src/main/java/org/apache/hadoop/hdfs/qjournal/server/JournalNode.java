@@ -469,6 +469,11 @@ specifier|private
 name|ObjectName
 name|journalNodeInfoBeanName
 decl_stmt|;
+DECL|field|httpServerURI
+specifier|private
+name|String
+name|httpServerURI
+decl_stmt|;
 DECL|field|localDir
 specifier|private
 name|File
@@ -790,6 +795,16 @@ operator|.
 name|start
 argument_list|()
 expr_stmt|;
+name|httpServerURI
+operator|=
+name|httpServer
+operator|.
+name|getServerURI
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+expr_stmt|;
 name|rpcServer
 operator|=
 operator|new
@@ -832,6 +847,8 @@ name|getAddress
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Deprecated
 DECL|method|getBoundHttpAddress ()
 specifier|public
 name|InetSocketAddress
@@ -843,6 +860,16 @@ name|httpServer
 operator|.
 name|getAddress
 argument_list|()
+return|;
+block|}
+DECL|method|getHttpServerURI ()
+specifier|public
+name|String
+name|getHttpServerURI
+parameter_list|()
+block|{
+return|return
+name|httpServerURI
 return|;
 block|}
 comment|/**    * Stop the daemon with the given status code    * @param rc the status code with which to exit (non-zero    * should indicate an error)    */
