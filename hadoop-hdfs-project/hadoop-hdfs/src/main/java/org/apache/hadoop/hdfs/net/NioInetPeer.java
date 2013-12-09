@@ -453,6 +453,18 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|hasSecureChannel ()
+specifier|public
+name|boolean
+name|hasSecureChannel
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 block|}
 end_class
 

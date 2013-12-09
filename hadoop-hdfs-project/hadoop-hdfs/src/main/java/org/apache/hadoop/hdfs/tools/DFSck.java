@@ -74,6 +74,16 @@ name|java
 operator|.
 name|net
 operator|.
+name|URI
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|net
+operator|.
 name|URL
 import|;
 end_import
@@ -251,20 +261,6 @@ operator|.
 name|web
 operator|.
 name|URLConnectionFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|http
-operator|.
-name|HttpConfig
 import|;
 end_import
 
@@ -1006,7 +1002,7 @@ block|}
 comment|/**    * Derive the namenode http address from the current file system,    * either default or as set by "-fs" in the generic options.    * @return Returns http address or null if failure.    * @throws IOException if we can't determine the active NN address    */
 DECL|method|getCurrentNamenodeAddress ()
 specifier|private
-name|String
+name|URI
 name|getCurrentNamenodeAddress
 parameter_list|()
 throws|throws
@@ -1103,7 +1099,12 @@ argument_list|)
 argument_list|,
 name|conf
 argument_list|,
-literal|false
+name|DFSUtil
+operator|.
+name|getHttpClientScheme
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -1126,14 +1127,9 @@ name|url
 init|=
 operator|new
 name|StringBuilder
-argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
 argument_list|()
-argument_list|)
 decl_stmt|;
-name|String
+name|URI
 name|namenodeAddress
 init|=
 name|getCurrentNamenodeAddress
@@ -1165,6 +1161,9 @@ operator|.
 name|append
 argument_list|(
 name|namenodeAddress
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|System

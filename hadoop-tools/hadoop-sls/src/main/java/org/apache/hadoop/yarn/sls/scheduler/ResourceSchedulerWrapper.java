@@ -4895,6 +4895,29 @@ name|appAttemptId
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getAppsInQueue (String queue)
+specifier|public
+name|List
+argument_list|<
+name|ApplicationAttemptId
+argument_list|>
+name|getAppsInQueue
+parameter_list|(
+name|String
+name|queue
+parameter_list|)
+block|{
+return|return
+name|scheduler
+operator|.
+name|getAppsInQueue
+argument_list|(
+name|queue
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

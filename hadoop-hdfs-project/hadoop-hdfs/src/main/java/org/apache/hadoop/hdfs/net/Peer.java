@@ -227,6 +227,13 @@ name|DomainSocket
 name|getDomainSocket
 parameter_list|()
 function_decl|;
+comment|/**    * Return true if the channel is secure.    *    * @return               True if our channel to this peer is not    *                       susceptible to man-in-the-middle attacks.    */
+DECL|method|hasSecureChannel ()
+specifier|public
+name|boolean
+name|hasSecureChannel
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

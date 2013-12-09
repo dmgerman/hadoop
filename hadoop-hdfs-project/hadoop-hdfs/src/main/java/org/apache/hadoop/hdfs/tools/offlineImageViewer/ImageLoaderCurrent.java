@@ -471,7 +471,7 @@ name|Map
 argument_list|<
 name|Long
 argument_list|,
-name|String
+name|Boolean
 argument_list|>
 name|subtreeMap
 init|=
@@ -480,7 +480,7 @@ name|HashMap
 argument_list|<
 name|Long
 argument_list|,
-name|String
+name|Boolean
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2521,33 +2521,54 @@ name|dirName
 init|=
 name|dirNodeMap
 operator|.
+name|remove
+argument_list|(
+name|inodeId
+argument_list|)
+decl_stmt|;
+name|Boolean
+name|visitedRef
+init|=
+name|subtreeMap
+operator|.
 name|get
 argument_list|(
 name|inodeId
 argument_list|)
 decl_stmt|;
-name|String
-name|oldValue
-init|=
+if|if
+condition|(
+name|visitedRef
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|visitedRef
+operator|.
+name|booleanValue
+argument_list|()
+condition|)
+block|{
+comment|// the subtree has been visited
+return|return;
+block|}
+else|else
+block|{
+comment|// first time to visit
 name|subtreeMap
 operator|.
 name|put
 argument_list|(
 name|inodeId
 argument_list|,
-name|dirName
+literal|true
 argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|oldValue
-operator|!=
-literal|null
-condition|)
-block|{
-comment|// the subtree has been visited
-return|return;
+expr_stmt|;
 block|}
+block|}
+comment|// else the dir is not linked by a RefNode, thus cannot be revisited
 comment|// 2. load possible snapshots
 name|processSnapshots
 argument_list|(
@@ -3653,6 +3674,14 @@ condition|(
 name|supportSnapshot
 condition|)
 block|{
+comment|// make sure subtreeMap only contains entry for directory
+name|subtreeMap
+operator|.
+name|remove
+argument_list|(
+name|inodeId
+argument_list|)
+expr_stmt|;
 comment|// process file diffs
 name|processFileDiffList
 argument_list|(
@@ -3978,6 +4007,19 @@ condition|(
 name|firstReferred
 condition|)
 block|{
+comment|// if a subtree is linked by multiple "parents", the corresponding dir
+comment|// must be referred by a reference node. we put the reference node into
+comment|// the subtreeMap here and let its value be false. when we later visit
+comment|// the subtree for the first time, we change the value to true.
+name|subtreeMap
+operator|.
+name|put
+argument_list|(
+name|inodeId
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
 name|v
 operator|.
 name|visitEnclosingElement

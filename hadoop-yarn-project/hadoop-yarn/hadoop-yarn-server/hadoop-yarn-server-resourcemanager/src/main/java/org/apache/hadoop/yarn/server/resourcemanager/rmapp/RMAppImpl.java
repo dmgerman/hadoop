@@ -3926,33 +3926,7 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
-if|if
-condition|(
-name|app
-operator|.
-name|attempts
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|// Saved application was not running any attempts.
-name|app
-operator|.
-name|createNewAttempt
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-return|return
-name|RMAppState
-operator|.
-name|SUBMITTED
-return|;
-block|}
-else|else
-block|{
-comment|/*          * If last attempt recovered final state is null .. it means attempt          * was started but AM container may or may not have started / finished.          * Therefore we should wait for it to finish.          */
+comment|/*        * If last attempt recovered final state is null .. it means attempt was        * started but AM container may or may not have started / finished.        * Therefore we should wait for it to finish.        */
 for|for
 control|(
 name|RMAppAttempt
@@ -3991,6 +3965,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|// The app has completed.
 if|if
 condition|(
 name|app
@@ -4015,15 +3990,36 @@ operator|.
 name|recoveredFinalState
 return|;
 block|}
-else|else
+comment|// No existent attempts means the attempt associated with this app was not
+comment|// started or started but not yet savedã
+if|if
+condition|(
+name|app
+operator|.
+name|attempts
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
 block|{
+name|app
+operator|.
+name|createNewAttempt
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+return|return
+name|RMAppState
+operator|.
+name|SUBMITTED
+return|;
+block|}
 return|return
 name|RMAppState
 operator|.
 name|RUNNING
 return|;
-block|}
-block|}
 block|}
 block|}
 DECL|class|StartAppAttemptTransition

@@ -1404,6 +1404,25 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
+comment|/** set user pattern based on configuration file */
+name|UserParam
+operator|.
+name|setUserPattern
+argument_list|(
+name|conf
+operator|.
+name|get
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_WEBHDFS_USER_PATTERN_KEY
+argument_list|,
+name|DFSConfigKeys
+operator|.
+name|DFS_WEBHDFS_USER_PATTERN_DEFAULT
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|connectionFactory
 operator|=
 name|URLConnectionFactory

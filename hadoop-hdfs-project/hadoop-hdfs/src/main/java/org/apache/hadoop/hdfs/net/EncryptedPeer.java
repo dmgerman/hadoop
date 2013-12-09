@@ -509,6 +509,18 @@ name|getDomainSocket
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|hasSecureChannel ()
+specifier|public
+name|boolean
+name|hasSecureChannel
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
 block|}
 end_class
 

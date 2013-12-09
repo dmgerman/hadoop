@@ -683,14 +683,22 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|completedAppsMax
+DECL|field|maxCompletedAppsInMemory
 specifier|private
 name|int
-name|completedAppsMax
+name|maxCompletedAppsInMemory
+decl_stmt|;
+DECL|field|maxCompletedAppsInStateStore
+specifier|private
+name|int
+name|maxCompletedAppsInStateStore
+decl_stmt|;
+DECL|field|completedAppsInStateStore
+specifier|protected
+name|int
+name|completedAppsInStateStore
 init|=
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
+literal|0
 decl_stmt|;
 DECL|field|completedApps
 specifier|private
@@ -786,8 +794,10 @@ name|conf
 operator|=
 name|conf
 expr_stmt|;
-name|setCompletedAppsMax
-argument_list|(
+name|this
+operator|.
+name|maxCompletedAppsInMemory
+operator|=
 name|conf
 operator|.
 name|getInt
@@ -800,8 +810,44 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_RM_MAX_COMPLETED_APPLICATIONS
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|maxCompletedAppsInStateStore
+operator|=
+name|conf
+operator|.
+name|getInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_RM_STATE_STORE_MAX_COMPLETED_APPLICATIONS
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|maxCompletedAppsInStateStore
+operator|>
+name|this
+operator|.
+name|maxCompletedAppsInMemory
+condition|)
+block|{
+name|this
+operator|.
+name|maxCompletedAppsInStateStore
+operator|=
+name|this
+operator|.
+name|maxCompletedAppsInMemory
+expr_stmt|;
+block|}
 block|}
 comment|/**    *  This class is for logging the application summary.    */
 DECL|class|ApplicationSummary
@@ -1250,23 +1296,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setCompletedAppsMax (int max)
-specifier|protected
-specifier|synchronized
-name|void
-name|setCompletedAppsMax
-parameter_list|(
-name|int
-name|max
-parameter_list|)
-block|{
-name|this
-operator|.
-name|completedAppsMax
-operator|=
-name|max
-expr_stmt|;
-block|}
 DECL|method|getCompletedAppsListSize ()
 specifier|protected
 specifier|synchronized
@@ -1336,6 +1365,9 @@ name|add
 argument_list|(
 name|applicationId
 argument_list|)
+expr_stmt|;
+name|completedAppsInStateStore
+operator|++
 expr_stmt|;
 name|writeAuditLog
 argument_list|(
@@ -1508,6 +1540,79 @@ name|void
 name|checkAppNumCompletedLimit
 parameter_list|()
 block|{
+comment|// check apps kept in state store.
+while|while
+condition|(
+name|completedAppsInStateStore
+operator|>
+name|this
+operator|.
+name|maxCompletedAppsInStateStore
+condition|)
+block|{
+name|ApplicationId
+name|removeId
+init|=
+name|completedApps
+operator|.
+name|get
+argument_list|(
+name|completedApps
+operator|.
+name|size
+argument_list|()
+operator|-
+name|completedAppsInStateStore
+argument_list|)
+decl_stmt|;
+name|RMApp
+name|removeApp
+init|=
+name|rmContext
+operator|.
+name|getRMApps
+argument_list|()
+operator|.
+name|get
+argument_list|(
+name|removeId
+argument_list|)
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Max number of completed apps kept in state store met:"
+operator|+
+literal|" maxCompletedAppsInStateStore = "
+operator|+
+name|maxCompletedAppsInStateStore
+operator|+
+literal|", removing app "
+operator|+
+name|removeApp
+operator|.
+name|getApplicationId
+argument_list|()
+operator|+
+literal|" from state store."
+argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
+name|getStateStore
+argument_list|()
+operator|.
+name|removeApplication
+argument_list|(
+name|removeApp
+argument_list|)
+expr_stmt|;
+name|completedAppsInStateStore
+operator|--
+expr_stmt|;
+block|}
+comment|// check apps kept in memorty.
 while|while
 condition|(
 name|completedApps
@@ -1517,7 +1622,7 @@ argument_list|()
 operator|>
 name|this
 operator|.
-name|completedAppsMax
+name|maxCompletedAppsInMemory
 condition|)
 block|{
 name|ApplicationId
@@ -1532,11 +1637,19 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application should be expired, max # apps"
+literal|"Application should be expired, max number of completed apps"
 operator|+
-literal|" met. Removing app: "
+literal|" kept in memory met: maxCompletedAppsInMemory = "
+operator|+
+name|this
+operator|.
+name|maxCompletedAppsInMemory
+operator|+
+literal|", removing app "
 operator|+
 name|removeId
+operator|+
+literal|" from memory: "
 argument_list|)
 expr_stmt|;
 name|rmContext
@@ -2258,18 +2371,6 @@ name|values
 argument_list|()
 control|)
 block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Recovering application "
-operator|+
-name|appState
-operator|.
-name|getAppId
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|submitApplication
 argument_list|(
 name|appState

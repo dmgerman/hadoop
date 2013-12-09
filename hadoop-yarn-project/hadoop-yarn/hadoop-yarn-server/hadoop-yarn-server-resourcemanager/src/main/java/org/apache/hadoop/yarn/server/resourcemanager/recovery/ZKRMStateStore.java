@@ -2356,15 +2356,24 @@ argument_list|)
 condition|)
 block|{
 comment|// application
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Loading application from znode: "
 operator|+
 name|childNodeName
 argument_list|)
 expr_stmt|;
+block|}
 name|ApplicationId
 name|appId
 init|=
@@ -2483,15 +2492,24 @@ argument_list|)
 condition|)
 block|{
 comment|// attempt
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Loading application attempt from znode: "
 operator|+
 name|childNodeName
 argument_list|)
 expr_stmt|;
+block|}
 name|ApplicationAttemptId
 name|attemptId
 init|=
@@ -2734,11 +2752,19 @@ name|toString
 argument_list|()
 argument_list|)
 argument_list|,
-literal|0
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Done Loading applications from ZK state store"
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -3034,11 +3060,11 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeApplicationState (ApplicationState appState)
+DECL|method|removeApplicationStateInternal (ApplicationState appState)
 specifier|public
 specifier|synchronized
 name|void
-name|removeApplicationState
+name|removeApplicationStateInternal
 parameter_list|(
 name|ApplicationState
 name|appState
@@ -3090,7 +3116,8 @@ name|delete
 argument_list|(
 name|nodeRemovePath
 argument_list|,
-literal|0
+operator|-
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3130,7 +3157,8 @@ name|delete
 argument_list|(
 name|attemptRemovePath
 argument_list|,
-literal|0
+operator|-
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3349,7 +3377,8 @@ name|delete
 argument_list|(
 name|dtSequenceNumberPath
 argument_list|,
-literal|0
+operator|-
+literal|1
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -3438,7 +3467,8 @@ name|deleteWithRetries
 argument_list|(
 name|nodeRemovePath
 argument_list|,
-literal|0
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}
@@ -3597,7 +3627,8 @@ name|deleteWithRetries
 argument_list|(
 name|nodeRemovePath
 argument_list|,
-literal|0
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 block|}

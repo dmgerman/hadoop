@@ -233,7 +233,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-literal|"mapred.fairscheduler.eventlog.enabled"
+literal|"yarn.scheduler.fair.event-log-enabled"
 argument_list|,
 literal|"true"
 argument_list|)

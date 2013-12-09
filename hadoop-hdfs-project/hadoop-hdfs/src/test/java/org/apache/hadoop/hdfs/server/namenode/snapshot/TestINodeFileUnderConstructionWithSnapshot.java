@@ -1187,8 +1187,9 @@ decl_stmt|;
 name|assertTrue
 argument_list|(
 name|fileNode
-operator|instanceof
-name|INodeFileWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertEquals

@@ -104,6 +104,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Priority
 import|;
 end_import
@@ -824,6 +842,20 @@ name|FSQueue
 argument_list|>
 name|getChildQueues
 parameter_list|()
+function_decl|;
+comment|/**    * Adds all applications in the queue and its subqueues to the given collection.    * @param apps the collection to add the applications to    */
+DECL|method|collectSchedulerApplications ( Collection<ApplicationAttemptId> apps)
+specifier|public
+specifier|abstract
+name|void
+name|collectSchedulerApplications
+parameter_list|(
+name|Collection
+argument_list|<
+name|ApplicationAttemptId
+argument_list|>
+name|apps
+parameter_list|)
 function_decl|;
 comment|/**    * Return the number of apps for which containers can be allocated.    * Includes apps in subqueues.    */
 DECL|method|getNumRunnableApps ()

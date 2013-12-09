@@ -655,7 +655,7 @@ name|YarnConfiguration
 operator|.
 name|ZK_RM_STATE_STORE_TIMEOUT_MS
 argument_list|,
-literal|100
+literal|1000
 argument_list|)
 expr_stmt|;
 name|conf
