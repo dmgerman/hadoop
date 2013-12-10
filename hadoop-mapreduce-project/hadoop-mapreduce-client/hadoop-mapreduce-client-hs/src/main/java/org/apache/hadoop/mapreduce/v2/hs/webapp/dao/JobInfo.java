@@ -378,6 +378,11 @@ specifier|public
 class|class
 name|JobInfo
 block|{
+DECL|field|submitTime
+specifier|protected
+name|long
+name|submitTime
+decl_stmt|;
 DECL|field|startTime
 specifier|protected
 name|long
@@ -584,6 +589,15 @@ operator|=
 name|job
 operator|.
 name|getCompletedReduces
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|submitTime
+operator|=
+name|report
+operator|.
+name|getSubmitTime
 argument_list|()
 expr_stmt|;
 name|this
@@ -1089,6 +1103,18 @@ return|return
 name|this
 operator|.
 name|id
+return|;
+block|}
+DECL|method|getSubmitTime ()
+specifier|public
+name|long
+name|getSubmitTime
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|submitTime
 return|;
 block|}
 DECL|method|getStartTime ()
