@@ -717,6 +717,16 @@ argument_list|)
 decl_stmt|;
 name|info
 operator|.
+name|setJobStartTime
+argument_list|(
+name|report
+operator|.
+name|getStartTime
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|info
+operator|.
 name|setQueueName
 argument_list|(
 name|mockJob
