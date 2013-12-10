@@ -95,6 +95,11 @@ specifier|private
 name|String
 name|jobStatus
 decl_stmt|;
+DECL|field|jobStartTime
+specifier|private
+name|long
+name|jobStartTime
+decl_stmt|;
 DECL|method|JobIndexInfo ()
 specifier|public
 name|JobIndexInfo
@@ -176,6 +181,13 @@ operator|.
 name|jobStatus
 operator|=
 name|jobStatus
+expr_stmt|;
+name|this
+operator|.
+name|jobStartTime
+operator|=
+operator|-
+literal|1
 expr_stmt|;
 block|}
 DECL|method|getSubmitTime ()
@@ -410,6 +422,32 @@ operator|.
 name|jobStatus
 operator|=
 name|jobStatus
+expr_stmt|;
+block|}
+DECL|method|getJobStartTime ()
+specifier|public
+name|long
+name|getJobStartTime
+parameter_list|()
+block|{
+return|return
+name|jobStartTime
+return|;
+block|}
+DECL|method|setJobStartTime (long lTime)
+specifier|public
+name|void
+name|setJobStartTime
+parameter_list|(
+name|long
+name|lTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|jobStartTime
+operator|=
+name|lTime
 expr_stmt|;
 block|}
 annotation|@
