@@ -369,7 +369,7 @@ name|epoch
 parameter_list|)
 function_decl|;
 comment|/**    * Fetch the list of edit logs available on the remote node.    */
-DECL|method|getEditLogManifest ( long fromTxnId, boolean forReading, boolean inProgressOk)
+DECL|method|getEditLogManifest ( long fromTxnId, boolean inProgressOk)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -379,9 +379,6 @@ name|getEditLogManifest
 parameter_list|(
 name|long
 name|fromTxnId
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|,
 name|boolean
 name|inProgressOk

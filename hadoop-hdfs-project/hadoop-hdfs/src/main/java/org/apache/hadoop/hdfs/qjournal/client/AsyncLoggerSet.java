@@ -1231,7 +1231,7 @@ name|calls
 argument_list|)
 return|;
 block|}
-DECL|method|getEditLogManifest ( long fromTxnId, boolean forReading, boolean inProgressOk)
+DECL|method|getEditLogManifest ( long fromTxnId, boolean inProgressOk)
 specifier|public
 name|QuorumCall
 argument_list|<
@@ -1243,9 +1243,6 @@ name|getEditLogManifest
 parameter_list|(
 name|long
 name|fromTxnId
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|,
 name|boolean
 name|inProgressOk
@@ -1286,8 +1283,6 @@ operator|.
 name|getEditLogManifest
 argument_list|(
 name|fromTxnId
-argument_list|,
-name|forReading
 argument_list|,
 name|inProgressOk
 argument_list|)

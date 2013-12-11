@@ -434,8 +434,8 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * @param jid the journal from which to enumerate edits    * @param sinceTxId the first transaction which the client cares about    * @param forReading whether or not the caller intends to read from the edit    *        logs    * @param inProgressOk whether or not to check the in-progress edit log     *        segment           * @return a list of edit log segments since the given transaction ID.    */
-DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean forReading, boolean inProgressOk)
+comment|/**    * @param jid the journal from which to enumerate edits    * @param sinceTxId the first transaction which the client cares about    * @param inProgressOk whether or not to check the in-progress edit log     *        segment           * @return a list of edit log segments since the given transaction ID.    */
+DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean inProgressOk)
 specifier|public
 name|GetEditLogManifestResponseProto
 name|getEditLogManifest
@@ -445,9 +445,6 @@ name|jid
 parameter_list|,
 name|long
 name|sinceTxId
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|,
 name|boolean
 name|inProgressOk

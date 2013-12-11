@@ -6652,9 +6652,14 @@ block|{
 name|restartNameNode
 argument_list|(
 name|i
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
+name|waitActive
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**    * Restart the namenode.    */
 DECL|method|restartNameNode ()
