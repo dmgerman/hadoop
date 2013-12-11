@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|java
 operator|.
 name|io
@@ -64,6 +54,30 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertNotNull
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JUnit test to test {@link YarnVersionInfo}  */
 end_comment
@@ -73,16 +87,14 @@ DECL|class|TestYarnVersionInfo
 specifier|public
 class|class
 name|TestYarnVersionInfo
-extends|extends
-name|TestCase
 block|{
 comment|/**    * Test the yarn version info routines.    * @throws IOException    */
 annotation|@
 name|Test
-DECL|method|testVersionInfoGenerated ()
+DECL|method|versionInfoGenerated ()
 specifier|public
 name|void
-name|testVersionInfoGenerated
+name|versionInfoGenerated
 parameter_list|()
 throws|throws
 name|IOException
