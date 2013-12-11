@@ -917,8 +917,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @param forReading whether or not the caller intends to read from the edit    *        logs    * @param inProgressOk whether or not to include the in-progress edit log     *        segment           * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
-DECL|method|getRemoteEditLogs (long firstTxId, boolean forReading, boolean inProgressOk)
+comment|/**    * Find all editlog segments starting at or above the given txid.    * @param fromTxId the txnid which to start looking    * @param inProgressOk whether or not to include the in-progress edit log     *        segment           * @return a list of remote edit logs    * @throws IOException if edit logs cannot be listed.    */
+DECL|method|getRemoteEditLogs (long firstTxId, boolean inProgressOk)
 specifier|public
 name|List
 argument_list|<
@@ -930,28 +930,11 @@ name|long
 name|firstTxId
 parameter_list|,
 name|boolean
-name|forReading
-parameter_list|,
-name|boolean
 name|inProgressOk
 parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// make sure not reading in-progress edit log, i.e., if forReading is true,
-comment|// we should ignore the in-progress edit log.
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-operator|!
-operator|(
-name|forReading
-operator|&&
-name|inProgressOk
-operator|)
-argument_list|)
-expr_stmt|;
 name|File
 name|currentDir
 init|=
@@ -1061,31 +1044,8 @@ name|getLastTxId
 argument_list|()
 condition|)
 block|{
-comment|// If the firstTxId is in the middle of an edit log segment
-if|if
-condition|(
-name|forReading
-condition|)
-block|{
-comment|// Note that this behavior is different from getLogFiles below.
-throw|throw
-operator|new
-name|IllegalStateException
-argument_list|(
-literal|"Asked for firstTxId "
-operator|+
-name|firstTxId
-operator|+
-literal|" which is in the middle of file "
-operator|+
-name|elf
-operator|.
-name|file
-argument_list|)
-throw|;
-block|}
-else|else
-block|{
+comment|// If the firstTxId is in the middle of an edit log segment. Return this
+comment|// anyway and let the caller figure out whether it wants to use it.
 name|ret
 operator|.
 name|add
@@ -1103,7 +1063,6 @@ name|lastTxId
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 name|Collections
@@ -1359,7 +1318,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|selectInputStreams ( Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean forReading)
+DECL|method|selectInputStreams ( Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
 specifier|synchronized
 specifier|public
 name|void
@@ -1376,9 +1335,6 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|)
 throws|throws
 name|IOException

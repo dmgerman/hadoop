@@ -975,10 +975,10 @@ literal|"close journal"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * In this function, we get a bunch of streams from all of our JournalManager    * objects.  Then we add these to the collection one by one.    *     * @param streams          The collection to add the streams to.  It may or     *                         may not be sorted-- this is up to the caller.    * @param fromTxId         The transaction ID to start looking for streams at    * @param inProgressOk     Should we consider unfinalized streams?    * @param forReading       Whether or not the caller intends to read from    *                         the returned streams.    */
+comment|/**    * In this function, we get a bunch of streams from all of our JournalManager    * objects.  Then we add these to the collection one by one.    *     * @param streams          The collection to add the streams to.  It may or     *                         may not be sorted-- this is up to the caller.    * @param fromTxId         The transaction ID to start looking for streams at    * @param inProgressOk     Should we consider unfinalized streams?    */
 annotation|@
 name|Override
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean forReading)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
 specifier|public
 name|void
 name|selectInputStreams
@@ -994,9 +994,6 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|)
 block|{
 specifier|final
@@ -1060,8 +1057,6 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
-argument_list|,
-name|forReading
 argument_list|)
 expr_stmt|;
 block|}
@@ -2432,8 +2427,8 @@ literal|"recoverUnfinalizedSegments"
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Return a manifest of what finalized edit logs are available. All available    * edit logs are returned starting from the transaction id passed.    *     * @param fromTxId Starting transaction id to read the logs.    * @return RemoteEditLogManifest object.    */
-DECL|method|getEditLogManifest (long fromTxId, boolean forReading)
+comment|/**    * Return a manifest of what finalized edit logs are available. All available    * edit logs are returned starting from the transaction id passed. If    * 'fromTxId' falls in the middle of a log, that log is returned as well.    *     * @param fromTxId Starting transaction id to read the logs.    * @return RemoteEditLogManifest object.    */
+DECL|method|getEditLogManifest (long fromTxId)
 specifier|public
 specifier|synchronized
 name|RemoteEditLogManifest
@@ -2441,9 +2436,6 @@ name|getEditLogManifest
 parameter_list|(
 name|long
 name|fromTxId
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|)
 block|{
 comment|// Collect RemoteEditLogs available from each FileJournalManager
@@ -2498,8 +2490,6 @@ operator|.
 name|getRemoteEditLogs
 argument_list|(
 name|fromTxId
-argument_list|,
-name|forReading
 argument_list|,
 literal|false
 argument_list|)

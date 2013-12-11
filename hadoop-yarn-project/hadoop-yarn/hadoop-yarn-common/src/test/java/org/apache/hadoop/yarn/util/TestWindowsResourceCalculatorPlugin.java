@@ -20,16 +20,6 @@ end_package
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|junit
@@ -38,13 +28,23 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestWindowsResourceCalculatorPlugin
 specifier|public
 class|class
 name|TestWindowsResourceCalculatorPlugin
-extends|extends
-name|TestCase
 block|{
 DECL|class|WindowsResourceCalculatorPluginTester
 class|class
@@ -78,10 +78,10 @@ name|timeout
 operator|=
 literal|30000
 argument_list|)
-DECL|method|testParseSystemInfoString ()
+DECL|method|parseSystemInfoString ()
 specifier|public
 name|void
-name|testParseSystemInfoString
+name|parseSystemInfoString
 parameter_list|()
 block|{
 name|WindowsResourceCalculatorPluginTester
@@ -186,10 +186,10 @@ name|timeout
 operator|=
 literal|20000
 argument_list|)
-DECL|method|testRefreshAndCpuUsage ()
+DECL|method|refreshAndCpuUsage ()
 specifier|public
 name|void
-name|testRefreshAndCpuUsage
+name|refreshAndCpuUsage
 parameter_list|()
 throws|throws
 name|InterruptedException
@@ -309,10 +309,10 @@ name|timeout
 operator|=
 literal|20000
 argument_list|)
-DECL|method|testErrorInGetSystemInfo ()
+DECL|method|errorInGetSystemInfo ()
 specifier|public
 name|void
-name|testErrorInGetSystemInfo
+name|errorInGetSystemInfo
 parameter_list|()
 block|{
 name|WindowsResourceCalculatorPluginTester

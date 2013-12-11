@@ -62,16 +62,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|junit
@@ -80,13 +70,23 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertTrue
+import|;
+end_import
+
 begin_class
 DECL|class|TestWindowsBasedProcessTree
 specifier|public
 class|class
 name|TestWindowsBasedProcessTree
-extends|extends
-name|TestCase
 block|{
 DECL|field|LOG
 specifier|private
@@ -149,10 +149,10 @@ name|timeout
 operator|=
 literal|30000
 argument_list|)
-DECL|method|testTree ()
+DECL|method|tree ()
 specifier|public
 name|void
-name|testTree
+name|tree
 parameter_list|()
 block|{
 if|if

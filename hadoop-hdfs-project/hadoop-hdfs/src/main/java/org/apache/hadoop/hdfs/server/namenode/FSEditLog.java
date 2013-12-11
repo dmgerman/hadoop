@@ -1934,8 +1934,6 @@ argument_list|,
 name|segmentTxId
 argument_list|,
 literal|true
-argument_list|,
-literal|true
 argument_list|)
 expr_stmt|;
 if|if
@@ -4902,8 +4900,6 @@ operator|.
 name|getEditLogManifest
 argument_list|(
 name|fromTxId
-argument_list|,
-literal|true
 argument_list|)
 return|;
 block|}
@@ -5882,7 +5878,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk, boolean forReading)
+DECL|method|selectInputStreams (Collection<EditLogInputStream> streams, long fromTxId, boolean inProgressOk)
 specifier|public
 name|void
 name|selectInputStreams
@@ -5898,10 +5894,9 @@ name|fromTxId
 parameter_list|,
 name|boolean
 name|inProgressOk
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|journalSet
 operator|.
@@ -5912,8 +5907,6 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
-argument_list|,
-name|forReading
 argument_list|)
 expr_stmt|;
 block|}
@@ -5947,47 +5940,8 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/** Select a list of input streams to load */
+comment|/**    * Select a list of input streams.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeast the selected streams must contain this transaction    * @param inProgessOk set to true if in-progress streams are OK    */
 DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId, MetaRecoveryContext recovery, boolean inProgressOk)
-specifier|public
-name|Collection
-argument_list|<
-name|EditLogInputStream
-argument_list|>
-name|selectInputStreams
-parameter_list|(
-name|long
-name|fromTxId
-parameter_list|,
-name|long
-name|toAtLeastTxId
-parameter_list|,
-name|MetaRecoveryContext
-name|recovery
-parameter_list|,
-name|boolean
-name|inProgressOk
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-name|selectInputStreams
-argument_list|(
-name|fromTxId
-argument_list|,
-name|toAtLeastTxId
-argument_list|,
-name|recovery
-argument_list|,
-name|inProgressOk
-argument_list|,
-literal|true
-argument_list|)
-return|;
-block|}
-comment|/**    * Select a list of input streams.    *     * @param fromTxId first transaction in the selected streams    * @param toAtLeast the selected streams must contain this transaction    * @param inProgessOk set to true if in-progress streams are OK    * @param forReading whether or not to use the streams to load the edit log    */
-DECL|method|selectInputStreams ( long fromTxId, long toAtLeastTxId, MetaRecoveryContext recovery, boolean inProgressOk, boolean forReading)
 specifier|public
 specifier|synchronized
 name|Collection
@@ -6007,9 +5961,6 @@ name|recovery
 parameter_list|,
 name|boolean
 name|inProgressOk
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|)
 throws|throws
 name|IOException
@@ -6034,8 +5985,6 @@ argument_list|,
 name|fromTxId
 argument_list|,
 name|inProgressOk
-argument_list|,
-name|forReading
 argument_list|)
 expr_stmt|;
 try|try

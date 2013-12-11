@@ -40,6 +40,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+operator|.
+name|HAServiceState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -339,6 +355,16 @@ block|{
 DECL|method|getDispatcher ()
 name|Dispatcher
 name|getDispatcher
+parameter_list|()
+function_decl|;
+DECL|method|isHAEnabled ()
+name|boolean
+name|isHAEnabled
+parameter_list|()
+function_decl|;
+DECL|method|getHAServiceState ()
+name|HAServiceState
+name|getHAServiceState
 parameter_list|()
 function_decl|;
 DECL|method|getStateStore ()

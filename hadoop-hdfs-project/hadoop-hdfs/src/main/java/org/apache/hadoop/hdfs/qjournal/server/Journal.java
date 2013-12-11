@@ -2755,16 +2755,13 @@ block|}
 block|}
 block|}
 comment|/**    * @see QJournalProtocol#getEditLogManifest(String, long)    */
-DECL|method|getEditLogManifest (long sinceTxId, boolean forReading, boolean inProgressOk)
+DECL|method|getEditLogManifest (long sinceTxId, boolean inProgressOk)
 specifier|public
 name|RemoteEditLogManifest
 name|getEditLogManifest
 parameter_list|(
 name|long
 name|sinceTxId
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|,
 name|boolean
 name|inProgressOk
@@ -2777,15 +2774,6 @@ comment|// of segments.
 name|checkFormatted
 argument_list|()
 expr_stmt|;
-comment|// if this is for reading, ignore the in-progress editlog segment
-name|inProgressOk
-operator|=
-name|forReading
-condition|?
-literal|false
-else|:
-name|inProgressOk
-expr_stmt|;
 name|List
 argument_list|<
 name|RemoteEditLog
@@ -2797,8 +2785,6 @@ operator|.
 name|getRemoteEditLogs
 argument_list|(
 name|sinceTxId
-argument_list|,
-name|forReading
 argument_list|,
 name|inProgressOk
 argument_list|)
