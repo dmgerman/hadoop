@@ -20,15 +20,21 @@ end_package
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|util
 operator|.
-name|common
+name|Collections
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|base
+name|util
 operator|.
-name|Objects
+name|List
 import|;
 end_import
 
@@ -62,20 +68,34 @@ end_import
 
 begin_import
 import|import
-name|org
+name|com
 operator|.
-name|apache
+name|google
 operator|.
-name|hadoop
+name|common
 operator|.
-name|fs
+name|base
 operator|.
-name|Path
+name|Objects
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
 import|;
 end_import
 
 begin_comment
-comment|/**  * An AclStatus represents an association of a specific file {@link Path} with  * an {@link Acl}.  AclStatus instances are immutable.  Use a {@link Builder} to  * create a new instance.  */
+comment|/**  * An AclStatus contains the ACL information of a specific file. AclStatus  * instances are immutable. Use a {@link Builder} to create a new instance.  */
 end_comment
 
 begin_class
@@ -92,12 +112,6 @@ specifier|public
 class|class
 name|AclStatus
 block|{
-DECL|field|file
-specifier|private
-specifier|final
-name|Path
-name|file
-decl_stmt|;
 DECL|field|owner
 specifier|private
 specifier|final
@@ -110,23 +124,21 @@ specifier|final
 name|String
 name|group
 decl_stmt|;
-DECL|field|acl
+DECL|field|stickyBit
 specifier|private
 specifier|final
-name|Acl
-name|acl
+name|boolean
+name|stickyBit
 decl_stmt|;
-comment|/**    * Returns the file associated to this ACL.    *    * @return Path file associated to this ACL    */
-DECL|method|getFile ()
-specifier|public
-name|Path
-name|getFile
-parameter_list|()
-block|{
-return|return
-name|file
-return|;
-block|}
+DECL|field|entries
+specifier|private
+specifier|final
+name|Iterable
+argument_list|<
+name|AclEntry
+argument_list|>
+name|entries
+decl_stmt|;
 comment|/**    * Returns the file owner.    *    * @return String file owner    */
 DECL|method|getOwner ()
 specifier|public
@@ -149,15 +161,29 @@ return|return
 name|group
 return|;
 block|}
-comment|/**    * Returns the ACL.    *    * @return Acl the ACL    */
-DECL|method|getAcl ()
+comment|/**    * Returns the sticky bit.    *     * @return boolean sticky bit    */
+DECL|method|isStickyBit ()
 specifier|public
-name|Acl
-name|getAcl
+name|boolean
+name|isStickyBit
 parameter_list|()
 block|{
 return|return
-name|acl
+name|stickyBit
+return|;
+block|}
+comment|/**    * Returns the list of all ACL entries, ordered by their natural ordering.    *    * @return Iterable<AclEntry> unmodifiable ordered list of all ACL entries    */
+DECL|method|getEntries ()
+specifier|public
+name|Iterable
+argument_list|<
+name|AclEntry
+argument_list|>
+name|getEntries
+parameter_list|()
+block|{
+return|return
+name|entries
 return|;
 block|}
 annotation|@
@@ -210,17 +236,6 @@ name|Objects
 operator|.
 name|equal
 argument_list|(
-name|file
-argument_list|,
-name|other
-operator|.
-name|file
-argument_list|)
-operator|&&
-name|Objects
-operator|.
-name|equal
-argument_list|(
 name|owner
 argument_list|,
 name|other
@@ -239,15 +254,21 @@ operator|.
 name|group
 argument_list|)
 operator|&&
+name|stickyBit
+operator|==
+name|other
+operator|.
+name|stickyBit
+operator|&&
 name|Objects
 operator|.
 name|equal
 argument_list|(
-name|acl
+name|entries
 argument_list|,
 name|other
 operator|.
-name|acl
+name|entries
 argument_list|)
 return|;
 block|}
@@ -264,13 +285,13 @@ name|Objects
 operator|.
 name|hashCode
 argument_list|(
-name|file
-argument_list|,
 name|owner
 argument_list|,
 name|group
 argument_list|,
-name|acl
+name|stickyBit
+argument_list|,
+name|entries
 argument_list|)
 return|;
 block|}
@@ -289,17 +310,7 @@ argument_list|()
 operator|.
 name|append
 argument_list|(
-literal|"file: "
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|file
-argument_list|)
-operator|.
-name|append
-argument_list|(
-literal|", owner: "
+literal|"owner: "
 argument_list|)
 operator|.
 name|append
@@ -324,7 +335,22 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-name|acl
+literal|"entries: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|entries
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", stickyBit: "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|stickyBit
 argument_list|)
 operator|.
 name|append
@@ -343,11 +369,6 @@ specifier|static
 class|class
 name|Builder
 block|{
-DECL|field|file
-specifier|private
-name|Path
-name|file
-decl_stmt|;
 DECL|field|owner
 specifier|private
 name|String
@@ -358,36 +379,29 @@ specifier|private
 name|String
 name|group
 decl_stmt|;
-DECL|field|acl
+DECL|field|stickyBit
 specifier|private
-name|Acl
-name|acl
+name|boolean
+name|stickyBit
 decl_stmt|;
-comment|/**      * Sets the file associated to this ACL.      *      * @param file Path file associated to this ACL      * @return Builder this builder, for call chaining      */
-DECL|method|setFile (Path file)
-specifier|public
-name|Builder
-name|setFile
-parameter_list|(
-name|Path
-name|file
-parameter_list|)
-block|{
-name|this
+DECL|field|entries
+specifier|private
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|entries
+init|=
+name|Lists
 operator|.
-name|file
-operator|=
-name|file
-expr_stmt|;
-return|return
-name|this
-return|;
-block|}
+name|newArrayList
+argument_list|()
+decl_stmt|;
 comment|/**      * Sets the file owner.      *      * @param owner String file owner      * @return Builder this builder, for call chaining      */
-DECL|method|setOwner (String owner)
+DECL|method|owner (String owner)
 specifier|public
 name|Builder
-name|setOwner
+name|owner
 parameter_list|(
 name|String
 name|owner
@@ -404,10 +418,10 @@ name|this
 return|;
 block|}
 comment|/**      * Sets the file group.      *      * @param group String file group      * @return Builder this builder, for call chaining      */
-DECL|method|setGroup (String group)
+DECL|method|group (String group)
 specifier|public
 name|Builder
-name|setGroup
+name|group
 parameter_list|(
 name|String
 name|group
@@ -423,27 +437,83 @@ return|return
 name|this
 return|;
 block|}
-comment|/**      * Sets the ACL.      *      * @param acl Acl the ACL      * @return Builder this builder, for call chaining      */
-DECL|method|setAcl (Acl acl)
+comment|/**      * Adds an ACL entry.      *      * @param e AclEntry entry to add      * @return Builder this builder, for call chaining      */
+DECL|method|addEntry (AclEntry e)
 specifier|public
 name|Builder
-name|setAcl
+name|addEntry
 parameter_list|(
-name|Acl
-name|acl
+name|AclEntry
+name|e
 parameter_list|)
 block|{
 name|this
 operator|.
-name|acl
-operator|=
-name|acl
+name|entries
+operator|.
+name|add
+argument_list|(
+name|e
+argument_list|)
 expr_stmt|;
 return|return
 name|this
 return|;
 block|}
-comment|/**      * Builds a new Acl populated with the set properties.      *      * @return Acl new Acl      */
+comment|/**      * Adds a list of ACL entries.      *      * @param entries AclEntry entries to add      * @return Builder this builder, for call chaining      */
+DECL|method|addEntries (Iterable<AclEntry> entries)
+specifier|public
+name|Builder
+name|addEntries
+parameter_list|(
+name|Iterable
+argument_list|<
+name|AclEntry
+argument_list|>
+name|entries
+parameter_list|)
+block|{
+for|for
+control|(
+name|AclEntry
+name|e
+range|:
+name|entries
+control|)
+name|this
+operator|.
+name|entries
+operator|.
+name|add
+argument_list|(
+name|e
+argument_list|)
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Sets sticky bit. If this method is not called, then the builder assumes      * false.      *      * @param stickyBit      *          boolean sticky bit      * @return Builder this builder, for call chaining      */
+DECL|method|stickyBit (boolean stickyBit)
+specifier|public
+name|Builder
+name|stickyBit
+parameter_list|(
+name|boolean
+name|stickyBit
+parameter_list|)
+block|{
+name|this
+operator|.
+name|stickyBit
+operator|=
+name|stickyBit
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**      * Builds a new AclStatus populated with the set properties.      *      * @return AclStatus new AclStatus      */
 DECL|method|build ()
 specifier|public
 name|AclStatus
@@ -454,43 +524,40 @@ return|return
 operator|new
 name|AclStatus
 argument_list|(
-name|file
-argument_list|,
 name|owner
 argument_list|,
 name|group
 argument_list|,
-name|acl
+name|stickyBit
+argument_list|,
+name|entries
 argument_list|)
 return|;
 block|}
 block|}
-comment|/**    * Private constructor.    *    * @param file Path file associated to this ACL    * @param owner String file owner    * @param group String file group    * @param acl Acl the ACL    */
-DECL|method|AclStatus (Path file, String owner, String group, Acl acl)
+comment|/**    * Private constructor.    *    * @param file Path file associated to this ACL    * @param owner String file owner    * @param group String file group    * @param stickyBit the sticky bit    * @param entries the ACL entries    */
+DECL|method|AclStatus (String owner, String group, boolean stickyBit, Iterable<AclEntry> entries)
 specifier|private
 name|AclStatus
 parameter_list|(
-name|Path
-name|file
-parameter_list|,
 name|String
 name|owner
 parameter_list|,
 name|String
 name|group
 parameter_list|,
-name|Acl
-name|acl
+name|boolean
+name|stickyBit
+parameter_list|,
+name|Iterable
+argument_list|<
+name|AclEntry
+argument_list|>
+name|entries
 parameter_list|)
 block|{
 name|this
 operator|.
-name|file
-operator|=
-name|file
-expr_stmt|;
-name|this
-operator|.
 name|owner
 operator|=
 name|owner
@@ -503,9 +570,35 @@ name|group
 expr_stmt|;
 name|this
 operator|.
-name|acl
+name|stickyBit
 operator|=
-name|acl
+name|stickyBit
+expr_stmt|;
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|entriesCopy
+init|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
+name|entries
+argument_list|)
+decl_stmt|;
+name|Collections
+operator|.
+name|sort
+argument_list|(
+name|entriesCopy
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|entries
+operator|=
+name|entriesCopy
 expr_stmt|;
 block|}
 block|}

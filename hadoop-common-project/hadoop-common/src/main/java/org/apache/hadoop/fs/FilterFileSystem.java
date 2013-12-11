@@ -58,16 +58,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -136,39 +126,7 @@ name|fs
 operator|.
 name|permission
 operator|.
-name|AclReadFlag
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
 name|AclStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|AclWriteFlag
 import|;
 end_import
 
@@ -1943,7 +1901,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|modifyAclEntries (Path path, List<AclEntry> aclSpec, EnumSet<AclWriteFlag> flags)
+DECL|method|modifyAclEntries (Path path, Iterable<AclEntry> aclSpec)
 specifier|public
 name|void
 name|modifyAclEntries
@@ -1951,17 +1909,11 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|List
+name|Iterable
 argument_list|<
 name|AclEntry
 argument_list|>
 name|aclSpec
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -1973,14 +1925,12 @@ argument_list|(
 name|path
 argument_list|,
 name|aclSpec
-argument_list|,
-name|flags
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeAclEntries (Path path, List<AclEntry> aclSpec, EnumSet<AclWriteFlag> flags)
+DECL|method|removeAclEntries (Path path, Iterable<AclEntry> aclSpec)
 specifier|public
 name|void
 name|removeAclEntries
@@ -1988,17 +1938,11 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|List
+name|Iterable
 argument_list|<
 name|AclEntry
 argument_list|>
 name|aclSpec
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -2010,26 +1954,18 @@ argument_list|(
 name|path
 argument_list|,
 name|aclSpec
-argument_list|,
-name|flags
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeDefaultAcl (Path path, EnumSet<AclWriteFlag> flags)
+DECL|method|removeDefaultAcl (Path path)
 specifier|public
 name|void
 name|removeDefaultAcl
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -2039,26 +1975,18 @@ operator|.
 name|removeDefaultAcl
 argument_list|(
 name|path
-argument_list|,
-name|flags
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeAcl (Path path, EnumSet<AclWriteFlag> flags)
+DECL|method|removeAcl (Path path)
 specifier|public
 name|void
 name|removeAcl
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -2068,14 +1996,12 @@ operator|.
 name|removeAcl
 argument_list|(
 name|path
-argument_list|,
-name|flags
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAcl (Path path, List<AclEntry> aclSpec, EnumSet<AclWriteFlag> flags)
+DECL|method|setAcl (Path path, Iterable<AclEntry> aclSpec)
 specifier|public
 name|void
 name|setAcl
@@ -2083,17 +2009,11 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|List
+name|Iterable
 argument_list|<
 name|AclEntry
 argument_list|>
 name|aclSpec
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -2105,29 +2025,18 @@ argument_list|(
 name|path
 argument_list|,
 name|aclSpec
-argument_list|,
-name|flags
 argument_list|)
 expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|listAclStatus (Path path, EnumSet<AclReadFlag> flags)
+DECL|method|getAclStatus (Path path)
 specifier|public
-name|RemoteIterator
-argument_list|<
 name|AclStatus
-argument_list|>
-name|listAclStatus
+name|getAclStatus
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclReadFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -2135,11 +2044,9 @@ block|{
 return|return
 name|fs
 operator|.
-name|listAclStatus
+name|getAclStatus
 argument_list|(
 name|path
-argument_list|,
-name|flags
 argument_list|)
 return|;
 block|}

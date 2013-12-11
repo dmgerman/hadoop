@@ -386,39 +386,7 @@ name|fs
 operator|.
 name|permission
 operator|.
-name|AclReadFlag
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
 name|AclStatus
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|permission
-operator|.
-name|AclWriteFlag
 import|;
 end_import
 
@@ -6602,8 +6570,8 @@ literal|" doesn't support deleteSnapshot"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications    * @param flags EnumSet<AclWriteFlag> containing flags (such as recursive)    * @throws IOException if an ACL could not be modified    */
-DECL|method|modifyAclEntries (Path path, List<AclEntry> aclSpec, EnumSet<AclWriteFlag> flags)
+comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications    * @throws IOException if an ACL could not be modified    */
+DECL|method|modifyAclEntries (Path path, Iterable<AclEntry> aclSpec)
 specifier|public
 name|void
 name|modifyAclEntries
@@ -6611,17 +6579,11 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|List
+name|Iterable
 argument_list|<
 name|AclEntry
 argument_list|>
 name|aclSpec
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -6640,8 +6602,8 @@ literal|" doesn't support modifyAclEntries"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing entries to remove    * @param flags EnumSet<AclWriteFlag> containing flags (such as recursive)    * @throws IOException if an ACL could not be modified    */
-DECL|method|removeAclEntries (Path path, List<AclEntry> aclSpec, EnumSet<AclWriteFlag> flags)
+comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing entries to remove    * @throws IOException if an ACL could not be modified    */
+DECL|method|removeAclEntries (Path path, Iterable<AclEntry> aclSpec)
 specifier|public
 name|void
 name|removeAclEntries
@@ -6649,17 +6611,11 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|List
+name|Iterable
 argument_list|<
 name|AclEntry
 argument_list|>
 name|aclSpec
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -6678,20 +6634,14 @@ literal|" doesn't support removeAclEntries"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Removes all default ACL entries from files and directories.    *    * @param path Path to modify    * @param flags EnumSet<AclWriteFlag> containing flags (such as recursive)    * @throws IOException if an ACL could not be modified    */
-DECL|method|removeDefaultAcl (Path path, EnumSet<AclWriteFlag> flags)
+comment|/**    * Removes all default ACL entries from files and directories.    *    * @param path Path to modify    * @throws IOException if an ACL could not be modified    */
+DECL|method|removeDefaultAcl (Path path)
 specifier|public
 name|void
 name|removeDefaultAcl
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -6710,20 +6660,14 @@ literal|" doesn't support removeDefaultAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Removes all but the base ACL entries of files and directories.  The entries    * for user, group, and others are retained for compatibility with permission    * bits.    *    * @param path Path to modify    * @param flags EnumSet<AclWriteFlag> containing flags (such as recursive)    * @throws IOException if an ACL could not be removed    */
-DECL|method|removeAcl (Path path, EnumSet<AclWriteFlag> flags)
+comment|/**    * Removes all but the base ACL entries of files and directories.  The entries    * for user, group, and others are retained for compatibility with permission    * bits.    *    * @param path Path to modify    * @throws IOException if an ACL could not be removed    */
+DECL|method|removeAcl (Path path)
 specifier|public
 name|void
 name|removeAcl
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -6742,8 +6686,8 @@ literal|" doesn't support removeAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications, must include entries    *   for user, group, and others for compatibility with permission bits.    * @param flags EnumSet<AclWriteFlag> containing flags (such as recursive)    * @throws IOException if an ACL could not be modified    */
-DECL|method|setAcl (Path path, List<AclEntry> aclSpec, EnumSet<AclWriteFlag> flags)
+comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications, must include entries    *   for user, group, and others for compatibility with permission bits.    * @throws IOException if an ACL could not be modified    */
+DECL|method|setAcl (Path path, Iterable<AclEntry> aclSpec)
 specifier|public
 name|void
 name|setAcl
@@ -6751,17 +6695,11 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|List
+name|Iterable
 argument_list|<
 name|AclEntry
 argument_list|>
 name|aclSpec
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclWriteFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -6780,23 +6718,14 @@ literal|" doesn't support setAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Gets the ACLs of files and directories.    *    * @param path Path to get    * @param flags EnumSet<AclReadFlag> containing flags (such as recursive)    * @return RemoteIterator<AclStatus> which returns each AclStatus    * @throws IOException if an ACL could not be read    */
-DECL|method|listAclStatus (Path path, EnumSet<AclReadFlag> flags)
+comment|/**    * Gets the ACLs of files and directories.    *    * @param path Path to get    * @return RemoteIterator<AclStatus> which returns each AclStatus    * @throws IOException if an ACL could not be read    */
+DECL|method|getAclStatus (Path path)
 specifier|public
-name|RemoteIterator
-argument_list|<
 name|AclStatus
-argument_list|>
-name|listAclStatus
+name|getAclStatus
 parameter_list|(
 name|Path
 name|path
-parameter_list|,
-name|EnumSet
-argument_list|<
-name|AclReadFlag
-argument_list|>
-name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -6811,7 +6740,7 @@ operator|.
 name|getSimpleName
 argument_list|()
 operator|+
-literal|" doesn't support listAclStatus"
+literal|" doesn't support getAclStatus"
 argument_list|)
 throw|;
 block|}
