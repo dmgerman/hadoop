@@ -1213,9 +1213,16 @@ name|bpNSInfo
 operator|=
 name|nsInfo
 expr_stmt|;
+name|boolean
+name|success
+init|=
+literal|false
+decl_stmt|;
 comment|// Now that we know the namespace ID, etc, we can pass this to the DN.
 comment|// The DN can now initialize its local storage if we are the
 comment|// first BP to handshake, etc.
+try|try
+block|{
 name|dn
 operator|.
 name|initBlockPool
@@ -1223,7 +1230,30 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
-return|return;
+name|success
+operator|=
+literal|true
+expr_stmt|;
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+operator|!
+name|success
+condition|)
+block|{
+comment|// The datanode failed to initialize the BP. We need to reset
+comment|// the namespace info so that other BPService actors still have
+comment|// a chance to set it, and re-initialize the datanode.
+name|this
+operator|.
+name|bpNSInfo
+operator|=
+literal|null
+expr_stmt|;
+block|}
+block|}
 block|}
 else|else
 block|{
