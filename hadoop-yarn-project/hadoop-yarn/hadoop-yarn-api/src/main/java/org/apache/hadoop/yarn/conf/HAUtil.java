@@ -224,7 +224,7 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|verifyAndSetAllRpcAddresses
+name|verifyAndSetAllServiceAddresses
 argument_list|(
 name|conf
 argument_list|)
@@ -261,8 +261,8 @@ name|ids
 operator|.
 name|size
 argument_list|()
-operator|<=
-literal|0
+operator|<
+literal|2
 condition|)
 block|{
 name|throwBadConfigurationException
@@ -281,31 +281,8 @@ name|YarnConfiguration
 operator|.
 name|RM_HA_IDS
 argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|ids
-operator|.
-name|size
-argument_list|()
-operator|==
-literal|1
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-name|getRMHAIdsWarningMessage
-argument_list|(
-name|ids
-operator|.
-name|toString
-argument_list|()
+operator|+
+literal|"\nHA mode requires atleast two RMs"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -569,11 +546,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|verifyAndSetAllRpcAddresses (Configuration conf)
+DECL|method|verifyAndSetAllServiceAddresses (Configuration conf)
 specifier|public
 specifier|static
 name|void
-name|verifyAndSetAllRpcAddresses
+name|verifyAndSetAllServiceAddresses
 parameter_list|(
 name|Configuration
 name|conf
@@ -586,7 +563,7 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_RPC_ADDRESS_CONF_KEYS
+name|RM_SERVICES_ADDRESS_CONF_KEYS
 control|)
 block|{
 name|verifyAndSetConfValue
@@ -774,7 +751,7 @@ block|{
 return|return
 name|YarnConfiguration
 operator|.
-name|RM_RPC_ADDRESS_CONF_KEYS
+name|RM_SERVICES_ADDRESS_CONF_KEYS
 operator|.
 name|contains
 argument_list|(

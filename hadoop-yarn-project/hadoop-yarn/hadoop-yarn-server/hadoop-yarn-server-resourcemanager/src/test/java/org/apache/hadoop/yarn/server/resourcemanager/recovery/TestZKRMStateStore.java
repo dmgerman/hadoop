@@ -965,7 +965,7 @@ name|rpcAddress
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_RPC_ADDRESS_CONF_KEYS
+name|RM_SERVICES_ADDRESS_CONF_KEYS
 control|)
 block|{
 name|conf
