@@ -60,6 +60,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1358,7 +1368,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|modifyAclEntries (Path path, Iterable<AclEntry> aclSpec)
+DECL|method|modifyAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
 name|modifyAclEntries
@@ -1366,7 +1376,7 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>
@@ -1390,7 +1400,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|removeAclEntries (Path path, Iterable<AclEntry> aclSpec)
+DECL|method|removeAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
 name|removeAclEntries
@@ -1398,7 +1408,7 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>
@@ -1470,7 +1480,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|setAcl (Path path, Iterable<AclEntry> aclSpec)
+DECL|method|setAcl (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
 name|setAcl
@@ -1478,7 +1488,7 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>

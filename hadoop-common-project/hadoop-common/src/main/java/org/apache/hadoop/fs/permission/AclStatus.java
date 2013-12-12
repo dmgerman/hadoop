@@ -133,7 +133,7 @@ decl_stmt|;
 DECL|field|entries
 specifier|private
 specifier|final
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>
@@ -172,10 +172,10 @@ return|return
 name|stickyBit
 return|;
 block|}
-comment|/**    * Returns the list of all ACL entries, ordered by their natural ordering.    *    * @return Iterable<AclEntry> unmodifiable ordered list of all ACL entries    */
+comment|/**    * Returns the list of all ACL entries, ordered by their natural ordering.    *    * @return List<AclEntry> unmodifiable ordered list of all ACL entries    */
 DECL|method|getEntries ()
 specifier|public
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>

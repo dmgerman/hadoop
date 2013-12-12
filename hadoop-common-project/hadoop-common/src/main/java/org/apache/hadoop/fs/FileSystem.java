@@ -6571,7 +6571,7 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications    * @throws IOException if an ACL could not be modified    */
-DECL|method|modifyAclEntries (Path path, Iterable<AclEntry> aclSpec)
+DECL|method|modifyAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
 name|modifyAclEntries
@@ -6579,7 +6579,7 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>
@@ -6603,7 +6603,7 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing entries to remove    * @throws IOException if an ACL could not be modified    */
-DECL|method|removeAclEntries (Path path, Iterable<AclEntry> aclSpec)
+DECL|method|removeAclEntries (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
 name|removeAclEntries
@@ -6611,7 +6611,7 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>
@@ -6687,7 +6687,7 @@ argument_list|)
 throw|;
 block|}
 comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    *    * @param path Path to modify    * @param aclSpec List<AclEntry> describing modifications, must include entries    *   for user, group, and others for compatibility with permission bits.    * @throws IOException if an ACL could not be modified    */
-DECL|method|setAcl (Path path, Iterable<AclEntry> aclSpec)
+DECL|method|setAcl (Path path, List<AclEntry> aclSpec)
 specifier|public
 name|void
 name|setAcl
@@ -6695,7 +6695,7 @@ parameter_list|(
 name|Path
 name|path
 parameter_list|,
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>

@@ -79,7 +79,7 @@ block|,
 comment|/**    * An ACL entry that applies to all other users that were not covered by one    * of the more specific ACL entry types.    */
 DECL|enumConstant|OTHER
 name|OTHER
-block|}
+block|; }
 end_enum
 
 end_unit

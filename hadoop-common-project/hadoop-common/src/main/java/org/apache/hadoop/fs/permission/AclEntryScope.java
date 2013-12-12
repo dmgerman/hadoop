@@ -71,7 +71,7 @@ block|,
 comment|/**    * An ACL entry to be applied to a directory's children that do not otherwise    * have their own ACL defined.  Unlike an access ACL entry, a default ACL    * entry is not inspected as part of permission enforcement on the directory    * that owns it.    */
 DECL|enumConstant|DEFAULT
 name|DEFAULT
-block|}
+block|; }
 end_enum
 
 end_unit
