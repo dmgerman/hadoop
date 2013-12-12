@@ -44,18 +44,6 @@ name|junit
 operator|.
 name|Assert
 operator|.
-name|assertFalse
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|junit
-operator|.
-name|Assert
-operator|.
 name|assertNotNull
 import|;
 end_import
@@ -81,6 +69,18 @@ operator|.
 name|Assert
 operator|.
 name|assertTrue
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertFalse
 import|;
 end_import
 
@@ -182,6 +182,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -213,16 +223,6 @@ operator|.
 name|util
 operator|.
 name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Set
 import|;
 end_import
 
@@ -442,24 +442,6 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
 name|Priority
 import|;
 end_import
@@ -501,6 +483,24 @@ operator|.
 name|pb
 operator|.
 name|ApplicationSubmissionContextPBImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|NodeId
 import|;
 end_import
 
@@ -918,9 +918,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|event
-operator|.
-name|AppAttemptAddedSchedulerEvent
+name|SchedulerApplication
 import|;
 end_import
 
@@ -942,7 +940,29 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAttemptRemovedSchedulerEvent
+name|AppAddedSchedulerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
+name|AppRemovedSchedulerEvent
 import|;
 end_import
 
@@ -2038,7 +2058,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
 name|id
 argument_list|,
@@ -4553,11 +4573,11 @@ argument_list|,
 name|rmApp
 argument_list|)
 expr_stmt|;
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 name|appAddedEvent
 init|=
 operator|new
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -4761,11 +4781,11 @@ argument_list|,
 name|rmApp
 argument_list|)
 expr_stmt|;
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 name|appAddedEvent2
 init|=
 operator|new
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -4901,11 +4921,11 @@ argument_list|,
 literal|1
 argument_list|)
 decl_stmt|;
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 name|appAddedEvent
 init|=
 operator|new
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 argument_list|(
 name|appAttemptId
 argument_list|,
@@ -5920,7 +5940,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
 name|id11
 argument_list|,
@@ -5941,7 +5961,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
 name|id21
 argument_list|,
@@ -5962,7 +5982,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
 name|id22
 argument_list|,
@@ -6266,11 +6286,11 @@ name|getRMContext
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 name|appAddedEvent1
 init|=
 operator|new
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 argument_list|(
 name|createAppAttemptId
 argument_list|(
@@ -6332,11 +6352,11 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 name|appRemovedEvent1
 init|=
 operator|new
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 argument_list|(
 name|createAppAttemptId
 argument_list|(
@@ -10890,7 +10910,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
 name|appId
 argument_list|,
@@ -12439,7 +12459,7 @@ argument_list|)
 decl_stmt|;
 name|scheduler
 operator|.
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
 name|attId
 argument_list|,
@@ -15802,11 +15822,11 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// Remove app 1 and both app 2 and app 4 should becomes runnable in its place
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 name|appRemovedEvent1
 init|=
 operator|new
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 argument_list|(
 name|attId1
 argument_list|,
@@ -16208,11 +16228,11 @@ argument_list|)
 expr_stmt|;
 comment|// Even though the app was removed from sub3, the app from sub2 gets to go
 comment|// because it came in first
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 name|appRemovedEvent1
 init|=
 operator|new
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 argument_list|(
 name|attId2
 argument_list|,
@@ -16261,11 +16281,11 @@ literal|1
 argument_list|)
 expr_stmt|;
 comment|// Now test removal of a non-runnable app
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 name|appRemovedEvent2
 init|=
 operator|new
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 argument_list|(
 name|attId5
 argument_list|,
@@ -16311,11 +16331,11 @@ literal|0
 argument_list|)
 expr_stmt|;
 comment|// verify it doesn't become runnable when there would be space for it
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 name|appRemovedEvent3
 init|=
 operator|new
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 argument_list|(
 name|attId4
 argument_list|,
@@ -16549,7 +16569,7 @@ argument_list|)
 decl_stmt|;
 name|fs
 operator|.
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
 name|appAttemptId
 argument_list|,

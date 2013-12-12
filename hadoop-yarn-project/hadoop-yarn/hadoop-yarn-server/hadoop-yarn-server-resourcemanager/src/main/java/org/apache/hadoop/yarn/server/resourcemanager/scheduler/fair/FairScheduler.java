@@ -986,7 +986,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 import|;
 end_import
 
@@ -1008,7 +1008,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 import|;
 end_import
 
@@ -3395,11 +3395,11 @@ name|eventLog
 return|;
 block|}
 comment|/**    * Add a new application to the scheduler, with a given id, queue name, and    * user. This will accept a new app even if the user or queue is above    * configured limits, but the app will not be marked as runnable.    */
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, String queueName, String user)
+DECL|method|addApplication ( ApplicationAttemptId applicationAttemptId, String queueName, String user)
 specifier|protected
 specifier|synchronized
 name|void
-name|addApplicationAttempt
+name|addApplication
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -3848,11 +3848,11 @@ return|return
 name|queue
 return|;
 block|}
-DECL|method|removeApplicationAttempt ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState)
+DECL|method|removeApplication ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState)
 specifier|private
 specifier|synchronized
 name|void
-name|removeApplicationAttempt
+name|removeApplication
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -5840,7 +5840,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|APP_ATTEMPT_ADDED
+name|APP_ADDED
 case|:
 if|if
 condition|(
@@ -5848,7 +5848,7 @@ operator|!
 operator|(
 name|event
 operator|instanceof
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 operator|)
 condition|)
 block|{
@@ -5862,32 +5862,32 @@ name|event
 argument_list|)
 throw|;
 block|}
-name|AppAttemptAddedSchedulerEvent
-name|appAttemptAddedEvent
+name|AppAddedSchedulerEvent
+name|appAddedEvent
 init|=
 operator|(
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 operator|)
 name|event
 decl_stmt|;
 name|String
 name|queue
 init|=
-name|appAttemptAddedEvent
+name|appAddedEvent
 operator|.
 name|getQueue
 argument_list|()
 decl_stmt|;
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
-name|appAttemptAddedEvent
+name|appAddedEvent
 operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|,
 name|queue
 argument_list|,
-name|appAttemptAddedEvent
+name|appAddedEvent
 operator|.
 name|getUser
 argument_list|()
@@ -5895,7 +5895,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|APP_ATTEMPT_REMOVED
+name|APP_REMOVED
 case|:
 if|if
 condition|(
@@ -5903,7 +5903,7 @@ operator|!
 operator|(
 name|event
 operator|instanceof
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 operator|)
 condition|)
 block|{
@@ -5917,22 +5917,22 @@ name|event
 argument_list|)
 throw|;
 block|}
-name|AppAttemptRemovedSchedulerEvent
-name|appAttemptRemovedEvent
+name|AppRemovedSchedulerEvent
+name|appRemovedEvent
 init|=
 operator|(
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 operator|)
 name|event
 decl_stmt|;
-name|removeApplicationAttempt
+name|removeApplication
 argument_list|(
-name|appAttemptRemovedEvent
+name|appRemovedEvent
 operator|.
 name|getApplicationAttemptID
 argument_list|()
 argument_list|,
-name|appAttemptRemovedEvent
+name|appRemovedEvent
 operator|.
 name|getFinalAttemptState
 argument_list|()

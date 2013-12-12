@@ -950,7 +950,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 import|;
 end_import
 
@@ -972,7 +972,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 import|;
 end_import
 
@@ -2691,8 +2691,8 @@ block|}
 specifier|private
 specifier|synchronized
 name|void
-DECL|method|addApplicationAttempt (ApplicationAttemptId applicationAttemptId, String queueName, String user)
-name|addApplicationAttempt
+DECL|method|addApplication (ApplicationAttemptId applicationAttemptId, String queueName, String user)
+name|addApplication
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -2948,11 +2948,11 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doneApplicationAttempt ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState)
+DECL|method|doneApplication ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState)
 specifier|private
 specifier|synchronized
 name|void
-name|doneApplicationAttempt
+name|doneApplication
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -4186,30 +4186,30 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-name|APP_ATTEMPT_ADDED
+name|APP_ADDED
 case|:
 block|{
-name|AppAttemptAddedSchedulerEvent
-name|appAttemptAddedEvent
+name|AppAddedSchedulerEvent
+name|appAddedEvent
 init|=
 operator|(
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 operator|)
 name|event
 decl_stmt|;
-name|addApplicationAttempt
+name|addApplication
 argument_list|(
-name|appAttemptAddedEvent
+name|appAddedEvent
 operator|.
 name|getApplicationAttemptId
 argument_list|()
 argument_list|,
-name|appAttemptAddedEvent
+name|appAddedEvent
 operator|.
 name|getQueue
 argument_list|()
 argument_list|,
-name|appAttemptAddedEvent
+name|appAddedEvent
 operator|.
 name|getUser
 argument_list|()
@@ -4218,25 +4218,25 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-name|APP_ATTEMPT_REMOVED
+name|APP_REMOVED
 case|:
 block|{
-name|AppAttemptRemovedSchedulerEvent
-name|appAttemptRemovedEvent
+name|AppRemovedSchedulerEvent
+name|appRemovedEvent
 init|=
 operator|(
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 operator|)
 name|event
 decl_stmt|;
-name|doneApplicationAttempt
+name|doneApplication
 argument_list|(
-name|appAttemptRemovedEvent
+name|appRemovedEvent
 operator|.
 name|getApplicationAttemptID
 argument_list|()
 argument_list|,
-name|appAttemptRemovedEvent
+name|appRemovedEvent
 operator|.
 name|getFinalAttemptState
 argument_list|()

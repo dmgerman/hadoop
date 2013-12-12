@@ -440,7 +440,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 import|;
 end_import
 
@@ -2305,7 +2305,7 @@ name|SchedulerEvent
 name|event1
 init|=
 operator|new
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 argument_list|(
 name|appAttemptId1
 argument_list|,
@@ -2999,7 +2999,7 @@ name|SchedulerEvent
 name|event1
 init|=
 operator|new
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 argument_list|(
 name|appAttemptId1
 argument_list|,
@@ -3043,7 +3043,7 @@ name|SchedulerEvent
 name|event2
 init|=
 operator|new
-name|AppAttemptAddedSchedulerEvent
+name|AppAddedSchedulerEvent
 argument_list|(
 name|appAttemptId2
 argument_list|,

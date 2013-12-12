@@ -282,7 +282,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 import|;
 end_import
 
@@ -1026,11 +1026,11 @@ name|t3
 argument_list|)
 expr_stmt|;
 comment|// Notify scheduler application is finished.
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 name|appRemovedEvent1
 init|=
 operator|new
-name|AppAttemptRemovedSchedulerEvent
+name|AppRemovedSchedulerEvent
 argument_list|(
 name|application
 operator|.
