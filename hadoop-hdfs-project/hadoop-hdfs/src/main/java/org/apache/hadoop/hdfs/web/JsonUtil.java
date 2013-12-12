@@ -2121,6 +2121,7 @@ return|return
 literal|null
 return|;
 block|}
+comment|// TODO: Fix storageID
 specifier|final
 name|Map
 argument_list|<
@@ -2171,7 +2172,7 @@ literal|"storageID"
 argument_list|,
 name|datanodeinfo
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2536,6 +2537,7 @@ return|return
 literal|null
 return|;
 block|}
+comment|// TODO: Fix storageID
 return|return
 operator|new
 name|DatanodeInfo
@@ -3176,6 +3178,10 @@ argument_list|(
 name|b
 argument_list|,
 name|locations
+argument_list|,
+literal|null
+argument_list|,
+literal|null
 argument_list|,
 name|startOffset
 argument_list|,

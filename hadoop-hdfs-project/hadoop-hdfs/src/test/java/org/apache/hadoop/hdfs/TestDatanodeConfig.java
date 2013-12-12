@@ -66,6 +66,18 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assert
+operator|.
+name|fail
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
 name|Assume
 operator|.
 name|assumeTrue
@@ -461,10 +473,13 @@ argument_list|,
 name|conf
 argument_list|)
 expr_stmt|;
+name|fail
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(
-name|IOException
+name|Exception
 name|e
 parameter_list|)
 block|{

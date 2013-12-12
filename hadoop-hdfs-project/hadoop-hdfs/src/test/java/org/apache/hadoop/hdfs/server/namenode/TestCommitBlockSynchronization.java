@@ -132,7 +132,7 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 import|;
 end_import
 
@@ -289,15 +289,12 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|DatanodeDescriptor
+specifier|final
+name|DatanodeStorageInfo
 index|[]
 name|targets
 init|=
-operator|new
-name|DatanodeDescriptor
-index|[
-literal|0
-index|]
+block|{}
 decl_stmt|;
 name|FSNamesystem
 name|namesystem

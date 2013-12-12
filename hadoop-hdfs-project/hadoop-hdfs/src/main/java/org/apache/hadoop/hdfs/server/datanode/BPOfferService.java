@@ -136,6 +136,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -806,38 +820,36 @@ block|{
 comment|// If we haven't yet connected to our NN, we don't yet know our
 comment|// own block pool ID.
 comment|// If _none_ of the block pools have connected yet, we don't even
-comment|// know the storage ID of this DN.
+comment|// know the DatanodeID ID of this DN.
 name|String
-name|storageId
+name|datanodeUuid
 init|=
 name|dn
 operator|.
-name|getStorageId
+name|getDatanodeUuid
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|storageId
+name|datanodeUuid
 operator|==
 literal|null
 operator|||
-literal|""
+name|datanodeUuid
 operator|.
-name|equals
-argument_list|(
-name|storageId
-argument_list|)
+name|isEmpty
+argument_list|()
 condition|)
 block|{
-name|storageId
+name|datanodeUuid
 operator|=
-literal|"unknown"
+literal|"unassigned"
 expr_stmt|;
 block|}
 return|return
-literal|"Block pool<registering> (storage id "
+literal|"Block pool<registering> (Datanode Uuid "
 operator|+
-name|storageId
+name|datanodeUuid
 operator|+
 literal|")"
 return|;
@@ -850,23 +862,29 @@ operator|+
 name|getBlockPoolId
 argument_list|()
 operator|+
-literal|" (storage id "
+literal|" (Datanode Uuid "
 operator|+
 name|dn
 operator|.
-name|getStorageId
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|")"
 return|;
 block|}
 block|}
-DECL|method|reportBadBlocks (ExtendedBlock block)
+DECL|method|reportBadBlocks (ExtendedBlock block, String storageUuid, StorageType storageType)
 name|void
 name|reportBadBlocks
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 name|checkBlock
@@ -887,12 +905,16 @@ operator|.
 name|reportBadBlocks
 argument_list|(
 name|block
+argument_list|,
+name|storageUuid
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/*    * Informing the name node could take a long long time! Should we wait    * till namenode is informed before responding with success to the    * client? For now we don't.    */
-DECL|method|notifyNamenodeReceivedBlock (ExtendedBlock block, String delHint)
+DECL|method|notifyNamenodeReceivedBlock ( ExtendedBlock block, String delHint, String storageUuid)
 name|void
 name|notifyNamenodeReceivedBlock
 parameter_list|(
@@ -901,6 +923,9 @@ name|block
 parameter_list|,
 name|String
 name|delHint
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|checkBlock
@@ -946,6 +971,8 @@ operator|.
 name|notifyNamenodeBlockImmediately
 argument_list|(
 name|bInfo
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
@@ -1018,12 +1045,15 @@ literal|"delHint is null"
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block)
+DECL|method|notifyNamenodeDeletedBlock (ExtendedBlock block, String storageUuid)
 name|void
 name|notifyNamenodeDeletedBlock
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|checkBlock
@@ -1062,16 +1092,21 @@ operator|.
 name|notifyNamenodeDeletedBlock
 argument_list|(
 name|bInfo
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|notifyNamenodeReceivingBlock (ExtendedBlock block)
+DECL|method|notifyNamenodeReceivingBlock (ExtendedBlock block, String storageUuid)
 name|void
 name|notifyNamenodeReceivingBlock
 parameter_list|(
 name|ExtendedBlock
 name|block
+parameter_list|,
+name|String
+name|storageUuid
 parameter_list|)
 block|{
 name|checkBlock
@@ -1110,6 +1145,8 @@ operator|.
 name|notifyNamenodeBlockImmediately
 argument_list|(
 name|bInfo
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 block|}
@@ -1473,6 +1510,8 @@ specifier|synchronized
 name|DatanodeRegistration
 name|createRegistration
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|Preconditions
 operator|.

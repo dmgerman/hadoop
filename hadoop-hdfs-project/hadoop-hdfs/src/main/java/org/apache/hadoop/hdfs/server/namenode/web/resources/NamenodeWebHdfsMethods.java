@@ -438,6 +438,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|DatanodeInfo
@@ -565,6 +579,24 @@ operator|.
 name|blockmanagement
 operator|.
 name|DatanodeDescriptor
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|blockmanagement
+operator|.
+name|DatanodeStorageInfo
 import|;
 end_import
 
@@ -1594,7 +1626,7 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize, Configuration conf)
+DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize, final Configuration conf)
 specifier|static
 name|DatanodeInfo
 name|chooseDatanode
@@ -1621,6 +1653,7 @@ specifier|final
 name|long
 name|blocksize
 parameter_list|,
+specifier|final
 name|Configuration
 name|conf
 parameter_list|)
@@ -1674,9 +1707,9 @@ literal|null
 condition|)
 block|{
 specifier|final
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
-name|datanodes
+name|storages
 init|=
 name|bm
 operator|.
@@ -1694,7 +1727,7 @@ argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
 argument_list|,
@@ -1703,11 +1736,16 @@ argument_list|,
 literal|null
 argument_list|,
 name|blocksize
+argument_list|,
+comment|// TODO: get storage type from the file
+name|StorageType
+operator|.
+name|DEFAULT
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|datanodes
+name|storages
 operator|.
 name|length
 operator|>
@@ -1715,10 +1753,13 @@ literal|0
 condition|)
 block|{
 return|return
-name|datanodes
+name|storages
 index|[
 literal|0
 index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 return|;
 block|}
 block|}

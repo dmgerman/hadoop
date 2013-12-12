@@ -3372,7 +3372,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getAdditionalDatanode (String src, ExtendedBlock blk, DatanodeInfo[] existings, DatanodeInfo[] excludes, int numAdditionalNodes, String clientName)
+DECL|method|getAdditionalDatanode (String src, ExtendedBlock blk, DatanodeInfo[] existings, String[] existingStorageIDs, DatanodeInfo[] excludes, int numAdditionalNodes, String clientName)
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -3386,6 +3386,10 @@ parameter_list|,
 name|DatanodeInfo
 index|[]
 name|existings
+parameter_list|,
+name|String
+index|[]
+name|existingStorageIDs
 parameter_list|,
 name|DatanodeInfo
 index|[]
@@ -3438,6 +3442,16 @@ operator|.
 name|convert
 argument_list|(
 name|existings
+argument_list|)
+argument_list|)
+operator|.
+name|addAllExistingStorageUuids
+argument_list|(
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|existingStorageIDs
 argument_list|)
 argument_list|)
 operator|.
@@ -5720,7 +5734,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
+DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes, String[] storageIDs)
 specifier|public
 name|void
 name|updatePipeline
@@ -5737,6 +5751,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newNodes
+parameter_list|,
+name|String
+index|[]
+name|storageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -5786,6 +5804,22 @@ name|convert
 argument_list|(
 name|newNodes
 argument_list|)
+argument_list|)
+argument_list|)
+operator|.
+name|addAllStorageIDs
+argument_list|(
+name|storageIDs
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|storageIDs
 argument_list|)
 argument_list|)
 operator|.

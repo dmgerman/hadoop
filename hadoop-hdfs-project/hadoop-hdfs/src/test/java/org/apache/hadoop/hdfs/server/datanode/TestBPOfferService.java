@@ -955,8 +955,6 @@ name|SimulatedFSDataset
 argument_list|(
 literal|null
 argument_list|,
-literal|null
-argument_list|,
 name|conf
 argument_list|)
 argument_list|)
@@ -1303,6 +1301,8 @@ operator|.
 name|notifyNamenodeReceivedBlock
 argument_list|(
 name|FAKE_BLOCK
+argument_list|,
+literal|""
 argument_list|,
 literal|""
 argument_list|)

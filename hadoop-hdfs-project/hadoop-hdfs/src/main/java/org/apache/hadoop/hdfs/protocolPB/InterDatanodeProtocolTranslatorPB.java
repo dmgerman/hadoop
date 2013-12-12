@@ -701,7 +701,7 @@ argument_list|,
 name|req
 argument_list|)
 operator|.
-name|getStorageID
+name|getStorageUuid
 argument_list|()
 return|;
 block|}

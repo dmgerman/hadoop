@@ -182,7 +182,7 @@ literal|" is attempting to report storage ID "
 operator|+
 name|nodeID
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|". Node "

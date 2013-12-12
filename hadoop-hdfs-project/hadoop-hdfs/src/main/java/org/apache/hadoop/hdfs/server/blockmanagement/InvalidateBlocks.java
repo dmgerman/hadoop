@@ -328,7 +328,7 @@ name|get
 argument_list|(
 name|datanode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -354,7 +354,7 @@ name|put
 argument_list|(
 name|datanode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|set

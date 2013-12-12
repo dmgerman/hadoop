@@ -1910,7 +1910,7 @@ argument_list|()
 decl_stmt|;
 name|repBuilder
 operator|.
-name|setStorageID
+name|setStorageUuid
 argument_list|(
 name|storageBlock
 operator|.

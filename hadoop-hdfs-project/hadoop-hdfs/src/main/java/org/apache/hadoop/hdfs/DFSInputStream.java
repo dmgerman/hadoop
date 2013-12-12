@@ -6449,14 +6449,14 @@ condition|(
 operator|!
 name|oldNode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|.
 name|equals
 argument_list|(
 name|newNode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 condition|)
