@@ -65,10 +65,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|AppRemovedSchedulerEvent
+DECL|class|AppAttemptRemovedSchedulerEvent
 specifier|public
 class|class
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 extends|extends
 name|SchedulerEvent
 block|{
@@ -84,9 +84,9 @@ specifier|final
 name|RMAppAttemptState
 name|finalAttemptState
 decl_stmt|;
-DECL|method|AppRemovedSchedulerEvent (ApplicationAttemptId applicationAttemptId, RMAppAttemptState finalAttemptState)
+DECL|method|AppAttemptRemovedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState finalAttemptState)
 specifier|public
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -99,7 +99,7 @@ name|super
 argument_list|(
 name|SchedulerEventType
 operator|.
-name|APP_REMOVED
+name|APP_ATTEMPT_REMOVED
 argument_list|)
 expr_stmt|;
 name|this

@@ -626,7 +626,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 import|;
 end_import
 
@@ -1264,11 +1264,11 @@ name|request
 argument_list|)
 expr_stmt|;
 comment|// Notify scheduler
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 name|appAddedEvent1
 init|=
 operator|new
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 argument_list|(
 name|this
 operator|.

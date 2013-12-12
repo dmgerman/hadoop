@@ -700,7 +700,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 import|;
 end_import
 
@@ -2560,11 +2560,11 @@ argument_list|(
 name|app_0
 argument_list|)
 expr_stmt|;
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 name|event
 init|=
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|appAttemptId_0
 argument_list|,
@@ -2693,7 +2693,7 @@ expr_stmt|;
 name|event
 operator|=
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|appAttemptId_0
 argument_list|,

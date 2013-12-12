@@ -1198,7 +1198,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 import|;
 end_import
 
@@ -1220,7 +1220,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 import|;
 end_import
 
@@ -4367,7 +4367,7 @@ name|getAMRMTokenSecretManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Add the application to the scheduler
+comment|// Add the applicationAttempt to the scheduler
 name|appAttempt
 operator|.
 name|eventHandler
@@ -4375,7 +4375,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 argument_list|(
 name|appAttempt
 operator|.
@@ -5619,7 +5619,7 @@ operator|.
 name|handle
 argument_list|(
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|appAttemptId
 argument_list|,

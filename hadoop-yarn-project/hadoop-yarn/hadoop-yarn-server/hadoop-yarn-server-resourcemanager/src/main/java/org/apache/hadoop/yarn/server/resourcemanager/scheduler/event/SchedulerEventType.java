@@ -40,12 +40,12 @@ block|,
 DECL|enumConstant|NODE_UPDATE
 name|NODE_UPDATE
 block|,
-comment|// Source: App
-DECL|enumConstant|APP_ADDED
-name|APP_ADDED
+comment|// Source: RMAppAttempt
+DECL|enumConstant|APP_ATTEMPT_ADDED
+name|APP_ATTEMPT_ADDED
 block|,
-DECL|enumConstant|APP_REMOVED
-name|APP_REMOVED
+DECL|enumConstant|APP_ATTEMPT_REMOVED
+name|APP_ATTEMPT_REMOVED
 block|,
 comment|// Source: ContainerAllocationExpirer
 DECL|enumConstant|CONTAINER_EXPIRED
