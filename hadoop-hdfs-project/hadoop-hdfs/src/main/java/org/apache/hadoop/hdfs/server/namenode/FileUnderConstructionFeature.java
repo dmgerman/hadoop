@@ -131,8 +131,8 @@ DECL|class|FileUnderConstructionFeature
 specifier|public
 class|class
 name|FileUnderConstructionFeature
-extends|extends
-name|INodeFile
+implements|implements
+name|INode
 operator|.
 name|Feature
 block|{
