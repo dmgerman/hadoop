@@ -83,15 +83,15 @@ DECL|class|BlocksMap
 class|class
 name|BlocksMap
 block|{
-DECL|class|NodeIterator
+DECL|class|StorageIterator
 specifier|private
 specifier|static
 class|class
-name|NodeIterator
+name|StorageIterator
 implements|implements
 name|Iterator
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 block|{
 DECL|field|blockInfo
@@ -106,8 +106,8 @@ name|nextIdx
 init|=
 literal|0
 decl_stmt|;
-DECL|method|NodeIterator (BlockInfo blkInfo)
-name|NodeIterator
+DECL|method|StorageIterator (BlockInfo blkInfo)
+name|StorageIterator
 parameter_list|(
 name|BlockInfo
 name|blkInfo
@@ -154,14 +154,14 @@ annotation|@
 name|Override
 DECL|method|next ()
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|next
 parameter_list|()
 block|{
 return|return
 name|blockInfo
 operator|.
-name|getDatanode
+name|getStorageInfo
 argument_list|(
 name|nextIdx
 operator|++
@@ -431,20 +431,20 @@ name|b
 argument_list|)
 return|;
 block|}
-comment|/**    * Searches for the block in the BlocksMap and     * returns Iterator that iterates through the nodes the block belongs to.    */
-DECL|method|nodeIterator (Block b)
-name|Iterator
+comment|/**    * Searches for the block in the BlocksMap and     * returns {@link Iterable} of the storages the block belongs to.    */
+DECL|method|getStorages (Block b)
+name|Iterable
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|nodeIterator
+name|getStorages
 parameter_list|(
 name|Block
 name|b
 parameter_list|)
 block|{
 return|return
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|blocks
 operator|.
@@ -455,24 +455,46 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-comment|/**    * For a block that has already been retrieved from the BlocksMap    * returns Iterator that iterates through the nodes the block belongs to.    */
-DECL|method|nodeIterator (BlockInfo storedBlock)
-name|Iterator
+comment|/**    * For a block that has already been retrieved from the BlocksMap    * returns {@link Iterable} of the storages the block belongs to.    */
+DECL|method|getStorages (final BlockInfo storedBlock)
+name|Iterable
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|nodeIterator
+name|getStorages
 parameter_list|(
+specifier|final
 name|BlockInfo
 name|storedBlock
 parameter_list|)
 block|{
 return|return
 operator|new
-name|NodeIterator
+name|Iterable
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Iterator
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
+name|iterator
+parameter_list|()
+block|{
+return|return
+operator|new
+name|StorageIterator
 argument_list|(
 name|storedBlock
 argument_list|)
+return|;
+block|}
+block|}
 return|;
 block|}
 comment|/** counts number of containing nodes. Better than using iterator. */

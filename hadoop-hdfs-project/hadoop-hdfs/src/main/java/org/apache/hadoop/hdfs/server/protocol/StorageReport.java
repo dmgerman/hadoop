@@ -66,6 +66,16 @@ specifier|final
 name|long
 name|blockPoolUsed
 decl_stmt|;
+DECL|field|EMPTY_ARRAY
+specifier|public
+specifier|static
+specifier|final
+name|StorageReport
+index|[]
+name|EMPTY_ARRAY
+init|=
+block|{}
+decl_stmt|;
 DECL|method|StorageReport (String sid, boolean failed, long capacity, long dfsUsed, long remaining, long bpUsed)
 specifier|public
 name|StorageReport

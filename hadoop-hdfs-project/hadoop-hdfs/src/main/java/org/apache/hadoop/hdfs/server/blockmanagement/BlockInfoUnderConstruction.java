@@ -188,7 +188,8 @@ name|Block
 block|{
 DECL|field|expectedLocation
 specifier|private
-name|DatanodeDescriptor
+specifier|final
+name|DatanodeStorageInfo
 name|expectedLocation
 decl_stmt|;
 DECL|field|state
@@ -201,13 +202,13 @@ specifier|private
 name|boolean
 name|chosenAsPrimary
 decl_stmt|;
-DECL|method|ReplicaUnderConstruction (Block block, DatanodeDescriptor target, ReplicaState state)
+DECL|method|ReplicaUnderConstruction (Block block, DatanodeStorageInfo target, ReplicaState state)
 name|ReplicaUnderConstruction
 parameter_list|(
 name|Block
 name|block
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|target
 parameter_list|,
 name|ReplicaState
@@ -239,9 +240,10 @@ literal|false
 expr_stmt|;
 block|}
 comment|/**      * Expected block replica location as assigned when the block was allocated.      * This defines the pipeline order.      * It is not guaranteed, but expected, that the data-node actually has      * the replica.      */
-DECL|method|getExpectedLocation ()
-name|DatanodeDescriptor
-name|getExpectedLocation
+DECL|method|getExpectedStorageLocation ()
+specifier|private
+name|DatanodeStorageInfo
+name|getExpectedStorageLocation
 parameter_list|()
 block|{
 return|return
@@ -306,6 +308,9 @@ parameter_list|()
 block|{
 return|return
 name|expectedLocation
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 operator|.
 name|isAlive
 return|;
@@ -451,7 +456,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create a block that is currently being constructed.    */
-DECL|method|BlockInfoUnderConstruction (Block blk, int replication, BlockUCState state, DatanodeDescriptor[] targets)
+DECL|method|BlockInfoUnderConstruction (Block blk, int replication, BlockUCState state, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoUnderConstruction
 parameter_list|(
@@ -464,7 +469,7 @@ parameter_list|,
 name|BlockUCState
 name|state
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)
@@ -525,12 +530,12 @@ argument_list|)
 return|;
 block|}
 comment|/** Set expected locations */
-DECL|method|setExpectedLocations (DatanodeDescriptor[] targets)
+DECL|method|setExpectedLocations (DatanodeStorageInfo[] targets)
 specifier|public
 name|void
 name|setExpectedLocations
 parameter_list|(
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)
@@ -597,11 +602,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Create array of expected replica locations    * (as has been assigned by chooseTargets()).    */
-DECL|method|getExpectedLocations ()
+DECL|method|getExpectedStorageLocations ()
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
-name|getExpectedLocations
+name|getExpectedStorageLocations
 parameter_list|()
 block|{
 name|int
@@ -618,12 +623,12 @@ operator|.
 name|size
 argument_list|()
 decl_stmt|;
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
-name|locations
+name|storages
 init|=
 operator|new
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[
 name|numLocations
 index|]
@@ -642,7 +647,7 @@ condition|;
 name|i
 operator|++
 control|)
-name|locations
+name|storages
 index|[
 name|i
 index|]
@@ -654,11 +659,11 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getExpectedLocation
+name|getExpectedStorageLocation
 argument_list|()
 expr_stmt|;
 return|return
-name|locations
+name|storages
 return|;
 block|}
 comment|/** Get the number of expected locations */
@@ -764,7 +769,7 @@ condition|)
 block|{
 name|r
 operator|.
-name|getExpectedLocation
+name|getExpectedStorageLocation
 argument_list|()
 operator|.
 name|removeBlock
@@ -784,7 +789,7 @@ literal|"from location: "
 operator|+
 name|r
 operator|.
-name|getExpectedLocation
+name|getExpectedStorageLocation
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -1064,46 +1069,50 @@ condition|)
 block|{
 continue|continue;
 block|}
-if|if
-condition|(
+specifier|final
+name|ReplicaUnderConstruction
+name|ruc
+init|=
 name|replicas
 operator|.
 name|get
 argument_list|(
 name|i
 argument_list|)
+decl_stmt|;
+specifier|final
+name|long
+name|lastUpdate
+init|=
+name|ruc
 operator|.
-name|getExpectedLocation
+name|getExpectedStorageLocation
+argument_list|()
+operator|.
+name|getDatanodeDescriptor
 argument_list|()
 operator|.
 name|getLastUpdate
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|lastUpdate
 operator|>
 name|mostRecentLastUpdate
 condition|)
 block|{
-name|primary
-operator|=
-name|replicas
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-expr_stmt|;
 name|primaryNodeIndex
 operator|=
 name|i
 expr_stmt|;
+name|primary
+operator|=
+name|ruc
+expr_stmt|;
 name|mostRecentLastUpdate
 operator|=
-name|primary
-operator|.
-name|getExpectedLocation
-argument_list|()
-operator|.
-name|getLastUpdate
-argument_list|()
+name|lastUpdate
 expr_stmt|;
 block|}
 block|}
@@ -1116,7 +1125,10 @@ condition|)
 block|{
 name|primary
 operator|.
-name|getExpectedLocation
+name|getExpectedStorageLocation
+argument_list|()
+operator|.
+name|getDatanodeDescriptor
 argument_list|()
 operator|.
 name|addBlockToBeRecovered
@@ -1148,12 +1160,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addReplicaIfNotPresent (DatanodeDescriptor dn, Block block, ReplicaState rState)
+DECL|method|addReplicaIfNotPresent (DatanodeStorageInfo storage, Block block, ReplicaState rState)
 name|void
 name|addReplicaIfNotPresent
 parameter_list|(
-name|DatanodeDescriptor
-name|dn
+name|DatanodeStorageInfo
+name|storage
 parameter_list|,
 name|Block
 name|block
@@ -1162,22 +1174,41 @@ name|ReplicaState
 name|rState
 parameter_list|)
 block|{
-for|for
-control|(
+name|Iterator
+argument_list|<
+name|ReplicaUnderConstruction
+argument_list|>
+name|it
+init|=
+name|replicas
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
 name|ReplicaUnderConstruction
 name|r
-range|:
-name|replicas
-control|)
-block|{
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|r
 operator|.
-name|getExpectedLocation
+name|getExpectedStorageLocation
 argument_list|()
 operator|==
-name|dn
+name|storage
 condition|)
 block|{
 comment|// Record the gen stamp from the report
@@ -1193,6 +1224,34 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
+elseif|else
+if|if
+condition|(
+name|r
+operator|.
+name|getExpectedStorageLocation
+argument_list|()
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|==
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+condition|)
+block|{
+comment|// The Datanode reported that the block is on a different storage
+comment|// than the one chosen by BlockPlacementPolicy. This can occur as
+comment|// we allow Datanodes to choose the target storage. Update our
+comment|// state by removing the stale entry and adding a new one.
+name|it
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+break|break;
+block|}
 block|}
 name|replicas
 operator|.
@@ -1203,7 +1262,7 @@ name|ReplicaUnderConstruction
 argument_list|(
 name|block
 argument_list|,
-name|dn
+name|storage
 argument_list|,
 name|rState
 argument_list|)

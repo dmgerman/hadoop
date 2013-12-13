@@ -726,7 +726,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 import|;
 end_import
 
@@ -3983,7 +3983,7 @@ name|SchedulerEvent
 name|event
 init|=
 operator|new
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 argument_list|(
 name|appAttemptId
 argument_list|,

@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.blockmanagement
+DECL|package|org.apache.hadoop.hdfs
 package|package
 name|org
 operator|.
@@ -13,66 +13,71 @@ operator|.
 name|hadoop
 operator|.
 name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
 package|;
 end_package
 
 begin_import
 import|import
-name|java
+name|org
 operator|.
-name|io
+name|apache
 operator|.
-name|IOException
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
 import|;
 end_import
 
 begin_comment
-comment|/**   * This interface is used by the block manager to expose a  * few characteristics of a collection of Block/BlockUnderConstruction.  */
+comment|/**  * Defines the types of supported storage media. The default storage  * medium is assumed to be DISK.  */
 end_comment
 
-begin_interface
-DECL|interface|MutableBlockCollection
+begin_enum
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Public
+annotation|@
+name|InterfaceStability
+operator|.
+name|Unstable
+DECL|enum|StorageType
 specifier|public
-interface|interface
-name|MutableBlockCollection
-extends|extends
-name|BlockCollection
+enum|enum
+name|StorageType
 block|{
-comment|/**    * Set the block at the given index.    */
-DECL|method|setBlock (int index, BlockInfo blk)
+DECL|enumConstant|DISK
+name|DISK
+block|,
+DECL|enumConstant|SSD
+name|SSD
+block|;
+DECL|field|DEFAULT
 specifier|public
-name|void
-name|setBlock
-parameter_list|(
-name|int
-name|index
-parameter_list|,
-name|BlockInfo
-name|blk
-parameter_list|)
-function_decl|;
-comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
-DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeStorageInfo[] storages)
-specifier|public
-name|BlockInfoUnderConstruction
-name|setLastBlock
-parameter_list|(
-name|BlockInfo
-name|lastBlock
-parameter_list|,
-name|DatanodeStorageInfo
-index|[]
-name|storages
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
+specifier|static
+name|StorageType
+name|DEFAULT
+init|=
+name|DISK
+decl_stmt|;
 block|}
-end_interface
+end_enum
 
 end_unit
 

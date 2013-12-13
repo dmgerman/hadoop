@@ -317,7 +317,7 @@ name|bm
 operator|.
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|b
 operator|.
@@ -325,7 +325,13 @@ name|getLocalBlock
 argument_list|()
 argument_list|)
 operator|.
+name|iterator
+argument_list|()
+operator|.
 name|next
+argument_list|()
+operator|.
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 name|bm

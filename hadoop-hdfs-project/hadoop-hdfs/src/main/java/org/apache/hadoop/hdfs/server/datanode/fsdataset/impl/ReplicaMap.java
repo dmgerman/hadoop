@@ -458,6 +458,25 @@ argument_list|)
 return|;
 block|}
 block|}
+comment|/**    * Add all entries from the given replica map into the local replica map.    */
+DECL|method|addAll (ReplicaMap other)
+name|void
+name|addAll
+parameter_list|(
+name|ReplicaMap
+name|other
+parameter_list|)
+block|{
+name|map
+operator|.
+name|putAll
+argument_list|(
+name|other
+operator|.
+name|map
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Remove the replica's meta information from the map that matches    * the input block's id and generation stamp    * @param bpid block pool id    * @param block block with its id as the key    * @return the removed replica's meta information    * @throws IllegalArgumentException if the input block is null    */
 DECL|method|remove (String bpid, Block block)
 name|ReplicaInfo

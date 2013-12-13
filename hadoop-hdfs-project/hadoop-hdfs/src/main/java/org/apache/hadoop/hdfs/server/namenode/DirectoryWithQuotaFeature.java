@@ -94,8 +94,8 @@ specifier|public
 specifier|final
 class|class
 name|DirectoryWithQuotaFeature
-extends|extends
-name|INodeDirectory
+implements|implements
+name|INode
 operator|.
 name|Feature
 block|{

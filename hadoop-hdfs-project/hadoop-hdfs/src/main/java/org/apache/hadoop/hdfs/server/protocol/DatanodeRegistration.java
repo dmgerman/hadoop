@@ -312,9 +312,9 @@ operator|+
 name|getIpAddr
 argument_list|()
 operator|+
-literal|", storageID="
+literal|", datanodeUuid="
 operator|+
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|", infoPort="

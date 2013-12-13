@@ -1538,6 +1538,8 @@ index|[
 literal|0
 index|]
 argument_list|,
+literal|"STORAGE_ID"
+argument_list|,
 literal|"TEST"
 argument_list|)
 expr_stmt|;
@@ -1800,6 +1802,8 @@ argument_list|()
 index|[
 literal|0
 index|]
+argument_list|,
+literal|"STORAGE_ID"
 argument_list|,
 literal|"TEST"
 argument_list|)
@@ -2537,6 +2541,10 @@ operator|(
 name|long
 operator|)
 name|DATANODE_COUNT
+operator|*
+name|MiniDFSCluster
+operator|.
+name|DIRS_PER_DATANODE
 argument_list|,
 name|rb
 argument_list|)

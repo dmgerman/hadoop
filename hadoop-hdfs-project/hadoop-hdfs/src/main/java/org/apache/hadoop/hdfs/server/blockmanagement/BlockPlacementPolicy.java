@@ -150,6 +150,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -314,10 +328,10 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * choose<i>numOfReplicas</i> data nodes for<i>writer</i>     * to re-replicate a block with size<i>blocksize</i>     * If not, return as many as we can.    *    * @param srcPath the file to which this chooseTargets is being invoked.    * @param numOfReplicas additional number of replicas wanted.    * @param writer the writer's machine, null if not in the cluster.    * @param chosenNodes datanodes that have been chosen as targets.    * @param returnChosenNodes decide if the chosenNodes are returned.    * @param excludedNodes datanodes that should not be considered as targets.    * @param blocksize size of the data to be written.    * @return array of DatanodeDescriptor instances chosen as target    * and sorted as a pipeline.    */
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize)
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosen, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, StorageType storageType)
 specifier|public
 specifier|abstract
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
 parameter_list|(
@@ -332,9 +346,9 @@ name|writer
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|chosenNodes
+name|chosen
 parameter_list|,
 name|boolean
 name|returnChosenNodes
@@ -347,11 +361,14 @@ name|excludedNodes
 parameter_list|,
 name|long
 name|blocksize
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 function_decl|;
 comment|/**    * Same as {@link #chooseTarget(String, int, Node, List, boolean,     * Set, long)} with added parameter {@code favoredDatanodes}    * @param favoredNodes datanodes that should be favored as targets. This    *          is only a hint and due to cluster state, namenode may not be     *          able to place the blocks on these datanodes.    */
-DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes)
-name|DatanodeDescriptor
+DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, StorageType storageType)
+name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
 parameter_list|(
@@ -378,6 +395,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|favoredNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 comment|// This class does not provide the functionality of placing
@@ -395,7 +415,7 @@ argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|(
 name|numOfReplicas
@@ -406,6 +426,8 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|blocksize
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}

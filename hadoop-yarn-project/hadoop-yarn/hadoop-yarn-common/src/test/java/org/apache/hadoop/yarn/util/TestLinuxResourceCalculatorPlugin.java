@@ -60,16 +60,6 @@ end_import
 
 begin_import
 import|import
-name|junit
-operator|.
-name|framework
-operator|.
-name|TestCase
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -92,6 +82,18 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|junit
+operator|.
+name|Assert
+operator|.
+name|assertEquals
+import|;
+end_import
+
 begin_comment
 comment|/**  * A JUnit test to test {@link LinuxResourceCalculatorPlugin}  * Create the fake /proc/ information and verify the parsing and calculation  */
 end_comment
@@ -101,8 +103,6 @@ DECL|class|TestLinuxResourceCalculatorPlugin
 specifier|public
 class|class
 name|TestLinuxResourceCalculatorPlugin
-extends|extends
-name|TestCase
 block|{
 comment|/**    * LinuxResourceCalculatorPlugin with a fake timer    */
 DECL|class|FakeLinuxResourceCalculatorPlugin
@@ -457,10 +457,10 @@ decl_stmt|;
 comment|/**    * Test parsing /proc/stat and /proc/cpuinfo    * @throws IOException    */
 annotation|@
 name|Test
-DECL|method|testParsingProcStatAndCpuFile ()
+DECL|method|parsingProcStatAndCpuFile ()
 specifier|public
 name|void
-name|testParsingProcStatAndCpuFile
+name|parsingProcStatAndCpuFile
 parameter_list|()
 throws|throws
 name|IOException
@@ -640,6 +640,8 @@ name|LinuxResourceCalculatorPlugin
 operator|.
 name|UNAVAILABLE
 argument_list|)
+argument_list|,
+literal|0.0
 argument_list|)
 expr_stmt|;
 comment|// Advance the time and sample again to test the CPU usage calculation
@@ -689,6 +691,8 @@ name|getCpuUsage
 argument_list|()
 argument_list|,
 literal|6.25F
+argument_list|,
+literal|0.0
 argument_list|)
 expr_stmt|;
 comment|// Advance the time and sample again. This time, we call getCpuUsage() only.
@@ -720,6 +724,8 @@ name|getCpuUsage
 argument_list|()
 argument_list|,
 literal|25F
+argument_list|,
+literal|0.0
 argument_list|)
 expr_stmt|;
 comment|// Advance very short period of time (one jiffy length).
@@ -770,6 +776,8 @@ name|getCpuUsage
 argument_list|()
 argument_list|,
 literal|25F
+argument_list|,
+literal|0.0
 argument_list|)
 expr_stmt|;
 comment|// CPU usage is not updated.
@@ -828,10 +836,10 @@ block|}
 comment|/**    * Test parsing /proc/meminfo    * @throws IOException    */
 annotation|@
 name|Test
-DECL|method|testParsingProcMemFile ()
+DECL|method|parsingProcMemFile ()
 specifier|public
 name|void
-name|testParsingProcMemFile
+name|parsingProcMemFile
 parameter_list|()
 throws|throws
 name|IOException

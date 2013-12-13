@@ -700,7 +700,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 import|;
 end_import
 
@@ -2560,11 +2560,11 @@ argument_list|(
 name|app_0
 argument_list|)
 expr_stmt|;
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 name|event
 init|=
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|appAttemptId_0
 argument_list|,
@@ -2693,7 +2693,7 @@ expr_stmt|;
 name|event
 operator|=
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|appAttemptId_0
 argument_list|,
@@ -8015,6 +8015,21 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// node_1 heartbeats in and gets the DEFAULT_RACK request for app_1
+comment|// We do not need locality delay here
+name|doReturn
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|a
+argument_list|)
+operator|.
+name|getNodeLocalityDelay
+argument_list|()
+expr_stmt|;
 name|a
 operator|.
 name|assignContainers
@@ -12731,7 +12746,7 @@ decl_stmt|;
 comment|// before reinitialization
 name|assertEquals
 argument_list|(
-literal|0
+literal|40
 argument_list|,
 name|e
 operator|.
@@ -14208,6 +14223,9 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|app_0
+argument_list|,
+name|never
+argument_list|()
 argument_list|)
 operator|.
 name|allocate
@@ -14260,7 +14278,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|app_0
 operator|.

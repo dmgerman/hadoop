@@ -861,6 +861,7 @@ block|}
 annotation|@
 name|VisibleForTesting
 DECL|method|setEditLog (FSEditLog editLog)
+specifier|public
 name|void
 name|setEditLog
 parameter_list|(

@@ -185,8 +185,8 @@ DECL|class|FileWithSnapshotFeature
 specifier|public
 class|class
 name|FileWithSnapshotFeature
-extends|extends
-name|INodeFile
+implements|implements
+name|INode
 operator|.
 name|Feature
 block|{

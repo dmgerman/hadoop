@@ -1078,6 +1078,11 @@ block|}
 comment|/**    * This test ensures the appropriate response (successful or failure) from     * a Datanode when the system is started with differing version combinations.     *<pre>    * For each 3-tuple in the cross product    *   ({oldLayoutVersion,currentLayoutVersion,futureLayoutVersion},    *    {currentNamespaceId,incorrectNamespaceId},    *    {pastFsscTime,currentFsscTime,futureFsscTime})    *      1. Startup Namenode with version file containing     *         (currentLayoutVersion,currentNamespaceId,currentFsscTime)    *      2. Attempt to startup Datanode with version file containing     *         this iterations version 3-tuple    *</pre>    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testVersions ()
 specifier|public
 name|void

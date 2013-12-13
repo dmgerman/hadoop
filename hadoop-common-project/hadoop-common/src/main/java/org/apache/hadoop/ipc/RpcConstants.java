@@ -121,6 +121,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
+comment|/**   * The Rpc-connection header is as follows    * +----------------------------------+   * |  "hrpc" 4 bytes                  |         * +----------------------------------+   * |  Version (1 byte)                |   * +----------------------------------+   * |  Service Class (1 byte)          |   * +----------------------------------+   * |  AuthProtocol (1 byte)           |         * +----------------------------------+   */
 comment|/**    * The first four bytes of Hadoop RPC connections    */
 DECL|field|HEADER
 specifier|public
@@ -139,6 +140,16 @@ name|getBytes
 argument_list|()
 argument_list|)
 decl_stmt|;
+DECL|field|HEADER_LEN_AFTER_HRPC_PART
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|HEADER_LEN_AFTER_HRPC_PART
+init|=
+literal|3
+decl_stmt|;
+comment|// 3 bytes that follow
 comment|// 1 : Introduce ping and server does not throw away RPCs
 comment|// 3 : Introduce the protocol into the RPC connection header
 comment|// 4 : Introduced SASL security layer

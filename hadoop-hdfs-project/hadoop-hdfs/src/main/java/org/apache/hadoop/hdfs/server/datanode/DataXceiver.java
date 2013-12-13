@@ -1997,7 +1997,7 @@ argument_list|()
 argument_list|,
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 operator|(
@@ -2172,7 +2172,7 @@ literal|"%d"
 argument_list|,
 name|dnR
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|block
@@ -2862,6 +2862,10 @@ name|mirrorInStatus
 init|=
 name|SUCCESS
 decl_stmt|;
+specifier|final
+name|String
+name|storageUuid
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -2914,9 +2918,18 @@ argument_list|,
 name|cachingStrategy
 argument_list|)
 expr_stmt|;
+name|storageUuid
+operator|=
+name|blockReceiver
+operator|.
+name|getStorageUuid
+argument_list|()
+expr_stmt|;
 block|}
 else|else
 block|{
+name|storageUuid
+operator|=
 name|datanode
 operator|.
 name|data
@@ -3572,6 +3585,8 @@ argument_list|,
 name|DataNode
 operator|.
 name|EMPTY_DEL_HINT
+argument_list|,
+name|storageUuid
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -5009,6 +5024,11 @@ argument_list|(
 name|block
 argument_list|,
 name|delHint
+argument_list|,
+name|blockReceiver
+operator|.
+name|getStorageUuid
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -5025,6 +5045,10 @@ name|peer
 operator|.
 name|getRemoteAddressString
 argument_list|()
+operator|+
+literal|", delHint="
+operator|+
+name|delHint
 argument_list|)
 expr_stmt|;
 block|}

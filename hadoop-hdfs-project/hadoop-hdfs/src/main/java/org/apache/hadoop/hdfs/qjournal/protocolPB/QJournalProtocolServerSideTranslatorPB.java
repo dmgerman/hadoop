@@ -1330,11 +1330,6 @@ argument_list|()
 argument_list|,
 name|request
 operator|.
-name|getForReading
-argument_list|()
-argument_list|,
-name|request
-operator|.
 name|getInProgressOk
 argument_list|()
 argument_list|)

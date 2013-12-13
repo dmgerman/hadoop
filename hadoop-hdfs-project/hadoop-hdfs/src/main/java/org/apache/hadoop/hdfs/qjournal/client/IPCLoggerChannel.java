@@ -1044,6 +1044,19 @@ name|void
 name|close
 parameter_list|()
 block|{
+name|QuorumJournalManager
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Closing"
+argument_list|,
+operator|new
+name|Exception
+argument_list|()
+argument_list|)
+expr_stmt|;
 comment|// No more tasks may be submitted after this point.
 name|executor
 operator|.
@@ -2433,7 +2446,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getEditLogManifest ( final long fromTxnId, final boolean forReading, final boolean inProgressOk)
+DECL|method|getEditLogManifest ( final long fromTxnId, final boolean inProgressOk)
 specifier|public
 name|ListenableFuture
 argument_list|<
@@ -2444,10 +2457,6 @@ parameter_list|(
 specifier|final
 name|long
 name|fromTxnId
-parameter_list|,
-specifier|final
-name|boolean
-name|forReading
 parameter_list|,
 specifier|final
 name|boolean
@@ -2486,8 +2495,6 @@ argument_list|(
 name|journalId
 argument_list|,
 name|fromTxnId
-argument_list|,
-name|forReading
 argument_list|,
 name|inProgressOk
 argument_list|)

@@ -334,6 +334,11 @@ decl_stmt|;
 comment|/** check if nn.getCorruptFiles() returns a file that has corrupted blocks */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testListCorruptFilesCorruptedBlock ()
 specifier|public
 name|void
@@ -846,6 +851,11 @@ block|}
 comment|/**    * Check that listCorruptFileBlocks works while the namenode is still in safemode.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testListCorruptFileBlocksInSafeMode ()
 specifier|public
 name|void
@@ -1602,6 +1612,11 @@ block|}
 comment|// deliberately remove blocks from a file and validate the list-corrupt-file-blocks API
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testlistCorruptFileBlocks ()
 specifier|public
 name|void
@@ -2274,6 +2289,11 @@ block|}
 comment|/**    * test listCorruptFileBlocks in DistributedFileSystem    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testlistCorruptFileBlocksDFS ()
 specifier|public
 name|void
@@ -2694,6 +2714,11 @@ block|}
 comment|/**    * Test if NN.listCorruptFiles() returns the right number of results.    * The corrupt blocks are detected by the BlockPoolSliceScanner.    * Also, test that DFS.listCorruptFileBlocks can make multiple successive    * calls.    */
 annotation|@
 name|Test
+argument_list|(
+name|timeout
+operator|=
+literal|300000
+argument_list|)
 DECL|method|testMaxCorruptFiles ()
 specifier|public
 name|void

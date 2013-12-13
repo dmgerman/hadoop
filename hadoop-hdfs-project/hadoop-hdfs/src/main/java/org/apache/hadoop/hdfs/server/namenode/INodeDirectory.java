@@ -318,57 +318,6 @@ name|INodeWithAdditionalFields
 implements|implements
 name|INodeDirectoryAttributes
 block|{
-comment|/** Directory related features such as quota and snapshots. */
-DECL|class|Feature
-specifier|public
-specifier|static
-specifier|abstract
-class|class
-name|Feature
-implements|implements
-name|INode
-operator|.
-name|Feature
-argument_list|<
-name|Feature
-argument_list|>
-block|{
-DECL|field|nextFeature
-specifier|private
-name|Feature
-name|nextFeature
-decl_stmt|;
-annotation|@
-name|Override
-DECL|method|getNextFeature ()
-specifier|public
-name|Feature
-name|getNextFeature
-parameter_list|()
-block|{
-return|return
-name|nextFeature
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|setNextFeature (Feature next)
-specifier|public
-name|void
-name|setNextFeature
-parameter_list|(
-name|Feature
-name|next
-parameter_list|)
-block|{
-name|this
-operator|.
-name|nextFeature
-operator|=
-name|next
-expr_stmt|;
-block|}
-block|}
 comment|/** Cast INode to INodeDirectory. */
 DECL|method|valueOf (INode inode, Object path )
 specifier|public
@@ -471,14 +420,6 @@ name|children
 init|=
 literal|null
 decl_stmt|;
-comment|/** A linked list of {@link Feature}s. */
-DECL|field|headFeature
-specifier|private
-name|Feature
-name|headFeature
-init|=
-literal|null
-decl_stmt|;
 comment|/** constructor */
 DECL|method|INodeDirectory (long id, byte[] name, PermissionStatus permissions, long mtime)
 specifier|public
@@ -575,11 +516,11 @@ condition|)
 block|{
 name|this
 operator|.
-name|headFeature
+name|features
 operator|=
 name|other
 operator|.
-name|headFeature
+name|features
 expr_stmt|;
 block|}
 block|}
@@ -824,18 +765,8 @@ for|for
 control|(
 name|Feature
 name|f
-init|=
-name|headFeature
-init|;
-name|f
-operator|!=
-literal|null
-condition|;
-name|f
-operator|=
-name|f
-operator|.
-name|nextFeature
+range|:
+name|features
 control|)
 block|{
 if|if
@@ -913,56 +844,6 @@ expr_stmt|;
 return|return
 name|quota
 return|;
-block|}
-DECL|method|addFeature (Feature f)
-specifier|private
-name|void
-name|addFeature
-parameter_list|(
-name|Feature
-name|f
-parameter_list|)
-block|{
-name|headFeature
-operator|=
-name|INode
-operator|.
-name|Feature
-operator|.
-name|Util
-operator|.
-name|addFeature
-argument_list|(
-name|f
-argument_list|,
-name|headFeature
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|removeFeature (Feature f)
-specifier|private
-name|void
-name|removeFeature
-parameter_list|(
-name|Feature
-name|f
-parameter_list|)
-block|{
-name|headFeature
-operator|=
-name|INode
-operator|.
-name|Feature
-operator|.
-name|Util
-operator|.
-name|removeFeature
-argument_list|(
-name|f
-argument_list|,
-name|headFeature
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|searchChildren (byte[] name)
 specifier|private

@@ -1112,16 +1112,17 @@ operator|new
 name|MovedBlocks
 argument_list|()
 decl_stmt|;
-comment|// Map storage IDs to BalancerDatanodes
-DECL|field|datanodes
+comment|/** Map (datanodeUuid -> BalancerDatanodes) */
+DECL|field|datanodeMap
 specifier|private
+specifier|final
 name|Map
 argument_list|<
 name|String
 argument_list|,
 name|BalancerDatanode
 argument_list|>
-name|datanodes
+name|datanodeMap
 init|=
 operator|new
 name|HashMap
@@ -1181,6 +1182,55 @@ specifier|private
 name|PendingBlockMove
 parameter_list|()
 block|{     }
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+specifier|final
+name|Block
+name|b
+init|=
+name|block
+operator|.
+name|getBlock
+argument_list|()
+decl_stmt|;
+return|return
+name|b
+operator|+
+literal|" with size="
+operator|+
+name|b
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|" from "
+operator|+
+name|source
+operator|.
+name|getDisplayName
+argument_list|()
+operator|+
+literal|" to "
+operator|+
+name|target
+operator|.
+name|getDisplayName
+argument_list|()
+operator|+
+literal|" through "
+operator|+
+name|proxySource
+operator|.
+name|getDisplayName
+argument_list|()
+return|;
+block|}
 comment|/* choose a block& a proxy source for this pendingMove       * whose source& target have already been chosen.      *       * Return true if a block and its proxy are chosen; false otherwise      */
 DECL|method|chooseBlockAndProxy ()
 specifier|private
@@ -1297,45 +1347,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Decided to move block "
+literal|"Decided to move "
 operator|+
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" with a length of "
-operator|+
-name|StringUtils
-operator|.
-name|byteDesc
-argument_list|(
-name|block
-operator|.
-name|getNumBytes
-argument_list|()
-argument_list|)
-operator|+
-literal|" bytes from "
-operator|+
-name|source
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" using proxy source "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -1366,11 +1380,15 @@ operator|.
 name|getDatanode
 argument_list|()
 decl_stmt|;
-name|boolean
-name|find
-init|=
-literal|false
-decl_stmt|;
+comment|// if node group is supported, first try add nodes in the same node group
+if|if
+condition|(
+name|cluster
+operator|.
+name|isNodeGroupAware
+argument_list|()
+condition|)
+block|{
 for|for
 control|(
 name|BalancerDatanode
@@ -1382,7 +1400,44 @@ name|getLocations
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|cluster
+operator|.
+name|isOnSameNodeGroup
+argument_list|(
+name|loc
+operator|.
+name|getDatanode
+argument_list|()
+argument_list|,
+name|targetDN
+argument_list|)
+operator|&&
+name|addTo
+argument_list|(
+name|loc
+argument_list|)
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+block|}
 comment|// check if there is replica which is on the same rack with the target
+for|for
+control|(
+name|BalancerDatanode
+name|loc
+range|:
+name|block
+operator|.
+name|getLocations
+argument_list|()
+control|)
+block|{
 if|if
 condition|(
 name|cluster
@@ -1403,30 +1458,28 @@ name|loc
 argument_list|)
 condition|)
 block|{
-name|find
-operator|=
+return|return
 literal|true
-expr_stmt|;
-comment|// if cluster is not nodegroup aware or the proxy is on the same
-comment|// nodegroup with target, then we already find the nearest proxy
+return|;
+block|}
+block|}
+comment|// find out a non-busy replica
+for|for
+control|(
+name|BalancerDatanode
+name|loc
+range|:
+name|block
+operator|.
+name|getLocations
+argument_list|()
+control|)
+block|{
 if|if
 condition|(
-operator|!
-name|cluster
-operator|.
-name|isNodeGroupAware
-argument_list|()
-operator|||
-name|cluster
-operator|.
-name|isOnSameNodeGroup
+name|addTo
 argument_list|(
 name|loc
-operator|.
-name|getDatanode
-argument_list|()
-argument_list|,
-name|targetDN
 argument_list|)
 condition|)
 block|{
@@ -1435,24 +1488,8 @@ literal|true
 return|;
 block|}
 block|}
-if|if
-condition|(
-operator|!
-name|find
-condition|)
-block|{
-comment|// find out a non-busy replica out of rack of target
-name|find
-operator|=
-name|addTo
-argument_list|(
-name|loc
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 return|return
-name|find
+literal|false
 return|;
 block|}
 comment|// add a BalancerDatanode as proxy source for specific block movement
@@ -1653,38 +1690,9 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Moving block "
+literal|"Successfully moved "
 operator|+
-name|block
-operator|.
-name|getBlock
-argument_list|()
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|source
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" through "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" is succeeded."
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -1698,33 +1706,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Error moving block "
+literal|"Failed to move "
 operator|+
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|source
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" through "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
+name|this
 operator|+
 literal|": "
 operator|+
@@ -1992,26 +1976,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Starting moving "
+literal|"Start moving "
 operator|+
-name|block
+name|PendingBlockMove
 operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|" from "
-operator|+
-name|proxySource
-operator|.
-name|getDisplayName
-argument_list|()
-operator|+
-literal|" to "
-operator|+
-name|target
-operator|.
-name|getDisplayName
-argument_list|()
+name|this
 argument_list|)
 expr_stmt|;
 block|}
@@ -2160,20 +2129,6 @@ parameter_list|()
 block|{
 return|return
 name|block
-return|;
-block|}
-comment|/* Return the block id */
-DECL|method|getBlockId ()
-specifier|private
-name|long
-name|getBlockId
-parameter_list|()
-block|{
-return|return
-name|block
-operator|.
-name|getBlockId
-argument_list|()
 return|;
 block|}
 comment|/* Return the length of the block */
@@ -2516,7 +2471,7 @@ block|{
 return|return
 name|datanode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 return|;
 block|}
@@ -2975,22 +2930,23 @@ comment|// update locations
 for|for
 control|(
 name|String
-name|storageID
+name|datanodeUuid
 range|:
 name|blk
 operator|.
-name|getStorageIDs
+name|getDatanodeUuids
 argument_list|()
 control|)
 block|{
+specifier|final
 name|BalancerDatanode
-name|datanode
+name|d
 init|=
-name|datanodes
+name|datanodeMap
 operator|.
 name|get
 argument_list|(
-name|storageID
+name|datanodeUuid
 argument_list|)
 decl_stmt|;
 if|if
@@ -3005,7 +2961,7 @@ name|block
 operator|.
 name|addLocation
 argument_list|(
-name|datanode
+name|d
 argument_list|)
 expr_stmt|;
 block|}
@@ -3639,79 +3595,6 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* Shuffle datanode array */
-DECL|method|shuffleArray (DatanodeInfo[] datanodes)
-specifier|static
-specifier|private
-name|void
-name|shuffleArray
-parameter_list|(
-name|DatanodeInfo
-index|[]
-name|datanodes
-parameter_list|)
-block|{
-for|for
-control|(
-name|int
-name|i
-init|=
-name|datanodes
-operator|.
-name|length
-init|;
-name|i
-operator|>
-literal|1
-condition|;
-name|i
-operator|--
-control|)
-block|{
-name|int
-name|randomIndex
-init|=
-name|DFSUtil
-operator|.
-name|getRandom
-argument_list|()
-operator|.
-name|nextInt
-argument_list|(
-name|i
-argument_list|)
-decl_stmt|;
-name|DatanodeInfo
-name|tmp
-init|=
-name|datanodes
-index|[
-name|randomIndex
-index|]
-decl_stmt|;
-name|datanodes
-index|[
-name|randomIndex
-index|]
-operator|=
-name|datanodes
-index|[
-name|i
-operator|-
-literal|1
-index|]
-expr_stmt|;
-name|datanodes
-index|[
-name|i
-operator|-
-literal|1
-index|]
-operator|=
-name|tmp
-expr_stmt|;
-block|}
-block|}
 comment|/* Given a data node set, build a network topology and decide    * over-utilized datanodes, above average utilized datanodes,     * below average utilized datanodes, and underutilized datanodes.     * The input data node set is shuffled before the datanodes     * are put into the over-utilized datanodes, above average utilized    * datanodes, below average utilized datanodes, and    * underutilized datanodes lists. This will add some randomness    * to the node matching later on.    *     * @return the total number of bytes that are     *                needed to move to make the cluster balanced.    * @param datanodes a set of datanodes    */
 DECL|method|initNodes (DatanodeInfo[] datanodes)
 specifier|private
@@ -3771,17 +3654,17 @@ name|underLoadedBytes
 init|=
 literal|0L
 decl_stmt|;
-name|shuffleArray
-argument_list|(
-name|datanodes
-argument_list|)
-expr_stmt|;
 for|for
 control|(
 name|DatanodeInfo
 name|datanode
 range|:
+name|DFSUtil
+operator|.
+name|shuffle
+argument_list|(
 name|datanodes
+argument_list|)
 control|)
 block|{
 if|if
@@ -4018,15 +3901,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|this
-operator|.
-name|datanodes
+name|datanodeMap
 operator|.
 name|put
 argument_list|(
 name|datanode
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|datanodeS
@@ -4041,7 +3922,7 @@ assert|assert
 operator|(
 name|this
 operator|.
-name|datanodes
+name|datanodeMap
 operator|.
 name|size
 argument_list|()
@@ -4339,7 +4220,7 @@ argument_list|)
 expr_stmt|;
 assert|assert
 operator|(
-name|datanodes
+name|datanodeMap
 operator|.
 name|size
 argument_list|()
@@ -4357,7 +4238,7 @@ operator|)
 operator|:
 literal|"Mismatched number of datanodes ("
 operator|+
-name|datanodes
+name|datanodeMap
 operator|.
 name|size
 argument_list|()
@@ -5679,7 +5560,7 @@ argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|datanodes
+name|datanodeMap
 operator|.
 name|clear
 argument_list|()

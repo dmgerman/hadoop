@@ -40,37 +40,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
+name|*
 import|;
 end_import
 
@@ -228,6 +198,7 @@ name|numFailedVolumes
 return|;
 block|}
 comment|/**     * Get next volume. Synchronized to ensure {@link #curVolume} is updated    * by a single thread and next volume is chosen with no concurrent    * update to {@link #volumes}.    * @param blockSize free space needed on the volume    * @return next volume to store the block in.    */
+comment|// TODO should choose volume with storage type
 DECL|method|getNextVolume (long blockSize)
 specifier|synchronized
 name|FsVolumeImpl
@@ -381,12 +352,12 @@ return|return
 name|remaining
 return|;
 block|}
-DECL|method|getVolumeMap (ReplicaMap volumeMap)
+DECL|method|initializeReplicaMaps (ReplicaMap globalReplicaMap)
 name|void
-name|getVolumeMap
+name|initializeReplicaMaps
 parameter_list|(
 name|ReplicaMap
-name|volumeMap
+name|globalReplicaMap
 parameter_list|)
 throws|throws
 name|IOException
@@ -403,14 +374,14 @@ name|v
 operator|.
 name|getVolumeMap
 argument_list|(
-name|volumeMap
+name|globalReplicaMap
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getVolumeMap (String bpid, ReplicaMap volumeMap)
+DECL|method|getAllVolumesMap (String bpid, ReplicaMap volumeMap)
 name|void
-name|getVolumeMap
+name|getAllVolumesMap
 parameter_list|(
 name|String
 name|bpid
@@ -437,6 +408,56 @@ range|:
 name|volumes
 control|)
 block|{
+name|getVolumeMap
+argument_list|(
+name|bpid
+argument_list|,
+name|v
+argument_list|,
+name|volumeMap
+argument_list|)
+expr_stmt|;
+block|}
+name|long
+name|totalTimeTaken
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|totalStartTime
+decl_stmt|;
+name|FsDatasetImpl
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Total time to add all replicas to map: "
+operator|+
+name|totalTimeTaken
+operator|+
+literal|"ms"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getVolumeMap (String bpid, FsVolumeImpl volume, ReplicaMap volumeMap)
+name|void
+name|getVolumeMap
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|FsVolumeImpl
+name|volume
+parameter_list|,
+name|ReplicaMap
+name|volumeMap
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|FsDatasetImpl
 operator|.
 name|LOG
@@ -449,7 +470,7 @@ name|bpid
 operator|+
 literal|" on volume "
 operator|+
-name|v
+name|volume
 operator|+
 literal|"..."
 argument_list|)
@@ -462,7 +483,7 @@ operator|.
 name|currentTimeMillis
 argument_list|()
 decl_stmt|;
-name|v
+name|volume
 operator|.
 name|getVolumeMap
 argument_list|(
@@ -493,35 +514,11 @@ name|bpid
 operator|+
 literal|" on volume "
 operator|+
-name|v
+name|volume
 operator|+
 literal|": "
 operator|+
 name|timeTaken
-operator|+
-literal|"ms"
-argument_list|)
-expr_stmt|;
-block|}
-name|long
-name|totalTimeTaken
-init|=
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-operator|-
-name|totalStartTime
-decl_stmt|;
-name|FsDatasetImpl
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Total time to add all replicas to map: "
-operator|+
-name|totalTimeTaken
 operator|+
 literal|"ms"
 argument_list|)

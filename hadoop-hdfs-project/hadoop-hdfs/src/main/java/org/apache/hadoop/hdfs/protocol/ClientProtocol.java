@@ -822,7 +822,7 @@ function_decl|;
 comment|/**     * Get a datanode for an existing pipeline.    *     * @param src the file being written    * @param blk the block being written    * @param existings the existing nodes in the pipeline    * @param excludes the excluded nodes    * @param numAdditionalNodes number of additional datanodes    * @param clientName the name of the client    *     * @return the located block.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -839,6 +839,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|existings
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|existingStorageIDs
 parameter_list|,
 specifier|final
 name|DatanodeInfo
@@ -1585,7 +1590,7 @@ function_decl|;
 comment|/**    * Update a pipeline for a block under construction    *     * @param clientName the name of the client    * @param oldBlock the old block    * @param newBlock the new block containing new generation stamp and length    * @param newNodes datanodes in the pipeline    * @throws IOException if any error occurs    */
 annotation|@
 name|AtMostOnce
-DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
+DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes, String[] newStorageIDs)
 specifier|public
 name|void
 name|updatePipeline
@@ -1602,6 +1607,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newNodes
+parameter_list|,
+name|String
+index|[]
+name|newStorageIDs
 parameter_list|)
 throws|throws
 name|IOException

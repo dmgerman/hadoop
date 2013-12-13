@@ -4210,6 +4210,16 @@ index|[
 literal|1
 index|]
 expr_stmt|;
+name|String
+index|[]
+name|storageIDs
+init|=
+block|{
+literal|"s0"
+block|,
+literal|"s1"
+block|}
+decl_stmt|;
 name|client
 operator|.
 name|getNamenode
@@ -4227,6 +4237,8 @@ argument_list|,
 name|newBlock
 argument_list|,
 name|newNodes
+argument_list|,
+name|storageIDs
 argument_list|)
 expr_stmt|;
 name|out
@@ -4286,7 +4298,7 @@ name|datanodeNum
 init|=
 name|blkUC
 operator|.
-name|getExpectedLocations
+name|getExpectedStorageLocations
 argument_list|()
 operator|.
 name|length
@@ -4321,7 +4333,7 @@ name|datanodeNum
 operator|=
 name|blkUC
 operator|.
-name|getExpectedLocations
+name|getExpectedStorageLocations
 argument_list|()
 operator|.
 name|length

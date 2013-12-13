@@ -192,6 +192,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|TreeSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|concurrent
 operator|.
 name|atomic
@@ -307,6 +317,20 @@ operator|.
 name|hdfs
 operator|.
 name|HAUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|StorageType
 import|;
 end_import
 
@@ -800,6 +824,24 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|KeyUpdateCommand
 import|;
 end_import
@@ -819,6 +861,24 @@ operator|.
 name|protocol
 operator|.
 name|ReceivedDeletedBlockInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|StorageReceivedDeletedBlocks
 import|;
 end_import
 
@@ -2558,14 +2618,14 @@ argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|containingLiveReplicasNodes
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -2729,32 +2789,24 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|jt
-init|=
+name|DatanodeStorageInfo
+name|storage
+range|:
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|block
 argument_list|)
-init|;
-name|jt
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|node
 init|=
-name|jt
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 name|String
@@ -2802,7 +2854,7 @@ expr_stmt|;
 block|}
 if|if
 condition|(
-name|node
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
@@ -3351,11 +3403,11 @@ argument_list|)
 operator|:
 literal|"last block of the file is not in blocksMap"
 assert|;
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 init|=
-name|getNodes
+name|getStorages
 argument_list|(
 name|oldBlock
 argument_list|)
@@ -3420,25 +3472,20 @@ expr_stmt|;
 comment|// remove this block from the list of pending blocks to be deleted.
 for|for
 control|(
-name|DatanodeDescriptor
-name|dd
+name|DatanodeStorageInfo
+name|storage
 range|:
 name|targets
 control|)
 block|{
-name|String
-name|datanodeId
-init|=
-name|dd
-operator|.
-name|getStorageID
-argument_list|()
-decl_stmt|;
 name|invalidateBlocks
 operator|.
 name|remove
 argument_list|(
-name|datanodeId
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|,
 name|oldBlock
 argument_list|)
@@ -3508,7 +3555,7 @@ DECL|method|getValidLocations (Block block)
 specifier|private
 name|List
 argument_list|<
-name|String
+name|DatanodeStorageInfo
 argument_list|>
 name|getValidLocations
 parameter_list|(
@@ -3516,16 +3563,17 @@ name|Block
 name|block
 parameter_list|)
 block|{
-name|ArrayList
+specifier|final
+name|List
 argument_list|<
-name|String
+name|DatanodeStorageInfo
 argument_list|>
-name|machineSet
+name|locations
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|String
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|(
 name|blocksMap
@@ -3538,33 +3586,22 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
+name|DatanodeStorageInfo
+name|storage
+range|:
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|block
 argument_list|)
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
+specifier|final
 name|String
 name|storageID
 init|=
-name|it
-operator|.
-name|next
-argument_list|()
+name|storage
 operator|.
 name|getStorageID
 argument_list|()
@@ -3583,17 +3620,17 @@ name|block
 argument_list|)
 condition|)
 block|{
-name|machineSet
+name|locations
 operator|.
 name|add
 argument_list|(
-name|storageID
+name|storage
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 return|return
-name|machineSet
+name|locations
 return|;
 block|}
 DECL|method|createLocatedBlockList (final BlockInfo[] blocks, final long offset, final long length, final int nrBlocksToReturn, final AccessMode mode)
@@ -4024,13 +4061,13 @@ operator|)
 name|blk
 decl_stmt|;
 specifier|final
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
-name|locations
+name|storages
 init|=
 name|uc
 operator|.
-name|getExpectedLocations
+name|getExpectedStorageLocations
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -4054,7 +4091,7 @@ name|LocatedBlock
 argument_list|(
 name|eb
 argument_list|,
-name|locations
+name|storages
 argument_list|,
 name|pos
 argument_list|,
@@ -4143,12 +4180,12 @@ operator|-
 name|numCorruptNodes
 decl_stmt|;
 specifier|final
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|machines
 init|=
 operator|new
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[
 name|numMachines
 index|]
@@ -4167,33 +4204,24 @@ condition|)
 block|{
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
+name|DatanodeStorageInfo
+name|storage
+range|:
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|blk
 argument_list|)
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
 specifier|final
 name|DatanodeDescriptor
 name|d
 init|=
-name|it
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -4227,7 +4255,7 @@ name|j
 operator|++
 index|]
 operator|=
-name|d
+name|storage
 expr_stmt|;
 block|}
 block|}
@@ -5197,7 +5225,7 @@ name|remove
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5205,12 +5233,40 @@ comment|// If the DN hasn't block-reported since the most recent
 comment|// failover, then we may have been holding up on processing
 comment|// over-replicated blocks because of it. But we can now
 comment|// process those blocks.
+name|boolean
+name|stale
+init|=
+literal|false
+decl_stmt|;
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|node
+operator|.
+name|getStorageInfos
+argument_list|()
+control|)
+block|{
 if|if
 condition|(
-name|node
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
+condition|)
+block|{
+name|stale
+operator|=
+literal|true
+expr_stmt|;
+break|break;
+block|}
+block|}
+if|if
+condition|(
+name|stale
 condition|)
 block|{
 name|rescanPostponedMisreplicatedBlocks
@@ -5263,32 +5319,24 @@ argument_list|()
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
+name|DatanodeStorageInfo
+name|storage
+range|:
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|b
 argument_list|)
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|node
 init|=
-name|it
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 name|invalidateBlocks
@@ -5341,7 +5389,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Mark the block belonging to datanode as corrupt    * @param blk Block to be marked as corrupt    * @param dn Datanode which holds the corrupt replica    * @param reason a textual reason why the block should be marked corrupt,    * for logging purposes    */
-DECL|method|findAndMarkBlockAsCorrupt (final ExtendedBlock blk, final DatanodeInfo dn, String reason)
+DECL|method|findAndMarkBlockAsCorrupt (final ExtendedBlock blk, final DatanodeInfo dn, String storageID, String reason)
 specifier|public
 name|void
 name|findAndMarkBlockAsCorrupt
@@ -5353,6 +5401,9 @@ parameter_list|,
 specifier|final
 name|DatanodeInfo
 name|dn
+parameter_list|,
+name|String
+name|storageID
 parameter_list|,
 name|String
 name|reason
@@ -5417,10 +5468,12 @@ name|CORRUPTION_REPORTED
 argument_list|)
 argument_list|,
 name|dn
+argument_list|,
+name|storageID
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|markBlockAsCorrupt (BlockToMarkCorrupt b, DatanodeInfo dn)
+DECL|method|markBlockAsCorrupt (BlockToMarkCorrupt b, DatanodeInfo dn, String storageID)
 specifier|private
 name|void
 name|markBlockAsCorrupt
@@ -5430,6 +5483,9 @@ name|b
 parameter_list|,
 name|DatanodeInfo
 name|dn
+parameter_list|,
+name|String
+name|storageID
 parameter_list|)
 throws|throws
 name|IOException
@@ -5512,6 +5568,8 @@ name|node
 operator|.
 name|addBlock
 argument_list|(
+name|storageID
+argument_list|,
 name|b
 operator|.
 name|stored
@@ -6030,8 +6088,6 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|containingNodes
-decl_stmt|,
-name|liveReplicaNodes
 decl_stmt|;
 name|DatanodeDescriptor
 name|srcNode
@@ -6157,15 +6213,19 @@ name|DatanodeDescriptor
 argument_list|>
 argument_list|()
 expr_stmt|;
+name|List
+argument_list|<
+name|DatanodeStorageInfo
+argument_list|>
 name|liveReplicaNodes
-operator|=
+init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|NumberReplicas
 name|numReplicas
 init|=
@@ -6422,7 +6482,8 @@ range|:
 name|work
 control|)
 block|{
-name|DatanodeDescriptor
+specifier|final
+name|DatanodeStorageInfo
 index|[]
 name|targets
 init|=
@@ -6636,6 +6697,9 @@ index|[
 literal|0
 index|]
 operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|.
 name|getNetworkLocation
 argument_list|()
 argument_list|)
@@ -6660,20 +6724,13 @@ expr_stmt|;
 name|scheduledWork
 operator|++
 expr_stmt|;
-for|for
-control|(
-name|DatanodeDescriptor
-name|dn
-range|:
-name|targets
-control|)
-block|{
-name|dn
+name|DatanodeStorageInfo
 operator|.
-name|incBlocksScheduled
-argument_list|()
+name|incrementBlocksScheduled
+argument_list|(
+name|targets
+argument_list|)
 expr_stmt|;
-block|}
 comment|// Move the block-replication into a "pending" state.
 comment|// The reason we use 'pending' is so we can retry
 comment|// replications that fail after an appropriate amount of time.
@@ -6683,7 +6740,12 @@ name|increment
 argument_list|(
 name|block
 argument_list|,
+name|DatanodeStorageInfo
+operator|.
+name|toDatanodeDescriptors
+argument_list|(
 name|targets
+argument_list|)
 argument_list|)
 expr_stmt|;
 if|if
@@ -6757,7 +6819,7 @@ range|:
 name|work
 control|)
 block|{
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 init|=
@@ -6819,6 +6881,9 @@ name|targets
 index|[
 name|k
 index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -6881,7 +6946,7 @@ block|}
 comment|/**    * Choose target datanodes according to the replication policy.    *     * @throws IOException    *           if the number of targets< minimum replication.    * @see BlockPlacementPolicy#chooseTarget(String, int, Node,    *      List, boolean, Set, long)    */
 DECL|method|chooseTarget (final String src, final int numOfReplicas, final DatanodeDescriptor client, final Set<Node> excludedNodes, final long blocksize, List<String> favoredNodes)
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
 parameter_list|(
@@ -6929,9 +6994,9 @@ name|favoredNodes
 argument_list|)
 decl_stmt|;
 specifier|final
-name|DatanodeDescriptor
-name|targets
+name|DatanodeStorageInfo
 index|[]
+name|targets
 init|=
 name|blockplacement
 operator|.
@@ -6947,7 +7012,12 @@ name|excludedNodes
 argument_list|,
 name|blocksize
 argument_list|,
+comment|// TODO: get storage type from file
 name|favoredDatanodeDescriptors
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
 argument_list|)
 decl_stmt|;
 if|if
@@ -7112,7 +7182,7 @@ block|}
 comment|/**    * Parse the data-nodes the block belongs to and choose one,    * which will be the replication source.    *    * We prefer nodes that are in DECOMMISSION_INPROGRESS state to other nodes    * since the former do not have write traffic and hence are less busy.    * We do not use already decommissioned nodes as a source.    * Otherwise we choose a random node among those that did not reach their    * replication limits.  However, if the replication is of the highest priority    * and all nodes have reached their replication limits, we will choose a    * random node despite the replication limit.    *    * In addition form a list of all nodes containing the block    * and calculate its replication numbers.    *    * @param block Block for which a replication source is needed    * @param containingNodes List to be populated with nodes found to contain the     *                        given block    * @param nodesContainingLiveReplicas List to be populated with nodes found to    *                                    contain live replicas of the given block    * @param numReplicas NumberReplicas instance to be initialized with the     *                                   counts of live, corrupt, excess, and    *                                   decommissioned replicas of the given    *                                   block.    * @param priority integer representing replication priority of the given    *                 block    * @return the DatanodeDescriptor of the chosen node from which to replicate    *         the given block    */
 annotation|@
 name|VisibleForTesting
-DECL|method|chooseSourceDatanode ( Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> nodesContainingLiveReplicas, NumberReplicas numReplicas, int priority)
+DECL|method|chooseSourceDatanode (Block block, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> nodesContainingLiveReplicas, NumberReplicas numReplicas, int priority)
 name|DatanodeDescriptor
 name|chooseSourceDatanode
 parameter_list|(
@@ -7127,7 +7197,7 @@ name|containingNodes
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|nodesContainingLiveReplicas
 parameter_list|,
@@ -7173,19 +7243,6 @@ name|excess
 init|=
 literal|0
 decl_stmt|;
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
-name|blocksMap
-operator|.
-name|nodeIterator
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
 name|Collection
 argument_list|<
 name|DatanodeDescriptor
@@ -7199,20 +7256,26 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
-while|while
-condition|(
-name|it
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|blocksMap
 operator|.
-name|hasNext
-argument_list|()
-condition|)
+name|getStorages
+argument_list|(
+name|block
+argument_list|)
+control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|node
 init|=
-name|it
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 name|LightWeightLinkedSet
@@ -7227,7 +7290,7 @@ name|get
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -7292,7 +7355,7 @@ name|nodesContainingLiveReplicas
 operator|.
 name|add
 argument_list|(
-name|node
+name|storage
 argument_list|)
 expr_stmt|;
 name|live
@@ -7811,8 +7874,8 @@ literal|")"
 return|;
 block|}
 block|}
-comment|/**    * The given datanode is reporting all its blocks.    * Update the (machine-->blocklist) and (block-->machinelist) maps.    */
-DECL|method|processReport (final DatanodeID nodeID, final String poolId, final BlockListAsLongs newReport)
+comment|/**    * The given storage is reporting all its blocks.    * Update the (storage-->block list) and (block-->storage list) maps.    */
+DECL|method|processReport (final DatanodeID nodeID, final DatanodeStorage storage, final String poolId, final BlockListAsLongs newReport)
 specifier|public
 name|void
 name|processReport
@@ -7820,6 +7883,10 @@ parameter_list|(
 specifier|final
 name|DatanodeID
 name|nodeID
+parameter_list|,
+specifier|final
+name|DatanodeStorage
+name|storage
 parameter_list|,
 specifier|final
 name|String
@@ -7888,6 +7955,17 @@ throw|;
 block|}
 comment|// To minimize startup time, we discard any second (or later) block reports
 comment|// that we receive while still in startup phase.
+specifier|final
+name|DatanodeStorageInfo
+name|storageInfo
+init|=
+name|node
+operator|.
+name|updateStorage
+argument_list|(
+name|storage
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|namesystem
@@ -7895,11 +7973,12 @@ operator|.
 name|isInStartupSafeMode
 argument_list|()
 operator|&&
-operator|!
-name|node
+name|storageInfo
 operator|.
-name|isFirstBlockReport
+name|getBlockReportCount
 argument_list|()
+operator|>
+literal|0
 condition|)
 block|{
 name|blockLog
@@ -7919,7 +7998,7 @@ return|return;
 block|}
 if|if
 condition|(
-name|node
+name|storageInfo
 operator|.
 name|numBlocks
 argument_list|()
@@ -7933,6 +8012,11 @@ name|processFirstBlockReport
 argument_list|(
 name|node
 argument_list|,
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|,
 name|newReport
 argument_list|)
 expr_stmt|;
@@ -7943,6 +8027,8 @@ name|processReport
 argument_list|(
 name|node
 argument_list|,
+name|storage
+argument_list|,
 name|newReport
 argument_list|)
 expr_stmt|;
@@ -7952,12 +8038,12 @@ comment|// deletions from a previous NN iteration have been accounted for.
 name|boolean
 name|staleBefore
 init|=
-name|node
+name|storageInfo
 operator|.
 name|areBlockContentsStale
 argument_list|()
 decl_stmt|;
-name|node
+name|storageInfo
 operator|.
 name|receivedBlockReport
 argument_list|()
@@ -7967,7 +8053,7 @@ condition|(
 name|staleBefore
 operator|&&
 operator|!
-name|node
+name|storageInfo
 operator|.
 name|areBlockContentsStale
 argument_list|()
@@ -8207,7 +8293,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|processReport (final DatanodeDescriptor node, final BlockListAsLongs report)
+DECL|method|processReport (final DatanodeDescriptor node, final DatanodeStorage storage, final BlockListAsLongs report)
 specifier|private
 name|void
 name|processReport
@@ -8215,6 +8301,10 @@ parameter_list|(
 specifier|final
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+specifier|final
+name|DatanodeStorage
+name|storage
 parameter_list|,
 specifier|final
 name|BlockListAsLongs
@@ -8247,7 +8337,7 @@ argument_list|>
 name|toRemove
 init|=
 operator|new
-name|LinkedList
+name|TreeSet
 argument_list|<
 name|Block
 argument_list|>
@@ -8296,6 +8386,8 @@ name|reportDiff
 argument_list|(
 name|node
 argument_list|,
+name|storage
+argument_list|,
 name|report
 argument_list|,
 name|toAdd
@@ -8323,6 +8415,11 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -8360,6 +8457,11 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|,
 literal|null
 argument_list|,
@@ -8446,12 +8548,17 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * processFirstBlockReport is intended only for processing "initial" block    * reports, the first block report received from a DN after it registers.    * It just adds all the valid replicas to the datanode, without calculating     * a toRemove list (since there won't be any).  It also silently discards     * any invalid blocks, thereby deferring their processing until     * the next block report.    * @param node - DatanodeDescriptor of the node that sent the report    * @param report - the initial block report, to be processed    * @throws IOException     */
-DECL|method|processFirstBlockReport (final DatanodeDescriptor node, final BlockListAsLongs report)
+DECL|method|processFirstBlockReport (final DatanodeDescriptor node, final String storageID, final BlockListAsLongs report)
 specifier|private
 name|void
 name|processFirstBlockReport
@@ -8459,6 +8566,10 @@ parameter_list|(
 specifier|final
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+specifier|final
+name|String
+name|storageID
 parameter_list|,
 specifier|final
 name|BlockListAsLongs
@@ -8485,6 +8596,11 @@ assert|;
 assert|assert
 operator|(
 name|node
+operator|.
+name|getStorageInfo
+argument_list|(
+name|storageID
+argument_list|)
 operator|.
 name|numBlocks
 argument_list|()
@@ -8539,6 +8655,8 @@ block|{
 name|queueReportedBlock
 argument_list|(
 name|node
+argument_list|,
+name|storageID
 argument_list|,
 name|iblk
 argument_list|,
@@ -8610,6 +8728,8 @@ name|queueReportedBlock
 argument_list|(
 name|node
 argument_list|,
+name|storageID
+argument_list|,
 name|iblk
 argument_list|,
 name|reportedState
@@ -8625,6 +8745,8 @@ argument_list|(
 name|c
 argument_list|,
 name|node
+argument_list|,
+name|storageID
 argument_list|)
 expr_stmt|;
 block|}
@@ -8653,6 +8775,11 @@ operator|.
 name|addReplicaIfNotPresent
 argument_list|(
 name|node
+operator|.
+name|getStorageInfo
+argument_list|(
+name|storageID
+argument_list|)
 argument_list|,
 name|iblk
 argument_list|,
@@ -8713,18 +8840,23 @@ argument_list|(
 name|storedBlock
 argument_list|,
 name|node
+argument_list|,
+name|storageID
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|reportDiff (DatanodeDescriptor dn, BlockListAsLongs newReport, Collection<BlockInfo> toAdd, Collection<Block> toRemove, Collection<Block> toInvalidate, Collection<BlockToMarkCorrupt> toCorrupt, Collection<StatefulBlockInfo> toUC)
+DECL|method|reportDiff (DatanodeDescriptor dn, DatanodeStorage storage, BlockListAsLongs newReport, Collection<BlockInfo> toAdd, Collection<Block> toRemove, Collection<Block> toInvalidate, Collection<BlockToMarkCorrupt> toCorrupt, Collection<StatefulBlockInfo> toUC)
 specifier|private
 name|void
 name|reportDiff
 parameter_list|(
 name|DatanodeDescriptor
 name|dn
+parameter_list|,
+name|DatanodeStorage
+name|storage
 parameter_list|,
 name|BlockListAsLongs
 name|newReport
@@ -8765,6 +8897,17 @@ name|toUC
 parameter_list|)
 block|{
 comment|// add to under-construction list
+specifier|final
+name|DatanodeStorageInfo
+name|storageInfo
+init|=
+name|dn
+operator|.
+name|updateStorage
+argument_list|(
+name|storage
+argument_list|)
+decl_stmt|;
 comment|// place a delimiter in the list which separates blocks
 comment|// that have been reported from those that have not
 name|BlockInfo
@@ -8783,7 +8926,7 @@ decl_stmt|;
 name|boolean
 name|added
 init|=
-name|dn
+name|storageInfo
 operator|.
 name|addBlock
 argument_list|(
@@ -8856,6 +8999,11 @@ name|processReportedBlock
 argument_list|(
 name|dn
 argument_list|,
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|,
 name|iblk
 argument_list|,
 name|iState
@@ -8892,7 +9040,7 @@ condition|)
 block|{
 name|headIndex
 operator|=
-name|dn
+name|storageInfo
 operator|.
 name|moveBlockToHead
 argument_list|(
@@ -8909,15 +9057,13 @@ comment|// collect blocks that have not been reported
 comment|// all of them are next to the delimiter
 name|Iterator
 argument_list|<
-name|?
-extends|extends
-name|Block
+name|BlockInfo
 argument_list|>
 name|it
 init|=
-operator|new
-name|DatanodeDescriptor
+name|storageInfo
 operator|.
+expr|new
 name|BlockIterator
 argument_list|(
 name|delimiter
@@ -8926,8 +9072,6 @@ name|getNext
 argument_list|(
 literal|0
 argument_list|)
-argument_list|,
-name|dn
 argument_list|)
 decl_stmt|;
 while|while
@@ -8947,7 +9091,7 @@ name|next
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|dn
+name|storageInfo
 operator|.
 name|removeBlock
 argument_list|(
@@ -8956,7 +9100,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Process a block replica reported by the data-node.    * No side effects except adding to the passed-in Collections.    *     *<ol>    *<li>If the block is not known to the system (not in blocksMap) then the    * data-node should be notified to invalidate this block.</li>    *<li>If the reported replica is valid that is has the same generation stamp    * and length as recorded on the name-node, then the replica location should    * be added to the name-node.</li>    *<li>If the reported replica is not valid, then it is marked as corrupt,    * which triggers replication of the existing valid replicas.    * Corrupt replicas are removed from the system when the block    * is fully replicated.</li>    *<li>If the reported replica is for a block currently marked "under    * construction" in the NN, then it should be added to the     * BlockInfoUnderConstruction's list of replicas.</li>    *</ol>    *     * @param dn descriptor for the datanode that made the report    * @param block reported block replica    * @param reportedState reported replica state    * @param toAdd add to DatanodeDescriptor    * @param toInvalidate missing blocks (not in the blocks map)    *        should be removed from the data-node    * @param toCorrupt replicas with unexpected length or generation stamp;    *        add to corrupt replicas    * @param toUC replicas of blocks currently under construction    * @return the up-to-date stored block, if it should be kept.    *         Otherwise, null.    */
-DECL|method|processReportedBlock (final DatanodeDescriptor dn, final Block block, final ReplicaState reportedState, final Collection<BlockInfo> toAdd, final Collection<Block> toInvalidate, final Collection<BlockToMarkCorrupt> toCorrupt, final Collection<StatefulBlockInfo> toUC)
+DECL|method|processReportedBlock (final DatanodeDescriptor dn, final String storageID, final Block block, final ReplicaState reportedState, final Collection<BlockInfo> toAdd, final Collection<Block> toInvalidate, final Collection<BlockToMarkCorrupt> toCorrupt, final Collection<StatefulBlockInfo> toUC)
 specifier|private
 name|BlockInfo
 name|processReportedBlock
@@ -8964,6 +9108,10 @@ parameter_list|(
 specifier|final
 name|DatanodeDescriptor
 name|dn
+parameter_list|,
+specifier|final
+name|String
+name|storageID
 parameter_list|,
 specifier|final
 name|Block
@@ -9051,6 +9199,8 @@ name|queueReportedBlock
 argument_list|(
 name|dn
 argument_list|,
+name|storageID
+argument_list|,
 name|block
 argument_list|,
 name|reportedState
@@ -9133,7 +9283,7 @@ name|contains
 argument_list|(
 name|dn
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|block
@@ -9179,6 +9329,8 @@ comment|// but instead just queue it for later processing.
 name|queueReportedBlock
 argument_list|(
 name|dn
+argument_list|,
+name|storageID
 argument_list|,
 name|storedBlock
 argument_list|,
@@ -9280,13 +9432,16 @@ name|storedBlock
 return|;
 block|}
 comment|/**    * Queue the given reported block for later processing in the    * standby node. @see PendingDataNodeMessages.    * @param reason a textual reason to report in the debug logs    */
-DECL|method|queueReportedBlock (DatanodeDescriptor dn, Block block, ReplicaState reportedState, String reason)
+DECL|method|queueReportedBlock (DatanodeDescriptor dn, String storageID, Block block, ReplicaState reportedState, String reason)
 specifier|private
 name|void
 name|queueReportedBlock
 parameter_list|(
 name|DatanodeDescriptor
 name|dn
+parameter_list|,
+name|String
+name|storageID
 parameter_list|,
 name|Block
 name|block
@@ -9340,6 +9495,8 @@ operator|.
 name|enqueueReportedBlock
 argument_list|(
 name|dn
+argument_list|,
+name|storageID
 argument_list|,
 name|block
 argument_list|,
@@ -9433,6 +9590,11 @@ argument_list|(
 name|rbi
 operator|.
 name|getNode
+argument_list|()
+argument_list|,
+name|rbi
+operator|.
+name|getStorageID
 argument_list|()
 argument_list|,
 name|rbi
@@ -9916,7 +10078,7 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|addStoredBlockUnderConstruction (StatefulBlockInfo ucBlock, DatanodeDescriptor node)
+DECL|method|addStoredBlockUnderConstruction (StatefulBlockInfo ucBlock, DatanodeDescriptor node, String storageID)
 name|void
 name|addStoredBlockUnderConstruction
 parameter_list|(
@@ -9925,6 +10087,9 @@ name|ucBlock
 parameter_list|,
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+name|String
+name|storageID
 parameter_list|)
 throws|throws
 name|IOException
@@ -9941,6 +10106,11 @@ operator|.
 name|addReplicaIfNotPresent
 argument_list|(
 name|node
+operator|.
+name|getStorageInfo
+argument_list|(
+name|storageID
+argument_list|)
 argument_list|,
 name|ucBlock
 operator|.
@@ -9977,6 +10147,8 @@ name|block
 argument_list|,
 name|node
 argument_list|,
+name|storageID
+argument_list|,
 literal|null
 argument_list|,
 literal|true
@@ -9984,8 +10156,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Faster version of    * {@link #addStoredBlock(BlockInfo, DatanodeDescriptor, DatanodeDescriptor, boolean)}    * , intended for use with initial block report at startup. If not in startup    * safe mode, will call standard addStoredBlock(). Assumes this method is    * called "immediately" so there is no need to refresh the storedBlock from    * blocksMap. Doesn't handle underReplication/overReplication, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    *     * @throws IOException    */
-DECL|method|addStoredBlockImmediate (BlockInfo storedBlock, DatanodeDescriptor node)
+comment|/**    * Faster version of    * {@link #addStoredBlock(BlockInfo, DatanodeDescriptor, String, DatanodeDescriptor, boolean)}    * , intended for use with initial block report at startup. If not in startup    * safe mode, will call standard addStoredBlock(). Assumes this method is    * called "immediately" so there is no need to refresh the storedBlock from    * blocksMap. Doesn't handle underReplication/overReplication, or worry about    * pendingReplications or corruptReplicas, because it's in startup safe mode.    * Doesn't log every block, because there are typically millions of them.    *     * @throws IOException    */
+DECL|method|addStoredBlockImmediate (BlockInfo storedBlock, DatanodeDescriptor node, String storageID)
 specifier|private
 name|void
 name|addStoredBlockImmediate
@@ -9995,6 +10167,9 @@ name|storedBlock
 parameter_list|,
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+name|String
+name|storageID
 parameter_list|)
 throws|throws
 name|IOException
@@ -10031,6 +10206,8 @@ name|storedBlock
 argument_list|,
 name|node
 argument_list|,
+name|storageID
+argument_list|,
 literal|null
 argument_list|,
 literal|false
@@ -10043,6 +10220,8 @@ name|node
 operator|.
 name|addBlock
 argument_list|(
+name|storageID
+argument_list|,
 name|storedBlock
 argument_list|)
 expr_stmt|;
@@ -10107,7 +10286,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Modify (block-->datanode) map. Remove block from set of    * needed replications if this takes care of the problem.    * @return the block that is stored in blockMap.    */
-DECL|method|addStoredBlock (final BlockInfo block, DatanodeDescriptor node, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
+DECL|method|addStoredBlock (final BlockInfo block, DatanodeDescriptor node, String storageID, DatanodeDescriptor delNodeHint, boolean logEveryBlock)
 specifier|private
 name|Block
 name|addStoredBlock
@@ -10118,6 +10297,9 @@ name|block
 parameter_list|,
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+name|String
+name|storageID
 parameter_list|,
 name|DatanodeDescriptor
 name|delNodeHint
@@ -10239,6 +10421,8 @@ name|node
 operator|.
 name|addBlock
 argument_list|(
+name|storageID
+argument_list|,
 name|storedBlock
 argument_list|)
 decl_stmt|;
@@ -11337,37 +11521,29 @@ argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
+name|DatanodeStorageInfo
+name|storage
+range|:
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|block
 argument_list|)
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|cur
 init|=
-name|it
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|cur
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
@@ -11383,7 +11559,11 @@ literal|"Postponing processing of over-replicated "
 operator|+
 name|block
 operator|+
-literal|" since datanode "
+literal|" since storage + "
+operator|+
+name|storage
+operator|+
+literal|"datanode "
 operator|+
 name|cur
 operator|+
@@ -11411,7 +11591,7 @@ name|get
 argument_list|(
 name|cur
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -11786,7 +11966,7 @@ name|get
 argument_list|(
 name|dn
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -11812,7 +11992,7 @@ name|put
 argument_list|(
 name|dn
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|,
 name|excessBlocks
@@ -12000,7 +12180,7 @@ name|get
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -12062,7 +12242,7 @@ name|remove
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -12100,9 +12280,9 @@ block|{
 specifier|final
 name|List
 argument_list|<
-name|String
+name|DatanodeStorageInfo
 argument_list|>
-name|machineSet
+name|locations
 init|=
 name|getValidLocations
 argument_list|(
@@ -12111,7 +12291,7 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|machineSet
+name|locations
 operator|.
 name|size
 argument_list|()
@@ -12125,6 +12305,86 @@ return|;
 block|}
 else|else
 block|{
+specifier|final
+name|String
+index|[]
+name|datanodeUuids
+init|=
+operator|new
+name|String
+index|[
+name|locations
+operator|.
+name|size
+argument_list|()
+index|]
+decl_stmt|;
+specifier|final
+name|String
+index|[]
+name|storageIDs
+init|=
+operator|new
+name|String
+index|[
+name|datanodeUuids
+operator|.
+name|length
+index|]
+decl_stmt|;
+for|for
+control|(
+name|int
+name|i
+init|=
+literal|0
+init|;
+name|i
+operator|<
+name|locations
+operator|.
+name|size
+argument_list|()
+condition|;
+name|i
+operator|++
+control|)
+block|{
+specifier|final
+name|DatanodeStorageInfo
+name|s
+init|=
+name|locations
+operator|.
+name|get
+argument_list|(
+name|i
+argument_list|)
+decl_stmt|;
+name|datanodeUuids
+index|[
+name|i
+index|]
+operator|=
+name|s
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|.
+name|getDatanodeUuid
+argument_list|()
+expr_stmt|;
+name|storageIDs
+index|[
+name|i
+index|]
+operator|=
+name|s
+operator|.
+name|getStorageID
+argument_list|()
+expr_stmt|;
+block|}
 name|results
 operator|.
 name|add
@@ -12134,19 +12394,9 @@ name|BlockWithLocations
 argument_list|(
 name|block
 argument_list|,
-name|machineSet
-operator|.
-name|toArray
-argument_list|(
-operator|new
-name|String
-index|[
-name|machineSet
-operator|.
-name|size
-argument_list|()
-index|]
-argument_list|)
+name|datanodeUuids
+argument_list|,
+name|storageIDs
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -12161,12 +12411,15 @@ block|}
 comment|/**    * The given node is reporting that it received a certain block.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|addBlock (DatanodeDescriptor node, Block block, String delHint)
+DECL|method|addBlock (DatanodeDescriptor node, String storageID, Block block, String delHint)
 name|void
 name|addBlock
 parameter_list|(
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+name|String
+name|storageID
 parameter_list|,
 name|Block
 name|block
@@ -12177,12 +12430,12 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// decrement number of blocks scheduled to this datanode.
+comment|// Decrement number of blocks scheduled to this datanode.
 comment|// for a retry request (of DatanodeProtocol#blockReceivedAndDeleted with
 comment|// RECEIVED_BLOCK), we currently also decrease the approximate number.
 name|node
 operator|.
-name|decBlocksScheduled
+name|decrementBlocksScheduled
 argument_list|()
 expr_stmt|;
 comment|// get the deletion hint node
@@ -12252,6 +12505,8 @@ name|processAndHandleReportedBlock
 argument_list|(
 name|node
 argument_list|,
+name|storageID
+argument_list|,
 name|block
 argument_list|,
 name|ReplicaState
@@ -12262,13 +12517,16 @@ name|delHintNode
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|processAndHandleReportedBlock (DatanodeDescriptor node, Block block, ReplicaState reportedState, DatanodeDescriptor delHintNode)
+DECL|method|processAndHandleReportedBlock (DatanodeDescriptor node, String storageID, Block block, ReplicaState reportedState, DatanodeDescriptor delHintNode)
 specifier|private
 name|void
 name|processAndHandleReportedBlock
 parameter_list|(
 name|DatanodeDescriptor
 name|node
+parameter_list|,
+name|String
+name|storageID
 parameter_list|,
 name|Block
 name|block
@@ -12339,6 +12597,8 @@ name|processReportedBlock
 argument_list|(
 name|node
 argument_list|,
+name|storageID
+argument_list|,
 name|block
 argument_list|,
 name|reportedState
@@ -12392,6 +12652,8 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|storageID
 argument_list|)
 expr_stmt|;
 block|}
@@ -12413,6 +12675,8 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|storageID
 argument_list|,
 name|delHintNode
 argument_list|,
@@ -12499,12 +12763,14 @@ argument_list|(
 name|b
 argument_list|,
 name|node
+argument_list|,
+name|storageID
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * The given node is reporting incremental information about some blocks.    * This includes blocks that are starting to be received, completed being    * received, or deleted.    *     * This method must be called with FSNamesystem lock held.    */
-DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final String poolId, final ReceivedDeletedBlockInfo blockInfos[])
+DECL|method|processIncrementalBlockReport (final DatanodeID nodeID, final String poolId, final StorageReceivedDeletedBlocks srdb)
 specifier|public
 name|void
 name|processIncrementalBlockReport
@@ -12518,9 +12784,8 @@ name|String
 name|poolId
 parameter_list|,
 specifier|final
-name|ReceivedDeletedBlockInfo
-name|blockInfos
-index|[]
+name|StorageReceivedDeletedBlocks
+name|srdb
 parameter_list|)
 throws|throws
 name|IOException
@@ -12593,7 +12858,10 @@ control|(
 name|ReceivedDeletedBlockInfo
 name|rdbi
 range|:
-name|blockInfos
+name|srdb
+operator|.
+name|getBlocks
+argument_list|()
 control|)
 block|{
 switch|switch
@@ -12628,6 +12896,11 @@ name|addBlock
 argument_list|(
 name|node
 argument_list|,
+name|srdb
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|,
 name|rdbi
 operator|.
 name|getBlock
@@ -12652,6 +12925,11 @@ expr_stmt|;
 name|processAndHandleReportedBlock
 argument_list|(
 name|node
+argument_list|,
+name|srdb
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|,
 name|rdbi
 operator|.
@@ -12791,19 +13069,6 @@ name|stale
 init|=
 literal|0
 decl_stmt|;
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|nodeIter
-init|=
-name|blocksMap
-operator|.
-name|nodeIterator
-argument_list|(
-name|b
-argument_list|)
-decl_stmt|;
 name|Collection
 argument_list|<
 name|DatanodeDescriptor
@@ -12817,20 +13082,26 @@ argument_list|(
 name|b
 argument_list|)
 decl_stmt|;
-while|while
-condition|(
-name|nodeIter
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|blocksMap
 operator|.
-name|hasNext
-argument_list|()
-condition|)
+name|getStorages
+argument_list|(
+name|b
+argument_list|)
+control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|node
 init|=
-name|nodeIter
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 if|if
@@ -12887,7 +13158,7 @@ name|get
 argument_list|(
 name|node
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -12918,7 +13189,7 @@ block|}
 block|}
 if|if
 condition|(
-name|node
+name|storage
 operator|.
 name|areBlockContentsStale
 argument_list|()
@@ -12979,19 +13250,6 @@ name|live
 init|=
 literal|0
 decl_stmt|;
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|nodeIter
-init|=
-name|blocksMap
-operator|.
-name|nodeIterator
-argument_list|(
-name|b
-argument_list|)
-decl_stmt|;
 name|Collection
 argument_list|<
 name|DatanodeDescriptor
@@ -13005,20 +13263,26 @@ argument_list|(
 name|b
 argument_list|)
 decl_stmt|;
-while|while
-condition|(
-name|nodeIter
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|blocksMap
 operator|.
-name|hasNext
-argument_list|()
-condition|)
+name|getStorages
+argument_list|(
+name|b
+argument_list|)
+control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|node
 init|=
-name|nodeIter
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 if|if
@@ -13088,19 +13352,6 @@ argument_list|(
 name|block
 argument_list|)
 decl_stmt|;
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|nodeIter
-init|=
-name|blocksMap
-operator|.
-name|nodeIterator
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
 name|StringBuilder
 name|nodeList
 init|=
@@ -13108,20 +13359,26 @@ operator|new
 name|StringBuilder
 argument_list|()
 decl_stmt|;
-while|while
-condition|(
-name|nodeIter
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|blocksMap
 operator|.
-name|hasNext
-argument_list|()
-condition|)
+name|getStorages
+argument_list|(
+name|block
+argument_list|)
+control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|node
 init|=
-name|nodeIter
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 name|nodeList
@@ -13574,22 +13831,23 @@ name|size
 argument_list|()
 return|;
 block|}
-DECL|method|getNodes (BlockInfo block)
+DECL|method|getStorages (BlockInfo block)
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
-name|getNodes
+name|getStorages
 parameter_list|(
 name|BlockInfo
 name|block
 parameter_list|)
 block|{
-name|DatanodeDescriptor
+specifier|final
+name|DatanodeStorageInfo
 index|[]
-name|nodes
+name|storages
 init|=
 operator|new
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[
 name|block
 operator|.
@@ -13597,52 +13855,35 @@ name|numNodes
 argument_list|()
 index|]
 decl_stmt|;
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
-name|blocksMap
-operator|.
-name|nodeIterator
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
-for|for
-control|(
 name|int
 name|i
 init|=
 literal|0
-init|;
-name|it
-operator|!=
-literal|null
-operator|&&
-name|it
+decl_stmt|;
+for|for
+control|(
+name|DatanodeStorageInfo
+name|s
+range|:
+name|blocksMap
 operator|.
-name|hasNext
-argument_list|()
-condition|;
-name|i
-operator|++
+name|getStorages
+argument_list|(
+name|block
+argument_list|)
 control|)
 block|{
-name|nodes
+name|storages
 index|[
 name|i
+operator|++
 index|]
 operator|=
-name|it
-operator|.
-name|next
-argument_list|()
+name|s
 expr_stmt|;
 block|}
 return|return
-name|nodes
+name|storages
 return|;
 block|}
 DECL|method|getTotalBlocks ()
@@ -14231,32 +14472,24 @@ literal|null
 decl_stmt|;
 for|for
 control|(
-name|Iterator
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|it
-init|=
+name|DatanodeStorageInfo
+name|storage
+range|:
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|b
 argument_list|)
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
 control|)
 block|{
+specifier|final
 name|DatanodeDescriptor
 name|cur
 init|=
-name|it
+name|storage
 operator|.
-name|next
+name|getDatanodeDescriptor
 argument_list|()
 decl_stmt|;
 if|if
@@ -14447,13 +14680,13 @@ argument_list|)
 return|;
 block|}
 comment|/** @return an iterator of the datanodes. */
-DECL|method|datanodeIterator (final Block block)
+DECL|method|getStorages (final Block block)
 specifier|public
-name|Iterator
+name|Iterable
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|datanodeIterator
+name|getStorages
 parameter_list|(
 specifier|final
 name|Block
@@ -14463,7 +14696,7 @@ block|{
 return|return
 name|blocksMap
 operator|.
-name|nodeIterator
+name|getStorages
 argument_list|(
 name|block
 argument_list|)
@@ -14922,13 +15155,13 @@ name|DatanodeDescriptor
 argument_list|>
 name|containingNodes
 decl_stmt|;
-DECL|field|liveReplicaNodes
+DECL|field|liveReplicaStorages
 specifier|private
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|liveReplicaNodes
+name|liveReplicaStorages
 decl_stmt|;
 DECL|field|additionalReplRequired
 specifier|private
@@ -14937,7 +15170,7 @@ name|additionalReplRequired
 decl_stmt|;
 DECL|field|targets
 specifier|private
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|targets
 index|[]
 decl_stmt|;
@@ -14946,7 +15179,7 @@ specifier|private
 name|int
 name|priority
 decl_stmt|;
-DECL|method|ReplicationWork (Block block, BlockCollection bc, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeDescriptor> liveReplicaNodes, int additionalReplRequired, int priority)
+DECL|method|ReplicationWork (Block block, BlockCollection bc, DatanodeDescriptor srcNode, List<DatanodeDescriptor> containingNodes, List<DatanodeStorageInfo> liveReplicaStorages, int additionalReplRequired, int priority)
 specifier|public
 name|ReplicationWork
 parameter_list|(
@@ -14967,9 +15200,9 @@ name|containingNodes
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|liveReplicaNodes
+name|liveReplicaStorages
 parameter_list|,
 name|int
 name|additionalReplRequired
@@ -15004,9 +15237,9 @@ name|containingNodes
 expr_stmt|;
 name|this
 operator|.
-name|liveReplicaNodes
+name|liveReplicaStorages
 operator|=
-name|liveReplicaNodes
+name|liveReplicaStorages
 expr_stmt|;
 name|this
 operator|.
@@ -15057,7 +15290,7 @@ name|additionalReplRequired
 argument_list|,
 name|srcNode
 argument_list|,
-name|liveReplicaNodes
+name|liveReplicaStorages
 argument_list|,
 literal|false
 argument_list|,
@@ -15067,6 +15300,10 @@ name|block
 operator|.
 name|getNumBytes
 argument_list|()
+argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
 argument_list|)
 expr_stmt|;
 block|}

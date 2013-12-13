@@ -1485,7 +1485,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean forReading, boolean inProgressOk)
+DECL|method|getEditLogManifest (String jid, long sinceTxId, boolean inProgressOk)
 specifier|public
 name|GetEditLogManifestResponseProto
 name|getEditLogManifest
@@ -1495,9 +1495,6 @@ name|jid
 parameter_list|,
 name|long
 name|sinceTxId
-parameter_list|,
-name|boolean
-name|forReading
 parameter_list|,
 name|boolean
 name|inProgressOk
@@ -1530,11 +1527,6 @@ operator|.
 name|setSinceTxId
 argument_list|(
 name|sinceTxId
-argument_list|)
-operator|.
-name|setForReading
-argument_list|(
-name|forReading
 argument_list|)
 operator|.
 name|setInProgressOk
