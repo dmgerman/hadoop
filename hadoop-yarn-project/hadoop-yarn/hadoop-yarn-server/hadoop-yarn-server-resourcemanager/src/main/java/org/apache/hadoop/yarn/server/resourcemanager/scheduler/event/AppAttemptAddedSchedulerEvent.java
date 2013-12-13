@@ -43,10 +43,10 @@ import|;
 end_import
 
 begin_class
-DECL|class|AppAddedSchedulerEvent
+DECL|class|AppAttemptAddedSchedulerEvent
 specifier|public
 class|class
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 extends|extends
 name|SchedulerEvent
 block|{
@@ -68,9 +68,9 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
-DECL|method|AppAddedSchedulerEvent (ApplicationAttemptId applicationAttemptId, String queue, String user)
+DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, String queue, String user)
 specifier|public
-name|AppAddedSchedulerEvent
+name|AppAttemptAddedSchedulerEvent
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
@@ -86,7 +86,7 @@ name|super
 argument_list|(
 name|SchedulerEventType
 operator|.
-name|APP_ADDED
+name|APP_ATTEMPT_ADDED
 argument_list|)
 expr_stmt|;
 name|this
