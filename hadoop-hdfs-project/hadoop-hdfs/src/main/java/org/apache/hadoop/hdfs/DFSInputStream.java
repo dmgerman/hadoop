@@ -2875,39 +2875,18 @@ block|}
 elseif|else
 if|if
 condition|(
-operator|(
-name|ex
-operator|instanceof
-name|InvalidBlockTokenException
-operator|||
-name|ex
-operator|instanceof
-name|InvalidToken
-operator|)
-operator|&&
 name|refetchToken
 operator|>
 literal|0
+operator|&&
+name|tokenRefetchNeeded
+argument_list|(
+name|ex
+argument_list|,
+name|targetAddr
+argument_list|)
 condition|)
 block|{
-name|DFSClient
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Will fetch a new access token and retry, "
-operator|+
-literal|"access token was invalid when connecting to "
-operator|+
-name|targetAddr
-operator|+
-literal|" : "
-operator|+
-name|ex
-argument_list|)
-expr_stmt|;
-comment|/*            * Get a new access token and retry. Retry is needed in 2 cases. 1)            * When both NN and DN re-started while DFSClient holding a cached            * access token. 2) In the case that NN fails to update its            * access key at pre-set interval (by a wide margin) and            * subsequently restarts. In this case, DN re-registers itself with            * NN and receives a new access key, but DN will delete the old            * access key from its memory since it's considered expired based on            * the estimated expiration date.            */
 name|refetchToken
 operator|--
 expr_stmt|;
@@ -4739,38 +4718,18 @@ block|}
 elseif|else
 if|if
 condition|(
-operator|(
-name|e
-operator|instanceof
-name|InvalidBlockTokenException
-operator|||
-name|e
-operator|instanceof
-name|InvalidToken
-operator|)
-operator|&&
 name|refetchToken
 operator|>
 literal|0
+operator|&&
+name|tokenRefetchNeeded
+argument_list|(
+name|e
+argument_list|,
+name|targetAddr
+argument_list|)
 condition|)
 block|{
-name|DFSClient
-operator|.
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Will get a new access token and retry, "
-operator|+
-literal|"access token was invalid when connecting to "
-operator|+
-name|targetAddr
-operator|+
-literal|" : "
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
 name|refetchToken
 operator|--
 expr_stmt|;
@@ -4859,6 +4818,55 @@ name|chosenNode
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Should the block access token be refetched on an exception    *     * @param ex Exception received    * @param targetAddr Target datanode address from where exception was received    * @return true if block access token has expired or invalid and it should be    *         refetched    */
+DECL|method|tokenRefetchNeeded (IOException ex, InetSocketAddress targetAddr)
+specifier|private
+specifier|static
+name|boolean
+name|tokenRefetchNeeded
+parameter_list|(
+name|IOException
+name|ex
+parameter_list|,
+name|InetSocketAddress
+name|targetAddr
+parameter_list|)
+block|{
+comment|/*      * Get a new access token and retry. Retry is needed in 2 cases. 1)      * When both NN and DN re-started while DFSClient holding a cached      * access token. 2) In the case that NN fails to update its      * access key at pre-set interval (by a wide margin) and      * subsequently restarts. In this case, DN re-registers itself with      * NN and receives a new access key, but DN will delete the old      * access key from its memory since it's considered expired based on      * the estimated expiration date.      */
+if|if
+condition|(
+name|ex
+operator|instanceof
+name|InvalidBlockTokenException
+operator|||
+name|ex
+operator|instanceof
+name|InvalidToken
+condition|)
+block|{
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Access token was invalid when connecting to "
+operator|+
+name|targetAddr
+operator|+
+literal|" : "
+operator|+
+name|ex
+argument_list|)
+expr_stmt|;
+return|return
+literal|true
+return|;
+block|}
+return|return
+literal|false
+return|;
 block|}
 DECL|method|newTcpPeer (InetSocketAddress addr)
 specifier|private
