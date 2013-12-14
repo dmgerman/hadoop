@@ -652,6 +652,21 @@ name|dsDelta
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|isQuotaSet ()
+name|boolean
+name|isQuotaSet
+parameter_list|()
+block|{
+return|return
+name|nsQuota
+operator|>=
+literal|0
+operator|||
+name|dsQuota
+operator|>=
+literal|0
+return|;
+block|}
 DECL|method|namespaceString ()
 specifier|private
 name|String

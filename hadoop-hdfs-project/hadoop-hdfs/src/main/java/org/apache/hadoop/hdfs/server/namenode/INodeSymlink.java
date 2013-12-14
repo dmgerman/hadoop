@@ -215,16 +215,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (Snapshot latest, final INodeMap inodeMap)
+DECL|method|recordModification (Snapshot latest)
 name|INode
 name|recordModification
 parameter_list|(
 name|Snapshot
 name|latest
-parameter_list|,
-specifier|final
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -256,8 +252,6 @@ name|INodeSymlink
 argument_list|(
 name|this
 argument_list|)
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 block|}

@@ -606,24 +606,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INodeMap
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|INodeReference
 import|;
 end_import
@@ -682,7 +664,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
+name|DirectoryWithSnapshotFeature
 operator|.
 name|ChildrenDiff
 import|;
@@ -704,7 +686,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
+name|DirectoryWithSnapshotFeature
 operator|.
 name|DirectoryDiff
 import|;
@@ -5582,12 +5564,9 @@ name|getReferenceCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|foo
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooWithCount
 operator|.
 name|asDirectory
@@ -5614,6 +5593,9 @@ argument_list|(
 literal|"s1"
 argument_list|,
 name|foo
+operator|.
+name|getDirectoryWithSnapshotFeature
+argument_list|()
 operator|.
 name|getLastSnapshot
 argument_list|()
@@ -7126,12 +7108,9 @@ name|getReferenceCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|foo
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooWithCount
 operator|.
 name|asDirectory
@@ -7707,9 +7686,6 @@ argument_list|)
 expr_stmt|;
 name|foo
 operator|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooWithCount
 operator|.
 name|asDirectory
@@ -8712,12 +8688,9 @@ name|getReferenceCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|fooDir
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooWC
 operator|.
 name|getReferredINode
@@ -9353,12 +9326,6 @@ name|Snapshot
 operator|)
 name|anyObject
 argument_list|()
-argument_list|,
-operator|(
-name|INodeMap
-operator|)
-name|anyObject
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|INodeDirectory
@@ -9584,8 +9551,17 @@ decl_stmt|;
 name|assertTrue
 argument_list|(
 name|fooNode
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isDirectory
+argument_list|()
+operator|&&
+name|fooNode
+operator|.
+name|asDirectory
+argument_list|()
+operator|.
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|List
@@ -9594,12 +9570,10 @@ name|DirectoryDiff
 argument_list|>
 name|fooDiffs
 init|=
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooNode
-operator|)
+operator|.
+name|asDirectory
+argument_list|()
 operator|.
 name|getDiffs
 argument_list|()
@@ -9702,8 +9676,9 @@ decl_stmt|;
 name|assertFalse
 argument_list|(
 name|dir2Node
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|ReadOnlyList
@@ -9918,12 +9893,6 @@ argument_list|()
 argument_list|,
 operator|(
 name|Snapshot
-operator|)
-name|anyObject
-argument_list|()
-argument_list|,
-operator|(
-name|INodeMap
 operator|)
 name|anyObject
 argument_list|()
@@ -10230,8 +10199,9 @@ decl_stmt|;
 name|assertFalse
 argument_list|(
 name|dir2Node
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|ReadOnlyList
@@ -10446,12 +10416,6 @@ argument_list|()
 argument_list|,
 operator|(
 name|Snapshot
-operator|)
-name|anyObject
-argument_list|()
-argument_list|,
-operator|(
-name|INodeMap
 operator|)
 name|anyObject
 argument_list|()
@@ -10736,15 +10700,10 @@ name|DirectoryDiff
 argument_list|>
 name|fooDiffs
 init|=
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooNode
 operator|.
 name|asDirectory
 argument_list|()
-operator|)
 operator|.
 name|getDiffs
 argument_list|()
@@ -11070,15 +11029,10 @@ argument_list|)
 expr_stmt|;
 name|fooDiffs
 operator|=
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooNode
 operator|.
 name|asDirectory
 argument_list|()
-operator|)
 operator|.
 name|getDiffs
 argument_list|()
@@ -11375,12 +11329,6 @@ name|Snapshot
 operator|)
 name|anyObject
 argument_list|()
-argument_list|,
-operator|(
-name|INodeMap
-operator|)
-name|anyObject
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|Mockito
@@ -11404,12 +11352,6 @@ argument_list|()
 argument_list|,
 operator|(
 name|Snapshot
-operator|)
-name|anyObject
-argument_list|()
-argument_list|,
-operator|(
-name|INodeMap
 operator|)
 name|anyObject
 argument_list|()
@@ -11836,12 +11778,11 @@ name|assertTrue
 argument_list|(
 name|fooNode
 operator|.
-name|getClass
+name|asDirectory
 argument_list|()
-operator|==
-name|INodeDirectoryWithSnapshot
 operator|.
-name|class
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|INode
@@ -12415,12 +12356,11 @@ name|assertTrue
 argument_list|(
 name|fooNode
 operator|.
-name|getClass
+name|asDirectory
 argument_list|()
-operator|==
-name|INodeDirectoryWithSnapshot
 operator|.
-name|class
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertSame
@@ -12615,12 +12555,11 @@ name|assertTrue
 argument_list|(
 name|subdir2Node
 operator|.
-name|getClass
+name|asDirectory
 argument_list|()
-operator|==
-name|INodeDirectoryWithSnapshot
 operator|.
-name|class
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertSame
@@ -12755,12 +12694,10 @@ argument_list|)
 expr_stmt|;
 name|diffList
 operator|=
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|subdir2Node
-operator|)
+operator|.
+name|asDirectory
+argument_list|()
 operator|.
 name|getDiffs
 argument_list|()
@@ -12906,12 +12843,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// check
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|fooNode
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -12921,6 +12855,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|ReadOnlyList
 argument_list|<
@@ -14536,12 +14473,9 @@ name|getReferenceCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|fooNode
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|wc
 operator|.
 name|getReferredINode
@@ -15049,12 +14983,9 @@ name|getReferenceCount
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|fooNode
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|wc
 operator|.
 name|getReferredINode
@@ -15293,7 +15224,7 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This test demonstrates that     * {@link INodeDirectoryWithSnapshot#removeChild(INode, Snapshot, INodeMap)}    * and     * {@link INodeDirectoryWithSnapshot#addChild(INode, boolean, Snapshot, INodeMap)}    * should use {@link INode#isInLatestSnapshot(Snapshot)} to check if the     * added/removed child should be recorded in snapshots.    */
+comment|/**    * This test demonstrates that     * {@link INodeDirectory#removeChild(INode, Snapshot)}    * and     * {@link INodeDirectory#addChild(INode, boolean, Snapshot)}    * should use {@link INode#isInLatestSnapshot(Snapshot)} to check if the     * added/removed child should be recorded in snapshots.    */
 annotation|@
 name|Test
 DECL|method|testRenameDirAndDeleteSnapshot_5 ()
@@ -15397,7 +15328,7 @@ argument_list|,
 literal|"bar"
 argument_list|)
 decl_stmt|;
-comment|// create file bar, and foo will become an INodeDirectoryWithSnapshot
+comment|// create file bar, and foo will become an INodeDirectory with snapshot
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -15495,7 +15426,7 @@ argument_list|)
 expr_stmt|;
 comment|// delete /dir2/foo. Since it is not in any snapshot, we will call its
 comment|// destroy function. If we do not use isInLatestSnapshot in removeChild and
-comment|// addChild methods in INodeDirectoryWithSnapshot, the file bar will be
+comment|// addChild methods in INodeDirectory (with snapshot), the file bar will be
 comment|// stored in the deleted list of foo, and will be destroyed.
 name|hdfs
 operator|.
@@ -15772,12 +15703,9 @@ name|foo_s0
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|dir2Node
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -15787,6 +15715,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|assertTrue
 argument_list|(
@@ -15848,23 +15779,19 @@ operator|.
 name|asDirectory
 argument_list|()
 decl_stmt|;
-comment|// fooNode should be still INodeDirectoryWithSnapshot since we call
+comment|// fooNode should be still INodeDirectory (With Snapshot) since we call
 comment|// recordModification before the rename
 name|assertTrue
 argument_list|(
 name|fooNode
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fooNode
-operator|)
 operator|.
 name|getDiffs
 argument_list|()
@@ -15894,16 +15821,11 @@ operator|.
 name|asDirectory
 argument_list|()
 decl_stmt|;
-comment|// bar should also be an INodeDirectoryWithSnapshot, and both of its diff
+comment|// bar should also be INodeDirectory (With Snapshot), and both of its diff
 comment|// list and children list are empty
 name|assertTrue
 argument_list|(
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|barNode
-operator|)
 operator|.
 name|getDiffs
 argument_list|()
@@ -16188,12 +16110,9 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// check dir1: foo should be in the created list of s0
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|dir1Node
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -16203,6 +16122,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
@@ -16338,12 +16260,9 @@ name|getName
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|barNode
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -16353,6 +16272,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|assertSame
 argument_list|(
@@ -16444,12 +16366,9 @@ argument_list|)
 expr_stmt|;
 comment|// check dir2: a WithName instance for foo should be in the deleted list
 comment|// of the snapshot diff for s2
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|dir2Node
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fsdir
 operator|.
 name|getINode4Write
@@ -16459,6 +16378,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
@@ -16828,12 +16750,9 @@ argument_list|,
 literal|"foo/bar"
 argument_list|)
 decl_stmt|;
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|barNode
 init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|fsdir
 operator|.
 name|getINode
@@ -16843,6 +16762,9 @@ operator|.
 name|toString
 argument_list|()
 argument_list|)
+operator|.
+name|asDirectory
+argument_list|()
 decl_stmt|;
 name|assertEquals
 argument_list|(

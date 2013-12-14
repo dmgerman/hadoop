@@ -12651,11 +12651,6 @@ operator|.
 name|recordModification
 argument_list|(
 name|latestSnapshot
-argument_list|,
-name|dir
-operator|.
-name|getINodeMap
-argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -19500,11 +19495,6 @@ operator|.
 name|recordModification
 argument_list|(
 name|latestSnapshot
-argument_list|,
-name|dir
-operator|.
-name|getINodeMap
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// The file is no longer pending.

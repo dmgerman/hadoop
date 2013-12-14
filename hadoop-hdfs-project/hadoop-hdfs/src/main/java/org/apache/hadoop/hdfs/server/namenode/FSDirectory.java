@@ -764,26 +764,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
 name|Snapshot
 import|;
 end_import
@@ -3173,8 +3153,6 @@ name|srcIIP
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|srcIIP
@@ -3557,8 +3535,6 @@ name|srcIIP
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|dstParent
@@ -3582,8 +3558,6 @@ name|dstIIP
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 comment|// update moved leases with new filename
@@ -3789,15 +3763,9 @@ condition|(
 name|isSrcInSnapshot
 condition|)
 block|{
-comment|// srcParent must be an INodeDirectoryWithSnapshot instance since
-comment|// isSrcInSnapshot is true and src node has been removed from
-comment|// srcParent
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
+comment|// srcParent must have snapshot feature since isSrcInSnapshot is true
+comment|// and src node has been removed from srcParent
 name|srcParent
-operator|)
 operator|.
 name|undoRename4ScrParent
 argument_list|(
@@ -4523,8 +4491,6 @@ name|srcIIP
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|srcIIP
@@ -4960,8 +4926,6 @@ name|srcIIP
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|dstParent
@@ -4984,8 +4948,6 @@ name|dstIIP
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 comment|// update moved lease with new filename
@@ -5289,16 +5251,12 @@ block|}
 if|if
 condition|(
 name|srcParent
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 condition|)
 block|{
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|srcParent
-operator|)
 operator|.
 name|undoRename4ScrParent
 argument_list|(
@@ -5338,16 +5296,23 @@ comment|// Rename failed - restore dst
 if|if
 condition|(
 name|dstParent
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isDirectory
+argument_list|()
+operator|&&
+name|dstParent
+operator|.
+name|asDirectory
+argument_list|()
+operator|.
+name|isWithSnapshot
+argument_list|()
 condition|)
 block|{
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|dstParent
-operator|)
+operator|.
+name|asDirectory
+argument_list|()
 operator|.
 name|undoRename4DstParent
 argument_list|(
@@ -5977,8 +5942,6 @@ name|inodesInPath
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -6123,8 +6086,6 @@ name|inodesInPath
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -6145,8 +6106,6 @@ name|inodesInPath
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -6519,8 +6478,6 @@ argument_list|(
 name|nodeToRemove
 argument_list|,
 name|trgLatestSnapshot
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 name|inodeMap
@@ -6552,8 +6509,6 @@ argument_list|(
 name|timestamp
 argument_list|,
 name|trgLatestSnapshot
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|trgParent
@@ -6563,8 +6518,6 @@ argument_list|(
 name|timestamp
 argument_list|,
 name|trgLatestSnapshot
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 comment|// update quota on the parent directory ('count' files removed, 0 space)
@@ -7175,8 +7128,6 @@ operator|.
 name|recordModification
 argument_list|(
 name|latestSnapshot
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|iip
@@ -7225,8 +7176,6 @@ argument_list|(
 name|mtime
 argument_list|,
 name|latestSnapshot
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 if|if
@@ -10800,8 +10749,6 @@ name|iip
 operator|.
 name|getLatestSnapshot
 argument_list|()
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 block|}
@@ -11005,8 +10952,6 @@ argument_list|(
 name|last
 argument_list|,
 name|latestSnapshot
-argument_list|,
-name|inodeMap
 argument_list|)
 condition|)
 block|{
@@ -11671,8 +11616,6 @@ operator|.
 name|recordModification
 argument_list|(
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|dirNode
@@ -12003,8 +11946,6 @@ argument_list|(
 name|mtime
 argument_list|,
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|status
@@ -12062,8 +12003,6 @@ argument_list|(
 name|atime
 argument_list|,
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 expr_stmt|;
 name|status

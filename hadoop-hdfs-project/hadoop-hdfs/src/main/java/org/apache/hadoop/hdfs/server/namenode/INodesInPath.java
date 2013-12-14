@@ -148,7 +148,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectorySnapshottable
+name|DirectoryWithSnapshotFeature
 import|;
 end_import
 
@@ -168,7 +168,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
+name|INodeDirectorySnapshottable
 import|;
 end_import
 
@@ -547,8 +547,9 @@ operator|&&
 name|isDir
 operator|&&
 name|dir
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 condition|)
 block|{
 comment|//if the path is a non-snapshot path, update the latest snapshot.
@@ -565,12 +566,10 @@ name|existing
 operator|.
 name|updateLatestSnapshot
 argument_list|(
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
 name|dir
-operator|)
+operator|.
+name|getDirectoryWithSnapshotFeature
+argument_list|()
 operator|.
 name|getLastSnapshot
 argument_list|()
@@ -648,6 +647,11 @@ name|lastSnapshot
 init|=
 literal|null
 decl_stmt|;
+name|DirectoryWithSnapshotFeature
+name|sf
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|curNode
@@ -655,25 +659,24 @@ operator|.
 name|isDirectory
 argument_list|()
 operator|&&
+operator|(
+name|sf
+operator|=
 name|curNode
 operator|.
 name|asDirectory
 argument_list|()
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|getDirectoryWithSnapshotFeature
+argument_list|()
+operator|)
+operator|!=
+literal|null
 condition|)
 block|{
 name|lastSnapshot
 operator|=
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
-name|curNode
-operator|.
-name|asDirectory
-argument_list|()
-operator|)
+name|sf
 operator|.
 name|getLastSnapshot
 argument_list|()

@@ -379,9 +379,6 @@ name|recordModification
 parameter_list|(
 name|Snapshot
 name|latest
-parameter_list|,
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
