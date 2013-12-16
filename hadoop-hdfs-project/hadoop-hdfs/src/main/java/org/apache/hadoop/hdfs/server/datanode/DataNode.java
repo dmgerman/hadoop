@@ -4800,9 +4800,6 @@ name|nsInfo
 argument_list|)
 expr_stmt|;
 block|}
-name|checkDatanodeUuid
-argument_list|()
-expr_stmt|;
 name|DatanodeID
 name|dnId
 init|=
@@ -5408,6 +5405,10 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+comment|// If this is a newly formatted DataNode then assign a new DatanodeUuid.
+name|checkDatanodeUuid
+argument_list|()
+expr_stmt|;
 synchronized|synchronized
 init|(
 name|this

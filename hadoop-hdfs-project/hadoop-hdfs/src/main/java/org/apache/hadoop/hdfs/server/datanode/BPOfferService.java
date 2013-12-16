@@ -754,6 +754,7 @@ literal|false
 return|;
 block|}
 DECL|method|getBlockPoolId ()
+specifier|synchronized
 name|String
 name|getBlockPoolId
 parameter_list|()
@@ -806,6 +807,7 @@ annotation|@
 name|Override
 DECL|method|toString ()
 specifier|public
+specifier|synchronized
 name|String
 name|toString
 parameter_list|()

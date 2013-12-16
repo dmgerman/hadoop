@@ -5556,11 +5556,6 @@ argument_list|(
 name|dir
 argument_list|)
 expr_stmt|;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|cacheManager
@@ -5575,13 +5570,6 @@ argument_list|,
 name|blockManager
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 name|this
 operator|.
 name|safeMode
@@ -12683,11 +12671,6 @@ operator|.
 name|recordModification
 argument_list|(
 name|latestSnapshot
-argument_list|,
-name|dir
-operator|.
-name|getINodeMap
-argument_list|()
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -15506,6 +15489,11 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
 name|NameNode
 operator|.
 name|stateChangeLog
@@ -15521,6 +15509,7 @@ operator|+
 name|holder
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|success
 return|;
@@ -19532,11 +19521,6 @@ operator|.
 name|recordModification
 argument_list|(
 name|latestSnapshot
-argument_list|,
-name|dir
-operator|.
-name|getINodeMap
-argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// The file is no longer pending.

@@ -1284,15 +1284,26 @@ decl_stmt|;
 comment|// Hardcoded path to shell script in launch container's local env
 DECL|field|ExecShellStringPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|ExecShellStringPath
 init|=
 literal|"ExecShellScript.sh"
 decl_stmt|;
+DECL|field|ExecBatScripStringtPath
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|ExecBatScripStringtPath
+init|=
+literal|"ExecBatScript.bat"
+decl_stmt|;
 comment|// Hardcoded path to custom log_properties
 DECL|field|log4jPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|log4jPath
@@ -1301,6 +1312,7 @@ literal|"log4j.properties"
 decl_stmt|;
 DECL|field|shellCommandPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|shellCommandPath
@@ -1309,6 +1321,7 @@ literal|"shellCommands"
 decl_stmt|;
 DECL|field|shellArgsPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|shellArgsPath
@@ -1347,6 +1360,22 @@ argument_list|<
 name|Thread
 argument_list|>
 argument_list|()
+decl_stmt|;
+DECL|field|linux_bash_command
+specifier|private
+specifier|final
+name|String
+name|linux_bash_command
+init|=
+literal|"bash"
+decl_stmt|;
+DECL|field|windows_command
+specifier|private
+specifier|final
+name|String
+name|windows_command
+init|=
+literal|"cmd /c"
 decl_stmt|;
 comment|/**    * @param args Command line args    */
 DECL|method|main (String[] args)
@@ -1716,17 +1745,6 @@ argument_list|,
 literal|true
 argument_list|,
 literal|"App Attempt ID. Not to be used unless for testing purposes"
-argument_list|)
-expr_stmt|;
-name|opts
-operator|.
-name|addOption
-argument_list|(
-literal|"shell_script"
-argument_list|,
-literal|true
-argument_list|,
-literal|"Location of the shell script to be executed"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -2173,16 +2191,36 @@ name|fileExist
 argument_list|(
 name|shellCommandPath
 argument_list|)
+operator|&&
+name|envs
+operator|.
+name|get
+argument_list|(
+name|DSConstants
+operator|.
+name|DISTRIBUTEDSHELLSCRIPTLOCATION
+argument_list|)
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"No shell command specified to be executed by application master"
+literal|"No shell command or shell script specified to be executed by application master"
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|fileExist
+argument_list|(
+name|shellCommandPath
+argument_list|)
+condition|)
+block|{
 name|shellCommand
 operator|=
 name|readContent
@@ -2190,6 +2228,7 @@ argument_list|(
 name|shellCommandPath
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|fileExist
@@ -4175,10 +4214,26 @@ name|localResources
 operator|.
 name|put
 argument_list|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|ExecBatScripStringtPath
+else|:
 name|ExecShellStringPath
 argument_list|,
 name|shellRsrc
 argument_list|)
+expr_stmt|;
+name|shellCommand
+operator|=
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|windows_command
+else|:
+name|linux_bash_command
 expr_stmt|;
 block|}
 name|ctx
@@ -4226,6 +4281,12 @@ name|vargs
 operator|.
 name|add
 argument_list|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|ExecBatScripStringtPath
+else|:
 name|ExecShellStringPath
 argument_list|)
 expr_stmt|;

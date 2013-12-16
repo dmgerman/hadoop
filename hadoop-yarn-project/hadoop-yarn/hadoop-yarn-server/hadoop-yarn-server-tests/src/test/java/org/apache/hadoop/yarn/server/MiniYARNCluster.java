@@ -1776,6 +1776,19 @@ operator|.
 name|RM_SERVICES_ADDRESS_CONF_KEYS
 control|)
 block|{
+for|for
+control|(
+name|String
+name|id
+range|:
+name|HAUtil
+operator|.
+name|getRMHAIds
+argument_list|(
+name|conf
+argument_list|)
+control|)
+block|{
 name|conf
 operator|.
 name|set
@@ -1786,7 +1799,7 @@ name|addSuffix
 argument_list|(
 name|confKey
 argument_list|,
-name|rmId
+name|id
 argument_list|)
 argument_list|,
 name|hostname
@@ -1794,6 +1807,7 @@ operator|+
 literal|":0"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 annotation|@

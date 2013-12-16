@@ -6228,6 +6228,11 @@ argument_list|(
 name|nodeReg
 argument_list|)
 expr_stmt|;
+name|metrics
+operator|.
+name|incrBlockReceivedAndDeletedOps
+argument_list|()
+expr_stmt|;
 if|if
 condition|(
 name|blockStateChangeLog
