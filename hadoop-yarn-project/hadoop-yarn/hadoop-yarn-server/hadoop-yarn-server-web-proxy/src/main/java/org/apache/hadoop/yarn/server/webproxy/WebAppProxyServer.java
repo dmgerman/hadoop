@@ -363,11 +363,20 @@ argument_list|)
 expr_stmt|;
 try|try
 block|{
+name|YarnConfiguration
+name|configuration
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+decl_stmt|;
 name|WebAppProxyServer
 name|proxyServer
 init|=
 name|startServer
-argument_list|()
+argument_list|(
+name|configuration
+argument_list|)
 decl_stmt|;
 name|proxyServer
 operator|.
@@ -403,12 +412,15 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Start proxy server.    *     * @return proxy server instance.    */
-DECL|method|startServer ()
+DECL|method|startServer (Configuration configuration)
 specifier|protected
 specifier|static
 name|WebAppProxyServer
 name|startServer
-parameter_list|()
+parameter_list|(
+name|Configuration
+name|configuration
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -433,24 +445,6 @@ name|proxy
 argument_list|)
 argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
-argument_list|)
-expr_stmt|;
-name|YarnConfiguration
-name|configuration
-init|=
-operator|new
-name|YarnConfiguration
-argument_list|()
-decl_stmt|;
-name|configuration
-operator|.
-name|set
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|PROXY_ADDRESS
-argument_list|,
-literal|"localhost:9099"
 argument_list|)
 expr_stmt|;
 name|proxy
