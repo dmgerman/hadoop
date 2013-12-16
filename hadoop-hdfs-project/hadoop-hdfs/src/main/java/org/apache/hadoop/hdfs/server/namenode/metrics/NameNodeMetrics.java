@@ -450,6 +450,15 @@ DECL|field|snapshotDiffReportOps
 name|MutableCounterLong
 name|snapshotDiffReportOps
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of blockReceivedAndDeleted calls"
+argument_list|)
+DECL|field|blockReceivedAndDeletedOps
+name|MutableCounterLong
+name|blockReceivedAndDeletedOps
+decl_stmt|;
 DECL|field|transactions
 annotation|@
 name|Metric
@@ -1039,6 +1048,18 @@ name|incrSnapshotDiffReportOps
 parameter_list|()
 block|{
 name|snapshotDiffReportOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|incrBlockReceivedAndDeletedOps ()
+specifier|public
+name|void
+name|incrBlockReceivedAndDeletedOps
+parameter_list|()
+block|{
+name|blockReceivedAndDeletedOps
 operator|.
 name|incr
 argument_list|()
