@@ -3146,6 +3146,11 @@ name|info
 argument_list|(
 literal|"Starting "
 operator|+
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 argument_list|)
@@ -3178,7 +3183,10 @@ name|error
 argument_list|(
 literal|"Error closing read selector in "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -3341,6 +3349,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -3443,6 +3456,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -3622,7 +3640,10 @@ name|info
 argument_list|(
 literal|"Stopping "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -3907,6 +3928,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -3933,6 +3959,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4050,6 +4081,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4186,6 +4222,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4215,7 +4256,10 @@ name|info
 argument_list|(
 literal|"Stopping "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -4241,7 +4285,10 @@ name|error
 argument_list|(
 literal|"Couldn't close write selector in "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -4349,6 +4396,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4866,6 +4918,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4960,6 +5017,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -5065,6 +5127,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -5103,6 +5170,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9403,6 +9475,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9456,6 +9533,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9625,6 +9707,11 @@ block|}
 name|String
 name|logMsg
 init|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9896,6 +9983,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9916,6 +10008,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9930,6 +10027,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
