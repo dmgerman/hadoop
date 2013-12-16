@@ -15469,6 +15469,11 @@ operator|.
 name|logSync
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|success
+condition|)
+block|{
 name|NameNode
 operator|.
 name|stateChangeLog
@@ -15484,6 +15489,7 @@ operator|+
 name|holder
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|success
 return|;
