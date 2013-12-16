@@ -5524,11 +5524,6 @@ argument_list|(
 name|dir
 argument_list|)
 expr_stmt|;
-name|writeLock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|cacheManager
@@ -5543,13 +5538,6 @@ argument_list|,
 name|blockManager
 argument_list|)
 expr_stmt|;
-block|}
-finally|finally
-block|{
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-block|}
 name|this
 operator|.
 name|safeMode
