@@ -530,6 +530,8 @@ argument_list|,
 name|jobTokenSecretManager
 argument_list|,
 name|rmHeartbeatHandler
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 name|this
@@ -1306,6 +1308,8 @@ argument_list|,
 name|secret
 argument_list|,
 name|rmHeartbeatHandler
+argument_list|,
+literal|null
 argument_list|)
 block|{
 annotation|@
@@ -1788,6 +1792,8 @@ argument_list|,
 name|secret
 argument_list|,
 name|rmHeartbeatHandler
+argument_list|,
+literal|null
 argument_list|)
 block|{
 annotation|@

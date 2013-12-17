@@ -490,6 +490,28 @@ name|v2
 operator|.
 name|app
 operator|.
+name|rm
+operator|.
+name|preemption
+operator|.
+name|AMPreemptionPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
 name|security
 operator|.
 name|authorize
@@ -720,7 +742,12 @@ name|jobTokenSecretManager
 init|=
 literal|null
 decl_stmt|;
-DECL|method|TaskAttemptListenerImpl (AppContext context, JobTokenSecretManager jobTokenSecretManager, RMHeartbeatHandler rmHeartbeatHandler)
+DECL|field|preemptionPolicy
+specifier|private
+name|AMPreemptionPolicy
+name|preemptionPolicy
+decl_stmt|;
+DECL|method|TaskAttemptListenerImpl (AppContext context, JobTokenSecretManager jobTokenSecretManager, RMHeartbeatHandler rmHeartbeatHandler, AMPreemptionPolicy preemptionPolicy)
 specifier|public
 name|TaskAttemptListenerImpl
 parameter_list|(
@@ -732,6 +759,9 @@ name|jobTokenSecretManager
 parameter_list|,
 name|RMHeartbeatHandler
 name|rmHeartbeatHandler
+parameter_list|,
+name|AMPreemptionPolicy
+name|preemptionPolicy
 parameter_list|)
 block|{
 name|super
@@ -761,6 +791,12 @@ operator|.
 name|rmHeartbeatHandler
 operator|=
 name|rmHeartbeatHandler
+expr_stmt|;
+name|this
+operator|.
+name|preemptionPolicy
+operator|=
+name|preemptionPolicy
 expr_stmt|;
 block|}
 annotation|@

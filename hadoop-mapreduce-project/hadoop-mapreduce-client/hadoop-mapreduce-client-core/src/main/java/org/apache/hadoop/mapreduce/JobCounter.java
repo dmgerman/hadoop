@@ -124,6 +124,18 @@ name|NUM_UBER_SUBREDUCES
 block|,
 DECL|enumConstant|NUM_FAILED_UBERTASKS
 name|NUM_FAILED_UBERTASKS
+block|,
+DECL|enumConstant|TASKS_REQ_PREEMPT
+name|TASKS_REQ_PREEMPT
+block|,
+DECL|enumConstant|CHECKPOINTS
+name|CHECKPOINTS
+block|,
+DECL|enumConstant|CHECKPOINT_BYTES
+name|CHECKPOINT_BYTES
+block|,
+DECL|enumConstant|CHECKPOINT_TIME
+name|CHECKPOINT_TIME
 block|}
 end_enum
 
