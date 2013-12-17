@@ -117,7 +117,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  *<p>The response sent by the<code>ResourceManager</code> to the client  * aborting a submitted application.</p>  *  *<p>Currently it's empty.</p>  *   * @see ApplicationClientProtocol#forceKillApplication(KillApplicationRequest)  */
+comment|/**  *<p>  * The response sent by the<code>ResourceManager</code> to the client aborting  * a submitted application.  *</p>  *<p>  * The response, includes:  *<ul>  *<li>A flag which indicates that the process of killing the application is  * completed or not.</li>  *</ul>  * Note: user is recommended to wait until this flag becomes true, otherwise if  * the<code>ResourceManager</code> crashes before the process of killing the  * application is completed, the<code>ResourceManager</code> may retry this  * application on recovery.  *</p>  *   * @see ApplicationClientProtocol#forceKillApplication(KillApplicationRequest)  */
 end_comment
 
 begin_class
@@ -135,12 +135,15 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ()
+DECL|method|newInstance (boolean isKillCompleted)
 specifier|public
 specifier|static
 name|KillApplicationResponse
 name|newInstance
-parameter_list|()
+parameter_list|(
+name|boolean
+name|isKillCompleted
+parameter_list|)
 block|{
 name|KillApplicationResponse
 name|response
@@ -154,10 +157,44 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+name|response
+operator|.
+name|setIsKillCompleted
+argument_list|(
+name|isKillCompleted
+argument_list|)
+expr_stmt|;
 return|return
 name|response
 return|;
 block|}
+comment|/**    * Get the flag which indicates that the process of killing application is completed or not.    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getIsKillCompleted ()
+specifier|public
+specifier|abstract
+name|boolean
+name|getIsKillCompleted
+parameter_list|()
+function_decl|;
+comment|/**    * Set the flag which indicates that the process of killing application is completed or not.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setIsKillCompleted (boolean isKillCompleted)
+specifier|public
+specifier|abstract
+name|void
+name|setIsKillCompleted
+parameter_list|(
+name|boolean
+name|isKillCompleted
+parameter_list|)
+function_decl|;
 block|}
 end_class
 
