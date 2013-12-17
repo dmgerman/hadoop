@@ -317,6 +317,18 @@ operator|new
 name|RetryForever
 argument_list|()
 decl_stmt|;
+comment|/**    *<p>    * Keep failing over forever    *</p>    */
+DECL|field|FAILOVER_FOREVER
+specifier|public
+specifier|static
+specifier|final
+name|RetryPolicy
+name|FAILOVER_FOREVER
+init|=
+operator|new
+name|FailoverForever
+argument_list|()
+decl_stmt|;
 comment|/**    *<p>    * Keep trying a limited number of times, waiting a fixed time between attempts,    * and then fail by re-throwing the exception.    *</p>    */
 DECL|method|retryUpToMaximumCountWithFixedSleep (int maxRetries, long sleepTime, TimeUnit timeUnit)
 specifier|public
@@ -657,6 +669,42 @@ return|return
 name|RetryAction
 operator|.
 name|RETRY
+return|;
+block|}
+block|}
+DECL|class|FailoverForever
+specifier|static
+class|class
+name|FailoverForever
+implements|implements
+name|RetryPolicy
+block|{
+annotation|@
+name|Override
+DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
+specifier|public
+name|RetryAction
+name|shouldRetry
+parameter_list|(
+name|Exception
+name|e
+parameter_list|,
+name|int
+name|retries
+parameter_list|,
+name|int
+name|failovers
+parameter_list|,
+name|boolean
+name|isIdempotentOrAtMostOnce
+parameter_list|)
+throws|throws
+name|Exception
+block|{
+return|return
+name|RetryAction
+operator|.
+name|FAILOVER_AND_RETRY
 return|;
 block|}
 block|}

@@ -36,16 +36,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|net
-operator|.
-name|InetSocketAddress
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|ArrayList
@@ -881,11 +871,6 @@ specifier|protected
 name|ApplicationClientProtocol
 name|rmClient
 decl_stmt|;
-DECL|field|rmAddress
-specifier|protected
-name|InetSocketAddress
-name|rmAddress
-decl_stmt|;
 DECL|field|submitPollIntervalMillis
 specifier|protected
 name|long
@@ -921,35 +906,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getRmAddress (Configuration conf)
-specifier|private
-specifier|static
-name|InetSocketAddress
-name|getRmAddress
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-return|return
-name|conf
-operator|.
-name|getSocketAddr
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|RM_ADDRESS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_ADDRESS
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|DEFAULT_RM_PORT
-argument_list|)
-return|;
-block|}
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -968,15 +924,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|this
-operator|.
-name|rmAddress
-operator|=
-name|getRmAddress
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|asyncApiPollIntervalMillis
 operator|=
 name|conf
@@ -1356,12 +1303,6 @@ argument_list|(
 literal|"Submitted application "
 operator|+
 name|applicationId
-operator|+
-literal|" to ResourceManager"
-operator|+
-literal|" at "
-operator|+
-name|rmAddress
 argument_list|)
 expr_stmt|;
 return|return
