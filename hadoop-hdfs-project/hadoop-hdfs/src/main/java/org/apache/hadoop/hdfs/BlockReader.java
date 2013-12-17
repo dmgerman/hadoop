@@ -28,6 +28,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -37,6 +47,20 @@ operator|.
 name|fs
 operator|.
 name|ByteBufferReadable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|ReadOption
 import|;
 end_import
 
@@ -193,13 +217,16 @@ name|boolean
 name|isShortCircuit
 parameter_list|()
 function_decl|;
-comment|/**    * Get a ClientMmap object for this BlockReader.    *    * @param curBlock      The current block.    * @return              The ClientMmap object, or null if mmap is not    *                      supported.    */
-DECL|method|getClientMmap (LocatedBlock curBlock, ClientMmapManager mmapManager)
+comment|/**    * Get a ClientMmap object for this BlockReader.    *    * @param opts          The read options to use.    * @return              The ClientMmap object, or null if mmap is not    *                      supported.    */
+DECL|method|getClientMmap (EnumSet<ReadOption> opts, ClientMmapManager mmapManager)
 name|ClientMmap
 name|getClientMmap
 parameter_list|(
-name|LocatedBlock
-name|curBlock
+name|EnumSet
+argument_list|<
+name|ReadOption
+argument_list|>
+name|opts
 parameter_list|,
 name|ClientMmapManager
 name|mmapManager

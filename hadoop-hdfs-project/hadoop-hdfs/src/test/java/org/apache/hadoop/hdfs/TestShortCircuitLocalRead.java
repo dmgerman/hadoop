@@ -1710,7 +1710,6 @@ operator|==
 literal|true
 argument_list|)
 expr_stmt|;
-comment|// create a new file in home directory. Do not close it.
 name|byte
 index|[]
 name|fileData
