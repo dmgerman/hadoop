@@ -661,6 +661,12 @@ specifier|volatile
 name|boolean
 name|asyncStatus
 decl_stmt|;
+DECL|field|asyncWriteBackStartOffset
+specifier|private
+specifier|volatile
+name|long
+name|asyncWriteBackStartOffset
+decl_stmt|;
 comment|/**    * The current offset of the file in HDFS. All the content before this offset    * has been written back to HDFS.    */
 DECL|field|nextOffset
 specifier|private
@@ -1114,6 +1120,10 @@ expr_stmt|;
 name|asyncStatus
 operator|=
 literal|false
+expr_stmt|;
+name|asyncWriteBackStartOffset
+operator|=
+literal|0
 expr_stmt|;
 name|dumpOut
 operator|=
@@ -2979,6 +2989,13 @@ name|asyncStatus
 operator|=
 literal|true
 expr_stmt|;
+name|asyncWriteBackStartOffset
+operator|=
+name|writeCtx
+operator|.
+name|getOffset
+argument_list|()
+expr_stmt|;
 name|asyncDataService
 operator|.
 name|execute
@@ -4548,9 +4565,20 @@ name|checkState
 argument_list|(
 name|asyncStatus
 argument_list|,
-literal|"The openFileCtx has false async status"
+literal|"openFileCtx has false asyncStatus, fileId:"
+operator|+
+name|latestAttr
+operator|.
+name|getFileid
+argument_list|()
 argument_list|)
 expr_stmt|;
+specifier|final
+name|long
+name|startOffset
+init|=
+name|asyncWriteBackStartOffset
+decl_stmt|;
 try|try
 block|{
 while|while
@@ -4558,6 +4586,7 @@ condition|(
 name|activeState
 condition|)
 block|{
+comment|// asyncStatus could be changed to false in offerNextToWrite()
 name|WriteCtx
 name|toWrite
 init|=
@@ -4613,11 +4642,56 @@ block|}
 block|}
 finally|finally
 block|{
-comment|// make sure we reset asyncStatus to false
+comment|// Make sure to reset asyncStatus to false unless a race happens
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+if|if
+condition|(
+name|startOffset
+operator|==
+name|asyncWriteBackStartOffset
+condition|)
+block|{
 name|asyncStatus
 operator|=
 literal|false
 expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Another asyn task is already started before this one"
+operator|+
+literal|" is finalized. fileId:"
+operator|+
+name|latestAttr
+operator|.
+name|getFileid
+argument_list|()
+operator|+
+literal|" asyncStatus:"
+operator|+
+name|asyncStatus
+operator|+
+literal|" original startOffset:"
+operator|+
+name|startOffset
+operator|+
+literal|" new startOffset:"
+operator|+
+name|asyncWriteBackStartOffset
+operator|+
+literal|". Won't change asyncStatus here."
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 block|}
 block|}
 DECL|method|processCommits (long offset)
