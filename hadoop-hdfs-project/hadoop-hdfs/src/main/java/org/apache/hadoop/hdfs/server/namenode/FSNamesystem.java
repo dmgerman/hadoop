@@ -1524,6 +1524,20 @@ name|hadoop
 operator|.
 name|fs
 operator|.
+name|CacheFlag
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
 name|ContentSummary
 import|;
 end_import
@@ -32650,12 +32664,18 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|addCacheDirective ( CacheDirectiveInfo directive)
+DECL|method|addCacheDirective (CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 name|long
 name|addCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|directive
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -32780,6 +32800,8 @@ argument_list|(
 name|directive
 argument_list|,
 name|pc
+argument_list|,
+name|flags
 argument_list|)
 decl_stmt|;
 name|getEditLog
@@ -32862,12 +32884,18 @@ return|return
 name|result
 return|;
 block|}
-DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive)
+DECL|method|modifyCacheDirective (CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 name|void
 name|modifyCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|directive
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -32954,6 +32982,8 @@ argument_list|(
 name|directive
 argument_list|,
 name|pc
+argument_list|,
+name|flags
 argument_list|)
 expr_stmt|;
 name|getEditLog

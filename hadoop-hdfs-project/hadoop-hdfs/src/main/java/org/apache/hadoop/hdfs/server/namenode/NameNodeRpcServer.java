@@ -176,6 +176,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|HashSet
 import|;
 end_import
@@ -237,6 +247,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CacheFlag
 import|;
 end_import
 
@@ -7293,13 +7317,19 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|addCacheDirective ( CacheDirectiveInfo path)
+DECL|method|addCacheDirective ( CacheDirectiveInfo path, EnumSet<CacheFlag> flags)
 specifier|public
 name|long
 name|addCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|path
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -7310,18 +7340,26 @@ operator|.
 name|addCacheDirective
 argument_list|(
 name|path
+argument_list|,
+name|flags
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive)
+DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 specifier|public
 name|void
 name|modifyCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|directive
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -7331,6 +7369,8 @@ operator|.
 name|modifyCacheDirective
 argument_list|(
 name|directive
+argument_list|,
+name|flags
 argument_list|)
 expr_stmt|;
 block|}

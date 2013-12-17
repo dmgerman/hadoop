@@ -6122,9 +6122,9 @@ argument_list|(
 literal|"pool1"
 argument_list|)
 operator|.
-name|setWeight
+name|setLimit
 argument_list|(
-literal|99
+literal|99l
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -6166,6 +6166,15 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|CacheFlag
+operator|.
+name|FORCE
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// OP_MODIFY_PATH_BASED_CACHE_DIRECTIVE
@@ -6194,6 +6203,15 @@ argument_list|)
 operator|.
 name|build
 argument_list|()
+argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
+name|CacheFlag
+operator|.
+name|FORCE
+argument_list|)
 argument_list|)
 expr_stmt|;
 comment|// OP_REMOVE_PATH_BASED_CACHE_DIRECTIVE
