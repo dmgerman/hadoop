@@ -1301,9 +1301,6 @@ name|dfsClient
 operator|.
 name|getDefaultReadCachingStrategy
 argument_list|()
-operator|.
-name|duplicate
-argument_list|()
 expr_stmt|;
 name|openInfo
 argument_list|()
@@ -2795,6 +2792,8 @@ argument_list|,
 name|dfsClient
 operator|.
 name|clientName
+argument_list|,
+name|cachingStrategy
 argument_list|)
 expr_stmt|;
 if|if
@@ -4481,6 +4480,14 @@ block|{
 comment|// cached block locations may have been updated by chooseDataNode()
 comment|// or fetchBlockAt(). Always get the latest list of locations at the
 comment|// start of the loop.
+name|CachingStrategy
+name|curCachingStrategy
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|block
 operator|=
 name|getBlockAt
@@ -4493,6 +4500,11 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
+name|curCachingStrategy
+operator|=
+name|cachingStrategy
+expr_stmt|;
+block|}
 name|DNAddrPair
 name|retval
 init|=
@@ -4575,6 +4587,8 @@ argument_list|,
 name|dfsClient
 operator|.
 name|clientName
+argument_list|,
+name|curCachingStrategy
 argument_list|)
 expr_stmt|;
 name|int
@@ -4991,8 +5005,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Retrieve a BlockReader suitable for reading.    * This method will reuse the cached connection to the DN if appropriate.    * Otherwise, it will create a new connection.    * Throwing an IOException from this method is basically equivalent to     * declaring the DataNode bad, so we try to connect a lot of different ways    * before doing that.    *    * @param dnAddr  Address of the datanode    * @param chosenNode Chosen datanode information    * @param file  File location    * @param block  The Block object    * @param blockToken  The access token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @return New BlockReader instance    */
-DECL|method|getBlockReader (InetSocketAddress dnAddr, DatanodeInfo chosenNode, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName)
+comment|/**    * Retrieve a BlockReader suitable for reading.    * This method will reuse the cached connection to the DN if appropriate.    * Otherwise, it will create a new connection.    * Throwing an IOException from this method is basically equivalent to     * declaring the DataNode bad, so we try to connect a lot of different ways    * before doing that.    *    * @param dnAddr  Address of the datanode    * @param chosenNode Chosen datanode information    * @param file  File location    * @param block  The Block object    * @param blockToken  The access token for security    * @param startOffset  The read offset, relative to block head    * @param len  The number of bytes to read    * @param bufferSize  The IO buffer size (not the client buffer size)    * @param verifyChecksum  Whether to verify checksum    * @param clientName  Client name    * @param CachingStrategy  caching strategy to use    * @return New BlockReader instance    */
+DECL|method|getBlockReader (InetSocketAddress dnAddr, DatanodeInfo chosenNode, String file, ExtendedBlock block, Token<BlockTokenIdentifier> blockToken, long startOffset, long len, int bufferSize, boolean verifyChecksum, String clientName, CachingStrategy curCachingStrategy)
 specifier|protected
 name|BlockReader
 name|getBlockReader
@@ -5029,6 +5043,9 @@ name|verifyChecksum
 parameter_list|,
 name|String
 name|clientName
+parameter_list|,
+name|CachingStrategy
+name|curCachingStrategy
 parameter_list|)
 throws|throws
 name|IOException
@@ -5146,7 +5163,7 @@ argument_list|)
 operator|.
 name|setCachingStrategy
 argument_list|(
-name|cachingStrategy
+name|curCachingStrategy
 argument_list|)
 operator|.
 name|build
@@ -5341,7 +5358,7 @@ name|fileInputStreamCache
 argument_list|,
 name|allowShortCircuitLocalReads
 argument_list|,
-name|cachingStrategy
+name|curCachingStrategy
 argument_list|)
 expr_stmt|;
 return|return
@@ -5473,7 +5490,7 @@ name|fileInputStreamCache
 argument_list|,
 name|allowShortCircuitLocalReads
 argument_list|,
-name|cachingStrategy
+name|curCachingStrategy
 argument_list|)
 expr_stmt|;
 return|return
@@ -5602,7 +5619,7 @@ name|fileInputStreamCache
 argument_list|,
 literal|false
 argument_list|,
-name|cachingStrategy
+name|curCachingStrategy
 argument_list|)
 expr_stmt|;
 return|return
@@ -5706,7 +5723,7 @@ name|fileInputStreamCache
 argument_list|,
 literal|false
 argument_list|,
-name|cachingStrategy
+name|curCachingStrategy
 argument_list|)
 return|;
 block|}
@@ -6842,11 +6859,24 @@ block|{
 name|this
 operator|.
 name|cachingStrategy
+operator|=
+operator|new
+name|CachingStrategy
+operator|.
+name|Builder
+argument_list|(
+name|this
+operator|.
+name|cachingStrategy
+argument_list|)
 operator|.
 name|setReadahead
 argument_list|(
 name|readahead
 argument_list|)
+operator|.
+name|build
+argument_list|()
 expr_stmt|;
 name|closeCurrentBlockReader
 argument_list|()
@@ -6869,11 +6899,24 @@ block|{
 name|this
 operator|.
 name|cachingStrategy
+operator|=
+operator|new
+name|CachingStrategy
+operator|.
+name|Builder
+argument_list|(
+name|this
+operator|.
+name|cachingStrategy
+argument_list|)
 operator|.
 name|setDropBehind
 argument_list|(
 name|dropBehind
 argument_list|)
+operator|.
+name|build
+argument_list|()
 expr_stmt|;
 name|closeCurrentBlockReader
 argument_list|()
