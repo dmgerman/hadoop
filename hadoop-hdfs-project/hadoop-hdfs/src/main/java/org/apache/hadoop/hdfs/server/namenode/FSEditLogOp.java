@@ -1504,6 +1504,10 @@ decl_stmt|;
 DECL|field|txid
 name|long
 name|txid
+init|=
+name|HdfsConstants
+operator|.
+name|INVALID_TXID
 decl_stmt|;
 DECL|field|rpcClientId
 name|byte
@@ -1522,11 +1526,6 @@ name|RpcConstants
 operator|.
 name|INVALID_CALL_ID
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|class|OpInstanceCache
 specifier|final
 specifier|public
@@ -2007,14 +2006,6 @@ operator|.
 name|opCode
 operator|=
 name|opCode
-expr_stmt|;
-name|this
-operator|.
-name|txid
-operator|=
-name|HdfsConstants
-operator|.
-name|INVALID_TXID
 expr_stmt|;
 block|}
 DECL|method|getTransactionId ()
@@ -18355,11 +18346,6 @@ name|int
 name|maxOpSize
 decl_stmt|;
 comment|/**      * Construct the reader      * @param in The stream to read from.      * @param logVersion The version of the data coming from the stream.      */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
 DECL|method|Reader (DataInputStream in, StreamLimiter limiter, int logVersion)
 specifier|public
 name|Reader
