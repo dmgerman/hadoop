@@ -4436,6 +4436,13 @@ specifier|final
 name|boolean
 name|haEnabled
 decl_stmt|;
+comment|/** flag indicating whether replication queues have been initialized */
+DECL|field|initializedReplQueues
+name|boolean
+name|initializedReplQueues
+init|=
+literal|false
+decl_stmt|;
 comment|/**    * Whether the namenode is in the middle of starting the active service    */
 DECL|field|startingActiveService
 specifier|private
@@ -6438,8 +6445,6 @@ operator|!=
 literal|null
 operator|&&
 operator|!
-name|safeMode
-operator|.
 name|isPopulatingReplQueues
 argument_list|()
 assert|;
@@ -6641,21 +6646,12 @@ operator|.
 name|processAllPendingDNMessages
 argument_list|()
 expr_stmt|;
+comment|// Only need to re-process the queue, If not in SafeMode.
 if|if
 condition|(
 operator|!
 name|isInSafeMode
 argument_list|()
-operator|||
-operator|(
-name|isInSafeMode
-argument_list|()
-operator|&&
-name|safeMode
-operator|.
-name|isPopulatingReplQueues
-argument_list|()
-operator|)
 condition|)
 block|{
 name|LOG
@@ -6665,9 +6661,7 @@ argument_list|(
 literal|"Reprocessing replication and invalidation queues"
 argument_list|)
 expr_stmt|;
-name|blockManager
-operator|.
-name|processMisReplicatedBlocks
+name|initializeReplQueues
 argument_list|()
 expr_stmt|;
 block|}
@@ -6816,6 +6810,30 @@ operator|=
 literal|false
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Initialize replication queues.    */
+DECL|method|initializeReplQueues ()
+specifier|private
+name|void
+name|initializeReplQueues
+parameter_list|()
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"initializing replication queues"
+argument_list|)
+expr_stmt|;
+name|blockManager
+operator|.
+name|processMisReplicatedBlocks
+argument_list|()
+expr_stmt|;
+name|initializedReplQueues
+operator|=
+literal|true
+expr_stmt|;
 block|}
 comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the {@link #startActiveServices()}    */
 DECL|method|inTransitionToActive ()
@@ -7005,6 +7023,16 @@ name|setShouldSendCachingCommands
 argument_list|(
 literal|false
 argument_list|)
+expr_stmt|;
+comment|// Don't want to keep replication queues when not in Active.
+name|blockManager
+operator|.
+name|clearQueues
+argument_list|()
+expr_stmt|;
+name|initializedReplQueues
+operator|=
+literal|false
 expr_stmt|;
 block|}
 finally|finally
@@ -22505,13 +22533,6 @@ name|lastStatusReport
 init|=
 literal|0
 decl_stmt|;
-comment|/** flag indicating whether replication queues have been initialized */
-DECL|field|initializedReplQueues
-name|boolean
-name|initializedReplQueues
-init|=
-literal|false
-decl_stmt|;
 comment|/** Was safemode entered automatically because available resources were low. */
 DECL|field|resourcesLow
 specifier|private
@@ -22687,15 +22708,12 @@ name|shouldIncrementallyTrackBlocks
 return|;
 block|}
 comment|/**      * Creates SafeModeInfo when safe mode is entered manually, or because      * available resources are low.      *      * The {@link #threshold} is set to 1.5 so that it could never be reached.      * {@link #blockTotal} is set to -1 to indicate that safe mode is manual.      *       * @see SafeModeInfo      */
-DECL|method|SafeModeInfo (boolean resourcesLow, boolean isReplQueuesInited)
+DECL|method|SafeModeInfo (boolean resourcesLow)
 specifier|private
 name|SafeModeInfo
 parameter_list|(
 name|boolean
 name|resourcesLow
-parameter_list|,
-name|boolean
-name|isReplQueuesInited
 parameter_list|)
 block|{
 name|this
@@ -22759,12 +22777,6 @@ name|resourcesLow
 operator|=
 name|resourcesLow
 expr_stmt|;
-name|this
-operator|.
-name|initializedReplQueues
-operator|=
-name|isReplQueuesInited
-expr_stmt|;
 name|enter
 argument_list|()
 expr_stmt|;
@@ -22793,18 +22805,6 @@ operator|.
 name|reached
 operator|>=
 literal|0
-return|;
-block|}
-comment|/**      * Check if we are populating replication queues.      */
-DECL|method|isPopulatingReplQueues ()
-specifier|private
-specifier|synchronized
-name|boolean
-name|isPopulatingReplQueues
-parameter_list|()
-block|{
-return|return
-name|initializedReplQueues
 return|;
 block|}
 comment|/**      * Enter safe mode.      */
@@ -23009,66 +23009,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**      * Initialize replication queues.      */
-DECL|method|initializeReplQueues ()
-specifier|private
-specifier|synchronized
-name|void
-name|initializeReplQueues
-parameter_list|()
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"initializing replication queues"
-argument_list|)
-expr_stmt|;
-assert|assert
-operator|!
-name|isPopulatingReplQueues
-argument_list|()
-operator|:
-literal|"Already initialized repl queues"
-assert|;
-name|long
-name|startTimeMisReplicatedScan
-init|=
-name|now
-argument_list|()
-decl_stmt|;
-name|blockManager
-operator|.
-name|processMisReplicatedBlocks
-argument_list|()
-expr_stmt|;
-name|initializedReplQueues
-operator|=
-literal|true
-expr_stmt|;
-name|NameNode
-operator|.
-name|stateChangeLog
-operator|.
-name|info
-argument_list|(
-literal|"STATE* Replication Queue initialization "
-operator|+
-literal|"scan for invalid, over- and under-replicated blocks "
-operator|+
-literal|"completed in "
-operator|+
-operator|(
-name|now
-argument_list|()
-operator|-
-name|startTimeMisReplicatedScan
-operator|)
-operator|+
-literal|" msec"
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**      * Check whether we have reached the threshold for       * initializing replication queues.      */
 DECL|method|canInitializeReplQueues ()
 specifier|private
@@ -23203,6 +23143,9 @@ operator|&&
 operator|!
 name|isPopulatingReplQueues
 argument_list|()
+operator|&&
+operator|!
+name|haEnabled
 condition|)
 block|{
 name|initializeReplQueues
@@ -23306,6 +23249,9 @@ operator|&&
 operator|!
 name|isPopulatingReplQueues
 argument_list|()
+operator|&&
+operator|!
+name|haEnabled
 condition|)
 block|{
 name|initializeReplQueues
@@ -24403,28 +24349,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|// safeMode is volatile, and may be set to null at any time
-name|SafeModeInfo
-name|safeMode
-init|=
-name|this
-operator|.
-name|safeMode
-decl_stmt|;
-if|if
-condition|(
-name|safeMode
-operator|==
-literal|null
-condition|)
 return|return
-literal|true
-return|;
-return|return
-name|safeMode
-operator|.
-name|isPopulatingReplQueues
-argument_list|()
+name|initializedReplQueues
 return|;
 block|}
 DECL|method|shouldPopulateReplQueues ()
@@ -24856,9 +24782,6 @@ operator|new
 name|SafeModeInfo
 argument_list|(
 name|resourcesLow
-argument_list|,
-name|isPopulatingReplQueues
-argument_list|()
 argument_list|)
 expr_stmt|;
 return|return;

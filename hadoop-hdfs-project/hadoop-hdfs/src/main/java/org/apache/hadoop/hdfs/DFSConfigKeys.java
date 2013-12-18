@@ -3144,6 +3144,25 @@ name|DFS_DEFAULT_MAX_CORRUPT_FILES_RETURNED
 init|=
 literal|500
 decl_stmt|;
+comment|/* Maximum number of blocks to process for initializing replication queues */
+DECL|field|DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT
+init|=
+literal|"dfs.block.misreplication.processing.limit"
+decl_stmt|;
+DECL|field|DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DFS_BLOCK_MISREPLICATION_PROCESSING_LIMIT_DEFAULT
+init|=
+literal|10000
+decl_stmt|;
 DECL|field|DFS_CLIENT_READ_SHORTCIRCUIT_KEY
 specifier|public
 specifier|static

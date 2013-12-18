@@ -74,6 +74,22 @@ name|LightWeightGSet
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|LightWeightGSet
+operator|.
+name|SetIterator
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class maintains the map from a block to its metadata.  * block's metadata currently includes blockCollection it belongs to and  * the datanodes that store the block.  */
 end_comment
@@ -230,6 +246,37 @@ argument_list|>
 argument_list|(
 name|capacity
 argument_list|)
+block|{
+annotation|@
+name|Override
+specifier|public
+name|Iterator
+argument_list|<
+name|BlockInfo
+argument_list|>
+name|iterator
+parameter_list|()
+block|{
+name|SetIterator
+name|iterator
+init|=
+operator|new
+name|SetIterator
+argument_list|()
+decl_stmt|;
+comment|/*          * Not tracking any modifications to set. As this set will be used          * always under FSNameSystem lock, modifications will not cause any          * ConcurrentModificationExceptions. But there is a chance of missing          * newly added elements during iteration.          */
+name|iterator
+operator|.
+name|setTrackModification
+argument_list|(
+literal|false
+argument_list|)
+expr_stmt|;
+return|return
+name|iterator
+return|;
+block|}
+block|}
 expr_stmt|;
 block|}
 DECL|method|close ()

@@ -1330,7 +1330,7 @@ operator|.
 name|blockSafe
 return|;
 block|}
-comment|/**    * @return true if safemode is not running, or if safemode has already    * initialized the replication queues    */
+comment|/**    * @return Replication queue initialization status    */
 DECL|method|safeModeInitializedReplQueues (NameNode nn)
 specifier|public
 specifier|static
@@ -1341,32 +1341,14 @@ name|NameNode
 name|nn
 parameter_list|)
 block|{
-name|SafeModeInfo
-name|smi
-init|=
+return|return
 name|nn
 operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|getSafeModeInfoForTests
+name|isPopulatingReplQueues
 argument_list|()
-decl_stmt|;
-if|if
-condition|(
-name|smi
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|true
-return|;
-block|}
-return|return
-name|smi
-operator|.
-name|initializedReplQueues
 return|;
 block|}
 DECL|method|getInProgressEditsFile (StorageDirectory sd, long startTxId)
