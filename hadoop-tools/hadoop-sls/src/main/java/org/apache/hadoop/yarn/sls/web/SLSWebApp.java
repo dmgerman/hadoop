@@ -274,6 +274,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|sls
+operator|.
+name|scheduler
+operator|.
+name|SchedulerWrapper
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|codahale
@@ -360,7 +378,7 @@ decl_stmt|;
 DECL|field|wrapper
 specifier|private
 specifier|transient
-name|ResourceSchedulerWrapper
+name|SchedulerWrapper
 name|wrapper
 decl_stmt|;
 DECL|field|metrics
@@ -592,11 +610,11 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|SLSWebApp (ResourceSchedulerWrapper wrapper, int metricsAddressPort)
+DECL|method|SLSWebApp (SchedulerWrapper wrapper, int metricsAddressPort)
 specifier|public
 name|SLSWebApp
 parameter_list|(
-name|ResourceSchedulerWrapper
+name|SchedulerWrapper
 name|wrapper
 parameter_list|,
 name|int
