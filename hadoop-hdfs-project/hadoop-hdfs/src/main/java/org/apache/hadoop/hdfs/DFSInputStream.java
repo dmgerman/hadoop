@@ -1325,7 +1325,12 @@ expr_stmt|;
 name|int
 name|retriesForLastBlockLength
 init|=
-literal|3
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|retryTimesForGetLastBlockLength
 decl_stmt|;
 while|while
 condition|(
@@ -1365,7 +1370,12 @@ argument_list|)
 expr_stmt|;
 name|waitFor
 argument_list|(
-literal|4000
+name|dfsClient
+operator|.
+name|getConf
+argument_list|()
+operator|.
+name|retryIntervalForGetLastBlockLength
 argument_list|)
 expr_stmt|;
 name|lastBlockBeingWrittenLength
