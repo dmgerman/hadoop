@@ -4973,8 +4973,8 @@ specifier|synchronized
 name|void
 name|storeApplicationAttemptStateInternal
 parameter_list|(
-name|String
-name|attemptIdStr
+name|ApplicationAttemptId
+name|attemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
 name|attemptStateData
@@ -4991,8 +4991,8 @@ specifier|synchronized
 name|void
 name|updateApplicationAttemptStateInternal
 parameter_list|(
-name|String
-name|attemptIdStr
+name|ApplicationAttemptId
+name|attemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
 name|attemptStateData
@@ -9901,12 +9901,12 @@ literal|0
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
 specifier|public
 name|void
 name|updateApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -9935,11 +9935,11 @@ name|Override
 specifier|public
 specifier|synchronized
 name|void
-DECL|method|updateApplicationAttemptStateInternal (String attemptIdStr, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 name|updateApplicationAttemptStateInternal
 parameter_list|(
-name|String
-name|attemptIdStr
+name|ApplicationAttemptId
+name|attemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
 name|attemptStateData
@@ -9956,7 +9956,7 @@ name|super
 operator|.
 name|updateApplicationAttemptStateInternal
 argument_list|(
-name|attemptIdStr
+name|attemptId
 argument_list|,
 name|attemptStateData
 argument_list|)
