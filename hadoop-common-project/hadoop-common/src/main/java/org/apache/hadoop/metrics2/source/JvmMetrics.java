@@ -96,7 +96,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Map
+name|List
 import|;
 end_import
 
@@ -106,21 +106,9 @@ name|java
 operator|.
 name|util
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|com
+name|concurrent
 operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Maps
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -411,7 +399,7 @@ name|sessionId
 decl_stmt|;
 DECL|field|gcInfoCache
 specifier|final
-name|Map
+name|ConcurrentHashMap
 argument_list|<
 name|String
 argument_list|,
@@ -420,9 +408,14 @@ index|[]
 argument_list|>
 name|gcInfoCache
 init|=
-name|Maps
-operator|.
-name|newHashMap
+operator|new
+name|ConcurrentHashMap
+argument_list|<
+name|String
+argument_list|,
+name|MetricsInfo
+index|[]
+argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|method|JvmMetrics (String processName, String sessionId)
@@ -804,7 +797,6 @@ expr_stmt|;
 block|}
 DECL|method|getGcInfo (String gcName)
 specifier|private
-specifier|synchronized
 name|MetricsInfo
 index|[]
 name|getGcInfo
@@ -875,15 +867,30 @@ operator|+
 name|gcName
 argument_list|)
 expr_stmt|;
+name|MetricsInfo
+index|[]
+name|previousGcInfo
+init|=
 name|gcInfoCache
 operator|.
-name|put
+name|putIfAbsent
 argument_list|(
 name|gcName
 argument_list|,
 name|gcInfo
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+if|if
+condition|(
+name|previousGcInfo
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+name|previousGcInfo
+return|;
+block|}
 block|}
 return|return
 name|gcInfo
