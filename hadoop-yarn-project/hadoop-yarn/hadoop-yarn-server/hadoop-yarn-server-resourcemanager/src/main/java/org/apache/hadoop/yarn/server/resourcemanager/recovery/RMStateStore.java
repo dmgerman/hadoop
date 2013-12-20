@@ -1851,13 +1851,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Blocking API    * Derived classes must implement this method to store the state of an     * application.    */
-DECL|method|storeApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
 specifier|protected
 specifier|abstract
 name|void
 name|storeApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -1866,13 +1866,13 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-DECL|method|updateApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
 specifier|protected
 specifier|abstract
 name|void
 name|updateApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -1975,13 +1975,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Blocking API    * Derived classes must implement this method to store the state of an     * application attempt    */
-DECL|method|storeApplicationAttemptStateInternal (String attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 specifier|protected
 specifier|abstract
 name|void
 name|storeApplicationAttemptStateInternal
 parameter_list|(
-name|String
+name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
@@ -1990,13 +1990,13 @@ parameter_list|)
 throws|throws
 name|Exception
 function_decl|;
-DECL|method|updateApplicationAttemptStateInternal (String attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 specifier|protected
 specifier|abstract
 name|void
 name|updateApplicationAttemptStateInternal
 parameter_list|(
-name|String
+name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
@@ -2629,9 +2629,6 @@ block|{
 name|storeApplicationStateInternal
 argument_list|(
 name|appId
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|appStateData
 argument_list|)
@@ -2662,9 +2659,6 @@ assert|;
 name|updateApplicationStateInternal
 argument_list|(
 name|appId
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|appStateData
 argument_list|)
@@ -2942,9 +2936,6 @@ name|attemptState
 operator|.
 name|getAttemptId
 argument_list|()
-operator|.
-name|toString
-argument_list|()
 argument_list|,
 name|attemptStateData
 argument_list|)
@@ -2980,9 +2971,6 @@ argument_list|(
 name|attemptState
 operator|.
 name|getAttemptId
-argument_list|()
-operator|.
-name|toString
 argument_list|()
 argument_list|,
 name|attemptStateData

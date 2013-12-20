@@ -70,10 +70,7 @@ name|APP_NEW_SAVED
 block|,
 DECL|enumConstant|APP_UPDATE_SAVED
 name|APP_UPDATE_SAVED
-block|,
-DECL|enumConstant|APP_REMOVED
-name|APP_REMOVED
-block|}
+block|, }
 end_enum
 
 end_unit

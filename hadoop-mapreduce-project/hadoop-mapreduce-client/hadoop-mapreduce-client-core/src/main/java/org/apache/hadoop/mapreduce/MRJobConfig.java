@@ -1874,6 +1874,18 @@ name|DEFAULT_MR_AM_JOB_REDUCE_PREEMPTION_LIMIT
 init|=
 literal|0.5f
 decl_stmt|;
+comment|/**    * Policy class encoding responses to preemption requests.    */
+DECL|field|MR_AM_PREEMPTION_POLICY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_PREEMPTION_POLICY
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"preemption.policy"
+decl_stmt|;
 comment|/** AM ACL disabled. **/
 DECL|field|JOB_AM_ACCESS_DISABLED
 specifier|public
@@ -2605,6 +2617,15 @@ name|String
 name|MR_APPLICATION_TYPE
 init|=
 literal|"MAPREDUCE"
+decl_stmt|;
+DECL|field|TASK_PREEMPTION
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_PREEMPTION
+init|=
+literal|"mapreduce.job.preemption"
 decl_stmt|;
 block|}
 end_interface

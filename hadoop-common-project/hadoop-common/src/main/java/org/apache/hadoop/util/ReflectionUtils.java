@@ -1333,7 +1333,7 @@ return|return
 name|serialFactory
 return|;
 block|}
-comment|/**    * Make a copy of the writable object using serialization to a buffer    * @param dst the object to copy from    * @param src the object to copy into, which is destroyed    * @throws IOException    */
+comment|/**    * Make a copy of the writable object using serialization to a buffer    * @param src the object to copy from    * @param dst the object to copy into, which is destroyed    * @return dst param (the copy)    * @throws IOException    */
 annotation|@
 name|SuppressWarnings
 argument_list|(

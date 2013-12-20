@@ -915,6 +915,36 @@ literal|0
 return|;
 block|}
 block|}
+comment|/**    * convenience method for canonicalizing host name.    * @param addr name:port or name     * @return canonicalized host name    */
+DECL|method|canonicalize (String addr)
+specifier|public
+specifier|static
+name|String
+name|canonicalize
+parameter_list|(
+name|String
+name|addr
+parameter_list|)
+block|{
+comment|// default port 1 is supplied to allow addr without port.
+comment|// the port will be ignored.
+return|return
+name|NetUtils
+operator|.
+name|createSocketAddr
+argument_list|(
+name|addr
+argument_list|,
+literal|1
+argument_list|)
+operator|.
+name|getAddress
+argument_list|()
+operator|.
+name|getCanonicalHostName
+argument_list|()
+return|;
+block|}
 comment|/**    * A helper class that generates the correct URL for different schema.    *    */
 DECL|class|Url
 specifier|public
@@ -936,6 +966,17 @@ name|DatanodeID
 name|d
 parameter_list|)
 block|{
+name|String
+name|fqdn
+init|=
+name|canonicalize
+argument_list|(
+name|d
+operator|.
+name|getIpAddr
+argument_list|()
+argument_list|)
+decl_stmt|;
 if|if
 condition|(
 name|scheme
@@ -947,9 +988,13 @@ argument_list|)
 condition|)
 block|{
 return|return
+name|fqdn
+operator|+
+literal|":"
+operator|+
 name|d
 operator|.
-name|getInfoAddr
+name|getInfoPort
 argument_list|()
 return|;
 block|}
@@ -965,9 +1010,13 @@ argument_list|)
 condition|)
 block|{
 return|return
+name|fqdn
+operator|+
+literal|":"
+operator|+
 name|d
 operator|.
-name|getInfoSecureAddr
+name|getInfoSecurePort
 argument_list|()
 return|;
 block|}

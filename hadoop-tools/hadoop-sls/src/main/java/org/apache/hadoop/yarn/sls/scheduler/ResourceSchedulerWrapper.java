@@ -1046,6 +1046,8 @@ specifier|public
 class|class
 name|ResourceSchedulerWrapper
 implements|implements
+name|SchedulerWrapper
+implements|,
 name|ResourceScheduler
 implements|,
 name|Configurable

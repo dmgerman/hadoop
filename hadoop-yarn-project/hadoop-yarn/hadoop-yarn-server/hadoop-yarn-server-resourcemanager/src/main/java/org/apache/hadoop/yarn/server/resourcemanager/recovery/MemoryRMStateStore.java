@@ -476,12 +476,12 @@ name|Exception
 block|{   }
 annotation|@
 name|Override
-DECL|method|storeApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
 specifier|public
 name|void
 name|storeApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -523,10 +523,7 @@ name|appState
 operator|.
 name|put
 argument_list|(
-name|appState
-operator|.
-name|getAppId
-argument_list|()
+name|appId
 argument_list|,
 name|appState
 argument_list|)
@@ -534,12 +531,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
 specifier|public
 name|void
 name|updateApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -606,14 +603,6 @@ operator|+
 name|appId
 argument_list|)
 expr_stmt|;
-name|ApplicationId
-name|applicationId
-init|=
-name|updatedAppState
-operator|.
-name|getAppId
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 name|state
@@ -622,7 +611,7 @@ name|appState
 operator|.
 name|get
 argument_list|(
-name|applicationId
+name|appId
 argument_list|)
 operator|!=
 literal|null
@@ -641,7 +630,7 @@ name|appState
 operator|.
 name|get
 argument_list|(
-name|applicationId
+name|appId
 argument_list|)
 operator|.
 name|attempts
@@ -654,7 +643,7 @@ name|appState
 operator|.
 name|put
 argument_list|(
-name|applicationId
+name|appId
 argument_list|,
 name|updatedAppState
 argument_list|)
@@ -662,14 +651,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationAttemptStateInternal (String attemptIdStr, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 specifier|public
 specifier|synchronized
 name|void
 name|storeApplicationAttemptStateInternal
 parameter_list|(
-name|String
-name|attemptIdStr
+name|ApplicationAttemptId
+name|appAttemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
 name|attemptStateData
@@ -677,16 +666,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ApplicationAttemptId
-name|attemptId
-init|=
-name|ConverterUtils
-operator|.
-name|toApplicationAttemptId
-argument_list|(
-name|attemptIdStr
-argument_list|)
-decl_stmt|;
 name|Credentials
 name|credentials
 init|=
@@ -739,7 +718,7 @@ init|=
 operator|new
 name|ApplicationAttemptState
 argument_list|(
-name|attemptId
+name|appAttemptId
 argument_list|,
 name|attemptStateData
 operator|.
@@ -805,14 +784,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationAttemptStateInternal ( String attemptIdStr, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 specifier|public
 specifier|synchronized
 name|void
 name|updateApplicationAttemptStateInternal
 parameter_list|(
-name|String
-name|attemptIdStr
+name|ApplicationAttemptId
+name|appAttemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
 name|attemptStateData
@@ -820,16 +799,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ApplicationAttemptId
-name|attemptId
-init|=
-name|ConverterUtils
-operator|.
-name|toApplicationAttemptId
-argument_list|(
-name|attemptIdStr
-argument_list|)
-decl_stmt|;
 name|Credentials
 name|credentials
 init|=
@@ -882,7 +851,7 @@ init|=
 operator|new
 name|ApplicationAttemptState
 argument_list|(
-name|attemptId
+name|appAttemptId
 argument_list|,
 name|attemptStateData
 operator|.

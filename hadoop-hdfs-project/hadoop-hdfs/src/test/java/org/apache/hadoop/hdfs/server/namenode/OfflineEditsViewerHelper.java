@@ -1349,9 +1349,9 @@ literal|0700
 argument_list|)
 argument_list|)
 operator|.
-name|setWeight
+name|setLimit
 argument_list|(
-literal|1989
+literal|1989l
 argument_list|)
 argument_list|)
 expr_stmt|;

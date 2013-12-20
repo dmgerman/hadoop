@@ -13591,6 +13591,11 @@ name|status
 init|=
 literal|false
 decl_stmt|;
+name|boolean
+name|firstReplicationLog
+init|=
+literal|true
+decl_stmt|;
 name|int
 name|underReplicatedBlocks
 init|=
@@ -13697,7 +13702,7 @@ operator|>
 name|curReplicas
 condition|)
 block|{
-comment|//Log info about one block for this node which needs replication
+comment|// Log info about one block for this node which needs replication
 if|if
 condition|(
 operator|!
@@ -13708,6 +13713,11 @@ name|status
 operator|=
 literal|true
 expr_stmt|;
+if|if
+condition|(
+name|firstReplicationLog
+condition|)
+block|{
 name|logBlockReplicationInfo
 argument_list|(
 name|block
@@ -13717,6 +13727,24 @@ argument_list|,
 name|num
 argument_list|)
 expr_stmt|;
+block|}
+comment|// Allowing decommission as long as default replication is met
+if|if
+condition|(
+name|curReplicas
+operator|>=
+name|defaultReplication
+condition|)
+block|{
+name|status
+operator|=
+literal|false
+expr_stmt|;
+name|firstReplicationLog
+operator|=
+literal|false
+expr_stmt|;
+block|}
 block|}
 name|underReplicatedBlocks
 operator|++

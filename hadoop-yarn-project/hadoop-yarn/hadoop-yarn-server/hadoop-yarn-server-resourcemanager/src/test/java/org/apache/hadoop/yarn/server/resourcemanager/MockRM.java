@@ -210,6 +210,24 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|KillApplicationResponse
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|SubmitApplicationRequest
 import|;
 end_import
@@ -2228,7 +2246,7 @@ expr_stmt|;
 block|}
 DECL|method|killApp (ApplicationId appId)
 specifier|public
-name|void
+name|KillApplicationResponse
 name|killApp
 parameter_list|(
 name|ApplicationId
@@ -2246,29 +2264,21 @@ decl_stmt|;
 name|KillApplicationRequest
 name|req
 init|=
-name|Records
-operator|.
-name|newRecord
-argument_list|(
 name|KillApplicationRequest
 operator|.
-name|class
-argument_list|)
-decl_stmt|;
-name|req
-operator|.
-name|setApplicationId
+name|newInstance
 argument_list|(
 name|appId
 argument_list|)
-expr_stmt|;
+decl_stmt|;
+return|return
 name|client
 operator|.
 name|forceKillApplication
 argument_list|(
 name|req
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 comment|// from AMLauncher
 DECL|method|sendAMLaunched (ApplicationAttemptId appAttemptId)

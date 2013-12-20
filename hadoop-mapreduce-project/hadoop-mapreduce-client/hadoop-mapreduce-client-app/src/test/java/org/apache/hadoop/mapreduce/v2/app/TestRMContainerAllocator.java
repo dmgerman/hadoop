@@ -21,6 +21,28 @@ package|;
 end_package
 
 begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|app
+operator|.
+name|rm
+operator|.
+name|preemption
+operator|.
+name|NoopAMPreemptionPolicy
+import|;
+end_import
+
+begin_import
 import|import static
 name|org
 operator|.
@@ -9553,6 +9575,10 @@ name|createMockClientService
 argument_list|()
 argument_list|,
 name|context
+argument_list|,
+operator|new
+name|NoopAMPreemptionPolicy
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -9591,6 +9617,10 @@ name|appAttemptId
 argument_list|,
 name|job
 argument_list|)
+argument_list|,
+operator|new
+name|NoopAMPreemptionPolicy
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -9645,6 +9675,10 @@ name|job
 argument_list|,
 name|clock
 argument_list|)
+argument_list|,
+operator|new
+name|NoopAMPreemptionPolicy
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|this
@@ -10832,6 +10866,10 @@ name|class
 argument_list|)
 argument_list|,
 name|appContext
+argument_list|,
+operator|new
+name|NoopAMPreemptionPolicy
+argument_list|()
 argument_list|)
 block|{
 annotation|@
@@ -11103,6 +11141,10 @@ name|AppContext
 operator|.
 name|class
 argument_list|)
+argument_list|,
+operator|new
+name|NoopAMPreemptionPolicy
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|TaskAttemptId

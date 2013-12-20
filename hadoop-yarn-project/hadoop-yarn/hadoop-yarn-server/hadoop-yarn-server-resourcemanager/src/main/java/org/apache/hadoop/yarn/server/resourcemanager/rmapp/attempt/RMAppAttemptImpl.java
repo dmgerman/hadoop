@@ -2757,6 +2757,8 @@ name|RMAppAttemptEventType
 operator|.
 name|CONTAINER_ALLOCATED
 argument_list|,
+comment|// ignore Kill as we have already saved the final Finished state in
+comment|// state store.
 name|RMAppAttemptEventType
 operator|.
 name|KILL

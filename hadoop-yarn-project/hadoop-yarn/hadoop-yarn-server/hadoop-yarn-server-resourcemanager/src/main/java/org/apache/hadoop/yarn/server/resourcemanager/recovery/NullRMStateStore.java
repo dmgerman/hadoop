@@ -80,6 +80,42 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|security
 operator|.
 name|client
@@ -231,12 +267,12 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
 specifier|protected
 name|void
 name|storeApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -249,12 +285,12 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationAttemptStateInternal (String attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|storeApplicationAttemptStateInternal (ApplicationAttemptId attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 specifier|protected
 name|void
 name|storeApplicationAttemptStateInternal
 parameter_list|(
-name|String
+name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
@@ -348,12 +384,12 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateData)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateData)
 specifier|protected
 name|void
 name|updateApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -366,12 +402,12 @@ comment|// Do nothing
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationAttemptStateInternal (String attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
+DECL|method|updateApplicationAttemptStateInternal (ApplicationAttemptId attemptId, ApplicationAttemptStateDataPBImpl attemptStateData)
 specifier|protected
 name|void
 name|updateApplicationAttemptStateInternal
 parameter_list|(
-name|String
+name|ApplicationAttemptId
 name|attemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl

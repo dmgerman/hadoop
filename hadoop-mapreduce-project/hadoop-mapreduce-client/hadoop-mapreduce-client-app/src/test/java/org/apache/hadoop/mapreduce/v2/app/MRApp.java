@@ -1068,6 +1068,28 @@ name|mapreduce
 operator|.
 name|v2
 operator|.
+name|app
+operator|.
+name|rm
+operator|.
+name|preemption
+operator|.
+name|AMPreemptionPolicy
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
 name|util
 operator|.
 name|MRApps
@@ -3773,13 +3795,16 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|createTaskAttemptListener (AppContext context)
+DECL|method|createTaskAttemptListener ( AppContext context, AMPreemptionPolicy policy)
 specifier|protected
 name|TaskAttemptListener
 name|createTaskAttemptListener
 parameter_list|(
 name|AppContext
 name|context
+parameter_list|,
+name|AMPreemptionPolicy
+name|policy
 parameter_list|)
 block|{
 return|return

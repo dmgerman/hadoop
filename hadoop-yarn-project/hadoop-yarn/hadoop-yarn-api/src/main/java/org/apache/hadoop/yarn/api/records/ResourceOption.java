@@ -190,6 +190,29 @@ name|void
 name|build
 parameter_list|()
 function_decl|;
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+return|return
+literal|"Resource:"
+operator|+
+name|getResource
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|", overCommitTimeout:"
+operator|+
+name|getOverCommitTimeout
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 

@@ -265,14 +265,16 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|DEFAULT_WEIGHT
+DECL|field|DEFAULT_LIMIT
 specifier|public
 specifier|static
 specifier|final
-name|int
-name|DEFAULT_WEIGHT
+name|long
+name|DEFAULT_LIMIT
 init|=
-literal|100
+name|Long
+operator|.
+name|MAX_VALUE
 decl_stmt|;
 annotation|@
 name|Nonnull
@@ -304,10 +306,11 @@ specifier|private
 name|FsPermission
 name|mode
 decl_stmt|;
-DECL|field|weight
+comment|/**    * Maximum number of bytes that can be cached in this pool.    */
+DECL|field|limit
 specifier|private
-name|int
-name|weight
+name|long
+name|limit
 decl_stmt|;
 DECL|field|bytesNeeded
 specifier|private
@@ -501,23 +504,21 @@ operator|.
 name|getMode
 argument_list|()
 decl_stmt|;
-name|Integer
-name|weight
+name|long
+name|limit
 init|=
-operator|(
 name|info
 operator|.
-name|getWeight
+name|getLimit
 argument_list|()
 operator|==
 literal|null
-operator|)
 condition|?
-name|DEFAULT_WEIGHT
+name|DEFAULT_LIMIT
 else|:
 name|info
 operator|.
-name|getWeight
+name|getLimit
 argument_list|()
 decl_stmt|;
 return|return
@@ -535,7 +536,7 @@ name|groupName
 argument_list|,
 name|mode
 argument_list|,
-name|weight
+name|limit
 argument_list|)
 return|;
 block|}
@@ -575,12 +576,12 @@ argument_list|()
 argument_list|,
 name|info
 operator|.
-name|getWeight
+name|getLimit
 argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|CachePool (String poolName, String ownerName, String groupName, FsPermission mode, int weight)
+DECL|method|CachePool (String poolName, String ownerName, String groupName, FsPermission mode, long limit)
 name|CachePool
 parameter_list|(
 name|String
@@ -595,8 +596,8 @@ parameter_list|,
 name|FsPermission
 name|mode
 parameter_list|,
-name|int
-name|weight
+name|long
+name|limit
 parameter_list|)
 block|{
 name|Preconditions
@@ -657,9 +658,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|weight
+name|limit
 operator|=
-name|weight
+name|limit
 expr_stmt|;
 block|}
 DECL|method|getPoolName ()
@@ -763,30 +764,30 @@ return|return
 name|this
 return|;
 block|}
-DECL|method|getWeight ()
+DECL|method|getLimit ()
 specifier|public
-name|int
-name|getWeight
+name|long
+name|getLimit
 parameter_list|()
 block|{
 return|return
-name|weight
+name|limit
 return|;
 block|}
-DECL|method|setWeight (int weight)
+DECL|method|setLimit (long bytes)
 specifier|public
 name|CachePool
-name|setWeight
+name|setLimit
 parameter_list|(
-name|int
-name|weight
+name|long
+name|bytes
 parameter_list|)
 block|{
 name|this
 operator|.
-name|weight
+name|limit
 operator|=
-name|weight
+name|bytes
 expr_stmt|;
 return|return
 name|this
@@ -842,9 +843,9 @@ name|mode
 argument_list|)
 argument_list|)
 operator|.
-name|setWeight
+name|setLimit
 argument_list|(
-name|weight
+name|limit
 argument_list|)
 return|;
 block|}
@@ -948,6 +949,25 @@ return|return
 name|bytesCached
 return|;
 block|}
+DECL|method|getBytesOverlimit ()
+specifier|public
+name|long
+name|getBytesOverlimit
+parameter_list|()
+block|{
+return|return
+name|Math
+operator|.
+name|max
+argument_list|(
+name|bytesNeeded
+operator|-
+name|limit
+argument_list|,
+literal|0
+argument_list|)
+return|;
+block|}
 DECL|method|getFilesNeeded ()
 specifier|public
 name|long
@@ -990,6 +1010,12 @@ operator|.
 name|setBytesCached
 argument_list|(
 name|bytesCached
+argument_list|)
+operator|.
+name|setBytesOverlimit
+argument_list|(
+name|getBytesOverlimit
+argument_list|()
 argument_list|)
 operator|.
 name|setFilesNeeded
@@ -1137,12 +1163,12 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|", weight:"
+literal|", limit:"
 argument_list|)
 operator|.
 name|append
 argument_list|(
-name|weight
+name|limit
 argument_list|)
 operator|.
 name|append

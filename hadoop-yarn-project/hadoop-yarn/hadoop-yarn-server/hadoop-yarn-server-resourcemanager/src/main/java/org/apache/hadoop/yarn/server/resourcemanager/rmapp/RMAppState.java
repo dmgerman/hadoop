@@ -55,6 +55,9 @@ block|,
 DECL|enumConstant|FAILED
 name|FAILED
 block|,
+DECL|enumConstant|KILLING
+name|KILLING
+block|,
 DECL|enumConstant|KILLED
 name|KILLED
 block|}

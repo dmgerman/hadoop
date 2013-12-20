@@ -44,6 +44,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -73,6 +83,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CacheFlag
 import|;
 end_import
 
@@ -1779,30 +1803,42 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Add a CacheDirective to the CacheManager.    *     * @param directive A CacheDirectiveInfo to be added    * @return A CacheDirectiveInfo associated with the added directive    * @throws IOException if the directive could not be added    */
+comment|/**    * Add a CacheDirective to the CacheManager.    *     * @param directive A CacheDirectiveInfo to be added    * @param flags {@link CacheFlag}s to use for this operation.    * @return A CacheDirectiveInfo associated with the added directive    * @throws IOException if the directive could not be added    */
 annotation|@
 name|AtMostOnce
-DECL|method|addCacheDirective ( CacheDirectiveInfo directive)
+DECL|method|addCacheDirective (CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 specifier|public
 name|long
 name|addCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|directive
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Modify a CacheDirective in the CacheManager.    *     * @return directive The directive to modify.  Must contain     *                   a directive ID.    * @throws IOException if the directive could not be modified    */
+comment|/**    * Modify a CacheDirective in the CacheManager.    *     * @return directive The directive to modify. Must contain a directive ID.    * @param flags {@link CacheFlag}s to use for this operation.    * @throws IOException if the directive could not be modified    */
 annotation|@
 name|AtMostOnce
-DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive)
+DECL|method|modifyCacheDirective (CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 specifier|public
 name|void
 name|modifyCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|directive
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
