@@ -975,6 +975,17 @@ name|prevCacheManipulator
 decl_stmt|;
 static|static
 block|{
+name|NativeIO
+operator|.
+name|POSIX
+operator|.
+name|setCacheManipulator
+argument_list|(
+operator|new
+name|NoMlockCacheManipulator
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|EditLogFileOutputStream
 operator|.
 name|setShouldSkipFsyncForTesting
