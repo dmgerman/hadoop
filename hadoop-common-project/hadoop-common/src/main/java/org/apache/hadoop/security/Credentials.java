@@ -618,6 +618,24 @@ name|key
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Remove the key for a given alias.    * @param alias the alias for the key    */
+DECL|method|removeSecretKey (Text alias)
+specifier|public
+name|void
+name|removeSecretKey
+parameter_list|(
+name|Text
+name|alias
+parameter_list|)
+block|{
+name|secretKeysMap
+operator|.
+name|remove
+argument_list|(
+name|alias
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Convenience method for reading a token storage file, and loading the Tokens    * therein in the passed UGI    * @param filename    * @param conf    * @throws IOException    */
 DECL|method|readTokenStorageFile (Path filename, Configuration conf)
 specifier|public
