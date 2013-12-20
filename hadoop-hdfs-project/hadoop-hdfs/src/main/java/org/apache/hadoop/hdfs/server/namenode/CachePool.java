@@ -265,17 +265,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|DEFAULT_LIMIT
-specifier|public
-specifier|static
-specifier|final
-name|long
-name|DEFAULT_LIMIT
-init|=
-name|Long
-operator|.
-name|MAX_VALUE
-decl_stmt|;
 annotation|@
 name|Nonnull
 DECL|field|poolName
@@ -311,6 +300,12 @@ DECL|field|limit
 specifier|private
 name|long
 name|limit
+decl_stmt|;
+comment|/**    * Maximum duration that a CacheDirective in this pool remains valid,    * in milliseconds.    */
+DECL|field|maxRelativeExpiryMs
+specifier|private
+name|long
+name|maxRelativeExpiryMs
 decl_stmt|;
 DECL|field|bytesNeeded
 specifier|private
@@ -514,11 +509,32 @@ argument_list|()
 operator|==
 literal|null
 condition|?
+name|CachePoolInfo
+operator|.
 name|DEFAULT_LIMIT
 else|:
 name|info
 operator|.
 name|getLimit
+argument_list|()
+decl_stmt|;
+name|long
+name|maxRelativeExpiry
+init|=
+name|info
+operator|.
+name|getMaxRelativeExpiryMs
+argument_list|()
+operator|==
+literal|null
+condition|?
+name|CachePoolInfo
+operator|.
+name|DEFAULT_MAX_RELATIVE_EXPIRY
+else|:
+name|info
+operator|.
+name|getMaxRelativeExpiryMs
 argument_list|()
 decl_stmt|;
 return|return
@@ -537,6 +553,8 @@ argument_list|,
 name|mode
 argument_list|,
 name|limit
+argument_list|,
+name|maxRelativeExpiry
 argument_list|)
 return|;
 block|}
@@ -578,10 +596,15 @@ name|info
 operator|.
 name|getLimit
 argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getMaxRelativeExpiryMs
+argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|CachePool (String poolName, String ownerName, String groupName, FsPermission mode, long limit)
+DECL|method|CachePool (String poolName, String ownerName, String groupName, FsPermission mode, long limit, long maxRelativeExpiry)
 name|CachePool
 parameter_list|(
 name|String
@@ -598,6 +621,9 @@ name|mode
 parameter_list|,
 name|long
 name|limit
+parameter_list|,
+name|long
+name|maxRelativeExpiry
 parameter_list|)
 block|{
 name|Preconditions
@@ -661,6 +687,12 @@ operator|.
 name|limit
 operator|=
 name|limit
+expr_stmt|;
+name|this
+operator|.
+name|maxRelativeExpiryMs
+operator|=
+name|maxRelativeExpiry
 expr_stmt|;
 block|}
 DECL|method|getPoolName ()
@@ -793,6 +825,35 @@ return|return
 name|this
 return|;
 block|}
+DECL|method|getMaxRelativeExpiryMs ()
+specifier|public
+name|long
+name|getMaxRelativeExpiryMs
+parameter_list|()
+block|{
+return|return
+name|maxRelativeExpiryMs
+return|;
+block|}
+DECL|method|setMaxRelativeExpiryMs (long expiry)
+specifier|public
+name|CachePool
+name|setMaxRelativeExpiryMs
+parameter_list|(
+name|long
+name|expiry
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxRelativeExpiryMs
+operator|=
+name|expiry
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**    * Get either full or partial information about this CachePool.    *    * @param fullInfo    *          If true, only the name will be returned (i.e., what you     *          would get if you didn't have read permission for this pool.)    * @return    *          Cache pool information.    */
 DECL|method|getInfo (boolean fullInfo)
 name|CachePoolInfo
@@ -846,6 +907,11 @@ operator|.
 name|setLimit
 argument_list|(
 name|limit
+argument_list|)
+operator|.
+name|setMaxRelativeExpiryMs
+argument_list|(
+name|maxRelativeExpiryMs
 argument_list|)
 return|;
 block|}
@@ -1169,6 +1235,16 @@ operator|.
 name|append
 argument_list|(
 name|limit
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", maxRelativeExpiryMs:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|maxRelativeExpiryMs
 argument_list|)
 operator|.
 name|append
