@@ -294,6 +294,11 @@ specifier|protected
 name|String
 name|successfulAttempt
 decl_stmt|;
+DECL|field|status
+specifier|protected
+name|String
+name|status
+decl_stmt|;
 annotation|@
 name|XmlTransient
 DECL|field|taskNum
@@ -423,6 +428,15 @@ name|getProgress
 argument_list|()
 operator|*
 literal|100
+expr_stmt|;
+name|this
+operator|.
+name|status
+operator|=
+name|report
+operator|.
+name|getStatus
+argument_list|()
 expr_stmt|;
 name|this
 operator|.
@@ -644,6 +658,16 @@ block|}
 block|}
 return|return
 literal|null
+return|;
+block|}
+DECL|method|getStatus ()
+specifier|public
+name|String
+name|getStatus
+parameter_list|()
+block|{
+return|return
+name|status
 return|;
 block|}
 block|}

@@ -59,6 +59,13 @@ name|float
 name|getProgress
 parameter_list|()
 function_decl|;
+DECL|method|getStatus ()
+specifier|public
+specifier|abstract
+name|String
+name|getStatus
+parameter_list|()
+function_decl|;
 DECL|method|getStartTime ()
 specifier|public
 specifier|abstract
@@ -169,6 +176,16 @@ name|setProgress
 parameter_list|(
 name|float
 name|progress
+parameter_list|)
+function_decl|;
+DECL|method|setStatus (String status)
+specifier|public
+specifier|abstract
+name|void
+name|setStatus
+parameter_list|(
+name|String
+name|status
 parameter_list|)
 function_decl|;
 DECL|method|setStartTime (long startTime)

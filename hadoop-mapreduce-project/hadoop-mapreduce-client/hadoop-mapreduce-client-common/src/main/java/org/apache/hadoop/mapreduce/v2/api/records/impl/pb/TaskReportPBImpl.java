@@ -393,6 +393,11 @@ name|diagnostics
 init|=
 literal|null
 decl_stmt|;
+DECL|field|status
+specifier|private
+name|String
+name|status
+decl_stmt|;
 DECL|method|TaskReportPBImpl ()
 specifier|public
 name|TaskReportPBImpl
@@ -928,6 +933,18 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getStatus ()
+specifier|public
+name|String
+name|getStatus
+parameter_list|()
+block|{
+return|return
+name|status
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|setProgress (float progress)
 specifier|public
 name|void
@@ -948,6 +965,24 @@ operator|(
 name|progress
 operator|)
 argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|setStatus (String status)
+specifier|public
+name|void
+name|setStatus
+parameter_list|(
+name|String
+name|status
+parameter_list|)
+block|{
+name|this
+operator|.
+name|status
+operator|=
+name|status
 expr_stmt|;
 block|}
 annotation|@
