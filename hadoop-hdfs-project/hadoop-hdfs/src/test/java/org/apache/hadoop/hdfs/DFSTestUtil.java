@@ -46,6 +46,20 @@ end_import
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|collect
+operator|.
+name|Lists
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -156,7 +170,9 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|Path
+name|permission
+operator|.
+name|AclEntry
 import|;
 end_import
 
@@ -6264,6 +6280,22 @@ operator|.
 name|removeCachePool
 argument_list|(
 literal|"pool1"
+argument_list|)
+expr_stmt|;
+comment|// OP_SET_ACL
+name|filesystem
+operator|.
+name|setAcl
+argument_list|(
+name|pathConcatTarget
+argument_list|,
+name|Lists
+operator|.
+expr|<
+name|AclEntry
+operator|>
+name|newArrayList
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

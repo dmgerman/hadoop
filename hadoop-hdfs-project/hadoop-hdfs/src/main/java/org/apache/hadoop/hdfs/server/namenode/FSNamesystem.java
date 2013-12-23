@@ -34093,14 +34093,14 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|setAcl (String src, Iterable<AclEntry> aclSpec)
+DECL|method|setAcl (String src, List<AclEntry> aclSpec)
 name|void
 name|setAcl
 parameter_list|(
 name|String
 name|src
 parameter_list|,
-name|Iterable
+name|List
 argument_list|<
 name|AclEntry
 argument_list|>
