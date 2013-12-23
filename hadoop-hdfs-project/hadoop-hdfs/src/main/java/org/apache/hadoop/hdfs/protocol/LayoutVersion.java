@@ -455,6 +455,15 @@ literal|"Replace StorageID with DatanodeUuid."
 operator|+
 literal|" Use distinct StorageUuid per storage directory."
 argument_list|)
+block|,
+DECL|enumConstant|EXTENDED_ACL
+name|EXTENDED_ACL
+argument_list|(
+operator|-
+literal|50
+argument_list|,
+literal|"Extended ACL"
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final
