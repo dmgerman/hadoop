@@ -4331,7 +4331,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|8
+literal|9
 argument_list|,
 name|info
 operator|.
@@ -4400,6 +4400,13 @@ operator|.
 name|getDouble
 argument_list|(
 literal|"progress"
+argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getString
+argument_list|(
+literal|"status"
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -4547,7 +4554,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|verifyTaskGeneric (Task task, String id, String state, String type, String successfulAttempt, long startTime, long finishTime, long elapsedTime, float progress)
+DECL|method|verifyTaskGeneric (Task task, String id, String state, String type, String successfulAttempt, long startTime, long finishTime, long elapsedTime, float progress, String status)
 specifier|public
 name|void
 name|verifyTaskGeneric
@@ -4578,6 +4585,9 @@ name|elapsedTime
 parameter_list|,
 name|float
 name|progress
+parameter_list|,
+name|String
+name|status
 parameter_list|)
 block|{
 name|TaskId
@@ -4710,6 +4720,18 @@ argument_list|,
 literal|1e-3f
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|"status wrong"
+argument_list|,
+name|report
+operator|.
+name|getStatus
+argument_list|()
+argument_list|,
+name|status
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|verifyAMSingleTaskXML (Element element, Task task)
 specifier|public
@@ -4797,6 +4819,15 @@ argument_list|(
 name|element
 argument_list|,
 literal|"progress"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
+literal|"status"
 argument_list|)
 argument_list|)
 expr_stmt|;

@@ -156,6 +156,24 @@ name|FsPermission
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|CacheDirectiveInfo
+operator|.
+name|Expiration
+import|;
+end_import
+
 begin_comment
 comment|/**  * CachePoolInfo describes a cache pool.  *  * This class is used in RPCs to create and modify cache pools.  * It is serializable and can be stored in the edit log.  */
 end_comment
@@ -190,6 +208,48 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+comment|/**    * Indicates that the pool does not have a maximum relative expiry.    */
+DECL|field|RELATIVE_EXPIRY_NEVER
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|RELATIVE_EXPIRY_NEVER
+init|=
+name|Expiration
+operator|.
+name|MAX_RELATIVE_EXPIRY_MS
+decl_stmt|;
+comment|/**    * Default max relative expiry for cache pools.    */
+DECL|field|DEFAULT_MAX_RELATIVE_EXPIRY
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_MAX_RELATIVE_EXPIRY
+init|=
+name|RELATIVE_EXPIRY_NEVER
+decl_stmt|;
+DECL|field|LIMIT_UNLIMITED
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|LIMIT_UNLIMITED
+init|=
+name|Long
+operator|.
+name|MAX_VALUE
+decl_stmt|;
+DECL|field|DEFAULT_LIMIT
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_LIMIT
+init|=
+name|LIMIT_UNLIMITED
+decl_stmt|;
 DECL|field|poolName
 specifier|final
 name|String
@@ -219,6 +279,12 @@ DECL|field|limit
 name|Long
 name|limit
 decl_stmt|;
+annotation|@
+name|Nullable
+DECL|field|maxRelativeExpiryMs
+name|Long
+name|maxRelativeExpiryMs
+decl_stmt|;
 DECL|method|CachePoolInfo (String poolName)
 specifier|public
 name|CachePoolInfo
@@ -234,6 +300,7 @@ operator|=
 name|poolName
 expr_stmt|;
 block|}
+comment|/**    * @return Name of the pool.    */
 DECL|method|getPoolName ()
 specifier|public
 name|String
@@ -244,6 +311,7 @@ return|return
 name|poolName
 return|;
 block|}
+comment|/**    * @return The owner of the pool. Along with the group and mode, determines    *         who has access to view and modify the pool.    */
 DECL|method|getOwnerName ()
 specifier|public
 name|String
@@ -273,6 +341,7 @@ return|return
 name|this
 return|;
 block|}
+comment|/**    * @return The group of the pool. Along with the owner and mode, determines    *         who has access to view and modify the pool.    */
 DECL|method|getGroupName ()
 specifier|public
 name|String
@@ -302,6 +371,7 @@ return|return
 name|this
 return|;
 block|}
+comment|/**    * @return Unix-style permissions of the pool. Along with the owner and group,    *         determines who has access to view and modify the pool.    */
 DECL|method|getMode ()
 specifier|public
 name|FsPermission
@@ -331,6 +401,7 @@ return|return
 name|this
 return|;
 block|}
+comment|/**    * @return The maximum aggregate number of bytes that can be cached by    *         directives in this pool.    */
 DECL|method|getLimit ()
 specifier|public
 name|Long
@@ -355,6 +426,37 @@ operator|.
 name|limit
 operator|=
 name|bytes
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+comment|/**    * @return The maximum relative expiration of directives of this pool in    *         milliseconds    */
+DECL|method|getMaxRelativeExpiryMs ()
+specifier|public
+name|Long
+name|getMaxRelativeExpiryMs
+parameter_list|()
+block|{
+return|return
+name|maxRelativeExpiryMs
+return|;
+block|}
+comment|/**    * Set the maximum relative expiration of directives of this pool in    * milliseconds.    *     * @param ms in milliseconds    * @return This builder, for call chaining.    */
+DECL|method|setMaxRelativeExpiryMs (Long ms)
+specifier|public
+name|CachePoolInfo
+name|setMaxRelativeExpiryMs
+parameter_list|(
+name|Long
+name|ms
+parameter_list|)
+block|{
+name|this
+operator|.
+name|maxRelativeExpiryMs
+operator|=
+name|ms
 expr_stmt|;
 return|return
 name|this
@@ -442,6 +544,16 @@ operator|.
 name|append
 argument_list|(
 name|limit
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", maxRelativeExpiryMs:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|maxRelativeExpiryMs
 argument_list|)
 operator|.
 name|append
@@ -559,6 +671,15 @@ operator|.
 name|limit
 argument_list|)
 operator|.
+name|append
+argument_list|(
+name|maxRelativeExpiryMs
+argument_list|,
+name|other
+operator|.
+name|maxRelativeExpiryMs
+argument_list|)
+operator|.
 name|isEquals
 argument_list|()
 return|;
@@ -599,6 +720,11 @@ operator|.
 name|append
 argument_list|(
 name|limit
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|maxRelativeExpiryMs
 argument_list|)
 operator|.
 name|hashCode
@@ -660,6 +786,57 @@ argument_list|(
 literal|"Limit is negative."
 argument_list|)
 throw|;
+block|}
+if|if
+condition|(
+name|info
+operator|.
+name|getMaxRelativeExpiryMs
+argument_list|()
+operator|!=
+literal|null
+condition|)
+block|{
+name|long
+name|maxRelativeExpiryMs
+init|=
+name|info
+operator|.
+name|getMaxRelativeExpiryMs
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|maxRelativeExpiryMs
+operator|<
+literal|0l
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Max relative expiry is negative."
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|maxRelativeExpiryMs
+operator|>
+name|Expiration
+operator|.
+name|MAX_RELATIVE_EXPIRY_MS
+condition|)
+block|{
+throw|throw
+operator|new
+name|InvalidRequestException
+argument_list|(
+literal|"Max relative expiry is too big."
+argument_list|)
+throw|;
+block|}
 block|}
 name|validateName
 argument_list|(

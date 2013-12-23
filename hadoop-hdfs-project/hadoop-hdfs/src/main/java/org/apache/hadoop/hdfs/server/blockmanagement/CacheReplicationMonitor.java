@@ -1491,7 +1491,7 @@ operator|.
 name|getExpiryTime
 argument_list|()
 operator|+
-literal|">="
+literal|"<="
 operator|+
 name|now
 operator|+

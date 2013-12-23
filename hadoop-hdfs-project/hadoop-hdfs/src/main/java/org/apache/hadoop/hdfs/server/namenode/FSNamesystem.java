@@ -20479,7 +20479,7 @@ operator|.
 name|WRITE
 argument_list|)
 expr_stmt|;
-name|writeLock
+name|readLock
 argument_list|()
 expr_stmt|;
 try|try
@@ -20508,7 +20508,7 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|writeUnlock
+name|readUnlock
 argument_list|()
 expr_stmt|;
 block|}

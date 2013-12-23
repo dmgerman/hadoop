@@ -437,6 +437,13 @@ argument_list|)
 operator|.
 name|th
 argument_list|(
+literal|".status"
+argument_list|,
+literal|"Status"
+argument_list|)
+operator|.
+name|th
+argument_list|(
 literal|".node"
 argument_list|,
 literal|"Node"
@@ -593,6 +600,19 @@ name|getState
 argument_list|()
 operator|.
 name|toString
+argument_list|()
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"\",\""
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|ta
+operator|.
+name|getStatus
 argument_list|()
 argument_list|)
 operator|.
@@ -963,7 +983,7 @@ comment|//logs column should not filterable (it includes container ID which may 
 operator|.
 name|append
 argument_list|(
-literal|"\n{'aTargets': [ 4 ]"
+literal|"\n{'aTargets': [ 5 ]"
 argument_list|)
 operator|.
 name|append
@@ -973,7 +993,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [ 5, 6"
+literal|"\n, {'sType':'numeric', 'aTargets': [ 6, 7"
 argument_list|)
 operator|.
 name|append
@@ -983,7 +1003,7 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"\n, {'sType':'numeric', 'aTargets': [ 7"
+literal|"\n, {'sType':'numeric', 'aTargets': [ 8"
 argument_list|)
 operator|.
 name|append
