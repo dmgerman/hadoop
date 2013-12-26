@@ -10014,7 +10014,8 @@ name|applicationACLsManager
 argument_list|,
 literal|null
 argument_list|,
-name|rmDTSecretManager
+name|getRMDTSecretManager
+argument_list|()
 argument_list|)
 block|{
 annotation|@
