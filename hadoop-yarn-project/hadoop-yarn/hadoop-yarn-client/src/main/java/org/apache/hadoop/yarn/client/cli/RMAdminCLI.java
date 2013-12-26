@@ -888,7 +888,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"Usage: java RMAdmin ["
+literal|"Usage: yarn rmadmin ["
 operator|+
 name|cmd
 operator|+
@@ -916,7 +916,7 @@ name|builder
 operator|.
 name|append
 argument_list|(
-literal|"Usage: java RMAdmin"
+literal|"Usage: yarn rmadmin\n"
 argument_list|)
 expr_stmt|;
 for|for

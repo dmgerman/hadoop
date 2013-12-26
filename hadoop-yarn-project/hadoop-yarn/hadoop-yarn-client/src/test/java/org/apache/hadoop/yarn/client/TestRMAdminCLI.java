@@ -1465,7 +1465,7 @@ block|,
 literal|"-refreshQueues"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-refreshQueues]"
+literal|"Usage: yarn rmadmin [-refreshQueues]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1483,7 +1483,7 @@ block|,
 literal|"-refreshNodes"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-refreshNodes]"
+literal|"Usage: yarn rmadmin [-refreshNodes]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1501,7 +1501,7 @@ block|,
 literal|"-refreshUserToGroupsMappings"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-refreshUserToGroupsMappings]"
+literal|"Usage: yarn rmadmin [-refreshUserToGroupsMappings]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1519,7 +1519,7 @@ block|,
 literal|"-refreshSuperUserGroupsConfiguration"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-refreshSuperUserGroupsConfiguration]"
+literal|"Usage: yarn rmadmin [-refreshSuperUserGroupsConfiguration]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1537,7 +1537,7 @@ block|,
 literal|"-refreshAdminAcls"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-refreshAdminAcls]"
+literal|"Usage: yarn rmadmin [-refreshAdminAcls]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1555,7 +1555,7 @@ block|,
 literal|"-refreshServiceAcl"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-refreshServiceAcl]"
+literal|"Usage: yarn rmadmin [-refreshServiceAcl]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1573,7 +1573,7 @@ block|,
 literal|"-getGroups"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-getGroups [username]]"
+literal|"Usage: yarn rmadmin [-getGroups [username]]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1591,7 +1591,7 @@ block|,
 literal|"-transitionToActive"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-transitionToActive<serviceId>]"
+literal|"Usage: yarn rmadmin [-transitionToActive<serviceId>]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1609,7 +1609,7 @@ block|,
 literal|"-transitionToStandby"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-transitionToStandby<serviceId>]"
+literal|"Usage: yarn rmadmin [-transitionToStandby<serviceId>]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1627,7 +1627,7 @@ block|,
 literal|"-getServiceState"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-getServiceState<serviceId>]"
+literal|"Usage: yarn rmadmin [-getServiceState<serviceId>]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1645,7 +1645,7 @@ block|,
 literal|"-checkHealth"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin [-checkHealth<serviceId>]"
+literal|"Usage: yarn rmadmin [-checkHealth<serviceId>]"
 argument_list|,
 name|dataErr
 argument_list|,
@@ -1663,7 +1663,7 @@ block|,
 literal|"-failover"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin "
+literal|"Usage: yarn rmadmin "
 operator|+
 literal|"[-failover [--forcefence] [--forceactive] "
 operator|+
@@ -1685,7 +1685,7 @@ block|,
 literal|"-badParameter"
 block|}
 argument_list|,
-literal|"Usage: java RMAdmin"
+literal|"Usage: yarn rmadmin"
 argument_list|,
 name|dataErr
 argument_list|,
