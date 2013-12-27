@@ -6718,7 +6718,7 @@ literal|" doesn't support setAcl"
 argument_list|)
 throw|;
 block|}
-comment|/**    * Gets the ACLs of files and directories.    *    * @param path Path to get    * @return RemoteIterator<AclStatus> which returns each AclStatus    * @throws IOException if an ACL could not be read    */
+comment|/**    * Gets the ACL of a file or directory.    *    * @param path Path to get    * @return AclStatus describing the ACL of the file or directory    * @throws IOException if an ACL could not be read    */
 DECL|method|getAclStatus (Path path)
 specifier|public
 name|AclStatus
