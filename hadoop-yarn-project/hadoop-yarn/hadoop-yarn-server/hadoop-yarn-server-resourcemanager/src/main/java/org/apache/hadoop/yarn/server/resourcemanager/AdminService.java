@@ -1362,7 +1362,6 @@ block|}
 block|}
 DECL|method|isRMActive ()
 specifier|private
-specifier|synchronized
 name|boolean
 name|isRMActive
 parameter_list|()
