@@ -137,6 +137,15 @@ name|factory
 operator|.
 name|registerCommands
 argument_list|(
+name|AclCommands
+operator|.
+name|class
+argument_list|)
+expr_stmt|;
+name|factory
+operator|.
+name|registerCommands
+argument_list|(
 name|CopyCommands
 operator|.
 name|class

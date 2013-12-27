@@ -246,6 +246,46 @@ argument_list|()
 index|]
 return|;
 block|}
+comment|/**    * Get the FsAction enum for String representation of permissions    *     * @param permission    *          3-character string representation of permission. ex: rwx    * @return Returns FsAction enum if the corresponding FsAction exists for permission.    *         Otherwise returns null    */
+DECL|method|getFsAction (String permission)
+specifier|public
+specifier|static
+name|FsAction
+name|getFsAction
+parameter_list|(
+name|String
+name|permission
+parameter_list|)
+block|{
+for|for
+control|(
+name|FsAction
+name|fsAction
+range|:
+name|vals
+control|)
+block|{
+if|if
+condition|(
+name|fsAction
+operator|.
+name|SYMBOL
+operator|.
+name|equals
+argument_list|(
+name|permission
+argument_list|)
+condition|)
+block|{
+return|return
+name|fsAction
+return|;
+block|}
+block|}
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_enum
 
