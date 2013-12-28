@@ -42,34 +42,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
-operator|.
-name|TaskAttemptID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|TaskID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|checkpoint
@@ -95,6 +67,26 @@ operator|.
 name|records
 operator|.
 name|TaskAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|TaskId
 import|;
 end_import
 
@@ -265,12 +257,12 @@ name|attemptID
 parameter_list|)
 function_decl|;
 comment|/**    * This method is used to report to the policy that a certain task has been    * successfully preempted (for bookeeping, counters, etc..)    * @param attemptID Task attempt that preempted    */
-DECL|method|reportSuccessfulPreemption (TaskAttemptID attemptID)
+DECL|method|reportSuccessfulPreemption (TaskAttemptId attemptID)
 specifier|public
 name|void
 name|reportSuccessfulPreemption
 parameter_list|(
-name|TaskAttemptID
+name|TaskAttemptId
 name|attemptID
 parameter_list|)
 function_decl|;
@@ -294,23 +286,23 @@ name|TaskAttemptId
 name|attemptID
 parameter_list|)
 function_decl|;
-comment|/**    * Method to retrieve the latest checkpoint for a given {@link TaskID}    * @param taskId TaskID    * @return CheckpointID associated with this task or null    */
-DECL|method|getCheckpointID (TaskID taskId)
+comment|/**    * Method to retrieve the latest checkpoint for a given {@link TaskId}    * @param taskId TaskID    * @return CheckpointID associated with this task or null    */
+DECL|method|getCheckpointID (TaskId taskId)
 specifier|public
 name|TaskCheckpointID
 name|getCheckpointID
 parameter_list|(
-name|TaskID
+name|TaskId
 name|taskId
 parameter_list|)
 function_decl|;
-comment|/**    * Method to store the latest {@link    * org.apache.hadoop.mapreduce.checkpoint.CheckpointID} for a given {@link    * TaskID}. Assigning a null is akin to remove all previous checkpoints for    * this task.    * @param taskId TaskID    * @param cid Checkpoint to assign or<tt>null</tt> to remove it.    */
-DECL|method|setCheckpointID (TaskID taskId, TaskCheckpointID cid)
+comment|/**    * Method to store the latest {@link    * org.apache.hadoop.mapreduce.checkpoint.CheckpointID} for a given {@link    * TaskId}. Assigning a null is akin to remove all previous checkpoints for    * this task.    * @param taskId TaskID    * @param cid Checkpoint to assign or<tt>null</tt> to remove it.    */
+DECL|method|setCheckpointID (TaskId taskId, TaskCheckpointID cid)
 specifier|public
 name|void
 name|setCheckpointID
 parameter_list|(
-name|TaskID
+name|TaskId
 name|taskId
 parameter_list|,
 name|TaskCheckpointID

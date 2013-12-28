@@ -92,6 +92,54 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|checkpoint
+operator|.
+name|CheckpointID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|checkpoint
+operator|.
+name|FSCheckpointID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|checkpoint
+operator|.
+name|TaskCheckpointID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|security
 operator|.
 name|token
@@ -143,7 +191,7 @@ name|TaskUmbilicalProtocol
 extends|extends
 name|VersionedProtocol
 block|{
-comment|/**     * Changed the version to 2, since we have a new method getMapOutputs     * Changed version to 3 to have progress() return a boolean    * Changed the version to 4, since we have replaced     *         TaskUmbilicalProtocol.progress(String, float, String,     *         org.apache.hadoop.mapred.TaskStatus.Phase, Counters)     *         with statusUpdate(String, TaskStatus)    *     * Version 5 changed counters representation for HADOOP-2248    * Version 6 changes the TaskStatus representation for HADOOP-2208    * Version 7 changes the done api (via HADOOP-3140). It now expects whether    *           or not the task's output needs to be promoted.    * Version 8 changes {job|tip|task}id's to use their corresponding     * objects rather than strings.    * Version 9 changes the counter representation for HADOOP-1915    * Version 10 changed the TaskStatus format and added reportNextRecordRange    *            for HADOOP-153    * Version 11 Adds RPCs for task commit as part of HADOOP-3150    * Version 12 getMapCompletionEvents() now also indicates if the events are     *            stale or not. Hence the return type is a class that     *            encapsulates the events and whether to reset events index.    * Version 13 changed the getTask method signature for HADOOP-249    * Version 14 changed the getTask method signature for HADOOP-4232    * Version 15 Adds FAILED_UNCLEAN and KILLED_UNCLEAN states for HADOOP-4759    * Version 16 Change in signature of getTask() for HADOOP-5488    * Version 17 Modified TaskID to be aware of the new TaskTypes    * Version 18 Added numRequiredSlots to TaskStatus for MAPREDUCE-516    * Version 19 Added fatalError for child to communicate fatal errors to TT    * */
+comment|/**     * Changed the version to 2, since we have a new method getMapOutputs     * Changed version to 3 to have progress() return a boolean    * Changed the version to 4, since we have replaced     *         TaskUmbilicalProtocol.progress(String, float, String,     *         org.apache.hadoop.mapred.TaskStatus.Phase, Counters)     *         with statusUpdate(String, TaskStatus)    *     * Version 5 changed counters representation for HADOOP-2248    * Version 6 changes the TaskStatus representation for HADOOP-2208    * Version 7 changes the done api (via HADOOP-3140). It now expects whether    *           or not the task's output needs to be promoted.    * Version 8 changes {job|tip|task}id's to use their corresponding     * objects rather than strings.    * Version 9 changes the counter representation for HADOOP-1915    * Version 10 changed the TaskStatus format and added reportNextRecordRange    *            for HADOOP-153    * Version 11 Adds RPCs for task commit as part of HADOOP-3150    * Version 12 getMapCompletionEvents() now also indicates if the events are     *            stale or not. Hence the return type is a class that     *            encapsulates the events and whether to reset events index.    * Version 13 changed the getTask method signature for HADOOP-249    * Version 14 changed the getTask method signature for HADOOP-4232    * Version 15 Adds FAILED_UNCLEAN and KILLED_UNCLEAN states for HADOOP-4759    * Version 16 Change in signature of getTask() for HADOOP-5488    * Version 17 Modified TaskID to be aware of the new TaskTypes    * Version 18 Added numRequiredSlots to TaskStatus for MAPREDUCE-516    * Version 19 Added fatalError for child to communicate fatal errors to TT    * Version 20 Added methods to manage checkpoints    * */
 DECL|field|versionID
 specifier|public
 specifier|static
@@ -151,7 +199,7 @@ specifier|final
 name|long
 name|versionID
 init|=
-literal|19L
+literal|20L
 decl_stmt|;
 comment|/**    * Called when a child task process starts, to get its task.    * @param context the JvmContext of the JVM w.r.t the TaskTracker that    *  launched it    * @return Task object    * @throws IOException     */
 DECL|method|getTask (JvmContext context)
@@ -164,9 +212,9 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Report child's progress to parent.    *     * @param taskId task-id of the child    * @param taskStatus status of the child    * @throws IOException    * @throws InterruptedException    * @return True if the task is known    */
+comment|/**    * Report child's progress to parent. Also invoked to report still alive (used    * to be in ping). It reports an AMFeedback used to propagate preemption requests.    *     * @param taskId task-id of the child    * @param taskStatus status of the child    * @throws IOException    * @throws InterruptedException    * @return True if the task is known    */
 DECL|method|statusUpdate (TaskAttemptID taskId, TaskStatus taskStatus)
-name|boolean
+name|AMFeedback
 name|statusUpdate
 parameter_list|(
 name|TaskAttemptID
@@ -206,17 +254,6 @@ name|SortedRanges
 operator|.
 name|Range
 name|range
-parameter_list|)
-throws|throws
-name|IOException
-function_decl|;
-comment|/** Periodically called by child to check if parent is still alive.     * @return True if the task is known    */
-DECL|method|ping (TaskAttemptID taskid)
-name|boolean
-name|ping
-parameter_list|(
-name|TaskAttemptID
-name|taskid
 parameter_list|)
 throws|throws
 name|IOException
@@ -320,6 +357,43 @@ name|id
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+comment|/**    * Report to the AM that the task has been succesfully preempted.    *    * @param taskId task's id    * @param taskStatus status of the child    * @throws IOException    */
+DECL|method|preempted (TaskAttemptID taskId, TaskStatus taskStatus)
+name|void
+name|preempted
+parameter_list|(
+name|TaskAttemptID
+name|taskId
+parameter_list|,
+name|TaskStatus
+name|taskStatus
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+function_decl|;
+comment|/**    * Return the latest CheckpointID for the given TaskID. This provides    * the task with a way to locate the checkpointed data and restart from    * that point in the computation.    *    * @param taskID task's id    * @return the most recent checkpoint (if any) for this task    * @throws IOException    */
+DECL|method|getCheckpointID (TaskID taskID)
+name|TaskCheckpointID
+name|getCheckpointID
+parameter_list|(
+name|TaskID
+name|taskID
+parameter_list|)
+function_decl|;
+comment|/**    * Send a CheckpointID for a given TaskID to be stored in the AM,    * to later restart a task from this checkpoint.    * @param tid    * @param cid    */
+DECL|method|setCheckpointID (TaskID tid, TaskCheckpointID cid)
+name|void
+name|setCheckpointID
+parameter_list|(
+name|TaskID
+name|tid
+parameter_list|,
+name|TaskCheckpointID
+name|cid
+parameter_list|)
 function_decl|;
 block|}
 end_interface

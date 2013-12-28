@@ -867,8 +867,10 @@ argument_list|)
 expr_stmt|;
 name|proxy
 operator|.
-name|ping
+name|statusUpdate
 argument_list|(
+literal|null
+argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;

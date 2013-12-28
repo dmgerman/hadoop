@@ -60,34 +60,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|mapred
-operator|.
-name|TaskAttemptID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|mapred
-operator|.
-name|TaskID
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|mapreduce
 operator|.
 name|JobCounter
@@ -127,6 +99,26 @@ operator|.
 name|records
 operator|.
 name|TaskAttemptId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
+name|v2
+operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|TaskId
 import|;
 end_import
 
@@ -528,12 +520,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|reportSuccessfulPreemption (TaskAttemptID taskAttemptID)
+DECL|method|reportSuccessfulPreemption (TaskAttemptId taskAttemptID)
 specifier|public
 name|void
 name|reportSuccessfulPreemption
 parameter_list|(
-name|TaskAttemptID
+name|TaskAttemptId
 name|taskAttemptID
 parameter_list|)
 block|{
@@ -541,12 +533,12 @@ comment|// ignore
 block|}
 annotation|@
 name|Override
-DECL|method|getCheckpointID (TaskID taskId)
+DECL|method|getCheckpointID (TaskId taskId)
 specifier|public
 name|TaskCheckpointID
 name|getCheckpointID
 parameter_list|(
-name|TaskID
+name|TaskId
 name|taskId
 parameter_list|)
 block|{
@@ -556,12 +548,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|setCheckpointID (TaskID taskId, TaskCheckpointID cid)
+DECL|method|setCheckpointID (TaskId taskId, TaskCheckpointID cid)
 specifier|public
 name|void
 name|setCheckpointID
 parameter_list|(
-name|TaskID
+name|TaskId
 name|taskId
 parameter_list|,
 name|TaskCheckpointID
