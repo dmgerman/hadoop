@@ -1587,6 +1587,9 @@ DECL|field|rpcPort
 specifier|private
 name|int
 name|rpcPort
+init|=
+operator|-
+literal|1
 decl_stmt|;
 DECL|field|originalTrackingUrl
 specifier|private
@@ -3428,6 +3431,26 @@ expr_stmt|;
 name|proxiedTrackingUrl
 operator|=
 name|originalTrackingUrl
+expr_stmt|;
+block|}
+DECL|method|invalidateAMHostAndPort ()
+specifier|private
+name|void
+name|invalidateAMHostAndPort
+parameter_list|()
+block|{
+name|this
+operator|.
+name|host
+operator|=
+literal|"N/A"
+expr_stmt|;
+name|this
+operator|.
+name|rpcPort
+operator|=
+operator|-
+literal|1
 expr_stmt|;
 block|}
 comment|// This is only used for RMStateStore. Normal operation must invoke the secret
@@ -5548,6 +5571,11 @@ operator|.
 name|setTrackingUrlToRMAppPage
 argument_list|()
 expr_stmt|;
+name|appAttempt
+operator|.
+name|invalidateAMHostAndPort
+argument_list|()
+expr_stmt|;
 name|appEvent
 operator|=
 operator|new
@@ -5572,6 +5600,11 @@ comment|// don't leave the tracking URL pointing to a non-existent AM
 name|appAttempt
 operator|.
 name|setTrackingUrlToRMAppPage
+argument_list|()
+expr_stmt|;
+name|appAttempt
+operator|.
+name|invalidateAMHostAndPort
 argument_list|()
 expr_stmt|;
 name|appEvent
