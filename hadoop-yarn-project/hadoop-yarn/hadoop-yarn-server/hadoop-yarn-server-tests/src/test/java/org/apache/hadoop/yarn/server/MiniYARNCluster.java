@@ -94,20 +94,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -779,14 +765,16 @@ import|;
 end_import
 
 begin_import
-import|import static
-name|org
+import|import
+name|com
 operator|.
-name|junit
+name|google
 operator|.
-name|Assert
+name|common
 operator|.
-name|fail
+name|annotations
+operator|.
+name|VisibleForTesting
 import|;
 end_import
 
@@ -1446,6 +1434,19 @@ operator|=
 operator|new
 name|ResourceManager
 argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|doSecureLogin
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// Don't try to login using keytab in the testcases.
+block|}
+block|}
 expr_stmt|;
 name|addService
 argument_list|(
