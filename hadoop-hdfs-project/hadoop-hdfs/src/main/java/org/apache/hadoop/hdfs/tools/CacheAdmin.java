@@ -3232,7 +3232,7 @@ literal|"<name> [-owner<owner>] "
 operator|+
 literal|"[-group<group>] [-mode<mode>] [-limit<limit>] "
 operator|+
-literal|"[-maxttl<maxTtl>]\n"
+literal|"[-maxTtl<maxTtl>]\n"
 return|;
 block|}
 annotation|@
