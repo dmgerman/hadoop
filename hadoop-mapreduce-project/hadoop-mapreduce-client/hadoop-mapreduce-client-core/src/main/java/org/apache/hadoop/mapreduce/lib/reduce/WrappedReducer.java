@@ -674,7 +674,7 @@ block|{
 return|return
 name|reduceContext
 operator|.
-name|getCacheArchives
+name|getCacheFiles
 argument_list|()
 return|;
 block|}
