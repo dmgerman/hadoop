@@ -1933,15 +1933,40 @@ name|cachedByBlock
 expr_stmt|;
 if|if
 condition|(
+operator|(
 name|mark
 operator|!=
 name|ocblock
 operator|.
 name|getMark
 argument_list|()
+operator|)
+operator|||
+operator|(
+name|ocblock
+operator|.
+name|getReplication
+argument_list|()
+operator|<
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+operator|)
 condition|)
 block|{
-comment|// Mark hasn't been set in this scan, so update replication and mark.
+comment|//
+comment|// Overwrite the block's replication and mark in two cases:
+comment|//
+comment|// 1. If the mark on the CachedBlock is different from the mark for
+comment|// this scan, that means the block hasn't been updated during this
+comment|// scan, and we should overwrite whatever is there, since it is no
+comment|// longer valid.
+comment|//
+comment|// 2. If the replication in the CachedBlock is less than what the
+comment|// directive asks for, we want to increase the block's replication
+comment|// field to what the directive asks for.
+comment|//
 name|ocblock
 operator|.
 name|setReplicationAndMark
@@ -1950,36 +1975,6 @@ name|directive
 operator|.
 name|getReplication
 argument_list|()
-argument_list|,
-name|mark
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Mark already set in this scan.  Set replication to highest value in
-comment|// any CacheDirective that covers this file.
-name|ocblock
-operator|.
-name|setReplicationAndMark
-argument_list|(
-operator|(
-name|short
-operator|)
-name|Math
-operator|.
-name|max
-argument_list|(
-name|directive
-operator|.
-name|getReplication
-argument_list|()
-argument_list|,
-name|ocblock
-operator|.
-name|getReplication
-argument_list|()
-argument_list|)
 argument_list|,
 name|mark
 argument_list|)
@@ -2048,6 +2043,93 @@ literal|" bytes"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|findReasonForNotCaching (CachedBlock cblock, BlockInfo blockInfo)
+specifier|private
+name|String
+name|findReasonForNotCaching
+parameter_list|(
+name|CachedBlock
+name|cblock
+parameter_list|,
+name|BlockInfo
+name|blockInfo
+parameter_list|)
+block|{
+if|if
+condition|(
+name|blockInfo
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Somehow, a cache report with the block arrived, but the block
+comment|// reports from the DataNode haven't (yet?) described such a block.
+comment|// Alternately, the NameNode might have invalidated the block, but the
+comment|// DataNode hasn't caught up.  In any case, we want to tell the DN
+comment|// to uncache this.
+return|return
+literal|"not tracked by the BlockManager"
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|blockInfo
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+comment|// When a cached block changes state from complete to some other state
+comment|// on the DataNode (perhaps because of append), it will begin the
+comment|// uncaching process.  However, the uncaching process is not
+comment|// instantaneous, especially if clients have pinned the block.  So
+comment|// there may be a period of time when incomplete blocks remain cached
+comment|// on the DataNodes.
+return|return
+literal|"not complete"
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cblock
+operator|.
+name|getReplication
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Since 0 is not a valid value for a cache directive's replication
+comment|// field, seeing a replication of 0 on a CacheBlock means that it
+comment|// has never been reached by any sweep.
+return|return
+literal|"not needed by any directives"
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cblock
+operator|.
+name|getMark
+argument_list|()
+operator|!=
+name|mark
+condition|)
+block|{
+comment|// Although the block was needed in the past, we didn't reach it during
+comment|// the current sweep.  Therefore, it doesn't need to be cached any more.
+return|return
+literal|"no longer needed by any directives"
+return|;
+block|}
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * Scan through the cached block map.    * Any blocks which are under-replicated should be assigned new Datanodes.    * Blocks that are over-replicated should be removed from Datanodes.    */
 DECL|method|rescanCachedBlockMap ()
@@ -2192,28 +2274,78 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// If the block's mark doesn't match with the mark of this scan, that
-comment|// means that this block couldn't be reached during this scan.  That means
-comment|// it doesn't need to be cached any more.
+name|BlockInfo
+name|blockInfo
+init|=
+name|blockManager
+operator|.
+name|getStoredBlock
+argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|cblock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|String
+name|reason
+init|=
+name|findReasonForNotCaching
+argument_list|(
+name|cblock
+argument_list|,
+name|blockInfo
+argument_list|)
+decl_stmt|;
 name|int
 name|neededCached
 init|=
-operator|(
-name|cblock
-operator|.
-name|getMark
-argument_list|()
-operator|!=
-name|mark
-operator|)
-condition|?
 literal|0
-else|:
+decl_stmt|;
+if|if
+condition|(
+name|reason
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"not caching "
+operator|+
+name|cblock
+operator|+
+literal|" because it is "
+operator|+
+name|reason
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|neededCached
+operator|=
 name|cblock
 operator|.
 name|getReplication
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 name|int
 name|numCached
 init|=
@@ -2639,6 +2771,14 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2647,11 +2787,12 @@ literal|"Not caching block "
 operator|+
 name|cachedBlock
 operator|+
-literal|" because it "
+literal|" because there "
 operator|+
-literal|"was deleted from all DataNodes."
+literal|"is no record of it on the NameNode."
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 if|if
