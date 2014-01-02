@@ -40,6 +40,13 @@ block|,
 DECL|enumConstant|NODE_UPDATE
 name|NODE_UPDATE
 block|,
+comment|// Source: RMApp
+DECL|enumConstant|APP_ADDED
+name|APP_ADDED
+block|,
+DECL|enumConstant|APP_REMOVED
+name|APP_REMOVED
+block|,
 comment|// Source: RMAppAttempt
 DECL|enumConstant|APP_ATTEMPT_ADDED
 name|APP_ATTEMPT_ADDED

@@ -310,7 +310,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 import|;
 end_import
 
@@ -1099,13 +1099,13 @@ argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|reserveResource ( SchedulerApplication application, Priority priority, RMContainer reservedContainer)
+DECL|method|reserveResource ( SchedulerApplicationAttempt application, Priority priority, RMContainer reservedContainer)
 specifier|public
 specifier|synchronized
 name|void
 name|reserveResource
 parameter_list|(
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 name|application
 parameter_list|,
 name|Priority
@@ -1300,13 +1300,13 @@ operator|=
 name|reservedContainer
 expr_stmt|;
 block|}
-DECL|method|unreserveResource ( SchedulerApplication application)
+DECL|method|unreserveResource ( SchedulerApplicationAttempt application)
 specifier|public
 specifier|synchronized
 name|void
 name|unreserveResource
 parameter_list|(
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 name|application
 parameter_list|)
 block|{

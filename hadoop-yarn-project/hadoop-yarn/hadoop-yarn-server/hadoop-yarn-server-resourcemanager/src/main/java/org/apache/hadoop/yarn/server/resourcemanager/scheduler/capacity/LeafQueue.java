@@ -270,6 +270,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -662,26 +680,6 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplication
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
 name|common
 operator|.
 name|fica
@@ -973,14 +971,14 @@ name|FiCaSchedulerApp
 argument_list|>
 name|activeApplications
 decl_stmt|;
-DECL|field|applicationsMap
+DECL|field|applicationAttemptMap
 name|Map
 argument_list|<
 name|ApplicationAttemptId
 argument_list|,
 name|FiCaSchedulerApp
 argument_list|>
-name|applicationsMap
+name|applicationAttemptMap
 init|=
 operator|new
 name|HashMap
@@ -3195,13 +3193,81 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|submitApplication (FiCaSchedulerApp application, String userName, String queue)
+DECL|method|submitApplicationAttempt (FiCaSchedulerApp application, String userName)
+specifier|public
+name|void
+name|submitApplicationAttempt
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|String
+name|userName
+parameter_list|)
+block|{
+comment|// Careful! Locking order is important!
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
+name|User
+name|user
+init|=
+name|getUser
+argument_list|(
+name|userName
+argument_list|)
+decl_stmt|;
+comment|// Add the attempt to our data-structures
+name|addApplicationAttempt
+argument_list|(
+name|application
+argument_list|,
+name|user
+argument_list|)
+expr_stmt|;
+block|}
+name|int
+name|attemptId
+init|=
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getAttemptId
+argument_list|()
+decl_stmt|;
+name|metrics
+operator|.
+name|submitApp
+argument_list|(
+name|userName
+argument_list|,
+name|attemptId
+argument_list|)
+expr_stmt|;
+name|getParent
+argument_list|()
+operator|.
+name|submitApplicationAttempt
+argument_list|(
+name|application
+argument_list|,
+name|userName
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|submitApplication (ApplicationId applicationId, String userName, String queue)
 specifier|public
 name|void
 name|submitApplication
 parameter_list|(
-name|FiCaSchedulerApp
-name|application
+name|ApplicationId
+name|applicationId
 parameter_list|,
 name|String
 name|userName
@@ -3295,10 +3361,7 @@ argument_list|()
 operator|+
 literal|" is STOPPED. Cannot accept submission of application: "
 operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 decl_stmt|;
 name|LOG
 operator|.
@@ -3342,10 +3405,7 @@ literal|" applications,"
 operator|+
 literal|" cannot accept submission of application: "
 operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 decl_stmt|;
 name|LOG
 operator|.
@@ -3402,10 +3462,7 @@ name|userName
 operator|+
 literal|" cannot accept submission of application: "
 operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 decl_stmt|;
 name|LOG
 operator|.
@@ -3422,35 +3479,7 @@ name|msg
 argument_list|)
 throw|;
 block|}
-comment|// Add the application to our data-structures
-name|addApplication
-argument_list|(
-name|application
-argument_list|,
-name|user
-argument_list|)
-expr_stmt|;
 block|}
-name|int
-name|attemptId
-init|=
-name|application
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-operator|.
-name|getAttemptId
-argument_list|()
-decl_stmt|;
-name|metrics
-operator|.
-name|submitApp
-argument_list|(
-name|userName
-argument_list|,
-name|attemptId
-argument_list|)
-expr_stmt|;
 comment|// Inform the parent queue
 try|try
 block|{
@@ -3459,7 +3488,7 @@ argument_list|()
 operator|.
 name|submitApplication
 argument_list|(
-name|application
+name|applicationId
 argument_list|,
 name|userName
 argument_list|,
@@ -3486,13 +3515,6 @@ name|getQueuePath
 argument_list|()
 argument_list|,
 name|ace
-argument_list|)
-expr_stmt|;
-name|removeApplication
-argument_list|(
-name|application
-argument_list|,
-name|user
 argument_list|)
 expr_stmt|;
 throw|throw
@@ -3614,11 +3636,11 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|addApplication (FiCaSchedulerApp application, User user)
+DECL|method|addApplicationAttempt (FiCaSchedulerApp application, User user)
 specifier|private
 specifier|synchronized
 name|void
-name|addApplication
+name|addApplicationAttempt
 parameter_list|(
 name|FiCaSchedulerApp
 name|application
@@ -3640,7 +3662,7 @@ argument_list|(
 name|application
 argument_list|)
 expr_stmt|;
-name|applicationsMap
+name|applicationAttemptMap
 operator|.
 name|put
 argument_list|(
@@ -3708,10 +3730,46 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|finishApplication (FiCaSchedulerApp application, String queue)
+DECL|method|finishApplication (ApplicationId application, String user)
 specifier|public
 name|void
 name|finishApplication
+parameter_list|(
+name|ApplicationId
+name|application
+parameter_list|,
+name|String
+name|user
+parameter_list|)
+block|{
+comment|// Inform the activeUsersManager
+name|activeUsersManager
+operator|.
+name|deactivateApplication
+argument_list|(
+name|user
+argument_list|,
+name|application
+argument_list|)
+expr_stmt|;
+comment|// Inform the parent queue
+name|getParent
+argument_list|()
+operator|.
+name|finishApplication
+argument_list|(
+name|application
+argument_list|,
+name|user
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|finishApplicationAttempt (FiCaSchedulerApp application, String queue)
+specifier|public
+name|void
+name|finishApplicationAttempt
 parameter_list|(
 name|FiCaSchedulerApp
 name|application
@@ -3726,7 +3784,7 @@ init|(
 name|this
 init|)
 block|{
-name|removeApplication
+name|removeApplicationAttempt
 argument_list|(
 name|application
 argument_list|,
@@ -3740,11 +3798,10 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Inform the parent queue
 name|getParent
 argument_list|()
 operator|.
-name|finishApplication
+name|finishApplicationAttempt
 argument_list|(
 name|application
 argument_list|,
@@ -3752,11 +3809,11 @@ name|queue
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeApplication (FiCaSchedulerApp application, User user)
+DECL|method|removeApplicationAttempt (FiCaSchedulerApp application, User user)
 specifier|public
 specifier|synchronized
 name|void
-name|removeApplication
+name|removeApplicationAttempt
 parameter_list|(
 name|FiCaSchedulerApp
 name|application
@@ -3789,7 +3846,7 @@ name|application
 argument_list|)
 expr_stmt|;
 block|}
-name|applicationsMap
+name|applicationAttemptMap
 operator|.
 name|remove
 argument_list|(
@@ -3831,28 +3888,6 @@ comment|// Check if we can activate more applications
 name|activateApplications
 argument_list|()
 expr_stmt|;
-comment|// Inform the activeUsersManager
-synchronized|synchronized
-init|(
-name|application
-init|)
-block|{
-name|activeUsersManager
-operator|.
-name|deactivateApplication
-argument_list|(
-name|application
-operator|.
-name|getUser
-argument_list|()
-argument_list|,
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 name|LOG
 operator|.
 name|info
@@ -3915,7 +3950,7 @@ name|applicationAttemptId
 parameter_list|)
 block|{
 return|return
-name|applicationsMap
+name|applicationAttemptMap
 operator|.
 name|get
 argument_list|(

@@ -824,6 +824,50 @@ name|yarn
 operator|.
 name|server
 operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
+name|AppAddedSchedulerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
+name|event
+operator|.
+name|AppRemovedSchedulerEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
 name|utils
 operator|.
 name|BuilderUtils
@@ -1274,7 +1318,7 @@ name|SUBMITTED
 argument_list|,
 name|RMAppState
 operator|.
-name|RUNNING
+name|ACCEPTED
 argument_list|,
 name|RMAppState
 operator|.
@@ -1391,7 +1435,7 @@ operator|.
 name|APP_NEW_SAVED
 argument_list|,
 operator|new
-name|StartAppAttemptTransition
+name|AddApplicationToSchedulerTransition
 argument_list|()
 argument_list|)
 operator|.
@@ -1509,6 +1553,10 @@ argument_list|,
 name|RMAppEventType
 operator|.
 name|APP_ACCEPTED
+argument_list|,
+operator|new
+name|StartAppAttemptTransition
+argument_list|()
 argument_list|)
 operator|.
 name|addTransition
@@ -1519,15 +1567,23 @@ name|SUBMITTED
 argument_list|,
 name|RMAppState
 operator|.
-name|KILLING
+name|FINAL_SAVING
 argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
 argument_list|,
 operator|new
-name|KillAttemptTransition
+name|FinalSavingTransition
+argument_list|(
+operator|new
+name|AppKilledTransition
 argument_list|()
+argument_list|,
+name|RMAppState
+operator|.
+name|KILLED
+argument_list|)
 argument_list|)
 comment|// Transitions from ACCEPTED state
 operator|.
@@ -1577,13 +1633,16 @@ name|of
 argument_list|(
 name|RMAppState
 operator|.
-name|SUBMITTED
+name|ACCEPTED
 argument_list|,
 name|RMAppState
 operator|.
 name|FINAL_SAVING
 argument_list|)
 argument_list|,
+comment|// ACCEPTED state is possible to receive ATTEMPT_FAILED event because
+comment|// RMAppRecoveredTransition is returning ACCEPTED state directly and
+comment|// waiting for the previous AM to exit.
 name|RMAppEventType
 operator|.
 name|ATTEMPT_FAILED
@@ -1593,7 +1652,7 @@ name|AttemptFailedTransition
 argument_list|(
 name|RMAppState
 operator|.
-name|SUBMITTED
+name|ACCEPTED
 argument_list|)
 argument_list|)
 operator|.
@@ -1605,15 +1664,42 @@ name|ACCEPTED
 argument_list|,
 name|RMAppState
 operator|.
-name|KILLING
+name|FINAL_SAVING
 argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
 argument_list|,
 operator|new
-name|KillAttemptTransition
+name|FinalSavingTransition
+argument_list|(
+operator|new
+name|AppKilledTransition
 argument_list|()
+argument_list|,
+name|RMAppState
+operator|.
+name|KILLED
+argument_list|)
+argument_list|)
+comment|// ACCECPTED state can once again receive APP_ACCEPTED event, because on
+comment|// recovery the app returns ACCEPTED state and the app once again go
+comment|// through the scheduler and triggers one more APP_ACCEPTED event at
+comment|// ACCEPTED state.
+operator|.
+name|addTransition
+argument_list|(
+name|RMAppState
+operator|.
+name|ACCEPTED
+argument_list|,
+name|RMAppState
+operator|.
+name|ACCEPTED
+argument_list|,
+name|RMAppEventType
+operator|.
+name|APP_ACCEPTED
 argument_list|)
 comment|// Transitions from RUNNING state
 operator|.
@@ -1697,7 +1783,7 @@ name|of
 argument_list|(
 name|RMAppState
 operator|.
-name|SUBMITTED
+name|ACCEPTED
 argument_list|,
 name|RMAppState
 operator|.
@@ -1713,7 +1799,7 @@ name|AttemptFailedTransition
 argument_list|(
 name|RMAppState
 operator|.
-name|SUBMITTED
+name|ACCEPTED
 argument_list|)
 argument_list|)
 operator|.
@@ -3773,8 +3859,6 @@ argument_list|,
 name|submissionContext
 argument_list|,
 name|conf
-argument_list|,
-name|user
 argument_list|)
 decl_stmt|;
 name|attempts
@@ -4030,6 +4114,18 @@ operator|.
 name|recoveredFinalState
 return|;
 block|}
+comment|// Notify scheduler about the app on recovery
+operator|new
+name|AddApplicationToSchedulerTransition
+argument_list|()
+operator|.
+name|transition
+argument_list|(
+name|app
+argument_list|,
+name|event
+argument_list|)
+expr_stmt|;
 comment|// No existent attempts means the attempt associated with this app was not
 comment|// started or started but not yet saved.
 if|if
@@ -4042,35 +4138,36 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-name|app
-operator|.
-name|createNewAttempt
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
 return|return
 name|RMAppState
 operator|.
 name|SUBMITTED
 return|;
 block|}
+comment|// YARN-1507 is saving the application state after the application is
+comment|// accepted. So after YARN-1507, an app is saved meaning it is accepted.
+comment|// Thus we return ACCECPTED state on recovery.
 return|return
 name|RMAppState
 operator|.
-name|RUNNING
+name|ACCEPTED
 return|;
 block|}
 block|}
-DECL|class|StartAppAttemptTransition
+DECL|class|AddApplicationToSchedulerTransition
 specifier|private
 specifier|static
 specifier|final
 class|class
-name|StartAppAttemptTransition
+name|AddApplicationToSchedulerTransition
 extends|extends
 name|RMAppTransition
 block|{
+annotation|@
+name|SuppressWarnings
+argument_list|(
+literal|"unchecked"
+argument_list|)
 annotation|@
 name|Override
 DECL|method|transition (RMAppImpl app, RMAppEvent event)
@@ -4085,6 +4182,13 @@ name|RMAppEvent
 name|event
 parameter_list|)
 block|{
+if|if
+condition|(
+name|event
+operator|instanceof
+name|RMAppNewSavedEvent
+condition|)
+block|{
 name|RMAppNewSavedEvent
 name|storeEvent
 init|=
@@ -4093,9 +4197,16 @@ name|RMAppNewSavedEvent
 operator|)
 name|event
 decl_stmt|;
+comment|// For HA this exception needs to be handled by giving up
+comment|// master status if we got fenced
 if|if
 condition|(
-name|storeEvent
+operator|(
+operator|(
+name|RMAppNewSavedEvent
+operator|)
+name|event
+operator|)
 operator|.
 name|getStoredException
 argument_list|()
@@ -4103,8 +4214,6 @@ operator|!=
 literal|null
 condition|)
 block|{
-comment|// For HA this exception needs to be handled by giving up
-comment|// master status if we got fenced
 name|LOG
 operator|.
 name|error
@@ -4135,6 +4244,58 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+name|app
+operator|.
+name|handler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|AppAddedSchedulerEvent
+argument_list|(
+name|app
+operator|.
+name|applicationId
+argument_list|,
+name|app
+operator|.
+name|submissionContext
+operator|.
+name|getQueue
+argument_list|()
+argument_list|,
+name|app
+operator|.
+name|user
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+DECL|class|StartAppAttemptTransition
+specifier|private
+specifier|static
+specifier|final
+class|class
+name|StartAppAttemptTransition
+extends|extends
+name|RMAppTransition
+block|{
+annotation|@
+name|Override
+DECL|method|transition (RMAppImpl app, RMAppEvent event)
+specifier|public
+name|void
+name|transition
+parameter_list|(
+name|RMAppImpl
+name|app
+parameter_list|,
+name|RMAppEvent
+name|event
+parameter_list|)
+block|{
 name|app
 operator|.
 name|createNewAttempt
@@ -5371,6 +5532,26 @@ name|currentTimeMillis
 argument_list|()
 expr_stmt|;
 block|}
+name|app
+operator|.
+name|handler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|AppRemovedSchedulerEvent
+argument_list|(
+name|app
+operator|.
+name|applicationId
+argument_list|,
+name|app
+operator|.
+name|getState
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
 name|app
 operator|.
 name|handler

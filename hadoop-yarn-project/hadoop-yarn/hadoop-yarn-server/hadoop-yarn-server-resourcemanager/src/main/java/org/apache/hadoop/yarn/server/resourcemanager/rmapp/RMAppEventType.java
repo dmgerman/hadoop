@@ -38,13 +38,14 @@ block|,
 DECL|enumConstant|KILL
 name|KILL
 block|,
-comment|// Source: RMAppAttempt
+comment|// Source: Scheduler
 DECL|enumConstant|APP_REJECTED
 name|APP_REJECTED
 block|,
 DECL|enumConstant|APP_ACCEPTED
 name|APP_ACCEPTED
 block|,
+comment|// Source: RMAppAttempt
 DECL|enumConstant|ATTEMPT_REGISTERED
 name|ATTEMPT_REGISTERED
 block|,
