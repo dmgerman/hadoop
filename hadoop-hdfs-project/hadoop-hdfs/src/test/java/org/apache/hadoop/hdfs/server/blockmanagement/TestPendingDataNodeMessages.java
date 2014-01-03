@@ -248,6 +248,8 @@ name|enqueueReportedBlock
 argument_list|(
 name|fakeDN
 argument_list|,
+literal|"STORAGE_ID"
+argument_list|,
 name|block1Gs1
 argument_list|,
 name|ReplicaState
@@ -260,6 +262,8 @@ operator|.
 name|enqueueReportedBlock
 argument_list|(
 name|fakeDN
+argument_list|,
+literal|"STORAGE_ID"
 argument_list|,
 name|block1Gs2
 argument_list|,

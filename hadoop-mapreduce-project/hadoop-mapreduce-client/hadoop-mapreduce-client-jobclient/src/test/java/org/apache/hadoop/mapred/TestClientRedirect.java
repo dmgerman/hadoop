@@ -2572,13 +2572,11 @@ throws|throws
 name|IOException
 block|{
 return|return
-name|recordFactory
-operator|.
-name|newRecordInstance
-argument_list|(
 name|KillApplicationResponse
 operator|.
-name|class
+name|newInstance
+argument_list|(
+literal|true
 argument_list|)
 return|;
 block|}

@@ -450,6 +450,15 @@ DECL|field|snapshotDiffReportOps
 name|MutableCounterLong
 name|snapshotDiffReportOps
 decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"Number of blockReceivedAndDeleted calls"
+argument_list|)
+DECL|field|blockReceivedAndDeletedOps
+name|MutableCounterLong
+name|blockReceivedAndDeletedOps
+decl_stmt|;
 DECL|field|transactions
 annotation|@
 name|Metric
@@ -527,6 +536,33 @@ argument_list|)
 DECL|field|fsImageLoadTime
 name|MutableGaugeInt
 name|fsImageLoadTime
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"GetImageServlet getEdit"
+argument_list|)
+DECL|field|getEdit
+name|MutableRate
+name|getEdit
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"GetImageServlet getImage"
+argument_list|)
+DECL|field|getImage
+name|MutableRate
+name|getImage
+decl_stmt|;
+annotation|@
+name|Metric
+argument_list|(
+literal|"GetImageServlet putImage"
+argument_list|)
+DECL|field|putImage
+name|MutableRate
+name|putImage
 decl_stmt|;
 DECL|method|NameNodeMetrics (String processName, String sessionId, int[] intervals)
 name|NameNodeMetrics
@@ -1044,6 +1080,18 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|incrBlockReceivedAndDeletedOps ()
+specifier|public
+name|void
+name|incrBlockReceivedAndDeletedOps
+parameter_list|()
+block|{
+name|blockReceivedAndDeletedOps
+operator|.
+name|incr
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|addTransaction (long latency)
 specifier|public
 name|void
@@ -1209,6 +1257,57 @@ operator|(
 name|int
 operator|)
 name|elapsed
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addGetEdit (long latency)
+specifier|public
+name|void
+name|addGetEdit
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|getEdit
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addGetImage (long latency)
+specifier|public
+name|void
+name|addGetImage
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|getImage
+operator|.
+name|add
+argument_list|(
+name|latency
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|addPutImage (long latency)
+specifier|public
+name|void
+name|addPutImage
+parameter_list|(
+name|long
+name|latency
+parameter_list|)
+block|{
+name|putImage
+operator|.
+name|add
+argument_list|(
+name|latency
 argument_list|)
 expr_stmt|;
 block|}

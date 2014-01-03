@@ -289,11 +289,14 @@ block|,
 DECL|enumConstant|COMMIT_PENDING
 DECL|enumConstant|FAILED_UNCLEAN
 DECL|enumConstant|KILLED_UNCLEAN
+DECL|enumConstant|PREEMPTED
 name|COMMIT_PENDING
 block|,
 name|FAILED_UNCLEAN
 block|,
 name|KILLED_UNCLEAN
+block|,
+name|PREEMPTED
 block|}
 DECL|field|taskid
 specifier|private

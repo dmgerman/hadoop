@@ -40,6 +40,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -77,6 +87,20 @@ operator|.
 name|conf
 operator|.
 name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CacheFlag
 import|;
 end_import
 
@@ -468,14 +492,20 @@ name|path
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a new CacheDirectiveInfo.    *     * @param info Information about a directive to add.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
-DECL|method|addCacheDirective (CacheDirectiveInfo info)
+comment|/**    * Add a new CacheDirectiveInfo.    *     * @param info Information about a directive to add.    * @param flags {@link CacheFlag}s to use for this operation.    * @return the ID of the directive that was created.    * @throws IOException if the directive could not be added    */
+DECL|method|addCacheDirective (CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
 name|long
 name|addCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|info
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -486,17 +516,25 @@ operator|.
 name|addCacheDirective
 argument_list|(
 name|info
+argument_list|,
+name|flags
 argument_list|)
 return|;
 block|}
-comment|/**    * Modify a CacheDirective.    *     * @param info Information about the directive to modify.    *             You must set the ID to indicate which CacheDirective you want    *             to modify.    * @throws IOException if the directive could not be modified    */
-DECL|method|modifyCacheDirective (CacheDirectiveInfo info)
+comment|/**    * Modify a CacheDirective.    *     * @param info Information about the directive to modify. You must set the ID    *          to indicate which CacheDirective you want to modify.    * @param flags {@link CacheFlag}s to use for this operation.    * @throws IOException if the directive could not be modified    */
+DECL|method|modifyCacheDirective (CacheDirectiveInfo info, EnumSet<CacheFlag> flags)
 specifier|public
 name|void
 name|modifyCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|info
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
@@ -506,6 +544,8 @@ operator|.
 name|modifyCacheDirective
 argument_list|(
 name|info
+argument_list|,
+name|flags
 argument_list|)
 expr_stmt|;
 block|}

@@ -76,11 +76,8 @@ DECL|enumConstant|ATTEMPT_UPDATE_SAVED
 name|ATTEMPT_UPDATE_SAVED
 block|,
 comment|// Source: Scheduler
-DECL|enumConstant|APP_REJECTED
-name|APP_REJECTED
-block|,
-DECL|enumConstant|APP_ACCEPTED
-name|APP_ACCEPTED
+DECL|enumConstant|ATTEMPT_ADDED
+name|ATTEMPT_ADDED
 block|,
 comment|// Source: RMAttemptImpl.recover
 DECL|enumConstant|RECOVER

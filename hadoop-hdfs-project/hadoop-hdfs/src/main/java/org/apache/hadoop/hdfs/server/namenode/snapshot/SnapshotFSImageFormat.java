@@ -304,7 +304,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
+name|DirectoryWithSnapshotFeature
 operator|.
 name|DirectoryDiff
 import|;
@@ -326,7 +326,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
+name|DirectoryWithSnapshotFeature
 operator|.
 name|DirectoryDiffList
 import|;
@@ -619,20 +619,9 @@ block|{
 name|saveINodeDiffs
 argument_list|(
 name|dir
-operator|instanceof
-name|INodeDirectoryWithSnapshot
-condition|?
-operator|(
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
-name|dir
-operator|)
 operator|.
 name|getDiffs
 argument_list|()
-else|:
-literal|null
 argument_list|,
 name|out
 argument_list|,
@@ -844,7 +833,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Load a node stored in the created list from fsimage.    * @param createdNodeName The name of the created node.    * @param parent The directory that the created list belongs to.    * @return The created node.    */
-DECL|method|loadCreated (byte[] createdNodeName, INodeDirectoryWithSnapshot parent)
+DECL|method|loadCreated (byte[] createdNodeName, INodeDirectory parent)
 specifier|private
 specifier|static
 name|INode
@@ -854,7 +843,7 @@ name|byte
 index|[]
 name|createdNodeName
 parameter_list|,
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|parent
 parameter_list|)
 throws|throws
@@ -946,7 +935,7 @@ name|currentChild
 return|;
 block|}
 comment|/**    * Load the created list from fsimage.    * @param parent The directory that the created list belongs to.    * @param in The {@link DataInput} to read.    * @return The created list.    */
-DECL|method|loadCreatedList (INodeDirectoryWithSnapshot parent, DataInput in)
+DECL|method|loadCreatedList (INodeDirectory parent, DataInput in)
 specifier|private
 specifier|static
 name|List
@@ -955,7 +944,7 @@ name|INode
 argument_list|>
 name|loadCreatedList
 parameter_list|(
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|parent
 parameter_list|,
 name|DataInput
@@ -1037,7 +1026,7 @@ name|createdList
 return|;
 block|}
 comment|/**    * Load the deleted list from the fsimage.    *     * @param parent The directory that the deleted list belongs to.    * @param createdList The created list associated with the deleted list in     *                    the same Diff.    * @param in The {@link DataInput} to read.    * @param loader The {@link Loader} instance.    * @return The deleted list.    */
-DECL|method|loadDeletedList (INodeDirectoryWithSnapshot parent, List<INode> createdList, DataInput in, FSImageFormat.Loader loader)
+DECL|method|loadDeletedList (INodeDirectory parent, List<INode> createdList, DataInput in, FSImageFormat.Loader loader)
 specifier|private
 specifier|static
 name|List
@@ -1046,7 +1035,7 @@ name|INode
 argument_list|>
 name|loadDeletedList
 parameter_list|(
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|parent
 parameter_list|,
 name|List
@@ -1278,22 +1267,15 @@ decl_stmt|;
 if|if
 condition|(
 name|dir
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 condition|)
 block|{
-name|INodeDirectoryWithSnapshot
-name|withSnapshot
-init|=
-operator|(
-name|INodeDirectoryWithSnapshot
-operator|)
-name|dir
-decl_stmt|;
 name|DirectoryDiffList
 name|diffs
 init|=
-name|withSnapshot
+name|dir
 operator|.
 name|getDiffs
 argument_list|()
@@ -1319,7 +1301,7 @@ name|addFirst
 argument_list|(
 name|loadDirectoryDiff
 argument_list|(
-name|withSnapshot
+name|dir
 argument_list|,
 name|in
 argument_list|,
@@ -1393,13 +1375,13 @@ return|;
 block|}
 block|}
 comment|/**    * Load {@link DirectoryDiff} from fsimage.    * @param parent The directory that the SnapshotDiff belongs to.    * @param in The {@link DataInput} instance to read.    * @param loader The {@link Loader} instance that this loading procedure is     *               using.    * @return A {@link DirectoryDiff}.    */
-DECL|method|loadDirectoryDiff ( INodeDirectoryWithSnapshot parent, DataInput in, FSImageFormat.Loader loader)
+DECL|method|loadDirectoryDiff (INodeDirectory parent, DataInput in, FSImageFormat.Loader loader)
 specifier|private
 specifier|static
 name|DirectoryDiff
 name|loadDirectoryDiff
 parameter_list|(
-name|INodeDirectoryWithSnapshot
+name|INodeDirectory
 name|parent
 parameter_list|,
 name|DataInput

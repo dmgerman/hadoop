@@ -38,7 +38,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
+name|ApplicationId
 import|;
 end_import
 
@@ -58,9 +58,7 @@ name|resourcemanager
 operator|.
 name|rmapp
 operator|.
-name|attempt
-operator|.
-name|RMAppAttemptState
+name|RMAppState
 import|;
 end_import
 
@@ -72,27 +70,27 @@ name|AppRemovedSchedulerEvent
 extends|extends
 name|SchedulerEvent
 block|{
-DECL|field|applicationAttemptId
+DECL|field|applicationId
 specifier|private
 specifier|final
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|ApplicationId
+name|applicationId
 decl_stmt|;
-DECL|field|finalAttemptState
+DECL|field|finalState
 specifier|private
 specifier|final
-name|RMAppAttemptState
-name|finalAttemptState
+name|RMAppState
+name|finalState
 decl_stmt|;
-DECL|method|AppRemovedSchedulerEvent (ApplicationAttemptId applicationAttemptId, RMAppAttemptState finalAttemptState)
+DECL|method|AppRemovedSchedulerEvent (ApplicationId applicationId, RMAppState finalState)
 specifier|public
 name|AppRemovedSchedulerEvent
 parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|ApplicationId
+name|applicationId
 parameter_list|,
-name|RMAppAttemptState
-name|finalAttemptState
+name|RMAppState
+name|finalState
 parameter_list|)
 block|{
 name|super
@@ -104,39 +102,39 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|applicationAttemptId
+name|applicationId
 operator|=
-name|applicationAttemptId
+name|applicationId
 expr_stmt|;
 name|this
 operator|.
-name|finalAttemptState
+name|finalState
 operator|=
-name|finalAttemptState
+name|finalState
 expr_stmt|;
 block|}
-DECL|method|getApplicationAttemptID ()
+DECL|method|getApplicationID ()
 specifier|public
-name|ApplicationAttemptId
-name|getApplicationAttemptID
+name|ApplicationId
+name|getApplicationID
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|applicationAttemptId
+name|applicationId
 return|;
 block|}
-DECL|method|getFinalAttemptState ()
+DECL|method|getFinalState ()
 specifier|public
-name|RMAppAttemptState
-name|getFinalAttemptState
+name|RMAppState
+name|getFinalState
 parameter_list|()
 block|{
 return|return
 name|this
 operator|.
-name|finalAttemptState
+name|finalState
 return|;
 block|}
 block|}

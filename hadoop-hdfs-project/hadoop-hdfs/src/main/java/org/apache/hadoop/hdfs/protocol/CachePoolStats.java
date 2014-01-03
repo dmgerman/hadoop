@@ -80,6 +80,11 @@ specifier|private
 name|long
 name|bytesCached
 decl_stmt|;
+DECL|field|bytesOverlimit
+specifier|private
+name|long
+name|bytesOverlimit
+decl_stmt|;
 DECL|field|filesNeeded
 specifier|private
 name|long
@@ -128,6 +133,25 @@ operator|.
 name|bytesCached
 operator|=
 name|bytesCached
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
+DECL|method|setBytesOverlimit (long bytesOverlimit)
+specifier|public
+name|Builder
+name|setBytesOverlimit
+parameter_list|(
+name|long
+name|bytesOverlimit
+parameter_list|)
+block|{
+name|this
+operator|.
+name|bytesOverlimit
+operator|=
+name|bytesOverlimit
 expr_stmt|;
 return|return
 name|this
@@ -185,6 +209,8 @@ name|bytesNeeded
 argument_list|,
 name|bytesCached
 argument_list|,
+name|bytesOverlimit
+argument_list|,
 name|filesNeeded
 argument_list|,
 name|filesCached
@@ -205,6 +231,12 @@ specifier|final
 name|long
 name|bytesCached
 decl_stmt|;
+DECL|field|bytesOverlimit
+specifier|private
+specifier|final
+name|long
+name|bytesOverlimit
+decl_stmt|;
 DECL|field|filesNeeded
 specifier|private
 specifier|final
@@ -217,7 +249,7 @@ specifier|final
 name|long
 name|filesCached
 decl_stmt|;
-DECL|method|CachePoolStats (long bytesNeeded, long bytesCached, long filesNeeded, long filesCached)
+DECL|method|CachePoolStats (long bytesNeeded, long bytesCached, long bytesOverlimit, long filesNeeded, long filesCached)
 specifier|private
 name|CachePoolStats
 parameter_list|(
@@ -226,6 +258,9 @@ name|bytesNeeded
 parameter_list|,
 name|long
 name|bytesCached
+parameter_list|,
+name|long
+name|bytesOverlimit
 parameter_list|,
 name|long
 name|filesNeeded
@@ -245,6 +280,12 @@ operator|.
 name|bytesCached
 operator|=
 name|bytesCached
+expr_stmt|;
+name|this
+operator|.
+name|bytesOverlimit
+operator|=
+name|bytesOverlimit
 expr_stmt|;
 name|this
 operator|.
@@ -277,6 +318,16 @@ parameter_list|()
 block|{
 return|return
 name|bytesCached
+return|;
+block|}
+DECL|method|getBytesOverlimit ()
+specifier|public
+name|long
+name|getBytesOverlimit
+parameter_list|()
+block|{
+return|return
+name|bytesOverlimit
 return|;
 block|}
 DECL|method|getFilesNeeded ()
@@ -333,6 +384,16 @@ operator|.
 name|append
 argument_list|(
 name|bytesCached
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|", bytesOverlimit:"
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|bytesOverlimit
 argument_list|)
 operator|.
 name|append

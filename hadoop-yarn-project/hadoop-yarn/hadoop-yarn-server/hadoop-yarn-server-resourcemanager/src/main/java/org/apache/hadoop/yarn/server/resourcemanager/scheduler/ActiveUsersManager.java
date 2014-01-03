@@ -232,7 +232,7 @@ name|Queue
 operator|.
 name|class
 block|,
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 operator|.
 name|class
 block|}
@@ -338,7 +338,7 @@ name|Queue
 operator|.
 name|class
 block|,
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 operator|.
 name|class
 block|}
@@ -442,7 +442,7 @@ name|Queue
 operator|.
 name|class
 block|,
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 operator|.
 name|class
 block|}

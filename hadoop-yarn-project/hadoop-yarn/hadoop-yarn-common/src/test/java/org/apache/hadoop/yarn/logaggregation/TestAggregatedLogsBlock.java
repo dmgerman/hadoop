@@ -1422,7 +1422,7 @@ argument_list|)
 expr_stmt|;
 name|writer
 operator|.
-name|closeWriter
+name|close
 argument_list|()
 expr_stmt|;
 block|}

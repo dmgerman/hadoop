@@ -680,7 +680,7 @@ name|sls
 operator|.
 name|scheduler
 operator|.
-name|ResourceSchedulerWrapper
+name|SchedulerWrapper
 import|;
 end_import
 
@@ -1268,7 +1268,7 @@ expr_stmt|;
 comment|// record job running information
 operator|(
 operator|(
-name|ResourceSchedulerWrapper
+name|SchedulerWrapper
 operator|)
 name|rm
 operator|.
@@ -1974,7 +1974,7 @@ condition|)
 block|{
 operator|(
 operator|(
-name|ResourceSchedulerWrapper
+name|SchedulerWrapper
 operator|)
 name|rm
 operator|.
@@ -2004,7 +2004,7 @@ condition|)
 block|{
 operator|(
 operator|(
-name|ResourceSchedulerWrapper
+name|SchedulerWrapper
 operator|)
 name|rm
 operator|.

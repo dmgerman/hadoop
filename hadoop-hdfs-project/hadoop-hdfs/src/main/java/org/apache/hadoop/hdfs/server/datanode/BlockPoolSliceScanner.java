@@ -1082,7 +1082,7 @@ expr_stmt|;
 comment|// get the list of blocks and arrange them in random order
 name|List
 argument_list|<
-name|Block
+name|FinalizedReplica
 argument_list|>
 name|arr
 init|=

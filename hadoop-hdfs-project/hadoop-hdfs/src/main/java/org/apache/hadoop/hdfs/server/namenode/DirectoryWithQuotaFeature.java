@@ -94,8 +94,8 @@ specifier|public
 specifier|final
 class|class
 name|DirectoryWithQuotaFeature
-extends|extends
-name|INodeDirectory
+implements|implements
+name|INode
 operator|.
 name|Feature
 block|{
@@ -651,6 +651,21 @@ argument_list|(
 name|dsDelta
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|isQuotaSet ()
+name|boolean
+name|isQuotaSet
+parameter_list|()
+block|{
+return|return
+name|nsQuota
+operator|>=
+literal|0
+operator|||
+name|dsQuota
+operator|>=
+literal|0
+return|;
 block|}
 DECL|method|namespaceString ()
 specifier|private

@@ -1746,13 +1746,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateDataPB)
+DECL|method|storeApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
 name|storeApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -1761,6 +1761,14 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|String
+name|appIdStr
+init|=
+name|appId
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 name|Path
 name|appDirPath
 init|=
@@ -1768,7 +1776,7 @@ name|getAppDir
 argument_list|(
 name|rmAppRoot
 argument_list|,
-name|appId
+name|appIdStr
 argument_list|)
 decl_stmt|;
 name|fs
@@ -1785,7 +1793,7 @@ name|getNodePath
 argument_list|(
 name|appDirPath
 argument_list|,
-name|appId
+name|appIdStr
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -1849,13 +1857,13 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationStateInternal (String appId, ApplicationStateDataPBImpl appStateDataPB)
+DECL|method|updateApplicationStateInternal (ApplicationId appId, ApplicationStateDataPBImpl appStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
 name|updateApplicationStateInternal
 parameter_list|(
-name|String
+name|ApplicationId
 name|appId
 parameter_list|,
 name|ApplicationStateDataPBImpl
@@ -1864,6 +1872,14 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
+name|String
+name|appIdStr
+init|=
+name|appId
+operator|.
+name|toString
+argument_list|()
+decl_stmt|;
 name|Path
 name|appDirPath
 init|=
@@ -1871,7 +1887,7 @@ name|getAppDir
 argument_list|(
 name|rmAppRoot
 argument_list|,
-name|appId
+name|appIdStr
 argument_list|)
 decl_stmt|;
 name|Path
@@ -1881,7 +1897,7 @@ name|getNodePath
 argument_list|(
 name|appDirPath
 argument_list|,
-name|appId
+name|appIdStr
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -1945,14 +1961,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|storeApplicationAttemptStateInternal ( String attemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
+DECL|method|storeApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
 name|storeApplicationAttemptStateInternal
 parameter_list|(
-name|String
-name|attemptId
+name|ApplicationAttemptId
+name|appAttemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
 name|attemptStateDataPB
@@ -1960,16 +1976,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|ConverterUtils
-operator|.
-name|toApplicationAttemptId
-argument_list|(
-name|attemptId
-argument_list|)
-decl_stmt|;
 name|Path
 name|appDirPath
 init|=
@@ -1993,7 +1999,10 @@ name|getNodePath
 argument_list|(
 name|appDirPath
 argument_list|,
-name|attemptId
+name|appAttemptId
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -2002,7 +2011,7 @@ name|info
 argument_list|(
 literal|"Storing info for attempt: "
 operator|+
-name|attemptId
+name|appAttemptId
 operator|+
 literal|" at: "
 operator|+
@@ -2045,7 +2054,7 @@ name|info
 argument_list|(
 literal|"Error storing info for attempt: "
 operator|+
-name|attemptId
+name|appAttemptId
 argument_list|,
 name|e
 argument_list|)
@@ -2057,14 +2066,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|updateApplicationAttemptStateInternal ( String attemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
+DECL|method|updateApplicationAttemptStateInternal ( ApplicationAttemptId appAttemptId, ApplicationAttemptStateDataPBImpl attemptStateDataPB)
 specifier|public
 specifier|synchronized
 name|void
 name|updateApplicationAttemptStateInternal
 parameter_list|(
-name|String
-name|attemptId
+name|ApplicationAttemptId
+name|appAttemptId
 parameter_list|,
 name|ApplicationAttemptStateDataPBImpl
 name|attemptStateDataPB
@@ -2072,16 +2081,6 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|ApplicationAttemptId
-name|appAttemptId
-init|=
-name|ConverterUtils
-operator|.
-name|toApplicationAttemptId
-argument_list|(
-name|attemptId
-argument_list|)
-decl_stmt|;
 name|Path
 name|appDirPath
 init|=
@@ -2105,7 +2104,10 @@ name|getNodePath
 argument_list|(
 name|appDirPath
 argument_list|,
-name|attemptId
+name|appAttemptId
+operator|.
+name|toString
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|LOG
@@ -2114,7 +2116,7 @@ name|info
 argument_list|(
 literal|"Updating info for attempt: "
 operator|+
-name|attemptId
+name|appAttemptId
 operator|+
 literal|" at: "
 operator|+
@@ -2157,7 +2159,7 @@ name|info
 argument_list|(
 literal|"Error updating info for attempt: "
 operator|+
-name|attemptId
+name|appAttemptId
 argument_list|,
 name|e
 argument_list|)

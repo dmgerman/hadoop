@@ -276,6 +276,15 @@ name|drained
 init|=
 literal|true
 decl_stmt|;
+DECL|field|waitForDrained
+specifier|private
+name|Object
+name|waitForDrained
+init|=
+operator|new
+name|Object
+argument_list|()
+decl_stmt|;
 comment|// For drainEventsOnStop enabled only, block newly coming events into the
 comment|// queue while stopping.
 DECL|field|blockNewEvents
@@ -415,6 +424,32 @@ operator|.
 name|isEmpty
 argument_list|()
 expr_stmt|;
+comment|// blockNewEvents is only set when dispatcher is draining to stop,
+comment|// adding this check is to avoid the overhead of acquiring the lock
+comment|// and calling notify every time in the normal run of the loop.
+if|if
+condition|(
+name|blockNewEvents
+condition|)
+block|{
+synchronized|synchronized
+init|(
+name|waitForDrained
+init|)
+block|{
+if|if
+condition|(
+name|drained
+condition|)
+block|{
+name|waitForDrained
+operator|.
+name|notify
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+block|}
 name|Event
 name|event
 decl_stmt|;
@@ -583,17 +618,37 @@ argument_list|(
 literal|"AsyncDispatcher is draining to stop, igonring any new events."
 argument_list|)
 expr_stmt|;
+synchronized|synchronized
+init|(
+name|waitForDrained
+init|)
+block|{
 while|while
 condition|(
 operator|!
 name|drained
+operator|&&
+name|eventHandlingThread
+operator|.
+name|isAlive
+argument_list|()
 condition|)
 block|{
-name|Thread
+name|waitForDrained
 operator|.
-name|yield
-argument_list|()
+name|wait
+argument_list|(
+literal|1000
+argument_list|)
 expr_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Waiting for AsyncDispatcher to drain."
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 block|}
 name|stopped

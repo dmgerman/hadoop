@@ -282,7 +282,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 import|;
 end_import
 
@@ -592,6 +592,8 @@ throws|throws
 name|IOException
 throws|,
 name|YarnException
+throws|,
+name|InterruptedException
 block|{
 name|LOG
 operator|.
@@ -607,6 +609,12 @@ init|=
 literal|4
 operator|*
 literal|1024
+decl_stmt|;
+specifier|final
+name|int
+name|vcores
+init|=
+literal|4
 decl_stmt|;
 comment|// Register node1
 name|String
@@ -647,7 +655,7 @@ name|createResource
 argument_list|(
 name|memory
 argument_list|,
-literal|1
+name|vcores
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -692,7 +700,9 @@ name|memory
 operator|/
 literal|2
 argument_list|,
-literal|1
+name|vcores
+operator|/
+literal|2
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -965,10 +975,20 @@ argument_list|,
 name|nm2
 argument_list|)
 expr_stmt|;
-comment|// Send a heartbeat to kick the tires on the Scheduler
+comment|// Send heartbeats to kick the tires on the Scheduler
 name|nodeUpdate
 argument_list|(
 name|nm2
+argument_list|)
+expr_stmt|;
+name|nodeUpdate
+argument_list|(
+name|nm2
+argument_list|)
+expr_stmt|;
+name|nodeUpdate
+argument_list|(
+name|nm1
 argument_list|)
 expr_stmt|;
 name|nodeUpdate
@@ -1026,11 +1046,11 @@ name|t3
 argument_list|)
 expr_stmt|;
 comment|// Notify scheduler application is finished.
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 name|appRemovedEvent1
 init|=
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|application
 operator|.

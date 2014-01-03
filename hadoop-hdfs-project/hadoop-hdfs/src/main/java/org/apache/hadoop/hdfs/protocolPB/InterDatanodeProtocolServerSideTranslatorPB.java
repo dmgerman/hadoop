@@ -430,7 +430,7 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setStorageID
+name|setStorageUuid
 argument_list|(
 name|storageID
 argument_list|)

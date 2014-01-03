@@ -244,7 +244,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 import|;
 end_import
 

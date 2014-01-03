@@ -1075,13 +1075,15 @@ operator|new
 name|Configuration
 argument_list|()
 expr_stmt|;
+comment|// the specific tests for kerberos will enable kerberos.  forcing it
+comment|// for all tests will cause tests to fail if the user has a TGT
 name|conf
 operator|.
 name|set
 argument_list|(
 name|HADOOP_SECURITY_AUTHENTICATION
 argument_list|,
-name|KERBEROS
+name|SIMPLE
 operator|.
 name|toString
 argument_list|()

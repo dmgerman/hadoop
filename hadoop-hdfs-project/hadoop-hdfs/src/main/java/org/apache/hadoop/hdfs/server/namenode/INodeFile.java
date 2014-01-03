@@ -216,6 +216,24 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|blockmanagement
+operator|.
+name|DatanodeStorageInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|common
 operator|.
 name|HdfsServerConstants
@@ -352,57 +370,6 @@ name|INodeFileAttributes
 implements|,
 name|BlockCollection
 block|{
-comment|/**    * A feature contains specific information for a type of INodeFile. E.g.,    * we can have separate features for Under-Construction and Snapshot.    */
-DECL|class|Feature
-specifier|public
-specifier|static
-specifier|abstract
-class|class
-name|Feature
-implements|implements
-name|INode
-operator|.
-name|Feature
-argument_list|<
-name|Feature
-argument_list|>
-block|{
-DECL|field|nextFeature
-specifier|private
-name|Feature
-name|nextFeature
-decl_stmt|;
-annotation|@
-name|Override
-DECL|method|getNextFeature ()
-specifier|public
-name|Feature
-name|getNextFeature
-parameter_list|()
-block|{
-return|return
-name|nextFeature
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|setNextFeature (Feature next)
-specifier|public
-name|void
-name|setNextFeature
-parameter_list|(
-name|Feature
-name|next
-parameter_list|)
-block|{
-name|this
-operator|.
-name|nextFeature
-operator|=
-name|next
-expr_stmt|;
-block|}
-block|}
 comment|/** The same as valueOf(inode, path, false). */
 DECL|method|valueOf (INode inode, String path )
 specifier|public
@@ -703,11 +670,6 @@ name|BlockInfo
 index|[]
 name|blocks
 decl_stmt|;
-DECL|field|headFeature
-specifier|private
-name|Feature
-name|headFeature
-decl_stmt|;
 DECL|method|INodeFile (long id, byte[] name, PermissionStatus permissions, long mtime, long atime, BlockInfo[] blklist, short replication, long preferredBlockSize)
 name|INodeFile
 parameter_list|(
@@ -811,11 +773,11 @@ name|blocks
 expr_stmt|;
 name|this
 operator|.
-name|headFeature
+name|features
 operator|=
 name|that
 operator|.
-name|headFeature
+name|features
 expr_stmt|;
 block|}
 DECL|method|INodeFile (INodeFile that, FileDiffList diffs)
@@ -850,56 +812,6 @@ operator|.
 name|addSnapshotFeature
 argument_list|(
 name|diffs
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|addFeature (Feature f)
-specifier|private
-name|void
-name|addFeature
-parameter_list|(
-name|Feature
-name|f
-parameter_list|)
-block|{
-name|headFeature
-operator|=
-name|INode
-operator|.
-name|Feature
-operator|.
-name|Util
-operator|.
-name|addFeature
-argument_list|(
-name|f
-argument_list|,
-name|headFeature
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|removeFeature (Feature f)
-specifier|private
-name|void
-name|removeFeature
-parameter_list|(
-name|Feature
-name|f
-parameter_list|)
-block|{
-name|headFeature
-operator|=
-name|INode
-operator|.
-name|Feature
-operator|.
-name|Util
-operator|.
-name|removeFeature
-argument_list|(
-name|f
-argument_list|,
-name|headFeature
 argument_list|)
 expr_stmt|;
 block|}
@@ -944,20 +856,8 @@ for|for
 control|(
 name|Feature
 name|f
-init|=
-name|this
-operator|.
-name|headFeature
-init|;
-name|f
-operator|!=
-literal|null
-condition|;
-name|f
-operator|=
-name|f
-operator|.
-name|nextFeature
+range|:
+name|features
 control|)
 block|{
 if|if
@@ -1194,7 +1094,7 @@ block|}
 annotation|@
 name|Override
 comment|// BlockCollection, the file should be under construction
-DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] locations)
+DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeStorageInfo[] locations)
 specifier|public
 name|BlockInfoUnderConstruction
 name|setLastBlock
@@ -1202,7 +1102,7 @@ parameter_list|(
 name|BlockInfo
 name|lastBlock
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|locations
 parameter_list|)
@@ -1379,6 +1279,17 @@ name|FileDiffList
 name|diffs
 parameter_list|)
 block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+operator|!
+name|isWithSnapshot
+argument_list|()
+argument_list|,
+literal|"File is already with snapshot"
+argument_list|)
+expr_stmt|;
 name|FileWithSnapshotFeature
 name|sf
 init|=
@@ -1411,18 +1322,8 @@ for|for
 control|(
 name|Feature
 name|f
-init|=
-name|headFeature
-init|;
-name|f
-operator|!=
-literal|null
-condition|;
-name|f
-operator|=
-name|f
-operator|.
-name|nextFeature
+range|:
+name|features
 control|)
 block|{
 if|if
@@ -1525,11 +1426,14 @@ block|{
 return|return
 name|sf
 operator|.
+name|getDiffs
+argument_list|()
+operator|.
 name|getSnapshotINode
 argument_list|(
-name|this
-argument_list|,
 name|snapshot
+argument_list|,
+name|this
 argument_list|)
 return|;
 block|}
@@ -1542,7 +1446,7 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (final Snapshot latest, final INodeMap inodeMap)
+DECL|method|recordModification (final Snapshot latest)
 specifier|public
 name|INodeFile
 name|recordModification
@@ -1550,10 +1454,6 @@ parameter_list|(
 specifier|final
 name|Snapshot
 name|latest
-parameter_list|,
-specifier|final
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1561,6 +1461,12 @@ block|{
 if|if
 condition|(
 name|isInLatestSnapshot
+argument_list|(
+name|latest
+argument_list|)
+operator|&&
+operator|!
+name|shouldRecordInSrcSnapshot
 argument_list|(
 name|latest
 argument_list|)
@@ -1591,15 +1497,6 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// record self in the diff list if necessary
-if|if
-condition|(
-operator|!
-name|shouldRecordInSrcSnapshot
-argument_list|(
-name|latest
-argument_list|)
-condition|)
-block|{
 name|sf
 operator|.
 name|getDiffs
@@ -1614,7 +1511,6 @@ argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 return|return
 name|this
@@ -1825,8 +1721,6 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate

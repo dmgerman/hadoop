@@ -1207,28 +1207,18 @@ operator|.
 name|waitForCompletion
 argument_list|()
 expr_stmt|;
-name|Counters
-name|counters
-init|=
+name|assertEquals
+argument_list|(
+literal|"Job did not fail"
+argument_list|,
+name|JobStatus
+operator|.
+name|FAILED
+argument_list|,
 name|job
 operator|.
-name|getCounters
+name|getJobState
 argument_list|()
-decl_stmt|;
-name|assertTrue
-argument_list|(
-literal|"No. of failed maps should be 1"
-argument_list|,
-name|counters
-operator|.
-name|getCounter
-argument_list|(
-name|JobCounter
-operator|.
-name|NUM_FAILED_MAPS
-argument_list|)
-operator|==
-literal|1
 argument_list|)
 expr_stmt|;
 if|if
@@ -1469,27 +1459,18 @@ name|waitForCompletion
 argument_list|()
 expr_stmt|;
 comment|// wait for the job to complete
-name|counters
-operator|=
+name|assertEquals
+argument_list|(
+literal|"Job was not killed"
+argument_list|,
+name|JobStatus
+operator|.
+name|KILLED
+argument_list|,
 name|job
 operator|.
-name|getCounters
+name|getJobState
 argument_list|()
-expr_stmt|;
-name|assertTrue
-argument_list|(
-literal|"No. of killed maps should be 1"
-argument_list|,
-name|counters
-operator|.
-name|getCounter
-argument_list|(
-name|JobCounter
-operator|.
-name|NUM_KILLED_MAPS
-argument_list|)
-operator|==
-literal|1
 argument_list|)
 expr_stmt|;
 if|if

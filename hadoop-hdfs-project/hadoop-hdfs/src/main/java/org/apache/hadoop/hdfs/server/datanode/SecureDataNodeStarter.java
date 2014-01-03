@@ -416,6 +416,14 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+name|boolean
+name|isSecure
+init|=
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
+decl_stmt|;
 comment|// Obtain secure port for data streaming to datanode
 name|InetSocketAddress
 name|streamingAddr
@@ -506,6 +514,26 @@ name|ss
 operator|.
 name|getLocalPort
 argument_list|()
+argument_list|)
+throw|;
+block|}
+if|if
+condition|(
+name|ss
+operator|.
+name|getLocalPort
+argument_list|()
+operator|>
+literal|1023
+operator|&&
+name|isSecure
+condition|)
+block|{
+throw|throw
+operator|new
+name|RuntimeException
+argument_list|(
+literal|"Cannot start secure datanode with unprivileged RPC ports"
 argument_list|)
 throw|;
 block|}
@@ -636,33 +664,21 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-operator|(
-name|ss
-operator|.
-name|getLocalPort
-argument_list|()
-operator|>
-literal|1023
-operator|||
 name|listener
 operator|.
 name|getPort
 argument_list|()
 operator|>
 literal|1023
-operator|)
 operator|&&
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
+name|isSecure
 condition|)
 block|{
 throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Cannot start secure datanode with unprivileged ports"
+literal|"Cannot start secure datanode with unprivileged HTTP ports"
 argument_list|)
 throw|;
 block|}

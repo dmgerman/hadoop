@@ -244,6 +244,24 @@ name|server
 operator|.
 name|datanode
 operator|.
+name|FinalizedReplica
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|datanode
+operator|.
 name|Replica
 import|;
 end_import
@@ -342,7 +360,43 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeStorage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|ReplicaRecoveryInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|StorageReport
 import|;
 end_import
 
@@ -525,6 +579,19 @@ argument_list|>
 name|getVolumes
 parameter_list|()
 function_decl|;
+comment|/** @return one or more storage reports for attached volumes. */
+DECL|method|getStorageReports (String bpid)
+specifier|public
+name|StorageReport
+index|[]
+name|getStorageReports
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/** @return the volume that contains a replica of the block. */
 DECL|method|getVolume (ExtendedBlock b)
 specifier|public
@@ -547,20 +614,12 @@ argument_list|>
 name|getVolumeInfoMap
 parameter_list|()
 function_decl|;
-comment|/** @return a list of block pools. */
-DECL|method|getBlockPoolList ()
-specifier|public
-name|String
-index|[]
-name|getBlockPoolList
-parameter_list|()
-function_decl|;
 comment|/** @return a list of finalized blocks for the given block pool. */
 DECL|method|getFinalizedBlocks (String bpid)
 specifier|public
 name|List
 argument_list|<
-name|Block
+name|FinalizedReplica
 argument_list|>
 name|getFinalizedBlocks
 parameter_list|(
@@ -783,10 +842,10 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Recover a failed pipeline close    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @throws IOException    */
+comment|/**    * Recover a failed pipeline close    * It bumps the replica's generation stamp and finalize it if RBW replica    *     * @param b block    * @param newGS the new generation stamp for the replica    * @param expectedBlockLen the number of bytes the replica is expected to have    * @return the storage uuid of the replica.    * @throws IOException    */
 DECL|method|recoverClose (ExtendedBlock b, long newGS, long expectedBlockLen )
 specifier|public
-name|void
+name|String
 name|recoverClose
 parameter_list|(
 name|ExtendedBlock
@@ -825,11 +884,16 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Returns the block report - the full list of blocks stored under a     * block pool    * @param bpid Block Pool Id    * @return - the block report - the full list of blocks stored    */
-DECL|method|getBlockReport (String bpid)
+comment|/**    * Returns one block report per volume.    * @param bpid Block Pool Id    * @return - a map of DatanodeStorage to block report for the volume.    */
+DECL|method|getBlockReports (String bpid)
 specifier|public
+name|Map
+argument_list|<
+name|DatanodeStorage
+argument_list|,
 name|BlockListAsLongs
-name|getBlockReport
+argument_list|>
+name|getBlockReports
 parameter_list|(
 name|String
 name|bpid

@@ -773,10 +773,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|isAppSafeToUnregister ()
+DECL|method|isAppSafeToTerminate ()
 specifier|public
 name|boolean
-name|isAppSafeToUnregister
+name|isAppSafeToTerminate
 parameter_list|()
 block|{
 throw|throw

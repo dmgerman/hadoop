@@ -1806,6 +1806,16 @@ index|[
 literal|2
 index|]
 decl_stmt|;
+name|String
+index|[]
+name|newStorages
+init|=
+operator|new
+name|String
+index|[
+literal|2
+index|]
+decl_stmt|;
 name|newCall
 argument_list|()
 expr_stmt|;
@@ -1822,6 +1832,8 @@ argument_list|,
 name|newBlock
 argument_list|,
 name|newNodes
+argument_list|,
+name|newStorages
 argument_list|)
 expr_stmt|;
 name|fail
@@ -1872,6 +1884,8 @@ argument_list|,
 name|newBlock
 argument_list|,
 name|newNodes
+argument_list|,
+name|newStorages
 argument_list|)
 expr_stmt|;
 block|}

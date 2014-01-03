@@ -260,6 +260,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -503,26 +521,6 @@ operator|.
 name|scheduler
 operator|.
 name|QueueMetrics
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerApplication
 import|;
 end_import
 
@@ -2385,13 +2383,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|submitApplication (FiCaSchedulerApp application, String user, String queue)
+DECL|method|submitApplication (ApplicationId applicationId, String user, String queue)
 specifier|public
 name|void
 name|submitApplication
 parameter_list|(
-name|FiCaSchedulerApp
-name|application
+name|ApplicationId
+name|applicationId
 parameter_list|,
 name|String
 name|user
@@ -2450,16 +2448,13 @@ argument_list|()
 operator|+
 literal|" is STOPPED. Cannot accept submission of application: "
 operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 argument_list|)
 throw|;
 block|}
 name|addApplication
 argument_list|(
-name|application
+name|applicationId
 argument_list|,
 name|user
 argument_list|)
@@ -2479,7 +2474,7 @@ name|parent
 operator|.
 name|submitApplication
 argument_list|(
-name|application
+name|applicationId
 argument_list|,
 name|user
 argument_list|,
@@ -2509,7 +2504,7 @@ argument_list|)
 expr_stmt|;
 name|removeApplication
 argument_list|(
-name|application
+name|applicationId
 argument_list|,
 name|user
 argument_list|)
@@ -2520,14 +2515,46 @@ throw|;
 block|}
 block|}
 block|}
-DECL|method|addApplication (FiCaSchedulerApp application, String user)
+annotation|@
+name|Override
+DECL|method|submitApplicationAttempt (FiCaSchedulerApp application, String userName)
+specifier|public
+name|void
+name|submitApplicationAttempt
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|String
+name|userName
+parameter_list|)
+block|{
+comment|// submit attempt logic.
+block|}
+annotation|@
+name|Override
+DECL|method|finishApplicationAttempt (FiCaSchedulerApp application, String queue)
+specifier|public
+name|void
+name|finishApplicationAttempt
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|String
+name|queue
+parameter_list|)
+block|{
+comment|// finish attempt logic.
+block|}
+DECL|method|addApplication (ApplicationId applicationId, String user)
 specifier|private
 specifier|synchronized
 name|void
 name|addApplication
 parameter_list|(
-name|FiCaSchedulerApp
-name|application
+name|ApplicationId
+name|applicationId
 parameter_list|,
 name|String
 name|user
@@ -2544,10 +2571,7 @@ literal|"Application added -"
 operator|+
 literal|" appId: "
 operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 operator|+
 literal|" user: "
 operator|+
@@ -2567,16 +2591,16 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|finishApplication (FiCaSchedulerApp application, String queue)
+DECL|method|finishApplication (ApplicationId application, String user)
 specifier|public
 name|void
 name|finishApplication
 parameter_list|(
-name|FiCaSchedulerApp
+name|ApplicationId
 name|application
 parameter_list|,
 name|String
-name|queue
+name|user
 parameter_list|)
 block|{
 synchronized|synchronized
@@ -2588,10 +2612,7 @@ name|removeApplication
 argument_list|(
 name|application
 argument_list|,
-name|application
-operator|.
-name|getUser
-argument_list|()
+name|user
 argument_list|)
 expr_stmt|;
 block|}
@@ -2609,19 +2630,19 @@ name|finishApplication
 argument_list|(
 name|application
 argument_list|,
-name|queue
+name|user
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|removeApplication (FiCaSchedulerApp application, String user)
+DECL|method|removeApplication (ApplicationId applicationId, String user)
 specifier|public
 specifier|synchronized
 name|void
 name|removeApplication
 parameter_list|(
-name|FiCaSchedulerApp
-name|application
+name|ApplicationId
+name|applicationId
 parameter_list|,
 name|String
 name|user
@@ -2638,10 +2659,7 @@ literal|"Application removed -"
 operator|+
 literal|" appId: "
 operator|+
-name|application
-operator|.
-name|getApplicationId
-argument_list|()
+name|applicationId
 operator|+
 literal|" user: "
 operator|+

@@ -204,6 +204,20 @@ name|CommonConfigurationKeys
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_class
 DECL|class|WebAppProxy
 specifier|public
@@ -779,6 +793,21 @@ name|e
 parameter_list|)
 block|{       }
 block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getBindAddress ()
+name|String
+name|getBindAddress
+parameter_list|()
+block|{
+return|return
+name|bindAddress
+operator|+
+literal|":"
+operator|+
+name|port
+return|;
 block|}
 block|}
 end_class

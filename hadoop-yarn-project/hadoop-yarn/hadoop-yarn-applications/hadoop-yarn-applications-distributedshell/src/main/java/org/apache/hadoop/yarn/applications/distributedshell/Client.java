@@ -420,6 +420,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|util
+operator|.
+name|Shell
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -1128,6 +1142,7 @@ name|opts
 decl_stmt|;
 DECL|field|shellCommandPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|shellCommandPath
@@ -1136,6 +1151,7 @@ literal|"shellCommands"
 decl_stmt|;
 DECL|field|shellArgsPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|shellArgsPath
@@ -1144,6 +1160,7 @@ literal|"shellArgs"
 decl_stmt|;
 DECL|field|appMasterJarPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|appMasterJarPath
@@ -1153,11 +1170,30 @@ decl_stmt|;
 comment|// Hardcoded path to custom log_properties
 DECL|field|log4jPath
 specifier|private
+specifier|static
 specifier|final
 name|String
 name|log4jPath
 init|=
 literal|"log4j.properties"
+decl_stmt|;
+DECL|field|linuxShellPath
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|linuxShellPath
+init|=
+literal|"ExecShellScript.sh"
+decl_stmt|;
+DECL|field|windowBatPath
+specifier|private
+specifier|static
+specifier|final
+name|String
+name|windowBatPath
+init|=
+literal|"ExecBatScript.bat"
 decl_stmt|;
 comment|/**    * @param args Command line arguments     */
 DECL|method|main (String[] args)
@@ -1463,7 +1499,11 @@ literal|"shell_command"
 argument_list|,
 literal|true
 argument_list|,
-literal|"Shell command to be executed by the Application Master"
+literal|"Shell command to be executed by "
+operator|+
+literal|"the Application Master. Can only specify either --shell_command "
+operator|+
+literal|"or --shell_script"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1474,7 +1514,9 @@ literal|"shell_script"
 argument_list|,
 literal|true
 argument_list|,
-literal|"Location of the shell script to be executed"
+literal|"Location of the shell script to be "
+operator|+
+literal|"executed. Can only specify either --shell_command or --shell_script"
 argument_list|)
 expr_stmt|;
 name|opts
@@ -1900,16 +1942,63 @@ name|hasOption
 argument_list|(
 literal|"shell_command"
 argument_list|)
+operator|&&
+operator|!
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"shell_script"
+argument_list|)
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"No shell command specified to be executed by application master"
+literal|"No shell command or shell script specified to be executed by application master"
 argument_list|)
 throw|;
 block|}
+elseif|else
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"shell_command"
+argument_list|)
+operator|&&
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"shell_script"
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Can not specify shell_command option "
+operator|+
+literal|"and shell_script option at the same time"
+argument_list|)
+throw|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"shell_command"
+argument_list|)
+condition|)
+block|{
 name|shellCommand
 operator|=
 name|cliParser
@@ -1919,15 +2008,8 @@ argument_list|(
 literal|"shell_command"
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|cliParser
-operator|.
-name|hasOption
-argument_list|(
-literal|"shell_script"
-argument_list|)
-condition|)
+block|}
+else|else
 block|{
 name|shellScriptPath
 operator|=
@@ -2727,7 +2809,17 @@ operator|.
 name|getId
 argument_list|()
 operator|+
-literal|"/ExecShellScript.sh"
+literal|"/"
+operator|+
+operator|(
+name|Shell
+operator|.
+name|WINDOWS
+condition|?
+name|windowBatPath
+else|:
+name|linuxShellPath
+operator|)
 decl_stmt|;
 name|Path
 name|shellDst

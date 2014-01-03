@@ -116,6 +116,20 @@ name|DFSUtil
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/**  * Describes a path-based cache directive.  */
 end_comment
@@ -358,18 +372,35 @@ specifier|static
 class|class
 name|Expiration
 block|{
-comment|/** Denotes a CacheDirectiveInfo that never expires **/
-DECL|field|EXPIRY_NEVER
+comment|/**      * The maximum value we accept for a relative expiry.      */
+DECL|field|MAX_RELATIVE_EXPIRY_MS
 specifier|public
 specifier|static
 specifier|final
-name|int
-name|EXPIRY_NEVER
+name|long
+name|MAX_RELATIVE_EXPIRY_MS
 init|=
-operator|-
-literal|1
+name|Long
+operator|.
+name|MAX_VALUE
+operator|/
+literal|4
 decl_stmt|;
-comment|/**      * Create a new relative Expiration.      *       * @param ms how long until the CacheDirective expires, in milliseconds      * @return A relative Expiration      */
+comment|// This helps prevent weird overflow bugs
+comment|/**      * An relative Expiration that never expires.      */
+DECL|field|NEVER
+specifier|public
+specifier|static
+specifier|final
+name|Expiration
+name|NEVER
+init|=
+name|newRelative
+argument_list|(
+name|MAX_RELATIVE_EXPIRY_MS
+argument_list|)
+decl_stmt|;
+comment|/**      * Create a new relative Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *       * @param ms how long until the CacheDirective expires, in milliseconds      * @return A relative Expiration      */
 DECL|method|newRelative (long ms)
 specifier|public
 specifier|static
@@ -390,7 +421,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**      * Create a new absolute Expiration.      *       * @param date when the CacheDirective expires      * @return An absolute Expiration      */
+comment|/**      * Create a new absolute Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *       * @param date when the CacheDirective expires      * @return An absolute Expiration      */
 DECL|method|newAbsolute (Date date)
 specifier|public
 specifier|static
@@ -414,7 +445,7 @@ literal|false
 argument_list|)
 return|;
 block|}
-comment|/**      * Create a new absolute Expiration.      *       * @param ms when the CacheDirective expires, in milliseconds since the Unix      *          epoch.      * @return An absolute Expiration      */
+comment|/**      * Create a new absolute Expiration.      *<p>      * Use {@link Expiration#NEVER} to indicate an Expiration that never      * expires.      *       * @param ms when the CacheDirective expires, in milliseconds since the Unix      *          epoch.      * @return An absolute Expiration      */
 DECL|method|newAbsolute (long ms)
 specifier|public
 specifier|static
@@ -458,6 +489,23 @@ name|boolean
 name|isRelative
 parameter_list|)
 block|{
+if|if
+condition|(
+name|isRelative
+condition|)
+block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|ms
+operator|<=
+name|MAX_RELATIVE_EXPIRY_MS
+argument_list|,
+literal|"Expiration time is too far in the future!"
+argument_list|)
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|ms

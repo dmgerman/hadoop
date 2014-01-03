@@ -148,6 +148,34 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|DFSUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|StorageType
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|protocol
 operator|.
 name|Block
@@ -217,6 +245,26 @@ operator|.
 name|namenode
 operator|.
 name|FSClusterStats
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
+name|DatanodeStorage
+operator|.
+name|State
 import|;
 end_import
 
@@ -508,9 +556,9 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize)
+DECL|method|chooseTarget (String srcPath, int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, StorageType storageType)
 specifier|public
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
 parameter_list|(
@@ -525,7 +573,7 @@ name|writer
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|chosenNodes
 parameter_list|,
@@ -540,6 +588,9 @@ name|excludedNodes
 parameter_list|,
 name|long
 name|blocksize
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 return|return
@@ -556,13 +607,15 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|blocksize
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes)
-name|DatanodeDescriptor
+DECL|method|chooseTarget (String src, int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, List<DatanodeDescriptor> favoredNodes, StorageType storageType)
+name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
 parameter_list|(
@@ -589,6 +642,9 @@ argument_list|<
 name|DatanodeDescriptor
 argument_list|>
 name|favoredNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 try|try
@@ -620,7 +676,7 @@ argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|(
 name|numOfReplicas
@@ -631,6 +687,8 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|blocksize
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -663,14 +721,14 @@ decl_stmt|;
 comment|// Choose favored nodes
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -723,10 +781,11 @@ argument_list|)
 decl_stmt|;
 comment|// Choose a single node which is local to favoredNode.
 comment|// 'results' is updated within chooseLocalNode
-name|DatanodeDescriptor
+specifier|final
+name|DatanodeStorageInfo
 name|target
 init|=
-name|chooseLocalNode
+name|chooseLocalStorage
 argument_list|(
 name|favoredNode
 argument_list|,
@@ -737,6 +796,9 @@ argument_list|,
 name|getMaxNodesPerRack
 argument_list|(
 name|results
+operator|.
+name|size
+argument_list|()
 argument_list|,
 name|numOfReplicas
 argument_list|)
@@ -747,6 +809,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 decl_stmt|;
 if|if
@@ -776,6 +840,9 @@ operator|.
 name|add
 argument_list|(
 name|target
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -797,7 +864,7 @@ operator|.
 name|size
 argument_list|()
 expr_stmt|;
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|remainingTargets
 init|=
@@ -816,6 +883,8 @@ argument_list|,
 name|favoriteAndExcludedNodes
 argument_list|,
 name|blocksize
+argument_list|,
+name|storageType
 argument_list|)
 decl_stmt|;
 for|for
@@ -857,7 +926,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[
 name|results
 operator|.
@@ -887,7 +956,7 @@ argument_list|,
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|(
 name|numOfReplicas
@@ -898,14 +967,16 @@ argument_list|,
 name|excludedNodes
 argument_list|,
 name|blocksize
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
 block|}
 comment|/** This is the implementation. */
-DECL|method|chooseTarget (int numOfReplicas, Node writer, List<DatanodeDescriptor> chosenNodes, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize)
+DECL|method|chooseTarget (int numOfReplicas, Node writer, List<DatanodeStorageInfo> chosenStorage, boolean returnChosenNodes, Set<Node> excludedNodes, long blocksize, StorageType storageType)
 specifier|private
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|chooseTarget
 parameter_list|(
@@ -917,9 +988,9 @@ name|writer
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
-name|chosenNodes
+name|chosenStorage
 parameter_list|,
 name|boolean
 name|returnChosenNodes
@@ -932,6 +1003,9 @@ name|excludedNodes
 parameter_list|,
 name|long
 name|blocksize
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 if|if
@@ -949,7 +1023,7 @@ literal|0
 condition|)
 block|{
 return|return
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 operator|.
 name|EMPTY_ARRAY
 return|;
@@ -977,7 +1051,10 @@ name|result
 init|=
 name|getMaxNodesPerRack
 argument_list|(
-name|chosenNodes
+name|chosenStorage
+operator|.
+name|size
+argument_list|()
 argument_list|,
 name|numOfReplicas
 argument_list|)
@@ -997,33 +1074,37 @@ index|[
 literal|1
 index|]
 decl_stmt|;
+specifier|final
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 argument_list|(
-name|chosenNodes
+name|chosenStorage
 argument_list|)
 decl_stmt|;
 for|for
 control|(
-name|DatanodeDescriptor
-name|node
+name|DatanodeStorageInfo
+name|storage
 range|:
-name|chosenNodes
+name|chosenStorage
 control|)
 block|{
 comment|// add localMachine and related nodes to excludedNodes
 name|addToExcludedNodes
 argument_list|(
-name|node
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|,
 name|excludedNodes
 argument_list|)
@@ -1077,6 +1158,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 decl_stmt|;
 if|if
@@ -1089,7 +1172,7 @@ name|results
 operator|.
 name|removeAll
 argument_list|(
-name|chosenNodes
+name|chosenStorage
 argument_list|)
 expr_stmt|;
 block|}
@@ -1112,7 +1195,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[
 name|results
 operator|.
@@ -1123,17 +1206,14 @@ argument_list|)
 argument_list|)
 return|;
 block|}
-DECL|method|getMaxNodesPerRack (List<DatanodeDescriptor> chosenNodes, int numOfReplicas)
+DECL|method|getMaxNodesPerRack (int numOfChosen, int numOfReplicas)
 specifier|private
 name|int
 index|[]
 name|getMaxNodesPerRack
 parameter_list|(
-name|List
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|chosenNodes
+name|int
+name|numOfChosen
 parameter_list|,
 name|int
 name|numOfReplicas
@@ -1150,10 +1230,7 @@ decl_stmt|;
 name|int
 name|totalNumOfReplicas
 init|=
-name|chosenNodes
-operator|.
-name|size
-argument_list|()
+name|numOfChosen
 operator|+
 name|numOfReplicas
 decl_stmt|;
@@ -1205,7 +1282,7 @@ block|}
 return|;
 block|}
 comment|/**    * choose<i>numOfReplicas</i> from all data nodes    * @param numOfReplicas additional number of replicas wanted    * @param writer the writer's machine, could be a non-DatanodeDescriptor node    * @param excludedNodes datanodes that should not be considered as targets    * @param blocksize size of the data to be written    * @param maxNodesPerRack max nodes allowed per rack    * @param results the target nodes already chosen    * @param avoidStaleNodes avoid stale nodes in replica choosing    * @return local node of writer (not chosen node)    */
-DECL|method|chooseTarget (int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, final boolean avoidStaleNodes)
+DECL|method|chooseTarget (int numOfReplicas, Node writer, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, final boolean avoidStaleNodes, StorageType storageType)
 specifier|private
 name|Node
 name|chooseTarget
@@ -1230,13 +1307,16 @@ name|maxNodesPerRack
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 specifier|final
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 if|if
@@ -1311,6 +1391,9 @@ name|get
 argument_list|(
 literal|0
 argument_list|)
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 expr_stmt|;
 block|}
 comment|// Keep a copy of original excludedNodes
@@ -1345,7 +1428,7 @@ condition|)
 block|{
 name|writer
 operator|=
-name|chooseLocalNode
+name|chooseLocalStorage
 argument_list|(
 name|writer
 argument_list|,
@@ -1358,7 +1441,12 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 expr_stmt|;
 if|if
 condition|(
@@ -1373,6 +1461,20 @@ name|writer
 return|;
 block|}
 block|}
+specifier|final
+name|DatanodeDescriptor
+name|dn0
+init|=
+name|results
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|numOfResults
@@ -1384,12 +1486,7 @@ name|chooseRemoteRack
 argument_list|(
 literal|1
 argument_list|,
-name|results
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
+name|dn0
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1400,6 +1497,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 if|if
@@ -1422,25 +1521,29 @@ operator|<=
 literal|2
 condition|)
 block|{
-if|if
-condition|(
-name|clusterMap
-operator|.
-name|isOnSameRack
-argument_list|(
-name|results
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
-argument_list|,
+specifier|final
+name|DatanodeDescriptor
+name|dn1
+init|=
 name|results
 operator|.
 name|get
 argument_list|(
 literal|1
 argument_list|)
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|clusterMap
+operator|.
+name|isOnSameRack
+argument_list|(
+name|dn0
+argument_list|,
+name|dn1
 argument_list|)
 condition|)
 block|{
@@ -1448,12 +1551,7 @@ name|chooseRemoteRack
 argument_list|(
 literal|1
 argument_list|,
-name|results
-operator|.
-name|get
-argument_list|(
-literal|0
-argument_list|)
+name|dn0
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1464,6 +1562,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
@@ -1475,12 +1575,7 @@ condition|)
 block|{
 name|chooseLocalRack
 argument_list|(
-name|results
-operator|.
-name|get
-argument_list|(
-literal|1
-argument_list|)
+name|dn1
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1491,6 +1586,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
@@ -1509,6 +1606,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
@@ -1542,6 +1641,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
@@ -1551,11 +1652,11 @@ name|NotEnoughReplicasException
 name|e
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Not able to place enough replicas, still in need of "
+specifier|final
+name|String
+name|message
+init|=
+literal|"Failed to place enough replicas, still in need of "
 operator|+
 operator|(
 name|totalReplicasExpected
@@ -1570,7 +1671,35 @@ literal|" to reach "
 operator|+
 name|totalReplicasExpected
 operator|+
-literal|"\n"
+literal|"."
+decl_stmt|;
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+name|message
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|message
+operator|+
+literal|" "
 operator|+
 name|e
 operator|.
@@ -1578,6 +1707,7 @@ name|getMessage
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 if|if
 condition|(
 name|avoidStaleNodes
@@ -1590,8 +1720,8 @@ comment|// We need to additionally exclude the nodes that were added to the
 comment|// result list in the successful calls to choose*() above.
 for|for
 control|(
-name|Node
-name|node
+name|DatanodeStorageInfo
+name|resultStorage
 range|:
 name|results
 control|)
@@ -1600,7 +1730,10 @@ name|oldExcludedNodes
 operator|.
 name|add
 argument_list|(
-name|node
+name|resultStorage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1631,6 +1764,8 @@ argument_list|,
 name|results
 argument_list|,
 literal|false
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -1639,11 +1774,11 @@ return|return
 name|writer
 return|;
 block|}
-comment|/**    * Choose<i>localMachine</i> as the target.    * if<i>localMachine</i> is not available,     * choose a node on the same rack    * @return the chosen node    */
-DECL|method|chooseLocalNode (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+comment|/**    * Choose<i>localMachine</i> as the target.    * if<i>localMachine</i> is not available,     * choose a node on the same rack    * @return the chosen storage    */
+DECL|method|chooseLocalStorage (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
 specifier|protected
-name|DatanodeDescriptor
-name|chooseLocalNode
+name|DatanodeStorageInfo
+name|chooseLocalStorage
 parameter_list|(
 name|Node
 name|localMachine
@@ -1662,12 +1797,15 @@ name|maxNodesPerRack
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1695,6 +1833,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 if|if
@@ -1726,11 +1866,27 @@ argument_list|)
 condition|)
 block|{
 comment|// was not in the excluded list
+for|for
+control|(
+name|DatanodeStorageInfo
+name|localStorage
+range|:
+name|DFSUtil
+operator|.
+name|shuffle
+argument_list|(
+name|localDatanode
+operator|.
+name|getStorageInfos
+argument_list|()
+argument_list|)
+control|)
+block|{
 if|if
 condition|(
 name|addIfIsGoodTarget
 argument_list|(
-name|localDatanode
+name|localStorage
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -1743,14 +1899,17 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 operator|>=
 literal|0
 condition|)
 block|{
 return|return
-name|localDatanode
+name|localStorage
 return|;
+block|}
 block|}
 block|}
 block|}
@@ -1769,6 +1928,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -1802,9 +1963,9 @@ literal|0
 return|;
 block|}
 comment|/**    * Choose one node from the rack that<i>localMachine</i> is on.    * if no such node is available, choose one node from the rack where    * a second replica is on.    * if still no such node is available, choose a random node     * in the cluster.    * @return the chosen node    */
-DECL|method|chooseLocalRack (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseLocalRack (Node localMachine, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
 specifier|protected
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|chooseLocalRack
 parameter_list|(
 name|Node
@@ -1824,12 +1985,15 @@ name|maxNodesPerRack
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -1858,6 +2022,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -1881,6 +2047,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -1898,12 +2066,20 @@ literal|null
 decl_stmt|;
 for|for
 control|(
-name|DatanodeDescriptor
-name|nextNode
+name|DatanodeStorageInfo
+name|resultStorage
 range|:
 name|results
 control|)
 block|{
+name|DatanodeDescriptor
+name|nextNode
+init|=
+name|resultStorage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+decl_stmt|;
 if|if
 condition|(
 name|nextNode
@@ -1944,6 +2120,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -1970,6 +2148,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
@@ -1993,13 +2173,15 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
 block|}
 block|}
 comment|/**     * Choose<i>numOfReplicas</i> nodes from the racks     * that<i>localMachine</i> is NOT on.    * if not enough nodes are available, choose the remaining ones     * from the local rack    */
-DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Set<Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseRemoteRack (int numOfReplicas, DatanodeDescriptor localMachine, Set<Node> excludedNodes, long blocksize, int maxReplicasPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
 specifier|protected
 name|void
 name|chooseRemoteRack
@@ -2024,12 +2206,15 @@ name|maxReplicasPerRack
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -2065,6 +2250,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
@@ -2101,14 +2288,16 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Randomly choose one target from the given<i>scope</i>.    * @return the chosen node, if there is any.    */
-DECL|method|chooseRandom (String scope, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+comment|/**    * Randomly choose one target from the given<i>scope</i>.    * @return the chosen storage, if there is any.    */
+DECL|method|chooseRandom (String scope, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
 specifier|protected
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|chooseRandom
 parameter_list|(
 name|String
@@ -2128,12 +2317,15 @@ name|maxNodesPerRack
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -2154,13 +2346,15 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 return|;
 block|}
 comment|/**    * Randomly choose<i>numOfReplicas</i> targets from the given<i>scope</i>.    * @return the first chosen node, if there is any.    */
-DECL|method|chooseRandom (int numOfReplicas, String scope, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+DECL|method|chooseRandom (int numOfReplicas, String scope, Set<Node> excludedNodes, long blocksize, int maxNodesPerRack, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
 specifier|protected
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|chooseRandom
 parameter_list|(
 name|int
@@ -2183,12 +2377,15 @@ name|maxNodesPerRack
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 throws|throws
 name|NotEnoughReplicasException
@@ -2245,7 +2442,7 @@ name|badTarget
 init|=
 literal|false
 decl_stmt|;
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 name|firstChosen
 init|=
 literal|null
@@ -2288,12 +2485,50 @@ comment|//was not in the excluded list
 name|numOfAvailableNodes
 operator|--
 expr_stmt|;
+specifier|final
+name|DatanodeStorageInfo
+index|[]
+name|storages
+init|=
+name|DFSUtil
+operator|.
+name|shuffle
+argument_list|(
+name|chosenNode
+operator|.
+name|getStorageInfos
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|int
+name|i
+decl_stmt|;
+for|for
+control|(
+name|i
+operator|=
+literal|0
+init|;
+name|i
+operator|<
+name|storages
+operator|.
+name|length
+condition|;
+name|i
+operator|++
+control|)
+block|{
+specifier|final
 name|int
 name|newExcludedNodes
 init|=
 name|addIfIsGoodTarget
 argument_list|(
-name|chosenNode
+name|storages
+index|[
+name|i
+index|]
 argument_list|,
 name|excludedNodes
 argument_list|,
@@ -2306,6 +2541,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 decl_stmt|;
 if|if
@@ -2327,21 +2564,30 @@ condition|)
 block|{
 name|firstChosen
 operator|=
-name|chosenNode
+name|storages
+index|[
+name|i
+index|]
 expr_stmt|;
 block|}
 name|numOfAvailableNodes
 operator|-=
 name|newExcludedNodes
 expr_stmt|;
+break|break;
 block|}
-else|else
-block|{
+block|}
+comment|// If no candidate storage was found on this DN then set badTarget.
 name|badTarget
 operator|=
-literal|true
+operator|(
+name|i
+operator|==
+name|storages
+operator|.
+name|length
+operator|)
 expr_stmt|;
-block|}
 block|}
 block|}
 if|if
@@ -2411,13 +2657,13 @@ return|return
 name|firstChosen
 return|;
 block|}
-comment|/**    * If the given node is a good target, add it to the result list and    * update the set of excluded nodes.    * @return -1 if the given is not a good target;    *         otherwise, return the number of nodes added to excludedNodes set.    */
-DECL|method|addIfIsGoodTarget (DatanodeDescriptor node, Set<Node> excludedNodes, long blockSize, int maxNodesPerRack, boolean considerLoad, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+comment|/**    * If the given storage is a good target, add it to the result list and    * update the set of excluded nodes.    * @return -1 if the given is not a good target;    *         otherwise, return the number of nodes added to excludedNodes set.    */
+DECL|method|addIfIsGoodTarget (DatanodeStorageInfo storage, Set<Node> excludedNodes, long blockSize, int maxNodesPerRack, boolean considerLoad, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
 name|int
 name|addIfIsGoodTarget
 parameter_list|(
-name|DatanodeDescriptor
-name|node
+name|DatanodeStorageInfo
+name|storage
 parameter_list|,
 name|Set
 argument_list|<
@@ -2436,19 +2682,22 @@ name|considerLoad
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
 if|if
 condition|(
 name|isGoodTarget
 argument_list|(
-name|node
+name|storage
 argument_list|,
 name|blockSize
 argument_list|,
@@ -2459,6 +2708,8 @@ argument_list|,
 name|results
 argument_list|,
 name|avoidStaleNodes
+argument_list|,
+name|storageType
 argument_list|)
 condition|)
 block|{
@@ -2466,14 +2717,17 @@ name|results
 operator|.
 name|add
 argument_list|(
-name|node
+name|storage
 argument_list|)
 expr_stmt|;
 comment|// add node and related nodes to excludedNode
 return|return
 name|addToExcludedNodes
 argument_list|(
-name|node
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|,
 name|excludedNodes
 argument_list|)
@@ -2487,14 +2741,14 @@ literal|1
 return|;
 block|}
 block|}
-DECL|method|logNodeIsNotChosen (DatanodeDescriptor node, String reason)
+DECL|method|logNodeIsNotChosen (DatanodeStorageInfo storage, String reason)
 specifier|private
 specifier|static
 name|void
 name|logNodeIsNotChosen
 parameter_list|(
-name|DatanodeDescriptor
-name|node
+name|DatanodeStorageInfo
+name|storage
 parameter_list|,
 name|String
 name|reason
@@ -2508,6 +2762,15 @@ name|isDebugEnabled
 argument_list|()
 condition|)
 block|{
+specifier|final
+name|DatanodeDescriptor
+name|node
+init|=
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+decl_stmt|;
 comment|// build the error message for later use.
 name|debugLoggingBuilder
 operator|.
@@ -2526,7 +2789,17 @@ argument_list|)
 operator|.
 name|append
 argument_list|(
-literal|"Node "
+literal|"Storage "
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|storage
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"at node "
 argument_list|)
 operator|.
 name|append
@@ -2551,14 +2824,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Determine if a node is a good target.     *     * @param node The target node    * @param blockSize Size of block    * @param maxTargetPerRack Maximum number of targets per rack. The value of     *                       this parameter depends on the number of racks in     *                       the cluster and total number of replicas for a block    * @param considerLoad whether or not to consider load of the target node    * @param results A list containing currently chosen nodes. Used to check if     *                too many nodes has been chosen in the target rack.    * @param avoidStaleNodes Whether or not to avoid choosing stale nodes    * @return Return true if<i>node</i> has enough space,     *         does not have too much load,     *         and the rack does not have too many nodes.    */
-DECL|method|isGoodTarget (DatanodeDescriptor node, long blockSize, int maxTargetPerRack, boolean considerLoad, List<DatanodeDescriptor> results, boolean avoidStaleNodes)
+comment|/**    * Determine if a storage is a good target.     *     * @param storage The target storage    * @param blockSize Size of block    * @param maxTargetPerRack Maximum number of targets per rack. The value of     *                       this parameter depends on the number of racks in     *                       the cluster and total number of replicas for a block    * @param considerLoad whether or not to consider load of the target node    * @param results A list containing currently chosen nodes. Used to check if     *                too many nodes has been chosen in the target rack.    * @param avoidStaleNodes Whether or not to avoid choosing stale nodes    * @return Return true if<i>node</i> has enough space,     *         does not have too much load,     *         and the rack does not have too many nodes.    */
+DECL|method|isGoodTarget (DatanodeStorageInfo storage, long blockSize, int maxTargetPerRack, boolean considerLoad, List<DatanodeStorageInfo> results, boolean avoidStaleNodes, StorageType storageType)
 specifier|private
 name|boolean
 name|isGoodTarget
 parameter_list|(
-name|DatanodeDescriptor
-name|node
+name|DatanodeStorageInfo
+name|storage
 parameter_list|,
 name|long
 name|blockSize
@@ -2571,15 +2844,72 @@ name|considerLoad
 parameter_list|,
 name|List
 argument_list|<
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 argument_list|>
 name|results
 parameter_list|,
 name|boolean
 name|avoidStaleNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|)
 block|{
-comment|// check if the node is (being) decommissed
+if|if
+condition|(
+name|storage
+operator|.
+name|getStorageType
+argument_list|()
+operator|!=
+name|storageType
+condition|)
+block|{
+name|logNodeIsNotChosen
+argument_list|(
+name|storage
+argument_list|,
+literal|"storage types do not match, where the expected storage type is "
+operator|+
+name|storageType
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+if|if
+condition|(
+name|storage
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|State
+operator|.
+name|READ_ONLY
+condition|)
+block|{
+name|logNodeIsNotChosen
+argument_list|(
+name|storage
+argument_list|,
+literal|"storage is read-only"
+argument_list|)
+expr_stmt|;
+return|return
+literal|false
+return|;
+block|}
+name|DatanodeDescriptor
+name|node
+init|=
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+decl_stmt|;
+comment|// check if the node is (being) decommissioned
 if|if
 condition|(
 name|node
@@ -2595,7 +2925,7 @@ condition|)
 block|{
 name|logNodeIsNotChosen
 argument_list|(
-name|node
+name|storage
 argument_list|,
 literal|"the node is (being) decommissioned "
 argument_list|)
@@ -2623,7 +2953,7 @@ condition|)
 block|{
 name|logNodeIsNotChosen
 argument_list|(
-name|node
+name|storage
 argument_list|,
 literal|"the node is stale "
 argument_list|)
@@ -2633,38 +2963,42 @@ literal|false
 return|;
 block|}
 block|}
+specifier|final
 name|long
-name|remaining
+name|requiredSize
 init|=
-name|node
-operator|.
-name|getRemaining
-argument_list|()
-operator|-
-operator|(
-name|node
-operator|.
-name|getBlocksScheduled
-argument_list|()
-operator|*
-name|blockSize
-operator|)
-decl_stmt|;
-comment|// check the remaining capacity of the target machine
-if|if
-condition|(
 name|blockSize
 operator|*
 name|HdfsConstants
 operator|.
 name|MIN_BLOCKS_FOR_WRITE
+decl_stmt|;
+specifier|final
+name|long
+name|scheduledSize
+init|=
+name|blockSize
+operator|*
+name|node
+operator|.
+name|getBlocksScheduled
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|requiredSize
 operator|>
-name|remaining
+name|node
+operator|.
+name|getRemaining
+argument_list|()
+operator|-
+name|scheduledSize
 condition|)
 block|{
 name|logNodeIsNotChosen
 argument_list|(
-name|node
+name|storage
 argument_list|,
 literal|"the node does not have enough space "
 argument_list|)
@@ -2732,7 +3066,7 @@ condition|)
 block|{
 name|logNodeIsNotChosen
 argument_list|(
-name|node
+name|storage
 argument_list|,
 literal|"the node is too busy "
 argument_list|)
@@ -2758,8 +3092,8 @@ literal|1
 decl_stmt|;
 for|for
 control|(
-name|Node
-name|result
+name|DatanodeStorageInfo
+name|resultStorage
 range|:
 name|results
 control|)
@@ -2770,7 +3104,10 @@ name|rackname
 operator|.
 name|equals
 argument_list|(
-name|result
+name|resultStorage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 operator|.
 name|getNetworkLocation
 argument_list|()
@@ -2791,7 +3128,7 @@ condition|)
 block|{
 name|logNodeIsNotChosen
 argument_list|(
-name|node
+name|storage
 argument_list|,
 literal|"the rack has too many chosen nodes "
 argument_list|)
@@ -2805,31 +3142,33 @@ literal|true
 return|;
 block|}
 comment|/**    * Return a pipeline of nodes.    * The pipeline is formed finding a shortest path that     * starts from the writer and traverses all<i>nodes</i>    * This is basically a traveling salesman problem.    */
-DECL|method|getPipeline (Node writer, DatanodeDescriptor[] nodes)
+DECL|method|getPipeline (Node writer, DatanodeStorageInfo[] storages)
 specifier|private
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|getPipeline
 parameter_list|(
 name|Node
 name|writer
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
-name|nodes
+name|storages
 parameter_list|)
 block|{
 if|if
 condition|(
-name|nodes
+name|storages
 operator|.
 name|length
 operator|==
 literal|0
 condition|)
+block|{
 return|return
-name|nodes
+name|storages
 return|;
+block|}
 synchronized|synchronized
 init|(
 name|clusterMap
@@ -2857,10 +3196,13 @@ condition|)
 block|{
 name|writer
 operator|=
-name|nodes
+name|storages
 index|[
 literal|0
 index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 expr_stmt|;
 block|}
 for|for
@@ -2868,7 +3210,7 @@ control|(
 init|;
 name|index
 operator|<
-name|nodes
+name|storages
 operator|.
 name|length
 condition|;
@@ -2876,10 +3218,10 @@ name|index
 operator|++
 control|)
 block|{
-name|DatanodeDescriptor
-name|shortestNode
+name|DatanodeStorageInfo
+name|shortestStorage
 init|=
-name|nodes
+name|storages
 index|[
 name|index
 index|]
@@ -2893,7 +3235,10 @@ name|getDistance
 argument_list|(
 name|writer
 argument_list|,
-name|shortestNode
+name|shortestStorage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|int
@@ -2912,7 +3257,7 @@ literal|1
 init|;
 name|i
 operator|<
-name|nodes
+name|storages
 operator|.
 name|length
 condition|;
@@ -2920,14 +3265,6 @@ name|i
 operator|++
 control|)
 block|{
-name|DatanodeDescriptor
-name|currentNode
-init|=
-name|nodes
-index|[
-name|i
-index|]
-decl_stmt|;
 name|int
 name|currentDistance
 init|=
@@ -2937,7 +3274,13 @@ name|getDistance
 argument_list|(
 name|writer
 argument_list|,
-name|currentNode
+name|storages
+index|[
+name|i
+index|]
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -2951,9 +3294,12 @@ name|shortestDistance
 operator|=
 name|currentDistance
 expr_stmt|;
-name|shortestNode
+name|shortestStorage
 operator|=
-name|currentNode
+name|storages
+index|[
+name|i
+index|]
 expr_stmt|;
 name|shortestIndex
 operator|=
@@ -2969,32 +3315,35 @@ operator|!=
 name|shortestIndex
 condition|)
 block|{
-name|nodes
+name|storages
 index|[
 name|shortestIndex
 index|]
 operator|=
-name|nodes
+name|storages
 index|[
 name|index
 index|]
 expr_stmt|;
-name|nodes
+name|storages
 index|[
 name|index
 index|]
 operator|=
-name|shortestNode
+name|shortestStorage
 expr_stmt|;
 block|}
 name|writer
 operator|=
-name|shortestNode
+name|shortestStorage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 expr_stmt|;
 block|}
 block|}
 return|return
-name|nodes
+name|storages
 return|;
 block|}
 annotation|@

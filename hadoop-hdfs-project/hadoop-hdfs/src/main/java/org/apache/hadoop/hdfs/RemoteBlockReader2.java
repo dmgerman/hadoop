@@ -100,6 +100,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -137,6 +147,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|ReadOption
 import|;
 end_import
 
@@ -2140,16 +2164,19 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getClientMmap (LocatedBlock curBlock, ClientMmapManager manager)
+DECL|method|getClientMmap (EnumSet<ReadOption> opts, ClientMmapManager mmapManager)
 specifier|public
 name|ClientMmap
 name|getClientMmap
 parameter_list|(
-name|LocatedBlock
-name|curBlock
+name|EnumSet
+argument_list|<
+name|ReadOption
+argument_list|>
+name|opts
 parameter_list|,
 name|ClientMmapManager
-name|manager
+name|mmapManager
 parameter_list|)
 block|{
 return|return

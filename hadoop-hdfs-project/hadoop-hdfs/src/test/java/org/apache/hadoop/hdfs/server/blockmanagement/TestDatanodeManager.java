@@ -419,7 +419,7 @@ literal|"Removing node "
 operator|+
 name|toRemove
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|" ip "
@@ -485,7 +485,7 @@ name|when
 argument_list|(
 name|dr
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 argument_list|)
 operator|.
@@ -627,7 +627,7 @@ literal|"Registering node storageID: "
 operator|+
 name|dr
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|", version: "

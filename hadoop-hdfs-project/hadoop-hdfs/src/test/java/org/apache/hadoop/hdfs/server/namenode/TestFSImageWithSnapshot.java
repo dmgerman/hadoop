@@ -338,7 +338,9 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectorySnapshottable
+name|DirectoryWithSnapshotFeature
+operator|.
+name|DirectoryDiff
 import|;
 end_import
 
@@ -358,9 +360,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
-operator|.
-name|DirectoryDiff
+name|INodeDirectorySnapshottable
 import|;
 end_import
 

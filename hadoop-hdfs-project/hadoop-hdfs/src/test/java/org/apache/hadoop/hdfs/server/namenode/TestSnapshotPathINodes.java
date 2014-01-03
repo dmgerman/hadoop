@@ -198,26 +198,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
 name|Snapshot
 import|;
 end_import
@@ -239,6 +219,16 @@ operator|.
 name|junit
 operator|.
 name|Assert
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Before
 import|;
 end_import
 
@@ -381,8 +371,8 @@ decl_stmt|;
 annotation|@
 name|BeforeClass
 DECL|method|setUp ()
-specifier|static
 specifier|public
+specifier|static
 name|void
 name|setUp
 parameter_list|()
@@ -439,6 +429,17 @@ operator|.
 name|getFileSystem
 argument_list|()
 expr_stmt|;
+block|}
+annotation|@
+name|Before
+DECL|method|reset ()
+specifier|public
+name|void
+name|reset
+parameter_list|()
+throws|throws
+name|Exception
+block|{
 name|DFSTestUtil
 operator|.
 name|createFile
@@ -473,8 +474,8 @@ block|}
 annotation|@
 name|AfterClass
 DECL|method|tearDown ()
-specifier|static
 specifier|public
+specifier|static
 name|void
 name|tearDown
 parameter_list|()
@@ -1303,8 +1304,9 @@ name|snapshotFileNode
 operator|.
 name|getParent
 argument_list|()
-operator|instanceof
-name|INodeDirectoryWithSnapshot
+operator|.
+name|isWithSnapshot
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Call getExistingPathINodes and request only one INode.
@@ -1620,6 +1622,22 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+name|hdfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|sub1
+argument_list|,
+literal|"s1"
+argument_list|)
+expr_stmt|;
+name|hdfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|sub1
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file after deleting the original file.    */
 annotation|@
@@ -1946,6 +1964,22 @@ name|dir
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|hdfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|sub1
+argument_list|,
+literal|"s2"
+argument_list|)
+expr_stmt|;
+name|hdfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|sub1
 argument_list|)
 expr_stmt|;
 block|}
@@ -2277,6 +2311,22 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|hdfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|sub1
+argument_list|,
+literal|"s4"
+argument_list|)
+expr_stmt|;
+name|hdfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|sub1
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**     * Test {@link INodeDirectory#getExistingPathINodes(byte[][], int, boolean)}     * for snapshot file while modifying file after snapshot.    */
 annotation|@
@@ -2294,22 +2344,6 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-comment|//file1 was deleted, create it again.
-name|DFSTestUtil
-operator|.
-name|createFile
-argument_list|(
-name|hdfs
-argument_list|,
-name|file1
-argument_list|,
-literal|1024
-argument_list|,
-name|REPLICATION
-argument_list|,
-name|seed
-argument_list|)
-expr_stmt|;
 comment|// First check the INode for /TestSnapshot/sub1/file1
 name|String
 index|[]
@@ -2370,18 +2404,6 @@ argument_list|,
 name|components
 operator|.
 name|length
-argument_list|)
-expr_stmt|;
-name|assertSnapshot
-argument_list|(
-name|nodesInPath
-argument_list|,
-literal|false
-argument_list|,
-name|s4
-argument_list|,
-operator|-
-literal|1
 argument_list|)
 expr_stmt|;
 comment|// The last INode should be associated with file1
@@ -2705,6 +2727,22 @@ index|]
 operator|.
 name|getModificationTime
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|hdfs
+operator|.
+name|deleteSnapshot
+argument_list|(
+name|sub1
+argument_list|,
+literal|"s3"
+argument_list|)
+expr_stmt|;
+name|hdfs
+operator|.
+name|disallowSnapshot
+argument_list|(
+name|sub1
 argument_list|)
 expr_stmt|;
 block|}

@@ -274,26 +274,6 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
 name|Snapshot
 import|;
 end_import
@@ -521,7 +501,7 @@ name|user
 parameter_list|)
 function_decl|;
 comment|/** Set user */
-DECL|method|setUser (String user, Snapshot latest, INodeMap inodeMap)
+DECL|method|setUser (String user, Snapshot latest)
 specifier|final
 name|INode
 name|setUser
@@ -531,9 +511,6 @@ name|user
 parameter_list|,
 name|Snapshot
 name|latest
-parameter_list|,
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -545,8 +522,6 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -598,7 +573,7 @@ name|group
 parameter_list|)
 function_decl|;
 comment|/** Set group */
-DECL|method|setGroup (String group, Snapshot latest, INodeMap inodeMap)
+DECL|method|setGroup (String group, Snapshot latest)
 specifier|final
 name|INode
 name|setGroup
@@ -608,9 +583,6 @@ name|group
 parameter_list|,
 name|Snapshot
 name|latest
-parameter_list|,
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -622,8 +594,6 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -675,7 +645,7 @@ name|permission
 parameter_list|)
 function_decl|;
 comment|/** Set the {@link FsPermission} of this {@link INode} */
-DECL|method|setPermission (FsPermission permission, Snapshot latest, INodeMap inodeMap)
+DECL|method|setPermission (FsPermission permission, Snapshot latest)
 name|INode
 name|setPermission
 parameter_list|(
@@ -684,9 +654,6 @@ name|permission
 parameter_list|,
 name|Snapshot
 name|latest
-parameter_list|,
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -698,8 +665,6 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -982,8 +947,8 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @param inodeMap while recording modification, the inode or its parent may     *                 get replaced, and the inodeMap needs to be updated.    * @return The current inode, which usually is the same object of this inode.    *         However, in some cases, this inode may be replaced with a new inode    *         for maintaining snapshots. The current inode is then the new inode.    */
-DECL|method|recordModification (final Snapshot latest, final INodeMap inodeMap)
+comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @return The current inode, which usually is the same object of this inode.    *         However, in some cases, this inode may be replaced with a new inode    *         for maintaining snapshots. The current inode is then the new inode.    */
+DECL|method|recordModification (final Snapshot latest)
 specifier|abstract
 name|INode
 name|recordModification
@@ -991,10 +956,6 @@ parameter_list|(
 specifier|final
 name|Snapshot
 name|latest
-parameter_list|,
-specifier|final
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1123,7 +1084,7 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is a {@link INodeDirectoryWithSnapshot}.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectoryWithSnapshot}: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *     * @param snapshot    *          The snapshot to delete. Null means to delete the current    *          file/directory.    * @param prior    *          The latest snapshot before the to-be-deleted snapshot. When    *          deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of     *          inodeMap    * @return quota usage delta when deleting a snapshot    */
+comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is an {@link INodeDirectory} with snapshot feature.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectory} with snapshot: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *     * @param snapshot    *          The snapshot to delete. Null means to delete the current    *          file/directory.    * @param prior    *          The latest snapshot before the to-be-deleted snapshot. When    *          deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of     *          inodeMap    * @return quota usage delta when deleting a snapshot    */
 DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, boolean countDiffChange)
 specifier|public
 specifier|abstract
@@ -1848,7 +1809,7 @@ argument_list|)
 return|;
 block|}
 comment|/** Update modification time if it is larger than the current value. */
-DECL|method|updateModificationTime (long mtime, Snapshot latest, INodeMap inodeMap)
+DECL|method|updateModificationTime (long mtime, Snapshot latest)
 specifier|public
 specifier|abstract
 name|INode
@@ -1859,9 +1820,6 @@ name|mtime
 parameter_list|,
 name|Snapshot
 name|latest
-parameter_list|,
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1878,7 +1836,7 @@ name|modificationTime
 parameter_list|)
 function_decl|;
 comment|/** Set the last modification time of inode. */
-DECL|method|setModificationTime (long modificationTime, Snapshot latest, INodeMap inodeMap)
+DECL|method|setModificationTime (long modificationTime, Snapshot latest)
 specifier|public
 specifier|final
 name|INode
@@ -1889,9 +1847,6 @@ name|modificationTime
 parameter_list|,
 name|Snapshot
 name|latest
-parameter_list|,
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1903,8 +1858,6 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -1957,7 +1910,7 @@ name|accessTime
 parameter_list|)
 function_decl|;
 comment|/**    * Set last access time of inode.    */
-DECL|method|setAccessTime (long accessTime, Snapshot latest, INodeMap inodeMap)
+DECL|method|setAccessTime (long accessTime, Snapshot latest)
 specifier|public
 specifier|final
 name|INode
@@ -1968,9 +1921,6 @@ name|accessTime
 parameter_list|,
 name|Snapshot
 name|latest
-parameter_list|,
-name|INodeMap
-name|inodeMap
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1982,8 +1932,6 @@ init|=
 name|recordModification
 argument_list|(
 name|latest
-argument_list|,
-name|inodeMap
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -2542,209 +2490,12 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/** INode feature such as {@link FileUnderConstructionFeature}    *  and {@link DirectoryWithQuotaFeature}.    */
+comment|/**     * INode feature such as {@link FileUnderConstructionFeature}    * and {@link DirectoryWithQuotaFeature}.    */
 DECL|interface|Feature
+specifier|public
 interface|interface
 name|Feature
-parameter_list|<
-name|F
-extends|extends
-name|Feature
-parameter_list|<
-name|F
-parameter_list|>
-parameter_list|>
-block|{
-comment|/** @return the next feature. */
-DECL|method|getNextFeature ()
-specifier|public
-name|F
-name|getNextFeature
-parameter_list|()
-function_decl|;
-comment|/** Set the next feature. */
-DECL|method|setNextFeature (F next)
-specifier|public
-name|void
-name|setNextFeature
-parameter_list|(
-name|F
-name|next
-parameter_list|)
-function_decl|;
-comment|/** Utility methods such as addFeature and removeFeature. */
-DECL|class|Util
-specifier|static
-class|class
-name|Util
-block|{
-comment|/**        * Add a feature to the linked list.        * @return the new head.        */
-DECL|method|addFeature (F feature, F head)
-specifier|static
-parameter_list|<
-name|F
-extends|extends
-name|Feature
-argument_list|<
-name|F
-argument_list|>
-parameter_list|>
-name|F
-name|addFeature
-parameter_list|(
-name|F
-name|feature
-parameter_list|,
-name|F
-name|head
-parameter_list|)
-block|{
-name|feature
-operator|.
-name|setNextFeature
-argument_list|(
-name|head
-argument_list|)
-expr_stmt|;
-return|return
-name|feature
-return|;
-block|}
-comment|/**        * Remove a feature from the linked list.        * @return the new head.        */
-DECL|method|removeFeature (F feature, F head)
-specifier|static
-parameter_list|<
-name|F
-extends|extends
-name|Feature
-argument_list|<
-name|F
-argument_list|>
-parameter_list|>
-name|F
-name|removeFeature
-parameter_list|(
-name|F
-name|feature
-parameter_list|,
-name|F
-name|head
-parameter_list|)
-block|{
-if|if
-condition|(
-name|feature
-operator|==
-name|head
-condition|)
-block|{
-specifier|final
-name|F
-name|newHead
-init|=
-name|head
-operator|.
-name|getNextFeature
-argument_list|()
-decl_stmt|;
-name|head
-operator|.
-name|setNextFeature
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-name|newHead
-return|;
-block|}
-elseif|else
-if|if
-condition|(
-name|head
-operator|!=
-literal|null
-condition|)
-block|{
-name|F
-name|prev
-init|=
-name|head
-decl_stmt|;
-name|F
-name|curr
-init|=
-name|head
-operator|.
-name|getNextFeature
-argument_list|()
-decl_stmt|;
-for|for
-control|(
-init|;
-name|curr
-operator|!=
-literal|null
-operator|&&
-name|curr
-operator|!=
-name|feature
-condition|;
-name|prev
-operator|=
-name|curr
-operator|,
-name|curr
-operator|=
-name|curr
-operator|.
-name|getNextFeature
-argument_list|()
-control|)
-empty_stmt|;
-if|if
-condition|(
-name|curr
-operator|!=
-literal|null
-condition|)
-block|{
-name|prev
-operator|.
-name|setNextFeature
-argument_list|(
-name|curr
-operator|.
-name|getNextFeature
-argument_list|()
-argument_list|)
-expr_stmt|;
-name|curr
-operator|.
-name|setNextFeature
-argument_list|(
-literal|null
-argument_list|)
-expr_stmt|;
-return|return
-name|head
-return|;
-block|}
-block|}
-throw|throw
-operator|new
-name|IllegalStateException
-argument_list|(
-literal|"Feature "
-operator|+
-name|feature
-operator|+
-literal|" not found."
-argument_list|)
-throw|;
-block|}
-block|}
-block|}
+block|{   }
 block|}
 end_class
 

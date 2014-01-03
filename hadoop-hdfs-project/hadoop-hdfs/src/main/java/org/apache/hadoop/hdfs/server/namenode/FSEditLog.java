@@ -1402,16 +1402,19 @@ name|metrics
 decl_stmt|;
 DECL|field|storage
 specifier|private
+specifier|final
 name|NNStorage
 name|storage
 decl_stmt|;
 DECL|field|conf
 specifier|private
+specifier|final
 name|Configuration
 name|conf
 decl_stmt|;
 DECL|field|editsDirs
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|URI
@@ -1451,6 +1454,7 @@ decl_stmt|;
 comment|/**    * The edit directories that are shared between primary and secondary.    */
 DECL|field|sharedEditsDirs
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|URI
@@ -1524,34 +1528,6 @@ decl_stmt|;
 comment|/**    * Constructor for FSEditLog. Underlying journals are constructed, but     * no streams are opened until open() is called.    *     * @param conf The namenode configuration    * @param storage Storage object used by namenode    * @param editsDirs List of journals to use    */
 DECL|method|FSEditLog (Configuration conf, NNStorage storage, List<URI> editsDirs)
 name|FSEditLog
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|,
-name|NNStorage
-name|storage
-parameter_list|,
-name|List
-argument_list|<
-name|URI
-argument_list|>
-name|editsDirs
-parameter_list|)
-block|{
-name|init
-argument_list|(
-name|conf
-argument_list|,
-name|storage
-argument_list|,
-name|editsDirs
-argument_list|)
-expr_stmt|;
-block|}
-DECL|method|init (Configuration conf, NNStorage storage, List<URI> editsDirs)
-specifier|private
-name|void
-name|init
 parameter_list|(
 name|Configuration
 name|conf

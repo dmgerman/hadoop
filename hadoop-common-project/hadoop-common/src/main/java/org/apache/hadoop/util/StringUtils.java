@@ -4005,7 +4005,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**    * From a list of command-line arguments, remove both an option and the     * next argument.    *    * @param name  Name of the option to remove.  Example: -foo.    * @param args  List of arguments.    * @return      null if the option was not found; the value of the     *              option otherwise.    */
+comment|/**    * From a list of command-line arguments, remove both an option and the     * next argument.    *    * @param name  Name of the option to remove.  Example: -foo.    * @param args  List of arguments.    * @return      null if the option was not found; the value of the     *              option otherwise.    * @throws IllegalArgumentException if the option's argument is not present    */
 DECL|method|popOptionWithArgument (String name, List<String> args)
 specifier|public
 specifier|static
@@ -4021,6 +4021,8 @@ name|String
 argument_list|>
 name|args
 parameter_list|)
+throws|throws
+name|IllegalArgumentException
 block|{
 name|String
 name|val
@@ -4095,7 +4097,7 @@ condition|)
 block|{
 throw|throw
 operator|new
-name|RuntimeException
+name|IllegalArgumentException
 argument_list|(
 literal|"option "
 operator|+

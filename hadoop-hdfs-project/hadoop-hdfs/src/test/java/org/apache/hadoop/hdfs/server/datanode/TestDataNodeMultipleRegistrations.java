@@ -1137,7 +1137,7 @@ name|bpos
 operator|.
 name|bpRegistration
 operator|.
-name|getStorageID
+name|getDatanodeUuid
 argument_list|()
 operator|+
 literal|"; nna="

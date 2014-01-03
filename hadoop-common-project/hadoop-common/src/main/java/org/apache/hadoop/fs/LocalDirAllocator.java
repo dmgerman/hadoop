@@ -1266,6 +1266,21 @@ name|i
 index|]
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|totalAvailable
+operator|==
+literal|0
+condition|)
+block|{
+throw|throw
+operator|new
+name|DiskErrorException
+argument_list|(
+literal|"No space available in any of the local directories."
+argument_list|)
+throw|;
+block|}
 comment|// Keep rolling the wheel till we get a valid path
 name|Random
 name|r

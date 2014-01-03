@@ -40,6 +40,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|EnumSet
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -63,6 +73,20 @@ operator|.
 name|classification
 operator|.
 name|InterfaceStability
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|CacheFlag
 import|;
 end_import
 
@@ -780,7 +804,7 @@ function_decl|;
 comment|/**     * Get a datanode for an existing pipeline.    *     * @param src the file being written    * @param blk the block being written    * @param existings the existing nodes in the pipeline    * @param excludes the excluded nodes    * @param numAdditionalNodes number of additional datanodes    * @param clientName the name of the client    *     * @return the located block.    *     * @throws AccessControlException If access is denied    * @throws FileNotFoundException If file<code>src</code> is not found    * @throws SafeModeException create not allowed in safemode    * @throws UnresolvedLinkException If<code>src</code> contains a symlink    * @throws IOException If an I/O error occurred    */
 annotation|@
 name|Idempotent
-DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
+DECL|method|getAdditionalDatanode (final String src, final ExtendedBlock blk, final DatanodeInfo[] existings, final String[] existingStorageIDs, final DatanodeInfo[] excludes, final int numAdditionalNodes, final String clientName )
 specifier|public
 name|LocatedBlock
 name|getAdditionalDatanode
@@ -797,6 +821,11 @@ specifier|final
 name|DatanodeInfo
 index|[]
 name|existings
+parameter_list|,
+specifier|final
+name|String
+index|[]
+name|existingStorageIDs
 parameter_list|,
 specifier|final
 name|DatanodeInfo
@@ -1543,7 +1572,7 @@ function_decl|;
 comment|/**    * Update a pipeline for a block under construction    *     * @param clientName the name of the client    * @param oldBlock the old block    * @param newBlock the new block containing new generation stamp and length    * @param newNodes datanodes in the pipeline    * @throws IOException if any error occurs    */
 annotation|@
 name|AtMostOnce
-DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes)
+DECL|method|updatePipeline (String clientName, ExtendedBlock oldBlock, ExtendedBlock newBlock, DatanodeID[] newNodes, String[] newStorageIDs)
 specifier|public
 name|void
 name|updatePipeline
@@ -1560,6 +1589,10 @@ parameter_list|,
 name|DatanodeID
 index|[]
 name|newNodes
+parameter_list|,
+name|String
+index|[]
+name|newStorageIDs
 parameter_list|)
 throws|throws
 name|IOException
@@ -1728,30 +1761,42 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Add a CacheDirective to the CacheManager.    *     * @param directive A CacheDirectiveInfo to be added    * @return A CacheDirectiveInfo associated with the added directive    * @throws IOException if the directive could not be added    */
+comment|/**    * Add a CacheDirective to the CacheManager.    *     * @param directive A CacheDirectiveInfo to be added    * @param flags {@link CacheFlag}s to use for this operation.    * @return A CacheDirectiveInfo associated with the added directive    * @throws IOException if the directive could not be added    */
 annotation|@
 name|AtMostOnce
-DECL|method|addCacheDirective ( CacheDirectiveInfo directive)
+DECL|method|addCacheDirective (CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 specifier|public
 name|long
 name|addCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|directive
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
-comment|/**    * Modify a CacheDirective in the CacheManager.    *     * @return directive The directive to modify.  Must contain     *                   a directive ID.    * @throws IOException if the directive could not be modified    */
+comment|/**    * Modify a CacheDirective in the CacheManager.    *     * @return directive The directive to modify. Must contain a directive ID.    * @param flags {@link CacheFlag}s to use for this operation.    * @throws IOException if the directive could not be modified    */
 annotation|@
 name|AtMostOnce
-DECL|method|modifyCacheDirective ( CacheDirectiveInfo directive)
+DECL|method|modifyCacheDirective (CacheDirectiveInfo directive, EnumSet<CacheFlag> flags)
 specifier|public
 name|void
 name|modifyCacheDirective
 parameter_list|(
 name|CacheDirectiveInfo
 name|directive
+parameter_list|,
+name|EnumSet
+argument_list|<
+name|CacheFlag
+argument_list|>
+name|flags
 parameter_list|)
 throws|throws
 name|IOException

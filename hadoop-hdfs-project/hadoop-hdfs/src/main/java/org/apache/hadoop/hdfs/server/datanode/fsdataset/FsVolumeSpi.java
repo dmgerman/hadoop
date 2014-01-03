@@ -42,6 +42,20 @@ name|IOException
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|StorageType
+import|;
+end_import
+
 begin_comment
 comment|/**  * This is an interface for the underlying volume.  */
 end_comment
@@ -52,6 +66,13 @@ specifier|public
 interface|interface
 name|FsVolumeSpi
 block|{
+comment|/** @return the StorageUuid of the volume */
+DECL|method|getStorageID ()
+specifier|public
+name|String
+name|getStorageID
+parameter_list|()
+function_decl|;
 comment|/** @return a list of block pools. */
 DECL|method|getBlockPoolList ()
 specifier|public
@@ -99,6 +120,12 @@ name|bpid
 parameter_list|)
 throws|throws
 name|IOException
+function_decl|;
+DECL|method|getStorageType ()
+specifier|public
+name|StorageType
+name|getStorageType
+parameter_list|()
 function_decl|;
 block|}
 end_interface

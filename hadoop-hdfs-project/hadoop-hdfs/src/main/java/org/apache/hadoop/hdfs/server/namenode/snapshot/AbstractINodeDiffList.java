@@ -126,7 +126,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INodeAttributes
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
 import|;
 end_import
 
@@ -144,9 +146,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INode
-operator|.
-name|BlocksMapUpdateInfo
+name|INodeAttributes
 import|;
 end_import
 
@@ -1281,6 +1281,7 @@ return|;
 block|}
 comment|/**    * @return the inode corresponding to the given snapshot.    *         Note that the current inode is returned if there is no change    *         between the given snapshot and the current state.     */
 DECL|method|getSnapshotINode (final Snapshot snapshot, final A currentINode)
+specifier|public
 name|A
 name|getSnapshotINode
 parameter_list|(
@@ -1472,8 +1473,6 @@ operator|.
 name|saveSnapshotCopy
 argument_list|(
 name|snapshotCopy
-argument_list|,
-name|currentINode
 argument_list|)
 expr_stmt|;
 block|}

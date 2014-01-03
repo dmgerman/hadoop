@@ -3146,6 +3146,11 @@ name|info
 argument_list|(
 literal|"Starting "
 operator|+
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 argument_list|)
@@ -3178,7 +3183,10 @@ name|error
 argument_list|(
 literal|"Error closing read selector in "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -3341,6 +3349,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -3443,6 +3456,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -3622,7 +3640,10 @@ name|info
 argument_list|(
 literal|"Stopping "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -3907,6 +3928,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -3933,6 +3959,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4050,6 +4081,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4186,6 +4222,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4215,7 +4256,10 @@ name|info
 argument_list|(
 literal|"Stopping "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -4241,7 +4285,10 @@ name|error
 argument_list|(
 literal|"Couldn't close write selector in "
 operator|+
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|getName
 argument_list|()
@@ -4349,6 +4396,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4866,6 +4918,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -4960,6 +5017,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -5065,6 +5127,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -5103,6 +5170,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -5681,6 +5753,8 @@ name|data
 operator|=
 literal|null
 expr_stmt|;
+comment|// the buffer is initialized to read the "hrpc" and after that to read
+comment|// the length of the Rpc-packet (i.e 4 bytes)
 name|this
 operator|.
 name|dataLengthBuffer
@@ -6074,10 +6148,11 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|getCauseForInvalidToken (IOException e)
+comment|/**      * Some exceptions ({@link RetriableException} and {@link StandbyException})      * that are wrapped as a cause of parameter e are unwrapped so that they can      * be sent as the true cause to the client side. In case of      * {@link InvalidToken} we go one level deeper to get the true cause.      *       * @param e the exception that may have a cause we want to unwrap.      * @return the true cause for some exceptions.      */
+DECL|method|getTrueCause (IOException e)
 specifier|private
 name|Throwable
-name|getCauseForInvalidToken
+name|getTrueCause
 parameter_list|(
 name|IOException
 name|e
@@ -6171,6 +6246,7 @@ return|return
 name|e
 return|;
 block|}
+comment|/**      * Process saslMessage and send saslResponse back      * @param saslMessage received SASL message      * @throws WrappedRpcServerException setup failed due to SASL negotiation       *         failure, premature or invalid connection context, or other state       *         errors. This exception needs to be sent to the client. This       *         exception will wrap {@link RetriableException},       *         {@link InvalidToken}, {@link StandbyException} or       *         {@link SaslException}.      * @throws IOException if sending reply fails      * @throws InterruptedException      */
 DECL|method|saslProcess (RpcSaslProto saslMessage)
 specifier|private
 name|void
@@ -6265,7 +6341,7 @@ throw|throw
 operator|(
 name|IOException
 operator|)
-name|getCauseForInvalidToken
+name|getTrueCause
 argument_list|(
 name|e
 argument_list|)
@@ -6440,6 +6516,7 @@ operator|)
 expr_stmt|;
 block|}
 block|}
+comment|/**      * Process a saslMessge.      * @param saslMessage received SASL message      * @return the sasl response to send back to client      * @throws SaslException if authentication or generating response fails,       *                       or SASL protocol mixup      * @throws IOException if a SaslServer cannot be created      * @throws AccessControlException if the requested authentication type       *         is not supported or trying to re-attempt negotiation.      * @throws InterruptedException      */
 DECL|method|processSaslMessage (RpcSaslProto saslMessage)
 specifier|private
 name|RpcSaslProto
@@ -6449,7 +6526,11 @@ name|RpcSaslProto
 name|saslMessage
 parameter_list|)
 throws|throws
+name|SaslException
+throws|,
 name|IOException
+throws|,
+name|AccessControlException
 throws|,
 name|InterruptedException
 block|{
@@ -6482,6 +6563,7 @@ condition|(
 name|sentNegotiate
 condition|)
 block|{
+comment|// FIXME shouldn't this be SaslException?
 throw|throw
 operator|new
 name|AccessControlException
@@ -7078,6 +7160,7 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**      * This method reads in a non-blocking fashion from the channel:       * this method is called repeatedly when data is present in the channel;       * when it has enough data to process one rpc it processes that rpc.      *       * On the first pass, it processes the connectionHeader,       * connectionContext (an outOfBand RPC) and at most one RPC request that       * follows that. On future passes it will process at most one RPC request.      *        * Quirky things: dataLengthBuffer (4 bytes) is used to read "hrpc" OR       * rpc request length.      *          * @return -1 in case of error, else num bytes read so far      * @throws WrappedRpcServerException - an exception that has already been       *         sent back to the client that does not require verbose logging      *         by the Listener thread      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws InterruptedException      */
 DECL|method|readAndProcess ()
 specifier|public
 name|int
@@ -7095,7 +7178,7 @@ condition|(
 literal|true
 condition|)
 block|{
-comment|/* Read at most one RPC. If the header is not read completely yet          * then iterate until we read first RPC or until there is no data left.          */
+comment|// dataLengthBuffer is used to read "hrpc" or the rpc-packet length
 name|int
 name|count
 init|=
@@ -7145,7 +7228,8 @@ operator|!
 name|connectionHeaderRead
 condition|)
 block|{
-comment|//Every connection is expected to send the header.
+comment|// Every connection is expected to send the header;
+comment|// so far we read "hrpc" of the connection header.
 if|if
 condition|(
 name|connectionHeaderBuf
@@ -7153,13 +7237,14 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// for the bytes that follow "hrpc", in the connection header
 name|connectionHeaderBuf
 operator|=
 name|ByteBuffer
 operator|.
 name|allocate
 argument_list|(
-literal|3
+name|HEADER_LEN_AFTER_HRPC_PART
 argument_list|)
 expr_stmt|;
 block|}
@@ -7307,6 +7392,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+comment|// clear to next read rpc packet len
 name|connectionHeaderBuf
 operator|=
 literal|null
@@ -7316,6 +7402,7 @@ operator|=
 literal|true
 expr_stmt|;
 continue|continue;
+comment|// connection header read, now read  4 bytes rpc packet len
 block|}
 if|if
 condition|(
@@ -7324,6 +7411,7 @@ operator|==
 literal|null
 condition|)
 block|{
+comment|// just read 4 bytes -  length of RPC packet
 name|dataLengthBuffer
 operator|.
 name|flip
@@ -7341,6 +7429,7 @@ argument_list|(
 name|dataLength
 argument_list|)
 expr_stmt|;
+comment|// Set buffer for reading EXACTLY the RPC-packet length and no more.
 name|data
 operator|=
 name|ByteBuffer
@@ -7351,6 +7440,7 @@ name|dataLength
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Now read the RPC packet
 name|count
 operator|=
 name|channelRead
@@ -7375,6 +7465,7 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+comment|// to read length of future rpc packets
 name|data
 operator|.
 name|flip
@@ -7397,6 +7488,8 @@ name|data
 operator|=
 literal|null
 expr_stmt|;
+comment|// the last rpc-request we processed could have simply been the
+comment|// connectionContext; if so continue to read the first RPC.
 if|if
 condition|(
 operator|!
@@ -7520,15 +7613,18 @@ return|return
 name|authProtocol
 return|;
 block|}
+comment|/**      * Process the Sasl's Negotiate request, including the optimization of       * accelerating token negotiation.      * @return the response to Negotiate request - the list of enabled       *         authMethods and challenge if the TOKENS are supported.       * @throws SaslException - if attempt to generate challenge fails.      * @throws IOException - if it fails to create the SASL server for Tokens      */
 DECL|method|buildSaslNegotiateResponse ()
 specifier|private
 name|RpcSaslProto
 name|buildSaslNegotiateResponse
 parameter_list|()
 throws|throws
-name|IOException
-throws|,
 name|InterruptedException
+throws|,
+name|SaslException
+throws|,
+name|IOException
 block|{
 name|RpcSaslProto
 name|negotiateMessage
@@ -8122,7 +8218,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-comment|/**      * Process a wrapped RPC Request - unwrap the SASL packet and process      * each embedded RPC request       * @param buf - SASL wrapped request of one or more RPCs      * @throws IOException - SASL packet cannot be unwrapped      * @throws InterruptedException      */
+comment|/**      * Process a wrapped RPC Request - unwrap the SASL packet and process      * each embedded RPC request       * @param inBuf - SASL wrapped request of one or more RPCs      * @throws IOException - SASL packet cannot be unwrapped      * @throws WrappedRpcServerException - an exception that has already been       *         sent back to the client that does not require verbose logging      *         by the Listener thread      * @throws InterruptedException      */
 DECL|method|unwrapPacketAndProcessRpcs (byte[] inBuf)
 specifier|private
 name|void
@@ -8324,7 +8420,7 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**      * Process an RPC Request - handle connection setup and decoding of      * request into a Call      * @param buf - contains the RPC request header and the rpc request      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws WrappedRpcServerException - an exception to be sent back to      *         the client that does not require verbose logging by the      *         Listener thread      * @throws InterruptedException      */
+comment|/**      * Process one RPC Request from buffer read from socket stream       *  - decode rpc in a rpc-Call      *  - handle out-of-band RPC requests such as the initial connectionContext      *  - A successfully decoded RpcCall will be deposited in RPC-Q and      *    its response will be sent later when the request is processed.      *       * Prior to this call the connectionHeader ("hrpc...") has been handled and      * if SASL then SASL has been established and the buf we are passed      * has been unwrapped from SASL.      *       * @param buf - contains the RPC request header and the rpc request      * @throws IOException - internal error that should not be returned to      *         client, typically failure to respond to client      * @throws WrappedRpcServerException - an exception that is sent back to the      *         client in this method and does not require verbose logging by the      *         Listener thread      * @throws InterruptedException      */
 DECL|method|processOneRpc (byte[] buf)
 specifier|private
 name|void
@@ -8645,7 +8741,7 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**      * Process an RPC Request - the connection headers and context must      * have been already read      * @param header - RPC request header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - due to fatal rpc layer issues such      *   as invalid header or deserialization error. In this case a RPC fatal      *   status response will later be sent back to client.      * @throws InterruptedException      */
+comment|/**      * Process an RPC Request       *   - the connection headers and context must have been already read.      *   - Based on the rpcKind, decode the rpcRequest.      *   - A successfully decoded RpcCall will be deposited in RPC-Q and      *     its response will be sent later when the request is processed.      * @param header - RPC request header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - due to fatal rpc layer issues such      *   as invalid header or deserialization error. In this case a RPC fatal      *   status response will later be sent back to client.      * @throws InterruptedException      */
 DECL|method|processRpcRequest (RpcRequestHeaderProto header, DataInputStream dis)
 specifier|private
 name|void
@@ -8856,7 +8952,7 @@ argument_list|()
 expr_stmt|;
 comment|// Increment the rpc count
 block|}
-comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors       * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
+comment|/**      * Establish RPC connection setup by negotiating SASL if required, then      * reading and authorizing the connection header      * @param header - RPC header      * @param dis - stream to request payload      * @throws WrappedRpcServerException - setup failed due to SASL      *         negotiation failure, premature or invalid connection context,      *         or other state errors. This exception needs to be sent to the       *         client.      * @throws IOException - failed to send a response back to the client      * @throws InterruptedException      */
 DECL|method|processRpcOutOfBandRequest (RpcRequestHeaderProto header, DataInputStream dis)
 specifier|private
 name|void
@@ -9379,6 +9475,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9432,6 +9533,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9601,6 +9707,11 @@ block|}
 name|String
 name|logMsg
 init|=
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9872,6 +9983,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9892,6 +10008,11 @@ name|LOG
 operator|.
 name|info
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+
@@ -9906,6 +10027,11 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
 name|getName
 argument_list|()
 operator|+

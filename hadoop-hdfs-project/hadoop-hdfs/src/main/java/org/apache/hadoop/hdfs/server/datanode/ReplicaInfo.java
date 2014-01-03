@@ -472,6 +472,22 @@ operator|=
 name|vol
 expr_stmt|;
 block|}
+comment|/**    * Get the storageUuid of the volume that stores this replica.    */
+annotation|@
+name|Override
+DECL|method|getStorageUuid ()
+specifier|public
+name|String
+name|getStorageUuid
+parameter_list|()
+block|{
+return|return
+name|volume
+operator|.
+name|getStorageID
+argument_list|()
+return|;
+block|}
 comment|/**    * Return the parent directory path where this replica is located    * @return the parent directory path where this replica is located    */
 DECL|method|getDir ()
 name|File

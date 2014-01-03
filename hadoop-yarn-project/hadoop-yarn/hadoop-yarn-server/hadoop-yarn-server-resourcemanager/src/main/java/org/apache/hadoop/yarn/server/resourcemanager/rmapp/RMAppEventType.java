@@ -38,13 +38,14 @@ block|,
 DECL|enumConstant|KILL
 name|KILL
 block|,
-comment|// Source: RMAppAttempt
+comment|// Source: Scheduler
 DECL|enumConstant|APP_REJECTED
 name|APP_REJECTED
 block|,
 DECL|enumConstant|APP_ACCEPTED
 name|APP_ACCEPTED
 block|,
+comment|// Source: RMAppAttempt
 DECL|enumConstant|ATTEMPT_REGISTERED
 name|ATTEMPT_REGISTERED
 block|,
@@ -70,10 +71,7 @@ name|APP_NEW_SAVED
 block|,
 DECL|enumConstant|APP_UPDATE_SAVED
 name|APP_UPDATE_SAVED
-block|,
-DECL|enumConstant|APP_REMOVED
-name|APP_REMOVED
-block|}
+block|, }
 end_enum
 
 end_unit

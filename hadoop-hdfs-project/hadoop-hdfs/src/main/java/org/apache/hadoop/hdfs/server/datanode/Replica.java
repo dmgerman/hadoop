@@ -110,6 +110,13 @@ name|long
 name|getVisibleLength
 parameter_list|()
 function_decl|;
+comment|/**    * Return the storageUuid of the volume that stores this replica.    */
+DECL|method|getStorageUuid ()
+specifier|public
+name|String
+name|getStorageUuid
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

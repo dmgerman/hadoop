@@ -846,7 +846,7 @@ argument_list|)
 expr_stmt|;
 name|logWriter
 operator|.
-name|closeWriter
+name|close
 argument_list|()
 expr_stmt|;
 comment|// make sure permission are correct on the file
@@ -1370,7 +1370,7 @@ argument_list|)
 expr_stmt|;
 name|logWriter
 operator|.
-name|closeWriter
+name|close
 argument_list|()
 expr_stmt|;
 name|BufferedReader

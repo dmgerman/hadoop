@@ -341,15 +341,12 @@ name|posterior
 expr_stmt|;
 block|}
 comment|/** Save the INode state to the snapshot if it is not done already. */
-DECL|method|saveSnapshotCopy (A snapshotCopy, N currentINode)
+DECL|method|saveSnapshotCopy (A snapshotCopy)
 name|void
 name|saveSnapshotCopy
 parameter_list|(
 name|A
 name|snapshotCopy
-parameter_list|,
-name|N
-name|currentINode
 parameter_list|)
 block|{
 name|Preconditions

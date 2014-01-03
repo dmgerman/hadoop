@@ -56,7 +56,7 @@ name|blk
 parameter_list|)
 function_decl|;
 comment|/**    * Convert the last block of the collection to an under-construction block    * and set the locations.    */
-DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeDescriptor[] locations)
+DECL|method|setLastBlock (BlockInfo lastBlock, DatanodeStorageInfo[] storages)
 specifier|public
 name|BlockInfoUnderConstruction
 name|setLastBlock
@@ -64,9 +64,9 @@ parameter_list|(
 name|BlockInfo
 name|lastBlock
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
-name|locations
+name|storages
 parameter_list|)
 throws|throws
 name|IOException

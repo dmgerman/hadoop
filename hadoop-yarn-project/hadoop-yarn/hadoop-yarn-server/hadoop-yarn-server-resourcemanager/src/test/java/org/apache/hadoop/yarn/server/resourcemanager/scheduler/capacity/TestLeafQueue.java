@@ -700,7 +700,7 @@ name|scheduler
 operator|.
 name|event
 operator|.
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 import|;
 end_import
 
@@ -2141,13 +2141,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|B
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -2187,13 +2185,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|B
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -2416,13 +2412,11 @@ argument_list|)
 decl_stmt|;
 name|d
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_d
-argument_list|,
-name|D
 argument_list|)
 expr_stmt|;
 comment|// Attempt the same application again
@@ -2458,13 +2452,11 @@ argument_list|)
 decl_stmt|;
 name|d
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_d
-argument_list|,
-name|D
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -2536,13 +2528,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|B
 argument_list|)
 expr_stmt|;
 name|when
@@ -2560,11 +2550,11 @@ argument_list|(
 name|app_0
 argument_list|)
 expr_stmt|;
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 name|event
 init|=
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|appAttemptId_0
 argument_list|,
@@ -2639,13 +2629,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|B
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -2693,7 +2681,7 @@ expr_stmt|;
 name|event
 operator|=
 operator|new
-name|AppRemovedSchedulerEvent
+name|AppAttemptRemovedSchedulerEvent
 argument_list|(
 name|appAttemptId_0
 argument_list|,
@@ -2865,13 +2853,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -2911,13 +2897,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -3931,13 +3915,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -3975,13 +3957,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -4020,13 +4000,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes
@@ -4478,13 +4456,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -4522,13 +4498,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -4567,13 +4541,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes
@@ -5262,13 +5234,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -5306,13 +5276,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -5351,13 +5319,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -5395,13 +5361,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_3
 argument_list|,
 name|user_2
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes
@@ -6648,13 +6612,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -6694,13 +6656,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes
@@ -7518,13 +7478,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -7564,13 +7522,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes
@@ -8015,6 +7971,21 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// node_1 heartbeats in and gets the DEFAULT_RACK request for app_1
+comment|// We do not need locality delay here
+name|doReturn
+argument_list|(
+operator|-
+literal|1
+argument_list|)
+operator|.
+name|when
+argument_list|(
+name|a
+argument_list|)
+operator|.
+name|getNodeLocalityDelay
+argument_list|()
+expr_stmt|;
 name|a
 operator|.
 name|assignContainers
@@ -8368,13 +8339,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -8414,13 +8383,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes
@@ -9374,13 +9341,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes and racks
@@ -10569,13 +10534,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes and racks
@@ -11718,13 +11681,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes and racks
@@ -12468,13 +12429,11 @@ argument_list|)
 decl_stmt|;
 name|e
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_e
-argument_list|,
-name|E
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -12514,13 +12473,11 @@ argument_list|)
 decl_stmt|;
 name|e
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_e
-argument_list|,
-name|E
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -12561,13 +12518,11 @@ argument_list|)
 decl_stmt|;
 name|e
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
 name|user_e
-argument_list|,
-name|E
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -12731,7 +12686,7 @@ decl_stmt|;
 comment|// before reinitialization
 name|assertEquals
 argument_list|(
-literal|0
+literal|40
 argument_list|,
 name|e
 operator|.
@@ -12898,13 +12853,11 @@ argument_list|)
 decl_stmt|;
 name|e
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_e
-argument_list|,
-name|E
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -12944,13 +12897,11 @@ argument_list|)
 decl_stmt|;
 name|e
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_e
-argument_list|,
-name|E
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -12991,13 +12942,11 @@ argument_list|)
 decl_stmt|;
 name|e
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
 name|user_e
-argument_list|,
-name|E
 argument_list|)
 expr_stmt|;
 comment|// same user
@@ -13409,13 +13358,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -13458,13 +13405,11 @@ argument_list|)
 decl_stmt|;
 name|a
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 comment|// Setup some nodes and racks
@@ -14208,6 +14153,9 @@ expr_stmt|;
 name|verify
 argument_list|(
 name|app_0
+argument_list|,
+name|never
+argument_list|()
 argument_list|)
 operator|.
 name|allocate
@@ -14260,7 +14208,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|0
+literal|1
 argument_list|,
 name|app_0
 operator|.

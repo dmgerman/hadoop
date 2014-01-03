@@ -38,7 +38,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationAttemptId
+name|ApplicationId
 import|;
 end_import
 
@@ -50,11 +50,11 @@ name|AppAddedSchedulerEvent
 extends|extends
 name|SchedulerEvent
 block|{
-DECL|field|applicationAttemptId
+DECL|field|applicationId
 specifier|private
 specifier|final
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|ApplicationId
+name|applicationId
 decl_stmt|;
 DECL|field|queue
 specifier|private
@@ -68,12 +68,12 @@ specifier|final
 name|String
 name|user
 decl_stmt|;
-DECL|method|AppAddedSchedulerEvent (ApplicationAttemptId applicationAttemptId, String queue, String user)
+DECL|method|AppAddedSchedulerEvent ( ApplicationId applicationId, String queue, String user)
 specifier|public
 name|AppAddedSchedulerEvent
 parameter_list|(
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|ApplicationId
+name|applicationId
 parameter_list|,
 name|String
 name|queue
@@ -91,9 +91,9 @@ argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|applicationAttemptId
+name|applicationId
 operator|=
-name|applicationAttemptId
+name|applicationId
 expr_stmt|;
 name|this
 operator|.
@@ -108,14 +108,14 @@ operator|=
 name|user
 expr_stmt|;
 block|}
-DECL|method|getApplicationAttemptId ()
+DECL|method|getApplicationId ()
 specifier|public
-name|ApplicationAttemptId
-name|getApplicationAttemptId
+name|ApplicationId
+name|getApplicationId
 parameter_list|()
 block|{
 return|return
-name|applicationAttemptId
+name|applicationId
 return|;
 block|}
 DECL|method|getQueue ()

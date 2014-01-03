@@ -390,10 +390,10 @@ name|String
 name|getApplicationType
 parameter_list|()
 function_decl|;
-comment|/**    * Check whether this application is safe to unregister.    * An application is deemed to be safe to unregister if it is an unmanaged    * AM or its state has been removed from state store.    * @return the flag which indicates whether this application is safe to    *         unregister.    */
-DECL|method|isAppSafeToUnregister ()
+comment|/**    * Check whether this application is safe to terminate.    * An application is deemed to be safe to terminate if it is an unmanaged    * AM or its state has been saved in state store.    * @return the flag which indicates whether this application is safe to    *         terminate.    */
+DECL|method|isAppSafeToTerminate ()
 name|boolean
-name|isAppSafeToUnregister
+name|isAppSafeToTerminate
 parameter_list|()
 function_decl|;
 comment|/**    * Create the external user-facing state of ApplicationMaster from the    * current state of the {@link RMApp}.    * @return the external user-facing state of ApplicationMaster.    */

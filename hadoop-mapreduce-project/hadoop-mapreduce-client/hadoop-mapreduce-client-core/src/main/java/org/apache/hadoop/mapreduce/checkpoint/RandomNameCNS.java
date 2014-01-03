@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.exceptions
+DECL|package|org.apache.hadoop.mapreduce.checkpoint
 package|package
 name|org
 operator|.
@@ -12,9 +12,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|yarn
+name|mapreduce
 operator|.
-name|exceptions
+name|checkpoint
 package|;
 end_package
 
@@ -24,67 +24,44 @@ name|org
 operator|.
 name|apache
 operator|.
-name|hadoop
+name|commons
 operator|.
-name|classification
+name|lang
 operator|.
-name|InterfaceAudience
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|classification
-operator|.
-name|InterfaceStability
+name|RandomStringUtils
 import|;
 end_import
 
 begin_comment
-comment|/**  * Exception to be thrown when an Active-Only operation is attempted on a  * ResourceManager that is not Active.  */
+comment|/**  * Simple naming service that generates a random checkpoint name.  */
 end_comment
 
 begin_class
-annotation|@
-name|InterfaceAudience
-operator|.
-name|Private
-annotation|@
-name|InterfaceStability
-operator|.
-name|Evolving
-DECL|class|RMNotYetActiveException
+DECL|class|RandomNameCNS
 specifier|public
 class|class
-name|RMNotYetActiveException
-extends|extends
-name|YarnException
+name|RandomNameCNS
+implements|implements
+name|CheckpointNamingService
 block|{
-DECL|field|serialVersionUID
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|serialVersionUID
-init|=
-literal|1L
-decl_stmt|;
-DECL|method|RMNotYetActiveException ()
+annotation|@
+name|Override
+DECL|method|getNewName ()
 specifier|public
-name|RMNotYetActiveException
+name|String
+name|getNewName
 parameter_list|()
 block|{
-name|super
+return|return
+literal|"checkpoint_"
+operator|+
+name|RandomStringUtils
+operator|.
+name|randomAlphanumeric
 argument_list|(
-literal|"ResourceManager is not yet Active!"
+literal|8
 argument_list|)
-expr_stmt|;
+return|;
 block|}
 block|}
 end_class

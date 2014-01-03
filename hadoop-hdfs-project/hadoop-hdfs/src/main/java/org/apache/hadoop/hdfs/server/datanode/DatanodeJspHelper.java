@@ -606,36 +606,6 @@ block|}
 argument_list|)
 return|;
 block|}
-comment|/**    * Internal convenience method for canonicalizing host name.    * @param addr name:port or name     * @return canonicalized host name    */
-DECL|method|canonicalize (String addr)
-specifier|private
-specifier|static
-name|String
-name|canonicalize
-parameter_list|(
-name|String
-name|addr
-parameter_list|)
-block|{
-comment|// default port 1 is supplied to allow addr without port.
-comment|// the port will be ignored.
-return|return
-name|NetUtils
-operator|.
-name|createSocketAddr
-argument_list|(
-name|addr
-argument_list|,
-literal|1
-argument_list|)
-operator|.
-name|getAddress
-argument_list|()
-operator|.
-name|getCanonicalHostName
-argument_list|()
-return|;
-block|}
 comment|/**    * Get the default chunk size.    * @param conf the configuration    * @return the number of bytes to chunk in    */
 DECL|method|getDefaultChunkSize (Configuration conf)
 specifier|private
@@ -1650,6 +1620,8 @@ name|print
 argument_list|(
 literal|"<br><a href=\"///"
 operator|+
+name|JspHelper
+operator|.
 name|canonicalize
 argument_list|(
 name|nnAddr
@@ -2463,6 +2435,8 @@ expr_stmt|;
 name|String
 name|nnCanonicalName
 init|=
+name|JspHelper
+operator|.
 name|canonicalize
 argument_list|(
 name|nnAddr

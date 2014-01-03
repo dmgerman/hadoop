@@ -871,6 +871,11 @@ operator|.
 name|notifyNamenodeDeletedBlock
 argument_list|(
 name|block
+argument_list|,
+name|volume
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}

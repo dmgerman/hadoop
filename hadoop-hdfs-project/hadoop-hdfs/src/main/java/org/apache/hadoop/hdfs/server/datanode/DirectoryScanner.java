@@ -46,16 +46,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|Arrays
 import|;
 end_import
@@ -1037,25 +1027,6 @@ operator|+
 name|fullPath
 argument_list|)
 throw|;
-block|}
-DECL|method|ScanInfo (long blockId)
-name|ScanInfo
-parameter_list|(
-name|long
-name|blockId
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|blockId
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|,
-literal|null
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|ScanInfo (long blockId, File blockFile, File metaFile, FsVolumeSpi vol)
 name|ScanInfo
@@ -2048,7 +2019,7 @@ name|length
 expr_stmt|;
 name|List
 argument_list|<
-name|Block
+name|FinalizedReplica
 argument_list|>
 name|bl
 init|=
@@ -2059,7 +2030,7 @@ argument_list|(
 name|bpid
 argument_list|)
 decl_stmt|;
-name|Block
+name|FinalizedReplica
 index|[]
 name|memReport
 init|=
@@ -2068,7 +2039,7 @@ operator|.
 name|toArray
 argument_list|(
 operator|new
-name|Block
+name|FinalizedReplica
 index|[
 name|bl
 operator|.
@@ -2207,6 +2178,11 @@ name|memBlock
 operator|.
 name|getBlockId
 argument_list|()
+argument_list|,
+name|info
+operator|.
+name|getVolume
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|m
@@ -2294,19 +2270,29 @@ operator|.
 name|length
 condition|)
 block|{
+name|FinalizedReplica
+name|current
+init|=
+name|memReport
+index|[
+name|m
+operator|++
+index|]
+decl_stmt|;
 name|addDifference
 argument_list|(
 name|diffRecord
 argument_list|,
 name|statsRecord
 argument_list|,
-name|memReport
-index|[
-name|m
-operator|++
-index|]
+name|current
 operator|.
 name|getBlockId
+argument_list|()
+argument_list|,
+name|current
+operator|.
+name|getVolume
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -2412,7 +2398,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Block is not found on the disk */
-DECL|method|addDifference (LinkedList<ScanInfo> diffRecord, Stats statsRecord, long blockId)
+DECL|method|addDifference (LinkedList<ScanInfo> diffRecord, Stats statsRecord, long blockId, FsVolumeSpi vol)
 specifier|private
 name|void
 name|addDifference
@@ -2428,6 +2414,9 @@ name|statsRecord
 parameter_list|,
 name|long
 name|blockId
+parameter_list|,
+name|FsVolumeSpi
+name|vol
 parameter_list|)
 block|{
 name|statsRecord
@@ -2448,6 +2437,12 @@ operator|new
 name|ScanInfo
 argument_list|(
 name|blockId
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|,
+name|vol
 argument_list|)
 argument_list|)
 expr_stmt|;

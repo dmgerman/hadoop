@@ -3442,7 +3442,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|16
+literal|17
 argument_list|,
 name|info
 operator|.
@@ -3457,7 +3457,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|11
+literal|12
 argument_list|,
 name|info
 operator|.
@@ -4242,12 +4242,12 @@ literal|"elapsedShuffleTime wrong"
 argument_list|,
 name|ta
 operator|.
-name|getLaunchTime
+name|getShuffleFinishTime
 argument_list|()
 operator|-
 name|ta
 operator|.
-name|getShuffleFinishTime
+name|getLaunchTime
 argument_list|()
 argument_list|,
 name|elapsedShuffleTime
@@ -4259,12 +4259,12 @@ literal|"elapsedMergeTime wrong"
 argument_list|,
 name|ta
 operator|.
-name|getShuffleFinishTime
+name|getSortFinishTime
 argument_list|()
 operator|-
 name|ta
 operator|.
-name|getSortFinishTime
+name|getShuffleFinishTime
 argument_list|()
 argument_list|,
 name|elapsedMergeTime
@@ -4276,12 +4276,12 @@ literal|"elapsedReduceTime wrong"
 argument_list|,
 name|ta
 operator|.
-name|getSortFinishTime
+name|getFinishTime
 argument_list|()
 operator|-
 name|ta
 operator|.
-name|getFinishTime
+name|getSortFinishTime
 argument_list|()
 argument_list|,
 name|elapsedReduceTime

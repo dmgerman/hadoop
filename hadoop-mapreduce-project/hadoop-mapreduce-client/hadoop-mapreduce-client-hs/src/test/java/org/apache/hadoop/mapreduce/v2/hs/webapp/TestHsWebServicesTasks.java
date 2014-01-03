@@ -4521,7 +4521,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|8
+literal|9
 argument_list|,
 name|info
 operator|.

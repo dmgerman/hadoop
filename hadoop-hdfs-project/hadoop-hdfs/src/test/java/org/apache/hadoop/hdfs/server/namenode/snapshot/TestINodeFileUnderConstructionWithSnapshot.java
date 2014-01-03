@@ -394,7 +394,7 @@ name|namenode
 operator|.
 name|snapshot
 operator|.
-name|INodeDirectoryWithSnapshot
+name|DirectoryWithSnapshotFeature
 operator|.
 name|DirectoryDiff
 import|;

@@ -42,13 +42,13 @@ specifier|public
 class|class
 name|SchedulerAppUtils
 block|{
-DECL|method|isBlacklisted (SchedulerApplication application, SchedulerNode node, Log LOG)
+DECL|method|isBlacklisted (SchedulerApplicationAttempt application, SchedulerNode node, Log LOG)
 specifier|public
 specifier|static
 name|boolean
 name|isBlacklisted
 parameter_list|(
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 name|application
 parameter_list|,
 name|SchedulerNode

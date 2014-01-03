@@ -70,6 +70,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|DatanodeInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -137,7 +153,7 @@ operator|.
 name|LinkedElement
 name|nextLinkedElement
 decl_stmt|;
-comment|/**    * This array contains triplets of references. For each i-th datanode the    * block belongs to triplets[3*i] is the reference to the DatanodeDescriptor    * and triplets[3*i+1] and triplets[3*i+2] are references to the previous and    * the next blocks, respectively, in the list of blocks belonging to this    * data-node.    *     * Using previous and next in Object triplets is done instead of a    * {@link LinkedList} list to efficiently use memory. With LinkedList the cost    * per replica is 42 bytes (LinkedList#Entry object per replica) versus 16    * bytes using the triplets.    */
+comment|/**    * This array contains triplets of references. For each i-th storage, the    * block belongs to triplets[3*i] is the reference to the    * {@link DatanodeStorageInfo} and triplets[3*i+1] and triplets[3*i+2] are    * references to the previous and the next blocks, respectively, in the list    * of blocks belonging to this storage.    *     * Using previous and next in Object triplets is done instead of a    * {@link LinkedList} list to efficiently use memory. With LinkedList the cost    * per replica is 42 bytes (LinkedList#Entry object per replica) versus 16    * bytes using the triplets.    */
 DECL|field|triplets
 specifier|private
 name|Object
@@ -272,6 +288,35 @@ name|int
 name|index
 parameter_list|)
 block|{
+name|DatanodeStorageInfo
+name|storage
+init|=
+name|getStorageInfo
+argument_list|(
+name|index
+argument_list|)
+decl_stmt|;
+return|return
+name|storage
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+return|;
+block|}
+DECL|method|getStorageInfo (int index)
+name|DatanodeStorageInfo
+name|getStorageInfo
+parameter_list|(
+name|int
+name|index
+parameter_list|)
+block|{
 assert|assert
 name|this
 operator|.
@@ -298,7 +343,7 @@ literal|"Index is out of bound"
 assert|;
 return|return
 operator|(
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 operator|)
 name|triplets
 index|[
@@ -473,22 +518,16 @@ return|return
 name|info
 return|;
 block|}
-DECL|method|setDatanode (int index, DatanodeDescriptor node, BlockInfo previous, BlockInfo next)
+DECL|method|setStorageInfo (int index, DatanodeStorageInfo storage)
 specifier|private
 name|void
-name|setDatanode
+name|setStorageInfo
 parameter_list|(
 name|int
 name|index
 parameter_list|,
-name|DatanodeDescriptor
-name|node
-parameter_list|,
-name|BlockInfo
-name|previous
-parameter_list|,
-name|BlockInfo
-name|next
+name|DatanodeStorageInfo
+name|storage
 parameter_list|)
 block|{
 assert|assert
@@ -500,21 +539,14 @@ literal|null
 operator|:
 literal|"BlockInfo is not initialized"
 assert|;
-name|int
-name|i
-init|=
-name|index
-operator|*
-literal|3
-decl_stmt|;
 assert|assert
 name|index
 operator|>=
 literal|0
 operator|&&
-name|i
-operator|+
-literal|2
+name|index
+operator|*
+literal|3
 operator|<
 name|triplets
 operator|.
@@ -524,28 +556,12 @@ literal|"Index is out of bound"
 assert|;
 name|triplets
 index|[
-name|i
+name|index
+operator|*
+literal|3
 index|]
 operator|=
-name|node
-expr_stmt|;
-name|triplets
-index|[
-name|i
-operator|+
-literal|1
-index|]
-operator|=
-name|previous
-expr_stmt|;
-name|triplets
-index|[
-name|i
-operator|+
-literal|2
-index|]
-operator|=
-name|next
+name|storage
 expr_stmt|;
 block|}
 comment|/**    * Return the previous block on the block list for the datanode at    * position index. Set the previous block on the list to "to".    *    * @param index - the datanode index    * @param to - block to be set to previous on the list of blocks    * @return current previous block on the list of blocks    */
@@ -868,29 +884,69 @@ return|return
 literal|0
 return|;
 block|}
-comment|/**    * Add data-node this block belongs to.    */
-DECL|method|addNode (DatanodeDescriptor node)
-specifier|public
+comment|/**    * Add a {@link DatanodeStorageInfo} location for a block    */
+DECL|method|addStorage (DatanodeStorageInfo storage)
 name|boolean
-name|addNode
+name|addStorage
 parameter_list|(
-name|DatanodeDescriptor
-name|node
+name|DatanodeStorageInfo
+name|storage
 parameter_list|)
 block|{
-if|if
-condition|(
+name|boolean
+name|added
+init|=
+literal|true
+decl_stmt|;
+name|int
+name|idx
+init|=
 name|findDatanode
 argument_list|(
-name|node
+name|storage
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|idx
 operator|>=
 literal|0
 condition|)
-comment|// the node is already there
+block|{
+if|if
+condition|(
+name|getStorageInfo
+argument_list|(
+name|idx
+argument_list|)
+operator|==
+name|storage
+condition|)
+block|{
+comment|// the storage is already there
 return|return
 literal|false
 return|;
+block|}
+else|else
+block|{
+comment|// The block is on the DN but belongs to a different storage.
+comment|// Update our state.
+name|removeStorage
+argument_list|(
+name|storage
+argument_list|)
+expr_stmt|;
+name|added
+operator|=
+literal|false
+expr_stmt|;
+comment|// Just updating storage. Return false.
+block|}
+block|}
 comment|// find the last null node
 name|int
 name|lastNode
@@ -900,37 +956,46 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
-name|setDatanode
+name|setStorageInfo
 argument_list|(
 name|lastNode
 argument_list|,
-name|node
+name|storage
+argument_list|)
+expr_stmt|;
+name|setNext
+argument_list|(
+name|lastNode
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|setPrevious
+argument_list|(
+name|lastNode
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 return|return
-literal|true
+name|added
 return|;
 block|}
-comment|/**    * Remove data-node from the block.    */
-DECL|method|removeNode (DatanodeDescriptor node)
-specifier|public
+comment|/**    * Remove {@link DatanodeStorageInfo} location for a block    */
+DECL|method|removeStorage (DatanodeStorageInfo storage)
 name|boolean
-name|removeNode
+name|removeStorage
 parameter_list|(
-name|DatanodeDescriptor
-name|node
+name|DatanodeStorageInfo
+name|storage
 parameter_list|)
 block|{
 name|int
 name|dnIndex
 init|=
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|node
+name|storage
 argument_list|)
 decl_stmt|;
 if|if
@@ -970,19 +1035,19 @@ operator|-
 literal|1
 decl_stmt|;
 comment|// replace current node triplet by the lastNode one
-name|setDatanode
+name|setStorageInfo
 argument_list|(
 name|dnIndex
 argument_list|,
-name|getDatanode
+name|getStorageInfo
 argument_list|(
 name|lastNode
 argument_list|)
-argument_list|,
-name|getPrevious
-argument_list|(
-name|lastNode
 argument_list|)
+expr_stmt|;
+name|setNext
+argument_list|(
+name|dnIndex
 argument_list|,
 name|getNext
 argument_list|(
@@ -990,14 +1055,34 @@ name|lastNode
 argument_list|)
 argument_list|)
 expr_stmt|;
+name|setPrevious
+argument_list|(
+name|dnIndex
+argument_list|,
+name|getPrevious
+argument_list|(
+name|lastNode
+argument_list|)
+argument_list|)
+expr_stmt|;
 comment|// set the last triplet to null
-name|setDatanode
+name|setStorageInfo
 argument_list|(
 name|lastNode
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|setNext
+argument_list|(
+name|lastNode
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|setPrevious
+argument_list|(
+name|lastNode
 argument_list|,
 literal|null
 argument_list|)
@@ -1066,17 +1151,139 @@ operator|-
 literal|1
 return|;
 block|}
-comment|/**    * Insert this block into the head of the list of blocks     * related to the specified DatanodeDescriptor.    * If the head is null then form a new list.    * @return current block as the new head of the list.    */
-DECL|method|listInsert (BlockInfo head, DatanodeDescriptor dn)
-specifier|public
+comment|/**    * Find specified DatanodeStorageInfo.    * @param dn    * @return index or -1 if not found.    */
+DECL|method|findStorageInfo (DatanodeInfo dn)
+name|int
+name|findStorageInfo
+parameter_list|(
+name|DatanodeInfo
+name|dn
+parameter_list|)
+block|{
+name|int
+name|len
+init|=
+name|getCapacity
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|idx
+init|=
+literal|0
+init|;
+name|idx
+operator|<
+name|len
+condition|;
+name|idx
+operator|++
+control|)
+block|{
+name|DatanodeStorageInfo
+name|cur
+init|=
+name|getStorageInfo
+argument_list|(
+name|idx
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cur
+operator|==
+literal|null
+condition|)
+break|break;
+if|if
+condition|(
+name|cur
+operator|.
+name|getDatanodeDescriptor
+argument_list|()
+operator|==
+name|dn
+condition|)
+return|return
+name|idx
+return|;
+block|}
+return|return
+operator|-
+literal|1
+return|;
+block|}
+comment|/**    * Find specified DatanodeStorageInfo.    * @param storageInfo    * @return index or -1 if not found.    */
+DECL|method|findStorageInfo (DatanodeStorageInfo storageInfo)
+name|int
+name|findStorageInfo
+parameter_list|(
+name|DatanodeStorageInfo
+name|storageInfo
+parameter_list|)
+block|{
+name|int
+name|len
+init|=
+name|getCapacity
+argument_list|()
+decl_stmt|;
+for|for
+control|(
+name|int
+name|idx
+init|=
+literal|0
+init|;
+name|idx
+operator|<
+name|len
+condition|;
+name|idx
+operator|++
+control|)
+block|{
+name|DatanodeStorageInfo
+name|cur
+init|=
+name|getStorageInfo
+argument_list|(
+name|idx
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cur
+operator|==
+name|storageInfo
+condition|)
+return|return
+name|idx
+return|;
+if|if
+condition|(
+name|cur
+operator|==
+literal|null
+condition|)
+break|break;
+block|}
+return|return
+operator|-
+literal|1
+return|;
+block|}
+comment|/**    * Insert this block into the head of the list of blocks     * related to the specified DatanodeStorageInfo.    * If the head is null then form a new list.    * @return current block as the new head of the list.    */
+DECL|method|listInsert (BlockInfo head, DatanodeStorageInfo storage)
 name|BlockInfo
 name|listInsert
 parameter_list|(
 name|BlockInfo
 name|head
 parameter_list|,
-name|DatanodeDescriptor
-name|dn
+name|DatanodeStorageInfo
+name|storage
 parameter_list|)
 block|{
 name|int
@@ -1084,9 +1291,9 @@ name|dnIndex
 init|=
 name|this
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storage
 argument_list|)
 decl_stmt|;
 assert|assert
@@ -1143,9 +1350,9 @@ name|setPrevious
 argument_list|(
 name|head
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storage
 argument_list|)
 argument_list|,
 name|this
@@ -1155,17 +1362,16 @@ return|return
 name|this
 return|;
 block|}
-comment|/**    * Remove this block from the list of blocks     * related to the specified DatanodeDescriptor.    * If this block is the head of the list then return the next block as     * the new head.    * @return the new head of the list or null if the list becomes    * empty after deletion.    */
-DECL|method|listRemove (BlockInfo head, DatanodeDescriptor dn)
-specifier|public
+comment|/**    * Remove this block from the list of blocks     * related to the specified DatanodeStorageInfo.    * If this block is the head of the list then return the next block as     * the new head.    * @return the new head of the list or null if the list becomes    * empy after deletion.    */
+DECL|method|listRemove (BlockInfo head, DatanodeStorageInfo storage)
 name|BlockInfo
 name|listRemove
 parameter_list|(
 name|BlockInfo
 name|head
 parameter_list|,
-name|DatanodeDescriptor
-name|dn
+name|DatanodeStorageInfo
+name|storage
 parameter_list|)
 block|{
 if|if
@@ -1182,9 +1388,9 @@ name|dnIndex
 init|=
 name|this
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storage
 argument_list|)
 decl_stmt|;
 if|if
@@ -1247,9 +1453,9 @@ name|setNext
 argument_list|(
 name|prev
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storage
 argument_list|)
 argument_list|,
 name|next
@@ -1267,9 +1473,9 @@ name|setPrevious
 argument_list|(
 name|next
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storage
 argument_list|)
 argument_list|,
 name|prev
@@ -1291,7 +1497,7 @@ name|head
 return|;
 block|}
 comment|/**    * Remove this block from the list of blocks related to the specified    * DatanodeDescriptor. Insert it into the head of the list of blocks.    *    * @return the new head of the list.    */
-DECL|method|moveBlockToHead (BlockInfo head, DatanodeDescriptor dn, int curIndex, int headIndex)
+DECL|method|moveBlockToHead (BlockInfo head, DatanodeStorageInfo storage, int curIndex, int headIndex)
 specifier|public
 name|BlockInfo
 name|moveBlockToHead
@@ -1299,8 +1505,8 @@ parameter_list|(
 name|BlockInfo
 name|head
 parameter_list|,
-name|DatanodeDescriptor
-name|dn
+name|DatanodeStorageInfo
+name|storage
 parameter_list|,
 name|int
 name|curIndex
@@ -1359,9 +1565,9 @@ name|setNext
 argument_list|(
 name|prev
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storage
 argument_list|)
 argument_list|,
 name|next
@@ -1379,9 +1585,9 @@ name|setPrevious
 argument_list|(
 name|next
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storage
 argument_list|)
 argument_list|,
 name|prev
@@ -1424,7 +1630,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Convert a complete block to an under construction block.    * @return BlockInfoUnderConstruction -  an under construction block.    */
-DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeDescriptor[] targets)
+DECL|method|convertToBlockUnderConstruction ( BlockUCState s, DatanodeStorageInfo[] targets)
 specifier|public
 name|BlockInfoUnderConstruction
 name|convertToBlockUnderConstruction
@@ -1432,7 +1638,7 @@ parameter_list|(
 name|BlockUCState
 name|s
 parameter_list|,
-name|DatanodeDescriptor
+name|DatanodeStorageInfo
 index|[]
 name|targets
 parameter_list|)

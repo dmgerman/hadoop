@@ -400,6 +400,20 @@ name|AggregatedLogDeletionService
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/******************************************************************  * {@link JobHistoryServer} is responsible for servicing all job history  * related requests from client.  *  *****************************************************************/
 end_comment
@@ -451,7 +465,7 @@ name|class
 argument_list|)
 decl_stmt|;
 DECL|field|historyContext
-specifier|private
+specifier|protected
 name|HistoryContext
 name|historyContext
 decl_stmt|;
@@ -466,7 +480,7 @@ name|JobHistory
 name|jobHistoryService
 decl_stmt|;
 DECL|field|jhsDTSecretManager
-specifier|private
+specifier|protected
 name|JHSDelegationTokenSecretManager
 name|jhsDTSecretManager
 decl_stmt|;
@@ -756,15 +770,8 @@ argument_list|)
 expr_stmt|;
 name|clientService
 operator|=
-operator|new
-name|HistoryClientService
-argument_list|(
-name|historyContext
-argument_list|,
-name|this
-operator|.
-name|jhsDTSecretManager
-argument_list|)
+name|createHistoryClientService
+argument_list|()
 expr_stmt|;
 name|aggLogDelService
 operator|=
@@ -821,6 +828,26 @@ argument_list|(
 name|config
 argument_list|)
 expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createHistoryClientService ()
+specifier|protected
+name|HistoryClientService
+name|createHistoryClientService
+parameter_list|()
+block|{
+return|return
+operator|new
+name|HistoryClientService
+argument_list|(
+name|historyContext
+argument_list|,
+name|this
+operator|.
+name|jhsDTSecretManager
+argument_list|)
+return|;
 block|}
 DECL|method|createJHSSecretManager ( Configuration conf, HistoryServerStateStoreService store)
 specifier|protected

@@ -84,6 +84,9 @@ block|,
 DECL|enumConstant|TA_TIMED_OUT
 name|TA_TIMED_OUT
 block|,
+DECL|enumConstant|TA_PREEMPTED
+name|TA_PREEMPTED
+block|,
 comment|//Producer:TaskCleaner
 DECL|enumConstant|TA_CLEANUP_DONE
 name|TA_CLEANUP_DONE
