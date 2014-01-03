@@ -580,10 +580,6 @@ specifier|private
 specifier|final
 name|ReentrantLock
 name|lock
-init|=
-operator|new
-name|ReentrantLock
-argument_list|()
 decl_stmt|;
 comment|/**    * Notifies the scan thread that an immediate rescan is needed.    */
 DECL|field|doRescan
@@ -591,11 +587,6 @@ specifier|private
 specifier|final
 name|Condition
 name|doRescan
-init|=
-name|lock
-operator|.
-name|newCondition
-argument_list|()
 decl_stmt|;
 comment|/**    * Notifies waiting threads that a rescan has finished.    */
 DECL|field|scanFinished
@@ -603,11 +594,6 @@ specifier|private
 specifier|final
 name|Condition
 name|scanFinished
-init|=
-name|lock
-operator|.
-name|newCondition
-argument_list|()
 decl_stmt|;
 comment|/**    * Whether there are pending CacheManager operations that necessitate a    * CacheReplicationMonitor rescan. Protected by the CRM lock.    */
 DECL|field|needsRescan
@@ -641,12 +627,6 @@ name|shutdown
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * The monotonic time at which the current scan started.    */
-DECL|field|startTimeMs
-specifier|private
-name|long
-name|startTimeMs
-decl_stmt|;
 comment|/**    * Mark status of the current scan.    */
 DECL|field|mark
 specifier|private
@@ -667,7 +647,7 @@ specifier|private
 name|long
 name|scannedBlocks
 decl_stmt|;
-DECL|method|CacheReplicationMonitor (FSNamesystem namesystem, CacheManager cacheManager, long intervalMs)
+DECL|method|CacheReplicationMonitor (FSNamesystem namesystem, CacheManager cacheManager, long intervalMs, ReentrantLock lock)
 specifier|public
 name|CacheReplicationMonitor
 parameter_list|(
@@ -679,6 +659,9 @@ name|cacheManager
 parameter_list|,
 name|long
 name|intervalMs
+parameter_list|,
+name|ReentrantLock
+name|lock
 parameter_list|)
 block|{
 name|this
@@ -717,6 +700,34 @@ name|intervalMs
 operator|=
 name|intervalMs
 expr_stmt|;
+name|this
+operator|.
+name|lock
+operator|=
+name|lock
+expr_stmt|;
+name|this
+operator|.
+name|doRescan
+operator|=
+name|this
+operator|.
+name|lock
+operator|.
+name|newCondition
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|scanFinished
+operator|=
+name|this
+operator|.
+name|lock
+operator|.
+name|newCondition
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -726,9 +737,29 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|long
 name|startTimeMs
-operator|=
+init|=
 literal|0
+decl_stmt|;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"CacheReplicationMonitor("
+operator|+
+name|System
+operator|.
+name|identityHashCode
+argument_list|(
+name|this
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -756,8 +787,6 @@ condition|(
 literal|true
 condition|)
 block|{
-comment|// Not all of the variables accessed here need the CRM lock, but take
-comment|// it anyway for simplicity
 name|lock
 operator|.
 name|lock
@@ -852,23 +881,6 @@ name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-comment|// Mark scan as started, clear needsRescan
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|isScanning
 operator|=
 literal|true
@@ -905,7 +917,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
-comment|// Retake the CRM lock to update synchronization-related variables
+comment|// Update synchronization-related variables.
 name|lock
 operator|.
 name|lock
@@ -963,6 +975,21 @@ block|}
 block|}
 catch|catch
 parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutting down CacheReplicationMonitor."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+catch|catch
+parameter_list|(
 name|Throwable
 name|t
 parameter_list|)
@@ -985,20 +1012,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Similar to {@link CacheReplicationMonitor#waitForRescan()}, except it only    * waits if there are pending operations that necessitate a rescan as    * indicated by {@link #setNeedsRescan()}.    *<p>    * Note that this call may release the FSN lock, so operations before and    * after are not necessarily atomic.    */
+comment|/**    * Waits for a rescan to complete. This doesn't guarantee consistency with    * pending operations, only relative recency, since it will not force a new    * rescan if a rescan is already underway.    *<p>    * Note that this call will release the FSN lock, so operations before and    * after are not atomic.    */
 DECL|method|waitForRescanIfNeeded ()
 specifier|public
 name|void
 name|waitForRescanIfNeeded
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+argument_list|,
+literal|"Must not hold the FSN write lock when waiting for a rescan."
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|lock
 operator|.
-name|lock
+name|isHeldByCurrentThread
 argument_list|()
+argument_list|,
+literal|"Must hold the CRM lock when waiting for a rescan."
+argument_list|)
 expr_stmt|;
-try|try
-block|{
 if|if
 condition|(
 operator|!
@@ -1007,90 +1052,6 @@ condition|)
 block|{
 return|return;
 block|}
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-name|waitForRescan
-argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Waits for a rescan to complete. This doesn't guarantee consistency with    * pending operations, only relative recency, since it will not force a new    * rescan if a rescan is already underway.    *<p>    * Note that this call will release the FSN lock, so operations before and    * after are not atomic.    */
-DECL|method|waitForRescan ()
-specifier|public
-name|void
-name|waitForRescan
-parameter_list|()
-block|{
-comment|// Drop the FSN lock temporarily and retake it after we finish waiting
-comment|// Need to handle both the read lock and the write lock
-name|boolean
-name|retakeWriteLock
-init|=
-literal|false
-decl_stmt|;
-if|if
-condition|(
-name|namesystem
-operator|.
-name|hasWriteLock
-argument_list|()
-condition|)
-block|{
-name|namesystem
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-name|retakeWriteLock
-operator|=
-literal|true
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|namesystem
-operator|.
-name|hasReadLock
-argument_list|()
-condition|)
-block|{
-name|namesystem
-operator|.
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Expected to have at least one of the locks
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-literal|false
-argument_list|,
-literal|"Need to be holding either the read or write lock"
-argument_list|)
-expr_stmt|;
-block|}
-comment|// try/finally for retaking FSN lock
-try|try
-block|{
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-comment|// try/finally for releasing CRM lock
-try|try
-block|{
 comment|// If no scan is already ongoing, mark the CRM as dirty and kick
 if|if
 condition|(
@@ -1098,10 +1059,6 @@ operator|!
 name|isScanning
 condition|)
 block|{
-name|needsRescan
-operator|=
-literal|true
-expr_stmt|;
 name|doRescan
 operator|.
 name|signal
@@ -1117,9 +1074,16 @@ name|scanCount
 decl_stmt|;
 while|while
 condition|(
+operator|(
+operator|!
+name|shutdown
+operator|)
+operator|&&
+operator|(
 name|startCount
 operator|>=
 name|scanCount
+operator|)
 condition|)
 block|{
 try|try
@@ -1151,38 +1115,6 @@ break|break;
 block|}
 block|}
 block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|retakeWriteLock
-condition|)
-block|{
-name|namesystem
-operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-name|namesystem
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Indicates to the CacheReplicationMonitor that there have been CacheManager    * changes that require a rescan.    */
 DECL|method|setNeedsRescan ()
 specifier|public
@@ -1190,13 +1122,18 @@ name|void
 name|setNeedsRescan
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|lock
 operator|.
-name|lock
+name|isHeldByCurrentThread
 argument_list|()
+argument_list|,
+literal|"Must hold the CRM lock when setting the needsRescan bit."
+argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|needsRescan
@@ -1204,16 +1141,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Shut down and join the monitor thread.    */
+comment|/**    * Shut down the monitor thread.    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -1224,6 +1152,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|lock
 operator|.
 name|lock
@@ -1236,6 +1174,12 @@ condition|(
 name|shutdown
 condition|)
 return|return;
+comment|// Since we hold both the FSN write lock and the CRM lock here,
+comment|// we know that the CRM thread cannot be currently modifying
+comment|// the cache manager state while we're closing it.
+comment|// Since the CRM thread checks the value of 'shutdown' after waiting
+comment|// for a lock, we know that the thread will not modify the cache
+comment|// manager state after this point.
 name|shutdown
 operator|=
 literal|true
@@ -1259,46 +1203,14 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-try|try
-block|{
-if|if
-condition|(
-name|this
-operator|.
-name|isAlive
-argument_list|()
-condition|)
-block|{
-name|this
-operator|.
-name|join
-argument_list|(
-literal|60000
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|rescan ()
 specifier|private
 name|void
 name|rescan
 parameter_list|()
+throws|throws
+name|InterruptedException
 block|{
 name|scannedDirectives
 operator|=
@@ -1315,6 +1227,21 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|shutdown
+condition|)
+block|{
+throw|throw
+operator|new
+name|InterruptedException
+argument_list|(
+literal|"CacheReplicationMonitor was "
+operator|+
+literal|"shut down."
+argument_list|)
+throw|;
+block|}
 name|resetStatistics
 argument_list|()
 expr_stmt|;
@@ -2582,17 +2509,6 @@ argument_list|>
 name|pendingUncached
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|cacheManager
-operator|.
-name|isActive
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 comment|// Figure out which replicas can be uncached.
 name|LinkedList
 argument_list|<
@@ -2734,17 +2650,6 @@ argument_list|>
 name|pendingCached
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|cacheManager
-operator|.
-name|isActive
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 comment|// To figure out which replicas can be cached, we consult the
 comment|// blocksMap.  We don't want to try to cache a corrupt replica, though.
 name|BlockInfo
