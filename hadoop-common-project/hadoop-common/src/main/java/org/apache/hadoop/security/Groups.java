@@ -738,6 +738,15 @@ name|endMs
 operator|-
 name|startMs
 decl_stmt|;
+name|UserGroupInformation
+operator|.
+name|metrics
+operator|.
+name|addGetGroups
+argument_list|(
+name|deltaMs
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|deltaMs

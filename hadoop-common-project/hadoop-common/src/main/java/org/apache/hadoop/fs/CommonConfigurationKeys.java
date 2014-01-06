@@ -60,22 +60,6 @@ name|StaticUserWebFilter
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|authorize
-operator|.
-name|Service
-import|;
-end_import
-
 begin_comment
 comment|/**   * This class contains constants for configuration keys used  * in the common code.  *  * It inherits all the publicly documented configuration keys  * and adds unsupported keys.  *  */
 end_comment
@@ -775,6 +759,15 @@ name|int
 name|IPC_CLIENT_CONNECTION_IDLESCANINTERVAL_DEFAULT
 init|=
 literal|10000
+decl_stmt|;
+DECL|field|HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS
+init|=
+literal|"hadoop.user.group.metrics.percentiles.intervals"
 decl_stmt|;
 block|}
 end_class
