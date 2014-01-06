@@ -2361,7 +2361,7 @@ name|this
 argument_list|)
 return|;
 block|}
-comment|/**     * Get the user defined {@link WritableComparable} comparator for     * grouping keys of inputs to the reduce.    *     * @return comparator set by the user for grouping values.    * @see #setOutputValueGroupingComparator(Class) for details.      */
+comment|/**     * Get the user defined {@link WritableComparable} comparator for     * grouping keys of inputs to the reduce.    *     * @return comparator set by the user for grouping values.    * @see #setOutputValueGroupingComparator(Class) for details.    */
 DECL|method|getOutputValueGroupingComparator ()
 specifier|public
 name|RawComparator
@@ -2441,7 +2441,7 @@ name|class
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**     * Set the user defined {@link RawComparator} comparator for     * grouping keys in the input to the reduce.    *     *<p>This comparator should be provided if the equivalence rules for keys    * for sorting the intermediates are different from those for grouping keys    * before each call to     * {@link Reducer#reduce(Object, java.util.Iterator, OutputCollector, Reporter)}.</p>    *      *<p>For key-value pairs (K1,V1) and (K2,V2), the values (V1, V2) are passed    * in a single call to the reduce function if K1 and K2 compare as equal.</p>    *     *<p>Since {@link #setOutputKeyComparatorClass(Class)} can be used to control     * how keys are sorted, this can be used in conjunction to simulate     *<i>secondary sort on values</i>.</p>    *      *<p><i>Note</i>: This is not a guarantee of the reduce sort being     *<i>stable</i> in any sense. (In any case, with the order of available     * map-outputs to the reduce being non-deterministic, it wouldn't make     * that much sense.)</p>    *     * @param theClass the comparator class to be used for grouping keys.     *                 It should implement<code>RawComparator</code>.    * @see #setOutputKeyComparatorClass(Class)    * @see {@link #setCombinerKeyGroupingComparator(Class)} for setting a     * comparator for the combiner.    */
+comment|/**     * Set the user defined {@link RawComparator} comparator for     * grouping keys in the input to the reduce.    *     *<p>This comparator should be provided if the equivalence rules for keys    * for sorting the intermediates are different from those for grouping keys    * before each call to     * {@link Reducer#reduce(Object, java.util.Iterator, OutputCollector, Reporter)}.</p>    *      *<p>For key-value pairs (K1,V1) and (K2,V2), the values (V1, V2) are passed    * in a single call to the reduce function if K1 and K2 compare as equal.</p>    *     *<p>Since {@link #setOutputKeyComparatorClass(Class)} can be used to control     * how keys are sorted, this can be used in conjunction to simulate     *<i>secondary sort on values</i>.</p>    *      *<p><i>Note</i>: This is not a guarantee of the reduce sort being     *<i>stable</i> in any sense. (In any case, with the order of available     * map-outputs to the reduce being non-deterministic, it wouldn't make     * that much sense.)</p>    *     * @param theClass the comparator class to be used for grouping keys.     *                 It should implement<code>RawComparator</code>.    * @see #setOutputKeyComparatorClass(Class)    * @see #setCombinerKeyGroupingComparator(Class)    */
 DECL|method|setOutputValueGroupingComparator ( Class<? extends RawComparator> theClass)
 specifier|public
 name|void
