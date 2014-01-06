@@ -3293,7 +3293,7 @@ argument_list|>
 operator|)
 name|job
 operator|.
-name|getOutputKeyComparator
+name|getCombinerKeyGroupingComparator
 argument_list|()
 decl_stmt|;
 try|try
