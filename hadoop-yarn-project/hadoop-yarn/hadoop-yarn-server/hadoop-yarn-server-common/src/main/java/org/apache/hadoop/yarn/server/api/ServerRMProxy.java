@@ -172,15 +172,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-static|static
-block|{
+DECL|field|INSTANCE
+specifier|private
+specifier|static
+specifier|final
+name|ServerRMProxy
 name|INSTANCE
-operator|=
+init|=
 operator|new
 name|ServerRMProxy
 argument_list|()
-expr_stmt|;
-block|}
+decl_stmt|;
 DECL|method|ServerRMProxy ()
 specifier|private
 name|ServerRMProxy
@@ -214,16 +216,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// This method exists only to initiate this class' static INSTANCE. TODO:
-comment|// FIX if possible
 return|return
-name|RMProxy
-operator|.
 name|createRMProxy
 argument_list|(
 name|configuration
 argument_list|,
 name|protocol
+argument_list|,
+name|INSTANCE
 argument_list|)
 return|;
 block|}
