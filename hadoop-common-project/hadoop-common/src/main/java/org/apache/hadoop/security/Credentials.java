@@ -132,7 +132,29 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+operator|.
+name|Entry
 import|;
 end_import
 
@@ -452,26 +474,6 @@ name|credentials
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Returns the key bytes for the alias    * @param alias the alias for the key    * @return key for this alias    */
-DECL|method|getSecretKey (Text alias)
-specifier|public
-name|byte
-index|[]
-name|getSecretKey
-parameter_list|(
-name|Text
-name|alias
-parameter_list|)
-block|{
-return|return
-name|secretKeysMap
-operator|.
-name|get
-argument_list|(
-name|alias
-argument_list|)
-return|;
-block|}
 comment|/**    * Returns the Token object for the alias    * @param alias the alias for the Token    * @return token for this alias    */
 DECL|method|getToken (Text alias)
 specifier|public
@@ -580,6 +582,26 @@ name|size
 argument_list|()
 return|;
 block|}
+comment|/**    * Returns the key bytes for the alias    * @param alias the alias for the key    * @return key for this alias    */
+DECL|method|getSecretKey (Text alias)
+specifier|public
+name|byte
+index|[]
+name|getSecretKey
+parameter_list|(
+name|Text
+name|alias
+parameter_list|)
+block|{
+return|return
+name|secretKeysMap
+operator|.
+name|get
+argument_list|(
+name|alias
+argument_list|)
+return|;
+block|}
 comment|/**    * @return number of keys in the in-memory map    */
 DECL|method|numberOfSecretKeys ()
 specifier|public
@@ -635,6 +657,47 @@ argument_list|(
 name|alias
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Return all the secret key entries in the in-memory map    */
+DECL|method|getAllSecretKeys ()
+specifier|public
+name|List
+argument_list|<
+name|Text
+argument_list|>
+name|getAllSecretKeys
+parameter_list|()
+block|{
+name|List
+argument_list|<
+name|Text
+argument_list|>
+name|list
+init|=
+operator|new
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+argument_list|<
+name|Text
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|list
+operator|.
+name|addAll
+argument_list|(
+name|secretKeysMap
+operator|.
+name|keySet
+argument_list|()
+argument_list|)
+expr_stmt|;
+return|return
+name|list
+return|;
 block|}
 comment|/**    * Convenience method for reading a token storage file, and loading the Tokens    * therein in the passed UGI    * @param filename    * @param conf    * @throws IOException    */
 DECL|method|readTokenStorageFile (Path filename, Configuration conf)

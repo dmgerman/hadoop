@@ -1062,6 +1062,35 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Get the key names for all keys.    * @return the list of key names    * @throws IOException    */
+DECL|method|getKeys ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|String
+argument_list|>
+name|getKeys
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Get the key material for all versions of a specific key name.    * @return the list of key material    * @throws IOException    */
+DECL|method|getKeyVersions (String name)
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|KeyVersion
+argument_list|>
+name|getKeyVersions
+parameter_list|(
+name|String
+name|name
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
 comment|/**    * Get the current version of the key, which should be used for encrypting new    * data.    * @param name the base name of the key    * @return the version name of the current version of the key or null if the    *    key version doesn't exist    * @throws IOException    */
 DECL|method|getCurrentKey (String name)
 specifier|public
