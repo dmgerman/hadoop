@@ -30,11 +30,11 @@ specifier|public
 class|class
 name|StorageReport
 block|{
-DECL|field|storageID
+DECL|field|storage
 specifier|private
 specifier|final
-name|String
-name|storageID
+name|DatanodeStorage
+name|storage
 decl_stmt|;
 DECL|field|failed
 specifier|private
@@ -76,12 +76,12 @@ name|EMPTY_ARRAY
 init|=
 block|{}
 decl_stmt|;
-DECL|method|StorageReport (String sid, boolean failed, long capacity, long dfsUsed, long remaining, long bpUsed)
+DECL|method|StorageReport (DatanodeStorage storage, boolean failed, long capacity, long dfsUsed, long remaining, long bpUsed)
 specifier|public
 name|StorageReport
 parameter_list|(
-name|String
-name|sid
+name|DatanodeStorage
+name|storage
 parameter_list|,
 name|boolean
 name|failed
@@ -101,9 +101,9 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|storageID
+name|storage
 operator|=
-name|sid
+name|storage
 expr_stmt|;
 name|this
 operator|.
@@ -136,14 +136,14 @@ operator|=
 name|bpUsed
 expr_stmt|;
 block|}
-DECL|method|getStorageID ()
+DECL|method|getStorage ()
 specifier|public
-name|String
-name|getStorageID
+name|DatanodeStorage
+name|getStorage
 parameter_list|()
 block|{
 return|return
-name|storageID
+name|storage
 return|;
 block|}
 DECL|method|isFailed ()
