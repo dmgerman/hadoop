@@ -2252,6 +2252,8 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+try|try
+block|{
 name|prevState
 operator|.
 name|getStorage
@@ -2557,6 +2559,15 @@ name|isUpgradeFinalized
 operator|=
 literal|true
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|prevState
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|doFinalize (StorageDirectory sd)
 specifier|private
