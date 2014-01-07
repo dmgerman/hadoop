@@ -647,7 +647,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_ADDRESS
+name|RM_ZK_ADDRESS
 argument_list|,
 name|hostPort
 argument_list|)
@@ -942,7 +942,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_ADDRESS
+name|RM_ZK_ADDRESS
 argument_list|,
 name|hostPort
 argument_list|)
