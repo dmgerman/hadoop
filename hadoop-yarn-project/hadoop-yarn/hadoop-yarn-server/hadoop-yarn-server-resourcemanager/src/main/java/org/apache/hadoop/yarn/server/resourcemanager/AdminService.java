@@ -304,6 +304,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ipc
+operator|.
+name|StandbyException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|Groups
@@ -435,22 +449,6 @@ operator|.
 name|conf
 operator|.
 name|YarnConfiguration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|exceptions
-operator|.
-name|RMNotYetActiveException
 import|;
 end_import
 
@@ -928,6 +926,11 @@ specifier|final
 name|ResourceManager
 name|rm
 decl_stmt|;
+DECL|field|rmId
+specifier|private
+name|String
+name|rmId
+decl_stmt|;
 DECL|field|server
 specifier|private
 name|Server
@@ -1040,6 +1043,17 @@ name|YarnConfiguration
 operator|.
 name|DEFAULT_YARN_ADMIN_ACL
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|rmId
+operator|=
+name|conf
+operator|.
+name|get
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_HA_ID
 argument_list|)
 expr_stmt|;
 name|super
@@ -1364,6 +1378,26 @@ name|getHAServiceState
 argument_list|()
 return|;
 block|}
+DECL|method|throwStandbyException ()
+specifier|private
+name|void
+name|throwStandbyException
+parameter_list|()
+throws|throws
+name|StandbyException
+block|{
+throw|throw
+operator|new
+name|StandbyException
+argument_list|(
+literal|"ResourceManager "
+operator|+
+name|rmId
+operator|+
+literal|" is not Active!"
+argument_list|)
+throw|;
+block|}
 annotation|@
 name|Override
 DECL|method|monitorHealth ()
@@ -1656,6 +1690,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|StandbyException
 block|{
 name|UserGroupInformation
 name|user
@@ -1693,11 +1729,9 @@ argument_list|,
 literal|"ResourceManager is not active. Can not refresh queues."
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|RMNotYetActiveException
+name|throwStandbyException
 argument_list|()
-throw|;
+expr_stmt|;
 block|}
 try|try
 block|{
@@ -1799,6 +1833,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|StandbyException
 block|{
 name|UserGroupInformation
 name|user
@@ -1836,11 +1872,9 @@ argument_list|,
 literal|"ResourceManager is not active. Can not refresh nodes."
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|RMNotYetActiveException
+name|throwStandbyException
 argument_list|()
-throw|;
+expr_stmt|;
 block|}
 try|try
 block|{
@@ -1939,6 +1973,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|StandbyException
 block|{
 name|UserGroupInformation
 name|user
@@ -1977,11 +2013,9 @@ argument_list|,
 literal|"ResourceManager is not active. Can not refresh super-user-groups."
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|RMNotYetActiveException
+name|throwStandbyException
 argument_list|()
-throw|;
+expr_stmt|;
 block|}
 name|ProxyUsers
 operator|.
@@ -2029,6 +2063,8 @@ name|request
 parameter_list|)
 throws|throws
 name|YarnException
+throws|,
+name|StandbyException
 block|{
 name|UserGroupInformation
 name|user
@@ -2067,11 +2103,9 @@ argument_list|,
 literal|"ResourceManager is not active. Can not refresh user-groups."
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|RMNotYetActiveException
+name|throwStandbyException
 argument_list|()
-throw|;
+expr_stmt|;
 block|}
 name|Groups
 operator|.

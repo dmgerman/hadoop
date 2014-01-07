@@ -2148,13 +2148,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2215,13 +2213,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2282,13 +2278,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2338,7 +2332,7 @@ expr_stmt|;
 comment|// Finish one application, app_2 should be activated
 name|queue
 operator|.
-name|finishApplication
+name|finishApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
@@ -2403,13 +2397,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_3
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2484,13 +2476,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_4
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2575,13 +2565,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_5
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2655,7 +2643,7 @@ expr_stmt|;
 comment|// Now finish one app of user_1 so app_5 should be activated
 name|queue
 operator|.
-name|finishApplication
+name|finishApplicationAttempt
 argument_list|(
 name|app_4
 argument_list|,
@@ -2780,13 +2768,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2859,13 +2845,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -2938,13 +2922,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3017,13 +2999,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_3
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -3085,7 +3065,7 @@ expr_stmt|;
 comment|// Kill 3rd pending application
 name|queue
 operator|.
-name|finishApplication
+name|finishApplicationAttempt
 argument_list|(
 name|app_2
 argument_list|,
@@ -3163,7 +3143,7 @@ expr_stmt|;
 comment|// Finish 1st application, app_3 should become active
 name|queue
 operator|.
-name|finishApplication
+name|finishApplicationAttempt
 argument_list|(
 name|app_0
 argument_list|,
@@ -3253,7 +3233,7 @@ expr_stmt|;
 comment|// Finish 2nd application
 name|queue
 operator|.
-name|finishApplication
+name|finishApplicationAttempt
 argument_list|(
 name|app_1
 argument_list|,
@@ -3319,7 +3299,7 @@ expr_stmt|;
 comment|// Finish 4th application
 name|queue
 operator|.
-name|finishApplication
+name|finishApplicationAttempt
 argument_list|(
 name|app_3
 argument_list|,
@@ -3737,13 +3717,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0_0
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|List
@@ -3870,13 +3848,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_0_1
 argument_list|,
 name|user_0
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|List
@@ -4007,13 +3983,11 @@ argument_list|)
 decl_stmt|;
 name|queue
 operator|.
-name|submitApplication
+name|submitApplicationAttempt
 argument_list|(
 name|app_1_0
 argument_list|,
 name|user_1
-argument_list|,
-name|A
 argument_list|)
 expr_stmt|;
 name|List

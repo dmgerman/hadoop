@@ -331,7 +331,7 @@ operator|=
 name|nodeGroups
 expr_stmt|;
 block|}
-DECL|method|startDataNodes (Configuration conf, int numDataNodes, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] nodeGroups, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
+DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] nodeGroups, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
 specifier|public
 specifier|synchronized
 name|void
@@ -342,6 +342,9 @@ name|conf
 parameter_list|,
 name|int
 name|numDataNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|,
 name|boolean
 name|manageDfsDirs
@@ -709,82 +712,14 @@ condition|(
 name|manageDfsDirs
 condition|)
 block|{
-name|File
-name|dir1
-init|=
-name|getInstanceStorageDir
-argument_list|(
-name|i
-argument_list|,
-literal|0
-argument_list|)
-decl_stmt|;
-name|File
-name|dir2
-init|=
-name|getInstanceStorageDir
-argument_list|(
-name|i
-argument_list|,
-literal|1
-argument_list|)
-decl_stmt|;
-name|dir1
-operator|.
-name|mkdirs
-argument_list|()
-expr_stmt|;
-name|dir2
-operator|.
-name|mkdirs
-argument_list|()
-expr_stmt|;
-if|if
-condition|(
-operator|!
-name|dir1
-operator|.
-name|isDirectory
-argument_list|()
-operator|||
-operator|!
-name|dir2
-operator|.
-name|isDirectory
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Mkdirs failed to create directory for DataNode "
-operator|+
-name|i
-operator|+
-literal|": "
-operator|+
-name|dir1
-operator|+
-literal|" or "
-operator|+
-name|dir2
-argument_list|)
-throw|;
-block|}
 name|String
 name|dirs
 init|=
-name|fileAsURI
+name|makeDataNodeDirs
 argument_list|(
-name|dir1
-argument_list|)
-operator|+
-literal|","
-operator|+
-name|fileAsURI
-argument_list|(
-name|dir2
+name|i
+argument_list|,
+name|storageType
 argument_list|)
 decl_stmt|;
 name|dnConf
@@ -1351,6 +1286,10 @@ name|conf
 argument_list|,
 name|numDataNodes
 argument_list|,
+name|StorageType
+operator|.
+name|DEFAULT
+argument_list|,
 name|manageDfsDirs
 argument_list|,
 name|operation
@@ -1428,7 +1367,7 @@ block|}
 comment|// This is for initialize from parent class.
 annotation|@
 name|Override
-DECL|method|startDataNodes (Configuration conf, int numDataNodes, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
+DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
 specifier|public
 specifier|synchronized
 name|void
@@ -1439,6 +1378,9 @@ name|conf
 parameter_list|,
 name|int
 name|numDataNodes
+parameter_list|,
+name|StorageType
+name|storageType
 parameter_list|,
 name|boolean
 name|manageDfsDirs
@@ -1475,6 +1417,8 @@ argument_list|(
 name|conf
 argument_list|,
 name|numDataNodes
+argument_list|,
+name|storageType
 argument_list|,
 name|manageDfsDirs
 argument_list|,

@@ -754,7 +754,27 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|RMDelegationTokenSecretManager
+name|NMTokenSecretManagerInRM
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|security
+operator|.
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -2420,7 +2440,8 @@ name|applicationACLsManager
 argument_list|,
 name|queueACLsManager
 argument_list|,
-name|rmDTSecretManager
+name|getRMDTSecretManager
+argument_list|()
 argument_list|)
 block|{
 annotation|@
@@ -2459,11 +2480,23 @@ operator|new
 name|Configuration
 argument_list|()
 decl_stmt|;
+name|RMContainerTokenSecretManager
+name|containerTokenSecretManager
+init|=
+name|getRMContainerTokenSecretManager
+argument_list|()
+decl_stmt|;
 name|containerTokenSecretManager
 operator|.
 name|rollMasterKey
 argument_list|()
 expr_stmt|;
+name|NMTokenSecretManagerInRM
+name|nmTokenSecretManager
+init|=
+name|getRMNMTokenSecretManager
+argument_list|()
+decl_stmt|;
 name|nmTokenSecretManager
 operator|.
 name|rollMasterKey
@@ -2647,18 +2680,6 @@ operator|.
 name|nodesListManager
 return|;
 block|}
-DECL|method|getRMDTSecretManager ()
-specifier|public
-name|RMDelegationTokenSecretManager
-name|getRMDTSecretManager
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|rmDTSecretManager
-return|;
-block|}
 DECL|method|getClientToAMTokenSecretManager ()
 specifier|public
 name|ClientToAMTokenSecretManagerInRM
@@ -2668,7 +2689,11 @@ block|{
 return|return
 name|this
 operator|.
-name|clientToAMSecretManager
+name|getRMContext
+argument_list|()
+operator|.
+name|getClientToAMTokenSecretManager
+argument_list|()
 return|;
 block|}
 DECL|method|getRMAppManager ()

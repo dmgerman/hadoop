@@ -3182,7 +3182,39 @@ name|theClass
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Define the comparator that controls how the keys are sorted before they    * are passed to the {@link Reducer}.    * @param cls the raw comparator    * @throws IllegalStateException if the job is submitted    */
+comment|/**    * Define the comparator that controls which keys are grouped together    * for a single call to combiner,    * {@link Reducer#reduce(Object, Iterable,    * org.apache.hadoop.mapreduce.Reducer.Context)}    *    * @param cls the raw comparator to use    * @throws IllegalStateException if the job is submitted    */
+DECL|method|setCombinerKeyGroupingComparatorClass ( Class<? extends RawComparator> cls)
+specifier|public
+name|void
+name|setCombinerKeyGroupingComparatorClass
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+extends|extends
+name|RawComparator
+argument_list|>
+name|cls
+parameter_list|)
+throws|throws
+name|IllegalStateException
+block|{
+name|ensureState
+argument_list|(
+name|JobState
+operator|.
+name|DEFINE
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|setCombinerKeyGroupingComparator
+argument_list|(
+name|cls
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Define the comparator that controls how the keys are sorted before they    * are passed to the {@link Reducer}.    * @param cls the raw comparator    * @throws IllegalStateException if the job is submitted    * @see #setCombinerKeyGroupingComparatorClass(Class)    */
 DECL|method|setSortComparatorClass (Class<? extends RawComparator> cls )
 specifier|public
 name|void
@@ -3214,7 +3246,7 @@ name|cls
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Define the comparator that controls which keys are grouped together    * for a single call to     * {@link Reducer#reduce(Object, Iterable,     *                       org.apache.hadoop.mapreduce.Reducer.Context)}    * @param cls the raw comparator to use    * @throws IllegalStateException if the job is submitted    */
+comment|/**    * Define the comparator that controls which keys are grouped together    * for a single call to     * {@link Reducer#reduce(Object, Iterable,     *                       org.apache.hadoop.mapreduce.Reducer.Context)}    * @param cls the raw comparator to use    * @throws IllegalStateException if the job is submitted    * @see #setCombinerKeyGroupingComparatorClass(Class)    */
 DECL|method|setGroupingComparatorClass (Class<? extends RawComparator> cls )
 specifier|public
 name|void

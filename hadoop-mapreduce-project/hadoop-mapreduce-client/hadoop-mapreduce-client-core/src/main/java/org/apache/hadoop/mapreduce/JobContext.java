@@ -397,7 +397,17 @@ name|String
 name|getJar
 parameter_list|()
 function_decl|;
-comment|/**     * Get the user defined {@link RawComparator} comparator for     * grouping keys of inputs to the reduce.    *     * @return comparator set by the user for grouping values.    * @see Job#setGroupingComparatorClass(Class) for details.      */
+comment|/**    * Get the user defined {@link RawComparator} comparator for    * grouping keys of inputs to the combiner.    *    * @return comparator set by the user for grouping values.    * @see Job#setCombinerKeyGroupingComparatorClass(Class)    */
+DECL|method|getCombinerKeyGroupingComparator ()
+specifier|public
+name|RawComparator
+argument_list|<
+name|?
+argument_list|>
+name|getCombinerKeyGroupingComparator
+parameter_list|()
+function_decl|;
+comment|/**      * Get the user defined {@link RawComparator} comparator for      * grouping keys of inputs to the reduce.      *      * @return comparator set by the user for grouping values.      * @see Job#setGroupingComparatorClass(Class)      * @see #getCombinerKeyGroupingComparator()      */
 DECL|method|getGroupingComparator ()
 specifier|public
 name|RawComparator

@@ -674,7 +674,7 @@ block|{
 return|return
 name|reduceContext
 operator|.
-name|getCacheArchives
+name|getCacheFiles
 argument_list|()
 return|;
 block|}
@@ -753,6 +753,24 @@ return|return
 name|reduceContext
 operator|.
 name|getFileTimestamps
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getCombinerKeyGroupingComparator ()
+specifier|public
+name|RawComparator
+argument_list|<
+name|?
+argument_list|>
+name|getCombinerKeyGroupingComparator
+parameter_list|()
+block|{
+return|return
+name|reduceContext
+operator|.
+name|getCombinerKeyGroupingComparator
 argument_list|()
 return|;
 block|}

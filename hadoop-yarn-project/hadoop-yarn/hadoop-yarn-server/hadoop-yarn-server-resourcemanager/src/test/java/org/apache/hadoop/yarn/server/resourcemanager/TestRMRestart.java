@@ -2069,7 +2069,21 @@ argument_list|(
 name|loadedApp1
 argument_list|)
 expr_stmt|;
-comment|//Assert.assertEquals(1, loadedApp1.getAppAttempts().size());
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|1
+argument_list|,
+name|loadedApp1
+operator|.
+name|getAppAttempts
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|Assert
 operator|.
 name|assertEquals
@@ -2151,7 +2165,7 @@ argument_list|()
 argument_list|,
 name|RMAppState
 operator|.
-name|RUNNING
+name|ACCEPTED
 argument_list|)
 expr_stmt|;
 name|rm2
@@ -2406,12 +2420,14 @@ operator|.
 name|ACCEPTED
 argument_list|)
 expr_stmt|;
-name|Assert
-operator|.
-name|assertEquals
-argument_list|(
-literal|2
-argument_list|,
+comment|// wait for the 2nd attempt to be started.
+name|int
+name|timeoutSecs
+init|=
+literal|0
+decl_stmt|;
+while|while
+condition|(
 name|loadedApp1
 operator|.
 name|getAppAttempts
@@ -2419,8 +2435,24 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
+operator|!=
+literal|2
+operator|&&
+name|timeoutSecs
+operator|++
+operator|<
+literal|40
+condition|)
+block|{
+empty_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|200
 argument_list|)
 expr_stmt|;
+block|}
 comment|// verify no more reboot response sent
 name|hbResponse
 operator|=
@@ -3479,7 +3511,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// application should be in running state
+comment|// application should be in ACCEPTED state
 name|rm2
 operator|.
 name|waitForState
@@ -3491,7 +3523,7 @@ argument_list|()
 argument_list|,
 name|RMAppState
 operator|.
-name|RUNNING
+name|ACCEPTED
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3500,7 +3532,7 @@ name|assertEquals
 argument_list|(
 name|RMAppState
 operator|.
-name|RUNNING
+name|ACCEPTED
 argument_list|,
 name|rmApp
 operator|.
@@ -3776,7 +3808,7 @@ name|getApplicationId
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// application should be in running state
+comment|// application should be in ACCEPTED state
 name|rm3
 operator|.
 name|waitForState
@@ -3788,7 +3820,7 @@ argument_list|()
 argument_list|,
 name|RMAppState
 operator|.
-name|RUNNING
+name|ACCEPTED
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -3802,7 +3834,7 @@ argument_list|()
 argument_list|,
 name|RMAppState
 operator|.
-name|RUNNING
+name|ACCEPTED
 argument_list|)
 expr_stmt|;
 comment|// new attempt should not be started
@@ -4137,6 +4169,38 @@ operator|.
 name|ACCEPTED
 argument_list|)
 expr_stmt|;
+comment|// wait for the attempt to be created.
+name|int
+name|timeoutSecs
+init|=
+literal|0
+decl_stmt|;
+while|while
+condition|(
+name|rmApp
+operator|.
+name|getAppAttempts
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|!=
+literal|2
+operator|&&
+name|timeoutSecs
+operator|++
+operator|<
+literal|40
+condition|)
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|200
+argument_list|)
+expr_stmt|;
+block|}
 name|Assert
 operator|.
 name|assertEquals
@@ -10014,7 +10078,8 @@ name|applicationACLsManager
 argument_list|,
 literal|null
 argument_list|,
-name|rmDTSecretManager
+name|getRMDTSecretManager
+argument_list|()
 argument_list|)
 block|{
 annotation|@

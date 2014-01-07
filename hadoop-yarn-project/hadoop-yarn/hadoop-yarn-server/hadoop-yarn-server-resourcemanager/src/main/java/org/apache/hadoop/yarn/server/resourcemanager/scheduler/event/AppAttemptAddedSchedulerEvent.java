@@ -56,30 +56,12 @@ specifier|final
 name|ApplicationAttemptId
 name|applicationAttemptId
 decl_stmt|;
-DECL|field|queue
-specifier|private
-specifier|final
-name|String
-name|queue
-decl_stmt|;
-DECL|field|user
-specifier|private
-specifier|final
-name|String
-name|user
-decl_stmt|;
-DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, String queue, String user)
+DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId)
 specifier|public
 name|AppAttemptAddedSchedulerEvent
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
-parameter_list|,
-name|String
-name|queue
-parameter_list|,
-name|String
-name|user
 parameter_list|)
 block|{
 name|super
@@ -95,18 +77,6 @@ name|applicationAttemptId
 operator|=
 name|applicationAttemptId
 expr_stmt|;
-name|this
-operator|.
-name|queue
-operator|=
-name|queue
-expr_stmt|;
-name|this
-operator|.
-name|user
-operator|=
-name|user
-expr_stmt|;
 block|}
 DECL|method|getApplicationAttemptId ()
 specifier|public
@@ -116,26 +86,6 @@ parameter_list|()
 block|{
 return|return
 name|applicationAttemptId
-return|;
-block|}
-DECL|method|getQueue ()
-specifier|public
-name|String
-name|getQueue
-parameter_list|()
-block|{
-return|return
-name|queue
-return|;
-block|}
-DECL|method|getUser ()
-specifier|public
-name|String
-name|getUser
-parameter_list|()
-block|{
-return|return
-name|user
 return|;
 block|}
 block|}

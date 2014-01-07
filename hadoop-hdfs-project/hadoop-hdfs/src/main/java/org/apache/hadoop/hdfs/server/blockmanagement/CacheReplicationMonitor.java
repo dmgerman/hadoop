@@ -62,6 +62,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Collection
 import|;
 end_import
@@ -113,6 +123,16 @@ operator|.
 name|util
 operator|.
 name|Random
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|TreeMap
 import|;
 end_import
 
@@ -559,6 +579,7 @@ decl_stmt|;
 comment|/**    * Pseudorandom number source    */
 DECL|field|random
 specifier|private
+specifier|static
 specifier|final
 name|Random
 name|random
@@ -580,10 +601,6 @@ specifier|private
 specifier|final
 name|ReentrantLock
 name|lock
-init|=
-operator|new
-name|ReentrantLock
-argument_list|()
 decl_stmt|;
 comment|/**    * Notifies the scan thread that an immediate rescan is needed.    */
 DECL|field|doRescan
@@ -591,11 +608,6 @@ specifier|private
 specifier|final
 name|Condition
 name|doRescan
-init|=
-name|lock
-operator|.
-name|newCondition
-argument_list|()
 decl_stmt|;
 comment|/**    * Notifies waiting threads that a rescan has finished.    */
 DECL|field|scanFinished
@@ -603,11 +615,6 @@ specifier|private
 specifier|final
 name|Condition
 name|scanFinished
-init|=
-name|lock
-operator|.
-name|newCondition
-argument_list|()
 decl_stmt|;
 comment|/**    * Whether there are pending CacheManager operations that necessitate a    * CacheReplicationMonitor rescan. Protected by the CRM lock.    */
 DECL|field|needsRescan
@@ -641,12 +648,6 @@ name|shutdown
 init|=
 literal|false
 decl_stmt|;
-comment|/**    * The monotonic time at which the current scan started.    */
-DECL|field|startTimeMs
-specifier|private
-name|long
-name|startTimeMs
-decl_stmt|;
 comment|/**    * Mark status of the current scan.    */
 DECL|field|mark
 specifier|private
@@ -667,7 +668,7 @@ specifier|private
 name|long
 name|scannedBlocks
 decl_stmt|;
-DECL|method|CacheReplicationMonitor (FSNamesystem namesystem, CacheManager cacheManager, long intervalMs)
+DECL|method|CacheReplicationMonitor (FSNamesystem namesystem, CacheManager cacheManager, long intervalMs, ReentrantLock lock)
 specifier|public
 name|CacheReplicationMonitor
 parameter_list|(
@@ -679,6 +680,9 @@ name|cacheManager
 parameter_list|,
 name|long
 name|intervalMs
+parameter_list|,
+name|ReentrantLock
+name|lock
 parameter_list|)
 block|{
 name|this
@@ -717,6 +721,34 @@ name|intervalMs
 operator|=
 name|intervalMs
 expr_stmt|;
+name|this
+operator|.
+name|lock
+operator|=
+name|lock
+expr_stmt|;
+name|this
+operator|.
+name|doRescan
+operator|=
+name|this
+operator|.
+name|lock
+operator|.
+name|newCondition
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|scanFinished
+operator|=
+name|this
+operator|.
+name|lock
+operator|.
+name|newCondition
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|Override
@@ -726,9 +758,29 @@ name|void
 name|run
 parameter_list|()
 block|{
+name|long
 name|startTimeMs
-operator|=
+init|=
 literal|0
+decl_stmt|;
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
+operator|.
+name|setName
+argument_list|(
+literal|"CacheReplicationMonitor("
+operator|+
+name|System
+operator|.
+name|identityHashCode
+argument_list|(
+name|this
+argument_list|)
+operator|+
+literal|")"
+argument_list|)
 expr_stmt|;
 name|LOG
 operator|.
@@ -756,8 +808,6 @@ condition|(
 literal|true
 condition|)
 block|{
-comment|// Not all of the variables accessed here need the CRM lock, but take
-comment|// it anyway for simplicity
 name|lock
 operator|.
 name|lock
@@ -852,23 +902,6 @@ name|monotonicNow
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-comment|// Mark scan as started, clear needsRescan
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-try|try
-block|{
 name|isScanning
 operator|=
 literal|true
@@ -905,7 +938,7 @@ operator|.
 name|monotonicNow
 argument_list|()
 expr_stmt|;
-comment|// Retake the CRM lock to update synchronization-related variables
+comment|// Update synchronization-related variables.
 name|lock
 operator|.
 name|lock
@@ -963,6 +996,21 @@ block|}
 block|}
 catch|catch
 parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Shutting down CacheReplicationMonitor."
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
+catch|catch
+parameter_list|(
 name|Throwable
 name|t
 parameter_list|)
@@ -985,20 +1033,38 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Similar to {@link CacheReplicationMonitor#waitForRescan()}, except it only    * waits if there are pending operations that necessitate a rescan as    * indicated by {@link #setNeedsRescan()}.    *<p>    * Note that this call may release the FSN lock, so operations before and    * after are not necessarily atomic.    */
+comment|/**    * Waits for a rescan to complete. This doesn't guarantee consistency with    * pending operations, only relative recency, since it will not force a new    * rescan if a rescan is already underway.    *<p>    * Note that this call will release the FSN lock, so operations before and    * after are not atomic.    */
 DECL|method|waitForRescanIfNeeded ()
 specifier|public
 name|void
 name|waitForRescanIfNeeded
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+operator|!
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+argument_list|,
+literal|"Must not hold the FSN write lock when waiting for a rescan."
+argument_list|)
+expr_stmt|;
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|lock
 operator|.
-name|lock
+name|isHeldByCurrentThread
 argument_list|()
+argument_list|,
+literal|"Must hold the CRM lock when waiting for a rescan."
+argument_list|)
 expr_stmt|;
-try|try
-block|{
 if|if
 condition|(
 operator|!
@@ -1007,90 +1073,6 @@ condition|)
 block|{
 return|return;
 block|}
-block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-name|waitForRescan
-argument_list|()
-expr_stmt|;
-block|}
-comment|/**    * Waits for a rescan to complete. This doesn't guarantee consistency with    * pending operations, only relative recency, since it will not force a new    * rescan if a rescan is already underway.    *<p>    * Note that this call will release the FSN lock, so operations before and    * after are not atomic.    */
-DECL|method|waitForRescan ()
-specifier|public
-name|void
-name|waitForRescan
-parameter_list|()
-block|{
-comment|// Drop the FSN lock temporarily and retake it after we finish waiting
-comment|// Need to handle both the read lock and the write lock
-name|boolean
-name|retakeWriteLock
-init|=
-literal|false
-decl_stmt|;
-if|if
-condition|(
-name|namesystem
-operator|.
-name|hasWriteLock
-argument_list|()
-condition|)
-block|{
-name|namesystem
-operator|.
-name|writeUnlock
-argument_list|()
-expr_stmt|;
-name|retakeWriteLock
-operator|=
-literal|true
-expr_stmt|;
-block|}
-elseif|else
-if|if
-condition|(
-name|namesystem
-operator|.
-name|hasReadLock
-argument_list|()
-condition|)
-block|{
-name|namesystem
-operator|.
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Expected to have at least one of the locks
-name|Preconditions
-operator|.
-name|checkState
-argument_list|(
-literal|false
-argument_list|,
-literal|"Need to be holding either the read or write lock"
-argument_list|)
-expr_stmt|;
-block|}
-comment|// try/finally for retaking FSN lock
-try|try
-block|{
-name|lock
-operator|.
-name|lock
-argument_list|()
-expr_stmt|;
-comment|// try/finally for releasing CRM lock
-try|try
-block|{
 comment|// If no scan is already ongoing, mark the CRM as dirty and kick
 if|if
 condition|(
@@ -1098,10 +1080,6 @@ operator|!
 name|isScanning
 condition|)
 block|{
-name|needsRescan
-operator|=
-literal|true
-expr_stmt|;
 name|doRescan
 operator|.
 name|signal
@@ -1117,9 +1095,16 @@ name|scanCount
 decl_stmt|;
 while|while
 condition|(
+operator|(
+operator|!
+name|shutdown
+operator|)
+operator|&&
+operator|(
 name|startCount
 operator|>=
 name|scanCount
+operator|)
 condition|)
 block|{
 try|try
@@ -1151,38 +1136,6 @@ break|break;
 block|}
 block|}
 block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-finally|finally
-block|{
-if|if
-condition|(
-name|retakeWriteLock
-condition|)
-block|{
-name|namesystem
-operator|.
-name|writeLock
-argument_list|()
-expr_stmt|;
-block|}
-else|else
-block|{
-name|namesystem
-operator|.
-name|readLock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-block|}
 comment|/**    * Indicates to the CacheReplicationMonitor that there have been CacheManager    * changes that require a rescan.    */
 DECL|method|setNeedsRescan ()
 specifier|public
@@ -1190,13 +1143,18 @@ name|void
 name|setNeedsRescan
 parameter_list|()
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
 name|lock
 operator|.
-name|lock
+name|isHeldByCurrentThread
 argument_list|()
+argument_list|,
+literal|"Must hold the CRM lock when setting the needsRescan bit."
+argument_list|)
 expr_stmt|;
-try|try
-block|{
 name|this
 operator|.
 name|needsRescan
@@ -1204,16 +1162,7 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
-finally|finally
-block|{
-name|lock
-operator|.
-name|unlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-comment|/**    * Shut down and join the monitor thread.    */
+comment|/**    * Shut down the monitor thread.    */
 annotation|@
 name|Override
 DECL|method|close ()
@@ -1224,6 +1173,16 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
+name|Preconditions
+operator|.
+name|checkArgument
+argument_list|(
+name|namesystem
+operator|.
+name|hasWriteLock
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|lock
 operator|.
 name|lock
@@ -1236,6 +1195,12 @@ condition|(
 name|shutdown
 condition|)
 return|return;
+comment|// Since we hold both the FSN write lock and the CRM lock here,
+comment|// we know that the CRM thread cannot be currently modifying
+comment|// the cache manager state while we're closing it.
+comment|// Since the CRM thread checks the value of 'shutdown' after waiting
+comment|// for a lock, we know that the thread will not modify the cache
+comment|// manager state after this point.
 name|shutdown
 operator|=
 literal|true
@@ -1259,46 +1224,14 @@ name|unlock
 argument_list|()
 expr_stmt|;
 block|}
-try|try
-block|{
-if|if
-condition|(
-name|this
-operator|.
-name|isAlive
-argument_list|()
-condition|)
-block|{
-name|this
-operator|.
-name|join
-argument_list|(
-literal|60000
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-catch|catch
-parameter_list|(
-name|InterruptedException
-name|e
-parameter_list|)
-block|{
-name|Thread
-operator|.
-name|currentThread
-argument_list|()
-operator|.
-name|interrupt
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|rescan ()
 specifier|private
 name|void
 name|rescan
 parameter_list|()
+throws|throws
+name|InterruptedException
 block|{
 name|scannedDirectives
 operator|=
@@ -1315,6 +1248,21 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+if|if
+condition|(
+name|shutdown
+condition|)
+block|{
+throw|throw
+operator|new
+name|InterruptedException
+argument_list|(
+literal|"CacheReplicationMonitor was "
+operator|+
+literal|"shut down."
+argument_list|)
+throw|;
+block|}
 name|resetStatistics
 argument_list|()
 expr_stmt|;
@@ -1420,12 +1368,6 @@ name|getCacheDirectives
 argument_list|()
 control|)
 block|{
-comment|// Reset the directive's statistics
-name|directive
-operator|.
-name|resetStatistics
-argument_list|()
-expr_stmt|;
 comment|// Skip processing this entry if it has expired
 if|if
 condition|(
@@ -1933,15 +1875,40 @@ name|cachedByBlock
 expr_stmt|;
 if|if
 condition|(
+operator|(
 name|mark
 operator|!=
 name|ocblock
 operator|.
 name|getMark
 argument_list|()
+operator|)
+operator|||
+operator|(
+name|ocblock
+operator|.
+name|getReplication
+argument_list|()
+operator|<
+name|directive
+operator|.
+name|getReplication
+argument_list|()
+operator|)
 condition|)
 block|{
-comment|// Mark hasn't been set in this scan, so update replication and mark.
+comment|//
+comment|// Overwrite the block's replication and mark in two cases:
+comment|//
+comment|// 1. If the mark on the CachedBlock is different from the mark for
+comment|// this scan, that means the block hasn't been updated during this
+comment|// scan, and we should overwrite whatever is there, since it is no
+comment|// longer valid.
+comment|//
+comment|// 2. If the replication in the CachedBlock is less than what the
+comment|// directive asks for, we want to increase the block's replication
+comment|// field to what the directive asks for.
+comment|//
 name|ocblock
 operator|.
 name|setReplicationAndMark
@@ -1950,36 +1917,6 @@ name|directive
 operator|.
 name|getReplication
 argument_list|()
-argument_list|,
-name|mark
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|// Mark already set in this scan.  Set replication to highest value in
-comment|// any CacheDirective that covers this file.
-name|ocblock
-operator|.
-name|setReplicationAndMark
-argument_list|(
-operator|(
-name|short
-operator|)
-name|Math
-operator|.
-name|max
-argument_list|(
-name|directive
-operator|.
-name|getReplication
-argument_list|()
-argument_list|,
-name|ocblock
-operator|.
-name|getReplication
-argument_list|()
-argument_list|)
 argument_list|,
 name|mark
 argument_list|)
@@ -2048,6 +1985,107 @@ literal|" bytes"
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+DECL|method|findReasonForNotCaching (CachedBlock cblock, BlockInfo blockInfo)
+specifier|private
+name|String
+name|findReasonForNotCaching
+parameter_list|(
+name|CachedBlock
+name|cblock
+parameter_list|,
+name|BlockInfo
+name|blockInfo
+parameter_list|)
+block|{
+if|if
+condition|(
+name|blockInfo
+operator|==
+literal|null
+condition|)
+block|{
+comment|// Somehow, a cache report with the block arrived, but the block
+comment|// reports from the DataNode haven't (yet?) described such a block.
+comment|// Alternately, the NameNode might have invalidated the block, but the
+comment|// DataNode hasn't caught up.  In any case, we want to tell the DN
+comment|// to uncache this.
+return|return
+literal|"not tracked by the BlockManager"
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+operator|!
+name|blockInfo
+operator|.
+name|isComplete
+argument_list|()
+condition|)
+block|{
+comment|// When a cached block changes state from complete to some other state
+comment|// on the DataNode (perhaps because of append), it will begin the
+comment|// uncaching process.  However, the uncaching process is not
+comment|// instantaneous, especially if clients have pinned the block.  So
+comment|// there may be a period of time when incomplete blocks remain cached
+comment|// on the DataNodes.
+return|return
+literal|"not complete"
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cblock
+operator|.
+name|getReplication
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+comment|// Since 0 is not a valid value for a cache directive's replication
+comment|// field, seeing a replication of 0 on a CacheBlock means that it
+comment|// has never been reached by any sweep.
+return|return
+literal|"not needed by any directives"
+return|;
+block|}
+elseif|else
+if|if
+condition|(
+name|cblock
+operator|.
+name|getMark
+argument_list|()
+operator|!=
+name|mark
+condition|)
+block|{
+comment|// Although the block was needed in the past, we didn't reach it during
+comment|// the current sweep.  Therefore, it doesn't need to be cached any more.
+comment|// Need to set the replication to 0 so it doesn't flip back to cached
+comment|// when the mark flips on the next scan
+name|cblock
+operator|.
+name|setReplicationAndMark
+argument_list|(
+operator|(
+name|short
+operator|)
+literal|0
+argument_list|,
+name|mark
+argument_list|)
+expr_stmt|;
+return|return
+literal|"no longer needed by any directives"
+return|;
+block|}
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * Scan through the cached block map.    * Any blocks which are under-replicated should be assigned new Datanodes.    * Blocks that are over-replicated should be removed from Datanodes.    */
 DECL|method|rescanCachedBlockMap ()
@@ -2192,28 +2230,78 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|// If the block's mark doesn't match with the mark of this scan, that
-comment|// means that this block couldn't be reached during this scan.  That means
-comment|// it doesn't need to be cached any more.
+name|BlockInfo
+name|blockInfo
+init|=
+name|blockManager
+operator|.
+name|getStoredBlock
+argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|cblock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|String
+name|reason
+init|=
+name|findReasonForNotCaching
+argument_list|(
+name|cblock
+argument_list|,
+name|blockInfo
+argument_list|)
+decl_stmt|;
 name|int
 name|neededCached
 init|=
-operator|(
-name|cblock
-operator|.
-name|getMark
-argument_list|()
-operator|!=
-name|mark
-operator|)
-condition|?
 literal|0
-else|:
+decl_stmt|;
+if|if
+condition|(
+name|reason
+operator|!=
+literal|null
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"not caching "
+operator|+
+name|cblock
+operator|+
+literal|" because it is "
+operator|+
+name|reason
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+name|neededCached
+operator|=
 name|cblock
 operator|.
 name|getReplication
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 name|int
 name|numCached
 init|=
@@ -2450,17 +2538,6 @@ argument_list|>
 name|pendingUncached
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|cacheManager
-operator|.
-name|isActive
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 comment|// Figure out which replicas can be uncached.
 name|LinkedList
 argument_list|<
@@ -2578,11 +2655,12 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add new entries to the PendingCached list.    *    * @param neededCached     The number of replicas that need to be cached.    * @param cachedBlock      The block which needs to be cached.    * @param cached           A list of DataNodes currently caching the block.    * @param pendingCached    A list of DataNodes that will soon cache the    *                         block.    */
-DECL|method|addNewPendingCached (int neededCached, CachedBlock cachedBlock, List<DatanodeDescriptor> cached, List<DatanodeDescriptor> pendingCached)
+DECL|method|addNewPendingCached (final int neededCached, CachedBlock cachedBlock, List<DatanodeDescriptor> cached, List<DatanodeDescriptor> pendingCached)
 specifier|private
 name|void
 name|addNewPendingCached
 parameter_list|(
+specifier|final
 name|int
 name|neededCached
 parameter_list|,
@@ -2602,17 +2680,6 @@ argument_list|>
 name|pendingCached
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|cacheManager
-operator|.
-name|isActive
-argument_list|()
-condition|)
-block|{
-return|return;
-block|}
 comment|// To figure out which replicas can be cached, we consult the
 comment|// blocksMap.  We don't want to try to cache a corrupt replica, though.
 name|BlockInfo
@@ -2639,6 +2706,14 @@ operator|==
 literal|null
 condition|)
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
@@ -2647,11 +2722,12 @@ literal|"Not caching block "
 operator|+
 name|cachedBlock
 operator|+
-literal|" because it "
+literal|" because there "
 operator|+
-literal|"was deleted from all DataNodes."
+literal|"is no record of it on the NameNode."
 argument_list|)
 expr_stmt|;
+block|}
 return|return;
 block|}
 if|if
@@ -2687,6 +2763,7 @@ expr_stmt|;
 block|}
 return|return;
 block|}
+comment|// Filter the list of replicas to only the valid targets
 name|List
 argument_list|<
 name|DatanodeDescriptor
@@ -2721,6 +2798,11 @@ argument_list|(
 name|blockInfo
 argument_list|)
 decl_stmt|;
+name|int
+name|outOfCapacity
+init|=
+literal|0
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -2748,43 +2830,253 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|(
 name|datanode
+operator|==
+literal|null
+condition|)
+block|{
+continue|continue;
+block|}
+if|if
+condition|(
+name|datanode
+operator|.
+name|isDecommissioned
+argument_list|()
+operator|||
+name|datanode
+operator|.
+name|isDecommissionInProgress
+argument_list|()
+condition|)
+block|{
+continue|continue;
+block|}
+if|if
+condition|(
+name|corrupt
 operator|!=
 literal|null
-operator|)
 operator|&&
-operator|(
-operator|(
-operator|!
+name|corrupt
+operator|.
+name|contains
+argument_list|(
+name|datanode
+argument_list|)
+condition|)
+block|{
+continue|continue;
+block|}
+if|if
+condition|(
 name|pendingCached
 operator|.
 name|contains
 argument_list|(
 name|datanode
 argument_list|)
-operator|)
-operator|&&
-operator|(
-operator|(
-name|corrupt
-operator|==
-literal|null
-operator|)
 operator|||
-operator|(
-operator|!
-name|corrupt
+name|cached
 operator|.
 name|contains
 argument_list|(
 name|datanode
 argument_list|)
-operator|)
-operator|)
-operator|)
 condition|)
 block|{
+continue|continue;
+block|}
+name|long
+name|pendingCapacity
+init|=
+name|datanode
+operator|.
+name|getCacheRemaining
+argument_list|()
+decl_stmt|;
+comment|// Subtract pending cached blocks from effective capacity
+name|Iterator
+argument_list|<
+name|CachedBlock
+argument_list|>
+name|it
+init|=
+name|datanode
+operator|.
+name|getPendingCached
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|CachedBlock
+name|cBlock
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+name|BlockInfo
+name|info
+init|=
+name|blockManager
+operator|.
+name|getStoredBlock
+argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|cBlock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|info
+operator|!=
+literal|null
+condition|)
+block|{
+name|pendingCapacity
+operator|-=
+name|info
+operator|.
+name|getNumBytes
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+name|it
+operator|=
+name|datanode
+operator|.
+name|getPendingUncached
+argument_list|()
+operator|.
+name|iterator
+argument_list|()
+expr_stmt|;
+comment|// Add pending uncached blocks from effective capacity
+while|while
+condition|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|CachedBlock
+name|cBlock
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+name|BlockInfo
+name|info
+init|=
+name|blockManager
+operator|.
+name|getStoredBlock
+argument_list|(
+operator|new
+name|Block
+argument_list|(
+name|cBlock
+operator|.
+name|getBlockId
+argument_list|()
+argument_list|)
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|info
+operator|!=
+literal|null
+condition|)
+block|{
+name|pendingCapacity
+operator|+=
+name|info
+operator|.
+name|getNumBytes
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+if|if
+condition|(
+name|pendingCapacity
+operator|<
+name|blockInfo
+operator|.
+name|getNumBytes
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"Datanode "
+operator|+
+name|datanode
+operator|+
+literal|" is not a valid possibility for"
+operator|+
+literal|" block "
+operator|+
+name|blockInfo
+operator|.
+name|getBlockId
+argument_list|()
+operator|+
+literal|" of size "
+operator|+
+name|blockInfo
+operator|.
+name|getNumBytes
+argument_list|()
+operator|+
+literal|" bytes, only has "
+operator|+
+name|datanode
+operator|.
+name|getCacheRemaining
+argument_list|()
+operator|+
+literal|" bytes of cache remaining."
+argument_list|)
+expr_stmt|;
+block|}
+name|outOfCapacity
+operator|++
+expr_stmt|;
+continue|continue;
+block|}
 name|possibilities
 operator|.
 name|add
@@ -2793,86 +3085,35 @@ name|datanode
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-while|while
-condition|(
-name|neededCached
-operator|>
-literal|0
-condition|)
-block|{
-if|if
-condition|(
-name|possibilities
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"We need "
-operator|+
-name|neededCached
-operator|+
-literal|" more replica(s) than "
-operator|+
-literal|"actually exist to provide a cache replication of "
-operator|+
-name|cachedBlock
-operator|.
-name|getReplication
-argument_list|()
-operator|+
-literal|" for "
-operator|+
-name|cachedBlock
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
+name|List
+argument_list|<
 name|DatanodeDescriptor
-name|datanode
+argument_list|>
+name|chosen
 init|=
-name|possibilities
-operator|.
-name|remove
-argument_list|(
-name|random
-operator|.
-name|nextInt
+name|chooseDatanodesForCaching
 argument_list|(
 name|possibilities
+argument_list|,
+name|neededCached
+argument_list|,
+name|blockManager
 operator|.
-name|size
+name|getDatanodeManager
 argument_list|()
-argument_list|)
+operator|.
+name|getStaleInterval
+argument_list|()
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
-name|LOG
-operator|.
-name|isDebugEnabled
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"AddNewPendingCached: datanode "
-operator|+
+for|for
+control|(
+name|DatanodeDescriptor
 name|datanode
-operator|+
-literal|" will now cache block "
-operator|+
-name|cachedBlock
-argument_list|)
-expr_stmt|;
-block|}
+range|:
+name|chosen
+control|)
+block|{
 name|pendingCached
 operator|.
 name|add
@@ -2896,10 +3137,390 @@ decl_stmt|;
 assert|assert
 name|added
 assert|;
+block|}
+comment|// We were unable to satisfy the requested replication factor
+if|if
+condition|(
 name|neededCached
-operator|--
+operator|>
+name|chosen
+operator|.
+name|size
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Only have "
+operator|+
+operator|(
+name|cachedBlock
+operator|.
+name|getReplication
+argument_list|()
+operator|-
+name|neededCached
+operator|+
+name|chosen
+operator|.
+name|size
+argument_list|()
+operator|)
+operator|+
+literal|" of "
+operator|+
+name|cachedBlock
+operator|.
+name|getReplication
+argument_list|()
+operator|+
+literal|" cached replicas for "
+operator|+
+name|cachedBlock
+operator|+
+literal|" ("
+operator|+
+name|outOfCapacity
+operator|+
+literal|" nodes have insufficient "
+operator|+
+literal|"capacity)."
+argument_list|)
 expr_stmt|;
 block|}
+block|}
+block|}
+comment|/**    * Chooses datanode locations for caching from a list of valid possibilities.    * Non-stale nodes are chosen before stale nodes.    *     * @param possibilities List of candidate datanodes    * @param neededCached Number of replicas needed    * @param staleInterval Age of a stale datanode    * @return A list of chosen datanodes    */
+DECL|method|chooseDatanodesForCaching ( final List<DatanodeDescriptor> possibilities, final int neededCached, final long staleInterval)
+specifier|private
+specifier|static
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|chooseDatanodesForCaching
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|possibilities
+parameter_list|,
+specifier|final
+name|int
+name|neededCached
+parameter_list|,
+specifier|final
+name|long
+name|staleInterval
+parameter_list|)
+block|{
+comment|// Make a copy that we can modify
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|targets
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|(
+name|possibilities
+argument_list|)
+decl_stmt|;
+comment|// Selected targets
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|chosen
+init|=
+operator|new
+name|LinkedList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+decl_stmt|;
+comment|// Filter out stale datanodes
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|stale
+init|=
+operator|new
+name|LinkedList
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|Iterator
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|it
+init|=
+name|targets
+operator|.
+name|iterator
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|)
+block|{
+name|DatanodeDescriptor
+name|d
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|d
+operator|.
+name|isStale
+argument_list|(
+name|staleInterval
+argument_list|)
+condition|)
+block|{
+name|it
+operator|.
+name|remove
+argument_list|()
+expr_stmt|;
+name|stale
+operator|.
+name|add
+argument_list|(
+name|d
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|// Select targets
+while|while
+condition|(
+name|chosen
+operator|.
+name|size
+argument_list|()
+operator|<
+name|neededCached
+condition|)
+block|{
+comment|// Try to use stale nodes if we're out of non-stale nodes, else we're done
+if|if
+condition|(
+name|targets
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+if|if
+condition|(
+operator|!
+name|stale
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
+name|targets
+operator|=
+name|stale
+expr_stmt|;
+block|}
+else|else
+block|{
+break|break;
+block|}
+block|}
+comment|// Select a random target
+name|DatanodeDescriptor
+name|target
+init|=
+name|chooseRandomDatanodeByRemainingCapacity
+argument_list|(
+name|targets
+argument_list|)
+decl_stmt|;
+name|chosen
+operator|.
+name|add
+argument_list|(
+name|target
+argument_list|)
+expr_stmt|;
+name|targets
+operator|.
+name|remove
+argument_list|(
+name|target
+argument_list|)
+expr_stmt|;
+block|}
+return|return
+name|chosen
+return|;
+block|}
+comment|/**    * Choose a single datanode from the provided list of possible    * targets, weighted by the percentage of free space remaining on the node.    *     * @return The chosen datanode    */
+DECL|method|chooseRandomDatanodeByRemainingCapacity ( final List<DatanodeDescriptor> targets)
+specifier|private
+specifier|static
+name|DatanodeDescriptor
+name|chooseRandomDatanodeByRemainingCapacity
+parameter_list|(
+specifier|final
+name|List
+argument_list|<
+name|DatanodeDescriptor
+argument_list|>
+name|targets
+parameter_list|)
+block|{
+comment|// Use a weighted probability to choose the target datanode
+name|float
+name|total
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|DatanodeDescriptor
+name|d
+range|:
+name|targets
+control|)
+block|{
+name|total
+operator|+=
+name|d
+operator|.
+name|getCacheRemainingPercent
+argument_list|()
+expr_stmt|;
+block|}
+comment|// Give each datanode a portion of keyspace equal to its relative weight
+comment|// [0, w1) selects d1, [w1, w2) selects d2, etc.
+name|TreeMap
+argument_list|<
+name|Integer
+argument_list|,
+name|DatanodeDescriptor
+argument_list|>
+name|lottery
+init|=
+operator|new
+name|TreeMap
+argument_list|<
+name|Integer
+argument_list|,
+name|DatanodeDescriptor
+argument_list|>
+argument_list|()
+decl_stmt|;
+name|int
+name|offset
+init|=
+literal|0
+decl_stmt|;
+for|for
+control|(
+name|DatanodeDescriptor
+name|d
+range|:
+name|targets
+control|)
+block|{
+comment|// Since we're using floats, be paranoid about negative values
+name|int
+name|weight
+init|=
+name|Math
+operator|.
+name|max
+argument_list|(
+literal|1
+argument_list|,
+call|(
+name|int
+call|)
+argument_list|(
+operator|(
+name|d
+operator|.
+name|getCacheRemainingPercent
+argument_list|()
+operator|/
+name|total
+operator|)
+operator|*
+literal|1000000
+argument_list|)
+argument_list|)
+decl_stmt|;
+name|offset
+operator|+=
+name|weight
+expr_stmt|;
+name|lottery
+operator|.
+name|put
+argument_list|(
+name|offset
+argument_list|,
+name|d
+argument_list|)
+expr_stmt|;
+block|}
+comment|// Choose a number from [0, offset), which is the total amount of weight,
+comment|// to select the winner
+name|DatanodeDescriptor
+name|winner
+init|=
+name|lottery
+operator|.
+name|higherEntry
+argument_list|(
+name|random
+operator|.
+name|nextInt
+argument_list|(
+name|offset
+argument_list|)
+argument_list|)
+operator|.
+name|getValue
+argument_list|()
+decl_stmt|;
+return|return
+name|winner
+return|;
 block|}
 block|}
 end_class

@@ -146,6 +146,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ApplicationId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Container
 import|;
 end_import
@@ -279,26 +297,6 @@ operator|.
 name|scheduler
 operator|.
 name|ActiveUsersManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|SchedulerApplication
 import|;
 end_import
 
@@ -510,14 +508,14 @@ name|UserGroupInformation
 name|user
 parameter_list|)
 function_decl|;
-comment|/**    * Submit a new application to the queue.    * @param application application being submitted    * @param user user who submitted the application    * @param queue queue to which the application is submitted    */
-DECL|method|submitApplication (FiCaSchedulerApp application, String user, String queue)
+comment|/**    * Submit a new application to the queue.    * @param applicationId the applicationId of the application being submitted    * @param user user who submitted the application    * @param queue queue to which the application is submitted    */
+DECL|method|submitApplication (ApplicationId applicationId, String user, String queue)
 specifier|public
 name|void
 name|submitApplication
 parameter_list|(
-name|FiCaSchedulerApp
-name|application
+name|ApplicationId
+name|applicationId
 parameter_list|,
 name|String
 name|user
@@ -528,11 +526,37 @@ parameter_list|)
 throws|throws
 name|AccessControlException
 function_decl|;
-comment|/**    * An application submitted to this queue has finished.    * @param application    * @param queue application queue     */
-DECL|method|finishApplication (FiCaSchedulerApp application, String queue)
+comment|/**    * Submit an application attempt to the queue.    */
+DECL|method|submitApplicationAttempt (FiCaSchedulerApp application, String userName)
+specifier|public
+name|void
+name|submitApplicationAttempt
+parameter_list|(
+name|FiCaSchedulerApp
+name|application
+parameter_list|,
+name|String
+name|userName
+parameter_list|)
+function_decl|;
+comment|/**    * An application submitted to this queue has finished.    * @param applicationId    * @param user user who submitted the application    */
+DECL|method|finishApplication (ApplicationId applicationId, String user)
 specifier|public
 name|void
 name|finishApplication
+parameter_list|(
+name|ApplicationId
+name|applicationId
+parameter_list|,
+name|String
+name|user
+parameter_list|)
+function_decl|;
+comment|/**    * An application attempt submitted to this queue has finished.    */
+DECL|method|finishApplicationAttempt (FiCaSchedulerApp application, String queue)
+specifier|public
+name|void
+name|finishApplicationAttempt
 parameter_list|(
 name|FiCaSchedulerApp
 name|application

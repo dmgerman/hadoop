@@ -1202,6 +1202,20 @@ name|WebApps
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * This module is responsible for talking to the  * JobClient (user facing).  *  */
 end_comment
@@ -1445,8 +1459,10 @@ name|serviceStart
 argument_list|()
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|initializeWebApp (Configuration conf)
-specifier|private
+specifier|protected
 name|void
 name|initializeWebApp
 parameter_list|(

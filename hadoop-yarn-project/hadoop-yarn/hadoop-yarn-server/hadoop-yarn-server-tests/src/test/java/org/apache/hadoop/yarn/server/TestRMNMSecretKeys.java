@@ -329,6 +329,15 @@ return|return
 name|dispatcher
 return|;
 block|}
+annotation|@
+name|Override
+specifier|protected
+name|void
+name|startWepApp
+parameter_list|()
+block|{
+comment|// Don't need it, skip.
+block|}
 block|}
 decl_stmt|;
 name|rm

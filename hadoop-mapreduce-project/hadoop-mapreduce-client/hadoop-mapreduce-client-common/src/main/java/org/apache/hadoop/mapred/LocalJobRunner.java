@@ -448,6 +448,22 @@ name|hadoop
 operator|.
 name|mapreduce
 operator|.
+name|checkpoint
+operator|.
+name|TaskCheckpointID
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapreduce
+operator|.
 name|protocol
 operator|.
 name|ClientProtocol
@@ -3222,6 +3238,8 @@ block|}
 block|}
 block|}
 comment|// TaskUmbilicalProtocol methods
+annotation|@
+name|Override
 DECL|method|getTask (JvmContext context)
 specifier|public
 name|JvmTask
@@ -3235,10 +3253,12 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|statusUpdate (TaskAttemptID taskId, TaskStatus taskStatus)
 specifier|public
 specifier|synchronized
-name|boolean
+name|AMFeedback
 name|statusUpdate
 parameter_list|(
 name|TaskAttemptID
@@ -3252,6 +3272,31 @@ name|IOException
 throws|,
 name|InterruptedException
 block|{
+name|AMFeedback
+name|feedback
+init|=
+operator|new
+name|AMFeedback
+argument_list|()
+decl_stmt|;
+name|feedback
+operator|.
+name|setTaskFound
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+literal|null
+operator|==
+name|taskStatus
+condition|)
+block|{
+return|return
+name|feedback
+return|;
+block|}
 comment|// Serialize as we would if distributed in order to make deep copy
 name|ByteArrayOutputStream
 name|baos
@@ -3471,7 +3516,7 @@ expr_stmt|;
 block|}
 comment|// ignore phase
 return|return
-literal|true
+name|feedback
 return|;
 block|}
 comment|/** Return the current values of the counters for this job,      * including tasks that are in progress.      */
@@ -3586,6 +3631,8 @@ name|taskStatus
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|reportDiagnosticInfo (TaskAttemptID taskid, String trace)
 specifier|public
 name|void
@@ -3600,6 +3647,8 @@ parameter_list|)
 block|{
 comment|// Ignore for now
 block|}
+annotation|@
+name|Override
 DECL|method|reportNextRecordRange (TaskAttemptID taskid, SortedRanges.Range range)
 specifier|public
 name|void
@@ -3630,21 +3679,8 @@ name|range
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|ping (TaskAttemptID taskid)
-specifier|public
-name|boolean
-name|ping
-parameter_list|(
-name|TaskAttemptID
-name|taskid
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-return|return
-literal|true
-return|;
-block|}
+annotation|@
+name|Override
 DECL|method|canCommit (TaskAttemptID taskid)
 specifier|public
 name|boolean
@@ -3660,6 +3696,8 @@ return|return
 literal|true
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|done (TaskAttemptID taskId)
 specifier|public
 name|void
@@ -3708,6 +3746,8 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|fsError (TaskAttemptID taskId, String message)
 specifier|public
 specifier|synchronized
@@ -3737,6 +3777,8 @@ name|taskId
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|shuffleError (TaskAttemptID taskId, String message)
 specifier|public
 name|void
@@ -3794,6 +3836,8 @@ name|taskId
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Override
 DECL|method|getMapCompletionEvents (JobID jobId, int fromEventId, int maxLocs, TaskAttemptID id)
 specifier|public
 name|MapTaskCompletionEventsUpdate
@@ -3833,6 +3877,58 @@ argument_list|,
 literal|false
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|preempted (TaskAttemptID taskId, TaskStatus taskStatus)
+specifier|public
+name|void
+name|preempted
+parameter_list|(
+name|TaskAttemptID
+name|taskId
+parameter_list|,
+name|TaskStatus
+name|taskStatus
+parameter_list|)
+throws|throws
+name|IOException
+throws|,
+name|InterruptedException
+block|{
+comment|// ignore
+block|}
+annotation|@
+name|Override
+DECL|method|getCheckpointID (TaskID taskId)
+specifier|public
+name|TaskCheckpointID
+name|getCheckpointID
+parameter_list|(
+name|TaskID
+name|taskId
+parameter_list|)
+block|{
+comment|// ignore
+return|return
+literal|null
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setCheckpointID (TaskID downgrade, TaskCheckpointID cid)
+specifier|public
+name|void
+name|setCheckpointID
+parameter_list|(
+name|TaskID
+name|downgrade
+parameter_list|,
+name|TaskCheckpointID
+name|cid
+parameter_list|)
+block|{
+comment|// ignore
 block|}
 block|}
 DECL|method|LocalJobRunner (Configuration conf)

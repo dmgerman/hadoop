@@ -32,7 +32,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
+name|DFS_NAMENODE_PATH_BASED_CACHE_BLOCK_MAP_ALLOCATION_PERCENT
 import|;
 end_import
 
@@ -48,7 +48,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_CACHING_ENABLED_KEY
+name|DFS_NAMENODE_PATH_BASED_CACHE_BLOCK_MAP_ALLOCATION_PERCENT_DEFAULT
 import|;
 end_import
 
@@ -287,6 +287,20 @@ operator|.
 name|util
 operator|.
 name|TreeMap
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|locks
+operator|.
+name|ReentrantLock
 import|;
 end_import
 
@@ -624,24 +638,6 @@ name|server
 operator|.
 name|blockmanagement
 operator|.
-name|BlockInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|blockmanagement
-operator|.
 name|BlockManager
 import|;
 end_import
@@ -933,7 +929,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * The Cache Manager handles caching on DataNodes.  *  * This class is instantiated by the FSNamesystem when caching is enabled.  * It maintains the mapping of cached blocks to datanodes via processing  * datanode cache reports. Based on these reports and addition and removal of  * caching directives, we will schedule caching and uncaching work.  */
+comment|/**  * The Cache Manager handles caching on DataNodes.  *  * This class is instantiated by the FSNamesystem.  * It maintains the mapping of cached blocks to datanodes via processing  * datanode cache reports. Based on these reports and addition and removal of  * caching directives, we will schedule caching and uncaching work.  */
 end_comment
 
 begin_class
@@ -967,6 +963,15 @@ name|CacheManager
 operator|.
 name|class
 argument_list|)
+decl_stmt|;
+DECL|field|MIN_CACHED_BLOCKS_PERCENT
+specifier|private
+specifier|static
+specifier|final
+name|float
+name|MIN_CACHED_BLOCKS_PERCENT
+init|=
+literal|0.001f
 decl_stmt|;
 comment|// TODO: add pending / underCached / schedule cached blocks stats.
 comment|/**    * The FSNamesystem that contains this CacheManager.    */
@@ -1079,21 +1084,6 @@ specifier|final
 name|long
 name|scanIntervalMs
 decl_stmt|;
-comment|/**    * Whether caching is enabled.    *    * If caching is disabled, we will not process cache reports or store    * information about what is cached where.  We also do not start the    * CacheReplicationMonitor thread.  This will save resources, but provide    * less functionality.    *         * Even when caching is disabled, we still store path-based cache    * information.  This information is stored in the edit log and fsimage.  We    * don't want to lose it just because a configuration setting was turned off.    * However, we will not act on this information if caching is disabled.    */
-DECL|field|enabled
-specifier|private
-specifier|final
-name|boolean
-name|enabled
-decl_stmt|;
-comment|/**    * Whether the CacheManager is active.    *     * When the CacheManager is active, it tells the DataNodes what to cache    * and uncache.  The CacheManager cannot become active if enabled = false.    */
-DECL|field|active
-specifier|private
-name|boolean
-name|active
-init|=
-literal|false
-decl_stmt|;
 comment|/**    * All cached blocks.    */
 DECL|field|cachedBlocks
 specifier|private
@@ -1105,6 +1095,17 @@ argument_list|,
 name|CachedBlock
 argument_list|>
 name|cachedBlocks
+decl_stmt|;
+comment|/**    * Lock which protects the CacheReplicationMonitor.    */
+DECL|field|crmLock
+specifier|private
+specifier|final
+name|ReentrantLock
+name|crmLock
+init|=
+operator|new
+name|ReentrantLock
+argument_list|()
 decl_stmt|;
 comment|/**    * The CacheReplicationMonitor.    */
 DECL|field|monitor
@@ -1180,28 +1181,47 @@ argument_list|,
 name|DFS_NAMENODE_PATH_BASED_CACHE_REFRESH_INTERVAL_MS_DEFAULT
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|enabled
-operator|=
+name|float
+name|cachedBlocksPercent
+init|=
 name|conf
 operator|.
-name|getBoolean
+name|getFloat
 argument_list|(
-name|DFS_NAMENODE_CACHING_ENABLED_KEY
+name|DFS_NAMENODE_PATH_BASED_CACHE_BLOCK_MAP_ALLOCATION_PERCENT
 argument_list|,
-name|DFS_NAMENODE_CACHING_ENABLED_DEFAULT
+name|DFS_NAMENODE_PATH_BASED_CACHE_BLOCK_MAP_ALLOCATION_PERCENT_DEFAULT
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cachedBlocksPercent
+operator|<
+name|MIN_CACHED_BLOCKS_PERCENT
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Using minimum value "
+operator|+
+name|MIN_CACHED_BLOCKS_PERCENT
+operator|+
+literal|" for "
+operator|+
+name|DFS_NAMENODE_PATH_BASED_CACHE_BLOCK_MAP_ALLOCATION_PERCENT
 argument_list|)
 expr_stmt|;
+name|cachedBlocksPercent
+operator|=
+name|MIN_CACHED_BLOCKS_PERCENT
+expr_stmt|;
+block|}
 name|this
 operator|.
 name|cachedBlocks
 operator|=
-operator|!
-name|enabled
-condition|?
-literal|null
-else|:
 operator|new
 name|LightWeightGSet
 argument_list|<
@@ -1214,49 +1234,37 @@ name|LightWeightGSet
 operator|.
 name|computeCapacity
 argument_list|(
-literal|0.25
+name|cachedBlocksPercent
 argument_list|,
 literal|"cachedBlocks"
 argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Activate the cache manager.    *     * When the cache manager is active, tell the datanodes where to cache files.    */
-DECL|method|activate ()
+DECL|method|startMonitorThread ()
 specifier|public
 name|void
-name|activate
+name|startMonitorThread
 parameter_list|()
 block|{
-assert|assert
-name|namesystem
+name|crmLock
 operator|.
-name|hasWriteLock
+name|lock
 argument_list|()
-assert|;
+expr_stmt|;
+try|try
+block|{
 if|if
 condition|(
-name|enabled
-operator|&&
-operator|(
-operator|!
-name|active
-operator|)
+name|this
+operator|.
+name|monitor
+operator|==
+literal|null
 condition|)
 block|{
-name|LOG
+name|this
 operator|.
-name|info
-argument_list|(
-literal|"Activating CacheManager.  "
-operator|+
-literal|"Starting replication monitor thread..."
-argument_list|)
-expr_stmt|;
-name|active
-operator|=
-literal|true
-expr_stmt|;
 name|monitor
 operator|=
 operator|new
@@ -1267,8 +1275,12 @@ argument_list|,
 name|this
 argument_list|,
 name|scanIntervalMs
+argument_list|,
+name|crmLock
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
 name|monitor
 operator|.
 name|start
@@ -1276,11 +1288,72 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Deactivate the cache manager.    *     * When the cache manager is inactive, it does not tell the datanodes where to    * cache files.    */
-DECL|method|deactivate ()
+finally|finally
+block|{
+name|crmLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|stopMonitorThread ()
 specifier|public
 name|void
-name|deactivate
+name|stopMonitorThread
+parameter_list|()
+block|{
+name|crmLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|this
+operator|.
+name|monitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|CacheReplicationMonitor
+name|prevMonitor
+init|=
+name|this
+operator|.
+name|monitor
+decl_stmt|;
+name|this
+operator|.
+name|monitor
+operator|=
+literal|null
+expr_stmt|;
+name|IOUtils
+operator|.
+name|closeQuietly
+argument_list|(
+name|prevMonitor
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|crmLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|clearDirectiveStats ()
+specifier|public
+name|void
+name|clearDirectiveStats
 parameter_list|()
 block|{
 assert|assert
@@ -1289,54 +1362,23 @@ operator|.
 name|hasWriteLock
 argument_list|()
 assert|;
-if|if
-condition|(
-name|active
-condition|)
+for|for
+control|(
+name|CacheDirective
+name|directive
+range|:
+name|directivesById
+operator|.
+name|values
+argument_list|()
+control|)
 block|{
-name|LOG
+name|directive
 operator|.
-name|info
-argument_list|(
-literal|"Deactivating CacheManager.  "
-operator|+
-literal|"stopping CacheReplicationMonitor thread..."
-argument_list|)
-expr_stmt|;
-name|active
-operator|=
-literal|false
-expr_stmt|;
-name|IOUtils
-operator|.
-name|closeQuietly
-argument_list|(
-name|monitor
-argument_list|)
-expr_stmt|;
-name|monitor
-operator|=
-literal|null
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"CacheReplicationMonitor thread stopped and deactivated."
-argument_list|)
+name|resetStatistics
+argument_list|()
 expr_stmt|;
 block|}
-block|}
-comment|/**    * Return true only if the cache manager is active.    * Must be called under the FSN read or write lock.    */
-DECL|method|isActive ()
-specifier|public
-name|boolean
-name|isActive
-parameter_list|()
-block|{
-return|return
-name|active
-return|;
 block|}
 comment|/**    * @return Unmodifiable view of the collection of CachePools.    */
 DECL|method|getCachePools ()
@@ -2431,19 +2473,9 @@ name|getFilesNeeded
 argument_list|()
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
 name|setNeedsRescan
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 comment|/**    * Adds a directive, skipping most error checking. This should only be called    * internally in special scenarios like edit log replay.    */
 DECL|method|addDirectiveFromEditLog (CacheDirectiveInfo directive)
@@ -2611,20 +2643,6 @@ name|FORCE
 argument_list|)
 condition|)
 block|{
-comment|// Can't kick and wait if caching is disabled
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
-name|waitForRescan
-argument_list|()
-expr_stmt|;
-block|}
 name|checkLimit
 argument_list|(
 name|pool
@@ -3131,19 +3149,9 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Indicate changes to the CRM
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
 name|setNeedsRescan
 argument_list|()
 expr_stmt|;
-block|}
 comment|// Validation passed
 name|removeInternal
 argument_list|(
@@ -3356,19 +3364,9 @@ argument_list|()
 operator|==
 literal|null
 assert|;
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
 name|setNeedsRescan
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 DECL|method|removeDirective (long id, FSPermissionChecker pc)
 specifier|public
@@ -3541,19 +3539,6 @@ argument_list|(
 literal|"Filtering by replication is unsupported."
 argument_list|)
 throw|;
-block|}
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
-name|waitForRescanIfNeeded
-argument_list|()
-expr_stmt|;
 block|}
 name|ArrayList
 argument_list|<
@@ -4163,19 +4148,9 @@ operator|=
 literal|"; "
 expr_stmt|;
 comment|// New limit changes stats, need to set needs refresh
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
 name|setNeedsRescan
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 if|if
 condition|(
@@ -4393,19 +4368,9 @@ name|remove
 argument_list|()
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
 name|setNeedsRescan
 argument_list|()
 expr_stmt|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -4463,19 +4428,6 @@ operator|.
 name|hasReadLock
 argument_list|()
 assert|;
-if|if
-condition|(
-name|monitor
-operator|!=
-literal|null
-condition|)
-block|{
-name|monitor
-operator|.
-name|waitForRescanIfNeeded
-argument_list|()
-expr_stmt|;
-block|}
 specifier|final
 name|int
 name|NUM_PRE_ALLOCATED_ENTRIES
@@ -4594,14 +4546,6 @@ name|LocatedBlock
 name|block
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|enabled
-condition|)
-block|{
-return|return;
-block|}
 name|CachedBlock
 name|cachedBlock
 init|=
@@ -4694,36 +4638,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-if|if
-condition|(
-operator|!
-name|enabled
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Ignoring cache report from "
-operator|+
-name|datanodeID
-operator|+
-literal|" because "
-operator|+
-name|DFS_NAMENODE_CACHING_ENABLED_KEY
-operator|+
-literal|" = false. "
-operator|+
-literal|"number of blocks: "
-operator|+
-name|blockIds
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
 name|namesystem
 operator|.
 name|writeLock
@@ -4892,6 +4806,22 @@ operator|.
 name|clear
 argument_list|()
 expr_stmt|;
+name|CachedBlocksList
+name|cachedList
+init|=
+name|datanode
+operator|.
+name|getCached
+argument_list|()
+decl_stmt|;
+name|CachedBlocksList
+name|pendingCachedList
+init|=
+name|datanode
+operator|.
+name|getPendingCached
+argument_list|()
+decl_stmt|;
 for|for
 control|(
 name|Iterator
@@ -4912,118 +4842,21 @@ argument_list|()
 condition|;
 control|)
 block|{
-name|Block
-name|block
+name|long
+name|blockId
 init|=
-operator|new
-name|Block
-argument_list|(
 name|iter
 operator|.
 name|next
 argument_list|()
-argument_list|)
 decl_stmt|;
-name|BlockInfo
-name|blockInfo
-init|=
-name|blockManager
-operator|.
-name|getStoredBlock
-argument_list|(
-name|block
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|blockInfo
-operator|.
-name|isComplete
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Ignoring block id "
-operator|+
-name|block
-operator|.
-name|getBlockId
-argument_list|()
-operator|+
-literal|", because "
-operator|+
-literal|"it is in not complete yet.  It is in state "
-operator|+
-name|blockInfo
-operator|.
-name|getBlockUCState
-argument_list|()
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
-name|Collection
-argument_list|<
-name|DatanodeDescriptor
-argument_list|>
-name|corruptReplicas
-init|=
-name|blockManager
-operator|.
-name|getCorruptReplicas
-argument_list|(
-name|blockInfo
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-operator|(
-name|corruptReplicas
-operator|!=
-literal|null
-operator|)
-operator|&&
-name|corruptReplicas
-operator|.
-name|contains
-argument_list|(
-name|datanode
-argument_list|)
-condition|)
-block|{
-comment|// The NameNode will eventually remove or update the corrupt block.
-comment|// Until then, we pretend that it isn't cached.
-name|LOG
-operator|.
-name|warn
-argument_list|(
-literal|"Ignoring cached replica on "
-operator|+
-name|datanode
-operator|+
-literal|" of "
-operator|+
-name|block
-operator|+
-literal|" because it is corrupt."
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
 name|CachedBlock
 name|cachedBlock
 init|=
 operator|new
 name|CachedBlock
 argument_list|(
-name|block
-operator|.
-name|getBlockId
-argument_list|()
+name|blockId
 argument_list|,
 operator|(
 name|short
@@ -5043,8 +4876,8 @@ argument_list|(
 name|cachedBlock
 argument_list|)
 decl_stmt|;
-comment|// Use the existing CachedBlock if it's present; otherwise,
-comment|// insert a new one.
+comment|// Add the block ID from the cache report to the cachedBlocks map
+comment|// if it's not already there.
 if|if
 condition|(
 name|prevCachedBlock
@@ -5067,6 +4900,9 @@ name|cachedBlock
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Add the block to the datanode's implicit cached block list
+comment|// if it's not already there.  Similarly, remove it from the pending
+comment|// cached block list if it exists there.
 if|if
 condition|(
 operator|!
@@ -5074,17 +4910,11 @@ name|cachedBlock
 operator|.
 name|isPresent
 argument_list|(
-name|datanode
-operator|.
-name|getCached
-argument_list|()
+name|cachedList
 argument_list|)
 condition|)
 block|{
-name|datanode
-operator|.
-name|getCached
-argument_list|()
+name|cachedList
 operator|.
 name|add
 argument_list|(
@@ -5098,17 +4928,11 @@ name|cachedBlock
 operator|.
 name|isPresent
 argument_list|(
-name|datanode
-operator|.
-name|getPendingCached
-argument_list|()
+name|pendingCachedList
 argument_list|)
 condition|)
 block|{
-name|datanode
-operator|.
-name|getPendingCached
-argument_list|()
+name|pendingCachedList
 operator|.
 name|remove
 argument_list|(
@@ -5858,6 +5682,106 @@ argument_list|,
 name|step
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|waitForRescanIfNeeded ()
+specifier|public
+name|void
+name|waitForRescanIfNeeded
+parameter_list|()
+block|{
+name|crmLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|monitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|monitor
+operator|.
+name|waitForRescanIfNeeded
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|crmLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+DECL|method|setNeedsRescan ()
+specifier|private
+name|void
+name|setNeedsRescan
+parameter_list|()
+block|{
+name|crmLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+if|if
+condition|(
+name|monitor
+operator|!=
+literal|null
+condition|)
+block|{
+name|monitor
+operator|.
+name|setNeedsRescan
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+finally|finally
+block|{
+name|crmLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCacheReplicationMonitor ()
+specifier|public
+name|Thread
+name|getCacheReplicationMonitor
+parameter_list|()
+block|{
+name|crmLock
+operator|.
+name|lock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
+return|return
+name|monitor
+return|;
+block|}
+finally|finally
+block|{
+name|crmLock
+operator|.
+name|unlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 end_class

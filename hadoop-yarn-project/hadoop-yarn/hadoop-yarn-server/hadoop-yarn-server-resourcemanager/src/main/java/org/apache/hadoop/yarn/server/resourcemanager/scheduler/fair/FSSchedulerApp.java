@@ -470,7 +470,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 import|;
 end_import
 
@@ -506,7 +506,7 @@ specifier|public
 class|class
 name|FSSchedulerApp
 extends|extends
-name|SchedulerApplication
+name|SchedulerApplicationAttempt
 block|{
 DECL|field|LOG
 specifier|private

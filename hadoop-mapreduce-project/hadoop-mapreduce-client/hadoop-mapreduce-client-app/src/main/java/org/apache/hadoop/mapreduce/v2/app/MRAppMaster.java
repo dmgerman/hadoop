@@ -2024,6 +2024,18 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|LogManager
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -7673,6 +7685,14 @@ name|exit
 argument_list|(
 literal|1
 argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|LogManager
+operator|.
+name|shutdown
+argument_list|()
 expr_stmt|;
 block|}
 block|}
