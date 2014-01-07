@@ -210,11 +210,11 @@ specifier|final
 name|long
 name|fileSize
 decl_stmt|;
-DECL|method|FileDiff (Snapshot snapshot, INodeFile file)
+DECL|method|FileDiff (int snapshotId, INodeFile file)
 name|FileDiff
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|INodeFile
 name|file
@@ -222,7 +222,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
 literal|null
 argument_list|,
@@ -238,11 +238,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Constructor used by FSImage loading */
-DECL|method|FileDiff (Snapshot snapshot, INodeFileAttributes snapshotINode, FileDiff posteriorDiff, long fileSize)
+DECL|method|FileDiff (int snapshotId, INodeFileAttributes snapshotINode, FileDiff posteriorDiff, long fileSize)
 name|FileDiff
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|INodeFileAttributes
 name|snapshotINode
@@ -256,7 +256,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
 name|snapshotINode
 argument_list|,

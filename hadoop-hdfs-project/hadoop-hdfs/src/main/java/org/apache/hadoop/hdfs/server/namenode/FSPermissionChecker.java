@@ -24,16 +24,6 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
 name|util
 operator|.
 name|Arrays
@@ -151,26 +141,6 @@ operator|.
 name|permission
 operator|.
 name|FsPermission
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|snapshot
-operator|.
-name|Snapshot
 import|;
 end_import
 
@@ -538,12 +508,12 @@ name|resolveLink
 argument_list|)
 decl_stmt|;
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 init|=
 name|inodesInPath
 operator|.
-name|getPathSnapshot
+name|getPathSnapshotId
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -589,7 +559,7 @@ name|inodes
 argument_list|,
 name|ancestorIndex
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -644,7 +614,7 @@ index|]
 argument_list|,
 name|last
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|)
 expr_stmt|;
 block|}
@@ -667,7 +637,7 @@ name|inodes
 argument_list|,
 name|ancestorIndex
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
 name|ancestorAccess
 argument_list|)
@@ -696,7 +666,7 @@ name|length
 operator|-
 literal|2
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
 name|parentAccess
 argument_list|)
@@ -713,7 +683,7 @@ name|check
 argument_list|(
 name|last
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
 name|access
 argument_list|)
@@ -730,7 +700,7 @@ name|checkSubAccess
 argument_list|(
 name|last
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
 name|subAccess
 argument_list|)
@@ -745,13 +715,13 @@ name|checkOwner
 argument_list|(
 name|last
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkOwner (INode inode, Snapshot snapshot )
+DECL|method|checkOwner (INode inode, int snapshotId )
 specifier|private
 name|void
 name|checkOwner
@@ -759,8 +729,8 @@ parameter_list|(
 name|INode
 name|inode
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -779,7 +749,7 @@ name|inode
 operator|.
 name|getUserName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|)
 condition|)
@@ -795,7 +765,7 @@ argument_list|)
 throw|;
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkTraverse (INode[] inodes, int last, Snapshot snapshot )
+DECL|method|checkTraverse (INode[] inodes, int last, int snapshotId )
 specifier|private
 name|void
 name|checkTraverse
@@ -807,8 +777,8 @@ parameter_list|,
 name|int
 name|last
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -835,7 +805,7 @@ index|[
 name|j
 index|]
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
 name|FsAction
 operator|.
@@ -845,7 +815,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkSubAccess (INode inode, Snapshot snapshot, FsAction access )
+DECL|method|checkSubAccess (INode inode, int snapshotId, FsAction access )
 specifier|private
 name|void
 name|checkSubAccess
@@ -853,8 +823,8 @@ parameter_list|(
 name|INode
 name|inode
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|FsAction
 name|access
@@ -922,7 +892,7 @@ name|check
 argument_list|(
 name|d
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
 name|access
 argument_list|)
@@ -936,7 +906,7 @@ name|d
 operator|.
 name|getChildrenList
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 control|)
 block|{
@@ -963,7 +933,7 @@ block|}
 block|}
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|check (INode[] inodes, int i, Snapshot snapshot, FsAction access )
+DECL|method|check (INode[] inodes, int i, int snapshotId, FsAction access )
 specifier|private
 name|void
 name|check
@@ -975,8 +945,8 @@ parameter_list|,
 name|int
 name|i
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|FsAction
 name|access
@@ -997,14 +967,14 @@ index|]
 else|:
 literal|null
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
 name|access
 argument_list|)
 expr_stmt|;
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|check (INode inode, Snapshot snapshot, FsAction access )
+DECL|method|check (INode inode, int snapshotId, FsAction access )
 specifier|private
 name|void
 name|check
@@ -1012,8 +982,8 @@ parameter_list|(
 name|INode
 name|inode
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|FsAction
 name|access
@@ -1037,7 +1007,7 @@ name|inode
 operator|.
 name|getFsPermission
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 decl_stmt|;
 if|if
@@ -1050,7 +1020,7 @@ name|inode
 operator|.
 name|getUserName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|)
 condition|)
@@ -1083,7 +1053,7 @@ name|inode
 operator|.
 name|getGroupName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|)
 condition|)
@@ -1146,7 +1116,7 @@ argument_list|)
 throw|;
 block|}
 comment|/** Guarded by {@link FSNamesystem#readLock()} */
-DECL|method|checkStickyBit (INode parent, INode inode, Snapshot snapshot )
+DECL|method|checkStickyBit (INode parent, INode inode, int snapshotId )
 specifier|private
 name|void
 name|checkStickyBit
@@ -1157,8 +1127,8 @@ parameter_list|,
 name|INode
 name|inode
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 throws|throws
 name|AccessControlException
@@ -1170,7 +1140,7 @@ name|parent
 operator|.
 name|getFsPermission
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|getStickyBit
@@ -1186,7 +1156,7 @@ name|parent
 operator|.
 name|getUserName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|equals
@@ -1204,7 +1174,7 @@ name|inode
 operator|.
 name|getUserName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|equals

@@ -604,7 +604,7 @@ name|replaceSelf4INodeDirectorySnapshottable
 argument_list|(
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|,
 name|fsdir
@@ -811,7 +811,7 @@ name|replaceSelf
 argument_list|(
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|,
 name|fsdir
@@ -1357,7 +1357,9 @@ name|dir
 operator|.
 name|getChildrenNum
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 argument_list|,
 name|dir

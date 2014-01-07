@@ -254,13 +254,13 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** @return an {@link AbstractINodeDiff}. */
-DECL|method|createDiff (Snapshot snapshot, N currentINode)
+DECL|method|createDiff (int snapshotId, N currentINode)
 specifier|abstract
 name|D
 name|createDiff
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|N
 name|currentINode
@@ -276,8 +276,8 @@ name|N
 name|currentINode
 parameter_list|)
 function_decl|;
-comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The snapshot to be deleted    * @param prior The snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
-DECL|method|deleteSnapshotDiff (final Snapshot snapshot, Snapshot prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, boolean countDiffChange)
+comment|/**    * Delete a snapshot. The synchronization of the diff list will be done     * outside. If the diff to remove is not the first one in the diff list, we     * need to combine the diff with its previous one.    *     * @param snapshot The id of the snapshot to be deleted    * @param prior The id of the snapshot taken before the to-be-deleted snapshot    * @param collectedBlocks Used to collect information for blocksMap update    * @return delta in namespace.     */
+DECL|method|deleteSnapshotDiff (final int snapshot, final int prior, final N currentINode, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, boolean countDiffChange)
 specifier|public
 specifier|final
 name|Quota
@@ -286,10 +286,11 @@ name|Counts
 name|deleteSnapshotDiff
 parameter_list|(
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
+specifier|final
+name|int
 name|prior
 parameter_list|,
 specifier|final
@@ -323,9 +324,6 @@ argument_list|(
 name|diffs
 argument_list|,
 name|snapshot
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 decl_stmt|;
 name|Quota
@@ -356,9 +354,12 @@ if|if
 condition|(
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
+comment|// there is still snapshot before
 comment|// set the snapshot to latestBefore
 name|diffs
 operator|.
@@ -367,7 +368,7 @@ argument_list|(
 name|snapshotIndex
 argument_list|)
 operator|.
-name|setSnapshot
+name|setSnapshotId
 argument_list|(
 name|prior
 argument_list|)
@@ -375,6 +376,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
+comment|// there is no snapshot before
 name|removed
 operator|=
 name|diffs
@@ -467,16 +469,12 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
-operator|!
 name|previous
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|!=
 name|prior
-argument_list|)
 condition|)
 block|{
 name|diffs
@@ -486,7 +484,7 @@ argument_list|(
 name|snapshotIndex
 argument_list|)
 operator|.
-name|setSnapshot
+name|setSnapshotId
 argument_list|(
 name|prior
 argument_list|)
@@ -596,13 +594,13 @@ name|counts
 return|;
 block|}
 comment|/** Add an {@link AbstractINodeDiff} for the given snapshot. */
-DECL|method|addDiff (Snapshot latest, N currentINode)
+DECL|method|addDiff (int latestSnapshotId, N currentINode)
 specifier|final
 name|D
 name|addDiff
 parameter_list|(
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|,
 name|N
 name|currentINode
@@ -626,7 +624,7 @@ name|addLast
 argument_list|(
 name|createDiff
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|currentINode
 argument_list|)
@@ -756,12 +754,12 @@ literal|1
 argument_list|)
 return|;
 block|}
-comment|/** @return the last snapshot. */
-DECL|method|getLastSnapshot ()
+comment|/** @return the id of the last snapshot. */
+DECL|method|getLastSnapshotId ()
 specifier|public
 specifier|final
-name|Snapshot
-name|getLastSnapshot
+name|int
+name|getLastSnapshotId
 parameter_list|()
 block|{
 specifier|final
@@ -783,19 +781,21 @@ name|last
 operator|==
 literal|null
 condition|?
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 else|:
 name|last
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
 return|;
 block|}
-comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchorId The returned snapshot's id must be<= or< this given     *                 snapshot id.    * @param exclusive True means the returned snapshot's id must be< the given    *                  id, otherwise<=.    * @return The latest snapshot before the given snapshot.    */
+comment|/**    * Find the latest snapshot before a given snapshot.    * @param anchorId The returned snapshot's id must be<= or< this given     *                 snapshot id.    * @param exclusive True means the returned snapshot's id must be< the given    *                  id, otherwise<=.    * @return The id of the latest snapshot before the given snapshot.    */
 DECL|method|getPrior (int anchorId, boolean exclusive)
 specifier|private
 specifier|final
-name|Snapshot
+name|int
 name|getPrior
 parameter_list|(
 name|int
@@ -811,11 +811,11 @@ name|anchorId
 operator|==
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
-name|getLastSnapshot
+name|getLastSnapshotId
 argument_list|()
 return|;
 block|}
@@ -851,7 +851,9 @@ literal|0
 condition|)
 block|{
 return|return
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 return|;
 block|}
 else|else
@@ -880,7 +882,7 @@ argument_list|(
 name|priorIndex
 argument_list|)
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
 return|;
 block|}
@@ -903,7 +905,7 @@ argument_list|(
 name|i
 argument_list|)
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
 return|;
 block|}
@@ -927,7 +929,7 @@ operator|-
 literal|2
 argument_list|)
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
 return|;
 block|}
@@ -935,7 +937,9 @@ else|else
 block|{
 comment|// i == -1
 return|return
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 return|;
 block|}
 block|}
@@ -943,7 +947,7 @@ block|}
 DECL|method|getPrior (int snapshotId)
 specifier|public
 specifier|final
-name|Snapshot
+name|int
 name|getPrior
 parameter_list|(
 name|int
@@ -960,109 +964,60 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Update the prior snapshot.    */
-DECL|method|updatePrior (Snapshot snapshot, Snapshot prior)
+DECL|method|updatePrior (int snapshot, int prior)
 specifier|final
-name|Snapshot
+name|int
 name|updatePrior
 parameter_list|(
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
+name|int
 name|prior
 parameter_list|)
 block|{
 name|int
-name|id
-init|=
-name|snapshot
-operator|==
-literal|null
-condition|?
-name|Snapshot
-operator|.
-name|INVALID_ID
-else|:
-name|snapshot
-operator|.
-name|getId
-argument_list|()
-decl_stmt|;
-name|Snapshot
-name|s
+name|p
 init|=
 name|getPrior
 argument_list|(
-name|id
+name|snapshot
 argument_list|,
 literal|true
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|s
+name|p
 operator|!=
-literal|null
-operator|&&
-operator|(
-name|prior
-operator|==
-literal|null
-operator|||
 name|Snapshot
 operator|.
-name|ID_COMPARATOR
+name|CURRENT_STATE_ID
+operator|&&
+name|Snapshot
+operator|.
+name|ID_INTEGER_COMPARATOR
 operator|.
 name|compare
 argument_list|(
-name|s
+name|p
 argument_list|,
 name|prior
 argument_list|)
 operator|>
 literal|0
-operator|)
 condition|)
 block|{
 return|return
-name|s
+name|p
 return|;
 block|}
 return|return
 name|prior
 return|;
 block|}
-comment|/**    * @return the diff corresponding to the given snapshot.    *         When the diff is null, it means that the current state and    *         the corresponding snapshot state are the same.     */
-DECL|method|getDiff (Snapshot snapshot)
-specifier|public
-specifier|final
-name|D
-name|getDiff
-parameter_list|(
-name|Snapshot
-name|snapshot
-parameter_list|)
-block|{
-return|return
-name|getDiffById
-argument_list|(
-name|snapshot
-operator|==
-literal|null
-condition|?
-name|Snapshot
-operator|.
-name|INVALID_ID
-else|:
-name|snapshot
-operator|.
-name|getId
-argument_list|()
-argument_list|)
-return|;
-block|}
 DECL|method|getDiffById (final int snapshotId)
-specifier|private
+specifier|public
 specifier|final
 name|D
 name|getDiffById
@@ -1078,7 +1033,7 @@ name|snapshotId
 operator|==
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
@@ -1152,7 +1107,7 @@ comment|/**    * Search for the snapshot whose id is 1) no less than the given i
 DECL|method|getSnapshotById (final int snapshotId)
 specifier|public
 specifier|final
-name|Snapshot
+name|int
 name|getSnapshotById
 parameter_list|(
 specifier|final
@@ -1173,11 +1128,13 @@ name|diff
 operator|==
 literal|null
 condition|?
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 else|:
 name|diff
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
 return|;
 block|}
@@ -1280,14 +1237,14 @@ literal|true
 return|;
 block|}
 comment|/**    * @return the inode corresponding to the given snapshot.    *         Note that the current inode is returned if there is no change    *         between the given snapshot and the current state.     */
-DECL|method|getSnapshotINode (final Snapshot snapshot, final A currentINode)
+DECL|method|getSnapshotINode (final int snapshotId, final A currentINode)
 specifier|public
 name|A
 name|getSnapshotINode
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 specifier|final
 name|A
@@ -1298,9 +1255,9 @@ specifier|final
 name|D
 name|diff
 init|=
-name|getDiff
+name|getDiffById
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 decl_stmt|;
 specifier|final
@@ -1329,13 +1286,13 @@ name|inode
 return|;
 block|}
 comment|/**    * Check if the latest snapshot diff exists.  If not, add it.    * @return the latest snapshot diff, which is never null.    */
-DECL|method|checkAndAddLatestSnapshotDiff (Snapshot latest, N currentINode)
+DECL|method|checkAndAddLatestSnapshotDiff (int latestSnapshotId, N currentINode)
 specifier|final
 name|D
 name|checkAndAddLatestSnapshotDiff
 parameter_list|(
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|,
 name|N
 name|currentINode
@@ -1358,16 +1315,16 @@ literal|null
 operator|&&
 name|Snapshot
 operator|.
-name|ID_COMPARATOR
+name|ID_INTEGER_COMPARATOR
 operator|.
 name|compare
 argument_list|(
 name|last
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 operator|>=
 literal|0
@@ -1384,7 +1341,7 @@ block|{
 return|return
 name|addDiff
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|currentINode
 argument_list|)
@@ -1410,13 +1367,13 @@ block|}
 block|}
 block|}
 comment|/** Save the snapshot copy to the latest snapshot. */
-DECL|method|saveSelf2Snapshot (Snapshot latest, N currentINode, A snapshotCopy)
+DECL|method|saveSelf2Snapshot (int latestSnapshotId, N currentINode, A snapshotCopy)
 specifier|public
 name|void
 name|saveSelf2Snapshot
 parameter_list|(
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|,
 name|N
 name|currentINode
@@ -1429,9 +1386,11 @@ name|QuotaExceededException
 block|{
 if|if
 condition|(
-name|latest
+name|latestSnapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 name|D
@@ -1439,7 +1398,7 @@ name|diff
 init|=
 name|checkAndAddLatestSnapshotDiff
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|currentINode
 argument_list|)

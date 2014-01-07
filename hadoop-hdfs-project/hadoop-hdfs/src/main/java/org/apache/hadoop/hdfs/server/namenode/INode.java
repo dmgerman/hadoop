@@ -440,13 +440,13 @@ literal|0
 return|;
 block|}
 comment|/** Get the {@link PermissionStatus} */
-DECL|method|getPermissionStatus (Snapshot snapshot)
+DECL|method|getPermissionStatus (int snapshotId)
 specifier|abstract
 name|PermissionStatus
 name|getPermissionStatus
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 function_decl|;
 comment|/** The same as getPermissionStatus(null). */
@@ -459,21 +459,23 @@ block|{
 return|return
 name|getPermissionStatus
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
-comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return user name    */
-DECL|method|getUserName (Snapshot snapshot)
+comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the given snapshot; otherwise, get the result from the    *          current inode.    * @return user name    */
+DECL|method|getUserName (int snapshotId)
 specifier|abstract
 name|String
 name|getUserName
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 function_decl|;
-comment|/** The same as getUserName(null). */
+comment|/** The same as getUserName(Snapshot.CURRENT_STATE_ID). */
 annotation|@
 name|Override
 DECL|method|getUserName ()
@@ -486,7 +488,9 @@ block|{
 return|return
 name|getUserName
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
@@ -501,7 +505,7 @@ name|user
 parameter_list|)
 function_decl|;
 comment|/** Set user */
-DECL|method|setUser (String user, Snapshot latest)
+DECL|method|setUser (String user, int latestSnapshotId)
 specifier|final
 name|INode
 name|setUser
@@ -509,8 +513,8 @@ parameter_list|(
 name|String
 name|user
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -521,7 +525,7 @@ name|nodeToUpdate
 init|=
 name|recordModification
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -535,17 +539,17 @@ return|return
 name|nodeToUpdate
 return|;
 block|}
-comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return group name    */
-DECL|method|getGroupName (Snapshot snapshot)
+comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the given snapshot; otherwise, get the result from the    *          current inode.    * @return group name    */
+DECL|method|getGroupName (int snapshotId)
 specifier|abstract
 name|String
 name|getGroupName
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 function_decl|;
-comment|/** The same as getGroupName(null). */
+comment|/** The same as getGroupName(Snapshot.CURRENT_STATE_ID). */
 annotation|@
 name|Override
 DECL|method|getGroupName ()
@@ -558,7 +562,9 @@ block|{
 return|return
 name|getGroupName
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
@@ -573,7 +579,7 @@ name|group
 parameter_list|)
 function_decl|;
 comment|/** Set group */
-DECL|method|setGroup (String group, Snapshot latest)
+DECL|method|setGroup (String group, int latestSnapshotId)
 specifier|final
 name|INode
 name|setGroup
@@ -581,8 +587,8 @@ parameter_list|(
 name|String
 name|group
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -593,7 +599,7 @@ name|nodeToUpdate
 init|=
 name|recordModification
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -607,17 +613,17 @@ return|return
 name|nodeToUpdate
 return|;
 block|}
-comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return permission.    */
-DECL|method|getFsPermission (Snapshot snapshot)
+comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the given snapshot; otherwise, get the result from the    *          current inode.    * @return permission.    */
+DECL|method|getFsPermission (int snapshotId)
 specifier|abstract
 name|FsPermission
 name|getFsPermission
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 function_decl|;
-comment|/** The same as getFsPermission(null). */
+comment|/** The same as getFsPermission(Snapshot.CURRENT_STATE_ID). */
 annotation|@
 name|Override
 DECL|method|getFsPermission ()
@@ -630,7 +636,9 @@ block|{
 return|return
 name|getFsPermission
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
@@ -645,15 +653,15 @@ name|permission
 parameter_list|)
 function_decl|;
 comment|/** Set the {@link FsPermission} of this {@link INode} */
-DECL|method|setPermission (FsPermission permission, Snapshot latest)
+DECL|method|setPermission (FsPermission permission, int latestSnapshotId)
 name|INode
 name|setPermission
 parameter_list|(
 name|FsPermission
 name|permission
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -664,7 +672,7 @@ name|nodeToUpdate
 init|=
 name|recordModification
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -678,15 +686,15 @@ return|return
 name|nodeToUpdate
 return|;
 block|}
-comment|/**    * @return if the given snapshot is null, return this;    *     otherwise return the corresponding snapshot inode.    */
-DECL|method|getSnapshotINode (final Snapshot snapshot)
+comment|/**    * @return if the given snapshot id is {@link Snapshot#CURRENT_STATE_ID},    *         return this; otherwise return the corresponding snapshot inode.    */
+DECL|method|getSnapshotINode (final int snapshotId)
 specifier|public
 name|INodeAttributes
 name|getSnapshotINode
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -694,22 +702,24 @@ name|this
 return|;
 block|}
 comment|/** Is this inode in the latest snapshot? */
-DECL|method|isInLatestSnapshot (final Snapshot latest)
+DECL|method|isInLatestSnapshot (final int latestSnapshotId)
 specifier|public
 specifier|final
 name|boolean
 name|isInLatestSnapshot
 parameter_list|(
 specifier|final
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|latest
+name|latestSnapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
@@ -760,7 +770,7 @@ name|parentDir
 operator|.
 name|isInLatestSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 condition|)
 block|{
@@ -779,7 +789,7 @@ argument_list|(
 name|getLocalNameBytes
 argument_list|()
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 if|if
@@ -872,15 +882,15 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * When {@link #recordModification} is called on a referred node,    * this method tells which snapshot the modification should be    * associated with: the snapshot that belongs to the SRC tree of the rename    * operation, or the snapshot belonging to the DST tree.    *     * @param latestInDst    *          the latest snapshot in the DST tree above the reference node    * @return True: the modification should be recorded in the snapshot that    *         belongs to the SRC tree. False: the modification should be    *         recorded in the snapshot that belongs to the DST tree.    */
-DECL|method|shouldRecordInSrcSnapshot (final Snapshot latestInDst)
+comment|/**    * When {@link #recordModification} is called on a referred node,    * this method tells which snapshot the modification should be    * associated with: the snapshot that belongs to the SRC tree of the rename    * operation, or the snapshot belonging to the DST tree.    *     * @param latestInDst    *          id of the latest snapshot in the DST tree above the reference node    * @return True: the modification should be recorded in the snapshot that    *         belongs to the SRC tree. False: the modification should be    *         recorded in the snapshot that belongs to the DST tree.    */
+DECL|method|shouldRecordInSrcSnapshot (final int latestInDst)
 specifier|public
 specifier|final
 name|boolean
 name|shouldRecordInSrcSnapshot
 parameter_list|(
 specifier|final
-name|Snapshot
+name|int
 name|latestInDst
 parameter_list|)
 block|{
@@ -897,7 +907,9 @@ if|if
 condition|(
 name|latestInDst
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
@@ -931,11 +943,14 @@ decl_stmt|;
 if|if
 condition|(
 name|dstSnapshotId
+operator|!=
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+operator|&&
+name|dstSnapshotId
 operator|>=
 name|latestInDst
-operator|.
-name|getId
-argument_list|()
 condition|)
 block|{
 return|return
@@ -947,15 +962,15 @@ return|return
 literal|false
 return|;
 block|}
-comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latest the latest snapshot that has been taken.    *        Note that it is null if no snapshots have been taken.    * @return The current inode, which usually is the same object of this inode.    *         However, in some cases, this inode may be replaced with a new inode    *         for maintaining snapshots. The current inode is then the new inode.    */
-DECL|method|recordModification (final Snapshot latest)
+comment|/**    * This inode is being modified.  The previous version of the inode needs to    * be recorded in the latest snapshot.    *    * @param latestSnapshotId The id of the latest snapshot that has been taken.    *                         Note that it is {@link Snapshot#CURRENT_STATE_ID}     *                         if no snapshots have been taken.    * @return The current inode, which usually is the same object of this inode.    *         However, in some cases, this inode may be replaced with a new inode    *         for maintaining snapshots. The current inode is then the new inode.    */
+DECL|method|recordModification (final int latestSnapshotId)
 specifier|abstract
 name|INode
 name|recordModification
 parameter_list|(
 specifier|final
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1084,8 +1099,8 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is an {@link INodeDirectory} with snapshot feature.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectory} with snapshot: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *     * @param snapshot    *          The snapshot to delete. Null means to delete the current    *          file/directory.    * @param prior    *          The latest snapshot before the to-be-deleted snapshot. When    *          deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of     *          inodeMap    * @return quota usage delta when deleting a snapshot    */
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, boolean countDiffChange)
+comment|/**    * Clean the subtree under this inode and collect the blocks from the descents    * for further block deletion/update. The current inode can either resides in    * the current tree or be stored as a snapshot copy.    *     *<pre>    * In general, we have the following rules.     * 1. When deleting a file/directory in the current tree, we have different     * actions according to the type of the node to delete.     *     * 1.1 The current inode (this) is an {@link INodeFile}.     * 1.1.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Thus we simply destroy (i.e., to delete completely, no need to save     * snapshot copy) the current INode and collect its blocks for further     * cleansing.    * 1.1.2 Else do nothing since the current INode will be stored as a snapshot    * copy.    *     * 1.2 The current inode is an {@link INodeDirectory}.    * 1.2.1 If {@code prior} is null, there is no snapshot taken on ancestors     * before. Similarly, we destroy the whole subtree and collect blocks.    * 1.2.2 Else do nothing with the current INode. Recursively clean its     * children.    *     * 1.3 The current inode is a file with snapshot.    * Call recordModification(..) to capture the current states.    * Mark the INode as deleted.    *     * 1.4 The current inode is an {@link INodeDirectory} with snapshot feature.    * Call recordModification(..) to capture the current states.     * Destroy files/directories created after the latest snapshot     * (i.e., the inodes stored in the created list of the latest snapshot).    * Recursively clean remaining children.     *    * 2. When deleting a snapshot.    * 2.1 To clean {@link INodeFile}: do nothing.    * 2.2 To clean {@link INodeDirectory}: recursively clean its children.    * 2.3 To clean INodeFile with snapshot: delete the corresponding snapshot in    * its diff list.    * 2.4 To clean {@link INodeDirectory} with snapshot: delete the corresponding     * snapshot in its diff list. Recursively clean its children.    *</pre>    *     * @param snapshotId    *          The id of the snapshot to delete.     *          {@link Snapshot#CURRENT_STATE_ID} means to delete the current    *          file/directory.    * @param priorSnapshotId    *          The id of the latest snapshot before the to-be-deleted snapshot.    *          When deleting a current inode, this parameter captures the latest    *          snapshot.    * @param collectedBlocks    *          blocks collected from the descents for further block    *          deletion/update will be added to the given map.    * @param removedINodes    *          INodes collected from the descents for further cleaning up of     *          inodeMap    * @return quota usage delta when deleting a snapshot    */
+DECL|method|cleanSubtree (final int snapshotId, int priorSnapshotId, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, boolean countDiffChange)
 specifier|public
 specifier|abstract
 name|Quota
@@ -1094,11 +1109,11 @@ name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
-name|Snapshot
-name|prior
+name|int
+name|priorSnapshotId
 parameter_list|,
 name|BlocksMapUpdateInfo
 name|collectedBlocks
@@ -1414,7 +1429,7 @@ literal|true
 argument_list|)
 return|;
 block|}
-comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *     * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#INVALID_ID} indicates the computation    *                       is in the current tree. Otherwise the id indicates    *                       the computation range for a {@link WithName} node.    * @return The same objects as the counts parameter.    */
+comment|/**    * Count subtree {@link Quota#NAMESPACE} and {@link Quota#DISKSPACE} usages.    *     * With the existence of {@link INodeReference}, the same inode and its    * subtree may be referred by multiple {@link WithName} nodes and a    * {@link DstReference} node. To avoid circles while quota usage computation,    * we have the following rules:    *     *<pre>    * 1. For a {@link DstReference} node, since the node must be in the current    * tree (or has been deleted as the end point of a series of rename     * operations), we compute the quota usage of the referred node (and its     * subtree) in the regular manner, i.e., including every inode in the current    * tree and in snapshot copies, as well as the size of diff list.    *     * 2. For a {@link WithName} node, since the node must be in a snapshot, we     * only count the quota usage for those nodes that still existed at the     * creation time of the snapshot associated with the {@link WithName} node.    * We do not count in the size of the diff list.      *<pre>    *     * @param counts The subtree counts for returning.    * @param useCache Whether to use cached quota usage. Note that     *                 {@link WithName} node never uses cache for its subtree.    * @param lastSnapshotId {@link Snapshot#CURRENT_STATE_ID} indicates the     *                       computation is in the current tree. Otherwise the id    *                       indicates the computation range for a     *                       {@link WithName} node.    * @return The same objects as the counts parameter.    */
 DECL|method|computeQuotaUsage (Quota.Counts counts, boolean useCache, int lastSnapshotId)
 specifier|public
 specifier|abstract
@@ -1461,7 +1476,7 @@ name|useCache
 argument_list|,
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
@@ -1781,17 +1796,17 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return modification time.    */
-DECL|method|getModificationTime (Snapshot snapshot)
+comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the given snapshot; otherwise, get the result from the    *          current inode.    * @return modification time.    */
+DECL|method|getModificationTime (int snapshotId)
 specifier|abstract
 name|long
 name|getModificationTime
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 function_decl|;
-comment|/** The same as getModificationTime(null). */
+comment|/** The same as getModificationTime(Snapshot.CURRENT_STATE_ID). */
 annotation|@
 name|Override
 DECL|method|getModificationTime ()
@@ -1804,12 +1819,14 @@ block|{
 return|return
 name|getModificationTime
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
 comment|/** Update modification time if it is larger than the current value. */
-DECL|method|updateModificationTime (long mtime, Snapshot latest)
+DECL|method|updateModificationTime (long mtime, int latestSnapshotId)
 specifier|public
 specifier|abstract
 name|INode
@@ -1818,8 +1835,8 @@ parameter_list|(
 name|long
 name|mtime
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1836,7 +1853,7 @@ name|modificationTime
 parameter_list|)
 function_decl|;
 comment|/** Set the last modification time of inode. */
-DECL|method|setModificationTime (long modificationTime, Snapshot latest)
+DECL|method|setModificationTime (long modificationTime, int latestSnapshotId)
 specifier|public
 specifier|final
 name|INode
@@ -1845,8 +1862,8 @@ parameter_list|(
 name|long
 name|modificationTime
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1857,7 +1874,7 @@ name|nodeToUpdate
 init|=
 name|recordModification
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -1871,17 +1888,17 @@ return|return
 name|nodeToUpdate
 return|;
 block|}
-comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current inode.    * @return access time    */
-DECL|method|getAccessTime (Snapshot snapshot)
+comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the given snapshot; otherwise, get the result from the    *          current inode.    * @return access time    */
+DECL|method|getAccessTime (int snapshotId)
 specifier|abstract
 name|long
 name|getAccessTime
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 function_decl|;
-comment|/** The same as getAccessTime(null). */
+comment|/** The same as getAccessTime(Snapshot.CURRENT_STATE_ID). */
 annotation|@
 name|Override
 DECL|method|getAccessTime ()
@@ -1894,7 +1911,9 @@ block|{
 return|return
 name|getAccessTime
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
@@ -1910,7 +1929,7 @@ name|accessTime
 parameter_list|)
 function_decl|;
 comment|/**    * Set last access time of inode.    */
-DECL|method|setAccessTime (long accessTime, Snapshot latest)
+DECL|method|setAccessTime (long accessTime, int latestSnapshotId)
 specifier|public
 specifier|final
 name|INode
@@ -1919,8 +1938,8 @@ parameter_list|(
 name|long
 name|accessTime
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1931,7 +1950,7 @@ name|nodeToUpdate
 init|=
 name|recordModification
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -2240,7 +2259,9 @@ operator|new
 name|StringBuilder
 argument_list|()
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 return|return
@@ -2276,14 +2297,16 @@ operator|new
 name|StringBuilder
 argument_list|()
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Dump tree recursively.    * @param prefix The prefix string that each line should print.    */
 annotation|@
 name|VisibleForTesting
-DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, Snapshot snapshot)
+DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, int snapshotId)
 specifier|public
 name|void
 name|dumpTreeRecursively
@@ -2294,8 +2317,8 @@ parameter_list|,
 name|StringBuilder
 name|prefix
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|out
@@ -2371,7 +2394,7 @@ literal|", "
 operator|+
 name|getPermissionStatus
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|)
 expr_stmt|;

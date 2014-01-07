@@ -79,12 +79,12 @@ argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|createDiff (Snapshot snapshot, INodeFile file)
+DECL|method|createDiff (int snapshotId, INodeFile file)
 name|FileDiff
 name|createDiff
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|INodeFile
 name|file
@@ -94,7 +94,7 @@ return|return
 operator|new
 name|FileDiff
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
 name|file
 argument_list|)

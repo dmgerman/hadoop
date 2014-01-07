@@ -84,7 +84,9 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INodeAttributes
+name|INode
+operator|.
+name|BlocksMapUpdateInfo
 import|;
 end_import
 
@@ -102,9 +104,7 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|INode
-operator|.
-name|BlocksMapUpdateInfo
+name|INodeAttributes
 import|;
 end_import
 
@@ -197,10 +197,11 @@ argument_list|<
 name|Integer
 argument_list|>
 block|{
-comment|/** The snapshot will be obtained after this diff is applied. */
-DECL|field|snapshot
-name|Snapshot
-name|snapshot
+comment|/** The id of the corresponding snapshot. */
+DECL|field|snapshotId
+specifier|private
+name|int
+name|snapshotId
 decl_stmt|;
 comment|/** The snapshot inode data.  It is null when there is no change. */
 DECL|field|snapshotINode
@@ -213,11 +214,11 @@ specifier|private
 name|D
 name|posteriorDiff
 decl_stmt|;
-DECL|method|AbstractINodeDiff (Snapshot snapshot, A snapshotINode, D posteriorDiff)
+DECL|method|AbstractINodeDiff (int snapshotId, A snapshotINode, D posteriorDiff)
 name|AbstractINodeDiff
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|A
 name|snapshotINode
@@ -226,20 +227,11 @@ name|D
 name|posteriorDiff
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkNotNull
-argument_list|(
-name|snapshot
-argument_list|,
-literal|"snapshot is null"
-argument_list|)
-expr_stmt|;
 name|this
 operator|.
-name|snapshot
+name|snapshotId
 operator|=
-name|snapshot
+name|snapshotId
 expr_stmt|;
 name|this
 operator|.
@@ -277,39 +269,36 @@ name|compare
 argument_list|(
 name|this
 operator|.
-name|snapshot
-operator|.
-name|getId
-argument_list|()
+name|snapshotId
 argument_list|,
 name|that
 argument_list|)
 return|;
 block|}
 comment|/** @return the snapshot object of this diff. */
-DECL|method|getSnapshot ()
+DECL|method|getSnapshotId ()
 specifier|public
 specifier|final
-name|Snapshot
-name|getSnapshot
+name|int
+name|getSnapshotId
 parameter_list|()
 block|{
 return|return
-name|snapshot
+name|snapshotId
 return|;
 block|}
-DECL|method|setSnapshot (Snapshot snapshot)
+DECL|method|setSnapshotId (int snapshot)
 specifier|final
 name|void
-name|setSnapshot
+name|setSnapshotId
 parameter_list|(
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 block|{
 name|this
 operator|.
-name|snapshot
+name|snapshotId
 operator|=
 name|snapshot
 expr_stmt|;
@@ -495,7 +484,7 @@ argument_list|()
 operator|+
 literal|": "
 operator|+
-name|snapshot
+name|snapshotId
 operator|+
 literal|" (post="
 operator|+
@@ -508,7 +497,7 @@ literal|null
 else|:
 name|posteriorDiff
 operator|.
-name|snapshot
+name|snapshotId
 operator|)
 operator|+
 literal|")"
@@ -524,15 +513,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Assume the snapshot is recorded before, write id only.
 name|out
 operator|.
 name|writeInt
 argument_list|(
-name|snapshot
-operator|.
-name|getId
-argument_list|()
+name|snapshotId
 argument_list|)
 expr_stmt|;
 block|}

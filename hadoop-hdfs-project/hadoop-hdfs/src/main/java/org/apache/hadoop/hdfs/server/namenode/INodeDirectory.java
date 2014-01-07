@@ -1028,13 +1028,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getSnapshotINode (Snapshot snapshot)
+DECL|method|getSnapshotINode (int snapshotId)
 specifier|public
 name|INodeDirectoryAttributes
 name|getSnapshotINode
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|DirectoryWithSnapshotFeature
@@ -1057,7 +1057,7 @@ argument_list|()
 operator|.
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
 name|this
 argument_list|)
@@ -1102,13 +1102,13 @@ operator|)
 return|;
 block|}
 comment|/** Replace itself with an {@link INodeDirectorySnapshottable}. */
-DECL|method|replaceSelf4INodeDirectorySnapshottable ( Snapshot latest, final INodeMap inodeMap)
+DECL|method|replaceSelf4INodeDirectorySnapshottable ( int latestSnapshotId, final INodeMap inodeMap)
 specifier|public
 name|INodeDirectorySnapshottable
 name|replaceSelf4INodeDirectorySnapshottable
 parameter_list|(
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|,
 specifier|final
 name|INodeMap
@@ -1158,7 +1158,7 @@ argument_list|()
 operator|.
 name|saveSelf2Snapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|s
 argument_list|,
@@ -1503,7 +1503,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|replaceChild4ReferenceWithName (INode oldChild, Snapshot latest)
+DECL|method|replaceChild4ReferenceWithName (INode oldChild, int latestSnapshotId)
 name|INodeReference
 operator|.
 name|WithName
@@ -1512,17 +1512,19 @@ parameter_list|(
 name|INode
 name|oldChild
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 block|{
 name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|latest
+name|latestSnapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 if|if
@@ -1619,10 +1621,7 @@ operator|.
 name|getLocalNameBytes
 argument_list|()
 argument_list|,
-name|latest
-operator|.
-name|getId
-argument_list|()
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 name|replaceChild
@@ -1640,13 +1639,13 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (Snapshot latest)
+DECL|method|recordModification (int latestSnapshotId)
 specifier|public
 name|INodeDirectory
 name|recordModification
 parameter_list|(
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1655,13 +1654,13 @@ if|if
 condition|(
 name|isInLatestSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 operator|&&
 operator|!
 name|shouldRecordInSrcSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 condition|)
 block|{
@@ -1695,7 +1694,7 @@ argument_list|()
 operator|.
 name|saveSelf2Snapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|this
 argument_list|,
@@ -1708,7 +1707,7 @@ name|this
 return|;
 block|}
 comment|/**    * Save the child to the latest snapshot.    *     * @return the child inode, which may be replaced.    */
-DECL|method|saveChild2Snapshot (final INode child, final Snapshot latest, final INode snapshotCopy)
+DECL|method|saveChild2Snapshot (final INode child, final int latestSnapshotId, final INode snapshotCopy)
 specifier|public
 name|INode
 name|saveChild2Snapshot
@@ -1718,8 +1717,8 @@ name|INode
 name|child
 parameter_list|,
 specifier|final
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|,
 specifier|final
 name|INode
@@ -1730,9 +1729,11 @@ name|QuotaExceededException
 block|{
 if|if
 condition|(
-name|latest
+name|latestSnapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
@@ -1772,14 +1773,14 @@ name|this
 argument_list|,
 name|child
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|snapshotCopy
 argument_list|)
 return|;
 block|}
-comment|/**    * @param name the name of the child    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current directory.    * @return the child inode.    */
-DECL|method|getChild (byte[] name, Snapshot snapshot)
+comment|/**    * @param name the name of the child    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the corresponding snapshot; otherwise, get the result from    *          the current directory.    * @return the child inode.    */
+DECL|method|getChild (byte[] name, int snapshotId)
 specifier|public
 name|INode
 name|getChild
@@ -1788,8 +1789,8 @@ name|byte
 index|[]
 name|name
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|DirectoryWithSnapshotFeature
@@ -1797,9 +1798,11 @@ name|sf
 decl_stmt|;
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 operator|||
 operator|(
 name|sf
@@ -1859,12 +1862,12 @@ name|this
 argument_list|,
 name|name
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
-comment|/**    * @param snapshot    *          if it is not null, get the result from the given snapshot;    *          otherwise, get the result from the current directory.    * @return the current children list if the specified snapshot is null;    *         otherwise, return the children list corresponding to the snapshot.    *         Note that the returned list is never null.    */
-DECL|method|getChildrenList (final Snapshot snapshot)
+comment|/**    * @param snapshotId    *          if it is not {@link Snapshot#CURRENT_STATE_ID}, get the result    *          from the corresponding snapshot; otherwise, get the result from    *          the current directory.    * @return the current children list if the specified snapshot is null;    *         otherwise, return the children list corresponding to the snapshot.    *         Note that the returned list is never null.    */
+DECL|method|getChildrenList (final int snapshotId)
 specifier|public
 name|ReadOnlyList
 argument_list|<
@@ -1873,8 +1876,8 @@ argument_list|>
 name|getChildrenList
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|DirectoryWithSnapshotFeature
@@ -1882,9 +1885,11 @@ name|sf
 decl_stmt|;
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 operator|||
 operator|(
 name|sf
@@ -1910,7 +1915,7 @@ name|getChildrenList
 argument_list|(
 name|this
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
@@ -2209,7 +2214,7 @@ name|nextPos
 return|;
 block|}
 comment|/**    * Remove the specified child from this directory.    */
-DECL|method|removeChild (INode child, Snapshot latest)
+DECL|method|removeChild (INode child, int latestSnapshotId)
 specifier|public
 name|boolean
 name|removeChild
@@ -2217,8 +2222,8 @@ parameter_list|(
 name|INode
 name|child
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2227,7 +2232,7 @@ if|if
 condition|(
 name|isInLatestSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 condition|)
 block|{
@@ -2266,7 +2271,7 @@ name|this
 argument_list|,
 name|child
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 return|;
 block|}
@@ -2336,7 +2341,7 @@ literal|true
 return|;
 block|}
 comment|/**    * Add a child inode to the directory.    *     * @param node INode to insert    * @param setModTime set modification time for the parent node    *                   not needed when replaying the addition and     *                   the parent already has the proper mod time    * @return false if the child with this name already exists;     *         otherwise, return true;    */
-DECL|method|addChild (INode node, final boolean setModTime, final Snapshot latest)
+DECL|method|addChild (INode node, final boolean setModTime, final int latestSnapshotId)
 specifier|public
 name|boolean
 name|addChild
@@ -2349,8 +2354,8 @@ name|boolean
 name|setModTime
 parameter_list|,
 specifier|final
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -2382,7 +2387,7 @@ if|if
 condition|(
 name|isInLatestSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 condition|)
 block|{
@@ -2423,7 +2428,7 @@ name|node
 argument_list|,
 name|setModTime
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 return|;
 block|}
@@ -2447,7 +2452,7 @@ operator|.
 name|getModificationTime
 argument_list|()
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 expr_stmt|;
 block|}
@@ -2612,7 +2617,7 @@ name|lastSnapshotId
 operator|!=
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 operator|&&
 operator|!
 operator|(
@@ -2623,19 +2628,6 @@ argument_list|()
 operator|)
 condition|)
 block|{
-name|Snapshot
-name|lastSnapshot
-init|=
-name|sf
-operator|.
-name|getDiffs
-argument_list|()
-operator|.
-name|getSnapshotById
-argument_list|(
-name|lastSnapshotId
-argument_list|)
-decl_stmt|;
 name|ReadOnlyList
 argument_list|<
 name|INode
@@ -2644,7 +2636,7 @@ name|childrenList
 init|=
 name|getChildrenList
 argument_list|(
-name|lastSnapshot
+name|lastSnapshotId
 argument_list|)
 decl_stmt|;
 for|for
@@ -2936,7 +2928,9 @@ name|childrenList
 init|=
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 decl_stmt|;
 comment|// Explicit traversing is done to enable repositioning after relinquishing
@@ -3025,7 +3019,9 @@ name|childrenList
 operator|=
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 comment|// Reposition in case the children list is changed. Decrement by 1
@@ -3067,8 +3063,8 @@ return|return
 name|summary
 return|;
 block|}
-comment|/**    * This method is usually called by the undo section of rename.    *     * Before calling this function, in the rename operation, we replace the    * original src node (of the rename operation) with a reference node (WithName    * instance) in both the children list and a created list, delete the    * reference node from the children list, and add it to the corresponding    * deleted list.    *     * To undo the above operations, we have the following steps in particular:    *     *<pre>    * 1) remove the WithName node from the deleted list (if it exists)     * 2) replace the WithName node in the created list with srcChild     * 3) add srcChild back as a child of srcParent. Note that we already add     * the node into the created list of a snapshot diff in step 2, we do not need    * to add srcChild to the created list of the latest snapshot.    *</pre>    *     * We do not need to update quota usage because the old child is in the     * deleted list before.     *     * @param oldChild    *          The reference node to be removed/replaced    * @param newChild    *          The node to be added back    * @param latestSnapshot    *          The latest snapshot. Note this may not be the last snapshot in the    *          diff list, since the src tree of the current rename operation    *          may be the dst tree of a previous rename.    * @throws QuotaExceededException should not throw this exception    */
-DECL|method|undoRename4ScrParent (final INodeReference oldChild, final INode newChild, Snapshot latestSnapshot)
+comment|/**    * This method is usually called by the undo section of rename.    *     * Before calling this function, in the rename operation, we replace the    * original src node (of the rename operation) with a reference node (WithName    * instance) in both the children list and a created list, delete the    * reference node from the children list, and add it to the corresponding    * deleted list.    *     * To undo the above operations, we have the following steps in particular:    *     *<pre>    * 1) remove the WithName node from the deleted list (if it exists)     * 2) replace the WithName node in the created list with srcChild     * 3) add srcChild back as a child of srcParent. Note that we already add     * the node into the created list of a snapshot diff in step 2, we do not need    * to add srcChild to the created list of the latest snapshot.    *</pre>    *     * We do not need to update quota usage because the old child is in the     * deleted list before.     *     * @param oldChild    *          The reference node to be removed/replaced    * @param newChild    *          The node to be added back    * @throws QuotaExceededException should not throw this exception    */
+DECL|method|undoRename4ScrParent (final INodeReference oldChild, final INode newChild)
 specifier|public
 name|void
 name|undoRename4ScrParent
@@ -3080,9 +3076,6 @@ parameter_list|,
 specifier|final
 name|INode
 name|newChild
-parameter_list|,
-name|Snapshot
-name|latestSnapshot
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -3140,12 +3133,14 @@ name|newChild
 argument_list|,
 literal|true
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Undo the rename operation for the dst tree, i.e., if the rename operation    * (with OVERWRITE option) removes a file/dir from the dst tree, add it back    * and delete possible record in the deleted list.      */
-DECL|method|undoRename4DstParent (final INode deletedChild, Snapshot latestSnapshot)
+DECL|method|undoRename4DstParent (final INode deletedChild, int latestSnapshotId)
 specifier|public
 name|void
 name|undoRename4DstParent
@@ -3154,8 +3149,8 @@ specifier|final
 name|INode
 name|deletedChild
 parameter_list|,
-name|Snapshot
-name|latestSnapshot
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -3194,8 +3189,17 @@ argument_list|,
 name|deletedChild
 argument_list|)
 decl_stmt|;
-comment|// pass null for inodeMap since the parent node will not get replaced when
-comment|// undoing rename
+name|int
+name|sid
+init|=
+name|removeDeletedChild
+condition|?
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+else|:
+name|latestSnapshotId
+decl_stmt|;
 specifier|final
 name|boolean
 name|added
@@ -3206,11 +3210,7 @@ name|deletedChild
 argument_list|,
 literal|true
 argument_list|,
-name|removeDeletedChild
-condition|?
-literal|null
-else|:
-name|latestSnapshot
+name|sid
 argument_list|)
 decl_stmt|;
 comment|// update quota usage if adding is successfully and the old child has not
@@ -3291,7 +3291,7 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Call cleanSubtree(..) recursively down the subtree. */
-DECL|method|cleanSubtreeRecursively (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final Map<INode, INode> excludedNodes, final boolean countDiffChange)
+DECL|method|cleanSubtreeRecursively (final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final Map<INode, INode> excludedNodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -3299,10 +3299,10 @@ name|Counts
 name|cleanSubtreeRecursively
 parameter_list|(
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
+name|int
 name|prior
 parameter_list|,
 specifier|final
@@ -3349,16 +3349,20 @@ comment|// the diff list, the snapshot to be deleted has been combined or rename
 comment|// to its latest previous snapshot. (besides, we also need to consider nodes
 comment|// created after prior but before snapshot. this will be done in
 comment|// DirectoryWithSnapshotFeature)
-name|Snapshot
+name|int
 name|s
 init|=
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 operator|&&
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|?
 name|prior
 else|:
@@ -3379,7 +3383,9 @@ if|if
 condition|(
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 operator|&&
 name|excludedNodes
 operator|!=
@@ -3482,7 +3488,9 @@ name|child
 range|:
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 control|)
 block|{
@@ -3509,7 +3517,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -3517,11 +3525,11 @@ name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
-name|Snapshot
-name|prior
+name|int
+name|priorSnapshotId
 parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
@@ -3562,9 +3570,9 @@ name|cleanDirectory
 argument_list|(
 name|this
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|,
-name|prior
+name|priorSnapshotId
 argument_list|,
 name|collectedBlocks
 argument_list|,
@@ -3577,13 +3585,17 @@ block|}
 comment|// there is no snapshot data
 if|if
 condition|(
-name|prior
+name|priorSnapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 operator|&&
-name|snapshot
+name|snapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 comment|// destroy the whole subtree and collect blocks that should be deleted
@@ -3629,9 +3641,9 @@ name|counts
 init|=
 name|cleanSubtreeRecursively
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
-name|prior
+name|priorSnapshotId
 argument_list|,
 name|collectedBlocks
 argument_list|,
@@ -3738,7 +3750,7 @@ annotation|@
 name|VisibleForTesting
 annotation|@
 name|Override
-DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final Snapshot snapshot)
+DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final int snapshot)
 specifier|public
 name|void
 name|dumpTreeRecursively
@@ -3750,7 +3762,7 @@ name|StringBuilder
 name|prefix
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 block|{
@@ -3820,9 +3832,6 @@ argument_list|(
 literal|", snapshotId="
 operator|+
 name|snapshot
-operator|.
-name|getId
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4046,7 +4055,7 @@ name|prefix
 argument_list|,
 name|pair
 operator|.
-name|snapshot
+name|snapshotId
 argument_list|)
 expr_stmt|;
 name|prefix
@@ -4071,11 +4080,11 @@ specifier|static
 class|class
 name|SnapshotAndINode
 block|{
-DECL|field|snapshot
+DECL|field|snapshotId
 specifier|public
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 decl_stmt|;
 DECL|field|inode
 specifier|public
@@ -4083,11 +4092,11 @@ specifier|final
 name|INode
 name|inode
 decl_stmt|;
-DECL|method|SnapshotAndINode (Snapshot snapshot, INode inode)
+DECL|method|SnapshotAndINode (int snapshot, INode inode)
 specifier|public
 name|SnapshotAndINode
 parameter_list|(
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
 name|INode
@@ -4096,7 +4105,7 @@ parameter_list|)
 block|{
 name|this
 operator|.
-name|snapshot
+name|snapshotId
 operator|=
 name|snapshot
 expr_stmt|;
@@ -4107,41 +4116,22 @@ operator|=
 name|inode
 expr_stmt|;
 block|}
-DECL|method|SnapshotAndINode (Snapshot snapshot)
-specifier|public
-name|SnapshotAndINode
-parameter_list|(
-name|Snapshot
-name|snapshot
-parameter_list|)
-block|{
-name|this
-argument_list|(
-name|snapshot
-argument_list|,
-name|snapshot
-operator|.
-name|getRoot
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
-block|}
-DECL|method|getChildrenNum (final Snapshot snapshot)
+DECL|method|getChildrenNum (final int snapshotId)
 specifier|public
 specifier|final
 name|int
 name|getChildrenNum
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
 name|getChildrenList
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|size
