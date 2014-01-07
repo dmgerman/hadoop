@@ -33225,7 +33225,7 @@ name|logAuditEvent
 argument_list|(
 name|success
 argument_list|,
-literal|"addCacheDirective"
+literal|"modifyCacheDirective"
 argument_list|,
 literal|null
 argument_list|,
