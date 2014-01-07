@@ -32,16 +32,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|junit
@@ -57,20 +47,6 @@ operator|.
 name|junit
 operator|.
 name|Test
-import|;
-end_import
-
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|collect
-operator|.
-name|Lists
 import|;
 end_import
 
@@ -877,149 +853,6 @@ name|hashCode
 argument_list|()
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Test
-DECL|method|testEntryNaturalOrdering ()
-specifier|public
-name|void
-name|testEntryNaturalOrdering
-parameter_list|()
-block|{
-name|AclEntry
-name|expected
-index|[]
-init|=
-operator|new
-name|AclEntry
-index|[]
-block|{
-name|ENTRY5
-block|,
-comment|// owner
-name|ENTRY1
-block|,
-comment|// named user
-name|ENTRY11
-block|,
-comment|// group
-name|ENTRY3
-block|,
-comment|// named group
-name|ENTRY9
-block|,
-comment|// mask
-name|ENTRY7
-block|,
-comment|// other
-name|ENTRY13
-block|,
-comment|// default owner
-name|ENTRY8
-block|,
-comment|// default named user
-name|ENTRY12
-block|,
-comment|// default group
-name|ENTRY6
-block|,
-comment|// default named group
-name|ENTRY10
-block|,
-comment|// default mask
-name|ENTRY4
-comment|// default other
-block|}
-decl_stmt|;
-name|List
-argument_list|<
-name|AclEntry
-argument_list|>
-name|actual
-init|=
-name|Lists
-operator|.
-name|newArrayList
-argument_list|(
-name|STATUS4
-operator|.
-name|getEntries
-argument_list|()
-argument_list|)
-decl_stmt|;
-name|assertNotNull
-argument_list|(
-name|actual
-argument_list|)
-expr_stmt|;
-name|assertEquals
-argument_list|(
-name|expected
-operator|.
-name|length
-argument_list|,
-name|actual
-operator|.
-name|size
-argument_list|()
-argument_list|)
-expr_stmt|;
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|expected
-operator|.
-name|length
-condition|;
-operator|++
-name|i
-control|)
-block|{
-name|AclEntry
-name|expectedEntry
-init|=
-name|expected
-index|[
-name|i
-index|]
-decl_stmt|;
-name|AclEntry
-name|actualEntry
-init|=
-name|actual
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-decl_stmt|;
-name|assertEquals
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"At position %d, expected = %s, actual = %s"
-argument_list|,
-name|i
-argument_list|,
-name|expectedEntry
-argument_list|,
-name|actualEntry
-argument_list|)
-argument_list|,
-name|expectedEntry
-argument_list|,
-name|actualEntry
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 annotation|@
 name|Test
