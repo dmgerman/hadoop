@@ -484,7 +484,10 @@ argument_list|()
 operator|+
 literal|": "
 operator|+
-name|snapshotId
+name|this
+operator|.
+name|getSnapshotId
+argument_list|()
 operator|+
 literal|" (post="
 operator|+
@@ -497,7 +500,8 @@ literal|null
 else|:
 name|posteriorDiff
 operator|.
-name|snapshotId
+name|getSnapshotId
+argument_list|()
 operator|)
 operator|+
 literal|")"
