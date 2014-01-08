@@ -942,7 +942,7 @@ operator|.
 name|newBuilder
 argument_list|()
 operator|.
-name|setClusterid
+name|setClusterId
 argument_list|(
 name|clusterId
 argument_list|)
@@ -1051,7 +1051,7 @@ condition|(
 operator|!
 name|proto
 operator|.
-name|getClusterid
+name|getClusterId
 argument_list|()
 operator|.
 name|equals
@@ -1074,7 +1074,7 @@ literal|"Other RM's cluster = "
 operator|+
 name|proto
 operator|.
-name|getClusterid
+name|getClusterId
 argument_list|()
 argument_list|)
 expr_stmt|;
