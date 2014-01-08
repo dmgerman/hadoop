@@ -248,12 +248,26 @@ name|byte
 index|[]
 argument_list|>
 block|{
-DECL|field|INVALID_ID
+comment|/**    * This id is used to indicate the current state (vs. snapshots)    */
+DECL|field|CURRENT_STATE_ID
 specifier|public
 specifier|static
 specifier|final
 name|int
-name|INVALID_ID
+name|CURRENT_STATE_ID
+init|=
+name|Integer
+operator|.
+name|MAX_VALUE
+operator|-
+literal|1
+decl_stmt|;
+DECL|field|NO_SNAPSHOT_ID
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|NO_SNAPSHOT_ID
 init|=
 operator|-
 literal|1
@@ -368,7 +382,7 @@ name|toString
 argument_list|()
 return|;
 block|}
-comment|/**     * Get the name of the given snapshot.     * @param s The given snapshot.    * @return The name of the snapshot, or an empty string if {@code s} is null    */
+comment|/**    * Get the name of the given snapshot.    * @param s The given snapshot.    * @return The name of the snapshot, or an empty string if {@code s} is null    */
 DECL|method|getSnapshotName (Snapshot s)
 specifier|static
 name|String
@@ -392,6 +406,29 @@ name|getLocalName
 argument_list|()
 else|:
 literal|""
+return|;
+block|}
+DECL|method|getSnapshotId (Snapshot s)
+specifier|public
+specifier|static
+name|int
+name|getSnapshotId
+parameter_list|(
+name|Snapshot
+name|s
+parameter_list|)
+block|{
+return|return
+name|s
+operator|==
+literal|null
+condition|?
+name|CURRENT_STATE_ID
+else|:
+name|s
+operator|.
+name|getId
+argument_list|()
 return|;
 block|}
 comment|/**    * Compare snapshot with IDs, where null indicates the current status thus    * is greater than any non-null snapshot.    */
@@ -430,27 +467,19 @@ name|ID_INTEGER_COMPARATOR
 operator|.
 name|compare
 argument_list|(
-name|left
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-name|left
+name|Snapshot
 operator|.
-name|getId
-argument_list|()
+name|getSnapshotId
+argument_list|(
+name|left
+argument_list|)
 argument_list|,
-name|right
-operator|==
-literal|null
-condition|?
-literal|null
-else|:
-name|right
+name|Snapshot
 operator|.
-name|getId
-argument_list|()
+name|getSnapshotId
+argument_list|(
+name|right
+argument_list|)
 argument_list|)
 return|;
 block|}
@@ -487,60 +516,35 @@ name|Integer
 name|right
 parameter_list|)
 block|{
-comment|// null means the current state, thus should be the largest
-if|if
-condition|(
-name|left
-operator|==
-literal|null
-condition|)
-block|{
+comment|// Snapshot.CURRENT_STATE_ID means the current state, thus should be the
+comment|// largest
 return|return
-name|right
-operator|==
-literal|null
-condition|?
-literal|0
-else|:
-literal|1
-return|;
-block|}
-else|else
-block|{
-return|return
-name|right
-operator|==
-literal|null
-condition|?
-operator|-
-literal|1
-else|:
 name|left
 operator|-
 name|right
 return|;
-block|}
 block|}
 block|}
 decl_stmt|;
-comment|/**    * Find the latest snapshot that 1) covers the given inode (which means the    * snapshot was either taken on the inode or taken on an ancestor of the    * inode), and 2) was taken before the given snapshot (if the given snapshot     * is not null).    *     * @param inode the given inode that the returned snapshot needs to cover    * @param anchor the returned snapshot should be taken before this snapshot.    * @return the latest snapshot covers the given inode and was taken before the    *         the given snapshot (if it is not null).    */
-DECL|method|findLatestSnapshot (INode inode, Snapshot anchor)
+comment|/**    * Find the latest snapshot that 1) covers the given inode (which means the    * snapshot was either taken on the inode or taken on an ancestor of the    * inode), and 2) was taken before the given snapshot (if the given snapshot     * is not null).    *     * @param inode the given inode that the returned snapshot needs to cover    * @param anchor the returned snapshot should be taken before this given id.    * @return id of the latest snapshot that covers the given inode and was taken     *         before the the given snapshot (if it is not null).    */
+DECL|method|findLatestSnapshot (INode inode, final int anchor)
 specifier|public
 specifier|static
-name|Snapshot
+name|int
 name|findLatestSnapshot
 parameter_list|(
 name|INode
 name|inode
 parameter_list|,
-name|Snapshot
+specifier|final
+name|int
 name|anchor
 parameter_list|)
 block|{
-name|Snapshot
+name|int
 name|latest
 init|=
-literal|null
+name|NO_SNAPSHOT_ID
 decl_stmt|;
 for|for
 control|(
@@ -686,7 +690,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getChildrenList (Snapshot snapshot)
+DECL|method|getChildrenList (int snapshotId)
 specifier|public
 name|ReadOnlyList
 argument_list|<
@@ -694,8 +698,8 @@ name|INode
 argument_list|>
 name|getChildrenList
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -704,13 +708,13 @@ argument_list|()
 operator|.
 name|getChildrenList
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getChild (byte[] name, Snapshot snapshot)
+DECL|method|getChild (byte[] name, int snapshotId)
 specifier|public
 name|INode
 name|getChild
@@ -719,8 +723,8 @@ name|byte
 index|[]
 name|name
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -731,7 +735,7 @@ name|getChild
 argument_list|(
 name|name
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}

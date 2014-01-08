@@ -3154,7 +3154,7 @@ name|isInLatestSnapshot
 argument_list|(
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3183,7 +3183,7 @@ name|recordModification
 argument_list|(
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3229,7 +3229,7 @@ argument_list|()
 else|:
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 decl_stmt|;
 if|if
 condition|(
@@ -3259,7 +3259,7 @@ name|srcChild
 argument_list|,
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -3297,10 +3297,6 @@ argument_list|(
 name|oldSrcCounts
 argument_list|,
 literal|true
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -3459,12 +3455,12 @@ argument_list|(
 name|dstChildName
 argument_list|)
 expr_stmt|;
-name|Snapshot
-name|dstSnapshot
+name|int
+name|dstSnapshotId
 init|=
 name|dstIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -3485,18 +3481,7 @@ argument_list|()
 argument_list|,
 name|withCount
 argument_list|,
-name|dstSnapshot
-operator|==
-literal|null
-condition|?
-name|Snapshot
-operator|.
-name|INVALID_ID
-else|:
-name|dstSnapshot
-operator|.
-name|getId
-argument_list|()
+name|dstSnapshotId
 argument_list|)
 decl_stmt|;
 name|toDst
@@ -3565,7 +3550,7 @@ name|timestamp
 argument_list|,
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3588,7 +3573,7 @@ name|timestamp
 argument_list|,
 name|dstIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -3627,10 +3612,6 @@ name|newInstance
 argument_list|()
 argument_list|,
 literal|false
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 decl_stmt|;
 name|newSrcCounts
@@ -3807,11 +3788,6 @@ name|asReference
 argument_list|()
 argument_list|,
 name|srcChild
-argument_list|,
-name|srcIIP
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4323,7 +4299,9 @@ argument_list|()
 operator|.
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -4492,7 +4470,7 @@ name|isInLatestSnapshot
 argument_list|(
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4521,7 +4499,7 @@ name|recordModification
 argument_list|(
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4555,7 +4533,7 @@ argument_list|()
 else|:
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 decl_stmt|;
 name|Quota
 operator|.
@@ -4597,7 +4575,7 @@ name|srcChild
 argument_list|,
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4635,10 +4613,6 @@ argument_list|(
 name|oldSrcCounts
 argument_list|,
 literal|true
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -4844,12 +4818,12 @@ argument_list|(
 name|dstChildName
 argument_list|)
 expr_stmt|;
-name|Snapshot
-name|dstSnapshot
+name|int
+name|dstSnapshotId
 init|=
 name|dstIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -4876,18 +4850,7 @@ argument_list|()
 argument_list|,
 name|withCount
 argument_list|,
-name|dstSnapshot
-operator|==
-literal|null
-condition|?
-name|Snapshot
-operator|.
-name|INVALID_ID
-else|:
-name|dstSnapshot
-operator|.
-name|getId
-argument_list|()
+name|dstSnapshotId
 argument_list|)
 decl_stmt|;
 name|toDst
@@ -4956,7 +4919,7 @@ name|timestamp
 argument_list|,
 name|srcIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4978,7 +4941,7 @@ name|timestamp
 argument_list|,
 name|dstIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5037,11 +5000,13 @@ name|removedDst
 operator|.
 name|cleanSubtree
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|,
 name|dstIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|,
 name|collectedBlocks
@@ -5115,10 +5080,6 @@ name|newInstance
 argument_list|()
 argument_list|,
 literal|false
-argument_list|,
-name|Snapshot
-operator|.
-name|INVALID_ID
 argument_list|)
 decl_stmt|;
 name|newSrcCounts
@@ -5298,11 +5259,6 @@ name|asReference
 argument_list|()
 argument_list|,
 name|srcChild
-argument_list|,
-name|srcIIP
-operator|.
-name|getLatestSnapshot
-argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -5352,7 +5308,7 @@ name|removedDst
 argument_list|,
 name|dstIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5651,7 +5607,7 @@ name|replication
 argument_list|,
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|,
 name|inodeMap
@@ -5972,7 +5928,7 @@ name|permissions
 argument_list|,
 name|inodesInPath
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6116,7 +6072,7 @@ name|username
 argument_list|,
 name|inodesInPath
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6136,7 +6092,7 @@ name|groupname
 argument_list|,
 name|inodesInPath
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -6317,12 +6273,12 @@ name|asDirectory
 argument_list|()
 decl_stmt|;
 specifier|final
-name|Snapshot
+name|int
 name|trgLatestSnapshot
 init|=
 name|trgIIP
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -6368,12 +6324,12 @@ index|]
 argument_list|)
 decl_stmt|;
 specifier|final
-name|Snapshot
+name|int
 name|latest
 init|=
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -6960,12 +6916,12 @@ literal|false
 return|;
 block|}
 specifier|final
-name|Snapshot
+name|int
 name|s
 init|=
 name|inodesInPath
 operator|.
-name|getPathSnapshot
+name|getPathSnapshotId
 argument_list|()
 decl_stmt|;
 return|return
@@ -7145,12 +7101,12 @@ return|;
 block|}
 comment|// record modification
 specifier|final
-name|Snapshot
+name|int
 name|latestSnapshot
 init|=
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 name|targetNode
@@ -7254,7 +7210,9 @@ name|targetNode
 operator|.
 name|cleanSubtree
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|,
 name|latestSnapshot
 argument_list|,
@@ -7446,7 +7404,9 @@ name|targetDir
 operator|.
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 control|)
 block|{
@@ -7528,12 +7488,12 @@ literal|true
 argument_list|)
 decl_stmt|;
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 init|=
 name|inodesInPath
 operator|.
-name|getPathSnapshot
+name|getPathSnapshotId
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -7941,7 +7901,9 @@ argument_list|()
 argument_list|,
 name|sRoot
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -8049,7 +8011,7 @@ name|i
 argument_list|,
 name|inodesInPath
 operator|.
-name|getPathSnapshot
+name|getPathSnapshotId
 argument_list|()
 argument_list|)
 return|;
@@ -10481,7 +10443,9 @@ name|parent
 operator|.
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 operator|.
 name|size
@@ -10779,7 +10743,7 @@ literal|true
 argument_list|,
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -10942,12 +10906,12 @@ throws|throws
 name|QuotaExceededException
 block|{
 specifier|final
-name|Snapshot
+name|int
 name|latestSnapshot
 init|=
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -11633,12 +11597,12 @@ literal|null
 return|;
 block|}
 specifier|final
-name|Snapshot
+name|int
 name|latest
 init|=
 name|iip
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 decl_stmt|;
 name|dirNode
@@ -11796,7 +11760,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Sets the access time on the file/directory. Logs it in the transaction log.    */
-DECL|method|setTimes (String src, INode inode, long mtime, long atime, boolean force, Snapshot latest)
+DECL|method|setTimes (String src, INode inode, long mtime, long atime, boolean force, int latestSnapshotId)
 name|void
 name|setTimes
 parameter_list|(
@@ -11815,8 +11779,8 @@ parameter_list|,
 name|boolean
 name|force
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -11843,7 +11807,7 @@ name|atime
 argument_list|,
 name|force
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 expr_stmt|;
 block|}
@@ -11924,12 +11888,12 @@ name|force
 argument_list|,
 name|i
 operator|.
-name|getLatestSnapshot
+name|getLatestSnapshotId
 argument_list|()
 argument_list|)
 return|;
 block|}
-DECL|method|unprotectedSetTimes (INode inode, long mtime, long atime, boolean force, Snapshot latest)
+DECL|method|unprotectedSetTimes (INode inode, long mtime, long atime, boolean force, int latest)
 specifier|private
 name|boolean
 name|unprotectedSetTimes
@@ -11946,7 +11910,7 @@ parameter_list|,
 name|boolean
 name|force
 parameter_list|,
-name|Snapshot
+name|int
 name|latest
 parameter_list|)
 throws|throws
@@ -11999,9 +11963,7 @@ init|=
 name|inode
 operator|.
 name|getAccessTime
-argument_list|(
-literal|null
-argument_list|)
+argument_list|()
 decl_stmt|;
 comment|// if the last access time update was within the last precision interval, then
 comment|// no need to store access time
@@ -12095,7 +12057,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * create an hdfs file status from an inode    *     * @param path the local name    * @param node inode    * @param needLocation if block locations need to be included or not    * @return a file status    * @throws IOException if any error occurs    */
-DECL|method|createFileStatus (byte[] path, INode node, boolean needLocation, Snapshot snapshot)
+DECL|method|createFileStatus (byte[] path, INode node, boolean needLocation, int snapshot)
 specifier|private
 name|HdfsFileStatus
 name|createFileStatus
@@ -12110,7 +12072,7 @@ parameter_list|,
 name|boolean
 name|needLocation
 parameter_list|,
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 throws|throws
@@ -12147,7 +12109,7 @@ return|;
 block|}
 block|}
 comment|/**    * Create FileStatus by file INode     */
-DECL|method|createFileStatus (byte[] path, INode node, Snapshot snapshot)
+DECL|method|createFileStatus (byte[] path, INode node, int snapshot)
 name|HdfsFileStatus
 name|createFileStatus
 parameter_list|(
@@ -12158,7 +12120,7 @@ parameter_list|,
 name|INode
 name|node
 parameter_list|,
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 block|{
@@ -12318,7 +12280,7 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Create FileStatus with location info by file INode    */
-DECL|method|createLocatedFileStatus (byte[] path, INode node, Snapshot snapshot)
+DECL|method|createLocatedFileStatus (byte[] path, INode node, int snapshot)
 specifier|private
 name|HdfsLocatedFileStatus
 name|createLocatedFileStatus
@@ -12330,7 +12292,7 @@ parameter_list|,
 name|INode
 name|node
 parameter_list|,
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 throws|throws
@@ -12409,7 +12371,9 @@ name|inSnapshot
 init|=
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 decl_stmt|;
 specifier|final
 name|boolean

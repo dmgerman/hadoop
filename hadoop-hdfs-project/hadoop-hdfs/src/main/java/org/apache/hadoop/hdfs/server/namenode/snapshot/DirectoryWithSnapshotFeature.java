@@ -1577,12 +1577,19 @@ specifier|final
 name|ChildrenDiff
 name|diff
 decl_stmt|;
-DECL|method|DirectoryDiff (Snapshot snapshot, INodeDirectory dir)
+DECL|field|isSnapshotRoot
+specifier|private
+name|boolean
+name|isSnapshotRoot
+init|=
+literal|false
+decl_stmt|;
+DECL|method|DirectoryDiff (int snapshotId, INodeDirectory dir)
 specifier|private
 name|DirectoryDiff
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|INodeDirectory
 name|dir
@@ -1590,7 +1597,7 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
 literal|null
 argument_list|,
@@ -1605,7 +1612,9 @@ name|dir
 operator|.
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 operator|.
 name|size
@@ -1621,11 +1630,11 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** Constructor used by FSImage loading */
-DECL|method|DirectoryDiff (Snapshot snapshot, INodeDirectoryAttributes snapshotINode, DirectoryDiff posteriorDiff, int childrenSize, List<INode> createdList, List<INode> deletedList)
+DECL|method|DirectoryDiff (int snapshotId, INodeDirectoryAttributes snapshotINode, DirectoryDiff posteriorDiff, int childrenSize, List<INode> createdList, List<INode> deletedList, boolean isSnapshotRoot)
 name|DirectoryDiff
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
 name|INodeDirectoryAttributes
 name|snapshotINode
@@ -1647,11 +1656,14 @@ argument_list|<
 name|INode
 argument_list|>
 name|deletedList
+parameter_list|,
+name|boolean
+name|isSnapshotRoot
 parameter_list|)
 block|{
 name|super
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
 name|snapshotINode
 argument_list|,
@@ -1676,6 +1688,12 @@ argument_list|,
 name|deletedList
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|isSnapshotRoot
+operator|=
+name|isSnapshotRoot
+expr_stmt|;
 block|}
 DECL|method|getChildrenDiff ()
 name|ChildrenDiff
@@ -1686,19 +1704,34 @@ return|return
 name|diff
 return|;
 block|}
-comment|/** Is the inode the root of the snapshot? */
+DECL|method|setSnapshotRoot (INodeDirectoryAttributes root)
+name|void
+name|setSnapshotRoot
+parameter_list|(
+name|INodeDirectoryAttributes
+name|root
+parameter_list|)
+block|{
+name|this
+operator|.
+name|snapshotINode
+operator|=
+name|root
+expr_stmt|;
+name|this
+operator|.
+name|isSnapshotRoot
+operator|=
+literal|true
+expr_stmt|;
+block|}
 DECL|method|isSnapshotRoot ()
 name|boolean
 name|isSnapshotRoot
 parameter_list|()
 block|{
 return|return
-name|snapshotINode
-operator|==
-name|snapshot
-operator|.
-name|getRoot
-argument_list|()
+name|isSnapshotRoot
 return|;
 block|}
 annotation|@
@@ -1907,7 +1940,9 @@ name|currentDir
 operator|.
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 argument_list|)
 argument_list|)
@@ -2076,7 +2111,9 @@ name|getChild
 argument_list|(
 name|name
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
@@ -2132,30 +2169,20 @@ argument_list|(
 name|childrenSize
 argument_list|)
 expr_stmt|;
-comment|// write snapshotINode
+comment|// Write snapshotINode
+name|out
+operator|.
+name|writeBoolean
+argument_list|(
+name|isSnapshotRoot
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
+operator|!
 name|isSnapshotRoot
-argument_list|()
 condition|)
 block|{
-name|out
-operator|.
-name|writeBoolean
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-name|out
-operator|.
-name|writeBoolean
-argument_list|(
-literal|false
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|snapshotINode
@@ -2274,11 +2301,11 @@ argument_list|>
 block|{
 annotation|@
 name|Override
-DECL|method|createDiff (Snapshot snapshot, INodeDirectory currentDir)
+DECL|method|createDiff (int snapshot, INodeDirectory currentDir)
 name|DirectoryDiff
 name|createDiff
 parameter_list|(
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
 name|INodeDirectory
@@ -2574,7 +2601,7 @@ name|map
 return|;
 block|}
 comment|/**    * Destroy a subtree under a DstReference node.    */
-DECL|method|destroyDstSubtree (INode inode, final Snapshot snapshot, final Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
+DECL|method|destroyDstSubtree (INode inode, final int snapshot, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes)
 specifier|public
 specifier|static
 name|void
@@ -2584,11 +2611,11 @@ name|INode
 name|inode
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|prior
 parameter_list|,
 specifier|final
@@ -2611,7 +2638,9 @@ name|checkArgument
 argument_list|(
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 argument_list|)
 expr_stmt|;
 if|if
@@ -2632,7 +2661,9 @@ name|WithName
 operator|&&
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 comment|// this inode has been renamed before the deletion of the DstReference
@@ -2757,7 +2788,7 @@ name|priorDiff
 init|=
 name|diffList
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
 name|prior
 argument_list|)
@@ -2770,13 +2801,10 @@ literal|null
 operator|&&
 name|priorDiff
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|prior
-argument_list|)
 condition|)
 block|{
 name|List
@@ -2808,7 +2836,9 @@ if|if
 condition|(
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 name|diffList
@@ -2833,7 +2863,7 @@ name|priorDiff
 operator|=
 name|diffList
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
 name|prior
 argument_list|)
@@ -2846,13 +2876,10 @@ literal|null
 operator|&&
 name|priorDiff
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|prior
-argument_list|)
 condition|)
 block|{
 name|priorDiff
@@ -2918,8 +2945,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @return Quota usage update.    */
-DECL|method|cleanDeletedINode (INode inode, final Snapshot post, final Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+comment|/**    * Clean an inode while we move it from the deleted list of post to the    * deleted list of prior.    * @param inode The inode to clean.    * @param post The post snapshot.    * @param prior The id of the prior snapshot.    * @param collectedBlocks Used to collect blocks for later deletion.    * @return Quota usage update.    */
+DECL|method|cleanDeletedINode (INode inode, final int post, final int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|private
 specifier|static
 name|Quota
@@ -2931,11 +2958,11 @@ name|INode
 name|inode
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|post
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|prior
 parameter_list|,
 specifier|final
@@ -3034,9 +3061,6 @@ name|getLastSnapshotId
 argument_list|()
 operator|>=
 name|post
-operator|.
-name|getId
-argument_list|()
 condition|)
 block|{
 name|wn
@@ -3156,7 +3180,7 @@ operator|.
 name|getDiffs
 argument_list|()
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
 name|prior
 argument_list|)
@@ -3169,13 +3193,10 @@ literal|null
 operator|&&
 name|priorDiff
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|prior
-argument_list|)
 condition|)
 block|{
 name|priorChildrenDiff
@@ -3286,16 +3307,16 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/** @return the last snapshot. */
-DECL|method|getLastSnapshot ()
+DECL|method|getLastSnapshotId ()
 specifier|public
-name|Snapshot
-name|getLastSnapshot
+name|int
+name|getLastSnapshotId
 parameter_list|()
 block|{
 return|return
 name|diffs
 operator|.
-name|getLastSnapshot
+name|getLastSnapshotId
 argument_list|()
 return|;
 block|}
@@ -3344,7 +3365,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Add an inode into parent's children list. The caller of this method needs    * to make sure that parent is in the given snapshot "latest".    */
-DECL|method|addChild (INodeDirectory parent, INode inode, boolean setModTime, Snapshot latest)
+DECL|method|addChild (INodeDirectory parent, INode inode, boolean setModTime, int latestSnapshotId)
 specifier|public
 name|boolean
 name|addChild
@@ -3358,8 +3379,8 @@ parameter_list|,
 name|boolean
 name|setModTime
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -3371,7 +3392,7 @@ name|diffs
 operator|.
 name|checkAndAddLatestSnapshotDiff
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|parent
 argument_list|)
@@ -3400,7 +3421,9 @@ name|inode
 argument_list|,
 name|setModTime
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -3424,7 +3447,7 @@ name|added
 return|;
 block|}
 comment|/**    * Remove an inode from parent's children list. The caller of this method    * needs to make sure that parent is in the given snapshot "latest".    */
-DECL|method|removeChild (INodeDirectory parent, INode child, Snapshot latest)
+DECL|method|removeChild (INodeDirectory parent, INode child, int latestSnapshotId)
 specifier|public
 name|boolean
 name|removeChild
@@ -3435,8 +3458,8 @@ parameter_list|,
 name|INode
 name|child
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -3459,7 +3482,7 @@ name|diffs
 operator|.
 name|checkAndAddLatestSnapshotDiff
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|parent
 argument_list|)
@@ -3516,7 +3539,7 @@ name|removed
 return|;
 block|}
 comment|/**    * @return If there is no corresponding directory diff for the given    *         snapshot, this means that the current children list should be    *         returned for the snapshot. Otherwise we calculate the children list    *         for the snapshot and return it.     */
-DECL|method|getChildrenList (INodeDirectory currentINode, final Snapshot snapshot)
+DECL|method|getChildrenList (INodeDirectory currentINode, final int snapshotId)
 specifier|public
 name|ReadOnlyList
 argument_list|<
@@ -3528,8 +3551,8 @@ name|INodeDirectory
 name|currentINode
 parameter_list|,
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 specifier|final
@@ -3538,9 +3561,9 @@ name|diff
 init|=
 name|diffs
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 decl_stmt|;
 return|return
@@ -3559,11 +3582,13 @@ name|currentINode
 operator|.
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
-DECL|method|getChild (INodeDirectory currentINode, byte[] name, Snapshot snapshot)
+DECL|method|getChild (INodeDirectory currentINode, byte[] name, int snapshotId)
 specifier|public
 name|INode
 name|getChild
@@ -3575,8 +3600,8 @@ name|byte
 index|[]
 name|name
 parameter_list|,
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 specifier|final
@@ -3585,9 +3610,9 @@ name|diff
 init|=
 name|diffs
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 decl_stmt|;
 return|return
@@ -3612,12 +3637,14 @@ name|getChild
 argument_list|(
 name|name
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
 comment|/** Used to record the modification of a symlink node */
-DECL|method|saveChild2Snapshot (INodeDirectory currentINode, final INode child, final Snapshot latest, final INode snapshotCopy)
+DECL|method|saveChild2Snapshot (INodeDirectory currentINode, final INode child, final int latestSnapshotId, final INode snapshotCopy)
 specifier|public
 name|INode
 name|saveChild2Snapshot
@@ -3630,8 +3657,8 @@ name|INode
 name|child
 parameter_list|,
 specifier|final
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|,
 specifier|final
 name|INode
@@ -3659,9 +3686,11 @@ name|Preconditions
 operator|.
 name|checkArgument
 argument_list|(
-name|latest
+name|latestSnapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 specifier|final
@@ -3672,7 +3701,7 @@ name|diffs
 operator|.
 name|checkAndAddLatestSnapshotDiff
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|currentINode
 argument_list|)
@@ -3812,7 +3841,7 @@ literal|false
 argument_list|,
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 block|}
@@ -4257,7 +4286,7 @@ literal|false
 return|;
 block|}
 block|}
-DECL|method|cleanDirectory (final INodeDirectory currentINode, final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanDirectory (final INodeDirectory currentINode, final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -4269,10 +4298,10 @@ name|INodeDirectory
 name|currentINode
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
+name|int
 name|prior
 parameter_list|,
 specifier|final
@@ -4329,7 +4358,9 @@ if|if
 condition|(
 name|snapshot
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 comment|// delete the current directory
@@ -4397,7 +4428,9 @@ if|if
 condition|(
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 name|DirectoryDiff
@@ -4408,7 +4441,7 @@ operator|.
 name|getDiffs
 argument_list|()
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
 name|prior
 argument_list|)
@@ -4421,13 +4454,10 @@ literal|null
 operator|&&
 name|priorDiff
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|prior
-argument_list|)
 condition|)
 block|{
 name|List
@@ -4508,7 +4538,9 @@ if|if
 condition|(
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 name|DirectoryDiff
@@ -4519,7 +4551,7 @@ operator|.
 name|getDiffs
 argument_list|()
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
 name|prior
 argument_list|)
@@ -4532,13 +4564,10 @@ literal|null
 operator|&&
 name|priorDiff
 operator|.
-name|getSnapshot
+name|getSnapshotId
 argument_list|()
-operator|.
-name|equals
-argument_list|(
+operator|==
 name|prior
-argument_list|)
 condition|)
 block|{
 comment|// For files/directories created between "prior" and "snapshot",
@@ -4592,7 +4621,9 @@ name|cleanSubtree
 argument_list|(
 name|snapshot
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 argument_list|,
 name|collectedBlocks
 argument_list|,

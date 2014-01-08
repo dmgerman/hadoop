@@ -2531,7 +2531,12 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|method|terminateConnection ()
+specifier|public
 name|void
 name|terminateConnection
 parameter_list|()

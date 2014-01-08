@@ -280,7 +280,7 @@ block|}
 comment|/**    * When destroying a reference node (WithName or DstReference), we call this    * method to identify the snapshot which is the latest snapshot before the    * reference node's creation.     */
 DECL|method|getPriorSnapshot (INodeReference ref)
 specifier|static
-name|Snapshot
+name|int
 name|getPriorSnapshot
 parameter_list|(
 name|INodeReference
@@ -431,7 +431,9 @@ block|}
 block|}
 block|}
 return|return
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 return|;
 block|}
 DECL|field|referred
@@ -666,14 +668,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getPermissionStatus (Snapshot snapshot)
+DECL|method|getPermissionStatus (int snapshotId)
 specifier|public
 specifier|final
 name|PermissionStatus
 name|getPermissionStatus
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -681,20 +683,20 @@ name|referred
 operator|.
 name|getPermissionStatus
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getUserName (Snapshot snapshot)
+DECL|method|getUserName (int snapshotId)
 specifier|public
 specifier|final
 name|String
 name|getUserName
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -702,7 +704,7 @@ name|referred
 operator|.
 name|getUserName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
@@ -727,14 +729,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getGroupName (Snapshot snapshot)
+DECL|method|getGroupName (int snapshotId)
 specifier|public
 specifier|final
 name|String
 name|getGroupName
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -742,7 +744,7 @@ name|referred
 operator|.
 name|getGroupName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
@@ -767,14 +769,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFsPermission (Snapshot snapshot)
+DECL|method|getFsPermission (int snapshotId)
 specifier|public
 specifier|final
 name|FsPermission
 name|getFsPermission
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -782,7 +784,7 @@ name|referred
 operator|.
 name|getFsPermission
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
@@ -837,14 +839,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getModificationTime (Snapshot snapshot)
+DECL|method|getModificationTime (int snapshotId)
 specifier|public
 specifier|final
 name|long
 name|getModificationTime
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -852,13 +854,13 @@ name|referred
 operator|.
 name|getModificationTime
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|updateModificationTime (long mtime, Snapshot latest)
+DECL|method|updateModificationTime (long mtime, int latestSnapshotId)
 specifier|public
 specifier|final
 name|INode
@@ -867,8 +869,8 @@ parameter_list|(
 name|long
 name|mtime
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -880,7 +882,7 @@ name|updateModificationTime
 argument_list|(
 name|mtime
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 return|;
 block|}
@@ -906,14 +908,14 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAccessTime (Snapshot snapshot)
+DECL|method|getAccessTime (int snapshotId)
 specifier|public
 specifier|final
 name|long
 name|getAccessTime
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -921,7 +923,7 @@ name|referred
 operator|.
 name|getAccessTime
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
@@ -947,13 +949,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (Snapshot latest)
+DECL|method|recordModification (int latestSnapshotId)
 specifier|final
 name|INode
 name|recordModification
 parameter_list|(
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -962,7 +964,7 @@ name|referred
 operator|.
 name|recordModification
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 expr_stmt|;
 comment|// reference is never replaced
@@ -973,17 +975,17 @@ block|}
 annotation|@
 name|Override
 comment|// used by WithCount
-DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
 name|Counts
 name|cleanSubtree
 parameter_list|(
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
+name|int
 name|prior
 parameter_list|,
 name|BlocksMapUpdateInfo
@@ -1116,14 +1118,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getSnapshotINode (Snapshot snapshot)
+DECL|method|getSnapshotINode (int snapshotId)
 specifier|public
 specifier|final
 name|INodeAttributes
 name|getSnapshotINode
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -1131,7 +1133,7 @@ name|referred
 operator|.
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 return|;
 block|}
@@ -1173,7 +1175,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final Snapshot snapshot)
+DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final int snapshot)
 specifier|public
 name|void
 name|dumpTreeRecursively
@@ -1185,7 +1187,7 @@ name|StringBuilder
 name|prefix
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 block|{
@@ -1317,7 +1319,7 @@ block|{
 return|return
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 return|;
 block|}
 comment|/** An anonymous reference with reference count. */
@@ -1906,6 +1908,12 @@ name|Preconditions
 operator|.
 name|checkState
 argument_list|(
+name|lastSnapshotId
+operator|==
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+operator|||
 name|this
 operator|.
 name|lastSnapshotId
@@ -1936,10 +1944,10 @@ name|int
 name|id
 init|=
 name|lastSnapshotId
-operator|>
+operator|!=
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 condition|?
 name|lastSnapshotId
 else|:
@@ -1962,7 +1970,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (final int snapshot, int prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -1970,10 +1978,10 @@ name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
+name|int
 name|prior
 parameter_list|,
 specifier|final
@@ -2002,16 +2010,20 @@ name|checkArgument
 argument_list|(
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
-comment|// if prior is null, we need to check snapshot belonging to the previous
-comment|// WithName instance
+comment|// if prior is NO_SNAPSHOT_ID, we need to check snapshot belonging to the
+comment|// previous WithName instance
 if|if
 condition|(
 name|prior
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 name|prior
@@ -2026,11 +2038,13 @@ if|if
 condition|(
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 operator|&&
 name|Snapshot
 operator|.
-name|ID_COMPARATOR
+name|ID_INTEGER_COMPARATOR
 operator|.
 name|compare
 argument_list|(
@@ -2119,9 +2133,6 @@ block|}
 if|if
 condition|(
 name|snapshot
-operator|.
-name|getId
-argument_list|()
 operator|<
 name|lastSnapshotId
 condition|)
@@ -2162,7 +2173,7 @@ argument_list|>
 name|removedINodes
 parameter_list|)
 block|{
-name|Snapshot
+name|int
 name|snapshot
 init|=
 name|getSelfSnapshot
@@ -2191,7 +2202,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|Snapshot
+name|int
 name|prior
 init|=
 name|getPriorSnapshot
@@ -2215,24 +2226,22 @@ if|if
 condition|(
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 if|if
 condition|(
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 operator|&&
 name|snapshot
-operator|.
-name|getId
-argument_list|()
 operator|<=
 name|prior
-operator|.
-name|getId
-argument_list|()
 condition|)
 block|{
 comment|// the snapshot to be deleted has been deleted while traversing
@@ -2334,7 +2343,7 @@ block|}
 block|}
 DECL|method|getSelfSnapshot ()
 specifier|private
-name|Snapshot
+name|int
 name|getSelfSnapshot
 parameter_list|()
 block|{
@@ -2350,10 +2359,12 @@ operator|.
 name|getReferredINode
 argument_list|()
 decl_stmt|;
-name|Snapshot
+name|int
 name|snapshot
 init|=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 decl_stmt|;
 if|if
 condition|(
@@ -2441,7 +2452,7 @@ name|DstReference
 extends|extends
 name|INodeReference
 block|{
-comment|/**      * Record the latest snapshot of the dst subtree before the rename. For      * later operations on the moved/renamed files/directories, if the latest      * snapshot is after this dstSnapshot, changes will be recorded to the      * latest snapshot. Otherwise changes will be recorded to the snapshot      * belonging to the src of the rename.      *       * {@link Snapshot#INVALID_ID} means no dstSnapshot (e.g., src of the      * first-time rename).      */
+comment|/**      * Record the latest snapshot of the dst subtree before the rename. For      * later operations on the moved/renamed files/directories, if the latest      * snapshot is after this dstSnapshot, changes will be recorded to the      * latest snapshot. Otherwise changes will be recorded to the snapshot      * belonging to the src of the rename.      *       * {@link Snapshot#NO_SNAPSHOT_ID} means no dstSnapshot (e.g., src of the      * first-time rename).      */
 DECL|field|dstSnapshotId
 specifier|private
 specifier|final
@@ -2499,17 +2510,17 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (Snapshot snapshot, Snapshot prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (int snapshot, int prior, BlocksMapUpdateInfo collectedBlocks, List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
 name|Counts
 name|cleanSubtree
 parameter_list|(
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
+name|int
 name|prior
 parameter_list|,
 name|BlocksMapUpdateInfo
@@ -2532,11 +2543,15 @@ if|if
 condition|(
 name|snapshot
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 operator|&&
 name|prior
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 name|Quota
@@ -2573,13 +2588,15 @@ return|;
 block|}
 else|else
 block|{
-comment|// if prior is null, we need to check snapshot belonging to the previous
-comment|// WithName instance
+comment|// if prior is NO_SNAPSHOT_ID, we need to check snapshot belonging to
+comment|// the previous WithName instance
 if|if
 condition|(
 name|prior
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 name|prior
@@ -2590,22 +2607,26 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
-comment|// if prior is not null, and prior is not before the to-be-deleted
-comment|// snapshot, we can quit here and leave the snapshot deletion work to
-comment|// the src tree of rename
+comment|// if prior is not NO_SNAPSHOT_ID, and prior is not before the
+comment|// to-be-deleted snapshot, we can quit here and leave the snapshot
+comment|// deletion work to the src tree of rename
 if|if
 condition|(
 name|snapshot
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 operator|&&
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 operator|&&
 name|Snapshot
 operator|.
-name|ID_COMPARATOR
+name|ID_INTEGER_COMPARATOR
 operator|.
 name|compare
 argument_list|(
@@ -2689,7 +2710,7 @@ else|else
 block|{
 comment|// we will clean everything, including files, directories, and
 comment|// snapshots, that were created after this prior snapshot
-name|Snapshot
+name|int
 name|prior
 init|=
 name|getPriorSnapshot
@@ -2705,11 +2726,13 @@ name|checkState
 argument_list|(
 name|prior
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 argument_list|)
 expr_stmt|;
 comment|// identify the snapshot created after prior
-name|Snapshot
+name|int
 name|snapshot
 init|=
 name|getSelfSnapshot
@@ -2870,13 +2893,13 @@ block|}
 block|}
 block|}
 block|}
-DECL|method|getSelfSnapshot (final Snapshot prior)
+DECL|method|getSelfSnapshot (final int prior)
 specifier|private
-name|Snapshot
+name|int
 name|getSelfSnapshot
 parameter_list|(
 specifier|final
-name|Snapshot
+name|int
 name|prior
 parameter_list|)
 block|{
@@ -2900,10 +2923,12 @@ operator|.
 name|getReferredINode
 argument_list|()
 decl_stmt|;
-name|Snapshot
+name|int
 name|lastSnapshot
 init|=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 decl_stmt|;
 if|if
 condition|(
@@ -2931,7 +2956,7 @@ operator|.
 name|getDiffs
 argument_list|()
 operator|.
-name|getLastSnapshot
+name|getLastSnapshotId
 argument_list|()
 expr_stmt|;
 block|}
@@ -2966,7 +2991,7 @@ name|lastSnapshot
 operator|=
 name|sf
 operator|.
-name|getLastSnapshot
+name|getLastSnapshotId
 argument_list|()
 expr_stmt|;
 block|}
@@ -2975,15 +3000,13 @@ if|if
 condition|(
 name|lastSnapshot
 operator|!=
-literal|null
-operator|&&
-operator|!
-name|lastSnapshot
+name|Snapshot
 operator|.
-name|equals
-argument_list|(
+name|CURRENT_STATE_ID
+operator|&&
+name|lastSnapshot
+operator|!=
 name|prior
-argument_list|)
 condition|)
 block|{
 return|return
@@ -2993,7 +3016,9 @@ block|}
 else|else
 block|{
 return|return
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 return|;
 block|}
 block|}

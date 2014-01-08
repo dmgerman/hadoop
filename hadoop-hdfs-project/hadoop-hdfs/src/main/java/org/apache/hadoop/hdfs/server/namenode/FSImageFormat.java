@@ -5330,7 +5330,9 @@ name|current
 operator|.
 name|getChildrenList
 argument_list|(
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 decl_stmt|;
 name|int

@@ -318,7 +318,7 @@ operator|+
 name|diffs
 return|;
 block|}
-DECL|method|cleanFile (final INodeFile file, final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanFile (final INodeFile file, final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -330,11 +330,11 @@ name|INodeFile
 name|file
 parameter_list|,
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
-name|Snapshot
-name|prior
+name|int
+name|priorSnapshotId
 parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
@@ -356,9 +356,11 @@ name|QuotaExceededException
 block|{
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 comment|// delete the current file while the file has snapshot feature
@@ -373,7 +375,7 @@ name|file
 operator|.
 name|recordModification
 argument_list|(
-name|prior
+name|priorSnapshotId
 argument_list|)
 expr_stmt|;
 name|deleteCurrentFile
@@ -401,16 +403,16 @@ block|}
 else|else
 block|{
 comment|// delete the snapshot
-name|prior
+name|priorSnapshotId
 operator|=
 name|getDiffs
 argument_list|()
 operator|.
 name|updatePrior
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
-name|prior
+name|priorSnapshotId
 argument_list|)
 expr_stmt|;
 return|return
@@ -418,9 +420,9 @@ name|diffs
 operator|.
 name|deleteSnapshotDiff
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
-name|prior
+name|priorSnapshotId
 argument_list|,
 name|file
 argument_list|,

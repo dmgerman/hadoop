@@ -777,7 +777,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// 1. Read the full path of the Snapshot root to identify the Snapshot
+comment|// 1. Read the id of the Snapshot root to identify the Snapshot
 specifier|final
 name|Snapshot
 name|snapshot
@@ -823,6 +823,9 @@ operator|new
 name|FileDiff
 argument_list|(
 name|snapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|,
 name|snapshotINode
 argument_list|,
@@ -903,7 +906,9 @@ name|getChild
 argument_list|(
 name|createdNodeName
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 decl_stmt|;
 if|if
@@ -1483,6 +1488,9 @@ operator|new
 name|DirectoryDiff
 argument_list|(
 name|snapshot
+operator|.
+name|getId
+argument_list|()
 argument_list|,
 name|snapshotINode
 argument_list|,
@@ -1505,6 +1513,13 @@ argument_list|,
 name|createdList
 argument_list|,
 name|deletedList
+argument_list|,
+name|snapshotINode
+operator|==
+name|snapshot
+operator|.
+name|getRoot
+argument_list|()
 argument_list|)
 decl_stmt|;
 return|return

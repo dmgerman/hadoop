@@ -1422,15 +1422,6 @@ argument_list|,
 name|delim
 argument_list|)
 decl_stmt|;
-name|values
-operator|=
-operator|new
-name|ArrayList
-argument_list|<
-name|String
-argument_list|>
-argument_list|()
-expr_stmt|;
 while|while
 condition|(
 name|tokenizer

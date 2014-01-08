@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.recovery
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager
 package|package
 name|org
 operator|.
@@ -17,24 +17,43 @@ operator|.
 name|server
 operator|.
 name|resourcemanager
-operator|.
-name|recovery
 package|;
 end_package
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
 begin_enum
-DECL|enum|RMStateStoreOperationFailedEventType
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
+DECL|enum|RMFatalEventType
 specifier|public
 enum|enum
-name|RMStateStoreOperationFailedEventType
+name|RMFatalEventType
 block|{
-DECL|enumConstant|FENCED
-name|FENCED
+comment|// Source<- Store
+DECL|enumConstant|STATE_STORE_FENCED
+name|STATE_STORE_FENCED
 block|,
-comment|// Store operation failed because it was fenced
-DECL|enumConstant|FAILED
-name|FAILED
-comment|// Store operation failed for no known reason
+DECL|enumConstant|STATE_STORE_OP_FAILED
+name|STATE_STORE_OP_FAILED
+block|,
+comment|// Source<- Embedded Elector
+DECL|enumConstant|EMBEDDED_ELECTOR_FAILED
+name|EMBEDDED_ELECTOR_FAILED
 block|}
 end_enum
 

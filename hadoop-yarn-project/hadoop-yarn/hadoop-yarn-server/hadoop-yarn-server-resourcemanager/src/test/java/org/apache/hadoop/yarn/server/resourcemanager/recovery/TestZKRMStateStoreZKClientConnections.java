@@ -571,7 +571,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_ADDRESS
+name|RM_ZK_ADDRESS
 argument_list|,
 name|hostPort
 argument_list|)
@@ -653,7 +653,7 @@ name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_TIMEOUT_MS
+name|RM_ZK_TIMEOUT_MS
 argument_list|,
 literal|1000
 argument_list|)
@@ -664,7 +664,7 @@ name|setLong
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_RETRY_INTERVAL_MS
+name|RM_ZK_RETRY_INTERVAL_MS
 argument_list|,
 literal|100
 argument_list|)
@@ -824,7 +824,7 @@ name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_TIMEOUT_MS
+name|RM_ZK_TIMEOUT_MS
 argument_list|,
 literal|100
 argument_list|)
@@ -1061,7 +1061,7 @@ name|setInt
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_TIMEOUT_MS
+name|RM_ZK_TIMEOUT_MS
 argument_list|,
 literal|100
 argument_list|)
@@ -1240,7 +1240,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_ACL
+name|RM_ZK_ACL
 argument_list|,
 literal|"world:anyone:rwca"
 argument_list|)
@@ -1313,7 +1313,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ZK_RM_STATE_STORE_ACL
+name|RM_ZK_ACL
 argument_list|,
 literal|"randomstring&*"
 argument_list|)

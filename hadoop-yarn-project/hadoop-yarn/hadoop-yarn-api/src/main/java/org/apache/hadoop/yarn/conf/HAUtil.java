@@ -201,6 +201,78 @@ name|DEFAULT_RM_HA_ENABLED
 argument_list|)
 return|;
 block|}
+DECL|method|isAutomaticFailoverEnabled (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isAutomaticFailoverEnabled
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|AUTO_FAILOVER_ENABLED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_AUTO_FAILOVER_ENABLED
+argument_list|)
+return|;
+block|}
+DECL|method|isAutomaticFailoverEnabledAndEmbedded ( Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isAutomaticFailoverEnabledAndEmbedded
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|isAutomaticFailoverEnabled
+argument_list|(
+name|conf
+argument_list|)
+operator|&&
+name|isAutomaticFailoverEmbedded
+argument_list|(
+name|conf
+argument_list|)
+return|;
+block|}
+DECL|method|isAutomaticFailoverEmbedded (Configuration conf)
+specifier|public
+specifier|static
+name|boolean
+name|isAutomaticFailoverEmbedded
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getBoolean
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|AUTO_FAILOVER_EMBEDDED
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_AUTO_FAILOVER_EMBEDDED
+argument_list|)
+return|;
+block|}
 comment|/**    * Verify configuration for Resource Manager HA.    * @param conf Configuration    * @throws YarnRuntimeException    */
 DECL|method|verifyAndSetConfiguration (Configuration conf)
 specifier|public
@@ -695,9 +767,8 @@ argument_list|)
 return|;
 block|}
 comment|/**    * @param conf Configuration. Please use verifyAndSetRMHAId to check.    * @return RM Id on success    */
-annotation|@
-name|VisibleForTesting
 DECL|method|getRMHAId (Configuration conf)
+specifier|public
 specifier|static
 name|String
 name|getRMHAId
