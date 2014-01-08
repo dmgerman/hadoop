@@ -371,6 +371,15 @@ name|KEY_COMPARATOR
 init|=
 literal|"mapreduce.job.output.key.comparator.class"
 decl_stmt|;
+DECL|field|COMBINER_GROUP_COMPARATOR_CLASS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|COMBINER_GROUP_COMPARATOR_CLASS
+init|=
+literal|"mapreduce.job.combiner.group.comparator.class"
+decl_stmt|;
 DECL|field|GROUP_COMPARATOR_CLASS
 specifier|public
 specifier|static

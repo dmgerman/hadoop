@@ -758,6 +758,24 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getCombinerKeyGroupingComparator ()
+specifier|public
+name|RawComparator
+argument_list|<
+name|?
+argument_list|>
+name|getCombinerKeyGroupingComparator
+parameter_list|()
+block|{
+return|return
+name|reduceContext
+operator|.
+name|getCombinerKeyGroupingComparator
+argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getGroupingComparator ()
 specifier|public
 name|RawComparator

@@ -368,12 +368,6 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|field|INSTANCE
-specifier|protected
-specifier|static
-name|RMProxy
-name|INSTANCE
-decl_stmt|;
 DECL|method|RMProxy ()
 specifier|protected
 name|RMProxy
@@ -427,7 +421,7 @@ block|}
 comment|/**    * Create a proxy for the specified protocol. For non-HA,    * this is a direct connection to the ResourceManager address. When HA is    * enabled, the proxy handles the failover between the ResourceManagers as    * well.    */
 annotation|@
 name|Private
-DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol)
+DECL|method|createRMProxy (final Configuration configuration, final Class<T> protocol, RMProxy instance)
 specifier|protected
 specifier|static
 parameter_list|<
@@ -446,6 +440,9 @@ argument_list|<
 name|T
 argument_list|>
 name|protocol
+parameter_list|,
+name|RMProxy
+name|instance
 parameter_list|)
 throws|throws
 name|IOException
@@ -494,7 +491,7 @@ name|T
 argument_list|>
 name|provider
 init|=
-name|INSTANCE
+name|instance
 operator|.
 name|createRMFailoverProxyProvider
 argument_list|(
@@ -524,7 +521,7 @@ block|{
 name|InetSocketAddress
 name|rmAddress
 init|=
-name|INSTANCE
+name|instance
 operator|.
 name|getRMAddress
 argument_list|(
@@ -857,74 +854,6 @@ expr_stmt|;
 return|return
 name|provider
 return|;
-block|}
-comment|/**    * A RetryPolicy to allow failing over upto the specified maximum time.    */
-DECL|class|FailoverUptoMaximumTimePolicy
-specifier|private
-specifier|static
-class|class
-name|FailoverUptoMaximumTimePolicy
-implements|implements
-name|RetryPolicy
-block|{
-DECL|field|maxTime
-specifier|private
-name|long
-name|maxTime
-decl_stmt|;
-DECL|method|FailoverUptoMaximumTimePolicy (long maxTime)
-name|FailoverUptoMaximumTimePolicy
-parameter_list|(
-name|long
-name|maxTime
-parameter_list|)
-block|{
-name|this
-operator|.
-name|maxTime
-operator|=
-name|maxTime
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|shouldRetry (Exception e, int retries, int failovers, boolean isIdempotentOrAtMostOnce)
-specifier|public
-name|RetryAction
-name|shouldRetry
-parameter_list|(
-name|Exception
-name|e
-parameter_list|,
-name|int
-name|retries
-parameter_list|,
-name|int
-name|failovers
-parameter_list|,
-name|boolean
-name|isIdempotentOrAtMostOnce
-parameter_list|)
-throws|throws
-name|Exception
-block|{
-return|return
-name|System
-operator|.
-name|currentTimeMillis
-argument_list|()
-operator|<
-name|maxTime
-condition|?
-name|RetryAction
-operator|.
-name|FAILOVER_AND_RETRY
-else|:
-name|RetryAction
-operator|.
-name|FAIL
-return|;
-block|}
 block|}
 comment|/**    * Fetch retry policy from Configuration    */
 annotation|@

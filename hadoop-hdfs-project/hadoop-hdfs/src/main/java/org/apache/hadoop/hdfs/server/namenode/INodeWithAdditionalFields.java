@@ -709,13 +709,13 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getPermissionStatus (Snapshot snapshot)
+DECL|method|getPermissionStatus (int snapshotId)
 specifier|final
 name|PermissionStatus
 name|getPermissionStatus
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 return|return
@@ -724,17 +724,17 @@ name|PermissionStatus
 argument_list|(
 name|getUserName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|,
 name|getGroupName
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|,
 name|getFsPermission
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|)
 return|;
@@ -768,26 +768,28 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getUserName (Snapshot snapshot)
+DECL|method|getUserName (int snapshotId)
 specifier|final
 name|String
 name|getUserName
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|getUserName
@@ -855,26 +857,28 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getGroupName (Snapshot snapshot)
+DECL|method|getGroupName (int snapshotId)
 specifier|final
 name|String
 name|getGroupName
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|getGroupName
@@ -942,26 +946,28 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getFsPermission (Snapshot snapshot)
+DECL|method|getFsPermission (int snapshotId)
 specifier|final
 name|FsPermission
 name|getFsPermission
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|getFsPermission
@@ -1043,26 +1049,28 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getModificationTime (Snapshot snapshot)
+DECL|method|getModificationTime (int snapshotId)
 specifier|final
 name|long
 name|getModificationTime
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|getModificationTime
@@ -1078,7 +1086,7 @@ block|}
 comment|/** Update modification time if it is larger than the current value. */
 annotation|@
 name|Override
-DECL|method|updateModificationTime (long mtime, Snapshot latest)
+DECL|method|updateModificationTime (long mtime, int latestSnapshotId)
 specifier|public
 specifier|final
 name|INode
@@ -1087,8 +1095,8 @@ parameter_list|(
 name|long
 name|mtime
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1117,7 +1125,7 @@ name|setModificationTime
 argument_list|(
 name|mtime
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|)
 return|;
 block|}
@@ -1160,26 +1168,28 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|getAccessTime (Snapshot snapshot)
+DECL|method|getAccessTime (int snapshotId)
 specifier|final
 name|long
 name|getAccessTime
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|!=
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 operator|.
 name|getAccessTime

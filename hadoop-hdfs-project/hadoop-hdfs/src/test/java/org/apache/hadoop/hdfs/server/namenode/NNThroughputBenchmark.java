@@ -4814,9 +4814,9 @@ operator|=
 operator|new
 name|DatanodeStorage
 argument_list|(
-name|dnRegistration
+name|DatanodeStorage
 operator|.
-name|getDatanodeUuid
+name|generateUuid
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4880,10 +4880,7 @@ block|{
 operator|new
 name|StorageReport
 argument_list|(
-name|dnRegistration
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|storage
 argument_list|,
 literal|false
 argument_list|,
@@ -5138,10 +5135,7 @@ block|{
 operator|new
 name|StorageReport
 argument_list|(
-name|dnRegistration
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|storage
 argument_list|,
 literal|false
 argument_list|,
@@ -5231,6 +5225,11 @@ name|bcmd
 operator|.
 name|getTargets
 argument_list|()
+argument_list|,
+name|bcmd
+operator|.
+name|getTargetStorageIDs
+argument_list|()
 argument_list|)
 return|;
 block|}
@@ -5241,7 +5240,7 @@ literal|0
 return|;
 block|}
 comment|/**      * Transfer blocks to another data-node.      * Just report on behalf of the other data-node      * that the blocks have been received.      */
-DECL|method|transferBlocks ( Block blocks[], DatanodeInfo xferTargets[][] )
+DECL|method|transferBlocks ( Block blocks[], DatanodeInfo xferTargets[][], String targetStorageIDs[][] )
 specifier|private
 name|int
 name|transferBlocks
@@ -5252,6 +5251,11 @@ index|[]
 parameter_list|,
 name|DatanodeInfo
 name|xferTargets
+index|[]
+index|[]
+parameter_list|,
+name|String
+name|targetStorageIDs
 index|[]
 index|[]
 parameter_list|)
@@ -5305,6 +5309,17 @@ name|DatanodeInfo
 name|dnInfo
 init|=
 name|blockTargets
+index|[
+name|t
+index|]
+decl_stmt|;
+name|String
+name|targetStorageID
+init|=
+name|targetStorageIDs
+index|[
+name|i
+index|]
 index|[
 name|t
 index|]
@@ -5366,10 +5381,7 @@ block|{
 operator|new
 name|StorageReceivedDeletedBlocks
 argument_list|(
-name|receivedDNReg
-operator|.
-name|getDatanodeUuid
-argument_list|()
+name|targetStorageID
 argument_list|,
 name|rdBlocks
 argument_list|)
@@ -5915,7 +5927,7 @@ literal|"Creating "
 operator|+
 name|nrFiles
 operator|+
-literal|" with "
+literal|" files with "
 operator|+
 name|blocksPerFile
 operator|+
@@ -6218,9 +6230,9 @@ index|[
 name|dnIdx
 index|]
 operator|.
-name|dnRegistration
+name|storage
 operator|.
-name|getDatanodeUuid
+name|getStorageID
 argument_list|()
 argument_list|,
 name|rdBlocks

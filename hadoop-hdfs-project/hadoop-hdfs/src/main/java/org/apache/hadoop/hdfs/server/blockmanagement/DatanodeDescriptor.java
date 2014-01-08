@@ -1484,6 +1484,9 @@ name|get
 argument_list|(
 name|report
 operator|.
+name|getStorage
+argument_list|()
+operator|.
 name|getStorageID
 argument_list|()
 argument_list|)
@@ -1501,14 +1504,10 @@ name|storage
 operator|=
 name|updateStorage
 argument_list|(
-operator|new
-name|DatanodeStorage
-argument_list|(
 name|report
 operator|.
-name|getStorageID
+name|getStorage
 argument_list|()
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}

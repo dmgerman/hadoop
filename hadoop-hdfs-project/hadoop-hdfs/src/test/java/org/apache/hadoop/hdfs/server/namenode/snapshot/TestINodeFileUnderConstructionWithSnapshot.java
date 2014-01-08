@@ -1059,13 +1059,6 @@ operator|.
 name|getLast
 argument_list|()
 decl_stmt|;
-name|Snapshot
-name|s0
-init|=
-name|last
-operator|.
-name|snapshot
-decl_stmt|;
 comment|// 2. append without closing stream
 name|out
 operator|=
@@ -1116,7 +1109,10 @@ name|fileNode
 operator|.
 name|computeFileSize
 argument_list|(
-name|s0
+name|last
+operator|.
+name|getSnapshotId
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1177,13 +1173,6 @@ operator|.
 name|getLast
 argument_list|()
 expr_stmt|;
-name|Snapshot
-name|s1
-init|=
-name|last
-operator|.
-name|snapshot
-decl_stmt|;
 name|assertTrue
 argument_list|(
 name|fileNode
@@ -1202,7 +1191,10 @@ name|fileNode
 operator|.
 name|computeFileSize
 argument_list|(
-name|s1
+name|last
+operator|.
+name|getSnapshotId
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -1258,7 +1250,10 @@ name|fileNode
 operator|.
 name|computeFileSize
 argument_list|(
-name|s1
+name|last
+operator|.
+name|getSnapshotId
+argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;

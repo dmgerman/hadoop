@@ -215,12 +215,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (Snapshot latest)
+DECL|method|recordModification (int latestSnapshotId)
 name|INode
 name|recordModification
 parameter_list|(
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -229,7 +229,7 @@ if|if
 condition|(
 name|isInLatestSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 condition|)
 block|{
@@ -245,7 +245,7 @@ name|saveChild2Snapshot
 argument_list|(
 name|this
 argument_list|,
-name|latest
+name|latestSnapshotId
 argument_list|,
 operator|new
 name|INodeSymlink
@@ -313,7 +313,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (final int snapshotId, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -321,11 +321,11 @@ name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|,
-name|Snapshot
-name|prior
+name|int
+name|priorSnapshotId
 parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
@@ -345,13 +345,17 @@ parameter_list|)
 block|{
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 operator|&&
-name|prior
+name|priorSnapshotId
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 name|destroyAndCollectBlocks
@@ -470,7 +474,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final Snapshot snapshot)
+DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final int snapshot)
 specifier|public
 name|void
 name|dumpTreeRecursively
@@ -482,7 +486,7 @@ name|StringBuilder
 name|prefix
 parameter_list|,
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 block|{

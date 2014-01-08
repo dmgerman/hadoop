@@ -391,18 +391,101 @@ decl_stmt|;
 name|register
 argument_list|(
 name|mapEntry
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Unregister this program with the local portmapper.    */
+DECL|method|unregister (int transport, int boundPort)
+specifier|public
+name|void
+name|unregister
+parameter_list|(
+name|int
+name|transport
+parameter_list|,
+name|int
+name|boundPort
+parameter_list|)
+block|{
+if|if
+condition|(
+name|boundPort
+operator|!=
+name|port
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"The bound port is "
+operator|+
+name|boundPort
+operator|+
+literal|", different with configured port "
+operator|+
+name|port
+argument_list|)
+expr_stmt|;
+name|port
+operator|=
+name|boundPort
+expr_stmt|;
+block|}
+comment|// Unregister all the program versions with portmapper for a given transport
+for|for
+control|(
+name|int
+name|vers
+init|=
+name|lowProgVersion
+init|;
+name|vers
+operator|<=
+name|highProgVersion
+condition|;
+name|vers
+operator|++
+control|)
+block|{
+name|PortmapMapping
+name|mapEntry
+init|=
+operator|new
+name|PortmapMapping
+argument_list|(
+name|progNumber
+argument_list|,
+name|vers
+argument_list|,
+name|transport
+argument_list|,
+name|port
+argument_list|)
+decl_stmt|;
+name|register
+argument_list|(
+name|mapEntry
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
 block|}
 comment|/**    * Register the program with Portmap or Rpcbind    */
-DECL|method|register (PortmapMapping mapEntry)
+DECL|method|register (PortmapMapping mapEntry, boolean set)
 specifier|protected
 name|void
 name|register
 parameter_list|(
 name|PortmapMapping
 name|mapEntry
+parameter_list|,
+name|boolean
+name|set
 parameter_list|)
 block|{
 name|XDR
@@ -413,6 +496,8 @@ operator|.
 name|create
 argument_list|(
 name|mapEntry
+argument_list|,
+name|set
 argument_list|)
 decl_stmt|;
 name|SimpleUdpClient
@@ -442,11 +527,22 @@ name|IOException
 name|e
 parameter_list|)
 block|{
+name|String
+name|request
+init|=
+name|set
+condition|?
+literal|"Registration"
+else|:
+literal|"Unregistration"
+decl_stmt|;
 name|LOG
 operator|.
 name|error
 argument_list|(
-literal|"Registration failure with "
+name|request
+operator|+
+literal|" failure with "
 operator|+
 name|host
 operator|+
@@ -463,7 +559,9 @@ throw|throw
 operator|new
 name|RuntimeException
 argument_list|(
-literal|"Registration failure"
+name|request
+operator|+
+literal|" failure"
 argument_list|)
 throw|;
 block|}

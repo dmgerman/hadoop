@@ -1938,8 +1938,12 @@ return|return
 operator|new
 name|StorageReport
 argument_list|(
+operator|new
+name|DatanodeStorage
+argument_list|(
 name|getStorageUuid
 argument_list|()
+argument_list|)
 argument_list|,
 literal|false
 argument_list|,

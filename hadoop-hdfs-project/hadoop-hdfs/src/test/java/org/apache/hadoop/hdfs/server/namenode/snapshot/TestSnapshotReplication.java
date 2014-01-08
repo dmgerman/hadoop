@@ -756,7 +756,7 @@ name|getFileReplication
 argument_list|(
 name|iip
 operator|.
-name|getPathSnapshot
+name|getPathSnapshotId
 argument_list|()
 argument_list|)
 argument_list|)

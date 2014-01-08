@@ -1626,7 +1626,9 @@ operator|new
 name|StringBuilder
 argument_list|()
 argument_list|,
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 argument_list|)
 expr_stmt|;
 name|out

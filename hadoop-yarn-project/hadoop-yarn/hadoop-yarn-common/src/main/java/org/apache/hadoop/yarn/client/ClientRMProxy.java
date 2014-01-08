@@ -280,6 +280,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
+DECL|field|INSTANCE
+specifier|private
+specifier|static
+specifier|final
+name|ClientRMProxy
+name|INSTANCE
+init|=
+operator|new
+name|ClientRMProxy
+argument_list|()
+decl_stmt|;
 DECL|interface|ClientRMProtocols
 specifier|private
 interface|interface
@@ -292,15 +303,6 @@ extends|,
 name|ResourceManagerAdministrationProtocol
 block|{
 comment|// Add nothing
-block|}
-static|static
-block|{
-name|INSTANCE
-operator|=
-operator|new
-name|ClientRMProxy
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|ClientRMProxy ()
 specifier|private
@@ -335,16 +337,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// This method exists only to initiate this class' static INSTANCE. TODO:
-comment|// FIX if possible
 return|return
-name|RMProxy
-operator|.
 name|createRMProxy
 argument_list|(
 name|configuration
 argument_list|,
 name|protocol
+argument_list|,
+name|INSTANCE
 argument_list|)
 return|;
 block|}

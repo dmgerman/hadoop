@@ -7540,7 +7540,7 @@ argument_list|>
 operator|)
 name|job
 operator|.
-name|getOutputKeyComparator
+name|getCombinerKeyGroupingComparator
 argument_list|()
 expr_stmt|;
 block|}
@@ -7885,7 +7885,7 @@ argument_list|>
 operator|)
 name|context
 operator|.
-name|getSortComparator
+name|getCombinerKeyGroupingComparator
 argument_list|()
 expr_stmt|;
 name|this

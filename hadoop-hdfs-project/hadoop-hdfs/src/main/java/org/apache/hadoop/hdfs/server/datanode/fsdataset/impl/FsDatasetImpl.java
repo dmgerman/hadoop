@@ -1245,7 +1245,7 @@ name|StorageReport
 argument_list|(
 name|volume
 operator|.
-name|getStorageID
+name|toDatanodeStorage
 argument_list|()
 argument_list|,
 literal|false
@@ -1841,9 +1841,6 @@ name|idx
 operator|++
 control|)
 block|{
-comment|// TODO: getStorageTypeFromLocations() is only a temporary workaround and
-comment|// should be replaced with getting storage type from DataStorage (missing
-comment|// storage type now) directly.
 name|Storage
 operator|.
 name|StorageDirectory
@@ -1873,7 +1870,10 @@ name|getStorageTypeFromLocations
 argument_list|(
 name|dataLocations
 argument_list|,
-name|dir
+name|sd
+operator|.
+name|getRoot
+argument_list|()
 argument_list|)
 decl_stmt|;
 name|volArray

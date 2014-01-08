@@ -119,7 +119,7 @@ name|xdr
 argument_list|)
 return|;
 block|}
-DECL|method|create (PortmapMapping mapping)
+DECL|method|create (PortmapMapping mapping, boolean set)
 specifier|public
 specifier|static
 name|XDR
@@ -127,6 +127,9 @@ name|create
 parameter_list|(
 name|PortmapMapping
 name|mapping
+parameter_list|,
+name|boolean
+name|set
 parameter_list|)
 block|{
 name|XDR
@@ -135,6 +138,19 @@ init|=
 operator|new
 name|XDR
 argument_list|()
+decl_stmt|;
+name|int
+name|procedure
+init|=
+name|set
+condition|?
+name|RpcProgramPortmap
+operator|.
+name|PMAPPROC_SET
+else|:
+name|RpcProgramPortmap
+operator|.
+name|PMAPPROC_UNSET
 decl_stmt|;
 name|RpcCall
 name|call
@@ -165,9 +181,7 @@ name|RpcProgramPortmap
 operator|.
 name|VERSION
 argument_list|,
-name|RpcProgramPortmap
-operator|.
-name|PMAPPROC_SET
+name|procedure
 argument_list|,
 operator|new
 name|CredentialsNone

@@ -72,6 +72,22 @@ name|yarn
 operator|.
 name|conf
 operator|.
+name|HAUtil
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|conf
+operator|.
 name|YarnConfiguration
 import|;
 end_import
@@ -104,8 +120,15 @@ name|RMHAServiceTarget
 extends|extends
 name|HAServiceTarget
 block|{
+DECL|field|autoFailoverEnabled
+specifier|private
+specifier|final
+name|boolean
+name|autoFailoverEnabled
+decl_stmt|;
 DECL|field|haAdminServiceAddress
 specifier|private
+specifier|final
 name|InetSocketAddress
 name|haAdminServiceAddress
 decl_stmt|;
@@ -119,6 +142,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|autoFailoverEnabled
+operator|=
+name|HAUtil
+operator|.
+name|isAutomaticFailoverEnabled
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
 name|haAdminServiceAddress
 operator|=
 name|conf
@@ -159,10 +191,16 @@ name|InetSocketAddress
 name|getZKFCAddress
 parameter_list|()
 block|{
-comment|// TODO (YARN-1177): Hook up ZKFC information
-return|return
-literal|null
-return|;
+comment|// TODO (YARN-1177): ZKFC implementation
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"RMHAServiceTarget doesn't have "
+operator|+
+literal|"a corresponding ZKFC address"
+argument_list|)
+throw|;
 block|}
 annotation|@
 name|Override
@@ -172,7 +210,6 @@ name|NodeFencer
 name|getFencer
 parameter_list|()
 block|{
-comment|// TODO (YARN-1026): Hook up fencing implementation
 return|return
 literal|null
 return|;
@@ -187,7 +224,25 @@ parameter_list|()
 throws|throws
 name|BadFencingConfigurationException
 block|{
-comment|// TODO (YARN-1026): Based on fencing implementation
+throw|throw
+operator|new
+name|BadFencingConfigurationException
+argument_list|(
+literal|"Fencer not configured"
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|isAutoFailoverEnabled ()
+specifier|public
+name|boolean
+name|isAutoFailoverEnabled
+parameter_list|()
+block|{
+return|return
+name|autoFailoverEnabled
+return|;
 block|}
 block|}
 end_class

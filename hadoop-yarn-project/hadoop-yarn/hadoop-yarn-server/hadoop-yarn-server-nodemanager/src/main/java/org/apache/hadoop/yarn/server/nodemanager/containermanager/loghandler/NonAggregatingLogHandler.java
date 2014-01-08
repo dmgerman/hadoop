@@ -94,6 +94,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|RejectedExecutionException
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -744,10 +756,9 @@ operator|+
 literal|" seconds"
 argument_list|)
 expr_stmt|;
-name|sched
-operator|.
-name|schedule
-argument_list|(
+name|LogDeleterRunnable
+name|logDeleter
+init|=
 operator|new
 name|LogDeleterRunnable
 argument_list|(
@@ -766,6 +777,14 @@ operator|.
 name|getApplicationId
 argument_list|()
 argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|sched
+operator|.
+name|schedule
+argument_list|(
+name|logDeleter
 argument_list|,
 name|this
 operator|.
@@ -776,6 +795,21 @@ operator|.
 name|SECONDS
 argument_list|)
 expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|RejectedExecutionException
+name|e
+parameter_list|)
+block|{
+comment|// Handling this event in local thread before starting threads
+comment|// or after calling sched.shutdownNow().
+name|logDeleter
+operator|.
+name|run
+argument_list|()
+expr_stmt|;
+block|}
 break|break;
 default|default:
 empty_stmt|;

@@ -2665,6 +2665,17 @@ parameter_list|()
 block|{
 comment|// don't do anything
 block|}
+annotation|@
+name|Override
+specifier|protected
+name|EmbeddedElectorService
+name|createEmbeddedElectorService
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 return|;
 block|}

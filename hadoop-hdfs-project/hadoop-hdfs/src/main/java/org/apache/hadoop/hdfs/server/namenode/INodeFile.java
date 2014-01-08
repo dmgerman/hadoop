@@ -21,6 +21,50 @@ package|;
 end_package
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|snapshot
+operator|.
+name|Snapshot
+operator|.
+name|NO_SNAPSHOT_ID
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1398,14 +1442,14 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getSnapshotINode (final Snapshot snapshot)
+DECL|method|getSnapshotINode (final int snapshotId)
 specifier|public
 name|INodeFileAttributes
 name|getSnapshotINode
 parameter_list|(
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|FileWithSnapshotFeature
@@ -1431,7 +1475,7 @@ argument_list|()
 operator|.
 name|getSnapshotINode
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|,
 name|this
 argument_list|)
@@ -1446,14 +1490,14 @@ block|}
 block|}
 annotation|@
 name|Override
-DECL|method|recordModification (final Snapshot latest)
+DECL|method|recordModification (final int latestSnapshotId)
 specifier|public
 name|INodeFile
 name|recordModification
 parameter_list|(
 specifier|final
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|)
 throws|throws
 name|QuotaExceededException
@@ -1462,13 +1506,13 @@ if|if
 condition|(
 name|isInLatestSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 operator|&&
 operator|!
 name|shouldRecordInSrcSnapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 condition|)
 block|{
@@ -1504,7 +1548,7 @@ argument_list|()
 operator|.
 name|saveSelf2Snapshot
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|,
 name|this
 argument_list|,
@@ -1550,13 +1594,13 @@ return|;
 block|}
 comment|/* End of Snapshot Feature */
 comment|/** @return the replication factor of the file. */
-DECL|method|getFileReplication (Snapshot snapshot)
+DECL|method|getFileReplication (int snapshot)
 specifier|public
 specifier|final
 name|short
 name|getFileReplication
 parameter_list|(
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|)
 block|{
@@ -1564,7 +1608,7 @@ if|if
 condition|(
 name|snapshot
 operator|!=
-literal|null
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
@@ -1600,7 +1644,7 @@ block|{
 return|return
 name|getFileReplication
 argument_list|(
-literal|null
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
@@ -1618,7 +1662,7 @@ name|max
 init|=
 name|getFileReplication
 argument_list|(
-literal|null
+name|CURRENT_STATE_ID
 argument_list|)
 decl_stmt|;
 name|FileWithSnapshotFeature
@@ -1695,7 +1739,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/** Set the replication factor of this file. */
-DECL|method|setFileReplication (short replication, Snapshot latest, final INodeMap inodeMap)
+DECL|method|setFileReplication (short replication, int latestSnapshotId, final INodeMap inodeMap)
 specifier|public
 specifier|final
 name|INodeFile
@@ -1704,8 +1748,8 @@ parameter_list|(
 name|short
 name|replication
 parameter_list|,
-name|Snapshot
-name|latest
+name|int
+name|latestSnapshotId
 parameter_list|,
 specifier|final
 name|INodeMap
@@ -1720,7 +1764,7 @@ name|nodeToUpdate
 init|=
 name|recordModification
 argument_list|(
-name|latest
+name|latestSnapshotId
 argument_list|)
 decl_stmt|;
 name|nodeToUpdate
@@ -2049,7 +2093,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|cleanSubtree (final Snapshot snapshot, Snapshot prior, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
+DECL|method|cleanSubtree (final int snapshot, int priorSnapshotId, final BlocksMapUpdateInfo collectedBlocks, final List<INode> removedINodes, final boolean countDiffChange)
 specifier|public
 name|Quota
 operator|.
@@ -2057,11 +2101,11 @@ name|Counts
 name|cleanSubtree
 parameter_list|(
 specifier|final
-name|Snapshot
+name|int
 name|snapshot
 parameter_list|,
-name|Snapshot
-name|prior
+name|int
+name|priorSnapshotId
 parameter_list|,
 specifier|final
 name|BlocksMapUpdateInfo
@@ -2103,7 +2147,7 @@ name|this
 argument_list|,
 name|snapshot
 argument_list|,
-name|prior
+name|priorSnapshotId
 argument_list|,
 name|collectedBlocks
 argument_list|,
@@ -2129,11 +2173,11 @@ if|if
 condition|(
 name|snapshot
 operator|==
-literal|null
+name|CURRENT_STATE_ID
 operator|&&
-name|prior
+name|priorSnapshotId
 operator|==
-literal|null
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 comment|// this only happens when deleting the current file and the file is not
@@ -2158,11 +2202,11 @@ if|if
 condition|(
 name|snapshot
 operator|==
-literal|null
+name|CURRENT_STATE_ID
 operator|&&
-name|prior
+name|priorSnapshotId
 operator|!=
-literal|null
+name|NO_SNAPSHOT_ID
 condition|)
 block|{
 comment|// when deleting the current file and the file is in snapshot, we should
@@ -2349,12 +2393,12 @@ operator|.
 name|getDiffs
 argument_list|()
 decl_stmt|;
-name|Snapshot
+name|int
 name|last
 init|=
 name|fileDiffList
 operator|.
-name|getLastSnapshot
+name|getLastSnapshotId
 argument_list|()
 decl_stmt|;
 name|List
@@ -2374,11 +2418,13 @@ name|lastSnapshotId
 operator|==
 name|Snapshot
 operator|.
-name|INVALID_ID
+name|CURRENT_STATE_ID
 operator|||
 name|last
 operator|==
-literal|null
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
 condition|)
 block|{
 name|nsDelta
@@ -2398,9 +2444,6 @@ elseif|else
 if|if
 condition|(
 name|last
-operator|.
-name|getId
-argument_list|()
 operator|<
 name|lastSnapshotId
 condition|)
@@ -2420,8 +2463,8 @@ expr_stmt|;
 block|}
 else|else
 block|{
-name|Snapshot
-name|s
+name|int
+name|sid
 init|=
 name|fileDiffList
 operator|.
@@ -2434,7 +2477,7 @@ name|dsDelta
 operator|=
 name|diskspaceConsumed
 argument_list|(
-name|s
+name|sid
 argument_list|)
 expr_stmt|;
 block|}
@@ -2713,19 +2756,19 @@ block|{
 return|return
 name|computeFileSize
 argument_list|(
-literal|null
+name|CURRENT_STATE_ID
 argument_list|)
 return|;
 block|}
 comment|/**    * Compute file size of the current file if the given snapshot is null;    * otherwise, get the file size from the given snapshot.    */
-DECL|method|computeFileSize (Snapshot snapshot)
+DECL|method|computeFileSize (int snapshotId)
 specifier|public
 specifier|final
 name|long
 name|computeFileSize
 parameter_list|(
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|FileWithSnapshotFeature
@@ -2738,9 +2781,9 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|snapshot
+name|snapshotId
 operator|!=
-literal|null
+name|CURRENT_STATE_ID
 operator|&&
 name|sf
 operator|!=
@@ -2756,9 +2799,9 @@ operator|.
 name|getDiffs
 argument_list|()
 operator|.
-name|getDiff
+name|getDiffById
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 decl_stmt|;
 if|if
@@ -2940,32 +2983,32 @@ name|getBlockReplication
 argument_list|()
 return|;
 block|}
-DECL|method|diskspaceConsumed (Snapshot lastSnapshot)
+DECL|method|diskspaceConsumed (int lastSnapshotId)
 specifier|public
 specifier|final
 name|long
 name|diskspaceConsumed
 parameter_list|(
-name|Snapshot
-name|lastSnapshot
+name|int
+name|lastSnapshotId
 parameter_list|)
 block|{
 if|if
 condition|(
-name|lastSnapshot
+name|lastSnapshotId
 operator|!=
-literal|null
+name|CURRENT_STATE_ID
 condition|)
 block|{
 return|return
 name|computeFileSize
 argument_list|(
-name|lastSnapshot
+name|lastSnapshotId
 argument_list|)
 operator|*
 name|getFileReplication
 argument_list|(
-name|lastSnapshot
+name|lastSnapshotId
 argument_list|)
 return|;
 block|}
@@ -3068,7 +3111,7 @@ annotation|@
 name|VisibleForTesting
 annotation|@
 name|Override
-DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final Snapshot snapshot)
+DECL|method|dumpTreeRecursively (PrintWriter out, StringBuilder prefix, final int snapshotId)
 specifier|public
 name|void
 name|dumpTreeRecursively
@@ -3080,8 +3123,8 @@ name|StringBuilder
 name|prefix
 parameter_list|,
 specifier|final
-name|Snapshot
-name|snapshot
+name|int
+name|snapshotId
 parameter_list|)
 block|{
 name|super
@@ -3092,7 +3135,7 @@ name|out
 argument_list|,
 name|prefix
 argument_list|,
-name|snapshot
+name|snapshotId
 argument_list|)
 expr_stmt|;
 name|out
@@ -3103,7 +3146,7 @@ literal|", fileSize="
 operator|+
 name|computeFileSize
 argument_list|(
-name|snapshot
+name|snapshotId
 argument_list|)
 argument_list|)
 expr_stmt|;
