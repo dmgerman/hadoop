@@ -769,6 +769,24 @@ name|HADOOP_USER_GROUP_METRICS_PERCENTILES_INTERVALS
 init|=
 literal|"hadoop.user.group.metrics.percentiles.intervals"
 decl_stmt|;
+DECL|field|RPC_METRICS_QUANTILE_ENABLE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RPC_METRICS_QUANTILE_ENABLE
+init|=
+literal|"rpc.metrics.quantile.enable"
+decl_stmt|;
+DECL|field|RPC_METRICS_PERCENTILES_INTERVALS_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|RPC_METRICS_PERCENTILES_INTERVALS_KEY
+init|=
+literal|"rpc.metrics.percentiles.intervals"
+decl_stmt|;
 block|}
 end_class
 
