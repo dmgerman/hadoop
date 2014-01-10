@@ -26,19 +26,9 @@ begin_import
 import|import
 name|java
 operator|.
-name|io
+name|util
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|ByteBuffer
+name|ArrayList
 import|;
 end_import
 
@@ -48,7 +38,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|Arrays
+name|HashMap
 import|;
 end_import
 
@@ -59,30 +49,6 @@ operator|.
 name|util
 operator|.
 name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|atomic
-operator|.
-name|AtomicInteger
 import|;
 end_import
 
@@ -102,57 +68,15 @@ name|org
 operator|.
 name|apache
 operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|Log
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
-name|logging
-operator|.
-name|LogFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|conf
-operator|.
-name|Configuration
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
 name|hadoop
 operator|.
 name|yarn
 operator|.
 name|api
 operator|.
-name|protocolrecords
+name|records
 operator|.
-name|SubmitApplicationRequest
+name|ApplicationAccessType
 import|;
 end_import
 
@@ -170,43 +94,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|ApplicationId
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|YarnApplicationState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|ApplicationSubmissionContext
+name|ApplicationAttemptId
 import|;
 end_import
 
@@ -260,7 +148,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|NodeId
+name|ContainerState
 import|;
 end_import
 
@@ -278,61 +166,7 @@ name|api
 operator|.
 name|records
 operator|.
-name|Priority
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|QueueInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|QueueUserACLInfo
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Resource
+name|ContainerStatus
 import|;
 end_import
 
@@ -380,43 +214,11 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|event
+name|server
 operator|.
-name|EventHandler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|resourcemanager
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|factories
-operator|.
-name|RecordFactory
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|factory
-operator|.
-name|providers
-operator|.
-name|RecordFactoryProvider
+name|MockAM
 import|;
 end_import
 
@@ -434,7 +236,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|ClientRMService
+name|MockNM
 import|;
 end_import
 
@@ -452,7 +254,7 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContext
+name|MockRM
 import|;
 end_import
 
@@ -470,7 +272,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|RMContextImpl
+name|rmapp
+operator|.
+name|RMApp
 import|;
 end_import
 
@@ -488,7 +292,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|ResourceManager
+name|rmapp
+operator|.
+name|RMAppState
 import|;
 end_import
 
@@ -506,9 +312,11 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|amlauncher
+name|rmapp
 operator|.
-name|AMLauncherEventType
+name|attempt
+operator|.
+name|RMAppAttempt
 import|;
 end_import
 
@@ -526,11 +334,11 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|recovery
+name|rmapp
 operator|.
-name|RMStateStore
+name|attempt
 operator|.
-name|RMState
+name|RMAppAttemptState
 import|;
 end_import
 
@@ -548,9 +356,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|rmnode
+name|rmcontainer
 operator|.
-name|RMNode
+name|RMContainerState
 import|;
 end_import
 
@@ -570,7 +378,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|Allocation
+name|SchedulerApplicationAttempt
 import|;
 end_import
 
@@ -590,103 +398,9 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|ResourceScheduler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
+name|capacity
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|scheduler
-operator|.
-name|YarnScheduler
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|resourcemanager
-operator|.
-name|security
-operator|.
-name|AMRMTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|security
-operator|.
-name|BaseContainerTokenSecretManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|util
-operator|.
-name|resource
-operator|.
-name|Resources
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|After
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|junit
-operator|.
-name|Before
+name|CapacityScheduler
 import|;
 end_import
 
@@ -710,240 +424,965 @@ specifier|public
 class|class
 name|TestAMRestart
 block|{
-comment|//  private static final Log LOG = LogFactory.getLog(TestAMRestart.class);
-comment|//  ApplicationsManagerImpl appImpl;
-comment|//  RMContext asmContext = new RMContextImpl(new MemStore());
-comment|//  ApplicationTokenSecretManager appTokenSecretManager =
-comment|//    new ApplicationTokenSecretManager();
-comment|//  DummyResourceScheduler scheduler;
-comment|//  private ClientRMService clientRMService;
-comment|//  int count = 0;
-comment|//  ApplicationId appID;
-comment|//  final int maxFailures = 3;
-comment|//  AtomicInteger launchNotify = new AtomicInteger();
-comment|//  AtomicInteger schedulerNotify = new AtomicInteger();
-comment|//  volatile boolean stop = false;
-comment|//  int schedulerAddApplication = 0;
-comment|//  int schedulerRemoveApplication = 0;
-comment|//  int launcherLaunchCalled = 0;
-comment|//  int launcherCleanupCalled = 0;
-comment|//  private final static RecordFactory recordFactory = RecordFactoryProvider.getRecordFactory(null);
-comment|//
-comment|//  private class ExtApplicationsManagerImpl extends ApplicationsManagerImpl {
-comment|//    public ExtApplicationsManagerImpl(
-comment|//        ApplicationTokenSecretManager applicationTokenSecretManager,
-comment|//        YarnScheduler scheduler, RMContext asmContext) {
-comment|//      super(applicationTokenSecretManager, scheduler, asmContext);
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public EventHandler<ASMEvent<AMLauncherEventType>> createNewApplicationMasterLauncher(
-comment|//        ApplicationTokenSecretManager tokenSecretManager) {
-comment|//      return new DummyAMLauncher();
-comment|//    }
-comment|//  }
-comment|//
-comment|//  private class DummyAMLauncher implements EventHandler<ASMEvent<AMLauncherEventType>> {
-comment|//
-comment|//    public DummyAMLauncher() {
-comment|//      asmContext.getDispatcher().register(AMLauncherEventType.class, this);
-comment|//      new Thread() {
-comment|//        public void run() {
-comment|//          while (!stop) {
-comment|//            LOG.info("DEBUG -- waiting for launch");
-comment|//            synchronized(launchNotify) {
-comment|//              while (launchNotify.get() == 0) {
-comment|//                try {
-comment|//                  launchNotify.wait();
-comment|//                } catch (InterruptedException e) {
-comment|//                }
-comment|//              }
-comment|//              asmContext.getDispatcher().getEventHandler().handle(
-comment|//                  new ApplicationEvent(
-comment|//                      ApplicationEventType.LAUNCHED, appID));
-comment|//              launchNotify.addAndGet(-1);
-comment|//            }
-comment|//          }
-comment|//        }
-comment|//      }.start();
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public void handle(ASMEvent<AMLauncherEventType> event) {
-comment|//      switch (event.getType()) {
-comment|//      case CLEANUP:
-comment|//        launcherCleanupCalled++;
-comment|//        break;
-comment|//      case LAUNCH:
-comment|//        LOG.info("DEBUG -- launching");
-comment|//        launcherLaunchCalled++;
-comment|//        synchronized (launchNotify) {
-comment|//          launchNotify.addAndGet(1);
-comment|//          launchNotify.notify();
-comment|//        }
-comment|//        break;
-comment|//      default:
-comment|//        break;
-comment|//      }
-comment|//    }
-comment|//  }
-comment|//
-comment|//  private class DummyResourceScheduler implements ResourceScheduler {
-comment|//
-comment|//    @Override
-comment|//    public void removeNode(RMNode node) {
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public Allocation allocate(ApplicationId applicationId,
-comment|//        List<ResourceRequest> ask, List<Container> release) throws IOException {
-comment|//      Container container = recordFactory.newRecordInstance(Container.class);
-comment|//      container.setContainerToken(recordFactory.newRecordInstance(ContainerToken.class));
-comment|//      container.setNodeId(recordFactory.newRecordInstance(NodeId.class));
-comment|//      container.setContainerManagerAddress("localhost");
-comment|//      container.setNodeHttpAddress("localhost:8042");
-comment|//      container.setId(recordFactory.newRecordInstance(ContainerId.class));
-comment|//      container.getId().setAppId(appID);
-comment|//      container.getId().setId(count);
-comment|//      count++;
-comment|//      return new Allocation(Arrays.asList(container), Resources.none());
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public void handle(ASMEvent<ApplicationTrackerEventType> event) {
-comment|//      switch (event.getType()) {
-comment|//      case ADD:
-comment|//        schedulerAddApplication++;
-comment|//        break;
-comment|//      case EXPIRE:
-comment|//        schedulerRemoveApplication++;
-comment|//        LOG.info("REMOVING app : " + schedulerRemoveApplication);
-comment|//        if (schedulerRemoveApplication == maxFailures) {
-comment|//          synchronized (schedulerNotify) {
-comment|//            schedulerNotify.addAndGet(1);
-comment|//            schedulerNotify.notify();
-comment|//          }
-comment|//        }
-comment|//        break;
-comment|//      default:
-comment|//        break;
-comment|//      }
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public QueueInfo getQueueInfo(String queueName,
-comment|//        boolean includeChildQueues,
-comment|//        boolean recursive) throws IOException {
-comment|//      return null;
-comment|//    }
-comment|//    @Override
-comment|//    public List<QueueUserACLInfo> getQueueUserAclInfo() {
-comment|//      return null;
-comment|//    }
-comment|//    @Override
-comment|//    public void addApplication(ApplicationId applicationId,
-comment|//        ApplicationMaster master, String user, String queue, Priority priority,
-comment|//        ApplicationStore store)
-comment|//        throws IOException {
-comment|//    }
-comment|//    @Override
-comment|//    public void addNode(RMNode nodeInfo) {
-comment|//    }
-comment|//    @Override
-comment|//    public void recover(RMState state) throws Exception {
-comment|//    }
-comment|//    @Override
-comment|//    public void reinitialize(Configuration conf,
-comment|//        ContainerTokenSecretManager secretManager, RMContext rmContext)
-comment|//        throws IOException {
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public void nodeUpdate(RMNode nodeInfo,
-comment|//        Map<String, List<Container>> containers) {
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public Resource getMaximumResourceCapability() {
-comment|//      // TODO Auto-generated method stub
-comment|//      return null;
-comment|//    }
-comment|//
-comment|//    @Override
-comment|//    public Resource getMinimumResourceCapability() {
-comment|//      // TODO Auto-generated method stub
-comment|//      return null;
-comment|//    }
-comment|//  }
-comment|//
-comment|//  @Before
-comment|//  public void setUp() {
-comment|//
-comment|//    asmContext.getDispatcher().register(ApplicationEventType.class,
-comment|//        new ResourceManager.ApplicationEventDispatcher(asmContext));
-comment|//
-comment|//    appID = recordFactory.newRecordInstance(ApplicationId.class);
-comment|//    appID.setClusterTimestamp(System.currentTimeMillis());
-comment|//    appID.setId(1);
-comment|//    Configuration conf = new Configuration();
-comment|//    scheduler = new DummyResourceScheduler();
-comment|//    asmContext.getDispatcher().init(conf);
-comment|//    asmContext.getDispatcher().start();
-comment|//    asmContext.getDispatcher().register(ApplicationTrackerEventType.class, scheduler);
-comment|//    appImpl = new ExtApplicationsManagerImpl(appTokenSecretManager, scheduler, asmContext);
-comment|//
-comment|//    conf.setLong(YarnConfiguration.AM_EXPIRY_INTERVAL, 1000L);
-comment|//    conf.setInt(RMConfig.AM_MAX_RETRIES, maxFailures);
-comment|//    appImpl.init(conf);
-comment|//    appImpl.start();
-comment|//
-comment|//    this.clientRMService = new ClientRMService(asmContext, appImpl
-comment|//        .getAmLivelinessMonitor(), appImpl.getClientToAMSecretManager(),
-comment|//        scheduler);
-comment|//    this.clientRMService.init(conf);
-comment|//  }
-comment|//
-comment|//  @After
-comment|//  public void tearDown() {
-comment|//  }
-comment|//
-comment|//  private void waitForFailed(AppAttempt application, ApplicationState
-comment|//      finalState) throws Exception {
-comment|//    int count = 0;
-comment|//    while(application.getState() != finalState&& count< 10) {
-comment|//      Thread.sleep(500);
-comment|//      count++;
-comment|//    }
-comment|//    Assert.assertEquals(finalState, application.getState());
-comment|//  }
-comment|//
-comment|//  @Test
-comment|//  public void testAMRestart() throws Exception {
-comment|//    ApplicationSubmissionContext subContext = recordFactory.newRecordInstance(ApplicationSubmissionContext.class);
-comment|//    subContext.setApplicationId(appID);
-comment|//    subContext.setApplicationName("dummyApp");
-comment|////    subContext.command = new ArrayList<String>();
-comment|////    subContext.environment = new HashMap<String, String>();
-comment|////    subContext.fsTokens = new ArrayList<String>();
-comment|//    subContext.setFsTokensTodo(ByteBuffer.wrap(new byte[0]));
-comment|//    SubmitApplicationRequest request = recordFactory
-comment|//        .newRecordInstance(SubmitApplicationRequest.class);
-comment|//    request.setApplicationSubmissionContext(subContext);
-comment|//    clientRMService.submitApplication(request);
-comment|//    AppAttempt application = asmContext.getApplications().get(appID);
-comment|//    synchronized (schedulerNotify) {
-comment|//      while(schedulerNotify.get() == 0) {
-comment|//        schedulerNotify.wait();
-comment|//      }
-comment|//    }
-comment|//    Assert.assertEquals(maxFailures, launcherCleanupCalled);
-comment|//    Assert.assertEquals(maxFailures, launcherLaunchCalled);
-comment|//    Assert.assertEquals(maxFailures, schedulerAddApplication);
-comment|//    Assert.assertEquals(maxFailures, schedulerRemoveApplication);
-comment|//    Assert.assertEquals(maxFailures, application.getFailedCount());
-comment|//    waitForFailed(application, ApplicationState.FAILED);
-comment|//    stop = true;
-comment|//  }
+annotation|@
+name|Test
+DECL|method|testAMRestartWithExistingContainers ()
+specifier|public
+name|void
+name|testAMRestartWithExistingContainers
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|YarnConfiguration
+name|conf
+init|=
+operator|new
+name|YarnConfiguration
+argument_list|()
+decl_stmt|;
+name|conf
+operator|.
+name|setInt
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_AM_MAX_ATTEMPTS
+argument_list|,
+literal|2
+argument_list|)
+expr_stmt|;
+name|MockRM
+name|rm1
+init|=
+operator|new
+name|MockRM
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+name|rm1
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
+name|RMApp
+name|app1
+init|=
+name|rm1
+operator|.
+name|submitApp
+argument_list|(
+literal|200
+argument_list|,
+literal|"name"
+argument_list|,
+literal|"user"
+argument_list|,
+operator|new
+name|HashMap
+argument_list|<
+name|ApplicationAccessType
+argument_list|,
+name|String
+argument_list|>
+argument_list|()
+argument_list|,
+literal|false
+argument_list|,
+literal|"default"
+argument_list|,
+operator|-
+literal|1
+argument_list|,
+literal|null
+argument_list|,
+literal|"MAPREDUCE"
+argument_list|,
+literal|false
+argument_list|,
+literal|true
+argument_list|)
+decl_stmt|;
+name|MockNM
+name|nm1
+init|=
+operator|new
+name|MockNM
+argument_list|(
+literal|"127.0.0.1:1234"
+argument_list|,
+literal|10240
+argument_list|,
+name|rm1
+operator|.
+name|getResourceTrackerService
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|nm1
+operator|.
+name|registerNode
+argument_list|()
+expr_stmt|;
+name|MockNM
+name|nm2
+init|=
+operator|new
+name|MockNM
+argument_list|(
+literal|"127.0.0.1:2351"
+argument_list|,
+literal|4089
+argument_list|,
+name|rm1
+operator|.
+name|getResourceTrackerService
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|nm2
+operator|.
+name|registerNode
+argument_list|()
+expr_stmt|;
+name|MockAM
+name|am1
+init|=
+name|MockRM
+operator|.
+name|launchAM
+argument_list|(
+name|app1
+argument_list|,
+name|rm1
+argument_list|,
+name|nm1
+argument_list|)
+decl_stmt|;
+name|int
+name|NUM_CONTAINERS
+init|=
+literal|3
+decl_stmt|;
+comment|// allocate NUM_CONTAINERS containers
+name|am1
+operator|.
+name|allocate
+argument_list|(
+literal|"127.0.0.1"
+argument_list|,
+literal|1024
+argument_list|,
+name|NUM_CONTAINERS
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// wait for containers to be allocated.
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containers
+init|=
+name|am1
+operator|.
+name|allocate
+argument_list|(
+operator|new
+name|ArrayList
+argument_list|<
+name|ResourceRequest
+argument_list|>
+argument_list|()
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
+argument_list|)
+operator|.
+name|getAllocatedContainers
+argument_list|()
+decl_stmt|;
+while|while
+condition|(
+name|containers
+operator|.
+name|size
+argument_list|()
+operator|!=
+name|NUM_CONTAINERS
+condition|)
+block|{
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|containers
+operator|.
+name|addAll
+argument_list|(
+name|am1
+operator|.
+name|allocate
+argument_list|(
+operator|new
+name|ArrayList
+argument_list|<
+name|ResourceRequest
+argument_list|>
+argument_list|()
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
+argument_list|)
+operator|.
+name|getAllocatedContainers
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|200
+argument_list|)
+expr_stmt|;
+block|}
+comment|// launch the 2nd container, for testing running container transferred.
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|2
+argument_list|,
+name|ContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+name|ContainerId
+name|containerId2
+init|=
+name|ContainerId
+operator|.
+name|newInstance
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|2
+argument_list|)
+decl_stmt|;
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId2
+argument_list|,
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+comment|// launch the 3rd container, for testing container allocated by previous
+comment|// attempt is completed by the next new attempt/
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|3
+argument_list|,
+name|ContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+name|ContainerId
+name|containerId3
+init|=
+name|ContainerId
+operator|.
+name|newInstance
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|3
+argument_list|)
+decl_stmt|;
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId3
+argument_list|,
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+comment|// 4th container still in AQUIRED state. for testing Acquired container is
+comment|// always killed.
+name|ContainerId
+name|containerId4
+init|=
+name|ContainerId
+operator|.
+name|newInstance
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|4
+argument_list|)
+decl_stmt|;
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId4
+argument_list|,
+name|RMContainerState
+operator|.
+name|ACQUIRED
+argument_list|)
+expr_stmt|;
+comment|// 5th container is in Allocated state. for testing allocated container is
+comment|// always killed.
+name|am1
+operator|.
+name|allocate
+argument_list|(
+literal|"127.0.0.1"
+argument_list|,
+literal|1024
+argument_list|,
+literal|1
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|ContainerId
+name|containerId5
+init|=
+name|ContainerId
+operator|.
+name|newInstance
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|5
+argument_list|)
+decl_stmt|;
+name|rm1
+operator|.
+name|waitForContainerAllocated
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId5
+argument_list|)
+expr_stmt|;
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId5
+argument_list|,
+name|RMContainerState
+operator|.
+name|ALLOCATED
+argument_list|)
+expr_stmt|;
+comment|// 6th container is in Reserved state.
+name|am1
+operator|.
+name|allocate
+argument_list|(
+literal|"127.0.0.1"
+argument_list|,
+literal|6000
+argument_list|,
+literal|1
+argument_list|,
+operator|new
+name|ArrayList
+argument_list|<
+name|ContainerId
+argument_list|>
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|ContainerId
+name|containerId6
+init|=
+name|ContainerId
+operator|.
+name|newInstance
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|6
+argument_list|)
+decl_stmt|;
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|SchedulerApplicationAttempt
+name|schedulerAttempt
+init|=
+operator|(
+operator|(
+name|CapacityScheduler
+operator|)
+name|rm1
+operator|.
+name|getResourceScheduler
+argument_list|()
+operator|)
+operator|.
+name|getCurrentAttemptForContainer
+argument_list|(
+name|containerId6
+argument_list|)
+decl_stmt|;
+while|while
+condition|(
+name|schedulerAttempt
+operator|.
+name|getReservedContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|)
+block|{
+name|System
+operator|.
+name|out
+operator|.
+name|println
+argument_list|(
+literal|"Waiting for container "
+operator|+
+name|containerId6
+operator|+
+literal|" to be reserved."
+argument_list|)
+expr_stmt|;
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|200
+argument_list|)
+expr_stmt|;
+block|}
+comment|// assert containerId6 is reserved.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+name|containerId6
+argument_list|,
+name|schedulerAttempt
+operator|.
+name|getReservedContainers
+argument_list|()
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// fail the AM by sending CONTAINER_FINISHED event without registering.
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|1
+argument_list|,
+name|ContainerState
+operator|.
+name|COMPLETE
+argument_list|)
+expr_stmt|;
+name|am1
+operator|.
+name|waitForState
+argument_list|(
+name|RMAppAttemptState
+operator|.
+name|FAILED
+argument_list|)
+expr_stmt|;
+comment|// wait for some time. previous AM's running containers should still remain
+comment|// in scheduler even though am failed
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|3000
+argument_list|)
+expr_stmt|;
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId2
+argument_list|,
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+comment|// acquired/allocated containers are cleaned up.
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|rm1
+operator|.
+name|getResourceScheduler
+argument_list|()
+operator|.
+name|getRMContainer
+argument_list|(
+name|containerId4
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|Assert
+operator|.
+name|assertNull
+argument_list|(
+name|rm1
+operator|.
+name|getResourceScheduler
+argument_list|()
+operator|.
+name|getRMContainer
+argument_list|(
+name|containerId5
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// wait for app to start a new attempt.
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|app1
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|,
+name|RMAppState
+operator|.
+name|ACCEPTED
+argument_list|)
+expr_stmt|;
+comment|// assert this is a new AM.
+name|ApplicationAttemptId
+name|newAttemptId
+init|=
+name|app1
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+operator|.
+name|getAppAttemptId
+argument_list|()
+decl_stmt|;
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|newAttemptId
+operator|.
+name|equals
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|MockAM
+name|am2
+init|=
+name|MockRM
+operator|.
+name|launchAM
+argument_list|(
+name|app1
+argument_list|,
+name|rm1
+argument_list|,
+name|nm1
+argument_list|)
+decl_stmt|;
+comment|// complete container by sending the container complete event which has earlier
+comment|// attempt's attemptId
+name|nm1
+operator|.
+name|nodeHeartbeat
+argument_list|(
+name|am1
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|,
+literal|3
+argument_list|,
+name|ContainerState
+operator|.
+name|COMPLETE
+argument_list|)
+expr_stmt|;
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId3
+argument_list|,
+name|RMContainerState
+operator|.
+name|COMPLETED
+argument_list|)
+expr_stmt|;
+comment|// Even though the completed container containerId3 event was sent to the
+comment|// earlier failed attempt, new RMAppAttempt can also capture this container
+comment|// info.
+comment|// completed containerId4 is also transferred to the new attempt.
+name|RMAppAttempt
+name|newAttempt
+init|=
+name|app1
+operator|.
+name|getRMAppAttempt
+argument_list|(
+name|am2
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+argument_list|)
+decl_stmt|;
+comment|// 4 containers finished, acquired/allocated/reserved/completed.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|4
+argument_list|,
+name|newAttempt
+operator|.
+name|getJustFinishedContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|boolean
+name|container3Exists
+init|=
+literal|false
+decl_stmt|,
+name|container4Exists
+init|=
+literal|false
+decl_stmt|,
+name|container5Exists
+init|=
+literal|false
+decl_stmt|,
+name|container6Exists
+init|=
+literal|false
+decl_stmt|;
+for|for
+control|(
+name|ContainerStatus
+name|status
+range|:
+name|newAttempt
+operator|.
+name|getJustFinishedContainers
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|status
+operator|.
+name|getContainerId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|containerId3
+argument_list|)
+condition|)
+block|{
+comment|// containerId3 is the container ran by previous attempt but finished by the
+comment|// new attempt.
+name|container3Exists
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|status
+operator|.
+name|getContainerId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|containerId4
+argument_list|)
+condition|)
+block|{
+comment|// containerId4 is the Acquired Container killed by the previous attempt,
+comment|// it's now inside new attempt's finished container list.
+name|container4Exists
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|status
+operator|.
+name|getContainerId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|containerId5
+argument_list|)
+condition|)
+block|{
+comment|// containerId5 is the Allocated container killed by previous failed attempt.
+name|container5Exists
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|status
+operator|.
+name|getContainerId
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|containerId6
+argument_list|)
+condition|)
+block|{
+comment|// containerId6 is the reserved container killed by previous failed attempt.
+name|container6Exists
+operator|=
+literal|true
+expr_stmt|;
+block|}
+block|}
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|container3Exists
+operator|&&
+name|container4Exists
+operator|&&
+name|container5Exists
+operator|&&
+name|container6Exists
+argument_list|)
+expr_stmt|;
+comment|// New SchedulerApplicationAttempt also has the containers info.
+name|rm1
+operator|.
+name|waitForState
+argument_list|(
+name|nm1
+argument_list|,
+name|containerId2
+argument_list|,
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|)
+expr_stmt|;
+comment|// record the scheduler attempt for testing.
+name|SchedulerApplicationAttempt
+name|schedulerNewAttempt
+init|=
+operator|(
+operator|(
+name|CapacityScheduler
+operator|)
+name|rm1
+operator|.
+name|getResourceScheduler
+argument_list|()
+operator|)
+operator|.
+name|getCurrentAttemptForContainer
+argument_list|(
+name|containerId2
+argument_list|)
+decl_stmt|;
+comment|// finish this application
+name|MockRM
+operator|.
+name|finishApplicationMaster
+argument_list|(
+name|app1
+argument_list|,
+name|rm1
+argument_list|,
+name|nm1
+argument_list|,
+name|am2
+argument_list|)
+expr_stmt|;
+comment|// the 2nd attempt released the 1st attempt's running container, when the
+comment|// 2nd attempt finishes.
+name|Assert
+operator|.
+name|assertFalse
+argument_list|(
+name|schedulerNewAttempt
+operator|.
+name|getLiveContainers
+argument_list|()
+operator|.
+name|contains
+argument_list|(
+name|containerId2
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// all 4 normal containers finished.
+name|Assert
+operator|.
+name|assertEquals
+argument_list|(
+literal|5
+argument_list|,
+name|newAttempt
+operator|.
+name|getJustFinishedContainers
+argument_list|()
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|rm1
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 end_class
 

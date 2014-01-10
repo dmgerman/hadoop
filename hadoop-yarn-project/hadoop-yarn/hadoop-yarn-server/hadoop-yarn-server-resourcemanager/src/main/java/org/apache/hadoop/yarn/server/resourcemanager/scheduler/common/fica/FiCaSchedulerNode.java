@@ -1180,7 +1180,8 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-comment|// Cannot reserve more than one application on a given node!
+comment|// Cannot reserve more than one application attempt on a given node!
+comment|// Reservation is still against attempt.
 if|if
 condition|(
 operator|!

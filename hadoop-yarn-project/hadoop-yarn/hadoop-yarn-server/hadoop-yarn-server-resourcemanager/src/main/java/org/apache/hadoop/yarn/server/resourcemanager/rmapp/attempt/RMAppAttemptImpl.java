@@ -1490,7 +1490,6 @@ decl_stmt|;
 comment|//nodes on while this attempt's containers ran
 DECL|field|ranNodes
 specifier|private
-specifier|final
 name|Set
 argument_list|<
 name|NodeId
@@ -1506,7 +1505,6 @@ argument_list|()
 decl_stmt|;
 DECL|field|justFinishedContainers
 specifier|private
-specifier|final
 name|List
 argument_list|<
 name|ContainerStatus
@@ -1591,6 +1589,12 @@ DECL|field|conf
 specifier|private
 name|Configuration
 name|conf
+decl_stmt|;
+DECL|field|isLastAttempt
+specifier|private
+specifier|final
+name|boolean
+name|isLastAttempt
 decl_stmt|;
 DECL|field|EXPIRED_TRANSITION
 specifier|private
@@ -2565,6 +2569,28 @@ name|KILL
 argument_list|)
 argument_list|)
 comment|// Transitions from FAILED State
+comment|// For work-preserving AM restart, failed attempt are still capturing
+comment|// CONTAINER_FINISHED event and record the finished containers for the
+comment|// use by the next new attempt.
+operator|.
+name|addTransition
+argument_list|(
+name|RMAppAttemptState
+operator|.
+name|FAILED
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|FAILED
+argument_list|,
+name|RMAppAttemptEventType
+operator|.
+name|CONTAINER_FINISHED
+argument_list|,
+operator|new
+name|ContainerFinishedAtFailedTransition
+argument_list|()
+argument_list|)
 operator|.
 name|addTransition
 argument_list|(
@@ -2599,10 +2625,6 @@ argument_list|,
 name|RMAppAttemptEventType
 operator|.
 name|CONTAINER_ALLOCATED
-argument_list|,
-name|RMAppAttemptEventType
-operator|.
-name|CONTAINER_FINISHED
 argument_list|)
 argument_list|)
 comment|// Transitions from FINISHING State
@@ -2793,7 +2815,7 @@ operator|.
 name|installTopology
 argument_list|()
 decl_stmt|;
-DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf)
+DECL|method|RMAppAttemptImpl (ApplicationAttemptId appAttemptId, RMContext rmContext, YarnScheduler scheduler, ApplicationMasterService masterService, ApplicationSubmissionContext submissionContext, Configuration conf, boolean isLastAttempt)
 specifier|public
 name|RMAppAttemptImpl
 parameter_list|(
@@ -2814,6 +2836,9 @@ name|submissionContext
 parameter_list|,
 name|Configuration
 name|conf
+parameter_list|,
+name|boolean
+name|isLastAttempt
 parameter_list|)
 block|{
 name|this
@@ -2897,6 +2922,12 @@ name|generateProxyUriWithScheme
 argument_list|(
 literal|null
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|isLastAttempt
+operator|=
+name|isLastAttempt
 expr_stmt|;
 name|this
 operator|.
@@ -4082,6 +4113,34 @@ name|getStartTime
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|transferStateFromPreviousAttempt (RMAppAttempt attempt)
+specifier|public
+name|void
+name|transferStateFromPreviousAttempt
+parameter_list|(
+name|RMAppAttempt
+name|attempt
+parameter_list|)
+block|{
+name|this
+operator|.
+name|justFinishedContainers
+operator|=
+name|attempt
+operator|.
+name|getJustFinishedContainers
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|ranNodes
+operator|=
+name|attempt
+operator|.
+name|getRanNodes
+argument_list|()
+expr_stmt|;
+block|}
 DECL|method|recoverAppAttemptCredentials (Credentials appAttemptTokens)
 specifier|private
 name|void
@@ -4223,6 +4282,31 @@ name|RMAppAttemptEvent
 name|event
 parameter_list|)
 block|{
+name|boolean
+name|transferStateFromPreviousAttempt
+init|=
+literal|false
+decl_stmt|;
+if|if
+condition|(
+name|event
+operator|instanceof
+name|RMAppStartAttemptEvent
+condition|)
+block|{
+name|transferStateFromPreviousAttempt
+operator|=
+operator|(
+operator|(
+name|RMAppStartAttemptEvent
+operator|)
+name|event
+operator|)
+operator|.
+name|getTransferStateFromPreviousAttempt
+argument_list|()
+expr_stmt|;
+block|}
 name|appAttempt
 operator|.
 name|startTime
@@ -4303,7 +4387,8 @@ name|getAMRMTokenSecretManager
 argument_list|()
 argument_list|)
 expr_stmt|;
-comment|// Add the applicationAttempt to the scheduler
+comment|// Add the applicationAttempt to the scheduler and inform the scheduler
+comment|// whether to transfer the state from previous attempt.
 name|appAttempt
 operator|.
 name|eventHandler
@@ -4316,6 +4401,8 @@ argument_list|(
 name|appAttempt
 operator|.
 name|applicationAttemptId
+argument_list|,
+name|transferStateFromPreviousAttempt
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5302,6 +5389,11 @@ name|appEvent
 init|=
 literal|null
 decl_stmt|;
+name|boolean
+name|keepContainersAcrossAppAttempts
+init|=
+literal|false
+decl_stmt|;
 switch|switch
 condition|(
 name|finalAttemptState
@@ -5353,6 +5445,8 @@ operator|.
 name|ATTEMPT_KILLED
 argument_list|,
 literal|"Application killed by user."
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 block|}
@@ -5372,6 +5466,34 @@ operator|.
 name|invalidateAMHostAndPort
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|appAttempt
+operator|.
+name|submissionContext
+operator|.
+name|getKeepContainersAcrossApplicationAttempts
+argument_list|()
+operator|&&
+operator|!
+name|appAttempt
+operator|.
+name|isLastAttempt
+operator|&&
+operator|!
+name|appAttempt
+operator|.
+name|submissionContext
+operator|.
+name|getUnmanagedAM
+argument_list|()
+condition|)
+block|{
+name|keepContainersAcrossAppAttempts
+operator|=
+literal|true
+expr_stmt|;
+block|}
 name|appEvent
 operator|=
 operator|new
@@ -5387,6 +5509,8 @@ name|appAttempt
 operator|.
 name|getDiagnostics
 argument_list|()
+argument_list|,
+name|keepContainersAcrossAppAttempts
 argument_list|)
 expr_stmt|;
 block|}
@@ -5424,6 +5548,8 @@ argument_list|(
 name|appAttemptId
 argument_list|,
 name|finalAttemptState
+argument_list|,
+name|keepContainersAcrossAppAttempts
 argument_list|)
 argument_list|)
 expr_stmt|;
@@ -5518,6 +5644,11 @@ argument_list|(
 name|event
 argument_list|)
 expr_stmt|;
+comment|// TODO Today unmanaged AM client is waiting for app state to be Accepted to
+comment|// launch the AM. This is broken since we changed to start the attempt
+comment|// after the application is Accepted. We may need to introduce an attempt
+comment|// report that client can rely on to query the attempt state and choose to
+comment|// launch the unmanaged AM.
 name|super
 operator|.
 name|transition
@@ -6654,6 +6785,57 @@ name|RMAppAttemptState
 operator|.
 name|RUNNING
 return|;
+block|}
+block|}
+DECL|class|ContainerFinishedAtFailedTransition
+specifier|private
+specifier|static
+specifier|final
+class|class
+name|ContainerFinishedAtFailedTransition
+extends|extends
+name|BaseTransition
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+DECL|method|transition (RMAppAttemptImpl appAttempt, RMAppAttemptEvent event)
+name|transition
+parameter_list|(
+name|RMAppAttemptImpl
+name|appAttempt
+parameter_list|,
+name|RMAppAttemptEvent
+name|event
+parameter_list|)
+block|{
+name|RMAppAttemptContainerFinishedEvent
+name|containerFinishedEvent
+init|=
+operator|(
+name|RMAppAttemptContainerFinishedEvent
+operator|)
+name|event
+decl_stmt|;
+name|ContainerStatus
+name|containerStatus
+init|=
+name|containerFinishedEvent
+operator|.
+name|getContainerStatus
+argument_list|()
+decl_stmt|;
+comment|// Normal container. Add it in completed containers list
+name|appAttempt
+operator|.
+name|justFinishedContainers
+operator|.
+name|add
+argument_list|(
+name|containerStatus
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|class|ContainerFinishedFinalStateSavedTransition

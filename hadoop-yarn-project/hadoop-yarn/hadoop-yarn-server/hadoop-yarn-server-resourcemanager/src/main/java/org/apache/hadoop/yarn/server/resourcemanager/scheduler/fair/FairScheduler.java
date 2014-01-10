@@ -1575,29 +1575,6 @@ name|SchedulerApplication
 argument_list|>
 argument_list|()
 decl_stmt|;
-comment|// This stores per-application-attempt scheduling information, indexed by
-comment|// attempt ID's for fast lookup.
-annotation|@
-name|VisibleForTesting
-DECL|field|appAttempts
-specifier|protected
-name|Map
-argument_list|<
-name|ApplicationAttemptId
-argument_list|,
-name|FSSchedulerApp
-argument_list|>
-name|appAttempts
-init|=
-operator|new
-name|ConcurrentHashMap
-argument_list|<
-name|ApplicationAttemptId
-argument_list|,
-name|FSSchedulerApp
-argument_list|>
-argument_list|()
-decl_stmt|;
 comment|// Nodes in the cluster, indexed by NodeId
 DECL|field|nodes
 specifier|private
@@ -1987,8 +1964,10 @@ return|return
 name|queueMgr
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getRMContainer (ContainerId containerId)
-specifier|private
+specifier|public
 name|RMContainer
 name|getRMContainer
 parameter_list|(
@@ -1997,9 +1976,43 @@ name|containerId
 parameter_list|)
 block|{
 name|FSSchedulerApp
-name|application
+name|attempt
 init|=
-name|appAttempts
+name|getCurrentAttemptForContainer
+argument_list|(
+name|containerId
+argument_list|)
+decl_stmt|;
+return|return
+operator|(
+name|attempt
+operator|==
+literal|null
+operator|)
+condition|?
+literal|null
+else|:
+name|attempt
+operator|.
+name|getRMContainer
+argument_list|(
+name|containerId
+argument_list|)
+return|;
+block|}
+DECL|method|getCurrentAttemptForContainer ( ContainerId containerId)
+specifier|private
+name|FSSchedulerApp
+name|getCurrentAttemptForContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+name|SchedulerApplication
+name|app
+init|=
+name|applications
 operator|.
 name|get
 argument_list|(
@@ -2007,23 +2020,30 @@ name|containerId
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|app
+operator|!=
+literal|null
+condition|)
+block|{
 return|return
 operator|(
-name|application
-operator|==
-literal|null
+name|FSSchedulerApp
 operator|)
-condition|?
-literal|null
-else|:
-name|application
+name|app
 operator|.
-name|getRMContainer
-argument_list|(
-name|containerId
-argument_list|)
+name|getCurrentAppAttempt
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 comment|/**    * A runnable which calls {@link FairScheduler#update()} every    *<code>UPDATE_INTERVAL</code> milliseconds.    */
@@ -3775,6 +3795,13 @@ operator|+
 literal|", in queue: "
 operator|+
 name|queueName
+operator|+
+literal|", currently num of applications: "
+operator|+
+name|applications
+operator|.
+name|size
+argument_list|()
 argument_list|)
 expr_stmt|;
 name|rmContext
@@ -3800,7 +3827,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Add a new application attempt to the scheduler.    */
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId)
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
 specifier|protected
 specifier|synchronized
 name|void
@@ -3808,6 +3835,9 @@ name|addApplicationAttempt
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
+parameter_list|,
+name|boolean
+name|transferStateFromPreviousAttempt
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3843,7 +3873,7 @@ name|getQueue
 argument_list|()
 decl_stmt|;
 name|FSSchedulerApp
-name|schedulerApp
+name|attempt
 init|=
 operator|new
 name|FSSchedulerApp
@@ -3864,6 +3894,29 @@ argument_list|,
 name|rmContext
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|transferStateFromPreviousAttempt
+condition|)
+block|{
+name|attempt
+operator|.
+name|transferStateFromPreviousAttempt
+argument_list|(
+name|application
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|application
+operator|.
+name|setCurrentAppAttempt
+argument_list|(
+name|attempt
+argument_list|)
+expr_stmt|;
 name|boolean
 name|runnable
 init|=
@@ -3880,7 +3933,7 @@ name|queue
 operator|.
 name|addApp
 argument_list|(
-name|schedulerApp
+name|attempt
 argument_list|,
 name|runnable
 argument_list|)
@@ -3894,7 +3947,7 @@ name|maxRunningEnforcer
 operator|.
 name|trackRunnableApp
 argument_list|(
-name|schedulerApp
+name|attempt
 argument_list|)
 expr_stmt|;
 block|}
@@ -3904,7 +3957,7 @@ name|maxRunningEnforcer
 operator|.
 name|trackNonRunnableApp
 argument_list|(
-name|schedulerApp
+name|attempt
 argument_list|)
 expr_stmt|;
 block|}
@@ -3923,15 +3976,6 @@ name|getAttemptId
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|appAttempts
-operator|.
-name|put
-argument_list|(
-name|applicationAttemptId
-argument_list|,
-name|schedulerApp
-argument_list|)
-expr_stmt|;
 name|LOG
 operator|.
 name|info
@@ -3943,13 +3987,6 @@ operator|+
 literal|" to scheduler from user: "
 operator|+
 name|user
-operator|+
-literal|", currently active: "
-operator|+
-name|appAttempts
-operator|.
-name|size
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|rmContext
@@ -4108,7 +4145,7 @@ name|applicationId
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|removeApplicationAttempt ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState)
+DECL|method|removeApplicationAttempt ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState, boolean keepContainers)
 specifier|private
 specifier|synchronized
 name|void
@@ -4119,6 +4156,9 @@ name|applicationAttemptId
 parameter_list|,
 name|RMAppAttemptState
 name|rmAppAttemptFinalState
+parameter_list|,
+name|boolean
+name|keepContainers
 parameter_list|)
 block|{
 name|LOG
@@ -4136,18 +4176,33 @@ operator|+
 name|rmAppAttemptFinalState
 argument_list|)
 expr_stmt|;
-name|FSSchedulerApp
+name|SchedulerApplication
 name|application
 init|=
-name|appAttempts
+name|applications
 operator|.
 name|get
+argument_list|(
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|FSSchedulerApp
+name|attempt
+init|=
+name|getSchedulerApp
 argument_list|(
 name|applicationAttemptId
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|attempt
+operator|==
+literal|null
+operator|||
 name|application
 operator|==
 literal|null
@@ -4172,12 +4227,45 @@ control|(
 name|RMContainer
 name|rmContainer
 range|:
-name|application
+name|attempt
 operator|.
 name|getLiveContainers
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|keepContainers
+operator|&&
+name|rmContainer
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|)
+condition|)
+block|{
+comment|// do not kill the running container in the case of work-preserving AM
+comment|// restart.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skip killing "
+operator|+
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|completedContainer
 argument_list|(
 name|rmContainer
@@ -4208,7 +4296,7 @@ control|(
 name|RMContainer
 name|rmContainer
 range|:
-name|application
+name|attempt
 operator|.
 name|getReservedContainers
 argument_list|()
@@ -4237,7 +4325,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Clean up pending requests, metrics etc.
-name|application
+name|attempt
 operator|.
 name|stop
 argument_list|(
@@ -4252,7 +4340,7 @@ name|queueMgr
 operator|.
 name|getLeafQueue
 argument_list|(
-name|application
+name|attempt
 operator|.
 name|getQueue
 argument_list|()
@@ -4270,7 +4358,7 @@ name|queue
 operator|.
 name|removeApp
 argument_list|(
-name|application
+name|attempt
 argument_list|)
 decl_stmt|;
 if|if
@@ -4282,7 +4370,7 @@ name|maxRunningEnforcer
 operator|.
 name|updateRunnabilityOnAppRemoval
 argument_list|(
-name|application
+name|attempt
 argument_list|)
 expr_stmt|;
 block|}
@@ -4292,18 +4380,10 @@ name|maxRunningEnforcer
 operator|.
 name|untrackNonRunnableApp
 argument_list|(
-name|application
+name|attempt
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Remove from our data-structure
-name|appAttempts
-operator|.
-name|remove
-argument_list|(
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Clean up a completed container.    */
 DECL|method|completedContainer (RMContainer rmContainer, ContainerStatus containerStatus, RMContainerEventType event)
@@ -4347,8 +4427,19 @@ name|getContainer
 argument_list|()
 decl_stmt|;
 comment|// Get the application for the finished container
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|FSSchedulerApp
+name|application
+init|=
+name|getCurrentAttemptForContainer
+argument_list|(
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|ApplicationId
+name|appId
 init|=
 name|container
 operator|.
@@ -4357,16 +4448,9 @@ argument_list|()
 operator|.
 name|getApplicationAttemptId
 argument_list|()
-decl_stmt|;
-name|FSSchedulerApp
-name|application
-init|=
-name|appAttempts
 operator|.
-name|get
-argument_list|(
-name|applicationAttemptId
-argument_list|)
+name|getApplicationId
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -4385,9 +4469,9 @@ name|container
 operator|+
 literal|" of"
 operator|+
-literal|" unknown application "
+literal|" unknown application attempt "
 operator|+
-name|applicationAttemptId
+name|appId
 operator|+
 literal|" completed with event "
 operator|+
@@ -4470,9 +4554,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application "
+literal|"Application attempt "
 operator|+
-name|applicationAttemptId
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
 operator|+
 literal|" released container "
 operator|+
@@ -4749,9 +4836,7 @@ comment|// Make sure this application exists
 name|FSSchedulerApp
 name|application
 init|=
-name|appAttempts
-operator|.
-name|get
+name|getSchedulerApp
 argument_list|(
 name|appAttemptId
 argument_list|)
@@ -5059,22 +5144,12 @@ name|node
 parameter_list|)
 block|{
 comment|// Get the application for the finished container
-name|ApplicationAttemptId
-name|applicationAttemptId
-init|=
-name|containerId
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-decl_stmt|;
 name|FSSchedulerApp
 name|application
 init|=
-name|appAttempts
-operator|.
-name|get
+name|getCurrentAttemptForContainer
 argument_list|(
-name|applicationAttemptId
+name|containerId
 argument_list|)
 decl_stmt|;
 if|if
@@ -5088,9 +5163,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Unknown application: "
+literal|"Unknown application "
 operator|+
-name|applicationAttemptId
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
 operator|+
 literal|" launched container "
 operator|+
@@ -5818,13 +5899,38 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 block|{
-return|return
-name|appAttempts
+name|SchedulerApplication
+name|app
+init|=
+name|applications
 operator|.
 name|get
 argument_list|(
 name|appAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|app
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+operator|(
+name|FSSchedulerApp
+operator|)
+name|app
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 annotation|@
@@ -5838,15 +5944,19 @@ name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|)
 block|{
-if|if
-condition|(
-operator|!
-name|appAttempts
-operator|.
-name|containsKey
+name|FSSchedulerApp
+name|attempt
+init|=
+name|getSchedulerApp
 argument_list|(
 name|appAttemptId
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|attempt
+operator|==
+literal|null
 condition|)
 block|{
 name|LOG
@@ -5866,12 +5976,7 @@ return|return
 operator|new
 name|SchedulerAppReport
 argument_list|(
-name|appAttempts
-operator|.
-name|get
-argument_list|(
-name|appAttemptId
-argument_list|)
+name|attempt
 argument_list|)
 return|;
 block|}
@@ -5887,18 +5992,16 @@ name|appAttemptId
 parameter_list|)
 block|{
 name|FSSchedulerApp
-name|app
+name|attempt
 init|=
-name|appAttempts
-operator|.
-name|get
+name|getSchedulerApp
 argument_list|(
 name|appAttemptId
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|app
+name|attempt
 operator|==
 literal|null
 condition|)
@@ -5917,7 +6020,7 @@ literal|null
 return|;
 block|}
 return|return
-name|app
+name|attempt
 operator|.
 name|getResourceUsageReport
 argument_list|()
@@ -6231,6 +6334,11 @@ name|appAttemptAddedEvent
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+argument_list|,
+name|appAttemptAddedEvent
+operator|.
+name|getTransferStateFromPreviousAttempt
+argument_list|()
 argument_list|)
 expr_stmt|;
 break|break;
@@ -6275,6 +6383,11 @@ argument_list|,
 name|appAttemptRemovedEvent
 operator|.
 name|getFinalAttemptState
+argument_list|()
+argument_list|,
+name|appAttemptRemovedEvent
+operator|.
+name|getKeepContainersAcrossAppAttempts
 argument_list|()
 argument_list|)
 expr_stmt|;

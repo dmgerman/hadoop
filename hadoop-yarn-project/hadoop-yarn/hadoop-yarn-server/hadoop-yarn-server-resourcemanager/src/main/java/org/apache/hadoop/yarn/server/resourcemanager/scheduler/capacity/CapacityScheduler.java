@@ -772,6 +772,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|rmcontainer
+operator|.
+name|RMContainerState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|rmnode
 operator|.
 name|RMNode
@@ -894,7 +914,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplication
+name|SchedulerAppReport
 import|;
 end_import
 
@@ -914,7 +934,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerAppReport
+name|SchedulerApplication
 import|;
 end_import
 
@@ -1783,27 +1803,6 @@ argument_list|<
 name|ApplicationId
 argument_list|,
 name|SchedulerApplication
-argument_list|>
-argument_list|()
-decl_stmt|;
-annotation|@
-name|VisibleForTesting
-DECL|field|appAttempts
-specifier|protected
-name|Map
-argument_list|<
-name|ApplicationAttemptId
-argument_list|,
-name|FiCaSchedulerApp
-argument_list|>
-name|appAttempts
-init|=
-operator|new
-name|ConcurrentHashMap
-argument_list|<
-name|ApplicationAttemptId
-argument_list|,
-name|FiCaSchedulerApp
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -3070,7 +3069,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId)
+DECL|method|addApplicationAttempt ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
 specifier|private
 specifier|synchronized
 name|void
@@ -3078,6 +3077,9 @@ name|addApplicationAttempt
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
+parameter_list|,
+name|boolean
+name|transferStateFromPreviousAttempt
 parameter_list|)
 block|{
 name|SchedulerApplication
@@ -3105,7 +3107,7 @@ name|getQueue
 argument_list|()
 decl_stmt|;
 name|FiCaSchedulerApp
-name|SchedulerApp
+name|attempt
 init|=
 operator|new
 name|FiCaSchedulerApp
@@ -3127,20 +3129,34 @@ argument_list|,
 name|rmContext
 argument_list|)
 decl_stmt|;
-name|appAttempts
+if|if
+condition|(
+name|transferStateFromPreviousAttempt
+condition|)
+block|{
+name|attempt
 operator|.
-name|put
+name|transferStateFromPreviousAttempt
 argument_list|(
-name|applicationAttemptId
-argument_list|,
-name|SchedulerApp
+name|application
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+name|application
+operator|.
+name|setCurrentAppAttempt
+argument_list|(
+name|attempt
 argument_list|)
 expr_stmt|;
 name|queue
 operator|.
 name|submitApplicationAttempt
 argument_list|(
-name|SchedulerApp
+name|attempt
 argument_list|,
 name|application
 operator|.
@@ -3223,7 +3239,8 @@ operator|==
 literal|null
 condition|)
 block|{
-comment|// The AppRemovedSchedulerEvent maybe sent on recovery for completed apps.
+comment|// The AppRemovedSchedulerEvent maybe sent on recovery for completed apps,
+comment|// ignore it.
 return|return;
 block|}
 name|CSQueue
@@ -3285,7 +3302,7 @@ name|applicationId
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|doneApplicationAttempt ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState)
+DECL|method|doneApplicationAttempt ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState rmAppAttemptFinalState, boolean keepContainers)
 specifier|private
 specifier|synchronized
 name|void
@@ -3296,6 +3313,9 @@ name|applicationAttemptId
 parameter_list|,
 name|RMAppAttemptState
 name|rmAppAttemptFinalState
+parameter_list|,
+name|boolean
+name|keepContainers
 parameter_list|)
 block|{
 name|LOG
@@ -3314,11 +3334,24 @@ name|rmAppAttemptFinalState
 argument_list|)
 expr_stmt|;
 name|FiCaSchedulerApp
-name|application
+name|attempt
 init|=
-name|getApplication
+name|getApplicationAttempt
 argument_list|(
 name|applicationAttemptId
+argument_list|)
+decl_stmt|;
+name|SchedulerApplication
+name|application
+init|=
+name|applications
+operator|.
+name|get
+argument_list|(
+name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
 decl_stmt|;
 if|if
@@ -3326,10 +3359,12 @@ condition|(
 name|application
 operator|==
 literal|null
+operator|||
+name|attempt
+operator|==
+literal|null
 condition|)
 block|{
-comment|//      throw new IOException("Unknown application " + applicationId +
-comment|//          " has completed!");
 name|LOG
 operator|.
 name|info
@@ -3343,18 +3378,51 @@ argument_list|)
 expr_stmt|;
 return|return;
 block|}
-comment|// Release all the running containers
+comment|// Release all the allocated, acquired, running containers
 for|for
 control|(
 name|RMContainer
 name|rmContainer
 range|:
-name|application
+name|attempt
 operator|.
 name|getLiveContainers
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|keepContainers
+operator|&&
+name|rmContainer
+operator|.
+name|getState
+argument_list|()
+operator|.
+name|equals
+argument_list|(
+name|RMContainerState
+operator|.
+name|RUNNING
+argument_list|)
+condition|)
+block|{
+comment|// do not kill the running container in the case of work-preserving AM
+comment|// restart.
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Skip killing "
+operator|+
+name|rmContainer
+operator|.
+name|getContainerId
+argument_list|()
+argument_list|)
+expr_stmt|;
+continue|continue;
+block|}
 name|completedContainer
 argument_list|(
 name|rmContainer
@@ -3385,7 +3453,7 @@ control|(
 name|RMContainer
 name|rmContainer
 range|:
-name|application
+name|attempt
 operator|.
 name|getReservedContainers
 argument_list|()
@@ -3414,7 +3482,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Clean up pending requests, metrics etc.
-name|application
+name|attempt
 operator|.
 name|stop
 argument_list|(
@@ -3425,7 +3493,7 @@ comment|// Inform the queue
 name|String
 name|queueName
 init|=
-name|application
+name|attempt
 operator|.
 name|getQueue
 argument_list|()
@@ -3471,7 +3539,7 @@ name|queue
 operator|.
 name|finishApplicationAttempt
 argument_list|(
-name|application
+name|attempt
 argument_list|,
 name|queue
 operator|.
@@ -3480,14 +3548,6 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|// Remove from our data-structure
-name|appAttempts
-operator|.
-name|remove
-argument_list|(
-name|applicationAttemptId
-argument_list|)
-expr_stmt|;
 block|}
 DECL|field|EMPTY_ALLOCATION
 specifier|private
@@ -3558,7 +3618,7 @@ block|{
 name|FiCaSchedulerApp
 name|application
 init|=
-name|getApplication
+name|getApplicationAttempt
 argument_list|(
 name|applicationAttemptId
 argument_list|)
@@ -4187,11 +4247,11 @@ block|{
 name|FiCaSchedulerApp
 name|reservedApplication
 init|=
-name|getApplication
+name|getCurrentAttemptForContainer
 argument_list|(
 name|reservedContainer
 operator|.
-name|getApplicationAttemptId
+name|getContainerId
 argument_list|()
 argument_list|)
 decl_stmt|;
@@ -4358,20 +4418,12 @@ name|node
 parameter_list|)
 block|{
 comment|// Get the application for the finished container
-name|ApplicationAttemptId
-name|applicationAttemptId
-init|=
-name|containerId
-operator|.
-name|getApplicationAttemptId
-argument_list|()
-decl_stmt|;
 name|FiCaSchedulerApp
 name|application
 init|=
-name|getApplication
+name|getCurrentAttemptForContainer
 argument_list|(
-name|applicationAttemptId
+name|containerId
 argument_list|)
 decl_stmt|;
 if|if
@@ -4385,9 +4437,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Unknown application: "
+literal|"Unknown application "
 operator|+
-name|applicationAttemptId
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
 operator|+
 literal|" launched container "
 operator|+
@@ -4599,6 +4657,11 @@ name|appAttemptAddedEvent
 operator|.
 name|getApplicationAttemptId
 argument_list|()
+argument_list|,
+name|appAttemptAddedEvent
+operator|.
+name|getTransferStateFromPreviousAttempt
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -4625,6 +4688,11 @@ argument_list|,
 name|appAttemptRemovedEvent
 operator|.
 name|getFinalAttemptState
+argument_list|()
+argument_list|,
+name|appAttemptRemovedEvent
+operator|.
+name|getKeepContainersAcrossAppAttempts
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -4981,8 +5049,19 @@ name|getContainer
 argument_list|()
 decl_stmt|;
 comment|// Get the application for the finished container
-name|ApplicationAttemptId
-name|applicationAttemptId
+name|FiCaSchedulerApp
+name|application
+init|=
+name|getCurrentAttemptForContainer
+argument_list|(
+name|container
+operator|.
+name|getId
+argument_list|()
+argument_list|)
+decl_stmt|;
+name|ApplicationId
+name|appId
 init|=
 name|container
 operator|.
@@ -4991,14 +5070,9 @@ argument_list|()
 operator|.
 name|getApplicationAttemptId
 argument_list|()
-decl_stmt|;
-name|FiCaSchedulerApp
-name|application
-init|=
-name|getApplication
-argument_list|(
-name|applicationAttemptId
-argument_list|)
+operator|.
+name|getApplicationId
+argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -5019,7 +5093,7 @@ literal|" of"
 operator|+
 literal|" unknown application "
 operator|+
-name|applicationAttemptId
+name|appId
 operator|+
 literal|" completed with event "
 operator|+
@@ -5075,9 +5149,12 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application "
+literal|"Application attempt "
 operator|+
-name|applicationAttemptId
+name|application
+operator|.
+name|getApplicationAttemptId
+argument_list|()
 operator|+
 literal|" released container "
 operator|+
@@ -5105,21 +5182,46 @@ name|NoLock
 operator|.
 name|class
 argument_list|)
-DECL|method|getApplication (ApplicationAttemptId applicationAttemptId)
+DECL|method|getApplicationAttempt ( ApplicationAttemptId applicationAttemptId)
 name|FiCaSchedulerApp
-name|getApplication
+name|getApplicationAttempt
 parameter_list|(
 name|ApplicationAttemptId
 name|applicationAttemptId
 parameter_list|)
 block|{
-return|return
-name|appAttempts
+name|SchedulerApplication
+name|app
+init|=
+name|applications
 operator|.
 name|get
 argument_list|(
 name|applicationAttemptId
+operator|.
+name|getApplicationId
+argument_list|()
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|app
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+operator|(
+name|FiCaSchedulerApp
+operator|)
+name|app
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 annotation|@
@@ -5136,7 +5238,7 @@ block|{
 name|FiCaSchedulerApp
 name|app
 init|=
-name|getApplication
+name|getApplicationAttempt
 argument_list|(
 name|applicationAttemptId
 argument_list|)
@@ -5169,7 +5271,7 @@ block|{
 name|FiCaSchedulerApp
 name|app
 init|=
-name|getApplication
+name|getApplicationAttempt
 argument_list|(
 name|applicationAttemptId
 argument_list|)
@@ -5213,8 +5315,10 @@ name|nodeId
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getRMContainer (ContainerId containerId)
-specifier|private
+specifier|public
 name|RMContainer
 name|getRMContainer
 parameter_list|(
@@ -5223,31 +5327,76 @@ name|containerId
 parameter_list|)
 block|{
 name|FiCaSchedulerApp
-name|application
+name|attempt
 init|=
-name|getApplication
+name|getCurrentAttemptForContainer
 argument_list|(
 name|containerId
-operator|.
-name|getApplicationAttemptId
-argument_list|()
 argument_list|)
 decl_stmt|;
 return|return
 operator|(
-name|application
+name|attempt
 operator|==
 literal|null
 operator|)
 condition|?
 literal|null
 else|:
-name|application
+name|attempt
 operator|.
 name|getRMContainer
 argument_list|(
 name|containerId
 argument_list|)
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getCurrentAttemptForContainer ( ContainerId containerId)
+specifier|public
+name|FiCaSchedulerApp
+name|getCurrentAttemptForContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+name|SchedulerApplication
+name|app
+init|=
+name|applications
+operator|.
+name|get
+argument_list|(
+name|containerId
+operator|.
+name|getApplicationAttemptId
+argument_list|()
+operator|.
+name|getApplicationId
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|app
+operator|!=
+literal|null
+condition|)
+block|{
+return|return
+operator|(
+name|FiCaSchedulerApp
+operator|)
+name|app
+operator|.
+name|getCurrentAppAttempt
+argument_list|()
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 annotation|@
@@ -5408,9 +5557,7 @@ block|}
 name|FiCaSchedulerApp
 name|app
 init|=
-name|appAttempts
-operator|.
-name|get
+name|getApplicationAttempt
 argument_list|(
 name|aid
 argument_list|)

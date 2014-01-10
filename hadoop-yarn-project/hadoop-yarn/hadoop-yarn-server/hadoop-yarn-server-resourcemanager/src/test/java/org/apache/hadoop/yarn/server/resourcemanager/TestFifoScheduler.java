@@ -2350,6 +2350,8 @@ operator|new
 name|AppAttemptAddedSchedulerEvent
 argument_list|(
 name|appAttemptId1
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|fs
@@ -3060,6 +3062,8 @@ operator|new
 name|AppAttemptAddedSchedulerEvent
 argument_list|(
 name|appAttemptId1
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|fs
@@ -3120,6 +3124,8 @@ operator|new
 name|AppAttemptAddedSchedulerEvent
 argument_list|(
 name|appAttemptId2
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|fs
