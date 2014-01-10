@@ -128,6 +128,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|ha
+operator|.
+name|HAServiceProtocol
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|service
 operator|.
 name|Service
@@ -1998,6 +2012,15 @@ name|getXmlString
 argument_list|(
 name|element
 argument_list|,
+literal|"haState"
+argument_list|)
+argument_list|,
+name|WebServicesTestUtils
+operator|.
+name|getXmlString
+argument_list|(
+name|element
+argument_list|,
 literal|"hadoopVersionBuiltOn"
 argument_list|)
 argument_list|,
@@ -2088,7 +2111,7 @@ name|assertEquals
 argument_list|(
 literal|"incorrect number of elements"
 argument_list|,
-literal|9
+literal|10
 argument_list|,
 name|info
 operator|.
@@ -2117,6 +2140,13 @@ operator|.
 name|getString
 argument_list|(
 literal|"state"
+argument_list|)
+argument_list|,
+name|info
+operator|.
+name|getString
+argument_list|(
+literal|"haState"
 argument_list|)
 argument_list|,
 name|info
@@ -2163,7 +2193,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|verifyClusterGeneric (long clusterid, long startedon, String state, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion)
+DECL|method|verifyClusterGeneric (long clusterid, long startedon, String state, String haState, String hadoopVersionBuiltOn, String hadoopBuildVersion, String hadoopVersion, String resourceManagerVersionBuiltOn, String resourceManagerBuildVersion, String resourceManagerVersion)
 specifier|public
 name|void
 name|verifyClusterGeneric
@@ -2176,6 +2206,9 @@ name|startedon
 parameter_list|,
 name|String
 name|state
+parameter_list|,
+name|String
+name|haState
 parameter_list|,
 name|String
 name|hadoopVersionBuiltOn
@@ -2236,6 +2269,20 @@ name|INITED
 operator|.
 name|toString
 argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|assertTrue
+argument_list|(
+literal|"HA state doesn't match: "
+operator|+
+name|haState
+argument_list|,
+name|haState
+operator|.
+name|matches
+argument_list|(
+literal|"INITIALIZING"
 argument_list|)
 argument_list|)
 expr_stmt|;
