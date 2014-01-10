@@ -316,7 +316,7 @@ block|{
 return|return
 name|serviceList
 operator|.
-name|add
+name|remove
 argument_list|(
 name|service
 argument_list|)
