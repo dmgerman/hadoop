@@ -781,6 +781,26 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSEditLogOpCodes
+operator|.
+name|OP_UPGRADE_MARKER
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1969,6 +1989,17 @@ name|OP_REMOVE_CACHE_POOL
 argument_list|,
 operator|new
 name|RemoveCachePoolOp
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|inst
+operator|.
+name|put
+argument_list|(
+name|OP_UPGRADE_MARKER
+argument_list|,
+operator|new
+name|UpgradeMarkerOp
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -18162,6 +18193,147 @@ operator|.
 name|readLong
 argument_list|()
 expr_stmt|;
+block|}
+block|}
+comment|/**    * Operation corresponding to upgrade    */
+DECL|class|UpgradeMarkerOp
+specifier|static
+class|class
+name|UpgradeMarkerOp
+extends|extends
+name|FSEditLogOp
+block|{
+comment|// @Idempotent
+DECL|method|UpgradeMarkerOp ()
+specifier|public
+name|UpgradeMarkerOp
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|OP_UPGRADE_MARKER
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getInstance (OpInstanceCache cache)
+specifier|static
+name|UpgradeMarkerOp
+name|getInstance
+parameter_list|(
+name|OpInstanceCache
+name|cache
+parameter_list|)
+block|{
+return|return
+operator|(
+name|UpgradeMarkerOp
+operator|)
+name|cache
+operator|.
+name|get
+argument_list|(
+name|OP_UPGRADE_MARKER
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|readFields (DataInputStream in, int logVersion)
+name|void
+name|readFields
+parameter_list|(
+name|DataInputStream
+name|in
+parameter_list|,
+name|int
+name|logVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{     }
+annotation|@
+name|Override
+DECL|method|writeFields (DataOutputStream out)
+specifier|public
+name|void
+name|writeFields
+parameter_list|(
+name|DataOutputStream
+name|out
+parameter_list|)
+throws|throws
+name|IOException
+block|{     }
+annotation|@
+name|Override
+DECL|method|toXml (ContentHandler contentHandler)
+specifier|protected
+name|void
+name|toXml
+parameter_list|(
+name|ContentHandler
+name|contentHandler
+parameter_list|)
+throws|throws
+name|SAXException
+block|{     }
+annotation|@
+name|Override
+DECL|method|fromXml (Stanza st)
+name|void
+name|fromXml
+parameter_list|(
+name|Stanza
+name|st
+parameter_list|)
+throws|throws
+name|InvalidXmlException
+block|{     }
+annotation|@
+name|Override
+DECL|method|toString ()
+specifier|public
+name|String
+name|toString
+parameter_list|()
+block|{
+name|StringBuilder
+name|builder
+init|=
+operator|new
+name|StringBuilder
+argument_list|()
+decl_stmt|;
+name|builder
+operator|.
+name|append
+argument_list|(
+literal|"UpgradeMarkerOp"
+argument_list|)
+expr_stmt|;
+return|return
+name|builder
+operator|.
+name|toString
+argument_list|()
+return|;
+block|}
+DECL|class|UpgradeMarkerException
+specifier|static
+class|class
+name|UpgradeMarkerException
+extends|extends
+name|IOException
+block|{
+DECL|field|serialVersionUID
+specifier|private
+specifier|static
+specifier|final
+name|long
+name|serialVersionUID
+init|=
+literal|1L
+decl_stmt|;
 block|}
 block|}
 comment|/**    * Class for writing editlog ops    */
