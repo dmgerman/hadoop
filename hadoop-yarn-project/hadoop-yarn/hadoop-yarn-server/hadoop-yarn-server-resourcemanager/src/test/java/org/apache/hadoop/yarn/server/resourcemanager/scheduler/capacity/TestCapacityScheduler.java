@@ -4674,7 +4674,8 @@ name|verifyAppAddedAndRemovedFromScheduler
 argument_list|(
 name|cs
 operator|.
-name|applications
+name|getSchedulerApplications
+argument_list|()
 argument_list|,
 name|cs
 argument_list|,

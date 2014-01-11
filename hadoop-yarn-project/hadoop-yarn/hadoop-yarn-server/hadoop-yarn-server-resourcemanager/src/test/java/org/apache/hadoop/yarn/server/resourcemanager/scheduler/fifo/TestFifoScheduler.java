@@ -4130,7 +4130,8 @@ name|verifyAppAddedAndRemovedFromScheduler
 argument_list|(
 name|fs
 operator|.
-name|applications
+name|getSchedulerApplications
+argument_list|()
 argument_list|,
 name|fs
 argument_list|,
