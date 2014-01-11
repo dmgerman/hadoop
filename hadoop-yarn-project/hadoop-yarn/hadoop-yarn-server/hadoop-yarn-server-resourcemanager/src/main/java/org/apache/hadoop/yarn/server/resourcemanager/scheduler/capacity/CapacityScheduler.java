@@ -3241,6 +3241,15 @@ condition|)
 block|{
 comment|// The AppRemovedSchedulerEvent maybe sent on recovery for completed apps,
 comment|// ignore it.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Couldn't find application "
+operator|+
+name|applicationId
+argument_list|)
+expr_stmt|;
 return|return;
 block|}
 name|CSQueue
@@ -3294,6 +3303,13 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+name|application
+operator|.
+name|stop
+argument_list|(
+name|finalState
+argument_list|)
+expr_stmt|;
 name|applications
 operator|.
 name|remove

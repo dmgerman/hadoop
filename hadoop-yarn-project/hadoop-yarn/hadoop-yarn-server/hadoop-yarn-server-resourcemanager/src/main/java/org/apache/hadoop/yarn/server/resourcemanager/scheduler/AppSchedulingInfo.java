@@ -1291,9 +1291,9 @@ literal|false
 expr_stmt|;
 name|metrics
 operator|.
-name|incrAppsRunning
+name|runAppAttempt
 argument_list|(
-name|this
+name|applicationId
 argument_list|,
 name|user
 argument_list|)
@@ -1824,11 +1824,13 @@ block|}
 block|}
 name|metrics
 operator|.
-name|finishApp
+name|finishAppAttempt
 argument_list|(
-name|this
+name|applicationId
 argument_list|,
-name|rmAppAttemptFinalState
+name|pending
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 comment|// Clear requests themselves

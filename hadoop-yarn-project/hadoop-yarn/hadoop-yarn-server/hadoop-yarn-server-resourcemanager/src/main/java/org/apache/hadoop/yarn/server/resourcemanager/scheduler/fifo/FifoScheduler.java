@@ -2685,7 +2685,7 @@ init|=
 operator|new
 name|SchedulerApplication
 argument_list|(
-literal|null
+name|DEFAULT_QUEUE
 argument_list|,
 name|user
 argument_list|)
@@ -2697,6 +2697,13 @@ argument_list|(
 name|applicationId
 argument_list|,
 name|application
+argument_list|)
+expr_stmt|;
+name|metrics
+operator|.
+name|submitApp
+argument_list|(
+name|user
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2820,14 +2827,9 @@ argument_list|)
 expr_stmt|;
 name|metrics
 operator|.
-name|submitApp
+name|submitAppAttempt
 argument_list|(
 name|user
-argument_list|,
-name|appAttemptId
-operator|.
-name|getAttemptId
-argument_list|()
 argument_list|)
 expr_stmt|;
 name|LOG
@@ -2891,6 +2893,24 @@ argument_list|(
 name|applicationId
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|application
+operator|==
+literal|null
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Couldn't find application "
+operator|+
+name|applicationId
+argument_list|)
+expr_stmt|;
+return|return;
+block|}
 comment|// Inform the activeUsersManager
 name|activeUsersManager
 operator|.
@@ -2902,6 +2922,13 @@ name|getUser
 argument_list|()
 argument_list|,
 name|applicationId
+argument_list|)
+expr_stmt|;
+name|application
+operator|.
+name|stop
+argument_list|(
+name|finalState
 argument_list|)
 expr_stmt|;
 name|applications
