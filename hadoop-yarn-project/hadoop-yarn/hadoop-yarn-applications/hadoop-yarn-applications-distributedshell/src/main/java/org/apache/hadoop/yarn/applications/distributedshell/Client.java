@@ -1127,6 +1127,14 @@ name|clientTimeout
 init|=
 literal|600000
 decl_stmt|;
+comment|// flag to indicate whether to keep containers across application attempts.
+DECL|field|keepContainers
+specifier|private
+name|boolean
+name|keepContainers
+init|=
+literal|false
+decl_stmt|;
 comment|// Debug flag
 DECL|field|debugFlag
 name|boolean
@@ -1616,6 +1624,23 @@ name|opts
 operator|.
 name|addOption
 argument_list|(
+literal|"keep_containers_across_application_attempts"
+argument_list|,
+literal|false
+argument_list|,
+literal|"Flag to indicate whether to keep containers across application attempts."
+operator|+
+literal|" If the flag is true, running containers will not be killed when"
+operator|+
+literal|" application attempt fails and these containers will be retrieved by"
+operator|+
+literal|" the new application attempt "
+argument_list|)
+expr_stmt|;
+name|opts
+operator|.
+name|addOption
+argument_list|(
 literal|"debug"
 argument_list|,
 literal|false
@@ -1793,6 +1818,28 @@ argument_list|)
 condition|)
 block|{
 name|debugFlag
+operator|=
+literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|cliParser
+operator|.
+name|hasOption
+argument_list|(
+literal|"keep_containers_across_application_attempts"
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"keep_containers_across_application_attempts"
+argument_list|)
+expr_stmt|;
+name|keepContainers
 operator|=
 literal|true
 expr_stmt|;
@@ -2652,6 +2699,13 @@ operator|.
 name|getApplicationId
 argument_list|()
 decl_stmt|;
+name|appContext
+operator|.
+name|setKeepContainersAcrossApplicationAttempts
+argument_list|(
+name|keepContainers
+argument_list|)
+expr_stmt|;
 name|appContext
 operator|.
 name|setApplicationName
