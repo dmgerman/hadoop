@@ -10479,6 +10479,8 @@ operator|.
 name|create
 argument_list|(
 name|this
+argument_list|,
+name|conf
 argument_list|)
 expr_stmt|;
 name|this

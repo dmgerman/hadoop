@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.resourcemanager.scheduler.event
+DECL|package|org.apache.hadoop.yarn.server.resourcemanager.rmapp.attempt
 package|package
 name|org
 operator|.
@@ -18,9 +18,9 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
-name|scheduler
+name|rmapp
 operator|.
-name|event
+name|attempt
 package|;
 end_package
 
@@ -43,31 +43,25 @@ import|;
 end_import
 
 begin_class
-DECL|class|AppAttemptAddedSchedulerEvent
+DECL|class|RMAppStartAttemptEvent
 specifier|public
 class|class
-name|AppAttemptAddedSchedulerEvent
+name|RMAppStartAttemptEvent
 extends|extends
-name|SchedulerEvent
+name|RMAppAttemptEvent
 block|{
-DECL|field|applicationAttemptId
-specifier|private
-specifier|final
-name|ApplicationAttemptId
-name|applicationAttemptId
-decl_stmt|;
 DECL|field|transferStateFromPreviousAttempt
 specifier|private
 specifier|final
 name|boolean
 name|transferStateFromPreviousAttempt
 decl_stmt|;
-DECL|method|AppAttemptAddedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, boolean transferStateFromPreviousAttempt)
+DECL|method|RMAppStartAttemptEvent (ApplicationAttemptId appAttemptId, boolean transferStateFromPreviousAttempt)
 specifier|public
-name|AppAttemptAddedSchedulerEvent
+name|RMAppStartAttemptEvent
 parameter_list|(
 name|ApplicationAttemptId
-name|applicationAttemptId
+name|appAttemptId
 parameter_list|,
 name|boolean
 name|transferStateFromPreviousAttempt
@@ -75,33 +69,19 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|SchedulerEventType
+name|appAttemptId
+argument_list|,
+name|RMAppAttemptEventType
 operator|.
-name|APP_ATTEMPT_ADDED
+name|START
 argument_list|)
 expr_stmt|;
 name|this
 operator|.
-name|applicationAttemptId
-operator|=
-name|applicationAttemptId
-expr_stmt|;
-name|this
-operator|.
 name|transferStateFromPreviousAttempt
 operator|=
 name|transferStateFromPreviousAttempt
 expr_stmt|;
-block|}
-DECL|method|getApplicationAttemptId ()
-specifier|public
-name|ApplicationAttemptId
-name|getApplicationAttemptId
-parameter_list|()
-block|{
-return|return
-name|applicationAttemptId
-return|;
 block|}
 DECL|method|getTransferStateFromPreviousAttempt ()
 specifier|public

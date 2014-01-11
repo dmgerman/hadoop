@@ -457,7 +457,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|blacklist
-specifier|final
+specifier|private
 name|Set
 argument_list|<
 name|String
@@ -1851,6 +1851,44 @@ operator|.
 name|queue
 operator|=
 name|queue
+expr_stmt|;
+block|}
+DECL|method|getBlackList ()
+specifier|public
+specifier|synchronized
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlackList
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|blacklist
+return|;
+block|}
+DECL|method|transferStateFromPreviousAppSchedulingInfo ( AppSchedulingInfo appInfo)
+specifier|public
+specifier|synchronized
+name|void
+name|transferStateFromPreviousAppSchedulingInfo
+parameter_list|(
+name|AppSchedulingInfo
+name|appInfo
+parameter_list|)
+block|{
+comment|//    this.priorities = appInfo.getPriorities();
+comment|//    this.requests = appInfo.getRequests();
+name|this
+operator|.
+name|blacklist
+operator|=
+name|appInfo
+operator|.
+name|getBlackList
+argument_list|()
 expr_stmt|;
 block|}
 block|}

@@ -2537,6 +2537,7 @@ operator|.
 name|Private
 DECL|method|terminateConnection ()
 specifier|public
+specifier|synchronized
 name|void
 name|terminateConnection
 parameter_list|()

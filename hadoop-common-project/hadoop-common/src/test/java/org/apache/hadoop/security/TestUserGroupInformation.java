@@ -4536,11 +4536,13 @@ operator|>
 literal|0
 condition|)
 block|{
-name|assertCounter
+name|assertCounterGt
 argument_list|(
 literal|"GetGroupsNumOps"
 argument_list|,
 name|groups
+operator|-
+literal|1
 argument_list|,
 name|rb
 argument_list|)

@@ -11891,7 +11891,7 @@ name|registerNode
 argument_list|(
 literal|"127.0.0.1:1234"
 argument_list|,
-literal|2048
+literal|8192
 argument_list|)
 decl_stmt|;
 name|RMApp
@@ -11987,6 +11987,8 @@ operator|.
 name|ATTEMPT_FAILED
 argument_list|,
 literal|""
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|app1
@@ -12018,6 +12020,14 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|// kick the scheduler to allocate the am container.
+name|amNodeManager
+operator|.
+name|nodeHeartbeat
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
 name|rm
 operator|.
 name|waitForState

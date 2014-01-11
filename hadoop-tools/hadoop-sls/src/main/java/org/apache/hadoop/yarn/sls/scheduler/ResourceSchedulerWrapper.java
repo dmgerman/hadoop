@@ -4943,6 +4943,21 @@ name|queue
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getRMContainer (ContainerId containerId)
+specifier|public
+name|RMContainer
+name|getRMContainer
+parameter_list|(
+name|ContainerId
+name|containerId
+parameter_list|)
+block|{
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
