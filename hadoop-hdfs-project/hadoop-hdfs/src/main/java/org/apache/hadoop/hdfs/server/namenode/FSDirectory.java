@@ -9134,7 +9134,14 @@ argument_list|(
 name|inode
 argument_list|)
 decl_stmt|;
+comment|// inodes can be null only when its called without holding lock
 return|return
+name|inodes
+operator|==
+literal|null
+condition|?
+literal|""
+else|:
 name|getFullPathName
 argument_list|(
 name|inodes
