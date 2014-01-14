@@ -2951,6 +2951,16 @@ name|value
 argument_list|()
 return|;
 block|}
+DECL|method|getMetricsSystem ()
+specifier|public
+name|MetricsSystem
+name|getMetricsSystem
+parameter_list|()
+block|{
+return|return
+name|metricsSystem
+return|;
+block|}
 block|}
 end_class
 

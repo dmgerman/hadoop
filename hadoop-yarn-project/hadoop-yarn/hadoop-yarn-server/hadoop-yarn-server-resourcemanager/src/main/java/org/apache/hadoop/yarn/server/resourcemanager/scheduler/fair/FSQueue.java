@@ -46,6 +46,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -836,7 +846,7 @@ comment|/**    * Gets the children of this queue, if any.    */
 DECL|method|getChildQueues ()
 specifier|public
 specifier|abstract
-name|Collection
+name|List
 argument_list|<
 name|FSQueue
 argument_list|>

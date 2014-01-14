@@ -373,9 +373,9 @@ DECL|field|placementPolicy
 name|QueuePlacementPolicy
 name|placementPolicy
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|field|queueNames
-specifier|private
-specifier|final
 name|Set
 argument_list|<
 name|String
