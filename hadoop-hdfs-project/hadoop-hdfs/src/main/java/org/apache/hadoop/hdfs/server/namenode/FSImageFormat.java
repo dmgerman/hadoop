@@ -4050,7 +4050,7 @@ return|return;
 block|}
 name|namesystem
 operator|.
-name|loadSecretManagerState
+name|loadSecretManagerStateCompat
 argument_list|(
 name|in
 argument_list|)
@@ -4891,7 +4891,7 @@ argument_list|()
 expr_stmt|;
 name|sourceNamesystem
 operator|.
-name|saveSecretManagerState
+name|saveSecretManagerStateCompat
 argument_list|(
 name|out
 argument_list|,
