@@ -14393,13 +14393,11 @@ argument_list|)
 expr_stmt|;
 name|dir
 operator|.
-name|persistBlocks
+name|persistNewBlock
 argument_list|(
 name|src
 argument_list|,
 name|pendingFile
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|offset

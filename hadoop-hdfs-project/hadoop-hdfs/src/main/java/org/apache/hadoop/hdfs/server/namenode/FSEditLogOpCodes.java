@@ -432,6 +432,15 @@ operator|)
 literal|38
 argument_list|)
 block|,
+DECL|enumConstant|OP_ADD_BLOCK
+name|OP_ADD_BLOCK
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|39
+argument_list|)
+block|,
 comment|// Note that fromByte(..) depends on OP_INVALID being at the last position.
 DECL|enumConstant|OP_INVALID
 name|OP_INVALID
