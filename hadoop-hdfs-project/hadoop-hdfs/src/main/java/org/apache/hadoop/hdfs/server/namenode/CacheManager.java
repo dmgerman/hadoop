@@ -1111,6 +1111,16 @@ operator|new
 name|ReentrantLock
 argument_list|()
 decl_stmt|;
+DECL|field|serializerCompat
+specifier|private
+specifier|final
+name|SerializerCompat
+name|serializerCompat
+init|=
+operator|new
+name|SerializerCompat
+argument_list|()
+decl_stmt|;
 comment|/**    * The CacheReplicationMonitor.    */
 DECL|field|monitor
 specifier|private
@@ -4949,10 +4959,60 @@ block|}
 block|}
 block|}
 comment|/**    * Saves the current state of the CacheManager to the DataOutput. Used    * to persist CacheManager state in the FSImage.    * @param out DataOutput to persist state    * @param sdPath path of the storage directory    * @throws IOException    */
-DECL|method|saveState (DataOutputStream out, String sdPath)
+DECL|method|saveStateCompat (DataOutputStream out, String sdPath)
 specifier|public
 name|void
-name|saveState
+name|saveStateCompat
+parameter_list|(
+name|DataOutputStream
+name|out
+parameter_list|,
+name|String
+name|sdPath
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|serializerCompat
+operator|.
+name|save
+argument_list|(
+name|out
+argument_list|,
+name|sdPath
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**    * Reloads CacheManager state from the passed DataInput. Used during namenode    * startup to restore CacheManager state from an FSImage.    * @param in DataInput from which to restore state    * @throws IOException    */
+DECL|method|loadStateCompat (DataInput in)
+specifier|public
+name|void
+name|loadStateCompat
+parameter_list|(
+name|DataInput
+name|in
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|serializerCompat
+operator|.
+name|load
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+block|}
+DECL|class|SerializerCompat
+specifier|private
+specifier|final
+class|class
+name|SerializerCompat
+block|{
+DECL|method|save (DataOutputStream out, String sdPath)
+specifier|private
+name|void
+name|save
 parameter_list|(
 name|DataOutputStream
 name|out
@@ -4985,11 +5045,10 @@ name|sdPath
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Reloads CacheManager state from the passed DataInput. Used during namenode    * startup to restore CacheManager state from an FSImage.    * @param in DataInput from which to restore state    * @throws IOException    */
-DECL|method|loadState (DataInput in)
-specifier|public
+DECL|method|load (DataInput in)
+specifier|private
 name|void
-name|loadState
+name|load
 parameter_list|(
 name|DataInput
 name|in
@@ -5016,7 +5075,7 @@ name|in
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Save cache pools to fsimage    */
+comment|/**      * Save cache pools to fsimage      */
 DECL|method|savePools (DataOutputStream out, String sdPath)
 specifier|private
 name|void
@@ -5146,7 +5205,7 @@ name|step
 argument_list|)
 expr_stmt|;
 block|}
-comment|/*    * Save cache entries to fsimage    */
+comment|/*      * Save cache entries to fsimage      */
 DECL|method|saveDirectives (DataOutputStream out, String sdPath)
 specifier|private
 name|void
@@ -5274,7 +5333,7 @@ name|step
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load cache pools from fsimage    */
+comment|/**      * Load cache pools from fsimage      */
 DECL|method|loadPools (DataInput in)
 specifier|private
 name|void
@@ -5394,7 +5453,7 @@ name|step
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load cache directives from the fsimage    */
+comment|/**      * Load cache directives from the fsimage      */
 DECL|method|loadDirectives (DataInput in)
 specifier|private
 name|void
@@ -5688,6 +5747,7 @@ argument_list|,
 name|step
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 DECL|method|waitForRescanIfNeeded ()
 specifier|public

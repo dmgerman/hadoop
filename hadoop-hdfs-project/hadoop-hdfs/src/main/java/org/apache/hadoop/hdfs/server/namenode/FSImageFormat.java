@@ -4095,7 +4095,7 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|loadState
+name|loadStateCompat
 argument_list|(
 name|in
 argument_list|)
@@ -4908,7 +4908,7 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|saveState
+name|saveStateCompat
 argument_list|(
 name|out
 argument_list|,
