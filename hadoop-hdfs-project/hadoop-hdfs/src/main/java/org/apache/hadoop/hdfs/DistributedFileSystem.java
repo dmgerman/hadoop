@@ -572,6 +572,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|CacheDirectiveInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|CachePoolEntry
 import|;
 end_import
@@ -688,6 +704,24 @@ name|protocol
 operator|.
 name|HdfsConstants
 operator|.
+name|RollingUpgradeAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
 name|SafeModeAction
 import|;
 end_import
@@ -752,7 +786,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|CacheDirectiveInfo
+name|RollingUpgradeInfo
 import|;
 end_import
 
@@ -4991,6 +5025,27 @@ operator|.
 name|finalizeUpgrade
 argument_list|()
 expr_stmt|;
+block|}
+comment|/**    * Rolling upgrade: start/finalize/query.    */
+DECL|method|rollingUpgrade (RollingUpgradeAction action)
+specifier|public
+name|RollingUpgradeInfo
+name|rollingUpgrade
+parameter_list|(
+name|RollingUpgradeAction
+name|action
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|dfs
+operator|.
+name|rollingUpgrade
+argument_list|(
+name|action
+argument_list|)
+return|;
 block|}
 comment|/*    * Requests the namenode to dump data strcutures into specified     * file.    */
 DECL|method|metaSave (String pathname)

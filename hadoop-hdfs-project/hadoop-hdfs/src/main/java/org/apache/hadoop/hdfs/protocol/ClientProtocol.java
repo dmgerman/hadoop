@@ -274,6 +274,24 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|HdfsConstants
+operator|.
+name|RollingUpgradeAction
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|security
 operator|.
 name|token
@@ -1289,6 +1307,20 @@ specifier|public
 name|void
 name|finalizeUpgrade
 parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Rolling upgrade operations.    * @param action either query, start or finailze.    * @return rolling upgrade information.    */
+annotation|@
+name|Idempotent
+DECL|method|rollingUpgrade (RollingUpgradeAction action)
+specifier|public
+name|RollingUpgradeInfo
+name|rollingUpgrade
+parameter_list|(
+name|RollingUpgradeAction
+name|action
+parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
