@@ -229,6 +229,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"ResourceManager HA state:"
+argument_list|,
+name|cinfo
+operator|.
+name|getHAState
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"ResourceManager started on:"
 argument_list|,
 name|Times

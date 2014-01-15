@@ -410,6 +410,18 @@ name|YarnVersionInfo
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|mortbay
+operator|.
+name|log
+operator|.
+name|Log
+import|;
+end_import
+
 begin_class
 DECL|class|MockNM
 specifier|public
@@ -923,7 +935,7 @@ literal|1
 argument_list|)
 decl_stmt|;
 name|ContainerStatus
-name|amContainerStatus
+name|containerStatus
 init|=
 name|BuilderUtils
 operator|.
@@ -935,12 +947,10 @@ name|newContainerId
 argument_list|(
 name|attemptId
 argument_list|,
-literal|1
+name|containerId
 argument_list|)
 argument_list|,
-name|ContainerState
-operator|.
-name|COMPLETE
+name|containerState
 argument_list|,
 literal|"Success"
 argument_list|,
@@ -966,7 +976,16 @@ name|containerStatusList
 operator|.
 name|add
 argument_list|(
-name|amContainerStatus
+name|containerStatus
+argument_list|)
+expr_stmt|;
+name|Log
+operator|.
+name|info
+argument_list|(
+literal|"ContainerStatus: "
+operator|+
+name|containerStatus
 argument_list|)
 expr_stmt|;
 name|nodeUpdate
@@ -1108,6 +1127,18 @@ name|entrySet
 argument_list|()
 control|)
 block|{
+name|Log
+operator|.
+name|info
+argument_list|(
+literal|"entry.getValue() "
+operator|+
+name|entry
+operator|.
+name|getValue
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|status
 operator|.
 name|setContainersStatuses

@@ -54,7 +54,13 @@ specifier|final
 name|String
 name|diagnostics
 decl_stmt|;
-DECL|method|RMAppFailedAttemptEvent (ApplicationId appId, RMAppEventType event, String diagnostics)
+DECL|field|transferStateFromPreviousAttempt
+specifier|private
+specifier|final
+name|boolean
+name|transferStateFromPreviousAttempt
+decl_stmt|;
+DECL|method|RMAppFailedAttemptEvent (ApplicationId appId, RMAppEventType event, String diagnostics, boolean transferStateFromPreviousAttempt)
 specifier|public
 name|RMAppFailedAttemptEvent
 parameter_list|(
@@ -66,6 +72,9 @@ name|event
 parameter_list|,
 name|String
 name|diagnostics
+parameter_list|,
+name|boolean
+name|transferStateFromPreviousAttempt
 parameter_list|)
 block|{
 name|super
@@ -81,6 +90,12 @@ name|diagnostics
 operator|=
 name|diagnostics
 expr_stmt|;
+name|this
+operator|.
+name|transferStateFromPreviousAttempt
+operator|=
+name|transferStateFromPreviousAttempt
+expr_stmt|;
 block|}
 DECL|method|getDiagnostics ()
 specifier|public
@@ -92,6 +107,16 @@ return|return
 name|this
 operator|.
 name|diagnostics
+return|;
+block|}
+DECL|method|getTransferStateFromPreviousAttempt ()
+specifier|public
+name|boolean
+name|getTransferStateFromPreviousAttempt
+parameter_list|()
+block|{
+return|return
+name|transferStateFromPreviousAttempt
 return|;
 block|}
 block|}

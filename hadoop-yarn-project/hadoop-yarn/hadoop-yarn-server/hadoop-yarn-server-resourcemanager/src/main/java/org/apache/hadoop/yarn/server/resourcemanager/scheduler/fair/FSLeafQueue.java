@@ -1152,7 +1152,7 @@ annotation|@
 name|Override
 DECL|method|getChildQueues ()
 specifier|public
-name|Collection
+name|List
 argument_list|<
 name|FSQueue
 argument_list|>

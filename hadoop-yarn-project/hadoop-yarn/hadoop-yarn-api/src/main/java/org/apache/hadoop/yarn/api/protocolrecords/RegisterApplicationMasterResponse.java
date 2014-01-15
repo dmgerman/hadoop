@@ -36,6 +36,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|Map
 import|;
 end_import
@@ -152,6 +162,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|Container
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|Resource
 import|;
 end_import
@@ -191,7 +219,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls, ByteBuffer key)
+DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls, ByteBuffer key, List<Container> containersFromPreviousAttempt)
 specifier|public
 specifier|static
 name|RegisterApplicationMasterResponse
@@ -213,6 +241,12 @@ name|acls
 parameter_list|,
 name|ByteBuffer
 name|key
+parameter_list|,
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containersFromPreviousAttempt
 parameter_list|)
 block|{
 name|RegisterApplicationMasterResponse
@@ -246,6 +280,13 @@ operator|.
 name|setClientToAMTokenMasterKey
 argument_list|(
 name|key
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setContainersFromPreviousAttempt
+argument_list|(
+name|containersFromPreviousAttempt
 argument_list|)
 expr_stmt|;
 return|return
@@ -340,6 +381,39 @@ name|setClientToAMTokenMasterKey
 parameter_list|(
 name|ByteBuffer
 name|key
+parameter_list|)
+function_decl|;
+comment|/**    *<p>    * Get the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt.    *</p>    *     * @return the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt    */
+annotation|@
+name|Public
+annotation|@
+name|Unstable
+DECL|method|getContainersFromPreviousAttempt ()
+specifier|public
+specifier|abstract
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|getContainersFromPreviousAttempt
+parameter_list|()
+function_decl|;
+comment|/**    * Set the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt.    *     * @param containersFromPreviousAttempt    *          the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt.    */
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setContainersFromPreviousAttempt ( List<Container> containersFromPreviousAttempt)
+specifier|public
+specifier|abstract
+name|void
+name|setContainersFromPreviousAttempt
+parameter_list|(
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|containersFromPreviousAttempt
 parameter_list|)
 function_decl|;
 block|}

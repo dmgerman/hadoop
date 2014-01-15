@@ -1060,6 +1060,8 @@ argument_list|,
 name|RMAppAttemptState
 operator|.
 name|FINISHED
+argument_list|,
+literal|false
 argument_list|)
 decl_stmt|;
 name|resourceManager

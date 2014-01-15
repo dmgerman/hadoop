@@ -457,7 +457,7 @@ argument_list|>
 argument_list|()
 decl_stmt|;
 DECL|field|blacklist
-specifier|final
+specifier|private
 name|Set
 argument_list|<
 name|String
@@ -1291,9 +1291,9 @@ literal|false
 expr_stmt|;
 name|metrics
 operator|.
-name|incrAppsRunning
+name|runAppAttempt
 argument_list|(
-name|this
+name|applicationId
 argument_list|,
 name|user
 argument_list|)
@@ -1824,11 +1824,13 @@ block|}
 block|}
 name|metrics
 operator|.
-name|finishApp
+name|finishAppAttempt
 argument_list|(
-name|this
+name|applicationId
 argument_list|,
-name|rmAppAttemptFinalState
+name|pending
+argument_list|,
+name|user
 argument_list|)
 expr_stmt|;
 comment|// Clear requests themselves
@@ -1851,6 +1853,44 @@ operator|.
 name|queue
 operator|=
 name|queue
+expr_stmt|;
+block|}
+DECL|method|getBlackList ()
+specifier|public
+specifier|synchronized
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getBlackList
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|blacklist
+return|;
+block|}
+DECL|method|transferStateFromPreviousAppSchedulingInfo ( AppSchedulingInfo appInfo)
+specifier|public
+specifier|synchronized
+name|void
+name|transferStateFromPreviousAppSchedulingInfo
+parameter_list|(
+name|AppSchedulingInfo
+name|appInfo
+parameter_list|)
+block|{
+comment|//    this.priorities = appInfo.getPriorities();
+comment|//    this.requests = appInfo.getRequests();
+name|this
+operator|.
+name|blacklist
+operator|=
+name|appInfo
+operator|.
+name|getBlackList
+argument_list|()
 expr_stmt|;
 block|}
 block|}

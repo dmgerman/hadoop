@@ -210,20 +210,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|annotations
-operator|.
-name|VisibleForTesting
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -1050,6 +1036,20 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * An ApplicationMaster for executing shell commands on a set of launched  * containers using the YARN framework.  *   *<p>  * This class is meant to act as an example on how to write yarn-based  * application masters.  *</p>  *   *<p>  * The ApplicationMaster is started on a container by the  *<code>ResourceManager</code>'s launcher. The first thing that the  *<code>ApplicationMaster</code> needs to do is to connect and register itself  * with the<code>ResourceManager</code>. The registration sets up information  * within the<code>ResourceManager</code> regarding what host:port the  * ApplicationMaster is listening on to provide any form of functionality to a  * client as well as a tracking url that a client can use to keep track of  * status/job history if needed. However, in the distributedshell, trackingurl  * and appMasterHost:appMasterRpcPort are not supported.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> needs to send a heartbeat to the  *<code>ResourceManager</code> at regular intervals to inform the  *<code>ResourceManager</code> that it is up and alive. The  * {@link ApplicationMasterProtocol#allocate} to the<code>ResourceManager</code> from the  *<code>ApplicationMaster</code> acts as a heartbeat.  *   *<p>  * For the actual handling of the job, the<code>ApplicationMaster</code> has to  * request the<code>ResourceManager</code> via {@link AllocateRequest} for the  * required no. of containers using {@link ResourceRequest} with the necessary  * resource specifications such as node location, computational  * (memory/disk/cpu) resource requirements. The<code>ResourceManager</code>  * responds with an {@link AllocateResponse} that informs the  *<code>ApplicationMaster</code> of the set of newly allocated containers,  * completed containers as well as current state of available resources.  *</p>  *   *<p>  * For each allocated container, the<code>ApplicationMaster</code> can then set  * up the necessary launch context via {@link ContainerLaunchContext} to specify  * the allocated container id, local resources required by the executable, the  * environment to be setup for the executable, commands to execute, etc. and  * submit a {@link StartContainerRequest} to the {@link ContainerManagementProtocol} to  * launch and execute the defined commands on the given allocated container.  *</p>  *   *<p>  * The<code>ApplicationMaster</code> can monitor the launched container by  * either querying the<code>ResourceManager</code> using  * {@link ApplicationMasterProtocol#allocate} to get updates on completed containers or via  * the {@link ContainerManagementProtocol} by querying for the status of the allocated  * container's {@link ContainerId}.  *  *<p>  * After the job has been completed, the<code>ApplicationMaster</code> has to  * send a {@link FinishApplicationMasterRequest} to the  *<code>ResourceManager</code> to inform it that the  *<code>ApplicationMaster</code> has been completed.  */
 end_comment
@@ -1114,8 +1114,10 @@ name|NMCallbackHandler
 name|containerListener
 decl_stmt|;
 comment|// Application Attempt Id ( combination of attemptId and fail count )
+annotation|@
+name|VisibleForTesting
 DECL|field|appAttemptID
-specifier|private
+specifier|protected
 name|ApplicationAttemptId
 name|appAttemptID
 decl_stmt|;
@@ -1189,8 +1191,10 @@ argument_list|()
 decl_stmt|;
 comment|// Allocated container count so that we know how many containers has the RM
 comment|// allocated to us
+annotation|@
+name|VisibleForTesting
 DECL|field|numAllocatedContainers
-specifier|private
+specifier|protected
 name|AtomicInteger
 name|numAllocatedContainers
 init|=
@@ -1211,8 +1215,10 @@ decl_stmt|;
 comment|// Count of containers already requested from the RM
 comment|// Needed as once requested, we should not request for containers again.
 comment|// Only request for more if the original requirement changes.
+annotation|@
+name|VisibleForTesting
 DECL|field|numRequestedContainers
-specifier|private
+specifier|protected
 name|AtomicInteger
 name|numRequestedContainers
 init|=
@@ -1439,6 +1445,11 @@ operator|=
 name|appMaster
 operator|.
 name|run
+argument_list|()
+expr_stmt|;
+name|appMaster
+operator|.
+name|finish
 argument_list|()
 expr_stmt|;
 block|}
@@ -2911,6 +2922,51 @@ operator|=
 name|maxVCores
 expr_stmt|;
 block|}
+name|List
+argument_list|<
+name|Container
+argument_list|>
+name|previousAMRunningContainers
+init|=
+name|response
+operator|.
+name|getContainersFromPreviousAttempt
+argument_list|()
+decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Received "
+operator|+
+name|previousAMRunningContainers
+operator|.
+name|size
+argument_list|()
+operator|+
+literal|" previous AM's running containers on AM registration."
+argument_list|)
+expr_stmt|;
+name|numAllocatedContainers
+operator|.
+name|addAndGet
+argument_list|(
+name|previousAMRunningContainers
+operator|.
+name|size
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|int
+name|numTotalContainersToRequest
+init|=
+name|numTotalContainers
+operator|-
+name|previousAMRunningContainers
+operator|.
+name|size
+argument_list|()
+decl_stmt|;
 comment|// Setup ask for containers from RM
 comment|// Send request for containers to RM
 comment|// Until we get our fully allocated quota, we keep on polling RM for
@@ -2926,7 +2982,7 @@ literal|0
 init|;
 name|i
 operator|<
-name|numTotalContainers
+name|numTotalContainersToRequest
 condition|;
 operator|++
 name|i
@@ -2950,9 +3006,35 @@ name|numRequestedContainers
 operator|.
 name|set
 argument_list|(
-name|numTotalContainers
+name|numTotalContainersToRequest
 argument_list|)
 expr_stmt|;
+return|return
+name|success
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|createNMCallbackHandler ()
+name|NMCallbackHandler
+name|createNMCallbackHandler
+parameter_list|()
+block|{
+return|return
+operator|new
+name|NMCallbackHandler
+argument_list|(
+name|this
+argument_list|)
+return|;
+block|}
+DECL|method|finish ()
+specifier|protected
+name|void
+name|finish
+parameter_list|()
+block|{
+comment|// wait for completion.
 while|while
 condition|(
 operator|!
@@ -2985,34 +3067,6 @@ name|ex
 parameter_list|)
 block|{}
 block|}
-name|finish
-argument_list|()
-expr_stmt|;
-return|return
-name|success
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|createNMCallbackHandler ()
-name|NMCallbackHandler
-name|createNMCallbackHandler
-parameter_list|()
-block|{
-return|return
-operator|new
-name|NMCallbackHandler
-argument_list|(
-name|this
-argument_list|)
-return|;
-block|}
-DECL|method|finish ()
-specifier|private
-name|void
-name|finish
-parameter_list|()
-block|{
 comment|// Join all launched threads
 comment|// needed for when we time out
 comment|// and we need to release containers

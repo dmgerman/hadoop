@@ -84,7 +84,13 @@ specifier|final
 name|RMAppAttemptState
 name|finalAttemptState
 decl_stmt|;
-DECL|method|AppAttemptRemovedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState finalAttemptState)
+DECL|field|keepContainersAcrossAppAttempts
+specifier|private
+specifier|final
+name|boolean
+name|keepContainersAcrossAppAttempts
+decl_stmt|;
+DECL|method|AppAttemptRemovedSchedulerEvent ( ApplicationAttemptId applicationAttemptId, RMAppAttemptState finalAttemptState, boolean keepContainers)
 specifier|public
 name|AppAttemptRemovedSchedulerEvent
 parameter_list|(
@@ -93,6 +99,9 @@ name|applicationAttemptId
 parameter_list|,
 name|RMAppAttemptState
 name|finalAttemptState
+parameter_list|,
+name|boolean
+name|keepContainers
 parameter_list|)
 block|{
 name|super
@@ -113,6 +122,12 @@ operator|.
 name|finalAttemptState
 operator|=
 name|finalAttemptState
+expr_stmt|;
+name|this
+operator|.
+name|keepContainersAcrossAppAttempts
+operator|=
+name|keepContainers
 expr_stmt|;
 block|}
 DECL|method|getApplicationAttemptID ()
@@ -137,6 +152,18 @@ return|return
 name|this
 operator|.
 name|finalAttemptState
+return|;
+block|}
+DECL|method|getKeepContainersAcrossAppAttempts ()
+specifier|public
+name|boolean
+name|getKeepContainersAcrossAppAttempts
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|keepContainersAcrossAppAttempts
 return|;
 block|}
 block|}
