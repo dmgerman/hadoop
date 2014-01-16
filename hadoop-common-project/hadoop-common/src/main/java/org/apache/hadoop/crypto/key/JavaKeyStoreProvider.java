@@ -410,9 +410,9 @@ argument_list|)
 expr_stmt|;
 name|fs
 operator|=
-name|FileSystem
+name|path
 operator|.
-name|get
+name|getFileSystem
 argument_list|(
 name|conf
 argument_list|)
