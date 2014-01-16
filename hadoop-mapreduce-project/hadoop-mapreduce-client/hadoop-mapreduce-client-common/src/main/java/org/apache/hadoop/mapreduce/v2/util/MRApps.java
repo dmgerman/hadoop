@@ -628,6 +628,18 @@ name|ConverterUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|log4j
+operator|.
+name|RollingFileAppender
+import|;
+end_import
+
 begin_comment
 comment|/**  * Helper class for MR applications  */
 end_comment
@@ -2935,8 +2947,8 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * Add the JVM system properties necessary to configure {@link ContainerLogAppender}.    * @param logLevel the desired log level (eg INFO/WARN/DEBUG)    * @param logSize See {@link ContainerLogAppender#setTotalLogFileSize(long)}    * @param vargs the argument list to append to    */
-DECL|method|addLog4jSystemProperties ( String logLevel, long logSize, List<String> vargs)
+comment|/**    * Add the JVM system properties necessary to configure {@link ContainerLogAppender}.    * @param logLevel the desired log level (eg INFO/WARN/DEBUG)    * @param logSize See {@link ContainerLogAppender#setTotalLogFileSize(long)}    * @param numBackups See {@link RollingFileAppender#setMaxBackupIndex(int)}    * @param vargs the argument list to append to    */
+DECL|method|addLog4jSystemProperties ( String logLevel, long logSize, int numBackups, List<String> vargs)
 specifier|public
 specifier|static
 name|void
@@ -2947,6 +2959,9 @@ name|logLevel
 parameter_list|,
 name|long
 name|logSize
+parameter_list|,
+name|int
+name|numBackups
 parameter_list|,
 name|List
 argument_list|<
@@ -2994,6 +3009,47 @@ operator|+
 name|logSize
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|logSize
+operator|>
+literal|0L
+operator|&&
+name|numBackups
+operator|>
+literal|0
+condition|)
+block|{
+comment|// log should be rolled
+name|vargs
+operator|.
+name|add
+argument_list|(
+literal|"-D"
+operator|+
+name|YarnConfiguration
+operator|.
+name|YARN_APP_CONTAINER_LOG_BACKUPS
+operator|+
+literal|"="
+operator|+
+name|numBackups
+argument_list|)
+expr_stmt|;
+name|vargs
+operator|.
+name|add
+argument_list|(
+literal|"-Dhadoop.root.logger="
+operator|+
+name|logLevel
+operator|+
+literal|",CRLA"
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
 name|vargs
 operator|.
 name|add
@@ -3005,6 +3061,7 @@ operator|+
 literal|",CLA"
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/**    * Return lines for system property keys and values per configuration.    *    * @return the formatted string for the system property lines or null if no    * properties are specified.    */
 DECL|method|getSystemPropertiesToLog (Configuration conf)

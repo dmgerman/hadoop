@@ -1733,6 +1733,27 @@ name|DEFAULT_MR_AM_LOG_LEVEL
 init|=
 literal|"INFO"
 decl_stmt|;
+DECL|field|MR_AM_LOG_BACKUPS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_AM_LOG_BACKUPS
+init|=
+name|MR_AM_PREFIX
+operator|+
+literal|"container.log.backups"
+decl_stmt|;
+DECL|field|DEFAULT_MR_AM_LOG_BACKUPS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_MR_AM_LOG_BACKUPS
+init|=
+literal|0
+decl_stmt|;
+comment|// don't roll
 comment|/**The number of splits when reporting progress in MR*/
 DECL|field|MR_AM_NUM_PROGRESS_SPLITS
 specifier|public
@@ -2554,6 +2575,27 @@ name|WORKFLOW_ID
 init|=
 literal|"mapreduce.workflow.id"
 decl_stmt|;
+DECL|field|TASK_LOG_BACKUPS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|TASK_LOG_BACKUPS
+init|=
+name|MR_PREFIX
+operator|+
+literal|"task.container.log.backups"
+decl_stmt|;
+DECL|field|DEFAULT_TASK_LOG_BACKUPS
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_TASK_LOG_BACKUPS
+init|=
+literal|0
+decl_stmt|;
+comment|// don't roll
 DECL|field|WORKFLOW_NAME
 specifier|public
 specifier|static
