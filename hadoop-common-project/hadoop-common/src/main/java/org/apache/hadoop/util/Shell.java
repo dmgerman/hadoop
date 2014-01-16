@@ -60,6 +60,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Arrays
@@ -2321,11 +2331,32 @@ block|}
 comment|// close the input stream
 try|try
 block|{
+comment|// JDK 7 tries to automatically drain the input streams for us
+comment|// when the process exits, but since close is not synchronized,
+comment|// it creates a race if we close the stream first and the same
+comment|// fd is recycled.  the stream draining thread will attempt to
+comment|// drain that fd!!  it may block, OOM, or cause bizarre behavior
+comment|// see: https://bugs.openjdk.java.net/browse/JDK-8024521
+comment|//      issue is fixed in build 7u60
+name|InputStream
+name|stdout
+init|=
+name|process
+operator|.
+name|getInputStream
+argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|stdout
+init|)
+block|{
 name|inReader
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2382,11 +2413,25 @@ expr_stmt|;
 block|}
 try|try
 block|{
+name|InputStream
+name|stderr
+init|=
+name|process
+operator|.
+name|getErrorStream
+argument_list|()
+decl_stmt|;
+synchronized|synchronized
+init|(
+name|stderr
+init|)
+block|{
 name|errReader
 operator|.
 name|close
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(
