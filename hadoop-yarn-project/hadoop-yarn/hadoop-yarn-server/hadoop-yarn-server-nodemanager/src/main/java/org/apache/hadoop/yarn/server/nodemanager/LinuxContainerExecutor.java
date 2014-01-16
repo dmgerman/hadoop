@@ -1352,21 +1352,6 @@ argument_list|(
 name|commandArray
 argument_list|)
 decl_stmt|;
-comment|// TODO: DEBUG
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"initApplication: "
-operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|commandArray
-argument_list|)
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|LOG
@@ -1733,10 +1718,17 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// sanitized env
-comment|// DEBUG
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"launchContainer: "
 operator|+
@@ -1748,6 +1740,7 @@ name|commandArray
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
 name|shExec
 operator|.
 name|execute
@@ -2350,20 +2343,6 @@ argument_list|(
 name|commandArray
 argument_list|)
 decl_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|" -- DEBUG -- deleteAsUser: "
-operator|+
-name|Arrays
-operator|.
-name|toString
-argument_list|(
-name|commandArray
-argument_list|)
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|LOG
