@@ -436,11 +436,22 @@ operator|+
 literal|"enable rebuilding retry cache in case of HA failover"
 argument_list|)
 block|,
+DECL|enumConstant|EDITLOG_ADD_BLOCK
+name|EDITLOG_ADD_BLOCK
+argument_list|(
+operator|-
+literal|48
+argument_list|,
+literal|"Add new editlog that only records allocation of "
+operator|+
+literal|"the new block instead of the entire block list"
+argument_list|)
+block|,
 DECL|enumConstant|CACHING
 name|CACHING
 argument_list|(
 operator|-
-literal|48
+literal|49
 argument_list|,
 literal|"Support for cache pools and path-based caching"
 argument_list|)
@@ -449,7 +460,7 @@ DECL|enumConstant|ADD_DATANODE_AND_STORAGE_UUIDS
 name|ADD_DATANODE_AND_STORAGE_UUIDS
 argument_list|(
 operator|-
-literal|49
+literal|50
 argument_list|,
 literal|"Replace StorageID with DatanodeUuid."
 operator|+
