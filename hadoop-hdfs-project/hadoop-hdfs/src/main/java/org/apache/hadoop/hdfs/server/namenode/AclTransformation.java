@@ -329,16 +329,6 @@ name|MAX_ENTRIES
 init|=
 literal|32
 decl_stmt|;
-DECL|field|PIVOT_NOT_FOUND
-specifier|private
-specifier|static
-specifier|final
-name|int
-name|PIVOT_NOT_FOUND
-init|=
-operator|-
-literal|1
-decl_stmt|;
 comment|/**    * Filters (discards) any existing ACL entries that have the same scope, type    * and name of any entry in the ACL spec.  If necessary, recalculates the mask    * entries.  If necessary, default entries may be inferred by copying the    * permissions of the corresponding access entries.  It is invalid to request    * removal of the mask entry from an ACL that would otherwise require a mask    * entry, due to existing named entries or an unnamed group entry.    *    * @param existingAcl List<AclEntry> existing ACL    * @param inAclSpec List<AclEntry> ACL spec describing entries to filter    * @return List<AclEntry> new ACL    * @throws AclException if validation fails    */
 DECL|method|filterAclEntriesByAclSpec ( List<AclEntry> existingAcl, List<AclEntry> inAclSpec)
 specifier|public
@@ -1190,7 +1180,6 @@ parameter_list|()
 block|{   }
 comment|/**    * Comparator that enforces required ordering for entries within an ACL:    * -owner entry (unnamed user)    * -all named user entries (internal ordering undefined)    * -owning group entry (unnamed group)    * -all named group entries (internal ordering undefined)    * -mask entry    * -other entry    * All access ACL entries sort ahead of all default ACL entries.    */
 DECL|field|ACL_ENTRY_COMPARATOR
-specifier|private
 specifier|static
 specifier|final
 name|Comparator
@@ -1447,10 +1436,11 @@ expr_stmt|;
 block|}
 comment|// Search for the required base access entries.  If there is a default ACL,
 comment|// then do the same check on the default entries.
-name|int
-name|pivot
+name|ScopedAclEntries
+name|scopedEntries
 init|=
-name|calculatePivotOnDefaultEntries
+operator|new
+name|ScopedAclEntries
 argument_list|(
 name|aclBuilder
 argument_list|)
@@ -1500,7 +1490,10 @@ name|Collections
 operator|.
 name|binarySearch
 argument_list|(
-name|aclBuilder
+name|scopedEntries
+operator|.
+name|getAccessEntries
+argument_list|()
 argument_list|,
 name|accessEntryKey
 argument_list|,
@@ -1520,9 +1513,14 @@ throw|;
 block|}
 if|if
 condition|(
-name|pivot
-operator|!=
-name|PIVOT_NOT_FOUND
+operator|!
+name|scopedEntries
+operator|.
+name|getDefaultEntries
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|AclEntry
@@ -1553,7 +1551,10 @@ name|Collections
 operator|.
 name|binarySearch
 argument_list|(
-name|aclBuilder
+name|scopedEntries
+operator|.
+name|getDefaultEntries
+argument_list|()
 argument_list|,
 name|defaultEntryKey
 argument_list|,
@@ -1801,6 +1802,7 @@ name|scope
 argument_list|)
 condition|)
 block|{
+comment|// Caller explicitly removed mask entry, but it's required.
 throw|throw
 operator|new
 name|AclException
@@ -1837,6 +1839,8 @@ argument_list|)
 operator|)
 condition|)
 block|{
+comment|// Caller explicitly provided new mask, or we are preserving the existing
+comment|// mask in an unchanged scope.
 name|aclBuilder
 operator|.
 name|add
@@ -1859,8 +1863,17 @@ name|contains
 argument_list|(
 name|scope
 argument_list|)
+operator|||
+name|providedMask
+operator|.
+name|containsKey
+argument_list|(
+name|scope
+argument_list|)
 condition|)
 block|{
+comment|// Otherwise, if there are maskable entries present, or the ACL
+comment|// previously had a mask, then recalculate a mask automatically.
 name|aclBuilder
 operator|.
 name|add
@@ -1898,62 +1911,6 @@ expr_stmt|;
 block|}
 block|}
 block|}
-comment|/**    * Returns the pivot point in the list between the access entries and the    * default entries.  This is the index of the first element in the list that is    * a default entry.    *    * @param aclBuilder ArrayList<AclEntry> containing entries to build    * @return int pivot point, or -1 if list contains no default entries    */
-DECL|method|calculatePivotOnDefaultEntries (List<AclEntry> aclBuilder)
-specifier|private
-specifier|static
-name|int
-name|calculatePivotOnDefaultEntries
-parameter_list|(
-name|List
-argument_list|<
-name|AclEntry
-argument_list|>
-name|aclBuilder
-parameter_list|)
-block|{
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|aclBuilder
-operator|.
-name|size
-argument_list|()
-condition|;
-operator|++
-name|i
-control|)
-block|{
-if|if
-condition|(
-name|aclBuilder
-operator|.
-name|get
-argument_list|(
-name|i
-argument_list|)
-operator|.
-name|getScope
-argument_list|()
-operator|==
-name|DEFAULT
-condition|)
-block|{
-return|return
-name|i
-return|;
-block|}
-block|}
-return|return
-name|PIVOT_NOT_FOUND
-return|;
-block|}
 comment|/**    * Adds unspecified default entries by copying permissions from the    * corresponding access entries.    *    * @param aclBuilder ArrayList<AclEntry> containing entries to build    */
 DECL|method|copyDefaultsIfNeeded (List<AclEntry> aclBuilder)
 specifier|private
@@ -1977,19 +1934,25 @@ argument_list|,
 name|ACL_ENTRY_COMPARATOR
 argument_list|)
 expr_stmt|;
-name|int
-name|pivot
+name|ScopedAclEntries
+name|scopedEntries
 init|=
-name|calculatePivotOnDefaultEntries
+operator|new
+name|ScopedAclEntries
 argument_list|(
 name|aclBuilder
 argument_list|)
 decl_stmt|;
 if|if
 condition|(
-name|pivot
-operator|!=
-name|PIVOT_NOT_FOUND
+operator|!
+name|scopedEntries
+operator|.
+name|getDefaultEntries
+argument_list|()
+operator|.
+name|isEmpty
+argument_list|()
 condition|)
 block|{
 name|List
@@ -1998,14 +1961,10 @@ name|AclEntry
 argument_list|>
 name|accessEntries
 init|=
-name|aclBuilder
+name|scopedEntries
 operator|.
-name|subList
-argument_list|(
-literal|0
-argument_list|,
-name|pivot
-argument_list|)
+name|getAccessEntries
+argument_list|()
 decl_stmt|;
 name|List
 argument_list|<
@@ -2013,17 +1972,10 @@ name|AclEntry
 argument_list|>
 name|defaultEntries
 init|=
-name|aclBuilder
+name|scopedEntries
 operator|.
-name|subList
-argument_list|(
-name|pivot
-argument_list|,
-name|aclBuilder
-operator|.
-name|size
+name|getDefaultEntries
 argument_list|()
-argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
