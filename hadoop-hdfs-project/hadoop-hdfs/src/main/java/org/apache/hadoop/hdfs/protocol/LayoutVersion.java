@@ -466,6 +466,15 @@ literal|"Replace StorageID with DatanodeUuid."
 operator|+
 literal|" Use distinct StorageUuid per storage directory."
 argument_list|)
+block|,
+DECL|enumConstant|ADD_LAYOUT_FLAGS
+name|ADD_LAYOUT_FLAGS
+argument_list|(
+operator|-
+literal|51
+argument_list|,
+literal|"Add support for layout flags."
+argument_list|)
 block|;
 DECL|field|lv
 specifier|final
