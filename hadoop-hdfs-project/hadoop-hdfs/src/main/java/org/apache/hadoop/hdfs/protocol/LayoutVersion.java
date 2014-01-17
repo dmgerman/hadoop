@@ -447,20 +447,11 @@ operator|+
 literal|"the new block instead of the entire block list"
 argument_list|)
 block|,
-DECL|enumConstant|CACHING
-name|CACHING
-argument_list|(
-operator|-
-literal|49
-argument_list|,
-literal|"Support for cache pools and path-based caching"
-argument_list|)
-block|,
 DECL|enumConstant|ADD_DATANODE_AND_STORAGE_UUIDS
 name|ADD_DATANODE_AND_STORAGE_UUIDS
 argument_list|(
 operator|-
-literal|50
+literal|49
 argument_list|,
 literal|"Replace StorageID with DatanodeUuid."
 operator|+
@@ -471,9 +462,18 @@ DECL|enumConstant|ADD_LAYOUT_FLAGS
 name|ADD_LAYOUT_FLAGS
 argument_list|(
 operator|-
-literal|51
+literal|50
 argument_list|,
 literal|"Add support for layout flags."
+argument_list|)
+block|,
+DECL|enumConstant|CACHING
+name|CACHING
+argument_list|(
+operator|-
+literal|51
+argument_list|,
+literal|"Support for cache pools and path-based caching"
 argument_list|)
 block|;
 DECL|field|lv
