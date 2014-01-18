@@ -1604,7 +1604,7 @@ argument_list|(
 name|clientId
 argument_list|)
 operator|+
-literal|", ID in reponse="
+literal|", ID in response="
 operator|+
 name|StringUtils
 operator|.

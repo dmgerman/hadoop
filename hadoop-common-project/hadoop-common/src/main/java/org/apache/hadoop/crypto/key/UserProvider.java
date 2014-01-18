@@ -239,6 +239,18 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|isTransient ()
+specifier|public
+name|boolean
+name|isTransient
+parameter_list|()
+block|{
+return|return
+literal|true
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getKeyVersion (String versionName)
 specifier|public
 name|KeyVersion

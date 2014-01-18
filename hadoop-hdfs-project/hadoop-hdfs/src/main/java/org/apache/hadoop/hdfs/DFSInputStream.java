@@ -4756,6 +4756,7 @@ operator|.
 name|clearDataEncryptionKey
 argument_list|()
 expr_stmt|;
+continue|continue;
 block|}
 elseif|else
 if|if

@@ -1049,6 +1049,17 @@ name|conf
 argument_list|)
 return|;
 block|}
+comment|/**    * Indicates whether this provider represents a store    * that is intended for transient use - such as the UserProvider    * is. These providers are generally used to provide access to    * keying material rather than for long term storage.    * @return true if transient, false otherwise    */
+DECL|method|isTransient ()
+specifier|public
+name|boolean
+name|isTransient
+parameter_list|()
+block|{
+return|return
+literal|false
+return|;
+block|}
 comment|/**    * Get the key material for a specific version of the key. This method is used    * when decrypting data.    * @param versionName the name of a specific version of the key    * @return the key material    * @throws IOException    */
 DECL|method|getKeyVersion (String versionName )
 specifier|public

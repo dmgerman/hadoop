@@ -271,6 +271,28 @@ name|MR_HISTORY_PREFIX
 operator|+
 literal|"done-dir"
 decl_stmt|;
+comment|/**    * Maximum time the History server will wait for the FileSystem for History    * files to become available. Default value is -1, forever.    */
+DECL|field|MR_HISTORY_MAX_START_WAIT_TIME
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MR_HISTORY_MAX_START_WAIT_TIME
+init|=
+name|MR_HISTORY_PREFIX
+operator|+
+literal|"maximum-start-wait-time-millis"
+decl_stmt|;
+DECL|field|DEFAULT_MR_HISTORY_MAX_START_WAIT_TIME
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_MR_HISTORY_MAX_START_WAIT_TIME
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    *  Path where history files should be stored after a job finished and before    *  they are pulled into the job history server.    **/
 DECL|field|MR_HISTORY_INTERMEDIATE_DONE_DIR
 specifier|public

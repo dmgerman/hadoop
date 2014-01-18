@@ -14458,13 +14458,11 @@ argument_list|)
 expr_stmt|;
 name|dir
 operator|.
-name|persistBlocks
+name|persistNewBlock
 argument_list|(
 name|src
 argument_list|,
 name|pendingFile
-argument_list|,
-literal|false
 argument_list|)
 expr_stmt|;
 name|offset
@@ -28964,9 +28962,9 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * @param out save state of the secret manager    * @param sdPath String storage directory path    */
-DECL|method|saveSecretManagerState (DataOutputStream out, String sdPath)
+DECL|method|saveSecretManagerStateCompat (DataOutputStream out, String sdPath)
 name|void
-name|saveSecretManagerState
+name|saveSecretManagerStateCompat
 parameter_list|(
 name|DataOutputStream
 name|out
@@ -28979,7 +28977,7 @@ name|IOException
 block|{
 name|dtSecretManager
 operator|.
-name|saveSecretManagerState
+name|saveSecretManagerStateCompat
 argument_list|(
 name|out
 argument_list|,
@@ -28988,9 +28986,9 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * @param in load the state of secret manager from input stream    */
-DECL|method|loadSecretManagerState (DataInput in)
+DECL|method|loadSecretManagerStateCompat (DataInput in)
 name|void
-name|loadSecretManagerState
+name|loadSecretManagerStateCompat
 parameter_list|(
 name|DataInput
 name|in
@@ -29000,7 +28998,7 @@ name|IOException
 block|{
 name|dtSecretManager
 operator|.
-name|loadSecretManagerState
+name|loadSecretManagerStateCompat
 argument_list|(
 name|in
 argument_list|)

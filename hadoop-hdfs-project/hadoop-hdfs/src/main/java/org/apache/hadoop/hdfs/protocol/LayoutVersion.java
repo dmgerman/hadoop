@@ -436,13 +436,15 @@ operator|+
 literal|"enable rebuilding retry cache in case of HA failover"
 argument_list|)
 block|,
-DECL|enumConstant|CACHING
-name|CACHING
+DECL|enumConstant|EDITLOG_ADD_BLOCK
+name|EDITLOG_ADD_BLOCK
 argument_list|(
 operator|-
 literal|48
 argument_list|,
-literal|"Support for cache pools and path-based caching"
+literal|"Add new editlog that only records allocation of "
+operator|+
+literal|"the new block instead of the entire block list"
 argument_list|)
 block|,
 DECL|enumConstant|ADD_DATANODE_AND_STORAGE_UUIDS
@@ -456,11 +458,29 @@ operator|+
 literal|" Use distinct StorageUuid per storage directory."
 argument_list|)
 block|,
+DECL|enumConstant|ADD_LAYOUT_FLAGS
+name|ADD_LAYOUT_FLAGS
+argument_list|(
+operator|-
+literal|50
+argument_list|,
+literal|"Add support for layout flags."
+argument_list|)
+block|,
+DECL|enumConstant|CACHING
+name|CACHING
+argument_list|(
+operator|-
+literal|51
+argument_list|,
+literal|"Support for cache pools and path-based caching"
+argument_list|)
+block|,
 DECL|enumConstant|ROLLING_UPGRADE_MARKER
 name|ROLLING_UPGRADE_MARKER
 argument_list|(
 operator|-
-literal|50
+literal|52
 argument_list|,
 literal|"Upgrade marker for rolling upgrade"
 argument_list|)
