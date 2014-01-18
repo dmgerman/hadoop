@@ -253,6 +253,11 @@ operator|.
 name|run
 argument_list|()
 expr_stmt|;
+name|appMaster
+operator|.
+name|finish
+argument_list|()
+expr_stmt|;
 block|}
 catch|catch
 parameter_list|(

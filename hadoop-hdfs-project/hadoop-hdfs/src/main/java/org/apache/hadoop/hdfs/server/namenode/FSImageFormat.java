@@ -418,6 +418,22 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|protocol
+operator|.
+name|LayoutFlags
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|blockmanagement
@@ -1077,6 +1093,28 @@ argument_list|,
 name|imgVersion
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|LayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|Feature
+operator|.
+name|ADD_LAYOUT_FLAGS
+argument_list|,
+name|imgVersion
+argument_list|)
+condition|)
+block|{
+name|LayoutFlags
+operator|.
+name|read
+argument_list|(
+name|in
+argument_list|)
+expr_stmt|;
+block|}
 comment|// read namespaceID: first appeared in version -2
 name|in
 operator|.
@@ -4191,7 +4229,7 @@ return|return;
 block|}
 name|namesystem
 operator|.
-name|loadSecretManagerState
+name|loadSecretManagerStateCompat
 argument_list|(
 name|in
 argument_list|)
@@ -4236,7 +4274,7 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|loadState
+name|loadStateCompat
 argument_list|(
 name|in
 argument_list|)
@@ -4836,6 +4874,13 @@ operator|.
 name|LAYOUT_VERSION
 argument_list|)
 expr_stmt|;
+name|LayoutFlags
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
 comment|// We use the non-locked version of getNamespaceInfo here since
 comment|// the coordinating thread of saveNamespace already has read-locked
 comment|// the namespace for us. If we attempt to take another readlock
@@ -5032,7 +5077,7 @@ argument_list|()
 expr_stmt|;
 name|sourceNamesystem
 operator|.
-name|saveSecretManagerState
+name|saveSecretManagerStateCompat
 argument_list|(
 name|out
 argument_list|,
@@ -5049,7 +5094,7 @@ operator|.
 name|getCacheManager
 argument_list|()
 operator|.
-name|saveState
+name|saveStateCompat
 argument_list|(
 name|out
 argument_list|,

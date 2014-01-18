@@ -569,10 +569,10 @@ name|editLog
 argument_list|)
 expr_stmt|;
 comment|// OP_ADD to create file
-comment|// OP_UPDATE_BLOCKS for first block
+comment|// OP_ADD_BLOCK for first block
 comment|// OP_CLOSE to close file
 comment|// OP_ADD to reopen file
-comment|// OP_UPDATE_BLOCKS for second block
+comment|// OP_ADD_BLOCK for second block
 comment|// OP_CLOSE to close file
 name|assertEquals
 argument_list|(
@@ -606,7 +606,7 @@ name|get
 argument_list|(
 name|FSEditLogOpCodes
 operator|.
-name|OP_UPDATE_BLOCKS
+name|OP_ADD_BLOCK
 argument_list|)
 operator|.
 name|held
@@ -663,14 +663,14 @@ name|editLog
 argument_list|)
 expr_stmt|;
 comment|// OP_ADD to create file
-comment|// OP_UPDATE_BLOCKS for first block
+comment|// OP_ADD_BLOCK for first block
 comment|// OP_CLOSE to close file
 comment|// OP_ADD to re-establish the lease
 comment|// OP_UPDATE_BLOCKS from the updatePipeline call (increments genstamp of last block)
-comment|// OP_UPDATE_BLOCKS at the start of the second block
+comment|// OP_ADD_BLOCK at the start of the second block
 comment|// OP_CLOSE to close file
-comment|// Total: 2 OP_ADDs, 3 OP_UPDATE_BLOCKS, and 2 OP_CLOSEs in addition
-comment|//        to the ones above
+comment|// Total: 2 OP_ADDs, 1 OP_UPDATE_BLOCKS, 2 OP_ADD_BLOCKs, and 2 OP_CLOSEs
+comment|//       in addition to the ones above
 name|assertEquals
 argument_list|(
 literal|2
@@ -694,9 +694,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-literal|2
-operator|+
-literal|3
+literal|1
 argument_list|,
 operator|(
 name|int
@@ -708,6 +706,27 @@ argument_list|(
 name|FSEditLogOpCodes
 operator|.
 name|OP_UPDATE_BLOCKS
+argument_list|)
+operator|.
+name|held
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+literal|2
+operator|+
+literal|2
+argument_list|,
+operator|(
+name|int
+operator|)
+name|counts
+operator|.
+name|get
+argument_list|(
+name|FSEditLogOpCodes
+operator|.
+name|OP_ADD_BLOCK
 argument_list|)
 operator|.
 name|held
@@ -1025,7 +1044,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Test to append to the file, when one of datanode in the existing pipeline is down.    * @throws Exception    */
+comment|/**    * Test to append to the file, when one of datanode in the existing pipeline    * is down.    */
 annotation|@
 name|Test
 DECL|method|testAppendWithPipelineRecovery ()
@@ -1045,6 +1064,11 @@ argument_list|()
 decl_stmt|;
 name|MiniDFSCluster
 name|cluster
+init|=
+literal|null
+decl_stmt|;
+name|FSDataOutputStream
+name|out
 init|=
 literal|null
 decl_stmt|;
@@ -1116,23 +1140,41 @@ argument_list|(
 literal|"/test1"
 argument_list|)
 decl_stmt|;
-name|DFSTestUtil
-operator|.
-name|createFile
-argument_list|(
+name|out
+operator|=
 name|fs
-argument_list|,
+operator|.
+name|create
+argument_list|(
 name|path
 argument_list|,
-literal|1024
+literal|true
+argument_list|,
+name|BLOCK_SIZE
 argument_list|,
 operator|(
 name|short
 operator|)
 literal|3
 argument_list|,
-literal|1l
+name|BLOCK_SIZE
 argument_list|)
+expr_stmt|;
+name|AppendTestUtil
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|,
+literal|0
+argument_list|,
+literal|1024
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 name|cluster
 operator|.
@@ -1141,20 +1183,59 @@ argument_list|(
 literal|3
 argument_list|)
 expr_stmt|;
-name|DFSTestUtil
+name|out
+operator|=
+name|fs
 operator|.
-name|appendFile
+name|append
+argument_list|(
+name|path
+argument_list|)
+expr_stmt|;
+name|AppendTestUtil
+operator|.
+name|write
+argument_list|(
+name|out
+argument_list|,
+literal|1024
+argument_list|,
+literal|1024
+argument_list|)
+expr_stmt|;
+name|out
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+name|cluster
+operator|.
+name|restartNameNode
+argument_list|(
+literal|true
+argument_list|)
+expr_stmt|;
+name|AppendTestUtil
+operator|.
+name|check
 argument_list|(
 name|fs
 argument_list|,
 name|path
 argument_list|,
-literal|"hello"
+literal|2048
 argument_list|)
 expr_stmt|;
 block|}
 finally|finally
 block|{
+name|IOUtils
+operator|.
+name|closeStream
+argument_list|(
+name|out
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 literal|null

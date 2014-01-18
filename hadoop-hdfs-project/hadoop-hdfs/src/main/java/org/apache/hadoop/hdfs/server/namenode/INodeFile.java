@@ -3025,8 +3025,6 @@ specifier|public
 name|BlockInfo
 name|getLastBlock
 parameter_list|()
-throws|throws
-name|IOException
 block|{
 return|return
 name|blocks

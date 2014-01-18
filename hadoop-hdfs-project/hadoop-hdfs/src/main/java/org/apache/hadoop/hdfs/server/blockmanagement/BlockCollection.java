@@ -78,8 +78,6 @@ specifier|public
 name|BlockInfo
 name|getLastBlock
 parameter_list|()
-throws|throws
-name|IOException
 function_decl|;
 comment|/**     * Get content summary.    */
 DECL|method|computeContentSummary ()

@@ -2051,13 +2051,6 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|taskHeartbeatHandler
-operator|.
-name|progressing
-argument_list|(
-name|yarnAttemptID
-argument_list|)
-expr_stmt|;
 return|return
 name|feedback
 return|;

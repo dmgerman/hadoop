@@ -2227,12 +2227,13 @@ argument_list|,
 name|offsetToTxId
 argument_list|)
 decl_stmt|;
-comment|// Truncate the file so that there is nothing except the header
+comment|// Truncate the file so that there is nothing except the header and
+comment|// layout flags section.
 name|truncateFile
 argument_list|(
 name|logFile
 argument_list|,
-literal|4
+literal|8
 argument_list|)
 expr_stmt|;
 name|EditLogValidation

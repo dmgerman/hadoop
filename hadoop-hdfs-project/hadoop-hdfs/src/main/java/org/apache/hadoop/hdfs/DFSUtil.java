@@ -3422,6 +3422,32 @@ argument_list|(
 name|address
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|isa
+operator|.
+name|isUnresolved
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Namenode for "
+operator|+
+name|nsId
+operator|+
+literal|" remains unresolved for ID "
+operator|+
+name|nnId
+operator|+
+literal|".  Check your hdfs-site.xml file to "
+operator|+
+literal|"ensure namenodes are configured properly."
+argument_list|)
+expr_stmt|;
+block|}
 name|ret
 operator|.
 name|put

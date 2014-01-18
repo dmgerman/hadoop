@@ -2708,7 +2708,7 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"Queue %s has max resources %d less than min resources %d"
+literal|"Queue %s has max resources %s less than min resources %s"
 argument_list|,
 name|queueName
 argument_list|,

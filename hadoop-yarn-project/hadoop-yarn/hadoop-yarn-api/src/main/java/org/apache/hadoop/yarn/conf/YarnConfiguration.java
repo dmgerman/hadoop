@@ -3455,6 +3455,17 @@ name|YARN_PREFIX
 operator|+
 literal|"app.container.log.filesize"
 decl_stmt|;
+DECL|field|YARN_APP_CONTAINER_LOG_BACKUPS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_APP_CONTAINER_LOG_BACKUPS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"app.container.log.backups"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////

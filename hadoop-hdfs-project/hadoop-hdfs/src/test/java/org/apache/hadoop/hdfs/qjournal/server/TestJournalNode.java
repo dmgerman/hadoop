@@ -1372,6 +1372,22 @@ operator|.
 name|LAYOUT_VERSION
 argument_list|)
 argument_list|,
+operator|(
+operator|new
+name|byte
+index|[]
+block|{
+literal|0
+block|,
+literal|0
+block|,
+literal|0
+block|,
+literal|0
+block|}
+operator|)
+argument_list|,
+comment|// layout flags section
 name|EDITS_DATA
 argument_list|)
 decl_stmt|;
