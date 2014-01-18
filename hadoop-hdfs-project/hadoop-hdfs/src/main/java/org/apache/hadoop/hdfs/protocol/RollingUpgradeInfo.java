@@ -74,6 +74,19 @@ specifier|public
 class|class
 name|RollingUpgradeInfo
 block|{
+DECL|field|EMPTY_INFO
+specifier|public
+specifier|static
+specifier|final
+name|RollingUpgradeInfo
+name|EMPTY_INFO
+init|=
+operator|new
+name|RollingUpgradeInfo
+argument_list|(
+literal|0
+argument_list|)
+decl_stmt|;
 DECL|field|startTime
 specifier|private
 name|long
@@ -84,6 +97,22 @@ specifier|private
 name|long
 name|finalizeTime
 decl_stmt|;
+DECL|method|RollingUpgradeInfo (long startTime)
+specifier|public
+name|RollingUpgradeInfo
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|startTime
+argument_list|,
+literal|0L
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|RollingUpgradeInfo (long startTime, long finalizeTime)
 specifier|public
 name|RollingUpgradeInfo

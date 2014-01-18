@@ -18204,6 +18204,11 @@ extends|extends
 name|FSEditLogOp
 block|{
 comment|// @Idempotent
+DECL|field|startTime
+specifier|private
+name|long
+name|startTime
+decl_stmt|;
 DECL|method|UpgradeMarkerOp ()
 specifier|public
 name|UpgradeMarkerOp
@@ -18236,6 +18241,21 @@ name|OP_UPGRADE_MARKER
 argument_list|)
 return|;
 block|}
+DECL|method|setStartTime (long startTime)
+name|void
+name|setStartTime
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+block|{
+name|this
+operator|.
+name|startTime
+operator|=
+name|startTime
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|readFields (DataInputStream in, int logVersion)
@@ -18250,7 +18270,15 @@ name|logVersion
 parameter_list|)
 throws|throws
 name|IOException
-block|{     }
+block|{
+name|startTime
+operator|=
+name|in
+operator|.
+name|readLong
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|writeFields (DataOutputStream out)
@@ -18263,7 +18291,17 @@ name|out
 parameter_list|)
 throws|throws
 name|IOException
-block|{     }
+block|{
+name|FSImageSerialization
+operator|.
+name|writeLong
+argument_list|(
+name|startTime
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toXml (ContentHandler contentHandler)
@@ -18276,7 +18314,27 @@ name|contentHandler
 parameter_list|)
 throws|throws
 name|SAXException
-block|{     }
+block|{
+name|XMLUtils
+operator|.
+name|addSaxString
+argument_list|(
+name|contentHandler
+argument_list|,
+literal|"STARTTIME"
+argument_list|,
+name|Long
+operator|.
+name|valueOf
+argument_list|(
+name|startTime
+argument_list|)
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|fromXml (Stanza st)
@@ -18288,7 +18346,24 @@ name|st
 parameter_list|)
 throws|throws
 name|InvalidXmlException
-block|{     }
+block|{
+name|this
+operator|.
+name|startTime
+operator|=
+name|Long
+operator|.
+name|valueOf
+argument_list|(
+name|st
+operator|.
+name|getValue
+argument_list|(
+literal|"STARTTIME"
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|toString ()

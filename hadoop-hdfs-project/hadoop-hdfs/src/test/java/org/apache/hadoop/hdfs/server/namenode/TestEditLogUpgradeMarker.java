@@ -229,7 +229,7 @@ expr_stmt|;
 comment|//add marker
 name|namesystem
 operator|.
-name|addUpgradeMarker
+name|startRollingUpgrade
 argument_list|()
 expr_stmt|;
 name|dfs

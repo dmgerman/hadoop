@@ -248,6 +248,20 @@ name|NameNodeDirType
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|util
+operator|.
+name|Time
+import|;
+end_import
+
 begin_comment
 comment|/**  * OfflineEditsViewerHelper is a helper class for TestOfflineEditsViewer,  * it performs NN operations that generate all op codes  */
 end_comment
@@ -614,8 +628,16 @@ operator|.
 name|getNamesystem
 argument_list|()
 operator|.
-name|addUpgradeMarker
+name|getEditLog
 argument_list|()
+operator|.
+name|logUpgradeMarker
+argument_list|(
+name|Time
+operator|.
+name|now
+argument_list|()
+argument_list|)
 expr_stmt|;
 comment|// Force a roll so we get an OP_END_LOG_SEGMENT txn
 return|return

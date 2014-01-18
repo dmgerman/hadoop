@@ -4810,10 +4810,13 @@ name|op
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|logUpgradeMarker ()
+DECL|method|logUpgradeMarker (long startTime)
 name|void
 name|logUpgradeMarker
-parameter_list|()
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
 block|{
 name|UpgradeMarkerOp
 name|op
@@ -4828,6 +4831,13 @@ name|get
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|op
+operator|.
+name|setStartTime
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
 name|logEdit
 argument_list|(
 name|op
