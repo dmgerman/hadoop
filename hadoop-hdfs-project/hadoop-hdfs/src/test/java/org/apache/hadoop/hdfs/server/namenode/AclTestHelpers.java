@@ -90,6 +90,7 @@ end_comment
 
 begin_class
 DECL|class|AclTestHelpers
+specifier|public
 specifier|final
 class|class
 name|AclTestHelpers
