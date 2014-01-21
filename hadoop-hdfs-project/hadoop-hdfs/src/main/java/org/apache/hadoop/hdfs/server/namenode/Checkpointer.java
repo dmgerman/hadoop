@@ -1536,8 +1536,6 @@ argument_list|(
 name|editsStreams
 argument_list|,
 name|dstNamesystem
-argument_list|,
-literal|null
 argument_list|)
 expr_stmt|;
 block|}

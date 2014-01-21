@@ -1311,8 +1311,6 @@ name|editFile
 argument_list|)
 argument_list|,
 name|startTxId
-argument_list|,
-literal|null
 argument_list|)
 decl_stmt|;
 name|System

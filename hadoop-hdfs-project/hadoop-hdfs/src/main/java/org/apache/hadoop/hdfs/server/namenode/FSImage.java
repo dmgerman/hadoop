@@ -1520,6 +1520,8 @@ name|loadFSImage
 argument_list|(
 name|target
 argument_list|,
+name|startOpt
+argument_list|,
 name|recovery
 argument_list|)
 return|;
@@ -1832,6 +1834,8 @@ operator|.
 name|loadFSImage
 argument_list|(
 name|target
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -3096,12 +3100,16 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Choose latest image from one of the directories,    * load it and merge with the edits.    *     * Saving and loading fsimage should never trigger symlink resolution.     * The paths that are persisted do not have *intermediate* symlinks     * because intermediate symlinks are resolved at the time files,     * directories, and symlinks are created. All paths accessed while     * loading or saving fsimage should therefore only see symlinks as     * the final path component, and the functions called below do not    * resolve symlinks that are the final path component.    *    * @return whether the image should be saved    * @throws IOException    */
-DECL|method|loadFSImage (FSNamesystem target, MetaRecoveryContext recovery)
+DECL|method|loadFSImage (FSNamesystem target, StartupOption startOpt, MetaRecoveryContext recovery)
+specifier|private
 name|boolean
 name|loadFSImage
 parameter_list|(
 name|FSNamesystem
 name|target
+parameter_list|,
+name|StartupOption
+name|startOpt
 parameter_list|,
 name|MetaRecoveryContext
 name|recovery
@@ -3467,6 +3475,8 @@ name|editStreams
 argument_list|,
 name|target
 argument_list|,
+name|startOpt
+argument_list|,
 name|recovery
 argument_list|)
 decl_stmt|;
@@ -3800,7 +3810,7 @@ operator|)
 return|;
 block|}
 comment|/**    * Load the specified list of edit files into the image.    */
-DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target, MetaRecoveryContext recovery)
+DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target)
 specifier|public
 name|long
 name|loadEdits
@@ -3813,6 +3823,39 @@ name|editStreams
 parameter_list|,
 name|FSNamesystem
 name|target
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+return|return
+name|loadEdits
+argument_list|(
+name|editStreams
+argument_list|,
+name|target
+argument_list|,
+literal|null
+argument_list|,
+literal|null
+argument_list|)
+return|;
+block|}
+DECL|method|loadEdits (Iterable<EditLogInputStream> editStreams, FSNamesystem target, StartupOption startOpt, MetaRecoveryContext recovery)
+specifier|private
+name|long
+name|loadEdits
+parameter_list|(
+name|Iterable
+argument_list|<
+name|EditLogInputStream
+argument_list|>
+name|editStreams
+parameter_list|,
+name|FSNamesystem
+name|target
+parameter_list|,
+name|StartupOption
+name|startOpt
 parameter_list|,
 name|MetaRecoveryContext
 name|recovery
@@ -3911,6 +3954,8 @@ argument_list|,
 name|lastAppliedTxId
 operator|+
 literal|1
+argument_list|,
+name|startOpt
 argument_list|,
 name|recovery
 argument_list|)

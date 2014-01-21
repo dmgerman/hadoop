@@ -82,6 +82,20 @@ name|MetaRecoveryContext
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|base
+operator|.
+name|Preconditions
+import|;
+end_import
+
 begin_comment
 comment|/************************************  * Some handy internal HDFS constants  *  ************************************/
 end_comment
@@ -119,6 +133,85 @@ block|,
 DECL|enumConstant|JOURNAL_NODE
 name|JOURNAL_NODE
 block|;   }
+comment|/** Startup options for rolling upgrade. */
+DECL|enum|RollingUpgradeStartupOption
+specifier|public
+specifier|static
+enum|enum
+name|RollingUpgradeStartupOption
+block|{
+DECL|enumConstant|ROLLBACK
+DECL|enumConstant|DOWNGRADE
+name|ROLLBACK
+block|,
+name|DOWNGRADE
+block|;
+DECL|field|VALUES
+specifier|private
+specifier|static
+specifier|final
+name|RollingUpgradeStartupOption
+index|[]
+name|VALUES
+init|=
+name|values
+argument_list|()
+decl_stmt|;
+DECL|method|fromString (String s)
+specifier|static
+name|RollingUpgradeStartupOption
+name|fromString
+parameter_list|(
+name|String
+name|s
+parameter_list|)
+block|{
+for|for
+control|(
+name|RollingUpgradeStartupOption
+name|opt
+range|:
+name|VALUES
+control|)
+block|{
+if|if
+condition|(
+name|opt
+operator|.
+name|name
+argument_list|()
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|s
+argument_list|)
+condition|)
+block|{
+return|return
+name|opt
+return|;
+block|}
+block|}
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"Failed to convert \""
+operator|+
+name|s
+operator|+
+literal|"\" to "
+operator|+
+name|RollingUpgradeStartupOption
+operator|.
+name|class
+operator|.
+name|getSimpleName
+argument_list|()
+argument_list|)
+throw|;
+block|}
+block|}
 comment|/** Startup options */
 DECL|enum|StartupOption
 specifier|static
@@ -180,6 +273,12 @@ argument_list|(
 literal|"-finalize"
 argument_list|)
 block|,
+DECL|enumConstant|ROLLINGUPGRADE
+name|ROLLINGUPGRADE
+argument_list|(
+literal|"-rollingUpgrade"
+argument_list|)
+block|,
 DECL|enumConstant|IMPORT
 name|IMPORT
 argument_list|(
@@ -229,6 +328,12 @@ name|String
 name|clusterId
 init|=
 literal|null
+decl_stmt|;
+comment|// Used only by rolling upgrade
+DECL|field|rollingUpgradeStartupOption
+specifier|private
+name|RollingUpgradeStartupOption
+name|rollingUpgradeStartupOption
 decl_stmt|;
 comment|// Used only with format option
 DECL|field|isForceFormat
@@ -335,6 +440,53 @@ parameter_list|()
 block|{
 return|return
 name|clusterId
+return|;
+block|}
+DECL|method|setRollingUpgradeStartupOption (String opt)
+specifier|public
+name|void
+name|setRollingUpgradeStartupOption
+parameter_list|(
+name|String
+name|opt
+parameter_list|)
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|this
+operator|==
+name|ROLLINGUPGRADE
+argument_list|)
+expr_stmt|;
+name|rollingUpgradeStartupOption
+operator|=
+name|RollingUpgradeStartupOption
+operator|.
+name|fromString
+argument_list|(
+name|opt
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getRollingUpgradeStartupOption ()
+specifier|public
+name|RollingUpgradeStartupOption
+name|getRollingUpgradeStartupOption
+parameter_list|()
+block|{
+name|Preconditions
+operator|.
+name|checkState
+argument_list|(
+name|this
+operator|==
+name|ROLLINGUPGRADE
+argument_list|)
+expr_stmt|;
+return|return
+name|rollingUpgradeStartupOption
 return|;
 block|}
 DECL|method|createRecoveryContext ()

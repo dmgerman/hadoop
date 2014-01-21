@@ -268,7 +268,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_HTTP_ADDRESS_KEY
+name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
 import|;
 end_import
 
@@ -284,7 +284,7 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
+name|DFS_NAMENODE_HTTP_ADDRESS_KEY
 import|;
 end_import
 
@@ -1233,22 +1233,6 @@ operator|.
 name|authorize
 operator|.
 name|ProxyUsers
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|security
-operator|.
-name|ssl
-operator|.
-name|SSLFactory
 import|;
 end_import
 
@@ -6811,6 +6795,33 @@ literal|true
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Restart the namenode.    */
+DECL|method|restartNameNode (String... args)
+specifier|public
+specifier|synchronized
+name|void
+name|restartNameNode
+parameter_list|(
+name|String
+modifier|...
+name|args
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkSingleNameNode
+argument_list|()
+expr_stmt|;
+name|restartNameNode
+argument_list|(
+literal|0
+argument_list|,
+literal|true
+argument_list|,
+name|args
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Restart the namenode. Optionally wait for the cluster to become active.    */
 DECL|method|restartNameNode (boolean waitActive)
 specifier|public
@@ -6857,7 +6868,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Restart the namenode at a given index. Optionally wait for the cluster    * to become active.    */
-DECL|method|restartNameNode (int nnIndex, boolean waitActive)
+DECL|method|restartNameNode (int nnIndex, boolean waitActive, String... args)
 specifier|public
 specifier|synchronized
 name|void
@@ -6868,6 +6879,10 @@ name|nnIndex
 parameter_list|,
 name|boolean
 name|waitActive
+parameter_list|,
+name|String
+modifier|...
+name|args
 parameter_list|)
 throws|throws
 name|IOException
@@ -6914,10 +6929,7 @@ name|NameNode
 operator|.
 name|createNameNode
 argument_list|(
-operator|new
-name|String
-index|[]
-block|{}
+name|args
 argument_list|,
 name|conf
 argument_list|)
