@@ -166,6 +166,18 @@ name|util
 operator|.
 name|concurrent
 operator|.
+name|ScheduledExecutorService
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
 name|atomic
 operator|.
 name|AtomicBoolean
@@ -337,6 +349,20 @@ operator|.
 name|mapred
 operator|.
 name|TaskAttemptListenerImpl
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|mapred
+operator|.
+name|TaskLog
 import|;
 end_import
 
@@ -2311,6 +2337,12 @@ name|forcedState
 init|=
 literal|null
 decl_stmt|;
+DECL|field|logSyncer
+specifier|private
+specifier|final
+name|ScheduledExecutorService
+name|logSyncer
+decl_stmt|;
 DECL|field|recoveredJobStartTime
 specifier|private
 name|long
@@ -2483,6 +2515,13 @@ operator|.
 name|maxAppAttempts
 operator|=
 name|maxAppAttempts
+expr_stmt|;
+name|logSyncer
+operator|=
+name|TaskLog
+operator|.
+name|createLogSyncer
+argument_list|()
 expr_stmt|;
 name|LOG
 operator|.
@@ -6047,6 +6086,27 @@ expr_stmt|;
 comment|// All components have started, start the job.
 name|startJobs
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|stop ()
+specifier|public
+name|void
+name|stop
+parameter_list|()
+block|{
+name|super
+operator|.
+name|stop
+argument_list|()
+expr_stmt|;
+name|TaskLog
+operator|.
+name|syncLogsShutdown
+argument_list|(
+name|logSyncer
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|processRecovery ()
