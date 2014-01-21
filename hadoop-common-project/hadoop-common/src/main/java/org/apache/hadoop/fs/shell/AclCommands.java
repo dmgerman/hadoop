@@ -424,8 +424,6 @@ argument_list|(
 literal|"# file: "
 operator|+
 name|item
-operator|.
-name|path
 argument_list|)
 expr_stmt|;
 name|out
@@ -568,6 +566,11 @@ name|perm
 argument_list|)
 expr_stmt|;
 block|}
+name|out
+operator|.
+name|println
+argument_list|()
+expr_stmt|;
 block|}
 comment|/**      * Prints an extended ACL, including all extended ACL entries and also the      * base entries implied by the permission bits.      *      * @param perm FsPermission of file      * @param entries List<AclEntry> containing ACL entries of file      */
 DECL|method|printExtendedAcl (FsPermission perm, List<AclEntry> entries)

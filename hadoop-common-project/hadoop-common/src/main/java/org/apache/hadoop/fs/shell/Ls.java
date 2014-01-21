@@ -242,12 +242,16 @@ argument_list|(
 literal|"yyyy-MM-dd HH:mm"
 argument_list|)
 decl_stmt|;
+DECL|field|maxPerm
 DECL|field|maxRepl
 DECL|field|maxLen
 DECL|field|maxOwner
-DECL|field|maxGroup
 specifier|protected
 name|int
+name|maxPerm
+init|=
+literal|9
+decl_stmt|,
 name|maxRepl
 init|=
 literal|3
@@ -260,6 +264,7 @@ name|maxOwner
 init|=
 literal|0
 decl_stmt|,
+DECL|field|maxGroup
 name|maxGroup
 init|=
 literal|0
@@ -634,6 +639,18 @@ name|item
 operator|.
 name|stat
 decl_stmt|;
+name|maxPerm
+operator|=
+name|maxLength
+argument_list|(
+name|maxPerm
+argument_list|,
+name|stat
+operator|.
+name|getPermission
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|maxRepl
 operator|=
 name|maxLength
@@ -694,7 +711,11 @@ name|fmt
 operator|.
 name|append
 argument_list|(
-literal|"%s%s "
+literal|"%s%-"
+operator|+
+name|maxPerm
+operator|+
+literal|"s "
 argument_list|)
 expr_stmt|;
 comment|// permission string
