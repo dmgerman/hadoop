@@ -3531,6 +3531,13 @@ argument_list|()
 operator|.
 name|name
 argument_list|()
+operator|+
+literal|". Cause:\n"
+operator|+
+name|event
+operator|.
+name|getCause
+argument_list|()
 argument_list|)
 expr_stmt|;
 if|if
