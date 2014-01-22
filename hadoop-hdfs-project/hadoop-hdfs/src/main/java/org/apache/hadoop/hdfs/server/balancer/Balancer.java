@@ -1573,6 +1573,15 @@ argument_list|)
 expr_stmt|;
 name|sock
 operator|.
+name|setSoTimeout
+argument_list|(
+name|HdfsServerConstants
+operator|.
+name|READ_TIMEOUT
+argument_list|)
+expr_stmt|;
+name|sock
+operator|.
 name|setKeepAlive
 argument_list|(
 literal|true
