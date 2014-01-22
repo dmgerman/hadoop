@@ -2308,6 +2308,11 @@ argument_list|(
 name|name
 argument_list|)
 operator|.
+name|hostName
+argument_list|(
+name|bindAddress
+argument_list|)
+operator|.
 name|addEndpoint
 argument_list|(
 name|URI
