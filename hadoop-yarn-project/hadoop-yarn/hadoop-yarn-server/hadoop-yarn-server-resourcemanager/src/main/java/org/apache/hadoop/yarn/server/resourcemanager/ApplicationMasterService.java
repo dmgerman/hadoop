@@ -2017,6 +2017,16 @@ name|getApplicationACLs
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|response
+operator|.
+name|setQueue
+argument_list|(
+name|app
+operator|.
+name|getQueue
+argument_list|()
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|UserGroupInformation
