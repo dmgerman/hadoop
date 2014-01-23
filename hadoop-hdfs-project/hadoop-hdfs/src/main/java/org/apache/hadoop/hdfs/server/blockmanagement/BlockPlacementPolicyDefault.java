@@ -429,6 +429,7 @@ name|int
 name|tolerateHeartbeatMultiplier
 decl_stmt|;
 DECL|method|BlockPlacementPolicyDefault (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+specifier|protected
 name|BlockPlacementPolicyDefault
 parameter_list|(
 name|Configuration

@@ -303,11 +303,6 @@ parameter_list|()
 throws|throws
 name|ServerException
 block|{
-name|super
-operator|.
-name|init
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|SERVER
@@ -326,6 +321,11 @@ block|}
 name|SERVER
 operator|=
 name|this
+expr_stmt|;
+name|super
+operator|.
+name|init
+argument_list|()
 expr_stmt|;
 name|adminGroup
 operator|=

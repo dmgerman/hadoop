@@ -223,11 +223,11 @@ name|SERVICE_NAME
 operator|+
 name|SERVICE_VERSION
 decl_stmt|;
-comment|/**    * Convenience method that creates an HTTP<code>URL</code> for the    * HttpFSServer file system operations.    *<p/>    *    * @param path the file path.    * @param params the query string parameters.    *    * @return a<code>URL</code> for the HttpFSServer server,    *    * @throws IOException thrown if an IO error occurrs.    */
-DECL|method|createHttpURL (Path path, Map<String, String> params)
+comment|/**    * Convenience method that creates an HTTP<code>URL</code> for the    * HttpFSServer file system operations.    *<p/>    *    * @param path the file path.    * @param params the query string parameters.    *    * @return a<code>URL</code> for the HttpFSServer server,    *    * @throws IOException thrown if an IO error occurs.    */
+DECL|method|createURL (Path path, Map<String, String> params)
 specifier|static
 name|URL
-name|createHttpURL
+name|createURL
 parameter_list|(
 name|Path
 name|path
@@ -274,6 +274,27 @@ operator|=
 literal|"http"
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|uri
+operator|.
+name|getScheme
+argument_list|()
+operator|.
+name|equalsIgnoreCase
+argument_list|(
+name|HttpsFSFileSystem
+operator|.
+name|SCHEME
+argument_list|)
+condition|)
+block|{
+name|realScheme
+operator|=
+literal|"https"
+expr_stmt|;
+block|}
 else|else
 block|{
 throw|throw
@@ -284,7 +305,21 @@ name|MessageFormat
 operator|.
 name|format
 argument_list|(
-literal|"Invalid scheme [{0}] it should be 'webhdfs'"
+literal|"Invalid scheme [{0}] it should be '"
+operator|+
+name|HttpFSFileSystem
+operator|.
+name|SCHEME
+operator|+
+literal|"' "
+operator|+
+literal|"or '"
+operator|+
+name|HttpsFSFileSystem
+operator|.
+name|SCHEME
+operator|+
+literal|"'"
 argument_list|,
 name|uri
 argument_list|)

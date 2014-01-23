@@ -102,6 +102,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ScheduledExecutorService
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -602,18 +614,6 @@ name|ConverterUtils
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|log4j
-operator|.
-name|LogManager
-import|;
-end_import
-
 begin_comment
 comment|/**  * The main() for MapReduce task processes.  */
 end_comment
@@ -988,6 +988,11 @@ name|childUGI
 init|=
 literal|null
 decl_stmt|;
+name|ScheduledExecutorService
+name|logSyncer
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 name|int
@@ -1175,6 +1180,13 @@ name|setJobClassLoader
 argument_list|(
 name|job
 argument_list|)
+expr_stmt|;
+name|logSyncer
+operator|=
+name|TaskLog
+operator|.
+name|createLogSyncer
+argument_list|()
 expr_stmt|;
 comment|// Create a final reference to the task for the doAs block
 specifier|final
@@ -1480,13 +1492,12 @@ operator|.
 name|shutdown
 argument_list|()
 expr_stmt|;
-comment|// Shutting down log4j of the child-vm...
-comment|// This assumes that on return from Task.run()
-comment|// there is no more logging done.
-name|LogManager
+name|TaskLog
 operator|.
-name|shutdown
-argument_list|()
+name|syncLogsShutdown
+argument_list|(
+name|logSyncer
+argument_list|)
 expr_stmt|;
 block|}
 block|}

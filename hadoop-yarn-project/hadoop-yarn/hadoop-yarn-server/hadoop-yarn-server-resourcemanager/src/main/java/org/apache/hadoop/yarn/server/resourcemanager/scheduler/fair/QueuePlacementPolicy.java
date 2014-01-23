@@ -543,9 +543,31 @@ name|ruleName
 init|=
 name|element
 operator|.
-name|getTagName
-argument_list|()
+name|getAttribute
+argument_list|(
+literal|"name"
+argument_list|)
 decl_stmt|;
+if|if
+condition|(
+literal|""
+operator|.
+name|equals
+argument_list|(
+name|ruleName
+argument_list|)
+condition|)
+block|{
+throw|throw
+operator|new
+name|AllocationConfigurationException
+argument_list|(
+literal|"No name provided for a "
+operator|+
+literal|"rule element"
+argument_list|)
+throw|;
+block|}
 name|Class
 argument_list|<
 name|?

@@ -1592,7 +1592,7 @@ name|url
 init|=
 name|HttpFSUtils
 operator|.
-name|createHttpURL
+name|createURL
 argument_list|(
 name|path
 argument_list|,

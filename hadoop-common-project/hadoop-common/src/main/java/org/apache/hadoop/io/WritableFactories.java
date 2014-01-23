@@ -78,7 +78,19 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashMap
+name|Map
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
 import|;
 end_import
 
@@ -104,7 +116,7 @@ DECL|field|CLASS_TO_FACTORY
 specifier|private
 specifier|static
 specifier|final
-name|HashMap
+name|Map
 argument_list|<
 name|Class
 argument_list|,
@@ -113,7 +125,7 @@ argument_list|>
 name|CLASS_TO_FACTORY
 init|=
 operator|new
-name|HashMap
+name|ConcurrentHashMap
 argument_list|<
 name|Class
 argument_list|,
@@ -131,7 +143,6 @@ comment|/** Define a factory for a class. */
 DECL|method|setFactory (Class c, WritableFactory factory)
 specifier|public
 specifier|static
-specifier|synchronized
 name|void
 name|setFactory
 parameter_list|(
@@ -156,7 +167,6 @@ comment|/** Define a factory for a class. */
 DECL|method|getFactory (Class c)
 specifier|public
 specifier|static
-specifier|synchronized
 name|WritableFactory
 name|getFactory
 parameter_list|(
