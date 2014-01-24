@@ -8066,6 +8066,16 @@ operator|instanceof
 name|IllegalArgumentException
 argument_list|)
 expr_stmt|;
+name|assertEquals
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+literal|"The value of property testClassName must not be null"
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|testSettingKeyNull ()
@@ -8111,6 +8121,16 @@ argument_list|(
 name|e
 operator|instanceof
 name|IllegalArgumentException
+argument_list|)
+expr_stmt|;
+name|assertEquals
+argument_list|(
+name|e
+operator|.
+name|getMessage
+argument_list|()
+argument_list|,
+literal|"Property name must not be null"
 argument_list|)
 expr_stmt|;
 block|}
