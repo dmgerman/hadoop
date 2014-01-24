@@ -193,6 +193,15 @@ name|TestSymlinkLocalFS
 extends|extends
 name|SymlinkBaseTest
 block|{
+comment|// Workaround for HADOOP-9652
+static|static
+block|{
+name|RawLocalFileSystem
+operator|.
+name|useStatIfAvailable
+argument_list|()
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|getScheme ()
