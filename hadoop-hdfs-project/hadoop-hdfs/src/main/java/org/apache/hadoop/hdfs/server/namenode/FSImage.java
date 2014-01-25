@@ -1505,10 +1505,15 @@ comment|// import checkpoint saved image already
 case|case
 name|ROLLBACK
 case|:
-name|doRollback
-argument_list|()
-expr_stmt|;
-break|break;
+throw|throw
+operator|new
+name|AssertionError
+argument_list|(
+literal|"Rollback is now a standalone command, "
+operator|+
+literal|"NameNode should not be starting with this option."
+argument_list|)
+throw|;
 case|case
 name|REGULAR
 case|:
@@ -1521,6 +1526,8 @@ argument_list|(
 name|target
 argument_list|,
 name|recovery
+argument_list|,
+name|startOpt
 argument_list|)
 return|;
 block|}
@@ -1549,6 +1556,9 @@ name|isFormatted
 init|=
 literal|false
 decl_stmt|;
+comment|// This loop needs to be over all storage dirs, even shared dirs, to make
+comment|// sure that we properly examine their state, but we make sure we don't
+comment|// mutate the shared dir below in the actual loop.
 for|for
 control|(
 name|Iterator
@@ -1593,50 +1603,6 @@ argument_list|,
 name|storage
 argument_list|)
 expr_stmt|;
-name|String
-name|nameserviceId
-init|=
-name|DFSUtil
-operator|.
-name|getNamenodeNameServiceId
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
-if|if
-condition|(
-name|curState
-operator|!=
-name|StorageState
-operator|.
-name|NORMAL
-operator|&&
-name|HAUtil
-operator|.
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|,
-name|nameserviceId
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot start an HA namenode with name dirs "
-operator|+
-literal|"that need recovery. Dir: "
-operator|+
-name|sd
-operator|+
-literal|" state: "
-operator|+
-name|curState
-argument_list|)
-throw|;
-block|}
 comment|// sd is locked but not opened
 switch|switch
 condition|(
@@ -1761,7 +1727,6 @@ name|isFormatted
 return|;
 block|}
 DECL|method|doUpgrade (FSNamesystem target)
-specifier|private
 name|void
 name|doUpgrade
 parameter_list|(
@@ -1772,7 +1737,7 @@ throws|throws
 name|IOException
 block|{
 comment|// Upgrade is allowed only if there are
-comment|// no previous fs states in any of the directories
+comment|// no previous fs states in any of the local directories
 for|for
 control|(
 name|Iterator
@@ -1784,7 +1749,9 @@ init|=
 name|storage
 operator|.
 name|dirIterator
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 init|;
 name|it
 operator|.
@@ -1827,6 +1794,7 @@ argument_list|)
 throw|;
 block|}
 comment|// load the latest image
+comment|// Do upgrade for each directory
 name|this
 operator|.
 name|loadFSImage
@@ -1834,9 +1802,12 @@ argument_list|(
 name|target
 argument_list|,
 literal|null
+argument_list|,
+name|StartupOption
+operator|.
+name|UPGRADE
 argument_list|)
 expr_stmt|;
-comment|// Do upgrade for each directory
 name|long
 name|oldCTime
 init|=
@@ -1887,46 +1858,22 @@ argument_list|>
 argument_list|()
 argument_list|)
 decl_stmt|;
-for|for
-control|(
-name|Iterator
-argument_list|<
-name|StorageDirectory
-argument_list|>
-name|it
-init|=
-name|storage
+assert|assert
+operator|!
+name|editLog
 operator|.
-name|dirIterator
+name|isSegmentOpen
 argument_list|()
-init|;
-name|it
-operator|.
-name|hasNext
-argument_list|()
-condition|;
-control|)
-block|{
-name|StorageDirectory
-name|sd
-init|=
-name|it
-operator|.
-name|next
-argument_list|()
-decl_stmt|;
+operator|:
+literal|"Edits log must not be open."
+assert|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Starting upgrade of image directory "
+literal|"Starting upgrade of local storage directories."
 operator|+
-name|sd
-operator|.
-name|getRoot
-argument_list|()
-operator|+
-literal|".\n   old LV = "
+literal|"\n   old LV = "
 operator|+
 name|oldLV
 operator|+
@@ -1949,96 +1896,46 @@ name|getCTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+comment|// Do upgrade for each directory
+for|for
+control|(
+name|Iterator
+argument_list|<
+name|StorageDirectory
+argument_list|>
+name|it
+init|=
+name|storage
+operator|.
+name|dirIterator
+argument_list|(
+literal|false
+argument_list|)
+init|;
+name|it
+operator|.
+name|hasNext
+argument_list|()
+condition|;
+control|)
+block|{
+name|StorageDirectory
+name|sd
+init|=
+name|it
+operator|.
+name|next
+argument_list|()
+decl_stmt|;
 try|try
 block|{
-name|File
-name|curDir
-init|=
-name|sd
+name|NNUpgradeUtil
 operator|.
-name|getCurrentDir
-argument_list|()
-decl_stmt|;
-name|File
-name|prevDir
-init|=
-name|sd
-operator|.
-name|getPreviousDir
-argument_list|()
-decl_stmt|;
-name|File
-name|tmpDir
-init|=
-name|sd
-operator|.
-name|getPreviousTmp
-argument_list|()
-decl_stmt|;
-assert|assert
-name|curDir
-operator|.
-name|exists
-argument_list|()
-operator|:
-literal|"Current directory must exist."
-assert|;
-assert|assert
-operator|!
-name|prevDir
-operator|.
-name|exists
-argument_list|()
-operator|:
-literal|"previous directory must not exist."
-assert|;
-assert|assert
-operator|!
-name|tmpDir
-operator|.
-name|exists
-argument_list|()
-operator|:
-literal|"previous.tmp directory must not exist."
-assert|;
-assert|assert
-operator|!
-name|editLog
-operator|.
-name|isSegmentOpen
-argument_list|()
-operator|:
-literal|"Edits log must not be open."
-assert|;
-comment|// rename current to tmp
-name|NNStorage
-operator|.
-name|rename
+name|doPreUpgrade
 argument_list|(
-name|curDir
-argument_list|,
-name|tmpDir
+name|sd
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-operator|!
-name|curDir
-operator|.
-name|mkdir
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot create directory "
-operator|+
-name|curDir
-argument_list|)
-throw|;
-block|}
 block|}
 catch|catch
 parameter_list|(
@@ -2071,6 +1968,20 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
+block|}
+if|if
+condition|(
+name|target
+operator|.
+name|isHaEnabled
+argument_list|()
+condition|)
+block|{
+name|editLog
+operator|.
+name|doPreUpgradeOfSharedLog
+argument_list|()
+expr_stmt|;
 block|}
 name|storage
 operator|.
@@ -2105,7 +2016,9 @@ init|=
 name|storage
 operator|.
 name|dirIterator
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 init|;
 name|it
 operator|.
@@ -2124,39 +2037,13 @@ argument_list|()
 decl_stmt|;
 try|try
 block|{
-comment|// Write the version file, since saveFsImage above only makes the
-comment|// fsimage_<txid>, and the directory is otherwise empty.
-name|storage
+name|NNUpgradeUtil
 operator|.
-name|writeProperties
+name|doUpgrade
 argument_list|(
 name|sd
-argument_list|)
-expr_stmt|;
-name|File
-name|prevDir
-init|=
-name|sd
-operator|.
-name|getPreviousDir
-argument_list|()
-decl_stmt|;
-name|File
-name|tmpDir
-init|=
-name|sd
-operator|.
-name|getPreviousTmp
-argument_list|()
-decl_stmt|;
-comment|// rename tmp to previous
-name|NNStorage
-operator|.
-name|rename
-argument_list|(
-name|tmpDir
 argument_list|,
-name|prevDir
+name|storage
 argument_list|)
 expr_stmt|;
 block|}
@@ -2166,20 +2053,6 @@ name|IOException
 name|ioe
 parameter_list|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-literal|"Unable to rename temp to previous for "
-operator|+
-name|sd
-operator|.
-name|getRoot
-argument_list|()
-argument_list|,
-name|ioe
-argument_list|)
-expr_stmt|;
 name|errorSDs
 operator|.
 name|add
@@ -2189,19 +2062,19 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
-name|LOG
+block|}
+if|if
+condition|(
+name|target
 operator|.
-name|info
-argument_list|(
-literal|"Upgrade of "
-operator|+
-name|sd
-operator|.
-name|getRoot
+name|isHaEnabled
 argument_list|()
-operator|+
-literal|" is complete."
-argument_list|)
+condition|)
+block|{
+name|editLog
+operator|.
+name|doUpgradeOfSharedLog
+argument_list|()
 expr_stmt|;
 block|}
 name|storage
@@ -2227,7 +2100,7 @@ name|isEmpty
 argument_list|()
 condition|)
 block|{
-comment|//during upgrade, it's a fatal error to fail any storage directory
+comment|// during upgrade, it's a fatal error to fail any storage directory
 throw|throw
 operator|new
 name|IOException
@@ -2247,11 +2120,13 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|doRollback ()
-specifier|private
+DECL|method|doRollback (FSNamesystem fsns)
 name|void
 name|doRollback
-parameter_list|()
+parameter_list|(
+name|FSNamesystem
+name|fsns
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -2296,7 +2171,9 @@ init|=
 name|storage
 operator|.
 name|dirIterator
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 init|;
 name|it
 operator|.
@@ -2313,97 +2190,64 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|File
-name|prevDir
-init|=
-name|sd
-operator|.
-name|getPreviousDir
-argument_list|()
-decl_stmt|;
 if|if
 condition|(
 operator|!
-name|prevDir
+name|NNUpgradeUtil
 operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-comment|// use current directory then
-name|LOG
-operator|.
-name|info
+name|canRollBack
 argument_list|(
-literal|"Storage directory "
-operator|+
 name|sd
-operator|.
-name|getRoot
-argument_list|()
-operator|+
-literal|" does not contain previous fs state."
-argument_list|)
-expr_stmt|;
-comment|// read and verify consistency with other directories
+argument_list|,
 name|storage
-operator|.
-name|readProperties
-argument_list|(
-name|sd
-argument_list|)
-expr_stmt|;
-continue|continue;
-block|}
-comment|// read and verify consistency of the prev dir
+argument_list|,
 name|prevState
 operator|.
 name|getStorage
 argument_list|()
-operator|.
-name|readPreviousVersionProperties
-argument_list|(
-name|sd
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|prevState
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|!=
+argument_list|,
 name|HdfsConstants
 operator|.
 name|LAYOUT_VERSION
+argument_list|)
 condition|)
 block|{
-throw|throw
-operator|new
-name|IOException
-argument_list|(
-literal|"Cannot rollback to storage version "
-operator|+
-name|prevState
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|+
-literal|" using this version of the NameNode, which uses storage version "
-operator|+
-name|HdfsConstants
-operator|.
-name|LAYOUT_VERSION
-operator|+
-literal|". "
-operator|+
-literal|"Please use the previous version of HDFS to perform the rollback."
-argument_list|)
-throw|;
+continue|continue;
 block|}
 name|canRollback
 operator|=
 literal|true
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|fsns
+operator|.
+name|isHaEnabled
+argument_list|()
+condition|)
+block|{
+comment|// If HA is enabled, check if the shared log can be rolled back as well.
+name|editLog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+name|canRollback
+operator||=
+name|editLog
+operator|.
+name|canRollBackSharedLog
+argument_list|(
+name|prevState
+operator|.
+name|getStorage
+argument_list|()
+argument_list|,
+name|HdfsConstants
+operator|.
+name|LAYOUT_VERSION
+argument_list|)
 expr_stmt|;
 block|}
 if|if
@@ -2433,7 +2277,9 @@ init|=
 name|storage
 operator|.
 name|dirIterator
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 init|;
 name|it
 operator|.
@@ -2450,23 +2296,6 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
-name|File
-name|prevDir
-init|=
-name|sd
-operator|.
-name|getPreviousDir
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|prevDir
-operator|.
-name|exists
-argument_list|()
-condition|)
-continue|continue;
 name|LOG
 operator|.
 name|info
@@ -2499,80 +2328,27 @@ name|getCTime
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|File
-name|tmpDir
-init|=
-name|sd
+name|NNUpgradeUtil
 operator|.
-name|getRemovedTmp
-argument_list|()
-decl_stmt|;
-assert|assert
-operator|!
-name|tmpDir
-operator|.
-name|exists
-argument_list|()
-operator|:
-literal|"removed.tmp directory must not exist."
-assert|;
-comment|// rename current to tmp
-name|File
-name|curDir
-init|=
-name|sd
-operator|.
-name|getCurrentDir
-argument_list|()
-decl_stmt|;
-assert|assert
-name|curDir
-operator|.
-name|exists
-argument_list|()
-operator|:
-literal|"Current directory must exist."
-assert|;
-name|NNStorage
-operator|.
-name|rename
+name|doRollBack
 argument_list|(
-name|curDir
-argument_list|,
-name|tmpDir
+name|sd
 argument_list|)
 expr_stmt|;
-comment|// rename previous to current
-name|NNStorage
+block|}
+if|if
+condition|(
+name|fsns
 operator|.
-name|rename
-argument_list|(
-name|prevDir
-argument_list|,
-name|curDir
-argument_list|)
-expr_stmt|;
-comment|// delete tmp dir
-name|NNStorage
-operator|.
-name|deleteDir
-argument_list|(
-name|tmpDir
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Rollback of "
-operator|+
-name|sd
-operator|.
-name|getRoot
+name|isHaEnabled
 argument_list|()
-operator|+
-literal|" is complete."
-argument_list|)
+condition|)
+block|{
+comment|// If HA is enabled, try to roll back the shared log as well.
+name|editLog
+operator|.
+name|doRollback
+argument_list|()
 expr_stmt|;
 block|}
 name|isUpgradeFinalized
@@ -2588,157 +2364,6 @@ name|close
 argument_list|()
 expr_stmt|;
 block|}
-block|}
-DECL|method|doFinalize (StorageDirectory sd)
-specifier|private
-name|void
-name|doFinalize
-parameter_list|(
-name|StorageDirectory
-name|sd
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-name|File
-name|prevDir
-init|=
-name|sd
-operator|.
-name|getPreviousDir
-argument_list|()
-decl_stmt|;
-if|if
-condition|(
-operator|!
-name|prevDir
-operator|.
-name|exists
-argument_list|()
-condition|)
-block|{
-comment|// already discarded
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Directory "
-operator|+
-name|prevDir
-operator|+
-literal|" does not exist."
-argument_list|)
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Finalize upgrade for "
-operator|+
-name|sd
-operator|.
-name|getRoot
-argument_list|()
-operator|+
-literal|" is not required."
-argument_list|)
-expr_stmt|;
-return|return;
-block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Finalizing upgrade for storage directory "
-operator|+
-name|sd
-operator|.
-name|getRoot
-argument_list|()
-operator|+
-literal|"."
-operator|+
-operator|(
-name|storage
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|==
-literal|0
-condition|?
-literal|""
-else|:
-literal|"\n   cur LV = "
-operator|+
-name|storage
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|+
-literal|"; cur CTime = "
-operator|+
-name|storage
-operator|.
-name|getCTime
-argument_list|()
-operator|)
-argument_list|)
-expr_stmt|;
-assert|assert
-name|sd
-operator|.
-name|getCurrentDir
-argument_list|()
-operator|.
-name|exists
-argument_list|()
-operator|:
-literal|"Current directory must exist."
-assert|;
-specifier|final
-name|File
-name|tmpDir
-init|=
-name|sd
-operator|.
-name|getFinalizedTmp
-argument_list|()
-decl_stmt|;
-comment|// rename previous to tmp and remove
-name|NNStorage
-operator|.
-name|rename
-argument_list|(
-name|prevDir
-argument_list|,
-name|tmpDir
-argument_list|)
-expr_stmt|;
-name|NNStorage
-operator|.
-name|deleteDir
-argument_list|(
-name|tmpDir
-argument_list|)
-expr_stmt|;
-name|isUpgradeFinalized
-operator|=
-literal|true
-expr_stmt|;
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Finalize upgrade for "
-operator|+
-name|sd
-operator|.
-name|getRoot
-argument_list|()
-operator|+
-literal|" is complete."
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Load image from a checkpoint directory and save it into the current one.    * @param target the NameSystem to import into    * @throws IOException    */
 DECL|method|doImportCheckpoint (FSNamesystem target)
@@ -2914,7 +2539,11 @@ expr_stmt|;
 name|realImage
 operator|.
 name|initEditLog
-argument_list|()
+argument_list|(
+name|StartupOption
+operator|.
+name|IMPORT
+argument_list|)
 expr_stmt|;
 name|target
 operator|.
@@ -2950,13 +2579,48 @@ name|writeAll
 argument_list|()
 expr_stmt|;
 block|}
-DECL|method|finalizeUpgrade ()
+DECL|method|finalizeUpgrade (boolean finalizeEditLog)
 name|void
 name|finalizeUpgrade
-parameter_list|()
+parameter_list|(
+name|boolean
+name|finalizeEditLog
+parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Finalizing upgrade for local dirs. "
+operator|+
+operator|(
+name|storage
+operator|.
+name|getLayoutVersion
+argument_list|()
+operator|==
+literal|0
+condition|?
+literal|""
+else|:
+literal|"\n   cur LV = "
+operator|+
+name|storage
+operator|.
+name|getLayoutVersion
+argument_list|()
+operator|+
+literal|"; cur CTime = "
+operator|+
+name|storage
+operator|.
+name|getCTime
+argument_list|()
+operator|)
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|Iterator
@@ -2968,7 +2632,9 @@ init|=
 name|storage
 operator|.
 name|dirIterator
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 init|;
 name|it
 operator|.
@@ -2985,12 +2651,32 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+name|NNUpgradeUtil
+operator|.
 name|doFinalize
 argument_list|(
 name|sd
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|finalizeEditLog
+condition|)
+block|{
+comment|// We only do this in the case that HA is enabled and we're active. In any
+comment|// other case the NN will have done the upgrade of the edits directories
+comment|// already by virtue of the fact that they're local.
+name|editLog
+operator|.
+name|doFinalizeOfSharedLog
+argument_list|()
+expr_stmt|;
+block|}
+name|isUpgradeFinalized
+operator|=
+literal|true
+expr_stmt|;
 block|}
 DECL|method|isUpgradeFinalized ()
 name|boolean
@@ -3096,7 +2782,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Choose latest image from one of the directories,    * load it and merge with the edits.    *     * Saving and loading fsimage should never trigger symlink resolution.     * The paths that are persisted do not have *intermediate* symlinks     * because intermediate symlinks are resolved at the time files,     * directories, and symlinks are created. All paths accessed while     * loading or saving fsimage should therefore only see symlinks as     * the final path component, and the functions called below do not    * resolve symlinks that are the final path component.    *    * @return whether the image should be saved    * @throws IOException    */
-DECL|method|loadFSImage (FSNamesystem target, MetaRecoveryContext recovery)
+DECL|method|loadFSImage (FSNamesystem target, MetaRecoveryContext recovery, StartupOption startOpt)
 name|boolean
 name|loadFSImage
 parameter_list|(
@@ -3105,6 +2791,9 @@ name|target
 parameter_list|,
 name|MetaRecoveryContext
 name|recovery
+parameter_list|,
+name|StartupOption
+name|startOpt
 parameter_list|)
 throws|throws
 name|IOException
@@ -3215,7 +2904,9 @@ init|=
 literal|null
 decl_stmt|;
 name|initEditLog
-argument_list|()
+argument_list|(
+name|startOpt
+argument_list|)
 expr_stmt|;
 if|if
 condition|(
@@ -3662,11 +3353,16 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-DECL|method|initEditLog ()
+DECL|method|initEditLog (StartupOption startOpt)
 specifier|public
 name|void
 name|initEditLog
-parameter_list|()
+parameter_list|(
+name|StartupOption
+name|startOpt
+parameter_list|)
+throws|throws
+name|IOException
 block|{
 name|Preconditions
 operator|.
@@ -3703,6 +3399,7 @@ name|nameserviceId
 argument_list|)
 condition|)
 block|{
+comment|// If this NN is not HA
 name|editLog
 operator|.
 name|initJournalsForWrite
@@ -3714,8 +3411,84 @@ name|recoverUnclosedStreams
 argument_list|()
 expr_stmt|;
 block|}
+elseif|else
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nameserviceId
+argument_list|)
+operator|&&
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADE
+condition|)
+block|{
+comment|// This NN is HA, but we're doing an upgrade so init the edit log for
+comment|// write.
+name|editLog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+name|long
+name|sharedLogCTime
+init|=
+name|editLog
+operator|.
+name|getSharedLogCTime
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|this
+operator|.
+name|storage
+operator|.
+name|getCTime
+argument_list|()
+operator|<
+name|sharedLogCTime
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"It looks like the shared log is already "
+operator|+
+literal|"being upgraded but this NN has not been upgraded yet. You "
+operator|+
+literal|"should restart this NameNode with the '"
+operator|+
+name|StartupOption
+operator|.
+name|BOOTSTRAPSTANDBY
+operator|.
+name|getName
+argument_list|()
+operator|+
+literal|"' option to bring "
+operator|+
+literal|"this NN in sync with the other."
+argument_list|)
+throw|;
+block|}
+name|editLog
+operator|.
+name|recoverUnclosedStreams
+argument_list|()
+expr_stmt|;
+block|}
 else|else
 block|{
+comment|// This NN is HA and we're not doing an upgrade.
 name|editLog
 operator|.
 name|initSharedJournalsForRead

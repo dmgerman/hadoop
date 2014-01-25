@@ -192,6 +192,42 @@ name|hdfs
 operator|.
 name|server
 operator|.
+name|common
+operator|.
+name|Storage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|StorageInfo
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
 name|protocol
 operator|.
 name|NamespaceInfo
@@ -459,12 +495,17 @@ name|stream
 decl_stmt|;
 DECL|field|required
 specifier|private
+specifier|final
 name|boolean
 name|required
-init|=
-literal|false
 decl_stmt|;
-DECL|method|JournalAndStream (JournalManager manager, boolean required)
+DECL|field|shared
+specifier|private
+specifier|final
+name|boolean
+name|shared
+decl_stmt|;
+DECL|method|JournalAndStream (JournalManager manager, boolean required, boolean shared)
 specifier|public
 name|JournalAndStream
 parameter_list|(
@@ -473,6 +514,9 @@ name|manager
 parameter_list|,
 name|boolean
 name|required
+parameter_list|,
+name|boolean
+name|shared
 parameter_list|)
 block|{
 name|this
@@ -486,6 +530,12 @@ operator|.
 name|required
 operator|=
 name|required
+expr_stmt|;
+name|this
+operator|.
+name|shared
+operator|=
+name|shared
 expr_stmt|;
 block|}
 DECL|method|startLogSegment (long txId)
@@ -729,6 +779,16 @@ return|return
 name|required
 return|;
 block|}
+DECL|method|isShared ()
+specifier|public
+name|boolean
+name|isShared
+parameter_list|()
+block|{
+return|return
+name|shared
+return|;
+block|}
 block|}
 comment|// COW implementation is necessary since some users (eg the web ui) call
 comment|// getAllJournalStreams() and then iterate. Since this is rarely
@@ -782,7 +842,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// The iteration is done by FSEditLog itself
+comment|// The operation is done by FSEditLog itself
 throw|throw
 operator|new
 name|UnsupportedOperationException
@@ -2252,6 +2312,30 @@ name|boolean
 name|required
 parameter_list|)
 block|{
+name|add
+argument_list|(
+name|j
+argument_list|,
+name|required
+argument_list|,
+literal|false
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|add (JournalManager j, boolean required, boolean shared)
+name|void
+name|add
+parameter_list|(
+name|JournalManager
+name|j
+parameter_list|,
+name|boolean
+name|required
+parameter_list|,
+name|boolean
+name|shared
+parameter_list|)
+block|{
 name|JournalAndStream
 name|jas
 init|=
@@ -2261,6 +2345,8 @@ argument_list|(
 name|j
 argument_list|,
 name|required
+argument_list|,
+name|shared
 argument_list|)
 decl_stmt|;
 name|journals
@@ -2777,6 +2863,120 @@ operator|.
 name|toString
 argument_list|()
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|doPreUpgrade ()
+specifier|public
+name|void
+name|doPreUpgrade
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// This operation is handled by FSEditLog directly.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|doUpgrade (Storage storage)
+specifier|public
+name|void
+name|doUpgrade
+parameter_list|(
+name|Storage
+name|storage
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// This operation is handled by FSEditLog directly.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|doFinalize ()
+specifier|public
+name|void
+name|doFinalize
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// This operation is handled by FSEditLog directly.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|canRollBack (StorageInfo storage, StorageInfo prevStorage, int targetLayoutVersion)
+specifier|public
+name|boolean
+name|canRollBack
+parameter_list|(
+name|StorageInfo
+name|storage
+parameter_list|,
+name|StorageInfo
+name|prevStorage
+parameter_list|,
+name|int
+name|targetLayoutVersion
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// This operation is handled by FSEditLog directly.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|doRollback ()
+specifier|public
+name|void
+name|doRollback
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// This operation is handled by FSEditLog directly.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|getJournalCTime ()
+specifier|public
+name|long
+name|getJournalCTime
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+comment|// This operation is handled by FSEditLog directly.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
 block|}
 block|}
 end_class
