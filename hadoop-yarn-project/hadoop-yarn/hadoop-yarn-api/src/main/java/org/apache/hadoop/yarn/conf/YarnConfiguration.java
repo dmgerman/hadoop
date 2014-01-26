@@ -3523,7 +3523,7 @@ name|YARN_HISTORY_SERVICE_ENABLED
 init|=
 name|AHS_PREFIX
 operator|+
-literal|".enabled"
+literal|"enabled"
 decl_stmt|;
 DECL|field|DEFAULT_YARN_HISTORY_SERVICE_ENABLED
 specifier|public
