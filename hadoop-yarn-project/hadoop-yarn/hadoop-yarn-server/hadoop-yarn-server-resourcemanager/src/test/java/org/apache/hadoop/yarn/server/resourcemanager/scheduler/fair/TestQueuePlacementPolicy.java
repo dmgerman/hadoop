@@ -273,14 +273,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<specified />"
+literal|"<rule name='specified' />"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<user />"
+literal|"<rule name='user' />"
 argument_list|)
 expr_stmt|;
 name|sb
@@ -372,21 +372,21 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<specified />"
+literal|"<rule name='specified' />"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<user create=\"false\" />"
+literal|"<rule name='user' create=\"false\" />"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<default />"
+literal|"<rule name='default' />"
 argument_list|)
 expr_stmt|;
 name|sb
@@ -492,14 +492,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<specified />"
+literal|"<rule name='specified' />"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<reject />"
+literal|"<rule name='reject' />"
 argument_list|)
 expr_stmt|;
 name|sb
@@ -584,14 +584,14 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<specified />"
+literal|"<rule name='specified' />"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<user create=\"false\" />"
+literal|"<rule name='user' create=\"false\" />"
 argument_list|)
 expr_stmt|;
 name|sb
@@ -645,21 +645,21 @@ name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<specified />"
+literal|"<rule name='specified' />"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<default />"
+literal|"<rule name='default' />"
 argument_list|)
 expr_stmt|;
 name|sb
 operator|.
 name|append
 argument_list|(
-literal|"<user />"
+literal|"<rule name='user' />"
 argument_list|)
 expr_stmt|;
 name|sb

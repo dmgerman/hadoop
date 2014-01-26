@@ -64,6 +64,18 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
+name|times
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Mockito
+operator|.
 name|verify
 import|;
 end_import
@@ -77,18 +89,6 @@ operator|.
 name|Mockito
 operator|.
 name|when
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Mockito
-operator|.
-name|times
 import|;
 end_import
 
@@ -377,6 +377,26 @@ operator|.
 name|providers
 operator|.
 name|RecordFactoryProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|ahs
+operator|.
+name|RMApplicationHistoryWriter
 import|;
 end_import
 
@@ -907,6 +927,16 @@ argument_list|(
 name|rmDispatcher
 argument_list|)
 decl_stmt|;
+name|RMApplicationHistoryWriter
+name|writer
+init|=
+name|mock
+argument_list|(
+name|RMApplicationHistoryWriter
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
 name|RMContext
 name|context
 init|=
@@ -930,6 +960,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|null
+argument_list|,
+name|writer
 argument_list|)
 block|{
 annotation|@

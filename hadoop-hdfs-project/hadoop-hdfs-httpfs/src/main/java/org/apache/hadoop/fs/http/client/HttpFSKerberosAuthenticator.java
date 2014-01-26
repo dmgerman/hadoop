@@ -635,7 +635,7 @@ name|url
 init|=
 name|HttpFSUtils
 operator|.
-name|createHttpURL
+name|createURL
 argument_list|(
 operator|new
 name|Path
@@ -852,7 +852,7 @@ name|url
 init|=
 name|HttpFSUtils
 operator|.
-name|createHttpURL
+name|createURL
 argument_list|(
 operator|new
 name|Path
@@ -1039,7 +1039,7 @@ name|url
 init|=
 name|HttpFSUtils
 operator|.
-name|createHttpURL
+name|createURL
 argument_list|(
 operator|new
 name|Path

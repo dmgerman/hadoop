@@ -225,6 +225,7 @@ extends|extends
 name|BlockPlacementPolicyDefault
 block|{
 DECL|method|BlockPlacementPolicyWithNodeGroup (Configuration conf, FSClusterStats stats, NetworkTopology clusterMap)
+specifier|protected
 name|BlockPlacementPolicyWithNodeGroup
 parameter_list|(
 name|Configuration
@@ -248,6 +249,7 @@ argument_list|)
 expr_stmt|;
 block|}
 DECL|method|BlockPlacementPolicyWithNodeGroup ()
+specifier|protected
 name|BlockPlacementPolicyWithNodeGroup
 parameter_list|()
 block|{   }

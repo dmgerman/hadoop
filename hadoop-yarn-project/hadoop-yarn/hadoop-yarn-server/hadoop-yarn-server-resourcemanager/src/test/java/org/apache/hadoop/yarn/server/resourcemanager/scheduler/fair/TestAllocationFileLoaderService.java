@@ -457,7 +457,7 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"<default />"
+literal|"<rule name='default' />"
 argument_list|)
 expr_stmt|;
 name|out
@@ -717,14 +717,14 @@ name|out
 operator|.
 name|println
 argument_list|(
-literal|"<specified />"
+literal|"<rule name='specified' />"
 argument_list|)
 expr_stmt|;
 name|out
 operator|.
 name|println
 argument_list|(
-literal|"<default />"
+literal|"<rule name='default' />"
 argument_list|)
 expr_stmt|;
 name|out

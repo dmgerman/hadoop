@@ -894,6 +894,16 @@ operator|.
 name|class
 return|;
 block|}
+DECL|method|getScheme ()
+specifier|protected
+name|String
+name|getScheme
+parameter_list|()
+block|{
+return|return
+literal|"webhdfs"
+return|;
+block|}
 DECL|method|getHttpFSFileSystem ()
 specifier|protected
 name|FileSystem
@@ -928,7 +938,10 @@ init|=
 operator|new
 name|URI
 argument_list|(
-literal|"webhdfs://"
+name|getScheme
+argument_list|()
+operator|+
+literal|"://"
 operator|+
 name|TestJettyHelper
 operator|.
@@ -980,7 +993,10 @@ init|=
 operator|new
 name|URI
 argument_list|(
-literal|"webhdfs://"
+name|getScheme
+argument_list|()
+operator|+
+literal|"://"
 operator|+
 name|TestJettyHelper
 operator|.

@@ -86,6 +86,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|RandomAccessFile
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -1021,7 +1031,7 @@ name|ReplicaWaitingToBeRecovered
 argument_list|(
 name|blockId
 argument_list|,
-name|validateIntegrity
+name|validateIntegrityAndSetLength
 argument_list|(
 name|blockFile
 argument_list|,
@@ -1082,10 +1092,10 @@ block|}
 block|}
 block|}
 comment|/**    * Find out the number of bytes in the block that match its crc.    *     * This algorithm assumes that data corruption caused by unexpected     * datanode shutdown occurs only in the last crc chunk. So it checks    * only the last chunk.    *     * @param blockFile the block file    * @param genStamp generation stamp of the block    * @return the number of valid bytes    */
-DECL|method|validateIntegrity (File blockFile, long genStamp)
+DECL|method|validateIntegrityAndSetLength (File blockFile, long genStamp)
 specifier|private
 name|long
-name|validateIntegrity
+name|validateIntegrityAndSetLength
 parameter_list|(
 name|File
 name|blockFile
@@ -1404,6 +1414,9 @@ argument_list|,
 name|lastChunkSize
 argument_list|)
 expr_stmt|;
+name|long
+name|validFileLength
+decl_stmt|;
 if|if
 condition|(
 name|checksum
@@ -1417,19 +1430,66 @@ argument_list|)
 condition|)
 block|{
 comment|// last chunk matches crc
-return|return
+name|validFileLength
+operator|=
 name|lastChunkStartPos
 operator|+
 name|lastChunkSize
-return|;
+expr_stmt|;
 block|}
 else|else
 block|{
 comment|// last chunck is corrupt
-return|return
+name|validFileLength
+operator|=
 name|lastChunkStartPos
-return|;
+expr_stmt|;
 block|}
+comment|// truncate if extra bytes are present without CRC
+if|if
+condition|(
+name|blockFile
+operator|.
+name|length
+argument_list|()
+operator|>
+name|validFileLength
+condition|)
+block|{
+name|RandomAccessFile
+name|blockRAF
+init|=
+operator|new
+name|RandomAccessFile
+argument_list|(
+name|blockFile
+argument_list|,
+literal|"rw"
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+comment|// truncate blockFile
+name|blockRAF
+operator|.
+name|setLength
+argument_list|(
+name|validFileLength
+argument_list|)
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|blockRAF
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+block|}
+block|}
+return|return
+name|validFileLength
+return|;
 block|}
 catch|catch
 parameter_list|(

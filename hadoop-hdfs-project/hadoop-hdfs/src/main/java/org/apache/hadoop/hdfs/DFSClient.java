@@ -4932,7 +4932,7 @@ operator|/
 literal|1000
 operator|)
 operator|+
-literal|" seconds (>= soft-limit ="
+literal|" seconds (>= hard-limit ="
 operator|+
 operator|(
 name|HdfsConstants

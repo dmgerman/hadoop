@@ -3585,7 +3585,11 @@ name|value
 operator|!=
 literal|null
 argument_list|,
-literal|"Property value must not be null"
+literal|"The value of property "
+operator|+
+name|name
+operator|+
+literal|" must not be null"
 argument_list|)
 expr_stmt|;
 name|DeprecationContext

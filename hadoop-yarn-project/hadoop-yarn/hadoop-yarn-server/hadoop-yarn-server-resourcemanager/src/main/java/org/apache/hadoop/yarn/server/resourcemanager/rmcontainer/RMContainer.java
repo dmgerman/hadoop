@@ -90,6 +90,24 @@ name|api
 operator|.
 name|records
 operator|.
+name|ContainerState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|records
+operator|.
 name|NodeId
 import|;
 end_import
@@ -194,6 +212,51 @@ function_decl|;
 DECL|method|getReservedPriority ()
 name|Priority
 name|getReservedPriority
+parameter_list|()
+function_decl|;
+DECL|method|getAllocatedResource ()
+name|Resource
+name|getAllocatedResource
+parameter_list|()
+function_decl|;
+DECL|method|getAllocatedNode ()
+name|NodeId
+name|getAllocatedNode
+parameter_list|()
+function_decl|;
+DECL|method|getAllocatedPriority ()
+name|Priority
+name|getAllocatedPriority
+parameter_list|()
+function_decl|;
+DECL|method|getStartTime ()
+name|long
+name|getStartTime
+parameter_list|()
+function_decl|;
+DECL|method|getFinishTime ()
+name|long
+name|getFinishTime
+parameter_list|()
+function_decl|;
+DECL|method|getDiagnosticsInfo ()
+name|String
+name|getDiagnosticsInfo
+parameter_list|()
+function_decl|;
+DECL|method|getLogURL ()
+name|String
+name|getLogURL
+parameter_list|()
+function_decl|;
+DECL|method|getContainerExitStatus ()
+name|int
+name|getContainerExitStatus
+parameter_list|()
+function_decl|;
+DECL|method|getContainerState ()
+name|ContainerState
+name|getContainerState
 parameter_list|()
 function_decl|;
 block|}

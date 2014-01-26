@@ -20,6 +20,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|Flushable
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|LinkedList
@@ -91,6 +101,8 @@ class|class
 name|TaskLogAppender
 extends|extends
 name|FileAppender
+implements|implements
+name|Flushable
 block|{
 DECL|field|taskId
 specifier|private
@@ -359,6 +371,8 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|Override
 DECL|method|flush ()
 specifier|public
 name|void

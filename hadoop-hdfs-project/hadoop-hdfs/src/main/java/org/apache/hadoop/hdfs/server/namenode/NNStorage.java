@@ -1369,7 +1369,6 @@ argument_list|)
 argument_list|,
 name|dirType
 argument_list|,
-operator|!
 name|sharedEditsDirs
 operator|.
 name|contains
@@ -1432,7 +1431,6 @@ name|NameNodeDirType
 operator|.
 name|EDITS
 argument_list|,
-operator|!
 name|sharedEditsDirs
 operator|.
 name|contains
@@ -3919,7 +3917,9 @@ argument_list|>
 name|it
 init|=
 name|dirIterator
-argument_list|()
+argument_list|(
+literal|false
+argument_list|)
 init|;
 name|it
 operator|.

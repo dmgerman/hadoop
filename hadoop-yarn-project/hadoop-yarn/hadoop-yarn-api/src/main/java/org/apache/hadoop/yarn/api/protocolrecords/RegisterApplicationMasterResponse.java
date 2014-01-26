@@ -219,7 +219,7 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls, ByteBuffer key, List<Container> containersFromPreviousAttempt)
+DECL|method|newInstance ( Resource minCapability, Resource maxCapability, Map<ApplicationAccessType, String> acls, ByteBuffer key, List<Container> containersFromPreviousAttempt, String queue)
 specifier|public
 specifier|static
 name|RegisterApplicationMasterResponse
@@ -247,6 +247,9 @@ argument_list|<
 name|Container
 argument_list|>
 name|containersFromPreviousAttempt
+parameter_list|,
+name|String
+name|queue
 parameter_list|)
 block|{
 name|RegisterApplicationMasterResponse
@@ -287,6 +290,13 @@ operator|.
 name|setContainersFromPreviousAttempt
 argument_list|(
 name|containersFromPreviousAttempt
+argument_list|)
+expr_stmt|;
+name|response
+operator|.
+name|setQueue
+argument_list|(
+name|queue
 argument_list|)
 expr_stmt|;
 return|return
@@ -381,6 +391,33 @@ name|setClientToAMTokenMasterKey
 parameter_list|(
 name|ByteBuffer
 name|key
+parameter_list|)
+function_decl|;
+comment|/**    *<p>Get the queue that the application was placed in.<p>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getQueue ()
+specifier|public
+specifier|abstract
+name|String
+name|getQueue
+parameter_list|()
+function_decl|;
+comment|/**    *<p>Set the queue that the application was placed in.<p>    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setQueue (String queue)
+specifier|public
+specifier|abstract
+name|void
+name|setQueue
+parameter_list|(
+name|String
+name|queue
 parameter_list|)
 function_decl|;
 comment|/**    *<p>    * Get the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt.    *</p>    *     * @return the list of running containers as viewed by    *<code>ResourceManager</code> from previous application attempt    */

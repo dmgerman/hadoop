@@ -96,27 +96,38 @@ name|DelegationTokenIdentifier
 extends|extends
 name|AbstractDelegationTokenIdentifier
 block|{
-DECL|field|KIND_NAME
-specifier|public
-specifier|static
-specifier|final
+DECL|field|kind
+specifier|private
 name|Text
-name|KIND_NAME
+name|kind
 init|=
 name|WebHdfsFileSystem
 operator|.
 name|TOKEN_KIND
 decl_stmt|;
-DECL|method|DelegationTokenIdentifier ()
-specifier|public
-name|DelegationTokenIdentifier
-parameter_list|()
-block|{   }
-comment|/**    * Create a new delegation token identifier    *    * @param owner the effective username of the token owner    * @param renewer the username of the renewer    * @param realUser the real username of the token owner    */
-DECL|method|DelegationTokenIdentifier (Text owner, Text renewer, Text realUser)
+DECL|method|DelegationTokenIdentifier (Text kind)
 specifier|public
 name|DelegationTokenIdentifier
 parameter_list|(
+name|Text
+name|kind
+parameter_list|)
+block|{
+name|this
+operator|.
+name|kind
+operator|=
+name|kind
+expr_stmt|;
+block|}
+comment|/**    * Create a new delegation token identifier    *    * @param kind token kind    * @param owner the effective username of the token owner    * @param renewer the username of the renewer    * @param realUser the real username of the token owner    */
+DECL|method|DelegationTokenIdentifier (Text kind, Text owner, Text renewer, Text realUser)
+specifier|public
+name|DelegationTokenIdentifier
+parameter_list|(
+name|Text
+name|kind
+parameter_list|,
 name|Text
 name|owner
 parameter_list|,
@@ -136,6 +147,12 @@ argument_list|,
 name|realUser
 argument_list|)
 expr_stmt|;
+name|this
+operator|.
+name|kind
+operator|=
+name|kind
+expr_stmt|;
 block|}
 comment|/**    * Returns the kind,<code>TOKEN_KIND</code>.    * @return returns<code>TOKEN_KIND</code>.    */
 annotation|@
@@ -147,7 +164,7 @@ name|getKind
 parameter_list|()
 block|{
 return|return
-name|KIND_NAME
+name|kind
 return|;
 block|}
 block|}

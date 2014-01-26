@@ -26,6 +26,38 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+operator|.
+name|Public
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
+name|InterfaceStability
+operator|.
+name|Unstable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -53,10 +85,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This exception is thrown on  * {@link ApplicationClientProtocol#getApplicationReport(GetApplicationReportRequest)} API  * when the Application doesn't exist in RM  */
+comment|/**  * This exception is thrown on  * {@link ApplicationClientProtocol#getApplicationReport  * (GetApplicationReportRequest)} API  * when the Application doesn't exist in RM and AHS  */
 end_comment
 
 begin_class
+annotation|@
+name|Public
+annotation|@
+name|Unstable
 DECL|class|ApplicationNotFoundException
 specifier|public
 class|class

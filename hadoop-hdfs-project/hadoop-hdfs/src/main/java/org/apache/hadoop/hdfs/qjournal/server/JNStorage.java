@@ -579,6 +579,18 @@ literal|"paxos"
 argument_list|)
 return|;
 block|}
+DECL|method|getRoot ()
+name|File
+name|getRoot
+parameter_list|()
+block|{
+return|return
+name|sd
+operator|.
+name|getRoot
+argument_list|()
+return|;
+block|}
 comment|/**    * Remove any log files and associated paxos files which are older than    * the given txid.    */
 DECL|method|purgeDataOlderThan (long minTxIdToKeep)
 name|void
@@ -790,6 +802,20 @@ argument_list|(
 name|sd
 argument_list|)
 expr_stmt|;
+name|createPaxosDir
+argument_list|()
+expr_stmt|;
+name|analyzeStorage
+argument_list|()
+expr_stmt|;
+block|}
+DECL|method|createPaxosDir ()
+name|void
+name|createPaxosDir
+parameter_list|()
+throws|throws
+name|IOException
+block|{
 if|if
 condition|(
 operator|!
@@ -811,9 +837,6 @@ argument_list|()
 argument_list|)
 throw|;
 block|}
-name|analyzeStorage
-argument_list|()
-expr_stmt|;
 block|}
 DECL|method|analyzeStorage ()
 name|void
