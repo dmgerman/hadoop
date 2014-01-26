@@ -870,22 +870,14 @@ operator|.
 name|getNodeID
 argument_list|()
 argument_list|,
-name|this
+name|appSchedulingInfo
 operator|.
-name|rmContext
-operator|.
-name|getDispatcher
-argument_list|()
-operator|.
-name|getEventHandler
+name|getUser
 argument_list|()
 argument_list|,
 name|this
 operator|.
 name|rmContext
-operator|.
-name|getContainerAllocationExpirer
-argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Add it to allContainers list.

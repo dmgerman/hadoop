@@ -40,6 +40,18 @@ name|mockito
 operator|.
 name|Matchers
 operator|.
+name|any
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|mockito
+operator|.
+name|Matchers
+operator|.
 name|anyBoolean
 import|;
 end_import
@@ -53,18 +65,6 @@ operator|.
 name|Matchers
 operator|.
 name|anyString
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|mockito
-operator|.
-name|Matchers
-operator|.
-name|any
 import|;
 end_import
 
@@ -100,7 +100,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|when
+name|spy
 import|;
 end_import
 
@@ -112,7 +112,7 @@ name|mockito
 operator|.
 name|Mockito
 operator|.
-name|spy
+name|when
 import|;
 end_import
 
@@ -172,7 +172,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|HashSet
+name|EnumSet
 import|;
 end_import
 
@@ -182,7 +182,7 @@ name|java
 operator|.
 name|util
 operator|.
-name|EnumSet
+name|HashSet
 import|;
 end_import
 
@@ -392,6 +392,24 @@ name|api
 operator|.
 name|protocolrecords
 operator|.
+name|GetApplicationReportRequest
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|api
+operator|.
+name|protocolrecords
+operator|.
 name|GetApplicationsRequest
 import|;
 end_import
@@ -411,24 +429,6 @@ operator|.
 name|protocolrecords
 operator|.
 name|GetApplicationsResponse
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|api
-operator|.
-name|protocolrecords
-operator|.
-name|GetApplicationReportRequest
 import|;
 end_import
 
@@ -899,6 +899,26 @@ operator|.
 name|client
 operator|.
 name|RMDelegationTokenIdentifier
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|ahs
+operator|.
+name|RMApplicationHistoryWriter
 import|;
 end_import
 
@@ -4299,6 +4319,29 @@ name|IOException
 argument_list|(
 literal|"queue does not exist"
 argument_list|)
+argument_list|)
+expr_stmt|;
+name|RMApplicationHistoryWriter
+name|writer
+init|=
+name|mock
+argument_list|(
+name|RMApplicationHistoryWriter
+operator|.
+name|class
+argument_list|)
+decl_stmt|;
+name|when
+argument_list|(
+name|rmContext
+operator|.
+name|getRMApplicationHistoryWriter
+argument_list|()
+argument_list|)
+operator|.
+name|thenReturn
+argument_list|(
+name|writer
 argument_list|)
 expr_stmt|;
 name|ConcurrentHashMap

@@ -114,6 +114,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|ahs
+operator|.
+name|RMApplicationHistoryWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|RMStateStore
@@ -298,7 +318,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|RMContainerTokenSecretManager
+name|NMTokenSecretManagerInRM
 import|;
 end_import
 
@@ -318,7 +338,7 @@ name|resourcemanager
 operator|.
 name|security
 operator|.
-name|NMTokenSecretManagerInRM
+name|RMContainerTokenSecretManager
 import|;
 end_import
 
@@ -491,6 +511,19 @@ name|setRMDelegationTokenSecretManager
 parameter_list|(
 name|RMDelegationTokenSecretManager
 name|delegationTokenSecretManager
+parameter_list|)
+function_decl|;
+DECL|method|getRMApplicationHistoryWriter ()
+name|RMApplicationHistoryWriter
+name|getRMApplicationHistoryWriter
+parameter_list|()
+function_decl|;
+DECL|method|setRMApplicationHistoryWriter ( RMApplicationHistoryWriter rmApplicationHistoryWriter)
+name|void
+name|setRMApplicationHistoryWriter
+parameter_list|(
+name|RMApplicationHistoryWriter
+name|rmApplicationHistoryWriter
 parameter_list|)
 function_decl|;
 block|}

@@ -671,6 +671,33 @@ literal|100
 argument_list|)
 return|;
 block|}
+DECL|method|getPartUrl (String url, String part)
+specifier|public
+specifier|static
+name|String
+name|getPartUrl
+parameter_list|(
+name|String
+name|url
+parameter_list|,
+name|String
+name|part
+parameter_list|)
+block|{
+return|return
+name|url
+operator|.
+name|substring
+argument_list|(
+name|url
+operator|.
+name|indexOf
+argument_list|(
+name|part
+argument_list|)
+argument_list|)
+return|;
+block|}
 block|}
 end_class
 

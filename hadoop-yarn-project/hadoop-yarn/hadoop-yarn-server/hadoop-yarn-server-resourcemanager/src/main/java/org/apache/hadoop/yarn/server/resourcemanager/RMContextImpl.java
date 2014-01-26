@@ -156,6 +156,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|ahs
+operator|.
+name|RMApplicationHistoryWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|recovery
 operator|.
 name|NullRMStateStore
@@ -589,6 +609,11 @@ specifier|private
 name|ApplicationMasterService
 name|applicationMasterService
 decl_stmt|;
+DECL|field|rmApplicationHistoryWriter
+specifier|private
+name|RMApplicationHistoryWriter
+name|rmApplicationHistoryWriter
+decl_stmt|;
 comment|/**    * Default constructor. To be used in conjunction with setter methods for    * individual fields.    */
 DECL|method|RMContextImpl ()
 specifier|public
@@ -598,7 +623,7 @@ block|{    }
 annotation|@
 name|VisibleForTesting
 comment|// helper constructor for tests
-DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager)
+DECL|method|RMContextImpl (Dispatcher rmDispatcher, ContainerAllocationExpirer containerAllocationExpirer, AMLivelinessMonitor amLivelinessMonitor, AMLivelinessMonitor amFinishingMonitor, DelegationTokenRenewer delegationTokenRenewer, AMRMTokenSecretManager appTokenSecretManager, RMContainerTokenSecretManager containerTokenSecretManager, NMTokenSecretManagerInRM nmTokenSecretManager, ClientToAMTokenSecretManagerInRM clientToAMTokenSecretManager, RMApplicationHistoryWriter rmApplicationHistoryWriter)
 specifier|public
 name|RMContextImpl
 parameter_list|(
@@ -628,6 +653,9 @@ name|nmTokenSecretManager
 parameter_list|,
 name|ClientToAMTokenSecretManagerInRM
 name|clientToAMTokenSecretManager
+parameter_list|,
+name|RMApplicationHistoryWriter
+name|rmApplicationHistoryWriter
 parameter_list|)
 block|{
 name|this
@@ -694,6 +722,13 @@ operator|.
 name|setClientToAMTokenSecretManager
 argument_list|(
 name|clientToAMTokenSecretManager
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|setRMApplicationHistoryWriter
+argument_list|(
+name|rmApplicationHistoryWriter
 argument_list|)
 expr_stmt|;
 name|RMStateStore
@@ -1352,6 +1387,36 @@ return|return
 name|haServiceState
 return|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getRMApplicationHistoryWriter ()
+specifier|public
+name|RMApplicationHistoryWriter
+name|getRMApplicationHistoryWriter
+parameter_list|()
+block|{
+return|return
+name|rmApplicationHistoryWriter
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|setRMApplicationHistoryWriter ( RMApplicationHistoryWriter rmApplicationHistoryWriter)
+specifier|public
+name|void
+name|setRMApplicationHistoryWriter
+parameter_list|(
+name|RMApplicationHistoryWriter
+name|rmApplicationHistoryWriter
+parameter_list|)
+block|{
+name|this
+operator|.
+name|rmApplicationHistoryWriter
+operator|=
+name|rmApplicationHistoryWriter
+expr_stmt|;
 block|}
 block|}
 end_class
