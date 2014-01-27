@@ -83,8 +83,44 @@ operator|.
 name|common
 operator|.
 name|Storage
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|Storage
 operator|.
 name|FormatConfirmable
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|StorageInfo
 import|;
 end_import
 
@@ -179,6 +215,66 @@ comment|/**    * Recover segments which have not been finalized.    */
 DECL|method|recoverUnfinalizedSegments ()
 name|void
 name|recoverUnfinalizedSegments
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Perform any steps that must succeed across all JournalManagers involved in    * an upgrade before proceeding onto the actual upgrade stage. If a call to    * any JM's doPreUpgrade method fails, then doUpgrade will not be called for    * any JM.    */
+DECL|method|doPreUpgrade ()
+name|void
+name|doPreUpgrade
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Perform the actual upgrade of the JM. After this is completed, the NN can    * begin to use the new upgraded metadata. This metadata may later be either    * finalized or rolled back to the previous state.    *     * @param storage info about the new upgraded versions.    */
+DECL|method|doUpgrade (Storage storage)
+name|void
+name|doUpgrade
+parameter_list|(
+name|Storage
+name|storage
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Finalize the upgrade. JMs should purge any state that they had been keeping    * around during the upgrade process. After this is completed, rollback is no    * longer allowed.    */
+DECL|method|doFinalize ()
+name|void
+name|doFinalize
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Return true if this JM can roll back to the previous storage state, false    * otherwise. The NN will refuse to run the rollback operation unless at least    * one JM or fsimage storage directory can roll back.    *     * @param storage the storage info for the current state    * @param prevStorage the storage info for the previous (unupgraded) state    * @param targetLayoutVersion the layout version we intend to roll back to    * @return true if this JM can roll back, false otherwise.    */
+DECL|method|canRollBack (StorageInfo storage, StorageInfo prevStorage, int targetLayoutVersion)
+name|boolean
+name|canRollBack
+parameter_list|(
+name|StorageInfo
+name|storage
+parameter_list|,
+name|StorageInfo
+name|prevStorage
+parameter_list|,
+name|int
+name|targetLayoutVersion
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Perform the rollback to the previous FS state. JMs which do not need to    * roll back their state should just return without error.    */
+DECL|method|doRollback ()
+name|void
+name|doRollback
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * @return the CTime of the journal manager.    */
+DECL|method|getJournalCTime ()
+name|long
+name|getJournalCTime
 parameter_list|()
 throws|throws
 name|IOException

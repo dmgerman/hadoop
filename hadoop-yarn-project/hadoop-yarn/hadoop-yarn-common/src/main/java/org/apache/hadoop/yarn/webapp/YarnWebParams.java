@@ -61,6 +61,12 @@ name|APPLICATION_ID
 init|=
 literal|"app.id"
 decl_stmt|;
+DECL|field|APPLICATION_ATTEMPT_ID
+name|String
+name|APPLICATION_ATTEMPT_ID
+init|=
+literal|"appattempt.id"
+decl_stmt|;
 DECL|field|CONTAINER_ID
 name|String
 name|CONTAINER_ID

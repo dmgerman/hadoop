@@ -518,6 +518,26 @@ name|server
 operator|.
 name|resourcemanager
 operator|.
+name|ahs
+operator|.
+name|RMApplicationHistoryWriter
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
 name|amlauncher
 operator|.
 name|AMLauncherEventType
@@ -2012,6 +2032,18 @@ name|conf
 argument_list|)
 return|;
 block|}
+DECL|method|createRMApplicationHistoryWriter ()
+specifier|protected
+name|RMApplicationHistoryWriter
+name|createRMApplicationHistoryWriter
+parameter_list|()
+block|{
+return|return
+operator|new
+name|RMApplicationHistoryWriter
+argument_list|()
+return|;
+block|}
 comment|// sanity check for configurations
 DECL|method|validateConfigs (Configuration conf)
 specifier|protected
@@ -2364,6 +2396,24 @@ name|delegationTokenRenewer
 argument_list|)
 expr_stmt|;
 block|}
+name|RMApplicationHistoryWriter
+name|rmApplicationHistoryWriter
+init|=
+name|createRMApplicationHistoryWriter
+argument_list|()
+decl_stmt|;
+name|addService
+argument_list|(
+name|rmApplicationHistoryWriter
+argument_list|)
+expr_stmt|;
+name|rmContext
+operator|.
+name|setRMApplicationHistoryWriter
+argument_list|(
+name|rmApplicationHistoryWriter
+argument_list|)
+expr_stmt|;
 comment|// Register event handler for NodesListManager
 name|nodesListManager
 operator|=

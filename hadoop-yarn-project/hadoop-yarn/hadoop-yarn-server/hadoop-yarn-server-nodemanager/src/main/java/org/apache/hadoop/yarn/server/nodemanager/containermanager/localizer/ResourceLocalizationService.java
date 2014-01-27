@@ -4270,8 +4270,12 @@ name|this
 operator|.
 name|pending
 operator|=
+name|Collections
+operator|.
+name|synchronizedMap
+argument_list|(
 operator|new
-name|ConcurrentHashMap
+name|HashMap
 argument_list|<
 name|Future
 argument_list|<
@@ -4281,6 +4285,7 @@ argument_list|,
 name|LocalizerResourceRequestEvent
 argument_list|>
 argument_list|()
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -4467,6 +4472,13 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
+comment|// explicitly synchronize pending here to avoid future task
+comment|// completing and being dequeued before pending updated
+synchronized|synchronized
+init|(
+name|pending
+init|)
+block|{
 name|pending
 operator|.
 name|put
@@ -4493,6 +4505,7 @@ argument_list|,
 name|request
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 catch|catch
 parameter_list|(

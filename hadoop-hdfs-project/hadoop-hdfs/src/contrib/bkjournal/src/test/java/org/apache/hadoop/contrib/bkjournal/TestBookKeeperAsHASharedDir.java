@@ -1660,7 +1660,7 @@ name|GenericTestUtils
 operator|.
 name|assertExceptionContains
 argument_list|(
-literal|"Cannot start an HA namenode with name dirs that need recovery"
+literal|"storage directory does not exist or is not accessible"
 argument_list|,
 name|ioe
 argument_list|)

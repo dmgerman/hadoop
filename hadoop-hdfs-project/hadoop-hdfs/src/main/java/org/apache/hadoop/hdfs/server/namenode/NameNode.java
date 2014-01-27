@@ -3157,7 +3157,12 @@ expr_stmt|;
 name|state
 operator|=
 name|createHAState
-argument_list|()
+argument_list|(
+name|getStartupOption
+argument_list|(
+name|conf
+argument_list|)
+argument_list|)
 expr_stmt|;
 name|this
 operator|.
@@ -3255,20 +3260,37 @@ name|e
 throw|;
 block|}
 block|}
-DECL|method|createHAState ()
+DECL|method|createHAState (StartupOption startOpt)
 specifier|protected
 name|HAState
 name|createHAState
-parameter_list|()
+parameter_list|(
+name|StartupOption
+name|startOpt
+parameter_list|)
 block|{
-return|return
+if|if
+condition|(
 operator|!
 name|haEnabled
-condition|?
+operator|||
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADE
+condition|)
+block|{
+return|return
 name|ACTIVE_STATE
-else|:
+return|;
+block|}
+else|else
+block|{
+return|return
 name|STANDBY_STATE
 return|;
+block|}
 block|}
 DECL|method|createHAContext ()
 specifier|protected
@@ -4711,11 +4733,13 @@ expr_stmt|;
 block|}
 block|}
 block|}
-DECL|method|finalize (Configuration conf, boolean isConfirmationNeeded )
-specifier|private
+annotation|@
+name|VisibleForTesting
+DECL|method|doRollback (Configuration conf, boolean isConfirmationNeeded)
+specifier|public
 specifier|static
 name|boolean
-name|finalize
+name|doRollback
 parameter_list|(
 name|Configuration
 name|conf
@@ -4778,11 +4802,15 @@ name|err
 operator|.
 name|print
 argument_list|(
-literal|"\"finalize\" will remove the previous state of the files system.\n"
+literal|"\"rollBack\" will remove the current state of the file system,\n"
 operator|+
-literal|"Recent upgrade will become permanent.\n"
+literal|"returning you to the state prior to initiating your recent.\n"
 operator|+
-literal|"Rollback option will not be available anymore.\n"
+literal|"upgrade. This action is permanent and cannot be undone. If you\n"
+operator|+
+literal|"are performing a rollback in an HA environment, you should be\n"
+operator|+
+literal|"certain that no NameNode process is running on any host."
 argument_list|)
 expr_stmt|;
 if|if
@@ -4795,7 +4823,7 @@ condition|(
 operator|!
 name|confirmPrompt
 argument_list|(
-literal|"Finalize filesystem state?"
+literal|"Roll back file system state?"
 argument_list|)
 condition|)
 block|{
@@ -4805,7 +4833,7 @@ name|err
 operator|.
 name|println
 argument_list|(
-literal|"Finalize aborted."
+literal|"Rollback aborted."
 argument_list|)
 expr_stmt|;
 return|return
@@ -4819,8 +4847,10 @@ name|dir
 operator|.
 name|fsImage
 operator|.
-name|finalizeUpgrade
-argument_list|()
+name|doRollback
+argument_list|(
+name|nsys
+argument_list|)
 expr_stmt|;
 return|return
 literal|false
@@ -5928,53 +5958,6 @@ argument_list|,
 name|startOpt
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|HAUtil
-operator|.
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|,
-name|DFSUtil
-operator|.
-name|getNamenodeNameServiceId
-argument_list|(
-name|conf
-argument_list|)
-argument_list|)
-operator|&&
-operator|(
-name|startOpt
-operator|==
-name|StartupOption
-operator|.
-name|UPGRADE
-operator|||
-name|startOpt
-operator|==
-name|StartupOption
-operator|.
-name|ROLLBACK
-operator|||
-name|startOpt
-operator|==
-name|StartupOption
-operator|.
-name|FINALIZE
-operator|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|HadoopIllegalArgumentException
-argument_list|(
-literal|"Invalid startup option. "
-operator|+
-literal|"Cannot perform DFS upgrade with HA enabled."
-argument_list|)
-throw|;
-block|}
 switch|switch
 condition|(
 name|startOpt
@@ -6054,10 +6037,41 @@ case|case
 name|FINALIZE
 case|:
 block|{
+name|System
+operator|.
+name|err
+operator|.
+name|println
+argument_list|(
+literal|"Use of the argument '"
+operator|+
+name|StartupOption
+operator|.
+name|FINALIZE
+operator|+
+literal|"' is no longer supported. To finalize an upgrade, start the NN "
+operator|+
+literal|" and then run `hdfs dfsadmin -finalizeUpgrade'"
+argument_list|)
+expr_stmt|;
+name|terminate
+argument_list|(
+literal|1
+argument_list|)
+expr_stmt|;
+return|return
+literal|null
+return|;
+comment|// avoid javac warning
+block|}
+case|case
+name|ROLLBACK
+case|:
+block|{
 name|boolean
 name|aborted
 init|=
-name|finalize
+name|doRollback
 argument_list|(
 name|conf
 argument_list|,
@@ -6076,7 +6090,7 @@ expr_stmt|;
 return|return
 literal|null
 return|;
-comment|// avoid javac warning
+comment|// avoid warning
 block|}
 case|case
 name|BOOTSTRAPSTANDBY

@@ -222,6 +222,24 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|api
+operator|.
+name|records
+operator|.
+name|YarnApplicationAttemptState
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|conf
 operator|.
 name|YarnConfiguration
@@ -454,6 +472,18 @@ comment|/**    * the start time of the application.    * @return the start time 
 DECL|method|getStartTime ()
 name|long
 name|getStartTime
+parameter_list|()
+function_decl|;
+comment|/**    * The current state of the {@link RMAppAttempt}.    *     * @return the current state {@link RMAppAttemptState} for this application    *         attempt.    */
+DECL|method|getState ()
+name|RMAppAttemptState
+name|getState
+parameter_list|()
+function_decl|;
+comment|/**    * Create the external user-facing state of the attempt of ApplicationMaster    * from the current state of the {@link RMAppAttempt}.    *     * @return the external user-facing state of the attempt ApplicationMaster.    */
+DECL|method|createApplicationAttemptState ()
+name|YarnApplicationAttemptState
+name|createApplicationAttemptState
 parameter_list|()
 function_decl|;
 block|}

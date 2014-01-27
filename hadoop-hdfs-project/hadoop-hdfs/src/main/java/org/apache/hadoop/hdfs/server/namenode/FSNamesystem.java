@@ -4798,6 +4798,15 @@ return|return
 name|leaseManager
 return|;
 block|}
+DECL|method|isHaEnabled ()
+name|boolean
+name|isHaEnabled
+parameter_list|()
+block|{
+return|return
+name|haEnabled
+return|;
+block|}
 comment|/**    * Check the supplied configuration for correctness.    * @param conf Supplies the configuration to validate.    * @throws IOException if the configuration could not be queried.    * @throws IllegalArgumentException if the configuration is invalid.    */
 DECL|method|checkConfiguration (Configuration conf)
 specifier|private
@@ -6469,6 +6478,16 @@ if|if
 condition|(
 operator|!
 name|haEnabled
+operator|||
+operator|(
+name|haEnabled
+operator|&&
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADE
+operator|)
 condition|)
 block|{
 name|fsImage
@@ -7030,16 +7049,13 @@ literal|false
 expr_stmt|;
 block|}
 block|}
-comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the {@link #startActiveServices()}    */
-DECL|method|inTransitionToActive ()
-specifier|public
+DECL|method|inActiveState ()
+specifier|private
 name|boolean
-name|inTransitionToActive
+name|inActiveState
 parameter_list|()
 block|{
 return|return
-name|haEnabled
-operator|&&
 name|haContext
 operator|!=
 literal|null
@@ -7055,6 +7071,20 @@ operator|==
 name|HAServiceState
 operator|.
 name|ACTIVE
+return|;
+block|}
+comment|/**    * @return Whether the namenode is transitioning to active state and is in the    *         middle of the {@link #startActiveServices()}    */
+DECL|method|inTransitionToActive ()
+specifier|public
+name|boolean
+name|inTransitionToActive
+parameter_list|()
+block|{
+return|return
+name|haEnabled
+operator|&&
+name|inActiveState
+argument_list|()
 operator|&&
 name|startingActiveService
 return|;
@@ -22615,7 +22645,7 @@ name|checkOperation
 argument_list|(
 name|OperationCategory
 operator|.
-name|WRITE
+name|UNCHECKED
 argument_list|)
 expr_stmt|;
 name|writeLock
@@ -22627,14 +22657,22 @@ name|checkOperation
 argument_list|(
 name|OperationCategory
 operator|.
-name|WRITE
+name|UNCHECKED
 argument_list|)
 expr_stmt|;
 name|getFSImage
 argument_list|()
 operator|.
 name|finalizeUpgrade
+argument_list|(
+name|this
+operator|.
+name|isHaEnabled
 argument_list|()
+operator|&&
+name|inActiveState
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally

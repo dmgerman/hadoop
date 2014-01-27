@@ -18,6 +18,20 @@ end_package
 
 begin_import
 import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
 name|java
 operator|.
 name|io
@@ -310,19 +324,33 @@ specifier|private
 name|Path
 name|workingDir
 decl_stmt|;
+comment|// Temporary workaround for HADOOP-9652.
 DECL|field|useDeprecatedFileStatus
 specifier|private
 specifier|static
-specifier|final
 name|boolean
 name|useDeprecatedFileStatus
 init|=
+literal|true
+decl_stmt|;
+annotation|@
+name|VisibleForTesting
+DECL|method|useStatIfAvailable ()
+specifier|public
+specifier|static
+name|void
+name|useStatIfAvailable
+parameter_list|()
+block|{
+name|useDeprecatedFileStatus
+operator|=
 operator|!
 name|Stat
 operator|.
 name|isAvailable
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 DECL|method|RawLocalFileSystem ()
 specifier|public
 name|RawLocalFileSystem
