@@ -267,11 +267,45 @@ argument_list|(
 name|loggerName
 argument_list|)
 decl_stmt|;
-if|if
-condition|(
+name|boolean
+name|isLog4JLogger
+decl_stmt|;
+empty_stmt|;
+try|try
+block|{
+name|isLog4JLogger
+operator|=
 name|logger
 operator|instanceof
 name|Log4JLogger
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|NoClassDefFoundError
+name|err
+parameter_list|)
+block|{
+comment|// In some dependent projects, log4j may not even be on the classpath at
+comment|// runtime, in which case the above instanceof check will throw
+comment|// NoClassDefFoundError.
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"Could not load Log4JLogger class"
+argument_list|,
+name|err
+argument_list|)
+expr_stmt|;
+name|isLog4JLogger
+operator|=
+literal|false
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|isLog4JLogger
 condition|)
 block|{
 name|Log4JLogger
