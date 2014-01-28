@@ -33099,10 +33099,7 @@ operator|+
 name|cs
 argument_list|)
 expr_stmt|;
-name|rollingUpgradeInfo
-operator|=
-operator|new
-name|RollingUpgradeInfo
+name|setRollingUpgradeInfo
 argument_list|(
 name|now
 argument_list|()
@@ -33160,6 +33157,24 @@ block|}
 return|return
 name|rollingUpgradeInfo
 return|;
+block|}
+DECL|method|setRollingUpgradeInfo (long startTime)
+name|void
+name|setRollingUpgradeInfo
+parameter_list|(
+name|long
+name|startTime
+parameter_list|)
+block|{
+name|rollingUpgradeInfo
+operator|=
+operator|new
+name|RollingUpgradeInfo
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
+empty_stmt|;
 block|}
 DECL|method|finalizeRollingUpgrade ()
 name|RollingUpgradeInfo

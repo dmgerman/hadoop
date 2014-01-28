@@ -18823,6 +18823,15 @@ name|OP_UPGRADE_MARKER
 argument_list|)
 return|;
 block|}
+DECL|method|getStartTime ()
+name|long
+name|getStartTime
+parameter_list|()
+block|{
+return|return
+name|startTime
+return|;
+block|}
 DECL|method|setStartTime (long startTime)
 name|void
 name|setStartTime
