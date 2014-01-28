@@ -136,6 +136,24 @@ name|CHECKPOINT_BYTES
 block|,
 DECL|enumConstant|CHECKPOINT_TIME
 name|CHECKPOINT_TIME
+block|,
+DECL|enumConstant|MILLIS_MAPS
+name|MILLIS_MAPS
+block|,
+DECL|enumConstant|MILLIS_REDUCES
+name|MILLIS_REDUCES
+block|,
+DECL|enumConstant|VCORES_MILLIS_MAPS
+name|VCORES_MILLIS_MAPS
+block|,
+DECL|enumConstant|VCORES_MILLIS_REDUCES
+name|VCORES_MILLIS_REDUCES
+block|,
+DECL|enumConstant|MB_MILLIS_MAPS
+name|MB_MILLIS_MAPS
+block|,
+DECL|enumConstant|MB_MILLIS_REDUCES
+name|MB_MILLIS_REDUCES
 block|}
 end_enum
 
