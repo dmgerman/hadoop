@@ -879,7 +879,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**********************************************************  * The Secondary NameNode is a helper to the primary NameNode.  * The Secondary is responsible for supporting periodic checkpoints   * of the HDFS metadata. The current design allows only one Secondary  * NameNode per HDFs cluster.  *  * The Secondary NameNode is a daemon that periodically wakes  * up (determined by the schedule specified in the configuration),  * triggers a periodic checkpoint and then goes back to sleep.  * The Secondary NameNode uses the ClientProtocol to talk to the  * primary NameNode.  *  **********************************************************/
+comment|/**********************************************************  * The Secondary NameNode is a helper to the primary NameNode.  * The Secondary is responsible for supporting periodic checkpoints   * of the HDFS metadata. The current design allows only one Secondary  * NameNode per HDFs cluster.  *  * The Secondary NameNode is a daemon that periodically wakes  * up (determined by the schedule specified in the configuration),  * triggers a periodic checkpoint and then goes back to sleep.  * The Secondary NameNode uses the NamenodeProtocol to talk to the  * primary NameNode.  *  **********************************************************/
 end_comment
 
 begin_class
