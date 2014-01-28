@@ -548,46 +548,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-DECL|method|makeAppRunnable (AppSchedulable appSched)
-specifier|public
-name|void
-name|makeAppRunnable
-parameter_list|(
-name|AppSchedulable
-name|appSched
-parameter_list|)
-block|{
-if|if
-condition|(
-operator|!
-name|nonRunnableAppScheds
-operator|.
-name|remove
-argument_list|(
-name|appSched
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalStateException
-argument_list|(
-literal|"Can't make app runnable that does not "
-operator|+
-literal|"already exist in queue as non-runnable"
-operator|+
-name|appSched
-argument_list|)
-throw|;
-block|}
-name|runnableAppScheds
-operator|.
-name|add
-argument_list|(
-name|appSched
-argument_list|)
-expr_stmt|;
-block|}
 DECL|method|getRunnableAppSchedulables ()
 specifier|public
 name|Collection
