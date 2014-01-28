@@ -508,19 +508,12 @@ name|storageTypes
 operator|=
 name|storageTypes
 expr_stmt|;
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|cachedLocs
-operator|!=
-literal|null
-argument_list|,
-literal|"cachedLocs should not be null, use a different constructor"
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
+name|cachedLocs
+operator|==
+literal|null
+operator|||
 name|cachedLocs
 operator|.
 name|length

@@ -693,6 +693,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|StorageObject
+name|object
+init|=
+literal|null
+decl_stmt|;
 try|try
 block|{
 if|if
@@ -720,12 +725,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|S3Object
 name|object
-init|=
+operator|=
 name|s3Service
 operator|.
-name|getObject
+name|getObjectDetails
 argument_list|(
 name|bucket
 operator|.
@@ -734,7 +738,7 @@ argument_list|()
 argument_list|,
 name|key
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 return|return
 operator|new
 name|FileMetadata
@@ -758,21 +762,21 @@ return|;
 block|}
 catch|catch
 parameter_list|(
-name|S3ServiceException
+name|ServiceException
 name|e
 parameter_list|)
 block|{
 comment|// Following is brittle. Is there a better way?
 if|if
 condition|(
+literal|"NoSuchKey"
+operator|.
+name|equals
+argument_list|(
 name|e
 operator|.
-name|getS3ErrorCode
+name|getErrorCode
 argument_list|()
-operator|.
-name|matches
-argument_list|(
-literal|"NoSuchKey"
 argument_list|)
 condition|)
 block|{
@@ -781,7 +785,7 @@ literal|null
 return|;
 comment|//return null if key not found
 block|}
-name|handleS3ServiceException
+name|handleServiceException
 argument_list|(
 name|e
 argument_list|)
@@ -790,6 +794,22 @@ return|return
 literal|null
 return|;
 comment|//never returned - keep compiler happy
+block|}
+finally|finally
+block|{
+if|if
+condition|(
+name|object
+operator|!=
+literal|null
+condition|)
+block|{
+name|object
+operator|.
+name|closeDataInputStream
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 comment|/**    * @param key    * The key is the object name that is being retrieved from the S3 bucket    * @return    * This method returns null if the key is not found    * @throws IOException    */
