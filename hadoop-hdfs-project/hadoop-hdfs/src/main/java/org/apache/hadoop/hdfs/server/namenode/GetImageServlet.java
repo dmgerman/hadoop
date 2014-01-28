@@ -402,7 +402,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -1701,7 +1701,7 @@ block|}
 block|}
 if|if
 condition|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|userHasAdministratorAccess
 argument_list|(

@@ -228,7 +228,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -694,7 +694,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|HttpServer
+name|HttpServer2
 name|testServer
 init|=
 name|HttpServerFunctionalTest

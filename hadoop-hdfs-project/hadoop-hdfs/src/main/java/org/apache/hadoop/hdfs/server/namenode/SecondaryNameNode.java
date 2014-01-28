@@ -688,7 +688,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -973,7 +973,7 @@ name|shouldRun
 decl_stmt|;
 DECL|field|infoServer
 specifier|private
-name|HttpServer
+name|HttpServer2
 name|infoServer
 decl_stmt|;
 DECL|field|imageListenURL
@@ -1595,7 +1595,7 @@ argument_list|(
 name|httpsAddrString
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder

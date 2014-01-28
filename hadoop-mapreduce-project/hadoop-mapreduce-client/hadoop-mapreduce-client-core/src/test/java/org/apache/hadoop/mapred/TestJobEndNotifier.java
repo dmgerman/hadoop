@@ -166,7 +166,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -179,7 +179,7 @@ extends|extends
 name|TestCase
 block|{
 DECL|field|server
-name|HttpServer
+name|HttpServer2
 name|server
 decl_stmt|;
 DECL|field|baseUrl
@@ -464,7 +464,7 @@ expr_stmt|;
 name|server
 operator|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

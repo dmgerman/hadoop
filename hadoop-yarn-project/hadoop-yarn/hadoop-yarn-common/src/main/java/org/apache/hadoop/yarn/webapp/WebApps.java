@@ -188,7 +188,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -1213,13 +1213,13 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()
@@ -1318,7 +1318,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|builder
@@ -1386,7 +1386,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-name|HttpServer
+name|HttpServer2
 operator|.
 name|defineFilter
 argument_list|(

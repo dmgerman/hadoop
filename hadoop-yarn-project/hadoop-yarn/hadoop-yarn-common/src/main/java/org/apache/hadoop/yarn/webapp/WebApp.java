@@ -122,7 +122,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -421,7 +421,7 @@ decl_stmt|;
 DECL|field|httpServer
 specifier|private
 specifier|volatile
-name|HttpServer
+name|HttpServer2
 name|httpServer
 decl_stmt|;
 DECL|field|guiceFilter
@@ -492,11 +492,11 @@ operator|.
 name|omitEmptyStrings
 argument_list|()
 decl_stmt|;
-DECL|method|setHttpServer (HttpServer server)
+DECL|method|setHttpServer (HttpServer2 server)
 name|void
 name|setHttpServer
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 name|server
 parameter_list|)
 block|{
@@ -514,7 +514,7 @@ DECL|method|httpServer ()
 annotation|@
 name|Provides
 specifier|public
-name|HttpServer
+name|HttpServer2
 name|httpServer
 parameter_list|()
 block|{

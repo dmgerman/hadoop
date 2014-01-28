@@ -366,7 +366,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 operator|.
 name|QuotingInputFilter
 operator|.
@@ -582,7 +582,7 @@ decl_stmt|;
 DECL|field|server
 specifier|private
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|server
 decl_stmt|;
 DECL|field|baseUrl
@@ -1058,7 +1058,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|HTTP_MAX_THREADS
 argument_list|,
@@ -2079,7 +2079,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|FILTER_INITIALIZER_PROPERTY
 argument_list|,
@@ -2151,11 +2151,11 @@ literal|"groupB"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|HttpServer
+name|HttpServer2
 name|myServer
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()
@@ -2186,7 +2186,7 @@ name|myServer
 operator|.
 name|setAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|CONF_CONTEXT_ATTRIBUTE
 argument_list|,
@@ -2321,7 +2321,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|FILTER_INITIALIZER_PROPERTY
 argument_list|,
@@ -2441,11 +2441,11 @@ literal|"groupE"
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|HttpServer
+name|HttpServer2
 name|myServer
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()
@@ -2490,7 +2490,7 @@ name|myServer
 operator|.
 name|setAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|CONF_CONTEXT_ATTRIBUTE
 argument_list|,
@@ -2939,7 +2939,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|CONF_CONTEXT_ATTRIBUTE
 argument_list|)
@@ -2958,7 +2958,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|ADMINS_ACL
 argument_list|)
@@ -3013,7 +3013,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|hasAdministratorAccess
 argument_list|(
@@ -3052,7 +3052,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|hasAdministratorAccess
 argument_list|(
@@ -3119,7 +3119,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|hasAdministratorAccess
 argument_list|(
@@ -3186,7 +3186,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|ADMINS_ACL
 argument_list|)
@@ -3201,7 +3201,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|hasAdministratorAccess
 argument_list|(
@@ -3280,7 +3280,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|ADMINS_ACL
 argument_list|)
@@ -3295,7 +3295,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|hasAdministratorAccess
 argument_list|(
@@ -3345,7 +3345,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|CONF_CONTEXT_ATTRIBUTE
 argument_list|)
@@ -3385,7 +3385,7 @@ name|Assert
 operator|.
 name|assertTrue
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|isInstrumentationAccessAllowed
 argument_list|(
@@ -3463,7 +3463,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|ADMINS_ACL
 argument_list|)
@@ -3478,7 +3478,7 @@ name|Assert
 operator|.
 name|assertFalse
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|isInstrumentationAccessAllowed
 argument_list|(
@@ -3490,53 +3490,6 @@ name|response
 argument_list|)
 argument_list|)
 expr_stmt|;
-block|}
-annotation|@
-name|Test
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"deprecation"
-argument_list|)
-DECL|method|testOldConstructor ()
-specifier|public
-name|void
-name|testOldConstructor
-parameter_list|()
-throws|throws
-name|Exception
-block|{
-name|HttpServer
-name|server
-init|=
-operator|new
-name|HttpServer
-argument_list|(
-literal|"test"
-argument_list|,
-literal|"0.0.0.0"
-argument_list|,
-literal|0
-argument_list|,
-literal|false
-argument_list|)
-decl_stmt|;
-try|try
-block|{
-name|server
-operator|.
-name|start
-argument_list|()
-expr_stmt|;
-block|}
-finally|finally
-block|{
-name|server
-operator|.
-name|stop
-argument_list|()
-expr_stmt|;
-block|}
 block|}
 DECL|method|testBindAddress ()
 annotation|@
@@ -3561,7 +3514,7 @@ name|stop
 argument_list|()
 expr_stmt|;
 comment|// hang onto this one for a bit more testing
-name|HttpServer
+name|HttpServer2
 name|myServer
 init|=
 name|checkBindAddress
@@ -3573,7 +3526,7 @@ argument_list|,
 literal|false
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 name|myServer2
 init|=
 literal|null
@@ -3680,7 +3633,7 @@ block|}
 block|}
 DECL|method|checkBindAddress (String host, int port, boolean findPort)
 specifier|private
-name|HttpServer
+name|HttpServer2
 name|checkBindAddress
 parameter_list|(
 name|String
@@ -3695,7 +3648,7 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|createServer
@@ -3994,11 +3947,11 @@ operator|.
 name|getHost
 argument_list|()
 expr_stmt|;
-name|HttpServer
+name|HttpServer2
 name|s
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

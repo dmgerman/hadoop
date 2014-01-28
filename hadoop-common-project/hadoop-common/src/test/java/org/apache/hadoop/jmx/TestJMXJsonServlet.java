@@ -88,7 +88,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -163,7 +163,7 @@ decl_stmt|;
 DECL|field|server
 specifier|private
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|server
 decl_stmt|;
 DECL|field|baseUrl
