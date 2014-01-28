@@ -6891,7 +6891,7 @@ argument_list|()
 decl_stmt|;
 name|LOG
 operator|.
-name|error
+name|warn
 argument_list|(
 literal|"PriviledgedActionException as:"
 operator|+
