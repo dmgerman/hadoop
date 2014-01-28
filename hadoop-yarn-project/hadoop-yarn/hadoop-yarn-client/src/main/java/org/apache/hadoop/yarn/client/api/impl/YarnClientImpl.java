@@ -987,6 +987,11 @@ specifier|private
 name|long
 name|asyncApiPollIntervalMillis
 decl_stmt|;
+DECL|field|asyncApiPollTimeoutMillis
+specifier|private
+name|long
+name|asyncApiPollTimeoutMillis
+decl_stmt|;
 DECL|field|historyClient
 specifier|protected
 name|AHSClient
@@ -1053,6 +1058,21 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS
+argument_list|)
+expr_stmt|;
+name|asyncApiPollTimeoutMillis
+operator|=
+name|conf
+operator|.
+name|getLong
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS
 argument_list|)
 expr_stmt|;
 name|submitPollIntervalMillis
@@ -1384,6 +1404,14 @@ name|pollCount
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|startTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -1423,7 +1451,48 @@ name|NEW_SAVING
 argument_list|)
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Submitted application "
+operator|+
+name|applicationId
+argument_list|)
+expr_stmt|;
 break|break;
+block|}
+name|long
+name|elapsedMillis
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|startTime
+decl_stmt|;
+if|if
+condition|(
+name|enforceAsyncAPITimeout
+argument_list|()
+operator|&&
+name|elapsedMillis
+operator|>=
+name|asyncApiPollTimeoutMillis
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Timed out while waiting for application "
+operator|+
+name|applicationId
+operator|+
+literal|" to be submitted successfully"
+argument_list|)
+throw|;
 block|}
 comment|// Notify the client through the log every 10 poll, in case the client
 comment|// is blocked here too long.
@@ -1468,17 +1537,20 @@ parameter_list|(
 name|InterruptedException
 name|ie
 parameter_list|)
-block|{       }
-block|}
+block|{
 name|LOG
 operator|.
-name|info
+name|error
 argument_list|(
-literal|"Submitted application "
+literal|"Interrupted while waiting for application "
 operator|+
 name|applicationId
+operator|+
+literal|" to be successfully submitted."
 argument_list|)
 expr_stmt|;
+block|}
+block|}
 return|return
 name|applicationId
 return|;
@@ -1524,6 +1596,14 @@ name|pollCount
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|startTime
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+decl_stmt|;
 while|while
 condition|(
 literal|true
@@ -1547,7 +1627,50 @@ name|getIsKillCompleted
 argument_list|()
 condition|)
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Killed application "
+operator|+
+name|applicationId
+argument_list|)
+expr_stmt|;
 break|break;
+block|}
+name|long
+name|elapsedMillis
+init|=
+name|System
+operator|.
+name|currentTimeMillis
+argument_list|()
+operator|-
+name|startTime
+decl_stmt|;
+if|if
+condition|(
+name|enforceAsyncAPITimeout
+argument_list|()
+operator|&&
+name|elapsedMillis
+operator|>=
+name|this
+operator|.
+name|asyncApiPollTimeoutMillis
+condition|)
+block|{
+throw|throw
+operator|new
+name|YarnException
+argument_list|(
+literal|"Timed out while waiting for application "
+operator|+
+name|applicationId
+operator|+
+literal|" to be killed."
+argument_list|)
+throw|;
 block|}
 if|if
 condition|(
@@ -1563,7 +1686,7 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Watiting for application "
+literal|"Waiting for application "
 operator|+
 name|applicationId
 operator|+
@@ -1598,15 +1721,19 @@ literal|" to be killed."
 argument_list|)
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"Killed application "
-operator|+
-name|applicationId
-argument_list|)
-expr_stmt|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|enforceAsyncAPITimeout ()
+name|boolean
+name|enforceAsyncAPITimeout
+parameter_list|()
+block|{
+return|return
+name|asyncApiPollTimeoutMillis
+operator|>=
+literal|0
+return|;
 block|}
 annotation|@
 name|Override

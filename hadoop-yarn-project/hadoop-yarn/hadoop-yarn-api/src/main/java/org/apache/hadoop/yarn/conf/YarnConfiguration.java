@@ -3758,6 +3758,28 @@ name|DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS
 init|=
 literal|200
 decl_stmt|;
+comment|/**    * The duration that the yarn client library waits, cumulatively across polls,    * for an expected state change to occur. Defaults to -1, which indicates no    * limit.    */
+DECL|field|YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"client.application-client-protocol.poll-timeout-ms"
+decl_stmt|;
+DECL|field|DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_TIMEOUT_MS
+init|=
+operator|-
+literal|1
+decl_stmt|;
 comment|/**    * Max number of threads in NMClientAsync to process container management    * events    */
 DECL|field|NM_CLIENT_ASYNC_THREAD_POOL_MAX_SIZE
 specifier|public
