@@ -481,6 +481,16 @@ argument_list|()
 expr_stmt|;
 break|break;
 case|case
+name|JOB_QUEUE_CHANGED
+case|:
+name|result
+operator|=
+operator|new
+name|JobQueueChangeEvent
+argument_list|()
+expr_stmt|;
+break|break;
+case|case
 name|JOB_STATUS_CHANGED
 case|:
 name|result

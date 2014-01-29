@@ -249,6 +249,10 @@ name|String
 argument_list|>
 name|blacklistedNodes
 decl_stmt|;
+DECL|field|queue
+name|String
+name|queue
+decl_stmt|;
 DECL|method|MockAppContext (int appid)
 specifier|public
 name|MockAppContext

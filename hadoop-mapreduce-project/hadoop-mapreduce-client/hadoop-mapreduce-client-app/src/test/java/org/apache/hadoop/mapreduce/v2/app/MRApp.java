@@ -1476,6 +1476,12 @@ specifier|private
 name|ClusterInfo
 name|clusterInfo
 decl_stmt|;
+comment|// Queue to pretend the RM assigned us
+DECL|field|assignedQueue
+specifier|private
+name|String
+name|assignedQueue
+decl_stmt|;
 DECL|field|NM_HOST
 specifier|public
 specifier|static
@@ -1565,6 +1571,8 @@ argument_list|,
 literal|1
 argument_list|,
 name|clock
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1647,6 +1655,51 @@ argument_list|,
 name|cleanOnStart
 argument_list|,
 literal|1
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, String assignedQueue)
+specifier|public
+name|MRApp
+parameter_list|(
+name|int
+name|maps
+parameter_list|,
+name|int
+name|reduces
+parameter_list|,
+name|boolean
+name|autoComplete
+parameter_list|,
+name|String
+name|testName
+parameter_list|,
+name|boolean
+name|cleanOnStart
+parameter_list|,
+name|String
+name|assignedQueue
+parameter_list|)
+block|{
+name|this
+argument_list|(
+name|maps
+argument_list|,
+name|reduces
+argument_list|,
+name|autoComplete
+argument_list|,
+name|testName
+argument_list|,
+name|cleanOnStart
+argument_list|,
+literal|1
+argument_list|,
+operator|new
+name|SystemClock
+argument_list|()
+argument_list|,
+name|assignedQueue
 argument_list|)
 expr_stmt|;
 block|}
@@ -1830,6 +1883,8 @@ argument_list|,
 operator|new
 name|SystemClock
 argument_list|()
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -1941,10 +1996,12 @@ argument_list|,
 name|clock
 argument_list|,
 name|unregistered
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock)
+DECL|method|MRApp (int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock, String assignedQueue)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -1968,6 +2025,9 @@ name|startCount
 parameter_list|,
 name|Clock
 name|clock
+parameter_list|,
+name|String
+name|assignedQueue
 parameter_list|)
 block|{
 name|this
@@ -2001,6 +2061,8 @@ argument_list|,
 name|clock
 argument_list|,
 literal|true
+argument_list|,
+name|assignedQueue
 argument_list|)
 expr_stmt|;
 block|}
@@ -2059,6 +2121,8 @@ name|SystemClock
 argument_list|()
 argument_list|,
 name|unregistered
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -2114,10 +2178,12 @@ name|SystemClock
 argument_list|()
 argument_list|,
 literal|true
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|MRApp (ApplicationAttemptId appAttemptId, ContainerId amContainerId, int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock, boolean unregistered)
+DECL|method|MRApp (ApplicationAttemptId appAttemptId, ContainerId amContainerId, int maps, int reduces, boolean autoComplete, String testName, boolean cleanOnStart, int startCount, Clock clock, boolean unregistered, String assignedQueue)
 specifier|public
 name|MRApp
 parameter_list|(
@@ -2150,6 +2216,9 @@ name|clock
 parameter_list|,
 name|boolean
 name|unregistered
+parameter_list|,
+name|String
+name|assignedQueue
 parameter_list|)
 block|{
 name|super
@@ -2295,6 +2364,12 @@ name|set
 argument_list|(
 name|unregistered
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|assignedQueue
+operator|=
+name|assignedQueue
 expr_stmt|;
 block|}
 annotation|@
@@ -2575,6 +2650,21 @@ operator|.
 name|next
 argument_list|()
 decl_stmt|;
+if|if
+condition|(
+name|assignedQueue
+operator|!=
+literal|null
+condition|)
+block|{
+name|job
+operator|.
+name|setQueueName
+argument_list|(
+name|assignedQueue
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Write job.xml
 name|String
 name|jobFile

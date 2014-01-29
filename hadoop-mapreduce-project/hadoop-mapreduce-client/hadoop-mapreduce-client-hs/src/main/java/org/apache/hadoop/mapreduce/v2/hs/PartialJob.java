@@ -916,6 +916,25 @@ return|return
 literal|null
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setQueueName (String queueName)
+specifier|public
+name|void
+name|setQueueName
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Can't set job's queue name in history"
+argument_list|)
+throw|;
+block|}
 block|}
 end_class
 
