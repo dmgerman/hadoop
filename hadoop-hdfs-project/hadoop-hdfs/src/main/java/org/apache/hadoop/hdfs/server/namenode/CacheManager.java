@@ -1255,6 +1255,32 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Resets all tracked directives and pools. Called during 2NN checkpointing to    * reset FSNamesystem state. See {FSNamesystem{@link #clear()}.    */
+DECL|method|clear ()
+name|void
+name|clear
+parameter_list|()
+block|{
+name|directivesById
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|directivesByPath
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|cachePools
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
+name|nextDirectiveId
+operator|=
+literal|1
+expr_stmt|;
+block|}
 DECL|method|startMonitorThread ()
 specifier|public
 name|void
