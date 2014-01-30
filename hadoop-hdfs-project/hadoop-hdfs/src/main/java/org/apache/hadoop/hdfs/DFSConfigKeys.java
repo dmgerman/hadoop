@@ -432,6 +432,15 @@ name|DFS_CLIENT_RETRY_INTERVAL_GET_LAST_BLOCK_LENGTH_DEFAULT
 init|=
 literal|4000
 decl_stmt|;
+DECL|field|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DFS_WEBHDFS_ACL_PERMISSION_PATTERN_DEFAULT
+init|=
+literal|"^(default:)?(user|group|mask|other):[[A-Za-z_][A-Za-z0-9._-]]*:([rwx-]{3})?(,(default:)?(user|group|mask|other):[[A-Za-z_][A-Za-z0-9._-]]*:([rwx-]{3})?)*$"
+decl_stmt|;
 comment|// HA related configuration
 DECL|field|DFS_CLIENT_FAILOVER_PROXY_PROVIDER_KEY_PREFIX
 specifier|public
