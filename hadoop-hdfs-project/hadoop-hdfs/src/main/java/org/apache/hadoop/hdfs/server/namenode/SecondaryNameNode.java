@@ -688,7 +688,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -879,7 +879,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**********************************************************  * The Secondary NameNode is a helper to the primary NameNode.  * The Secondary is responsible for supporting periodic checkpoints   * of the HDFS metadata. The current design allows only one Secondary  * NameNode per HDFs cluster.  *  * The Secondary NameNode is a daemon that periodically wakes  * up (determined by the schedule specified in the configuration),  * triggers a periodic checkpoint and then goes back to sleep.  * The Secondary NameNode uses the ClientProtocol to talk to the  * primary NameNode.  *  **********************************************************/
+comment|/**********************************************************  * The Secondary NameNode is a helper to the primary NameNode.  * The Secondary is responsible for supporting periodic checkpoints   * of the HDFS metadata. The current design allows only one Secondary  * NameNode per HDFs cluster.  *  * The Secondary NameNode is a daemon that periodically wakes  * up (determined by the schedule specified in the configuration),  * triggers a periodic checkpoint and then goes back to sleep.  * The Secondary NameNode uses the NamenodeProtocol to talk to the  * primary NameNode.  *  **********************************************************/
 end_comment
 
 begin_class
@@ -973,7 +973,7 @@ name|shouldRun
 decl_stmt|;
 DECL|field|infoServer
 specifier|private
-name|HttpServer
+name|HttpServer2
 name|infoServer
 decl_stmt|;
 DECL|field|imageListenURL
@@ -1595,7 +1595,7 @@ argument_list|(
 name|httpsAddrString
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder
@@ -4775,6 +4775,13 @@ literal|"just been downloaded"
 argument_list|)
 throw|;
 block|}
+name|dstNamesystem
+operator|.
+name|writeLock
+argument_list|()
+expr_stmt|;
+try|try
+block|{
 name|dstImage
 operator|.
 name|reloadFromImageFile
@@ -4784,6 +4791,15 @@ argument_list|,
 name|dstNamesystem
 argument_list|)
 expr_stmt|;
+block|}
+finally|finally
+block|{
+name|dstNamesystem
+operator|.
+name|writeUnlock
+argument_list|()
+expr_stmt|;
+block|}
 name|dstNamesystem
 operator|.
 name|dir

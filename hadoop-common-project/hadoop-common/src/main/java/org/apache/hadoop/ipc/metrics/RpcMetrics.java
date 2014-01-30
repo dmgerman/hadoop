@@ -376,7 +376,9 @@ name|CommonConfigurationKeys
 operator|.
 name|RPC_METRICS_QUANTILE_ENABLE
 argument_list|,
-literal|false
+name|CommonConfigurationKeys
+operator|.
+name|RPC_METRICS_QUANTILE_ENABLE_DEFAULT
 argument_list|)
 expr_stmt|;
 if|if

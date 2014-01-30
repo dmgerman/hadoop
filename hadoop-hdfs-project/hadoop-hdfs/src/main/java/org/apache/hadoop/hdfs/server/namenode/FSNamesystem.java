@@ -4786,6 +4786,11 @@ operator|.
 name|clearSnapshottableDirs
 argument_list|()
 expr_stmt|;
+name|cacheManager
+operator|.
+name|clear
+argument_list|()
+expr_stmt|;
 block|}
 annotation|@
 name|VisibleForTesting

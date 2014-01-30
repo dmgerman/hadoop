@@ -1410,6 +1410,8 @@ name|webUrl
 argument_list|)
 argument_list|,
 name|renewer
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|creds
@@ -1557,7 +1559,7 @@ block|}
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|getDTfromRemote (URLConnectionFactory factory, URI nnUri, String renewer)
+DECL|method|getDTfromRemote (URLConnectionFactory factory, URI nnUri, String renewer, String proxyUser)
 specifier|static
 specifier|public
 name|Credentials
@@ -1571,6 +1573,9 @@ name|nnUri
 parameter_list|,
 name|String
 name|renewer
+parameter_list|,
+name|String
+name|proxyUser
 parameter_list|)
 throws|throws
 name|IOException
@@ -1593,6 +1598,11 @@ name|GetDelegationTokenServlet
 operator|.
 name|PATH_SPEC
 argument_list|)
+decl_stmt|;
+name|String
+name|separator
+init|=
+literal|"?"
 decl_stmt|;
 if|if
 condition|(
@@ -1623,6 +1633,35 @@ operator|.
 name|append
 argument_list|(
 name|renewer
+argument_list|)
+expr_stmt|;
+name|separator
+operator|=
+literal|"&"
+expr_stmt|;
+block|}
+if|if
+condition|(
+name|proxyUser
+operator|!=
+literal|null
+condition|)
+block|{
+name|buf
+operator|.
+name|append
+argument_list|(
+name|separator
+argument_list|)
+operator|.
+name|append
+argument_list|(
+literal|"doas="
+argument_list|)
+operator|.
+name|append
+argument_list|(
+name|proxyUser
 argument_list|)
 expr_stmt|;
 block|}

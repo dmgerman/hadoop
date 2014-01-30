@@ -280,7 +280,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -1629,7 +1629,7 @@ extends|extends
 name|WebAppProxy
 block|{
 DECL|field|proxyServer
-name|HttpServer
+name|HttpServer2
 name|proxyServer
 decl_stmt|;
 DECL|field|appReportFetcher
@@ -1701,7 +1701,7 @@ decl_stmt|;
 name|proxyServer
 operator|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

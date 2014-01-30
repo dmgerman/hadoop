@@ -286,7 +286,7 @@ decl_stmt|;
 DECL|field|server
 specifier|private
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|server
 decl_stmt|;
 DECL|field|baseUrl
@@ -334,7 +334,7 @@ name|conf
 operator|.
 name|setInt
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|HTTP_MAX_THREADS
 argument_list|,
@@ -442,7 +442,7 @@ expr_stmt|;
 name|server
 operator|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

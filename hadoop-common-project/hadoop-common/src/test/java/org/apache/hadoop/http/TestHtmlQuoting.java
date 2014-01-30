@@ -365,7 +365,7 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|QuotingInputFilter
 operator|.
@@ -373,7 +373,7 @@ name|RequestQuoter
 name|quoter
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|QuotingInputFilter
 operator|.

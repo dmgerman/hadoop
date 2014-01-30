@@ -130,7 +130,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -421,7 +421,7 @@ name|context
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|ADMINS_ACL
 argument_list|)

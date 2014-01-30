@@ -144,7 +144,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -187,7 +187,7 @@ literal|"localjournal"
 decl_stmt|;
 DECL|field|httpServer
 specifier|private
-name|HttpServer
+name|HttpServer2
 name|httpServer
 decl_stmt|;
 DECL|field|localJournalNode
@@ -267,7 +267,7 @@ argument_list|(
 name|httpsAddrString
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder

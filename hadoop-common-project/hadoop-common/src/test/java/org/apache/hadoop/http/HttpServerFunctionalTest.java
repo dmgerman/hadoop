@@ -80,7 +80,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 import|;
@@ -147,7 +147,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This is a base class for functional tests of the {@link HttpServer}.  * The methods are static for other classes to import statically.  */
+comment|/**  * This is a base class for functional tests of the {@link HttpServer2}.  * The methods are static for other classes to import statically.  */
 end_comment
 
 begin_class
@@ -192,7 +192,7 @@ comment|/**    * Create but do not start the test webapp server. The test webapp
 DECL|method|createTestServer ()
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createTestServer
 parameter_list|()
 throws|throws
@@ -212,7 +212,7 @@ comment|/**    * Create but do not start the test webapp server. The test webapp
 DECL|method|createTestServer (Configuration conf)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createTestServer
 parameter_list|(
 name|Configuration
@@ -236,7 +236,7 @@ block|}
 DECL|method|createTestServer (Configuration conf, AccessControlList adminsAcl)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createTestServer
 parameter_list|(
 name|Configuration
@@ -266,7 +266,7 @@ comment|/**    * Create but do not start the test webapp server. The test webapp
 DECL|method|createTestServer (Configuration conf, String[] pathSpecs)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createTestServer
 parameter_list|(
 name|Configuration
@@ -364,7 +364,7 @@ comment|/**    * Create an HttpServer instance on the given address for the give
 DECL|method|createServer (String host, int port)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createServer
 parameter_list|(
 name|String
@@ -381,7 +381,7 @@ argument_list|()
 expr_stmt|;
 return|return
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()
@@ -420,7 +420,7 @@ comment|/**    * Create an HttpServer instance for the given webapp    * @param 
 DECL|method|createServer (String webapp)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createServer
 parameter_list|(
 name|String
@@ -448,7 +448,7 @@ comment|/**    * Create an HttpServer instance for the given webapp    * @param 
 DECL|method|createServer (String webapp, Configuration conf)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createServer
 parameter_list|(
 name|String
@@ -483,7 +483,7 @@ block|}
 DECL|method|createServer (String webapp, Configuration conf, AccessControlList adminsAcl)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createServer
 parameter_list|(
 name|String
@@ -535,7 +535,7 @@ parameter_list|)
 block|{
 return|return
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()
@@ -560,7 +560,7 @@ comment|/**    * Create an HttpServer instance for the given webapp    * @param 
 DECL|method|createServer (String webapp, Configuration conf, String[] pathSpecs)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createServer
 parameter_list|(
 name|String
@@ -605,13 +605,13 @@ comment|/**    * Create and start a server with the test webapp    *    * @retur
 DECL|method|createAndStartTestServer ()
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|createAndStartTestServer
 parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|createTestServer
@@ -627,13 +627,13 @@ name|server
 return|;
 block|}
 comment|/**    * If the server is non null, stop it    * @param server to stop    * @throws Exception on any failure    */
-DECL|method|stop (HttpServer server)
+DECL|method|stop (HttpServer2 server)
 specifier|public
 specifier|static
 name|void
 name|stop
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 name|server
 parameter_list|)
 throws|throws
@@ -654,13 +654,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Pass in a server, return a URL bound to localhost and its port    * @param server server    * @return a URL bonded to the base of the server    * @throws MalformedURLException if the URL cannot be created.    */
-DECL|method|getServerURL (HttpServer server)
+DECL|method|getServerURL (HttpServer2 server)
 specifier|public
 specifier|static
 name|URL
 name|getServerURL
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 name|server
 parameter_list|)
 throws|throws

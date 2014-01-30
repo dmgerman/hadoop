@@ -116,7 +116,7 @@ block|{
 comment|// Do the authorization
 if|if
 condition|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|hasAdministratorAccess
 argument_list|(
