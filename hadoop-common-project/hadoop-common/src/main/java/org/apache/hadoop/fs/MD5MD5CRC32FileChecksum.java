@@ -458,6 +458,8 @@ operator|.
 name|CRC32
 return|;
 block|}
+annotation|@
+name|Override
 DECL|method|getChecksumOpt ()
 specifier|public
 name|ChecksumOpt
