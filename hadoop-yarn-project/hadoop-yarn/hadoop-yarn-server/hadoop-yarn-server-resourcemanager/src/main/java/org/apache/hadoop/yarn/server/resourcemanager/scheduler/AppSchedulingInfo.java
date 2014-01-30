@@ -1299,15 +1299,44 @@ name|user
 argument_list|)
 expr_stmt|;
 block|}
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
 name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"allocate: user: "
+literal|"allocate: applicationId="
+operator|+
+name|applicationId
+operator|+
+literal|" container="
+operator|+
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|+
+literal|" host="
+operator|+
+name|container
+operator|.
+name|getNodeId
+argument_list|()
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|" user="
 operator|+
 name|user
 operator|+
-literal|", memory: "
+literal|" resource="
 operator|+
 name|request
 operator|.
@@ -1315,6 +1344,7 @@ name|getCapability
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|metrics
 operator|.
 name|allocateResources
@@ -1350,12 +1380,6 @@ name|Container
 name|container
 parameter_list|)
 block|{
-comment|// Update consumption and track allocations
-name|allocate
-argument_list|(
-name|container
-argument_list|)
-expr_stmt|;
 comment|// Update future requirements
 name|nodeLocalRequest
 operator|.
@@ -1493,12 +1517,6 @@ name|Container
 name|container
 parameter_list|)
 block|{
-comment|// Update consumption and track allocations
-name|allocate
-argument_list|(
-name|container
-argument_list|)
-expr_stmt|;
 comment|// Update future requirements
 name|rackLocalRequest
 operator|.
@@ -1578,12 +1596,6 @@ name|Container
 name|container
 parameter_list|)
 block|{
-comment|// Update consumption and track allocations
-name|allocate
-argument_list|(
-name|container
-argument_list|)
-expr_stmt|;
 comment|// Update future requirements
 name|decrementOutstanding
 argument_list|(
@@ -1698,46 +1710,6 @@ name|applicationId
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|allocate (Container container)
-specifier|synchronized
-specifier|private
-name|void
-name|allocate
-parameter_list|(
-name|Container
-name|container
-parameter_list|)
-block|{
-comment|// Update consumption and track allocations
-comment|//TODO: fixme sharad
-comment|/* try {         store.storeContainer(container);       } catch (IOException ie) {         // TODO fix this. we shouldnt ignore       }*/
-name|LOG
-operator|.
-name|debug
-argument_list|(
-literal|"allocate: applicationId="
-operator|+
-name|applicationId
-operator|+
-literal|" container="
-operator|+
-name|container
-operator|.
-name|getId
-argument_list|()
-operator|+
-literal|" host="
-operator|+
-name|container
-operator|.
-name|getNodeId
-argument_list|()
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|stop (RMAppAttemptState rmAppAttemptFinalState)
 specifier|synchronized
