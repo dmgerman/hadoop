@@ -10557,6 +10557,11 @@ condition|(
 name|secretManager
 operator|!=
 literal|null
+operator|||
+name|UserGroupInformation
+operator|.
+name|isSecurityEnabled
+argument_list|()
 condition|)
 block|{
 name|SaslRpcServer
