@@ -778,6 +778,15 @@ name|RPC_METRICS_QUANTILE_ENABLE
 init|=
 literal|"rpc.metrics.quantile.enable"
 decl_stmt|;
+DECL|field|RPC_METRICS_QUANTILE_ENABLE_DEFAULT
+specifier|public
+specifier|static
+specifier|final
+name|boolean
+name|RPC_METRICS_QUANTILE_ENABLE_DEFAULT
+init|=
+literal|false
+decl_stmt|;
 DECL|field|RPC_METRICS_PERCENTILES_INTERVALS_KEY
 specifier|public
 specifier|static
