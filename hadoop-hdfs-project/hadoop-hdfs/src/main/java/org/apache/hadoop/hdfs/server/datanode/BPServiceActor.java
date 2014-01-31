@@ -72,37 +72,21 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
+name|*
 import|;
 end_import
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|util
+name|google
 operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|common
 operator|.
-name|util
+name|base
 operator|.
-name|List
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Map
+name|Joiner
 import|;
 end_import
 
@@ -1895,20 +1879,19 @@ block|}
 block|}
 block|}
 block|}
-comment|/**    * Report the list blocks to the Namenode    * @throws IOException    */
+comment|/**    * Report the list blocks to the Namenode    * @return DatanodeCommands returned by the NN. May be null.    * @throws IOException    */
 DECL|method|blockReport ()
+name|List
+argument_list|<
 name|DatanodeCommand
+argument_list|>
 name|blockReport
 parameter_list|()
 throws|throws
 name|IOException
 block|{
 comment|// send block report if timer has expired.
-name|DatanodeCommand
-name|cmd
-init|=
-literal|null
-decl_stmt|;
+specifier|final
 name|long
 name|startTime
 init|=
@@ -1920,12 +1903,29 @@ condition|(
 name|startTime
 operator|-
 name|lastBlockReport
-operator|>
+operator|<=
 name|dnConf
 operator|.
 name|blockReportInterval
 condition|)
 block|{
+return|return
+literal|null
+return|;
+block|}
+name|ArrayList
+argument_list|<
+name|DatanodeCommand
+argument_list|>
+name|cmds
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|DatanodeCommand
+argument_list|>
+argument_list|()
+decl_stmt|;
 comment|// Flush any block information that precedes the block report. Otherwise
 comment|// we have a chance that we will miss the delHint information
 comment|// or we will report an RBW replica after the BlockReport already reports
@@ -1933,18 +1933,15 @@ comment|// a FINALIZED one.
 name|reportReceivedDeletedBlocks
 argument_list|()
 expr_stmt|;
-comment|// Send one block report per known storage.
-comment|// Create block report
+name|lastDeletedReport
+operator|=
+name|startTime
+expr_stmt|;
 name|long
 name|brCreateStartTime
 init|=
 name|now
 argument_list|()
-decl_stmt|;
-name|long
-name|totalBlockCount
-init|=
-literal|0
 decl_stmt|;
 name|Map
 argument_list|<
@@ -1967,16 +1964,20 @@ name|getBlockPoolId
 argument_list|()
 argument_list|)
 decl_stmt|;
-comment|// Send block report
-name|long
-name|brSendStartTime
+comment|// Convert the reports to the format expected by the NN.
+name|int
+name|i
 init|=
-name|now
-argument_list|()
+literal|0
+decl_stmt|;
+name|int
+name|totalBlockCount
+init|=
+literal|0
 decl_stmt|;
 name|StorageBlockReport
-index|[]
 name|reports
+index|[]
 init|=
 operator|new
 name|StorageBlockReport
@@ -1986,11 +1987,6 @@ operator|.
 name|size
 argument_list|()
 index|]
-decl_stmt|;
-name|int
-name|i
-init|=
-literal|0
 decl_stmt|;
 for|for
 control|(
@@ -2010,14 +2006,6 @@ name|entrySet
 argument_list|()
 control|)
 block|{
-name|DatanodeStorage
-name|dnStorage
-init|=
-name|kvPair
-operator|.
-name|getKey
-argument_list|()
-decl_stmt|;
 name|BlockListAsLongs
 name|blockList
 init|=
@@ -2026,13 +2014,6 @@ operator|.
 name|getValue
 argument_list|()
 decl_stmt|;
-name|totalBlockCount
-operator|+=
-name|blockList
-operator|.
-name|getNumberOfBlocks
-argument_list|()
-expr_stmt|;
 name|reports
 index|[
 name|i
@@ -2042,7 +2023,10 @@ operator|=
 operator|new
 name|StorageBlockReport
 argument_list|(
-name|dnStorage
+name|kvPair
+operator|.
+name|getKey
+argument_list|()
 argument_list|,
 name|blockList
 operator|.
@@ -2050,9 +2034,41 @@ name|getBlockListAsLongs
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|totalBlockCount
+operator|+=
+name|blockList
+operator|.
+name|getNumberOfBlocks
+argument_list|()
+expr_stmt|;
 block|}
-name|cmd
+comment|// Send the reports to the NN.
+name|int
+name|numReportsSent
+decl_stmt|;
+name|long
+name|brSendStartTime
+init|=
+name|now
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|totalBlockCount
+operator|<
+name|dnConf
+operator|.
+name|blockReportSplitThreshold
+condition|)
+block|{
+comment|// Below split threshold, send all reports in a single message.
+name|numReportsSent
 operator|=
+literal|1
+expr_stmt|;
+name|DatanodeCommand
+name|cmd
+init|=
 name|bpNamenode
 operator|.
 name|blockReport
@@ -2066,7 +2082,80 @@ argument_list|()
 argument_list|,
 name|reports
 argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cmd
+operator|!=
+literal|null
+condition|)
+block|{
+name|cmds
+operator|.
+name|add
+argument_list|(
+name|cmd
+argument_list|)
 expr_stmt|;
+block|}
+block|}
+else|else
+block|{
+comment|// Send one block report per message.
+name|numReportsSent
+operator|=
+name|i
+expr_stmt|;
+for|for
+control|(
+name|StorageBlockReport
+name|report
+range|:
+name|reports
+control|)
+block|{
+name|StorageBlockReport
+name|singleReport
+index|[]
+init|=
+block|{
+name|report
+block|}
+decl_stmt|;
+name|DatanodeCommand
+name|cmd
+init|=
+name|bpNamenode
+operator|.
+name|blockReport
+argument_list|(
+name|bpRegistration
+argument_list|,
+name|bpos
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|,
+name|singleReport
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|cmd
+operator|!=
+literal|null
+condition|)
+block|{
+name|cmds
+operator|.
+name|add
+argument_list|(
+name|cmd
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
 comment|// Log the block report processing stats from Datanode perspective
 name|long
 name|brSendCost
@@ -2097,11 +2186,15 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"BlockReport of "
+literal|"Sent "
+operator|+
+name|numReportsSent
+operator|+
+literal|" blockreports "
 operator|+
 name|totalBlockCount
 operator|+
-literal|" blocks took "
+literal|" blocks total. Took "
 operator|+
 name|brCreateCost
 operator|+
@@ -2109,10 +2202,62 @@ literal|" msec to generate and "
 operator|+
 name|brSendCost
 operator|+
-literal|" msecs for RPC and NN processing"
+literal|" msecs for RPC and NN processing. "
+operator|+
+literal|" Got back commands "
+operator|+
+operator|(
+name|cmds
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|?
+literal|"none"
+else|:
+name|Joiner
+operator|.
+name|on
+argument_list|(
+literal|"; "
+argument_list|)
+operator|.
+name|join
+argument_list|(
+name|cmds
+argument_list|)
+operator|)
 argument_list|)
 expr_stmt|;
-comment|// If we have sent the first block report, then wait a random
+name|scheduleNextBlockReport
+argument_list|(
+name|startTime
+argument_list|)
+expr_stmt|;
+return|return
+name|cmds
+operator|.
+name|size
+argument_list|()
+operator|==
+literal|0
+condition|?
+literal|null
+else|:
+name|cmds
+return|;
+block|}
+DECL|method|scheduleNextBlockReport (long previousReportStartTime)
+specifier|private
+name|void
+name|scheduleNextBlockReport
+parameter_list|(
+name|long
+name|previousReportStartTime
+parameter_list|)
+block|{
+comment|// If we have sent the first set of block reports, then wait a random
 comment|// time before we start the periodic block reports.
 if|if
 condition|(
@@ -2121,7 +2266,7 @@ condition|)
 block|{
 name|lastBlockReport
 operator|=
-name|startTime
+name|previousReportStartTime
 operator|-
 name|DFSUtil
 operator|.
@@ -2147,7 +2292,7 @@ expr_stmt|;
 block|}
 else|else
 block|{
-comment|/* say the last block report was at 8:20:14. The current report          * should have started around 9:20:14 (default 1 hour interval).          * If current time is :          *   1) normal like 9:20:18, next report should be at 10:20:14          *   2) unexpected like 11:35:43, next report should be at 12:20:14          */
+comment|/* say the last block report was at 8:20:14. The current report        * should have started around 9:20:14 (default 1 hour interval).        * If current time is :        *   1) normal like 9:20:18, next report should be at 10:20:14        *   2) unexpected like 11:35:43, next report should be at 12:20:14        */
 name|lastBlockReport
 operator|+=
 operator|(
@@ -2166,19 +2311,6 @@ operator|.
 name|blockReportInterval
 expr_stmt|;
 block|}
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"sent block report, processed command:"
-operator|+
-name|cmd
-argument_list|)
-expr_stmt|;
-block|}
-return|return
-name|cmd
-return|;
 block|}
 DECL|method|cacheReport ()
 name|DatanodeCommand
@@ -2211,6 +2343,7 @@ name|cmd
 init|=
 literal|null
 decl_stmt|;
+specifier|final
 name|long
 name|startTime
 init|=
@@ -2687,6 +2820,7 @@ condition|)
 block|{
 try|try
 block|{
+specifier|final
 name|long
 name|startTime
 init|=
@@ -2864,27 +2998,44 @@ operator|=
 name|startTime
 expr_stmt|;
 block|}
+name|List
+argument_list|<
 name|DatanodeCommand
-name|cmd
+argument_list|>
+name|cmds
 init|=
 name|blockReport
 argument_list|()
 decl_stmt|;
 name|processCommand
 argument_list|(
+name|cmds
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
+name|cmds
+operator|.
+name|toArray
+argument_list|(
 operator|new
 name|DatanodeCommand
-index|[]
-block|{
-name|cmd
-block|}
+index|[
+name|cmds
+operator|.
+name|size
+argument_list|()
+index|]
+argument_list|)
 argument_list|)
 expr_stmt|;
+name|DatanodeCommand
 name|cmd
-operator|=
+init|=
 name|cacheReport
 argument_list|()
-expr_stmt|;
+decl_stmt|;
 name|processCommand
 argument_list|(
 operator|new
