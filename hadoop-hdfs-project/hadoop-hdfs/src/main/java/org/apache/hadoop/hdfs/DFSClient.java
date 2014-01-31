@@ -11924,6 +11924,10 @@ name|FileNotFoundException
 operator|.
 name|class
 argument_list|,
+name|NSQuotaExceededException
+operator|.
+name|class
+argument_list|,
 name|SafeModeException
 operator|.
 name|class
@@ -11993,6 +11997,10 @@ name|FileNotFoundException
 operator|.
 name|class
 argument_list|,
+name|NSQuotaExceededException
+operator|.
+name|class
+argument_list|,
 name|SafeModeException
 operator|.
 name|class
@@ -12054,6 +12062,10 @@ name|FileNotFoundException
 operator|.
 name|class
 argument_list|,
+name|NSQuotaExceededException
+operator|.
+name|class
+argument_list|,
 name|SafeModeException
 operator|.
 name|class
@@ -12112,6 +12124,10 @@ operator|.
 name|class
 argument_list|,
 name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+name|NSQuotaExceededException
 operator|.
 name|class
 argument_list|,
@@ -12181,6 +12197,10 @@ operator|.
 name|class
 argument_list|,
 name|FileNotFoundException
+operator|.
+name|class
+argument_list|,
+name|NSQuotaExceededException
 operator|.
 name|class
 argument_list|,

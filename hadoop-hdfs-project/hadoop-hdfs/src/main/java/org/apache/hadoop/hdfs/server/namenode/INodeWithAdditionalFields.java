@@ -1069,6 +1069,45 @@ return|;
 block|}
 annotation|@
 name|Override
+DECL|method|getAclFeature (int snapshotId)
+specifier|final
+name|AclFeature
+name|getAclFeature
+parameter_list|(
+name|int
+name|snapshotId
+parameter_list|)
+block|{
+if|if
+condition|(
+name|snapshotId
+operator|!=
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+condition|)
+block|{
+return|return
+name|getSnapshotINode
+argument_list|(
+name|snapshotId
+argument_list|)
+operator|.
+name|getAclFeature
+argument_list|()
+return|;
+block|}
+return|return
+name|getFeature
+argument_list|(
+name|AclFeature
+operator|.
+name|class
+argument_list|)
+return|;
+block|}
+annotation|@
+name|Override
 DECL|method|getModificationTime (int snapshotId)
 specifier|final
 name|long
@@ -1532,21 +1571,6 @@ return|return
 literal|null
 return|;
 block|}
-DECL|method|getAclFeature ()
-specifier|public
-name|AclFeature
-name|getAclFeature
-parameter_list|()
-block|{
-return|return
-name|getFeature
-argument_list|(
-name|AclFeature
-operator|.
-name|class
-argument_list|)
-return|;
-block|}
 DECL|method|removeAclFeature ()
 specifier|public
 name|void
@@ -1605,6 +1629,18 @@ argument_list|(
 name|f
 argument_list|)
 expr_stmt|;
+block|}
+DECL|method|getFeatures ()
+specifier|public
+specifier|final
+name|Feature
+index|[]
+name|getFeatures
+parameter_list|()
+block|{
+return|return
+name|features
+return|;
 block|}
 block|}
 end_class

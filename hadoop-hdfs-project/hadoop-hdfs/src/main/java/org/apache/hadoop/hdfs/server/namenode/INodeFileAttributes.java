@@ -126,7 +126,7 @@ specifier|final
 name|long
 name|header
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, long modificationTime, long accessTime, short replication, long preferredBlockSize)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime, short replication, long preferredBlockSize)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -136,6 +136,9 @@ name|name
 parameter_list|,
 name|PermissionStatus
 name|permissions
+parameter_list|,
+name|AclFeature
+name|aclFeature
 parameter_list|,
 name|long
 name|modificationTime
@@ -155,6 +158,8 @@ argument_list|(
 name|name
 argument_list|,
 name|permissions
+argument_list|,
+name|aclFeature
 argument_list|,
 name|modificationTime
 argument_list|,

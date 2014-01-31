@@ -194,8 +194,8 @@ specifier|final
 class|class
 name|AclStorage
 block|{
-comment|/**    * Reads the existing extended ACL entries of an inode.  This method returns    * only the extended ACL entries stored in the AclFeature.  If the inode does    * not have an ACL, then this method returns an empty list.    *    * @param inode INodeWithAdditionalFields to read    * @param snapshotId int latest snapshot ID of inode    * @return List<AclEntry> containing extended inode ACL entries    */
-DECL|method|readINodeAcl (INodeWithAdditionalFields inode, int snapshotId)
+comment|/**    * Reads the existing extended ACL entries of an inode.  This method returns    * only the extended ACL entries stored in the AclFeature.  If the inode does    * not have an ACL, then this method returns an empty list.  This method    * supports querying by snapshot ID.    *    * @param inode INode to read    * @param snapshotId int ID of snapshot to read    * @return List<AclEntry> containing extended inode ACL entries    */
+DECL|method|readINodeAcl (INode inode, int snapshotId)
 specifier|public
 specifier|static
 name|List
@@ -204,7 +204,7 @@ name|AclEntry
 argument_list|>
 name|readINodeAcl
 parameter_list|(
-name|INodeWithAdditionalFields
+name|INode
 name|inode
 parameter_list|,
 name|int
@@ -216,13 +216,10 @@ name|perm
 init|=
 name|inode
 operator|.
-name|getPermissionStatus
+name|getFsPermission
 argument_list|(
 name|snapshotId
 argument_list|)
-operator|.
-name|getPermission
-argument_list|()
 decl_stmt|;
 if|if
 condition|(
@@ -236,7 +233,9 @@ return|return
 name|inode
 operator|.
 name|getAclFeature
-argument_list|()
+argument_list|(
+name|snapshotId
+argument_list|)
 operator|.
 name|getEntries
 argument_list|()
@@ -252,8 +251,8 @@ argument_list|()
 return|;
 block|}
 block|}
-comment|/**    * Reads the existing ACL of an inode.  This method always returns the full    * logical ACL of the inode after reading relevant data from the inode's    * {@link FsPermission} and {@link AclFeature}.  Note that every inode    * logically has an ACL, even if no ACL has been set explicitly.  If the inode    * does not have an extended ACL, then the result is a minimal ACL consising of    * exactly 3 entries that correspond to the owner, group and other permissions.    *    * @param inode INodeWithAdditionalFields to read    * @param snapshotId int latest snapshot ID of inode    * @return List<AclEntry> containing all logical inode ACL entries    */
-DECL|method|readINodeLogicalAcl ( INodeWithAdditionalFields inode, int snapshotId)
+comment|/**    * Reads the existing ACL of an inode.  This method always returns the full    * logical ACL of the inode after reading relevant data from the inode's    * {@link FsPermission} and {@link AclFeature}.  Note that every inode    * logically has an ACL, even if no ACL has been set explicitly.  If the inode    * does not have an extended ACL, then the result is a minimal ACL consising of    * exactly 3 entries that correspond to the owner, group and other permissions.    * This method always reads the inode's current state and does not support    * querying by snapshot ID.  This is because the method is intended to support    * ACL modification APIs, which always apply a delta on top of current state.    *    * @param inode INode to read    * @return List<AclEntry> containing all logical inode ACL entries    */
+DECL|method|readINodeLogicalAcl (INode inode)
 specifier|public
 specifier|static
 name|List
@@ -262,11 +261,8 @@ name|AclEntry
 argument_list|>
 name|readINodeLogicalAcl
 parameter_list|(
-name|INodeWithAdditionalFields
+name|INode
 name|inode
-parameter_list|,
-name|int
-name|snapshotId
 parameter_list|)
 block|{
 specifier|final
@@ -281,12 +277,7 @@ name|perm
 init|=
 name|inode
 operator|.
-name|getPermissionStatus
-argument_list|(
-name|snapshotId
-argument_list|)
-operator|.
-name|getPermission
+name|getFsPermission
 argument_list|()
 decl_stmt|;
 if|if
@@ -529,14 +520,14 @@ return|return
 name|existingAcl
 return|;
 block|}
-comment|/**    * Completely removes the ACL from an inode.    *    * @param inode INodeWithAdditionalFields to update    * @param snapshotId int latest snapshot ID of inode    * @throws QuotaExceededException if quota limit is exceeded    */
-DECL|method|removeINodeAcl (INodeWithAdditionalFields inode, int snapshotId)
+comment|/**    * Completely removes the ACL from an inode.    *    * @param inode INode to update    * @param snapshotId int latest snapshot ID of inode    * @throws QuotaExceededException if quota limit is exceeded    */
+DECL|method|removeINodeAcl (INode inode, int snapshotId)
 specifier|public
 specifier|static
 name|void
 name|removeINodeAcl
 parameter_list|(
-name|INodeWithAdditionalFields
+name|INode
 name|inode
 parameter_list|,
 name|int
@@ -550,12 +541,7 @@ name|perm
 init|=
 name|inode
 operator|.
-name|getPermissionStatus
-argument_list|(
-name|snapshotId
-argument_list|)
-operator|.
-name|getPermission
+name|getFsPermission
 argument_list|()
 decl_stmt|;
 if|if
@@ -677,7 +663,9 @@ comment|// Remove the feature and turn off the ACL bit.
 name|inode
 operator|.
 name|removeAclFeature
-argument_list|()
+argument_list|(
+name|snapshotId
+argument_list|)
 expr_stmt|;
 name|FsPermission
 name|newPerm
@@ -716,14 +704,14 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Updates an inode with a new ACL.  This method takes a full logical ACL and    * stores the entries to the inode's {@link FsPermission} and    * {@link AclFeature}.    *    * @param inode INodeWithAdditionalFields to update    * @param newAcl List<AclEntry> containing new ACL entries    * @param snapshotId int latest snapshot ID of inode    * @throws AclException if the ACL is invalid for the given inode    * @throws QuotaExceededException if quota limit is exceeded    */
-DECL|method|updateINodeAcl (INodeWithAdditionalFields inode, List<AclEntry> newAcl, int snapshotId)
+comment|/**    * Updates an inode with a new ACL.  This method takes a full logical ACL and    * stores the entries to the inode's {@link FsPermission} and    * {@link AclFeature}.    *    * @param inode INode to update    * @param newAcl List<AclEntry> containing new ACL entries    * @param snapshotId int latest snapshot ID of inode    * @throws AclException if the ACL is invalid for the given inode    * @throws QuotaExceededException if quota limit is exceeded    */
+DECL|method|updateINodeAcl (INode inode, List<AclEntry> newAcl, int snapshotId)
 specifier|public
 specifier|static
 name|void
 name|updateINodeAcl
 parameter_list|(
-name|INodeWithAdditionalFields
+name|INode
 name|inode
 parameter_list|,
 name|List
@@ -753,12 +741,7 @@ name|perm
 init|=
 name|inode
 operator|.
-name|getPermissionStatus
-argument_list|(
-name|snapshotId
-argument_list|)
-operator|.
-name|getPermission
+name|getFsPermission
 argument_list|()
 decl_stmt|;
 specifier|final
@@ -956,41 +939,34 @@ argument_list|(
 name|defaultEntries
 argument_list|)
 expr_stmt|;
-comment|// Attach entries to the feature, creating a new feature if needed.
-name|AclFeature
-name|aclFeature
-init|=
-name|inode
-operator|.
-name|getAclFeature
-argument_list|()
-decl_stmt|;
+comment|// Attach entries to the feature.
 if|if
 condition|(
-name|aclFeature
-operator|==
-literal|null
+name|perm
+operator|.
+name|getAclBit
+argument_list|()
 condition|)
 block|{
-name|aclFeature
-operator|=
-operator|new
-name|AclFeature
-argument_list|()
+name|inode
+operator|.
+name|removeAclFeature
+argument_list|(
+name|snapshotId
+argument_list|)
 expr_stmt|;
+block|}
 name|inode
 operator|.
 name|addAclFeature
 argument_list|(
-name|aclFeature
-argument_list|)
-expr_stmt|;
-block|}
-name|aclFeature
-operator|.
-name|setEntries
+operator|new
+name|AclFeature
 argument_list|(
 name|featureEntries
+argument_list|)
+argument_list|,
+name|snapshotId
 argument_list|)
 expr_stmt|;
 block|}
@@ -1008,7 +984,9 @@ block|{
 name|inode
 operator|.
 name|removeAclFeature
-argument_list|()
+argument_list|(
+name|snapshotId
+argument_list|)
 expr_stmt|;
 block|}
 comment|// Calculate new permission bits.  For a correctly sorted ACL, the owner,

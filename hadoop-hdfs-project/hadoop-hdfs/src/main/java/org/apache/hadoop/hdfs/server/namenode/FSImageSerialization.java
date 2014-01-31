@@ -1424,6 +1424,13 @@ name|getPreferredBlockSize
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|writeAclFeature
+argument_list|(
+name|file
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|writeQuota (Quota.Counts quota, DataOutput out)
 specifier|private
@@ -1657,6 +1664,13 @@ argument_list|,
 name|out
 argument_list|)
 expr_stmt|;
+name|writeAclFeature
+argument_list|(
+name|a
+argument_list|,
+name|out
+argument_list|)
+expr_stmt|;
 block|}
 comment|/**    * Serialize a {@link INodeSymlink} node    * @param node The node to write    * @param out The {@link DataOutput} where the fields are written    */
 DECL|method|writeINodeSymlink (INodeSymlink node, DataOutput out)
@@ -1752,13 +1766,13 @@ name|out
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|writeAclFeature (INodeWithAdditionalFields node, DataOutput out)
+DECL|method|writeAclFeature (INodeAttributes node, DataOutput out)
 specifier|private
 specifier|static
 name|void
 name|writeAclFeature
 parameter_list|(
-name|INodeWithAdditionalFields
+name|INodeAttributes
 name|node
 parameter_list|,
 name|DataOutput
@@ -1766,6 +1780,17 @@ name|out
 parameter_list|)
 throws|throws
 name|IOException
+block|{
+if|if
+condition|(
+name|node
+operator|.
+name|getFsPermission
+argument_list|()
+operator|.
+name|getAclBit
+argument_list|()
+condition|)
 block|{
 name|AclFsImageProto
 operator|.
@@ -1824,6 +1849,7 @@ argument_list|(
 name|os
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 comment|/** Serialize a {@link INodeReference} node */
 DECL|method|writeINodeReference (INodeReference ref, DataOutput out, boolean writeUnderConstruction, ReferenceMap referenceMap )

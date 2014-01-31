@@ -105,29 +105,16 @@ argument_list|()
 decl_stmt|;
 DECL|field|entries
 specifier|private
+specifier|final
 name|List
 argument_list|<
 name|AclEntry
 argument_list|>
 name|entries
 decl_stmt|;
-DECL|method|getEntries ()
+DECL|method|AclFeature (List<AclEntry> entries)
 specifier|public
-name|List
-argument_list|<
-name|AclEntry
-argument_list|>
-name|getEntries
-parameter_list|()
-block|{
-return|return
-name|entries
-return|;
-block|}
-DECL|method|setEntries (List<AclEntry> entries)
-specifier|public
-name|void
-name|setEntries
+name|AclFeature
 parameter_list|(
 name|List
 argument_list|<
@@ -142,6 +129,19 @@ name|entries
 operator|=
 name|entries
 expr_stmt|;
+block|}
+DECL|method|getEntries ()
+specifier|public
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|getEntries
+parameter_list|()
+block|{
+return|return
+name|entries
+return|;
 block|}
 block|}
 end_class

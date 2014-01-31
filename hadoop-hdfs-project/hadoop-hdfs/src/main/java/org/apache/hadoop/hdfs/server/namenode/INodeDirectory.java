@@ -493,8 +493,8 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor    * @param other The INodeDirectory to be copied    * @param adopt Indicate whether or not need to set the parent field of child    *              INodes to the new node    */
-DECL|method|INodeDirectory (INodeDirectory other, boolean adopt, boolean copyFeatures)
+comment|/**    * Copy constructor    * @param other The INodeDirectory to be copied    * @param adopt Indicate whether or not need to set the parent field of child    *              INodes to the new node    * @param featuresToCopy any number of features to copy to the new node.    *              The method will do a reference copy, not a deep copy.    */
+DECL|method|INodeDirectory (INodeDirectory other, boolean adopt, Feature... featuresToCopy)
 specifier|public
 name|INodeDirectory
 parameter_list|(
@@ -504,8 +504,9 @@ parameter_list|,
 name|boolean
 name|adopt
 parameter_list|,
-name|boolean
-name|copyFeatures
+name|Feature
+modifier|...
+name|featuresToCopy
 parameter_list|)
 block|{
 name|super
@@ -549,20 +550,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|copyFeatures
-condition|)
-block|{
 name|this
 operator|.
 name|features
 operator|=
-name|other
-operator|.
-name|features
+name|featuresToCopy
 expr_stmt|;
-block|}
 block|}
 comment|/** @return true unconditionally. */
 annotation|@
@@ -1206,7 +1199,10 @@ name|this
 argument_list|,
 literal|true
 argument_list|,
-literal|true
+name|this
+operator|.
+name|getFeatures
+argument_list|()
 argument_list|)
 argument_list|,
 name|inodeMap
