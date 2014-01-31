@@ -3948,6 +3948,13 @@ specifier|final
 name|long
 name|crcPerBlock
 init|=
+name|checksum
+operator|.
+name|getChecksumSize
+argument_list|()
+operator|>
+literal|0
+condition|?
 operator|(
 name|metadataIn
 operator|.
@@ -3964,6 +3971,8 @@ name|checksum
 operator|.
 name|getChecksumSize
 argument_list|()
+else|:
+literal|0
 decl_stmt|;
 comment|//compute block checksum
 specifier|final

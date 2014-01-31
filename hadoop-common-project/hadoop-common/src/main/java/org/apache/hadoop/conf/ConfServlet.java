@@ -120,7 +120,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -205,7 +205,7 @@ argument_list|()
 operator|.
 name|getAttribute
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|CONF_CONTEXT_ATTRIBUTE
 argument_list|)
@@ -240,7 +240,7 @@ block|{
 if|if
 condition|(
 operator|!
-name|HttpServer
+name|HttpServer2
 operator|.
 name|isInstrumentationAccessAllowed
 argument_list|(

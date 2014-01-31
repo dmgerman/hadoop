@@ -46,13 +46,13 @@ name|TestHttpServerLifecycle
 extends|extends
 name|HttpServerFunctionalTest
 block|{
-comment|/**    * Check that a server is alive by probing the {@link HttpServer#isAlive()} method    * and the text of its toString() description    * @param server server    */
-DECL|method|assertAlive (HttpServer server)
+comment|/**    * Check that a server is alive by probing the {@link HttpServer2#isAlive()} method    * and the text of its toString() description    * @param server server    */
+DECL|method|assertAlive (HttpServer2 server)
 specifier|private
 name|void
 name|assertAlive
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 name|server
 parameter_list|)
 block|{
@@ -70,18 +70,18 @@ name|assertToStringContains
 argument_list|(
 name|server
 argument_list|,
-name|HttpServer
+name|HttpServer2
 operator|.
 name|STATE_DESCRIPTION_ALIVE
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|assertNotLive (HttpServer server)
+DECL|method|assertNotLive (HttpServer2 server)
 specifier|private
 name|void
 name|assertNotLive
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 name|server
 parameter_list|)
 block|{
@@ -100,7 +100,7 @@ name|assertToStringContains
 argument_list|(
 name|server
 argument_list|,
-name|HttpServer
+name|HttpServer2
 operator|.
 name|STATE_DESCRIPTION_NOT_LIVE
 argument_list|)
@@ -117,7 +117,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|createTestServer
@@ -139,7 +139,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|createTestServer
@@ -162,7 +162,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 literal|null
@@ -238,7 +238,7 @@ name|Logger
 operator|.
 name|getLogger
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|class
 operator|.
@@ -253,7 +253,7 @@ argument_list|(
 name|requestLogAppender
 argument_list|)
 expr_stmt|;
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 literal|null
@@ -287,7 +287,7 @@ name|Logger
 operator|.
 name|getLogger
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|class
 operator|.
@@ -303,13 +303,13 @@ name|requestLogAppender
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Assert that the result of {@link HttpServer#toString()} contains the specific text    * @param server server to examine    * @param text text to search for    */
-DECL|method|assertToStringContains (HttpServer server, String text)
+comment|/**    * Assert that the result of {@link HttpServer2#toString()} contains the specific text    * @param server server to examine    * @param text text to search for    */
+DECL|method|assertToStringContains (HttpServer2 server, String text)
 specifier|private
 name|void
 name|assertToStringContains
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 name|server
 parameter_list|,
 name|String
@@ -356,7 +356,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|createAndStartTestServer
@@ -389,7 +389,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|createAndStartTestServer
@@ -432,7 +432,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 literal|null

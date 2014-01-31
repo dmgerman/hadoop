@@ -236,6 +236,26 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
+name|ActiveUsersManager
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|scheduler
+operator|.
 name|SchedulerAppUtils
 import|;
 end_import
@@ -365,6 +385,12 @@ specifier|private
 name|long
 name|lastTimeAtHalfFairShare
 decl_stmt|;
+DECL|field|activeUsersManager
+specifier|private
+specifier|final
+name|ActiveUsersManager
+name|activeUsersManager
+decl_stmt|;
 DECL|method|FSLeafQueue (String name, FairScheduler scheduler, FSParentQueue parent)
 specifier|public
 name|FSLeafQueue
@@ -411,6 +437,15 @@ argument_list|()
 operator|.
 name|getTime
 argument_list|()
+expr_stmt|;
+name|activeUsersManager
+operator|=
+operator|new
+name|ActiveUsersManager
+argument_list|(
+name|getMetrics
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|addApp (FSSchedulerApp app, boolean runnable)
@@ -547,46 +582,6 @@ name|this
 argument_list|)
 throw|;
 block|}
-block|}
-DECL|method|makeAppRunnable (AppSchedulable appSched)
-specifier|public
-name|void
-name|makeAppRunnable
-parameter_list|(
-name|AppSchedulable
-name|appSched
-parameter_list|)
-block|{
-if|if
-condition|(
-operator|!
-name|nonRunnableAppScheds
-operator|.
-name|remove
-argument_list|(
-name|appSched
-argument_list|)
-condition|)
-block|{
-throw|throw
-operator|new
-name|IllegalStateException
-argument_list|(
-literal|"Can't make app runnable that does not "
-operator|+
-literal|"already exist in queue as non-runnable"
-operator|+
-name|appSched
-argument_list|)
-throw|;
-block|}
-name|runnableAppScheds
-operator|.
-name|add
-argument_list|(
-name|appSched
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|getRunnableAppSchedulables ()
 specifier|public
@@ -1328,6 +1323,18 @@ name|runnableAppScheds
 operator|.
 name|size
 argument_list|()
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getActiveUsersManager ()
+specifier|public
+name|ActiveUsersManager
+name|getActiveUsersManager
+parameter_list|()
+block|{
+return|return
+name|activeUsersManager
 return|;
 block|}
 block|}

@@ -3789,6 +3789,18 @@ return|return
 name|jobConf
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|void
+name|setQueueName
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+comment|// do nothing
+block|}
 block|}
 return|;
 block|}

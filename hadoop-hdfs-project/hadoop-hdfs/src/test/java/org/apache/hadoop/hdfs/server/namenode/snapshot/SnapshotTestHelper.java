@@ -590,7 +590,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -797,7 +797,7 @@ argument_list|)
 expr_stmt|;
 name|setLevel2OFF
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|LOG
 argument_list|)

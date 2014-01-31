@@ -422,7 +422,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/* create a file, write data with vairable amount of data */
+comment|/* create a file, write data with variable amount of data */
 DECL|method|writeFile3 (Path name)
 specifier|private
 name|void
@@ -700,6 +700,14 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
+comment|// do a sanity check. Get the file checksum
+name|fileSys
+operator|.
+name|getFileChecksum
+argument_list|(
+name|name
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|cleanupFile (Path name)
 specifier|private
@@ -743,7 +751,7 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Test write opeation for output stream in DFS.    */
+comment|/**    * Test write operation for output stream in DFS.    */
 annotation|@
 name|Test
 DECL|method|testFSOutputSummer ()
@@ -751,6 +759,33 @@ specifier|public
 name|void
 name|testFSOutputSummer
 parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|doTestFSOutputSummer
+argument_list|(
+literal|"CRC32"
+argument_list|)
+expr_stmt|;
+name|doTestFSOutputSummer
+argument_list|(
+literal|"CRC32C"
+argument_list|)
+expr_stmt|;
+name|doTestFSOutputSummer
+argument_list|(
+literal|"NULL"
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|doTestFSOutputSummer (String checksumType)
+specifier|private
+name|void
+name|doTestFSOutputSummer
+parameter_list|(
+name|String
+name|checksumType
+parameter_list|)
 throws|throws
 name|Exception
 block|{
@@ -781,6 +816,17 @@ operator|.
 name|DFS_BYTES_PER_CHECKSUM_KEY
 argument_list|,
 name|BYTES_PER_CHECKSUM
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_CHECKSUM_TYPE_KEY
+argument_list|,
+name|checksumType
 argument_list|)
 expr_stmt|;
 name|MiniDFSCluster

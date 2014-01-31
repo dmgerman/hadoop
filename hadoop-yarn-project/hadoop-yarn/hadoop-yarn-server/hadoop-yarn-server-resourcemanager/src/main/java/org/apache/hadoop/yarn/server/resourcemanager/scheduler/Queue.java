@@ -192,6 +192,12 @@ name|UserGroupInformation
 name|user
 parameter_list|)
 function_decl|;
+DECL|method|getActiveUsersManager ()
+specifier|public
+name|ActiveUsersManager
+name|getActiveUsersManager
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

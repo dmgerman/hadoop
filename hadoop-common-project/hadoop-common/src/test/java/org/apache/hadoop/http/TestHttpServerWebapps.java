@@ -103,7 +103,7 @@ parameter_list|()
 throws|throws
 name|Throwable
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 literal|null
@@ -140,7 +140,7 @@ name|Throwable
 block|{
 try|try
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|createServer

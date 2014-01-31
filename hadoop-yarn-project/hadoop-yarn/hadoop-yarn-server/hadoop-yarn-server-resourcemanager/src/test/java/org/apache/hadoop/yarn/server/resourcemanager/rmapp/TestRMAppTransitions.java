@@ -2041,6 +2041,36 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|assertAppFinalStateNotSaved (RMApp application)
+specifier|private
+name|void
+name|assertAppFinalStateNotSaved
+parameter_list|(
+name|RMApp
+name|application
+parameter_list|)
+block|{
+name|verify
+argument_list|(
+name|store
+argument_list|,
+name|times
+argument_list|(
+literal|0
+argument_list|)
+argument_list|)
+operator|.
+name|updateApplicationState
+argument_list|(
+name|any
+argument_list|(
+name|ApplicationState
+operator|.
+name|class
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|assertKilled (RMApp application)
 specifier|private
 name|void
@@ -2203,11 +2233,6 @@ name|matches
 argument_list|(
 name|regex
 argument_list|)
-argument_list|)
-expr_stmt|;
-name|assertAppFinalStateSaved
-argument_list|(
-name|application
 argument_list|)
 expr_stmt|;
 block|}
@@ -3013,6 +3038,11 @@ argument_list|,
 literal|".*Unmanaged application.*Failing the application.*"
 argument_list|)
 expr_stmt|;
+name|assertAppFinalStateSaved
+argument_list|(
+name|application
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Test
@@ -3165,6 +3195,11 @@ argument_list|(
 name|application
 argument_list|)
 expr_stmt|;
+name|assertAppFinalStateNotSaved
+argument_list|(
+name|application
+argument_list|)
+expr_stmt|;
 name|verify
 argument_list|(
 name|writer
@@ -3248,6 +3283,11 @@ argument_list|(
 name|application
 argument_list|,
 name|rejectedText
+argument_list|)
+expr_stmt|;
+name|assertAppFinalStateNotSaved
+argument_list|(
+name|application
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3425,6 +3465,11 @@ argument_list|,
 name|rejectedText
 argument_list|)
 expr_stmt|;
+name|assertAppFinalStateSaved
+argument_list|(
+name|application
+argument_list|)
+expr_stmt|;
 name|verify
 argument_list|(
 name|writer
@@ -3513,6 +3558,11 @@ argument_list|(
 name|application
 argument_list|,
 name|rejectedText
+argument_list|)
+expr_stmt|;
+name|assertAppFinalStateSaved
+argument_list|(
+name|application
 argument_list|)
 expr_stmt|;
 name|verify
@@ -3794,6 +3844,11 @@ operator|+
 name|message
 operator|+
 literal|".*Failing the application.*"
+argument_list|)
+expr_stmt|;
+name|assertAppFinalStateSaved
+argument_list|(
+name|application
 argument_list|)
 expr_stmt|;
 name|verify
@@ -4285,6 +4340,11 @@ argument_list|,
 literal|".*Failing the application.*"
 argument_list|)
 expr_stmt|;
+name|assertAppFinalStateSaved
+argument_list|(
+name|application
+argument_list|)
+expr_stmt|;
 comment|// FAILED => FAILED event RMAppEventType.KILL
 name|event
 operator|=
@@ -4318,6 +4378,11 @@ argument_list|(
 name|application
 argument_list|,
 literal|".*Failing the application.*"
+argument_list|)
+expr_stmt|;
+name|assertAppFinalStateSaved
+argument_list|(
+name|application
 argument_list|)
 expr_stmt|;
 name|verify

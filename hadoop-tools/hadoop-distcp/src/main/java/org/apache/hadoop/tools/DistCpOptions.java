@@ -247,6 +247,7 @@ DECL|enumConstant|BLOCKSIZE
 DECL|enumConstant|USER
 DECL|enumConstant|GROUP
 DECL|enumConstant|PERMISSION
+DECL|enumConstant|CHECKSUMTYPE
 name|REPLICATION
 block|,
 name|BLOCKSIZE
@@ -256,6 +257,8 @@ block|,
 name|GROUP
 block|,
 name|PERMISSION
+block|,
+name|CHECKSUMTYPE
 block|;
 DECL|method|getAttribute (char symbol)
 specifier|public

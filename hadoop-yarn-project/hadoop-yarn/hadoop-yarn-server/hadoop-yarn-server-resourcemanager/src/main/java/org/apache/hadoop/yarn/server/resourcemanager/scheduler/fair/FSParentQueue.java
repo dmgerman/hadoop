@@ -244,7 +244,7 @@ name|resourcemanager
 operator|.
 name|scheduler
 operator|.
-name|SchedulerApplicationAttempt
+name|ActiveUsersManager
 import|;
 end_import
 
@@ -974,6 +974,19 @@ name|apps
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+annotation|@
+name|Override
+DECL|method|getActiveUsersManager ()
+specifier|public
+name|ActiveUsersManager
+name|getActiveUsersManager
+parameter_list|()
+block|{
+comment|// Should never be called since all applications are submitted to LeafQueues
+return|return
+literal|null
+return|;
 block|}
 block|}
 end_class

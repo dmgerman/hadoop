@@ -250,7 +250,7 @@ index|[
 name|index
 index|]
 operator|=
-literal|"-prbugp"
+literal|"-prbugpc"
 expr_stmt|;
 block|}
 block|}

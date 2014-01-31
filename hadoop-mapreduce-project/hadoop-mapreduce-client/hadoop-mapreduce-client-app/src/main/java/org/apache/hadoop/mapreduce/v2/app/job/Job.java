@@ -293,7 +293,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Main interface to interact with the job. Provides only getters.   */
+comment|/**  * Main interface to interact with the job.  */
 end_comment
 
 begin_interface
@@ -474,6 +474,15 @@ name|callerUGI
 parameter_list|,
 name|JobACL
 name|jobOperation
+parameter_list|)
+function_decl|;
+DECL|method|setQueueName (String queueName)
+specifier|public
+name|void
+name|setQueueName
+parameter_list|(
+name|String
+name|queueName
 parameter_list|)
 function_decl|;
 block|}

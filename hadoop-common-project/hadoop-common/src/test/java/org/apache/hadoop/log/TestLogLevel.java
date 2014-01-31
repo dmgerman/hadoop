@@ -46,7 +46,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -220,11 +220,11 @@ argument_list|()
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

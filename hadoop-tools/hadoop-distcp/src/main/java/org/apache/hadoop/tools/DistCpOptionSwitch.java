@@ -73,7 +73,7 @@ literal|"Ignore failures during copy"
 argument_list|)
 argument_list|)
 block|,
-comment|/**    * Preserves status of file/path in the target.    * Default behavior with -p, is to preserve replication,    * block size, user, group and permission on the target file    *    * If any of the optional switches are present among rbugp, then    * only the corresponding file attribute is preserved    *    */
+comment|/**    * Preserves status of file/path in the target.    * Default behavior with -p, is to preserve replication,    * block size, user, group, permission and checksum type on the target file.    * Note that when preserving checksum type, block size is also preserved.    *    * If any of the optional switches are present among rbugpc, then    * only the corresponding file attribute is preserved.    *    */
 DECL|enumConstant|PRESERVE_STATUS
 name|PRESERVE_STATUS
 argument_list|(
@@ -88,9 +88,9 @@ literal|"p"
 argument_list|,
 literal|true
 argument_list|,
-literal|"preserve status (rbugp)"
+literal|"preserve status (rbugpc)"
 operator|+
-literal|"(replication, block-size, user, group, permission)"
+literal|"(replication, block-size, user, group, permission, checksum-type)"
 argument_list|)
 argument_list|)
 block|,

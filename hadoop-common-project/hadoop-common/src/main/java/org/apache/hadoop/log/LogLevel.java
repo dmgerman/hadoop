@@ -138,7 +138,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -506,7 +506,7 @@ comment|// Do the authorization
 if|if
 condition|(
 operator|!
-name|HttpServer
+name|HttpServer2
 operator|.
 name|hasAdministratorAccess
 argument_list|(

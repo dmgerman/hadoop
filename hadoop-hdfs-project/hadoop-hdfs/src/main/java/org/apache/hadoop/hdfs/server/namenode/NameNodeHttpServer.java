@@ -278,7 +278,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -340,7 +340,7 @@ name|NameNodeHttpServer
 block|{
 DECL|field|httpServer
 specifier|private
-name|HttpServer
+name|HttpServer2
 name|httpServer
 decl_stmt|;
 DECL|field|conf
@@ -457,7 +457,7 @@ name|isEnabled
 argument_list|(
 name|conf
 argument_list|,
-name|HttpServer
+name|HttpServer2
 operator|.
 name|LOG
 argument_list|)
@@ -523,7 +523,7 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|defineFilter
 argument_list|(
@@ -546,7 +546,7 @@ name|pathSpec
 block|}
 argument_list|)
 expr_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|LOG
 operator|.
@@ -657,7 +657,7 @@ argument_list|(
 name|httpsAddrString
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder
@@ -940,7 +940,7 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|HttpServer
+name|HttpServer2
 operator|.
 name|LOG
 operator|.
@@ -1009,7 +1009,7 @@ name|isSecurityEnabled
 argument_list|()
 condition|)
 block|{
-name|HttpServer
+name|HttpServer2
 operator|.
 name|LOG
 operator|.
@@ -1130,13 +1130,13 @@ name|prog
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|setupServlets (HttpServer httpServer, Configuration conf)
+DECL|method|setupServlets (HttpServer2 httpServer, Configuration conf)
 specifier|private
 specifier|static
 name|void
 name|setupServlets
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 name|httpServer
 parameter_list|,
 name|Configuration

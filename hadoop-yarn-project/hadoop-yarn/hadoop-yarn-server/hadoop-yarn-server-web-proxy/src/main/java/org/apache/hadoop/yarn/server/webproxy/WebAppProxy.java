@@ -92,7 +92,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -271,7 +271,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|proxyServer
 specifier|private
-name|HttpServer
+name|HttpServer2
 name|proxyServer
 init|=
 literal|null
@@ -580,7 +580,7 @@ block|{
 name|proxyServer
 operator|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

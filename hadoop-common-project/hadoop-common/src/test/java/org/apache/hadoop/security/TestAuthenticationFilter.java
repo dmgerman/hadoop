@@ -36,7 +36,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -278,7 +278,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|BIND_ADDRESS
 argument_list|,

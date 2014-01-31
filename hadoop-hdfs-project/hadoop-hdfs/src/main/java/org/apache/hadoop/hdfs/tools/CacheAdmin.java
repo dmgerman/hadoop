@@ -3417,7 +3417,7 @@ literal|"seconds, minutes, hours, and days, e.g. 120s, 30m, 4h, 2d. "
 operator|+
 literal|"Valid units are [smhd]. By default, no maximum is set. "
 operator|+
-literal|"This can also be manually specified by \"never\"."
+literal|"A value of \"never\" specifies that there is no limit."
 argument_list|)
 expr_stmt|;
 return|return

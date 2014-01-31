@@ -1528,7 +1528,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -2225,7 +2225,7 @@ literal|null
 decl_stmt|;
 DECL|field|infoServer
 specifier|private
-name|HttpServer
+name|HttpServer2
 name|infoServer
 init|=
 literal|null
@@ -2716,13 +2716,13 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

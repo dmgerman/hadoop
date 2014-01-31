@@ -878,7 +878,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -7181,15 +7181,15 @@ return|return
 name|policy
 return|;
 block|}
-DECL|method|loadSslConfToHttpServerBuilder (HttpServer.Builder builder, Configuration sslConf)
+DECL|method|loadSslConfToHttpServerBuilder (HttpServer2.Builder builder, Configuration sslConf)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|loadSslConfToHttpServerBuilder
 parameter_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder
@@ -7720,7 +7720,7 @@ comment|/**    * Return a HttpServer.Builder that the journalnode / namenode / s
 DECL|method|httpServerTemplateForNNAndJN ( Configuration conf, final InetSocketAddress httpAddr, final InetSocketAddress httpsAddr, String name, String spnegoUserNameKey, String spnegoKeytabFileKey)
 specifier|public
 specifier|static
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|httpServerTemplateForNNAndJN
@@ -7758,13 +7758,13 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 name|builder
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

@@ -208,7 +208,7 @@ name|hadoop
 operator|.
 name|http
 operator|.
-name|HttpServer
+name|HttpServer2
 import|;
 end_import
 
@@ -1350,7 +1350,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|startHttpServer
@@ -1524,7 +1524,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|startHttpServer
@@ -1726,7 +1726,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 name|startHttpServer
@@ -1928,7 +1928,7 @@ block|}
 DECL|method|startHttpServer ()
 specifier|private
 specifier|static
-name|HttpServer
+name|HttpServer2
 name|startHttpServer
 parameter_list|()
 throws|throws
@@ -1952,11 +1952,11 @@ operator|.
 name|mkdirs
 argument_list|()
 expr_stmt|;
-name|HttpServer
+name|HttpServer2
 name|server
 init|=
 operator|new
-name|HttpServer
+name|HttpServer2
 operator|.
 name|Builder
 argument_list|()

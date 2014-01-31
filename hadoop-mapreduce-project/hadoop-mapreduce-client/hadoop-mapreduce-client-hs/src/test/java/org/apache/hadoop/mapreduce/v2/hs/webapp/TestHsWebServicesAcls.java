@@ -2492,6 +2492,17 @@ argument_list|)
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|setQueueName (String queueName)
+specifier|public
+name|void
+name|setQueueName
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{     }
 block|}
 block|}
 end_class

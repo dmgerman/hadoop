@@ -242,7 +242,7 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|class
 argument_list|)
@@ -552,7 +552,7 @@ name|conf
 operator|.
 name|set
 argument_list|(
-name|HttpServer
+name|HttpServer2
 operator|.
 name|FILTER_INITIALIZER_PROPERTY
 argument_list|,
@@ -576,7 +576,7 @@ block|,
 literal|"/path/*"
 block|}
 decl_stmt|;
-name|HttpServer
+name|HttpServer2
 name|http
 init|=
 name|createTestServer

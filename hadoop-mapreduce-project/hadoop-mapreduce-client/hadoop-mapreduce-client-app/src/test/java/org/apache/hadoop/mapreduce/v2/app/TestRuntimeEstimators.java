@@ -2914,6 +2914,19 @@ name|UnsupportedOperationException
 argument_list|()
 throw|;
 block|}
+annotation|@
+name|Override
+DECL|method|setQueueName (String queueName)
+specifier|public
+name|void
+name|setQueueName
+parameter_list|(
+name|String
+name|queueName
+parameter_list|)
+block|{
+comment|// do nothing
+block|}
 block|}
 comment|/*    * We follow the pattern of the real XxxImpl .  We create a job and initialize    * it with a full suite of tasks which in turn have one attempt each in the    * NEW state.  Attempts transition only from NEW to RUNNING to SUCCEEDED .    */
 DECL|class|MyTaskAttemptImpl
