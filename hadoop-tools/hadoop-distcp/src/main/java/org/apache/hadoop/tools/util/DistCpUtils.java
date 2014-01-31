@@ -520,7 +520,7 @@ name|class
 argument_list|)
 return|;
 block|}
-comment|/**    * Gets relative path of child path with respect to a root path    * For ex. If childPath = /tmp/abc/xyz/file and    *            sourceRootPath = /tmp/abc    * Relative path would be /xyz/file    *         If childPath = /file and    *            sourceRootPath = /    * Relative path would be /file    * @param sourceRootPath - Source root path    * @param childPath - Path for which relative path is required    * @return - Relative portion of the child path (always prefixed with /    *           unless it is empty     */
+comment|/**    * Gets relative path of child path with respect to a root path    * For ex. If childPath = /tmp/abc/xyz/file and    *            sourceRootPath = /tmp/abc    * Relative path would be /xyz/file    *         If childPath = /file and    *            sourceRootPath = /    * Relative path would be /file    * @param sourceRootPath - Source root path    * @param childPath - Path for which relative path is required    * @return - Relative portion of the child path (always prefixed with /    *           unless it is empty    */
 DECL|method|getRelativePath (Path sourceRootPath, Path childPath)
 specifier|public
 specifier|static
@@ -1169,8 +1169,8 @@ name|index
 index|]
 return|;
 block|}
-comment|/**    * Utility to compare checksums for the paths specified.    *    * If checksums's can't be retrieved, it doesn't fail the test    * Only time the comparison would fail is when checksums are    * available and they don't match    *                                      * @param sourceFS FileSystem for the source path.    * @param source The source path.    * @param targetFS FileSystem for the target path.    * @param target The target path.    * @return If either checksum couldn't be retrieved, the function returns    * false. If checksums are retrieved, the function returns true if they match,    * and false otherwise.    * @throws IOException if there's an exception while retrieving checksums.    */
-DECL|method|checksumsAreEqual (FileSystem sourceFS, Path source, FileSystem targetFS, Path target)
+comment|/**    * Utility to compare checksums for the paths specified.    *    * If checksums's can't be retrieved, it doesn't fail the test    * Only time the comparison would fail is when checksums are    * available and they don't match    *    * @param sourceFS FileSystem for the source path.    * @param source The source path.    * @param sourceChecksum The checksum of the source file. If it is null we    * still need to retrieve it through sourceFS.    * @param targetFS FileSystem for the target path.    * @param target The target path.    * @return If either checksum couldn't be retrieved, the function returns    * false. If checksums are retrieved, the function returns true if they match,    * and false otherwise.    * @throws IOException if there's an exception while retrieving checksums.    */
+DECL|method|checksumsAreEqual (FileSystem sourceFS, Path source, FileChecksum sourceChecksum, FileSystem targetFS, Path target)
 specifier|public
 specifier|static
 name|boolean
@@ -1182,6 +1182,9 @@ parameter_list|,
 name|Path
 name|source
 parameter_list|,
+name|FileChecksum
+name|sourceChecksum
+parameter_list|,
 name|FileSystem
 name|targetFS
 parameter_list|,
@@ -1192,11 +1195,6 @@ throws|throws
 name|IOException
 block|{
 name|FileChecksum
-name|sourceChecksum
-init|=
-literal|null
-decl_stmt|;
-name|FileChecksum
 name|targetChecksum
 init|=
 literal|null
@@ -1205,6 +1203,12 @@ try|try
 block|{
 name|sourceChecksum
 operator|=
+name|sourceChecksum
+operator|!=
+literal|null
+condition|?
+name|sourceChecksum
+else|:
 name|sourceFS
 operator|.
 name|getFileChecksum

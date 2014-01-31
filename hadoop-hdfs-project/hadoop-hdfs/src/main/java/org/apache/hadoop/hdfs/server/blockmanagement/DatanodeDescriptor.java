@@ -1074,6 +1074,45 @@ argument_list|)
 return|;
 block|}
 block|}
+DECL|method|hasStaleStorages ()
+name|boolean
+name|hasStaleStorages
+parameter_list|()
+block|{
+synchronized|synchronized
+init|(
+name|storageMap
+init|)
+block|{
+for|for
+control|(
+name|DatanodeStorageInfo
+name|storage
+range|:
+name|storageMap
+operator|.
+name|values
+argument_list|()
+control|)
+block|{
+if|if
+condition|(
+name|storage
+operator|.
+name|areBlockContentsStale
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
+block|}
 comment|/**    * Remove block from the list of blocks belonging to the data-node. Remove    * data-node from the block.    */
 DECL|method|removeBlock (BlockInfo b)
 name|boolean

@@ -1927,6 +1927,17 @@ name|user
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+specifier|public
+name|ActiveUsersManager
+name|getActiveUsersManager
+parameter_list|()
+block|{
+return|return
+name|activeUsersManager
+return|;
+block|}
 block|}
 decl_stmt|;
 annotation|@

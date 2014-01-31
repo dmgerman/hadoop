@@ -62,6 +62,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|fs
+operator|.
+name|Options
+operator|.
+name|ChecksumOpt
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|io
 operator|.
 name|Writable
@@ -114,6 +130,16 @@ index|[]
 name|getBytes
 parameter_list|()
 function_decl|;
+DECL|method|getChecksumOpt ()
+specifier|public
+name|ChecksumOpt
+name|getChecksumOpt
+parameter_list|()
+block|{
+return|return
+literal|null
+return|;
+block|}
 comment|/** Return true if both the algorithms and the values are the same. */
 annotation|@
 name|Override
