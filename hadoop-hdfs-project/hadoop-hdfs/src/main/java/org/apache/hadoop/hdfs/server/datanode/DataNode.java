@@ -6432,11 +6432,6 @@ block|{
 if|if
 condition|(
 name|isBlockTokenEnabled
-operator|&&
-name|UserGroupInformation
-operator|.
-name|isSecurityEnabled
-argument_list|()
 condition|)
 block|{
 name|BlockTokenIdentifier
