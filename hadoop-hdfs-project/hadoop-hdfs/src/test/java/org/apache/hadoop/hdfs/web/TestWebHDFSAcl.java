@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.hdfs.server.namenode
+DECL|package|org.apache.hadoop.hdfs.web
 package|package
 name|org
 operator|.
@@ -14,9 +14,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|server
-operator|.
-name|namenode
+name|web
 package|;
 end_package
 
@@ -56,7 +54,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|DistributedFileSystem
+name|MiniDFSCluster
 import|;
 end_import
 
@@ -70,7 +68,11 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|MiniDFSCluster
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSAclBaseTest
 import|;
 end_import
 
@@ -85,14 +87,14 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests NameNode interaction for all ACL modification APIs.  This test suite  * also covers interaction of setPermission with inodes that have ACLs.  */
+comment|/**  * Tests ACL APIs via WebHDFS.  */
 end_comment
 
 begin_class
-DECL|class|TestNameNodeAcl
+DECL|class|TestWebHDFSAcl
 specifier|public
 class|class
-name|TestNameNodeAcl
+name|TestWebHDFSAcl
 extends|extends
 name|FSAclBaseTest
 block|{
@@ -110,8 +112,9 @@ block|{
 name|Configuration
 name|conf
 init|=
-operator|new
-name|Configuration
+name|WebHdfsTestUtil
+operator|.
+name|createConf
 argument_list|()
 decl_stmt|;
 name|cluster
@@ -139,16 +142,22 @@ argument_list|()
 expr_stmt|;
 name|fs
 operator|=
-name|cluster
+name|WebHdfsTestUtil
 operator|.
-name|getFileSystem
-argument_list|()
+name|getWebHdfsFileSystem
+argument_list|(
+name|conf
+argument_list|,
+name|WebHdfsFileSystem
+operator|.
+name|SCHEME
+argument_list|)
 expr_stmt|;
 name|assertTrue
 argument_list|(
 name|fs
 operator|instanceof
-name|DistributedFileSystem
+name|WebHdfsFileSystem
 argument_list|)
 expr_stmt|;
 block|}
