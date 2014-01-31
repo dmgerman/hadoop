@@ -3774,15 +3774,14 @@ expr_stmt|;
 block|}
 try|try
 block|{
-comment|// Use superUserClient to get file attr since we don't know whether the
-comment|// NFS client user has access permission to the file
+comment|// HDFS-5804 removed supserUserClient access
 name|attrs
 operator|=
 name|writeManager
 operator|.
 name|getFileAttr
 argument_list|(
-name|superUserClient
+name|dfsClient
 argument_list|,
 name|handle
 argument_list|,
@@ -4479,7 +4478,7 @@ name|Nfs3Utils
 operator|.
 name|getFileAttr
 argument_list|(
-name|superUserClient
+name|dfsClient
 argument_list|,
 name|Nfs3Utils
 operator|.
