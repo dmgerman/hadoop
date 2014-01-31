@@ -2127,7 +2127,7 @@ name|znodePath
 argument_list|,
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|,
 name|currentLedger
 operator|.

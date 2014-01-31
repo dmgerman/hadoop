@@ -433,6 +433,10 @@ argument_list|,
 name|clusterId
 argument_list|,
 name|cTime
+argument_list|,
+name|NodeType
+operator|.
+name|DATA_NODE
 argument_list|)
 expr_stmt|;
 name|blockPoolId
@@ -461,10 +465,9 @@ decl_stmt|;
 name|int
 name|layoutVersionCur
 init|=
-name|UpgradeUtilities
+name|HdfsConstants
 operator|.
-name|getCurrentLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 decl_stmt|;
 name|int
 name|layoutVersionNew
@@ -963,9 +966,8 @@ name|softwareLV
 init|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 decl_stmt|;
-comment|// will also be Namenode's LV
 name|int
 name|storedLV
 init|=
@@ -1179,10 +1181,9 @@ init|=
 operator|new
 name|StorageData
 argument_list|(
-name|UpgradeUtilities
+name|HdfsConstants
 operator|.
-name|getCurrentLayoutVersion
-argument_list|()
+name|NAMENODE_LAYOUT_VERSION
 argument_list|,
 name|UpgradeUtilities
 operator|.

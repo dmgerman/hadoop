@@ -2161,7 +2161,7 @@ block|}
 assert|assert
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|==
 name|nsInfo
 operator|.
@@ -2172,7 +2172,7 @@ literal|"Active and backup node layout versions must be the same. Expected: "
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|+
 literal|" actual "
 operator|+

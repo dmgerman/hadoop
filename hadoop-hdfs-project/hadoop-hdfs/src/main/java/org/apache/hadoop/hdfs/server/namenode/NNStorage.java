@@ -260,24 +260,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|LayoutVersion
-operator|.
-name|Feature
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -2222,7 +2204,7 @@ argument_list|()
 operator|==
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 argument_list|,
 literal|"Bad layout version: %s"
 argument_list|,
@@ -2321,7 +2303,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 expr_stmt|;
 for|for
 control|(
@@ -2443,8 +2425,19 @@ block|}
 comment|// Set Block pool ID in version with federation support
 if|if
 condition|(
-name|versionSupportsFederation
+name|NameNodeLayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|LayoutVersion
+operator|.
+name|Feature
+operator|.
+name|FEDERATION
+argument_list|,
+name|getLayoutVersion
 argument_list|()
+argument_list|)
 condition|)
 block|{
 name|String
@@ -2538,7 +2531,7 @@ argument_list|()
 operator|>
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|:
 literal|"getDeprecatedProperty should only be done when loading "
 operator|+
@@ -2583,8 +2576,19 @@ expr_stmt|;
 comment|// Set blockpoolID in version with federation support
 if|if
 condition|(
-name|versionSupportsFederation
+name|NameNodeLayoutVersion
+operator|.
+name|supports
+argument_list|(
+name|LayoutVersion
+operator|.
+name|Feature
+operator|.
+name|FEDERATION
+argument_list|,
+name|getLayoutVersion
 argument_list|()
+argument_list|)
 condition|)
 block|{
 name|props
@@ -3291,10 +3295,12 @@ comment|// Else generate a new cluster ID
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|NameNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -4078,10 +4084,12 @@ name|inspector
 decl_stmt|;
 if|if
 condition|(
-name|LayoutVersion
+name|NameNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|TXID_BASED_LAYOUT

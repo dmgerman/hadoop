@@ -6014,14 +6014,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|verifyLayoutVersion
-argument_list|(
-name|nodeReg
-operator|.
-name|getVersion
-argument_list|()
-argument_list|)
-expr_stmt|;
 name|verifySoftwareVersion
 argument_list|(
 name|nodeReg
@@ -6551,14 +6543,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|verifyLayoutVersion
-argument_list|(
-name|nodeReg
-operator|.
-name|getVersion
-argument_list|()
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -6888,12 +6872,16 @@ name|version
 operator|!=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 condition|)
 throw|throw
 operator|new
 name|IncorrectVersionException
 argument_list|(
+name|HdfsConstants
+operator|.
+name|NAMENODE_LAYOUT_VERSION
+argument_list|,
 name|version
 argument_list|,
 literal|"data node"

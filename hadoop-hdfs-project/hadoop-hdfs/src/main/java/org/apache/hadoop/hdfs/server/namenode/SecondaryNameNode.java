@@ -2678,7 +2678,11 @@ operator|(
 name|dstStorage
 operator|.
 name|versionSupportsFederation
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|FEATURES
+argument_list|)
 operator|&&
 name|sig
 operator|.
@@ -2693,7 +2697,11 @@ operator|!
 name|dstStorage
 operator|.
 name|versionSupportsFederation
-argument_list|()
+argument_list|(
+name|NameNodeLayoutVersion
+operator|.
+name|FEATURES
+argument_list|)
 operator|&&
 name|sig
 operator|.

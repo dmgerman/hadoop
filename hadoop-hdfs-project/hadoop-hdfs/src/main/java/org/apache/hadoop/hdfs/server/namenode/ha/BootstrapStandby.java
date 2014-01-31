@@ -1033,7 +1033,7 @@ literal|"this node's layout version ("
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|+
 literal|")"
 argument_list|)
@@ -1494,7 +1494,7 @@ argument_list|()
 operator|==
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|NAMENODE_LAYOUT_VERSION
 operator|)
 return|;
 block|}

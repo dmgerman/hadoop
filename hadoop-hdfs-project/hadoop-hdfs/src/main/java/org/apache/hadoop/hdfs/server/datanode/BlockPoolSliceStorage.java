@@ -188,24 +188,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|LayoutVersion
-operator|.
-name|Feature
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -375,10 +357,6 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|NodeType
-operator|.
-name|DATA_NODE
-argument_list|,
 name|storageInfo
 argument_list|)
 expr_stmt|;
@@ -471,18 +449,6 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-assert|assert
-name|HdfsConstants
-operator|.
-name|LAYOUT_VERSION
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|:
-literal|"Block-pool and name-node layout versions must be the same."
-assert|;
 comment|// 1. For each BP data directory analyze the state and
 comment|// check whether all is consistent before transitioning.
 name|this
@@ -727,17 +693,6 @@ name|startOpt
 argument_list|)
 expr_stmt|;
 assert|assert
-name|getLayoutVersion
-argument_list|()
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|:
-literal|"Data-node and name-node layout versions must be the same."
-assert|;
-assert|assert
 name|getCTime
 argument_list|()
 operator|==
@@ -843,7 +798,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 name|this
 operator|.
@@ -871,14 +826,6 @@ name|nsInfo
 operator|.
 name|getBlockPoolID
 argument_list|()
-expr_stmt|;
-name|this
-operator|.
-name|storageType
-operator|=
-name|NodeType
-operator|.
-name|DATA_NODE
 expr_stmt|;
 name|writeProperties
 argument_list|(
@@ -1149,7 +1096,7 @@ name|layoutVersion
 operator|>=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|:
 literal|"Future version is not allowed"
 assert|;
@@ -1241,7 +1188,7 @@ name|layoutVersion
 operator|==
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|&&
 name|this
 operator|.
@@ -1264,7 +1211,7 @@ name|layoutVersion
 operator|>
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|||
 name|this
 operator|.
@@ -1340,10 +1287,12 @@ comment|// Upgrading is applicable only to release with federation or after
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -1536,7 +1485,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 assert|assert
 name|this
@@ -1606,10 +1555,12 @@ block|{
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|APPEND_RBW_DIR
@@ -1742,7 +1693,7 @@ argument_list|()
 operator|>=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|&&
 name|prevInfo
 operator|.
@@ -1782,10 +1733,9 @@ argument_list|()
 operator|+
 literal|" is newer than the namespace state: LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" CTime = "
 operator|+

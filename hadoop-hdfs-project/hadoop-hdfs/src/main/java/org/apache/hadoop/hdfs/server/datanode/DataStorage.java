@@ -276,24 +276,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|protocol
-operator|.
-name|LayoutVersion
-operator|.
-name|Feature
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|server
 operator|.
 name|common
@@ -613,10 +595,6 @@ parameter_list|)
 block|{
 name|super
 argument_list|(
-name|NodeType
-operator|.
-name|DATA_NODE
-argument_list|,
 name|storageInfo
 argument_list|)
 expr_stmt|;
@@ -714,31 +692,35 @@ block|{
 comment|// DN storage has been initialized, no need to do anything
 return|return;
 block|}
-assert|assert
+if|if
+condition|(
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|==
 name|nsInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|:
-literal|"Data-node version "
+condition|)
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Data-node version: "
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|+
-literal|" and name-node layout version "
+literal|" and name-node layout version: "
 operator|+
 name|nsInfo
 operator|.
 name|getLayoutVersion
 argument_list|()
-operator|+
-literal|" must be the same."
-assert|;
+argument_list|)
+expr_stmt|;
 comment|// 1. For each data directory calculate its state and
 comment|// check whether all is consistent before transitioning.
 comment|// Format and recover.
@@ -1336,7 +1318,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 name|this
 operator|.
@@ -1501,10 +1483,12 @@ comment|// Set NamespaceID in version before federation
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -1607,7 +1591,7 @@ argument_list|,
 name|sd
 argument_list|)
 expr_stmt|;
-name|setStorageType
+name|checkStorageType
 argument_list|(
 name|props
 argument_list|,
@@ -1627,10 +1611,12 @@ comment|// Read NamespaceID in version before federation
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -2035,17 +2021,19 @@ name|layoutVersion
 operator|>=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|:
 literal|"Future version is not allowed"
 assert|;
 name|boolean
 name|federationSupported
 init|=
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -2153,7 +2141,7 @@ name|layoutVersion
 operator|==
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 condition|)
 return|return;
 comment|// regular startup
@@ -2166,7 +2154,7 @@ name|layoutVersion
 operator|>
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 condition|)
 block|{
 name|doUpgrade
@@ -2198,7 +2186,7 @@ literal|" is newer than the supported LV = "
 operator|+
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" or name node LV = "
 operator|+
@@ -2227,10 +2215,12 @@ comment|// If the existing on-disk layout version supportes federation, simply
 comment|// update its layout version.
 if|if
 condition|(
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
@@ -2481,7 +2471,7 @@ name|layoutVersion
 operator|=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 name|clusterID
 operator|=
@@ -2543,10 +2533,12 @@ block|{
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|APPEND_RBW_DIR
@@ -2657,22 +2649,24 @@ comment|// level and the invalid VERSION content will be overwritten when
 comment|// the error is corrected and rollback is retried.
 if|if
 condition|(
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|FEDERATION
 argument_list|,
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 operator|&&
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|==
 name|nsInfo
 operator|.
@@ -2744,7 +2738,7 @@ argument_list|()
 operator|>=
 name|HdfsConstants
 operator|.
-name|LAYOUT_VERSION
+name|DATANODE_LAYOUT_VERSION
 operator|&&
 name|prevInfo
 operator|.
@@ -3200,10 +3194,12 @@ argument_list|()
 decl_stmt|;
 if|if
 condition|(
-name|LayoutVersion
+name|DataNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
+name|LayoutVersion
+operator|.
 name|Feature
 operator|.
 name|APPEND_RBW_DIR
