@@ -336,38 +336,6 @@ name|hdfs
 operator|.
 name|DFSConfigKeys
 operator|.
-name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_DEFAULT
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_KEY
-import|;
-end_import
-
-begin_import
-import|import static
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|DFSConfigKeys
-operator|.
 name|DFS_NAMENODE_AUDIT_LOG_ASYNC_DEFAULT
 import|;
 end_import
@@ -385,6 +353,38 @@ operator|.
 name|DFSConfigKeys
 operator|.
 name|DFS_NAMENODE_AUDIT_LOG_ASYNC_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_DEFAULT
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AUDIT_LOG_TOKEN_TRACKING_ID_KEY
 import|;
 end_import
 
@@ -21250,6 +21250,7 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+comment|//get datanode commands
 specifier|final
 name|int
 name|maxTransfer
@@ -21289,43 +21290,18 @@ argument_list|,
 name|failedVolumes
 argument_list|)
 decl_stmt|;
-return|return
-operator|new
-name|HeartbeatResponse
-argument_list|(
-name|cmds
-argument_list|,
-name|createHaStatusHeartbeat
-argument_list|()
-argument_list|)
-return|;
-block|}
-finally|finally
-block|{
-name|readUnlock
-argument_list|()
-expr_stmt|;
-block|}
-block|}
-DECL|method|createHaStatusHeartbeat ()
-specifier|private
+comment|//create ha status
+specifier|final
 name|NNHAStatusHeartbeat
-name|createHaStatusHeartbeat
-parameter_list|()
-block|{
-name|HAState
-name|state
+name|haState
 init|=
+operator|new
+name|NNHAStatusHeartbeat
+argument_list|(
 name|haContext
 operator|.
 name|getState
 argument_list|()
-decl_stmt|;
-return|return
-operator|new
-name|NNHAStatusHeartbeat
-argument_list|(
-name|state
 operator|.
 name|getServiceState
 argument_list|()
@@ -21336,7 +21312,25 @@ operator|.
 name|getLastAppliedOrWrittenTxId
 argument_list|()
 argument_list|)
+decl_stmt|;
+return|return
+operator|new
+name|HeartbeatResponse
+argument_list|(
+name|cmds
+argument_list|,
+name|haState
+argument_list|,
+name|rollingUpgradeInfo
+argument_list|)
 return|;
+block|}
+finally|finally
+block|{
+name|readUnlock
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Returns whether or not there were available resources at the last check of    * resources.    *    * @return true if there were sufficient resources available, false otherwise.    */
 DECL|method|nameNodeHasResourcesAvailable ()
@@ -33056,9 +33050,8 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|rollingUpgradeInfo
-operator|!=
-literal|null
+name|isRollingUpgrade
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -33168,10 +33161,23 @@ operator|=
 operator|new
 name|RollingUpgradeInfo
 argument_list|(
+name|blockPoolId
+argument_list|,
 name|startTime
 argument_list|)
 expr_stmt|;
-empty_stmt|;
+block|}
+comment|/** Is rolling upgrade in progress? */
+DECL|method|isRollingUpgrade ()
+name|boolean
+name|isRollingUpgrade
+parameter_list|()
+block|{
+return|return
+name|rollingUpgradeInfo
+operator|!=
+literal|null
+return|;
 block|}
 DECL|method|finalizeRollingUpgrade ()
 name|RollingUpgradeInfo
@@ -33219,9 +33225,9 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
-name|rollingUpgradeInfo
-operator|==
-literal|null
+operator|!
+name|isRollingUpgrade
+argument_list|()
 condition|)
 block|{
 throw|throw
@@ -33239,6 +33245,8 @@ operator|=
 operator|new
 name|RollingUpgradeInfo
 argument_list|(
+name|blockPoolId
+argument_list|,
 name|rollingUpgradeInfo
 operator|.
 name|getStartTime

@@ -1542,6 +1542,16 @@ operator|.
 name|getHaStatus
 argument_list|()
 argument_list|)
+argument_list|,
+name|PBHelper
+operator|.
+name|convert
+argument_list|(
+name|resp
+operator|.
+name|getRollingUpgradeStatus
+argument_list|()
+argument_list|)
 argument_list|)
 return|;
 block|}

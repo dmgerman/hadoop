@@ -73,6 +73,8 @@ DECL|class|RollingUpgradeInfo
 specifier|public
 class|class
 name|RollingUpgradeInfo
+extends|extends
+name|RollingUpgradeStatus
 block|{
 DECL|field|EMPTY_INFO
 specifier|public
@@ -84,6 +86,8 @@ init|=
 operator|new
 name|RollingUpgradeInfo
 argument_list|(
+literal|null
+argument_list|,
 literal|0
 argument_list|)
 decl_stmt|;
@@ -97,26 +101,34 @@ specifier|private
 name|long
 name|finalizeTime
 decl_stmt|;
-DECL|method|RollingUpgradeInfo (long startTime)
+DECL|method|RollingUpgradeInfo (String blockPoolId, long startTime)
 specifier|public
 name|RollingUpgradeInfo
 parameter_list|(
+name|String
+name|blockPoolId
+parameter_list|,
 name|long
 name|startTime
 parameter_list|)
 block|{
 name|this
 argument_list|(
+name|blockPoolId
+argument_list|,
 name|startTime
 argument_list|,
 literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RollingUpgradeInfo (long startTime, long finalizeTime)
+DECL|method|RollingUpgradeInfo (String blockPoolId, long startTime, long finalizeTime)
 specifier|public
 name|RollingUpgradeInfo
 parameter_list|(
+name|String
+name|blockPoolId
+parameter_list|,
 name|long
 name|startTime
 parameter_list|,
@@ -124,6 +136,11 @@ name|long
 name|finalizeTime
 parameter_list|)
 block|{
+name|super
+argument_list|(
+name|blockPoolId
+argument_list|)
+expr_stmt|;
 name|this
 operator|.
 name|startTime
@@ -192,6 +209,11 @@ parameter_list|()
 block|{
 comment|//only use lower 32 bits
 return|return
+name|super
+operator|.
+name|hashCode
+argument_list|()
+operator|^
 operator|(
 name|int
 operator|)
@@ -254,6 +276,13 @@ operator|)
 name|obj
 decl_stmt|;
 return|return
+name|super
+operator|.
+name|equals
+argument_list|(
+name|that
+argument_list|)
+operator|&&
 name|this
 operator|.
 name|startTime
@@ -280,7 +309,12 @@ name|toString
 parameter_list|()
 block|{
 return|return
-literal|"     Start Time: "
+name|super
+operator|.
+name|toString
+argument_list|()
+operator|+
+literal|"\n     Start Time: "
 operator|+
 operator|(
 name|startTime
