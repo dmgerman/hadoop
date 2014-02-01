@@ -7937,10 +7937,10 @@ literal|")"
 return|;
 block|}
 block|}
-comment|/**    * The given storage is reporting all its blocks.    * Update the (storage-->block list) and (block-->storage list) maps.    */
+comment|/**    * The given storage is reporting all its blocks.    * Update the (storage-->block list) and (block-->storage list) maps.    *    * @return true if all known storages of the given DN have finished reporting.    * @throws IOException    */
 DECL|method|processReport (final DatanodeID nodeID, final DatanodeStorage storage, final String poolId, final BlockListAsLongs newReport)
 specifier|public
-name|void
+name|boolean
 name|processReport
 parameter_list|(
 specifier|final
@@ -7981,19 +7981,20 @@ specifier|final
 name|long
 name|endTime
 decl_stmt|;
-try|try
-block|{
-specifier|final
 name|DatanodeDescriptor
 name|node
-init|=
+decl_stmt|;
+try|try
+block|{
+name|node
+operator|=
 name|datanodeManager
 operator|.
 name|getDatanode
 argument_list|(
 name|nodeID
 argument_list|)
-decl_stmt|;
+expr_stmt|;
 if|if
 condition|(
 name|node
@@ -8018,17 +8019,53 @@ throw|;
 block|}
 comment|// To minimize startup time, we discard any second (or later) block reports
 comment|// that we receive while still in startup phase.
-specifier|final
 name|DatanodeStorageInfo
 name|storageInfo
 init|=
+name|node
+operator|.
+name|getStorageInfo
+argument_list|(
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|storageInfo
+operator|==
+literal|null
+condition|)
+block|{
+comment|// We handle this for backwards compatibility.
+name|storageInfo
+operator|=
 name|node
 operator|.
 name|updateStorage
 argument_list|(
 name|storage
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unknown storageId "
+operator|+
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
+operator|+
+literal|", updating storageMap. This indicates a buggy "
+operator|+
+literal|"DataNode that isn't heartbeating correctly."
+argument_list|)
+expr_stmt|;
+block|}
 if|if
 condition|(
 name|namesystem
@@ -8057,7 +8094,13 @@ operator|+
 literal|" because namenode still in startup phase"
 argument_list|)
 expr_stmt|;
-return|return;
+return|return
+operator|!
+name|node
+operator|.
+name|hasStaleStorages
+argument_list|()
+return|;
 block|}
 if|if
 condition|(
@@ -8128,7 +8171,7 @@ name|info
 argument_list|(
 literal|"BLOCK* processReport: Received first block report from "
 operator|+
-name|node
+name|storage
 operator|+
 literal|" after starting up or becoming active. Its block "
 operator|+
@@ -8191,7 +8234,14 @@ name|blockLog
 operator|.
 name|info
 argument_list|(
-literal|"BLOCK* processReport: from "
+literal|"BLOCK* processReport: from storage "
+operator|+
+name|storage
+operator|.
+name|getStorageID
+argument_list|()
+operator|+
+literal|" node "
 operator|+
 name|nodeID
 operator|+
@@ -8213,6 +8263,13 @@ operator|+
 literal|" msecs"
 argument_list|)
 expr_stmt|;
+return|return
+operator|!
+name|node
+operator|.
+name|hasStaleStorages
+argument_list|()
+return|;
 block|}
 comment|/**    * Rescan the list of blocks which were previously postponed.    */
 DECL|method|rescanPostponedMisreplicatedBlocks ()
@@ -8966,9 +9023,12 @@ name|storageInfo
 init|=
 name|dn
 operator|.
-name|updateStorage
+name|getStorageInfo
 argument_list|(
 name|storage
+operator|.
+name|getStorageID
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// place a delimiter in the list which separates blocks

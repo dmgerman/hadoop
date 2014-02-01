@@ -6150,6 +6150,11 @@ operator|.
 name|getBlockManager
 argument_list|()
 decl_stmt|;
+name|boolean
+name|hasStaleStorages
+init|=
+literal|true
+decl_stmt|;
 for|for
 control|(
 name|StorageBlockReport
@@ -6171,6 +6176,8 @@ name|getBlocks
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|hasStaleStorages
+operator|=
 name|bm
 operator|.
 name|processReport
@@ -6203,7 +6210,11 @@ name|nn
 operator|.
 name|isStandbyState
 argument_list|()
+operator|&&
+operator|!
+name|hasStaleStorages
 condition|)
+block|{
 return|return
 operator|new
 name|FinalizeCommand
@@ -6211,6 +6222,7 @@ argument_list|(
 name|poolId
 argument_list|)
 return|;
+block|}
 return|return
 literal|null
 return|;

@@ -243,6 +243,15 @@ name|SUBMIT_APP_REQUEST
 init|=
 literal|"Submit Application Request"
 decl_stmt|;
+DECL|field|MOVE_APP_REQUEST
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MOVE_APP_REQUEST
+init|=
+literal|"Move Application Request"
+decl_stmt|;
 DECL|field|FINISH_SUCCESS_APP
 specifier|public
 specifier|static
