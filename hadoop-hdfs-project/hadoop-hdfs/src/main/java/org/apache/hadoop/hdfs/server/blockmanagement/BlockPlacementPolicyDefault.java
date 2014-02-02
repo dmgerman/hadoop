@@ -1727,14 +1727,14 @@ range|:
 name|results
 control|)
 block|{
-name|oldExcludedNodes
-operator|.
-name|add
+name|addToExcludedNodes
 argument_list|(
 name|resultStorage
 operator|.
 name|getDatanodeDescriptor
 argument_list|()
+argument_list|,
+name|oldExcludedNodes
 argument_list|)
 expr_stmt|;
 block|}
