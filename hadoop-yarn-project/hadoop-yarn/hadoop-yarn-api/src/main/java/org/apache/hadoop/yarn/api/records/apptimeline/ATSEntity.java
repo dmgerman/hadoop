@@ -64,6 +64,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Map
+operator|.
+name|Entry
+import|;
+end_import
+
+begin_import
+import|import
 name|javax
 operator|.
 name|xml
@@ -190,7 +202,7 @@ name|entityId
 decl_stmt|;
 DECL|field|startTime
 specifier|private
-name|long
+name|Long
 name|startTime
 decl_stmt|;
 DECL|field|events
@@ -216,7 +228,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 argument_list|>
 name|relatedEntities
@@ -228,7 +240,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 argument_list|>
 argument_list|()
@@ -356,7 +368,7 @@ literal|"starttime"
 argument_list|)
 DECL|method|getStartTime ()
 specifier|public
-name|long
+name|Long
 name|getStartTime
 parameter_list|()
 block|{
@@ -365,12 +377,12 @@ name|startTime
 return|;
 block|}
 comment|/**    * Set the start time of the entity    *     * @param startTime    *          the start time of the entity    */
-DECL|method|setStartTime (long startTime)
+DECL|method|setStartTime (Long startTime)
 specifier|public
 name|void
 name|setStartTime
 parameter_list|(
-name|long
+name|Long
 name|startTime
 parameter_list|)
 block|{
@@ -479,7 +491,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 argument_list|>
 name|getRelatedEntities
@@ -489,8 +501,8 @@ return|return
 name|relatedEntities
 return|;
 block|}
-comment|/**    * Add a list of entity of the same type to the existing related entity map    *     * @param entityType    *          the entity type    * @param entityIds    *          a list of entity Ids    */
-DECL|method|addRelatedEntity (String entityType, List<Object> entityIds)
+comment|/**    * Add an entity to the existing related entity map    *     * @param entityType    *          the entity type    * @param entityId    *          the entity Id    */
+DECL|method|addRelatedEntity (String entityType, String entityId)
 specifier|public
 name|void
 name|addRelatedEntity
@@ -498,16 +510,13 @@ parameter_list|(
 name|String
 name|entityType
 parameter_list|,
-name|List
-argument_list|<
-name|Object
-argument_list|>
-name|entityIds
+name|String
+name|entityId
 parameter_list|)
 block|{
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 name|thisRelatedEntity
 init|=
@@ -518,15 +527,6 @@ argument_list|(
 name|entityType
 argument_list|)
 decl_stmt|;
-name|relatedEntities
-operator|.
-name|put
-argument_list|(
-name|entityType
-argument_list|,
-name|entityIds
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 name|thisRelatedEntity
@@ -534,29 +534,35 @@ operator|==
 literal|null
 condition|)
 block|{
+name|thisRelatedEntity
+operator|=
+operator|new
+name|ArrayList
+argument_list|<
+name|String
+argument_list|>
+argument_list|()
+expr_stmt|;
 name|relatedEntities
 operator|.
 name|put
 argument_list|(
 name|entityType
 argument_list|,
-name|entityIds
+name|thisRelatedEntity
 argument_list|)
 expr_stmt|;
 block|}
-else|else
-block|{
 name|thisRelatedEntity
 operator|.
-name|addAll
+name|add
 argument_list|(
-name|entityIds
+name|entityId
 argument_list|)
 expr_stmt|;
 block|}
-block|}
 comment|/**    * Add a map of related entities to the existing related entity map    *     * @param relatedEntities    *          a map of related entities    */
-DECL|method|addRelatedEntities ( Map<String, List<Object>> relatedEntities)
+DECL|method|addRelatedEntities (Map<String, List<String>> relatedEntities)
 specifier|public
 name|void
 name|addRelatedEntities
@@ -567,7 +573,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 argument_list|>
 name|relatedEntities
@@ -575,15 +581,13 @@ parameter_list|)
 block|{
 for|for
 control|(
-name|Map
-operator|.
 name|Entry
 argument_list|<
 name|String
 argument_list|,
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 argument_list|>
 name|relatedEntity
@@ -596,7 +600,7 @@ control|)
 block|{
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 name|thisRelatedEntity
 init|=
@@ -653,7 +657,7 @@ block|}
 block|}
 block|}
 comment|/**    * Set the related entity map to the given map of related entities    *     * @param relatedEntities    *          a map of related entities    */
-DECL|method|setRelatedEntities ( Map<String, List<Object>> relatedEntities)
+DECL|method|setRelatedEntities ( Map<String, List<String>> relatedEntities)
 specifier|public
 name|void
 name|setRelatedEntities
@@ -664,7 +668,7 @@ name|String
 argument_list|,
 name|List
 argument_list|<
-name|Object
+name|String
 argument_list|>
 argument_list|>
 name|relatedEntities
