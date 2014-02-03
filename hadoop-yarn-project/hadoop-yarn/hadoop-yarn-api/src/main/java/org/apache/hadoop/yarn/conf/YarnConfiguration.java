@@ -226,6 +226,17 @@ name|YARN_SITE_XML_FILE
 init|=
 literal|"yarn-site.xml"
 decl_stmt|;
+annotation|@
+name|Private
+DECL|field|CORE_SITE_CONFIGURATION_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|CORE_SITE_CONFIGURATION_FILE
+init|=
+literal|"core-site.xml"
+decl_stmt|;
 DECL|field|YARN_DEFAULT_XML_FILE
 specifier|private
 specifier|static
