@@ -1365,7 +1365,7 @@ name|args
 operator|.
 name|length
 operator|!=
-literal|2
+literal|3
 condition|)
 block|{
 name|printUsage

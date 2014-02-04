@@ -5328,6 +5328,8 @@ operator|new
 name|String
 index|[]
 block|{
+literal|"application"
+block|,
 literal|"-kill"
 block|,
 name|applicationId
@@ -5617,6 +5619,8 @@ operator|new
 name|String
 index|[]
 block|{
+literal|"application"
+block|,
 literal|"-kill"
 block|,
 name|applicationId
@@ -5754,6 +5758,8 @@ operator|new
 name|String
 index|[]
 block|{
+literal|"application"
+block|,
 literal|"-kill"
 block|,
 name|applicationId
@@ -5833,6 +5839,8 @@ operator|new
 name|String
 index|[]
 block|{
+literal|"application"
+block|,
 literal|"-kill"
 block|,
 name|applicationId
