@@ -217,6 +217,17 @@ literal|"capacity-scheduler.xml"
 decl_stmt|;
 annotation|@
 name|Private
+DECL|field|HADOOP_POLICY_CONFIGURATION_FILE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|HADOOP_POLICY_CONFIGURATION_FILE
+init|=
+literal|"hadoop-policy.xml"
+decl_stmt|;
+annotation|@
+name|Private
 DECL|field|YARN_SITE_XML_FILE
 specifier|public
 specifier|static

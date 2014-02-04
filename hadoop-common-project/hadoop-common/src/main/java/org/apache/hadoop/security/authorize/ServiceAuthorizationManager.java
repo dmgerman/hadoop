@@ -194,6 +194,20 @@ name|UserGroupInformation
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * An authorization manager which handles service-level authorization  * for incoming service requests.  */
 end_comment
@@ -576,6 +590,27 @@ argument_list|(
 name|policyFile
 argument_list|)
 expr_stmt|;
+name|refreshWithConfiguration
+argument_list|(
+name|policyConf
+argument_list|,
+name|provider
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|refreshWithConfiguration (Configuration conf, PolicyProvider provider)
+specifier|public
+specifier|synchronized
+name|void
+name|refreshWithConfiguration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|PolicyProvider
+name|provider
+parameter_list|)
+block|{
 specifier|final
 name|Map
 argument_list|<
@@ -631,7 +666,7 @@ init|=
 operator|new
 name|AccessControlList
 argument_list|(
-name|policyConf
+name|conf
 operator|.
 name|get
 argument_list|(
@@ -666,8 +701,10 @@ operator|=
 name|newAcls
 expr_stmt|;
 block|}
-comment|// Package-protected for use in tests.
+annotation|@
+name|VisibleForTesting
 DECL|method|getProtocolsWithAcls ()
+specifier|public
 name|Set
 argument_list|<
 name|Class
@@ -683,6 +720,29 @@ name|protocolToAcl
 operator|.
 name|keySet
 argument_list|()
+return|;
+block|}
+annotation|@
+name|VisibleForTesting
+DECL|method|getProtocolsAcls (Class<?> className)
+specifier|public
+name|AccessControlList
+name|getProtocolsAcls
+parameter_list|(
+name|Class
+argument_list|<
+name|?
+argument_list|>
+name|className
+parameter_list|)
+block|{
+return|return
+name|protocolToAcl
+operator|.
+name|get
+argument_list|(
+name|className
+argument_list|)
 return|;
 block|}
 block|}
