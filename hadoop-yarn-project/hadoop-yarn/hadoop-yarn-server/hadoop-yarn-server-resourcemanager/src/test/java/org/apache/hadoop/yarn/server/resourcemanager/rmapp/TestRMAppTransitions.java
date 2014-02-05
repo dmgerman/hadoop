@@ -1643,6 +1643,8 @@ name|currentTimeMillis
 argument_list|()
 argument_list|,
 literal|"YARN"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|testAppStartState

@@ -116,6 +116,16 @@ name|Records
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
 begin_comment
 comment|/**  *<p><code>ApplicationReport</code> is a report of an application.</p>  *  *<p>It includes details such as:  *<ul>  *<li>{@link ApplicationId} of the application.</li>  *<li>Applications user.</li>  *<li>Application queue.</li>  *<li>Application name.</li>  *<li>Host on which the<code>ApplicationMaster</code> is running.</li>  *<li>RPC port of the<code>ApplicationMaster</code>.</li>  *<li>Tracking URL.</li>  *<li>{@link YarnApplicationState} of the application.</li>  *<li>Diagnostic information in case of errors.</li>  *<li>Start time of the application.</li>  *<li>Client {@link Token} of the application (if security is enabled).</li>  *</ul>  *</p>  *  * @see ApplicationClientProtocol#getApplicationReport(org.apache.hadoop.yarn.api.protocolrecords.GetApplicationReportRequest)  */
 end_comment
@@ -815,6 +825,38 @@ name|setApplicationType
 parameter_list|(
 name|String
 name|applicationType
+parameter_list|)
+function_decl|;
+comment|/**    * Get all tags corresponding to the application    * @return Application's tags    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationTags ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|()
+function_decl|;
+annotation|@
+name|Private
+annotation|@
+name|Unstable
+DECL|method|setApplicationTags (Set<String> tags)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationTags
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|tags
 parameter_list|)
 function_decl|;
 annotation|@

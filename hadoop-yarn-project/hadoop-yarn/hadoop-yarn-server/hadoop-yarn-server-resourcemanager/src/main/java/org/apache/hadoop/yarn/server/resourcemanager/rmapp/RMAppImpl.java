@@ -1203,6 +1203,15 @@ specifier|final
 name|String
 name|applicationType
 decl_stmt|;
+DECL|field|applicationTags
+specifier|private
+specifier|final
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationTags
+decl_stmt|;
 comment|// Mutable fields
 DECL|field|startTime
 specifier|private
@@ -2309,7 +2318,7 @@ init|=
 operator|-
 literal|1
 decl_stmt|;
-DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType)
+DECL|method|RMAppImpl (ApplicationId applicationId, RMContext rmContext, Configuration config, String name, String user, String queue, ApplicationSubmissionContext submissionContext, YarnScheduler scheduler, ApplicationMasterService masterService, long submitTime, String applicationType, Set<String> applicationTags)
 specifier|public
 name|RMAppImpl
 parameter_list|(
@@ -2345,6 +2354,12 @@ name|submitTime
 parameter_list|,
 name|String
 name|applicationType
+parameter_list|,
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|applicationTags
 parameter_list|)
 block|{
 name|this
@@ -2439,6 +2454,12 @@ operator|.
 name|applicationType
 operator|=
 name|applicationType
+expr_stmt|;
+name|this
+operator|.
+name|applicationTags
+operator|=
+name|applicationTags
 expr_stmt|;
 name|int
 name|globalMaxAppAttempts
@@ -3480,6 +3501,8 @@ operator|.
 name|applicationType
 argument_list|,
 name|amrmToken
+argument_list|,
+name|applicationTags
 argument_list|)
 return|;
 block|}
@@ -5950,6 +5973,23 @@ return|return
 name|this
 operator|.
 name|applicationType
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationTags ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|()
+block|{
+return|return
+name|this
+operator|.
+name|applicationTags
 return|;
 block|}
 annotation|@

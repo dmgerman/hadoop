@@ -44,6 +44,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -388,6 +398,15 @@ comment|/**    * Returns the application type    * @return the application type.
 DECL|method|getApplicationType ()
 name|String
 name|getApplicationType
+parameter_list|()
+function_decl|;
+comment|/**    * Get tags for the application    * @return tags corresponding to the application    */
+DECL|method|getApplicationTags ()
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
 parameter_list|()
 function_decl|;
 comment|/**    * Check whether this application is safe to terminate.    * An application is deemed to be safe to terminate if it is an unmanaged    * AM or its state has been saved in state store.    * @return the flag which indicates whether this application is safe to    *         terminate.    */

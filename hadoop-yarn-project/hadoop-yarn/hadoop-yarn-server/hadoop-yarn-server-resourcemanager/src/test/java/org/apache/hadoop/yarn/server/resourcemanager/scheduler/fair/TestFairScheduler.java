@@ -4584,6 +4584,8 @@ argument_list|,
 literal|0
 argument_list|,
 literal|null
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|appsMap
@@ -4811,6 +4813,8 @@ argument_list|,
 literal|null
 argument_list|,
 literal|0
+argument_list|,
+literal|null
 argument_list|,
 literal|null
 argument_list|)
@@ -12386,6 +12390,8 @@ name|currentTimeMillis
 argument_list|()
 argument_list|,
 literal|"YARN"
+argument_list|,
+literal|null
 argument_list|)
 decl_stmt|;
 name|resourceManager

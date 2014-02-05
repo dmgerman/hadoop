@@ -142,9 +142,35 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|YarnConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|util
 operator|.
 name|Records
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
 import|;
 end_import
 
@@ -732,6 +758,39 @@ name|setKeepContainersAcrossApplicationAttempts
 parameter_list|(
 name|boolean
 name|keepContainers
+parameter_list|)
+function_decl|;
+comment|/**    * Get tags for the application    *    * @return the application tags    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|getApplicationTags ()
+specifier|public
+specifier|abstract
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|()
+function_decl|;
+comment|/**    * Set tags for the application. A maximum of    * {@link YarnConfiguration#APPLICATION_MAX_TAGS} are allowed    * per application. Each tag can be at most    * {@link YarnConfiguration#APPLICATION_MAX_TAG_LENGTH}    * characters, and can contain only ASCII characters.    *    * @param tags tags to set    */
+annotation|@
+name|Public
+annotation|@
+name|Stable
+DECL|method|setApplicationTags (Set<String> tags)
+specifier|public
+specifier|abstract
+name|void
+name|setApplicationTags
+parameter_list|(
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|tags
 parameter_list|)
 function_decl|;
 block|}

@@ -54,6 +54,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -981,6 +991,21 @@ return|return
 name|YarnConfiguration
 operator|.
 name|DEFAULT_APPLICATION_TYPE
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getApplicationTags ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 annotation|@
