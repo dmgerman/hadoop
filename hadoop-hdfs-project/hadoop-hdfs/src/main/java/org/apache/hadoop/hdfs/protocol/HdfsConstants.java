@@ -88,6 +88,24 @@ name|HdfsConfiguration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
+name|FSDirectory
+import|;
+end_import
+
 begin_comment
 comment|/************************************  * Some handy constants  *   ************************************/
 end_comment
@@ -373,6 +391,28 @@ name|LayoutVersion
 operator|.
 name|getCurrentLayoutVersion
 argument_list|()
+decl_stmt|;
+comment|/**    * Path components that are reserved in HDFS.    *<p>    * .reserved is only reserved under root ("/").    */
+DECL|field|RESERVED_PATH_COMPONENTS
+specifier|public
+specifier|static
+specifier|final
+name|String
+index|[]
+name|RESERVED_PATH_COMPONENTS
+init|=
+operator|new
+name|String
+index|[]
+block|{
+name|HdfsConstants
+operator|.
+name|DOT_SNAPSHOT_DIR
+block|,
+name|FSDirectory
+operator|.
+name|DOT_RESERVED_STRING
+block|}
 decl_stmt|;
 comment|/**    * A special path component contained in the path for a snapshot file/dir    */
 DECL|field|DOT_SNAPSHOT_DIR
