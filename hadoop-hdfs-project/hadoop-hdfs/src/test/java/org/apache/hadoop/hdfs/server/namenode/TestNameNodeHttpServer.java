@@ -562,6 +562,17 @@ name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
+argument_list|,
+literal|"localhost:0"
+argument_list|)
+expr_stmt|;
 name|InetSocketAddress
 name|addr
 init|=
