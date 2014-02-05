@@ -700,11 +700,19 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|server
+operator|!=
+literal|null
+condition|)
+block|{
 name|server
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|canAccess (String scheme, InetSocketAddress addr)
