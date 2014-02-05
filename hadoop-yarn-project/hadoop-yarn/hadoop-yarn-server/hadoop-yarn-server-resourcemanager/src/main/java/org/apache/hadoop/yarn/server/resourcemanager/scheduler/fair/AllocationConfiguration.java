@@ -241,8 +241,9 @@ argument_list|>
 name|minQueueResources
 decl_stmt|;
 comment|// Maximum amount of resources per queue
+annotation|@
+name|VisibleForTesting
 DECL|field|maxQueueResources
-specifier|private
 specifier|final
 name|Map
 argument_list|<
