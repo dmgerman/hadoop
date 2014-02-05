@@ -3833,6 +3833,32 @@ operator|+
 literal|"webapp.spnego-keytab-file"
 decl_stmt|;
 comment|////////////////////////////////
+comment|// ATS Configs
+comment|////////////////////////////////
+DECL|field|ATS_PREFIX
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ATS_PREFIX
+init|=
+name|YARN_PREFIX
+operator|+
+literal|"ats."
+decl_stmt|;
+comment|/** ATS store class */
+DECL|field|ATS_STORE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ATS_STORE
+init|=
+name|ATS_PREFIX
+operator|+
+literal|"store.class"
+decl_stmt|;
+comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////
 comment|/**    * Use YARN_CLIENT_APPLICATION_CLIENT_PROTOCOL_POLL_INTERVAL_MS instead.    * The interval of the yarn client's querying application state after    * application submission. The unit is millisecond.    */
