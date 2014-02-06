@@ -566,11 +566,7 @@ specifier|final
 name|long
 name|DFS_CLIENT_SOCKET_CACHE_EXPIRY_MSEC_DEFAULT
 init|=
-literal|2
-operator|*
-literal|60
-operator|*
-literal|1000
+literal|3000
 decl_stmt|;
 DECL|field|DFS_CLIENT_WRITE_EXCLUDE_NODES_CACHE_EXPIRY_INTERVAL
 specifier|public
@@ -1669,7 +1665,7 @@ specifier|final
 name|int
 name|DFS_DATANODE_SOCKET_REUSE_KEEPALIVE_DEFAULT
 init|=
-literal|1000
+literal|4000
 decl_stmt|;
 DECL|field|DFS_NAMENODE_DATANODE_REGISTRATION_IP_HOSTNAME_CHECK_KEY
 specifier|public
