@@ -102,7 +102,7 @@ annotation|@
 name|Override
 DECL|method|run ()
 specifier|public
-name|boolean
+name|void
 name|run
 parameter_list|()
 throws|throws
@@ -110,14 +110,11 @@ name|YarnException
 throws|,
 name|IOException
 block|{
-name|boolean
-name|res
-init|=
 name|super
 operator|.
 name|run
 argument_list|()
-decl_stmt|;
+expr_stmt|;
 comment|// for the 2nd attempt.
 if|if
 condition|(
@@ -153,7 +150,21 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Application Master failed. exiting"
+literal|"NumAllocatedContainers is "
+operator|+
+name|numAllocatedContainers
+operator|.
+name|get
+argument_list|()
+operator|+
+literal|" and NumRequestedContainers is "
+operator|+
+name|numAllocatedContainers
+operator|.
+name|get
+argument_list|()
+operator|+
+literal|".Application Master failed. exiting"
 argument_list|)
 expr_stmt|;
 name|System
@@ -165,9 +176,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-return|return
-name|res
-return|;
 block|}
 DECL|method|main (String[] args)
 specifier|public
@@ -218,8 +226,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-name|result
-operator|=
 name|appMaster
 operator|.
 name|run
@@ -263,6 +269,8 @@ literal|100
 argument_list|)
 expr_stmt|;
 block|}
+name|result
+operator|=
 name|appMaster
 operator|.
 name|finish
