@@ -1581,7 +1581,7 @@ specifier|final
 name|boolean
 name|DEFAULT_AUTO_FAILOVER_ENABLED
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|AUTO_FAILOVER_EMBEDDED
 specifier|public
@@ -1601,7 +1601,7 @@ specifier|final
 name|boolean
 name|DEFAULT_AUTO_FAILOVER_EMBEDDED
 init|=
-literal|false
+literal|true
 decl_stmt|;
 DECL|field|AUTO_FAILOVER_ZK_BASE_PATH
 specifier|public
