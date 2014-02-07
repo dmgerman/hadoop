@@ -2836,26 +2836,6 @@ name|namenode
 operator|.
 name|ha
 operator|.
-name|HAState
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
-name|ha
-operator|.
 name|StandbyCheckpointer
 import|;
 end_import
@@ -4403,6 +4383,8 @@ DECL|field|rollingUpgradeInfo
 specifier|private
 name|RollingUpgradeInfo
 name|rollingUpgradeInfo
+init|=
+literal|null
 decl_stmt|;
 comment|// Block pool ID used by this namenode
 DECL|field|blockPoolId
@@ -5053,7 +5035,6 @@ block|}
 block|}
 comment|/**    * Instantiates an FSNamesystem loaded from the image and edits    * directories specified in the passed Configuration.    *    * @param conf the Configuration which specifies the storage directories    *             from which to load    * @return an FSNamesystem which contains the loaded namespace    * @throws IOException if loading fails    */
 DECL|method|loadFromDisk (Configuration conf)
-specifier|public
 specifier|static
 name|FSNamesystem
 name|loadFromDisk
@@ -5140,16 +5121,6 @@ init|=
 name|now
 argument_list|()
 decl_stmt|;
-name|String
-name|nameserviceId
-init|=
-name|DFSUtil
-operator|.
-name|getNamenodeNameServiceId
-argument_list|(
-name|conf
-argument_list|)
-decl_stmt|;
 try|try
 block|{
 name|namesystem
@@ -5157,17 +5128,6 @@ operator|.
 name|loadFSImage
 argument_list|(
 name|startOpt
-argument_list|,
-name|fsImage
-argument_list|,
-name|HAUtil
-operator|.
-name|isHAEnabled
-argument_list|(
-name|conf
-argument_list|,
-name|nameserviceId
-argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -6361,22 +6321,24 @@ name|auditLoggers
 argument_list|)
 return|;
 block|}
-DECL|method|loadFSImage (StartupOption startOpt, FSImage fsImage, boolean haEnabled)
+DECL|method|loadFSImage (StartupOption startOpt)
+specifier|private
 name|void
 name|loadFSImage
 parameter_list|(
 name|StartupOption
 name|startOpt
-parameter_list|,
-name|FSImage
-name|fsImage
-parameter_list|,
-name|boolean
-name|haEnabled
 parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|FSImage
+name|fsImage
+init|=
+name|getFSImage
+argument_list|()
+decl_stmt|;
 comment|// format before starting up if requested
 if|if
 condition|(
@@ -6429,8 +6391,9 @@ operator|.
 name|createRecoveryContext
 argument_list|()
 decl_stmt|;
+specifier|final
 name|boolean
-name|needToSave
+name|staleImage
 init|=
 name|fsImage
 operator|.
@@ -6442,10 +6405,44 @@ name|this
 argument_list|,
 name|recovery
 argument_list|)
+decl_stmt|;
+specifier|final
+name|boolean
+name|needToSave
+init|=
+name|staleImage
 operator|&&
 operator|!
 name|haEnabled
+operator|&&
+operator|!
+name|isRollingUpgrade
+argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Need to save fs image? "
+operator|+
+name|needToSave
+operator|+
+literal|" (staleImage="
+operator|+
+name|staleImage
+operator|+
+literal|", haEnabled="
+operator|+
+name|haEnabled
+operator|+
+literal|", isRollingUpgrade="
+operator|+
+name|isRollingUpgrade
+argument_list|()
+operator|+
+literal|")"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|needToSave
@@ -22503,6 +22500,11 @@ operator|.
 name|UNCHECKED
 argument_list|)
 expr_stmt|;
+name|checkRollingUpgrade
+argument_list|(
+literal|"save namespace"
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -32991,14 +32993,6 @@ try|try
 block|{
 return|return
 name|rollingUpgradeInfo
-operator|!=
-literal|null
-condition|?
-name|rollingUpgradeInfo
-else|:
-name|RollingUpgradeInfo
-operator|.
-name|EMPTY_INFO
 return|;
 block|}
 finally|finally
@@ -33039,54 +33033,35 @@ argument_list|)
 expr_stmt|;
 specifier|final
 name|String
-name|err
+name|action
 init|=
-literal|"Failed to start rolling upgrade"
+literal|"start rolling upgrade"
 decl_stmt|;
 name|checkNameNodeSafeMode
 argument_list|(
-name|err
+literal|"Failed to "
+operator|+
+name|action
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|isRollingUpgrade
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|RollingUpgradeException
+name|checkRollingUpgrade
 argument_list|(
-name|err
-operator|+
-literal|" since a rolling upgrade is already in progress."
-operator|+
-literal|"\nExisting rolling upgrade info: "
-operator|+
-name|rollingUpgradeInfo
+name|action
 argument_list|)
-throw|;
-block|}
-specifier|final
-name|CheckpointSignature
-name|cs
-init|=
+expr_stmt|;
 name|getFSImage
 argument_list|()
 operator|.
-name|rollEditLog
-argument_list|()
-decl_stmt|;
+name|saveNamespace
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Successfully rolled edit log for preparing rolling upgrade."
-operator|+
-literal|" Checkpoint signature: "
-operator|+
-name|cs
+literal|"Successfully saved namespace for preparing rolling upgrade."
 argument_list|)
 expr_stmt|;
 name|setRollingUpgradeInfo
@@ -33178,6 +33153,40 @@ name|rollingUpgradeInfo
 operator|!=
 literal|null
 return|;
+block|}
+DECL|method|checkRollingUpgrade (String action)
+specifier|private
+name|void
+name|checkRollingUpgrade
+parameter_list|(
+name|String
+name|action
+parameter_list|)
+throws|throws
+name|RollingUpgradeException
+block|{
+if|if
+condition|(
+name|isRollingUpgrade
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|RollingUpgradeException
+argument_list|(
+literal|"Failed to "
+operator|+
+name|action
+operator|+
+literal|" since a rolling upgrade is already in progress."
+operator|+
+literal|" Existing rolling upgrade info:\n"
+operator|+
+name|rollingUpgradeInfo
+argument_list|)
+throw|;
+block|}
 block|}
 DECL|method|finalizeRollingUpgrade ()
 name|RollingUpgradeInfo

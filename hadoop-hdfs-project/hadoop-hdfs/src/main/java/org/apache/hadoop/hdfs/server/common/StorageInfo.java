@@ -262,20 +262,6 @@ name|Joiner
 import|;
 end_import
 
-begin_import
-import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
 begin_comment
 comment|/**  * Common class for storage information.  *   * TODO namespaceID should be long and computed as hash(address + port)  */
 end_comment
@@ -478,17 +464,6 @@ name|StorageInfo
 name|from
 parameter_list|)
 block|{
-name|Preconditions
-operator|.
-name|checkArgument
-argument_list|(
-name|from
-operator|.
-name|storageType
-operator|==
-name|storageType
-argument_list|)
-expr_stmt|;
 name|layoutVersion
 operator|=
 name|from

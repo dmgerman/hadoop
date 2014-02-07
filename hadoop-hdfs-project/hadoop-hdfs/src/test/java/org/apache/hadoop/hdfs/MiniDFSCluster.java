@@ -6922,25 +6922,6 @@ argument_list|()
 expr_stmt|;
 block|}
 comment|/**    * Restart the namenode.    */
-DECL|method|restartNameNode ()
-specifier|public
-specifier|synchronized
-name|void
-name|restartNameNode
-parameter_list|()
-throws|throws
-name|IOException
-block|{
-name|checkSingleNameNode
-argument_list|()
-expr_stmt|;
-name|restartNameNode
-argument_list|(
-literal|true
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Restart the namenode.    */
 DECL|method|restartNameNode (String... args)
 specifier|public
 specifier|synchronized

@@ -5673,7 +5673,7 @@ name|DFS_NAMENODE_STARTUP_KEY
 argument_list|,
 name|opt
 operator|.
-name|toString
+name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
@@ -5843,8 +5843,13 @@ argument_list|)
 expr_stmt|;
 name|fsn
 operator|.
-name|saveNamespace
+name|getFSImage
 argument_list|()
+operator|.
+name|saveNamespace
+argument_list|(
+name|fsn
+argument_list|)
 expr_stmt|;
 name|MetaRecoveryContext
 operator|.
@@ -5929,6 +5934,20 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"createNameNode "
+operator|+
+name|Arrays
+operator|.
+name|asList
+argument_list|(
+name|argv
+argument_list|)
+argument_list|)
+expr_stmt|;
 if|if
 condition|(
 name|conf

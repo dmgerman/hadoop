@@ -1356,6 +1356,7 @@ argument_list|)
 decl_stmt|;
 DECL|field|REPLAY_TRANSACTION_LOG_INTERVAL
 specifier|static
+specifier|final
 name|long
 name|REPLAY_TRANSACTION_LOG_INTERVAL
 init|=
@@ -1372,6 +1373,14 @@ DECL|field|lastAppliedTxId
 specifier|private
 name|long
 name|lastAppliedTxId
+decl_stmt|;
+comment|/** Total number of end transactions loaded. */
+DECL|field|totalEdits
+specifier|private
+name|int
+name|totalEdits
+init|=
+literal|0
 decl_stmt|;
 DECL|method|FSEditLogLoader (FSNamesystem fsNamesys, long lastAppliedTxId)
 specifier|public
@@ -1986,6 +1995,36 @@ block|}
 block|}
 try|try
 block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isTraceEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|trace
+argument_list|(
+literal|"op="
+operator|+
+name|op
+operator|+
+literal|", startOpt="
+operator|+
+name|startOpt
+operator|+
+literal|", numEdits="
+operator|+
+name|numEdits
+operator|+
+literal|", totalEdits="
+operator|+
+name|totalEdits
+argument_list|)
+expr_stmt|;
+block|}
 name|long
 name|inodeId
 init|=
@@ -2214,6 +2253,9 @@ expr_stmt|;
 block|}
 block|}
 name|numEdits
+operator|++
+expr_stmt|;
+name|totalEdits
 operator|++
 expr_stmt|;
 block|}
@@ -4362,12 +4404,18 @@ operator|.
 name|ROLLINGUPGRADE
 condition|)
 block|{
-if|if
-condition|(
+specifier|final
+name|RollingUpgradeStartupOption
+name|rollingUpgradeOpt
+init|=
 name|startOpt
 operator|.
 name|getRollingUpgradeStartupOption
 argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|rollingUpgradeOpt
 operator|==
 name|RollingUpgradeStartupOption
 operator|.
@@ -4383,10 +4431,7 @@ block|}
 elseif|else
 if|if
 condition|(
-name|startOpt
-operator|.
-name|getRollingUpgradeStartupOption
-argument_list|()
+name|rollingUpgradeOpt
 operator|==
 name|RollingUpgradeStartupOption
 operator|.
@@ -4399,16 +4444,33 @@ block|}
 elseif|else
 if|if
 condition|(
-name|startOpt
-operator|.
-name|getRollingUpgradeStartupOption
-argument_list|()
+name|rollingUpgradeOpt
 operator|==
 name|RollingUpgradeStartupOption
 operator|.
 name|STARTED
 condition|)
 block|{
+if|if
+condition|(
+name|totalEdits
+operator|>
+literal|1
+condition|)
+block|{
+comment|// save namespace if this is not the second edit transaction
+comment|// (the first must be OP_START_LOG_SEGMENT)
+name|fsNamesys
+operator|.
+name|getFSImage
+argument_list|()
+operator|.
+name|saveNamespace
+argument_list|(
+name|fsNamesys
+argument_list|)
+expr_stmt|;
+block|}
 comment|//rolling upgrade is already started, set info
 specifier|final
 name|UpgradeMarkerOp

@@ -4608,6 +4608,13 @@ literal|null
 operator|:
 literal|"editLog must be initialized"
 assert|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Save namespace ..."
+argument_list|)
+expr_stmt|;
 name|storage
 operator|.
 name|attemptRestoreRemovedStorage

@@ -1799,6 +1799,10 @@ case|:
 if|if
 condition|(
 name|info
+operator|!=
+literal|null
+operator|&&
+name|info
 operator|.
 name|isStarted
 argument_list|()

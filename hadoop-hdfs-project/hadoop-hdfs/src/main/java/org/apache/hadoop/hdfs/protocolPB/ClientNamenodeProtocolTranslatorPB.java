@@ -5003,6 +5003,14 @@ argument_list|,
 name|r
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|proto
+operator|.
+name|hasRollingUpgradeInfo
+argument_list|()
+condition|)
+block|{
 return|return
 name|PBHelper
 operator|.
@@ -5013,6 +5021,10 @@ operator|.
 name|getRollingUpgradeInfo
 argument_list|()
 argument_list|)
+return|;
+block|}
+return|return
+literal|null
 return|;
 block|}
 catch|catch
