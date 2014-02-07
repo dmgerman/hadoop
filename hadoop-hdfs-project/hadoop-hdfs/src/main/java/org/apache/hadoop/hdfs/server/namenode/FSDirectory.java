@@ -410,6 +410,22 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
+name|AclException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|protocol
+operator|.
 name|Block
 import|;
 end_import
@@ -1703,6 +1719,8 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
+throws|,
+name|AclException
 block|{
 name|waitForReady
 argument_list|()
@@ -1875,7 +1893,7 @@ return|return
 name|newNode
 return|;
 block|}
-DECL|method|unprotectedAddFile ( long id, String path, PermissionStatus permissions, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
+DECL|method|unprotectedAddFile ( long id, String path, PermissionStatus permissions, List<AclEntry> aclEntries, short replication, long modificationTime, long atime, long preferredBlockSize, boolean underConstruction, String clientName, String clientMachine)
 name|INodeFile
 name|unprotectedAddFile
 parameter_list|(
@@ -1887,6 +1905,12 @@ name|path
 parameter_list|,
 name|PermissionStatus
 name|permissions
+parameter_list|,
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|aclEntries
 parameter_list|,
 name|short
 name|replication
@@ -1998,6 +2022,27 @@ name|newNode
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|aclEntries
+operator|!=
+literal|null
+condition|)
+block|{
+name|AclStorage
+operator|.
+name|updateINodeAcl
+argument_list|(
+name|newNode
+argument_list|,
+name|aclEntries
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+argument_list|)
+expr_stmt|;
+block|}
 return|return
 name|newNode
 return|;
@@ -9482,6 +9527,8 @@ throws|,
 name|UnresolvedLinkException
 throws|,
 name|SnapshotAccessControlException
+throws|,
+name|AclException
 block|{
 name|src
 operator|=
@@ -9829,6 +9876,8 @@ name|parentPermissions
 else|:
 name|permissions
 argument_list|,
+literal|null
+argument_list|,
 name|now
 argument_list|)
 expr_stmt|;
@@ -9921,7 +9970,7 @@ return|return
 literal|true
 return|;
 block|}
-DECL|method|unprotectedMkdir (long inodeId, String src, PermissionStatus permissions, long timestamp)
+DECL|method|unprotectedMkdir (long inodeId, String src, PermissionStatus permissions, List<AclEntry> aclEntries, long timestamp)
 name|INode
 name|unprotectedMkdir
 parameter_list|(
@@ -9934,6 +9983,12 @@ parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|aclEntries
+parameter_list|,
 name|long
 name|timestamp
 parameter_list|)
@@ -9941,6 +9996,8 @@ throws|throws
 name|QuotaExceededException
 throws|,
 name|UnresolvedLinkException
+throws|,
+name|AclException
 block|{
 assert|assert
 name|hasWriteLock
@@ -10000,6 +10057,8 @@ index|]
 argument_list|,
 name|permissions
 argument_list|,
+name|aclEntries
+argument_list|,
 name|timestamp
 argument_list|)
 expr_stmt|;
@@ -10011,7 +10070,7 @@ index|]
 return|;
 block|}
 comment|/** create a directory at index pos.    * The parent path to the directory is at [0, pos-1].    * All ancestors exist. Newly created one stored at index pos.    */
-DECL|method|unprotectedMkdir (long inodeId, INodesInPath inodesInPath, int pos, byte[] name, PermissionStatus permission, long timestamp)
+DECL|method|unprotectedMkdir (long inodeId, INodesInPath inodesInPath, int pos, byte[] name, PermissionStatus permission, List<AclEntry> aclEntries, long timestamp)
 specifier|private
 name|void
 name|unprotectedMkdir
@@ -10032,11 +10091,19 @@ parameter_list|,
 name|PermissionStatus
 name|permission
 parameter_list|,
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|aclEntries
+parameter_list|,
 name|long
 name|timestamp
 parameter_list|)
 throws|throws
 name|QuotaExceededException
+throws|,
+name|AclException
 block|{
 assert|assert
 name|hasWriteLock
@@ -10072,6 +10139,27 @@ literal|true
 argument_list|)
 condition|)
 block|{
+if|if
+condition|(
+name|aclEntries
+operator|!=
+literal|null
+condition|)
+block|{
+name|AclStorage
+operator|.
+name|updateINodeAcl
+argument_list|(
+name|dir
+argument_list|,
+name|aclEntries
+argument_list|,
+name|Snapshot
+operator|.
+name|CURRENT_STATE_ID
+argument_list|)
+expr_stmt|;
+block|}
 name|inodesInPath
 operator|.
 name|setINode
@@ -11111,6 +11199,13 @@ name|child
 operator|.
 name|getParent
 argument_list|()
+argument_list|)
+expr_stmt|;
+name|AclStorage
+operator|.
+name|copyINodeDefaultAcl
+argument_list|(
+name|child
 argument_list|)
 expr_stmt|;
 name|addToInodeMap
@@ -12892,6 +12987,8 @@ throws|,
 name|QuotaExceededException
 throws|,
 name|SnapshotAccessControlException
+throws|,
+name|AclException
 block|{
 name|waitForReady
 argument_list|()

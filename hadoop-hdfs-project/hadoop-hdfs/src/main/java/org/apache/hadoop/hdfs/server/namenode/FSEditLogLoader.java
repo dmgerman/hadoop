@@ -2518,6 +2518,10 @@ name|addCloseOp
 operator|.
 name|permissions
 argument_list|,
+name|addCloseOp
+operator|.
+name|aclEntries
+argument_list|,
 name|replication
 argument_list|,
 name|addCloseOp
@@ -3361,6 +3365,10 @@ argument_list|,
 name|mkdirOp
 operator|.
 name|permissions
+argument_list|,
+name|mkdirOp
+operator|.
+name|aclEntries
 argument_list|,
 name|mkdirOp
 operator|.

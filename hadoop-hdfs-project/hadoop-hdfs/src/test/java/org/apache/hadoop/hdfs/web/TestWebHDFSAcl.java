@@ -86,6 +86,26 @@ name|BeforeClass
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Ignore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
+name|Test
+import|;
+end_import
+
 begin_comment
 comment|/**  * Tests ACL APIs via WebHDFS.  */
 end_comment
@@ -161,6 +181,19 @@ name|WebHdfsFileSystem
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * We need to skip this test on WebHDFS, because WebHDFS currently cannot    * resolve symlinks.    */
+annotation|@
+name|Override
+annotation|@
+name|Test
+annotation|@
+name|Ignore
+DECL|method|testDefaultAclNewSymlinkIntermediate ()
+specifier|public
+name|void
+name|testDefaultAclNewSymlinkIntermediate
+parameter_list|()
+block|{   }
 block|}
 end_class
 

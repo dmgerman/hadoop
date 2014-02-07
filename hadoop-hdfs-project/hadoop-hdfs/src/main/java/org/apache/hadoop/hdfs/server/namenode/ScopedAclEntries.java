@@ -197,15 +197,7 @@ else|else
 block|{
 name|accessEntries
 operator|=
-operator|!
 name|aclEntries
-operator|.
-name|isEmpty
-argument_list|()
-condition|?
-name|aclEntries
-else|:
-literal|null
 expr_stmt|;
 name|defaultEntries
 operator|=
