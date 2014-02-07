@@ -1760,23 +1760,15 @@ name|ACCEPTED
 argument_list|,
 name|RMAppState
 operator|.
-name|FINAL_SAVING
+name|KILLING
 argument_list|,
 name|RMAppEventType
 operator|.
 name|KILL
 argument_list|,
 operator|new
-name|FinalSavingTransition
-argument_list|(
-operator|new
-name|AppKilledTransition
+name|KillAttemptTransition
 argument_list|()
-argument_list|,
-name|RMAppState
-operator|.
-name|KILLED
-argument_list|)
 argument_list|)
 comment|// ACCECPTED state can once again receive APP_ACCEPTED event, because on
 comment|// recovery the app returns ACCEPTED state and the app once again go

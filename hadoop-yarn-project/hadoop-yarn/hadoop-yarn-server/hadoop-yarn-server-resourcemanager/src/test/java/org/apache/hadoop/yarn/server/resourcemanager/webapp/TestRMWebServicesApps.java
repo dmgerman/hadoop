@@ -11858,7 +11858,7 @@ name|am
 init|=
 name|MockRM
 operator|.
-name|launchAM
+name|launchAndRegisterAM
 argument_list|(
 name|app1
 argument_list|,
@@ -11971,7 +11971,7 @@ name|am
 operator|=
 name|MockRM
 operator|.
-name|launchAM
+name|launchAndRegisterAM
 argument_list|(
 name|app1
 argument_list|,
