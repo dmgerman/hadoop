@@ -166,6 +166,15 @@ name|KILL_CMD
 init|=
 literal|"kill"
 decl_stmt|;
+DECL|field|MOVE_TO_QUEUE_CMD
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|MOVE_TO_QUEUE_CMD
+init|=
+literal|"movetoqueue"
+decl_stmt|;
 DECL|field|HELP_CMD
 specifier|public
 specifier|static

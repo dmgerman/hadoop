@@ -881,6 +881,24 @@ name|YarnException
 throws|,
 name|IOException
 function_decl|;
+comment|/**    *<p>    * Attempts to move the given application to the given queue.    *</p>    *     * @param appId    *    Application to move.    * @param queue    *    Queue to place it in to.    * @throws YarnException    * @throws IOException    */
+DECL|method|moveApplicationAcrossQueues (ApplicationId appId, String queue)
+specifier|public
+specifier|abstract
+name|void
+name|moveApplicationAcrossQueues
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|queue
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+function_decl|;
 block|}
 end_class
 
