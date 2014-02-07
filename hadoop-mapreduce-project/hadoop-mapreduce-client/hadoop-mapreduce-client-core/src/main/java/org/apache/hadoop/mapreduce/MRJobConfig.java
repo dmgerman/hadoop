@@ -218,6 +218,15 @@ name|QUEUE_NAME
 init|=
 literal|"mapreduce.job.queuename"
 decl_stmt|;
+DECL|field|JOB_TAGS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|JOB_TAGS
+init|=
+literal|"mapreduce.job.tags"
+decl_stmt|;
 DECL|field|JVM_NUMTASKS_TORUN
 specifier|public
 specifier|static

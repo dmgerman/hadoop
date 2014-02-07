@@ -1990,6 +1990,11 @@ name|submissionContext
 operator|.
 name|getApplicationType
 argument_list|()
+argument_list|,
+name|submissionContext
+operator|.
+name|getApplicationTags
+argument_list|()
 argument_list|)
 decl_stmt|;
 comment|// Concurrent app submissions with same applicationId will fail here

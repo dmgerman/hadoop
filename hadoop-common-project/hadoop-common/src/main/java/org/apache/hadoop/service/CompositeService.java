@@ -32,16 +32,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|Collections
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|List
 import|;
 end_import
@@ -192,7 +182,7 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Get an unmodifiable list of services    * @return a list of child services at the time of invocation -    * added services will not be picked up.    */
+comment|/**    * Get a cloned list of services    * @return a list of child services at the time of invocation -    * added services will not be picked up.    */
 DECL|method|getServices ()
 specifier|public
 name|List
@@ -208,9 +198,11 @@ name|serviceList
 init|)
 block|{
 return|return
-name|Collections
-operator|.
-name|unmodifiableList
+operator|new
+name|ArrayList
+argument_list|<
+name|Service
+argument_list|>
 argument_list|(
 name|serviceList
 argument_list|)

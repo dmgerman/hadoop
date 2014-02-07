@@ -54,6 +54,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Set
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -754,6 +764,25 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|getApplicationTags ()
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|()
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|(
+literal|"Not supported yet."
+argument_list|)
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|setQueue (String name)
 specifier|public
 name|void
@@ -1118,6 +1147,20 @@ parameter_list|()
 block|{
 return|return
 name|maxAppAttempts
+return|;
+block|}
+annotation|@
+name|Override
+specifier|public
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|getApplicationTags
+parameter_list|()
+block|{
+return|return
+literal|null
 return|;
 block|}
 block|}

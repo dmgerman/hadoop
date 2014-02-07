@@ -5464,17 +5464,8 @@ name|listing
 argument_list|)
 expr_stmt|;
 block|}
-comment|// If there are no results, we return 1 (failure exit code);
-comment|// otherwise we return 0 (success exit code).
+comment|// If list pools succeed, we return 0 (success exit code)
 return|return
-operator|(
-name|numResults
-operator|==
-literal|0
-operator|)
-condition|?
-literal|1
-else|:
 literal|0
 return|;
 block|}

@@ -852,6 +852,16 @@ argument_list|)
 operator|.
 name|_
 argument_list|(
+literal|"Application Tags:"
+argument_list|,
+name|app
+operator|.
+name|getApplicationTags
+argument_list|()
+argument_list|)
+operator|.
+name|_
+argument_list|(
 literal|"State:"
 argument_list|,
 name|app

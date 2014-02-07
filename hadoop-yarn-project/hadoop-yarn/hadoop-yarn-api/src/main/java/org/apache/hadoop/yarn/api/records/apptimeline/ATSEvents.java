@@ -417,10 +417,10 @@ name|events
 return|;
 block|}
 comment|/**      * Add a single event to the existing event list      *       * @param event      *          a single event      */
-DECL|method|addEntity (ATSEvent event)
+DECL|method|addEvent (ATSEvent event)
 specifier|public
 name|void
-name|addEntity
+name|addEvent
 parameter_list|(
 name|ATSEvent
 name|event

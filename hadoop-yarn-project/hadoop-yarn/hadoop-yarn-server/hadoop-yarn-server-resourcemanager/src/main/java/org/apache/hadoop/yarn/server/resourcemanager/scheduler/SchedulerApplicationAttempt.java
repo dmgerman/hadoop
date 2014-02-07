@@ -2179,6 +2179,7 @@ expr_stmt|;
 block|}
 DECL|method|move (Queue newQueue)
 specifier|public
+specifier|synchronized
 name|void
 name|move
 parameter_list|(

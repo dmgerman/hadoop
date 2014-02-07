@@ -129,6 +129,38 @@ import|;
 end_import
 
 begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_RETRY_MAX_ATTEMPTS_KEY
+import|;
+end_import
+
+begin_import
+import|import static
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|DFSConfigKeys
+operator|.
+name|DFS_CLIENT_RETRY_MAX_ATTEMPTS_DEFAULT
+import|;
+end_import
+
+begin_import
 import|import
 name|java
 operator|.
@@ -1130,6 +1162,10 @@ name|maxFailoverAttempts
 argument_list|,
 name|config
 operator|.
+name|maxRetryAttempts
+argument_list|,
+name|config
+operator|.
 name|failoverSleepBaseMillis
 argument_list|,
 name|config
@@ -1286,6 +1322,18 @@ argument_list|,
 name|DFS_CLIENT_FAILOVER_MAX_ATTEMPTS_DEFAULT
 argument_list|)
 decl_stmt|;
+name|int
+name|maxRetryAttempts
+init|=
+name|config
+operator|.
+name|getInt
+argument_list|(
+name|DFS_CLIENT_RETRY_MAX_ATTEMPTS_KEY
+argument_list|,
+name|DFS_CLIENT_RETRY_MAX_ATTEMPTS_DEFAULT
+argument_list|)
+decl_stmt|;
 name|InvocationHandler
 name|dummyHandler
 init|=
@@ -1307,6 +1355,8 @@ name|RetryPolicies
 operator|.
 name|TRY_ONCE_THEN_FAIL
 argument_list|,
+name|maxFailoverAttempts
+argument_list|,
 name|Math
 operator|.
 name|max
@@ -1315,7 +1365,7 @@ name|numResponseToDrop
 operator|+
 literal|1
 argument_list|,
-name|maxFailoverAttempts
+name|maxRetryAttempts
 argument_list|)
 argument_list|,
 name|delay

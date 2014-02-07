@@ -317,6 +317,12 @@ name|NONINTERACTIVE
 argument_list|(
 literal|"-nonInteractive"
 argument_list|)
+block|,
+DECL|enumConstant|RENAMERESERVED
+name|RENAMERESERVED
+argument_list|(
+literal|"-renameReserved"
+argument_list|)
 block|;
 DECL|field|name
 specifier|private
