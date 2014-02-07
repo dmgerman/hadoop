@@ -692,17 +692,6 @@ block|{
 comment|// DN storage has been initialized, no need to do anything
 return|return;
 block|}
-if|if
-condition|(
-name|HdfsConstants
-operator|.
-name|DATANODE_LAYOUT_VERSION
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-condition|)
 name|LOG
 operator|.
 name|info
@@ -990,19 +979,6 @@ argument_list|,
 name|startOpt
 argument_list|)
 expr_stmt|;
-assert|assert
-name|this
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-operator|:
-literal|"Data-node and name-node layout versions must be the same."
-assert|;
 name|createStorageID
 argument_list|(
 name|getStorageDir
@@ -2167,7 +2143,7 @@ expr_stmt|;
 comment|// upgrade
 return|return;
 block|}
-comment|// layoutVersion< LAYOUT_VERSION. I.e. stored layout version is newer
+comment|// layoutVersion< DATANODE_LAYOUT_VERSION. I.e. stored layout version is newer
 comment|// than the version supported by datanode. This should have been caught
 comment|// in readProperties(), even if rollback was not carried out or somehow
 comment|// failed.
@@ -2187,13 +2163,6 @@ operator|+
 name|HdfsConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|" or name node LV = "
-operator|+
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
 argument_list|)
 throw|;
 block|}
@@ -2241,10 +2210,9 @@ name|layoutVersion
 operator|+
 literal|" to "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" for storage "
 operator|+
@@ -2256,10 +2224,9 @@ argument_list|)
 expr_stmt|;
 name|layoutVersion
 operator|=
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 expr_stmt|;
 name|writeProperties
 argument_list|(
@@ -2295,10 +2262,9 @@ argument_list|()
 operator|+
 literal|".\n   new LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|"; new CTime = "
 operator|+
@@ -2641,12 +2607,6 @@ name|exists
 argument_list|()
 condition|)
 block|{
-comment|// The current datanode version supports federation and the layout
-comment|// version from namenode matches what the datanode supports. An invalid
-comment|// rollback may happen if namenode didn't rollback and datanode is
-comment|// running a wrong version.  But this will be detected in block pool
-comment|// level and the invalid VERSION content will be overwritten when
-comment|// the error is corrected and rollback is retried.
 if|if
 condition|(
 name|DataNodeLayoutVersion
@@ -2663,25 +2623,15 @@ name|HdfsConstants
 operator|.
 name|DATANODE_LAYOUT_VERSION
 argument_list|)
-operator|&&
-name|HdfsConstants
-operator|.
-name|DATANODE_LAYOUT_VERSION
-operator|==
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
 condition|)
 block|{
 name|readProperties
 argument_list|(
 name|sd
 argument_list|,
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 argument_list|)
 expr_stmt|;
 name|writeProperties
@@ -2695,10 +2645,9 @@ name|info
 argument_list|(
 literal|"Layout version rolled back to "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" for storage "
 operator|+
@@ -2777,10 +2726,9 @@ argument_list|()
 operator|+
 literal|" is newer than the namespace state: LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|" CTime = "
 operator|+
@@ -2803,10 +2751,9 @@ argument_list|()
 operator|+
 literal|".\n   target LV = "
 operator|+
-name|nsInfo
+name|HdfsConstants
 operator|.
-name|getLayoutVersion
-argument_list|()
+name|DATANODE_LAYOUT_VERSION
 operator|+
 literal|"; target CTime = "
 operator|+

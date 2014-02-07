@@ -1074,39 +1074,6 @@ literal|"limits. Note: This is normal during a rolling upgrade."
 argument_list|)
 expr_stmt|;
 block|}
-if|if
-condition|(
-name|HdfsConstants
-operator|.
-name|DATANODE_LAYOUT_VERSION
-operator|!=
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"DataNode and NameNode layout versions are different:"
-operator|+
-literal|" DataNode version: "
-operator|+
-name|HdfsConstants
-operator|.
-name|DATANODE_LAYOUT_VERSION
-operator|+
-literal|" NameNode version: "
-operator|+
-name|nsInfo
-operator|.
-name|getLayoutVersion
-argument_list|()
-argument_list|)
-expr_stmt|;
-block|}
 block|}
 DECL|method|connectToNNAndHandshake ()
 specifier|private
