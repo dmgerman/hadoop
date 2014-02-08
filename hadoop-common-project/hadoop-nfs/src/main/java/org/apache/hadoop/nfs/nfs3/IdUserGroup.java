@@ -243,38 +243,6 @@ init|=
 literal|0
 decl_stmt|;
 comment|// Last time maps were updated
-DECL|class|DuplicateNameOrIdException
-specifier|static
-specifier|public
-class|class
-name|DuplicateNameOrIdException
-extends|extends
-name|IOException
-block|{
-DECL|field|serialVersionUID
-specifier|private
-specifier|static
-specifier|final
-name|long
-name|serialVersionUID
-init|=
-literal|1L
-decl_stmt|;
-DECL|method|DuplicateNameOrIdException (String msg)
-specifier|public
-name|DuplicateNameOrIdException
-parameter_list|(
-name|String
-name|msg
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|msg
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 DECL|method|IdUserGroup ()
 specifier|public
 name|IdUserGroup
@@ -356,7 +324,7 @@ specifier|final
 name|String
 name|DUPLICATE_NAME_ID_DEBUG_INFO
 init|=
-literal|"NFS gateway can't start with duplicate name or id on the host system.\n"
+literal|"NFS gateway could have problem starting with duplicate name or id on the host system.\n"
 operator|+
 literal|"This is because HDFS (non-kerberos cluster) uses name as the only way to identify a user or group.\n"
 operator|+
@@ -370,6 +338,62 @@ literal|"<getent passwd | cut -d: -f1,3> and<getent group | cut -d: -f1,3> on Li
 operator|+
 literal|"<dscl . -list /Users UniqueID> and<dscl . -list /Groups PrimaryGroupID> on MacOS."
 decl_stmt|;
+DECL|method|reportDuplicateEntry (final String header, final Integer key, final String value, final Integer ekey, final String evalue)
+specifier|private
+specifier|static
+name|void
+name|reportDuplicateEntry
+parameter_list|(
+specifier|final
+name|String
+name|header
+parameter_list|,
+specifier|final
+name|Integer
+name|key
+parameter_list|,
+specifier|final
+name|String
+name|value
+parameter_list|,
+specifier|final
+name|Integer
+name|ekey
+parameter_list|,
+specifier|final
+name|String
+name|evalue
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"\n"
+operator|+
+name|header
+operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"new entry (%d, %s), existing entry: (%d, %s).\n%s\n%s"
+argument_list|,
+name|key
+argument_list|,
+name|value
+argument_list|,
+name|ekey
+argument_list|,
+name|evalue
+argument_list|,
+literal|"The new entry is to be ignored for the following reason."
+argument_list|,
+name|DUPLICATE_NAME_ID_DEBUG_INFO
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Get the whole list of users and groups and save them in the maps.    * @throws IOException     */
 annotation|@
 name|VisibleForTesting
@@ -528,6 +552,7 @@ index|]
 argument_list|)
 expr_stmt|;
 comment|// HDFS can't differentiate duplicate names with simple authentication
+specifier|final
 name|Integer
 name|key
 init|=
@@ -541,6 +566,7 @@ literal|1
 index|]
 argument_list|)
 decl_stmt|;
+specifier|final
 name|String
 name|value
 init|=
@@ -559,15 +585,33 @@ name|key
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
+specifier|final
 name|String
+name|prevValue
+init|=
+name|map
 operator|.
-name|format
+name|get
 argument_list|(
-literal|"Got duplicate id:(%d, %s), existing entry: (%d, %s).\n%s"
+name|key
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|value
+operator|.
+name|equals
+argument_list|(
+name|prevValue
+argument_list|)
+condition|)
+block|{
+comment|// silently ignore equivalent entries
+continue|continue;
+block|}
+name|reportDuplicateEntry
+argument_list|(
+literal|"Got multiple names associated with the same id: "
 argument_list|,
 name|key
 argument_list|,
@@ -575,24 +619,10 @@ name|value
 argument_list|,
 name|key
 argument_list|,
-name|map
-operator|.
-name|get
-argument_list|(
-name|key
-argument_list|)
-argument_list|,
-name|DUPLICATE_NAME_ID_DEBUG_INFO
-argument_list|)
+name|prevValue
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|DuplicateNameOrIdException
-argument_list|(
-literal|"Got duplicate id."
-argument_list|)
-throw|;
+continue|continue;
 block|}
 if|if
 condition|(
@@ -600,27 +630,14 @@ name|map
 operator|.
 name|containsValue
 argument_list|(
-name|nameId
-index|[
-literal|0
-index|]
+name|value
 argument_list|)
 condition|)
 block|{
-name|LOG
-operator|.
-name|error
-argument_list|(
-name|String
-operator|.
-name|format
-argument_list|(
-literal|"Got duplicate name:(%d, %s), existing entry: (%d, %s) \n%s"
-argument_list|,
-name|key
-argument_list|,
-name|value
-argument_list|,
+specifier|final
+name|Integer
+name|prevKey
+init|=
 name|map
 operator|.
 name|inverse
@@ -630,39 +647,29 @@ name|get
 argument_list|(
 name|value
 argument_list|)
+decl_stmt|;
+name|reportDuplicateEntry
+argument_list|(
+literal|"Got multiple ids associated with the same name: "
+argument_list|,
+name|key
 argument_list|,
 name|value
 argument_list|,
-name|DUPLICATE_NAME_ID_DEBUG_INFO
-argument_list|)
+name|prevKey
+argument_list|,
+name|value
 argument_list|)
 expr_stmt|;
-throw|throw
-operator|new
-name|DuplicateNameOrIdException
-argument_list|(
-literal|"Got duplicate name"
-argument_list|)
-throw|;
+continue|continue;
 block|}
 name|map
 operator|.
 name|put
 argument_list|(
-name|Integer
-operator|.
-name|valueOf
-argument_list|(
-name|nameId
-index|[
-literal|1
-index|]
-argument_list|)
+name|key
 argument_list|,
-name|nameId
-index|[
-literal|0
-index|]
+name|value
 argument_list|)
 expr_stmt|;
 block|}

@@ -86,7 +86,6 @@ name|SchedulerApplication
 block|{
 DECL|field|queue
 specifier|private
-specifier|final
 name|Queue
 name|queue
 decl_stmt|;
@@ -134,6 +133,22 @@ block|{
 return|return
 name|queue
 return|;
+block|}
+DECL|method|setQueue (Queue queue)
+specifier|public
+name|void
+name|setQueue
+parameter_list|(
+name|Queue
+name|queue
+parameter_list|)
+block|{
+name|this
+operator|.
+name|queue
+operator|=
+name|queue
+expr_stmt|;
 block|}
 DECL|method|getUser ()
 specifier|public

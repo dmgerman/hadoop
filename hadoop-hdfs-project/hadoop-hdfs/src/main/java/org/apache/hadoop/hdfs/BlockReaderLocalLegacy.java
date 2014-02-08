@@ -2934,7 +2934,11 @@ argument_list|)
 argument_list|)
 decl_stmt|;
 return|return
+operator|(
+name|remaining
+operator|+
 name|ret
+operator|)
 return|;
 block|}
 comment|// optimize for big gap: discard the current buffer, skip to
@@ -3060,7 +3064,11 @@ condition|)
 block|{
 comment|// EOS
 return|return
+operator|(
 name|toskip
+operator|+
+name|remaining
+operator|)
 return|;
 block|}
 else|else
@@ -3068,6 +3076,8 @@ block|{
 return|return
 operator|(
 name|toskip
+operator|+
+name|remaining
 operator|+
 name|ret
 operator|)

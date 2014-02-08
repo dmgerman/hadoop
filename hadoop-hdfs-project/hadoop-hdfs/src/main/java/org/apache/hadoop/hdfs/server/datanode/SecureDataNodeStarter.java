@@ -132,6 +132,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|HdfsConfiguration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|server
 operator|.
 name|common
@@ -317,11 +331,13 @@ argument_list|(
 literal|"Initializing secure datanode resources"
 argument_list|)
 expr_stmt|;
+comment|// Create a new HdfsConfiguration object to ensure that the configuration in
+comment|// hdfs-site.xml is picked up.
 name|Configuration
 name|conf
 init|=
 operator|new
-name|Configuration
+name|HdfsConfiguration
 argument_list|()
 decl_stmt|;
 comment|// Stash command-line arguments for regular datanode

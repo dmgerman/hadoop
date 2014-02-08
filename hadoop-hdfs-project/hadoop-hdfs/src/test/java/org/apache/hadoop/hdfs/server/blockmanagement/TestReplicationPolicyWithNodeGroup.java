@@ -698,6 +698,17 @@ name|getName
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|CONF
+operator|.
+name|setBoolean
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_AVOID_STALE_DATANODE_FOR_WRITE_KEY
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
 name|File
 name|baseDir
 init|=

@@ -543,11 +543,9 @@ name|YarnConfiguration
 operator|.
 name|NM_LOG_RETAIN_SECONDS
 argument_list|,
-literal|3
-operator|*
-literal|60
-operator|*
-literal|60
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_LOG_RETAIN_SECONDS
 argument_list|)
 expr_stmt|;
 name|sched

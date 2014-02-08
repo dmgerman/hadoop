@@ -6462,6 +6462,41 @@ operator|=
 literal|true
 expr_stmt|;
 block|}
+else|else
+block|{
+comment|// The range was already checked. If the block reader returns
+comment|// something unexpected instead of throwing an exception, it is
+comment|// most likely a bug.
+name|String
+name|errMsg
+init|=
+literal|"BlockReader failed to seek to "
+operator|+
+name|targetPos
+operator|+
+literal|". Instead, it seeked to "
+operator|+
+name|pos
+operator|+
+literal|"."
+decl_stmt|;
+name|DFSClient
+operator|.
+name|LOG
+operator|.
+name|warn
+argument_list|(
+name|errMsg
+argument_list|)
+expr_stmt|;
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+name|errMsg
+argument_list|)
+throw|;
+block|}
 block|}
 catch|catch
 parameter_list|(

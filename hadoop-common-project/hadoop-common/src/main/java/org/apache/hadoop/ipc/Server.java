@@ -2615,6 +2615,29 @@ name|provider
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Refresh the service authorization ACL for the service handled by this server    * using the specified Configuration.    */
+DECL|method|refreshServiceAclWithConfigration (Configuration conf, PolicyProvider provider)
+specifier|public
+name|void
+name|refreshServiceAclWithConfigration
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|,
+name|PolicyProvider
+name|provider
+parameter_list|)
+block|{
+name|serviceAuthorizationManager
+operator|.
+name|refreshWithConfiguration
+argument_list|(
+name|conf
+argument_list|,
+name|provider
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Returns a handle to the serviceAuthorizationManager (required in tests)    * @return instance of ServiceAuthorizationManager for this server    */
 annotation|@
 name|InterfaceAudience

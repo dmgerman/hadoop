@@ -1340,12 +1340,6 @@ specifier|volatile
 name|boolean
 name|done
 decl_stmt|;
-DECL|field|success
-specifier|private
-specifier|volatile
-name|boolean
-name|success
-decl_stmt|;
 DECL|field|allTokens
 specifier|private
 name|ByteBuffer
@@ -1440,13 +1434,13 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-name|result
-operator|=
 name|appMaster
 operator|.
 name|run
 argument_list|()
 expr_stmt|;
+name|result
+operator|=
 name|appMaster
 operator|.
 name|finish
@@ -2618,7 +2612,7 @@ block|}
 argument_list|)
 DECL|method|run ()
 specifier|public
-name|boolean
+name|void
 name|run
 parameter_list|()
 throws|throws
@@ -3009,9 +3003,6 @@ argument_list|(
 name|numTotalContainersToRequest
 argument_list|)
 expr_stmt|;
-return|return
-name|success
-return|;
 block|}
 annotation|@
 name|VisibleForTesting
@@ -3028,9 +3019,11 @@ name|this
 argument_list|)
 return|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|finish ()
 specifier|protected
-name|void
+name|boolean
 name|finish
 parameter_list|()
 block|{
@@ -3143,10 +3136,11 @@ name|appMessage
 init|=
 literal|null
 decl_stmt|;
+name|boolean
 name|success
-operator|=
+init|=
 literal|true
-expr_stmt|;
+decl_stmt|;
 if|if
 condition|(
 name|numFailedContainers
@@ -3264,6 +3258,9 @@ operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+return|return
+name|success
+return|;
 block|}
 DECL|class|RMCallbackHandler
 specifier|private

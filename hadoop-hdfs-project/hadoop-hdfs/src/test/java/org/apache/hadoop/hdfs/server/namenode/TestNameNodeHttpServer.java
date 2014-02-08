@@ -562,6 +562,17 @@ name|name
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
+name|DFS_NAMENODE_HTTPS_ADDRESS_KEY
+argument_list|,
+literal|"localhost:0"
+argument_list|)
+expr_stmt|;
 name|InetSocketAddress
 name|addr
 init|=
@@ -689,11 +700,19 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+if|if
+condition|(
+name|server
+operator|!=
+literal|null
+condition|)
+block|{
 name|server
 operator|.
 name|stop
 argument_list|()
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|canAccess (String scheme, InetSocketAddress addr)

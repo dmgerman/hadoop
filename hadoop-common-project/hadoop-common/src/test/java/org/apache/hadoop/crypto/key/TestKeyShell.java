@@ -187,7 +187,7 @@ name|Exception
 block|{
 name|outContent
 operator|.
-name|flush
+name|reset
 argument_list|()
 expr_stmt|;
 name|String
@@ -262,7 +262,7 @@ argument_list|)
 expr_stmt|;
 name|outContent
 operator|.
-name|flush
+name|reset
 argument_list|()
 expr_stmt|;
 name|String
@@ -312,7 +312,7 @@ argument_list|)
 expr_stmt|;
 name|outContent
 operator|.
-name|flush
+name|reset
 argument_list|()
 expr_stmt|;
 name|String
@@ -366,7 +366,7 @@ argument_list|)
 expr_stmt|;
 name|outContent
 operator|.
-name|flush
+name|reset
 argument_list|()
 expr_stmt|;
 name|String
@@ -420,7 +420,7 @@ argument_list|)
 expr_stmt|;
 name|outContent
 operator|.
-name|flush
+name|reset
 argument_list|()
 expr_stmt|;
 name|String
@@ -455,8 +455,13 @@ argument_list|,
 name|rc
 argument_list|)
 expr_stmt|;
-name|assertTrue
+name|assertFalse
 argument_list|(
+name|outContent
+operator|.
+name|toString
+argument_list|()
+argument_list|,
 name|outContent
 operator|.
 name|toString
@@ -976,7 +981,7 @@ argument_list|)
 expr_stmt|;
 name|outContent
 operator|.
-name|flush
+name|reset
 argument_list|()
 expr_stmt|;
 name|String
