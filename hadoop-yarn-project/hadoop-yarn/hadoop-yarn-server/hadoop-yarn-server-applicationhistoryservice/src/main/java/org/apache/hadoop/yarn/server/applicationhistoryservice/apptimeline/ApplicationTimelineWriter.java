@@ -90,6 +90,16 @@ name|ATSPutErrors
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * This interface is for storing application timeline information.  */
 end_comment
@@ -108,7 +118,7 @@ specifier|public
 interface|interface
 name|ApplicationTimelineWriter
 block|{
-comment|/**    * Stores entity information to the application timeline store. Any errors    * occurring for individual put request objects will be reported in the    * response.    *    * @param data An {@link ATSEntities} object.    * @return An {@link ATSPutErrors} object.    */
+comment|/**    * Stores entity information to the application timeline store. Any errors    * occurring for individual put request objects will be reported in the    * response.    *    * @param data An {@link ATSEntities} object.    * @return An {@link ATSPutErrors} object.    * @throws IOException    */
 DECL|method|put (ATSEntities data)
 name|ATSPutErrors
 name|put
@@ -116,6 +126,8 @@ parameter_list|(
 name|ATSEntities
 name|data
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

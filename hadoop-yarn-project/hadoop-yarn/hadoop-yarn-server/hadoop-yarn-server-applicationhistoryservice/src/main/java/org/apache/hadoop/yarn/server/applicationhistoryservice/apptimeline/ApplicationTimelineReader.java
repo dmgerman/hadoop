@@ -26,6 +26,16 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|Collection
@@ -196,7 +206,7 @@ name|DEFAULT_LIMIT
 init|=
 literal|100
 decl_stmt|;
-comment|/**    * This method retrieves a list of entity information, {@link ATSEntity},    * sorted by the starting timestamp for the entity, descending.    *    * @param entityType The type of entities to return (required).    * @param limit A limit on the number of entities to return. If null,    *              defaults to {@link #DEFAULT_LIMIT}.    * @param windowStart The earliest start timestamp to retrieve (exclusive).    *                    If null, defaults to retrieving all entities until the    *                    limit is reached.    * @param windowEnd The latest start timestamp to retrieve (inclusive).    *                  If null, defaults to {@link Long#MAX_VALUE}    * @param primaryFilter Retrieves only entities that have the specified    *                      primary filter. If null, retrieves all entities.    *                      This is an indexed retrieval, and no entities that    *                      do not match the filter are scanned.    * @param secondaryFilters Retrieves only entities that have exact matches    *                         for all the specified filters in their primary    *                         filters or other info. This is not an indexed    *                         retrieval, so all entities are scanned but only    *                         those matching the filters are returned.    * @param fieldsToRetrieve Specifies which fields of the entity object to    *                         retrieve (see {@link Field}). If the set of fields    *                         contains {@link Field#LAST_EVENT_ONLY} and not    *                         {@link Field#EVENTS}, the most recent event for    *                         each entity is retrieved.    * @return An {@link ATSEntities} object.    */
+comment|/**    * This method retrieves a list of entity information, {@link ATSEntity},    * sorted by the starting timestamp for the entity, descending.    *    * @param entityType The type of entities to return (required).    * @param limit A limit on the number of entities to return. If null,    *              defaults to {@link #DEFAULT_LIMIT}.    * @param windowStart The earliest start timestamp to retrieve (exclusive).    *                    If null, defaults to retrieving all entities until the    *                    limit is reached.    * @param windowEnd The latest start timestamp to retrieve (inclusive).    *                  If null, defaults to {@link Long#MAX_VALUE}    * @param primaryFilter Retrieves only entities that have the specified    *                      primary filter. If null, retrieves all entities.    *                      This is an indexed retrieval, and no entities that    *                      do not match the filter are scanned.    * @param secondaryFilters Retrieves only entities that have exact matches    *                         for all the specified filters in their primary    *                         filters or other info. This is not an indexed    *                         retrieval, so all entities are scanned but only    *                         those matching the filters are returned.    * @param fieldsToRetrieve Specifies which fields of the entity object to    *                         retrieve (see {@link Field}). If the set of fields    *                         contains {@link Field#LAST_EVENT_ONLY} and not    *                         {@link Field#EVENTS}, the most recent event for    *                         each entity is retrieved. If null, retrieves all    *                         fields.    * @return An {@link ATSEntities} object.    * @throws IOException    */
 DECL|method|getEntities (String entityType, Long limit, Long windowStart, Long windowEnd, NameValuePair primaryFilter, Collection<NameValuePair> secondaryFilters, EnumSet<Field> fieldsToRetrieve)
 name|ATSEntities
 name|getEntities
@@ -228,8 +238,10 @@ name|Field
 argument_list|>
 name|fieldsToRetrieve
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * This method retrieves the entity information for a given entity.    *    * @param entity The entity whose information will be retrieved.    * @param entityType The type of the entity.    * @param fieldsToRetrieve Specifies which fields of the entity object to    *                         retrieve (see {@link Field}). If the set of    *                         fields contains {@link Field#LAST_EVENT_ONLY} and    *                         not {@link Field#EVENTS}, the most recent event    *                         for each entity is retrieved.    * @return An {@link ATSEntity} object.    */
+comment|/**    * This method retrieves the entity information for a given entity.    *    * @param entity The entity whose information will be retrieved.    * @param entityType The type of the entity.    * @param fieldsToRetrieve Specifies which fields of the entity object to    *                         retrieve (see {@link Field}). If the set of    *                         fields contains {@link Field#LAST_EVENT_ONLY} and    *                         not {@link Field#EVENTS}, the most recent event    *                         for each entity is retrieved. If null, retrieves    *                         all fields.    * @return An {@link ATSEntity} object.    * @throws IOException    */
 DECL|method|getEntity (String entity, String entityType, EnumSet<Field> fieldsToRetrieve)
 name|ATSEntity
 name|getEntity
@@ -246,8 +258,10 @@ name|Field
 argument_list|>
 name|fieldsToRetrieve
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
-comment|/**    * This method retrieves the events for a list of entities all of the same    * entity type. The events for each entity are sorted in order of their    * timestamps, descending.    *    * @param entityType The type of entities to retrieve events for.    * @param entityIds The entity IDs to retrieve events for.    * @param limit A limit on the number of events to return for each entity.    *              If null, defaults to  {@link #DEFAULT_LIMIT} events per    *              entity.    * @param windowStart If not null, retrieves only events later than the    *                    given time (exclusive)    * @param windowEnd If not null, retrieves only events earlier than the    *                  given time (inclusive)    * @param eventTypes Restricts the events returned to the given types. If    *                   null, events of all types will be returned.    * @return An {@link ATSEvents} object.    */
+comment|/**    * This method retrieves the events for a list of entities all of the same    * entity type. The events for each entity are sorted in order of their    * timestamps, descending.    *    * @param entityType The type of entities to retrieve events for.    * @param entityIds The entity IDs to retrieve events for.    * @param limit A limit on the number of events to return for each entity.    *              If null, defaults to  {@link #DEFAULT_LIMIT} events per    *              entity.    * @param windowStart If not null, retrieves only events later than the    *                    given time (exclusive)    * @param windowEnd If not null, retrieves only events earlier than the    *                  given time (inclusive)    * @param eventTypes Restricts the events returned to the given types. If    *                   null, events of all types will be returned.    * @return An {@link ATSEvents} object.    * @throws IOException    */
 DECL|method|getEntityTimelines (String entityType, SortedSet<String> entityIds, Long limit, Long windowStart, Long windowEnd, Set<String> eventTypes)
 name|ATSEvents
 name|getEntityTimelines
@@ -276,6 +290,8 @@ name|String
 argument_list|>
 name|eventTypes
 parameter_list|)
+throws|throws
+name|IOException
 function_decl|;
 block|}
 end_interface

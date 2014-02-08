@@ -3894,6 +3894,18 @@ name|ATS_PREFIX
 operator|+
 literal|"store.class"
 decl_stmt|;
+comment|/** ATS leveldb path */
+DECL|field|ATS_LEVELDB_PATH_PROPERTY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|ATS_LEVELDB_PATH_PROPERTY
+init|=
+name|ATS_PREFIX
+operator|+
+literal|"leveldb-apptimeline-store.path"
+decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs
 comment|////////////////////////////////

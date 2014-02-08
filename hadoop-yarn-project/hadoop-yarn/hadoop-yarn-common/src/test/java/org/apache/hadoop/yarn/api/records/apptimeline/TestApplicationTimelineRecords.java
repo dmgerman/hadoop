@@ -962,7 +962,9 @@ name|error1
 operator|.
 name|setErrorCode
 argument_list|(
-literal|1
+name|ATSPutError
+operator|.
+name|NO_START_TIME
 argument_list|)
 expr_stmt|;
 name|atsPutErrors
@@ -1017,7 +1019,9 @@ name|error2
 operator|.
 name|setErrorCode
 argument_list|(
-literal|2
+name|ATSPutError
+operator|.
+name|IO_EXCEPTION
 argument_list|)
 expr_stmt|;
 name|errors
