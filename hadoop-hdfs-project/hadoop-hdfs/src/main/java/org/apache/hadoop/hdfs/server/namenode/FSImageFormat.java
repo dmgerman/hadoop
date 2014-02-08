@@ -3605,6 +3605,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|namesystem
+operator|.
+name|getAclConfigFlag
+argument_list|()
+operator|.
+name|checkForFsImage
+argument_list|()
+expr_stmt|;
 name|AclFeature
 name|aclFeature
 init|=

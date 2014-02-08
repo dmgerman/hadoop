@@ -4636,6 +4636,12 @@ specifier|final
 name|RetryCache
 name|retryCache
 decl_stmt|;
+DECL|field|aclConfigFlag
+specifier|private
+specifier|final
+name|AclConfigFlag
+name|aclConfigFlag
+decl_stmt|;
 comment|/**    * Set the last allocated inode id when fsimage or editlog is loaded.     */
 DECL|method|resetLastInodeId (long newValue)
 specifier|public
@@ -5924,6 +5930,16 @@ condition|?
 literal|null
 else|:
 name|initRetryCache
+argument_list|(
+name|conf
+argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|aclConfigFlag
+operator|=
+operator|new
+name|AclConfigFlag
 argument_list|(
 name|conf
 argument_list|)
@@ -34379,6 +34395,15 @@ return|return
 name|results
 return|;
 block|}
+DECL|method|getAclConfigFlag ()
+name|AclConfigFlag
+name|getAclConfigFlag
+parameter_list|()
+block|{
+return|return
+name|aclConfigFlag
+return|;
+block|}
 DECL|method|modifyAclEntries (String src, List<AclEntry> aclSpec)
 name|void
 name|modifyAclEntries
@@ -34395,6 +34420,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|aclConfigFlag
+operator|.
+name|checkForApiCall
+argument_list|()
+expr_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -34525,6 +34555,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|aclConfigFlag
+operator|.
+name|checkForApiCall
+argument_list|()
+expr_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -34649,6 +34684,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|aclConfigFlag
+operator|.
+name|checkForApiCall
+argument_list|()
+expr_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -34771,6 +34811,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|aclConfigFlag
+operator|.
+name|checkForApiCall
+argument_list|()
+expr_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -34899,6 +34944,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|aclConfigFlag
+operator|.
+name|checkForApiCall
+argument_list|()
+expr_stmt|;
 name|HdfsFileStatus
 name|resultingStat
 init|=
@@ -35023,6 +35073,11 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|aclConfigFlag
+operator|.
+name|checkForApiCall
+argument_list|()
+expr_stmt|;
 name|checkOperation
 argument_list|(
 name|OperationCategory
