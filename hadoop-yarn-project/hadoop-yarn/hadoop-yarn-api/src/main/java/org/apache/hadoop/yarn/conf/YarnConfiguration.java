@@ -2546,6 +2546,19 @@ name|NM_PREFIX
 operator|+
 literal|"log.retain-seconds"
 decl_stmt|;
+DECL|field|DEFAULT_NM_LOG_RETAIN_SECONDS
+specifier|public
+specifier|static
+specifier|final
+name|long
+name|DEFAULT_NM_LOG_RETAIN_SECONDS
+init|=
+literal|3
+operator|*
+literal|60
+operator|*
+literal|60
+decl_stmt|;
 comment|/**    * Number of threads used in log cleanup. Only applicable if Log aggregation    * is disabled    */
 DECL|field|NM_LOG_DELETION_THREADS_COUNT
 specifier|public
