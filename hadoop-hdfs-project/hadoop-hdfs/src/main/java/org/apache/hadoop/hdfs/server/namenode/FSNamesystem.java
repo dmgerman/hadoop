@@ -31950,6 +31950,23 @@ name|shouldAvoidStaleDataNodesForWrite
 argument_list|()
 return|;
 block|}
+annotation|@
+name|Override
+comment|// FSClusterStats
+DECL|method|getNumDatanodesInService ()
+specifier|public
+name|int
+name|getNumDatanodesInService
+parameter_list|()
+block|{
+return|return
+name|getNumLiveDataNodes
+argument_list|()
+operator|-
+name|getNumDecomLiveDataNodes
+argument_list|()
+return|;
+block|}
 DECL|method|getSnapshotManager ()
 specifier|public
 name|SnapshotManager
