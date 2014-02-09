@@ -26,6 +26,16 @@ name|java
 operator|.
 name|util
 operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
 name|List
 import|;
 end_import
@@ -218,6 +228,22 @@ name|INodeWithAdditionalFields
 argument_list|>
 name|map
 decl_stmt|;
+DECL|method|getMapIterator ()
+specifier|public
+name|Iterator
+argument_list|<
+name|INodeWithAdditionalFields
+argument_list|>
+name|getMapIterator
+parameter_list|()
+block|{
+return|return
+name|map
+operator|.
+name|iterator
+argument_list|()
+return|;
+block|}
 DECL|method|INodeMap (GSet<INode, INodeWithAdditionalFields> map)
 specifier|private
 name|INodeMap

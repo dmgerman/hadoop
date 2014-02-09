@@ -245,6 +245,16 @@ operator|=
 name|codec
 expr_stmt|;
 block|}
+DECL|method|getImageCodec ()
+specifier|public
+name|CompressionCodec
+name|getImageCodec
+parameter_list|()
+block|{
+return|return
+name|imageCodec
+return|;
+block|}
 comment|/**    * Create a "noop" compression - i.e. uncompressed    */
 DECL|method|createNoopCompression ()
 specifier|static
@@ -324,7 +334,6 @@ return|;
 block|}
 comment|/**    * Create a compression instance using the codec specified by    *<code>codecClassName</code>    */
 DECL|method|createCompression (Configuration conf, String codecClassName)
-specifier|private
 specifier|static
 name|FSImageCompression
 name|createCompression
