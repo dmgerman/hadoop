@@ -70,6 +70,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|classification
+operator|.
+name|InterfaceAudience
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|hdfs
 operator|.
 name|server
@@ -117,7 +131,12 @@ comment|/**  * Context for an ongoing SaveNamespace operation. This class  * all
 end_comment
 
 begin_class
+annotation|@
+name|InterfaceAudience
+operator|.
+name|Private
 DECL|class|SaveNamespaceContext
+specifier|public
 class|class
 name|SaveNamespaceContext
 block|{
@@ -275,6 +294,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|checkCancelled ()
+specifier|public
 name|void
 name|checkCancelled
 parameter_list|()

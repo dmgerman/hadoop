@@ -1080,6 +1080,69 @@ name|get
 argument_list|()
 return|;
 block|}
+DECL|method|setNumSnapshots (int num)
+name|void
+name|setNumSnapshots
+parameter_list|(
+name|int
+name|num
+parameter_list|)
+block|{
+name|numSnapshots
+operator|.
+name|set
+argument_list|(
+name|num
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|getSnapshotCounter ()
+name|int
+name|getSnapshotCounter
+parameter_list|()
+block|{
+return|return
+name|snapshotCounter
+return|;
+block|}
+DECL|method|setSnapshotCounter (int counter)
+name|void
+name|setSnapshotCounter
+parameter_list|(
+name|int
+name|counter
+parameter_list|)
+block|{
+name|snapshotCounter
+operator|=
+name|counter
+expr_stmt|;
+block|}
+DECL|method|getSnapshottableDirs ()
+name|INodeDirectorySnapshottable
+index|[]
+name|getSnapshottableDirs
+parameter_list|()
+block|{
+return|return
+name|snapshottables
+operator|.
+name|values
+argument_list|()
+operator|.
+name|toArray
+argument_list|(
+operator|new
+name|INodeDirectorySnapshottable
+index|[
+name|snapshottables
+operator|.
+name|size
+argument_list|()
+index|]
+argument_list|)
+return|;
+block|}
 comment|/**    * Write {@link #snapshotCounter}, {@link #numSnapshots},    * and all snapshots to the DataOutput.    */
 DECL|method|write (DataOutput out)
 specifier|public

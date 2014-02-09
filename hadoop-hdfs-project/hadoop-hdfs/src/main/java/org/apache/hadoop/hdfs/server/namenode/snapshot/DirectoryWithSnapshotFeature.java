@@ -1696,6 +1696,7 @@ name|isSnapshotRoot
 expr_stmt|;
 block|}
 DECL|method|getChildrenDiff ()
+specifier|public
 name|ChildrenDiff
 name|getChildrenDiff
 parameter_list|()
@@ -2140,6 +2141,15 @@ operator|+
 literal|", "
 operator|+
 name|diff
+return|;
+block|}
+DECL|method|getChildrenSize ()
+name|int
+name|getChildrenSize
+parameter_list|()
+block|{
+return|return
+name|childrenSize
 return|;
 block|}
 annotation|@

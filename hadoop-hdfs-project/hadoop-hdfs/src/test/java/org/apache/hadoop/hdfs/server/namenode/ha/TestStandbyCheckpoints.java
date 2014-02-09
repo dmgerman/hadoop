@@ -1727,11 +1727,6 @@ operator|.
 name|waitForCall
 argument_list|()
 expr_stmt|;
-name|answerer
-operator|.
-name|proceed
-argument_list|()
-expr_stmt|;
 name|assertTrue
 argument_list|(
 literal|"SBN is not performing checkpoint but it should be."
@@ -1815,6 +1810,11 @@ argument_list|()
 operator|==
 literal|0
 argument_list|)
+expr_stmt|;
+name|answerer
+operator|.
+name|proceed
+argument_list|()
 expr_stmt|;
 name|answerer
 operator|.
