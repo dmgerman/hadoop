@@ -2327,7 +2327,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Kills the application with the application id as appId    *     * @param applicationId    * @throws YarnException    * @throws IOException    */
+comment|/**    * Moves the application with the given ID to the given queue.    */
 DECL|method|moveApplicationAcrossQueues (String applicationId, String queue)
 specifier|private
 name|void
