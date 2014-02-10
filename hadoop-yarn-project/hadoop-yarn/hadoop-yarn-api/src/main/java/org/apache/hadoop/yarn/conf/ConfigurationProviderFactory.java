@@ -105,7 +105,7 @@ specifier|public
 class|class
 name|ConfigurationProviderFactory
 block|{
-comment|/**    * Creates an instance of {@link ConfigurationProvider} using given    * configuration.    * @param conf    * @return configurationProvider    */
+comment|/**    * Creates an instance of {@link ConfigurationProvider} using given    * configuration.    * @param bootstrapConf    * @return configurationProvider    */
 annotation|@
 name|SuppressWarnings
 argument_list|(
@@ -114,11 +114,11 @@ argument_list|)
 specifier|public
 specifier|static
 name|ConfigurationProvider
-DECL|method|getConfigurationProvider (Configuration conf)
+DECL|method|getConfigurationProvider (Configuration bootstrapConf)
 name|getConfigurationProvider
 parameter_list|(
 name|Configuration
-name|conf
+name|bootstrapConf
 parameter_list|)
 block|{
 name|Class
@@ -178,7 +178,7 @@ name|ReflectionUtils
 operator|.
 name|newInstance
 argument_list|(
-name|conf
+name|bootstrapConf
 operator|.
 name|getClass
 argument_list|(
@@ -193,7 +193,7 @@ operator|.
 name|class
 argument_list|)
 argument_list|,
-name|conf
+name|bootstrapConf
 argument_list|)
 decl_stmt|;
 return|return

@@ -94,6 +94,22 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
+name|conf
+operator|.
+name|ConfigurationProvider
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
 name|event
 operator|.
 name|Dispatcher
@@ -525,6 +541,11 @@ parameter_list|(
 name|RMApplicationHistoryWriter
 name|rmApplicationHistoryWriter
 parameter_list|)
+function_decl|;
+DECL|method|getConfigurationProvider ()
+name|ConfigurationProvider
+name|getConfigurationProvider
+parameter_list|()
 function_decl|;
 block|}
 end_interface
