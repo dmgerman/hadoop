@@ -1054,6 +1054,9 @@ argument_list|()
 argument_list|,
 name|parent
 operator|.
+name|getLoaderContext
+argument_list|()
+operator|.
 name|getStringTable
 argument_list|()
 argument_list|)
@@ -1323,6 +1326,9 @@ name|getPermission
 argument_list|()
 argument_list|,
 name|parent
+operator|.
+name|getLoaderContext
+argument_list|()
 operator|.
 name|getStringTable
 argument_list|()
@@ -1892,6 +1898,9 @@ argument_list|()
 argument_list|,
 name|parent
 operator|.
+name|getLoaderContext
+argument_list|()
+operator|.
 name|getStringTable
 argument_list|()
 argument_list|)
@@ -2269,6 +2278,9 @@ argument_list|(
 name|sroot
 argument_list|,
 name|parent
+operator|.
+name|getSaverContext
+argument_list|()
 operator|.
 name|getStringMap
 argument_list|()
@@ -2707,6 +2719,9 @@ name|copy
 argument_list|,
 name|parent
 operator|.
+name|getSaverContext
+argument_list|()
+operator|.
 name|getStringMap
 argument_list|()
 argument_list|)
@@ -3019,6 +3034,9 @@ argument_list|(
 name|copy
 argument_list|,
 name|parent
+operator|.
+name|getSaverContext
+argument_list|()
 operator|.
 name|getStringMap
 argument_list|()

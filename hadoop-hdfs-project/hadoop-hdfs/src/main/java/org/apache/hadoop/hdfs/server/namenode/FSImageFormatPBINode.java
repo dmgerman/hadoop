@@ -298,7 +298,7 @@ name|namenode
 operator|.
 name|FSImageFormatProtobuf
 operator|.
-name|StringMap
+name|SaverContext
 import|;
 end_import
 
@@ -1525,6 +1525,9 @@ name|n
 argument_list|,
 name|parent
 operator|.
+name|getLoaderContext
+argument_list|()
+operator|.
 name|getStringTable
 argument_list|()
 argument_list|)
@@ -1673,6 +1676,9 @@ name|getPermission
 argument_list|()
 argument_list|,
 name|parent
+operator|.
+name|getLoaderContext
+argument_list|()
 operator|.
 name|getStringTable
 argument_list|()
@@ -1848,6 +1854,9 @@ argument_list|()
 argument_list|,
 name|parent
 operator|.
+name|getLoaderContext
+argument_list|()
+operator|.
 name|getStringTable
 argument_list|()
 argument_list|)
@@ -1904,6 +1913,9 @@ argument_list|(
 name|p
 argument_list|,
 name|parent
+operator|.
+name|getLoaderContext
+argument_list|()
 operator|.
 name|getStringTable
 argument_list|()
@@ -2001,7 +2013,7 @@ specifier|static
 class|class
 name|Saver
 block|{
-DECL|method|buildPermissionStatus (INodeAttributes n, final StringMap stringMap)
+DECL|method|buildPermissionStatus (INodeAttributes n, final SaverContext.DeduplicationMap<String> stringMap)
 specifier|private
 specifier|static
 name|long
@@ -2011,7 +2023,12 @@ name|INodeAttributes
 name|n
 parameter_list|,
 specifier|final
-name|StringMap
+name|SaverContext
+operator|.
+name|DeduplicationMap
+argument_list|<
+name|String
+argument_list|>
 name|stringMap
 parameter_list|)
 block|{
@@ -2020,7 +2037,7 @@ name|userId
 init|=
 name|stringMap
 operator|.
-name|getStringId
+name|getId
 argument_list|(
 name|n
 operator|.
@@ -2033,7 +2050,7 @@ name|groupId
 init|=
 name|stringMap
 operator|.
-name|getStringId
+name|getId
 argument_list|(
 name|n
 operator|.
@@ -2068,7 +2085,7 @@ name|getFsPermissionShort
 argument_list|()
 return|;
 block|}
-DECL|method|buildINodeFile ( INodeFileAttributes file, final StringMap stringMap)
+DECL|method|buildINodeFile ( INodeFileAttributes file, final SaverContext.DeduplicationMap<String> stringMap)
 specifier|public
 specifier|static
 name|INodeSection
@@ -2082,7 +2099,12 @@ name|INodeFileAttributes
 name|file
 parameter_list|,
 specifier|final
-name|StringMap
+name|SaverContext
+operator|.
+name|DeduplicationMap
+argument_list|<
+name|String
+argument_list|>
 name|stringMap
 parameter_list|)
 block|{
@@ -2146,7 +2168,7 @@ return|return
 name|b
 return|;
 block|}
-DECL|method|buildINodeDirectory ( INodeDirectoryAttributes dir, final StringMap stringMap)
+DECL|method|buildINodeDirectory ( INodeDirectoryAttributes dir, final SaverContext.DeduplicationMap<String> stringMap)
 specifier|public
 specifier|static
 name|INodeSection
@@ -2160,7 +2182,12 @@ name|INodeDirectoryAttributes
 name|dir
 parameter_list|,
 specifier|final
-name|StringMap
+name|SaverContext
+operator|.
+name|DeduplicationMap
+argument_list|<
+name|String
+argument_list|>
 name|stringMap
 parameter_list|)
 block|{
@@ -3017,6 +3044,9 @@ name|n
 argument_list|,
 name|parent
 operator|.
+name|getSaverContext
+argument_list|()
+operator|.
 name|getStringMap
 argument_list|()
 argument_list|)
@@ -3084,6 +3114,9 @@ argument_list|(
 name|n
 argument_list|,
 name|parent
+operator|.
+name|getSaverContext
+argument_list|()
 operator|.
 name|getStringMap
 argument_list|()
@@ -3239,6 +3272,9 @@ argument_list|(
 name|n
 argument_list|,
 name|parent
+operator|.
+name|getSaverContext
+argument_list|()
 operator|.
 name|getStringMap
 argument_list|()
