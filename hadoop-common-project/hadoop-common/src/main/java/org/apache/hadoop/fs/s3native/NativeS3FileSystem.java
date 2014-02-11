@@ -3962,6 +3962,19 @@ return|return
 name|workingDir
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+comment|// Does not support Token
+return|return
+literal|null
+return|;
+block|}
 block|}
 end_class
 
