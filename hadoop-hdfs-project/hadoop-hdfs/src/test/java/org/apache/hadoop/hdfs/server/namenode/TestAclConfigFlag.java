@@ -108,16 +108,6 @@ end_import
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -256,20 +246,6 @@ begin_import
 import|import
 name|org
 operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|test
-operator|.
-name|GenericTestUtils
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
 name|junit
 operator|.
 name|After
@@ -323,7 +299,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Tests that the configuration flag that controls support for ACLs is off by  * default and causes all attempted operations related to ACLs to fail.  This  * includes the API calls, ACLs found while loading fsimage and ACLs found while  * applying edit log ops.  */
+comment|/**  * Tests that the configuration flag that controls support for ACLs is off by  * default and causes all attempted operations related to ACLs to fail.  The  * NameNode can still load ACLs from fsimage or edits.  */
 end_comment
 
 begin_class
@@ -722,9 +698,7 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// Attempt restart with ACLs disabled.
-try|try
-block|{
+comment|// Restart with ACLs disabled.  Expect successful restart.
 name|restart
 argument_list|(
 literal|false
@@ -732,49 +706,67 @@ argument_list|,
 literal|false
 argument_list|)
 expr_stmt|;
-name|fail
-argument_list|(
-literal|"expected IOException"
-argument_list|)
-expr_stmt|;
 block|}
-catch|catch
-parameter_list|(
-name|IOException
-name|e
-parameter_list|)
+annotation|@
+name|Test
+DECL|method|testFsImage ()
+specifier|public
+name|void
+name|testFsImage
+parameter_list|()
+throws|throws
+name|Exception
 block|{
-name|GenericTestUtils
-operator|.
-name|assertExceptionContains
+comment|// With ACLs enabled, set an ACL.
+name|initCluster
 argument_list|(
-name|DFSConfigKeys
-operator|.
-name|DFS_NAMENODE_ACLS_ENABLED_KEY
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-comment|// Recover by restarting with ACLs enabled, deleting the ACL, saving a new
-comment|// checkpoint, and then restarting with ACLs disabled.
-name|restart
-argument_list|(
-literal|false
+literal|true
 argument_list|,
 literal|true
 argument_list|)
 expr_stmt|;
 name|fs
 operator|.
-name|removeAcl
+name|mkdirs
 argument_list|(
 name|PATH
 argument_list|)
 expr_stmt|;
+name|fs
+operator|.
+name|setAcl
+argument_list|(
+name|PATH
+argument_list|,
+name|Lists
+operator|.
+name|newArrayList
+argument_list|(
+name|aclEntry
+argument_list|(
+name|DEFAULT
+argument_list|,
+name|USER
+argument_list|,
+literal|"foo"
+argument_list|,
+name|READ_WRITE
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+comment|// Save a new checkpoint and restart with ACLs still enabled.
 name|restart
 argument_list|(
 literal|true
+argument_list|,
+literal|true
+argument_list|)
+expr_stmt|;
+comment|// Restart with ACLs disabled.  Expect successful restart.
+name|restart
+argument_list|(
+literal|false
 argument_list|,
 literal|false
 argument_list|)

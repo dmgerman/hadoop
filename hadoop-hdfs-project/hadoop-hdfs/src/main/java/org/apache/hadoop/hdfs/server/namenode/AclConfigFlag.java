@@ -79,7 +79,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * Support for ACLs is controlled by a configuration flag.  If the configuration  * flag is false, then the NameNode will reject all ACL-related operations and  * refuse to load an fsimage or edit log containing ACLs.  */
+comment|/**  * Support for ACLs is controlled by a configuration flag.  If the configuration  * flag is false, then the NameNode will reject all ACL-related operations.  */
 end_comment
 
 begin_class
@@ -144,39 +144,6 @@ parameter_list|()
 throws|throws
 name|AclException
 block|{
-name|check
-argument_list|(
-literal|"The ACL operation has been rejected."
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Checks the flag on behalf of edit log loading.    *    * @throws AclException if ACLs are disabled    */
-DECL|method|checkForEditLog ()
-specifier|public
-name|void
-name|checkForEditLog
-parameter_list|()
-throws|throws
-name|AclException
-block|{
-name|check
-argument_list|(
-literal|"Cannot load edit log containing an ACL."
-argument_list|)
-expr_stmt|;
-block|}
-comment|/**    * Common check method.    *    * @throws AclException if ACLs are disabled    */
-DECL|method|check (String reason)
-specifier|private
-name|void
-name|check
-parameter_list|(
-name|String
-name|reason
-parameter_list|)
-throws|throws
-name|AclException
-block|{
 if|if
 condition|(
 operator|!
@@ -191,9 +158,9 @@ name|String
 operator|.
 name|format
 argument_list|(
-literal|"%s  Support for ACLs has been disabled by setting %s to false."
-argument_list|,
-name|reason
+literal|"The ACL operation has been rejected.  "
+operator|+
+literal|"Support for ACLs has been disabled by setting %s to false."
 argument_list|,
 name|DFSConfigKeys
 operator|.

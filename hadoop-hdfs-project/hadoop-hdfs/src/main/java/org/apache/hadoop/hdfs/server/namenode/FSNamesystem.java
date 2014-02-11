@@ -34599,15 +34599,6 @@ return|return
 name|results
 return|;
 block|}
-DECL|method|getAclConfigFlag ()
-name|AclConfigFlag
-name|getAclConfigFlag
-parameter_list|()
-block|{
-return|return
-name|aclConfigFlag
-return|;
-block|}
 DECL|method|modifyAclEntries (String src, List<AclEntry> aclSpec)
 name|void
 name|modifyAclEntries
