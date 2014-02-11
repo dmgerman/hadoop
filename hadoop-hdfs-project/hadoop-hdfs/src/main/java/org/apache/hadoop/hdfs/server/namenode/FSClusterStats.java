@@ -62,6 +62,13 @@ name|boolean
 name|isAvoidingStaleDataNodesForWrite
 parameter_list|()
 function_decl|;
+comment|/**    * Indicates number of datanodes that are in service.    * @return Number of datanodes that are both alive and not decommissioned.    */
+DECL|method|getNumDatanodesInService ()
+specifier|public
+name|int
+name|getNumDatanodesInService
+parameter_list|()
+function_decl|;
 block|}
 end_interface
 

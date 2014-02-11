@@ -5288,19 +5288,6 @@ name|class
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|System
-operator|.
-name|err
-operator|.
-name|println
-argument_list|(
-name|sysOutStream
-operator|.
-name|toString
-argument_list|()
-argument_list|)
-expr_stmt|;
-comment|//todo sandyt remove this hejfkdsl
 name|Assert
 operator|.
 name|assertEquals

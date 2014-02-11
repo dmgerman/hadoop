@@ -216,12 +216,15 @@ name|configDir
 decl_stmt|;
 annotation|@
 name|Override
-DECL|method|getConfiguration (String name)
+DECL|method|getConfiguration (Configuration bootstrapConf, String name)
 specifier|public
 specifier|synchronized
 name|Configuration
 name|getConfiguration
 parameter_list|(
+name|Configuration
+name|bootstrapConf
+parameter_list|,
 name|String
 name|name
 parameter_list|)
@@ -268,16 +271,7 @@ name|configDir
 argument_list|)
 throw|;
 block|}
-name|Configuration
-name|conf
-init|=
-operator|new
-name|Configuration
-argument_list|(
-literal|false
-argument_list|)
-decl_stmt|;
-name|conf
+name|bootstrapConf
 operator|.
 name|addResource
 argument_list|(
@@ -290,19 +284,19 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 return|return
-name|conf
+name|bootstrapConf
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|initInternal (Configuration conf)
+DECL|method|initInternal (Configuration bootstrapConf)
 specifier|public
 specifier|synchronized
 name|void
 name|initInternal
 parameter_list|(
 name|Configuration
-name|conf
+name|bootstrapConf
 parameter_list|)
 throws|throws
 name|Exception
@@ -312,7 +306,7 @@ operator|=
 operator|new
 name|Path
 argument_list|(
-name|conf
+name|bootstrapConf
 operator|.
 name|get
 argument_list|(
@@ -332,7 +326,7 @@ name|configDir
 operator|.
 name|getFileSystem
 argument_list|(
-name|conf
+name|bootstrapConf
 argument_list|)
 expr_stmt|;
 if|if

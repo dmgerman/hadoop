@@ -217,6 +217,25 @@ name|tearDown
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|testCanonicalName ()
+specifier|public
+name|void
+name|testCanonicalName
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+name|assertNull
+argument_list|(
+literal|"s3n doesn't support security token and shouldn't have canonical name"
+argument_list|,
+name|fs
+operator|.
+name|getCanonicalServiceName
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|testListStatusForRoot ()
 specifier|public
 name|void
