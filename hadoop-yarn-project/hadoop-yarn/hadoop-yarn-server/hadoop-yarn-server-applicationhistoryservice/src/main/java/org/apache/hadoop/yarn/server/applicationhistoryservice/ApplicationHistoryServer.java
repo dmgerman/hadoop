@@ -276,7 +276,7 @@ name|applicationhistoryservice
 operator|.
 name|apptimeline
 operator|.
-name|MemoryApplicationTimelineStore
+name|LeveldbApplicationTimelineStore
 import|;
 end_import
 
@@ -770,8 +770,6 @@ name|Configuration
 name|conf
 parameter_list|)
 block|{
-comment|// TODO: need to replace the MemoryApplicationTimelineStore.class with the
-comment|// LevelDB implementation
 return|return
 name|ReflectionUtils
 operator|.
@@ -785,7 +783,7 @@ name|YarnConfiguration
 operator|.
 name|ATS_STORE
 argument_list|,
-name|MemoryApplicationTimelineStore
+name|LeveldbApplicationTimelineStore
 operator|.
 name|class
 argument_list|,
