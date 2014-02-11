@@ -1306,7 +1306,7 @@ name|proto
 operator|.
 name|AclProtos
 operator|.
-name|AclFsImageProto
+name|AclFeatureProto
 import|;
 end_import
 
@@ -3311,7 +3311,7 @@ name|getAclBit
 argument_list|()
 condition|)
 block|{
-name|AclFsImageProto
+name|AclFeatureProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -3714,7 +3714,7 @@ name|PBHelper
 operator|.
 name|convertAclEntry
 argument_list|(
-name|AclFsImageProto
+name|AclFeatureProto
 operator|.
 name|parseDelimitedFrom
 argument_list|(
@@ -8357,7 +8357,7 @@ name|getAclBit
 argument_list|()
 condition|)
 block|{
-name|AclFsImageProto
+name|AclFeatureProto
 operator|.
 name|newBuilder
 argument_list|()
@@ -8626,7 +8626,7 @@ name|PBHelper
 operator|.
 name|convertAclEntry
 argument_list|(
-name|AclFsImageProto
+name|AclFeatureProto
 operator|.
 name|parseDelimitedFrom
 argument_list|(

@@ -165,21 +165,6 @@ literal|"Cannot load edit log containing an ACL."
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Checks the flag on behalf of fsimage loading.    *    * @throws AclException if ACLs are disabled    */
-DECL|method|checkForFsImage ()
-specifier|public
-name|void
-name|checkForFsImage
-parameter_list|()
-throws|throws
-name|AclException
-block|{
-name|check
-argument_list|(
-literal|"Cannot load fsimage containing an ACL."
-argument_list|)
-expr_stmt|;
-block|}
 comment|/**    * Common check method.    *    * @throws AclException if ACLs are disabled    */
 DECL|method|check (String reason)
 specifier|private
