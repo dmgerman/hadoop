@@ -475,6 +475,19 @@ literal|1024
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getRunningContainers ()
+specifier|public
+name|int
+name|getRunningContainers
+parameter_list|()
+block|{
+return|return
+name|containersRunning
+operator|.
+name|value
+argument_list|()
+return|;
+block|}
 block|}
 end_class
 
