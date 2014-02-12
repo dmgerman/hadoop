@@ -654,7 +654,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -848,7 +848,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -1034,7 +1034,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -1174,7 +1174,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02660
+literal|0660
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -1329,7 +1329,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -1478,7 +1478,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02600
+literal|0600
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -1733,7 +1733,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|03750
+literal|01750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -2115,7 +2115,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -2318,7 +2318,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02760
+literal|0760
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -2540,7 +2540,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -2944,7 +2944,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -3173,7 +3173,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|03750
+literal|01750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -3398,7 +3398,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02770
+literal|0770
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -3572,7 +3572,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02770
+literal|0770
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -3956,7 +3956,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|03770
+literal|01770
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -4781,7 +4781,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02770
+literal|0770
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -4948,7 +4948,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02640
+literal|0640
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -5107,7 +5107,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -5452,7 +5452,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -5628,7 +5628,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02670
+literal|0670
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -5845,7 +5845,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|03770
+literal|01770
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -6232,7 +6232,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02700
+literal|0700
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -6416,7 +6416,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02600
+literal|0600
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -6619,7 +6619,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02700
+literal|0700
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -6774,7 +6774,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02640
+literal|0640
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -7265,7 +7265,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -7576,7 +7576,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -7797,7 +7797,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -7873,7 +7873,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02640
+literal|0640
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -8091,7 +8091,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -8140,7 +8140,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -8400,7 +8400,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -8712,7 +8712,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02740
+literal|0740
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -8922,7 +8922,7 @@ argument_list|,
 operator|(
 name|short
 operator|)
-literal|02740
+literal|0740
 argument_list|)
 expr_stmt|;
 name|assertAclFeature
@@ -9067,24 +9067,15 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-name|assertEquals
-argument_list|(
-name|FsPermission
+name|AclTestHelpers
 operator|.
-name|createImmutable
+name|assertPermission
 argument_list|(
-name|perm
-argument_list|)
-argument_list|,
 name|fs
-operator|.
-name|getFileStatus
-argument_list|(
+argument_list|,
 name|pathToCheck
-argument_list|)
-operator|.
-name|getPermission
-argument_list|()
+argument_list|,
+name|perm
 argument_list|)
 expr_stmt|;
 block|}

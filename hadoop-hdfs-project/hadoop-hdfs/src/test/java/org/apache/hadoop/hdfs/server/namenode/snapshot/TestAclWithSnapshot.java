@@ -326,6 +326,24 @@ name|server
 operator|.
 name|namenode
 operator|.
+name|AclTestHelpers
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|namenode
+operator|.
 name|NameNode
 import|;
 end_import
@@ -872,7 +890,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|,
 name|path
 argument_list|)
@@ -937,7 +955,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|,
 name|snapshotPath
 argument_list|)
@@ -1125,7 +1143,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|path
 argument_list|)
@@ -1190,7 +1208,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|,
 name|snapshotPath
 argument_list|)
@@ -1530,7 +1548,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|filePath
 argument_list|)
@@ -1572,7 +1590,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|subdirPath
 argument_list|)
@@ -1614,7 +1632,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|fileSnapshotPath
 argument_list|)
@@ -1674,7 +1692,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|subdirSnapshotPath
 argument_list|)
@@ -1895,7 +1913,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02570
+literal|0570
 argument_list|,
 name|filePath
 argument_list|)
@@ -1955,7 +1973,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02570
+literal|0570
 argument_list|,
 name|subdirPath
 argument_list|)
@@ -2042,7 +2060,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|fileSnapshotPath
 argument_list|)
@@ -2102,7 +2120,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|subdirSnapshotPath
 argument_list|)
@@ -2306,7 +2324,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|,
 name|path
 argument_list|)
@@ -2371,7 +2389,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|,
 name|snapshotPath
 argument_list|)
@@ -2557,7 +2575,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02750
+literal|0750
 argument_list|,
 name|snapshotPath
 argument_list|)
@@ -2897,7 +2915,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|filePath
 argument_list|)
@@ -2939,7 +2957,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|subdirPath
 argument_list|)
@@ -2981,7 +2999,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|fileSnapshotPath
 argument_list|)
@@ -3041,7 +3059,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|subdirSnapshotPath
 argument_list|)
@@ -3340,7 +3358,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|fileSnapshotPath
 argument_list|)
@@ -3400,7 +3418,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02550
+literal|0550
 argument_list|,
 name|subdirSnapshotPath
 argument_list|)
@@ -3602,7 +3620,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02770
+literal|0770
 argument_list|,
 name|path
 argument_list|)
@@ -3938,7 +3956,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02700
+literal|0700
 argument_list|,
 name|path
 argument_list|)
@@ -4030,7 +4048,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02700
+literal|0700
 argument_list|,
 name|snapshotPath
 argument_list|)
@@ -4611,7 +4629,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02660
+literal|0660
 argument_list|,
 name|filePath
 argument_list|)
@@ -4676,7 +4694,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02660
+literal|0660
 argument_list|,
 name|filePath
 argument_list|)
@@ -4931,7 +4949,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02660
+literal|0660
 argument_list|,
 name|filePath
 argument_list|)
@@ -4996,7 +5014,7 @@ argument_list|(
 operator|(
 name|short
 operator|)
-literal|02660
+literal|0660
 argument_list|,
 name|filePath
 argument_list|)
@@ -5325,24 +5343,15 @@ parameter_list|)
 throws|throws
 name|Exception
 block|{
-name|assertEquals
-argument_list|(
-name|FsPermission
+name|AclTestHelpers
 operator|.
-name|createImmutable
+name|assertPermission
 argument_list|(
-name|perm
-argument_list|)
-argument_list|,
 name|hdfs
-operator|.
-name|getFileStatus
-argument_list|(
+argument_list|,
 name|pathToCheck
-argument_list|)
-operator|.
-name|getPermission
-argument_list|()
+argument_list|,
+name|perm
 argument_list|)
 expr_stmt|;
 block|}
