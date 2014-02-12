@@ -934,6 +934,11 @@ name|read
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|in
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
 comment|// Check the file status matches the path. Hftp returns a FileStatus
 comment|// with the entire URI, extract the path part.
 name|assertEquals
@@ -1516,6 +1521,11 @@ operator|.
 name|read
 argument_list|()
 argument_list|)
+expr_stmt|;
+name|in
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@
