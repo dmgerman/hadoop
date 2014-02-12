@@ -1350,6 +1350,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Charsets
@@ -1626,7 +1640,9 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize, final Configuration conf)
+annotation|@
+name|VisibleForTesting
+DECL|method|chooseDatanode (final NameNode namenode, final String path, final HttpOpParam.Op op, final long openOffset, final long blocksize)
 specifier|static
 name|DatanodeInfo
 name|chooseDatanode
@@ -1652,10 +1668,6 @@ parameter_list|,
 specifier|final
 name|long
 name|blocksize
-parameter_list|,
-specifier|final
-name|Configuration
-name|conf
 parameter_list|)
 throws|throws
 name|IOException
@@ -1949,8 +1961,6 @@ literal|0
 condition|)
 block|{
 return|return
-name|JspHelper
-operator|.
 name|bestNode
 argument_list|(
 name|locations
@@ -1962,10 +1972,6 @@ argument_list|)
 operator|.
 name|getLocations
 argument_list|()
-argument_list|,
-literal|false
-argument_list|,
-name|conf
 argument_list|)
 return|;
 block|}
@@ -1989,6 +1995,52 @@ name|NodeBase
 operator|.
 name|ROOT
 argument_list|)
+return|;
+block|}
+comment|/**    * Choose the datanode to redirect the request. Note that the nodes have been    * sorted based on availability and network distances, thus it is sufficient    * to return the first element of the node here.    */
+DECL|method|bestNode (DatanodeInfo[] nodes)
+specifier|private
+specifier|static
+name|DatanodeInfo
+name|bestNode
+parameter_list|(
+name|DatanodeInfo
+index|[]
+name|nodes
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+if|if
+condition|(
+name|nodes
+operator|.
+name|length
+operator|==
+literal|0
+operator|||
+name|nodes
+index|[
+literal|0
+index|]
+operator|.
+name|isDecommissioned
+argument_list|()
+condition|)
+block|{
+throw|throw
+operator|new
+name|IOException
+argument_list|(
+literal|"No active nodes contain this block"
+argument_list|)
+throw|;
+block|}
+return|return
+name|nodes
+index|[
+literal|0
+index|]
 return|;
 block|}
 DECL|method|generateDelegationToken ( final NameNode namenode, final UserGroupInformation ugi, final String renewer)
@@ -2151,22 +2203,6 @@ throws|,
 name|IOException
 block|{
 specifier|final
-name|Configuration
-name|conf
-init|=
-operator|(
-name|Configuration
-operator|)
-name|context
-operator|.
-name|getAttribute
-argument_list|(
-name|JspHelper
-operator|.
-name|CURRENT_CONF
-argument_list|)
-decl_stmt|;
-specifier|final
 name|DatanodeInfo
 name|dn
 init|=
@@ -2181,8 +2217,6 @@ argument_list|,
 name|openOffset
 argument_list|,
 name|blocksize
-argument_list|,
-name|conf
 argument_list|)
 decl_stmt|;
 specifier|final
