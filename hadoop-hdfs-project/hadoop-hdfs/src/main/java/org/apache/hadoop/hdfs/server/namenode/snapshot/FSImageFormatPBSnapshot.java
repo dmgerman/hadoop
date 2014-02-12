@@ -1402,7 +1402,7 @@ if|if
 condition|(
 name|fileInPb
 operator|.
-name|hasAclId
+name|hasAcl
 argument_list|()
 condition|)
 block|{
@@ -1419,12 +1419,12 @@ name|loadAclEntries
 argument_list|(
 name|fileInPb
 operator|.
-name|getAclId
+name|getAcl
 argument_list|()
 argument_list|,
 name|state
 operator|.
-name|getExtendedAclTable
+name|getStringTable
 argument_list|()
 argument_list|)
 argument_list|)
@@ -2018,7 +2018,7 @@ if|if
 condition|(
 name|dirCopyInPb
 operator|.
-name|hasAclId
+name|hasAcl
 argument_list|()
 condition|)
 block|{
@@ -2035,12 +2035,12 @@ name|loadAclEntries
 argument_list|(
 name|dirCopyInPb
 operator|.
-name|getAclId
+name|getAcl
 argument_list|()
 argument_list|,
 name|state
 operator|.
-name|getExtendedAclTable
+name|getStringTable
 argument_list|()
 argument_list|)
 argument_list|)
