@@ -711,11 +711,6 @@ comment|/**    * Return the description of the application timeline web services
 annotation|@
 name|GET
 annotation|@
-name|Path
-argument_list|(
-literal|"/"
-argument_list|)
-annotation|@
 name|Produces
 argument_list|(
 block|{
@@ -1341,11 +1336,6 @@ block|}
 comment|/**    * Store the given entities into the timeline store, and return the errors    * that happen during storing.    */
 annotation|@
 name|POST
-annotation|@
-name|Path
-argument_list|(
-literal|"/"
-argument_list|)
 annotation|@
 name|Consumes
 argument_list|(
