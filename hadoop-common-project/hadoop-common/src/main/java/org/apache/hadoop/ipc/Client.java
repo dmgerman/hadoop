@@ -1391,6 +1391,7 @@ block|}
 comment|/**    * Get the ping interval from configuration;    * If not set in the configuration, return the default value.    *     * @param conf Configuration    * @return the ping interval    */
 DECL|method|getPingInterval (Configuration conf)
 specifier|final
+specifier|public
 specifier|static
 name|int
 name|getPingInterval
