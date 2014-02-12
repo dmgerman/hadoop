@@ -2782,6 +2782,7 @@ return|;
 block|}
 DECL|class|BlockReaderPeer
 specifier|private
+specifier|static
 class|class
 name|BlockReaderPeer
 block|{
