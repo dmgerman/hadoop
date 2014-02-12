@@ -1236,6 +1236,7 @@ return|;
 block|}
 DECL|method|getTotalPendingRequests ()
 specifier|public
+specifier|synchronized
 name|Resource
 name|getTotalPendingRequests
 parameter_list|()

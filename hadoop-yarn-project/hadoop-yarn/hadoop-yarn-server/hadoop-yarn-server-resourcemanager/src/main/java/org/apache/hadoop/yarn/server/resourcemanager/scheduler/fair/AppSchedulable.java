@@ -602,6 +602,11 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// Add up outstanding resource requests
+synchronized|synchronized
+init|(
+name|app
+init|)
+block|{
 for|for
 control|(
 name|Priority
@@ -656,6 +661,7 @@ argument_list|,
 name|total
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 block|}

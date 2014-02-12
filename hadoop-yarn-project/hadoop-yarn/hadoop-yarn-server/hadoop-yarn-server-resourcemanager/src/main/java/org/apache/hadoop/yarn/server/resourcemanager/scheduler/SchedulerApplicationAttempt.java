@@ -906,6 +906,7 @@ return|;
 block|}
 DECL|method|getResourceRequest (Priority priority, String resourceName)
 specifier|public
+specifier|synchronized
 name|ResourceRequest
 name|getResourceRequest
 parameter_list|(
@@ -955,6 +956,7 @@ return|;
 block|}
 DECL|method|getResource (Priority priority)
 specifier|public
+specifier|synchronized
 name|Resource
 name|getResource
 parameter_list|(
