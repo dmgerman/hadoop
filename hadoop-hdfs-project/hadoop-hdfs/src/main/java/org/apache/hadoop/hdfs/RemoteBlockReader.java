@@ -168,22 +168,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|client
-operator|.
-name|ClientMmapManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|net
 operator|.
 name|Peer
@@ -2199,7 +2183,7 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|getClientMmap (EnumSet<ReadOption> opts, ClientMmapManager mmapManager)
+DECL|method|getClientMmap (EnumSet<ReadOption> opts)
 specifier|public
 name|ClientMmap
 name|getClientMmap
@@ -2209,9 +2193,6 @@ argument_list|<
 name|ReadOption
 argument_list|>
 name|opts
-parameter_list|,
-name|ClientMmapManager
-name|mmapManager
 parameter_list|)
 block|{
 return|return

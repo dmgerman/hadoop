@@ -188,6 +188,20 @@ name|InterfaceStability
 import|;
 end_import
 
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
 begin_comment
 comment|/**  * BlockMetadataHeader manages metadata for data blocks on Datanodes.  * This is not related to the Block related functionality in Namenode.  * The biggest part of data block metadata is CRC for the block.  */
 end_comment
@@ -228,7 +242,10 @@ name|checksum
 init|=
 literal|null
 decl_stmt|;
+annotation|@
+name|VisibleForTesting
 DECL|method|BlockMetadataHeader (short version, DataChecksum checksum)
+specifier|public
 name|BlockMetadataHeader
 parameter_list|(
 name|short
@@ -565,8 +582,10 @@ argument_list|)
 return|;
 block|}
 comment|/**    * This writes all the fields till the beginning of checksum.    * @param out DataOutputStream    * @param header     * @return     * @throws IOException    */
+annotation|@
+name|VisibleForTesting
 DECL|method|writeHeader (DataOutputStream out, BlockMetadataHeader header)
-specifier|private
+specifier|public
 specifier|static
 name|void
 name|writeHeader

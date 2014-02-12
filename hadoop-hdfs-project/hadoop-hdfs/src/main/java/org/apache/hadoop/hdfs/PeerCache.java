@@ -434,17 +434,8 @@ specifier|final
 name|long
 name|expiryPeriod
 decl_stmt|;
-DECL|field|instance
-specifier|private
-specifier|static
-name|PeerCache
-name|instance
-init|=
-literal|null
-decl_stmt|;
-annotation|@
-name|VisibleForTesting
 DECL|method|PeerCache (int c, long e)
+specifier|public
 name|PeerCache
 parameter_list|(
 name|int
@@ -497,119 +488,10 @@ literal|"Cannot initialize expiryPeriod to "
 operator|+
 name|expiryPeriod
 operator|+
-literal|"when cache is enabled."
+literal|" when cache is enabled."
 argument_list|)
 throw|;
 block|}
-block|}
-DECL|method|getInstance (int c, long e)
-specifier|public
-specifier|static
-specifier|synchronized
-name|PeerCache
-name|getInstance
-parameter_list|(
-name|int
-name|c
-parameter_list|,
-name|long
-name|e
-parameter_list|)
-block|{
-comment|// capacity is only initialized once
-if|if
-condition|(
-name|instance
-operator|==
-literal|null
-condition|)
-block|{
-name|instance
-operator|=
-operator|new
-name|PeerCache
-argument_list|(
-name|c
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-else|else
-block|{
-comment|//already initialized once
-if|if
-condition|(
-name|instance
-operator|.
-name|capacity
-operator|!=
-name|c
-operator|||
-name|instance
-operator|.
-name|expiryPeriod
-operator|!=
-name|e
-condition|)
-block|{
-name|LOG
-operator|.
-name|info
-argument_list|(
-literal|"capacity and expiry periods already set to "
-operator|+
-name|instance
-operator|.
-name|capacity
-operator|+
-literal|" and "
-operator|+
-name|instance
-operator|.
-name|expiryPeriod
-operator|+
-literal|" respectively. Cannot set it to "
-operator|+
-name|c
-operator|+
-literal|" and "
-operator|+
-name|e
-argument_list|)
-expr_stmt|;
-block|}
-block|}
-return|return
-name|instance
-return|;
-block|}
-annotation|@
-name|VisibleForTesting
-DECL|method|setInstance (int c, long e)
-specifier|public
-specifier|static
-specifier|synchronized
-name|void
-name|setInstance
-parameter_list|(
-name|int
-name|c
-parameter_list|,
-name|long
-name|e
-parameter_list|)
-block|{
-name|instance
-operator|=
-operator|new
-name|PeerCache
-argument_list|(
-name|c
-argument_list|,
-name|e
-argument_list|)
-expr_stmt|;
 block|}
 DECL|method|isDaemonStarted ()
 specifier|private

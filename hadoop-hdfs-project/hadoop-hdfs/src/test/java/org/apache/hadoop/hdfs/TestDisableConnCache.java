@@ -237,7 +237,11 @@ operator|)
 operator|.
 name|dfs
 operator|.
-name|peerCache
+name|getClientContext
+argument_list|()
+operator|.
+name|getPeerCache
+argument_list|()
 operator|.
 name|size
 argument_list|()
