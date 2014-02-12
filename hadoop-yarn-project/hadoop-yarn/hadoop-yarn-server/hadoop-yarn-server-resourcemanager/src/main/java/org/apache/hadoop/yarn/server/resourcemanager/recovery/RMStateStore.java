@@ -3150,9 +3150,9 @@ name|SuppressWarnings
 argument_list|(
 literal|"unchecked"
 argument_list|)
-comment|/**    * In {#handleStoreEvent}, this method is called to notify the    * ResourceManager that the store operation has failed.    * @param failureCause the exception due to which the operation failed    */
+comment|/**    * This method is called to notify the ResourceManager that the store    * operation has failed.    * @param failureCause the exception due to which the operation failed    */
 DECL|method|notifyStoreOperationFailed (Exception failureCause)
-specifier|private
+specifier|protected
 name|void
 name|notifyStoreOperationFailed
 parameter_list|(
