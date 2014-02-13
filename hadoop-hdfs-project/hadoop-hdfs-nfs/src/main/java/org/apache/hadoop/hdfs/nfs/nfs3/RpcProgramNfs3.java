@@ -11871,6 +11871,12 @@ init|=
 operator|new
 name|WccData
 argument_list|(
+name|preOpAttr
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|Nfs3Utils
 operator|.
 name|getWccAttr
