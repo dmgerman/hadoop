@@ -631,7 +631,7 @@ operator|.
 name|getEditLog
 argument_list|()
 operator|.
-name|logUpgradeMarker
+name|logStartRollingUpgrade
 argument_list|(
 name|Time
 operator|.

@@ -326,6 +326,26 @@ name|common
 operator|.
 name|HdfsServerConstants
 operator|.
+name|RollingUpgradeStartupOption
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|common
+operator|.
+name|HdfsServerConstants
+operator|.
 name|StartupOption
 import|;
 end_import
@@ -2781,18 +2801,54 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
+name|NameNodeFile
+name|nnf
+decl_stmt|;
+if|if
+condition|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|ROLLINGUPGRADE
+operator|&&
+name|startOpt
+operator|.
+name|getRollingUpgradeStartupOption
+argument_list|()
+operator|==
+name|RollingUpgradeStartupOption
+operator|.
+name|ROLLBACK
+condition|)
+block|{
+name|nnf
+operator|=
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+expr_stmt|;
+block|}
+else|else
+block|{
+name|nnf
+operator|=
+name|NameNodeFile
+operator|.
+name|IMAGE
+expr_stmt|;
+block|}
+specifier|final
 name|FSImageStorageInspector
 name|inspector
 init|=
 name|storage
 operator|.
 name|readAndInspectDirs
-argument_list|()
-decl_stmt|;
-name|FSImageFile
-name|imageFile
-init|=
-literal|null
+argument_list|(
+name|nnf
+argument_list|)
 decl_stmt|;
 name|isUpgradeFinalized
 operator|=
@@ -3034,6 +3090,11 @@ literal|"No edit log streams selected."
 argument_list|)
 expr_stmt|;
 block|}
+name|FSImageFile
+name|imageFile
+init|=
+literal|null
+decl_stmt|;
 for|for
 control|(
 name|int
@@ -4581,12 +4642,16 @@ name|saveNamespace
 argument_list|(
 name|source
 argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Save the contents of the FS image to a new image file in each of the    * current storage directories.    * @param canceler     */
-DECL|method|saveNamespace (FSNamesystem source, Canceler canceler)
+DECL|method|saveNamespace (FSNamesystem source, NameNodeFile nnf, Canceler canceler)
 specifier|public
 specifier|synchronized
 name|void
@@ -4594,6 +4659,9 @@ name|saveNamespace
 parameter_list|(
 name|FSNamesystem
 name|source
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|,
 name|Canceler
 name|canceler
@@ -4652,6 +4720,8 @@ block|{
 name|saveFSImageInAllDirs
 argument_list|(
 name|source
+argument_list|,
+name|nnf
 argument_list|,
 name|imageTxId
 argument_list|,
@@ -4716,20 +4786,27 @@ name|saveFSImageInAllDirs
 argument_list|(
 name|source
 argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
 name|txid
 argument_list|,
 literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|saveFSImageInAllDirs (FSNamesystem source, long txid, Canceler canceler)
-specifier|protected
+DECL|method|saveFSImageInAllDirs (FSNamesystem source, NameNodeFile nnf, long txid, Canceler canceler)
+specifier|private
 specifier|synchronized
 name|void
 name|saveFSImageInAllDirs
 parameter_list|(
 name|FSNamesystem
 name|source
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|,
 name|long
 name|txid
@@ -4962,12 +5039,20 @@ block|}
 name|renameCheckpoint
 argument_list|(
 name|txid
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_NEW
+argument_list|,
+name|nnf
 argument_list|)
 expr_stmt|;
 comment|// Since we now have a new checkpoint, we can clean up some
 comment|// old edit logs and checkpoints.
 name|purgeOldStorage
-argument_list|()
+argument_list|(
+name|nnf
+argument_list|)
 expr_stmt|;
 block|}
 finally|finally
@@ -4995,18 +5080,22 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Purge any files in the storage directories that are no longer    * necessary.    */
-DECL|method|purgeOldStorage ()
-specifier|public
+DECL|method|purgeOldStorage (NameNodeFile nnf)
 name|void
 name|purgeOldStorage
-parameter_list|()
+parameter_list|(
+name|NameNodeFile
+name|nnf
+parameter_list|)
 block|{
 try|try
 block|{
 name|archivalManager
 operator|.
 name|purgeOldStorage
-argument_list|()
+argument_list|(
+name|nnf
+argument_list|)
 expr_stmt|;
 block|}
 catch|catch
@@ -5019,7 +5108,53 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unable to purge old storage"
+literal|"Unable to purge old storage "
+operator|+
+name|nnf
+operator|.
+name|getName
+argument_list|()
+argument_list|,
+name|e
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Purge all the checkpoints with the name style.    */
+DECL|method|purgeCheckpoints (NameNodeFile nnf)
+name|void
+name|purgeCheckpoints
+parameter_list|(
+name|NameNodeFile
+name|nnf
+parameter_list|)
+block|{
+try|try
+block|{
+name|archivalManager
+operator|.
+name|purgeCheckpoints
+argument_list|(
+name|nnf
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|Exception
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Unable to purge checkpoints with name "
+operator|+
+name|nnf
+operator|.
+name|getName
+argument_list|()
 argument_list|,
 name|e
 argument_list|)
@@ -5027,13 +5162,19 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Renames new image    */
-DECL|method|renameCheckpoint (long txid)
+DECL|method|renameCheckpoint (long txid, NameNodeFile fromNnf, NameNodeFile toNnf)
 specifier|private
 name|void
 name|renameCheckpoint
 parameter_list|(
 name|long
 name|txid
+parameter_list|,
+name|NameNodeFile
+name|fromNnf
+parameter_list|,
+name|NameNodeFile
+name|toNnf
 parameter_list|)
 throws|throws
 name|IOException
@@ -5063,9 +5204,13 @@ control|)
 block|{
 try|try
 block|{
-name|renameCheckpointInDir
+name|renameImageFileInDir
 argument_list|(
 name|sd
+argument_list|,
+name|fromNnf
+argument_list|,
+name|toNnf
 argument_list|,
 name|txid
 argument_list|)
@@ -5220,13 +5365,19 @@ name|al
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|renameCheckpointInDir (StorageDirectory sd, long txid)
+DECL|method|renameImageFileInDir (StorageDirectory sd, NameNodeFile fromNnf, NameNodeFile toNnf, long txid)
 specifier|private
 name|void
-name|renameCheckpointInDir
+name|renameImageFileInDir
 parameter_list|(
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|NameNodeFile
+name|fromNnf
+parameter_list|,
+name|NameNodeFile
+name|toNnf
 parameter_list|,
 name|long
 name|txid
@@ -5234,8 +5385,9 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+specifier|final
 name|File
-name|ckpt
+name|fromFile
 init|=
 name|NNStorage
 operator|.
@@ -5243,15 +5395,14 @@ name|getStorageFile
 argument_list|(
 name|sd
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE_NEW
+name|fromNnf
 argument_list|,
 name|txid
 argument_list|)
 decl_stmt|;
+specifier|final
 name|File
-name|curFile
+name|toFile
 init|=
 name|NNStorage
 operator|.
@@ -5259,9 +5410,7 @@ name|getStorageFile
 argument_list|(
 name|sd
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
+name|toNnf
 argument_list|,
 name|txid
 argument_list|)
@@ -5282,14 +5431,14 @@ name|debug
 argument_list|(
 literal|"renaming  "
 operator|+
-name|ckpt
+name|fromFile
 operator|.
 name|getAbsolutePath
 argument_list|()
 operator|+
 literal|" to "
 operator|+
-name|curFile
+name|toFile
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -5299,28 +5448,28 @@ block|}
 if|if
 condition|(
 operator|!
-name|ckpt
+name|fromFile
 operator|.
 name|renameTo
 argument_list|(
-name|curFile
+name|toFile
 argument_list|)
 condition|)
 block|{
 if|if
 condition|(
 operator|!
-name|curFile
+name|toFile
 operator|.
 name|delete
 argument_list|()
 operator|||
 operator|!
-name|ckpt
+name|fromFile
 operator|.
 name|renameTo
 argument_list|(
-name|curFile
+name|toFile
 argument_list|)
 condition|)
 block|{
@@ -5330,14 +5479,14 @@ name|IOException
 argument_list|(
 literal|"renaming  "
 operator|+
-name|ckpt
+name|fromFile
 operator|.
 name|getAbsolutePath
 argument_list|()
 operator|+
 literal|" to "
 operator|+
-name|curFile
+name|toFile
 operator|.
 name|getAbsolutePath
 argument_list|()
@@ -5752,6 +5901,14 @@ comment|// Rename image from tmp file
 name|renameCheckpoint
 argument_list|(
 name|txid
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_NEW
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
 argument_list|)
 expr_stmt|;
 comment|// So long as this is the newest image available,

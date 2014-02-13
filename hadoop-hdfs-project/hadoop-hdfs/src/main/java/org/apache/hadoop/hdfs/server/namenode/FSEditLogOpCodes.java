@@ -441,13 +441,22 @@ operator|)
 literal|39
 argument_list|)
 block|,
-DECL|enumConstant|OP_UPGRADE_MARKER
-name|OP_UPGRADE_MARKER
+DECL|enumConstant|OP_ROLLING_UPGRADE_START
+name|OP_ROLLING_UPGRADE_START
 argument_list|(
 operator|(
 name|byte
 operator|)
 literal|40
+argument_list|)
+block|,
+DECL|enumConstant|OP_ROLLING_UPGRADE_FINALIZE
+name|OP_ROLLING_UPGRADE_FINALIZE
+argument_list|(
+operator|(
+name|byte
+operator|)
+literal|41
 argument_list|)
 block|,
 comment|// Note that the current range of the valid OP code is 0~127

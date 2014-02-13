@@ -520,6 +520,7 @@ comment|//
 comment|// The filenames used for storing the images
 comment|//
 DECL|enum|NameNodeFile
+specifier|public
 enum|enum
 name|NameNodeFile
 block|{
@@ -552,6 +553,12 @@ DECL|enumConstant|IMAGE_NEW
 name|IMAGE_NEW
 argument_list|(
 literal|"fsimage.ckpt"
+argument_list|)
+block|,
+DECL|enumConstant|IMAGE_ROLLBACK
+name|IMAGE_ROLLBACK
+argument_list|(
+literal|"fsimage_rollback"
 argument_list|)
 block|,
 DECL|enumConstant|EDITS_NEW
@@ -3889,10 +3896,13 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Iterate over all of the storage dirs, reading their contents to determine    * their layout versions. Returns an FSImageStorageInspector which has    * inspected each directory.    *     *<b>Note:</b> this can mutate the storage info fields (ctime, version, etc).    * @throws IOException if no valid storage dirs are found or no valid layout version    */
-DECL|method|readAndInspectDirs ()
+DECL|method|readAndInspectDirs (NameNodeFile nnf)
 name|FSImageStorageInspector
 name|readAndInspectDirs
-parameter_list|()
+parameter_list|(
+name|NameNodeFile
+name|nnf
+parameter_list|)
 throws|throws
 name|IOException
 block|{
@@ -4103,7 +4113,9 @@ name|inspector
 operator|=
 operator|new
 name|FSImageTransactionalStorageInspector
-argument_list|()
+argument_list|(
+name|nnf
+argument_list|)
 expr_stmt|;
 block|}
 else|else
