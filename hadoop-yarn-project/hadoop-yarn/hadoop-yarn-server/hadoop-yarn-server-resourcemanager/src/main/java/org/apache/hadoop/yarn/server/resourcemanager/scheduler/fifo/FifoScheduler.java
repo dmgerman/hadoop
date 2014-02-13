@@ -4065,46 +4065,6 @@ name|getNewContainerId
 argument_list|()
 argument_list|)
 decl_stmt|;
-name|Token
-name|containerToken
-init|=
-literal|null
-decl_stmt|;
-name|containerToken
-operator|=
-name|this
-operator|.
-name|rmContext
-operator|.
-name|getContainerTokenSecretManager
-argument_list|()
-operator|.
-name|createContainerToken
-argument_list|(
-name|containerId
-argument_list|,
-name|nodeId
-argument_list|,
-name|application
-operator|.
-name|getUser
-argument_list|()
-argument_list|,
-name|capability
-argument_list|)
-expr_stmt|;
-if|if
-condition|(
-name|containerToken
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-name|i
-return|;
-comment|// Try again later.
-block|}
 comment|// Create the container
 name|Container
 name|container
@@ -4129,7 +4089,7 @@ name|capability
 argument_list|,
 name|priority
 argument_list|,
-name|containerToken
+literal|null
 argument_list|)
 decl_stmt|;
 comment|// Allocate!
