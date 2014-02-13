@@ -2225,6 +2225,34 @@ name|applicationAttemptId
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|moveApplicationAcrossQueues (ApplicationId appId, String queue)
+specifier|public
+name|void
+name|moveApplicationAcrossQueues
+parameter_list|(
+name|ApplicationId
+name|appId
+parameter_list|,
+name|String
+name|queue
+parameter_list|)
+throws|throws
+name|YarnException
+throws|,
+name|IOException
+block|{
+name|client
+operator|.
+name|moveApplicationAcrossQueues
+argument_list|(
+name|appId
+argument_list|,
+name|queue
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 end_class
 

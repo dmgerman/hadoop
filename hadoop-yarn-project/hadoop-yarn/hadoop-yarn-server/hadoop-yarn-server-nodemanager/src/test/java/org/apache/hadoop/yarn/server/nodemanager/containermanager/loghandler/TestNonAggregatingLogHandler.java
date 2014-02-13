@@ -1098,7 +1098,9 @@ name|YarnConfiguration
 operator|.
 name|NM_LOG_RETAIN_SECONDS
 argument_list|,
-literal|10800l
+name|YarnConfiguration
+operator|.
+name|DEFAULT_NM_LOG_RETAIN_SECONDS
 argument_list|)
 expr_stmt|;
 name|DrainDispatcher

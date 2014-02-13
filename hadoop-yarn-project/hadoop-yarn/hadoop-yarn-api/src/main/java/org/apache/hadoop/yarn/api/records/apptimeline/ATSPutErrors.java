@@ -295,6 +295,26 @@ specifier|static
 class|class
 name|ATSPutError
 block|{
+comment|/**      * Error code returned when no start time can be found when putting an      * entity. This occurs when the entity does not already exist in the      * store and it is put with no start time or events specified.      */
+DECL|field|NO_START_TIME
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|NO_START_TIME
+init|=
+literal|1
+decl_stmt|;
+comment|/**      * Error code returned if an IOException is encountered when putting an      * entity.      */
+DECL|field|IO_EXCEPTION
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|IO_EXCEPTION
+init|=
+literal|2
+decl_stmt|;
 DECL|field|entityId
 specifier|private
 name|String
@@ -307,7 +327,7 @@ name|entityType
 decl_stmt|;
 DECL|field|errorCode
 specifier|private
-name|Integer
+name|int
 name|errorCode
 decl_stmt|;
 comment|/**      * Get the entity Id      *      * @return the entity Id      */
@@ -390,7 +410,7 @@ literal|"errorcode"
 argument_list|)
 DECL|method|getErrorCode ()
 specifier|public
-name|Integer
+name|int
 name|getErrorCode
 parameter_list|()
 block|{
@@ -399,12 +419,12 @@ name|errorCode
 return|;
 block|}
 comment|/**      * Set the error code to the given error code      *      * @param errorCode      *          an error code      */
-DECL|method|setErrorCode (Integer errorCode)
+DECL|method|setErrorCode (int errorCode)
 specifier|public
 name|void
 name|setErrorCode
 parameter_list|(
-name|Integer
+name|int
 name|errorCode
 parameter_list|)
 block|{

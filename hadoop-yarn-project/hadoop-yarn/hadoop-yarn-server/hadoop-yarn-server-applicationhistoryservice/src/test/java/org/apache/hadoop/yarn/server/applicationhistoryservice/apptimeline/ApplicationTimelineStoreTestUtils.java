@@ -62,6 +62,26 @@ begin_import
 import|import
 name|java
 operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
 name|util
 operator|.
 name|ArrayList
@@ -512,6 +532,8 @@ specifier|protected
 name|void
 name|loadTestData
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 name|ATSEntities
 name|atsEntities
@@ -1039,7 +1061,7 @@ name|entity1b
 argument_list|,
 name|entityType1
 argument_list|,
-literal|123l
+literal|789l
 argument_list|,
 name|Collections
 operator|.
@@ -1163,10 +1185,9 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-operator|(
-name|Integer
-operator|)
-literal|1
+name|ATSPutError
+operator|.
+name|NO_START_TIME
 argument_list|,
 name|error
 operator|.
@@ -1175,7 +1196,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load veification data    */
+comment|/**    * Load verification data    */
 DECL|method|loadVerificationData ()
 specifier|protected
 name|void
@@ -1570,6 +1591,8 @@ specifier|public
 name|void
 name|testGetSingleEntity
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// test getting entity info
 name|verifyEntityInfo
@@ -1778,6 +1801,32 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
+name|entity1b
+argument_list|,
+name|entityType1
+argument_list|,
+name|events1
+argument_list|,
+name|EMPTY_REL_ENTITIES
+argument_list|,
+name|primaryFilters
+argument_list|,
+name|otherInfo
+argument_list|,
+name|store
+operator|.
+name|getEntity
+argument_list|(
+name|entity1b
+argument_list|,
+name|entityType1
+argument_list|,
+literal|null
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|verifyEntityInfo
+argument_list|(
 name|entity1
 argument_list|,
 name|entityType1
@@ -1881,6 +1930,8 @@ specifier|public
 name|void
 name|testGetEntities
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// test getting entities
 name|assertEquals
@@ -2588,6 +2639,8 @@ specifier|public
 name|void
 name|testGetEntitiesWithPrimaryFilters
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// test using primary filter
 name|assertEquals
@@ -3154,6 +3207,8 @@ specifier|public
 name|void
 name|testGetEntitiesWithSecondaryFilters
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// test using secondary filter
 name|List
@@ -3418,6 +3473,8 @@ specifier|public
 name|void
 name|testGetEvents
 parameter_list|()
+throws|throws
+name|IOException
 block|{
 comment|// test getting entity timelines
 name|SortedSet

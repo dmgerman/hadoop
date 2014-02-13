@@ -942,6 +942,19 @@ name|HAUtil
 operator|.
 name|getNeedToSetValueMessage
 argument_list|(
+name|HAUtil
+operator|.
+name|addSuffix
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|RM_HOSTNAME
+argument_list|,
+name|RM1_NODE_ID
+argument_list|)
+operator|+
+literal|" or "
+operator|+
 name|confKey
 argument_list|)
 argument_list|,

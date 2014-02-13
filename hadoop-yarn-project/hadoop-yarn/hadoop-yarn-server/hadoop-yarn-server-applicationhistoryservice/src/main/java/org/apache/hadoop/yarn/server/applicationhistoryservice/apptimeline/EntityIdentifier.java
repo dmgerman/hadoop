@@ -63,14 +63,14 @@ annotation|@
 name|Private
 annotation|@
 name|Unstable
-DECL|class|EntityId
+DECL|class|EntityIdentifier
 specifier|public
 class|class
-name|EntityId
+name|EntityIdentifier
 implements|implements
 name|Comparable
 argument_list|<
-name|EntityId
+name|EntityIdentifier
 argument_list|>
 block|{
 DECL|field|id
@@ -83,9 +83,9 @@ specifier|private
 name|String
 name|type
 decl_stmt|;
-DECL|method|EntityId (String id, String type)
+DECL|method|EntityIdentifier (String id, String type)
 specifier|public
-name|EntityId
+name|EntityIdentifier
 parameter_list|(
 name|String
 name|id
@@ -131,12 +131,12 @@ return|;
 block|}
 annotation|@
 name|Override
-DECL|method|compareTo (EntityId other)
+DECL|method|compareTo (EntityIdentifier other)
 specifier|public
 name|int
 name|compareTo
 parameter_list|(
-name|EntityId
+name|EntityIdentifier
 name|other
 parameter_list|)
 block|{
@@ -281,11 +281,11 @@ condition|)
 return|return
 literal|false
 return|;
-name|EntityId
+name|EntityIdentifier
 name|other
 init|=
 operator|(
-name|EntityId
+name|EntityIdentifier
 operator|)
 name|obj
 decl_stmt|;
