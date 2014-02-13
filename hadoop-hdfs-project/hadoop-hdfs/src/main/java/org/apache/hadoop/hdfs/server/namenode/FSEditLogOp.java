@@ -19622,6 +19622,21 @@ argument_list|(
 name|st
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
+name|aclEntries
+operator|==
+literal|null
+condition|)
+block|{
+name|aclEntries
+operator|=
+name|Lists
+operator|.
+name|newArrayList
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|readShort (DataInputStream in)
