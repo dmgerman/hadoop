@@ -218,7 +218,7 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|BlockReaderTestUtil
+name|ExtendedBlockId
 import|;
 end_import
 
@@ -383,24 +383,6 @@ operator|.
 name|client
 operator|.
 name|ShortCircuitReplica
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|ShortCircuitReplica
-operator|.
-name|Key
 import|;
 end_import
 
@@ -1985,7 +1967,7 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|visit (int numOutstandingMmaps, Map<Key, ShortCircuitReplica> replicas, Map<Key, InvalidToken> failedLoads, Map<Long, ShortCircuitReplica> evictable, Map<Long, ShortCircuitReplica> evictableMmapped)
+DECL|method|visit (int numOutstandingMmaps, Map<ExtendedBlockId, ShortCircuitReplica> replicas, Map<ExtendedBlockId, InvalidToken> failedLoads, Map<Long, ShortCircuitReplica> evictable, Map<Long, ShortCircuitReplica> evictableMmapped)
 specifier|public
 name|void
 name|visit
@@ -1995,7 +1977,7 @@ name|numOutstandingMmaps
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|ShortCircuitReplica
 argument_list|>
@@ -2003,7 +1985,7 @@ name|replicas
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|InvalidToken
 argument_list|>
@@ -2461,7 +2443,7 @@ name|numOutstandingMmaps
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|ShortCircuitReplica
 argument_list|>
@@ -2469,7 +2451,7 @@ name|replicas
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|InvalidToken
 argument_list|>
@@ -2500,7 +2482,7 @@ operator|.
 name|get
 argument_list|(
 operator|new
-name|Key
+name|ExtendedBlockId
 argument_list|(
 name|firstBlock
 operator|.
@@ -2688,7 +2670,7 @@ name|numOutstandingMmaps
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|ShortCircuitReplica
 argument_list|>
@@ -2696,7 +2678,7 @@ name|replicas
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|InvalidToken
 argument_list|>

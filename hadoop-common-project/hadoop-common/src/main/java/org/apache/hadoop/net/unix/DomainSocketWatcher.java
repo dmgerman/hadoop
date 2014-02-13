@@ -220,6 +220,20 @@ name|google
 operator|.
 name|common
 operator|.
+name|annotations
+operator|.
+name|VisibleForTesting
+import|;
+end_import
+
+begin_import
+import|import
+name|com
+operator|.
+name|google
+operator|.
+name|common
+operator|.
 name|base
 operator|.
 name|Preconditions
@@ -259,8 +273,6 @@ specifier|public
 specifier|final
 class|class
 name|DomainSocketWatcher
-extends|extends
-name|Thread
 implements|implements
 name|Closeable
 block|{
@@ -941,7 +953,10 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|interrupt
 argument_list|()
@@ -1027,7 +1042,10 @@ name|InterruptedException
 name|e
 parameter_list|)
 block|{
-name|this
+name|Thread
+operator|.
+name|currentThread
+argument_list|()
 operator|.
 name|interrupt
 argument_list|()
@@ -1385,8 +1403,9 @@ expr_stmt|;
 block|}
 block|}
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|field|watcherThread
-specifier|private
 specifier|final
 name|Thread
 name|watcherThread
@@ -1750,6 +1769,10 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
+name|kick
+argument_list|()
+expr_stmt|;
+comment|// allow the handler for notificationSockets[0] to read a byte
 for|for
 control|(
 name|Entry

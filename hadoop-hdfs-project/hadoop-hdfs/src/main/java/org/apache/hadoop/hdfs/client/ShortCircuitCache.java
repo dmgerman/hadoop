@@ -220,6 +220,20 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
+name|ExtendedBlockId
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
 name|DFSConfigKeys
 import|;
 end_import
@@ -237,24 +251,6 @@ operator|.
 name|client
 operator|.
 name|ShortCircuitReplica
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|client
-operator|.
-name|ShortCircuitReplica
-operator|.
-name|Key
 import|;
 end_import
 
@@ -814,7 +810,7 @@ specifier|private
 specifier|final
 name|HashMap
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|Waitable
 argument_list|<
@@ -827,7 +823,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|Waitable
 argument_list|<
@@ -2280,12 +2276,12 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Fetch or create a replica.    *    * You must hold the cache lock while calling this function.    *    * @param key          Key to use for lookup.    * @param creator      Replica creator callback.  Will be called without    *                     the cache lock being held.    *    * @return             Null if no replica could be found or created.    *                     The replica, otherwise.    */
-DECL|method|fetchOrCreate (Key key, ShortCircuitReplicaCreator creator)
+DECL|method|fetchOrCreate (ExtendedBlockId key, ShortCircuitReplicaCreator creator)
 specifier|public
 name|ShortCircuitReplicaInfo
 name|fetchOrCreate
 parameter_list|(
-name|Key
+name|ExtendedBlockId
 name|key
 parameter_list|,
 name|ShortCircuitReplicaCreator
@@ -2469,12 +2465,12 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Fetch an existing ReplicaInfo object.    *    * @param key       The key that we're using.    * @param waitable  The waitable object to wait on.    * @return          The existing ReplicaInfo object, or null if there is    *                  none.    *    * @throws RetriableException   If the caller needs to retry.    */
-DECL|method|fetch (Key key, Waitable<ShortCircuitReplicaInfo> waitable)
+DECL|method|fetch (ExtendedBlockId key, Waitable<ShortCircuitReplicaInfo> waitable)
 specifier|private
 name|ShortCircuitReplicaInfo
 name|fetch
 parameter_list|(
-name|Key
+name|ExtendedBlockId
 name|key
 parameter_list|,
 name|Waitable
@@ -2689,12 +2685,12 @@ return|return
 name|info
 return|;
 block|}
-DECL|method|create (Key key, ShortCircuitReplicaCreator creator, Waitable<ShortCircuitReplicaInfo> newWaitable)
+DECL|method|create (ExtendedBlockId key, ShortCircuitReplicaCreator creator, Waitable<ShortCircuitReplicaInfo> newWaitable)
 specifier|private
 name|ShortCircuitReplicaInfo
 name|create
 parameter_list|(
-name|Key
+name|ExtendedBlockId
 name|key
 parameter_list|,
 name|ShortCircuitReplicaCreator
@@ -3455,7 +3451,7 @@ specifier|public
 interface|interface
 name|CacheVisitor
 block|{
-DECL|method|visit (int numOutstandingMmaps, Map<Key, ShortCircuitReplica> replicas, Map<Key, InvalidToken> failedLoads, Map<Long, ShortCircuitReplica> evictable, Map<Long, ShortCircuitReplica> evictableMmapped)
+DECL|method|visit (int numOutstandingMmaps, Map<ExtendedBlockId, ShortCircuitReplica> replicas, Map<ExtendedBlockId, InvalidToken> failedLoads, Map<Long, ShortCircuitReplica> evictable, Map<Long, ShortCircuitReplica> evictableMmapped)
 name|void
 name|visit
 parameter_list|(
@@ -3464,7 +3460,7 @@ name|numOutstandingMmaps
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|ShortCircuitReplica
 argument_list|>
@@ -3472,7 +3468,7 @@ name|replicas
 parameter_list|,
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|InvalidToken
 argument_list|>
@@ -3517,7 +3513,7 @@ try|try
 block|{
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|ShortCircuitReplica
 argument_list|>
@@ -3526,7 +3522,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|ShortCircuitReplica
 argument_list|>
@@ -3534,7 +3530,7 @@ argument_list|()
 decl_stmt|;
 name|Map
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|InvalidToken
 argument_list|>
@@ -3543,7 +3539,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|InvalidToken
 argument_list|>
@@ -3553,7 +3549,7 @@ for|for
 control|(
 name|Entry
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|Waitable
 argument_list|<
@@ -3701,7 +3697,7 @@ for|for
 control|(
 name|Entry
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|ShortCircuitReplica
 argument_list|>
@@ -3748,7 +3744,7 @@ for|for
 control|(
 name|Entry
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|InvalidToken
 argument_list|>
