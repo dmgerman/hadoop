@@ -1519,6 +1519,9 @@ name|password
 operator|.
 name|toString
 argument_list|()
+operator|.
+name|trim
+argument_list|()
 return|;
 block|}
 catch|catch
