@@ -1100,14 +1100,6 @@ operator|.
 name|FINISHING
 return|;
 case|case
-name|FINAL_SAVING
-case|:
-return|return
-name|YarnApplicationAttemptState
-operator|.
-name|FINAL_SAVING
-return|;
-case|case
 name|FINISHED
 case|:
 return|return

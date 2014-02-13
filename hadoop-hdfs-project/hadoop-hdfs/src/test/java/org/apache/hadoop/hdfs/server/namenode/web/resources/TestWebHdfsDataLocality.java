@@ -770,8 +770,6 @@ operator|-
 literal|1L
 argument_list|,
 name|blocksize
-argument_list|,
-name|conf
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -930,8 +928,6 @@ operator|-
 literal|1L
 argument_list|,
 name|blocksize
-argument_list|,
-name|conf
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -967,8 +963,6 @@ argument_list|,
 literal|0
 argument_list|,
 name|blocksize
-argument_list|,
-name|conf
 argument_list|)
 decl_stmt|;
 name|Assert
@@ -1005,8 +999,6 @@ operator|-
 literal|1L
 argument_list|,
 name|blocksize
-argument_list|,
-name|conf
 argument_list|)
 decl_stmt|;
 name|Assert

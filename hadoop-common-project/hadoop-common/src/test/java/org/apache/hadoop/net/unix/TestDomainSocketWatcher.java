@@ -341,6 +341,7 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
+specifier|final
 name|DomainSocketWatcher
 name|watcher
 init|=
@@ -352,6 +353,8 @@ argument_list|)
 decl_stmt|;
 name|watcher
 operator|.
+name|watcherThread
+operator|.
 name|interrupt
 argument_list|()
 expr_stmt|;
@@ -360,7 +363,14 @@ operator|.
 name|joinUninterruptibly
 argument_list|(
 name|watcher
+operator|.
+name|watcherThread
 argument_list|)
+expr_stmt|;
+name|watcher
+operator|.
+name|close
+argument_list|()
 expr_stmt|;
 block|}
 annotation|@

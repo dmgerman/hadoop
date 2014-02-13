@@ -3291,6 +3291,29 @@ name|toXmlItemBlock
 argument_list|(
 name|doc
 argument_list|,
+literal|"Blockpool Used%"
+argument_list|,
+name|DFSUtil
+operator|.
+name|percent2String
+argument_list|(
+name|DFSUtil
+operator|.
+name|getPercentUsed
+argument_list|(
+name|nn
+operator|.
+name|bpUsed
+argument_list|,
+name|total
+argument_list|)
+argument_list|)
+argument_list|)
+expr_stmt|;
+name|toXmlItemBlock
+argument_list|(
+name|doc
+argument_list|,
 literal|"Files And Directories"
 argument_list|,
 name|Long
