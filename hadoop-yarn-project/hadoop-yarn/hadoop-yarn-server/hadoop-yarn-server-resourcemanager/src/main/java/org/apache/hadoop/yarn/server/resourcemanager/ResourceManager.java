@@ -224,6 +224,20 @@ name|hadoop
 operator|.
 name|security
 operator|.
+name|Groups
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|security
+operator|.
 name|SecurityUtil
 import|;
 end_import
@@ -1789,6 +1803,19 @@ name|YarnConfiguration
 operator|.
 name|CORE_SITE_CONFIGURATION_FILE
 argument_list|)
+expr_stmt|;
+comment|// Do refreshUserToGroupsMappings with loaded core-site.xml
+name|Groups
+operator|.
+name|getUserToGroupsMappingServiceWithLoadedConfiguration
+argument_list|(
+name|this
+operator|.
+name|conf
+argument_list|)
+operator|.
+name|refresh
+argument_list|()
 expr_stmt|;
 block|}
 comment|// register the handlers for all AlwaysOn services using setupDispatcher().
