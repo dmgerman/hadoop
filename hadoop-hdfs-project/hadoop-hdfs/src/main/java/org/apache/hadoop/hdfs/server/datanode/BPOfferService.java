@@ -1740,6 +1740,47 @@ name|bpServices
 argument_list|)
 return|;
 block|}
+comment|/**    * Signal the current rolling upgrade status as indicated by the NN.    * @param inProgress true if a rolling upgrade is in progress    */
+DECL|method|signalRollingUpgrade (boolean inProgress)
+name|void
+name|signalRollingUpgrade
+parameter_list|(
+name|boolean
+name|inProgress
+parameter_list|)
+block|{
+if|if
+condition|(
+name|inProgress
+condition|)
+block|{
+name|dn
+operator|.
+name|getFSDataset
+argument_list|()
+operator|.
+name|enableDeleteToTrash
+argument_list|(
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|dn
+operator|.
+name|getFSDataset
+argument_list|()
+operator|.
+name|disableAndPurgeTrashStorage
+argument_list|(
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Update the BPOS's view of which NN is active, based on a heartbeat    * response from one of the actors.    *     * @param actor the actor which received the heartbeat    * @param nnHaState the HA-related heartbeat contents    */
 DECL|method|updateActorStatesFromHeartbeat ( BPServiceActor actor, NNHAStatusHeartbeat nnHaState)
 specifier|synchronized
@@ -2599,6 +2640,15 @@ operator|.
 name|getBlockPoolId
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Got finalize command for block pool "
+operator|+
+name|bp
+argument_list|)
+expr_stmt|;
 assert|assert
 name|getBlockPoolId
 argument_list|()

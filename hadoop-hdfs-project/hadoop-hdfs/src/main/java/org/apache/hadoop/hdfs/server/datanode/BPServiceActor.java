@@ -222,7 +222,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|HdfsConstants
+name|LocatedBlock
 import|;
 end_import
 
@@ -238,7 +238,7 @@ name|hdfs
 operator|.
 name|protocol
 operator|.
-name|LocatedBlock
+name|RollingUpgradeStatus
 import|;
 end_import
 
@@ -2706,6 +2706,79 @@ name|this
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|handleRollingUpgradeStatus (HeartbeatResponse resp)
+specifier|private
+name|void
+name|handleRollingUpgradeStatus
+parameter_list|(
+name|HeartbeatResponse
+name|resp
+parameter_list|)
+block|{
+name|RollingUpgradeStatus
+name|rollingUpgradeStatus
+init|=
+name|resp
+operator|.
+name|getRollingUpdateStatus
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+name|rollingUpgradeStatus
+operator|!=
+literal|null
+operator|&&
+name|rollingUpgradeStatus
+operator|.
+name|getBlockPoolId
+argument_list|()
+operator|.
+name|compareTo
+argument_list|(
+name|bpos
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+operator|!=
+literal|0
+condition|)
+block|{
+comment|// Can this ever occur?
+name|LOG
+operator|.
+name|error
+argument_list|(
+literal|"Invalid BlockPoolId "
+operator|+
+name|rollingUpgradeStatus
+operator|.
+name|getBlockPoolId
+argument_list|()
+operator|+
+literal|" in HeartbeatResponse. Expected "
+operator|+
+name|bpos
+operator|.
+name|getBlockPoolId
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
+else|else
+block|{
+name|bpos
+operator|.
+name|signalRollingUpgrade
+argument_list|(
+name|rollingUpgradeStatus
+operator|!=
+literal|null
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 comment|/**    * Main loop for each BP thread. Run until shutdown,    * forever calling remote NameNode functions.    */
 DECL|method|offerService ()
 specifier|private
@@ -2868,6 +2941,21 @@ operator|.
 name|getState
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|state
+operator|==
+name|HAServiceState
+operator|.
+name|ACTIVE
+condition|)
+block|{
+name|handleRollingUpgradeStatus
+argument_list|(
+name|resp
+argument_list|)
+expr_stmt|;
+block|}
 name|long
 name|startProcessCommands
 init|=

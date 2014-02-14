@@ -1136,6 +1136,26 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Enable 'trash' for the given dataset. When trash is enabled, files are    * moved to a separate trash directory instead of being deleted immediately.    * This can be useful for example during rolling upgrades.    */
+DECL|method|enableDeleteToTrash (String bpid)
+specifier|public
+name|void
+name|enableDeleteToTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+function_decl|;
+comment|/**    * Disable 'trash' for the given dataset and purge existing files in 'trash'.    */
+DECL|method|disableAndPurgeTrashStorage (String bpid)
+specifier|public
+name|void
+name|disableAndPurgeTrashStorage
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+function_decl|;
 block|}
 end_interface
 

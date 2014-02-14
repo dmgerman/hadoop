@@ -94,6 +94,18 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -514,6 +526,19 @@ name|STORAGE_DIR_TMP
 init|=
 literal|"tmp"
 decl_stmt|;
+comment|// Set of bpids for which 'trash' is currently enabled.
+comment|// When trash is enabled block files are moved under a separate
+comment|// 'trash' folder instead of being deleted right away. This can
+comment|// be useful during rolling upgrades, for example.
+comment|// The set is backed by a concurrent HashMap.
+DECL|field|trashEnabledBpids
+specifier|private
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|trashEnabledBpids
+decl_stmt|;
 comment|/**    * Datanode UUID that this storage is currently attached to. This    *  is the same as the legacy StorageID for datanodes that were    *  upgraded from a pre-UUID version. For compatibility with prior    *  versions of Datanodes we cannot make this field a UUID.    */
 DECL|field|datanodeUuid
 specifier|private
@@ -564,6 +589,22 @@ argument_list|(
 name|NodeType
 operator|.
 name|DATA_NODE
+argument_list|)
+expr_stmt|;
+name|trashEnabledBpids
+operator|=
+name|Collections
+operator|.
+name|newSetFromMap
+argument_list|(
+operator|new
+name|ConcurrentHashMap
+argument_list|<
+name|String
+argument_list|,
+name|Boolean
+argument_list|>
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -659,6 +700,125 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+block|}
+comment|/**    * Enable trash for the specified block pool storage.    *    * @param bpid    * @param  inProgress    */
+DECL|method|enableTrash (String bpid)
+specifier|public
+name|void
+name|enableTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+if|if
+condition|(
+name|trashEnabledBpids
+operator|.
+name|add
+argument_list|(
+name|bpid
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Enabled trash for bpid "
+operator|+
+name|bpid
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+comment|/**    * Disable trash for the specified block pool storage.    * Existing files in trash are purged i.e. permanently deleted.    *    * @param bpid    * @param  inProgress    */
+DECL|method|disableAndPurgeTrash (String bpid)
+specifier|public
+name|void
+name|disableAndPurgeTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+if|if
+condition|(
+name|trashEnabledBpids
+operator|.
+name|remove
+argument_list|(
+name|bpid
+argument_list|)
+condition|)
+block|{
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Disabled trash for bpid "
+operator|+
+name|bpid
+argument_list|)
+expr_stmt|;
+block|}
+operator|(
+operator|(
+name|BlockPoolSliceStorage
+operator|)
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|)
+operator|.
+name|emptyTrash
+argument_list|()
+expr_stmt|;
+block|}
+comment|/**    * If rolling upgrades are in progress then do not delete block files    * immediately. Instead we move the block files to an intermediate    * 'trash' directory. If there is a subsequent rollback, then the block    * files will be restored from trash.    *    * @param blockFile    * @return trash directory if rolling upgrade is in progress, null    *         otherwise.    */
+DECL|method|getTrashDirectoryForBlockFile (String bpid, File blockFile)
+specifier|public
+name|String
+name|getTrashDirectoryForBlockFile
+parameter_list|(
+name|String
+name|bpid
+parameter_list|,
+name|File
+name|blockFile
+parameter_list|)
+block|{
+if|if
+condition|(
+name|trashEnabledBpids
+operator|.
+name|contains
+argument_list|(
+name|bpid
+argument_list|)
+condition|)
+block|{
+return|return
+operator|(
+operator|(
+name|BlockPoolSliceStorage
+operator|)
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|)
+operator|.
+name|getTrashDirectory
+argument_list|(
+name|blockFile
+argument_list|)
+return|;
+block|}
+return|return
+literal|null
+return|;
 block|}
 comment|/**    * Analyze storage directories.    * Recover from previous transitions if required.     * Perform fs state transition if necessary depending on the namespace info.    * Read storage info.    *<br>    * This method should be synchronized between multiple DN threads.  Only the     * first DN thread does DN level storage dir recoverTransitionRead.    *     * @param nsInfo namespace information    * @param dataDirs array of data storage directories    * @param startOpt startup option    * @throws IOException    */
 DECL|method|recoverTransitionRead (DataNode datanode, NamespaceInfo nsInfo, Collection<StorageLocation> dataDirs, StartupOption startOpt)

@@ -2269,6 +2269,21 @@ operator|=
 name|secureResources
 expr_stmt|;
 block|}
+DECL|method|setDnArgs (String .... args)
+specifier|public
+name|void
+name|setDnArgs
+parameter_list|(
+name|String
+modifier|...
+name|args
+parameter_list|)
+block|{
+name|dnArgs
+operator|=
+name|args
+expr_stmt|;
+block|}
 block|}
 DECL|field|conf
 specifier|private

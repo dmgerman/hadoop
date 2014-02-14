@@ -5069,6 +5069,40 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|enableDeleteToTrash (String bpid)
+specifier|public
+name|void
+name|enableDeleteToTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
+DECL|method|disableAndPurgeTrashStorage (String bpid)
+specifier|public
+name|void
+name|disableAndPurgeTrashStorage
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|checkAndUpdate (String bpid, long blockId, File diskFile, File diskMetaFile, FsVolumeSpi vol)
 specifier|public
 name|void

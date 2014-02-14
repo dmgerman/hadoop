@@ -220,20 +220,6 @@ end_import
 
 begin_import
 import|import
-name|com
-operator|.
-name|google
-operator|.
-name|common
-operator|.
-name|base
-operator|.
-name|Preconditions
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -1610,6 +1596,11 @@ specifier|final
 name|DataNode
 name|datanode
 decl_stmt|;
+DECL|field|dataStorage
+specifier|final
+name|DataStorage
+name|dataStorage
+decl_stmt|;
 DECL|field|volumes
 specifier|final
 name|FsVolumeList
@@ -1668,6 +1659,12 @@ operator|.
 name|datanode
 operator|=
 name|datanode
+expr_stmt|;
+name|this
+operator|.
+name|dataStorage
+operator|=
+name|storage
 expr_stmt|;
 comment|// The number of volumes required for operation is the total number
 comment|// of volumes minus the number of failed volumes we can tolerate.
@@ -6788,6 +6785,15 @@ index|[
 name|i
 index|]
 argument_list|)
+argument_list|,
+name|dataStorage
+operator|.
+name|getTrashDirectoryForBlockFile
+argument_list|(
+name|bpid
+argument_list|,
+name|f
+argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
@@ -9939,6 +9945,44 @@ argument_list|,
 name|blocksVolumeIndexes
 argument_list|)
 return|;
+block|}
+annotation|@
+name|Override
+DECL|method|enableDeleteToTrash (String bpid)
+specifier|public
+name|void
+name|enableDeleteToTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+name|dataStorage
+operator|.
+name|enableTrash
+argument_list|(
+name|bpid
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
+DECL|method|disableAndPurgeTrashStorage (String bpid)
+specifier|public
+name|void
+name|disableAndPurgeTrashStorage
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+name|dataStorage
+operator|.
+name|disableAndPurgeTrash
+argument_list|(
+name|bpid
+argument_list|)
+expr_stmt|;
 block|}
 annotation|@
 name|Override
