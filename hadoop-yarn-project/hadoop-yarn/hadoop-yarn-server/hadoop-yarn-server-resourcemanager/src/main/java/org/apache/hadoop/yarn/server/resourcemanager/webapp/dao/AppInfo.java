@@ -120,20 +120,6 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|http
-operator|.
-name|HttpConfig
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
 name|yarn
 operator|.
 name|api
@@ -401,6 +387,13 @@ specifier|protected
 name|ApplicationId
 name|applicationId
 decl_stmt|;
+annotation|@
+name|XmlTransient
+DECL|field|schemePrefix
+specifier|private
+name|String
+name|schemePrefix
+decl_stmt|;
 comment|// these are ok for any user to see
 DECL|field|id
 specifier|protected
@@ -516,7 +509,7 @@ name|AppInfo
 parameter_list|()
 block|{   }
 comment|// JAXB needs this
-DECL|method|AppInfo (RMApp app, Boolean hasAccess, String host)
+DECL|method|AppInfo (RMApp app, Boolean hasAccess, String schemePrefix)
 specifier|public
 name|AppInfo
 parameter_list|(
@@ -527,28 +520,15 @@ name|Boolean
 name|hasAccess
 parameter_list|,
 name|String
-name|host
+name|schemePrefix
 parameter_list|)
 block|{
 name|this
-argument_list|(
-name|app
-argument_list|,
-name|hasAccess
-argument_list|)
+operator|.
+name|schemePrefix
+operator|=
+name|schemePrefix
 expr_stmt|;
-block|}
-DECL|method|AppInfo (RMApp app, Boolean hasAccess)
-specifier|public
-name|AppInfo
-parameter_list|(
-name|RMApp
-name|app
-parameter_list|,
-name|Boolean
-name|hasAccess
-parameter_list|)
-block|{
 if|if
 condition|(
 name|app
@@ -655,10 +635,7 @@ name|WebAppUtils
 operator|.
 name|getURLWithScheme
 argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+name|schemePrefix
 argument_list|,
 name|trackingUrl
 argument_list|)
@@ -946,10 +923,7 @@ name|url
 init|=
 name|join
 argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+name|schemePrefix
 argument_list|,
 name|masterContainer
 operator|.

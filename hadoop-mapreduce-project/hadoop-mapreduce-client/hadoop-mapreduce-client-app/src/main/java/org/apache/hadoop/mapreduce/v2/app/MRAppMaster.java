@@ -7643,15 +7643,22 @@ argument_list|(
 name|conf
 argument_list|)
 expr_stmt|;
-name|HttpConfig
+name|conf
 operator|.
-name|setPolicy
+name|set
 argument_list|(
+name|YarnConfiguration
+operator|.
+name|YARN_HTTP_POLICY_KEY
+argument_list|,
 name|HttpConfig
 operator|.
 name|Policy
 operator|.
 name|HTTP_ONLY
+operator|.
+name|name
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// log the system properties

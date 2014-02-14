@@ -13426,7 +13426,7 @@ name|logsLink
 operator|.
 name|startsWith
 argument_list|(
-literal|"http://"
+literal|"//"
 argument_list|)
 argument_list|)
 expr_stmt|;

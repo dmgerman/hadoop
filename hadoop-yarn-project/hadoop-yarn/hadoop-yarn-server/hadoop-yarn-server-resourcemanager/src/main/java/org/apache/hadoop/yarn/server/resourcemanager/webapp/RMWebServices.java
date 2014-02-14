@@ -272,6 +272,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|UserGroupInformation
@@ -1130,6 +1144,24 @@ end_import
 
 begin_import
 import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|util
+operator|.
+name|WebAppUtils
+import|;
+end_import
+
+begin_import
+import|import
 name|com
 operator|.
 name|google
@@ -1233,6 +1265,12 @@ specifier|final
 name|QueueACLsManager
 name|queueACLsManager
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 DECL|field|response
 specifier|private
 annotation|@
@@ -1242,7 +1280,7 @@ name|response
 decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|RMWebServices (final ResourceManager rm, final ApplicationACLsManager aclsManager, final QueueACLsManager queueACLsManager)
+DECL|method|RMWebServices (final ResourceManager rm, final ApplicationACLsManager aclsManager, final QueueACLsManager queueACLsManager, Configuration conf)
 specifier|public
 name|RMWebServices
 parameter_list|(
@@ -1257,6 +1295,9 @@ parameter_list|,
 specifier|final
 name|QueueACLsManager
 name|queueACLsManager
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|this
@@ -1276,6 +1317,12 @@ operator|.
 name|queueACLsManager
 operator|=
 name|queueACLsManager
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 block|}
 DECL|method|hasAccess (RMApp app, HttpServletRequest hsr)
@@ -2989,6 +3036,13 @@ name|rmapp
 argument_list|,
 name|hsr
 argument_list|)
+argument_list|,
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|allApps
@@ -3909,6 +3963,13 @@ name|app
 argument_list|,
 name|hsr
 argument_list|)
+argument_list|,
+name|hsr
+operator|.
+name|getScheme
+argument_list|()
+operator|+
+literal|"://"
 argument_list|)
 return|;
 block|}

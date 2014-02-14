@@ -461,7 +461,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|configuration
+argument_list|)
 control|)
 block|{
 name|configuration
@@ -1729,7 +1732,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 name|assertEquals

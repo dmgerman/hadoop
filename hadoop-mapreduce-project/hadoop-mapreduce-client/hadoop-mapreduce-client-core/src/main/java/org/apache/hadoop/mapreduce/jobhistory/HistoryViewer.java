@@ -362,6 +362,24 @@ name|StringUtils
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
+name|util
+operator|.
+name|WebAppUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * HistoryViewer is used to parse and view the JobHistory files   *  */
 end_comment
@@ -1640,6 +1658,16 @@ name|taskLogsUrl
 init|=
 name|getTaskLogsUrl
 argument_list|(
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|fs
+operator|.
+name|getConf
+argument_list|()
+argument_list|)
+argument_list|,
 name|attempt
 argument_list|)
 decl_stmt|;
@@ -3406,12 +3434,15 @@ block|}
 block|}
 block|}
 comment|/**    * Return the TaskLogsUrl of a particular TaskAttempt    *     * @param attempt    * @return the taskLogsUrl. null if http-port or tracker-name or    *         task-attempt-id are unavailable.    */
-DECL|method|getTaskLogsUrl ( JobHistoryParser.TaskAttemptInfo attempt)
+DECL|method|getTaskLogsUrl (String scheme, JobHistoryParser.TaskAttemptInfo attempt)
 specifier|public
 specifier|static
 name|String
 name|getTaskLogsUrl
 parameter_list|(
+name|String
+name|scheme
+parameter_list|,
 name|JobHistoryParser
 operator|.
 name|TaskAttemptInfo
@@ -3468,6 +3499,8 @@ name|HostUtil
 operator|.
 name|getTaskLogUrl
 argument_list|(
+name|scheme
+argument_list|,
 name|taskTrackerName
 argument_list|,
 name|Integer
