@@ -120,6 +120,22 @@ name|hadoop
 operator|.
 name|classification
 operator|.
+name|InterfaceAudience
+operator|.
+name|Private
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|classification
+operator|.
 name|InterfaceStability
 import|;
 end_import
@@ -590,7 +606,7 @@ argument_list|(
 name|policyFile
 argument_list|)
 expr_stmt|;
-name|refreshWithConfiguration
+name|refreshWithLoadedConfiguration
 argument_list|(
 name|policyConf
 argument_list|,
@@ -598,11 +614,13 @@ name|provider
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|refreshWithConfiguration (Configuration conf, PolicyProvider provider)
+annotation|@
+name|Private
+DECL|method|refreshWithLoadedConfiguration (Configuration conf, PolicyProvider provider)
 specifier|public
 specifier|synchronized
 name|void
-name|refreshWithConfiguration
+name|refreshWithLoadedConfiguration
 parameter_list|(
 name|Configuration
 name|conf

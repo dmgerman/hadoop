@@ -118,11 +118,14 @@ name|ConfigurationProvider
 block|{
 annotation|@
 name|Override
-DECL|method|getConfiguration (String name)
+DECL|method|getConfiguration (Configuration bootstrapConf, String name)
 specifier|public
 name|Configuration
 name|getConfiguration
 parameter_list|(
+name|Configuration
+name|bootstrapConf
+parameter_list|,
 name|String
 name|name
 parameter_list|)
@@ -132,20 +135,18 @@ throws|,
 name|YarnException
 block|{
 return|return
-operator|new
-name|Configuration
-argument_list|()
+name|bootstrapConf
 return|;
 block|}
 annotation|@
 name|Override
-DECL|method|initInternal (Configuration conf)
+DECL|method|initInternal (Configuration bootstrapConf)
 specifier|public
 name|void
 name|initInternal
 parameter_list|(
 name|Configuration
-name|conf
+name|bootstrapConf
 parameter_list|)
 throws|throws
 name|Exception

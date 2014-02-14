@@ -98,10 +98,6 @@ comment|/** AppAttempt is currently running. */
 DECL|enumConstant|RUNNING
 name|RUNNING
 block|,
-comment|/** AppAttempt is waiting for state bing saved */
-DECL|enumConstant|FINAL_SAVING
-name|FINAL_SAVING
-block|,
 comment|/** AppAttempt is finishing. */
 DECL|enumConstant|FINISHING
 name|FINISHING

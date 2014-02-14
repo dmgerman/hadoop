@@ -4183,7 +4183,11 @@ name|NFS3ERR_IO
 argument_list|,
 name|postOpAttr
 argument_list|,
-literal|null
+operator|new
+name|byte
+index|[
+literal|0
+index|]
 argument_list|)
 return|;
 block|}
@@ -11867,6 +11871,12 @@ init|=
 operator|new
 name|WccData
 argument_list|(
+name|preOpAttr
+operator|==
+literal|null
+condition|?
+literal|null
+else|:
 name|Nfs3Utils
 operator|.
 name|getWccAttr

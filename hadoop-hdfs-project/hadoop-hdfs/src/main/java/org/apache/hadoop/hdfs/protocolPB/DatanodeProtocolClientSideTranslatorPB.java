@@ -1039,7 +1039,7 @@ block|{
 return|return
 name|RPC
 operator|.
-name|getProxy
+name|getProtocolProxy
 argument_list|(
 name|DatanodeProtocolPB
 operator|.
@@ -1070,7 +1070,27 @@ name|DatanodeProtocolPB
 operator|.
 name|class
 argument_list|)
+argument_list|,
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|ipc
+operator|.
+name|Client
+operator|.
+name|getPingInterval
+argument_list|(
+name|conf
 argument_list|)
+argument_list|,
+literal|null
+argument_list|)
+operator|.
+name|getProxy
+argument_list|()
 return|;
 block|}
 comment|/** Create a {@link NameNode} proxy */

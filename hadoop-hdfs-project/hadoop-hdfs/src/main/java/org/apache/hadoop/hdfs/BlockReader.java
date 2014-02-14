@@ -90,22 +90,6 @@ name|hadoop
 operator|.
 name|hdfs
 operator|.
-name|client
-operator|.
-name|ClientMmapManager
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
 name|protocol
 operator|.
 name|LocatedBlock
@@ -218,7 +202,7 @@ name|isShortCircuit
 parameter_list|()
 function_decl|;
 comment|/**    * Get a ClientMmap object for this BlockReader.    *    * @param opts          The read options to use.    * @return              The ClientMmap object, or null if mmap is not    *                      supported.    */
-DECL|method|getClientMmap (EnumSet<ReadOption> opts, ClientMmapManager mmapManager)
+DECL|method|getClientMmap (EnumSet<ReadOption> opts)
 name|ClientMmap
 name|getClientMmap
 parameter_list|(
@@ -227,9 +211,6 @@ argument_list|<
 name|ReadOption
 argument_list|>
 name|opts
-parameter_list|,
-name|ClientMmapManager
-name|mmapManager
 parameter_list|)
 function_decl|;
 block|}

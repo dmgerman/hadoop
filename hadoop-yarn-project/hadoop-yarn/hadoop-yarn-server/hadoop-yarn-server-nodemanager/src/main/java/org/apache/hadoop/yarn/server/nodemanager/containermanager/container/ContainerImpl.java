@@ -923,6 +923,11 @@ specifier|final
 name|StringBuilder
 name|diagnostics
 decl_stmt|;
+DECL|field|wasLaunched
+specifier|private
+name|boolean
+name|wasLaunched
+decl_stmt|;
 comment|/** The NM-wide configuration - not specific to this container */
 DECL|field|daemonConf
 specifier|private
@@ -2497,11 +2502,17 @@ break|break;
 case|case
 name|EXITED_WITH_FAILURE
 case|:
+if|if
+condition|(
+name|wasLaunched
+condition|)
+block|{
 name|metrics
 operator|.
 name|endRunningContainer
 argument_list|()
 expr_stmt|;
+block|}
 comment|// fall through
 case|case
 name|LOCALIZATION_FAILED
@@ -2537,11 +2548,17 @@ break|break;
 case|case
 name|CONTAINER_CLEANEDUP_AFTER_KILL
 case|:
+if|if
+condition|(
+name|wasLaunched
+condition|)
+block|{
 name|metrics
 operator|.
 name|endRunningContainer
 argument_list|()
 expr_stmt|;
+block|}
 comment|// fall through
 case|case
 name|NEW
@@ -3582,6 +3599,12 @@ name|metrics
 operator|.
 name|runningContainer
 argument_list|()
+expr_stmt|;
+name|container
+operator|.
+name|wasLaunched
+operator|=
+literal|true
 expr_stmt|;
 block|}
 block|}

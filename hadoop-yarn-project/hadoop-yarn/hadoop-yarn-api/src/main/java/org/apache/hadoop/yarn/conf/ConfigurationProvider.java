@@ -102,20 +102,20 @@ specifier|abstract
 class|class
 name|ConfigurationProvider
 block|{
-DECL|method|init (Configuration conf)
+DECL|method|init (Configuration bootstrapConf)
 specifier|public
 name|void
 name|init
 parameter_list|(
 name|Configuration
-name|conf
+name|bootstrapConf
 parameter_list|)
 throws|throws
 name|Exception
 block|{
 name|initInternal
 argument_list|(
-name|conf
+name|bootstrapConf
 argument_list|)
 expr_stmt|;
 block|}
@@ -131,13 +131,16 @@ name|closeInternal
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get the configuration.    * @param name The configuration file name    * @return configuration    * @throws YarnException    * @throws IOException    */
-DECL|method|getConfiguration (String name)
+comment|/**    * Get the configuration and combine with bootstrapConf    * @param bootstrapConf Configuration    * @param name The configuration file name    * @return configuration    * @throws YarnException    * @throws IOException    */
+DECL|method|getConfiguration (Configuration bootstrapConf, String name)
 specifier|public
 specifier|abstract
 name|Configuration
 name|getConfiguration
 parameter_list|(
+name|Configuration
+name|bootstrapConf
+parameter_list|,
 name|String
 name|name
 parameter_list|)
@@ -147,14 +150,14 @@ throws|,
 name|IOException
 function_decl|;
 comment|/**    * Derived classes initialize themselves using this method.    */
-DECL|method|initInternal (Configuration conf)
+DECL|method|initInternal (Configuration bootstrapConf)
 specifier|public
 specifier|abstract
 name|void
 name|initInternal
 parameter_list|(
 name|Configuration
-name|conf
+name|bootstrapConf
 parameter_list|)
 throws|throws
 name|Exception

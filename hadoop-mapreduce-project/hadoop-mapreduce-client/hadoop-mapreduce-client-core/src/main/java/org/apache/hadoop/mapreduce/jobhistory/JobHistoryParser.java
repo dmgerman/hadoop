@@ -1900,6 +1900,16 @@ operator|.
 name|getCounters
 argument_list|()
 expr_stmt|;
+if|if
+condition|(
+name|info
+operator|.
+name|errorInfo
+operator|.
+name|isEmpty
+argument_list|()
+condition|)
+block|{
 name|info
 operator|.
 name|errorInfo
@@ -1921,6 +1931,7 @@ argument_list|()
 operator|+
 literal|" times "
 expr_stmt|;
+block|}
 block|}
 DECL|method|handleTaskStartedEvent (TaskStartedEvent event)
 specifier|private

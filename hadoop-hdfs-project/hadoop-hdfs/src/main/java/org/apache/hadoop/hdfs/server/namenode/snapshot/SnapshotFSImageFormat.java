@@ -138,26 +138,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FSImageFormat
-operator|.
-name|Loader
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|FSImageSerialization
 import|;
 end_import
@@ -837,7 +817,7 @@ return|;
 block|}
 comment|/**    * Load a node stored in the created list from fsimage.    * @param createdNodeName The name of the created node.    * @param parent The directory that the created list belongs to.    * @return The created node.    */
 DECL|method|loadCreated (byte[] createdNodeName, INodeDirectory parent)
-specifier|private
+specifier|public
 specifier|static
 name|INode
 name|loadCreated
@@ -1154,7 +1134,7 @@ return|return
 name|deletedList
 return|;
 block|}
-comment|/**    * Load snapshots and snapshotQuota for a Snapshottable directory.    * @param snapshottableParent The snapshottable directory for loading.    * @param numSnapshots The number of snapshots that the directory has.    * @param in The {@link DataInput} instance to read.    * @param loader The {@link Loader} instance that this loading procedure is     *               using.    */
+comment|/**    * Load snapshots and snapshotQuota for a Snapshottable directory.    *    * @param snapshottableParent    *          The snapshottable directory for loading.    * @param numSnapshots    *          The number of snapshots that the directory has.    * @param loader    *          The loader    */
 DECL|method|loadSnapshotList ( INodeDirectorySnapshottable snapshottableParent, int numSnapshots, DataInput in, FSImageFormat.Loader loader)
 specifier|public
 specifier|static
@@ -1239,7 +1219,7 @@ name|snapshotQuota
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Load the {@link SnapshotDiff} list for the INodeDirectoryWithSnapshot    * directory.    * @param dir The snapshottable directory for loading.    * @param in The {@link DataInput} instance to read.    * @param loader The {@link Loader} instance that this loading procedure is     *               using.    */
+comment|/**    * Load the {@link SnapshotDiff} list for the INodeDirectoryWithSnapshot    * directory.    *    * @param dir    *          The snapshottable directory for loading.    * @param in    *          The {@link DataInput} instance to read.    * @param loader    *          The loader    */
 DECL|method|loadDirectoryDiffList (INodeDirectory dir, DataInput in, FSImageFormat.Loader loader)
 specifier|public
 specifier|static

@@ -1315,7 +1315,7 @@ block|}
 comment|/* End of Under-Construction Feature */
 comment|/* Start of Snapshot Feature */
 DECL|method|addSnapshotFeature (FileDiffList diffs)
-specifier|private
+specifier|public
 name|FileWithSnapshotFeature
 name|addSnapshotFeature
 parameter_list|(

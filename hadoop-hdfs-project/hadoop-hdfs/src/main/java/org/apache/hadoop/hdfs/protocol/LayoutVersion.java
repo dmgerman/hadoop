@@ -500,6 +500,15 @@ literal|51
 argument_list|,
 literal|"Support for cache pools and path-based caching"
 argument_list|)
+block|,
+DECL|enumConstant|PROTOBUF_FORMAT
+name|PROTOBUF_FORMAT
+argument_list|(
+operator|-
+literal|52
+argument_list|,
+literal|"Use protobuf to serialize FSImage"
+argument_list|)
 block|;
 DECL|field|info
 specifier|private

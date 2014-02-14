@@ -914,7 +914,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|addSnapshotFeature ( DirectoryDiffList diffs)
-specifier|protected
+specifier|public
 name|DirectoryWithSnapshotFeature
 name|addSnapshotFeature
 parameter_list|(

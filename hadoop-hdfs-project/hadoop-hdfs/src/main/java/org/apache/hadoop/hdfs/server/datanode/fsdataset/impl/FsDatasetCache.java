@@ -232,22 +232,6 @@ name|apache
 operator|.
 name|commons
 operator|.
-name|lang
-operator|.
-name|builder
-operator|.
-name|HashCodeBuilder
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|commons
-operator|.
 name|logging
 operator|.
 name|Log
@@ -307,6 +291,20 @@ operator|.
 name|fs
 operator|.
 name|ChecksumException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|ExtendedBlockId
 import|;
 end_import
 
@@ -390,153 +388,6 @@ specifier|public
 class|class
 name|FsDatasetCache
 block|{
-comment|/**    * Keys which identify MappableBlocks.    */
-DECL|class|Key
-specifier|private
-specifier|static
-specifier|final
-class|class
-name|Key
-block|{
-comment|/**      * Block id.      */
-DECL|field|id
-specifier|final
-name|long
-name|id
-decl_stmt|;
-comment|/**      * Block pool id.      */
-DECL|field|bpid
-specifier|final
-name|String
-name|bpid
-decl_stmt|;
-DECL|method|Key (long id, String bpid)
-name|Key
-parameter_list|(
-name|long
-name|id
-parameter_list|,
-name|String
-name|bpid
-parameter_list|)
-block|{
-name|this
-operator|.
-name|id
-operator|=
-name|id
-expr_stmt|;
-name|this
-operator|.
-name|bpid
-operator|=
-name|bpid
-expr_stmt|;
-block|}
-annotation|@
-name|Override
-DECL|method|equals (Object o)
-specifier|public
-name|boolean
-name|equals
-parameter_list|(
-name|Object
-name|o
-parameter_list|)
-block|{
-if|if
-condition|(
-name|o
-operator|==
-literal|null
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-if|if
-condition|(
-operator|!
-operator|(
-name|o
-operator|.
-name|getClass
-argument_list|()
-operator|==
-name|getClass
-argument_list|()
-operator|)
-condition|)
-block|{
-return|return
-literal|false
-return|;
-block|}
-name|Key
-name|other
-init|=
-operator|(
-name|Key
-operator|)
-name|o
-decl_stmt|;
-return|return
-operator|(
-operator|(
-name|other
-operator|.
-name|id
-operator|==
-name|this
-operator|.
-name|id
-operator|)
-operator|&&
-operator|(
-name|other
-operator|.
-name|bpid
-operator|.
-name|equals
-argument_list|(
-name|this
-operator|.
-name|bpid
-argument_list|)
-operator|)
-operator|)
-return|;
-block|}
-annotation|@
-name|Override
-DECL|method|hashCode ()
-specifier|public
-name|int
-name|hashCode
-parameter_list|()
-block|{
-return|return
-operator|new
-name|HashCodeBuilder
-argument_list|()
-operator|.
-name|append
-argument_list|(
-name|id
-argument_list|)
-operator|.
-name|append
-argument_list|(
-name|bpid
-argument_list|)
-operator|.
-name|hashCode
-argument_list|()
-return|;
-block|}
-block|}
-empty_stmt|;
 comment|/**    * MappableBlocks that we know about.    */
 DECL|class|Value
 specifier|private
@@ -638,7 +489,7 @@ specifier|private
 specifier|final
 name|HashMap
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|Value
 argument_list|>
@@ -647,7 +498,7 @@ init|=
 operator|new
 name|HashMap
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|Value
 argument_list|>
@@ -1032,7 +883,7 @@ name|Iterator
 argument_list|<
 name|Entry
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|Value
 argument_list|>
@@ -1056,7 +907,7 @@ control|)
 block|{
 name|Entry
 argument_list|<
-name|Key
+name|ExtendedBlockId
 argument_list|,
 name|Value
 argument_list|>
@@ -1074,7 +925,8 @@ operator|.
 name|getKey
 argument_list|()
 operator|.
-name|bpid
+name|getBlockPoolId
+argument_list|()
 operator|.
 name|equals
 argument_list|(
@@ -1104,7 +956,8 @@ operator|.
 name|getKey
 argument_list|()
 operator|.
-name|id
+name|getBlockId
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1139,11 +992,11 @@ name|Executor
 name|volumeExecutor
 parameter_list|)
 block|{
-name|Key
+name|ExtendedBlockId
 name|key
 init|=
 operator|new
-name|Key
+name|ExtendedBlockId
 argument_list|(
 name|blockId
 argument_list|,
@@ -1271,11 +1124,11 @@ name|long
 name|blockId
 parameter_list|)
 block|{
-name|Key
+name|ExtendedBlockId
 name|key
 init|=
 operator|new
-name|Key
+name|ExtendedBlockId
 argument_list|(
 name|blockId
 argument_list|,
@@ -1502,7 +1355,7 @@ block|{
 DECL|field|key
 specifier|private
 specifier|final
-name|Key
+name|ExtendedBlockId
 name|key
 decl_stmt|;
 DECL|field|blockFileName
@@ -1523,10 +1376,10 @@ specifier|final
 name|long
 name|genstamp
 decl_stmt|;
-DECL|method|CachingTask (Key key, String blockFileName, long length, long genstamp)
+DECL|method|CachingTask (ExtendedBlockId key, String blockFileName, long length, long genstamp)
 name|CachingTask
 parameter_list|(
-name|Key
+name|ExtendedBlockId
 name|key
 parameter_list|,
 name|String
@@ -1599,11 +1452,13 @@ name|ExtendedBlock
 argument_list|(
 name|key
 operator|.
-name|bpid
+name|getBlockPoolId
+argument_list|()
 argument_list|,
 name|key
 operator|.
-name|id
+name|getBlockId
+argument_list|()
 argument_list|,
 name|length
 argument_list|,
@@ -1631,25 +1486,15 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache block id "
+literal|"Failed to cache "
 operator|+
 name|key
-operator|.
-name|id
-operator|+
-literal|", pool "
-operator|+
-name|key
-operator|.
-name|bpid
 operator|+
 literal|": could not reserve "
 operator|+
 name|length
 operator|+
-literal|" more bytes in the "
-operator|+
-literal|"cache: "
+literal|" more bytes in the cache: "
 operator|+
 name|DFSConfigKeys
 operator|.
@@ -1713,17 +1558,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache block with id "
+literal|"Failed to cache "
 operator|+
 name|key
-operator|.
-name|id
-operator|+
-literal|", pool "
-operator|+
-name|key
-operator|.
-name|bpid
 operator|+
 literal|": Underlying blocks are not backed by files."
 argument_list|,
@@ -1742,19 +1579,13 @@ name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Failed to cache block with id "
+literal|"Failed to cache "
 operator|+
 name|key
-operator|.
-name|id
 operator|+
-literal|", pool "
+literal|": failed to find backing "
 operator|+
-name|key
-operator|.
-name|bpid
-operator|+
-literal|": failed to find backing files."
+literal|"files."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1769,17 +1600,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache block with id "
+literal|"Failed to cache "
 operator|+
 name|key
-operator|.
-name|id
-operator|+
-literal|", pool "
-operator|+
-name|key
-operator|.
-name|bpid
 operator|+
 literal|": failed to open file"
 argument_list|,
@@ -1817,21 +1640,11 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache block "
+literal|"Failed to cache "
 operator|+
 name|key
-operator|.
-name|id
 operator|+
-literal|" in "
-operator|+
-name|key
-operator|.
-name|bpid
-operator|+
-literal|": "
-operator|+
-literal|"checksum verification failed."
+literal|": checksum verification failed."
 argument_list|)
 expr_stmt|;
 return|return;
@@ -1846,17 +1659,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Failed to cache block "
+literal|"Failed to cache "
 operator|+
 name|key
-operator|.
-name|id
-operator|+
-literal|" in "
-operator|+
-name|key
-operator|.
-name|bpid
 argument_list|,
 name|e
 argument_list|)
@@ -1930,17 +1735,9 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Caching of block "
+literal|"Caching of "
 operator|+
 name|key
-operator|.
-name|id
-operator|+
-literal|" in "
-operator|+
-name|key
-operator|.
-name|bpid
 operator|+
 literal|" was cancelled."
 argument_list|)
@@ -1977,17 +1774,9 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Successfully cached block "
+literal|"Successfully cached "
 operator|+
 name|key
-operator|.
-name|id
-operator|+
-literal|" in "
-operator|+
-name|key
-operator|.
-name|bpid
 operator|+
 literal|".  We are now caching "
 operator|+
@@ -2038,19 +1827,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Caching of block "
+literal|"Caching of "
 operator|+
 name|key
-operator|.
-name|id
 operator|+
-literal|" in "
+literal|" was aborted.  We are now "
 operator|+
-name|key
-operator|.
-name|bpid
-operator|+
-literal|" was aborted.  We are now caching only "
+literal|"caching only "
 operator|+
 name|newUsedBytes
 operator|+
@@ -2119,13 +1902,13 @@ block|{
 DECL|field|key
 specifier|private
 specifier|final
-name|Key
+name|ExtendedBlockId
 name|key
 decl_stmt|;
-DECL|method|UncachingTask (Key key)
+DECL|method|UncachingTask (ExtendedBlockId key)
 name|UncachingTask
 parameter_list|(
-name|Key
+name|ExtendedBlockId
 name|key
 parameter_list|)
 block|{
@@ -2245,19 +2028,13 @@ name|LOG
 operator|.
 name|debug
 argument_list|(
-literal|"Uncaching of block "
+literal|"Uncaching of "
 operator|+
 name|key
-operator|.
-name|id
 operator|+
-literal|" in "
+literal|" completed.  "
 operator|+
-name|key
-operator|.
-name|bpid
-operator|+
-literal|" completed.  usedBytes = "
+literal|"usedBytes = "
 operator|+
 name|newUsedBytes
 argument_list|)

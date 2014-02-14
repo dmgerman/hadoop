@@ -2219,6 +2219,19 @@ literal|1024
 argument_list|)
 return|;
 block|}
+annotation|@
+name|Override
+DECL|method|getCanonicalServiceName ()
+specifier|public
+name|String
+name|getCanonicalServiceName
+parameter_list|()
+block|{
+comment|// Does not support Token
+return|return
+literal|null
+return|;
+block|}
 comment|// diagnostic methods
 DECL|method|dump ()
 name|void

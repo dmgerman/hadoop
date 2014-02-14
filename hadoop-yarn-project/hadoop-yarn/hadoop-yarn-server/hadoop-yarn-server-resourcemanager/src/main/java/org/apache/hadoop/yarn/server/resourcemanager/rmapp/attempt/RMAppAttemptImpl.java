@@ -1658,6 +1658,11 @@ specifier|private
 name|RMAppAttemptState
 name|recoveredFinalState
 decl_stmt|;
+DECL|field|stateBeforeFinalSaving
+specifier|private
+name|RMAppAttemptState
+name|stateBeforeFinalSaving
+decl_stmt|;
 DECL|field|transitionTodo
 specifier|private
 name|Object
@@ -4948,6 +4953,11 @@ argument_list|,
 name|targetFinalState
 argument_list|)
 expr_stmt|;
+name|stateBeforeFinalSaving
+operator|=
+name|getState
+argument_list|()
+expr_stmt|;
 comment|// As of today, finalState, diagnostics, final-tracking-url and
 comment|// finalAppStatus are the only things that we store into the StateStore
 comment|// AFTER the initial saving on app-attempt-start
@@ -7419,6 +7429,24 @@ init|=
 name|getState
 argument_list|()
 decl_stmt|;
+comment|// If AppAttempt is in FINAL_SAVING state, return its previous state.
+if|if
+condition|(
+name|state
+operator|.
+name|equals
+argument_list|(
+name|RMAppAttemptState
+operator|.
+name|FINAL_SAVING
+argument_list|)
+condition|)
+block|{
+name|state
+operator|=
+name|stateBeforeFinalSaving
+expr_stmt|;
+block|}
 return|return
 name|RMServerUtils
 operator|.

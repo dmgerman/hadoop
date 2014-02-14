@@ -536,8 +536,15 @@ name|scheme
 operator|=
 name|fc
 operator|.
-name|getDefaultFileSystem
-argument_list|()
+name|getFSofPath
+argument_list|(
+name|fc
+operator|.
+name|fixRelativePart
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
 operator|.
 name|getUri
 argument_list|()
@@ -604,8 +611,15 @@ name|authority
 operator|=
 name|fc
 operator|.
-name|getDefaultFileSystem
-argument_list|()
+name|getFSofPath
+argument_list|(
+name|fc
+operator|.
+name|fixRelativePart
+argument_list|(
+name|path
+argument_list|)
+argument_list|)
 operator|.
 name|getUri
 argument_list|()
@@ -766,6 +780,15 @@ argument_list|(
 literal|1
 argument_list|)
 decl_stmt|;
+comment|// To get the "real" FileStatus of root, we'd have to do an expensive
+comment|// RPC to the NameNode.  So we create a placeholder FileStatus which has
+comment|// the correct path, but defaults for the rest of the information.
+comment|// Later, if it turns out we actually want the FileStatus of root, we'll
+comment|// replace the placeholder with a real FileStatus obtained from the
+comment|// NameNode.
+name|FileStatus
+name|rootPlaceholder
+decl_stmt|;
 if|if
 condition|(
 name|Path
@@ -807,10 +830,8 @@ argument_list|(
 literal|0
 argument_list|)
 decl_stmt|;
-name|candidates
-operator|.
-name|add
-argument_list|(
+name|rootPlaceholder
+operator|=
 operator|new
 name|FileStatus
 argument_list|(
@@ -842,15 +863,12 @@ operator|.
 name|SEPARATOR
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
 else|else
 block|{
-name|candidates
-operator|.
-name|add
-argument_list|(
+name|rootPlaceholder
+operator|=
 operator|new
 name|FileStatus
 argument_list|(
@@ -876,9 +894,15 @@ operator|.
 name|SEPARATOR
 argument_list|)
 argument_list|)
-argument_list|)
 expr_stmt|;
 block|}
+name|candidates
+operator|.
+name|add
+argument_list|(
+name|rootPlaceholder
+argument_list|)
+expr_stmt|;
 for|for
 control|(
 name|int
@@ -1198,6 +1222,33 @@ range|:
 name|candidates
 control|)
 block|{
+comment|// Use object equality to see if this status is the root placeholder.
+comment|// See the explanation for rootPlaceholder above for more information.
+if|if
+condition|(
+name|status
+operator|==
+name|rootPlaceholder
+condition|)
+block|{
+name|status
+operator|=
+name|getFileStatus
+argument_list|(
+name|rootPlaceholder
+operator|.
+name|getPath
+argument_list|()
+argument_list|)
+expr_stmt|;
+if|if
+condition|(
+name|status
+operator|==
+literal|null
+condition|)
+continue|continue;
+block|}
 comment|// HADOOP-3497 semantics: the user-defined filter is applied at the
 comment|// end, once the full path is built up.
 if|if
