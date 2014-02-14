@@ -411,7 +411,7 @@ block|}
 if|if
 condition|(
 operator|!
-name|LayoutVersion
+name|NameNodeLayoutVersion
 operator|.
 name|supports
 argument_list|(
