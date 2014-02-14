@@ -300,9 +300,7 @@ block|{
 return|return
 operator|new
 name|FileSystemTestHelper
-argument_list|(
-literal|"/tmp/TestViewFileSystemHdfs"
-argument_list|)
+argument_list|()
 return|;
 block|}
 annotation|@
