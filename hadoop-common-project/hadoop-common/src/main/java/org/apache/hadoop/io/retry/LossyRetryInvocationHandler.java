@@ -228,15 +228,24 @@ operator|++
 name|retryCount
 argument_list|)
 expr_stmt|;
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"Drop the response. Current retryCount == "
 operator|+
 name|retryCount
 argument_list|)
 expr_stmt|;
+block|}
 throw|throw
 operator|new
 name|RetriableException
@@ -247,9 +256,17 @@ throw|;
 block|}
 else|else
 block|{
+if|if
+condition|(
 name|LOG
 operator|.
-name|info
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
 argument_list|(
 literal|"retryCount == "
 operator|+
@@ -258,6 +275,7 @@ operator|+
 literal|". It's time to normally process the response"
 argument_list|)
 expr_stmt|;
+block|}
 return|return
 name|result
 return|;

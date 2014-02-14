@@ -625,6 +625,11 @@ return|return
 literal|false
 return|;
 block|}
+name|context
+operator|.
+name|progress
+argument_list|()
+expr_stmt|;
 comment|// get a record reader for the idx-th chunk
 try|try
 block|{
