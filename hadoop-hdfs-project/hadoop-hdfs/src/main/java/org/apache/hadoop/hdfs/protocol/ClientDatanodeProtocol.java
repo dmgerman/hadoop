@@ -283,6 +283,25 @@ parameter_list|)
 throws|throws
 name|IOException
 function_decl|;
+comment|/**    * Shuts down a datanode.    *    * @param forUpgrade If true, data node does extra prep work before shutting    *          down. The work includes advising clients to wait and saving    *          certain states for quick restart. This should only be used when    *          the stored data will remain the same during upgrade/restart.    * @throws IOException     */
+DECL|method|shutdownDatanode (boolean forUpgrade)
+name|void
+name|shutdownDatanode
+parameter_list|(
+name|boolean
+name|forUpgrade
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Obtains datanode info    *    * @return software/config version and uptime of the datanode    */
+DECL|method|getDatanodeInfo ()
+name|DatanodeLocalInfo
+name|getDatanodeInfo
+parameter_list|()
+throws|throws
+name|IOException
+function_decl|;
 block|}
 end_interface
 
