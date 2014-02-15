@@ -1356,6 +1356,32 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
+DECL|method|discardSegments (String journalId, long startTxId)
+specifier|public
+name|void
+name|discardSegments
+parameter_list|(
+name|String
+name|journalId
+parameter_list|,
+name|long
+name|startTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|jn
+operator|.
+name|discardSegments
+argument_list|(
+name|journalId
+argument_list|,
+name|startTxId
+argument_list|)
+expr_stmt|;
+block|}
+annotation|@
+name|Override
 DECL|method|getJournalCTime (String journalId)
 specifier|public
 name|Long

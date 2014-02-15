@@ -1547,6 +1547,31 @@ name|doRollback
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|discardSegments (String journalId, long startTxId)
+specifier|public
+name|void
+name|discardSegments
+parameter_list|(
+name|String
+name|journalId
+parameter_list|,
+name|long
+name|startTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|getOrCreateJournal
+argument_list|(
+name|journalId
+argument_list|)
+operator|.
+name|discardSegments
+argument_list|(
+name|startTxId
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getJournalCTime (String journalId)
 specifier|public
 name|Long

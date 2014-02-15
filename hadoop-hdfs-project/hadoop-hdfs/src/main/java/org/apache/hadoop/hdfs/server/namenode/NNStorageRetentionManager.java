@@ -491,6 +491,28 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|purgeCheckpoinsAfter
+argument_list|(
+name|nnf
+argument_list|,
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
+DECL|method|purgeCheckpoinsAfter (NameNodeFile nnf, long fromTxId)
+name|void
+name|purgeCheckpoinsAfter
+parameter_list|(
+name|NameNodeFile
+name|nnf
+parameter_list|,
+name|long
+name|fromTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
 name|FSImageTransactionalStorageInspector
 name|inspector
 init|=
@@ -518,6 +540,16 @@ name|getFoundImages
 argument_list|()
 control|)
 block|{
+if|if
+condition|(
+name|image
+operator|.
+name|getCheckpointTxId
+argument_list|()
+operator|>
+name|fromTxId
+condition|)
+block|{
 name|purger
 operator|.
 name|purgeImage
@@ -525,6 +557,7 @@ argument_list|(
 name|image
 argument_list|)
 expr_stmt|;
+block|}
 block|}
 block|}
 DECL|method|purgeOldStorage (NameNodeFile nnf)

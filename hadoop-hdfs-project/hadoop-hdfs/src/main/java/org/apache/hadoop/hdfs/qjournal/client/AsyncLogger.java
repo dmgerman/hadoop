@@ -535,6 +535,18 @@ argument_list|>
 name|doRollback
 parameter_list|()
 function_decl|;
+DECL|method|discardSegments (long startTxId)
+specifier|public
+name|ListenableFuture
+argument_list|<
+name|Void
+argument_list|>
+name|discardSegments
+parameter_list|(
+name|long
+name|startTxId
+parameter_list|)
+function_decl|;
 DECL|method|getJournalCTime ()
 specifier|public
 name|ListenableFuture

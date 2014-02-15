@@ -266,6 +266,22 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|io
+operator|.
+name|retry
+operator|.
+name|Idempotent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|security
 operator|.
 name|KerberosInfo
@@ -566,6 +582,23 @@ name|doRollback
 parameter_list|(
 name|String
 name|journalId
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Discard journal segments whose first TxId is greater than or equal to the    * given txid.    */
+annotation|@
+name|Idempotent
+DECL|method|discardSegments (String journalId, long startTxId)
+specifier|public
+name|void
+name|discardSegments
+parameter_list|(
+name|String
+name|journalId
+parameter_list|,
+name|long
+name|startTxId
 parameter_list|)
 throws|throws
 name|IOException

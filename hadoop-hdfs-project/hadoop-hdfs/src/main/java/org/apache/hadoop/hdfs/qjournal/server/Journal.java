@@ -4589,6 +4589,38 @@ name|doRollback
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|discardSegments (long startTxId)
+specifier|public
+name|void
+name|discardSegments
+parameter_list|(
+name|long
+name|startTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|storage
+operator|.
+name|getJournalManager
+argument_list|()
+operator|.
+name|discardSegments
+argument_list|(
+name|startTxId
+argument_list|)
+expr_stmt|;
+comment|// we delete all the segments after the startTxId. let's reset committedTxnId
+name|committedTxnId
+operator|.
+name|set
+argument_list|(
+name|startTxId
+operator|-
+literal|1
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|getJournalCTime ()
 specifier|public
 name|Long

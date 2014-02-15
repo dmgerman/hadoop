@@ -2802,11 +2802,9 @@ throws|throws
 name|IOException
 block|{
 specifier|final
-name|NameNodeFile
-name|nnf
-decl_stmt|;
-if|if
-condition|(
+name|boolean
+name|rollingRollback
+init|=
 name|startOpt
 operator|==
 name|StartupOption
@@ -2821,24 +2819,21 @@ operator|==
 name|RollingUpgradeStartupOption
 operator|.
 name|ROLLBACK
-condition|)
-block|{
+decl_stmt|;
+specifier|final
+name|NameNodeFile
 name|nnf
-operator|=
+init|=
+name|rollingRollback
+condition|?
 name|NameNodeFile
 operator|.
 name|IMAGE_ROLLBACK
-expr_stmt|;
-block|}
-else|else
-block|{
-name|nnf
-operator|=
+else|:
 name|NameNodeFile
 operator|.
 name|IMAGE
-expr_stmt|;
-block|}
+decl_stmt|;
 specifier|final
 name|FSImageStorageInspector
 name|inspector
@@ -2967,6 +2962,10 @@ block|{
 comment|// If we're open for write, we're either non-HA or we're the active NN, so
 comment|// we better be able to load all the edits. If we're the standby NN, it's
 comment|// OK to not be able to read all of edits right now.
+comment|// In the meanwhile, for HA upgrade, we will still write editlog thus need
+comment|// this toAtLeastTxId to be set to the max-seen txid
+comment|// For rollback in rolling upgrade, we need to set the toAtLeastTxId to
+comment|// the txid right before the upgrade marker.
 name|long
 name|toAtLeastTxId
 init|=
@@ -2982,6 +2981,28 @@ argument_list|()
 else|:
 literal|0
 decl_stmt|;
+if|if
+condition|(
+name|rollingRollback
+condition|)
+block|{
+comment|// note that the first image in imageFiles is the special checkpoint
+comment|// for the rolling upgrade
+name|toAtLeastTxId
+operator|=
+name|imageFiles
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getCheckpointTxId
+argument_list|()
+operator|+
+literal|2
+expr_stmt|;
+block|}
 name|editStreams
 operator|=
 name|editLog
@@ -3198,6 +3219,8 @@ expr_stmt|;
 name|long
 name|txnsAdvanced
 init|=
+literal|0
+decl_stmt|;
 name|loadEdits
 argument_list|(
 name|editStreams
@@ -3208,7 +3231,38 @@ name|startOpt
 argument_list|,
 name|recovery
 argument_list|)
-decl_stmt|;
+expr_stmt|;
+if|if
+condition|(
+name|rollingRollback
+condition|)
+block|{
+comment|// Trigger the rollback for rolling upgrade.
+comment|// Here lastAppliedTxId == (markerTxId - 1), and we should decrease 1 from
+comment|// lastAppliedTxId for the start-segment transaction.
+name|rollingRollback
+argument_list|(
+name|lastAppliedTxId
+operator|--
+argument_list|,
+name|imageFiles
+operator|.
+name|get
+argument_list|(
+literal|0
+argument_list|)
+operator|.
+name|getCheckpointTxId
+argument_list|()
+argument_list|)
+expr_stmt|;
+name|needToSave
+operator|=
+literal|false
+expr_stmt|;
+block|}
+else|else
+block|{
 name|needToSave
 operator||=
 name|needsResaveBasedOnStaleCheckpoint
@@ -3221,6 +3275,7 @@ argument_list|,
 name|txnsAdvanced
 argument_list|)
 expr_stmt|;
+block|}
 name|editLog
 operator|.
 name|setNextTxId
@@ -3233,6 +3288,58 @@ expr_stmt|;
 return|return
 name|needToSave
 return|;
+block|}
+comment|/** rollback for rolling upgrade. */
+DECL|method|rollingRollback (long discardSegmentTxId, long ckptId)
+specifier|private
+name|void
+name|rollingRollback
+parameter_list|(
+name|long
+name|discardSegmentTxId
+parameter_list|,
+name|long
+name|ckptId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// discard discard unnecessary editlog segments starting from the given id
+name|this
+operator|.
+name|editLog
+operator|.
+name|discardSegments
+argument_list|(
+name|discardSegmentTxId
+argument_list|)
+expr_stmt|;
+comment|// rename the special checkpoint
+name|renameCheckpoint
+argument_list|(
+name|ckptId
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|)
+expr_stmt|;
+comment|// purge all the checkpoints after the marker
+name|archivalManager
+operator|.
+name|purgeCheckpoinsAfter
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE
+argument_list|,
+name|ckptId
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|loadFSImageFile (FSNamesystem target, MetaRecoveryContext recovery, FSImageFile imageFile)
 name|void
@@ -3788,6 +3895,24 @@ name|getLastAppliedTxId
 argument_list|()
 expr_stmt|;
 block|}
+name|boolean
+name|rollingRollback
+init|=
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|ROLLINGUPGRADE
+operator|&&
+name|startOpt
+operator|.
+name|getRollingUpgradeStartupOption
+argument_list|()
+operator|==
+name|RollingUpgradeStartupOption
+operator|.
+name|ROLLBACK
+decl_stmt|;
 comment|// If we are in recovery mode, we may have skipped over some txids.
 if|if
 condition|(
@@ -3799,6 +3924,9 @@ operator|!=
 name|HdfsConstants
 operator|.
 name|INVALID_TXID
+operator|&&
+operator|!
+name|rollingRollback
 condition|)
 block|{
 name|lastAppliedTxId
@@ -4312,7 +4440,7 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Save the contents of the FS image to the file.    */
-DECL|method|saveFSImage (SaveNamespaceContext context, StorageDirectory sd)
+DECL|method|saveFSImage (SaveNamespaceContext context, StorageDirectory sd, NameNodeFile dstType)
 name|void
 name|saveFSImage
 parameter_list|(
@@ -4321,6 +4449,9 @@ name|context
 parameter_list|,
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|NameNodeFile
+name|dstType
 parameter_list|)
 throws|throws
 name|IOException
@@ -4358,9 +4489,7 @@ name|getStorageFile
 argument_list|(
 name|sd
 argument_list|,
-name|NameNodeFile
-operator|.
-name|IMAGE
+name|dstType
 argument_list|,
 name|txid
 argument_list|)
@@ -4441,7 +4570,13 @@ specifier|private
 name|StorageDirectory
 name|sd
 decl_stmt|;
-DECL|method|FSImageSaver (SaveNamespaceContext context, StorageDirectory sd)
+DECL|field|nnf
+specifier|private
+specifier|final
+name|NameNodeFile
+name|nnf
+decl_stmt|;
+DECL|method|FSImageSaver (SaveNamespaceContext context, StorageDirectory sd, NameNodeFile nnf)
 specifier|public
 name|FSImageSaver
 parameter_list|(
@@ -4450,6 +4585,9 @@ name|context
 parameter_list|,
 name|StorageDirectory
 name|sd
+parameter_list|,
+name|NameNodeFile
+name|nnf
 parameter_list|)
 block|{
 name|this
@@ -4463,6 +4601,12 @@ operator|.
 name|sd
 operator|=
 name|sd
+expr_stmt|;
+name|this
+operator|.
+name|nnf
+operator|=
+name|nnf
 expr_stmt|;
 block|}
 annotation|@
@@ -4480,6 +4624,8 @@ argument_list|(
 name|context
 argument_list|,
 name|sd
+argument_list|,
+name|nnf
 argument_list|)
 expr_stmt|;
 block|}
@@ -4939,6 +5085,8 @@ argument_list|(
 name|ctx
 argument_list|,
 name|sd
+argument_list|,
+name|nnf
 argument_list|)
 decl_stmt|;
 name|Thread

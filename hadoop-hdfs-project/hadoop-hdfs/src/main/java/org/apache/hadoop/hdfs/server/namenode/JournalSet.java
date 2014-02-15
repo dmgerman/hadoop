@@ -2963,6 +2963,26 @@ throw|;
 block|}
 annotation|@
 name|Override
+DECL|method|discardSegments (long startTxId)
+specifier|public
+name|void
+name|discardSegments
+parameter_list|(
+name|long
+name|startTxId
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+comment|// This operation is handled by FSEditLog directly.
+throw|throw
+operator|new
+name|UnsupportedOperationException
+argument_list|()
+throw|;
+block|}
+annotation|@
+name|Override
 DECL|method|getJournalCTime ()
 specifier|public
 name|long
