@@ -200,7 +200,7 @@ expr_stmt|;
 block|}
 comment|/**    * Create a context with the given test root    */
 DECL|method|FileContextTestHelper (String testRootDir)
-specifier|public
+specifier|private
 name|FileContextTestHelper
 parameter_list|(
 name|String

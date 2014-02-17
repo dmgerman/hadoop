@@ -2356,6 +2356,17 @@ name|url
 init|=
 literal|null
 decl_stmt|;
+specifier|final
+name|String
+name|scheme
+init|=
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 try|try
 block|{
 name|URI
@@ -2377,6 +2388,8 @@ name|ProxyUriUtils
 operator|.
 name|getUriFromAMUrl
 argument_list|(
+name|scheme
+argument_list|,
 name|appAttempt
 operator|.
 name|getOriginalTrackingUrl
@@ -2400,6 +2413,8 @@ name|ProxyUriUtils
 operator|.
 name|getUriFromAMUrl
 argument_list|(
+name|scheme
+argument_list|,
 name|proxy
 argument_list|)
 decl_stmt|;

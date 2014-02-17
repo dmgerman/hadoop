@@ -1116,10 +1116,7 @@ literal|"#"
 else|:
 name|url
 argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+literal|"//"
 argument_list|,
 name|nodeLink
 argument_list|)

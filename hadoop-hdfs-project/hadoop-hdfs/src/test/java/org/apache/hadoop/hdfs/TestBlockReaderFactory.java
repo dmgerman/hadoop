@@ -260,6 +260,16 @@ name|org
 operator|.
 name|junit
 operator|.
+name|Assume
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|junit
+operator|.
 name|Before
 import|;
 end_import
@@ -386,6 +396,18 @@ name|DFS_CLIENT_DOMAIN_SOCKET_DATA_TRAFFIC
 import|;
 end_import
 
+begin_import
+import|import static
+name|org
+operator|.
+name|hamcrest
+operator|.
+name|CoreMatchers
+operator|.
+name|equalTo
+import|;
+end_import
+
 begin_class
 DECL|class|TestBlockReaderFactory
 specifier|public
@@ -419,6 +441,30 @@ name|DomainSocket
 operator|.
 name|disableBindPathValidation
 argument_list|()
+expr_stmt|;
+block|}
+annotation|@
+name|Before
+DECL|method|before ()
+specifier|public
+name|void
+name|before
+parameter_list|()
+block|{
+name|Assume
+operator|.
+name|assumeThat
+argument_list|(
+name|DomainSocket
+operator|.
+name|getLoadingFailureReason
+argument_list|()
+argument_list|,
+name|equalTo
+argument_list|(
+literal|null
+argument_list|)
+argument_list|)
 expr_stmt|;
 block|}
 annotation|@

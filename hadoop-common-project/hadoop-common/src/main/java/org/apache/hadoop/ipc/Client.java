@@ -3141,7 +3141,14 @@ name|reloginFromKeytab
 argument_list|()
 expr_stmt|;
 block|}
-else|else
+elseif|else
+if|if
+condition|(
+name|UserGroupInformation
+operator|.
+name|isLoginTicketBased
+argument_list|()
+condition|)
 block|{
 name|UserGroupInformation
 operator|.

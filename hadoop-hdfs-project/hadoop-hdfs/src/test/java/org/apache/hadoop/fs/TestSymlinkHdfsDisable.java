@@ -218,9 +218,7 @@ name|helper
 init|=
 operator|new
 name|FileContextTestHelper
-argument_list|(
-literal|"/tmp/TestSymlinkHdfsDisable"
-argument_list|)
+argument_list|()
 decl_stmt|;
 name|Path
 name|root

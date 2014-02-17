@@ -50,20 +50,6 @@ name|Unstable
 import|;
 end_import
 
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|http
-operator|.
-name|HttpConfig
-import|;
-end_import
-
 begin_class
 annotation|@
 name|Private
@@ -75,12 +61,15 @@ class|class
 name|HostUtil
 block|{
 comment|/**    * Construct the taskLogUrl    * @param taskTrackerHostName    * @param httpPort    * @param taskAttemptID    * @return the taskLogUrl    */
-DECL|method|getTaskLogUrl (String taskTrackerHostName, String httpPort, String taskAttemptID)
+DECL|method|getTaskLogUrl (String scheme, String taskTrackerHostName, String httpPort, String taskAttemptID)
 specifier|public
 specifier|static
 name|String
 name|getTaskLogUrl
 parameter_list|(
+name|String
+name|scheme
+parameter_list|,
 name|String
 name|taskTrackerHostName
 parameter_list|,
@@ -93,10 +82,7 @@ parameter_list|)
 block|{
 return|return
 operator|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+name|scheme
 operator|+
 name|taskTrackerHostName
 operator|+

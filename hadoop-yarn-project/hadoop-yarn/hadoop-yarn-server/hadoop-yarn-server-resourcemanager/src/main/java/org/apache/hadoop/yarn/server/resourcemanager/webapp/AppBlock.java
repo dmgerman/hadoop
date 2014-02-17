@@ -156,9 +156,9 @@ name|apache
 operator|.
 name|hadoop
 operator|.
-name|http
+name|conf
 operator|.
-name|HttpConfig
+name|Configuration
 import|;
 end_import
 
@@ -506,6 +506,24 @@ name|yarn
 operator|.
 name|webapp
 operator|.
+name|util
+operator|.
+name|WebAppUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
 name|view
 operator|.
 name|HtmlBlock
@@ -560,9 +578,15 @@ specifier|private
 name|QueueACLsManager
 name|queueACLsManager
 decl_stmt|;
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|AppBlock (ResourceManager rm, ViewContext ctx, ApplicationACLsManager aclsManager, QueueACLsManager queueACLsManager)
+DECL|method|AppBlock (ResourceManager rm, ViewContext ctx, ApplicationACLsManager aclsManager, QueueACLsManager queueACLsManager, Configuration conf)
 name|AppBlock
 parameter_list|(
 name|ResourceManager
@@ -576,6 +600,9 @@ name|aclsManager
 parameter_list|,
 name|QueueACLsManager
 name|queueACLsManager
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
@@ -594,6 +621,12 @@ operator|.
 name|queueACLsManager
 operator|=
 name|queueACLsManager
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 block|}
 annotation|@
@@ -710,6 +743,13 @@ argument_list|(
 name|rmApp
 argument_list|,
 literal|true
+argument_list|,
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 comment|// Check for the authorization.
@@ -1143,10 +1183,7 @@ literal|".nodelink"
 argument_list|,
 name|url
 argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
+literal|"//"
 argument_list|,
 name|attemptInfo
 operator|.

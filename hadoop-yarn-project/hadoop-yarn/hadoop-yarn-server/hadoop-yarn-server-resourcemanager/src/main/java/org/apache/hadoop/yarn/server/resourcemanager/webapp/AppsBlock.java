@@ -152,6 +152,20 @@ name|apache
 operator|.
 name|hadoop
 operator|.
+name|conf
+operator|.
+name|Configuration
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
 name|yarn
 operator|.
 name|api
@@ -310,6 +324,24 @@ name|yarn
 operator|.
 name|webapp
 operator|.
+name|util
+operator|.
+name|WebAppUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|webapp
+operator|.
 name|view
 operator|.
 name|HtmlBlock
@@ -345,7 +377,13 @@ name|RMApp
 argument_list|>
 name|apps
 decl_stmt|;
-DECL|method|AppsBlock (RMContext rmContext, ViewContext ctx)
+DECL|field|conf
+specifier|private
+specifier|final
+name|Configuration
+name|conf
+decl_stmt|;
+DECL|method|AppsBlock (RMContext rmContext, ViewContext ctx, Configuration conf)
 annotation|@
 name|Inject
 name|AppsBlock
@@ -355,6 +393,9 @@ name|rmContext
 parameter_list|,
 name|ViewContext
 name|ctx
+parameter_list|,
+name|Configuration
+name|conf
 parameter_list|)
 block|{
 name|super
@@ -368,6 +409,12 @@ name|rmContext
 operator|.
 name|getRMApps
 argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|conf
+operator|=
+name|conf
 expr_stmt|;
 block|}
 DECL|method|render (Block html)
@@ -613,6 +660,13 @@ argument_list|(
 name|app
 argument_list|,
 literal|true
+argument_list|,
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|conf
+argument_list|)
 argument_list|)
 decl_stmt|;
 name|String

@@ -324,20 +324,6 @@ specifier|public
 name|FSMainOperationsBaseTest
 parameter_list|()
 block|{   }
-DECL|method|FSMainOperationsBaseTest (String testRootDir)
-specifier|public
-name|FSMainOperationsBaseTest
-parameter_list|(
-name|String
-name|testRootDir
-parameter_list|)
-block|{
-name|super
-argument_list|(
-name|testRootDir
-argument_list|)
-expr_stmt|;
-block|}
 annotation|@
 name|Before
 DECL|method|setUp ()

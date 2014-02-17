@@ -3288,6 +3288,17 @@ argument_list|()
 expr_stmt|;
 try|try
 block|{
+specifier|final
+name|String
+name|scheme
+init|=
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|URI
 name|trackingUri
 init|=
@@ -3304,6 +3315,8 @@ name|ProxyUriUtils
 operator|.
 name|getUriFromAMUrl
 argument_list|(
+name|scheme
+argument_list|,
 name|trackingUriWithoutScheme
 argument_list|)
 decl_stmt|;
@@ -3324,6 +3337,8 @@ name|ProxyUriUtils
 operator|.
 name|getUriFromAMUrl
 argument_list|(
+name|scheme
+argument_list|,
 name|proxy
 argument_list|)
 decl_stmt|;

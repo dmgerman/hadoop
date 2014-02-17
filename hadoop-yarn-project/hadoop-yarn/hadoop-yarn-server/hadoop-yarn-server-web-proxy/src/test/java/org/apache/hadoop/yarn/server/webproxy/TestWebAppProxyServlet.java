@@ -1717,7 +1717,12 @@ name|URI
 operator|.
 name|create
 argument_list|(
-literal|"http://"
+name|WebAppUtils
+operator|.
+name|getHttpSchemePrefix
+argument_list|(
+name|conf
+argument_list|)
 operator|+
 name|bindAddress
 operator|+

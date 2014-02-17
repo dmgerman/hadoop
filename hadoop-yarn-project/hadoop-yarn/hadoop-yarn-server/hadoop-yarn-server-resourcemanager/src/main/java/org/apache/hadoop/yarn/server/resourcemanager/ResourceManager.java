@@ -5325,11 +5325,6 @@ argument_list|,
 name|SHUTDOWN_HOOK_PRIORITY
 argument_list|)
 expr_stmt|;
-name|setHttpPolicy
-argument_list|(
-name|conf
-argument_list|)
-expr_stmt|;
 name|resourceManager
 operator|.
 name|init
@@ -5367,40 +5362,6 @@ literal|1
 argument_list|)
 expr_stmt|;
 block|}
-block|}
-DECL|method|setHttpPolicy (Configuration conf)
-specifier|private
-specifier|static
-name|void
-name|setHttpPolicy
-parameter_list|(
-name|Configuration
-name|conf
-parameter_list|)
-block|{
-name|HttpConfig
-operator|.
-name|setPolicy
-argument_list|(
-name|Policy
-operator|.
-name|fromString
-argument_list|(
-name|conf
-operator|.
-name|get
-argument_list|(
-name|YarnConfiguration
-operator|.
-name|YARN_HTTP_POLICY_KEY
-argument_list|,
-name|YarnConfiguration
-operator|.
-name|YARN_HTTP_POLICY_DEFAULT
-argument_list|)
-argument_list|)
-argument_list|)
-expr_stmt|;
 block|}
 comment|/**    * Register the handlers for alwaysOn services    */
 DECL|method|setupDispatcher ()
