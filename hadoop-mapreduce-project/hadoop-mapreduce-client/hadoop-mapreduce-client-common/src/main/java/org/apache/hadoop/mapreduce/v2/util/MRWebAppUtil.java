@@ -432,12 +432,17 @@ name|getYARNWebappScheme
 parameter_list|()
 block|{
 return|return
+name|httpPolicyInYarn
+operator|==
 name|HttpConfig
 operator|.
-name|getScheme
-argument_list|(
-name|httpPolicyInYarn
-argument_list|)
+name|Policy
+operator|.
+name|HTTPS_ONLY
+condition|?
+literal|"https://"
+else|:
+literal|"http://"
 return|;
 block|}
 DECL|method|getJHSWebappScheme ()
@@ -448,12 +453,17 @@ name|getJHSWebappScheme
 parameter_list|()
 block|{
 return|return
+name|httpPolicyInJHS
+operator|==
 name|HttpConfig
 operator|.
-name|getScheme
-argument_list|(
-name|httpPolicyInJHS
-argument_list|)
+name|Policy
+operator|.
+name|HTTPS_ONLY
+condition|?
+literal|"https://"
+else|:
+literal|"http://"
 return|;
 block|}
 DECL|method|setJHSWebappURLWithoutScheme (Configuration conf, String hostAddress)

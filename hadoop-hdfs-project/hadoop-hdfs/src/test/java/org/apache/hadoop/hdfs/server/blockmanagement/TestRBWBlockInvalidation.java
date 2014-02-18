@@ -478,7 +478,7 @@ name|Test
 argument_list|(
 name|timeout
 operator|=
-literal|60000
+literal|600000
 argument_list|)
 DECL|method|testBlockInvalidationWhenRBWReplicaMissedInDN ()
 specifier|public
@@ -526,7 +526,7 @@ name|DFSConfigKeys
 operator|.
 name|DFS_BLOCKREPORT_INTERVAL_MSEC_KEY
 argument_list|,
-literal|100
+literal|300
 argument_list|)
 expr_stmt|;
 name|conf
@@ -746,9 +746,8 @@ operator|.
 name|close
 argument_list|()
 expr_stmt|;
-comment|// Check datanode has reported the corrupt block.
 name|int
-name|corruptReplicas
+name|liveReplicas
 init|=
 literal|0
 decl_stmt|;
@@ -760,7 +759,7 @@ block|{
 if|if
 condition|(
 operator|(
-name|corruptReplicas
+name|liveReplicas
 operator|=
 name|countReplicas
 argument_list|(
@@ -769,13 +768,23 @@ argument_list|,
 name|blk
 argument_list|)
 operator|.
-name|corruptReplicas
+name|liveReplicas
 argument_list|()
 operator|)
-operator|>
-literal|0
+operator|<
+literal|2
 condition|)
 block|{
+comment|// This confirms we have a corrupt replica
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Live Replicas after corruption: "
+operator|+
+name|liveReplicas
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 name|Thread
@@ -788,30 +797,15 @@ expr_stmt|;
 block|}
 name|assertEquals
 argument_list|(
-literal|"There should be 1 replica in the corruptReplicasMap"
+literal|"There should be less than 2 replicas in the "
+operator|+
+literal|"liveReplicasMap"
 argument_list|,
 literal|1
 argument_list|,
-name|corruptReplicas
-argument_list|)
-expr_stmt|;
-comment|// Check the block has got replicated to another datanode.
-name|blk
-operator|=
-name|DFSTestUtil
-operator|.
-name|getFirstBlock
-argument_list|(
-name|fs
-argument_list|,
-name|testPath
-argument_list|)
-expr_stmt|;
-name|int
 name|liveReplicas
-init|=
-literal|0
-decl_stmt|;
+argument_list|)
+expr_stmt|;
 while|while
 condition|(
 literal|true
@@ -836,6 +830,16 @@ operator|>
 literal|1
 condition|)
 block|{
+comment|//Wait till the live replica count becomes equal to Replication Factor
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Live Replicas after Rereplication: "
+operator|+
+name|liveReplicas
+argument_list|)
+expr_stmt|;
 break|break;
 block|}
 name|Thread
@@ -855,13 +859,13 @@ argument_list|,
 name|liveReplicas
 argument_list|)
 expr_stmt|;
-comment|// sleep for 1 second, so that by this time datanode reports the corrupt
+comment|// sleep for 2 seconds, so that by this time datanode reports the corrupt
 comment|// block after a live replica of block got replicated.
 name|Thread
 operator|.
 name|sleep
 argument_list|(
-literal|1000
+literal|2000
 argument_list|)
 expr_stmt|;
 comment|// Check that there is no corrupt block in the corruptReplicasMap.

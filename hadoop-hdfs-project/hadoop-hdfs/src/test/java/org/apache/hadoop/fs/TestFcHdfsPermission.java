@@ -163,9 +163,7 @@ name|fileContextTestHelper
 init|=
 operator|new
 name|FileContextTestHelper
-argument_list|(
-literal|"/tmp/TestFcHdfsPermission"
-argument_list|)
+argument_list|()
 decl_stmt|;
 DECL|field|fc
 specifier|private

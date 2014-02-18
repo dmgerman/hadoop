@@ -1730,17 +1730,18 @@ name|ByteRangeInputStream
 operator|.
 name|URLOpener
 block|{
-DECL|field|connectionFactory
+DECL|field|connFactory
+specifier|private
+specifier|final
 name|URLConnectionFactory
-name|connectionFactory
-init|=
-name|URLConnectionFactory
-operator|.
-name|DEFAULT_SYSTEM_CONNECTION_FACTORY
+name|connFactory
 decl_stmt|;
-DECL|method|RangeHeaderUrlOpener (final URL url)
+DECL|method|RangeHeaderUrlOpener (URLConnectionFactory connFactory, final URL url)
 name|RangeHeaderUrlOpener
 parameter_list|(
+name|URLConnectionFactory
+name|connFactory
+parameter_list|,
 specifier|final
 name|URL
 name|url
@@ -1750,6 +1751,12 @@ name|super
 argument_list|(
 name|url
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|connFactory
+operator|=
+name|connFactory
 expr_stmt|;
 block|}
 DECL|method|openConnection ()
@@ -1764,7 +1771,7 @@ return|return
 operator|(
 name|HttpURLConnection
 operator|)
-name|connectionFactory
+name|connFactory
 operator|.
 name|openConnection
 argument_list|(
@@ -1921,9 +1928,12 @@ name|r
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|RangeHeaderInputStream (final URL url)
+DECL|method|RangeHeaderInputStream (URLConnectionFactory connFactory, final URL url)
 name|RangeHeaderInputStream
 parameter_list|(
+name|URLConnectionFactory
+name|connFactory
+parameter_list|,
 specifier|final
 name|URL
 name|url
@@ -1934,12 +1944,16 @@ argument_list|(
 operator|new
 name|RangeHeaderUrlOpener
 argument_list|(
+name|connFactory
+argument_list|,
 name|url
 argument_list|)
 argument_list|,
 operator|new
 name|RangeHeaderUrlOpener
 argument_list|(
+name|connFactory
+argument_list|,
 literal|null
 argument_list|)
 argument_list|)
@@ -2043,6 +2057,8 @@ argument_list|(
 operator|new
 name|RangeHeaderInputStream
 argument_list|(
+name|connectionFactory
+argument_list|,
 name|u
 argument_list|)
 argument_list|)

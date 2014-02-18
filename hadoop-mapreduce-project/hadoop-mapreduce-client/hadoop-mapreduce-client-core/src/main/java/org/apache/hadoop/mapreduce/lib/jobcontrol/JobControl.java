@@ -358,7 +358,6 @@ name|READY
 expr_stmt|;
 block|}
 DECL|method|toList ( LinkedList<ControlledJob> jobs)
-specifier|synchronized
 specifier|private
 specifier|static
 name|List
@@ -523,6 +522,7 @@ return|;
 block|}
 comment|/**    * @return the jobs in the success state    */
 DECL|method|getSuccessfulJobList ()
+specifier|synchronized
 specifier|public
 name|List
 argument_list|<
@@ -541,6 +541,7 @@ argument_list|)
 return|;
 block|}
 DECL|method|getFailedJobList ()
+specifier|synchronized
 specifier|public
 name|List
 argument_list|<

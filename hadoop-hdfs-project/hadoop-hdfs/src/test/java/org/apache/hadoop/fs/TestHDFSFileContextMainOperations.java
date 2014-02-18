@@ -291,9 +291,7 @@ block|{
 return|return
 operator|new
 name|FileContextTestHelper
-argument_list|(
-literal|"/tmp/TestHDFSFileContextMainOperations"
-argument_list|)
+argument_list|()
 return|;
 block|}
 annotation|@

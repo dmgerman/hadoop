@@ -214,7 +214,7 @@ expr_stmt|;
 block|}
 comment|/**    * Create helper with the specified test root dir    */
 DECL|method|FileSystemTestHelper (String testRootDir)
-specifier|public
+specifier|private
 name|FileSystemTestHelper
 parameter_list|(
 name|String

@@ -319,7 +319,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 comment|// configuration key itself cannot contains space/tab/return chars.
@@ -576,7 +579,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 name|assertEquals
@@ -691,7 +697,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 name|conf
@@ -805,7 +814,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 comment|// simulate xml with invalid node id
@@ -1005,7 +1017,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 name|conf

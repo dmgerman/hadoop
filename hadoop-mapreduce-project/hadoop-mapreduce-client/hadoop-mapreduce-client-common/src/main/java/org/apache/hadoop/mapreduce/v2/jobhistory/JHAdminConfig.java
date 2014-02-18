@@ -62,6 +62,20 @@ name|CommonConfigurationKeysPublic
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|http
+operator|.
+name|HttpConfig
+import|;
+end_import
+
 begin_comment
 comment|/**  * Stores Job History configuration keys that can be set by administrators of  * the Job History server.  */
 end_comment
@@ -466,9 +480,14 @@ specifier|static
 name|String
 name|DEFAULT_MR_HS_HTTP_POLICY
 init|=
-name|CommonConfigurationKeysPublic
+name|HttpConfig
 operator|.
-name|HTTP_POLICY_HTTP_ONLY
+name|Policy
+operator|.
+name|HTTP_ONLY
+operator|.
+name|name
+argument_list|()
 decl_stmt|;
 comment|/**The address the history server webapp is on.*/
 DECL|field|MR_HISTORY_WEBAPP_ADDRESS

@@ -419,7 +419,10 @@ name|prefix
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 name|checkAndSetRMRPCAddress
@@ -750,7 +753,10 @@ name|confKey
 range|:
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 control|)
 block|{
 name|verifyAndSetConfValue
@@ -1087,7 +1093,10 @@ condition|(
 operator|!
 name|YarnConfiguration
 operator|.
-name|RM_SERVICES_ADDRESS_CONF_KEYS
+name|getServiceAddressConfKeys
+argument_list|(
+name|conf
+argument_list|)
 operator|.
 name|contains
 argument_list|(
@@ -1406,6 +1415,8 @@ operator|.
 name|getRMDefaultPortNumber
 argument_list|(
 name|prefix
+argument_list|,
+name|conf
 argument_list|)
 argument_list|)
 expr_stmt|;

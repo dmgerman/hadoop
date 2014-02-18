@@ -1810,6 +1810,17 @@ name|set
 argument_list|(
 name|DFSConfigKeys
 operator|.
+name|DFS_NAMENODE_BACKUP_HTTP_ADDRESS_KEY
+argument_list|,
+literal|"localhost:0"
+argument_list|)
+expr_stmt|;
+name|conf
+operator|.
+name|set
+argument_list|(
+name|DFSConfigKeys
+operator|.
 name|DFS_BLOCKREPORT_INITIAL_DELAY_KEY
 argument_list|,
 literal|"0"

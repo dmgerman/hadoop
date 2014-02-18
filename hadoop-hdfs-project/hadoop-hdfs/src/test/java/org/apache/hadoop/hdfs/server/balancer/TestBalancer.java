@@ -596,7 +596,7 @@ specifier|final
 name|long
 name|TIMEOUT
 init|=
-literal|20000L
+literal|40000L
 decl_stmt|;
 comment|//msec
 DECL|field|CAPACITY_ALLOWED_VARIANCE

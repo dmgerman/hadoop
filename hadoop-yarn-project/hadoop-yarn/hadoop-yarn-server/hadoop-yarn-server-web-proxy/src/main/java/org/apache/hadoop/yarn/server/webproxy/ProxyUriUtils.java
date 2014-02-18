@@ -626,55 +626,6 @@ argument_list|)
 throw|;
 block|}
 block|}
-comment|/**    * Create a URI form a no scheme Url, such as is returned by the AM.    * @param url the URL format returned by an AM. This may or may not contain    * scheme.    * @return a URI with an http scheme    * @throws URISyntaxException if the url is not formatted correctly.    */
-DECL|method|getUriFromAMUrl (String url)
-specifier|public
-specifier|static
-name|URI
-name|getUriFromAMUrl
-parameter_list|(
-name|String
-name|url
-parameter_list|)
-throws|throws
-name|URISyntaxException
-block|{
-if|if
-condition|(
-name|getSchemeFromUrl
-argument_list|(
-name|url
-argument_list|)
-operator|.
-name|isEmpty
-argument_list|()
-condition|)
-block|{
-comment|/*        * check is made to make sure if AM reports with scheme then it will be        * used by default otherwise it will default to the one configured using        * "yarn.http.policy".        */
-return|return
-operator|new
-name|URI
-argument_list|(
-name|HttpConfig
-operator|.
-name|getSchemePrefix
-argument_list|()
-operator|+
-name|url
-argument_list|)
-return|;
-block|}
-else|else
-block|{
-return|return
-operator|new
-name|URI
-argument_list|(
-name|url
-argument_list|)
-return|;
-block|}
-block|}
 comment|/**    * Create a URI form a no scheme Url, such as is returned by the AM.    * @param noSchemeUrl the URL formate returned by an AM    * @return a URI with an http scheme    * @throws URISyntaxException if the url is not formatted correctly.    */
 DECL|method|getUriFromAMUrl (String scheme, String noSchemeUrl)
 specifier|public
@@ -708,8 +659,6 @@ operator|new
 name|URI
 argument_list|(
 name|scheme
-operator|+
-literal|"://"
 operator|+
 name|noSchemeUrl
 argument_list|)
