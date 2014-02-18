@@ -3285,6 +3285,26 @@ name|PROXY_PREFIX
 operator|+
 literal|"address"
 decl_stmt|;
+DECL|field|DEFAULT_PROXY_PORT
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|DEFAULT_PROXY_PORT
+init|=
+literal|9099
+decl_stmt|;
+DECL|field|DEFAULT_PROXY_ADDRESS
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|DEFAULT_PROXY_ADDRESS
+init|=
+literal|"0.0.0.0:"
+operator|+
+name|DEFAULT_RM_PORT
+decl_stmt|;
 comment|/**    * YARN Service Level Authorization    */
 specifier|public
 specifier|static
