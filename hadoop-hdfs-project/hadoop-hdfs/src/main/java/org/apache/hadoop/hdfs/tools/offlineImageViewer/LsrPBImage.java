@@ -856,7 +856,7 @@ argument_list|)
 expr_stmt|;
 break|break;
 case|case
-name|INODE_REFRENCE
+name|INODE_REFERENCE
 case|:
 name|loadINodeReferenceSection
 argument_list|(

@@ -1509,7 +1509,7 @@ expr_stmt|;
 block|}
 break|break;
 case|case
-name|INODE_REFRENCE
+name|INODE_REFERENCE
 case|:
 name|snapshotLoader
 operator|.
@@ -3309,10 +3309,10 @@ argument_list|(
 literal|"INODE"
 argument_list|)
 block|,
-DECL|enumConstant|INODE_REFRENCE
-name|INODE_REFRENCE
+DECL|enumConstant|INODE_REFERENCE
+name|INODE_REFERENCE
 argument_list|(
-literal|"INODE_REFRENCE"
+literal|"INODE_REFERENCE"
 argument_list|)
 block|,
 DECL|enumConstant|SNAPSHOT
