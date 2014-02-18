@@ -7335,6 +7335,12 @@ operator|.
 name|getCurrentAppAttempt
 argument_list|()
 decl_stmt|;
+comment|// To serialize with FairScheduler#allocate, synchronize on app attempt
+synchronized|synchronized
+init|(
+name|attempt
+init|)
+block|{
 name|FSLeafQueue
 name|oldQueue
 init|=
@@ -7434,6 +7440,7 @@ operator|.
 name|getQueueName
 argument_list|()
 return|;
+block|}
 block|}
 DECL|method|verifyMoveDoesNotViolateConstraints (FSSchedulerApp app, FSLeafQueue oldQueue, FSLeafQueue targetQueue)
 specifier|private
@@ -7603,7 +7610,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper for moveApplication, which is synchronized, so all operations will    * be atomic.    */
+comment|/**    * Helper for moveApplication, which has appropriate synchronization, so all    * operations will be atomic.    */
 DECL|method|executeMove (SchedulerApplication app, FSSchedulerApp attempt, FSLeafQueue oldQueue, FSLeafQueue newQueue)
 specifier|private
 name|void
