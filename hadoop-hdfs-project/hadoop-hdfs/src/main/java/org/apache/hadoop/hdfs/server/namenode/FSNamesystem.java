@@ -2756,28 +2756,6 @@ name|server
 operator|.
 name|namenode
 operator|.
-name|FsImageProto
-operator|.
-name|SecretManagerSection
-operator|.
-name|PersistToken
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|namenode
-operator|.
 name|INode
 operator|.
 name|BlocksMapUpdateInfo
@@ -22629,11 +22607,6 @@ operator|.
 name|UNCHECKED
 argument_list|)
 expr_stmt|;
-name|checkRollingUpgrade
-argument_list|(
-literal|"save namespace"
-argument_list|)
-expr_stmt|;
 if|if
 condition|(
 operator|!
@@ -33276,6 +33249,14 @@ expr_stmt|;
 name|getFSImage
 argument_list|()
 operator|.
+name|checkUpgrade
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|getFSImage
+argument_list|()
+operator|.
 name|saveNamespace
 argument_list|(
 name|this
@@ -33372,6 +33353,15 @@ name|startTime
 argument_list|)
 expr_stmt|;
 block|}
+DECL|method|getRollingUpgradeInfo ()
+name|RollingUpgradeInfo
+name|getRollingUpgradeInfo
+parameter_list|()
+block|{
+return|return
+name|rollingUpgradeInfo
+return|;
+block|}
 comment|/** Is rolling upgrade in progress? */
 DECL|method|isRollingUpgrade ()
 specifier|public
@@ -33386,7 +33376,6 @@ literal|null
 return|;
 block|}
 DECL|method|checkRollingUpgrade (String action)
-specifier|private
 name|void
 name|checkRollingUpgrade
 parameter_list|(
@@ -33496,16 +33485,6 @@ name|now
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|getFSImage
-argument_list|()
-operator|.
-name|purgeCheckpoints
-argument_list|(
-name|NameNodeFile
-operator|.
-name|IMAGE_ROLLBACK
-argument_list|)
-expr_stmt|;
 name|rollingUpgradeInfo
 operator|=
 literal|null
@@ -33521,6 +33500,24 @@ name|getFinalizeTime
 argument_list|()
 argument_list|)
 expr_stmt|;
+name|getFSImage
+argument_list|()
+operator|.
+name|saveNamespace
+argument_list|(
+name|this
+argument_list|)
+expr_stmt|;
+name|getFSImage
+argument_list|()
+operator|.
+name|purgeCheckpoints
+argument_list|(
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -33528,12 +33525,6 @@ name|writeUnlock
 argument_list|()
 expr_stmt|;
 block|}
-name|getEditLog
-argument_list|()
-operator|.
-name|logSync
-argument_list|()
-expr_stmt|;
 if|if
 condition|(
 name|auditLog

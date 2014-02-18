@@ -1728,9 +1728,10 @@ return|return
 name|isFormatted
 return|;
 block|}
-DECL|method|doUpgrade (FSNamesystem target)
+comment|/** Check if upgrade is in progress. */
+DECL|method|checkUpgrade (FSNamesystem target)
 name|void
-name|doUpgrade
+name|checkUpgrade
 parameter_list|(
 name|FSNamesystem
 name|target
@@ -1738,7 +1739,7 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
-comment|// Upgrade is allowed only if there are
+comment|// Upgrade or rolling upgrade is allowed only if there are
 comment|// no previous fs states in any of the local directories
 for|for
 control|(
@@ -1795,6 +1796,22 @@ literal|"Finalize or rollback first."
 argument_list|)
 throw|;
 block|}
+block|}
+DECL|method|doUpgrade (FSNamesystem target)
+name|void
+name|doUpgrade
+parameter_list|(
+name|FSNamesystem
+name|target
+parameter_list|)
+throws|throws
+name|IOException
+block|{
+name|checkUpgrade
+argument_list|(
+name|target
+argument_list|)
+expr_stmt|;
 comment|// load the latest image
 comment|// Do upgrade for each directory
 name|this
@@ -1808,6 +1825,13 @@ operator|.
 name|UPGRADE
 argument_list|,
 literal|null
+argument_list|)
+expr_stmt|;
+name|target
+operator|.
+name|checkRollingUpgrade
+argument_list|(
+literal|"upgrade namenode"
 argument_list|)
 expr_stmt|;
 name|long

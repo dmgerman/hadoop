@@ -263,13 +263,13 @@ name|Feature
 implements|implements
 name|LayoutFeature
 block|{
-DECL|enumConstant|ROLLING_UPGRADE_MARKER
-name|ROLLING_UPGRADE_MARKER
+DECL|enumConstant|ROLLING_UPGRADE
+name|ROLLING_UPGRADE
 argument_list|(
 operator|-
 literal|52
 argument_list|,
-literal|"Upgrade marker for rolling upgrade"
+literal|"Support rolling upgrade"
 argument_list|)
 block|;
 DECL|field|info

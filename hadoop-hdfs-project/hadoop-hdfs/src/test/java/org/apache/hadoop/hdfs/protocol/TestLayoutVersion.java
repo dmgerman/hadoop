@@ -316,7 +316,7 @@ name|NameNodeLayoutVersion
 operator|.
 name|Feature
 operator|.
-name|ROLLING_UPGRADE_MARKER
+name|ROLLING_UPGRADE
 operator|.
 name|getInfo
 argument_list|()
