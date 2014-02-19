@@ -32,6 +32,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|net
+operator|.
+name|InetSocketAddress
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -312,6 +322,14 @@ parameter_list|)
 throws|throws
 name|IOException
 block|{
+name|InetSocketAddress
+name|socAddr
+init|=
+name|getBindAddress
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
 name|SecurityUtil
 operator|.
 name|login
@@ -325,8 +343,43 @@ argument_list|,
 name|YarnConfiguration
 operator|.
 name|PROXY_PRINCIPAL
+argument_list|,
+name|socAddr
+operator|.
+name|getHostName
+argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
+comment|/**    * Retrieve PROXY bind address from configuration    *    * @param conf    * @return InetSocketAddress    */
+DECL|method|getBindAddress (Configuration conf)
+specifier|public
+specifier|static
+name|InetSocketAddress
+name|getBindAddress
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+return|return
+name|conf
+operator|.
+name|getSocketAddr
+argument_list|(
+name|YarnConfiguration
+operator|.
+name|PROXY_ADDRESS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_PROXY_ADDRESS
+argument_list|,
+name|YarnConfiguration
+operator|.
+name|DEFAULT_PROXY_PORT
+argument_list|)
+return|;
 block|}
 DECL|method|main (String[] args)
 specifier|public

@@ -50,6 +50,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -231,6 +241,38 @@ operator|.
 name|fs
 operator|.
 name|UnresolvedLinkException
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|AclEntry
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|fs
+operator|.
+name|permission
+operator|.
+name|AclStatus
 import|;
 end_import
 
@@ -1922,6 +1964,108 @@ name|listCachePools
 parameter_list|(
 name|String
 name|prevPool
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Modifies ACL entries of files and directories.  This method can add new ACL    * entries or modify the permissions on existing ACL entries.  All existing    * ACL entries that are not specified in this call are retained without    * changes.  (Modifications are merged into the current ACL.)    */
+annotation|@
+name|Idempotent
+DECL|method|modifyAclEntries (String src, List<AclEntry> aclSpec)
+specifier|public
+name|void
+name|modifyAclEntries
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|aclSpec
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Removes ACL entries from files and directories.  Other ACL entries are    * retained.    */
+annotation|@
+name|Idempotent
+DECL|method|removeAclEntries (String src, List<AclEntry> aclSpec)
+specifier|public
+name|void
+name|removeAclEntries
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|aclSpec
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Removes all default ACL entries from files and directories.    */
+annotation|@
+name|Idempotent
+DECL|method|removeDefaultAcl (String src)
+specifier|public
+name|void
+name|removeDefaultAcl
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Removes all but the base ACL entries of files and directories.  The entries    * for user, group, and others are retained for compatibility with permission    * bits.    */
+annotation|@
+name|Idempotent
+DECL|method|removeAcl (String src)
+specifier|public
+name|void
+name|removeAcl
+parameter_list|(
+name|String
+name|src
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Fully replaces ACL of files and directories, discarding all existing    * entries.    */
+annotation|@
+name|Idempotent
+DECL|method|setAcl (String src, List<AclEntry> aclSpec)
+specifier|public
+name|void
+name|setAcl
+parameter_list|(
+name|String
+name|src
+parameter_list|,
+name|List
+argument_list|<
+name|AclEntry
+argument_list|>
+name|aclSpec
+parameter_list|)
+throws|throws
+name|IOException
+function_decl|;
+comment|/**    * Gets the ACLs of files and directories.    */
+annotation|@
+name|Idempotent
+DECL|method|getAclStatus (String src)
+specifier|public
+name|AclStatus
+name|getAclStatus
+parameter_list|(
+name|String
+name|src
 parameter_list|)
 throws|throws
 name|IOException

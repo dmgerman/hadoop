@@ -501,6 +501,7 @@ argument_list|,
 literal|"Support for cache pools and path-based caching"
 argument_list|)
 block|,
+comment|// Hadoop 2.4.0
 DECL|enumConstant|PROTOBUF_FORMAT
 name|PROTOBUF_FORMAT
 argument_list|(
@@ -508,6 +509,33 @@ operator|-
 literal|52
 argument_list|,
 literal|"Use protobuf to serialize FSImage"
+argument_list|)
+block|,
+DECL|enumConstant|EXTENDED_ACL
+name|EXTENDED_ACL
+argument_list|(
+operator|-
+literal|53
+argument_list|,
+literal|"Extended ACL"
+argument_list|)
+block|,
+DECL|enumConstant|RESERVED_REL2_4_0
+name|RESERVED_REL2_4_0
+argument_list|(
+operator|-
+literal|54
+argument_list|,
+operator|-
+literal|51
+argument_list|,
+literal|"Reserved for release 2.4.0"
+argument_list|,
+literal|true
+argument_list|,
+name|PROTOBUF_FORMAT
+argument_list|,
+name|EXTENDED_ACL
 argument_list|)
 block|;
 DECL|field|info

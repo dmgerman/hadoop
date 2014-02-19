@@ -1065,21 +1065,6 @@ operator|.
 name|UNDEFINED
 argument_list|)
 expr_stmt|;
-name|when
-argument_list|(
-name|app
-operator|.
-name|createApplicationState
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|YarnApplicationState
-operator|.
-name|FINISHED
-argument_list|)
-expr_stmt|;
 return|return
 name|app
 return|;
@@ -1226,21 +1211,6 @@ argument_list|(
 name|FinalApplicationStatus
 operator|.
 name|UNDEFINED
-argument_list|)
-expr_stmt|;
-name|when
-argument_list|(
-name|appAttempt
-operator|.
-name|createApplicationAttemptState
-argument_list|()
-argument_list|)
-operator|.
-name|thenReturn
-argument_list|(
-name|YarnApplicationAttemptState
-operator|.
-name|FINISHED
 argument_list|)
 expr_stmt|;
 return|return
@@ -1595,6 +1565,10 @@ operator|.
 name|applicationFinished
 argument_list|(
 name|app
+argument_list|,
+name|RMAppState
+operator|.
+name|FINISHED
 argument_list|)
 expr_stmt|;
 for|for
@@ -1876,6 +1850,10 @@ operator|.
 name|applicationAttemptFinished
 argument_list|(
 name|appAttempt
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|FINISHED
 argument_list|)
 expr_stmt|;
 for|for
@@ -2490,6 +2468,10 @@ operator|.
 name|applicationAttemptFinished
 argument_list|(
 name|appAttempt
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|FINISHED
 argument_list|)
 expr_stmt|;
 block|}
@@ -2498,6 +2480,10 @@ operator|.
 name|applicationFinished
 argument_list|(
 name|app
+argument_list|,
+name|RMAppState
+operator|.
+name|FINISHED
 argument_list|)
 expr_stmt|;
 block|}
@@ -2694,6 +2680,9 @@ name|applicationFinished
 parameter_list|(
 name|RMApp
 name|app
+parameter_list|,
+name|RMAppState
+name|finalState
 parameter_list|)
 block|{           }
 annotation|@
@@ -2714,6 +2703,9 @@ name|applicationAttemptFinished
 parameter_list|(
 name|RMAppAttempt
 name|appAttempt
+parameter_list|,
+name|RMAppAttemptState
+name|finalState
 parameter_list|)
 block|{           }
 annotation|@
