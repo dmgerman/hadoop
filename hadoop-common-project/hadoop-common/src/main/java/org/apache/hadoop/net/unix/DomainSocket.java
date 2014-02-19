@@ -1191,6 +1191,46 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
+comment|/**    * Call shutdown(SHUT_RDWR) on the UNIX domain socket.    *    * @throws IOException    */
+DECL|method|shutdown ()
+specifier|public
+name|void
+name|shutdown
+parameter_list|()
+throws|throws
+name|IOException
+block|{
+name|refCount
+operator|.
+name|reference
+argument_list|()
+expr_stmt|;
+name|boolean
+name|exc
+init|=
+literal|true
+decl_stmt|;
+try|try
+block|{
+name|shutdown0
+argument_list|(
+name|fd
+argument_list|)
+expr_stmt|;
+name|exc
+operator|=
+literal|false
+expr_stmt|;
+block|}
+finally|finally
+block|{
+name|unreference
+argument_list|(
+name|exc
+argument_list|)
+expr_stmt|;
+block|}
+block|}
 DECL|method|sendFileDescriptors0 (int fd, FileDescriptor descriptors[], byte jbuf[], int offset, int length)
 specifier|private
 specifier|native
