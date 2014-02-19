@@ -30,6 +30,16 @@ end_import
 
 begin_import
 import|import
+name|java
+operator|.
+name|io
+operator|.
+name|InputStream
+import|;
+end_import
+
+begin_import
+import|import
 name|org
 operator|.
 name|apache
@@ -131,12 +141,12 @@ name|closeInternal
 argument_list|()
 expr_stmt|;
 block|}
-comment|/**    * Get the configuration and combine with bootstrapConf    * @param bootstrapConf Configuration    * @param name The configuration file name    * @return configuration    * @throws YarnException    * @throws IOException    */
-DECL|method|getConfiguration (Configuration bootstrapConf, String name)
+comment|/**    * Opens an InputStream at the indicated file    * @param bootstrapConf Configuration    * @param name The configuration file name    * @return configuration    * @throws YarnException    * @throws IOException    */
+DECL|method|getConfigurationInputStream ( Configuration bootstrapConf, String name)
 specifier|public
 specifier|abstract
-name|Configuration
-name|getConfiguration
+name|InputStream
+name|getConfigurationInputStream
 parameter_list|(
 name|Configuration
 name|bootstrapConf
