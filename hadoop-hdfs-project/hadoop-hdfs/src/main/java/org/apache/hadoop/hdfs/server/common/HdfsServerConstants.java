@@ -166,12 +166,9 @@ name|RollingUpgradeStartupOption
 block|{
 DECL|enumConstant|ROLLBACK
 DECL|enumConstant|DOWNGRADE
-DECL|enumConstant|STARTED
 name|ROLLBACK
 block|,
 name|DOWNGRADE
-block|,
-name|STARTED
 block|;
 DECL|field|VALUES
 specifier|private

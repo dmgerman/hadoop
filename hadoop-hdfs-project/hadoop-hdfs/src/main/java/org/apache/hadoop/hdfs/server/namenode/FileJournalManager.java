@@ -2916,9 +2916,10 @@ init|=
 operator|new
 name|StorageInfo
 argument_list|(
+operator|(
 name|NodeType
-operator|.
-name|NAME_NODE
+operator|)
+literal|null
 argument_list|)
 decl_stmt|;
 name|sInfo

@@ -792,6 +792,16 @@ parameter_list|)
 throws|throws
 name|InconsistentFSStateException
 block|{
+if|if
+condition|(
+name|storageType
+operator|==
+literal|null
+condition|)
+block|{
+comment|//don't care about storage type
+return|return;
+block|}
 name|NodeType
 name|type
 init|=
@@ -828,7 +838,13 @@ name|sd
 operator|.
 name|root
 argument_list|,
-literal|"node type is incompatible with others."
+literal|"Incompatible node types: storageType="
+operator|+
+name|storageType
+operator|+
+literal|" but StorageDirectory type="
+operator|+
+name|type
 argument_list|)
 throw|;
 block|}

@@ -1954,7 +1954,7 @@ argument_list|()
 argument_list|,
 name|NodeType
 operator|.
-name|NAME_NODE
+name|JOURNAL_NODE
 argument_list|)
 decl_stmt|;
 try|try
@@ -2081,7 +2081,7 @@ argument_list|()
 argument_list|,
 name|NodeType
 operator|.
-name|NAME_NODE
+name|JOURNAL_NODE
 argument_list|)
 decl_stmt|;
 name|Boolean
@@ -2112,7 +2112,7 @@ argument_list|()
 argument_list|,
 name|NodeType
 operator|.
-name|NAME_NODE
+name|JOURNAL_NODE
 argument_list|)
 argument_list|,
 name|request
