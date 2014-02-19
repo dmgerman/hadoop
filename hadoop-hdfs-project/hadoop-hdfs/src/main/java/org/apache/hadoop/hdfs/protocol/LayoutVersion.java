@@ -1186,26 +1186,38 @@ argument_list|)
 return|;
 block|}
 comment|/**    * Get the current layout version    */
-DECL|method|getCurrentLayoutVersion ( Map<Integer, SortedSet<LayoutFeature>> map, LayoutFeature[] values)
+DECL|method|getCurrentLayoutVersion (LayoutFeature[] features)
 specifier|public
 specifier|static
 name|int
 name|getCurrentLayoutVersion
 parameter_list|(
-name|Map
-argument_list|<
-name|Integer
-argument_list|,
-name|SortedSet
-argument_list|<
-name|LayoutFeature
-argument_list|>
-argument_list|>
-name|map
-parameter_list|,
 name|LayoutFeature
 index|[]
-name|values
+name|features
+parameter_list|)
+block|{
+return|return
+name|getLastNonReservedFeature
+argument_list|(
+name|features
+argument_list|)
+operator|.
+name|getInfo
+argument_list|()
+operator|.
+name|getLayoutVersion
+argument_list|()
+return|;
+block|}
+DECL|method|getLastNonReservedFeature (LayoutFeature[] features)
+specifier|static
+name|LayoutFeature
+name|getLastNonReservedFeature
+parameter_list|(
+name|LayoutFeature
+index|[]
+name|features
 parameter_list|)
 block|{
 for|for
@@ -1213,7 +1225,7 @@ control|(
 name|int
 name|i
 init|=
-name|values
+name|features
 operator|.
 name|length
 operator|-
@@ -1231,7 +1243,7 @@ specifier|final
 name|FeatureInfo
 name|info
 init|=
-name|values
+name|features
 index|[
 name|i
 index|]
@@ -1249,10 +1261,10 @@ argument_list|()
 condition|)
 block|{
 return|return
-name|info
-operator|.
-name|getLayoutVersion
-argument_list|()
+name|features
+index|[
+name|i
+index|]
 return|;
 block|}
 block|}

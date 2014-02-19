@@ -165,8 +165,6 @@ name|LayoutVersion
 operator|.
 name|getCurrentLayoutVersion
 argument_list|(
-name|FEATURES
-argument_list|,
 name|Feature
 operator|.
 name|values
@@ -267,9 +265,14 @@ DECL|enumConstant|ROLLING_UPGRADE
 name|ROLLING_UPGRADE
 argument_list|(
 operator|-
-literal|52
+literal|55
+argument_list|,
+operator|-
+literal|53
 argument_list|,
 literal|"Support rolling upgrade"
+argument_list|,
+literal|false
 argument_list|)
 block|;
 DECL|field|info
