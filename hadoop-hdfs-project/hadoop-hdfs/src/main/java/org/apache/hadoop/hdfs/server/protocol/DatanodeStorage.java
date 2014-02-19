@@ -63,9 +63,10 @@ block|{
 DECL|enumConstant|NORMAL
 name|NORMAL
 block|,
-DECL|enumConstant|READ_ONLY
-name|READ_ONLY
-block|}
+comment|/**      * A storage that represents a read-only path to replicas stored on a shared storage device.      * Replicas on {@link #READ_ONLY_SHARED} storage are not counted towards live replicas.      *       *<p>      * In certain implementations, a {@link #READ_ONLY_SHARED} storage may be correlated to       * its {@link #NORMAL} counterpart using the {@link DatanodeStorage#storageID}.  This      * property should be used for debugging purposes only.      *</p>       */
+DECL|enumConstant|READ_ONLY_SHARED
+name|READ_ONLY_SHARED
+block|;   }
 DECL|field|storageID
 specifier|private
 specifier|final
