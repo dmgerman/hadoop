@@ -143,6 +143,13 @@ name|long
 name|getPermissionLong
 parameter_list|()
 function_decl|;
+comment|/** @return the ACL feature. */
+DECL|method|getAclFeature ()
+specifier|public
+name|AclFeature
+name|getAclFeature
+parameter_list|()
+function_decl|;
 comment|/** @return the modification time. */
 DECL|method|getModificationTime ()
 specifier|public
@@ -180,6 +187,12 @@ specifier|final
 name|long
 name|permission
 decl_stmt|;
+DECL|field|aclFeature
+specifier|private
+specifier|final
+name|AclFeature
+name|aclFeature
+decl_stmt|;
 DECL|field|modificationTime
 specifier|private
 specifier|final
@@ -192,7 +205,7 @@ specifier|final
 name|long
 name|accessTime
 decl_stmt|;
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, long modificationTime, long accessTime)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long accessTime)
 name|SnapshotCopy
 parameter_list|(
 name|byte
@@ -201,6 +214,9 @@ name|name
 parameter_list|,
 name|PermissionStatus
 name|permissions
+parameter_list|,
+name|AclFeature
+name|aclFeature
 parameter_list|,
 name|long
 name|modificationTime
@@ -225,6 +241,12 @@ name|toLong
 argument_list|(
 name|permissions
 argument_list|)
+expr_stmt|;
+name|this
+operator|.
+name|aclFeature
+operator|=
+name|aclFeature
 expr_stmt|;
 name|this
 operator|.
@@ -262,6 +284,15 @@ operator|=
 name|inode
 operator|.
 name|getPermissionLong
+argument_list|()
+expr_stmt|;
+name|this
+operator|.
+name|aclFeature
+operator|=
+name|inode
+operator|.
+name|getAclFeature
 argument_list|()
 expr_stmt|;
 name|this
@@ -420,6 +451,18 @@ parameter_list|()
 block|{
 return|return
 name|permission
+return|;
+block|}
+annotation|@
+name|Override
+DECL|method|getAclFeature ()
+specifier|public
+name|AclFeature
+name|getAclFeature
+parameter_list|()
+block|{
+return|return
+name|aclFeature
 return|;
 block|}
 annotation|@

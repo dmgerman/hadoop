@@ -493,8 +493,8 @@ literal|0L
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Copy constructor    * @param other The INodeDirectory to be copied    * @param adopt Indicate whether or not need to set the parent field of child    *              INodes to the new node    */
-DECL|method|INodeDirectory (INodeDirectory other, boolean adopt, boolean copyFeatures)
+comment|/**    * Copy constructor    * @param other The INodeDirectory to be copied    * @param adopt Indicate whether or not need to set the parent field of child    *              INodes to the new node    * @param featuresToCopy any number of features to copy to the new node.    *              The method will do a reference copy, not a deep copy.    */
+DECL|method|INodeDirectory (INodeDirectory other, boolean adopt, Feature... featuresToCopy)
 specifier|public
 name|INodeDirectory
 parameter_list|(
@@ -504,8 +504,9 @@ parameter_list|,
 name|boolean
 name|adopt
 parameter_list|,
-name|boolean
-name|copyFeatures
+name|Feature
+modifier|...
+name|featuresToCopy
 parameter_list|)
 block|{
 name|super
@@ -549,20 +550,12 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-if|if
-condition|(
-name|copyFeatures
-condition|)
-block|{
 name|this
 operator|.
 name|features
 operator|=
-name|other
-operator|.
-name|features
+name|featuresToCopy
 expr_stmt|;
-block|}
 block|}
 comment|/** @return true unconditionally. */
 annotation|@
@@ -801,31 +794,13 @@ name|DirectoryWithQuotaFeature
 name|getDirectoryWithQuotaFeature
 parameter_list|()
 block|{
-for|for
-control|(
-name|Feature
-name|f
-range|:
-name|features
-control|)
-block|{
-if|if
-condition|(
-name|f
-operator|instanceof
-name|DirectoryWithQuotaFeature
-condition|)
-block|{
 return|return
-operator|(
+name|getFeature
+argument_list|(
 name|DirectoryWithQuotaFeature
-operator|)
-name|f
-return|;
-block|}
-block|}
-return|return
-literal|null
+operator|.
+name|class
+argument_list|)
 return|;
 block|}
 comment|/** Is this directory with quota? */
@@ -959,31 +934,13 @@ name|DirectoryWithSnapshotFeature
 name|getDirectoryWithSnapshotFeature
 parameter_list|()
 block|{
-for|for
-control|(
-name|Feature
-name|f
-range|:
-name|features
-control|)
-block|{
-if|if
-condition|(
-name|f
-operator|instanceof
-name|DirectoryWithSnapshotFeature
-condition|)
-block|{
 return|return
-operator|(
+name|getFeature
+argument_list|(
 name|DirectoryWithSnapshotFeature
-operator|)
-name|f
-return|;
-block|}
-block|}
-return|return
-literal|null
+operator|.
+name|class
+argument_list|)
 return|;
 block|}
 comment|/** Is this file has the snapshot feature? */
@@ -1206,7 +1163,10 @@ name|this
 argument_list|,
 literal|true
 argument_list|,
-literal|true
+name|this
+operator|.
+name|getFeatures
+argument_list|()
 argument_list|)
 argument_list|,
 name|inodeMap

@@ -110,7 +110,7 @@ name|SnapshotCopy
 implements|implements
 name|INodeDirectoryAttributes
 block|{
-DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, long modificationTime)
+DECL|method|SnapshotCopy (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime)
 specifier|public
 name|SnapshotCopy
 parameter_list|(
@@ -121,6 +121,9 @@ parameter_list|,
 name|PermissionStatus
 name|permissions
 parameter_list|,
+name|AclFeature
+name|aclFeature
+parameter_list|,
 name|long
 name|modificationTime
 parameter_list|)
@@ -130,6 +133,8 @@ argument_list|(
 name|name
 argument_list|,
 name|permissions
+argument_list|,
+name|aclFeature
 argument_list|,
 name|modificationTime
 argument_list|,
@@ -237,7 +242,7 @@ specifier|final
 name|long
 name|dsQuota
 decl_stmt|;
-DECL|method|CopyWithQuota (byte[] name, PermissionStatus permissions, long modificationTime, long nsQuota, long dsQuota)
+DECL|method|CopyWithQuota (byte[] name, PermissionStatus permissions, AclFeature aclFeature, long modificationTime, long nsQuota, long dsQuota)
 specifier|public
 name|CopyWithQuota
 parameter_list|(
@@ -247,6 +252,9 @@ name|name
 parameter_list|,
 name|PermissionStatus
 name|permissions
+parameter_list|,
+name|AclFeature
+name|aclFeature
 parameter_list|,
 name|long
 name|modificationTime
@@ -263,6 +271,8 @@ argument_list|(
 name|name
 argument_list|,
 name|permissions
+argument_list|,
+name|aclFeature
 argument_list|,
 name|modificationTime
 argument_list|)

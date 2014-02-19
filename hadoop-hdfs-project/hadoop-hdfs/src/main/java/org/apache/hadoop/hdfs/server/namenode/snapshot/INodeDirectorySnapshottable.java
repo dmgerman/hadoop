@@ -1074,7 +1074,10 @@ name|dir
 argument_list|,
 literal|true
 argument_list|,
-literal|true
+name|dir
+operator|.
+name|getFeatures
+argument_list|()
 argument_list|)
 expr_stmt|;
 comment|// add snapshot feature if the original directory does not have it
