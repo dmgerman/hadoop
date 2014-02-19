@@ -5496,6 +5496,15 @@ name|keySet
 argument_list|()
 argument_list|)
 decl_stmt|;
+comment|// Sort the nodes by space available on them, so that we offer
+comment|// containers on emptier nodes first, facilitating an even spread. This
+comment|// requires holding the scheduler lock, so that the space available on a
+comment|// node doesn't change during the sort.
+synchronized|synchronized
+init|(
+name|this
+init|)
+block|{
 name|Collections
 operator|.
 name|sort
@@ -5505,6 +5514,7 @@ argument_list|,
 name|nodeAvailableResourceComparator
 argument_list|)
 expr_stmt|;
+block|}
 comment|// iterate all nodes
 for|for
 control|(
@@ -7335,6 +7345,12 @@ operator|.
 name|getCurrentAppAttempt
 argument_list|()
 decl_stmt|;
+comment|// To serialize with FairScheduler#allocate, synchronize on app attempt
+synchronized|synchronized
+init|(
+name|attempt
+init|)
+block|{
 name|FSLeafQueue
 name|oldQueue
 init|=
@@ -7434,6 +7450,7 @@ operator|.
 name|getQueueName
 argument_list|()
 return|;
+block|}
 block|}
 DECL|method|verifyMoveDoesNotViolateConstraints (FSSchedulerApp app, FSLeafQueue oldQueue, FSLeafQueue targetQueue)
 specifier|private
@@ -7603,7 +7620,7 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Helper for moveApplication, which is synchronized, so all operations will    * be atomic.    */
+comment|/**    * Helper for moveApplication, which has appropriate synchronization, so all    * operations will be atomic.    */
 DECL|method|executeMove (SchedulerApplication app, FSSchedulerApp attempt, FSLeafQueue oldQueue, FSLeafQueue newQueue)
 specifier|private
 name|void

@@ -5631,6 +5631,8 @@ operator|.
 name|applicationAttemptFinished
 argument_list|(
 name|appAttempt
+argument_list|,
+name|finalAttemptState
 argument_list|)
 expr_stmt|;
 block|}

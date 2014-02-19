@@ -2882,7 +2882,7 @@ name|headers
 argument_list|,
 name|SectionName
 operator|.
-name|INODE_REFRENCE
+name|INODE_REFERENCE
 argument_list|)
 expr_stmt|;
 block|}
