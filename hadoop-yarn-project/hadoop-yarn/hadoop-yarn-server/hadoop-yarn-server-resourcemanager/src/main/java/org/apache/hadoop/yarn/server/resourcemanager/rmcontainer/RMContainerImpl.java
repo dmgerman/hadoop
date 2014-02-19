@@ -1833,10 +1833,6 @@ argument_list|(
 name|container
 operator|.
 name|appAttemptId
-argument_list|,
-name|container
-operator|.
-name|container
 argument_list|)
 argument_list|)
 expr_stmt|;

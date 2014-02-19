@@ -114,21 +114,12 @@ name|RMAppAttemptContainerAllocatedEvent
 extends|extends
 name|RMAppAttemptEvent
 block|{
-DECL|field|container
-specifier|private
-specifier|final
-name|Container
-name|container
-decl_stmt|;
-DECL|method|RMAppAttemptContainerAllocatedEvent (ApplicationAttemptId appAttemptId, Container container)
+DECL|method|RMAppAttemptContainerAllocatedEvent (ApplicationAttemptId appAttemptId)
 specifier|public
 name|RMAppAttemptContainerAllocatedEvent
 parameter_list|(
 name|ApplicationAttemptId
 name|appAttemptId
-parameter_list|,
-name|Container
-name|container
 parameter_list|)
 block|{
 name|super
@@ -140,24 +131,6 @@ operator|.
 name|CONTAINER_ALLOCATED
 argument_list|)
 expr_stmt|;
-name|this
-operator|.
-name|container
-operator|=
-name|container
-expr_stmt|;
-block|}
-DECL|method|getContainer ()
-specifier|public
-name|Container
-name|getContainer
-parameter_list|()
-block|{
-return|return
-name|this
-operator|.
-name|container
-return|;
 block|}
 block|}
 end_class

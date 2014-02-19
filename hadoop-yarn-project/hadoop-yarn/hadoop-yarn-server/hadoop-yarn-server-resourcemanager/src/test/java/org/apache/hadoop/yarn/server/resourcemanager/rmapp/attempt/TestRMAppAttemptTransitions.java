@@ -4107,8 +4107,6 @@ name|applicationAttempt
 operator|.
 name|getAppAttemptId
 argument_list|()
-argument_list|,
-name|container
 argument_list|)
 argument_list|)
 expr_stmt|;
