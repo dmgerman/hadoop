@@ -326,26 +326,6 @@ name|common
 operator|.
 name|HdfsServerConstants
 operator|.
-name|RollingUpgradeStartupOption
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|hdfs
-operator|.
-name|server
-operator|.
-name|common
-operator|.
-name|HdfsServerConstants
-operator|.
 name|StartupOption
 import|;
 end_import
@@ -2829,20 +2809,12 @@ specifier|final
 name|boolean
 name|rollingRollback
 init|=
-name|startOpt
-operator|==
 name|StartupOption
 operator|.
-name|ROLLINGUPGRADE
-operator|&&
+name|isRollingUpgradeRollback
+argument_list|(
 name|startOpt
-operator|.
-name|getRollingUpgradeStartupOption
-argument_list|()
-operator|==
-name|RollingUpgradeStartupOption
-operator|.
-name|ROLLBACK
+argument_list|)
 decl_stmt|;
 specifier|final
 name|NameNodeFile
@@ -3350,6 +3322,8 @@ argument_list|,
 name|NameNodeFile
 operator|.
 name|IMAGE
+argument_list|,
+literal|true
 argument_list|)
 expr_stmt|;
 comment|// purge all the checkpoints after the marker
@@ -3364,6 +3338,45 @@ argument_list|,
 name|ckptId
 argument_list|)
 expr_stmt|;
+name|String
+name|nameserviceId
+init|=
+name|DFSUtil
+operator|.
+name|getNamenodeNameServiceId
+argument_list|(
+name|conf
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|HAUtil
+operator|.
+name|isHAEnabled
+argument_list|(
+name|conf
+argument_list|,
+name|nameserviceId
+argument_list|)
+condition|)
+block|{
+comment|// close the editlog since it is currently open for write
+name|this
+operator|.
+name|editLog
+operator|.
+name|close
+argument_list|()
+expr_stmt|;
+comment|// reopen the editlog for read
+name|this
+operator|.
+name|editLog
+operator|.
+name|initSharedJournalsForRead
+argument_list|()
+expr_stmt|;
+block|}
 block|}
 DECL|method|loadFSImageFile (FSNamesystem target, MetaRecoveryContext recovery, FSImageFile imageFile)
 name|void
@@ -3606,6 +3619,31 @@ argument_list|,
 name|nameserviceId
 argument_list|)
 operator|&&
+operator|(
+name|startOpt
+operator|==
+name|StartupOption
+operator|.
+name|UPGRADE
+operator|||
+name|StartupOption
+operator|.
+name|isRollingUpgradeRollback
+argument_list|(
+name|startOpt
+argument_list|)
+operator|)
+condition|)
+block|{
+comment|// This NN is HA, but we're doing an upgrade or a rollback of rolling
+comment|// upgrade so init the edit log for write.
+name|editLog
+operator|.
+name|initJournalsForWrite
+argument_list|()
+expr_stmt|;
+if|if
+condition|(
 name|startOpt
 operator|==
 name|StartupOption
@@ -3613,13 +3651,6 @@ operator|.
 name|UPGRADE
 condition|)
 block|{
-comment|// This NN is HA, but we're doing an upgrade so init the edit log for
-comment|// write.
-name|editLog
-operator|.
-name|initJournalsForWrite
-argument_list|()
-expr_stmt|;
 name|long
 name|sharedLogCTime
 init|=
@@ -3662,6 +3693,7 @@ operator|+
 literal|"this NN in sync with the other."
 argument_list|)
 throw|;
+block|}
 block|}
 name|editLog
 operator|.
@@ -3922,20 +3954,12 @@ block|}
 name|boolean
 name|rollingRollback
 init|=
-name|startOpt
-operator|==
 name|StartupOption
 operator|.
-name|ROLLINGUPGRADE
-operator|&&
+name|isRollingUpgradeRollback
+argument_list|(
 name|startOpt
-operator|.
-name|getRollingUpgradeStartupOption
-argument_list|()
-operator|==
-name|RollingUpgradeStartupOption
-operator|.
-name|ROLLBACK
+argument_list|)
 decl_stmt|;
 comment|// If we are in recovery mode, we may have skipped over some txids.
 if|if
@@ -5216,6 +5240,8 @@ operator|.
 name|IMAGE_NEW
 argument_list|,
 name|nnf
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// Since we now have a new checkpoint, we can clean up some
@@ -5333,7 +5359,7 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Renames new image    */
-DECL|method|renameCheckpoint (long txid, NameNodeFile fromNnf, NameNodeFile toNnf)
+DECL|method|renameCheckpoint (long txid, NameNodeFile fromNnf, NameNodeFile toNnf, boolean renameMD5)
 specifier|private
 name|void
 name|renameCheckpoint
@@ -5346,6 +5372,9 @@ name|fromNnf
 parameter_list|,
 name|NameNodeFile
 name|toNnf
+parameter_list|,
+name|boolean
+name|renameMD5
 parameter_list|)
 throws|throws
 name|IOException
@@ -5384,6 +5413,8 @@ argument_list|,
 name|toNnf
 argument_list|,
 name|txid
+argument_list|,
+name|renameMD5
 argument_list|)
 expr_stmt|;
 block|}
@@ -5536,7 +5567,7 @@ name|al
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|renameImageFileInDir (StorageDirectory sd, NameNodeFile fromNnf, NameNodeFile toNnf, long txid)
+DECL|method|renameImageFileInDir (StorageDirectory sd, NameNodeFile fromNnf, NameNodeFile toNnf, long txid, boolean renameMD5)
 specifier|private
 name|void
 name|renameImageFileInDir
@@ -5552,6 +5583,9 @@ name|toNnf
 parameter_list|,
 name|long
 name|txid
+parameter_list|,
+name|boolean
+name|renameMD5
 parameter_list|)
 throws|throws
 name|IOException
@@ -5666,6 +5700,21 @@ literal|" FAILED"
 argument_list|)
 throw|;
 block|}
+block|}
+if|if
+condition|(
+name|renameMD5
+condition|)
+block|{
+name|MD5FileUtils
+operator|.
+name|renameMD5File
+argument_list|(
+name|fromFile
+argument_list|,
+name|toFile
+argument_list|)
+expr_stmt|;
 block|}
 block|}
 DECL|method|rollEditLog ()
@@ -6080,6 +6129,8 @@ argument_list|,
 name|NameNodeFile
 operator|.
 name|IMAGE
+argument_list|,
+literal|false
 argument_list|)
 expr_stmt|;
 comment|// So long as this is the newest image available,

@@ -8523,6 +8523,15 @@ name|nnIndex
 index|]
 operator|==
 literal|null
+operator|||
+name|nameNodes
+index|[
+name|nnIndex
+index|]
+operator|.
+name|nameNode
+operator|==
+literal|null
 condition|)
 block|{
 return|return;
