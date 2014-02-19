@@ -678,6 +678,61 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
+annotation|@
+name|Test
+DECL|method|testTerminals ()
+specifier|public
+name|void
+name|testTerminals
+parameter_list|()
+throws|throws
+name|Exception
+block|{
+comment|// Should make it through without an exception
+name|StringBuffer
+name|sb
+init|=
+operator|new
+name|StringBuffer
+argument_list|()
+decl_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"<queuePlacementPolicy>"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"<rule name='secondaryGroupExistingQueue' create='true'/>"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"<rule name='default' create='false'/>"
+argument_list|)
+expr_stmt|;
+name|sb
+operator|.
+name|append
+argument_list|(
+literal|"</queuePlacementPolicy>"
+argument_list|)
+expr_stmt|;
+name|parse
+argument_list|(
+name|sb
+operator|.
+name|toString
+argument_list|()
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|parse (String str)
 specifier|private
 name|QueuePlacementPolicy
