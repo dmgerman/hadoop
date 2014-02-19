@@ -1242,26 +1242,10 @@ specifier|private
 name|String
 name|queue
 decl_stmt|;
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"rawtypes"
-argument_list|)
 DECL|field|handler
 specifier|private
 name|EventHandler
 name|handler
-decl_stmt|;
-DECL|field|FINAL_TRANSITION
-specifier|private
-specifier|static
-specifier|final
-name|FinalTransition
-name|FINAL_TRANSITION
-init|=
-operator|new
-name|FinalTransition
-argument_list|()
 decl_stmt|;
 DECL|field|FINISHED_TRANSITION
 specifier|private
@@ -4152,11 +4136,6 @@ block|}
 empty_stmt|;
 block|}
 comment|/**    * Move an app to a new queue.    * This transition must set the result on the Future in the RMAppMoveEvent,    * either as an exception for failure or null for success, or the client will    * be left waiting forever.    */
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|class|RMAppMoveTransition
 specifier|private
 specifier|static
@@ -4240,11 +4219,6 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-annotation|@
-name|SuppressWarnings
-argument_list|(
-literal|"unchecked"
-argument_list|)
 DECL|class|RMAppRecoveredTransition
 specifier|private
 specifier|static
@@ -4324,7 +4298,13 @@ operator|!=
 literal|null
 condition|)
 block|{
-name|FINAL_TRANSITION
+operator|new
+name|FinalTransition
+argument_list|(
+name|app
+operator|.
+name|recoveredFinalState
+argument_list|)
 operator|.
 name|transition
 argument_list|(
@@ -4729,7 +4709,13 @@ name|msg
 argument_list|)
 expr_stmt|;
 comment|// Inform the node for app-finish
-name|FINAL_TRANSITION
+operator|new
+name|FinalTransition
+argument_list|(
+name|RMAppState
+operator|.
+name|FAILED
+argument_list|)
 operator|.
 name|transition
 argument_list|(
@@ -5250,6 +5236,19 @@ name|AppFinishedTransition
 extends|extends
 name|FinalTransition
 block|{
+DECL|method|AppFinishedTransition ()
+specifier|public
+name|AppFinishedTransition
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|RMAppState
+operator|.
+name|FINISHED
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|transition (RMAppImpl app, RMAppEvent event)
 specifier|public
 name|void
@@ -5441,6 +5440,19 @@ name|AppKilledTransition
 extends|extends
 name|FinalTransition
 block|{
+DECL|method|AppKilledTransition ()
+specifier|public
+name|AppKilledTransition
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|RMAppState
+operator|.
+name|KILLED
+argument_list|)
+expr_stmt|;
+block|}
 annotation|@
 name|Override
 DECL|method|transition (RMAppImpl app, RMAppEvent event)
@@ -5552,6 +5564,19 @@ name|AppRejectedTransition
 extends|extends
 name|FinalTransition
 block|{
+DECL|method|AppRejectedTransition ()
+specifier|public
+name|AppRejectedTransition
+parameter_list|()
+block|{
+name|super
+argument_list|(
+name|RMAppState
+operator|.
+name|FAILED
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|transition (RMAppImpl app, RMAppEvent event)
 specifier|public
 name|void
@@ -5604,6 +5629,27 @@ name|FinalTransition
 extends|extends
 name|RMAppTransition
 block|{
+DECL|field|finalState
+specifier|private
+specifier|final
+name|RMAppState
+name|finalState
+decl_stmt|;
+DECL|method|FinalTransition (RMAppState finalState)
+specifier|public
+name|FinalTransition
+parameter_list|(
+name|RMAppState
+name|finalState
+parameter_list|)
+block|{
+name|this
+operator|.
+name|finalState
+operator|=
+name|finalState
+expr_stmt|;
+block|}
 DECL|method|getNodesOnWhichAttemptRan (RMAppImpl app)
 specifier|private
 name|Set
@@ -5772,8 +5818,6 @@ name|APP_COMPLETED
 argument_list|)
 argument_list|)
 expr_stmt|;
-comment|// TODO: We need to fix for the problem that RMApp enters the final state
-comment|// after RMAppAttempt in the killing case
 name|app
 operator|.
 name|rmContext
@@ -5784,6 +5828,8 @@ operator|.
 name|applicationFinished
 argument_list|(
 name|app
+argument_list|,
+name|finalState
 argument_list|)
 expr_stmt|;
 block|}
