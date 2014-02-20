@@ -2081,6 +2081,26 @@ operator|.
 name|toStringUtf8
 argument_list|()
 argument_list|)
+operator|.
+name|o
+argument_list|(
+literal|"mtime"
+argument_list|,
+name|s
+operator|.
+name|getModificationTime
+argument_list|()
+argument_list|)
+operator|.
+name|o
+argument_list|(
+literal|"atime"
+argument_list|,
+name|s
+operator|.
+name|getAccessTime
+argument_list|()
+argument_list|)
 expr_stmt|;
 block|}
 DECL|method|dumpNameSection (InputStream in)
