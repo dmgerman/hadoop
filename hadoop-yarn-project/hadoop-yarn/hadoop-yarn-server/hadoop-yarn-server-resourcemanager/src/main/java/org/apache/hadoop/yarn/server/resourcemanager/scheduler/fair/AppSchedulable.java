@@ -1059,16 +1059,13 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Assign a container to this node to facilitate {@code request}. If node does    * not have enough memory, create a reservation. This is called once we are    * sure the particular request should be facilitated by this node.    */
-DECL|method|assignContainer (FSSchedulerNode node, Priority priority, ResourceRequest request, NodeType type, boolean reserved)
+DECL|method|assignContainer (FSSchedulerNode node, ResourceRequest request, NodeType type, boolean reserved)
 specifier|private
 name|Resource
 name|assignContainer
 parameter_list|(
 name|FSSchedulerNode
 name|node
-parameter_list|,
-name|Priority
-name|priority
 parameter_list|,
 name|ResourceRequest
 name|request
@@ -1131,7 +1128,10 @@ name|node
 argument_list|,
 name|capability
 argument_list|,
-name|priority
+name|request
+operator|.
+name|getPriority
+argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
@@ -1160,7 +1160,10 @@ name|type
 argument_list|,
 name|node
 argument_list|,
-name|priority
+name|request
+operator|.
+name|getPriority
+argument_list|()
 argument_list|,
 name|request
 argument_list|,
@@ -1182,7 +1185,10 @@ condition|)
 block|{
 name|unreserve
 argument_list|(
-name|priority
+name|request
+operator|.
+name|getPriority
+argument_list|()
 argument_list|,
 name|node
 argument_list|)
@@ -1203,7 +1209,10 @@ condition|)
 block|{
 name|unreserve
 argument_list|(
-name|priority
+name|request
+operator|.
+name|getPriority
+argument_list|()
 argument_list|,
 name|node
 argument_list|)
@@ -1234,7 +1243,10 @@ block|{
 comment|// The desired container won't fit here, so reserve
 name|reserve
 argument_list|(
-name|priority
+name|request
+operator|.
+name|getPriority
+argument_list|()
 argument_list|,
 name|node
 argument_list|,
@@ -1556,8 +1568,6 @@ name|assignContainer
 argument_list|(
 name|node
 argument_list|,
-name|priority
-argument_list|,
 name|localRequest
 argument_list|,
 name|NodeType
@@ -1621,8 +1631,6 @@ return|return
 name|assignContainer
 argument_list|(
 name|node
-argument_list|,
-name|priority
 argument_list|,
 name|rackLocalRequest
 argument_list|,
@@ -1690,8 +1698,6 @@ return|return
 name|assignContainer
 argument_list|(
 name|node
-argument_list|,
-name|priority
 argument_list|,
 name|offSwitchRequest
 argument_list|,
