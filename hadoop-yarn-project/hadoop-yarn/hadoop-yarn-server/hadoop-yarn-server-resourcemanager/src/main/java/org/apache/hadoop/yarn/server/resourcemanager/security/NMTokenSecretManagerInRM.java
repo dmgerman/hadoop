@@ -28,16 +28,6 @@ name|java
 operator|.
 name|util
 operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
 name|HashSet
 import|;
 end_import
@@ -49,16 +39,6 @@ operator|.
 name|util
 operator|.
 name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
 import|;
 end_import
 
@@ -873,13 +853,10 @@ argument_list|()
 expr_stmt|;
 block|}
 block|}
-DECL|method|createAndGetNMTokens (String applicationSubmitter, ApplicationAttemptId appAttemptId, List<Container> containers)
+DECL|method|createAndGetNMToken (String applicationSubmitter, ApplicationAttemptId appAttemptId, Container container)
 specifier|public
-name|List
-argument_list|<
 name|NMToken
-argument_list|>
-name|createAndGetNMTokens
+name|createAndGetNMToken
 parameter_list|(
 name|String
 name|applicationSubmitter
@@ -887,11 +864,8 @@ parameter_list|,
 name|ApplicationAttemptId
 name|appAttemptId
 parameter_list|,
-name|List
-argument_list|<
 name|Container
-argument_list|>
-name|containers
+name|container
 parameter_list|)
 block|{
 try|try
@@ -903,19 +877,6 @@ operator|.
 name|lock
 argument_list|()
 expr_stmt|;
-name|List
-argument_list|<
-name|NMToken
-argument_list|>
-name|nmTokens
-init|=
-operator|new
-name|ArrayList
-argument_list|<
-name|NMToken
-argument_list|>
-argument_list|()
-decl_stmt|;
 name|HashSet
 argument_list|<
 name|NodeId
@@ -931,20 +892,17 @@ argument_list|(
 name|appAttemptId
 argument_list|)
 decl_stmt|;
+name|NMToken
+name|nmToken
+init|=
+literal|null
+decl_stmt|;
 if|if
 condition|(
 name|nodeSet
 operator|!=
 literal|null
 condition|)
-block|{
-for|for
-control|(
-name|Container
-name|container
-range|:
-name|containers
-control|)
 block|{
 if|if
 condition|(
@@ -958,6 +916,14 @@ operator|.
 name|getNodeId
 argument_list|()
 argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
 condition|)
 block|{
 name|LOG
@@ -982,12 +948,19 @@ name|toString
 argument_list|()
 argument_list|)
 expr_stmt|;
+block|}
 name|Token
 name|token
 init|=
 name|createNMToken
 argument_list|(
-name|appAttemptId
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|.
+name|getApplicationAttemptId
+argument_list|()
 argument_list|,
 name|container
 operator|.
@@ -997,9 +970,8 @@ argument_list|,
 name|applicationSubmitter
 argument_list|)
 decl_stmt|;
-name|NMToken
 name|nmToken
-init|=
+operator|=
 name|NMToken
 operator|.
 name|newInstance
@@ -1011,15 +983,24 @@ argument_list|()
 argument_list|,
 name|token
 argument_list|)
-decl_stmt|;
-name|nmTokens
-operator|.
-name|add
-argument_list|(
-name|nmToken
-argument_list|)
 expr_stmt|;
-comment|// This will update the nmToken set.
+comment|// The node set here is used for differentiating whether the NMToken
+comment|// has been issued for this node from the client's perspective. If
+comment|// this is an AM container, the NMToken is issued only for RM and so
+comment|// we should not update the node set.
+if|if
+condition|(
+name|container
+operator|.
+name|getId
+argument_list|()
+operator|.
+name|getId
+argument_list|()
+operator|!=
+literal|1
+condition|)
+block|{
 name|nodeSet
 operator|.
 name|add
@@ -1034,7 +1015,7 @@ block|}
 block|}
 block|}
 return|return
-name|nmTokens
+name|nmToken
 return|;
 block|}
 finally|finally

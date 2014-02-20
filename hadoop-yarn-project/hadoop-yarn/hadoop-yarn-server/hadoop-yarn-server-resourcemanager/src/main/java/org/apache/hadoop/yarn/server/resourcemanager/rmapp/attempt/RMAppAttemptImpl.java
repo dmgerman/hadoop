@@ -984,6 +984,30 @@ name|attempt
 operator|.
 name|event
 operator|.
+name|RMAppAttemptContainerAllocatedEvent
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|resourcemanager
+operator|.
+name|rmapp
+operator|.
+name|attempt
+operator|.
+name|event
+operator|.
 name|RMAppAttemptContainerFinishedEvent
 import|;
 end_import
@@ -1909,9 +1933,18 @@ name|RMAppAttemptState
 operator|.
 name|SCHEDULED
 argument_list|,
+name|EnumSet
+operator|.
+name|of
+argument_list|(
 name|RMAppAttemptState
 operator|.
 name|ALLOCATED_SAVING
+argument_list|,
+name|RMAppAttemptState
+operator|.
+name|SCHEDULED
+argument_list|)
 argument_list|,
 name|RMAppAttemptEventType
 operator|.
@@ -4649,14 +4682,21 @@ specifier|static
 specifier|final
 class|class
 name|AMContainerAllocatedTransition
-extends|extends
-name|BaseTransition
+implements|implements
+name|MultipleArcTransition
+argument_list|<
+name|RMAppAttemptImpl
+argument_list|,
+name|RMAppAttemptEvent
+argument_list|,
+name|RMAppAttemptState
+argument_list|>
 block|{
 annotation|@
 name|Override
 DECL|method|transition (RMAppAttemptImpl appAttempt, RMAppAttemptEvent event)
 specifier|public
-name|void
+name|RMAppAttemptState
 name|transition
 parameter_list|(
 name|RMAppAttemptImpl
@@ -4691,9 +4731,14 @@ argument_list|)
 decl_stmt|;
 comment|// There must be at least one container allocated, because a
 comment|// CONTAINER_ALLOCATED is emitted after an RMContainer is constructed,
-comment|// and is put in SchedulerApplication#newlyAllocatedContainers. Then,
-comment|// YarnScheduler#allocate will fetch it.
-assert|assert
+comment|// and is put in SchedulerApplication#newlyAllocatedContainers.
+comment|// Note that YarnScheduler#allocate is not guaranteed to be able to
+comment|// fetch it since container may not be fetchable for some reason like
+comment|// DNS unavailable causing container token not generated. As such, we
+comment|// return to the previous state and keep retry until am container is
+comment|// fetched.
+if|if
+condition|(
 name|amContainerAllocation
 operator|.
 name|getContainers
@@ -4701,9 +4746,23 @@ argument_list|()
 operator|.
 name|size
 argument_list|()
-operator|!=
+operator|==
 literal|0
-assert|;
+condition|)
+block|{
+name|appAttempt
+operator|.
+name|retryFetchingAMContainer
+argument_list|(
+name|appAttempt
+argument_list|)
+expr_stmt|;
+return|return
+name|RMAppAttemptState
+operator|.
+name|SCHEDULED
+return|;
+block|}
 comment|// Set the masterContainer
 name|appAttempt
 operator|.
@@ -4741,7 +4800,82 @@ operator|.
 name|storeAttempt
 argument_list|()
 expr_stmt|;
+return|return
+name|RMAppAttemptState
+operator|.
+name|ALLOCATED_SAVING
+return|;
 block|}
+block|}
+DECL|method|retryFetchingAMContainer (final RMAppAttemptImpl appAttempt)
+specifier|private
+name|void
+name|retryFetchingAMContainer
+parameter_list|(
+specifier|final
+name|RMAppAttemptImpl
+name|appAttempt
+parameter_list|)
+block|{
+comment|// start a new thread so that we are not blocking main dispatcher thread.
+operator|new
+name|Thread
+argument_list|()
+block|{
+annotation|@
+name|Override
+specifier|public
+name|void
+name|run
+parameter_list|()
+block|{
+try|try
+block|{
+name|Thread
+operator|.
+name|sleep
+argument_list|(
+literal|500
+argument_list|)
+expr_stmt|;
+block|}
+catch|catch
+parameter_list|(
+name|InterruptedException
+name|e
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Interrupted while waiting to resend the"
+operator|+
+literal|" ContainerAllocated Event."
+argument_list|)
+expr_stmt|;
+block|}
+name|appAttempt
+operator|.
+name|eventHandler
+operator|.
+name|handle
+argument_list|(
+operator|new
+name|RMAppAttemptContainerAllocatedEvent
+argument_list|(
+name|appAttempt
+operator|.
+name|applicationAttemptId
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+operator|.
+name|start
+argument_list|()
+expr_stmt|;
 block|}
 DECL|class|AttemptStoredTransition
 specifier|private

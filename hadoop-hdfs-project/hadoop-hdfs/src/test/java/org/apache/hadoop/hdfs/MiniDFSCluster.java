@@ -1592,6 +1592,12 @@ name|checkDataNodeHostConfig
 init|=
 literal|false
 decl_stmt|;
+DECL|field|dnConfOverlays
+specifier|private
+name|Configuration
+index|[]
+name|dnConfOverlays
+decl_stmt|;
 DECL|method|Builder (Configuration conf)
 specifier|public
 name|Builder
@@ -2030,6 +2036,27 @@ return|return
 name|this
 return|;
 block|}
+comment|/**      * Default: null      *       * An array of {@link Configuration} objects that will overlay the      * global MiniDFSCluster Configuration for the corresponding DataNode.      *       * Useful for setting specific per-DataNode configuration parameters.      */
+DECL|method|dataNodeConfOverlays (Configuration[] dnConfOverlays)
+specifier|public
+name|Builder
+name|dataNodeConfOverlays
+parameter_list|(
+name|Configuration
+index|[]
+name|dnConfOverlays
+parameter_list|)
+block|{
+name|this
+operator|.
+name|dnConfOverlays
+operator|=
+name|dnConfOverlays
+expr_stmt|;
+return|return
+name|this
+return|;
+block|}
 comment|/**      * Construct the actual MiniDFSCluster      */
 DECL|method|build ()
 specifier|public
@@ -2202,6 +2229,10 @@ argument_list|,
 name|builder
 operator|.
 name|checkDataNodeHostConfig
+argument_list|,
+name|builder
+operator|.
+name|dnConfOverlays
 argument_list|)
 expr_stmt|;
 block|}
@@ -2853,10 +2884,12 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, StorageType storageType, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption startOpt, StartupOption dnStartOpt, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology, boolean checkExitOnShutdown, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
+DECL|method|initMiniDFSCluster ( Configuration conf, int numDataNodes, StorageType storageType, boolean format, boolean manageNameDfsDirs, boolean manageNameDfsSharedDirs, boolean enableManagedDfsDirsRedundancy, boolean manageDataDfsDirs, StartupOption startOpt, StartupOption dnStartOpt, String[] racks, String[] hosts, long[] simulatedCapacities, String clusterId, boolean waitSafeMode, boolean setupHostsFile, MiniDFSNNTopology nnTopology, boolean checkExitOnShutdown, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays)
 specifier|private
 name|void
 name|initMiniDFSCluster
@@ -2923,6 +2956,10 @@ name|checkDataNodeAddrConfig
 parameter_list|,
 name|boolean
 name|checkDataNodeHostConfig
+parameter_list|,
+name|Configuration
+index|[]
+name|dnConfOverlays
 parameter_list|)
 throws|throws
 name|IOException
@@ -3255,6 +3292,8 @@ argument_list|,
 name|checkDataNodeAddrConfig
 argument_list|,
 name|checkDataNodeHostConfig
+argument_list|,
+name|dnConfOverlays
 argument_list|)
 expr_stmt|;
 name|waitClusterUp
@@ -5277,6 +5316,8 @@ argument_list|,
 literal|false
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
@@ -5345,11 +5386,13 @@ argument_list|,
 name|checkDataNodeAddrConfig
 argument_list|,
 literal|false
+argument_list|,
+literal|null
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link #DFS_DATANODE_DATA_DIR_KEY} will be     *          set in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    * @param setupHostsFile add new nodes to dfs hosts files    * @param checkDataNodeAddrConfig if true, only set DataNode port addresses if not already set in config    * @param checkDataNodeHostConfig if true, only set DataNode hostname key if not already set in config    *    * @throws IllegalStateException if NameNode has been shutdown    */
-DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
+comment|/**    * Modify the config and start up additional DataNodes.  The info port for    * DataNodes is guaranteed to use a free port.    *      *  Data nodes can run with the name node in the mini cluster or    *  a real name node. For example, running with a real name node is useful    *  when running simulated data nodes with a real name node.    *  If minicluster's name node is null assume that the conf has been    *  set with the right address:port of the name node.    *    * @param conf the base configuration to use in starting the DataNodes.  This    *          will be modified as necessary.    * @param numDataNodes Number of DataNodes to start; may be zero    * @param manageDfsDirs if true, the data directories for DataNodes will be    *          created and {@link #DFS_DATANODE_DATA_DIR_KEY} will be     *          set in the conf    * @param operation the operation with which to start the DataNodes.  If null    *          or StartupOption.FORMAT, then StartupOption.REGULAR will be used.    * @param racks array of strings indicating the rack that each DataNode is on    * @param hosts array of strings indicating the hostnames for each DataNode    * @param simulatedCapacities array of capacities of the simulated data nodes    * @param setupHostsFile add new nodes to dfs hosts files    * @param checkDataNodeAddrConfig if true, only set DataNode port addresses if not already set in config    * @param checkDataNodeHostConfig if true, only set DataNode hostname key if not already set in config    * @param dnConfOverlays An array of {@link Configuration} objects that will overlay the    *              global MiniDFSCluster Configuration for the corresponding DataNode.    * @throws IllegalStateException if NameNode has been shutdown    */
+DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays)
 specifier|public
 specifier|synchronized
 name|void
@@ -5390,6 +5433,10 @@ name|checkDataNodeAddrConfig
 parameter_list|,
 name|boolean
 name|checkDataNodeHostConfig
+parameter_list|,
+name|Configuration
+index|[]
+name|dnConfOverlays
 parameter_list|)
 throws|throws
 name|IOException
@@ -5611,6 +5658,37 @@ literal|"]."
 argument_list|)
 throw|;
 block|}
+if|if
+condition|(
+name|dnConfOverlays
+operator|!=
+literal|null
+operator|&&
+name|numDataNodes
+operator|>
+name|dnConfOverlays
+operator|.
+name|length
+condition|)
+block|{
+throw|throw
+operator|new
+name|IllegalArgumentException
+argument_list|(
+literal|"The length of dnConfOverlays ["
+operator|+
+name|dnConfOverlays
+operator|.
+name|length
+operator|+
+literal|"] is less than the number of datanodes ["
+operator|+
+name|numDataNodes
+operator|+
+literal|"]."
+argument_list|)
+throw|;
+block|}
 name|String
 index|[]
 name|dnArgs
@@ -5665,6 +5743,24 @@ argument_list|(
 name|conf
 argument_list|)
 decl_stmt|;
+if|if
+condition|(
+name|dnConfOverlays
+operator|!=
+literal|null
+condition|)
+block|{
+name|dnConf
+operator|.
+name|addResource
+argument_list|(
+name|dnConfOverlays
+index|[
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+block|}
 comment|// Set up datanode address
 name|setupDatanodeAddress
 argument_list|(
@@ -9095,8 +9191,8 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * This method is valid only if the data nodes have simulated data    * @param dataNodeIndex - data node i which to inject - the index is same as for getDataNodes()    * @param blocksToInject - the blocks    * @throws IOException    *              if not simulatedFSDataset    *             if any of blocks already exist in the data node    *       */
-DECL|method|injectBlocks (int dataNodeIndex, Iterable<Block> blocksToInject)
+comment|/**    * This method is valid only if the data nodes have simulated data    * @param dataNodeIndex - data node i which to inject - the index is same as for getDataNodes()    * @param blocksToInject - the blocks    * @param bpid - (optional) the block pool id to use for injecting blocks.    *             If not supplied then it is queried from the in-process NameNode.    * @throws IOException    *              if not simulatedFSDataset    *             if any of blocks already exist in the data node    *       */
+DECL|method|injectBlocks (int dataNodeIndex, Iterable<Block> blocksToInject, String bpid)
 specifier|public
 name|void
 name|injectBlocks
@@ -9109,6 +9205,9 @@ argument_list|<
 name|Block
 argument_list|>
 name|blocksToInject
+parameter_list|,
+name|String
+name|bpid
 parameter_list|)
 throws|throws
 name|IOException
@@ -9178,15 +9277,22 @@ literal|"injectBlocks is valid only for SimilatedFSDataset"
 argument_list|)
 throw|;
 block|}
-name|String
+if|if
+condition|(
 name|bpid
-init|=
+operator|==
+literal|null
+condition|)
+block|{
+name|bpid
+operator|=
 name|getNamesystem
 argument_list|()
 operator|.
 name|getBlockPoolId
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 name|SimulatedFSDataset
 name|sdataset
 init|=
@@ -9348,69 +9454,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method is valid only if the data nodes have simulated data    * @param blocksToInject - blocksToInject[] is indexed in the same order as the list     *             of datanodes returned by getDataNodes()    * @throws IOException    *             if not simulatedFSDataset    *             if any of blocks already exist in the data nodes    *             Note the rest of the blocks are not injected.    */
-DECL|method|injectBlocks (Iterable<Block>[] blocksToInject)
-specifier|public
-name|void
-name|injectBlocks
-parameter_list|(
-name|Iterable
-argument_list|<
-name|Block
-argument_list|>
-index|[]
-name|blocksToInject
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|blocksToInject
-operator|.
-name|length
-operator|>
-name|dataNodes
-operator|.
-name|size
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IndexOutOfBoundsException
-argument_list|()
-throw|;
-block|}
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|blocksToInject
-operator|.
-name|length
-condition|;
-operator|++
-name|i
-control|)
-block|{
-name|injectBlocks
-argument_list|(
-name|i
-argument_list|,
-name|blocksToInject
-index|[
-name|i
-index|]
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Set the softLimit and hardLimit of client lease periods    */
 DECL|method|setLeasePeriod (long soft, long hard)
 specifier|public
@@ -9561,6 +9604,14 @@ name|String
 name|determineDfsBaseDir
 parameter_list|()
 block|{
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
+specifier|final
 name|String
 name|dfsdir
 init|=
@@ -9576,18 +9627,18 @@ decl_stmt|;
 if|if
 condition|(
 name|dfsdir
-operator|==
+operator|!=
 literal|null
 condition|)
 block|{
-name|dfsdir
-operator|=
-name|getBaseDirectory
-argument_list|()
-expr_stmt|;
-block|}
 return|return
 name|dfsdir
+return|;
+block|}
+block|}
+return|return
+name|getBaseDirectory
+argument_list|()
 return|;
 block|}
 comment|/**    * Get the base directory for any DFS cluster whose configuration does    * not explicitly set it. This is done by retrieving the system property    * {@link #PROP_TEST_BUILD_DATA} (defaulting to "build/test/data" ),    * and returning that directory with a subdir of /dfs.    * @return a directory for use as a miniDFS filesystem.    */

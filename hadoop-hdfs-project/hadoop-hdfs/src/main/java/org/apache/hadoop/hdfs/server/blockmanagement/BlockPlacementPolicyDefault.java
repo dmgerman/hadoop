@@ -2888,7 +2888,7 @@ argument_list|()
 operator|==
 name|State
 operator|.
-name|READ_ONLY
+name|READ_ONLY_SHARED
 condition|)
 block|{
 name|logNodeIsNotChosen

@@ -1367,7 +1367,7 @@ block|}
 comment|// This is for initialize from parent class.
 annotation|@
 name|Override
-DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig)
+DECL|method|startDataNodes (Configuration conf, int numDataNodes, StorageType storageType, boolean manageDfsDirs, StartupOption operation, String[] racks, String[] hosts, long[] simulatedCapacities, boolean setupHostsFile, boolean checkDataNodeAddrConfig, boolean checkDataNodeHostConfig, Configuration[] dnConfOverlays)
 specifier|public
 specifier|synchronized
 name|void
@@ -1408,6 +1408,10 @@ name|checkDataNodeAddrConfig
 parameter_list|,
 name|boolean
 name|checkDataNodeHostConfig
+parameter_list|,
+name|Configuration
+index|[]
+name|dnConfOverlays
 parameter_list|)
 throws|throws
 name|IOException

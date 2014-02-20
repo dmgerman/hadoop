@@ -2904,6 +2904,29 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+comment|/**    * Add a configuration resource.    *    * The properties of this resource will override properties of previously    * added resources, unless they were marked<a href="#Final">final</a>.    *    * @param conf Configuration object from which to load properties    */
+DECL|method|addResource (Configuration conf)
+specifier|public
+name|void
+name|addResource
+parameter_list|(
+name|Configuration
+name|conf
+parameter_list|)
+block|{
+name|addResourceObject
+argument_list|(
+operator|new
+name|Resource
+argument_list|(
+name|conf
+operator|.
+name|getProps
+argument_list|()
+argument_list|)
+argument_list|)
+expr_stmt|;
+block|}
 comment|/**    * Reload configuration from previously added resources.    *    * This method will clear all the configuration read from the added     * resources, and final parameters. This will make the resources to     * be read again before accessing the values. Values that are added    * via set methods will overlay values read from the resources.    */
 DECL|method|reloadConfiguration ()
 specifier|public

@@ -842,6 +842,26 @@ name|server
 operator|.
 name|protocol
 operator|.
+name|DatanodeStorage
+operator|.
+name|State
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|hdfs
+operator|.
+name|server
+operator|.
+name|protocol
+operator|.
 name|KeyUpdateCommand
 import|;
 end_import
@@ -2691,12 +2711,14 @@ operator|.
 name|LEVEL
 argument_list|)
 expr_stmt|;
+comment|// containingLiveReplicasNodes can include READ_ONLY_SHARED replicas which are
+comment|// not included in the numReplicas.liveReplicas() count
 assert|assert
 name|containingLiveReplicasNodes
 operator|.
 name|size
 argument_list|()
-operator|==
+operator|>=
 name|numReplicas
 operator|.
 name|liveReplicas
@@ -5366,6 +5388,10 @@ operator|.
 name|getStorages
 argument_list|(
 name|b
+argument_list|,
+name|State
+operator|.
+name|NORMAL
 argument_list|)
 control|)
 block|{
@@ -6320,12 +6346,14 @@ argument_list|)
 expr_stmt|;
 continue|continue;
 block|}
+comment|// liveReplicaNodes can include READ_ONLY_SHARED replicas which are
+comment|// not included in the numReplicas.liveReplicas() count
 assert|assert
 name|liveReplicaNodes
 operator|.
 name|size
 argument_list|()
-operator|==
+operator|>=
 name|numReplicas
 operator|.
 name|liveReplicas
@@ -7357,6 +7385,22 @@ name|getDatanodeUuid
 argument_list|()
 argument_list|)
 decl_stmt|;
+name|int
+name|countableReplica
+init|=
+name|storage
+operator|.
+name|getState
+argument_list|()
+operator|==
+name|State
+operator|.
+name|NORMAL
+condition|?
+literal|1
+else|:
+literal|0
+decl_stmt|;
 if|if
 condition|(
 operator|(
@@ -7375,7 +7419,8 @@ argument_list|)
 operator|)
 condition|)
 name|corrupt
-operator|++
+operator|+=
+name|countableReplica
 expr_stmt|;
 elseif|else
 if|if
@@ -7391,7 +7436,8 @@ name|isDecommissioned
 argument_list|()
 condition|)
 name|decommissioned
-operator|++
+operator|+=
+name|countableReplica
 expr_stmt|;
 elseif|else
 if|if
@@ -7409,7 +7455,8 @@ argument_list|)
 condition|)
 block|{
 name|excess
-operator|++
+operator|+=
+name|countableReplica
 expr_stmt|;
 block|}
 else|else
@@ -7422,7 +7469,8 @@ name|storage
 argument_list|)
 expr_stmt|;
 name|live
-operator|++
+operator|+=
+name|countableReplica
 expr_stmt|;
 block|}
 name|containingNodes
@@ -9152,9 +9200,9 @@ name|curIndex
 operator|=
 name|storedBlock
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storageInfo
 argument_list|)
 operator|)
 operator|>=
@@ -11959,6 +12007,10 @@ operator|.
 name|getStorages
 argument_list|(
 name|block
+argument_list|,
+name|State
+operator|.
+name|NORMAL
 argument_list|)
 control|)
 block|{
@@ -13522,6 +13574,10 @@ operator|.
 name|getStorages
 argument_list|(
 name|b
+argument_list|,
+name|State
+operator|.
+name|NORMAL
 argument_list|)
 control|)
 block|{
@@ -13703,6 +13759,10 @@ operator|.
 name|getStorages
 argument_list|(
 name|b
+argument_list|,
+name|State
+operator|.
+name|NORMAL
 argument_list|)
 control|)
 block|{

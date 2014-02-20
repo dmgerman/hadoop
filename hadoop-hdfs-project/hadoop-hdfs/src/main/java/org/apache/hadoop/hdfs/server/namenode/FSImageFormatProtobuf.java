@@ -1651,7 +1651,7 @@ name|LOG
 operator|.
 name|warn
 argument_list|(
-literal|"Unregconized section "
+literal|"Unrecognized section "
 operator|+
 name|n
 argument_list|)

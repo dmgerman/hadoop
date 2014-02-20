@@ -619,7 +619,7 @@ name|isTerminal
 parameter_list|()
 block|{
 return|return
-name|create
+literal|false
 return|;
 block|}
 block|}
@@ -758,7 +758,7 @@ name|isTerminal
 parameter_list|()
 block|{
 return|return
-name|create
+literal|true
 return|;
 block|}
 block|}
