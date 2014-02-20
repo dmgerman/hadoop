@@ -4590,7 +4590,7 @@ argument_list|()
 expr_stmt|;
 block|}
 DECL|method|discardSegments (long startTxId)
-specifier|public
+specifier|synchronized
 name|void
 name|discardSegments
 parameter_list|(
