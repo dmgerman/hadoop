@@ -9105,8 +9105,8 @@ return|return
 name|result
 return|;
 block|}
-comment|/**    * This method is valid only if the data nodes have simulated data    * @param dataNodeIndex - data node i which to inject - the index is same as for getDataNodes()    * @param blocksToInject - the blocks    * @throws IOException    *              if not simulatedFSDataset    *             if any of blocks already exist in the data node    *       */
-DECL|method|injectBlocks (int dataNodeIndex, Iterable<Block> blocksToInject)
+comment|/**    * This method is valid only if the data nodes have simulated data    * @param dataNodeIndex - data node i which to inject - the index is same as for getDataNodes()    * @param blocksToInject - the blocks    * @param bpid - (optional) the block pool id to use for injecting blocks.    *             If not supplied then it is queried from the in-process NameNode.    * @throws IOException    *              if not simulatedFSDataset    *             if any of blocks already exist in the data node    *       */
+DECL|method|injectBlocks (int dataNodeIndex, Iterable<Block> blocksToInject, String bpid)
 specifier|public
 name|void
 name|injectBlocks
@@ -9119,6 +9119,9 @@ argument_list|<
 name|Block
 argument_list|>
 name|blocksToInject
+parameter_list|,
+name|String
+name|bpid
 parameter_list|)
 throws|throws
 name|IOException
@@ -9188,15 +9191,22 @@ literal|"injectBlocks is valid only for SimilatedFSDataset"
 argument_list|)
 throw|;
 block|}
-name|String
+if|if
+condition|(
 name|bpid
-init|=
+operator|==
+literal|null
+condition|)
+block|{
+name|bpid
+operator|=
 name|getNamesystem
 argument_list|()
 operator|.
 name|getBlockPoolId
 argument_list|()
-decl_stmt|;
+expr_stmt|;
+block|}
 name|SimulatedFSDataset
 name|sdataset
 init|=
@@ -9358,69 +9368,6 @@ literal|0
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * This method is valid only if the data nodes have simulated data    * @param blocksToInject - blocksToInject[] is indexed in the same order as the list     *             of datanodes returned by getDataNodes()    * @throws IOException    *             if not simulatedFSDataset    *             if any of blocks already exist in the data nodes    *             Note the rest of the blocks are not injected.    */
-DECL|method|injectBlocks (Iterable<Block>[] blocksToInject)
-specifier|public
-name|void
-name|injectBlocks
-parameter_list|(
-name|Iterable
-argument_list|<
-name|Block
-argument_list|>
-index|[]
-name|blocksToInject
-parameter_list|)
-throws|throws
-name|IOException
-block|{
-if|if
-condition|(
-name|blocksToInject
-operator|.
-name|length
-operator|>
-name|dataNodes
-operator|.
-name|size
-argument_list|()
-condition|)
-block|{
-throw|throw
-operator|new
-name|IndexOutOfBoundsException
-argument_list|()
-throw|;
-block|}
-for|for
-control|(
-name|int
-name|i
-init|=
-literal|0
-init|;
-name|i
-operator|<
-name|blocksToInject
-operator|.
-name|length
-condition|;
-operator|++
-name|i
-control|)
-block|{
-name|injectBlocks
-argument_list|(
-name|i
-argument_list|,
-name|blocksToInject
-index|[
-name|i
-index|]
-argument_list|)
-expr_stmt|;
-block|}
-block|}
 comment|/**    * Set the softLimit and hardLimit of client lease periods    */
 DECL|method|setLeasePeriod (long soft, long hard)
 specifier|public
@@ -9571,6 +9518,14 @@ name|String
 name|determineDfsBaseDir
 parameter_list|()
 block|{
+if|if
+condition|(
+name|conf
+operator|!=
+literal|null
+condition|)
+block|{
+specifier|final
 name|String
 name|dfsdir
 init|=
@@ -9586,18 +9541,18 @@ decl_stmt|;
 if|if
 condition|(
 name|dfsdir
-operator|==
+operator|!=
 literal|null
 condition|)
 block|{
-name|dfsdir
-operator|=
-name|getBaseDirectory
-argument_list|()
-expr_stmt|;
-block|}
 return|return
 name|dfsdir
+return|;
+block|}
+block|}
+return|return
+name|getBaseDirectory
+argument_list|()
 return|;
 block|}
 comment|/**    * Get the base directory for any DFS cluster whose configuration does    * not explicitly set it. This is done by retrieving the system property    * {@link #PROP_TEST_BUILD_DATA} (defaulting to "build/test/data" ),    * and returning that directory with a subdir of /dfs.    * @return a directory for use as a miniDFS filesystem.    */

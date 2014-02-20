@@ -1033,6 +1033,18 @@ operator|.
 name|newNamespaceInfo
 argument_list|()
 decl_stmt|;
+name|LOG
+operator|.
+name|info
+argument_list|(
+literal|"Allocated new BlockPoolId: "
+operator|+
+name|ns
+operator|.
+name|getBlockPoolID
+argument_list|()
+argument_list|)
+expr_stmt|;
 name|ns
 operator|.
 name|clusterID

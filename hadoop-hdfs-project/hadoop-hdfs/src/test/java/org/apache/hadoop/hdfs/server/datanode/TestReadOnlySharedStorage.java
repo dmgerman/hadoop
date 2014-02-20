@@ -926,6 +926,8 @@ name|cluster
 operator|.
 name|injectBlocks
 argument_list|(
+literal|0
+argument_list|,
 name|RO_NODE_INDEX
 argument_list|,
 name|Collections

@@ -186,7 +186,7 @@ name|GenerationStamp
 operator|.
 name|LAST_RESERVED_STAMP
 decl_stmt|;
-DECL|method|addFiles (FSEditLog editLog, int numFiles, short replication, int blocksPerFile, long startingBlockId, FileNameGenerator nameGenerator)
+DECL|method|addFiles (FSEditLog editLog, int numFiles, short replication, int blocksPerFile, long startingBlockId, long blockSize, FileNameGenerator nameGenerator)
 specifier|static
 name|void
 name|addFiles
@@ -205,6 +205,9 @@ name|blocksPerFile
 parameter_list|,
 name|long
 name|startingBlockId
+parameter_list|,
+name|long
+name|blockSize
 parameter_list|,
 name|FileNameGenerator
 name|nameGenerator
@@ -264,11 +267,6 @@ argument_list|,
 name|dirInode
 argument_list|)
 expr_stmt|;
-name|long
-name|blockSize
-init|=
-literal|10
-decl_stmt|;
 name|BlockInfo
 index|[]
 name|blocks
@@ -731,6 +729,11 @@ name|numBlocksPerFile
 init|=
 literal|0
 decl_stmt|;
+name|long
+name|blockSize
+init|=
+literal|10
+decl_stmt|;
 if|if
 condition|(
 name|args
@@ -910,6 +913,51 @@ index|]
 operator|.
 name|equals
 argument_list|(
+literal|"-l"
+argument_list|)
+condition|)
+block|{
+if|if
+condition|(
+name|i
+operator|+
+literal|1
+operator|>=
+name|args
+operator|.
+name|length
+condition|)
+block|{
+name|printUsageExit
+argument_list|(
+literal|"Missing block length"
+argument_list|)
+expr_stmt|;
+block|}
+name|blockSize
+operator|=
+name|Long
+operator|.
+name|parseLong
+argument_list|(
+name|args
+index|[
+operator|++
+name|i
+index|]
+argument_list|)
+expr_stmt|;
+block|}
+elseif|else
+if|if
+condition|(
+name|args
+index|[
+name|i
+index|]
+operator|.
+name|equals
+argument_list|(
 literal|"-r"
 argument_list|)
 operator|||
@@ -939,7 +987,7 @@ condition|)
 block|{
 name|printUsageExit
 argument_list|(
-literal|"Missing num files, starting block and/or number of blocks"
+literal|"Missing replication factor"
 argument_list|)
 expr_stmt|;
 block|}
@@ -1155,6 +1203,8 @@ argument_list|,
 name|numBlocksPerFile
 argument_list|,
 name|startingBlockId
+argument_list|,
+name|blockSize
 argument_list|,
 name|nameGenerator
 argument_list|)
