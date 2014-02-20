@@ -1582,7 +1582,11 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|// Restart should succeed!
-comment|//      cluster.restartNameNode();
+name|cluster
+operator|.
+name|restartNameNode
+argument_list|()
+expr_stmt|;
 name|cluster
 operator|.
 name|restartNameNode

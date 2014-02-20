@@ -3217,6 +3217,12 @@ name|txnsAdvanced
 init|=
 literal|0
 decl_stmt|;
+if|if
+condition|(
+operator|!
+name|rollingRollback
+condition|)
+block|{
 name|loadEdits
 argument_list|(
 name|editStreams
@@ -3228,18 +3234,28 @@ argument_list|,
 name|recovery
 argument_list|)
 expr_stmt|;
-if|if
-condition|(
-name|rollingRollback
-condition|)
+name|needToSave
+operator||=
+name|needsResaveBasedOnStaleCheckpoint
+argument_list|(
+name|imageFile
+operator|.
+name|getFile
+argument_list|()
+argument_list|,
+name|txnsAdvanced
+argument_list|)
+expr_stmt|;
+block|}
+else|else
 block|{
-comment|// Trigger the rollback for rolling upgrade.
-comment|// Here lastAppliedTxId == (markerTxId - 1), and we should decrease 1 from
-comment|// lastAppliedTxId for the start-segment transaction.
+comment|// Trigger the rollback for rolling upgrade. Here lastAppliedTxId equals
+comment|// to the last txid in rollback fsimage.
 name|rollingRollback
 argument_list|(
 name|lastAppliedTxId
-operator|--
+operator|+
+literal|1
 argument_list|,
 name|imageFiles
 operator|.
@@ -3255,21 +3271,6 @@ expr_stmt|;
 name|needToSave
 operator|=
 literal|false
-expr_stmt|;
-block|}
-else|else
-block|{
-name|needToSave
-operator||=
-name|needsResaveBasedOnStaleCheckpoint
-argument_list|(
-name|imageFile
-operator|.
-name|getFile
-argument_list|()
-argument_list|,
-name|txnsAdvanced
-argument_list|)
 expr_stmt|;
 block|}
 name|editLog
@@ -3951,16 +3952,6 @@ name|getLastAppliedTxId
 argument_list|()
 expr_stmt|;
 block|}
-name|boolean
-name|rollingRollback
-init|=
-name|StartupOption
-operator|.
-name|isRollingUpgradeRollback
-argument_list|(
-name|startOpt
-argument_list|)
-decl_stmt|;
 comment|// If we are in recovery mode, we may have skipped over some txids.
 if|if
 condition|(
@@ -3972,9 +3963,6 @@ operator|!=
 name|HdfsConstants
 operator|.
 name|INVALID_TXID
-operator|&&
-operator|!
-name|rollingRollback
 condition|)
 block|{
 name|lastAppliedTxId
