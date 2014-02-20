@@ -932,24 +932,6 @@ name|HADOOP_SECURITY_AUTH_TO_LOCAL
 init|=
 literal|"hadoop.security.auth_to_local"
 decl_stmt|;
-DECL|field|HADOOP_SSL_ENABLED_KEY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HADOOP_SSL_ENABLED_KEY
-init|=
-literal|"hadoop.ssl.enabled"
-decl_stmt|;
-DECL|field|HADOOP_SSL_ENABLED_DEFAULT
-specifier|public
-specifier|static
-specifier|final
-name|boolean
-name|HADOOP_SSL_ENABLED_DEFAULT
-init|=
-literal|false
-decl_stmt|;
 comment|/** See<a href="{@docRoot}/../core-default.html">core-default.xml</a> */
 DECL|field|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN
 specifier|public
@@ -969,30 +951,6 @@ name|int
 name|HADOOP_KERBEROS_MIN_SECONDS_BEFORE_RELOGIN_DEFAULT
 init|=
 literal|60
-decl_stmt|;
-comment|// HTTP policies to be used in configuration
-comment|// Use HttpPolicy.name() instead
-annotation|@
-name|Deprecated
-DECL|field|HTTP_POLICY_HTTP_ONLY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HTTP_POLICY_HTTP_ONLY
-init|=
-literal|"HTTP_ONLY"
-decl_stmt|;
-annotation|@
-name|Deprecated
-DECL|field|HTTP_POLICY_HTTPS_ONLY
-specifier|public
-specifier|static
-specifier|final
-name|String
-name|HTTP_POLICY_HTTPS_ONLY
-init|=
-literal|"HTTPS_ONLY"
 decl_stmt|;
 block|}
 end_class
