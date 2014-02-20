@@ -5163,11 +5163,7 @@ name|String
 name|bpid
 parameter_list|)
 block|{
-throw|throw
-operator|new
-name|UnsupportedOperationException
-argument_list|()
-throw|;
+comment|// do nothing
 block|}
 annotation|@
 name|Override
