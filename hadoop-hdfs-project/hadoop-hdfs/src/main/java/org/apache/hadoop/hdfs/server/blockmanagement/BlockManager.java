@@ -9161,9 +9161,9 @@ name|curIndex
 operator|=
 name|storedBlock
 operator|.
-name|findDatanode
+name|findStorageInfo
 argument_list|(
-name|dn
+name|storageInfo
 argument_list|)
 operator|)
 operator|>=
