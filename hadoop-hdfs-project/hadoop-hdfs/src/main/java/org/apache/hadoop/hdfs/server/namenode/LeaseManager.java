@@ -1562,7 +1562,6 @@ name|Lease
 argument_list|>
 argument_list|()
 decl_stmt|;
-specifier|final
 name|int
 name|srclen
 init|=
@@ -1571,6 +1570,28 @@ operator|.
 name|length
 argument_list|()
 decl_stmt|;
+comment|// prefix may ended with '/'
+if|if
+condition|(
+name|prefix
+operator|.
+name|charAt
+argument_list|(
+name|srclen
+operator|-
+literal|1
+argument_list|)
+operator|==
+name|Path
+operator|.
+name|SEPARATOR_CHAR
+condition|)
+block|{
+name|srclen
+operator|-=
+literal|1
+expr_stmt|;
+block|}
 for|for
 control|(
 name|Map
