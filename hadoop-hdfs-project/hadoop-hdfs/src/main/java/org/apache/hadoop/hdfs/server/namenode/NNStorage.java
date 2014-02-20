@@ -602,7 +602,10 @@ operator|=
 name|name
 expr_stmt|;
 block|}
+annotation|@
+name|VisibleForTesting
 DECL|method|getName ()
+specifier|public
 name|String
 name|getName
 parameter_list|()
