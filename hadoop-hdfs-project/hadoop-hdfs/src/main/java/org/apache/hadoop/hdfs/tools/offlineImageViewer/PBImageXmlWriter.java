@@ -701,7 +701,7 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<?xml version=\"1.0\"?>\n"
+literal|"<?xml version=\"1.0\"?>\n<fsimage>"
 argument_list|)
 expr_stmt|;
 name|ArrayList
@@ -989,6 +989,13 @@ default|default:
 break|break;
 block|}
 block|}
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"</fsimage>\n"
+argument_list|)
+expr_stmt|;
 block|}
 finally|finally
 block|{
@@ -1599,6 +1606,13 @@ name|e
 argument_list|)
 expr_stmt|;
 block|}
+name|out
+operator|.
+name|print
+argument_list|(
+literal|"</INodeReferenceSection>"
+argument_list|)
+expr_stmt|;
 block|}
 DECL|method|dumpINodeReference (INodeReferenceSection.INodeReference r)
 specifier|private
@@ -2185,7 +2199,7 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<NameSection>\n"
+literal|"</NameSection>\n"
 argument_list|)
 expr_stmt|;
 block|}
@@ -2664,7 +2678,7 @@ name|out
 operator|.
 name|print
 argument_list|(
-literal|"<SnapshotDiffSection>\n"
+literal|"</SnapshotDiffSection>\n"
 argument_list|)
 expr_stmt|;
 block|}
