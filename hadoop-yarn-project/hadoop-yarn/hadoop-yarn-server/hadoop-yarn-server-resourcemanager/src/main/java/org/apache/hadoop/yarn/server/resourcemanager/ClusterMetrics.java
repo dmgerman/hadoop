@@ -457,6 +457,23 @@ name|incr
 argument_list|()
 expr_stmt|;
 block|}
+DECL|method|setDecommisionedNMs (int num)
+specifier|public
+name|void
+name|setDecommisionedNMs
+parameter_list|(
+name|int
+name|num
+parameter_list|)
+block|{
+name|numDecommissionedNMs
+operator|.
+name|set
+argument_list|(
+name|num
+argument_list|)
+expr_stmt|;
+block|}
 DECL|method|decrDecommisionedNMs ()
 specifier|public
 name|void

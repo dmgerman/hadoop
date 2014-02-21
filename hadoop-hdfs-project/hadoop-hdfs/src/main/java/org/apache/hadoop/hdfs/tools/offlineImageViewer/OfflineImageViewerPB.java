@@ -210,6 +210,20 @@ name|Configuration
 import|;
 end_import
 
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|io
+operator|.
+name|IOUtils
+import|;
+end_import
+
 begin_comment
 comment|/**  * OfflineImageViewer to dump the contents of an Hadoop image file to XML or the  * console. Main entry point into utility, either via the command line or  * programatically.  */
 end_comment
@@ -787,10 +801,14 @@ expr_stmt|;
 block|}
 finally|finally
 block|{
-name|out
+name|IOUtils
 operator|.
-name|close
-argument_list|()
+name|cleanup
+argument_list|(
+literal|null
+argument_list|,
+name|out
+argument_list|)
 expr_stmt|;
 block|}
 block|}

@@ -220,6 +220,20 @@ name|hadoop
 operator|.
 name|net
 operator|.
+name|NetUtils
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|net
+operator|.
 name|Node
 import|;
 end_import
@@ -2292,6 +2306,14 @@ argument_list|()
 expr_stmt|;
 break|break;
 block|}
+comment|// Decomissioned NMs equals to the nodes missing in include list (if
+comment|// include list not empty) or the nodes listed in excluded list.
+comment|// DecomissionedNMs as per exclude list is set upfront when the
+comment|// exclude list is read so that RM restart can also reflect the
+comment|// decomissionedNMs. Note that RM is still not able to know decomissionedNMs
+comment|// as per include list after it restarts as they are known when those nodes
+comment|// come for registration.
+comment|// DecomissionedNMs as per include list is incremented in this transition.
 switch|switch
 condition|(
 name|finalState
@@ -2300,11 +2322,53 @@ block|{
 case|case
 name|DECOMMISSIONED
 case|:
+name|Set
+argument_list|<
+name|String
+argument_list|>
+name|ecludedHosts
+init|=
+name|context
+operator|.
+name|getNodesListManager
+argument_list|()
+operator|.
+name|getHostsReader
+argument_list|()
+operator|.
+name|getExcludedHosts
+argument_list|()
+decl_stmt|;
+if|if
+condition|(
+operator|!
+name|ecludedHosts
+operator|.
+name|contains
+argument_list|(
+name|hostName
+argument_list|)
+operator|&&
+operator|!
+name|ecludedHosts
+operator|.
+name|contains
+argument_list|(
+name|NetUtils
+operator|.
+name|normalizeHostName
+argument_list|(
+name|hostName
+argument_list|)
+argument_list|)
+condition|)
+block|{
 name|metrics
 operator|.
 name|incrDecommisionedNMs
 argument_list|()
 expr_stmt|;
+block|}
 break|break;
 case|case
 name|LOST

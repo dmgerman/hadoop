@@ -261,6 +261,16 @@ name|FACTORY
 argument_list|)
 expr_stmt|;
 block|}
+comment|/** Maximum acceptable length of a permission string to parse */
+DECL|field|MAX_PERMISSION_LENGTH
+specifier|public
+specifier|static
+specifier|final
+name|int
+name|MAX_PERMISSION_LENGTH
+init|=
+literal|10
+decl_stmt|;
 comment|/** Create an immutable {@link FsPermission} object. */
 DECL|method|createImmutable (short permission)
 specifier|public
@@ -1304,18 +1314,23 @@ operator|.
 name|length
 argument_list|()
 operator|!=
-literal|10
+name|MAX_PERMISSION_LENGTH
 condition|)
 block|{
 throw|throw
 operator|new
 name|IllegalArgumentException
 argument_list|(
-literal|"length != 10(unixSymbolicPermission="
-operator|+
+name|String
+operator|.
+name|format
+argument_list|(
+literal|"length != %d(unixSymbolicPermission=%s)"
+argument_list|,
+name|MAX_PERMISSION_LENGTH
+argument_list|,
 name|unixSymbolicPermission
-operator|+
-literal|")"
+argument_list|)
 argument_list|)
 throw|;
 block|}
