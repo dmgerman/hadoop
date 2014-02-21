@@ -1817,6 +1817,7 @@ argument_list|(
 name|child
 argument_list|)
 expr_stmt|;
+continue|continue;
 block|}
 if|if
 condition|(
@@ -1838,6 +1839,12 @@ argument_list|)
 expr_stmt|;
 if|if
 condition|(
+operator|!
+name|restoreDirectory
+operator|.
+name|exists
+argument_list|()
+operator|&&
 operator|!
 name|restoreDirectory
 operator|.
