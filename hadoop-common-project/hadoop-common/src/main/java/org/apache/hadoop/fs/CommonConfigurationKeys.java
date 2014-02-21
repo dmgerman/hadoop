@@ -265,6 +265,25 @@ name|IPC_SERVER_HANDLER_QUEUE_SIZE_DEFAULT
 init|=
 literal|100
 decl_stmt|;
+comment|/**    * CallQueue related settings. These are not used directly, but rather    * combined with a namespace and port. For instance:    * IPC_CALLQUEUE_NAMESPACE + ".8020." + IPC_CALLQUEUE_IMPL_KEY    */
+DECL|field|IPC_CALLQUEUE_NAMESPACE
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CALLQUEUE_NAMESPACE
+init|=
+literal|"ipc"
+decl_stmt|;
+DECL|field|IPC_CALLQUEUE_IMPL_KEY
+specifier|public
+specifier|static
+specifier|final
+name|String
+name|IPC_CALLQUEUE_IMPL_KEY
+init|=
+literal|"callqueue.impl"
+decl_stmt|;
 comment|/** Internal buffer size for Lzo compressor/decompressors */
 DECL|field|IO_COMPRESSION_CODEC_LZO_BUFFERSIZE_KEY
 specifier|public
