@@ -482,24 +482,6 @@ name|hadoop
 operator|.
 name|yarn
 operator|.
-name|api
-operator|.
-name|records
-operator|.
-name|Token
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
 name|factories
 operator|.
 name|RecordFactory
@@ -6604,6 +6586,11 @@ operator|!=
 literal|null
 condition|)
 block|{
+name|boolean
+name|removed
+init|=
+literal|false
+decl_stmt|;
 comment|// Careful! Locking order is important!
 synchronized|synchronized
 init|(
@@ -6617,11 +6604,6 @@ name|rmContainer
 operator|.
 name|getContainer
 argument_list|()
-decl_stmt|;
-name|boolean
-name|removed
-init|=
-literal|false
 decl_stmt|;
 comment|// Inform the application& the node
 comment|// Note: It's safe to assume that all state changes to RMContainer
@@ -6737,7 +6719,14 @@ operator|+
 name|clusterResource
 argument_list|)
 expr_stmt|;
-comment|// Inform the parent queue
+block|}
+block|}
+if|if
+condition|(
+name|removed
+condition|)
+block|{
+comment|// Inform the parent queue _outside_ of the leaf-queue lock
 name|getParent
 argument_list|()
 operator|.
@@ -6758,7 +6747,6 @@ argument_list|,
 name|this
 argument_list|)
 expr_stmt|;
-block|}
 block|}
 block|}
 block|}
