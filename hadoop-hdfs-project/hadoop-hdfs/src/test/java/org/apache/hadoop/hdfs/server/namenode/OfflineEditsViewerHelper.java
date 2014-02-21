@@ -634,6 +634,7 @@ argument_list|,
 literal|0
 argument_list|)
 expr_stmt|;
+comment|// OP_ROLLING_UPGRADE_START
 name|cluster
 operator|.
 name|getNamesystem
@@ -643,6 +644,23 @@ name|getEditLog
 argument_list|()
 operator|.
 name|logStartRollingUpgrade
+argument_list|(
+name|Time
+operator|.
+name|now
+argument_list|()
+argument_list|)
+expr_stmt|;
+comment|// OP_ROLLING_UPGRADE_FINALIZE
+name|cluster
+operator|.
+name|getNamesystem
+argument_list|()
+operator|.
+name|getEditLog
+argument_list|()
+operator|.
+name|logFinalizeRollingUpgrade
 argument_list|(
 name|Time
 operator|.
