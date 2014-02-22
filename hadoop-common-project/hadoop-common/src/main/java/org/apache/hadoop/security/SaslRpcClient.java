@@ -1787,6 +1787,37 @@ argument_list|)
 decl_stmt|;
 if|if
 condition|(
+name|LOG
+operator|.
+name|isDebugEnabled
+argument_list|()
+condition|)
+block|{
+name|LOG
+operator|.
+name|debug
+argument_list|(
+literal|"getting serverKey: "
+operator|+
+name|serverKey
+operator|+
+literal|" conf value: "
+operator|+
+name|conf
+operator|.
+name|get
+argument_list|(
+name|serverKey
+argument_list|)
+operator|+
+literal|" principal: "
+operator|+
+name|confPrincipal
+argument_list|)
+expr_stmt|;
+block|}
+if|if
+condition|(
 name|confPrincipal
 operator|==
 literal|null
