@@ -106,9 +106,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -126,9 +126,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -169,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A client library that can be used to post some information in terms of a  * number of conceptual entities.  *   * @See ATSEntity  */
+comment|/**  * A client library that can be used to post some information in terms of a  * number of conceptual entities.  *   * @See Entity  */
 end_comment
 
 begin_class
@@ -221,16 +221,16 @@ name|name
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    *<p>    * Post the information of a number of conceptual entities of an application    * to the timeline server. It is a blocking API. The method will not return    * until it gets the response from the timeline server.    *</p>    *     * @param entities    *          the collection of {@link ATSEntity}    * @return the error information if the post entities are not correctly stored    * @throws IOException    * @throws YarnException    */
+comment|/**    *<p>    * Send the information of a number of conceptual entities to the timeline    * server. It is a blocking API. The method will not return until it gets the    * response from the timeline server.    *</p>    *     * @param entities    *          the collection of {@link TimelineEntity}    * @return the error information if the sent entities are not correctly stored    * @throws IOException    * @throws YarnException    */
 annotation|@
 name|Public
-DECL|method|postEntities ( ATSEntity... entities)
+DECL|method|putEntities ( TimelineEntity... entities)
 specifier|public
 specifier|abstract
-name|ATSPutErrors
-name|postEntities
+name|TimelinePutResponse
+name|putEntities
 parameter_list|(
-name|ATSEntity
+name|TimelineEntity
 modifier|...
 name|entities
 parameter_list|)

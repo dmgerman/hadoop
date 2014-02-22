@@ -154,9 +154,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -174,9 +174,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -194,9 +194,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -413,7 +413,7 @@ specifier|final
 name|String
 name|RESOURCE_URI_STR
 init|=
-literal|"/ws/v1/apptimeline/"
+literal|"/ws/v1/timeline/"
 decl_stmt|;
 DECL|field|JOINER
 specifier|private
@@ -576,12 +576,12 @@ expr_stmt|;
 block|}
 annotation|@
 name|Override
-DECL|method|postEntities ( ATSEntity... entities)
+DECL|method|putEntities ( TimelineEntity... entities)
 specifier|public
-name|ATSPutErrors
-name|postEntities
+name|TimelinePutResponse
+name|putEntities
 parameter_list|(
-name|ATSEntity
+name|TimelineEntity
 modifier|...
 name|entities
 parameter_list|)
@@ -590,11 +590,11 @@ name|IOException
 throws|,
 name|YarnException
 block|{
-name|ATSEntities
+name|TimelineEntities
 name|entitiesContainer
 init|=
 operator|new
-name|ATSEntities
+name|TimelineEntities
 argument_list|()
 decl_stmt|;
 name|entitiesContainer
@@ -693,7 +693,7 @@ name|resp
 operator|.
 name|getEntity
 argument_list|(
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
 name|class
 argument_list|)
@@ -703,12 +703,12 @@ annotation|@
 name|Private
 annotation|@
 name|VisibleForTesting
-DECL|method|doPostingEntities (ATSEntities entities)
+DECL|method|doPostingEntities (TimelineEntities entities)
 specifier|public
 name|ClientResponse
 name|doPostingEntities
 parameter_list|(
-name|ATSEntities
+name|TimelineEntities
 name|entities
 parameter_list|)
 block|{

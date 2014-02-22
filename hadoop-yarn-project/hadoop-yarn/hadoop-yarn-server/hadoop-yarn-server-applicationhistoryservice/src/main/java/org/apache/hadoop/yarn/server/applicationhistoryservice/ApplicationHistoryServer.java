@@ -254,9 +254,9 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ApplicationTimelineStore
+name|TimelineStore
 import|;
 end_import
 
@@ -274,9 +274,9 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|LeveldbApplicationTimelineStore
+name|LeveldbTimelineStore
 import|;
 end_import
 
@@ -410,7 +410,7 @@ name|ApplicationHistoryManager
 name|historyManager
 decl_stmt|;
 DECL|field|timelineStore
-name|ApplicationTimelineStore
+name|TimelineStore
 name|timelineStore
 decl_stmt|;
 DECL|field|webApp
@@ -474,7 +474,7 @@ argument_list|)
 expr_stmt|;
 name|timelineStore
 operator|=
-name|createApplicationTimelineStore
+name|createTimelineStore
 argument_list|(
 name|conf
 argument_list|)
@@ -761,10 +761,10 @@ name|ApplicationHistoryManagerImpl
 argument_list|()
 return|;
 block|}
-DECL|method|createApplicationTimelineStore ( Configuration conf)
+DECL|method|createTimelineStore ( Configuration conf)
 specifier|protected
-name|ApplicationTimelineStore
-name|createApplicationTimelineStore
+name|TimelineStore
+name|createTimelineStore
 parameter_list|(
 name|Configuration
 name|conf
@@ -781,13 +781,13 @@ name|getClass
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|ATS_STORE
+name|TIMELINE_SERVICE_STORE
 argument_list|,
-name|LeveldbApplicationTimelineStore
+name|LeveldbTimelineStore
 operator|.
 name|class
 argument_list|,
-name|ApplicationTimelineStore
+name|TimelineStore
 operator|.
 name|class
 argument_list|)

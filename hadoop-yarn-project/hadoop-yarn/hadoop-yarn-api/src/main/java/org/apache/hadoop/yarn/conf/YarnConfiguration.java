@@ -3930,42 +3930,42 @@ operator|+
 literal|"webapp.spnego-keytab-file"
 decl_stmt|;
 comment|////////////////////////////////
-comment|// ATS Configs
+comment|// Timeline Service Configs
 comment|////////////////////////////////
-DECL|field|ATS_PREFIX
+DECL|field|TIMELINE_SERVICE_PREFIX
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|ATS_PREFIX
+name|TIMELINE_SERVICE_PREFIX
 init|=
 name|YARN_PREFIX
 operator|+
-literal|"ats."
+literal|"timeline-service."
 decl_stmt|;
-comment|/** ATS store class */
-DECL|field|ATS_STORE
+comment|/** Timeline service store class */
+DECL|field|TIMELINE_SERVICE_STORE
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|ATS_STORE
+name|TIMELINE_SERVICE_STORE
 init|=
-name|ATS_PREFIX
+name|TIMELINE_SERVICE_PREFIX
 operator|+
-literal|"store.class"
+literal|"store-class"
 decl_stmt|;
-comment|/** ATS leveldb path */
-DECL|field|ATS_LEVELDB_PATH_PROPERTY
+comment|/** Timeline service leveldb path */
+DECL|field|TIMELINE_SERVICE_LEVELDB_PATH
 specifier|public
 specifier|static
 specifier|final
 name|String
-name|ATS_LEVELDB_PATH_PROPERTY
+name|TIMELINE_SERVICE_LEVELDB_PATH
 init|=
-name|ATS_PREFIX
+name|TIMELINE_SERVICE_PREFIX
 operator|+
-literal|"leveldb-apptimeline-store.path"
+literal|"leveldb-timeline-store.path"
 decl_stmt|;
 comment|////////////////////////////////
 comment|// Other Configs

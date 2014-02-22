@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.apptimeline
+DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -204,9 +204,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -224,9 +224,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -244,9 +244,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvent
+name|TimelineEvent
 import|;
 end_import
 
@@ -264,11 +264,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
-operator|.
-name|ATSEventsOfOneEntity
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -286,9 +284,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelineEvents
+operator|.
+name|EventsOfOneEntity
 import|;
 end_import
 
@@ -306,11 +306,11 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
-name|ATSPutError
+name|TimelinePutError
 import|;
 end_import
 
@@ -328,19 +328,59 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ApplicationTimelineReader
+name|TimelineStore
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|applicationhistoryservice
+operator|.
+name|timeline
+operator|.
+name|NameValuePair
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|applicationhistoryservice
+operator|.
+name|timeline
+operator|.
+name|TimelineReader
 operator|.
 name|Field
 import|;
 end_import
 
 begin_class
-DECL|class|ApplicationTimelineStoreTestUtils
+DECL|class|TimelineStoreTestUtils
 specifier|public
 class|class
-name|ApplicationTimelineStoreTestUtils
+name|TimelineStoreTestUtils
 block|{
 DECL|field|EMPTY_MAP
 specifier|protected
@@ -401,28 +441,28 @@ argument_list|()
 decl_stmt|;
 DECL|field|store
 specifier|protected
-name|ApplicationTimelineStore
+name|TimelineStore
 name|store
 decl_stmt|;
-DECL|field|entity1
+DECL|field|entityId1
 specifier|protected
 name|String
-name|entity1
+name|entityId1
 decl_stmt|;
 DECL|field|entityType1
 specifier|protected
 name|String
 name|entityType1
 decl_stmt|;
-DECL|field|entity1b
+DECL|field|entityId1b
 specifier|protected
 name|String
-name|entity1b
+name|entityId1b
 decl_stmt|;
-DECL|field|entity2
+DECL|field|entityId2
 specifier|protected
 name|String
-name|entity2
+name|entityId2
 decl_stmt|;
 DECL|field|entityType2
 specifier|protected
@@ -508,22 +548,22 @@ name|badTestingFilters
 decl_stmt|;
 DECL|field|ev1
 specifier|protected
-name|ATSEvent
+name|TimelineEvent
 name|ev1
 decl_stmt|;
 DECL|field|ev2
 specifier|protected
-name|ATSEvent
+name|TimelineEvent
 name|ev2
 decl_stmt|;
 DECL|field|ev3
 specifier|protected
-name|ATSEvent
+name|TimelineEvent
 name|ev3
 decl_stmt|;
 DECL|field|ev4
 specifier|protected
-name|ATSEvent
+name|TimelineEvent
 name|ev4
 decl_stmt|;
 DECL|field|eventInfo
@@ -540,7 +580,7 @@ DECL|field|events1
 specifier|protected
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events1
 decl_stmt|;
@@ -548,7 +588,7 @@ DECL|field|events2
 specifier|protected
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events2
 decl_stmt|;
@@ -561,11 +601,11 @@ parameter_list|()
 throws|throws
 name|IOException
 block|{
-name|ATSEntities
-name|atsEntities
+name|TimelineEntities
+name|entities
 init|=
 operator|new
-name|ATSEntities
+name|TimelineEntities
 argument_list|()
 decl_stmt|;
 name|Map
@@ -718,7 +758,7 @@ name|secondaryFilters
 argument_list|)
 expr_stmt|;
 name|String
-name|entity1
+name|entityId1
 init|=
 literal|"id_1"
 decl_stmt|;
@@ -728,12 +768,12 @@ init|=
 literal|"type_1"
 decl_stmt|;
 name|String
-name|entity1b
+name|entityId1b
 init|=
 literal|"id_2"
 decl_stmt|;
 name|String
-name|entity2
+name|entityId2
 init|=
 literal|"id_2"
 decl_stmt|;
@@ -775,11 +815,11 @@ name|Collections
 operator|.
 name|singleton
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ATSEvent
+name|TimelineEvent
 name|ev3
 init|=
 name|createEvent
@@ -791,7 +831,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|ATSEvent
+name|TimelineEvent
 name|ev4
 init|=
 name|createEvent
@@ -806,14 +846,14 @@ argument_list|)
 decl_stmt|;
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 argument_list|()
 decl_stmt|;
@@ -831,7 +871,7 @@ argument_list|(
 name|ev4
 argument_list|)
 expr_stmt|;
-name|atsEntities
+name|entities
 operator|.
 name|setEntities
 argument_list|(
@@ -841,7 +881,7 @@ name|singletonList
 argument_list|(
 name|createEntity
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|,
 name|entityType2
 argument_list|,
@@ -858,14 +898,14 @@ argument_list|)
 argument_list|)
 argument_list|)
 expr_stmt|;
-name|ATSPutErrors
+name|TimelinePutResponse
 name|response
 init|=
 name|store
 operator|.
 name|put
 argument_list|(
-name|atsEntities
+name|entities
 argument_list|)
 decl_stmt|;
 name|assertEquals
@@ -881,7 +921,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEvent
+name|TimelineEvent
 name|ev1
 init|=
 name|createEvent
@@ -893,7 +933,7 @@ argument_list|,
 literal|null
 argument_list|)
 decl_stmt|;
-name|atsEntities
+name|entities
 operator|.
 name|setEntities
 argument_list|(
@@ -903,7 +943,7 @@ name|singletonList
 argument_list|(
 name|createEntity
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -931,7 +971,7 @@ name|store
 operator|.
 name|put
 argument_list|(
-name|atsEntities
+name|entities
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -947,7 +987,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|atsEntities
+name|entities
 operator|.
 name|setEntities
 argument_list|(
@@ -957,7 +997,7 @@ name|singletonList
 argument_list|(
 name|createEntity
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -985,7 +1025,7 @@ name|store
 operator|.
 name|put
 argument_list|(
-name|atsEntities
+name|entities
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1027,7 +1067,7 @@ argument_list|,
 literal|"val1"
 argument_list|)
 expr_stmt|;
-name|ATSEvent
+name|TimelineEvent
 name|ev2
 init|=
 name|createEvent
@@ -1065,7 +1105,7 @@ argument_list|,
 literal|"val2"
 argument_list|)
 expr_stmt|;
-name|atsEntities
+name|entities
 operator|.
 name|setEntities
 argument_list|(
@@ -1075,7 +1115,7 @@ name|singletonList
 argument_list|(
 name|createEntity
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1103,7 +1143,7 @@ name|store
 operator|.
 name|put
 argument_list|(
-name|atsEntities
+name|entities
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1119,7 +1159,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|atsEntities
+name|entities
 operator|.
 name|setEntities
 argument_list|(
@@ -1129,7 +1169,7 @@ name|singletonList
 argument_list|(
 name|createEntity
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1157,7 +1197,7 @@ name|store
 operator|.
 name|put
 argument_list|(
-name|atsEntities
+name|entities
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1173,7 +1213,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|atsEntities
+name|entities
 operator|.
 name|setEntities
 argument_list|(
@@ -1206,7 +1246,7 @@ name|store
 operator|.
 name|put
 argument_list|(
-name|atsEntities
+name|entities
 argument_list|)
 expr_stmt|;
 name|assertEquals
@@ -1222,7 +1262,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSPutError
+name|TimelinePutError
 name|error
 init|=
 name|response
@@ -1257,7 +1297,7 @@ argument_list|)
 expr_stmt|;
 name|assertEquals
 argument_list|(
-name|ATSPutError
+name|TimelinePutError
 operator|.
 name|NO_START_TIME
 argument_list|,
@@ -1556,7 +1596,7 @@ argument_list|(
 name|secondaryFilters
 argument_list|)
 expr_stmt|;
-name|entity1
+name|entityId1
 operator|=
 literal|"id_1"
 expr_stmt|;
@@ -1564,11 +1604,11 @@ name|entityType1
 operator|=
 literal|"type_1"
 expr_stmt|;
-name|entity1b
+name|entityId1b
 operator|=
 literal|"id_2"
 expr_stmt|;
-name|entity2
+name|entityId2
 operator|=
 literal|"id_2"
 expr_stmt|;
@@ -1623,7 +1663,7 @@ operator|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 argument_list|()
 expr_stmt|;
@@ -1672,14 +1712,14 @@ name|ids
 operator|.
 name|add
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|)
 expr_stmt|;
 name|ids
 operator|.
 name|add
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|)
 expr_stmt|;
 name|relEntityMap
@@ -1719,7 +1759,7 @@ operator|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 argument_list|()
 expr_stmt|;
@@ -1782,7 +1822,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1798,7 +1838,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1815,7 +1855,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1831,7 +1871,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1848,7 +1888,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|,
 name|entityType2
 argument_list|,
@@ -1864,7 +1904,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|,
 name|entityType2
 argument_list|,
@@ -1882,7 +1922,7 @@ expr_stmt|;
 comment|// test getting single fields
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1898,7 +1938,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1915,7 +1955,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1936,7 +1976,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1953,7 +1993,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1969,7 +2009,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1979,7 +2019,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -1995,7 +2035,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2012,7 +2052,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2028,7 +2068,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2045,7 +2085,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|,
 name|entityType2
 argument_list|,
@@ -2061,7 +2101,7 @@ name|store
 operator|.
 name|getEntity
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|,
 name|entityType2
 argument_list|,
@@ -2216,7 +2256,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entities
 init|=
@@ -2261,7 +2301,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2283,7 +2323,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2346,7 +2386,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|,
 name|entityType2
 argument_list|,
@@ -2409,7 +2449,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2472,7 +2512,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2658,7 +2698,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2680,7 +2720,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2743,7 +2783,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2765,7 +2805,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2932,7 +2972,7 @@ argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entities
 init|=
@@ -2977,7 +3017,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -2999,7 +3039,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3103,7 +3143,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3166,7 +3206,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3311,7 +3351,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3333,7 +3373,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3365,7 +3405,7 @@ block|{
 comment|// test using secondary filter
 name|List
 argument_list|<
-name|ATSEntity
+name|TimelineEntity
 argument_list|>
 name|entities
 init|=
@@ -3410,7 +3450,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3432,7 +3472,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3495,7 +3535,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3517,7 +3557,7 @@ argument_list|)
 expr_stmt|;
 name|verifyEntityInfo
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3646,12 +3686,12 @@ name|sortedSet
 operator|.
 name|add
 argument_list|(
-name|entity1
+name|entityId1
 argument_list|)
 expr_stmt|;
 name|List
 argument_list|<
-name|ATSEventsOfOneEntity
+name|EventsOfOneEntity
 argument_list|>
 name|timelines
 init|=
@@ -3694,7 +3734,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3707,7 +3747,7 @@ name|sortedSet
 operator|.
 name|add
 argument_list|(
-name|entity1b
+name|entityId1b
 argument_list|)
 expr_stmt|;
 name|timelines
@@ -3751,7 +3791,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3769,7 +3809,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3819,7 +3859,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3835,7 +3875,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3883,7 +3923,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3899,7 +3939,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3947,7 +3987,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -3963,7 +4003,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -4011,7 +4051,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -4027,7 +4067,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -4075,7 +4115,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -4091,7 +4131,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -4144,7 +4184,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity1
+name|entityId1
 argument_list|,
 name|entityType1
 argument_list|,
@@ -4160,7 +4200,7 @@ argument_list|(
 literal|1
 argument_list|)
 argument_list|,
-name|entity1b
+name|entityId1b
 argument_list|,
 name|entityType1
 argument_list|,
@@ -4171,7 +4211,7 @@ name|sortedSet
 operator|.
 name|add
 argument_list|(
-name|entity2
+name|entityId2
 argument_list|)
 expr_stmt|;
 name|timelines
@@ -4215,7 +4255,7 @@ argument_list|(
 literal|0
 argument_list|)
 argument_list|,
-name|entity2
+name|entityId2
 argument_list|,
 name|entityType2
 argument_list|,
@@ -4226,21 +4266,21 @@ argument_list|)
 expr_stmt|;
 block|}
 comment|/**    * Verify a single entity    */
-DECL|method|verifyEntityInfo (String entity, String entityType, List<ATSEvent> events, Map<String, Set<String>> relatedEntities, Map<String, Set<Object>> primaryFilters, Map<String, Object> otherInfo, ATSEntity retrievedEntityInfo)
+DECL|method|verifyEntityInfo (String entityId, String entityType, List<TimelineEvent> events, Map<String, Set<String>> relatedEntities, Map<String, Set<Object>> primaryFilters, Map<String, Object> otherInfo, TimelineEntity retrievedEntityInfo)
 specifier|protected
 specifier|static
 name|void
 name|verifyEntityInfo
 parameter_list|(
 name|String
-name|entity
+name|entityId
 parameter_list|,
 name|String
 name|entityType
 parameter_list|,
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 parameter_list|,
@@ -4274,13 +4314,13 @@ name|Object
 argument_list|>
 name|otherInfo
 parameter_list|,
-name|ATSEntity
+name|TimelineEntity
 name|retrievedEntityInfo
 parameter_list|)
 block|{
 if|if
 condition|(
-name|entity
+name|entityId
 operator|==
 literal|null
 condition|)
@@ -4294,7 +4334,7 @@ return|return;
 block|}
 name|assertEquals
 argument_list|(
-name|entity
+name|entityId
 argument_list|,
 name|retrievedEntityInfo
 operator|.
@@ -4436,29 +4476,29 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Verify timeline events    */
-DECL|method|verifyEntityTimeline ( ATSEventsOfOneEntity retrievedEvents, String entity, String entityType, ATSEvent... actualEvents)
+DECL|method|verifyEntityTimeline ( EventsOfOneEntity retrievedEvents, String entityId, String entityType, TimelineEvent... actualEvents)
 specifier|private
 specifier|static
 name|void
 name|verifyEntityTimeline
 parameter_list|(
-name|ATSEventsOfOneEntity
+name|EventsOfOneEntity
 name|retrievedEvents
 parameter_list|,
 name|String
-name|entity
+name|entityId
 parameter_list|,
 name|String
 name|entityType
 parameter_list|,
-name|ATSEvent
+name|TimelineEvent
 modifier|...
 name|actualEvents
 parameter_list|)
 block|{
 name|assertEquals
 argument_list|(
-name|entity
+name|entityId
 argument_list|,
 name|retrievedEvents
 operator|.
@@ -4529,14 +4569,14 @@ expr_stmt|;
 block|}
 block|}
 comment|/**    * Create a test entity    */
-DECL|method|createEntity (String entity, String entityType, Long startTime, List<ATSEvent> events, Map<String, Set<String>> relatedEntities, Map<String, Set<Object>> primaryFilters, Map<String, Object> otherInfo)
+DECL|method|createEntity (String entityId, String entityType, Long startTime, List<TimelineEvent> events, Map<String, Set<String>> relatedEntities, Map<String, Set<Object>> primaryFilters, Map<String, Object> otherInfo)
 specifier|protected
 specifier|static
-name|ATSEntity
+name|TimelineEntity
 name|createEntity
 parameter_list|(
 name|String
-name|entity
+name|entityId
 parameter_list|,
 name|String
 name|entityType
@@ -4546,7 +4586,7 @@ name|startTime
 parameter_list|,
 name|List
 argument_list|<
-name|ATSEvent
+name|TimelineEvent
 argument_list|>
 name|events
 parameter_list|,
@@ -4581,35 +4621,35 @@ argument_list|>
 name|otherInfo
 parameter_list|)
 block|{
-name|ATSEntity
-name|atsEntity
+name|TimelineEntity
+name|entity
 init|=
 operator|new
-name|ATSEntity
+name|TimelineEntity
 argument_list|()
 decl_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEntityId
 argument_list|(
-name|entity
+name|entityId
 argument_list|)
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEntityType
 argument_list|(
 name|entityType
 argument_list|)
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setStartTime
 argument_list|(
 name|startTime
 argument_list|)
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setEvents
 argument_list|(
@@ -4653,7 +4693,7 @@ name|getValue
 argument_list|()
 control|)
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|addRelatedEntity
 argument_list|(
@@ -4670,7 +4710,7 @@ block|}
 block|}
 else|else
 block|{
-name|atsEntity
+name|entity
 operator|.
 name|setRelatedEntities
 argument_list|(
@@ -4678,14 +4718,14 @@ literal|null
 argument_list|)
 expr_stmt|;
 block|}
-name|atsEntity
+name|entity
 operator|.
 name|setPrimaryFilters
 argument_list|(
 name|primaryFilters
 argument_list|)
 expr_stmt|;
-name|atsEntity
+name|entity
 operator|.
 name|setOtherInfo
 argument_list|(
@@ -4693,14 +4733,14 @@ name|otherInfo
 argument_list|)
 expr_stmt|;
 return|return
-name|atsEntity
+name|entity
 return|;
 block|}
 comment|/**    * Create a test event    */
 DECL|method|createEvent (long timestamp, String type, Map<String, Object> info)
 specifier|private
 specifier|static
-name|ATSEvent
+name|TimelineEvent
 name|createEvent
 parameter_list|(
 name|long
@@ -4718,11 +4758,11 @@ argument_list|>
 name|info
 parameter_list|)
 block|{
-name|ATSEvent
+name|TimelineEvent
 name|event
 init|=
 operator|new
-name|ATSEvent
+name|TimelineEvent
 argument_list|()
 decl_stmt|;
 name|event

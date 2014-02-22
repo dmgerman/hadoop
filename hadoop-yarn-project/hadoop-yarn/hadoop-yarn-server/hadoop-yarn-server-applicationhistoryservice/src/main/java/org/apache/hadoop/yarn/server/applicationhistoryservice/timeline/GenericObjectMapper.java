@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.apptimeline
+DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -169,7 +169,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * A utility class providing methods for serializing and deserializing  * objects. The {@link #write(Object)}, {@link #read(byte[])} and {@link  * #write(java.io.DataOutputStream, Object)}, {@link  * #read(java.io.DataInputStream)} methods are used by the  * {@link LeveldbApplicationTimelineStore} to store and retrieve arbitrary  * JSON, while the {@link #writeReverseOrderedLong} and {@link  * #readReverseOrderedLong} methods are used to sort entities in descending  * start time order.  */
+comment|/**  * A utility class providing methods for serializing and deserializing  * objects. The {@link #write(Object)}, {@link #read(byte[])} and {@link  * #write(java.io.DataOutputStream, Object)}, {@link  * #read(java.io.DataInputStream)} methods are used by the  * {@link LeveldbTimelineStore} to store and retrieve arbitrary  * JSON, while the {@link #writeReverseOrderedLong} and {@link  * #readReverseOrderedLong} methods are used to sort entities in descending  * start time order.  */
 end_comment
 
 begin_class

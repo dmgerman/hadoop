@@ -72,9 +72,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -92,9 +92,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -112,9 +112,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvent
+name|TimelineEvent
 import|;
 end_import
 
@@ -132,9 +132,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
+name|TimelineEvents
 import|;
 end_import
 
@@ -152,9 +152,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -172,9 +172,9 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ApplicationTimelineStore
+name|TimelineStore
 import|;
 end_import
 
@@ -192,9 +192,9 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|TestMemoryApplicationTimelineStore
+name|TestMemoryTimelineStore
 import|;
 end_import
 
@@ -395,17 +395,17 @@ import|;
 end_import
 
 begin_class
-DECL|class|TestATSWebServices
+DECL|class|TestTimelineWebServices
 specifier|public
 class|class
-name|TestATSWebServices
+name|TestTimelineWebServices
 extends|extends
 name|JerseyTest
 block|{
 DECL|field|store
 specifier|private
 specifier|static
-name|ApplicationTimelineStore
+name|TimelineStore
 name|store
 decl_stmt|;
 DECL|field|injector
@@ -437,7 +437,7 @@ argument_list|)
 expr_stmt|;
 name|bind
 argument_list|(
-name|ATSWebServices
+name|TimelineWebServices
 operator|.
 name|class
 argument_list|)
@@ -453,7 +453,7 @@ try|try
 block|{
 name|store
 operator|=
-name|mockApplicationTimelineStore
+name|mockTimelineStore
 argument_list|()
 expr_stmt|;
 block|}
@@ -471,7 +471,7 @@ expr_stmt|;
 block|}
 name|bind
 argument_list|(
-name|ApplicationTimelineStore
+name|TimelineStore
 operator|.
 name|class
 argument_list|)
@@ -517,19 +517,19 @@ name|injector
 return|;
 block|}
 block|}
-DECL|method|mockApplicationTimelineStore ()
+DECL|method|mockTimelineStore ()
 specifier|private
-name|ApplicationTimelineStore
-name|mockApplicationTimelineStore
+name|TimelineStore
+name|mockTimelineStore
 parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|TestMemoryApplicationTimelineStore
+name|TestMemoryTimelineStore
 name|store
 init|=
 operator|new
-name|TestMemoryApplicationTimelineStore
+name|TestMemoryTimelineStore
 argument_list|()
 decl_stmt|;
 name|store
@@ -540,13 +540,13 @@ expr_stmt|;
 return|return
 name|store
 operator|.
-name|getApplicationTimelineStore
+name|getTimelineStore
 argument_list|()
 return|;
 block|}
-DECL|method|TestATSWebServices ()
+DECL|method|TestTimelineWebServices ()
 specifier|public
-name|TestATSWebServices
+name|TestTimelineWebServices
 parameter_list|()
 block|{
 name|super
@@ -640,7 +640,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|accept
@@ -669,7 +669,7 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSWebServices
+name|TimelineWebServices
 operator|.
 name|AboutInfo
 name|about
@@ -678,7 +678,7 @@ name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSWebServices
+name|TimelineWebServices
 operator|.
 name|AboutInfo
 operator|.
@@ -696,7 +696,7 @@ name|Assert
 operator|.
 name|assertEquals
 argument_list|(
-literal|"Application Timeline API"
+literal|"Timeline API"
 argument_list|,
 name|about
 operator|.
@@ -738,7 +738,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|path
@@ -772,14 +772,14 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEntities
+name|TimelineEntities
 name|entities
 init|=
 name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSEntities
+name|TimelineEntities
 operator|.
 name|class
 argument_list|)
@@ -806,7 +806,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity1
 init|=
 name|entities
@@ -910,7 +910,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity2
 init|=
 name|entities
@@ -1048,7 +1048,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|path
@@ -1087,14 +1087,14 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSEntity
+name|TimelineEntity
 operator|.
 name|class
 argument_list|)
@@ -1224,7 +1224,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|path
@@ -1270,14 +1270,14 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSEntity
+name|TimelineEntity
 operator|.
 name|class
 argument_list|)
@@ -1407,7 +1407,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|path
@@ -1455,14 +1455,14 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSEntity
+name|TimelineEntity
 operator|.
 name|class
 argument_list|)
@@ -1592,7 +1592,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|path
@@ -1638,14 +1638,14 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEvents
+name|TimelineEvents
 name|events
 init|=
 name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSEvents
+name|TimelineEvents
 operator|.
 name|class
 argument_list|)
@@ -1672,9 +1672,9 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEvents
+name|TimelineEvents
 operator|.
-name|ATSEventsOfOneEntity
+name|EventsOfOneEntity
 name|partEvents
 init|=
 name|events
@@ -1702,7 +1702,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEvent
+name|TimelineEvent
 name|event1
 init|=
 name|partEvents
@@ -1754,7 +1754,7 @@ name|size
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSEvent
+name|TimelineEvent
 name|event2
 init|=
 name|partEvents
@@ -1817,18 +1817,18 @@ parameter_list|()
 throws|throws
 name|Exception
 block|{
-name|ATSEntities
+name|TimelineEntities
 name|entities
 init|=
 operator|new
-name|ATSEntities
+name|TimelineEntities
 argument_list|()
 decl_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 operator|new
-name|ATSEntity
+name|TimelineEntity
 argument_list|()
 decl_stmt|;
 name|entity
@@ -1885,7 +1885,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|accept
@@ -1923,14 +1923,14 @@ name|getType
 argument_list|()
 argument_list|)
 expr_stmt|;
-name|ATSPutErrors
-name|errors
+name|TimelinePutResponse
+name|putResposne
 init|=
 name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSPutErrors
+name|TimelinePutResponse
 operator|.
 name|class
 argument_list|)
@@ -1939,7 +1939,7 @@ name|Assert
 operator|.
 name|assertNotNull
 argument_list|(
-name|errors
+name|putResposne
 argument_list|)
 expr_stmt|;
 name|Assert
@@ -1948,7 +1948,7 @@ name|assertEquals
 argument_list|(
 literal|0
 argument_list|,
-name|errors
+name|putResposne
 operator|.
 name|getErrors
 argument_list|()
@@ -1974,7 +1974,7 @@ argument_list|)
 operator|.
 name|path
 argument_list|(
-literal|"apptimeline"
+literal|"timeline"
 argument_list|)
 operator|.
 name|path
@@ -2019,7 +2019,7 @@ name|response
 operator|.
 name|getEntity
 argument_list|(
-name|ATSEntity
+name|TimelineEntity
 operator|.
 name|class
 argument_list|)

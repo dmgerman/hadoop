@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.api.records.apptimeline
+DECL|package|org.apache.hadoop.yarn.api.records.timeline
 package|package
 name|org
 operator|.
@@ -18,9 +18,85 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|List
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlAccessType
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlAccessorType
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlElement
+import|;
+end_import
+
+begin_import
+import|import
+name|javax
+operator|.
+name|xml
+operator|.
+name|bind
+operator|.
+name|annotation
+operator|.
+name|XmlRootElement
+import|;
+end_import
 
 begin_import
 import|import
@@ -54,84 +130,8 @@ name|Unstable
 import|;
 end_import
 
-begin_import
-import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
-name|XmlAccessType
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
-name|XmlAccessorType
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
-name|XmlElement
-import|;
-end_import
-
-begin_import
-import|import
-name|javax
-operator|.
-name|xml
-operator|.
-name|bind
-operator|.
-name|annotation
-operator|.
-name|XmlRootElement
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|List
-import|;
-end_import
-
 begin_comment
-comment|/**  * A class that holds a list of put errors.  This is the response returned  * when a list of {@link ATSEntity} objects is added to the application  * timeline.  If there are errors in storing individual entity objects,  * they will be indicated in the list of errors.  */
+comment|/**  * The class that hosts a list of events, which are categorized according to  * their related entities.  */
 end_comment
 
 begin_class
@@ -140,7 +140,7 @@ name|XmlRootElement
 argument_list|(
 name|name
 operator|=
-literal|"errors"
+literal|"events"
 argument_list|)
 annotation|@
 name|XmlAccessorType
@@ -153,130 +153,130 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ATSPutErrors
+DECL|class|TimelineEvents
 specifier|public
 class|class
-name|ATSPutErrors
+name|TimelineEvents
 block|{
-DECL|field|errors
+DECL|field|allEvents
 specifier|private
 name|List
 argument_list|<
-name|ATSPutError
+name|EventsOfOneEntity
 argument_list|>
-name|errors
+name|allEvents
 init|=
 operator|new
 name|ArrayList
 argument_list|<
-name|ATSPutError
+name|EventsOfOneEntity
 argument_list|>
 argument_list|()
 decl_stmt|;
-DECL|method|ATSPutErrors ()
+DECL|method|TimelineEvents ()
 specifier|public
-name|ATSPutErrors
+name|TimelineEvents
 parameter_list|()
 block|{    }
-comment|/**    * Get a list of {@link ATSPutError} instances    *    * @return a list of {@link ATSPutError} instances    */
+comment|/**    * Get a list of {@link EventsOfOneEntity} instances    *     * @return a list of {@link EventsOfOneEntity} instances    */
 annotation|@
 name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"errors"
+literal|"events"
 argument_list|)
-DECL|method|getErrors ()
+DECL|method|getAllEvents ()
 specifier|public
 name|List
 argument_list|<
-name|ATSPutError
+name|EventsOfOneEntity
 argument_list|>
-name|getErrors
+name|getAllEvents
 parameter_list|()
 block|{
 return|return
-name|errors
+name|allEvents
 return|;
 block|}
-comment|/**    * Add a single {@link ATSPutError} instance into the existing list    *    * @param error    *          a single {@link ATSPutError} instance    */
-DECL|method|addError (ATSPutError error)
+comment|/**    * Add a single {@link EventsOfOneEntity} instance into the existing list    *     * @param eventsOfOneEntity    *          a single {@link EventsOfOneEntity} instance    */
+DECL|method|addEvent (EventsOfOneEntity eventsOfOneEntity)
 specifier|public
 name|void
-name|addError
+name|addEvent
 parameter_list|(
-name|ATSPutError
-name|error
+name|EventsOfOneEntity
+name|eventsOfOneEntity
 parameter_list|)
 block|{
-name|errors
+name|allEvents
 operator|.
 name|add
 argument_list|(
-name|error
+name|eventsOfOneEntity
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Add a list of {@link ATSPutError} instances into the existing list    *    * @param errors    *          a list of {@link ATSPutError} instances    */
-DECL|method|addErrors (List<ATSPutError> errors)
+comment|/**    * Add a list of {@link EventsOfOneEntity} instances into the existing list    *     * @param allEvents    *          a list of {@link EventsOfOneEntity} instances    */
+DECL|method|addEvents (List<EventsOfOneEntity> allEvents)
 specifier|public
 name|void
-name|addErrors
+name|addEvents
 parameter_list|(
 name|List
 argument_list|<
-name|ATSPutError
+name|EventsOfOneEntity
 argument_list|>
-name|errors
+name|allEvents
 parameter_list|)
 block|{
 name|this
 operator|.
-name|errors
+name|allEvents
 operator|.
 name|addAll
 argument_list|(
-name|errors
+name|allEvents
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Set the list to the given list of {@link ATSPutError} instances    *    * @param errors    *          a list of {@link ATSPutError} instances    */
-DECL|method|setErrors (List<ATSPutError> errors)
+comment|/**    * Set the list to the given list of {@link EventsOfOneEntity} instances    *     * @param allEvents    *          a list of {@link EventsOfOneEntity} instances    */
+DECL|method|setEvents (List<EventsOfOneEntity> allEvents)
 specifier|public
 name|void
-name|setErrors
+name|setEvents
 parameter_list|(
 name|List
 argument_list|<
-name|ATSPutError
+name|EventsOfOneEntity
 argument_list|>
-name|errors
+name|allEvents
 parameter_list|)
 block|{
 name|this
 operator|.
-name|errors
+name|allEvents
 operator|.
 name|clear
 argument_list|()
 expr_stmt|;
 name|this
 operator|.
-name|errors
+name|allEvents
 operator|.
 name|addAll
 argument_list|(
-name|errors
+name|allEvents
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * A class that holds the error code for one entity.    */
+comment|/**    * The class that hosts a list of events that are only related to one entity.    */
 annotation|@
 name|XmlRootElement
 argument_list|(
 name|name
 operator|=
-literal|"error"
+literal|"events"
 argument_list|)
 annotation|@
 name|XmlAccessorType
@@ -289,32 +289,12 @@ annotation|@
 name|Public
 annotation|@
 name|Unstable
-DECL|class|ATSPutError
+DECL|class|EventsOfOneEntity
 specifier|public
 specifier|static
 class|class
-name|ATSPutError
+name|EventsOfOneEntity
 block|{
-comment|/**      * Error code returned when no start time can be found when putting an      * entity. This occurs when the entity does not already exist in the      * store and it is put with no start time or events specified.      */
-DECL|field|NO_START_TIME
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|NO_START_TIME
-init|=
-literal|1
-decl_stmt|;
-comment|/**      * Error code returned if an IOException is encountered when putting an      * entity.      */
-DECL|field|IO_EXCEPTION
-specifier|public
-specifier|static
-specifier|final
-name|int
-name|IO_EXCEPTION
-init|=
-literal|2
-decl_stmt|;
 DECL|field|entityId
 specifier|private
 name|String
@@ -325,12 +305,27 @@ specifier|private
 name|String
 name|entityType
 decl_stmt|;
-DECL|field|errorCode
+DECL|field|events
 specifier|private
-name|int
-name|errorCode
+name|List
+argument_list|<
+name|TimelineEvent
+argument_list|>
+name|events
+init|=
+operator|new
+name|ArrayList
+argument_list|<
+name|TimelineEvent
+argument_list|>
+argument_list|()
 decl_stmt|;
-comment|/**      * Get the entity Id      *      * @return the entity Id      */
+DECL|method|EventsOfOneEntity ()
+specifier|public
+name|EventsOfOneEntity
+parameter_list|()
+block|{      }
+comment|/**      * Get the entity Id      *       * @return the entity Id      */
 annotation|@
 name|XmlElement
 argument_list|(
@@ -348,7 +343,7 @@ return|return
 name|entityId
 return|;
 block|}
-comment|/**      * Set the entity Id      *      * @param entityId      *          the entity Id      */
+comment|/**      * Set the entity Id      *       * @param entityId      *          the entity Id      */
 DECL|method|setEntityId (String entityId)
 specifier|public
 name|void
@@ -365,7 +360,7 @@ operator|=
 name|entityId
 expr_stmt|;
 block|}
-comment|/**      * Get the entity type      *      * @return the entity type      */
+comment|/**      * Get the entity type      *       * @return the entity type      */
 annotation|@
 name|XmlElement
 argument_list|(
@@ -383,7 +378,7 @@ return|return
 name|entityType
 return|;
 block|}
-comment|/**      * Set the entity type      *      * @param entityType      *          the entity type      */
+comment|/**      * Set the entity type      *       * @param entityType      *          the entity type      */
 DECL|method|setEntityType (String entityType)
 specifier|public
 name|void
@@ -400,39 +395,86 @@ operator|=
 name|entityType
 expr_stmt|;
 block|}
-comment|/**      * Get the error code      *      * @return an error code      */
+comment|/**      * Get a list of events      *       * @return a list of events      */
 annotation|@
 name|XmlElement
 argument_list|(
 name|name
 operator|=
-literal|"errorcode"
+literal|"events"
 argument_list|)
-DECL|method|getErrorCode ()
+DECL|method|getEvents ()
 specifier|public
-name|int
-name|getErrorCode
+name|List
+argument_list|<
+name|TimelineEvent
+argument_list|>
+name|getEvents
 parameter_list|()
 block|{
 return|return
-name|errorCode
+name|events
 return|;
 block|}
-comment|/**      * Set the error code to the given error code      *      * @param errorCode      *          an error code      */
-DECL|method|setErrorCode (int errorCode)
+comment|/**      * Add a single event to the existing event list      *       * @param event      *          a single event      */
+DECL|method|addEvent (TimelineEvent event)
 specifier|public
 name|void
-name|setErrorCode
+name|addEvent
 parameter_list|(
-name|int
-name|errorCode
+name|TimelineEvent
+name|event
+parameter_list|)
+block|{
+name|events
+operator|.
+name|add
+argument_list|(
+name|event
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Add a list of event to the existing event list      *       * @param events      *          a list of events      */
+DECL|method|addEvents (List<TimelineEvent> events)
+specifier|public
+name|void
+name|addEvents
+parameter_list|(
+name|List
+argument_list|<
+name|TimelineEvent
+argument_list|>
+name|events
 parameter_list|)
 block|{
 name|this
 operator|.
-name|errorCode
+name|events
+operator|.
+name|addAll
+argument_list|(
+name|events
+argument_list|)
+expr_stmt|;
+block|}
+comment|/**      * Set the event list to the given list of events      *       * @param events      *          a list of events      */
+DECL|method|setEvents (List<TimelineEvent> events)
+specifier|public
+name|void
+name|setEvents
+parameter_list|(
+name|List
+argument_list|<
+name|TimelineEvent
+argument_list|>
+name|events
+parameter_list|)
+block|{
+name|this
+operator|.
+name|events
 operator|=
-name|errorCode
+name|events
 expr_stmt|;
 block|}
 block|}

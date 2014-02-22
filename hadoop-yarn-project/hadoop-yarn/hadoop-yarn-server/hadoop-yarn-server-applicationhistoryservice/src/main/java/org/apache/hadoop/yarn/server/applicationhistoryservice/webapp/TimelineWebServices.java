@@ -404,9 +404,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -424,9 +424,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntity
+name|TimelineEntity
 import|;
 end_import
 
@@ -444,9 +444,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEvents
+name|TimelineEvents
 import|;
 end_import
 
@@ -464,9 +464,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -484,11 +484,9 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ApplicationTimelineReader
-operator|.
-name|Field
+name|TimelineStore
 import|;
 end_import
 
@@ -506,29 +504,31 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
-operator|.
-name|ApplicationTimelineStore
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|yarn
-operator|.
-name|server
-operator|.
-name|applicationhistoryservice
-operator|.
-name|apptimeline
+name|timeline
 operator|.
 name|NameValuePair
+import|;
+end_import
+
+begin_import
+import|import
+name|org
+operator|.
+name|apache
+operator|.
+name|hadoop
+operator|.
+name|yarn
+operator|.
+name|server
+operator|.
+name|applicationhistoryservice
+operator|.
+name|timeline
+operator|.
+name|TimelineReader
+operator|.
+name|Field
 import|;
 end_import
 
@@ -578,13 +578,13 @@ name|Singleton
 annotation|@
 name|Path
 argument_list|(
-literal|"/ws/v1/apptimeline"
+literal|"/ws/v1/timeline"
 argument_list|)
 comment|//TODO: support XML serialization/deserialization
-DECL|class|ATSWebServices
+DECL|class|TimelineWebServices
 specifier|public
 class|class
-name|ATSWebServices
+name|TimelineWebServices
 block|{
 DECL|field|LOG
 specifier|private
@@ -597,23 +597,23 @@ name|LogFactory
 operator|.
 name|getLog
 argument_list|(
-name|ATSWebServices
+name|TimelineWebServices
 operator|.
 name|class
 argument_list|)
 decl_stmt|;
 DECL|field|store
 specifier|private
-name|ApplicationTimelineStore
+name|TimelineStore
 name|store
 decl_stmt|;
 annotation|@
 name|Inject
-DECL|method|ATSWebServices (ApplicationTimelineStore store)
+DECL|method|TimelineWebServices (TimelineStore store)
 specifier|public
-name|ATSWebServices
+name|TimelineWebServices
 parameter_list|(
-name|ApplicationTimelineStore
+name|TimelineStore
 name|store
 parameter_list|)
 block|{
@@ -707,7 +707,7 @@ name|about
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Return the description of the application timeline web services.    */
+comment|/**    * Return the description of the timeline web services.    */
 annotation|@
 name|GET
 annotation|@
@@ -745,7 +745,7 @@ return|return
 operator|new
 name|AboutInfo
 argument_list|(
-literal|"Application Timeline API"
+literal|"Timeline API"
 argument_list|)
 return|;
 block|}
@@ -769,7 +769,7 @@ block|}
 argument_list|)
 DECL|method|getEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String entityType, @QueryParam(R) String primaryFilter, @QueryParam(R) String secondaryFilter, @QueryParam(R) String windowStart, @QueryParam(R) String windowEnd, @QueryParam(R) String limit, @QueryParam(R) String fields)
 specifier|public
-name|ATSEntities
+name|TimelineEntities
 name|getEntities
 parameter_list|(
 annotation|@
@@ -844,7 +844,7 @@ argument_list|(
 name|res
 argument_list|)
 expr_stmt|;
-name|ATSEntities
+name|TimelineEntities
 name|entities
 init|=
 literal|null
@@ -968,7 +968,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|ATSEntities
+name|TimelineEntities
 argument_list|()
 return|;
 block|}
@@ -996,7 +996,7 @@ block|}
 argument_list|)
 DECL|method|getEntity ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String entityType, @PathParam(R) String entityId, @QueryParam(R) String fields)
 specifier|public
-name|ATSEntity
+name|TimelineEntity
 name|getEntity
 parameter_list|(
 annotation|@
@@ -1039,7 +1039,7 @@ argument_list|(
 name|res
 argument_list|)
 expr_stmt|;
-name|ATSEntity
+name|TimelineEntity
 name|entity
 init|=
 literal|null
@@ -1157,7 +1157,7 @@ block|}
 argument_list|)
 DECL|method|getEvents ( @ontext HttpServletRequest req, @Context HttpServletResponse res, @PathParam(R) String entityType, @QueryParam(R) String entityId, @QueryParam(R) String eventType, @QueryParam(R) String windowStart, @QueryParam(R) String windowEnd, @QueryParam(R) String limit)
 specifier|public
-name|ATSEvents
+name|TimelineEvents
 name|getEvents
 parameter_list|(
 annotation|@
@@ -1224,7 +1224,7 @@ argument_list|(
 name|res
 argument_list|)
 expr_stmt|;
-name|ATSEvents
+name|TimelineEvents
 name|events
 init|=
 literal|null
@@ -1325,7 +1325,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|ATSEvents
+name|TimelineEvents
 argument_list|()
 return|;
 block|}
@@ -1346,9 +1346,9 @@ name|APPLICATION_JSON
 comment|/* , MediaType.APPLICATION_XML */
 block|}
 argument_list|)
-DECL|method|postEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, ATSEntities entities)
+DECL|method|postEntities ( @ontext HttpServletRequest req, @Context HttpServletResponse res, TimelineEntities entities)
 specifier|public
-name|ATSPutErrors
+name|TimelinePutResponse
 name|postEntities
 parameter_list|(
 annotation|@
@@ -1361,7 +1361,7 @@ name|Context
 name|HttpServletResponse
 name|res
 parameter_list|,
-name|ATSEntities
+name|TimelineEntities
 name|entities
 parameter_list|)
 block|{
@@ -1379,7 +1379,7 @@ condition|)
 block|{
 return|return
 operator|new
-name|ATSPutErrors
+name|TimelinePutResponse
 argument_list|()
 return|;
 block|}

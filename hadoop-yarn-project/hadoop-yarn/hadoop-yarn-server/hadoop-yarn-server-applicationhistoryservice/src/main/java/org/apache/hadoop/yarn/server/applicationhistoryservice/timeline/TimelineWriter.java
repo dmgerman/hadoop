@@ -4,7 +4,7 @@ comment|/**  * Licensed to the Apache Software Foundation (ASF) under one  * or 
 end_comment
 
 begin_package
-DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.apptimeline
+DECL|package|org.apache.hadoop.yarn.server.applicationhistoryservice.timeline
 package|package
 name|org
 operator|.
@@ -18,7 +18,7 @@ name|server
 operator|.
 name|applicationhistoryservice
 operator|.
-name|apptimeline
+name|timeline
 package|;
 end_package
 
@@ -64,9 +64,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSEntities
+name|TimelineEntities
 import|;
 end_import
 
@@ -84,9 +84,9 @@ name|api
 operator|.
 name|records
 operator|.
-name|apptimeline
+name|timeline
 operator|.
-name|ATSPutErrors
+name|TimelinePutResponse
 import|;
 end_import
 
@@ -101,7 +101,7 @@ import|;
 end_import
 
 begin_comment
-comment|/**  * This interface is for storing application timeline information.  */
+comment|/**  * This interface is for storing timeline information.  */
 end_comment
 
 begin_interface
@@ -113,17 +113,17 @@ annotation|@
 name|InterfaceStability
 operator|.
 name|Unstable
-DECL|interface|ApplicationTimelineWriter
+DECL|interface|TimelineWriter
 specifier|public
 interface|interface
-name|ApplicationTimelineWriter
+name|TimelineWriter
 block|{
-comment|/**    * Stores entity information to the application timeline store. Any errors    * occurring for individual put request objects will be reported in the    * response.    *    * @param data An {@link ATSEntities} object.    * @return An {@link ATSPutErrors} object.    * @throws IOException    */
-DECL|method|put (ATSEntities data)
-name|ATSPutErrors
+comment|/**    * Stores entity information to the timeline store. Any errors occurring for    * individual put request objects will be reported in the response.    *     * @param data    *          An {@link TimelineEntities} object.    * @return An {@link TimelinePutResponse} object.    * @throws IOException    */
+DECL|method|put (TimelineEntities data)
+name|TimelinePutResponse
 name|put
 parameter_list|(
-name|ATSEntities
+name|TimelineEntities
 name|data
 parameter_list|)
 throws|throws
