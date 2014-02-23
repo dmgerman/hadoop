@@ -520,7 +520,7 @@ name|getClass
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AHS_STORE
+name|APPLICATION_HISTORY_STORE
 argument_list|,
 name|FileSystemApplicationHistoryStore
 operator|.

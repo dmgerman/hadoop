@@ -361,7 +361,7 @@ name|set
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FS_HISTORY_STORE_URI
+name|FS_APPLICATION_HISTORY_STORE_URI
 argument_list|,
 name|fsWorkingPath
 operator|.

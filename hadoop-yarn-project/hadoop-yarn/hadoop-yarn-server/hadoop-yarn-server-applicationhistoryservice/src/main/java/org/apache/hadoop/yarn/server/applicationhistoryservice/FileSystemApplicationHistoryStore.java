@@ -1070,7 +1070,7 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FS_HISTORY_STORE_URI
+name|FS_APPLICATION_HISTORY_STORE_URI
 argument_list|)
 argument_list|)
 decl_stmt|;
@@ -4421,11 +4421,11 @@ name|get
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|FS_HISTORY_STORE_COMPRESSION_TYPE
+name|FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE
 argument_list|,
 name|YarnConfiguration
 operator|.
-name|DEFAULT_FS_HISTORY_STORE_COMPRESSION_TYPE
+name|DEFAULT_FS_APPLICATION_HISTORY_STORE_COMPRESSION_TYPE
 argument_list|)
 argument_list|,
 literal|null

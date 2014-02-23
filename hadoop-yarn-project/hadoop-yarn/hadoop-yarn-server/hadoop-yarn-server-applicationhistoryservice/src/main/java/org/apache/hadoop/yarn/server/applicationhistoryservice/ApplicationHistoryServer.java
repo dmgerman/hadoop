@@ -851,14 +851,14 @@ name|withHttpSpnegoPrincipalKey
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AHS_WEBAPP_SPNEGO_USER_NAME_KEY
+name|TIMELINE_SERVICE_WEBAPP_SPNEGO_USER_NAME_KEY
 argument_list|)
 operator|.
 name|withHttpSpnegoKeytabKey
 argument_list|(
 name|YarnConfiguration
 operator|.
-name|AHS_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
+name|TIMELINE_SERVICE_WEBAPP_SPNEGO_KEYTAB_FILE_KEY
 argument_list|)
 operator|.
 name|at
