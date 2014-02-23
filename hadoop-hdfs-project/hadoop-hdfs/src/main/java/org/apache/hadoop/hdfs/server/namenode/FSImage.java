@@ -1789,6 +1789,64 @@ argument_list|)
 throw|;
 block|}
 block|}
+comment|/**    * @return true if there is rollback fsimage (for rolling upgrade) for the    * given txid in storage.    */
+DECL|method|hasRollbackFSImage (long txid)
+name|boolean
+name|hasRollbackFSImage
+parameter_list|(
+name|long
+name|txid
+parameter_list|)
+block|{
+for|for
+control|(
+name|StorageDirectory
+name|sd
+range|:
+name|storage
+operator|.
+name|dirIterable
+argument_list|(
+name|NameNodeDirType
+operator|.
+name|IMAGE
+argument_list|)
+control|)
+block|{
+specifier|final
+name|File
+name|rollbackImageFile
+init|=
+name|NNStorage
+operator|.
+name|getStorageFile
+argument_list|(
+name|sd
+argument_list|,
+name|NameNodeFile
+operator|.
+name|IMAGE_ROLLBACK
+argument_list|,
+name|txid
+argument_list|)
+decl_stmt|;
+if|if
+condition|(
+name|rollbackImageFile
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
+block|}
 DECL|method|doUpgrade (FSNamesystem target)
 name|void
 name|doUpgrade
@@ -5356,7 +5414,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Renames new image    */
+comment|/**    * Rename FSImage    */
 DECL|method|renameCheckpoint (long txid, NameNodeFile fromNnf, NameNodeFile toNnf, boolean renameMD5)
 specifier|private
 name|void

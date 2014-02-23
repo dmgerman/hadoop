@@ -4693,16 +4693,7 @@ comment|//ignore upgrade marker
 break|break;
 block|}
 block|}
-comment|// save namespace if this is not the second edit transaction
-comment|// (the first must be OP_START_LOG_SEGMENT)
-specifier|final
-name|boolean
-name|saveNamespace
-init|=
-name|totalEdits
-operator|>
-literal|1
-decl_stmt|;
+comment|// save namespace if there is no rollback image existing
 specifier|final
 name|long
 name|startTime
@@ -4723,7 +4714,11 @@ name|startRollingUpgradeInternal
 argument_list|(
 name|startTime
 argument_list|,
-name|saveNamespace
+name|op
+operator|.
+name|txid
+operator|-
+literal|2
 argument_list|)
 expr_stmt|;
 break|break;

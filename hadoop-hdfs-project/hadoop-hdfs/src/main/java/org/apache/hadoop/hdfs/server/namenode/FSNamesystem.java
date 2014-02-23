@@ -33286,7 +33286,8 @@ argument_list|(
 name|now
 argument_list|()
 argument_list|,
-literal|true
+operator|-
+literal|1
 argument_list|)
 expr_stmt|;
 name|getEditLog
@@ -33342,16 +33343,16 @@ return|return
 name|rollingUpgradeInfo
 return|;
 block|}
-comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * Ootionally create a checkpoint before starting the RU.    * @param startTime    * @param saveNamespace If true then a checkpoint is created before initiating    *                   the rolling upgrade.    */
-DECL|method|startRollingUpgradeInternal (long startTime, boolean saveNamespace)
+comment|/**    * Update internal state to indicate that a rolling upgrade is in progress.    * Ootionally create a checkpoint before starting the RU.    * @param startTime    */
+DECL|method|startRollingUpgradeInternal (long startTime, long txid)
 name|void
 name|startRollingUpgradeInternal
 parameter_list|(
 name|long
 name|startTime
 parameter_list|,
-name|boolean
-name|saveNamespace
+name|long
+name|txid
 parameter_list|)
 throws|throws
 name|IOException
@@ -33369,9 +33370,21 @@ argument_list|(
 name|this
 argument_list|)
 expr_stmt|;
+comment|// if we have not made a rollback image, do it
 if|if
 condition|(
-name|saveNamespace
+name|txid
+operator|<
+literal|0
+operator|||
+operator|!
+name|getFSImage
+argument_list|()
+operator|.
+name|hasRollbackFSImage
+argument_list|(
+name|txid
+argument_list|)
 condition|)
 block|{
 name|getFSImage
