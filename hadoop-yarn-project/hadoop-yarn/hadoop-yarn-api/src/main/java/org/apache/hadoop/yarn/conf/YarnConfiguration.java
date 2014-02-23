@@ -2939,7 +2939,7 @@ name|NM_PREFIX
 operator|+
 literal|"disk-health-checker.min-healthy-disks"
 decl_stmt|;
-comment|/**    * By default, at least 5% of disks are to be healthy to say that the node    * is healthy in terms of disks.    */
+comment|/**    * By default, at least 25% of disks are to be healthy to say that the node    * is healthy in terms of disks.    */
 DECL|field|DEFAULT_NM_MIN_HEALTHY_DISKS_FRACTION
 specifier|public
 specifier|static
