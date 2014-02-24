@@ -18,16 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|com
 operator|.
 name|google
@@ -121,6 +111,12 @@ return|return
 literal|false
 return|;
 block|}
+DECL|method|startFetchFromDatanode ()
+specifier|public
+name|void
+name|startFetchFromDatanode
+parameter_list|()
+block|{}
 block|}
 end_class
 
