@@ -22,90 +22,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileInputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FileOutputStream
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|RandomAccessFile
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|nio
-operator|.
-name|channels
-operator|.
-name|FileLock
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|*
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|concurrent
-operator|.
-name|ConcurrentHashMap
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -156,49 +72,7 @@ name|hadoop
 operator|.
 name|fs
 operator|.
-name|FileUtil
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|HardLink
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|LocalFileSystem
-import|;
-end_import
-
-begin_import
-import|import
-name|org
-operator|.
-name|apache
-operator|.
-name|hadoop
-operator|.
-name|fs
-operator|.
-name|Path
+name|*
 import|;
 end_import
 
@@ -450,6 +324,50 @@ name|DiskChecker
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|nio
+operator|.
+name|channels
+operator|.
+name|FileLock
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|*
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|concurrent
+operator|.
+name|ConcurrentHashMap
+import|;
+end_import
+
 begin_comment
 comment|/**   * Data storage information file.  *<p>  * @see Storage  */
 end_comment
@@ -610,7 +528,7 @@ expr_stmt|;
 block|}
 DECL|method|getBPStorage (String bpid)
 specifier|public
-name|StorageInfo
+name|BlockPoolSliceStorage
 name|getBPStorage
 parameter_list|(
 name|String
@@ -701,7 +619,7 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Enable trash for the specified block pool storage.    *    * @param bpid    * @param  inProgress    */
+comment|/**    * Enable trash for the specified block pool storage.    */
 DECL|method|enableTrash (String bpid)
 specifier|public
 name|void
@@ -732,11 +650,10 @@ argument_list|)
 expr_stmt|;
 block|}
 block|}
-comment|/**    * Disable trash for the specified block pool storage.    * Existing files in trash are purged i.e. permanently deleted.    *    * @param bpid    * @param  inProgress    */
-DECL|method|disableAndPurgeTrash (String bpid)
+DECL|method|restoreTrash (String bpid)
 specifier|public
 name|void
-name|disableAndPurgeTrash
+name|restoreTrash
 parameter_list|(
 name|String
 name|bpid
@@ -746,37 +663,57 @@ if|if
 condition|(
 name|trashEnabledBpids
 operator|.
-name|remove
+name|contains
 argument_list|(
 name|bpid
 argument_list|)
 condition|)
 block|{
+name|getBPStorage
+argument_list|(
+name|bpid
+argument_list|)
+operator|.
+name|restoreTrash
+argument_list|()
+expr_stmt|;
+name|trashEnabledBpids
+operator|.
+name|remove
+argument_list|(
+name|bpid
+argument_list|)
+expr_stmt|;
 name|LOG
 operator|.
 name|info
 argument_list|(
-literal|"Disabled trash for bpid "
+literal|"Restored trash for bpid "
 operator|+
 name|bpid
 argument_list|)
 expr_stmt|;
 block|}
-operator|(
-operator|(
-name|BlockPoolSliceStorage
-operator|)
-name|getBPStorage
+block|}
+DECL|method|trashEnabled (String bpid)
+specifier|public
+name|boolean
+name|trashEnabled
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{
+return|return
+name|trashEnabledBpids
+operator|.
+name|contains
 argument_list|(
 name|bpid
 argument_list|)
-operator|)
-operator|.
-name|emptyTrash
-argument_list|()
-expr_stmt|;
+return|;
 block|}
-comment|/**    * If rolling upgrades are in progress then do not delete block files    * immediately. Instead we move the block files to an intermediate    * 'trash' directory. If there is a subsequent rollback, then the block    * files will be restored from trash.    *    * @param blockFile    * @return trash directory if rolling upgrade is in progress, null    *         otherwise.    */
+comment|/**    * If rolling upgrades are in progress then do not delete block files    * immediately. Instead we move the block files to an intermediate    * 'trash' directory. If there is a subsequent rollback, then the block    * files will be restored from trash.    *    * @return trash directory if rolling upgrade is in progress, null    *         otherwise.    */
 DECL|method|getTrashDirectoryForBlockFile (String bpid, File blockFile)
 specifier|public
 name|String
@@ -1154,7 +1091,7 @@ operator|.
 name|writeAll
 argument_list|()
 expr_stmt|;
-comment|// 4. mark DN storage is initilized
+comment|// 4. mark DN storage is initialized
 name|this
 operator|.
 name|initialized
@@ -3194,7 +3131,7 @@ name|start
 argument_list|()
 expr_stmt|;
 block|}
-comment|/*    * Finalize the upgrade for a block pool    */
+comment|/*    * Finalize the upgrade for a block pool    * This also empties trash created during rolling upgrade and disables    * trash functionality.    */
 DECL|method|finalizeUpgrade (String bpID)
 name|void
 name|finalizeUpgrade

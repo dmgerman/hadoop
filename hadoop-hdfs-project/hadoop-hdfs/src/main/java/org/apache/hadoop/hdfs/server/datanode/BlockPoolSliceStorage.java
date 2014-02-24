@@ -22,85 +22,15 @@ end_package
 
 begin_import
 import|import
-name|java
+name|com
 operator|.
-name|io
+name|google
 operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
+name|common
 operator|.
-name|io
+name|annotations
 operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|ArrayList
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Collection
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Iterator
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|Properties
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Matcher
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|util
-operator|.
-name|regex
-operator|.
-name|Pattern
+name|VisibleForTesting
 import|;
 end_import
 
@@ -306,15 +236,85 @@ end_import
 
 begin_import
 import|import
-name|com
+name|java
 operator|.
-name|google
+name|io
 operator|.
-name|common
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
 operator|.
-name|annotations
+name|io
 operator|.
-name|VisibleForTesting
+name|IOException
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|ArrayList
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Collection
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Iterator
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|Properties
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Matcher
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|util
+operator|.
+name|regex
+operator|.
+name|Pattern
 import|;
 end_import
 
@@ -844,7 +844,7 @@ name|nsInfo
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Format a block pool slice storage.     * @param sd the block pool storage    * @param nsInfo the name space info    * @throws IOException Signals that an I/O exception has occurred.    */
+comment|/**    * Format a block pool slice storage.     * @param bpSdir the block pool storage    * @param nsInfo the name space info    * @throws IOException Signals that an I/O exception has occurred.    */
 DECL|method|format (StorageDirectory bpSdir, NamespaceInfo nsInfo)
 specifier|private
 name|void
@@ -1059,11 +1059,11 @@ name|InconsistentFSStateException
 argument_list|(
 name|storage
 argument_list|,
-literal|"Unexepcted blockpoolID "
+literal|"Unexpected blockpoolID "
 operator|+
 name|bpid
 operator|+
-literal|" . Expected "
+literal|". Expected "
 operator|+
 name|blockpoolID
 argument_list|)
@@ -1132,7 +1132,7 @@ name|sbpid
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime.    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime Regular    * startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param dn DataNode to which this storage belongs to    * @param sd storage directory<SD>/current/<bpid>    * @param nsInfo namespace info    * @param startOpt startup option    * @throws IOException    */
+comment|/**    * Analyze whether a transition of the BP state is required and    * perform it if necessary.    *<br>    * Rollback if previousLV>= LAYOUT_VERSION&& prevCTime<= namenode.cTime.    * Upgrade if this.LV> LAYOUT_VERSION || this.cTime< namenode.cTime Regular    * startup if this.LV = LAYOUT_VERSION&& this.cTime = namenode.cTime    *     * @param sd storage directory<SD>/current/<bpid>    * @param nsInfo namespace info    * @param startOpt startup option    * @throws IOException    */
 DECL|method|doTransition (StorageDirectory sd, NamespaceInfo nsInfo, StartupOption startOpt)
 specifier|private
 name|void
@@ -1168,39 +1168,21 @@ argument_list|)
 expr_stmt|;
 comment|// rollback if applicable
 block|}
-elseif|else
-if|if
-condition|(
-name|StartupOption
-operator|.
-name|isRollingUpgradeRollback
-argument_list|(
-name|startOpt
-argument_list|)
-condition|)
+else|else
 block|{
-name|File
-name|trashRoot
+comment|// Restore all the files in the trash. The restored files are retained
+comment|// during rolling upgrade rollback. They are deleted during rolling
+comment|// upgrade downgrade.
+name|int
+name|restored
 init|=
+name|restoreBlockFilesFromTrash
+argument_list|(
 name|getTrashRootDir
 argument_list|(
 name|sd
 argument_list|)
-decl_stmt|;
-name|int
-name|filesRestored
-init|=
-name|trashRoot
-operator|.
-name|exists
-argument_list|()
-condition|?
-name|restoreBlockFilesFromTrash
-argument_list|(
-name|trashRoot
 argument_list|)
-else|:
-literal|0
 decl_stmt|;
 name|LOG
 operator|.
@@ -1208,7 +1190,7 @@ name|info
 argument_list|(
 literal|"Restored "
 operator|+
-name|filesRestored
+name|restored
 operator|+
 literal|" block files from trash."
 argument_list|)
@@ -1600,7 +1582,8 @@ argument_list|()
 operator|:
 literal|"previous.tmp directory must not exist."
 assert|;
-comment|// 2. Rename<SD>/curernt/<bpid>/current to<SD>/curernt/<bpid>/previous.tmp
+comment|// 2. Rename<SD>/current/<bpid>/current to
+comment|//<SD>/current/<bpid>/previous.tmp
 name|rename
 argument_list|(
 name|bpCurDir
@@ -1650,7 +1633,8 @@ argument_list|(
 name|bpSd
 argument_list|)
 expr_stmt|;
-comment|// 4.rename<SD>/curernt/<bpid>/previous.tmp to<SD>/curernt/<bpid>/previous
+comment|// 4.rename<SD>/current/<bpid>/previous.tmp to
+comment|//<SD>/current/<bpid>/previous
 name|rename
 argument_list|(
 name|bpTmpDir
@@ -1768,7 +1752,7 @@ throw|;
 block|}
 block|}
 block|}
-comment|/**    * Restore all files from the trash directory to their corresponding    * locations under current/    *    * @param trashRoot    * @throws IOException     */
+comment|/**    * Restore all files from the trash directory to their corresponding    * locations under current/    */
 DECL|method|restoreBlockFilesFromTrash (File trashRoot)
 specifier|private
 name|int
@@ -1786,6 +1770,33 @@ init|=
 literal|0
 decl_stmt|;
 name|File
+index|[]
+name|children
+init|=
+name|trashRoot
+operator|.
+name|exists
+argument_list|()
+condition|?
+name|trashRoot
+operator|.
+name|listFiles
+argument_list|()
+else|:
+literal|null
+decl_stmt|;
+if|if
+condition|(
+name|children
+operator|==
+literal|null
+condition|)
+block|{
+return|return
+literal|0
+return|;
+block|}
+name|File
 name|restoreDirectory
 init|=
 literal|null
@@ -1795,10 +1806,7 @@ control|(
 name|File
 name|child
 range|:
-name|trashRoot
-operator|.
-name|listFiles
-argument_list|()
+name|children
 control|)
 block|{
 if|if
@@ -1907,6 +1915,13 @@ operator|++
 name|filesRestored
 expr_stmt|;
 block|}
+name|FileUtil
+operator|.
+name|fullyDelete
+argument_list|(
+name|trashRoot
+argument_list|)
+expr_stmt|;
 return|return
 name|filesRestored
 return|;
@@ -2414,7 +2429,7 @@ argument_list|()
 argument_list|)
 expr_stmt|;
 block|}
-comment|/**    * gets the data node storage directory based on block pool storage    *     * @param bpRoot    * @return    */
+comment|/**    * gets the data node storage directory based on block pool storage    */
 DECL|method|getDataNodeStorageRoot (String bpRoot)
 specifier|private
 specifier|static
@@ -2539,7 +2554,7 @@ name|TRASH_ROOT_DIR
 argument_list|)
 return|;
 block|}
-comment|/**    * Get a target subdirectory under trash/ for a given block file that is being    * deleted.    *    * The subdirectory structure under trash/ mirrors that under current/ to keep    * implicit memory of where the files are to be restored (if necessary).    *    * @param blockFile    * @return the trash directory for a given block file that is being deleted.    */
+comment|/**    * Get a target subdirectory under trash/ for a given block file that is being    * deleted.    *    * The subdirectory structure under trash/ mirrors that under current/ to keep    * implicit memory of where the files are to be restored (if necessary).    *    * @return the trash directory for a given block file that is being deleted.    */
 DECL|method|getTrashDirectory (File blockFile)
 specifier|public
 name|String
@@ -2580,7 +2595,7 @@ return|return
 name|trashDirectory
 return|;
 block|}
-comment|/**    * Get a target subdirectory under current/ for a given block file that is being    * restored from trash.    *    * The subdirectory structure under trash/ mirrors that under current/ to keep    * implicit memory of where the files are to be restored.    *    * @param blockFile    * @return the target directory to restore a previously deleted block file.    */
+comment|/**    * Get a target subdirectory under current/ for a given block file that is being    * restored from trash.    *    * The subdirectory structure under trash/ mirrors that under current/ to keep    * implicit memory of where the files are to be restored.    *    * @return the target directory to restore a previously deleted block file.    */
 annotation|@
 name|VisibleForTesting
 DECL|method|getRestoreDirectory (File blockFile)
@@ -2636,10 +2651,10 @@ name|restoreDirectory
 return|;
 block|}
 comment|/**    * Delete all files and directories in the trash directories.    */
-DECL|method|emptyTrash ()
+DECL|method|restoreTrash ()
 specifier|public
 name|void
-name|emptyTrash
+name|restoreTrash
 parameter_list|()
 block|{
 for|for
@@ -2650,6 +2665,21 @@ range|:
 name|storageDirs
 control|)
 block|{
+name|File
+name|trashRoot
+init|=
+name|getTrashRootDir
+argument_list|(
+name|sd
+argument_list|)
+decl_stmt|;
+try|try
+block|{
+name|restoreBlockFilesFromTrash
+argument_list|(
+name|trashRoot
+argument_list|)
+expr_stmt|;
 name|FileUtil
 operator|.
 name|fullyDelete
@@ -2661,6 +2691,60 @@ argument_list|)
 argument_list|)
 expr_stmt|;
 block|}
+catch|catch
+parameter_list|(
+name|IOException
+name|ioe
+parameter_list|)
+block|{
+name|LOG
+operator|.
+name|warn
+argument_list|(
+literal|"Restoring trash failed for storage directory "
+operator|+
+name|sd
+argument_list|)
+expr_stmt|;
+block|}
+block|}
+block|}
+comment|/** trash is enabled if at least one storage directory contains trash root */
+annotation|@
+name|VisibleForTesting
+DECL|method|trashEnabled ()
+specifier|public
+name|boolean
+name|trashEnabled
+parameter_list|()
+block|{
+for|for
+control|(
+name|StorageDirectory
+name|sd
+range|:
+name|storageDirs
+control|)
+block|{
+if|if
+condition|(
+name|getTrashRootDir
+argument_list|(
+name|sd
+argument_list|)
+operator|.
+name|exists
+argument_list|()
+condition|)
+block|{
+return|return
+literal|true
+return|;
+block|}
+block|}
+return|return
+literal|false
+return|;
 block|}
 block|}
 end_class

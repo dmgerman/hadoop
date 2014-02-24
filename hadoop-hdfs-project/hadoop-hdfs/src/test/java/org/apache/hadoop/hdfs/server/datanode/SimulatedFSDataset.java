@@ -5137,10 +5137,10 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|enableDeleteToTrash (String bpid)
+DECL|method|enableTrash (String bpid)
 specifier|public
 name|void
-name|enableDeleteToTrash
+name|enableTrash
 parameter_list|(
 name|String
 name|bpid
@@ -5154,16 +5154,29 @@ throw|;
 block|}
 annotation|@
 name|Override
-DECL|method|disableAndPurgeTrashStorage (String bpid)
+DECL|method|restoreTrash (String bpid)
 specifier|public
 name|void
-name|disableAndPurgeTrashStorage
+name|restoreTrash
+parameter_list|(
+name|String
+name|bpid
+parameter_list|)
+block|{   }
+annotation|@
+name|Override
+DECL|method|trashEnabled (String bpid)
+specifier|public
+name|boolean
+name|trashEnabled
 parameter_list|(
 name|String
 name|bpid
 parameter_list|)
 block|{
-comment|// do nothing
+return|return
+literal|false
+return|;
 block|}
 annotation|@
 name|Override

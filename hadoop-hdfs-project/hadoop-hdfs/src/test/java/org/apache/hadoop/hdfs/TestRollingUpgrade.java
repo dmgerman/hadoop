@@ -18,36 +18,6 @@ end_package
 
 begin_import
 import|import
-name|java
-operator|.
-name|io
-operator|.
-name|File
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|FilenameFilter
-import|;
-end_import
-
-begin_import
-import|import
-name|java
-operator|.
-name|io
-operator|.
-name|IOException
-import|;
-end_import
-
-begin_import
-import|import
 name|org
 operator|.
 name|apache
@@ -306,6 +276,36 @@ name|Test
 import|;
 end_import
 
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|File
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|FilenameFilter
+import|;
+end_import
+
+begin_import
+import|import
+name|java
+operator|.
+name|io
+operator|.
+name|IOException
+import|;
+end_import
+
 begin_comment
 comment|/**  * This class tests rolling upgrade.  */
 end_comment
@@ -332,13 +332,17 @@ operator|.
 name|class
 argument_list|)
 decl_stmt|;
-DECL|method|runCmd (DFSAdmin dfsadmin, String... args)
-specifier|private
+DECL|method|runCmd (DFSAdmin dfsadmin, boolean success, String... args)
+specifier|public
+specifier|static
 name|void
 name|runCmd
 parameter_list|(
 name|DFSAdmin
 name|dfsadmin
+parameter_list|,
+name|boolean
+name|success
 parameter_list|,
 name|String
 modifier|...
@@ -346,6 +350,11 @@ name|args
 parameter_list|)
 throws|throws
 name|Exception
+block|{
+if|if
+condition|(
+name|success
+condition|)
 block|{
 name|Assert
 operator|.
@@ -361,6 +370,24 @@ name|args
 argument_list|)
 argument_list|)
 expr_stmt|;
+block|}
+else|else
+block|{
+name|Assert
+operator|.
+name|assertTrue
+argument_list|(
+name|dfsadmin
+operator|.
+name|run
+argument_list|(
+name|args
+argument_list|)
+operator|!=
+literal|0
+argument_list|)
+expr_stmt|;
+block|}
 block|}
 comment|/**    * Test DFSAdmin Upgrade Command.    */
 annotation|@
@@ -469,38 +496,24 @@ argument_list|(
 name|foo
 argument_list|)
 expr_stmt|;
-block|{
-comment|//illegal argument
-specifier|final
-name|String
-index|[]
-name|args
-init|=
-block|{
-literal|"-rollingUpgrade"
-block|,
-literal|"abc"
-block|}
-decl_stmt|;
-name|Assert
-operator|.
-name|assertTrue
+comment|//illegal argument "abc" to rollingUpgrade option
+name|runCmd
 argument_list|(
 name|dfsadmin
-operator|.
-name|run
-argument_list|(
-name|args
-argument_list|)
-operator|!=
-literal|0
+argument_list|,
+literal|false
+argument_list|,
+literal|"-rollingUpgrade"
+argument_list|,
+literal|"abc"
 argument_list|)
 expr_stmt|;
-block|}
 comment|//query rolling upgrade
 name|runCmd
 argument_list|(
 name|dfsadmin
+argument_list|,
+literal|true
 argument_list|,
 literal|"-rollingUpgrade"
 argument_list|)
@@ -509,6 +522,8 @@ comment|//start rolling upgrade
 name|runCmd
 argument_list|(
 name|dfsadmin
+argument_list|,
+literal|true
 argument_list|,
 literal|"-rollingUpgrade"
 argument_list|,
@@ -519,6 +534,8 @@ comment|//query rolling upgrade
 name|runCmd
 argument_list|(
 name|dfsadmin
+argument_list|,
+literal|true
 argument_list|,
 literal|"-rollingUpgrade"
 argument_list|,
@@ -537,6 +554,8 @@ name|runCmd
 argument_list|(
 name|dfsadmin
 argument_list|,
+literal|true
+argument_list|,
 literal|"-rollingUpgrade"
 argument_list|,
 literal|"finalize"
@@ -553,9 +572,13 @@ name|runCmd
 argument_list|(
 name|dfsadmin
 argument_list|,
+literal|true
+argument_list|,
 literal|"-rollingUpgrade"
 argument_list|)
 expr_stmt|;
+comment|// All directories created before upgrade, when upgrade in progress and
+comment|// after upgrade finalize exists
 name|Assert
 operator|.
 name|assertTrue
@@ -616,6 +639,7 @@ name|SAFEMODE_LEAVE
 argument_list|)
 expr_stmt|;
 block|}
+comment|// Ensure directories exist after restart
 name|cluster
 operator|.
 name|restartNameNode
